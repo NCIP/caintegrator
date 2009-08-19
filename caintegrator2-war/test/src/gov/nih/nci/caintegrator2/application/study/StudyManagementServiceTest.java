@@ -352,7 +352,6 @@ public class StudyManagementServiceTest {
         value2.setImageSeries(imageSeries);
         value3.setSubjectAnnotation(subjectAnnotation);
         AnnotationDefinition firstDefinition = new AnnotationDefinition();
-        firstDefinition.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
         firstDefinition.getAnnotationValueCollection().add(value1);
         firstDefinition.getAnnotationValueCollection().add(value2);
         firstDefinition.getAnnotationValueCollection().add(value3);
@@ -384,8 +383,7 @@ public class StudyManagementServiceTest {
         AnnotationDefinition originalDefinition = new AnnotationDefinition();
         originalDefinition.setType(AnnotationTypeEnum.STRING.getValue());
         fileColumn.getFieldDescriptor().setDefinition(originalDefinition);
-        originalDefinition.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
-        
+       
         StringAnnotationValue validValue = new StringAnnotationValue();
         SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
         StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();

@@ -89,7 +89,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
@@ -290,8 +289,7 @@ public class PermissibleValueUtilTest {
         Study study = new Study();
         AnnotationDefinition annotationDefinition1 = new AnnotationDefinition();
         annotationDefinition1.setType(AnnotationTypeEnum.NUMERIC.getValue());
-        annotationDefinition1.setPermissibleValueCollection(createNumericPermissible());
-        annotationDefinition1.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
+        annotationDefinition1.getPermissibleValueCollection().addAll(createNumericPermissible());
         CaIntegrator2DaoStub dao = new CaIntegrator2DaoStub();
         
         NumericAnnotationValue validValue = new NumericAnnotationValue();
@@ -331,8 +329,7 @@ public class PermissibleValueUtilTest {
         
         AnnotationDefinition annotationDefinition2 = new AnnotationDefinition();
         annotationDefinition2.setType(AnnotationTypeEnum.STRING.getValue());
-        annotationDefinition2.setPermissibleValueCollection(createStringPermissible());
-        annotationDefinition2.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
+        annotationDefinition2.getPermissibleValueCollection().addAll(createStringPermissible());
         
         StringAnnotationValue validValue2 = new StringAnnotationValue();
         validValue2.setStringValue("ABC");
@@ -353,8 +350,7 @@ public class PermissibleValueUtilTest {
 
         AnnotationDefinition annotationDefinition3 = new AnnotationDefinition();
         annotationDefinition3.setType(AnnotationTypeEnum.DATE.getValue());
-        annotationDefinition3.setPermissibleValueCollection(createDatePermissible());
-        annotationDefinition3.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
+        annotationDefinition3.getPermissibleValueCollection().addAll(createDatePermissible());
         DateAnnotationValue validValue3 = new DateAnnotationValue();
         validValue3.setDateValue(new Date());
         validValue3.setAnnotationDefinition(annotationDefinition3);

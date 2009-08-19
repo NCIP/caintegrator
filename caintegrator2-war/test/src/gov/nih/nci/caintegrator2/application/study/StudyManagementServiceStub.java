@@ -330,8 +330,12 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
 
     public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType) {
+        AnnotationDefinition definition = new AnnotationDefinition();
+        if (descriptor != null) {
+            descriptor.setDefinition(definition);
+        }
         createDefinitionCalled = true;
-        return null;
+        return definition;
     }
 
     /**

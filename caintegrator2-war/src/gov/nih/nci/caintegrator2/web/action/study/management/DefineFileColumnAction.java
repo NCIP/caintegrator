@@ -210,12 +210,17 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     /**
      * Let's the user create a new AnnotationDefinition for a column.
      * @return the Struts result.
+     * @throws ValidationException Invalid data
+     * @throws ParseException Invalid data
      */
-    public String createNewDefinition() {
+    public String createNewDefinition() throws ValidationException, ParseException {
         getStudyManagementService().createDefinition(getFileColumn().getFieldDescriptor(), 
                                                      getStudyConfiguration().getStudy(),
                                                      EntityTypeEnum.SUBJECT);
         setReadOnly(false);
+        // Default the available values to be permissible on any new definition.
+        getPermissibleUpdateList().addAll(getAvailableValues());
+        updatePermissible();
         clearCacheMemory();
         return SUCCESS;
     }
@@ -444,7 +449,8 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     */
    public Set<String> getAvailableValues() throws ValidationException {
        return AnnotationValueUtil.getAdditionalValue(getAnnotationValueCollection(),
-               fileColumn.getDataValues(), getPermissibleValues());
+               fileColumn.getAnnotationFile() != null ? fileColumn.getDataValues() : new ArrayList<String>(), 
+               getPermissibleValues());
    }
     
     /**
