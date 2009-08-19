@@ -84,7 +84,9 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
             List<File> files = new ArrayList<File>();
             files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
             AffymetrixDnaPlatformSource source = new AffymetrixDnaPlatformSource(files, "Mapping50K_Hind240");
-            platform = getArrayDataService().loadArrayDesign(new PlatformConfiguration(source), null).getPlatform();
+            PlatformConfiguration configuration = new PlatformConfiguration(source);
+            getArrayDataService().savePlatformConfiguration(configuration);
+            platform = getArrayDataService().loadArrayDesign(configuration, null).getPlatform();
         }
         return platform;
     }
