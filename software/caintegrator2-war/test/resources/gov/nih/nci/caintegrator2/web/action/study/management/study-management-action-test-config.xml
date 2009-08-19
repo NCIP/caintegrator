@@ -106,6 +106,9 @@
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
+        <property name="deploymentService">
+            <ref local="deploymentService"/>
+        </property>
     </bean>
 
     <bean id="saveStudyAction"
@@ -207,6 +210,11 @@
 
     <bean id="studyManagementService" 
         class="gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub" 
+        singleton="true">
+    </bean>
+    
+    <bean id="deploymentService" 
+        class="gov.nih.nci.caintegrator2.application.study.deployment.DeploymentServiceStub" 
         singleton="true">
     </bean>
     

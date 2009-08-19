@@ -87,7 +87,7 @@ package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentService;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
 import java.util.ArrayList;
@@ -112,7 +112,8 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String JOB_START_DATE = "studyJobStartDate_";
     private static final String JOB_FINISH_DATE = "studyJobFinishDate_";
     private static final String JOB_ACTION_BAR = "jobActionBar_";
-    private StudyManagementService studyManagementService;
+    
+    private DeploymentService deploymentService;
 
     /**
      * {@inheritDoc}
@@ -236,17 +237,17 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     }
 
     /**
-     * @return the studyManagementService
+     * @return the deploymentService
      */
-    public StudyManagementService getStudyManagementService() {
-        return studyManagementService;
+    public DeploymentService getDeploymentService() {
+        return deploymentService;
     }
 
     /**
-     * @param studyManagementService the studyManagementService to set
+     * @param deploymentService the deploymentService to set
      */
-    public void setStudyManagementService(StudyManagementService studyManagementService) {
-        this.studyManagementService = studyManagementService;
+    public void setDeploymentService(DeploymentService deploymentService) {
+        this.deploymentService = deploymentService;
     }
 
 

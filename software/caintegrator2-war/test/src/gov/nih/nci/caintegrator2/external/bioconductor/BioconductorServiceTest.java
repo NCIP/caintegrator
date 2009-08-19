@@ -6,6 +6,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.rmi.RemoteException;
@@ -39,7 +40,7 @@ public class BioconductorServiceTest {
     }
 
     @Test
-    public void testAddSegmentationData() throws ConnectionException {
+    public void testAddSegmentationData() throws ConnectionException, DataRetrievalException {
         List<DnaAnalysisReporter> reporters = new ArrayList<DnaAnalysisReporter>();
         reporters.add(createReporter("1", 0));
         reporters.add(createReporter("1", 5));

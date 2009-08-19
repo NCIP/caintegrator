@@ -85,9 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
-import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
@@ -107,8 +105,6 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.bioconductor.BioconductorService;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
@@ -120,7 +116,6 @@ import gov.nih.nci.security.exceptions.CSException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -147,18 +142,8 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     private CaDSRFacade caDSRFacade;
     private NCIAFacade nciaFacade;
     private CaArrayFacade caArrayFacade;
-    private ArrayDataService arrayDataService;
     private WorkspaceService workspaceService;
-    private BioconductorService bioconductorService;
-    private CopyNumberHandlerFactory copyNumberHandlerFactory;
     private SecurityManager securityManager;
-
-    /**
-     * @param bioconductorService the bioconductorService to set
-     */
-    public void setBioconductorService(BioconductorService bioconductorService) {
-        this.bioconductorService = bioconductorService;
-    }
 
     /**
      * {@inheritDoc}
@@ -423,59 +408,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("PMD.AvoidReassigningParameters") // preferable in this instance for error handling.
-    public void deployStudy(StudyConfiguration studyConfiguration, DeploymentListener listener) {
-        try {
-            studyConfiguration = getRefreshedStudyConfiguration(studyConfiguration.getId());
-            startDeployment(studyConfiguration, listener);
-            doDeployment(studyConfiguration, listener);
-        } catch (Exception e) {
-            handleDeploymentException(studyConfiguration, listener, e);
-        }
-    }
-
-    private void handleDeploymentException(StudyConfiguration studyConfiguration, DeploymentListener listener,
-            Exception e) {
-        LOGGER.error("Deployment of study " + studyConfiguration.getStudy().getShortTitleText() + " failed.", e);
-        studyConfiguration.setStatus(Status.ERROR);
-        studyConfiguration.setStatusDescription(e.getMessage());
-        if (listener != null) {
-            listener.statusUpdated(studyConfiguration);
-        }
-        dao.save(studyConfiguration);
-    }
-
-    private void doDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener) 
-    throws ConnectionException, DataRetrievalException, ValidationException {
-        if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
-            new GenomicDataHelper(getCaArrayFacade(), 
-                    getArrayDataService(), dao, bioconductorService, getCopyNumberHandlerFactory())
-                .loadData(studyConfiguration);
-        }
-        studyConfiguration.setStatus(Status.DEPLOYED);
-        studyConfiguration.setDeploymentFinishDate(new Date());
-        studyConfiguration.setStatusDescription("Minutes for deployment (approx):  " 
-                + DateUtil.compareDatesInMinutes(studyConfiguration.getDeploymentStartDate(), 
-                                                 studyConfiguration.getDeploymentFinishDate()));
-        dao.save(studyConfiguration);
-        if (listener != null) {
-            listener.statusUpdated(studyConfiguration);
-        }
-    }
-
-    private void startDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener) {
-        studyConfiguration.setDeploymentStartDate(new Date());
-        studyConfiguration.setDeploymentFinishDate(null);
-        studyConfiguration.setStatusDescription(null);
-        studyConfiguration.setStatus(Status.PROCESSING);
-        if (listener != null) {
-            listener.statusUpdated(studyConfiguration);
-        }
-    }
-
-    /**
      * @param dao the dao to set
      */
     public void setDao(CaIntegrator2Dao dao) {
@@ -724,20 +656,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         this.caArrayFacade = caArrayFacade;
     }
 
-    /**
-     * @return the arrayDataService
-     */
-    public ArrayDataService getArrayDataService() {
-        return arrayDataService;
-    }
-
-    /**
-     * @param arrayDataService the arrayDataService to set
-     */
-    public void setArrayDataService(ArrayDataService arrayDataService) {
-        this.arrayDataService = arrayDataService;
-    }
-    
     /**
      * {@inheritDoc}
      */
@@ -1019,23 +937,10 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     }
 
     /**
-     * @return the copyNumberHandlerFactory
-     */
-    public CopyNumberHandlerFactory getCopyNumberHandlerFactory() {
-        return copyNumberHandlerFactory;
-    }
-
-    /**
-     * @param copyNumberHandlerFactory the copyNumberHandlerFactory to set
-     */
-    public void setCopyNumberHandlerFactory(CopyNumberHandlerFactory copyNumberHandlerFactory) {
-        this.copyNumberHandlerFactory = copyNumberHandlerFactory;
-    }
-
-    /**
      * @param securityManager the securityManager to set
      */
     public void setSecurityManager(SecurityManager securityManager) {
         this.securityManager = securityManager;
     }
+
 }

@@ -83,34 +83,75 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.io.FileUtils;
+
 /**
- * Default factory implementation.
+ * Reads and retrieves copy number data from a caArray instance.
  */
-public class CopyNumberHandlerFactoryImpl implements CopyNumberHandlerFactory {
-
-    /**
-     * {@inheritDoc}
-     */
-    public AbstractCopyNumberMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
-            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao)
-    throws DataRetrievalException {
-        switch (PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor())) {
-        case AFFYMETRIX:
-            return new AffymetrixCopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
-        case AGILENT:
-            return new AgilentCopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
-        default:
-            throw new DataRetrievalException("Unknown platform vendor.");
-        }
-
+class AgilentCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFileHandler {
+    
+    AgilentCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
+            ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+        super(genomicSource, caArrayFacade, arrayDataService, dao);
     }
 
-}
+    @Override
+    void doneWithFile(File cnchpFile) {
+        cnchpFile.delete();
+    }
+
+    @Override
+    File getDataFile(String copyNumberFilename) 
+    throws ConnectionException, DataRetrievalException, ValidationException {
+        try {
+            byte[] fileBytes = getCaArrayFacade().retrieveFile(getGenomicSource(), copyNumberFilename);
+            File tempFile = File.createTempFile("temp", ".raw");
+            FileUtils.writeByteArrayToFile(tempFile, fileBytes);
+            return tempFile;
+        } catch (FileNotFoundException e) {
+            throw new ValidationException("Experiment " + getGenomicSource().getExperimentIdentifier() 
+                    + " doesn't contain a file named " + copyNumberFilename, e);
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't write Raw Data file locally", e);
+        }
+    }
+
+    @Override
+    ArrayDataValues loadArrayData(Sample sample, List<File> rawFiles) 
+    throws DataRetrievalException, ValidationException {
+        PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(getGenomicSource().getPlatformName()));
+        Set<ReporterList> reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        ArrayData arrayData = createArrayData(sample, reporterLists);
+        getDao().save(arrayData);
+        ArrayDataValues values = 
+            new ArrayDataValues(platformHelper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
+        for (File rawFile : rawFiles) {
+            AgilentCopyNumberDataRetrieval.INSTANCE.parseDataFile(rawFile, values, arrayData, platformHelper);
+        }
+        getArrayDataService().save(values);
+        return values;
+    }
+
+ }

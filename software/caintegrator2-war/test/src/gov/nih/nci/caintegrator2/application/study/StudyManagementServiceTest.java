@@ -122,7 +122,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
@@ -133,7 +132,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 @SuppressWarnings("PMD")
 public class StudyManagementServiceTest {
     
-    private StudyManagementService studyManagementService;
+    private StudyManagementServiceImpl studyManagementService;
     private CaIntegrator2DaoStub daoStub;
     private CaDSRFacadeStub caDSRFacadeStub;
     private FileManagerStub fileManagerStub;
@@ -145,7 +144,7 @@ public class StudyManagementServiceTest {
     @Before
     public void setUp() throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class); 
-        studyManagementService = (StudyManagementService) context.getBean("studyManagementService"); 
+        studyManagementService = (StudyManagementServiceImpl) context.getBean("studyManagementService"); 
 		daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
         daoStub.clear();                
         caDSRFacadeStub = (CaDSRFacadeStub) context.getBean("caDSRFacadeStub");
@@ -211,36 +210,6 @@ public class StudyManagementServiceTest {
         assertFalse(configTest.getImageDataSources().contains(imageSourceToDelete));
         assertTrue(configTest.getImageDataSources().contains(imageSourceToKeep));
         assertTrue(daoStub.deleteCalled);
-    }
-
-    @Test
-    public void testDeployStudyWithError() {
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        TestListener listener = new TestListener();
-        studyManagementService.deployStudy(studyConfiguration, listener);
-        assertEquals(Status.ERROR, listener.configuration.getStatus());
-        assertNotNull(listener.configuration.getStatusDescription());
-        assertTrue(daoStub.saveCalled);
-    }
-    @Test
-    public void testDeployStudy() {
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyConfiguration.setId(1L);
-        TestListener listener = new TestListener();
-        studyManagementService.deployStudy(studyConfiguration, listener);
-        assertTrue(listener.statuses.contains(Status.PROCESSING));
-        assertTrue(listener.statuses.contains(Status.DEPLOYED));
-        assertEquals(Status.DEPLOYED, listener.configuration.getStatus());
-        assertTrue(daoStub.saveCalled);
-    }
-    
-    private static class TestListener implements DeploymentListener {
-        private Set<Status> statuses = new HashSet<Status>();
-        private StudyConfiguration configuration;
-        public void statusUpdated(StudyConfiguration configuration) {
-            this.configuration = configuration;
-            statuses.add(configuration.getStatus());
-        }
     }
     
     @Test
@@ -383,7 +352,7 @@ public class StudyManagementServiceTest {
         AnnotationDefinition originalDefinition = new AnnotationDefinition();
         originalDefinition.setType(AnnotationTypeEnum.STRING.getValue());
         fileColumn.getFieldDescriptor().setDefinition(originalDefinition);
-       
+        
         StringAnnotationValue validValue = new StringAnnotationValue();
         SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
         StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();

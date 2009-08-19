@@ -88,7 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentServiceStub;
 import gov.nih.nci.caintegrator2.web.ajax.IStudyDeploymentAjaxUpdater;
 
 import org.junit.Before;
@@ -101,15 +101,14 @@ import com.opensymphony.xwork2.Action;
 public class DeployStudyActionTest {
 
     private DeployStudyAction action;
-    private StudyManagementServiceStub studyManagementServiceStub;
+    private DeploymentServiceStub deploymentServiceStub;
     private DeployStudyAjaxUpdaterStub ajaxUpdaterStub;
 
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditStudyActionTest.class); 
         action = (DeployStudyAction) context.getBean("deployStudyAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
+        deploymentServiceStub = (DeploymentServiceStub) context.getBean("deploymentService");
         ajaxUpdaterStub = new DeployStudyAjaxUpdaterStub();
         action.setAjaxUpdater(ajaxUpdaterStub);
     }
@@ -118,6 +117,7 @@ public class DeployStudyActionTest {
     public void testExecute() {
         assertEquals(Action.SUCCESS, action.execute());
         assertTrue(ajaxUpdaterStub.runJobCalled);
+        assertTrue(deploymentServiceStub.prepareForDeploymentCalled);
     }
     
     private static class DeployStudyAjaxUpdaterStub implements IStudyDeploymentAjaxUpdater {

@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
 import java.rmi.RemoteException;
 import java.util.HashMap;
@@ -119,13 +120,14 @@ public class BioconductorServiceImpl implements BioconductorService {
 
     /**
      * {@inheritDoc}
+     * @throws DataRetrievalException 
      */
     public void addSegmentationData(CopyNumberData copyNumberData,
             CopyNumberDataConfiguration configuration) 
-    throws ConnectionException {
+    throws ConnectionException, DataRetrievalException {
         String url = configuration.getCaDNACopyService().getUrl();
         try {
-            CaDNAcopyI client = getClientFactory().getCaDNAcopyI(url);
+            CaDNAcopyI client = getClient(url);
             DNAcopyAssays assays = buildAssays(copyNumberData);
             DNAcopyParameter parameter = new DNAcopyParameter();
             parameter.setChangePointSignificanceLevel(configuration.getChangePointSignificanceLevel());
@@ -134,11 +136,20 @@ public class BioconductorServiceImpl implements BioconductorService {
             parameter.setRandomNumberSeed(configuration.getRandomNumberSeed());
             DerivedDNAcopySegment segment = client.getDerivedDNAcopySegment(assays, parameter);
             addSegmenetationData(segment, copyNumberData);
+        } catch (RemoteException e) {
+            LOGGER.error("Couldn't complete CaDNACopy job", e);
+            throw new DataRetrievalException("Couldn't complete CaDNACopy job: " + e.getMessage(), e);
+        }
+    }
+
+    private CaDNAcopyI getClient(String url) throws ConnectionException {
+        try {
+            return getClientFactory().getCaDNAcopyI(url);
         } catch (MalformedURIException e) {
             throw new ConnectionException("Invalid URL: " + url, e);
         } catch (RemoteException e) {
-            LOGGER.error("Couldn't complete CaDNACopy job", e);
-            throw new ConnectionException("Couldn't connect to " + url, e);
+            LOGGER.error("Couldn't connect to CaDNACopy service", e);
+            throw new ConnectionException("Couldn't connect to " + url + ": " + e.getMessage(), e);
         }
     }
 
