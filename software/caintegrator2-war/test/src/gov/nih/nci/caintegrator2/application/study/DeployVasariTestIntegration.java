@@ -136,7 +136,7 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     
     @Override
     protected String getCaArrayId() {
-        return "admin-00004";
+        return "rembr-00037";
     }
 
     @Override

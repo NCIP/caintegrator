@@ -141,7 +141,7 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     
     @Override
     protected String getCaArrayId() {
-        return "admin-00001";
+        return "jagla-00034";
     }
     
     /**

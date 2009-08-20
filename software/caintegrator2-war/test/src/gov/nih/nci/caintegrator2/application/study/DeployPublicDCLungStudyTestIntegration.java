@@ -140,7 +140,7 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
 
     @Override
     protected String getCaArrayId() {
-        return "admin-00003";
+        return "jacob-00182";
     }
 
     @Override
