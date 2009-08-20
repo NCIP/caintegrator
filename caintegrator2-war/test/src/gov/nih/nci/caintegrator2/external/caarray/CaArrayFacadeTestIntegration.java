@@ -131,7 +131,7 @@ public class CaArrayFacadeTestIntegration {
         ServerConnectionProfile profile = new ServerConnectionProfile();
         profile.setHostname("ncias-d227-v.nci.nih.gov");
         profile.setPort(31099);
-        List<Sample> samples = caArrayFacade.getSamples("admin-00001", profile);
+        List<Sample> samples = caArrayFacade.getSamples("jagla-00034", profile);
         assertFalse(samples.isEmpty());
     }
     
@@ -148,18 +148,18 @@ public class CaArrayFacadeTestIntegration {
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         genomicSource.getServerProfile().setHostname("ncias-d227-v.nci.nih.gov");
         genomicSource.getServerProfile().setPort(31099);
-        genomicSource.setExperimentIdentifier("admin-00001");
+        genomicSource.setExperimentIdentifier("jagla-00034");
         assertEquals(711652, caArrayFacade.retrieveFile(genomicSource, "s1_U133P2.CHP").length);
     }
-    
+
     @Test
     public void testRetrieveData() throws ConnectionException, ExperimentNotFoundException, DataRetrievalException {
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         genomicSource.getServerProfile().setHostname("ncias-d227-v.nci.nih.gov");
         genomicSource.getServerProfile().setPort(31099);
-        genomicSource.setExperimentIdentifier("admin-00001");
+        genomicSource.setExperimentIdentifier("jagla-00034");
         genomicSource.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
-        genomicSource.getSamples().addAll(caArrayFacade.getSamples("admin-00001", genomicSource.getServerProfile()));
+        genomicSource.getSamples().addAll(caArrayFacade.getSamples("jagla-00034", genomicSource.getServerProfile()));
         genomicSource.setStudyConfiguration(StudyConfigurationFactory.createNewStudyConfiguration());
         ArrayDataValues values = caArrayFacade.retrieveData(genomicSource);
         assertEquals(3, values.getArrayDatas().size());
