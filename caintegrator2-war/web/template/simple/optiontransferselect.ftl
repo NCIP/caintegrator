@@ -24,7 +24,19 @@
     <script type="text/javascript" src="<@s.url value="/struts/optiontransferselect.js" encode='false' includeParams='none'/>"></script>
     <#assign temporaryVariable = stack.setValue("#optiontransferselect_js_included", "true") /><#t/>
 </#if><#t/>
+
 <table border="0" class="optionTransferSelect">
+<#if parameters.title?exists><#t/>
+<tr>
+    <td colspan="3">
+    <div class="inlinehelp_form_element">
+        <span class="wwlbl" style="text-align:left;width:500px;white-space:normal;">
+            ${parameters.title}
+        </span>
+    </div>
+    </td>
+</tr>
+</#if><#t/>
 <tr>
 <td>
 <#if parameters.leftTitle?exists><#t/>
