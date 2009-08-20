@@ -183,7 +183,7 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     
     @Override
     protected String getCaArrayId() {
-        return "admin-00001";
+        return "jagla-00034";
     }
 
     @Override
@@ -228,7 +228,7 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     
     @Override
     protected String getCopyNumberCaArrayId() {
-        return "admin-00002";
+        return "liu-00252";
     }
 
     @Override
