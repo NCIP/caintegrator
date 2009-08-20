@@ -65,7 +65,7 @@
                 doubleCssStyle="min-width:200px; vertical-align=middle; font-weight:bold; color: #475B82; background-color: #E9E9E9;"
                 buttonCssStyle="min-width:100px; vertical-align=middle;"
                 required="true"
-                title="Clinical Queries enable the user to specify which samples will be processed using PCA.  The queries selected here have been previously saved by the user.  Selected queries will result in the processing of only those samples which are mapped to patients in the saved query result.  If multiple queries are selected, all of the sample from each saved query are processed PLUS the results set will be classified according to those queries.  (One class per selected query.)"
+                title="Clinical Queries enable the user to specify which samples will be processed using PCA.  The queries selected here have been previously saved by the user.  Selected queries will result in the processing of only those samples which are mapped to subjects in the saved query result.  If multiple queries are selected, all of the sample from each saved query are processed PLUS the results set will be classified according to those queries.  (One class per selected query.)"
                 theme="css_xhtml" />
                 
              <br>    
@@ -108,6 +108,7 @@
                     list="pcaParameters.clusterByOptions" required="true" />
                 -->
             </s:div>           
+            <br>
             <br>
     
             
