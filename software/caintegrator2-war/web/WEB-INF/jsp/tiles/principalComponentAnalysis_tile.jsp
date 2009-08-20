@@ -24,7 +24,7 @@
                 <s:div cssStyle="text-align:left; width: 500px; margin-left: auto; margin-right: auto;">
                 <span style="font-weight:bold;">Job Name</span> - Please enter a job name.<br>
                 <span style="font-weight:bold;">Principal Component Analysis Server</span> -  Select a PCA grid service from the dropdown.<br>
-                <span style="font-weight:bold;">Clinical Queries</span> - Select one of your saved Clinical queries to specify which samples will be processed.<br>
+                <span style="font-weight:bold;">Clinical Queries</span> - Select saved Clinical queries to specify which samples will be processed.<br>
                 <span style="font-weight:bold;">Enable Preprocess Dataset</span> - (Optional)  Check this to display and configure preprocessing parameters.
                 </s:div>
 
@@ -40,7 +40,7 @@
             
             <s:optiontransferselect
                 id="allQueries"
-                label="Clincal Queries"
+                label="Clinical Queries"
                 doubleId="querySelections"
                 name="principalComponentAnalysisForm.unselectedQueryIDs"
                 list="principalComponentAnalysisForm.unselectedQueries"
