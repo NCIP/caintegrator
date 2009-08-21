@@ -19,6 +19,8 @@
     
     <s:url id="notYetImplementedUrl" includeParams="none" action="notYetImplemented" />
     
+    <s:url id="tutorialsUrl" includeParams="none" action="tutorials" />
+    
     <s:set name="sessionHelper" value="#session['sessionHelper']" />
 
     <s:if test="currentStudy != null">    
@@ -122,7 +124,7 @@
         <li class="stdnav" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
             <ul>
                 <li><a href="javascript:openWin('/caintegrator2//help/Getting_Started.2.8.html#1122280')">Support</a></li>
-                <li><a href="${ notYetImplementedUrl }">Tutorials</a></li>
+                <li><a href="${tutorialsUrl}">Tutorials</a></li>
                 <li><a href="javascript:openUsersGuideWindow('top')">User Guide (draft)</a></li>
             </ul>
         </li>
