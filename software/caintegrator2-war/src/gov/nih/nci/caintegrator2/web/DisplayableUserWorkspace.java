@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
+import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
@@ -255,7 +256,11 @@ public class DisplayableUserWorkspace {
     public List<StudySubscription> getOrderedSubscriptionList() {
         List<StudySubscription> orderedSubscriptionCollection = new ArrayList<StudySubscription>();
         if (getUserWorkspace().getSubscriptionCollection() != null) {
-            orderedSubscriptionCollection.addAll(getUserWorkspace().getSubscriptionCollection());
+            for (StudySubscription studySubscription : getUserWorkspace().getSubscriptionCollection()) {
+                if (Status.DEPLOYED.equals(studySubscription.getStudy().getStudyConfiguration().getStatus())) {
+                    orderedSubscriptionCollection.add(studySubscription);
+                }
+            }
         }
         Comparator<StudySubscription> nameComparator = new Comparator<StudySubscription>() {
             public int compare(StudySubscription subscription1, StudySubscription subscription2) {
