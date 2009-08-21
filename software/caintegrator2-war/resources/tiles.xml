@@ -74,6 +74,10 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/notYetImplemented_tile.jsp" />
     </definition>
     
+    <definition name="tutorials" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/tutorials_tile.jsp" />
+    </definition>
+    
     <definition name="homepage" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/homepage_tile.jsp" />
     </definition>
