@@ -31,6 +31,15 @@
         <param-value>@caintegrator2.svntag@</param-value>
     </context-param>
     
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Forbidden</web-resource-name>
+            <url-pattern>/*</url-pattern>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
+        <auth-constraint/>
+    </security-constraint>
+    
     <!-- Export Filter (for exporting data results) -->
     <filter>
 		<filter-name>ResponseOverrideFilter</filter-name>
