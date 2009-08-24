@@ -37,6 +37,7 @@
 		<property name="authenticationManager" ref="authenticationManager"/>
 		<property name="authenticationFailureUrl" value="/login.action"/> 
 		<property name="defaultTargetUrl" value="/"/>
+		<property name="alwaysUseDefaultTargetUrl" value="true"/> <!-- Always make it go to default action. -->
 		<property name="filterProcessesUrl" value="/j_acegi_security_check"/>
 	</bean>
 
