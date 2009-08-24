@@ -58,7 +58,8 @@
             onchange="CheckPlatformVendor(this.form.platformVendor.value);"/>
         <s:select id="dataType" name="genomicSource.dataTypeString" label="Data Type"
             list="@gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum@getStringValues()"/>
-        <s:select id="platformName" name="genomicSource.platformName" label="Platform (only needed for Agilent)" list="agilentPlatformNames" />
+        <s:select id="platformName" name="genomicSource.platformName" label="Platform (only needed for Agilent)"
+            list="agilentPlatformNames" disabled="platformNameDisable"/>
         
         <tr> 
         <td></td>
@@ -71,10 +72,6 @@
         </td> 
         </tr>
     </s:form>
-    
-    <script type="text/javascript">
-        CheckPlatformVendor();
-    </script>
             
 </div>
 

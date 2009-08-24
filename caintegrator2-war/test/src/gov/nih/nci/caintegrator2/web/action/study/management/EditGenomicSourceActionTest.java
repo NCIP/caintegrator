@@ -127,6 +127,14 @@ public class EditGenomicSourceActionTest {
         caArrayFacadeStub = new CaArrayFacadeStubForAction();
         action.setCaArrayFacade(caArrayFacadeStub);
     }
+    
+    @Test
+    public void testGetPlatformNameDisable() {
+        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AGILENT.getValue());
+        assertEquals("false", action.getPlatformNameDisable());
+        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
+        assertEquals("true", action.getPlatformNameDisable());
+    }
 
     @Test
     public void testGetAgilentPlatformNames() {

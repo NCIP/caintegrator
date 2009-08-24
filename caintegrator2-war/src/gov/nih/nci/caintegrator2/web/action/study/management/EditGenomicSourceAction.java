@@ -213,6 +213,15 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         }
         return platformNames;
     }
+    
+    /**
+     * Disabled status for the platform name selection.
+     * @return whether to disable the platform names.
+     */
+    public String getPlatformNameDisable() {
+        return PlatformVendorEnum.AGILENT.getValue().equals(getGenomicSource().getPlatformVendor())
+            ? "false" : "true";
+    }
 
     /**
      * @return the arrayDataService
