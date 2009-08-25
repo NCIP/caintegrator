@@ -18,6 +18,7 @@
 
         <!--  page specific criteria  -->
         <put-attribute name="content" value="" />
+        <put-attribute name="subTitle" value="" />
         <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyNormal_tile.jsp" />
     </definition>
 
@@ -27,55 +28,63 @@
     
     <definition name="editSurvivalValueDefinitions" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editSurvivalDefinitions_tile.jsp" />
+        <put-attribute name="subTitle" value="Survival Value Definitions" />
     </definition>
     
     <definition name="editClinicalFile" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editClinicalFile_tile.jsp" />
+        <put-attribute name="subTitle" value="Define Fields for Clinical Data" />
     </definition>
     
 	<definition name="editImagingFile" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editImagingFile_tile.jsp" />
+        <put-attribute name="subTitle" value="Define Fields for Imaging Data" />
     </definition>
     
     <definition name="editFileColumn" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editFileColumn_tile.jsp" />
+        <put-attribute name="subTitle" value="Assign Annotation Definition for Column" />
     </definition>
 
     <definition name="editImagingFileColumn" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editImagingFileColumn_tile.jsp" />
+        <put-attribute name="subTitle" value="Assign Annotation Definition for Imaging Column" />
     </definition>
     
     <definition name="editGenomicSource" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editGenomicSource_tile.jsp" />
+        <put-attribute name="subTitle" value="Edit Genomic Data Source" />
     </definition>
     
     <definition name="editCopyNumberDataConfiguration" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editCopyNumberDataConfiguration_tile.jsp" />
+        <put-attribute name="subTitle" value="Edit Copy Number Data Configuration" />
     </definition>
 
 	<definition name="editImagingSource" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editImagingSource_tile.jsp" />
+        <put-attribute name="subTitle" value="Edit Imaging Data Source" />
     </definition>
     
     <definition name="editStudy" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editStudy_tile.jsp" />
         <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyDwrAjax_tile.jsp" />
+        <put-attribute name="subTitle" value="Edit Study" />
     </definition>
 
     <definition name="fileIoError" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/fileIoError_tile.jsp" />
-    </definition>
-    
-    <definition name="displayMessage" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/displayMessage_tile.jsp" />
+        <put-attribute name="subTitle" value="Error Adding File" />
     </definition>
     
     <definition name="notYetImplemented" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/notYetImplemented_tile.jsp" />
+        <put-attribute name="subTitle" value="This feature currently not implemented." />
     </definition>
     
     <definition name="tutorials" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/tutorials_tile.jsp" />
+        <put-attribute name="subTitle" value="Tutorial Menu" />
     </definition>
     
     <definition name="homepage" extends="cssBaseDef">
@@ -84,27 +93,32 @@
     
     <definition name="browseStudy" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/browseStudy_tile.jsp" />
+        <put-attribute name="subTitle" value="Browse Study" />
     </definition>
     
     <definition name="login" extends="cssBaseDef">
         <put-attribute name="leftNavMenu" value=""/>
         <put-attribute name="globalHeader" value="/WEB-INF/jsp/tiles/loginHeader_tile.jsp" />
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/login_tile.jsp" />
+        <put-attribute name="subTitle" value="Login" />
     </definition>
     
     <definition name="genericError" extends="cssBaseDef">
         <put-attribute name="leftNavMenu" value=""/>
         <put-attribute name="globalHeader" value="/WEB-INF/jsp/tiles/loginHeader_tile.jsp" />
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/genericError_tile.jsp" />
+        <put-attribute name="subTitle" value="Error" />
     </definition>
     
     <definition name="dicomJobAjax" extends="cssBaseDef">
         <put-attribute name="leftNavMenu" value=""/>
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/dicomJobAjax_tile.jsp" />
+        <put-attribute name="subTitle" value="DICOM Retrieval" />
     </definition>
 
     <definition name="manageStudies" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageStudies_tile.jsp" />
+        <put-attribute name="subTitle" value="Manage Studies" />
     </definition>
 
     <definition name="workspaceStudy" extends="cssBaseDef">
@@ -115,12 +129,9 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/studySummary_tile.jsp" />
     </definition>
 
-    <definition name="viewStudy" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/viewStudy_tile.jsp" />
-    </definition>
-
     <definition name="editSampleMapping" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editSampleMapping_tile.jsp" />
+        <put-attribute name="subTitle" value="Edit Sample Mappings" />
     </definition>
 
     <!-- Query Management pages -->
@@ -129,6 +140,7 @@
     
     <definition name="manageQuery" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageQuery_tile.jsp" />
+        <put-attribute name="subTitle" value="Search Study" />
     </definition>
     
     <!-- Needs to open up the Search Results tab -->
@@ -161,34 +173,27 @@
     
     <definition name="genePatternAnalysis" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/genePatternAnalysis_tile.jsp" />
+        <put-attribute name="subTitle" value="GenePattern Analysis" />
     </definition>
     
     <definition name="genePatternAnalysisStatus" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/genePatternAnalysisStatus_tile.jsp" />
-    </definition>
-    
-    <definition name="genePatternAnalysisResults" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/genePatternAnalysisResults_tile.jsp" />
+        <put-attribute name="subTitle" value="GenePattern Analysis Status" />
     </definition>
     
     <definition name="comparativeMarkerSelectionAnalysis" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/comparativeMarkerSelectionAnalysis_tile.jsp" />
-    </definition>
-    
-    <definition name="comparativeMarkerSelectionAnalysisResults" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/comparativeMarkerSelectionAnalysisResults_tile.jsp" />
+        <put-attribute name="subTitle" value="Comparative Marker Selection Analysis" />
     </definition>
     
     <definition name="principalComponentAnalysis" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/principalComponentAnalysis_tile.jsp" />
+        <put-attribute name="subTitle" value="Principal Component Analysis" />
     </definition>
     
     <definition name="gisticAnalysis" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/gisticAnalysis_tile.jsp" />
-    </definition>
-    
-    <definition name="gisticAnalysisResults" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/gisticAnalysisResults_tile.jsp" />
+        <put-attribute name="subTitle" value="GISTIC Analysis" />
     </definition>
     
     <!-- Plot pages -->
@@ -197,10 +202,12 @@
 
     <definition name="kmPlot" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/kmPlot/kmPlot_tile.jsp" />
+        <put-attribute name="subTitle" value="Kaplan-Meier Survival Plots" />
     </definition>
     
     <definition name="gePlot" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/gePlot/gePlot_tile.jsp" />
+        <put-attribute name="subTitle" value="Gene Expression Value Plots" />
     </definition>
 
     <!-- Platform pages -->
@@ -210,6 +217,7 @@
     <definition name="managePlatforms" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/managePlatforms_tile.jsp" />
         <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyDwrAjax_tile.jsp" />
+        <put-attribute name="subTitle" value="Manage Platforms" />
     </definition>
 
 </tiles-definitions>

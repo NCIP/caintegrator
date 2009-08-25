@@ -3,7 +3,7 @@
             
 <div id="content">                      
     
-    <h1>This feature currently not implemented.</h1>
+    <h1><s:property value="#subTitleText" /></h1>
             
 </div>
 

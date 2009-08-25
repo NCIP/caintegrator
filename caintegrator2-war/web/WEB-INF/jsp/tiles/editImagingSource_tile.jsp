@@ -66,7 +66,7 @@
 
     <!--/Page Help-->
     
-    <h1>Edit Imaging Data Source</h1>
+    <h1><s:property value="#subTitleText" /></h1>
     <h2>Enter a NBIA Data Source and Image Mapping Data From file</h2>
     <br>
  

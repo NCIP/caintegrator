@@ -15,7 +15,7 @@
 
     <!--/Page Help-->
 
-    <h1>DICOM Retrieval</h1>
+    <h1><s:property value="#subTitleText" /></h1>
     
     <div id="errorMessages" style="color: red;"> </div>
 	<script type="text/javascript">

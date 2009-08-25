@@ -16,7 +16,7 @@
         <font color="red">Invalid username/password. Please try again.</font>
     </s:if>
     
-    <h1>Login</h1>
+    <h1><s:property value="#subTitleText" /></h1>
    
     <s:form name="loginForm" method="POST" action="j_acegi_security_check">
 	   <s:textfield label="Username" name="j_username" />

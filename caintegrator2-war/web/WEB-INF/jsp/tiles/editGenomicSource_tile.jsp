@@ -31,7 +31,7 @@
         }
     </script>
     
-    <h1>Edit Genomic Data Source</h1>
+    <h1><s:property value="#subTitleText" /></h1>
     <s:actionerror/>
     <s:form id="genomicSourceForm" name="genomicSourceForm" action="saveGenomicSource">
         <s:hidden name="studyConfiguration.id" />
