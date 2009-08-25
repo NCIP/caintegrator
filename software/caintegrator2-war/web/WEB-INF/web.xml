@@ -36,6 +36,7 @@
             <web-resource-name>Forbidden</web-resource-name>
             <url-pattern>/*</url-pattern>
             <http-method>DELETE</http-method>
+            <http-method>OPTIONS</http-method>
         </web-resource-collection>
         <auth-constraint/>
     </security-constraint>
