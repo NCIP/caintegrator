@@ -25,8 +25,7 @@
     </div>
     
     <!--/Page Help--> 
-
-<h1>Manage Studies</h1>
+<h1><s:property value="#subTitleText" /></h1>
 <s:actionerror/>
 
 <div id="errorMessages" style="color: red;"> </div>

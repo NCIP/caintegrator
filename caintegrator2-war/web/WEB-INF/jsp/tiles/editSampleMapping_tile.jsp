@@ -11,7 +11,7 @@
 
     <!--/Page Help-->         
     
-    <h1>Edit Sample Mappings</h1>
+    <h1><s:property value="#subTitleText" /></h1>
     <s:form action="saveSampleMapping" method="post" enctype="multipart/form-data" >
         <s:hidden name="studyConfiguration.id" />
         <s:hidden name="genomicSource.id" />

@@ -11,7 +11,7 @@
 
     <!--/Page Help-->        
     
-    <h1>GenePattern Analysis</h1>
+    <h1><s:property value="#subTitleText" /></h1>
     
     <s:actionerror />
     

@@ -13,7 +13,7 @@
     
     <!--ADD CONTENT HERE-->
     
-    <h1>Welcome to BrowseStudy Page</h1>
+    <h1><s:property value="#subTitleText" /></h1>
     
     <p> The Study you have selected is <s:property value="study.shortTitleText" />
             

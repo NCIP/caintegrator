@@ -23,8 +23,7 @@
     </div>
 
     <!--/Page Help-->        
-    
-    <h1>GenePattern Analysis Status</h1>
+    <h1><s:property value="#subTitleText" /></h1>
     <s:set name="displayableWorkspace" value="#session['displayableWorkspace']" />
     <div id="errors" style="color: red;"> </div>
     <br><br>

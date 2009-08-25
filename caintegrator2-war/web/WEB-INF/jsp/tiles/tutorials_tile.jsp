@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
-
+<%@ taglib prefix="s" uri="/struts-tags"%>
             
 <div id="content">                      
     
-    <h1>Tutorial Menu:</h1>
+    <h1><s:property value="#subTitleText" /></h1>
     <div class="tutorials">
         <a href="javascript:openOverviewTutorialWindow('overviewTutorial')" class="video">
             A short overview of the functionality of caIntegrator2 and how it integrates with other caBIG tools

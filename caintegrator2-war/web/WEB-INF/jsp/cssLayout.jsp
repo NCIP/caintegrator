@@ -4,8 +4,16 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
+    <tiles:importAttribute name="subTitle" scope="request" />
+    <s:set name="subTitleText" value="#request['subTitle']" />
+    
     <head>
-		<title>caIntegrator2</title>
+		<title>
+		caIntegrator2 
+		<s:if test="#subTitleText != null && #subTitleText != ''">
+		    - <s:property value="#subTitleText" />
+		</s:if>
+		</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<link rel="address bar icon" href="favicon.ico" />
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
@@ -18,12 +26,13 @@
         <script type="text/javascript" src="common/js/onlinehelp.js"></script>
         <script type="text/javascript" src="./struts/optiontransferselect.js"></script>      
 	</head>
+	
+	
 	<tiles:insertAttribute name="bodyTile" />
-		
 		<a href="#content" id="navskip">Skip to Page Content</a>
 		
 		<div id="wrapper" class="curate">
-			
+
 			<!-- Global Header -->	
             
             <tiles:insertAttribute name="globalHeader" />
@@ -49,7 +58,7 @@
 			    </s:form>
                 <!-- End caBioGeneSearchForm -->
 				<div id="contentwrapper">
-				
+				    
 				    <!--Content-->
 						
 	                <tiles:insertAttribute name="content" />

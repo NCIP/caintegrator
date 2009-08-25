@@ -11,7 +11,7 @@
 
     <!--/Page Help-->          
     
-    <h1>Define Fields for Imaging Data</h1>
+    <h1><s:property value="#subTitleText" /></h1>
     <h2>Study Name: <s:property value="studyConfiguration.study.shortTitleText" /></h2>
     <s:form id="imagingSourceForm" name="imagingSourceForm" action="saveImagingSourceAnnotations"
         method="post" enctype="multipart/form-data">

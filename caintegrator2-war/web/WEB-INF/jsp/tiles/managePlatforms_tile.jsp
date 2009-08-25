@@ -62,7 +62,7 @@
     }
 </script>
 
-<h1>Manage Platforms</h1>
+<h1><s:property value="#subTitleText" /></h1>
 <s:actionerror/>
 <s:form id="managePlatformForm" name="managePlatformForm" method="post" enctype="multipart/form-data" theme="css_xhtml">
     <s:hidden name="selectedAction" />

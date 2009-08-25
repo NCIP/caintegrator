@@ -11,7 +11,7 @@
 
     <!--/Page Help-->
     
-    <h1>Edit Copy Number Data Configuration</h1>
+    <h1><s:property value="#subTitleText" /></h1>
     <s:actionerror/>
     <s:form name="copyNumberDataConfigurationForm" action="saveCopyNumberDataConfiguration" method="post" enctype="multipart/form-data" >
         <s:hidden name="studyConfiguration.id" />

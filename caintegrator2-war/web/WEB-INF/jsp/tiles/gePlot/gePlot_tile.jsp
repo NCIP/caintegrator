@@ -19,8 +19,7 @@
 
 <div id="content">
 
-    
-        <h1>Gene Expression Value Plots</h1>
+        <h1><s:property value="#subTitleText" /></h1>
         <s:actionerror/>
         
         <!--Tab Box-->
