@@ -15,7 +15,7 @@
 
         <!--/Page Help-->
         
-        <h1>Kaplan-Meier Survival Plots</h1>
+        <h1><s:property value="#subTitleText" /></h1>
         <s:actionerror/>
         
         <!--Tab Box-->

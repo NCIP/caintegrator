@@ -10,8 +10,7 @@
     </div>
 
     <!--/Page Help-->        
-    
-    <h1>Comparative Marker Selection Analysis</h1>
+    <h1><s:property value="#subTitleText" /></h1>
     
     <div class="box2">   
     <div class="whitebg">   

@@ -13,7 +13,7 @@
     
     <!--ADD CONTENT HERE-->
     
-    <h1>Error</h1>
+    <h1><s:property value="#subTitleText" /></h1>
     <s:actionerror />
 </div>
 
