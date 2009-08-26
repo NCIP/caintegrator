@@ -118,6 +118,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -334,7 +335,14 @@ public class AnalysisServiceImpl implements AnalysisService {
     public void deleteAnalysisJob(Long jobId) {
         AbstractPersistedAnalysisJob job = getAnalysisJob(jobId);
         job.getSubscription().getAnalysisJobCollection().remove(job);
+        deleteResultFile(job);
         dao.delete(job);
+    }
+    
+    private void deleteResultFile(AbstractPersistedAnalysisJob job) {
+        if (job.getResultsZipFile() != null) {
+            FileUtils.deleteQuietly(job.getResultsZipFile().getFile());
+        }
     }
 
     private AbstractPersistedAnalysisJob getAnalysisJob(Long id) {
