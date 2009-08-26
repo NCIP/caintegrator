@@ -47,6 +47,7 @@
             <th> Status </th>
             <th> Creation Date </th>
             <th> Status Update Date </th>
+            <th> Action </th>
         </tr>
         <tbody id="analysisJobStatusTable" />
     </table>

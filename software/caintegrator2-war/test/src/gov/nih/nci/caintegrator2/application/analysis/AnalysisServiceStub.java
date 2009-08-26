@@ -113,6 +113,7 @@ public class AnalysisServiceStub implements AnalysisService {
     public boolean executeComparativeMarkerSelectionJobCalled;
     public boolean executePcaJobCalled;
     public boolean executeGisticJobCalled;
+    public boolean deleteAnalysisJobCalled;
     
     public void clear() {
         createKMPlotCalled = false;
@@ -121,6 +122,7 @@ public class AnalysisServiceStub implements AnalysisService {
         executeComparativeMarkerSelectionJobCalled = false;
         executePcaJobCalled = false;
         executeGisticJobCalled = false;
+        deleteAnalysisJobCalled = false;
     }
 
     /**
@@ -191,5 +193,9 @@ public class AnalysisServiceStub implements AnalysisService {
             throws ConnectionException, InvalidCriterionException {
         executeGisticJobCalled = true;
         return null;
+    }
+
+    public void deleteAnalysisJob(Long jobId) {
+        deleteAnalysisJobCalled = true;
     }
 }

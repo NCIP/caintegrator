@@ -115,6 +115,7 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String JOB_STATUS = "jobStatus_";
     private static final String JOB_CREATION_DATE = "jobCreationDate_";
     private static final String JOB_LAST_UPDATE_DATE = "jobLastUpdateDate_";
+    private static final String ACTION = "action_";
     private static final String JOB_URL = "jobUrl_";
     private AnalysisService analysisService;
 
@@ -145,7 +146,7 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
     }
 
     private String[][] createRow(AbstractPersistedAnalysisJob job) {
-        String[][] rowString = new String[1][5];
+        String[][] rowString = new String[1][6];
         String id = job.getId().toString();
         String startSpan = "<span id=\"";
         String endSpan = "\"> </span>";
@@ -155,6 +156,7 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
                             + startSpan + JOB_URL + id + endSpan;
         rowString[0][3] = startSpan + JOB_CREATION_DATE + id + endSpan;
         rowString[0][4] = startSpan + JOB_LAST_UPDATE_DATE + id + endSpan;
+        rowString[0][5] = startSpan + ACTION + id + endSpan;
         return rowString;
     }
 
@@ -218,6 +220,7 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
             utilThis.setValue(JOB_LAST_UPDATE_DATE + jobId, 
                 getDateString(job.getLastUpdateDate()));
         }
+        addActionUrl(utilThis, job);
         if (AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus())) {
             addJobUrl(utilThis, job);
         }
@@ -228,6 +231,19 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
      */
     public void updateStatus(AbstractPersistedAnalysisJob job) {
         saveAndUpdateJobStatus(job);
+    }
+    
+    private void addActionUrl(Util utilThis, AbstractPersistedAnalysisJob job) {
+        String jobId = job.getId().toString();
+        if (job.getStatus().isDeletable()) {
+            utilThis.setValue(ACTION + jobId,
+                    "<a href=\"deleteGenePatternAnalysis.action?jobId=" + jobId
+                    + "\" onclick=\"return confirm('This analysis job will be permanently deleted.')\">"
+                    + "Delete</a>",
+                    false);
+        } else {
+            utilThis.setValue(ACTION + jobId, "None");
+        }
     }
 
     private void addJobUrl(Util utilThis, AbstractPersistedAnalysisJob job) {

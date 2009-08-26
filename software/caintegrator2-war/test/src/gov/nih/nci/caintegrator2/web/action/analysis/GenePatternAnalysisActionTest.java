@@ -250,5 +250,10 @@ public class GenePatternAnalysisActionTest {
         action.validate();
         assertTrue(action.getActionErrors().size() == 1);
     }
+    
+    @Test
+    public void testDeleteAnalysisJob() {
+        assertEquals(ActionSupport.SUCCESS, action.deleteAnalysisJob());
+    }
 
 }

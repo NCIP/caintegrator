@@ -525,6 +525,9 @@
             </result>
         </action>
         
+        <action name="deleteGenePatternAnalysis" class="genePatternAnalysisAction" method="deleteAnalysisJob">
+            <result type="tiles">genePatternAnalysisStatus</result>
+        </action>
         
         <action name="genePatternAnalysisStatus" class="genePatternAnalysisAction" method="showStatusPage">
             <result name="status" type="tiles">genePatternAnalysisStatus</result>
