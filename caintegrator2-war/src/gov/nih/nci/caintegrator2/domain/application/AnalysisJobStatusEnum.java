@@ -12,50 +12,52 @@ public enum AnalysisJobStatusEnum {
     /**
      * Not yet submitted, still in creation state.
      */
-    NOT_SUBMITTED("Not Submitted"),
+    NOT_SUBMITTED("Not Submitted", true),
     
     /**
      * Submitted and validated, ready to be run.
      */
-    SUBMITTED("Submitted"),
+    SUBMITTED("Submitted", false),
 
     /**
      * Processing Locally.
      */
-    PROCESSING_LOCALLY("Processing Locally"),
+    PROCESSING_LOCALLY("Processing Locally", false),
     
     /**
      * Processing Remotely.
      */
-    PROCESSING_REMOTELY("Processing Remotely"),
+    PROCESSING_REMOTELY("Processing Remotely", false),
     
     /**
      * Error Connecting.
      */
-    ERROR_CONNECTING("Error Connecting"),
+    ERROR_CONNECTING("Error Connecting", true),
     
     /**
      * Error Connecting.
      */
-    INVALID_PARAMETER("Invalid Parameter"),
+    INVALID_PARAMETER("Invalid Parameter", true),
     
     /**
      * Local Error.
      */
-    LOCAL_ERROR("Local Error"),
+    LOCAL_ERROR("Local Error", true),
     
     /**
      * Completed.
      */
-    COMPLETED("Completed");
+    COMPLETED("Completed", true);
     
     private static Map<String, AnalysisJobStatusEnum> valueToTypeMap = 
                     new HashMap<String, AnalysisJobStatusEnum>();
 
     private String value;
+    private boolean deletable;
     
-    private AnalysisJobStatusEnum(String value) {
+    private AnalysisJobStatusEnum(String value, boolean deletable) {
         this.value = value;
+        this.deletable = deletable;
     }
 
     /**
@@ -71,6 +73,21 @@ public enum AnalysisJobStatusEnum {
     public void setValue(String value) {
         this.value = value;
     }
+
+    /**
+     * @return the deletable
+     */
+    public boolean isDeletable() {
+        return deletable;
+    }
+
+    /**
+     * @param deletable the deletable to set
+     */
+    public void setDeletable(boolean deletable) {
+        this.deletable = deletable;
+    }
+
 
     private static Map<String, AnalysisJobStatusEnum> getValueToTypeMap() {
         if (valueToTypeMap.isEmpty()) {

@@ -188,5 +188,11 @@ public interface AnalysisService {
     GeneExpressionPlotGroup createGeneExpressionPlot(StudySubscription studySubscription, 
             AbstractGEPlotParameters plotParameters) throws ControlSamplesNotMappedException, 
             InvalidCriterionException, GenesNotFoundInStudyException;
-    
+
+    /**
+     * Delete the analysis job with given id.
+     * 
+     * @param jobId the id of the analysis job to delete.
+     */
+    void deleteAnalysisJob(Long jobId);
 }
