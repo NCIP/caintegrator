@@ -215,4 +215,8 @@ public class WorkspaceServiceStub implements WorkspaceService {
         savePersistedAnalysisJobCalled = true;
     }
 
+    public AbstractPersistedAnalysisJob getPersistedAnalysisJob(Long id) {
+        return null;
+    }
+
 }

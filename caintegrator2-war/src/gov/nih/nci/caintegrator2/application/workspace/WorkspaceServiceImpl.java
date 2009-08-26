@@ -165,6 +165,13 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     public void saveUserWorkspace(UserWorkspace workspace) {
         dao.save(workspace);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public AbstractPersistedAnalysisJob getPersistedAnalysisJob(Long id) {
+        return getDao().get(id, AbstractPersistedAnalysisJob.class);
+    }
     
     /**
      * {@inheritDoc}
