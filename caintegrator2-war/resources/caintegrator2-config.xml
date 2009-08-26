@@ -63,9 +63,6 @@
     <bean id="loginAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.LoginAction">
-        <property name="workspaceService">
-            <ref local="workspaceService"/>
-        </property>
     </bean>
     <!-- Study Management -->
 
