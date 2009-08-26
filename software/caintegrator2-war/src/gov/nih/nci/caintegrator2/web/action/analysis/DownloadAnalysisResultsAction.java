@@ -106,8 +106,7 @@ public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction 
     @Override
     public void prepare() {
         super.prepare();
-        job.setId(jobId);
-        setJob(studyManagementService.getRefreshedStudyEntity(getJob()));
+        setJob(getWorkspaceService().getPersistedAnalysisJob(jobId));
     }
     
     /**
