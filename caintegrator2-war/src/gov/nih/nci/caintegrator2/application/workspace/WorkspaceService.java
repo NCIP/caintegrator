@@ -151,6 +151,13 @@ public interface WorkspaceService {
     void saveUserWorkspace(UserWorkspace workspace);
     
     /**
+     * Get the Analysis Job.
+     * @param id - id to be retrieved.
+     * @return Analysis Job
+     */
+    AbstractPersistedAnalysisJob getPersistedAnalysisJob(Long id);
+    
+    /**
      * Saves the current changes.
      * @param job - object to be updated.
      */
