@@ -143,7 +143,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
      */
     public static final String STATUS_ACTION = "status";
 
-    
+    private Long jobId;
     private AnalysisService analysisService;
     private QueryManagementService queryManagementService;
     private ConfigurationHelper configurationHelper;
@@ -176,6 +176,15 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
      */
     public String showStatusPage() {
         return STATUS_ACTION;
+    }
+    
+    /**
+     * Delete a job.
+     * @return Status string.
+     */
+    public String deleteAnalysisJob() {
+        getAnalysisService().deleteAnalysisJob(jobId);
+        return SUCCESS;
     }
     
     /**
@@ -397,6 +406,20 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
      */
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
+    }
+    
+    /**
+     * @return the jobId
+     */
+    public Long getJobId() {
+        return jobId;
+    }
+
+    /**
+     * @param jobId the jobId to set
+     */
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
     }
 
 }

@@ -100,6 +100,7 @@ import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
@@ -327,7 +328,16 @@ public class AnalysisServiceImpl implements AnalysisService {
         this.genePatternGridRunner = genePatternGridRunner;
     }
 
-    
-    
+    /**
+     * {@inheritDoc}
+     */
+    public void deleteAnalysisJob(Long jobId) {
+        AbstractPersistedAnalysisJob job = getAnalysisJob(jobId);
+        job.getSubscription().getAnalysisJobCollection().remove(job);
+        dao.delete(job);
+    }
 
+    private AbstractPersistedAnalysisJob getAnalysisJob(Long id) {
+        return dao.get(id, AbstractPersistedAnalysisJob.class);
+    }
 }
