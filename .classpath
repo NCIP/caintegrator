@@ -35,6 +35,7 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-search-3.1.1.GA.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/caarray-client-external-v1_0.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/rmiio-2.0.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/acegi-security-1.0.7.jar" sourcepath="software/lib/src/acegi-security-1.0.7-sources.jar"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/src"/>
 	<classpathentry kind="src" output="software/genepattern-service-jar/target/classes" path="software/genepattern-service-jar/src"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/src"/>
@@ -42,7 +43,6 @@
 	<classpathentry kind="src" path="software/caintegrator2-war/resources"/>
 	<classpathentry kind="src" output="software/kaplan-meier-jar/target/classes" path="software/kaplan-meier-jar/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/acegi-security-1.0.4.jar" sourcepath="software/lib/src/acegi-security-1.0.4-src.zip"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/activation-1.0.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/addressing-1.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ant-contrib-1.0b3.jar"/>

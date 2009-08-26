@@ -103,9 +103,12 @@ public class Cai2AuthenticationProcessingFilter extends AuthenticationProcessing
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request) {
         // Based on AppScan failing because of a "Cross-Site Request Forgery"
-        if (StringUtils.isBlank(request.getRequestedSessionId())) {
+        if (StringUtils.isBlank(request.getRequestedSessionId()) 
+            || !request.getRequestedSessionId().equals(request.getSession().getId())) {
             throw new AuthenticationServiceException("The session ID is not attached with this request.");
         }
+        request.getSession().invalidate();
+        request.getSession(true);
         return super.attemptAuthentication(request);
     }
 }
