@@ -268,8 +268,11 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
         Set<Sample> samples = GenePatternUtil.getSamplesForGistic(getStudySubscription(), 
                 getQueryManagementService(), getGisticParameters().getClinicalQuery());
         Set<String> genomeVersions = getGenomeVersions(samples);
-        if (genomeVersions.isEmpty()) {
-            addActionError("The samples selected are not related to any copy number data");
+        if (samples.isEmpty()) {
+            addActionError("There are no samples selected.");
+            return false;
+        } else if (genomeVersions.isEmpty()) {
+            addActionError("The samples selected are not related to any copy number data.");
             return false;
         } else if (genomeVersions.size() > 1) {
             addActionError("The samples selected have copy number data loaded for multiple genome build versions.");
