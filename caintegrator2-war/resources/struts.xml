@@ -350,11 +350,6 @@
             <result type="tiles">editSampleMapping</result>
             <result name="input" type="tiles">editGenomicSource</result>
         </action>
-        
-        <action name="saveControlSamples" class="saveControlSamplesAction">
-            <result type="tiles">editStudy</result>
-            <result name="input" type="tiles">editSampleMapping</result>
-        </action>
 
         <action name="saveSampleMapping" class="saveSampleMappingAction">
             <result type="tiles">editStudy</result>
