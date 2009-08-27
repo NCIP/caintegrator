@@ -86,9 +86,14 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.HashMap;
@@ -101,6 +106,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 
 @SuppressWarnings("PMD")
 public class SaveSampleMappingActionTest {
@@ -120,7 +126,8 @@ public class SaveSampleMappingActionTest {
     }
 
     @Test
-    public void testExecute() {
+    public void testExecuteForSampleMapping() {
+        action.setSampleMappingFile(TestDataFiles.VALID_FILE);
         Study study = action.getStudyConfiguration().getStudy();
         study.setShortTitleText("Invalid");
         assertEquals(Action.INPUT, action.execute());
@@ -140,5 +147,38 @@ public class SaveSampleMappingActionTest {
         assertEquals("TestFile", action.getSampleMappingFileFileName());
         action.validate();
         
+    }
+    
+    @Test
+    public void testValidateForControlMapping() {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        action.setStudyConfiguration(studyConfiguration);
+
+        action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.setControlSampleSetName("ControlSampleSet1");
+        action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.setControlSampleFile(TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE);
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        SampleSet controlSampleSet = new SampleSet();
+        controlSampleSet.setName("ControlSampleSet1");
+        GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+        studyConfiguration.getGenomicDataSources().add(genomicSource);
+        genomicSource.getControlSampleSetCollection().add(controlSampleSet);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+    }
+
+    @Test
+    public void testExecuteForControlMapping() {
+        action.setControlSampleFile(TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE);
+        action.setControlSampleSetName("ControlSampleSet1");
+        assertEquals(ActionSupport.SUCCESS, action.execute());
+        assertTrue(studyManagementServiceStub.addControlSampleSetCalled);
     }
 }

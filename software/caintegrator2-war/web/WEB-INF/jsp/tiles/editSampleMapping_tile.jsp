@@ -12,6 +12,7 @@
     <!--/Page Help-->         
     
     <h1><s:property value="#subTitleText" /></h1>
+    <s:actionerror />
     <s:form action="saveSampleMapping" method="post" enctype="multipart/form-data" >
         <s:hidden name="studyConfiguration.id" />
         <s:hidden name="genomicSource.id" />
@@ -23,10 +24,10 @@
         <!--/NOTE -->       
         <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" cssClass="readonly" />
         <s:file name="sampleMappingFile" label="Subject to Sample Mapping File" />
-        <s:submit value="Upload Mapping File" />
+        
         <s:textfield label="Control Sample Set Name" name="controlSampleSetName" required="true" theme="cai2xhtml"/>
         <s:file name="controlSampleFile" label="Control Samples File" />
-        <s:submit value="Upload Control Samples File" action="saveControlSamples" />
+        <s:submit value="Map Samples" />
     </s:form>
     
     <table class="data">
