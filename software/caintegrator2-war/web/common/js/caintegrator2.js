@@ -93,3 +93,10 @@
         document.getElementById(geneSymbolsTextbox).value = cbResults;
         hideCaBioInputForm(inputForm);
     }
+    
+    function ignoreReturnKey(e) {
+        if (e.keyCode == 13) {
+            return false;
+        }
+        return true;
+    }
