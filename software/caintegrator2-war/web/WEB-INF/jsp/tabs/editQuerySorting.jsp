@@ -2,6 +2,7 @@
 
 <!--Sort Order-->
 
+<s:if test="queryForm.resultConfiguration.selectedColumns.size() > 1">
     <h2>Set Sort Order for Selected Columns</h2>
     
     
@@ -28,6 +29,10 @@
         </s:iterator>
 
     </table>
+</s:if>
+<s:else>
+    <h2>Sorting feature is not applicable to this result type.</h2>
+</s:else>
     <!--Buttons-->
 
     <div class="actionsrow">
