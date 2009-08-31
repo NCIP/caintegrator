@@ -3,7 +3,8 @@
 
 <#if parameters.createTextField?exists>
     <@s.textfield theme="simple" id="${parameters.textFieldId}" name="${parameters.textFieldName}"
-                 title="Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )"/>
+                 title="Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )"
+                 onkeypress="return ignoreReturnKey(event)"/>
 </#if>                 
             
 
