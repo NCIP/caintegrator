@@ -139,7 +139,9 @@
                 <display:setProperty name="export.csv.filename" value="StudySearchResults.csv" />
                 <display:setProperty name="export.csv.include_header" value="true" />
                 <display:column 
-                    title="Select <br> <font style='font-size:9px;text-decoration:underline;cursor:pointer;'><s:a href='#' cssStyle='text-decoration: underline;' onclick='selectAll()'> All</s:a> | <s:a href='#' onclick='selectNone()'>None</s:a> </font>" 
+                    title="Select <br> <font style='font-size:9px;text-decoration:underline;cursor:pointer;'>
+                    <s:a href='#' cssStyle='text-decoration: underline;' onclick='selectAll()'> All
+                    </s:a> | <s:a href='#' onclick='selectNone()'>None</s:a> </font>" 
                     media="html"
                     sortable="false">
                     <s:if test="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).imagingRow}">
@@ -187,6 +189,18 @@
     <div class="actionsrow">
     <del class="btnwrapper">
     <ul class="btnrow">
+        <s:if test='%{query.resultType.value.equals("genomic")}'>
+            <li><s:a href="#" cssClass="btn" onclick="submitForm('exportGenomicResults')"
+                onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+                <span class="btn_img"><span class="add">Export To CSV</span></span>
+            </s:a></li>
+        </s:if>
+        <s:else>
+            <li><s:a href="#" cssClass="btn" onclick="submitForm('exportGenomicResults')"
+                onclick="openExportLink(); return false;">
+                <span class="btn_img"><span class="add">Export To CSV</span></span>
+            </s:a></li>
+        </s:else>
         <s:if test="queryForm.hasImageDataSources()">
             <li><s:a href="#" cssClass="btn" 
                 onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
