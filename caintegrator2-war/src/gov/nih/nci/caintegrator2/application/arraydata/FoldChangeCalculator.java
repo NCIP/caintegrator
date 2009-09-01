@@ -114,22 +114,30 @@ class FoldChangeCalculator {
     }
 
     private void calculate(AbstractReporter reporter) {
-        double controlValue = getControlValue(reporter);
+        double log2MeanOfControls = getLog2MeanOfControls(reporter);
         for (ArrayData arrayData : values.getArrayDatas()) {
-            float foldChange = 
-                (float) (values.getFloatValue(arrayData, reporter, EXPRESSION_SIGNAL) / controlValue);
+            double log2OfSample = log2(values.getFloatValue(arrayData, reporter, EXPRESSION_SIGNAL));
+            float foldChange = (float) getFoldChange(log2OfSample, log2MeanOfControls);
             foldChangeValues.setFloatValue(arrayData, reporter, EXPRESSION_SIGNAL, foldChange);
         }
     }
 
-    private double getControlValue(AbstractReporter reporter) {
+    private double getFoldChange(double log2OfSample, double log2MeanOfControls) {
+        double log2Ratio = log2OfSample - log2MeanOfControls;
+        if (log2Ratio >= 0) {
+            return Math.pow(2, log2Ratio);
+        } else {
+            return -Math.pow(2, -log2Ratio);
+        }
+    }
+
+    private double getLog2MeanOfControls(AbstractReporter reporter) {
         double valueProduct = 1.0f;
         for (ArrayData arrayData : controlValues.getArrayDatas()) {
             valueProduct *= controlValues.getFloatValue(arrayData, reporter, EXPRESSION_SIGNAL);
         }
         double logSum = log2(valueProduct);
-        double logMean = logSum / controlValues.getArrayDatas().size();
-        return Math.pow(2, logMean);
+        return logSum / controlValues.getArrayDatas().size();
     }
     
     private double log2(double value) {
