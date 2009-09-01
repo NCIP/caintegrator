@@ -93,7 +93,6 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -177,11 +176,7 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
     }
 
     private boolean isFoldsDownMatch(Float foldChangeValue) {
-        if (RegulationTypeEnum.UNCHANGED.equals(criterion.getRegulationType())) {
-            return foldChangeValue <= criterion.getFoldsDown();
-        } else {
-            return foldChangeValue <= (1  / criterion.getFoldsDown());
-        }
+        return foldChangeValue <= -criterion.getFoldsDown();
     }
 
     private boolean isFoldsUpMatch(Float foldChangeValue) {
