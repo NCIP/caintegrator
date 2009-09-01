@@ -190,8 +190,7 @@
     <del class="btnwrapper">
     <ul class="btnrow">
         <s:if test='%{query.resultType.value.equals("genomic")}'>
-            <li><s:a href="#" cssClass="btn" onclick="submitForm('exportGenomicResults')"
-                onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+            <li><s:a href="#" cssClass="btn" onclick="submitForm('exportGenomicResults')">
                 <span class="btn_img"><span class="add">Export To CSV</span></span>
             </s:a></li>
         </s:if>
