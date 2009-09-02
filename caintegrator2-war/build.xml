@@ -23,6 +23,11 @@
     <property name="resource.dir" location="${software.dir}/common" />
     <property name="target.dir" location="${build.dir}/target" />
     <property name="common.dir" value="${software.dir}/common"/>
+    
+    <tstamp>
+      <format property="touch.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
+    </tstamp>       
+    <property name="build.date" value="'${touch.time}'" />
 
     <!-- Environment properties -->
     <property environment="env" />
@@ -406,6 +411,7 @@
                 <filter token="svn.url" value="${svn.info.url}"/>
                 <filter token="svn.revision" value="${svn.info.rev}"/>
                 <filter token="caintegrator2.svntag" value="${caintegrator2.svntag}"/>
+                <filter token="caintegrator2.builddate" value="${build.date}"/>
             </filterset>
         </copy>
         
