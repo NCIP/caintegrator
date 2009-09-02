@@ -431,7 +431,7 @@ TABLE.data TH.order2 A
 TR.odd
 { background:#ffffff }
 TABLE.data TR.odd TD
-{ border-right:1px solid #ffffff; }
+{ border-right:1px solid #EEEEEE; }
 TR.even
 { background:#dcdcdc }
 /* TABLE.data tr.over, TABLE.data tr:hover
@@ -522,6 +522,8 @@ TABLE.details TD.value, TABLE.detailsbox TD.value
 
 TABLE.form
 { margin:10px auto; }
+/* TABLE.wwFormTable  */
+/* { margin:10px auto; } */
 TABLE.form TD
 { padding:3px }
 .label LABEL
@@ -649,7 +651,7 @@ A.remove:hover
 /* Centered Button Row at the Bottom */
 
 #content .btnrow, #content .btnrow2 
-{ display:table; padding:0; margin:0 auto; list-style-type:none; white-space:nowrap; }
+{ display:table; padding:0; margin:0 auto; list-style-type:none; white-space:nowrap; width: 24em;}
 #content .btnrow LI, #content .btnrow2 LI 
 { display:table-cell; background:none }
 .actionsrow 
@@ -713,6 +715,12 @@ A.btn SPAN.delete
 { background:url("../../images/ico_delete.gif") no-repeat; }
 A.btn SPAN.upload
 { background:url("../../images/ico_upload.gif") no-repeat; }
+A.btn SPAN.reload
+{ background:url("../../images/ico_reload.gif") no-repeat; }
+A.btn SPAN.map
+{ background:url("../../images/ico_map.gif") no-repeat; }
+A.btn SPAN.configure
+{ background:url("../../images/ico_map.gif") no-repeat; }
 
 
 /* Check List - Columns Tabs */
@@ -771,6 +779,73 @@ FORM.editStudyFile TABLE.editStudyFile
 { border-style: none; border:0px solid #ccc; float: left; }
 TABLE.data TBODY TR TH FORM TABLE.editStudyFile TBODY TR TD
 { border-style: none; border:0px solid #ccc; float: left; }
+
+.form_wrapper_outer
+{ border:1px solid #999; background:#eee; padding:10px 10px 5px 10px; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius:10px;}
+.form_wrapper_outer .bottombtns 
+{ margin:0 auto; width:25em; height:3em; }
+TABLE.form_wrapper_table
+{ border:1px solid #ccc; width:100%; background:#fff; margin-bottom:15px; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px;}
+TABLE.form_wrapper_table TH
+{ font-family:arial,helvetica,sans-serif; line-height:1.2em; margin:0; font-size:120%; font-weight:bold; color:#333; padding:5px 5px 5px 8px }
+TABLE.form_wrapper_table TH.title
+{ width:10%; white-space:nowrap }
+TABLE.form_wrapper_table TH.thbutton
+{ width:90%; white-space:nowrap }
+TABLE.form_wrapper_table TH.thbutton .btnwrapper UL
+{ float:left; }
+TABLE.form_wrapper_table TH INPUT
+{ font-size:90%; margin-left:10px }
+TABLE.form_wrapper_table TABLE.form,TABLE.wwFormTable TD.label
+{ width:28%; padding-left:5px; }
+TABLE.form_wrapper_table FORM#studyDeploymentForm TABLE.form TD.tdLabel
+{ width:28%; padding-left:5px; }
+TABLE.form_wrapper_table FORM#studyDeploymentForm TABLE.form TD.tdLabel LABEL.label
+{ font-size:92%; font-style:normal; }
+TABLE.form_wrapper_table FORM#addClinicalFile TABLE.form TD.tdLabel LABEL
+{ font-size:92%; font-style:normal;}
+TABLE.form_wrapper_table FORM#addStudyLogo DIV DIV label
+{ font-size:92%; font-style:normal;}
+TABLE.form_wrapper_table TABLE.form TD
+{ width:280px; }
+.table_wrapper
+{ padding:0 10px 10px 10px; }
+TABLE.form_wrapper_table TABLE.data
+{ border:1px solid #999; }
+TABLE.form_wrapper_table TABLE.data TH
+{ padding:5px; border-top:0; border-bottom:1px solid #a8b8ce; border-right:1px solid #a8b8ce; background:#d6dce6 url("../images/bg_th.gif") repeat-x top; color:#333; font-size:100%; }
+TABLE.form_wrapper_table TD.label
+{ padding:5px }
+.formbox
+{ background:#eee; border:1px solid #dcdcdc; padding:10px; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px; margin-bottom:10px }
+.formbox TABLE
+{ margin:0 auto }
+.inputnote
+{ font-style:italic; padding:5px 0 }
+.bordertop
+{ border-top:1px solid #dcdcdc }
+TABLE.form_wrapper_table .btnwrapper
+{ margin-bottom:-10px }
+#content TABLE.form_wrapper_table TABLE .btnrow LI INPUT
+{ margin:0 0 -10px 0; padding:0 }
+#content TABLE.form_wrapper_table TABLE .btnrow LI A.btn
+{ margin:0 }
+#content TABLE.form_wrapper_table * TABLE .btnrow LI, #content TABLE.form_wrapper_table * TABLE .btnrow2 LI { float:right; }
+HTML>BODY #content TABLE.form_wrapper_table TABLE .btnrow LI,HTML>BODY #content TABLE.form_wrapper_table TABLE .btnrow2 LI{ *float:right }
+* #btnrow A,* .btnrow2 A  { float:right; }
+HTML>BODY #content TABLE.form_wrapper_table TABLE .btnrow A, HTML>BODY #content TABLE.form_wrapper_table TABLE .btnrow2 A { *float:right }
+/** setting styles for ajax generated tables **/
+TABLE.data TBODY#genomicSourceJobStatusTable TR TD#dwrCellID_1
+{ white-space: nowrap; }
+TABLE.data TBODY#genomicSourceJobStatusTable TR TD#dwrCellID_5
+{ float: right; text-align:right; }
+TABLE.data TBODY#imagingSourceJobStatusTable TR TD#dwrCellID_1
+{ white-space: nowrap; }
+TABLE.data TBODY#imagingSourceJobStatusTable TR TD#dwrCellID_4
+{ float: right; }
+TABLE.data TBODY#studyDeploymentJobStatusTable TR TD#dwrCellID_3
+{ white-space: nowrap; }
+
 
 /** style for link to CGAP site **/
 A.cgapLogo
