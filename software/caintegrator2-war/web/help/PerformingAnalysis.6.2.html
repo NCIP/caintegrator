@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Performing Data Analysis</title>
+    <title>Data Analysis Overview</title>
     <link rel="StyleSheet" href="css/PerformingAnalysis.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,93 +28,50 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="PerformingAnalysis.6.1.html#1073202">Analyzing Studies</a> &gt; Performing Data Analysis</div>
+      <a class="WebWorks_Breadcrumb_Link" href="PerformingAnalysis.6.1.html#1078247">Analyzing Studies</a> &gt; Data Analysis Overview</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading1"><a name="1073202">Performing Data Analysis</a></div>
-      <div class="Body_Text"><a name="1073481">user analyzed data will never see lists of IDs/samples. Just be able to use the data to </a>continue to work with it here. Allowing integration of clinical and genomic data</div>
-      <div class="Body_Text"><a name="1073218">Include specifics about different tools</a></div>
-      <div class="Body_Text"><a name="1073205">...follow these steps:</a></div>
-      <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073206">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1. </div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1073206">The system presents the user with a form or wizard interface to name the </a>analysis method configuration and to set the analysis method parameters.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073207">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2. </div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1073207">The Research Investigator supplies the necessary analysis method parameters.</a></div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073208">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3. </div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1073208">The system saves the supplied analysis method parameters and executes the </a>analysis job.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073209">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">4. </div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1073209">The system informs the user that the analysis method is complete.</a></div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073203">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">5. </div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1073203">The user reviews the analysis results.</a></div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text"><a name="1073224">As a shortcut, the Research Investigator may launch the functionality described in the </a>use case Manage Queries at any point where the analysis parameter selection is requesting a data list. After defining or running the desired query to use to populate the data, the Research Investigator is returned to the analysis method definition with the selected query results used as the input data.</div>
-      <div class="Body_Text"><a name="1073232">Fold-change is launched during query configuration. Others?</a></div>
-      <div class="Body_Text"><a name="1073237">TrWorkbench will support at least the analysis and visualization methods that are </a>currently bundled in caIntegrator2 (specifically those in Rembrandt). These tools include the following: </div>
+      <div class="Heading1"><a name="1078247">Data Analysis Overview</a></div>
+      <div class="Body_Text"><a name="1073194">Once a study has been deployed, you can analyze the data using caIntegrator2 </a>analysis tools. </div>
+      <div class="Body_Text"><a name="1089703">You can verify that the study is in “Deployed” status by selecting the study name in the </a>My Studies dropdown selector.  After selecting the study name, click <span style="font-weight: bold;">Home</span> in the left sidebar of the caIntegrator2 Menu.  A study summary should appear, including a status field.  If the status is not deployed, or if the study summary does not appear, then the study is not deployed and available for analysis.</div>
+      <div class="Body_Text"><a name="1079606">If the study is ready for analysis, you will see a menu in the left sidebar named </a><span style="font-weight: bold;">Analysis Tools</span>, which contains the following options:</div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073379">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1079472">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1073379">KM Plot </a>– select from a list of clinical annotation fields that have permissible values associated (and 'no value' if there are subjects with no value for that field) with them.  They can then select two or more of those values (and each value should have a number next to it showing the number of subjects with that value).  USBAT select a measure of survival from a list of one or more of them.  USBAT to submit the request and get back a Kaplan-Meier Survival Curve plot.</div>
+              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1079472">K-M Plot</a></span>: This tool analyzes clinical data, generating a K-M plot based on survival data sets. See <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.6.3.html#1084273', '');">Creating Kaplan-Meier Plots</a></span>. </div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text_Indent_2"><a name="1073393">KM Plot </a>– Select a study with gene expression data; specify a single gene whose expression value can be used to split the subjects into three categories: high, low and intermediate expression. </div>
-      <div class="Body_Text_Indent_2"><a name="1073476">Must define at least one survival values before creating KM Plot.</a></div>
-      <div class="Body_Text_Indent_2"><a name="1073401">After a user clicks 'Create Plot', the ensuing plot should contain the P-Value that </a>was used in the calulation.  USBAT see the number of patients in each category on the plot.</div>
-      <div class="Body_Text"><a name="1073911">Query and KM plot functionality in caIntegrator2 provide functionality to allow users to </a>compare expression levels for a given gene against expression levels for a set of controls samples designated at study definition. The relative expression level is referred to as “fold change” and the numeric value for a given sample and reporter combination is the ratio of the expression value for that particular reporter for the given sample to a reference value calculated for that reporter across all control samples. The reference value is calculated by taking the mean of the log<span style="vertical-align: sub;">2</span> of the expression values for all control samples for the reporter in question. The log<span style="vertical-align: sub;">2</span> mean value (n) is then converted back to a comparable expression signal by returning 2 to the exponent n. </div>
-      <div class="Body_Text"><a name="1073885">In queries that include a fold change criterion and that are configured to return genomic </a>data, the raw expression values are replaced with the calculated fold change value.</div>
+      <div class="Bullet_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1079518">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1079518">Gene Expression Plot</a></span>: This tool analyzes annotation, clinical or genomic data based on gene expression values. See <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.6.7.html#1082800', '');">Creating Gene Expression Plots</a></span>.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1079547">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1079547">GenePattern</a></span>: This feature provides an express link to GenePattern where you can perform analyses on selected caIntegrator2 studies, or it enables you to perform several GenePattern analyses on the grid. See <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.6.12.html#1077363', '');">Analyzing Data with GenePattern</a></span> . </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text"><a name="1084091">After defining or running the desired query to use to populate the data, analysis results </a>display on the same page, allowing you to review the analysis method parameters you defined.  </div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics

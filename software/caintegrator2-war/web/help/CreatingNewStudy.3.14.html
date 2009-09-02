@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Adding Imaging Data</title>
+    <title>Deploying the Study</title>
     <link rel="StyleSheet" href="css/CreatingNewStudy.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,135 +28,17 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1075831">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.3.html#1075831">Configuring and Deploying Study</a> &gt;  Adding Imaging Data</div>
+      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1075829">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.3.html#1075829">Configuring and Deploying Study</a> &gt; Deploying the Study</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading2"><a name="1075831"> Adding Imaging Data</a></div>
-      <div class="Body_Text"><a name="1077974">Once you have loaded clinical data and identified patient IDs, you can add either array </a>genomic sample data from caArray which caIntegrator2 maps by sample IDs to the patient IDs in the clinical data, or you can load imaging files from NCIA, also mapped by IDs to the patient data, covered in this section. Genomic sample data and imaging data are independent of each other, so neither is required before loading the other.</div>
-      <div class="Body_Text"><a name="1083440">It is essential that you are well acquainted with the data you are working with--the </a>clinical data, and the corresponding imaging data in NCIA. </div>
-      <div class="Body_Text"><a name="1081340">Any data in NCIA can be uploaded to caIntegrator2. Imaging data consist of images </a>and or annotations for images.</div>
-      <div class="Body_Text"><a name="1081374">To add imaging data to the study you are creating or are editing, follow these steps:</a></div>
-      <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080129">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1080129">On the Edit Study page, click the </a><span style="font-weight: bold;">Add</span> button under Imaging Data Sources section. Imaging data can be NCIA images or image annotations, which are uploaded in spreadsheet format.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text_Indent_2"><a name="1075938">This opens the Edit Imaging Data Source dialog box. Enter the appropriate </a>information in the fields..</div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080167">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1080167">NCIA Server Grid URL</a></span> – Enter the URL for the grid connection to NCIA</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080168">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1080168">NCIA Username and NCIA Password</a></span>. This information is not required, as currently all data in the NCIA grid is Public data.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081393">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1081393">Protocol ID</a></span> – Enter the protocol ID assigned to the NCIA file.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081392">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1081392">Image Series Annotation File</a></span> – Click <span style="font-weight: bold;">Browse</span> to navigate to the appropriate image annotation file in NCIA. This file, which must be in CSV format, is similar to a clinical data file. It contains features and /or descriptions of images and their corresponding series IDs. If you select this option, you must also upload a mapping file, described in the next point.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081403">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1081403">Clinical/Imaging Mapping File</a></span> – Click <span style="font-weight: bold;">Browse</span> to navigate to the to  appropriate clinical/imaging file. It is similar to the genomic data sources mapping file in that the spreadsheet shows only two columns–one that shows that subject ID and one that displays the corresponding image series ID (assigned by NCIA), providing caIntegrator2 with the information for mapping patients to images or annotations.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081453">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1081453">Click </a><span style="font-weight: bold;">Add</span> to upload the data to caIntegrator.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1082278">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1082278">Once the data is loaded, you must assign identifiers and annotations to the data </a>in the same way you did with the clinical data. For more information, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.6.html#1082187', '');">Assigning An Identifier or Annotation</a></span> and <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.7.html#1082197', '');">Searching for Annotation Definitions</a></span>.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1082287">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">4.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1082287">To deploy the study, see </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.15.html#1075829', '');">Deploying the Study</a></span>.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
+      <div class="Heading2"><a name="1075829">Deploying the Study</a></div>
+      <div class="Body_Text"><a name="1081471">When you are ready to deploy the study, click the </a><span style="font-weight: bold;">Save and Deploy</span> button on the Edit Study page. caIntegrator2 retrieves the selected data from the data service(s) you defined and makes the study available to a study manager or to anyone else who may want to analyze the study’s data. Using the Manage Studies feature, you can then configure and share data queries and data lists with all investigators who access the study. </div>
+      <div class="Body_Text"><a name="1089848">Note that you can continue to work in caIntegrator2 while study is being deployed.</a> See also <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.15.html#1076280', '');">Managing a Study</a></span>.</div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
           //
           WWHClearRelatedTopics();
-
-          // Add related topics
-          //
-          WWHAddRelatedTopic("Adding Clinical Data", "caIntegrator2", "CreatingNewStudy.3.5.html#1075197");
-          WWHAddRelatedTopic("Adding Genomic Data", "caIntegrator2", "CreatingNewStudy.3.10.html#1076975");
-          WWHAddRelatedTopic("Managing a Study", "caIntegrator2", "CreatingNewStudy.3.16.html#1076280");
-          WWHAddRelatedTopic("Managing Platforms", "caIntegrator2", "CreatingNewStudy.3.17.html#1078043");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

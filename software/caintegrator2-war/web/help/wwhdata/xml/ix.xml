@@ -1,81 +1,457 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WebWorksHelpIX version="5.0" xmlns="urn:WebWorks-Help-Index-Schema">
   <g t="A" o="002">
-    <i t="Application Support">
-      <j l="8#1122280" />
+    <i t="adding">
+      <i t="clinical data">
+        <j l="11#1075152" />
+      </i>
+      <i t="genomic data">
+        <j l="15#1090798" />
+      </i>
+      <i t="imaging data">
+        <j l="19#1077974" />
+      </i>
+    </i>
+    <i t="annotation">
+      <i t="assigning identifier">
+        <j l="12#1081979" />
+      </i>
+      <i t="configuring field">
+        <j l="60#1073233" />
+      </i>
+      <i t="importing delimited text">
+        <j l="59#1073226" />
+      </i>
+      <i t="K-M plot for">
+        <j l="44#1089381" />
+      </i>
+      <i t="searching for definitions">
+        <j l="13#1074853" />
+      </i>
+    </i>
+    <i t="assigning, annotation identifier">
+      <j l="12#1081979" />
+    </i>
+  </g>
+  <g t="B" o="002">
+    <i t="box and whisker plot">
+      <i t="interpretation">
+        <j l="51#1089283" />
+      </i>
+      <i t="uses for">
+        <j l="51#1089283" />
+      </i>
     </i>
   </g>
   <g t="C" o="002">
     <i t="caIntegrator2">
-      <i t="workspace">
-        <j l="5#1122586" />
+      <i t="logging in">
+        <j l="3#1129115" />
       </i>
+      <i t="logging out">
+        <j l="6#1111569" />
+      </i>
+      <i t="using workspace">
+        <j l="4#1122586" />
+      </i>
+      <i t="workspace">
+        <j l="4#1122586" />
+      </i>
+    </i>
+    <i t="clinical study">
+      <i t="adding data">
+        <j l="11#1075152" />
+      </i>
+      <i t="data for">
+        <j l="8#1083468" />
+      </i>
+    </i>
+    <i t="columns tab">
+      <j l="26#1074611" />
+    </i>
+    <i t="Comparative Marker Selection (CMS)">
+      <i t="data analysis">
+        <j l="54#1090810" />
+      </i>
+    </i>
+    <i t="configuring">
+      <i t="annotation fields">
+        <j l="60#1073233" />
+      </i>
+      <i t="copy number data">
+        <j l="18#1089928" />
+      </i>
+      <i t="genomic data">
+        <j l="62#1073253" />
+      </i>
+      <i t="imaging data">
+        <j l="63#1073265" />
+      </i>
+      <i t="sample data">
+        <j l="61#1073243" />
+      </i>
+      <i t="subject clinical data">
+        <j l="58#1073215" />
+      </i>
+    </i>
+    <i t="control samples, uploading">
+      <j l="17#1081202" />
+    </i>
+    <i t="copy number data, configuring">
+      <j l="18#1089928" />
+    </i>
+    <i t="creating">
+      <i t="K-M plot">
+        <j l="43#1073562" />
+      </i>
+      <i t="study">
+        <j l="9#1079473" />
+        <j l="10#1074101" />
+      </i>
+    </i>
+  </g>
+  <g t="D" o="002">
+    <i t="data analysis, overview">
+      <j l="42#1073194" />
+    </i>
+    <i t="defining survival values">
+      <j l="14#1077702" />
+    </i>
+    <i t="delimited text annotation import">
+      <j l="59#1073226" />
+    </i>
+    <i t="DICOM, retrieving images">
+      <j l="37#1168195" />
+    </i>
+  </g>
+  <g t="E" o="002">
+    <i t="editing a query">
+      <j l="29#1073533" />
+    </i>
+    <i t="exporting">
+      <i t="data">
+        <j l="40#1164508" />
+      </i>
+      <i t="query results">
+        <j l="30#1073522" />
+      </i>
+    </i>
+  </g>
+  <g t="F" o="002">
+    <i t="fold change, control samples file">
+      <j l="17#1081202" />
+    </i>
+  </g>
+  <g t="G" o="002">
+    <i t="gene expression plot">
+      <i t="description">
+        <j l="42#1079518" />
+        <j l="47#1084199" />
+        <j l="51#1091490" />
+      </i>
+      <i t="for clinical queries">
+        <j l="50#1083443" />
+      </i>
+      <i t="for genomic queries">
+        <j l="49#1083381" />
+      </i>
+      <i t="interpreting">
+        <j l="51#1089063" />
+      </i>
+      <i t="plot display, box &amp; whisker">
+        <j l="51#1089283" />
+      </i>
+      <i t="plot display, log2 intensity">
+        <j l="51#1089102" />
+      </i>
+      <i t="plot display, mean">
+        <j l="51#1088726" />
+      </i>
+      <i t="plot display, median">
+        <j l="51#1088789" />
+      </i>
+    </i>
+    <i t="gene expression, K-M plot for">
+      <j l="45#1080255" />
+    </i>
+    <i t="GenePattern">
+      <i t="analyses, description">
+        <j l="52#1073260" />
+      </i>
+      <i t="analyses, in caIntegrator2">
+        <j l="52#1084384" />
+      </i>
+      <i t="analyses, modules">
+        <j l="53#1085979" />
+      </i>
+      <i t="CMS analysis">
+        <j l="54#1090810" />
+      </i>
+      <i t="GISTIC analysis">
+        <j l="56#1086919" />
+      </i>
+      <i t="PCA">
+        <j l="55#1086355" />
+      </i>
+      <i t="plot description">
+        <j l="42#1079547" />
+      </i>
+    </i>
+    <i t="genomic data">
+      <i t="adding copy number data to">
+        <j l="18#1089928" />
+      </i>
+      <i t="adding to study">
+        <j l="15#1090798" />
+      </i>
+      <i t="configuration">
+        <j l="62#1073253" />
+      </i>
+      <i t="for study">
+        <j l="8#1083477" />
+      </i>
+      <i t="mapping to clinical data">
+        <j l="16#1082153" />
+      </i>
+    </i>
+    <i t="GISTIC-based data analysis">
+      <j l="56#1086919" />
     </i>
   </g>
   <g t="H" o="002">
-    <i t="hierarchy of objects, NCIA">
-      <j l="28#1076814" />
-      <j l="38#1164562" />
+    <i t="hierarchy of objects, NBIA">
+      <j l="25#1076814" />
+      <j l="39#1168576" />
     </i>
   </g>
   <g t="I" o="002">
-    <i t="I-SPY">
-      <i t="logging out">
-        <j l="7#1111569" />
+    <i t="imaging data">
+      <i t="adding to study">
+        <j l="19#1077974" />
       </i>
-      <i t="tabs">
-        <j l="6#1122024" />
+      <i t="configuration">
+        <j l="63#1073265" />
       </i>
+      <i t="for study">
+        <j l="8#1083526" />
+      </i>
+    </i>
+    <i t="importing delimited text annotations">
+      <j l="59#1073226" />
     </i>
   </g>
   <g t="K" o="002">
-    <i t="Kaplan-Meier for Gene Expression Data">
-      <i t="redrawing plot">
-        <j l="42#1073592" />
+    <i t="Kaplan_Meier plot see K-M plot" />
+    <i t="K-M plot">
+      <i t="creating">
+        <j l="43#1073562" />
       </i>
-      <i t="simple search">
-        <j l="42#1073579" />
+      <i t="description">
+        <j l="42#1079472" />
+        <j l="43#1073562" />
+      </i>
+      <i t="for annotations">
+        <j l="44#1089381" />
+      </i>
+      <i t="for gene expression">
+        <j l="45#1080255" />
+      </i>
+      <i t="for queries">
+        <j l="46#1073748" />
       </i>
     </i>
   </g>
   <g t="L" o="002">
-    <i t="logging out">
-      <i t="I-SPY">
-        <j l="7#1111569" />
+    <i t="logout link">
+      <j l="6#1111569" />
+    </i>
+  </g>
+  <g t="M" o="002">
+    <i t="managing">
+      <i t="platforms">
+        <j l="22#1078047" />
+      </i>
+      <i t="queries">
+        <j l="27#1077949" />
+      </i>
+      <i t="study">
+        <j l="21#1085452" />
       </i>
     </i>
-    <i t="logout link">
-      <j l="7#1111569" />
+    <i t="mapping genomic to clinical data">
+      <j l="16#1082153" />
     </i>
   </g>
   <g t="N" o="002">
-    <i t="NCICB Application Support">
-      <j l="8#1122280" />
+    <i t="NBIA">
+      <i t="forwarding imaging results to">
+        <j l="36#1161874" />
+      </i>
+      <i t="viewing imaging results in">
+        <j l="36#1164465" />
+      </i>
     </i>
   </g>
   <g t="O" o="002">
-    <i t="objects in NCIA, hierarchy of">
-      <j l="28#1076814" />
-      <j l="38#1164562" />
+    <i t="objects in NBIA, hierarchy of">
+      <j l="25#1076814" />
+      <j l="39#1168576" />
     </i>
   </g>
-  <g t="R" o="002">
-    <i t="redrawing">
-      <i t="K-M Gene Expression plot">
-        <j l="42#1073592" />
+  <g t="P" o="002">
+    <i t="patient">
+      <i t="relationship to study, series, images">
+        <j l="39#1168597" />
+      </i>
+    </i>
+    <i t="platforms, managing">
+      <j l="22#1078047" />
+    </i>
+    <i t="plot">
+      <i t="gene expression description">
+        <j l="51#1089063" />
+      </i>
+      <i t="gene expression, description">
+        <j l="42#1079518" />
+        <j l="47#1084199" />
+      </i>
+      <i t="GenePattern description">
+        <j l="42#1079547" />
+      </i>
+      <i t="K-M description">
+        <j l="42#1079472" />
+      </i>
+    </i>
+    <i t="Principal Component Analysis">
+      <i t="data analysis">
+        <j l="55#1086355" />
+      </i>
+    </i>
+  </g>
+  <g t="Q" o="002">
+    <i t="query">
+      <i t="editing">
+        <j l="29#1073533" />
+      </i>
+      <i t="exporting results">
+        <j l="30#1073522" />
+      </i>
+      <i t="K-M plot for">
+        <j l="46#1073748" />
+      </i>
+      <i t="managing">
+        <j l="27#1077949" />
+      </i>
+      <i t="saving">
+        <j l="28#1075755" />
       </i>
     </i>
   </g>
   <g t="S" o="002">
-    <i t="simple searches">
-      <i t="K-M Gene Expression Data">
-        <j l="42#1073579" />
+    <i t="sample data, configuration">
+      <j l="61#1073243" />
+    </i>
+    <i t="saving query">
+      <j l="28#1075755" />
+    </i>
+    <i t="search results">
+      <i t="browsing">
+        <j l="33#1168460" />
+      </i>
+      <i t="clinical data">
+        <j l="34#1170152" />
+      </i>
+      <i t="exporting data">
+        <j l="40#1164508" />
+      </i>
+      <i t="forwarding imaging results to NBIA">
+        <j l="36#1161874" />
+      </i>
+      <i t="genomic data">
+        <j l="35#1159226" />
+      </i>
+      <i t="imaging data">
+        <j l="34#1170152" />
+        <j l="36#1169716" />
+      </i>
+      <i t="overview">
+        <j l="32#1163460" />
+      </i>
+      <i t="retrieving DICOM images">
+        <j l="37#1168195" />
+      </i>
+      <i t="viewing imaging data in NBIA">
+        <j l="36#1164465" />
       </i>
     </i>
-  </g>
-  <g t="T" o="002">
-    <i t="tabs, shown">
-      <j l="6#1122024" />
+    <i t="searching">
+      <i t="annotation definitions">
+        <j l="13#1074853" />
+      </i>
+      <i t="overview">
+        <j l="24#1077420" />
+      </i>
+      <i t="study">
+        <j l="25#1073200" />
+      </i>
+    </i>
+    <i t="sorting tab">
+      <j l="26#1074611" />
+    </i>
+    <i t="study">
+      <i t="adding clinical data">
+        <j l="11#1075152" />
+      </i>
+      <i t="adding genomic data">
+        <j l="15#1090798" />
+      </i>
+      <i t="adding imaging data">
+        <j l="19#1077974" />
+      </i>
+      <i t="clinical data, description">
+        <j l="8#1083468" />
+      </i>
+      <i t="configuring copy number data">
+        <j l="18#1089928" />
+      </i>
+      <i t="creating">
+        <j l="8#1077143" />
+        <j l="9#1079473" />
+        <j l="10#1074101" />
+      </i>
+      <i t="deploying">
+        <j l="20#1081471" />
+      </i>
+      <i t="editing">
+        <j l="21#1085452" />
+      </i>
+      <i t="genomic data, description">
+        <j l="8#1083477" />
+      </i>
+      <i t="imaging data, description">
+        <j l="8#1083526" />
+      </i>
+      <i t="managing">
+        <j l="21#1085452" />
+      </i>
+      <i t="mapping genomic data to clinical">
+        <j l="16#1082153" />
+      </i>
+      <i t="relationship patient, study, series, images">
+        <j l="39#1168597" />
+      </i>
+      <i t="searching">
+        <j l="25#1073200" />
+      </i>
+      <i t="uploading control samples to">
+        <j l="17#1081202" />
+      </i>
+    </i>
+    <i t="subject clinical data, configuring">
+      <j l="58#1073215" />
+    </i>
+    <i t="survival values, defining">
+      <j l="14#1077702" />
     </i>
   </g>
 </WebWorksHelpIX>
