@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Mapping Genomic Data to Clinical Data</title>
+    <title>Configuring Copy Number Data</title>
     <link rel="StyleSheet" href="css/CreatingNewStudy.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,63 +28,120 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1081247">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.3.html#1081247">Configuring and Deploying Study</a> &gt; Mapping Genomic Data to Clinical Data</div>
+      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1089873">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.3.html#1089873">Configuring and Deploying Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.9.html#1089873">Adding/Editing Genomic Data</a> &gt; Configuring Copy Number Data</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading2"><a name="1081247">Mapping Genomic Data to Clinical Data</a></div>
-      <div class="Body_Text"><a name="1082153">Because the goal of caIntegrator2 is to integrate data from clinical, genomic and </a>imaging data sources, data from uploaded source files must be mapped to each other. </div>
-      <div class="Body_Text"><a name="1089445">To map the samples from the caArray experiment to the patients in the clinical data you </a>uploaded, follow these steps:</div>
+      <div class="Heading3"><a name="1089873">Configuring Copy Number Data</a></div>
+      <div class="Body_Text"><a name="1089928">You can add copy number data for a genomic data source by uploading the mapping </a>file. This allows you to configure parameters to be used when segmentation data is being configured.</div>
+      <div class="Body_Text"><a name="1090208">To add copy number data relating to the genomic data you are adding, follow these </a>steps:</div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1082146">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1089976">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1082146">On the Edit Study page, click the </a><span style="font-weight: bold;">Map Samples</span> link.  This opens the Edit Sample Mappings page. </div>
+              <div class="Numbered_List_1_inner"><a name="1089976">In the Genomic Data Sources section, for the data you have already added, </a>click <span style="font-weight: bold;">Configure Copy Number Data hypertext</span> link. </div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text_Indent_2"><a name="1077886">When you first open this page, all of the samples in the caArray experiment you </a>selected are listed as unmapped, because caIntegrator2 does not know how these sample names correlate to the patient data in the clinical file until you upload the mapping file.</div>
+      <div class="Note_Indent_outer" style="margin-left: 50.25pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1094410">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Note_Indent_inner" style="width: 25px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1094410" border="0" width="30" height="30" />
+                </span>
+              </div>
+            </td>
+            <td width="100%">
+              <div class="Note_Indent_inner"><a name="1094410">This link is available only if you have uploaded copy number data and </a>you are configuring a Copy Number data type (as indicated by the Data Type column on the Edit Study page).</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text_Indent_2"><a name="1094406">The Edit Copy Number page opens. </a></div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081147">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1089953">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1081147">Browse for the .csv file that identifies the mapping information. Click the </a><span style="font-weight: bold;">Upload </span><span style="font-weight: bold;">Mapping File</span> button. </div>
+              <div class="Numbered_List_inner"><a name="1089953">Browse for and enter appropriate information to identify the copy number </a>mapping file. The fields are described in the following table. An asterisk* indicates a required field..</div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text_Indent_2"><a name="1081182">The mapping file has only two columns (typically without headers)</a>–one that shows the subject ID (designated in caIntegrator2 as the “Identifier) and one that has “Sample name” field from the linked caArray experiment,<span style="font-family: &quot;Times New Roman&quot;; font-size: 12.0pt;"> </span>with one subject per row. This provides caIntegrator2 with the information for mapping patients to caArray samples.<img id="1085177" class="Default" src="images/genomic%20mapping%20file.gif" width="557" height="182" style="display: block; float: none; left: 0.0; text-align: left; top: 0.0;" /></div>
-      <div class="Note_Indent_outer" style="margin-left: 50.25pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1085193">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Note_Indent_inner" style="width: 25px; white-space: nowrap;">
-                <span style="left: -20px; position: relative; top: 15px;">
-                  <img src="note_NCI.gif" alt="*" id="bullet1085193" border="0" width="30" height="30" />
-                </span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Note_Indent_inner"><a name="1085193">When you open the mapping file, make sure that the patient ID is used </a>for mapping.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text_Indent_2"><a name="1081151">Unmapped samples continue to show at the top of the caIntegrator2 page. They </a>were loaded from caArray, but they are not in the mapping file. These are not used for integration. </div>
+      <table id="1090095" class="Table_-_List" style="text-align: left;" cellspacing="2">
+        <caption></caption>
+        <tr>
+          <td id="tc1090097" style="background-color: WhiteSmoke; border-bottom-color: Black; border-bottom-style: solid; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 4pt; padding-left: 6pt; padding-right: 4pt; padding-top: 4pt; vertical-align: middle; width: 110.232pt;">
+            <div class="Table_Header"><a name="1090097">Field</a></div>
+          </td>
+          <td id="tc1090099" style="background-color: WhiteSmoke; border-bottom-color: Black; border-bottom-style: solid; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 4pt; padding-left: 6pt; padding-right: 4pt; padding-top: 4pt; vertical-align: middle; width: 280.584pt;">
+            <div class="Table_Header"><a name="1090099">Description</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1090101" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1090101">Subject and Sample to </a>Copy Number Mapping File</div>
+          </td>
+          <td id="tc1090103" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1090103">Browse for the appropriate CN mapping file</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1090105" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1090105">caDNACopy Service </a>URL*</div>
+          </td>
+          <td id="tc1090107" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1090107">&nbsp;</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1090109" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1090109">Change Point </a>Significance Level</div>
+          </td>
+          <td id="tc1090111" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1090111">&nbsp;</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1090113" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1090113">Early Stopping Criteria</a></div>
+          </td>
+          <td id="tc1090115" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1090115">&nbsp;</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1090117" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1090117">Permutation </a>Replicates</div>
+          </td>
+          <td id="tc1090119" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1090119">&nbsp;</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1090121" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1090121">Random Number </a>Seed </div>
+          </td>
+          <td id="tc1090123" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1090123">&nbsp;</a></div>
+          </td>
+        </tr>
+      </table>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080250">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1090004">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1080250">Scroll down the page to see samples that are mapped to the patients in the </a>clinical data.</div>
+              <div class="Numbered_List_inner"><a name="1090004">Users can now click "Configure copy number data" for a genomic data source </a>and on this screen upload a copy number mapping file (format: subject id, sample id, file name) and configure the parameters to be sent when computing segmentation data.</div>
             </td>
           </tr>
         </table>
@@ -94,6 +151,12 @@
           // Clear related topics
           //
           WWHClearRelatedTopics();
+
+          // Add related topics
+          //
+          WWHAddRelatedTopic("Adding/Editing Genomic Data", "caIntegrator2", "CreatingNewStudy.3.9.html#1076975");
+          WWHAddRelatedTopic("Uploading Control Samples", "caIntegrator2", "CreatingNewStudy.3.11.html#1080249");
+          WWHAddRelatedTopic("Configuring Copy Number Data", "caIntegrator2", "CreatingNewStudy.3.12.html#1089873");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->
