@@ -93,9 +93,11 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 public class StudyLogo extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
+    private static final String LOGO_SERVLET_URL = "/caintegrator2/logo?";
     private String fileName;
     private String path;
     private String fileType;
+    private StudyConfiguration studyConfiguration;
 
     /**
      * @return the fileName
@@ -133,4 +135,26 @@ public class StudyLogo extends AbstractCaIntegrator2Object {
     public void setFileType(String fileType) {
         this.fileType = fileType;
     }
+    
+    /**
+     * Retrieves the  URL for the study logo.
+     * @return - the URL for the servlet which serves up the study logo.
+     */
+    public String getLogoUrl() {
+        return LOGO_SERVLET_URL + "studyId=" + studyConfiguration.getStudy().getId() 
+        + "&studyName=" + studyConfiguration.getStudy().getShortTitleText();                           
+    }    
+
+    /**
+     * @return the studyConfiguration
+     */
+    public StudyConfiguration getStudyConfiguration() {
+        return studyConfiguration;
+    }
+    /**
+     * @param studyConfiguration the studyConfiguration to set
+     */
+    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
+        this.studyConfiguration = studyConfiguration;
+    }    
 }

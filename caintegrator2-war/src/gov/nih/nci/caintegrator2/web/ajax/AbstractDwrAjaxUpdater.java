@@ -139,7 +139,7 @@ public abstract class AbstractDwrAjaxUpdater {
     protected abstract void initializeDynamicTable(DisplayableUserWorkspace workspace);
     
     /**
-     * Retreives table options for DWR created tables.
+     * Retrieves table options for DWR created tables.
      * @param counter - to switch it from odd/even rows in a table.
      * @return dwr table row options.
      */
@@ -154,8 +154,10 @@ public abstract class AbstractDwrAjaxUpdater {
             + "return row;"
             + "},"
             + "cellCreator:function(options) { "
+            + "var cellNumber = options.cellNum;"
+            + "var cellID = 'dwrCellID_' + cellNumber;"
             + "var td = document.createElement(\"td\");"
-            + "if (options.cellNum == 1) { td.style.whiteSpace=\"nowrap\"; }"
+            + "td.setAttribute('id',cellID) ;"
             + "return td;"
             + "},"
             + " escapeHtml:false }";

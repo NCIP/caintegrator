@@ -28,10 +28,11 @@
         </div>
         <s:set name="holdsvnurl" value="#application['svnUrl']"/>
         <s:set name="holdsvntag" value="#application['caintegrator2Svntag']"/>
-        <s:div id="versioninfo" title="caINTEGRATOR2, SVNTAG: %{holdsvntag}, SVNURL: %{holdsvnurl}">
-            version: <s:property value="#application['caintegrator2Version']"/>,
-            build: <s:property value="#application['caintegrator2Svntag']"/>,
-            revision: <s:property value="#application['svnRevision']"/>            
+        <s:set name="holdsvnrev" value="#application['svnRevision']"/>
+        <s:set name="holdbuilddate" value="#application['caintegrator2Builddate']"/>
+        <s:div id="versioninfo" title="caINTEGRATOR2, BUILD DATE: %{holdbuilddate}, SVNTAG: %{holdsvntag}, SVNURL: %{holdsvnurl}, SVNREV: %{holdsvnrev}">
+            build: <s:property value="%{holdsvntag}"/> | 
+            date: <s:property value="%{holdbuilddate}"/>           
         </s:div>
     </div> 
 

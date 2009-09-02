@@ -22,6 +22,9 @@
         <s:head theme="ajax"/>
         <script type="text/javascript" src="common/js/pde.js"></script>
         <script type="text/javascript" src="common/js/prototype.js"></script>
+        <script type="text/javascript" src="common/js/scriptaculous.js"></script>
+        <script type="text/javascript" src="common/js/effects.js"></script>
+        <script type="text/javascript" src="common/js/prototype.js"></script>
         <script type="text/javascript" src="common/js/caintegrator2.js"></script>
         <script type="text/javascript" src="common/js/onlinehelp.js"></script>
         <script type="text/javascript" src="./struts/optiontransferselect.js"></script>      

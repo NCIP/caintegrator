@@ -158,11 +158,8 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
         rowString[0][2] = startSpan + JOB_FILE_DESCRIPTION + id + endSpan;
         rowString[0][3] = startSpan + JOB_DEPLOYMENT_STATUS + id + endSpan;
         rowString[0][4] = startSpan + JOB_EDIT_URL + id + endSpan
-                          + startSpan + JOB_ACTION_BAR1 + id + endSpan
                           + startSpan + JOB_EDIT_ANNOTATIONS_URL + id + endSpan
-                          + startSpan + JOB_ACTION_BAR2 + id + endSpan
                           + startSpan + JOB_LOAD_ANNOTATIONS_URL + id + endSpan
-                          + startSpan + JOB_ACTION_BAR3 + id + endSpan
                           + startSpan + JOB_DELETE_URL + id + endSpan;
         
         return rowString;
@@ -249,30 +246,30 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
 
     private void addNonProcessingActions(ImageDataSourceConfiguration imagingSource, Util utilThis,
             String imagingSourceId) {
-        String jobActionBarString = "&nbsp;|&nbsp;";
+        String jobActionBarString = "&nbsp;";
         if (!Status.ERROR.equals(imagingSource.getStatus())) {
             addNonErrorActions(imagingSource, utilThis, imagingSourceId, jobActionBarString);
         }
         utilThis.setValue(JOB_EDIT_URL + imagingSourceId, 
-                retrieveUrl(imagingSource, "editImagingSource", "Edit", false),
+                retrieveUrl(imagingSource, "editImagingSource", "Edit", "edit", false),
                 false);
         utilThis.setValue(JOB_ACTION_BAR1 + imagingSourceId, jobActionBarString, false);
         utilThis.setValue(JOB_DELETE_URL + imagingSourceId, 
-                retrieveUrl(imagingSource, "deleteImagingSource", "Delete", true),
+                retrieveUrl(imagingSource, "deleteImagingSource", "Delete", "delete", true),
                 false);
     }
 
     private void addNonErrorActions(ImageDataSourceConfiguration imagingSource, 
                     Util utilThis, String imagingSourceId, String jobActionBarString) {
         utilThis.setValue(JOB_EDIT_ANNOTATIONS_URL + imagingSourceId, retrieveUrl(imagingSource, 
-                "editImagingSourceAnnotations", "Edit Annotations", false));
+                "editImagingSourceAnnotations", "Edit Annotations", "edit", false));
         utilThis.setValue(JOB_ACTION_BAR2 + imagingSourceId, jobActionBarString, false);
         
         if (imagingSource.getImageAnnotationConfiguration() != null 
             && imagingSource.getImageAnnotationConfiguration().isLoadable() 
             && !imagingSource.getImageAnnotationConfiguration().isCurrentlyLoaded()) {
             utilThis.setValue(JOB_LOAD_ANNOTATIONS_URL + imagingSourceId, 
-                retrieveUrl(imagingSource, "loadImagingSource", "Load Annotations", false),
+                retrieveUrl(imagingSource, "loadImagingSource", "Load Annotations", "reload", false),
                 false);
             utilThis.setValue(JOB_ACTION_BAR3 + imagingSourceId, jobActionBarString, false);
         } 
@@ -280,16 +277,18 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
     }
 
     private String retrieveUrl(ImageDataSourceConfiguration imagingSource, String actionName, 
-            String linkDisplay, boolean isDelete) {
+            String linkDisplay, String linkCssClass, boolean isDelete) {
         String deleteString = "";
         if (isDelete) {
             deleteString = "onclick=\"return confirm('The Imaging Data Source " 
                             + imagingSource.getCollectionName() + " will be permanently deleted.')\"";
         }
-        return "<a href=\"" + actionName + ".action?studyConfiguration.id=" 
+
+        return "<a style=\"margin: 0pt;\" class=\"btn\" href=\"" + actionName + ".action?studyConfiguration.id=" 
                     + imagingSource.getStudyConfiguration().getId() 
                     + "&imageSourceConfiguration.id=" + imagingSource.getId() + "\"" 
-                    + deleteString + ">" + linkDisplay + "</a>";
+                    + deleteString + "><span class=\"btn_img\"><span class=\""
+                    + linkCssClass + "\">" + linkDisplay + "</span></span></a>";
     }
     
     private String getStatusMessage(Status imagingSourceStatus) {

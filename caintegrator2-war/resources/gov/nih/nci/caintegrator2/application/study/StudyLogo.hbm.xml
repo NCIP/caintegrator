@@ -9,5 +9,7 @@
 		<property name="fileName" type="string" column="FILENAME"/>
         <property name="fileType" type="string" column="FILETYPE"/>
         <property name="path" type="string" column="PATH"/>
+        <one-to-one name="studyConfiguration" class="gov.nih.nci.caintegrator2.application.study.StudyConfiguration"
+            property-ref="studyLogo"/>
 	</class>
 </hibernate-mapping>

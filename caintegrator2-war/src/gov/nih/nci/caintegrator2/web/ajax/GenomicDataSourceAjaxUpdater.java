@@ -157,9 +157,7 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
         rowString[0][3] = startSpan + JOB_DATA_TYPE + id + endSpan;
         rowString[0][4] = startSpan + JOB_DEPLOYMENT_STATUS + id + endSpan;
         rowString[0][5] = startSpan + JOB_EDIT_URL + id + endSpan
-                          + startSpan + JOB_ACTION_BAR1 + id + endSpan
                           + startSpan + getMappingActionUrl(genomicSource) + id + endSpan
-                          + startSpan + JOB_ACTION_BAR2 + id + endSpan
                           + startSpan + JOB_DELETE_URL + id + endSpan;
         
         return rowString;
@@ -264,16 +262,16 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
 
     private void addNonProcessingActions(GenomicDataSourceConfiguration genomicSource, Util utilThis,
             String genomicSourceId) {
-        String jobActionBarString = "&nbsp;|&nbsp;";
+        String jobActionBarString = "&nbsp;";
         if (!Status.ERROR.equals(genomicSource.getStatus())) {
             addNonErrorActions(genomicSource, utilThis, genomicSourceId, jobActionBarString);
         }
         utilThis.setValue(JOB_EDIT_URL + genomicSourceId, 
-                retrieveUrl(genomicSource, "editGenomicSource", "Edit", false),
+                retrieveUrl(genomicSource, "editGenomicSource", "Edit", "edit", false),
                 false);
         utilThis.setValue(JOB_ACTION_BAR1 + genomicSourceId, jobActionBarString, false);
         utilThis.setValue(JOB_DELETE_URL + genomicSourceId, 
-                retrieveUrl(genomicSource, "deleteGenomicSource", "Delete", true),
+                retrieveUrl(genomicSource, "deleteGenomicSource", "Delete", "delete", true),
                 false);
     }
 
@@ -281,27 +279,31 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
                     Util utilThis, String genomicSourceId, String jobActionBarString) {
         if (genomicSource.isExpressionData()) {
             utilThis.setValue(JOB_MAP_SAMPLES_URL + genomicSourceId, 
-                retrieveUrl(genomicSource, "editSampleMapping", "Map Samples", false),
+                retrieveUrl(genomicSource, "editSampleMapping", "Map Samples", "map", false),
                 false);
         } else {
             utilThis.setValue(JOB_CONFIGURE_COPY_NUMBER_URL + genomicSourceId, 
-                retrieveUrl(genomicSource, "editCopyNumberDataConfiguration", "ConfigureCopyNumberData", false),
-                false);
+                    retrieveUrl(genomicSource, "editCopyNumberDataConfiguration", "ConfigureCopyNumberData",
+                            "configure", false),
+                            false);
         }
         utilThis.setValue(JOB_ACTION_BAR2 + genomicSourceId, jobActionBarString, false);
     }
 
     private String retrieveUrl(GenomicDataSourceConfiguration genomicSource, String actionName, 
-            String linkDisplay, boolean isDelete) {
+            String linkDisplay, String linkCssClass, boolean isDelete) {
         String deleteString = "";
         if (isDelete) {
             deleteString = "onclick=\"return confirm('The Genomic Data Source " 
                             + genomicSource.getExperimentIdentifier() + " will be permanently deleted.')\"";
         }
-        return "<a href=\"" + actionName + ".action?studyConfiguration.id=" 
-                    + genomicSource.getStudyConfiguration().getId() 
-                    + "&genomicSource.id=" + genomicSource.getId() + "\"" 
-                    + deleteString + ">" + linkDisplay + "</a>";
+
+        return "<a style=\"margin: 0pt;\" class=\"btn\" href=\"" + actionName + ".action?studyConfiguration.id=" 
+        + genomicSource.getStudyConfiguration().getId() 
+        + "&genomicSource.id=" + genomicSource.getId() + "\"" 
+        + deleteString + "><span class=\"btn_img\"><span class=\""
+        + linkCssClass + "\">" + linkDisplay + "</span></span></a>";
+        
     }
     
     private String getStatusMessage(Status genomicSourceStatus) {
