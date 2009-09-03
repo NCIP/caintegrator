@@ -185,6 +185,14 @@ public class RegistrationAction extends ActionSupport implements Preparable {
             return INPUT;
         }
     }
+    
+    /**
+     * If user wishes to cancel.
+     * @return cancel string.
+     */
+    public String cancel() {
+        return "cancel";
+    }
 
     /**
      * @return the registrationRequest

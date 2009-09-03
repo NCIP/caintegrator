@@ -58,8 +58,10 @@
         <s:textfield name="registrationRequest.zip" label="Postal Code" size="50" required="true" />
         <s:textfield name="registrationRequest.phone" label="Phone" size="50" required="true" />
         <s:textfield name="registrationRequest.fax" label="Fax" size="50" />
-        
-	    <s:submit value="Submit Registration Request" />
+        <td colspan="2" align="right">
+        <s:submit value="Cancel" action="cancel" theme="simple"/>
+	    <s:submit value="Submit Registration Request" action="save" theme="simple"/>
+	    </td>
 	    </tbody>
 	    </table>
     </s:form>
