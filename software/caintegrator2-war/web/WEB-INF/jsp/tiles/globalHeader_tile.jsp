@@ -6,11 +6,11 @@
             
 <div id="nciheader">        
     <div id="ncilogo"><a href="http://www.cancer.gov"><img
-        src="images/logotype.gif" width="283" height="37"
+        src="/caintegrator2/images/logotype.gif" width="283" height="37"
         alt="Logo: National Cancer Institute" /></a>
     </div>
     <div id="nihtag"><a href="http://www.cancer.gov"><img
-        src="images/tagline.gif" width="295" height="37"
+        src="/caintegrator2/images/tagline.gif" width="295" height="37"
         alt="Logo: U.S. National Institutes of Health | www.cancer.gov" /></a>
     </div>
 
@@ -24,7 +24,7 @@
 
     <div id="mainlogo">
         <div>
-            <a href="index.jsp"><img src="images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a>
+            <a href="index.jsp"><img src="/caintegrator2/images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a>
         </div>
         <s:set name="holdsvnurl" value="#application['svnUrl']"/>
         <s:set name="holdsvntag" value="#application['caintegrator2Svntag']"/>

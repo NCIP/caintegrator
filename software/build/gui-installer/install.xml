@@ -292,7 +292,12 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 
 					<variable name="ldap.url" value="" condition="container.database"/>
 					<variable name="ldap.basedn" value="" condition="container.database"/>
-					<variable name="mail.smtp.server" value="" condition="container.database"/>
+					<variable name="mail.smtp.host" value="" condition="container.database"/>
+					<variable name="mail.smtp.port" value="" condition="container.database"/>
+					<variable name="mail.smtp.auth" value="" condition="container.database"/>
+					<variable name="mail.smtp.starttls.enable" value="" condition="container.database"/>
+					<variable name="mail.user" value="" condition="container.database"/>
+					<variable name="mail.password" value="" condition="container.database"/>
 					<variable name="authentication.type" value="" condition="container.database"/>
 				</dynamicvariables>
 
@@ -350,26 +355,27 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 					<panel classname="UserInputPanel"  id="UserInputPanel.13"/>
 					<!-- Global Configuraiton Options -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.14" condition="!container.database"/>
+					<!-- UPT Configuration -->
+                    <panel classname="UserInputPanel"  id="UserInputPanel.15" />
 					<!-- Grid Global Configuration -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.15" condition="never"/>
-					<!-- Grid Research Center -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.16" condition="never"/>
-					<!-- Grid Tech Contact -->
+					<!-- Grid Research Center -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.17" condition="never"/>
-					<!-- Grid Science Contact -->
+					<!-- Grid Tech Contact -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.18" condition="never"/>
+					<!-- Grid Science Contact -->
+					<panel classname="UserInputPanel"  id="UserInputPanel.19" condition="never"/>
 					<!-- Application Specific Properties -->
 					<!-- Tomcat Base Config 0.9.0 -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.19" condition="never"/>
-					<!-- Tomcat SSL 0.9.0 -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.20" condition="never"/>
-					<!-- external host stuff tomcat -->
+					<!-- Tomcat SSL 0.9.0 -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.21" condition="never"/>
+					<!-- external host stuff tomcat -->
+					<panel classname="UserInputPanel"  id="UserInputPanel.22" condition="never"/>
 					<!-- Jar Signing 1.5.0 -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.22" condition="container.tomcat|container.all|container.jboss"/>
-					
+					<panel classname="UserInputPanel"  id="UserInputPanel.23" condition="container.tomcat|container.all|container.jboss"/>
 					<!-- Installation Summary -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.23" />
+					<panel classname="UserInputPanel"  id="UserInputPanel.24" />
 					<panel classname="InstallationGroupPanel"/>
 					<panel classname="ExtendedInstallPanel"/>
 					<panel classname="FinishPanel"/>

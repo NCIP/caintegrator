@@ -140,4 +140,11 @@ public interface SecurityManager {
     Set<StudyConfiguration> retrieveManagedStudyConfigurations(String username, Collection<Study> studies) 
         throws CSException;
 
+    /**
+     * Checks to see if the given username exists.
+     * @param username to check if it exists or not.
+     * @return T/F value if it exists.
+     */
+    boolean doesUserExist(String username);
+    
 }

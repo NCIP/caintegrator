@@ -64,6 +64,18 @@
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.LoginAction">
     </bean>
+    
+    <bean id="registrationAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.registration.RegistrationAction">
+        <property name="securityManager">
+            <ref local="securityManager" />
+        </property>
+        <property name="registrationService">
+            <ref local="registrationService" />
+        </property>
+    </bean>
+    
     <!-- Study Management -->
 
     <bean id="deployStudyAction"
@@ -604,6 +616,13 @@
     <!-- ******************************************************************* -->
     <!-- ** SUBSYSTEMS                                                    ** -->
     <!-- ******************************************************************* -->
+    
+    <bean id="registrationService" 
+        class="gov.nih.nci.caintegrator2.application.registration.RegistrationServiceImpl">
+        <property name="configurationHelper">
+            <ref local="configurationHelper" /> 
+        </property>
+    </bean> 
 
     <bean id="studyManagementService" 
         class="gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImpl">

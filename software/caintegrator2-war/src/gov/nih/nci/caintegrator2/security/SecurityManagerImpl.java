@@ -203,6 +203,17 @@ public class SecurityManagerImpl implements SecurityManager {
         return managedStudyIds;
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public boolean doesUserExist(String username) {
+        try {
+            return retrieveCsmUser(username) != null ? true : false;
+        } catch (CSException e) {
+            return false;
+        }
+    }
+    
     private User retrieveCsmUser(String username) throws CSException {
         return getAuthorizationManager().getUser(username);
     }

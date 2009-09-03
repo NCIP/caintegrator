@@ -148,7 +148,17 @@ public enum ConfigurationParameter {
     /**
      * Default CaDNACopy service URL.
      */
-    CGAP_URL("http://cgap.nci.nih.gov/Genes/RunUniGeneQuery?PAGE=1&SYM=&PATH=&ORG=Hs&TERM=");
+    CGAP_URL("http://cgap.nci.nih.gov/Genes/RunUniGeneQuery?PAGE=1&SYM=&PATH=&ORG=Hs&TERM="),
+    
+    /**
+     * Default email to send registration requests to.
+     */
+    REGISTRATION_EMAIL_TO("replace@youremail.com"),
+    
+    /**
+     * Default email to send registration confirmations from.
+     */
+    REGISTRATION_EMAIL_FROM("NCICB@pop.nci.nih.gov");
 
     private String defaultValue;
 
