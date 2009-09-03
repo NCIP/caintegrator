@@ -718,14 +718,51 @@ Guide to this file:
 		<field type="title" txt="Global Settings" bold="true" size="1" />
         <field type="staticText" align="left" txt="These options are for properties that may be used by multiple applications."/>
         <field type="divider" align="top"/>
-		<field type="text" variable="mail.smtp.server">
-			<spec txt="SMTP Relay Host:" size="25" set="localhost"/>
+		<field type="text" variable="mail.smtp.host">
+			<spec txt="Mail Server Host:" size="25" set="localhost"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" SMTP Relay Host is a required field" />
 		</field>
+		<field type="text" variable="mail.smtp.port">
+            <spec txt="Mail Server Port Number:" size="25" set="25"/>
+        </field>
+        <field type="text" variable="mail.smtp.auth">
+            <spec txt="Mail Server Authentication:" size="25" set="false"/>
+        </field>
+
+        <field type="text" variable="mail.smtp.starttls.enable">
+            <spec txt="Mail Server starttls:" size="25" set="false"/>
+        </field>
+
+        <field type="text" variable="mail.user">
+            <spec txt="Mail Server User:" size="25" set=""/>
+        </field>
+
+        <field type="password" align="left" variable="mail.password">
+            <spec>
+                <pwd txt="Mail Server Password:" size="15" set=""/>
+                <pwd txt="Confirm Mail Server Password:" size="15" set=""/>
+            </spec>
+            <validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="The mail server passwords did not match"/>
+        </field>
 	</panel>
+	<!-- UPT Configuration -->
+	<panel order="15">
+        <field type="title" txt="UPT Settings" bold="true" size="1" />
+        <field type="staticText" align="left" txt="These options are for properties regarding the User Provisioning Tool, for user administration."/>
+        <field type="divider" align="top"/>
+        <field type="text" variable="upt.url">
+            <spec txt="UPT URL:" size="25" set=""/>
+        </field>
+       <field type="text" variable="user.admin.email.address.from">
+            <spec txt="UPT Admin Email Address From:" size="25" set=""/>
+        </field>
+       <field type="text" variable="user.admin.email.address.to">
+            <spec txt="UPT Admin Email Address To:" size="25" set=""/>
+        </field>
+    </panel>
 
 	<!-- Grid Global Configuration -->
-	<panel order="15">
+	<panel order="16">
 		<field type="title" txt="Grid Resource Locations Configuration" bold="true" size="1" />
 		<field type="staticText" align="left" txt="These options are for configuring Grid Resource Locations."/>
 		<field type="divider" align="top"/>
@@ -736,7 +773,7 @@ Guide to this file:
 	</panel>
 
 	<!-- Grid Research Center -->
-	<panel order="16">
+	<panel order="17">
 		<field type="title" txt="Grid Research Center Info" bold="true" size="1" />
 		<field type="staticText" align="left" txt="These options are for configuring contact/location information about your Research center."/>
 		<field type="divider" align="top"/>
@@ -774,7 +811,7 @@ Guide to this file:
 	</panel>
 
 	<!-- Grid Tech Contact -->
-	<panel order="17">
+	<panel order="18">
 
 		<field type="title" txt="Grid Tech Contact Info" bold="true" size="1" />
 		<field type="staticText" align="left" txt="These options are for configuring contact information for your Tech Contact."/>
@@ -807,7 +844,7 @@ Guide to this file:
 	</panel>
 
 	<!-- Grid Science Contact -->
-	<panel order="18">
+	<panel order="19">
 		<field type="title" txt="Grid Science Contact Info" bold="true" size="1" />
 		<field type="staticText" align="left" txt="These options are for configuring contact information Science Contact."/>
 		<field type="divider" align="top"/>
@@ -839,7 +876,7 @@ Guide to this file:
 
 
 	<!-- Tomcat Base Config 0.9.0 -->
-	<panel order="19">
+	<panel order="20">
 		<field type="title" txt="Tomcat Configuration" bold="true" size="1" />
 		<field type="staticText" align="left" txt="As part of this installation, Tomcat will be installed in ${UserPathPanelVariable}/${tomcat.binaries.relative.dir}.  It will be configured based on the values you enter below and on the following screens.  NOTE: The Hostname below (and on other panels of this installer) is the host name accesible from this machine and others on the local network. To access this Tomcat application server from the Internet, you may need to provide the ports below and on the following page to your Network administrator to allow access through the firewall."/>
 		<field type="divider" align="top"/>
@@ -880,7 +917,7 @@ Guide to this file:
 	</panel>
 
 	<!-- Tomcat SSL 0.9.0 -->
-	<panel order="20">
+	<panel order="21">
 		<field type="title" txt="Tomcat Secure Listener Configuration" bold="true" size="1" />
 		<field type="staticText" align="left" txt="For Tomcat SSL and Secure Grid configuration requires that you have requested and retrieved certificates already.  See https://wiki.nci.nih.gov/x/7xWy for details on SSL, see https://wiki.nci.nih.gov/x/8BWy for details on Secure Grid."/>
 		<field type="divider" align="top"/>
@@ -937,7 +974,7 @@ Guide to this file:
 
 	</panel>
 	<!-- External Host stuff for Tomcat -->
-	<panel order="21">
+	<panel order="22">
 		<field type="title" txt="Tomcat External Hostname Configuration" bold="true" size="1" />
 		<field type="staticText" align="left" txt="For Tomcat External Hostname configurations see https://wiki.nci.nih.gov/x/8hWy, values not required if not externally accessible"/>
 		<field type="divider" align="top"/>
@@ -965,7 +1002,7 @@ Guide to this file:
 	<!-- Jar Signing 1.5.0 -->
 	<!-- If you are signing jars for Java Web Starts then you may want to add com.izforge.izpack.util.PasswordEqualityValidator to each of the fields below.
 	-->
-	<panel order="22">
+	<panel order="23">
 		<field type="title" txt="Jar Signging configuration" bold="true" size="1" />
 		<field type="staticText" align="left" txt="This application can sign jars.  This page allows you to use your own java keystore to sign the jars or to have a self-signed one generated for you.  If you have an existing one put the full path to the file, the alias and password."/>
 		<field type="divider" align="top"/>
@@ -998,7 +1035,8 @@ Guide to this file:
 			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Passwords do not match. Please re-enter your passwords."/>
 		</field>
 	</panel>
-	<panel order="23">
+	
+	<panel order="24">
 		<field type="title" txt="Installation Summary" bold="true" size="1" />
 		<field type="staticText" align="left" txt="Below are "/>
 		<field type="divider" align="top"/>

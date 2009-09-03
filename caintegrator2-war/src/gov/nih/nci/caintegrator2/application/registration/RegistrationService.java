@@ -83,67 +83,43 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.security;
+package gov.nih.nci.caintegrator2.application.registration;
 
-import java.util.Collection;
-import java.util.Set;
+import gov.nih.nci.security.exceptions.internal.CSInternalConfigurationException;
+import gov.nih.nci.security.exceptions.internal.CSInternalInsufficientAttributesException;
 
-import org.hibernate.Session;
+import java.util.Map;
 
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.security.AuthorizationManager;
-import gov.nih.nci.security.exceptions.CSException;
+import javax.mail.MessagingException;
 
 /**
  * 
  */
-public class SecurityManagerStub implements SecurityManager {
+public interface RegistrationService {
     
-    public boolean createProtectionElementCalled;
-    public boolean deleteProtectionElementCalled;
-    public boolean isStudyManagerCalled;
-    public boolean doesUserExistCalled;
+    /**
+     * Registers the user with the system.
+     * @param registrationRequest from user.
+     * @throws MessagingException if unable to send email.
+     */
+    void registerUser(RegistrationRequest registrationRequest) throws MessagingException;
     
-    public void clear() {
-        createProtectionElementCalled = false;
-        deleteProtectionElementCalled = false;
-        isStudyManagerCalled = false;
-        doesUserExistCalled = false;
-    }
+    /**
+     * Retrieves ldap context params if they exist in this application container.
+     * @return ldap context params, or empty map if ldap doesn't exist.
+     */
+    Map<String, String> getLdapContextParams();
     
-    public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
-        createProtectionElementCalled = true;
-    }
-
-    public void deleteProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
-        deleteProtectionElementCalled = true;
-    }
-
-    public AuthorizationManager getAuthorizationManager() throws CSException {
-        return new AuthorizationManagerStub();
-    }
-
-    public void initializeFiltersForUserGroups(String username, Session session) throws CSException {
-        
-    }
-
-    public boolean isStudyManager(String userName) {
-        isStudyManagerCalled = true;
-        return false;
-    }
-
-    public Set<StudyConfiguration> retrieveManagedStudyConfigurations(String username, Collection<Study> studies)
-            throws CSException {
-        return null;
-    }
-
-    public boolean doesUserExist(String username) {
-        doesUserExistCalled = true;
-        if (username.equals("userExists")) {
-            return true;
-        }
-        return false;
-    }
+    /**
+     * Authenticates a Username / Password with LDAP.
+     * @param connectionProperties  for ldap configuration.
+     * @param userID user's id.
+     * @param password user's password.
+     * @return T/F depending on if it authenticates.
+     * @throws CSInternalConfigurationException CSM exception.
+     * @throws CSInternalInsufficientAttributesException CSM exception.
+     */
+    boolean ldapAuthenticate(Map<String, String> connectionProperties, String userID, String password) 
+        throws CSInternalConfigurationException, CSInternalInsufficientAttributesException;
 
 }

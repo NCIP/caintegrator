@@ -10,7 +10,7 @@
     </div>
 
     <!--/Page Help-->        
-    
+    <font color="green"> <s:actionmessage /> </font>
     <!--ADD CONTENT HERE-->
     <s:if test="#session['ACEGI_SECURITY_LAST_EXCEPTION'] != null">
         <font color="red">Invalid username/password. Please try again.</font>
@@ -21,10 +21,10 @@
     <s:form name="loginForm" method="GET" action="j_acegi_security_check">
 	   <s:textfield label="Username" name="j_username" />
 	   <s:password label="Password" name="j_password" />
-	    <s:submit value="Login" />
+	   <s:submit value="Login" />
+	   <tr><td><s:a href="registration/input.action">Register Now</s:a></td></tr>
     </s:form>
     
-            
 </div>
 
 <div class="clear"><br /></div>

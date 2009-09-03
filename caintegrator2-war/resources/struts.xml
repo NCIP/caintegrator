@@ -868,4 +868,13 @@
         </action>
     </package>
     
+    <package name="registration" namespace="/registration" extends="caintegrator2">
+        <action name="*" class="registrationAction" method="{1}" >
+            <result name="input" type="tiles">registration</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">login</param>
+            </result>
+        </action>
+    </package>
+    
 </struts>
