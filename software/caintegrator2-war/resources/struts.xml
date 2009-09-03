@@ -872,6 +872,9 @@
         <action name="*" class="registrationAction" method="{1}" >
             <result name="input" type="tiles">registration</result>
             <result name="success" type="tiles">login</result>
+            <result name="cancel" type="redirectAction">
+                <param name="actionName">../login</param>
+            </result>
         </action>
     </package>
     
