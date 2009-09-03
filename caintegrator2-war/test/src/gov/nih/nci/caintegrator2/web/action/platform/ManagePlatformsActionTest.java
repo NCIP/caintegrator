@@ -270,8 +270,10 @@ public class ManagePlatformsActionTest {
         
         action.clearErrorsAndMessages();
         action.setPlatformType(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue());
+        action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
+        action.setPlatformFileFileName("abc.adf");
         action.validate();
-        assertTrue(action.hasFieldErrors());
+        assertFalse(action.hasFieldErrors());
         
         action.clearErrorsAndMessages();
         action.setPlatformFileFileName("abc.csv");
@@ -290,10 +292,26 @@ public class ManagePlatformsActionTest {
         
         action.clearErrorsAndMessages();
         action.setPlatformType(PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue());
-        action.validate();
         action.setPlatformName("Agilent Copy Number Platform");
+        action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
+        action.setPlatformFileFileName("abc.xml");
         action.validate();
         assertFalse(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
+        action.setPlatformFileFileName("abc.csv");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
+        action.setPlatformFileFileName("abc.adf");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
+        action.setPlatformName("");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
     }
 
     @Test
