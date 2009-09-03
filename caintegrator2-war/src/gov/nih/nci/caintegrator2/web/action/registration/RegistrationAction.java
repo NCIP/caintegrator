@@ -162,7 +162,8 @@ public class RegistrationAction extends ActionSupport implements Preparable {
         try {
             if (!registrationService.ldapAuthenticate(ldapContextParams, registrationRequest
                     .getLoginName(), password)) {
-                addActionError("LDAP Authentication Failure");
+                addActionError("LDAP Authentication Failure.  " 
+                             + "Please verify that your LDAP username and password are correct.");
             }
         } catch (CSInternalConfigurationException e) {
             addActionError(e.getMessage());
