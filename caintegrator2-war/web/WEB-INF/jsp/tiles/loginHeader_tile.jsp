@@ -23,7 +23,7 @@
 
 <div id="appheader">
 
-    <div id="mainlogo"><a href="index.jsp"><img
+    <div id="mainlogo"><a href="/caintegrator2/index.jsp"><img
         src="/caintegrator2/images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a>
     </div>
 
