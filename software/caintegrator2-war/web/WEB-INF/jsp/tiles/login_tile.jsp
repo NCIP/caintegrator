@@ -18,7 +18,7 @@
     
     <h1><s:property value="#subTitleText" /></h1>
    
-    <s:form name="loginForm" method="GET" action="j_acegi_security_check">
+    <s:form name="loginForm" method="GET" action="/j_acegi_security_check">
 	   <s:textfield label="Username" name="j_username" />
 	   <s:password label="Password" name="j_password" />
 	   <s:submit value="Login" />
