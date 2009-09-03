@@ -18,7 +18,7 @@
 		<link rel="address bar icon" href="favicon.ico" />
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-		<link rel="stylesheet" type="text/css" href="common/css/caintegrator2.css" />
+		<link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/caintegrator2.css" />
         <s:head theme="ajax"/>
         <script type="text/javascript" src="common/js/pde.js"></script>
         <script type="text/javascript" src="common/js/prototype.js"></script>

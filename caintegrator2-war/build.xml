@@ -23,7 +23,7 @@
     <property name="resource.dir" location="${software.dir}/common" />
     <property name="target.dir" location="${build.dir}/target" />
     <property name="common.dir" value="${software.dir}/common"/>
-    
+
     <tstamp>
       <format property="touch.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
     </tstamp>       
@@ -514,9 +514,11 @@
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIASearchServiceImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIAServiceFactoryImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIADicomJobRunnerImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator2/application/registration/RegistrationServiceImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/common/GenericEnumUserType.class" />
                  <exclude name="gov/nih/nci/caintegrator2/common/ConfigurationHelperImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/common/CaGridUtil.class" />
+                 <exclude name="gov/nih/nci/caintegrator2/common/EmailUtil.class" />
                  <!-- Because the Gene Pattern Grid jobs are grid transfer-based, doing integration tests and not unit -->
                  <exclude name="gov/nih/nci/caintegrator2/application/analysis/grid/GenePatternGridRunnerImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/application/analysis/grid/pca/PCAGridRunner.class" />
@@ -573,6 +575,8 @@
         </copy>
         <!-- "replace" command for grid.index.url -->
         <replace file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@grid.index.url@" value="${grid.index.url}" />
+        <replace file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@user.admin.email.address.to@" value="${user.admin.email.address.to}" />
+        <replace file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@user.admin.email.address.from@" value="${user.admin.email.address.from}" />
         <run-sql-script onerror="continue" sql.file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" />
     </target>
 
@@ -881,10 +885,14 @@
     <property name="jboss.server.dir" location="${jboss.home}/server/${jboss.server.name}" />
     <property name="jboss.deploy.dir" location="${jboss.server.dir}/deploy" />
     <property name="caintegrator2.datasource" location="${software.dir}/common/resources/jboss-conf/caintegrator2-mysql-ds.xml" />
+    <property name="caintegrator2.mail.service.file" value="${software.dir}/common/resources/jboss-conf/mail-service.xml" />
     <property name="caintegrator2.jms.destinations.file" location="${software.dir}/common/resources/jboss-conf/caintegrator2-jms-destinations-service.xml" />
     
     <target name="deploy:jboss" depends="caintegrator2.war">
         <copy file="${caintegrator2.datasource}" todir="${jboss.deploy.dir}">
+            <filterset refid="caintegrator2.filterset" />
+        </copy>
+        <copy file="${caintegrator2.mail.service.file}" todir="${jboss.deploy.dir}">
             <filterset refid="caintegrator2.filterset" />
         </copy>
         <copy file="${caintegrator2.jms.destinations.file}" todir="${jboss.deploy.dir}/jms" />
