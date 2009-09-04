@@ -35,39 +35,19 @@
             
             <s:textfield name="currentPrincipalComponentAnalysisJob.name" label="Job Name" size="50" required="true" theme="css_xhtml" title="Please enter a name for this analysis job."/> <br>
             <s:select name="currentPrincipalComponentAnalysisJob.pcaUrl"
-                list="pcaServices" label="Principal Component Analysis Server" required="true" theme="css_xhtml" title="Principle Component Analysis Server is a server which hosts the grid-enabled Gene Pattern Principle Component Analysis module.  Select one from the list and caIntegrator2 will use the selected server for this portion of the processing."/> <br>
-            
-            <s:optiontransferselect
-                id="allQueries"
-                label="Clinical Queries"
-                doubleId="querySelections"
-                name="principalComponentAnalysisForm.unselectedQueryIDs"
-                list="principalComponentAnalysisForm.unselectedQueries"
-                listValue="value.name"
-                doubleName="principalComponentAnalysisForm.selectedQueryIDs"
-                doubleList="principalComponentAnalysisForm.selectedQueries"
-                doubleListValue="value.name"
-                allowAddAllToLeft="false"
-                allowAddAllToRight="false"
-                allowUpDownOnLeft="false"
-                allowUpDownOnRight="false"
-                leftTitle="All Available Queries"
-                rightTitle="Selected Queries"
-                addToRightLabel=" Add >"
-                addToLeftLabel=" < Remove "
-                allowSelectAll="false"
-                size="8"
-                doubleSize="8"
-                multiple="true"
-                doubleMultiple="true"
-                cssStyle="min-width:200px; vertical-align=middle; font-weight:bold; color: #475B82; background-color: #E9E9E9;"
-                doubleCssStyle="min-width:200px; vertical-align=middle; font-weight:bold; color: #475B82; background-color: #E9E9E9;"
-                buttonCssStyle="min-width:100px; vertical-align=middle;"
-                required="true"
-                title="Clinical Queries enable the user to specify which samples will be processed using PCA.  The queries selected here have been previously saved by the user.  Selected queries will result in the processing of only those samples which are mapped to subjects in the saved query result.  If multiple queries are selected, all of the sample from each saved query are processed PLUS the results set will be classified according to those queries.  (One class per selected query.)"
-                theme="css_xhtml" />
-                
-             <br>    
+                list="pcaServices" label="Principal Component Analysis Server"
+                required="true" theme="css_xhtml"
+                title="Principle Component Analysis Server is a server which hosts the grid-enabled Gene Pattern Principle Component Analysis module.  Select one from the list and caIntegrator2 will use the selected server for this portion of the processing."/> <br>
+            <s:select name="principalComponentAnalysisForm.selectedQueryID"
+                headerKey="" headerValue="All Samples"
+                list="principalComponentAnalysisForm.queries" label="Clinical Queries"
+                required="true" theme="css_xhtml"
+                title="Clinical Queries enable the user to specify which samples will be processed using PCA.  The queries selected here have been previously saved by the user.  Selected queries will result in the processing of only those samples which are mapped to subjects in the saved query result."/>
+            <s:select name="principalComponentAnalysisForm.excludeControlSampleSetName"
+                headerKey="" headerValue="None"
+                list="controlSampleSets" label="Exclude Sample Control Set"
+                required="true" theme="css_xhtml"
+                title="Samples in this set will be excluded."/>
             <s:checkbox name="principalComponentAnalysisForm.usePreprocessDataset"
                 label="Enable Preprocess Dataset:"
                 value="aBoolean"

@@ -32,9 +32,14 @@
             </s:div>
 
             <s:select name="gisticAnalysisForm.selectedQuery"
-                headerKey="" headerValue="All non-control Samples"
+                headerKey="" headerValue="All Samples"
                 list="gisticAnalysisForm.clinicalQueries" label="Clinical query" />
             <br />
+            <s:select name="gisticAnalysisForm.excludeControlSampleSetName"
+                headerKey="" headerValue="None"
+                list="controlSampleSets" label="Exclude Sample Control Set"
+                required="true" theme="css_xhtml"
+                title="Samples in this set will be excluded."/>
             <s:textfield name="gisticParameters.amplificationsThreshold" label="Amplifications Threshold" size="50" required="true" />
             <br />
             <s:textfield name="gisticParameters.deletionsThreshold" label="Deletions Threshold" size="50" required="true" />

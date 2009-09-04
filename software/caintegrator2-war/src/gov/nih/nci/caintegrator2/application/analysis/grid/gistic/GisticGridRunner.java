@@ -122,7 +122,7 @@ public class GisticGridRunner {
     
     private static final Logger LOGGER = Logger.getLogger(GisticGridRunner.class);
     private static final int DOWNLOAD_REFRESH_INTERVAL = 5000; // Every 5 seconds
-    private static final int TIMEOUT_SECONDS = 720; // For 3600 total Seconds (60 total minutes)
+    private static final int TIMEOUT_SECONDS = 7200; // For 3600 total Seconds (60 total minutes)
     private final GisticI client;
     private final FileManager fileManager;
     

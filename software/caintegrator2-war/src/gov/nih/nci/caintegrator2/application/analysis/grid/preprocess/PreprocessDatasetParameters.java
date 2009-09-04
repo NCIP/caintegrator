@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.analysis.grid.preprocess;
 
 import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gridextensions.PreprocessDatasetParameterSet;
 
@@ -111,6 +112,7 @@ public class PreprocessDatasetParameters {
     
     private final PreprocessDatasetParameterSet datasetParameters;
     private final List<Query> clinicalQueries = new ArrayList<Query>();
+    private SampleSet excludedControlSampleSet;
     private ServerConnectionProfile server;
     private String processedGctFilename;
     
@@ -248,6 +250,20 @@ public class PreprocessDatasetParameters {
             return "2";
         }
         return "0";
+    }
+
+    /**
+     * @return the excludedControlSampleSet
+     */
+    public SampleSet getExcludedControlSampleSet() {
+        return excludedControlSampleSet;
+    }
+
+    /**
+     * @param excludedControlSampleSet the excludedControlSampleSet to set
+     */
+    public void setExcludedControlSampleSet(SampleSet excludedControlSampleSet) {
+        this.excludedControlSampleSet = excludedControlSampleSet;
     }
     
 }

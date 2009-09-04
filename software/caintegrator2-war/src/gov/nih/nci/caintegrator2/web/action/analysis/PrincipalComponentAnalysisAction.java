@@ -164,10 +164,6 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
         if (StringUtils.isBlank(getCurrentPrincipalComponentAnalysisJob().getName())) {
             addFieldError("currentPrincipalComponentAnalysisJob.name", "Job name required.");
         }
-        if (getPrincipalComponentAnalysisForm().getSelectedQueryIDs().isEmpty()) {
-            addFieldError("principalComponentAnalysisForm.unselectedQueryIDs", 
-                            "Must select at least one query.");
-        }
     }
     
     /**
@@ -180,7 +176,7 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
     }
     
     private void loadDefaultValues() {
-        getPrincipalComponentAnalysisForm().setUnselectedQueries(new HashMap<String, Query>());
+        getPrincipalComponentAnalysisForm().setQueries(new HashMap<String, String>());
         
         addNonGenomicQueries();
         getPrincipalComponentAnalysisForm().setPreprocessParameters(new PreprocessDatasetParameters());
@@ -198,7 +194,7 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
                 : getStudySubscription().getQueryCollection()) {
             if (!ResultTypeEnum.GENOMIC.equals(query.getResultType()) 
                 && !Cai2Util.isCompoundCriterionGenomic(query.getCompoundCriterion())) {
-                getPrincipalComponentAnalysisForm().getUnselectedQueries().put(query.getId().toString(), query);
+                getPrincipalComponentAnalysisForm().getQueries().put(query.getId().toString(), query.getName());
             }
         }
     }
@@ -222,6 +218,7 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
     private void loadParameters() {
         loadServers();
         loadQueries();
+        loadExclude();
     }
     
     private void loadServers() {
@@ -234,20 +231,27 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
     }
     
     private void loadQueries() {
-        if (!getPrincipalComponentAnalysisForm().getSelectedQueryIDs().isEmpty()) {
-            getPcaParameters().getClinicalQueries().clear();
-            getPreprocessDatasetParameters().getClinicalQueries().clear();
-            for (String id : getPrincipalComponentAnalysisForm().getSelectedQueryIDs()) {
-                Query currentQuery = getQuery(id);
-                getPcaParameters().getClinicalQueries().add(currentQuery);
-                getPreprocessDatasetParameters().getClinicalQueries().add(currentQuery);
-            }
+        getPreprocessDatasetParameters().getClinicalQueries().clear();
+        getPcaParameters().getClinicalQueries().clear();
+        if (!StringUtils.isEmpty(getPrincipalComponentAnalysisForm().getSelectedQueryID())) {
+            Query currentQuery = getQuery(getPrincipalComponentAnalysisForm().getSelectedQueryID());
+            getPcaParameters().getClinicalQueries().add(currentQuery);
+            getPreprocessDatasetParameters().getClinicalQueries().add(currentQuery);
+        }
+    }
+    
+    private void loadExclude() {
+        String excludeControlSet = getPrincipalComponentAnalysisForm().getExcludeControlSampleSetName();
+        if (!StringUtils.isEmpty(excludeControlSet)) {
+            getPreprocessDatasetParameters().setExcludedControlSampleSet(
+                    getCurrentStudy().getStudyConfiguration().getControlSampleSet(excludeControlSet));
+            getPcaParameters().setExcludedControlSampleSet(
+                    getPreprocessDatasetParameters().getExcludedControlSampleSet());
         }
     }
     
     private Query getQuery(String id) {
-        for (Query query 
-                : getStudySubscription().getQueryCollection()) {
+        for (Query query : getStudySubscription().getQueryCollection()) {
             if (id.equals(query.getId().toString())) {
                 HibernateUtil.loadCollection(query);
                 return query;

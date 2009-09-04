@@ -266,7 +266,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
 
     private boolean loadRefgeneFileParameter() throws InvalidCriterionException {
         Set<Sample> samples = GenePatternUtil.getSamplesForGistic(getStudySubscription(), 
-                getQueryManagementService(), getGisticParameters().getClinicalQuery());
+                getQueryManagementService(), getGisticParameters());
         Set<String> genomeVersions = getGenomeVersions(samples);
         if (samples.isEmpty()) {
             addActionError("There are no samples selected.");

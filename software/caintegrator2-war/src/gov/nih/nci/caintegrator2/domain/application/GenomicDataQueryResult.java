@@ -1,6 +1,7 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,5 +73,37 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
         getColumnCollection().add(column);
         return column;
     }
+    
+    /**
+     * Remove columns and values in rows based on the excludedSampleSet.
+     * @param excludedSampleSet the set of samples to be removed.
+     */
+    public void excludeSampleSet(SampleSet excludedSampleSet) {
+        if (excludedSampleSet != null && !excludedSampleSet.getSamples().isEmpty()) {
+            removeRowValue(excludedSampleSet);
+            removeColumn(excludedSampleSet);
+        }
+    }
 
+    /**
+     * @param excludedSampleSet
+     */
+    private void removeColumn(SampleSet excludedSampleSet) {
+        List<GenomicDataResultColumn> removedColumns = new ArrayList<GenomicDataResultColumn>();
+        for (GenomicDataResultColumn column : columnCollection) {
+            if (excludedSampleSet.contains(column.getSampleAcquisition().getSample())) {
+                removedColumns.add(column);
+            }
+        }
+        columnCollection.removeAll(removedColumns);
+    }
+
+    /**
+     * @param excludedSampleSet
+     */
+    private void removeRowValue(SampleSet excludedSampleSet) {
+        for (GenomicDataResultRow row : rowCollection) {
+            row.excludeSampleSet(excludedSampleSet);
+        }
+    }
 }

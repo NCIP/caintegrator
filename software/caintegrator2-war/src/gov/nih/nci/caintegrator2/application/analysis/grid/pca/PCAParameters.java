@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.analysis.grid.pca;
 
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
@@ -101,6 +102,7 @@ import org.cabig.icr.asbp.parameter.StringParameter;
 public class PCAParameters {
     
     private final List<Query> clinicalQueries = new ArrayList<Query>();
+    private SampleSet excludedControlSampleSet;
     private ServerConnectionProfile server;
     private String clusterBy = getClusterByOptions().get(1); // rows is default
     private String classificationFileName;
@@ -195,6 +197,20 @@ public class PCAParameters {
      */
     public void setGctFileName(String gctFileName) {
         this.gctFileName = gctFileName;
+    }
+
+    /**
+     * @return the excludedControlSampleSet
+     */
+    public SampleSet getExcludedControlSampleSet() {
+        return excludedControlSampleSet;
+    }
+
+    /**
+     * @param excludedControlSampleSet the excludedControlSampleSet to set
+     */
+    public void setExcludedControlSampleSet(SampleSet excludedControlSampleSet) {
+        this.excludedControlSampleSet = excludedControlSampleSet;
     }
 
 }
