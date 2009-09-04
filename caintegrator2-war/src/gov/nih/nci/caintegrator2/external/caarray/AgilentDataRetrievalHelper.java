@@ -89,8 +89,7 @@ import gov.nih.nci.caarray.external.v1_0.CaArrayEntityReference;
 import gov.nih.nci.caarray.external.v1_0.data.File;
 import gov.nih.nci.caarray.external.v1_0.query.FileSearchCriteria;
 import gov.nih.nci.caarray.external.v1_0.sample.Hybridization;
-import gov.nih.nci.caarray.services.external.v1_0.InvalidReferenceException;
-import gov.nih.nci.caarray.services.external.v1_0.UnsupportedCategoryException;
+import gov.nih.nci.caarray.services.external.v1_0.InvalidInputException;
 import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
 import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
@@ -134,8 +133,7 @@ class AgilentDataRetrievalHelper extends AbstractDataRetrievalHelper {
     }
 
     protected ArrayDataValues retrieveData() 
-    throws DataRetrievalException, InvalidReferenceException, UnsupportedCategoryException, 
-    FileNotFoundException, ConnectionException {
+    throws DataRetrievalException, FileNotFoundException, ConnectionException, InvalidInputException {
         Set<Hybridization> hybridizationSet = getAllHybridizations();
         if (hybridizationSet.isEmpty()) {
             return new ArrayDataValues(new ArrayList<AbstractReporter>());
@@ -147,8 +145,8 @@ class AgilentDataRetrievalHelper extends AbstractDataRetrievalHelper {
     }
     
     private void populateArrayDataValues(Set<Hybridization> hybridizationSet) 
-    throws DataRetrievalException, InvalidReferenceException, FileNotFoundException, 
-    ConnectionException, UnsupportedCategoryException {
+    throws DataRetrievalException, FileNotFoundException, 
+    ConnectionException, InvalidInputException {
         for (Hybridization hybridization : hybridizationSet) {
             File dataFile = getDataFile(hybridization);
             byte[] byteArray = CaArrayUtils.retrieveFile(dataService, dataFile.getReference());
@@ -159,7 +157,7 @@ class AgilentDataRetrievalHelper extends AbstractDataRetrievalHelper {
         }
     }
 
-    private File getDataFile(Hybridization hybridization) throws DataRetrievalException, InvalidReferenceException {
+    private File getDataFile(Hybridization hybridization) throws DataRetrievalException, InvalidInputException {
         FileSearchCriteria criteria = new FileSearchCriteria();
         Set<CaArrayEntityReference> nodes = new HashSet<CaArrayEntityReference>();
         criteria.setExperimentGraphNodes(nodes);
