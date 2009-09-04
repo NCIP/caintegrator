@@ -91,8 +91,7 @@ import gov.nih.nci.caarray.external.v1_0.experiment.Experiment;
 import gov.nih.nci.caarray.external.v1_0.query.FileSearchCriteria;
 import gov.nih.nci.caarray.external.v1_0.query.SearchResult;
 import gov.nih.nci.caarray.external.v1_0.sample.Biomaterial;
-import gov.nih.nci.caarray.services.external.v1_0.InvalidReferenceException;
-import gov.nih.nci.caarray.services.external.v1_0.UnsupportedCategoryException;
+import gov.nih.nci.caarray.services.external.v1_0.InvalidInputException;
 import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
 import gov.nih.nci.caarray.services.external.v1_0.data.InconsistentDataSetsException;
 import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
@@ -170,11 +169,9 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
         AbstractDataRetrievalHelper dataRetrievalHelper = getDataRetrievalHelper(genomicSource);
         try {
             return dataRetrievalHelper.retrieveData();
-        } catch (InvalidReferenceException e) {
+        } catch (InvalidInputException e) {
             throw new DataRetrievalException(ARRAY_DATA_RETRIEVAL_ERROR_MESSAGE, e);
         } catch (InconsistentDataSetsException e) {
-            throw new DataRetrievalException(ARRAY_DATA_RETRIEVAL_ERROR_MESSAGE, e);
-        } catch (UnsupportedCategoryException e) {
             throw new DataRetrievalException(ARRAY_DATA_RETRIEVAL_ERROR_MESSAGE, e);
         } catch (FileNotFoundException e) {
             throw new DataRetrievalException("Couldn't retrieve the array data file", e);
@@ -237,7 +234,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
                     return file;
                 }
             }
-        } catch (InvalidReferenceException e) {
+        } catch (InvalidInputException e) {
             throw new FileNotFoundException(e.getMessage());
         } catch (ExperimentNotFoundException e) {
             throw new FileNotFoundException(e.getMessage());

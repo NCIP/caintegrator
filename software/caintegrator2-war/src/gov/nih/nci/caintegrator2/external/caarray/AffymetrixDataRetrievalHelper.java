@@ -94,8 +94,7 @@ import gov.nih.nci.caarray.external.v1_0.data.QuantitationType;
 import gov.nih.nci.caarray.external.v1_0.query.DataSetRequest;
 import gov.nih.nci.caarray.external.v1_0.query.ExampleSearchCriteria;
 import gov.nih.nci.caarray.external.v1_0.sample.Hybridization;
-import gov.nih.nci.caarray.services.external.v1_0.InvalidReferenceException;
-import gov.nih.nci.caarray.services.external.v1_0.UnsupportedCategoryException;
+import gov.nih.nci.caarray.services.external.v1_0.InvalidInputException;
 import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
 import gov.nih.nci.caarray.services.external.v1_0.data.InconsistentDataSetsException;
 import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
@@ -130,8 +129,8 @@ class AffymetrixDataRetrievalHelper extends AbstractDataRetrievalHelper {
     }
 
     protected ArrayDataValues retrieveData() 
-    throws ConnectionException, DataRetrievalException, InvalidReferenceException, 
-    InconsistentDataSetsException, UnsupportedCategoryException {
+    throws ConnectionException, DataRetrievalException, InconsistentDataSetsException, InvalidInputException {
+    
         DataSet dataSet = dataService.getDataSet(createRequest());
         if (dataSet.getDatas().isEmpty()) {
             throw new DataRetrievalException("No Chip signal available for experiment: "
@@ -144,7 +143,7 @@ class AffymetrixDataRetrievalHelper extends AbstractDataRetrievalHelper {
         return getArrayDataValues();
     }
 
-    private DataSetRequest createRequest() throws InvalidReferenceException, UnsupportedCategoryException {
+    private DataSetRequest createRequest() throws InvalidInputException {
         DataSetRequest request = new DataSetRequest();
         for (Hybridization hybridization : getAllHybridizations()) {
             request.getHybridizations().add(hybridization.getReference());
@@ -153,7 +152,7 @@ class AffymetrixDataRetrievalHelper extends AbstractDataRetrievalHelper {
         return request;
     }
 
-    private QuantitationType getSignal() {
+    private QuantitationType getSignal() throws InvalidInputException {
         QuantitationType signal = new QuantitationType();
         signal.setName(CHP_SIGNAL_TYPE_NAME);
         signal.setDataType(DataType.FLOAT);
@@ -163,14 +162,14 @@ class AffymetrixDataRetrievalHelper extends AbstractDataRetrievalHelper {
     }
 
     private void convertToArrayDataValues(DataSet dataSet) 
-    throws DataRetrievalException, InvalidReferenceException, UnsupportedCategoryException {
+    throws DataRetrievalException, InvalidInputException {
         for (HybridizationData hybridizationData : dataSet.getDatas()) {
             loadArrayDataValues(hybridizationData, dataSet);
         }
     }
 
     private void loadArrayDataValues(HybridizationData hybridizationData, DataSet dataSet) 
-    throws InvalidReferenceException, UnsupportedCategoryException {
+    throws InvalidInputException {
         ArrayData arrayData = createArrayData(hybridizationData.getHybridization());
         List<DesignElement> probeSets = dataSet.getDesignElements();
         float[] values = ((FloatColumn) hybridizationData.getDataColumns().get(0)).getValues();

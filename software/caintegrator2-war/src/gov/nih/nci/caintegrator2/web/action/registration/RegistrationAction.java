@@ -109,6 +109,8 @@ import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 @SuppressWarnings("PMD.ReplaceHashtableWithMap") // LDAPHelper.authenticate uses a Hashtable.
 @Validation
 public class RegistrationAction extends ActionSupport implements Preparable {
+
+    private static final long serialVersionUID = 1L;
     
     private SecurityManager securityManager;
     private RegistrationService registrationService;

@@ -93,8 +93,8 @@ import gov.nih.nci.caarray.external.v1_0.query.LimitOffset;
 import gov.nih.nci.caarray.external.v1_0.query.SearchResult;
 import gov.nih.nci.caarray.external.v1_0.sample.Biomaterial;
 import gov.nih.nci.caarray.external.v1_0.sample.BiomaterialType;
+import gov.nih.nci.caarray.services.external.v1_0.InvalidInputException;
 import gov.nih.nci.caarray.services.external.v1_0.InvalidReferenceException;
-import gov.nih.nci.caarray.services.external.v1_0.UnsupportedCategoryException;
 import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
 import gov.nih.nci.caarray.services.external.v1_0.data.DataTransferException;
 import gov.nih.nci.caarray.services.external.v1_0.data.JavaDataApiUtils;
@@ -170,15 +170,13 @@ final class CaArrayUtils {
         criteria.setTypes(types);
         try {
             return getSamples(searchService, criteria);
-        } catch (InvalidReferenceException e) {
-            throw new IllegalStateException("Couldn't load Biomaterials for valid experiment", e);
-        } catch (UnsupportedCategoryException e) {
+        } catch (InvalidInputException e) {
             throw new IllegalStateException("Couldn't load Biomaterials for valid experiment", e);
         }
     }
     
     private static List<Biomaterial> getSamples(SearchService searchService, BiomaterialSearchCriteria criteria)
-            throws InvalidReferenceException, UnsupportedCategoryException {
+            throws InvalidInputException {
         List<Biomaterial> samples = new ArrayList<Biomaterial>();
         LimitOffset limitOffset = new LimitOffset(-1, 0);
         SearchResult<Biomaterial> result;
@@ -197,9 +195,7 @@ final class CaArrayUtils {
         SearchResult<Experiment> experiments;
         try {
             experiments = searchService.searchForExperiments(criteria, null);
-        } catch (InvalidReferenceException e) {
-            throw new ExperimentNotFoundException(getExperimentNotFoundMessage(experimentIdentifier), e);
-        } catch (UnsupportedCategoryException e) {
+        } catch (InvalidInputException e) {
             throw new ExperimentNotFoundException(getExperimentNotFoundMessage(experimentIdentifier), e);
         }
         if (experiments.getResults().isEmpty()) {
