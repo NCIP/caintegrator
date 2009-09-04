@@ -91,6 +91,7 @@ import gov.nih.nci.caarray.external.v1_0.data.DesignElement;
 import gov.nih.nci.caarray.external.v1_0.query.HybridizationSearchCriteria;
 import gov.nih.nci.caarray.external.v1_0.sample.Biomaterial;
 import gov.nih.nci.caarray.external.v1_0.sample.Hybridization;
+import gov.nih.nci.caarray.services.external.v1_0.InvalidInputException;
 import gov.nih.nci.caarray.services.external.v1_0.InvalidReferenceException;
 import gov.nih.nci.caarray.services.external.v1_0.UnsupportedCategoryException;
 import gov.nih.nci.caarray.services.external.v1_0.data.InconsistentDataSetsException;
@@ -145,8 +146,8 @@ abstract class AbstractDataRetrievalHelper {
     }
 
     abstract ArrayDataValues retrieveData() 
-    throws ConnectionException, DataRetrievalException, InvalidReferenceException, 
-    InconsistentDataSetsException, UnsupportedCategoryException, FileNotFoundException;
+    throws ConnectionException, DataRetrievalException, InconsistentDataSetsException, FileNotFoundException, 
+    InvalidInputException;
 
     /**
      * @return the genomicSource
@@ -170,7 +171,7 @@ abstract class AbstractDataRetrievalHelper {
     }
 
     Map<Hybridization, Sample> getHybridizationToSampleMap() 
-    throws InvalidReferenceException, UnsupportedCategoryException {
+    throws InvalidInputException {
         if (hybridizationToSampleMap == null) {
             loadHybridizationToSampleMap();
         }
@@ -217,11 +218,11 @@ abstract class AbstractDataRetrievalHelper {
         return platform;
     }
 
-    protected Set<Hybridization> getAllHybridizations() throws InvalidReferenceException, UnsupportedCategoryException {
+    protected Set<Hybridization> getAllHybridizations() throws InvalidInputException {
         return getHybridizationToSampleMap().keySet();
     }
 
-    private void loadHybridizationToSampleMap() throws InvalidReferenceException, UnsupportedCategoryException {
+    private void loadHybridizationToSampleMap() throws InvalidInputException {
         hybridizationToSampleMap = new HashMap<Hybridization, Sample>();
         for (Sample sample : getGenomicSource().getSamples()) {
             Biomaterial caArraySample = getCaArraySample(sample);
@@ -230,7 +231,7 @@ abstract class AbstractDataRetrievalHelper {
         }
     }
 
-    protected List<Hybridization> getHybridizations(Biomaterial caArraySample) throws InvalidReferenceException {
+    protected List<Hybridization> getHybridizations(Biomaterial caArraySample) throws InvalidInputException {
         HybridizationSearchCriteria criteria = new HybridizationSearchCriteria();
         Set<CaArrayEntityReference> sourceSet = new HashSet<CaArrayEntityReference>();
         sourceSet.add(caArraySample.getReference());
@@ -256,7 +257,7 @@ abstract class AbstractDataRetrievalHelper {
     }
 
     protected ArrayData createArrayData(Hybridization hybridization) 
-    throws InvalidReferenceException, UnsupportedCategoryException {
+    throws InvalidInputException {
         Array array = new Array();
         array.setPlatform(platformHelper.getPlatform());
         array.setName(hybridization.getName());
@@ -282,12 +283,12 @@ abstract class AbstractDataRetrievalHelper {
     }
 
     private Sample getAssociatedSample(Hybridization hybridization) 
-    throws InvalidReferenceException, UnsupportedCategoryException {
+    throws InvalidInputException {
         return getHybridizationToSampleMap().get(getIdToHybridizationMap().get(hybridization.getId()));
     }
 
     private Map<String, Hybridization> getIdToHybridizationMap() 
-    throws InvalidReferenceException, UnsupportedCategoryException {
+    throws InvalidInputException {
         if (idToHybridizationMap == null) {
             idToHybridizationMap = new HashMap<String, Hybridization>();
             for (Hybridization hybridization : getAllHybridizations()) {
