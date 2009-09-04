@@ -962,6 +962,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
         -->
     </target>
     <target name="upgrade:post:jboss">
+        <jboss-copy-log4j
+            copied.jboss.log4j.dir="${copied.jboss.log4j.dir}"
+        />  
         <copy file="${copied.jboss.log4j.dir}/log4j.xml" todir="${jboss.home}/server/${jboss.server.name}/conf"/>
     </target>
 
