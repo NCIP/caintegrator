@@ -170,10 +170,9 @@ public class PrincipalComponentAnalysisActionTest {
         action.clearErrorsAndMessages();
         action.getCurrentPrincipalComponentAnalysisJob().setName("Test");
         action.validate();
-        assertTrue(action.hasErrors());
+        assertFalse(action.hasErrors());
         action.clearErrorsAndMessages();
-        action.getPrincipalComponentAnalysisForm().getSelectedQueryIDs().add("1");
-        action.getPrincipalComponentAnalysisForm().getSelectedQueryIDs().add("2");
+        action.getPrincipalComponentAnalysisForm().setSelectedQueryID("1");
         action.validate();
         assertFalse(action.hasErrors());
     }

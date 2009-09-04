@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.analysis.grid.gistic;
 import edu.wustl.icr.asrv1.common.GenomeAnnotationInformation;
 import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.io.File;
@@ -110,6 +111,7 @@ public class GisticParameters {
     private static final Float DEFAULT_QV_THRESH = .25f;
     
     private Query clinicalQuery;
+    private SampleSet excludeControlSampleSet;
     private File cnvSegmentsToIgnoreFile;
     private ServerConnectionProfile server;
     private GisticRefgeneFileEnum refgeneFile;
@@ -299,5 +301,19 @@ public class GisticParameters {
      */
     public void setRefgeneFile(GisticRefgeneFileEnum refgeneFile) {
         this.refgeneFile = refgeneFile;
+    }
+
+    /**
+     * @return the excludeControlSampleSet
+     */
+    public SampleSet getExcludeControlSampleSet() {
+        return excludeControlSampleSet;
+    }
+
+    /**
+     * @param excludeControlSampleSet the excludeControlSampleSet to set
+     */
+    public void setExcludeControlSampleSet(SampleSet excludeControlSampleSet) {
+        this.excludeControlSampleSet = excludeControlSampleSet;
     }
 }

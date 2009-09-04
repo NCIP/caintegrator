@@ -101,6 +101,7 @@ public class GisticAnalysisForm {
     private final ServerConnectionProfile server = new ServerConnectionProfile();
 
     private String selectedQuery = null;
+    private String excludeControlSampleSetName;
     
     // JSP Select List Options
     private Map<String, String> clinicalQueries = new HashMap<String, String>();
@@ -153,5 +154,19 @@ public class GisticAnalysisForm {
      */
     public void setClinicalQueries(Map<String, String> clinicalQueries) {
         this.clinicalQueries = clinicalQueries;
+    }
+
+    /**
+     * @return the excludeControlSampleSetName
+     */
+    public String getExcludeControlSampleSetName() {
+        return excludeControlSampleSetName;
+    }
+
+    /**
+     * @param excludeControlSampleSetName the excludeControlSampleSetName to set
+     */
+    public void setExcludeControlSampleSetName(String excludeControlSampleSetName) {
+        this.excludeControlSampleSetName = excludeControlSampleSetName;
     }
 }

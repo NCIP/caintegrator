@@ -138,4 +138,12 @@ public class SampleSet extends AbstractCaIntegrator2Object {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
+    
+    /**
+     * @param sample the element to check.
+     * @return true if contains the element.
+     */
+    public boolean contains(Sample sample) {
+        return samples.contains(sample);
+    }
 }
