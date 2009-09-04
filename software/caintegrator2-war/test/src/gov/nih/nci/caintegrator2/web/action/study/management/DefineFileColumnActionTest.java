@@ -180,10 +180,8 @@ public class DefineFileColumnActionTest {
     @Test
     @SuppressWarnings("deprecation")
     public void testSaveColumnType() {
-        action.setColumnType("Identifier");
         AnnotationFile annotationFile = new AnnotationFile();
         action.getFileColumn().setAnnotationFile(annotationFile);
-        assertEquals(Action.SUCCESS, action.saveColumnType());
         action.setColumnType("Timepoint");
         assertEquals(Action.SUCCESS, action.saveColumnType());
         action.setColumnType("Annotation");
