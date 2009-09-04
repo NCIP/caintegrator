@@ -89,7 +89,9 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represents a column in a <code>DelimitedTextFile</code>.
@@ -229,6 +231,21 @@ public class FileColumn extends AbstractCaIntegrator2Object implements Comparabl
     boolean isLoadable() {
         return isIdentifierColumn() || isTimepointColumn() 
         || (getFieldDescriptor() != null && getFieldDescriptor().getDefinition() != null);
+    }
+    
+    /**
+     * Checks to see if this would be a valid identifier column.
+     * @throws ValidationException if invalid column for identifier.
+     */
+    public void checkValidIdentifierColumn() throws ValidationException {
+        Set<String> currentValues = new HashSet<String>();
+        for (String value : getDataValues()) {
+            if (currentValues.contains(value)) {
+                throw new ValidationException("This column cannot be an identifier column because it "
+                        + "has a duplicate value for '" + value + "'.");
+            }
+            currentValues.add(value);
+        }
     }
 
     void createFieldDescriptor(CaIntegrator2Dao dao) {

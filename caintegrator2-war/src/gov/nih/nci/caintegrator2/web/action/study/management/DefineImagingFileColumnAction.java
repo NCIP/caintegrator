@@ -182,7 +182,11 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
      * @return the Struts result.
      */
     public String saveColumnType() {
-        updateColumnType();
+        try {
+            updateColumnType();
+        } catch (ValidationException e) {
+            addActionError(e.getMessage());
+        }
         if (isColumnTypeAnnotation() && getFileColumn().getFieldDescriptor() == null) {
             getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
             getFileColumn().getFieldDescriptor().setName(getFileColumn().getName());
@@ -270,7 +274,11 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
      * @return the Struts result.
      */
     public String updateFileColumn() {
-        updateColumnType();
+        try {
+            updateColumnType();
+        } catch (ValidationException e) {
+            addActionError(e.getMessage());
+        }
         if (isPermissibleOn() && !isFromCadsr()) {
             try {
                 updatePermissible();
@@ -339,8 +347,9 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     }
 
 
-    private void updateColumnType() {
+    private void updateColumnType() throws ValidationException {
         if (IDENTIFIER_TYPE.equals(columnType)) {
+            getFileColumn().checkValidIdentifierColumn();
             setAnnotationColumn(getFileColumn().getAnnotationFile().getIdentifierColumn());
             getFileColumn().getAnnotationFile().setIdentifierColumn(getFileColumn());
         } else if (TIMEPOINT_TYPE.equals(columnType)) {

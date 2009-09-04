@@ -128,6 +128,8 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
     private transient CSVReader reader;
     private transient String[] currentLineValues;
     private transient Map<AnnotationFieldDescriptor, FileColumn> descriptorToColumnMap;
+    private final transient Set<String> currentlyLoadedIdentifier = new HashSet<String>();
+    
 
     /**
      * No-arg constructor required by Hibernate.
@@ -262,6 +264,7 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
             }
         }
     }
+    
 
     /**
      * @return the timepointColumn
@@ -391,10 +394,15 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
     }
 
     void loadAnnontation(AbstractAnnotationHandler handler) throws ValidationException {
+        currentlyLoadedIdentifier.clear();
         handler.addDefinitionsToStudy(getAnnotationDefinitions());
         positionAtData();
         while (hasNextDataLine()) {
             String identifier = getDataValue(getIdentifierColumn());
+            if (currentlyLoadedIdentifier.contains(identifier)) {
+                throw new ValidationException("Multiples identifiers found for '" + identifier + "'");
+            }
+            currentlyLoadedIdentifier.add(identifier);
             handler.handleIdentifier(identifier);
             loadAnnotationLine(handler);
         }
@@ -527,6 +535,8 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
     public void setCurrentlyLoaded(String currentlyLoaded) {
         this.currentlyLoaded = currentlyLoaded;
     }
+
+    
 
 
 }
