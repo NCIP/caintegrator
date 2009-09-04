@@ -196,6 +196,24 @@ public class AnnotationFileTest {
         
         assertFalse(annotationFile.hasNextDataLine());
     }
+    
+    @Test
+    public void testCheckValidIdentifierColumn() throws IOException, ValidationException {
+        AnnotationFile annotationFile = createAnnotationFile(VALID_FILE);
+        try {
+            annotationFile.setIdentifierColumn(annotationFile.getColumns().get(0));
+            annotationFile.getIdentifierColumn().checkValidIdentifierColumn();
+        } catch (ValidationException e) {
+            fail(); // Should be valid.
+        }
+        try {
+            annotationFile.setIdentifierColumn(annotationFile.getColumns().get(2));
+            annotationFile.getIdentifierColumn().checkValidIdentifierColumn();
+            fail();
+        } catch(ValidationException e) {
+            // noop - it should catch exception because it contains 2 of the same identifiers.
+        }
+    }
 
     private void setupTestAnnotations() {
         testAnnotationFieldDescriptors = new ArrayList<AnnotationFieldDescriptor>();
