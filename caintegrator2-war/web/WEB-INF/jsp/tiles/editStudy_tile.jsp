@@ -223,7 +223,7 @@
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="clinicalSource.id" value="id" />
                                 </s:url>
-                                <s:a href="%{editClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit">Edit Annotations</span></span></s:a>
+                                <s:a href="%{editClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Annotations</span></span></s:a>
                                 <s:if test="%{loadable}" >
                                     <s:if test="%{currentlyLoaded}">
                                        <s:url id="reLoadClinicalSource" action="reLoadClinicalSource">
@@ -237,7 +237,7 @@
                                           <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                           <s:param name="clinicalSource.id" value="id" />
                                        </s:url> 
-                                       <s:a href="%{loadClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="reload">Load All Clinical</span></span></s:a>
+                                       <s:a href="%{loadClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="load">Load All Clinical</span></span></s:a>
                                     </s:else>
                                 </s:if>
                                 <s:url id="deleteClinicalSource" action="deleteClinicalSource">
