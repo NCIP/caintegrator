@@ -721,6 +721,11 @@ A.btn SPAN.map
 { background:url("../../images/ico_map.gif") no-repeat; }
 A.btn SPAN.configure
 { background:url("../../images/ico_map.gif") no-repeat; }
+A.btn SPAN.load
+{ background:url("../../images/ico_load.gif") no-repeat; }
+A.btn SPAN.edit_annotations
+{ background:url("../../images/ico_edit_annotations.gif") no-repeat; }
+
 
 
 /* Check List - Columns Tabs */
