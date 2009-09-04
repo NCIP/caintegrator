@@ -107,7 +107,7 @@ public class InvalidCriterionException extends Exception {
      * 
      * @param message describes the problem.
      */
-    InvalidCriterionException(String message) {
+    public InvalidCriterionException(String message) {
         super(message);
     }
 

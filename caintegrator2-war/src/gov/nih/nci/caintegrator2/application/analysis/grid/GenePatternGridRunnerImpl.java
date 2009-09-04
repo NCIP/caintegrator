@@ -144,7 +144,7 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
         GisticGridRunner runner = new GisticGridRunner(gisticClient, fileManager);
         try {
             GisticSamplesMarkers gisticSamplesMarkers = GenePatternUtil.
-                createGisticSamplesMarkers(queryManagementService, parameters.getClinicalQuery(), studySubscription);
+                createGisticSamplesMarkers(queryManagementService, parameters, studySubscription);
             updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_REMOTELY);
             return runner.execute(studySubscription, parameters, gisticSamplesMarkers);
         } catch (InterruptedException e) {
@@ -182,7 +182,8 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
         StudySubscription studySubscription = job.getSubscription();
         Set<Query> querySet = new HashSet<Query>();
         querySet.addAll(parameters.getClinicalQueries());
-        GctDataset gctDataset = GenePatternUtil.createGctDataset(studySubscription, querySet, queryManagementService);
+        GctDataset gctDataset = GenePatternUtil.createGctDataset(studySubscription, querySet,
+                parameters.getExcludedControlSampleSet(), queryManagementService);
         updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_REMOTELY);
         PreprocessDatasetMAGEServiceI client = 
             genePatternGridClientFactory.createPreprocessDatasetClient(parameters.getServer());
@@ -209,7 +210,7 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
         querySet.addAll(parameters.getClinicalQueries());
         File gctFile = preprocessedGctFile;
         if (gctFile == null) {
-            gctFile = createGctFile(studySubscription, querySet, parameters.getGctFileName());   
+            gctFile = createGctFile(studySubscription, querySet, parameters);   
         }
         File clsFile = createClassificationFile(studySubscription, parameters.getClinicalQueries(), 
                 parameters.getClassificationFileName());
@@ -279,12 +280,14 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
                         + classificationFileName).getAbsolutePath());
     }
     
-    private File createGctFile(StudySubscription studySubscription, Set<Query> clinicalQueries, String fileName)
+    private File createGctFile(StudySubscription studySubscription, Set<Query> querySet,
+            PCAParameters parameters)
     throws InvalidCriterionException {
         return GctDatasetFileWriter.writeAsGct(
-                GenePatternUtil.createGctDataset(studySubscription, clinicalQueries, queryManagementService), 
+                GenePatternUtil.createGctDataset(studySubscription, querySet,
+                        parameters.getExcludedControlSampleSet(), queryManagementService), 
                 new File(fileManager.getUserDirectory(studySubscription) + File.separator 
-                        + fileName).getAbsolutePath());
+                        + parameters.getGctFileName()).getAbsolutePath());
     }
 
     /**

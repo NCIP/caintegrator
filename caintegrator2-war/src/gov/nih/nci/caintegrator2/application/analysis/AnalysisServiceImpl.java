@@ -191,6 +191,7 @@ public class AnalysisServiceImpl implements AnalysisService {
      */
     public File executeGridPCA(StatusUpdateListener updater,
             PrincipalComponentAnalysisJob job) throws ConnectionException, InvalidCriterionException {
+        job.setSubscription(dao.get(job.getSubscription().getId(), StudySubscription.class));
         File gctFile = null;
         if (job.getForm().isUsePreprocessDataset()) {
             gctFile = genePatternGridRunner.runPreprocessDataset(updater,

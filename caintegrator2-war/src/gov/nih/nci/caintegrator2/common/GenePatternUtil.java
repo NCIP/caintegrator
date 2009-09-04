@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticSamplesMarkers;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
@@ -101,6 +102,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 
 import java.util.HashSet;
 import java.util.List;
@@ -121,14 +123,14 @@ public final class GenePatternUtil {
     /**
      * Creates the object which wraps gistic samples and markers from Cai2 objects.
      * @param queryManagementService to query the database for samples.
-     * @param clinicalQuery is optional, but if given it will restrict the samples returned.
+     * @param parameters the Gistic parameters.
      * @param studySubscription to run queries against and find samples for.
      * @return Gistic object which wraps the Cai2 samples and markers found.
      * @throws InvalidCriterionException if criterion is invalid and query cannot run.
      */
     public static GisticSamplesMarkers createGisticSamplesMarkers(QueryManagementService queryManagementService, 
-            Query clinicalQuery, StudySubscription studySubscription) throws InvalidCriterionException {
-        Set<Sample> samples = getSamplesForGistic(studySubscription, queryManagementService, clinicalQuery);
+            GisticParameters parameters, StudySubscription studySubscription) throws InvalidCriterionException {
+        Set<Sample> samples = getSamplesForGistic(studySubscription, queryManagementService, parameters);
         GisticSamplesMarkers gisticSamplesMarkers = new GisticSamplesMarkers();
         convertCai2SamplesToGistic(gisticSamplesMarkers, samples);
         return gisticSamplesMarkers;
@@ -139,23 +141,32 @@ public final class GenePatternUtil {
      * 
      * @param studySubscription the current study
      * @param queryManagementService used to run the query
-     * @param clinicalQuery the query to select samples, or null
+     * @param parameters the Gistic parameters
      * @return the matching samples
      * @throws InvalidCriterionException if the query was invalid.
      */
     public static Set<Sample> getSamplesForGistic(StudySubscription studySubscription, 
-            QueryManagementService queryManagementService, Query clinicalQuery) throws InvalidCriterionException {
-        if (clinicalQuery == null) {
-            return getAllNonControlSamples(studySubscription);
+            QueryManagementService queryManagementService, GisticParameters parameters)
+    throws InvalidCriterionException {
+        Set<Sample> samples;
+        if (parameters.getClinicalQuery() == null) {
+            samples = getControlSamples(studySubscription);
         } else {
-            return queryManagementService.execute(clinicalQuery).getAllSamples();
+            samples = queryManagementService.execute(parameters.getClinicalQuery()).getAllSamples();
         }
+        return excludeControlSample(samples, parameters.getExcludeControlSampleSet());
     }
 
-    private static Set<Sample> getAllNonControlSamples(StudySubscription studySubscription) {
+    private static Set<Sample> getControlSamples(StudySubscription studySubscription) {
         Set<Sample> samples = new HashSet<Sample>();
         samples.addAll(studySubscription.getStudy().getSamples());
-        samples.removeAll(studySubscription.getStudy().getStudyConfiguration().getAllControlSamples());
+        return samples;
+    }
+    
+    private static Set<Sample> excludeControlSample(Set<Sample> samples, SampleSet controlSampleSet) {
+        if (controlSampleSet != null) {
+            samples.removeAll(controlSampleSet.getSamples());
+        }
         return samples;
     }
 
@@ -215,15 +226,21 @@ public final class GenePatternUtil {
     /**
      * Creates the GCT dataset given the clinical queries (based on all genomic data).
      * @param studySubscription to run queries against.
-     * @param clinicalQueries to be turned into GctDataset. 
+     * @param clinicalQueries to be turned into GctDataset.
+     * @param excludedControlSampleSet the samples to be excluded.
      * @param queryManagementService to query database.
      * @return gct dataset for the queries.
      * @throws InvalidCriterionException if criterion is not valid.
      */
     public static GctDataset createGctDataset(StudySubscription studySubscription, Set<Query> clinicalQueries, 
-            QueryManagementService queryManagementService) throws InvalidCriterionException {
+            SampleSet excludedControlSampleSet, QueryManagementService queryManagementService)
+    throws InvalidCriterionException {
         Query allGenomicDataQuery = Cai2Util.createAllGenomicDataQuery(studySubscription, clinicalQueries);
         GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
+        genomicData.excludeSampleSet(excludedControlSampleSet);
+        if (genomicData.getRowCollection().isEmpty()) {
+            throw new InvalidCriterionException("No data found from selection.");
+        }
         return new GctDataset(genomicData);
     }
     

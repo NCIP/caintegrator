@@ -2,6 +2,7 @@ package gov.nih.nci.caintegrator2.domain.application;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,19 @@ public class GenomicDataResultRow extends AbstractCaIntegrator2Object {
      */
     public List<GenomicDataResultValue> getValues() {
         return values;
+    }
+    
+    /**
+     * @param sampleSet the set of samples to be excluded from the values.
+     */
+    void excludeSampleSet(SampleSet sampleSet) {
+        List<GenomicDataResultValue> removedValues = new ArrayList<GenomicDataResultValue>();
+        for (GenomicDataResultValue value : values) {
+            if (sampleSet.contains(value.getColumn().getSampleAcquisition().getSample())) {
+                removedValues.add(value);
+            }
+        }
+        values.removeAll(removedValues);
     }
 
 }
