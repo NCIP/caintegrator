@@ -126,7 +126,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Implementation of the AnalysisService subsystem.
  */
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 public class AnalysisServiceImpl implements AnalysisService {
     
     private CaIntegrator2Dao dao;
@@ -333,6 +333,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     /**
      * {@inheritDoc}
      */
+    @Transactional(readOnly = false)
     public void deleteAnalysisJob(Long jobId) {
         AbstractPersistedAnalysisJob job = getAnalysisJob(jobId);
         job.getSubscription().getAnalysisJobCollection().remove(job);
