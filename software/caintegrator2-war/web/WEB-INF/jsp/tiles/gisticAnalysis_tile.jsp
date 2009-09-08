@@ -15,6 +15,19 @@
     <div class="box2">   
     <div class="whitebg">   
         <s:actionerror/>
+            <s:div name="commentdiv" cssClass="inlinehelp_form_top">
+
+                This form submits a job which analyzes samples using the GenePattern GISTIC module.<br>
+                <br>
+                <s:div cssStyle="text-align:left; width: 550px; margin-left: auto; margin-right: auto;">
+                <span style="font-weight:bold;">Job Name</span> - Please enter a job name.<br>
+                <span style="font-weight:bold;">GISTIC Server</span> -  Select a GISTIC grid service from the dropdown.<br>
+                <span style="font-weight:bold;">Clinical Queries</span> - (Optional) Select a saved Clinical query to specify which samples will be processed.<br>
+                <span style="font-weight:bold;">Exclude Sample Control Set</span> - (Optional) Select a Control Sample Set to be excluded from the Clinical Query.<br>
+            </s:div>
+
+        </s:div>
+        
         <s:form id="gisticAnalysisForm" action="gisticAnalysis" method="post" enctype="multipart/form-data" theme="css_xhtml">
         
             <s:hidden name="selectedAction" />
@@ -22,15 +35,13 @@
             <br />
             <s:select name="currentGisticAnalysisJob.gisticUrl"
                 list="gisticServices" label="GISTIC Server" required="true" />
-            <br />    
+            <br />
             <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin-left: 0px;">
-                <div class="wwlbl">
-                &nbsp;  
-                </div >
-                <div class="wwctrl" style="width: 300px; white-space: normal; text-align: left; padding-top: 1em; padding-bottom: 1em;">For the Clinical query parameter below, choose either "All non-control Samples" or a clinical query.  If "All non-control Samples" is selected, then all samples which are not included in a Control Set will be used.  If a clinical query is selected, only those samples which map to the subjects in the clinical query results will be used.  The clinical queries in this list have been previously saved by the user. 
-                </div>
-            </s:div>
-
+                <div class="wwlbl">&nbsp;</div >
+                <div class="wwctrl" style="width: 300px; white-space:normal; text-align: left; padding-top: 1em; padding-bottom: 1em;">For the
+                    Clinical query parameter below, choose either "All Samples" or a clinical query.  If "All Samples" is selected, then all samples will be used.  If a clinical query is selected, only those samples which map to the subjects in the clinical query results will be used.  The clinical queries in this list have been previously saved by the user.  Control samples can be excluded from this processing by selecting a control set name in the Exclude Sample Control Set dropdown.
+                </div>
+            </s:div>
             <s:select name="gisticAnalysisForm.selectedQuery"
                 headerKey="" headerValue="All Samples"
                 list="gisticAnalysisForm.clinicalQueries" label="Clinical query" />
@@ -40,7 +51,7 @@
                 list="controlSampleSets" label="Exclude Sample Control Set"
                 required="true" theme="css_xhtml"
                 title="Samples in this set will be excluded."/>
-            <s:textfield name="gisticParameters.amplificationsThreshold" label="Amplifications Threshold" size="50" required="true" />
+            <s:textfield name="gisticParameters.amplificationsThreshold" label="Amplifications Threshold" size="50" required="false" />
             <br />
             <s:textfield name="gisticParameters.deletionsThreshold" label="Deletions Threshold" size="50" required="true" />
             <br />
