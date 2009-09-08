@@ -651,7 +651,7 @@ A.remove:hover
 /* Centered Button Row at the Bottom */
 
 #content .btnrow, #content .btnrow2 
-{ display:table; padding:0; margin:0 auto; list-style-type:none; white-space:nowrap; width: 24em;}
+{ display:table; padding:0; margin:0 auto; list-style-type:none; white-space:nowrap; width: 100%;}
 #content .btnrow LI, #content .btnrow2 LI 
 { display:table-cell; background:none }
 .actionsrow 
