@@ -282,6 +282,10 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
                 addActionError("Error parsing the data field!!!");
                 clearCacheMemory();
                 return ERROR;
+            } catch (NumberFormatException e) {
+                addActionError("Error parsing the data field!!!");
+                clearCacheMemory();
+                return ERROR;
             }
         }
         getStudyManagementService().save(getStudyConfiguration());

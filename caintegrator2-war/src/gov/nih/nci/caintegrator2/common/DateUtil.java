@@ -85,10 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * This is a static utility class to handle Date.
@@ -97,6 +100,7 @@ public final class DateUtil {
     
     private static final Long MILLISECONDS_PER_SECOND = 1000L;
     private static final Long SECONDS_PER_MINUTE = 60L;
+    private static DecimalFormat twoDigit = new DecimalFormat("00");
     
     private DateUtil() {
         
@@ -108,13 +112,19 @@ public final class DateUtil {
      * @throws ParseException parsing exception
      */
     public static Date createDate(String dateString) throws ParseException {
-        if (dateString.contains("-")) {
-            SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
-            return (Date) formatter.parse(dateString);
-        } else {
-            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-            return (Date) formatter.parse(dateString);
+        if (StringUtils.isBlank(dateString)) {
+            return null;
         }
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+        return (Date) formatter.parse(formatDate(dateString));
+    }
+    
+    private static String formatDate(String dateString) {
+        String[] dateElements = (dateString.contains("-"))
+            ? dateString.split("-", 3) : dateString.split("/", 3);
+        return twoDigit.format(Long.valueOf(dateElements[0])) + "/"
+            + twoDigit.format(Long.valueOf(dateElements[1])) + "/"
+            + dateElements[2];
     }
     
     /**
@@ -122,6 +132,9 @@ public final class DateUtil {
      * @return string date in "MM/dd/yyyy" format
      */
     public static String toString(Date date) {
+        if (date == null) {
+            return "";
+        }
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
         return formatter.format(date);
     }
@@ -142,6 +155,9 @@ public final class DateUtil {
      * @return string date in "yyyy/MM/dd" format
      */
     public static String toStringForComparison(Date date) {
+        if (date == null) {
+            return "";
+        }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
         return formatter.format(date);
     }
