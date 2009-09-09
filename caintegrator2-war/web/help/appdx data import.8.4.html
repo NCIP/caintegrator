@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Sample Data Configuration</title>
+    <title>Annotation Field Configuration</title>
     <link rel="StyleSheet" href="css/appdx%20data%20import.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,89 +28,107 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="appdx%20data%20import.8.1.html#1073242">Data Import Configurations</a> &gt; Sample Data Configuration</div>
+      <a class="WebWorks_Breadcrumb_Link" href="appdx%20data%20import.8.1.html#1073232">Data Import Configurations</a> &gt; Annotation Field Configuration</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading1"><a name="1073242">Sample Data Configuration</a></div>
-      <div class="Body_Text"><a name="1073243">Sample data may be uploaded from either caArray 2 or from delimited-text import. </a>Samples imported from caArray 2 may have annotation updated by use of the delimited-text import functionality if sample annotation is required. Import from caArray 2 requires specification of the following information:</div>
+      <div class="Heading1"><a name="1073232">Annotation Field Configuration</a></div>
+      <div class="Body_Text"><a name="1073233">For each annotation field (regardless of the source), the Study Manager must specify </a>the following information:</div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073244">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073234">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1073244">caArray server hostname</a></div>
+              <div class="Bullet_inner"><a name="1073234">Annotation semantics: each annotation field (whether associated with a subject, </a>image series, image or sample) must either:</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073235">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><a name="1073235">be associated with an existing annotation definition known to the system,</a></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073236">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><a name="1073236">be associated to an existing CDE in caDSR or</a></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073237">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><a name="1073237">have sufficient semantic metadata recorded so that the field may be </a>submitted for registration as a CDE in caDSR.</div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073245">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073238">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1073245">caArray server JNDI port</a></div>
+              <div class="Bullet_inner"><a name="1073238">Field authorization: each field must be either declared publicly visible or a </a>restricted to a list of groups. The default will be the visibility settings given at the study level.</div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073246">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073239">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1073246">caArray username</a></div>
+              <div class="Bullet_inner"><a name="1073239">Whether the field is to be included in the results list for a given entity type (i.e. </a>Subject, Sample, ImageSeries or Array Data) when browsing data (See Use Case: Browse Study Data).</div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073247">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073240">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1073247">caArray password</a></div>
+              <div class="Bullet_inner"><a name="1073240">Whether the field is to be included in simple single-input searches when </a>browsing data (See Use Case: Browse Study Data).</div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073248">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><a name="1073248">Either the experiment identifier (to import all samples in the experiment) or a file </a>containing a comma-separated list of samples in the format “experiment identifier”, “sample name”.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073249">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><a name="1073249">Mapping of samples to subjects. This may be specified by a comma-separated </a>list in the format “subject identifier”, “sample identifier” or by a regular-expression based mapping formula.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text"><a name="1073250">When samples are imported via delimited-text import, the time-point is associated to </a>the sample itself. This means that each sample may be associated with only one time-point (i.e. multiple time-points for the same sample are invalid).</div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
           //
           WWHClearRelatedTopics();
+
+          // Add related topics
+          //
+          WWHAddRelatedTopic("Delimited-Text Annotation Import", "caIntegrator2", "appdx%20data%20import.8.3.html#1073225");
+          WWHAddRelatedTopic("Sample Data Configuration", "caIntegrator2", "appdx%20data%20import.8.5.html#1073242");
+          WWHAddRelatedTopic("Genomic Data Configuration", "caIntegrator2", "appdx%20data%20import.8.6.html#1073252");
+          WWHAddRelatedTopic("Imaging Data Configuration", "caIntegrator2", "appdx%20data%20import.8.7.html#1073264");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

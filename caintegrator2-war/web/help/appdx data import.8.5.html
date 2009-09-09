@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Genomic Data Configuration</title>
+    <title>Sample Data Configuration</title>
     <link rel="StyleSheet" href="css/appdx%20data%20import.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,102 +28,96 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="appdx%20data%20import.8.1.html#1073252">Data Import Configurations</a> &gt; Genomic Data Configuration</div>
+      <a class="WebWorks_Breadcrumb_Link" href="appdx%20data%20import.8.1.html#1073242">Data Import Configurations</a> &gt; Sample Data Configuration</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading1"><a name="1073252">Genomic Data Configuration</a></div>
-      <div class="Body_Text"><a name="1073253">All genomic data (i.e. array data) is imported from caArray 2. First the Study Manager </a>must specify sufficient information to map study samples to caArray 2 samples. If all samples were imported directly from caArray 2 as described in Special Requirement: Sample Data Configuration, no further information is required for this step. If samples were imported via delimited-text, the Study Manager must specify</div>
+      <div class="Heading1"><a name="1073242">Sample Data Configuration</a></div>
+      <div class="Body_Text"><a name="1073243">Sample data may be uploaded from either caArray 2 or from delimited-text import. </a>Samples imported from caArray 2 may have annotation updated by use of the delimited-text import functionality if sample annotation is required. Import from caArray 2 requires specification of the following information:</div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073254">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073244">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1073254">caArray server hostname</a></div>
+              <div class="Bullet_inner"><a name="1073244">caArray server hostname</a></div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073255">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073245">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1073255">caArray server JNDI port</a></div>
+              <div class="Bullet_inner"><a name="1073245">caArray server JNDI port</a></div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073256">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073246">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1073256">caArray username</a></div>
+              <div class="Bullet_inner"><a name="1073246">caArray username</a></div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073257">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073247">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1073257">caArray password</a></div>
+              <div class="Bullet_inner"><a name="1073247">caArray password</a></div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073258">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073248">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1073258">A mapping of caIntegrator2 sample identifiers to caArray 2 samples, specified </a>as a comma-separated list in the format “caIntegrator2 sample identifier”, “caArray 2 experiment identifier”, “caArray 2 sample name”.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text"><a name="1073259">The system will enable the Study Manager to navigate easily to the selected caArray 2 </a>instance.</div>
-      <div class="Body_Text"><a name="1073260">Next, the system will indicate the available platforms and array data types available for </a>the study samples. The Study Manager will indicate which platforms and data types to import and for each platform/data type combination will indicate:</div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073261">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><a name="1073261">Whether to import the data</a></div>
+              <div class="Bullet_inner"><a name="1073248">Either the experiment identifier (to import all samples in the experiment) or a file </a>containing a comma-separated list of samples in the format “experiment identifier”, “sample name”.</div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073262">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073249">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1073262">The visibility of the data; either public or restricted to a set of groups. Low-level </a>genotyping data (raw data and normalized) will always have restricted visibility.</div>
+              <div class="Bullet_inner"><a name="1073249">Mapping of samples to subjects. This may be specified by a comma-separated </a>list in the format “subject identifier”, “sample identifier” or by a regular-expression based mapping formula.</div>
             </td>
           </tr>
         </table>
       </div>
+      <div class="Body_Text"><a name="1073250">When samples are imported via delimited-text import, the time-point is associated to </a>the sample itself. This means that each sample may be associated with only one time-point (i.e. multiple time-points for the same sample are invalid).</div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
           //
           WWHClearRelatedTopics();
+
+          // Add related topics
+          //
+          WWHAddRelatedTopic("Delimited-Text Annotation Import", "caIntegrator2", "appdx%20data%20import.8.3.html#1073225");
+          WWHAddRelatedTopic("Annotation Field Configuration", "caIntegrator2", "appdx%20data%20import.8.4.html#1073232");
+          WWHAddRelatedTopic("Genomic Data Configuration", "caIntegrator2", "appdx%20data%20import.8.6.html#1073252");
+          WWHAddRelatedTopic("Imaging Data Configuration", "caIntegrator2", "appdx%20data%20import.8.7.html#1073264");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

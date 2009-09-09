@@ -132,6 +132,52 @@ div.Appendix_name
   padding-bottom: 0pt;
 }
 
+div.Appendix_nameTOC
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 4.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 6.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Appendix_nameTOC_outer
+{
+  margin-bottom: 4.0pt;
+  margin-right: 0pt;
+  margin-top: 6.0pt;
+}
+
+.Appendix_nameTOC_inner
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Appendix_number
 {
   color: #515186;
@@ -166,6 +212,98 @@ div.Appendix_number
   font-variant: normal;
   font-weight: bold;
   text-align: Right;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Appendix_numberTOC
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 7.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Appendix_numberTOC_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 7.0pt;
+}
+
+.Appendix_numberTOC_inner
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.AppendixNameTOC
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 12.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 4.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 6.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.AppendixNameTOC_outer
+{
+  margin-bottom: 4.0pt;
+  margin-right: 0pt;
+  margin-top: 6.0pt;
+}
+
+.AppendixNameTOC_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 12.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -224,6 +362,52 @@ div.Blockquote
   padding-bottom: 0pt;
 }
 
+div.Body
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 4.0pt;
+  text-align: justify;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Body_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 4.0pt;
+}
+
+.Body_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: justify;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Body_Text
 {
   color: #000000;
@@ -250,6 +434,52 @@ div.Body_Text
 }
 
 .Body_Text_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Body_Text_Before6
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 6.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Body_Text_Before6_outer
+{
+  margin-bottom: 6.0pt;
+  margin-right: 0pt;
+  margin-top: 6.0pt;
+}
+
+.Body_Text_Before6_inner
 {
   color: #000000;
   font-family: Arial;
@@ -600,6 +830,98 @@ div.Body_Text_Indent_3_KWN
   padding-bottom: 0pt;
 }
 
+div.Body_Text_Indent_4
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6.0pt;
+  margin-left: 72pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: justify;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Body_Text_Indent_4_outer
+{
+  margin-bottom: 6.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.Body_Text_Indent_4_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: justify;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Body_Text_Indent_5
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6.0pt;
+  margin-left: 90pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: justify;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Body_Text_Indent_5_outer
+{
+  margin-bottom: 6.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.Body_Text_Indent_5_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: justify;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Body_Text_Indent_KWN
 {
   color: #000000;
@@ -738,6 +1060,52 @@ div.Body_Text_KWN
   padding-bottom: 0pt;
 }
 
+div.Body_Text_Newpage
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 8.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Body_Text_Newpage_outer
+{
+  margin-bottom: 8.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Body_Text_Newpage_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Body_Text_No_Space
 {
   color: #000000;
@@ -764,6 +1132,52 @@ div.Body_Text_No_Space
 }
 
 .Body_Text_No_Space_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Body_TextBefore6
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 6.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Body_TextBefore6_outer
+{
+  margin-bottom: 6.0pt;
+  margin-right: 0pt;
+  margin-top: 6.0pt;
+}
+
+.Body_TextBefore6_inner
 {
   color: #000000;
   font-family: Arial;
@@ -1048,6 +1462,98 @@ div.Bullet_KWN
   font-variant: normal;
   font-weight: normal;
   text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Bullet_Table
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 36pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: justify;
+  text-indent: -18pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Bullet_Table_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Bullet_Table_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: justify;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Bullet_table
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 18pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: justify;
+  text-indent: -18pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Bullet_table_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.Bullet_table_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1430,6 +1936,52 @@ div.Chapter_Name
   padding-bottom: 0pt;
 }
 
+div.Chapter_NameTOC
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 4.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 6.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Chapter_NameTOC_outer
+{
+  margin-bottom: 4.0pt;
+  margin-right: 0pt;
+  margin-top: 6.0pt;
+}
+
+.Chapter_NameTOC_inner
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Chapter_Number
 {
   color: #515186;
@@ -1464,6 +2016,52 @@ div.Chapter_Number
   font-variant: normal;
   font-weight: bold;
   text-align: Right;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Chapter_NumberTOC
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 7.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Chapter_NumberTOC_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 7.0pt;
+}
+
+.Chapter_NumberTOC_inner
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1890,6 +2488,142 @@ div.Code_Indent_8
   padding-bottom: 0pt;
 }
 
+div.Cover_title
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 36.0pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 7.0pt;
+  text-align: Right;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Cover_title_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 7.0pt;
+}
+
+.Cover_title_inner
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 36.0pt;
+  font-style: normal;
+  font-weight: bold;
+  text-align: Right;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.CoverDateRight
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 9.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Right;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.CoverDateRight_outer
+{
+  margin-bottom: 9.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.CoverDateRight_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Right;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.CoverText
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.CoverText_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.CoverText_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Example
 {
   color: #000000;
@@ -2120,6 +2854,52 @@ div.Footnote
   padding-bottom: 0pt;
 }
 
+div.GlossaryTOC
+{
+  color: #000000;
+  font-family: "Times New Roman";
+  font-size: 12.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.GlossaryTOC_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.GlossaryTOC_inner
+{
+  color: #000000;
+  font-family: "Times New Roman";
+  font-size: 12.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.GraphicIndent
 {
   color: #000000;
@@ -2153,6 +2933,52 @@ div.GraphicIndent
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.GroupTitlesIX
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 13.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 5.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 12.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.GroupTitlesIX_outer
+{
+  margin-bottom: 5.0pt;
+  margin-right: 0pt;
+  margin-top: 12.0pt;
+}
+
+.GroupTitlesIX_inner
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 13.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
   text-align: Left;
   text-transform: none;
   vertical-align: baseline;
@@ -2588,6 +3414,142 @@ div.Heading4
   padding-bottom: 0pt;
 }
 
+div.Index_Title
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 27.0pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 13.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Right;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Index_Title_outer
+{
+  margin-bottom: 13.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Index_Title_inner
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 27.0pt;
+  font-style: normal;
+  font-weight: bold;
+  text-align: Right;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Index_TitleTOC
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 7.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Index_TitleTOC_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 7.0pt;
+}
+
+.Index_TitleTOC_inner
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.IndexIX
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 9.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.IndexIX_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.IndexIX_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 9.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Lettered_List
 {
   color: #000000;
@@ -2680,6 +3642,190 @@ div.Lettered_List_1
   padding-bottom: 0pt;
 }
 
+div.Level1IX
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 9pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: -9pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Level1IX_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Level1IX_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Level2IX
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 36pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: -21.024pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Level2IX_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Level2IX_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Level3IX
+{
+  color: #000000;
+  font-family: "Times New Roman";
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 36pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: -9pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Level3IX_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Level3IX_inner
+{
+  color: #000000;
+  font-family: "Times New Roman";
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Level4IX
+{
+  color: #000000;
+  font-family: "Times New Roman";
+  font-size: 12.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 90pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: justify;
+  text-indent: -36pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Level4IX_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Level4IX_inner
+{
+  color: #000000;
+  font-family: "Times New Roman";
+  font-size: 12.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: justify;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Line_Number
 {
   color: #000000;
@@ -2714,6 +3860,52 @@ div.Line_Number
   font-variant: normal;
   font-weight: normal;
   text-align: Right;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.List_Table_Caption
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 13.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 4.0pt;
+  text-align: Left;
+  text-indent: 54pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.List_Table_Caption_outer
+{
+  margin-bottom: 13.0pt;
+  margin-right: 0pt;
+  margin-top: 4.0pt;
+}
+
+.List_Table_Caption_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -2844,6 +4036,52 @@ div.Note
 }
 
 .Note_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Note_Drop_Down
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6.0pt;
+  margin-left: 68.4pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: Left;
+  text-indent: -32.400000000000006pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Note_Drop_Down_outer
+{
+  margin-bottom: 6.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.Note_Drop_Down_inner
 {
   color: #000000;
   font-family: "Palatino Linotype";
@@ -3146,6 +4384,98 @@ div.Numbered_List_Indent
   padding-bottom: 0pt;
 }
 
+div.OverviewTOC
+{
+  color: #000000;
+  font-family: "Times New Roman";
+  font-size: 12.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.OverviewTOC_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.OverviewTOC_inner
+{
+  color: #000000;
+  font-family: "Times New Roman";
+  font-size: 12.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Picture
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Picture_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Picture_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Popup_Next
 {
   color: #000000;
@@ -3284,6 +4614,52 @@ div.Related_Topic
   padding-bottom: 0pt;
 }
 
+div.Related_Topics
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 2.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Related_Topics_outer
+{
+  margin-bottom: 6.0pt;
+  margin-right: 0pt;
+  margin-top: 2.0pt;
+}
+
+.Related_Topics_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Roadmap
 {
   color: #000000;
@@ -3376,6 +4752,52 @@ div.Run-In
   padding-bottom: 0pt;
 }
 
+div.SeparatorsIX
+{
+  color: #000000;
+  font-family: "Times New Roman";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: justify;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.SeparatorsIX_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.SeparatorsIX_inner
+{
+  color: #000000;
+  font-family: "Times New Roman";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: justify;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.SideWords
 {
   color: #000000;
@@ -3410,6 +4832,52 @@ div.SideWords
   font-variant: normal;
   font-weight: bold;
   text-align: Right;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.SortOrderIX
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: justify;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.SortOrderIX_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.SortOrderIX_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -3512,6 +4980,52 @@ div.Subprocedure
   padding-bottom: 0pt;
 }
 
+div.Subtitle
+{
+  color: #bcbcff;
+  font-family: "Palatino Linotype";
+  font-size: 24.0pt;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Subtitle_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.Subtitle_inner
+{
+  color: #bcbcff;
+  font-family: "Palatino Linotype";
+  font-size: 24.0pt;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: bold;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Table_Bullet
 {
   color: #000000;
@@ -3542,6 +5056,52 @@ div.Table_Bullet
   color: #000000;
   font-family: Arial;
   font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Table_Caption_Drop_Down
+{
+  color: #516186;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 8.0pt;
+  margin-left: 36pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Table_Caption_Drop_Down_outer
+{
+  margin-bottom: 8.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Table_Caption_Drop_Down_inner
+{
+  color: #516186;
+  font-family: Arial;
+  font-size: 11.0pt;
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
@@ -3984,6 +5544,52 @@ div.Table_Title
   padding-bottom: 0pt;
 }
 
+div.Table_Title_Indent
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 9.0pt;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 11.0pt;
+  margin-left: 36pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Table_Title_Indent_outer
+{
+  margin-bottom: 11.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.Table_Title_Indent_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 9.0pt;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.TableTitle
 {
   color: #000000;
@@ -4206,6 +5812,52 @@ div.Title
   font-style: normal;
   font-weight: bold;
   text-align: Right;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.TitleTOC
+{
+  color: #000000;
+  font-family: "Times New Roman";
+  font-size: 12.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.TitleTOC_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.TitleTOC_inner
+{
+  color: #000000;
+  font-family: "Times New Roman";
+  font-size: 12.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
