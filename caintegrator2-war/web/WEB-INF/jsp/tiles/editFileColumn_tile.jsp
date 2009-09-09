@@ -164,7 +164,7 @@
                 
                 <s:set name="selectDefinitionAction" value="selectDefinition" />
                 <s:set name="selectDataElementAction" value="selectDataElement" />
-                <div id="searchResult"></div>
+                <div id="searchResult" style="padding: 1em 0 0 1.5em;"></div>
                 
                 </td>
             </tr>
