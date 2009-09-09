@@ -88,7 +88,9 @@ package gov.nih.nci.caintegrator2.common;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
@@ -137,6 +139,19 @@ public final class DateUtil {
         }
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
         return formatter.format(date);
+    }
+    
+    /**
+     * @param dates the list of dates to convert to our display format.
+     * @return dates in "MM/dd/yyyy" format
+     * @throws ParseException date parsing exception
+     */
+    public static List<String> toString(List<String> dates) throws ParseException {
+        List<String> resultDates = new ArrayList<String>();
+        for (String date : dates) {
+            resultDates.add(toString(createDate(date)));
+        }
+        return resultDates;
     }
     
     /**

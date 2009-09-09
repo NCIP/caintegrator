@@ -89,7 +89,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -120,6 +122,16 @@ public class DateUtilTest {
         date = DateUtil.createDate(null);
         assertTrue("".equalsIgnoreCase(DateUtil.toString(date)));
         assertTrue("".equalsIgnoreCase(DateUtil.toStringForComparison(date)));
+    }
+    
+    @Test
+    public void testToString() throws ParseException {
+        List<String> stringDates = new ArrayList<String>();
+        stringDates.add("9/5/2000");
+        stringDates.add("08/15/2001");
+        stringDates = DateUtil.toString(stringDates);
+        assertEquals("09/05/2000", stringDates.get(0));
+        assertEquals("08/15/2001", stringDates.get(1));
     }
     
     @Test
