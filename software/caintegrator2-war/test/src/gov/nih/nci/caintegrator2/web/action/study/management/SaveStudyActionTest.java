@@ -91,6 +91,7 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.util.HashMap;
 
@@ -103,7 +104,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 
-public class SaveStudyActionTest {
+public class SaveStudyActionTest extends AbstractSessionBasedTest {
 
     private SaveStudyAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
@@ -111,7 +112,7 @@ public class SaveStudyActionTest {
     
     @Before
     public void setUp() {
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        super.setUp();
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditStudyActionTest.class); 
         action = (SaveStudyAction) context.getBean("saveStudyAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");

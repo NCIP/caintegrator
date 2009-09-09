@@ -130,6 +130,17 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     private static final String ADD_FILE_ACTION = "addAnnotationFile";
     private static final String PLATFORM_NAME = "platformName";
     private static final String PLATFORM_FILE = "platformFile";
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepare() {
+        super.prepare();
+        if (!SessionHelper.getInstance().isPlatformManager()) {
+            setAuthorizedPage(false);
+        }
+    }
 
     /**
      * {@inheritDoc}

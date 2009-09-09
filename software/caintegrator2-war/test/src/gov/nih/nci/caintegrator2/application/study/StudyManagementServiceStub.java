@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.security.exceptions.CSException;
+import gov.nih.nci.security.exceptions.CSSecurityException;
 
 import java.io.File;
 import java.io.IOException;
@@ -147,6 +148,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean updateImageDataSourceStatusCalled;
     public boolean getRefreshedStudyConfigurationCalled;
     public boolean getRefreshedGenomicSourceCalled;
+    public boolean isThrowCSException = false;
     
     public ImageDataSourceConfiguration refreshedImageSource = new ImageDataSourceConfiguration();
     public GenomicDataSourceConfiguration refreshedGenomicSource = new GenomicDataSourceConfiguration();
@@ -229,6 +231,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         updateImageDataSourceStatusCalled = false;
         getRefreshedStudyConfigurationCalled = false;
         getRefreshedGenomicSourceCalled = false;
+        isThrowCSException = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -455,8 +458,12 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return refreshedGenomicSource;
     }
 
-    public StudyConfiguration getRefreshedStudyConfiguration(Long id) {
+    public StudyConfiguration getRefreshedSecureStudyConfiguration(String username, Long id) 
+    throws CSSecurityException {
         getRefreshedStudyConfigurationCalled = true;
+        if (isThrowCSException) {
+            throw new CSSecurityException("invalid");
+        }
         return refreshedStudyConfiguration;
     }
 

@@ -112,6 +112,7 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIAFacade;
 import gov.nih.nci.caintegrator2.file.FileManager;
 import gov.nih.nci.caintegrator2.security.SecurityManager;
 import gov.nih.nci.security.exceptions.CSException;
+import gov.nih.nci.security.exceptions.CSSecurityException;
 
 import java.io.File;
 import java.io.IOException;
@@ -462,11 +463,21 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public StudyConfiguration getRefreshedStudyConfiguration(Long id) {
+    public StudyConfiguration getRefreshedSecureStudyConfiguration(String username, Long id) 
+    throws CSSecurityException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setId(id);
         studyConfiguration = getRefreshedStudyEntity(studyConfiguration);
-        HibernateUtil.loadCollection(studyConfiguration);
+        Set<StudyConfiguration> managedStudyConfigurations = new HashSet<StudyConfiguration>();
+        try {
+            managedStudyConfigurations = 
+                securityManager.retrieveManagedStudyConfigurations(username, dao.getStudies(username)); 
+        } catch (CSException e) {
+            throw new IllegalStateException("Error retrieving CSM data from SecurityManager.");
+        }
+        if (!managedStudyConfigurations.contains(studyConfiguration)) {
+            throw new CSSecurityException("User doesn't have access to this study.");
+        } 
         return studyConfiguration;
     }
 
