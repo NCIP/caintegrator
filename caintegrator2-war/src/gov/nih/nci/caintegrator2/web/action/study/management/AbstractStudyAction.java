@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.security.exceptions.CSSecurityException;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -108,7 +109,7 @@ implements ModelDriven<StudyConfiguration> {
         if (studyConfiguration.getId() != null) {
             try {
                 studyConfiguration = studyManagementService.getRefreshedSecureStudyConfiguration(
-                        getWorkspace().getUsername(), studyConfiguration.getId());
+                        SessionHelper.getInstance().getUsername(), studyConfiguration.getId());
             } catch (CSSecurityException e) {
                 setAuthorizedPage(false);
             }
