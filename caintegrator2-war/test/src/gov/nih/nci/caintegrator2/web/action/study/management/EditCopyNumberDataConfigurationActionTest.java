@@ -88,31 +88,25 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import java.util.HashMap;
-
-import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.opensymphony.xwork2.ActionContext;
-
 @SuppressWarnings("PMD")
-public class EditCopyNumberDataConfigurationActionTest {
+public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBasedTest {
 
     private EditCopyNumberDataConfigurationAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
 
     @Before
     public void setUp() {
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-
+        super.setUp();
+        
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditCopyNumberDataConfigurationActionTest.class); 
         action = (EditCopyNumberDataConfigurationAction) context.getBean("editCopyNumberDataConfigurationAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");

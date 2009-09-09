@@ -83,76 +83,46 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.security;
+package gov.nih.nci.caintegrator2.web.interceptor;
 
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.security.AuthorizationManager;
-import gov.nih.nci.security.exceptions.CSException;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.hibernate.Session;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
- * 
+ * This interceptor will be fired after the "prepare" method, if an object trying to be accessed
+ * from the prepare method isn't authorized, it will set a flag to let this know that it is unauthorized
+ * and this interceptor will forward it to the unauthorized page display.
  */
-public class SecurityManagerStub implements SecurityManager {
+public class AuthorizationInterceptor implements Interceptor {
     
-    public boolean createProtectionElementCalled;
-    public boolean deleteProtectionElementCalled;
-    public boolean isStudyManagerCalled;
-    public boolean doesUserExistCalled;
+    private static final String UNAUTHORIZED_PAGE = "unauthorized";
     
-    public void clear() {
-        createProtectionElementCalled = false;
-        deleteProtectionElementCalled = false;
-        isStudyManagerCalled = false;
-        doesUserExistCalled = false;
-    }
-    
-    public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
-        createProtectionElementCalled = true;
+    /**
+     * {@inheritDoc}
+     */
+    public void destroy() {
+        //NOOP
     }
 
-    public void deleteProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
-        deleteProtectionElementCalled = true;
+    /**
+     * {@inheritDoc}
+     */
+    public void init() {
+        // NOOP
     }
 
-    public AuthorizationManager getAuthorizationManager() throws CSException {
-        return new AuthorizationManagerStub();
-    }
-
-    public void initializeFiltersForUserGroups(String username, Session session) throws CSException {
-        
-    }
-
-    public boolean isStudyManager(String userName) {
-        isStudyManagerCalled = true;
-        return false;
-    }
-
-    public Set<StudyConfiguration> retrieveManagedStudyConfigurations(String username, Collection<Study> studies)
-            throws CSException {
-        Set<StudyConfiguration> studyConfigurationSet = new HashSet<StudyConfiguration>();
-        if (studies != null) {
-            for (Study study : studies) {
-                if (study.getStudyConfiguration() != null) {
-                    studyConfigurationSet.add(study.getStudyConfiguration());
-                }
-            }
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("PMD") // It doesn't like the "throws Exception".
+    public String intercept(ActionInvocation invocation) throws Exception {
+        if (!SessionHelper.getInstance().isAuthorizedPage()) {
+            SessionHelper.getInstance().setAuthorizedPage(true);
+            return UNAUTHORIZED_PAGE;
         }
-        return studyConfigurationSet;
-    }
-
-    public boolean doesUserExist(String username) {
-        doesUserExistCalled = true;
-        if (username.equals("userExists")) {
-            return true;
-        }
-        return false;
+        return invocation.invoke();
     }
 
 }

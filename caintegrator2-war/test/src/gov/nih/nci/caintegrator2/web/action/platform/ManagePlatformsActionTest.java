@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.web.action.platform;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
@@ -97,18 +96,15 @@ import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator2.web.ajax.IPlatformDeploymentAjaxUpdater;
 
-import java.util.HashMap;
-
-import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class ManagePlatformsActionTest {
+public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
 
     ManagePlatformsAction action = new ManagePlatformsAction();
     ArrayDataServiceStub arrayDataServiceStub = new ArrayDataServiceStub();
@@ -117,8 +113,7 @@ public class ManagePlatformsActionTest {
     
     @Before
     public void setUp() {
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        super.setUp();
         WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
         DisplayableUserWorkspace displayableWorkspace = 
             SessionHelper.getInstance().getDisplayableUserWorkspace();
@@ -129,6 +124,17 @@ public class ManagePlatformsActionTest {
         action.setArrayDataService(arrayDataServiceStub);        
         action.setFileManager(fileManagerStub);
         action.setAjaxUpdater(ajaxUpdater);
+    }
+    
+    @Test
+    public void testPrepare() {
+        SessionHelper.getInstance().setPlatformManager(false);
+        action.prepare();
+        assertFalse(SessionHelper.getInstance().isAuthorizedPage());
+        
+        SessionHelper.getInstance().setPlatformManager(true);
+        action.prepare();
+        assertTrue(SessionHelper.getInstance().isAuthorizedPage());
     }
     
     @Test

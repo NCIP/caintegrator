@@ -126,9 +126,19 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
      * {@inheritDoc}
      */
     public void prepare() {
+        setAuthorizedPage(true);
         if (!isFileUpload()) {
             prepareValueStack();
         }
+    }
+    
+    /**
+     * Call this method in the prepare statement if an object is being accessed that is unauthorized.  By
+     * default in this Action's prepare method it will be set to true otherwise.
+     * @param isAuthorized T/F value if user is allowed to proceed with requested action.
+     */
+    protected void setAuthorizedPage(Boolean isAuthorized) {
+        SessionHelper.getInstance().setAuthorizedPage(isAuthorized);
     }
 
     /**

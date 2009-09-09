@@ -2,38 +2,33 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfigurationFactory;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import java.util.HashMap;
-
-import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
 
 
-public class DefineSurvivalDefinitionActionTest {
+public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest {
     
     private DefineSurvivalDefinitionAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
 
     @Before
     public void setUp() {
+        super.setUp();
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", DefineSurvivalDefinitionActionTest.class); 
         action = (DefineSurvivalDefinitionAction) context.getBean("defineSurvivalDefinitionAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
         StudyConfiguration studyConfiguration = StudyConfigurationFactory.createNewStudyConfiguration();
         action.setStudyConfiguration(studyConfiguration);
     }
@@ -41,7 +36,7 @@ public class DefineSurvivalDefinitionActionTest {
     @Test
     public void testPrepare() {
         action.prepare();
-        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+        assertTrue(studyManagementServiceStub.getRefreshedStudyConfigurationCalled);
     }
     
     @Test

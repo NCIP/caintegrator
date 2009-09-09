@@ -108,6 +108,7 @@ public final class SessionHelper {
     private static final String DISPLAYABLE_USER_WORKSPACE_VALUE_STACK_KEY = "displayableWorkspace";
     private static final String KM_PLOT_SESSION_KEY = "kmPlot";
     private static final String GE_PLOT_SESSION_KEY = "gePlot";
+    private static final String IS_AUTHORIZED_PAGE = "isAuthorizedPage";
     private Boolean studyManager = null;
     private Boolean platformManager = null;
     
@@ -343,5 +344,25 @@ public final class SessionHelper {
         if (mapper != null) {
             mapper.clear();
         }
+    }
+    
+    /**
+     * Determines if the currently requested page is authorized for user.
+     * @return T/F value.
+     */
+    public Boolean isAuthorizedPage() {
+        Boolean isAuthorizedPage = (Boolean) getSession().get(IS_AUTHORIZED_PAGE);
+        if (isAuthorizedPage == null) {
+            return true;
+        }
+        return isAuthorizedPage;
+    }
+    
+    /**
+     * Sets the flag for the requested page to be either T/F.
+     * @param isAuthorized if the user is authorized or not to see page.
+     */
+    public void setAuthorizedPage(Boolean isAuthorized) {
+        getSession().put(IS_AUTHORIZED_PAGE, isAuthorized);
     }
 }
