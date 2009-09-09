@@ -11,7 +11,8 @@
 				PATTERN_TYPE_APACHE_ANT
 				/http/remoteauthenticationmanager/**=sessionContextIntegrationFilter
 				/services/**=sessionContextIntegrationFilter
-				/**/registration/**=sessionContextIntegrationFilter
+                /**/tutorials.action/**=sessionContextIntegrationFilter
+                /**/registration/**=sessionContextIntegrationFilter
 				/**/login.action/**=sessionContextIntegrationFilter,logoutFilter
 				/http/applicationservice/**=sessionContextIntegrationFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
 				/gethtml/**=sessionContextIntegrationFilter,logoutFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
