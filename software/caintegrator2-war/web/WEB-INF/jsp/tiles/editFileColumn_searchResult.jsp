@@ -2,10 +2,11 @@
 
         <table class="data">
             <tr>
-                <th colspan="4">Matching Annotation Definitions from caintegrator2</th>
+                <th colspan="5">Matching Annotation Definitions from caintegrator2</th>
             </tr>
             <tr>
                 <th>Name</th>
+                <th>Actions</th>
                 <th>CDE Public ID</th>
                 <th>Data Type</th>
                 <th>Definition</th>
@@ -21,12 +22,15 @@
                       <tr class="even">
                     </s:else>            
                     <td>
+                            <s:property value="displayName" />
+                    </td>
+                    <td>
                         <s:url id="selectDefinition" action="%{selectDefinitionAction}">
                             <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                             <s:param name="fileColumn.id" value="fileColumn.id" />
                             <s:param name="definitionIndex" value="#status.index" />
                         </s:url> 
-                        <s:a href="%{selectDefinition}"><s:property value="displayName" /></s:a>
+                        <s:a href="%{selectDefinition}">Select</s:a>                    
                     </td>
                     <td><s:property value="cde.publicID" /></td>
                     <td><s:property value="type" /></td>
@@ -36,10 +40,12 @@
             </s:if>
             </tbody>
         </table>    
-
+        
+        <br>
+        
         <table class="data">
             <tr>
-                <th colspan="6">Matching Annotation Definitions from caDSR</th>
+                <th colspan="6"><img style="vertical-align: middle" src="/caintegrator2/images/cadsrlogo.gif"> Matching Annotation Definitions from caDSR</th>
             </tr>
             <tr>
                 <th>Name</th>

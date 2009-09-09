@@ -269,17 +269,20 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
             action = SELECT_IMAGING_DEFINITION_ACTION;
         }
         for (AnnotationDefinition definition : definitions) {
-            String[][] rowString = new String[1][4];
-            rowString[0][0] = "<a href=\"" + action 
+            String[][] rowString = new String[1][5];
+            
+            rowString[0][0] = definition.getDisplayName();
+            
+            rowString[0][1] = "<a href=\"" + action 
                                 + "studyConfiguration.id=" + studyConfigurationId
                                 + "&amp;fileColumn.id=" + fileColumnId
-                                + "&amp;definitionIndex=" + counter + "\">" + definition.getDisplayName() + "</a>";
+                                + "&amp;definitionIndex=" + counter + "\">" + "Select" + "</a>";
             
             if (definition.getCde() != null && definition.getCde().getPublicID() != null) {
-                rowString[0][1] = String.valueOf(definition.getCde().getPublicID());
+                rowString[0][2] = String.valueOf(definition.getCde().getPublicID());
             }
-            rowString[0][2] = definition.getType();
-            rowString[0][3] = definition.getPreferredDefinition();
+            rowString[0][3] = definition.getType();
+            rowString[0][4] = definition.getPreferredDefinition();
             utilThis.addRows(ANNOTATION_DEFINITION_TABLE, rowString, retrieveRowOptions(counter));
             counter++;
         }
