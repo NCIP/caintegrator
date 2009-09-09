@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.AnnotationValueUtil;
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
@@ -471,11 +472,16 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     /**
      * @return the availableValue
      * @throws ValidationException Invalid data
+     * @throws ParseException  Invalid data
     */
-   public Set<String> getAvailableValues() throws ValidationException {
+   public Set<String> getAvailableValues() throws ValidationException, ParseException {
+       List<String> fileDataValues = fileColumn.getAnnotationFile() != null
+           ? fileColumn.getDataValues() : new ArrayList<String>();
+       if (AnnotationTypeEnum.DATE.getValue().equalsIgnoreCase(getDefinitionType())) {
+           fileDataValues = DateUtil.toString(fileDataValues);
+       }
        return AnnotationValueUtil.getAdditionalValue(getAnnotationValueCollection(),
-               fileColumn.getAnnotationFile() != null ? fileColumn.getDataValues() : new ArrayList<String>(), 
-               getPermissibleValues());
+           fileDataValues, getPermissibleValues());
    }
     
     /**
@@ -548,5 +554,13 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     public String getIdentifier() {
         FileColumn identifier = getFileColumn().getAnnotationFile().getIdentifierColumn();
         return identifier == null ? "" : identifier.getName();
+    }
+    
+    /**
+     * 
+     * @return the column definition type.
+     */
+    public String getDefinitionType() {
+        return getFileColumn().getFieldDescriptor().getDefinition().getType();
     }
 }
