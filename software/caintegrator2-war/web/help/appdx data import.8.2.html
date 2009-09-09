@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Delimited-Text Annotation Import</title>
+    <title>Subject Clinical Data Configuration</title>
     <link rel="StyleSheet" href="css/appdx%20data%20import.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,33 +28,55 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="appdx%20data%20import.8.1.html#1073225">Data Import Configurations</a> &gt; Delimited-Text Annotation Import</div>
+      <a class="WebWorks_Breadcrumb_Link" href="appdx%20data%20import.8.1.html#1075801">Data Import Configurations</a> &gt; Subject Clinical Data Configuration</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading1"><a name="1073225">Delimited-Text Annotation Import</a></div>
-      <div class="Body_Text"><a name="1073226">Delimited-text annotation files must be in standard comma-separated value format. The </a>file must include a header line that specifies the name for each field. Each row of data must contain the same number of values as the header row. The file must include a column that will be designated as the identifier (e.g. subject identifier, sample identifier, etc.) for each row. Optionally a file may include a single column that will be designated as a time-point indicator. Each row must contain a unique combination of identifier and time-point indicator of a unique identifier if no time-point is included. An example of the content of a file including a time-point is shown below.</div>
-      <div class="slink25_spriority0_styrsid12" style="color: #000000; font-family: &quot;Times New Roman&quot;; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: normal; margin-bottom: 6.0pt; margin-left: 36pt; text-indent: 0pt; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: &quot;Times New Roman&quot;; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: normal; text-transform: none; vertical-align: baseline;"><a name="1073227">“patientId”, “timepoint”, “bloodPressure”, “weight”</a></span><span style="color: #000000; font-family: &quot;Times New Roman&quot;; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: normal; text-transform: none; vertical-align: baseline;"><br /></span><span style="color: #000000; font-family: &quot;Times New Roman&quot;; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: normal; text-transform: none; vertical-align: baseline;">“1234”, “T1”, “120/80”, “180”</span><span style="color: #000000; font-family: &quot;Times New Roman&quot;; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: normal; text-transform: none; vertical-align: baseline;"><br /></span><span style="color: #000000; font-family: &quot;Times New Roman&quot;; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: normal; text-transform: none; vertical-align: baseline;">“1234”, “T2”, “125/80”, “190”</span><span style="color: #000000; font-family: &quot;Times New Roman&quot;; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: normal; text-transform: none; vertical-align: baseline;"><br /></span><span style="color: #000000; font-family: &quot;Times New Roman&quot;; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: normal; text-transform: none; vertical-align: baseline;">“5678”, “T1”, “120/85”, “200”</span></div>
-      <div class="Body_Text"><a name="1073228">After upload of the file, the Study Manager must indicate for each field:</a></div>
+      <div class="Heading1"><a name="1075801">Subject Clinical Data Configuration</a></div>
+      <div class="Body_Text"><a name="1073215">The following clinical data configuration information is collected:</a></div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073229">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073216">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1073229">Field type (identifier, timepoint indicator, text, integer, float or boolean)</a></div>
+              <div class="Bullet_inner"><a name="1073216">Clinical Data Source (delimited text)</a></div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073230">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073217">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1073230">After specification of these types, the file will be validated to ensure that the </a>values are valid for the types selected and that the file conforms to the requirements given above.</div>
+              <div class="Bullet_inner"><a name="1073217">Protocol Id (of study to import)</a></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073222">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_inner"><a name="1073222">For delimited text, see </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'appdx%20data%20import.8.3.html#1073225', '');">Delimited-Text Annotation Import</a></span>. For subject annotation files, one field must be identified as the subject identifier.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073223">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_inner"><a name="1073223">See </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'appdx%20data%20import.8.4.html#1073232', '');">Annotation Field Configuration</a></span> for details on specification of visibility and browse configuration.</div>
             </td>
           </tr>
         </table>
@@ -64,6 +86,12 @@
           // Clear related topics
           //
           WWHClearRelatedTopics();
+
+          // Add related topics
+          //
+          WWHAddRelatedTopic("Sample Data Configuration", "caIntegrator2", "appdx%20data%20import.8.5.html#1073242");
+          WWHAddRelatedTopic("Genomic Data Configuration", "caIntegrator2", "appdx%20data%20import.8.6.html#1073252");
+          WWHAddRelatedTopic("Imaging Data Configuration", "caIntegrator2", "appdx%20data%20import.8.7.html#1073264");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

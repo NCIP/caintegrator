@@ -1,0 +1,21 @@
+function BookData_Search(x,y)
+{
+if(x.t("with--the"))y.f("22,1,18,1");
+if(x.t("server"))y.f("68,2,44,1,60,6,22,1,69,2,61,6,18,1,67,2,62,3,59,1");
+if(x.t("consist"))y.f("22,1");
+if(x.t("contains"))y.f("27,1,37,1,46,1");
+if(x.t("checked"))y.f("30,1,44,1,54,1,51,1,43,1,56,1");
+if(x.t("filtered"))y.f("31,1,40,1");
+if(x.t("cells"))y.f("40,2");
+if(x.t("distinguish"))y.f("50,1,54,1");
+if(x.t("generally"))y.f("50,1,51,1,52,1");
+if(x.t("ratio"))y.f("51,2,62,2");
+if(x.t("apparent"))y.f("57,1");
+if(x.t("non-outliers"))y.f("57,1");
+if(x.t("http://genepattern.broad.mit.edu/gp/services/"))y.f("58,1");
+if(x.t("difference"))y.f("60,1");
+if(x.t("negative"))y.f("62,1");
+if(x.t("delimited-text"))y.f("68,1,65,23,69,1,63,1,67,3,64,1");
+if(x.t("comma-separated"))y.f("68,1,65,1,69,1,67,2");
+if(x.t("content"))y.f("65,1");
+}
