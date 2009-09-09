@@ -83,6 +83,7 @@
     </definition>
     
     <definition name="tutorials" extends="cssBaseDef">
+        <put-attribute name="globalHeader" value="/WEB-INF/jsp/tiles/loginHeader_tile.jsp" />
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/tutorials_tile.jsp" />
         <put-attribute name="subTitle" value="Tutorial Menu" />
     </definition>
@@ -97,7 +98,6 @@
     </definition>
     
     <definition name="login" extends="cssBaseDef">
-        <put-attribute name="leftNavMenu" value=""/>
         <put-attribute name="globalHeader" value="/WEB-INF/jsp/tiles/loginHeader_tile.jsp" />
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/login_tile.jsp" />
         <put-attribute name="subTitle" value="Login" />

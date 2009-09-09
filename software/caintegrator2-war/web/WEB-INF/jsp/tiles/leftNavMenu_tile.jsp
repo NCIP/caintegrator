@@ -101,9 +101,9 @@
         </li>
     </ul>
     </s:if>
-    
-    <ul class="menu">        
-        <s:if test="#sessionHelper.studyManager">
+         
+    <s:if test="#sessionHelper.studyManager">
+        <ul class="menu">   
             <li class="stdnav"><div>Study Management</div>
                 <ul>
                     <li><s:url id="manageStudiesUrl" includeParams="none" action="manageStudies" />
@@ -112,19 +112,25 @@
                     <a href="${createStudyUrl}">Create New Study</a></li>
                 </ul>
             </li>
-        </s:if>
-        <s:if test="#sessionHelper.platformManager">
+        </ul>
+    </s:if>
+    <s:if test="#sessionHelper.platformManager">
+        <ul class="menu">   
             <li class="stdnav"><div>Application Management</div>
                 <ul>
                     <li><s:url id="managePlatformsUrl" includeParams="none" action="managePlatforms" />
                     <a href="${managePlatformsUrl}">Manage Platforms</a></li>
                 </ul>
             </li>
-        </s:if>
-   </ul>
-   <ul class="menu">
+        </ul>
+    </s:if>
+    
+    <ul class="menu">
         <li class="stdnavforinvestigator" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
             <ul>
+                <s:if test="!#sessionHelper.authenticated">
+                    <li><a href="/caintegrator2/index.jsp">Login</a></li>
+                </s:if>
                 <li><a href="javascript:openWin('/caintegrator2//help/Getting_Started.2.8.html#1122280')">Support</a></li>
                 <li><a href="${tutorialsUrl}">Tutorials</a></li>
                 <li><a href="javascript:openUsersGuideWindow('top')">User Guide (draft)</a></li>
