@@ -36,7 +36,7 @@
             <s:select name="currentGisticAnalysisJob.gisticUrl"
                 list="gisticServices" label="GISTIC Server" required="true" />
             <br />
-            <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin-left: 0px;">
+            <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin-left: 0px;height:110px">
                 <div class="wwlbl">&nbsp;</div >
                 <div class="wwctrl" style="width: 300px; white-space:normal; text-align: left; padding-top: 1em; padding-bottom: 1em;">For the
                     Clinical query parameter below, choose either "All Samples" or a clinical query.  If "All Samples" is selected, then all samples will be used.  If a clinical query is selected, only those samples which map to the subjects in the clinical query results will be used.  The clinical queries in this list have been previously saved by the user.  Control samples can be excluded from this processing by selecting a control set name in the Exclude Sample Control Set dropdown.
@@ -64,7 +64,7 @@
             <br />
             <s:file name="gisticParameters.cnvSegmentsToIgnoreFile" label="cnv File" />
             <br />
-            <s:div cssClass="wwgrp" cssStyle="margin-top:70px;">
+            <s:div cssClass="wwgrp">
             <s:submit value="Perform Analysis" align="center"
                 onclick="this.form.selectedAction.value = 'execute'; return true;" cssClass="wwgrp"/>
             </s:div>
