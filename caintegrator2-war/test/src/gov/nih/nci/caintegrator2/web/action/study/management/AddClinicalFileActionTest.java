@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import static org.junit.Assert.*;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -98,13 +99,14 @@ import com.opensymphony.xwork2.Action;
 
 import javax.swing.filechooser.FileSystemView;
 
-public class AddClinicalFileActionTest {
+public class AddClinicalFileActionTest extends AbstractSessionBasedTest {
 
     private AddClinicalFileAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
 
     @Before
     public void setUp() {
+        super.setUp();
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditStudyActionTest.class); 
         action = (AddClinicalFileAction) context.getBean("addClinicalFileAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");

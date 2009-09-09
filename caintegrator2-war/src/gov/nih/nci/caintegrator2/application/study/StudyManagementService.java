@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.security.exceptions.CSException;
+import gov.nih.nci.security.exceptions.CSSecurityException;
 
 import java.io.File;
 import java.io.IOException;
@@ -260,10 +261,13 @@ public interface StudyManagementService {
     
     /**
      * Retrieves refreshed study configuration.
+     * @param username of the user trying to access study.
      * @param id of the study configuration.
      * @return refreshed study configuration.
+     * @throws CSSecurityException if user doesn't have access to this study. 
      */
-    StudyConfiguration getRefreshedStudyConfiguration(Long id);
+    StudyConfiguration getRefreshedSecureStudyConfiguration(String username, Long id) 
+    throws CSSecurityException;
     
     /**
      * Saves a file to the study directory.

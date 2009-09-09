@@ -89,6 +89,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
@@ -117,8 +118,10 @@ import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 import gov.nih.nci.caintegrator2.security.SecurityManagerStub;
 import gov.nih.nci.security.exceptions.CSException;
+import gov.nih.nci.security.exceptions.CSSecurityException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -619,5 +622,45 @@ public class StudyManagementServiceTest {
     public void testRetrieveImageDataSource() {
         studyManagementService.retrieveImageDataSource(new Study());
         assertTrue(daoStub.retrieveImagingDataSourceForStudyCalled);
+    }
+    
+    @Test
+    public void testGetRefreshedSecureStudyConfiguration() {
+        SecureDaoStub secureDaoStub = new SecureDaoStub();
+        studyManagementService.setDao(secureDaoStub);
+        try {
+            studyManagementService.getRefreshedSecureStudyConfiguration("invalid", Long.valueOf(1));
+            fail();
+        } catch (CSSecurityException e) {
+            
+        }
+        try {
+            assertEquals(secureDaoStub.studyConfiguration, 
+                    studyManagementService.getRefreshedSecureStudyConfiguration("valid", Long.valueOf(1)));
+        } catch (CSSecurityException e) {
+            fail();
+        }
+    }
+    
+    private static class SecureDaoStub extends CaIntegrator2DaoStub {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T get(Long id, java.lang.Class<T> objectClass) {
+            Study study = new Study();
+            studyConfiguration.setStudy(study);
+            study.setStudyConfiguration(studyConfiguration);
+            return (T) studyConfiguration;
+        }
+        
+        @Override
+        public List<Study> getStudies(String username) {
+            List<Study> studies = new ArrayList<Study>();
+            if ("valid".equals(username)) {
+                studies.add(studyConfiguration.getStudy());
+            }
+            return studies;
+        }
     }
 }

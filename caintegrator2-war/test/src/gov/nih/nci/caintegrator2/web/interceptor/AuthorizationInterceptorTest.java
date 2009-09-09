@@ -83,76 +83,94 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.security;
+package gov.nih.nci.caintegrator2.web.interceptor;
 
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.security.AuthorizationManager;
-import gov.nih.nci.security.exceptions.CSException;
+import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 
-import org.hibernate.Session;
+import org.junit.Test;
 
-/**
- * 
- */
-public class SecurityManagerStub implements SecurityManager {
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionEventListener;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.ActionProxy;
+import com.opensymphony.xwork2.Result;
+import com.opensymphony.xwork2.interceptor.PreResultListener;
+import com.opensymphony.xwork2.util.ValueStack;
+
+
+public class AuthorizationInterceptorTest {
+
     
-    public boolean createProtectionElementCalled;
-    public boolean deleteProtectionElementCalled;
-    public boolean isStudyManagerCalled;
-    public boolean doesUserExistCalled;
-    
-    public void clear() {
-        createProtectionElementCalled = false;
-        deleteProtectionElementCalled = false;
-        isStudyManagerCalled = false;
-        doesUserExistCalled = false;
-    }
-    
-    public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
-        createProtectionElementCalled = true;
-    }
-
-    public void deleteProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
-        deleteProtectionElementCalled = true;
-    }
-
-    public AuthorizationManager getAuthorizationManager() throws CSException {
-        return new AuthorizationManagerStub();
-    }
-
-    public void initializeFiltersForUserGroups(String username, Session session) throws CSException {
+    @Test
+    public void testIntercept() throws Exception {
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        AuthorizationInterceptor interceptor = new AuthorizationInterceptor();
+        ActionInvocationStub invocation = new ActionInvocationStub();
+        
+        // First try unauthorized.
+        SessionHelper.getInstance().setAuthorizedPage(false);
+        assertEquals("unauthorized", interceptor.intercept(invocation));
+        // After it is unauthorized, it should automatically change the session back to authorized.
+        assertEquals(true, SessionHelper.getInstance().isAuthorizedPage());
+        
+        // Now try authorized.
+        assertEquals(Action.SUCCESS, interceptor.intercept(invocation));
         
     }
 
-    public boolean isStudyManager(String userName) {
-        isStudyManagerCalled = true;
-        return false;
-    }
+    private static class ActionInvocationStub implements ActionInvocation {
 
-    public Set<StudyConfiguration> retrieveManagedStudyConfigurations(String username, Collection<Study> studies)
-            throws CSException {
-        Set<StudyConfiguration> studyConfigurationSet = new HashSet<StudyConfiguration>();
-        if (studies != null) {
-            for (Study study : studies) {
-                if (study.getStudyConfiguration() != null) {
-                    studyConfigurationSet.add(study.getStudyConfiguration());
-                }
-            }
+        public void addPreResultListener(PreResultListener listener) {
+            
         }
-        return studyConfigurationSet;
-    }
 
-    public boolean doesUserExist(String username) {
-        doesUserExistCalled = true;
-        if (username.equals("userExists")) {
-            return true;
+        public Object getAction() {
+            return null;
         }
-        return false;
-    }
 
+        public ActionContext getInvocationContext() {
+            return null;
+        }
+
+        public ActionProxy getProxy() {
+            return null;
+        }
+
+        public Result getResult() throws Exception {
+            return null;
+        }
+
+        public String getResultCode() {
+            return null;
+        }
+
+        public ValueStack getStack() {
+            return null;
+        }
+
+        public String invoke() throws Exception {
+            return Action.SUCCESS;
+        }
+
+        public String invokeActionOnly() throws Exception {
+            return null;
+        }
+
+        public boolean isExecuted() {
+            return false;
+        }
+
+        public void setActionEventListener(ActionEventListener listener) {
+            
+        }
+
+        public void setResultCode(String resultCode) {
+
+        }
+        
+    }
 }

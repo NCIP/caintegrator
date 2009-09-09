@@ -4,7 +4,6 @@
 <struts>
 
     <package name="caintegrator2" extends="struts-default">
-
         <result-types>
             <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
             <result-type name="kmPlotResult" class="gov.nih.nci.caintegrator2.web.action.analysis.KMPlotResult"/>
@@ -15,6 +14,10 @@
         </result-types>
         
         <interceptors>
+            <!-- This interceptor is used by cai2 after the prepare method to forward to an unauthorized page if
+            a flag is set based on the user not having proper authorization privileges on the action. -->
+            <interceptor name="cai2AuthorizationInterceptor" class="gov.nih.nci.caintegrator2.web.interceptor.AuthorizationInterceptor" />
+        
         <!-- This is the same as the paramsPrepareParams with the addition of excludeParams on the 
             ParametersInterceptor for special cases, this is done because Struts 2 is parsing the
             query string/post data and trying to "set" a value for each parameter it finds.  This gets
@@ -39,6 +42,7 @@
                  </interceptor-ref>
                 <interceptor-ref name="servletConfig"/>
                 <interceptor-ref name="prepare"/>
+                <interceptor-ref name="cai2AuthorizationInterceptor"/>
                 <interceptor-ref name="i18n"/>
                 <interceptor-ref name="chain"/>
                 <interceptor-ref name="modelDriven"/>
@@ -68,6 +72,10 @@
         </interceptors>
         
         <default-interceptor-ref name="cai2ParamsPrepareParamsStack" />
+        
+        <global-results>
+            <result name="unauthorized" type="tiles">unauthorized</result>
+        </global-results>
         
         <!--  Navigation Actions -->
         <!--  Navigation Actions -->
