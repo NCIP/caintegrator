@@ -15,8 +15,8 @@
     </script>
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('registration_help')" class="help">
-   (draft)</a>
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('register_user_help')" class="help">
+    &nbsp;</a>
     </div>
 
     <!--/Page Help-->        
