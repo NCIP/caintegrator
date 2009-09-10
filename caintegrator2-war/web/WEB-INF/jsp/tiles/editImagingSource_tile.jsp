@@ -167,8 +167,8 @@
                             <th colspan="2">Unmapped Image Series Acquisitions</th>
                         </tr>
                         <tr>
-                            <th>Image Series Acquisition Identifier</th>
-                            <th>Patient Identifier</th>
+                            <th>NBIA Image Series Acquisition Identifier</th>
+                            <th>NBIA Subject Identifier</th>
                         </tr>
                         <s:iterator value="imageSourceConfiguration.unmappedImageSeriesAcquisitions" status="status">
                             <s:if test="#status.odd == true">
@@ -190,9 +190,9 @@
                             <th colspan="3">Mapped Image Series Acquisitions</th>
                         </tr>
                         <tr>
-                            <th>Image Series Acquisition Identifier</th>
-                            <th>Patient Identifier</th>
-                            <th>CaIntegrator Subject Identifier</th>
+                            <th>NBIA Image Series Acquisition Identifier</th>
+                            <th>NBIA Subject Identifier</th>
+                            <th>caIntegrator2 Subject Identifier</th>
                         </tr>
                         <s:iterator value="imageSourceConfiguration.mappedImageSeriesAcquisitions" status="status">
                             <s:if test="#status.odd == true">
