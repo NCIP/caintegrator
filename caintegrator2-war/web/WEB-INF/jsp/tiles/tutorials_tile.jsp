@@ -20,6 +20,16 @@
         </a>
         
     </div>
+    <!--Buttons-->
+
+    <s:div theme="xhtml">
+        <ul class="btnrow">
+            <li><s:a href="/caintegrator2/index.jsp" cssClass="btn">
+                <span class="btn_img">Cancel</span>
+            </s:a></li>
+        </ul>
+    </s:div>
+    <!--/Buttons-->
 </div>
 
 <div class="clear"><br /></div>
