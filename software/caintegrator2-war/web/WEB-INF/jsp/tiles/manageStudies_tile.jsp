@@ -25,23 +25,37 @@
     </div>
     
     <!--/Page Help--> 
-<h1><s:property value="#subTitleText" /></h1>
-<s:actionerror/>
-
-<div id="errorMessages" style="color: red;"> </div>
-
-    <table class="data">
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Deployment Start Date</th>
-            <th>Deployment Finish Date</th>
-            <th>Action</th>
-        </tr>
-        <tbody id="studyDeploymentJobStatusTable" />
-    </table>
     
-    </div> 
+    <h1><s:property value="#subTitleText" /></h1>
+    
+    <p>View studies and click <strong>Edit</strong> to modify or click <strong>Delete</strong>. </p>
+    <div class="form_wrapper_outer">
+ 
+    <table class="form_wrapper_table">
+
+            <tr>
+                <td colspan="2" style="padding: 5px;">    
+    
+                <s:actionerror/>
+            
+                <div id="errorMessages" style="color: red;"> </div>
+            
+                <table class="data">
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Deployment Start Date</th>
+                        <th>Deployment Finish Date</th>
+                        <th>Action</th>
+                    </tr>
+                    <tbody id="studyDeploymentJobStatusTable" />
+                </table>
+    
+                </td>
+            </tr>
+    </table>
+    </div>    
+</div>    
 <div class="clear"><br />
 </div>
