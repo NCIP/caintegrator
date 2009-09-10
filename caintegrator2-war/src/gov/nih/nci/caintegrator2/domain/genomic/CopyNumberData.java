@@ -83,10 +83,8 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.bioconductor;
+package gov.nih.nci.caintegrator2.domain.genomic;
 
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -124,15 +122,25 @@ public class CopyNumberData implements Serializable {
         dataToValuesMap.put(arrayData, copyNumberValues);
     }
 
-    List<DnaAnalysisReporter> getReporters() {
+    /**
+     * @return all reporters, ordered.
+     */
+    public List<DnaAnalysisReporter> getReporters() {
         return reporters;
     }
     
-    Set<ArrayData> getArrayDatas() {
+    /**
+     * @return all array datas.
+     */
+    public Set<ArrayData> getArrayDatas() {
         return dataToValuesMap.keySet();
     }
     
-    float[] getValues(ArrayData arrayData) {
+    /**
+     * @param arrayData get values for this array data.
+     * @return the values.
+     */
+    public float[] getValues(ArrayData arrayData) {
         return dataToValuesMap.get(arrayData);
     }
 

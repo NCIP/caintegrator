@@ -83,101 +83,105 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.bioconductor;
+package gov.nih.nci.caintegrator2.application.study.deployment;
 
-import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.io.IOUtils;
+
+import au.com.bytecode.opencsv.CSVReader;
+import edu.mit.broad.genepattern.gp.services.FileWrapper;
+import edu.mit.broad.genepattern.gp.services.GenePatternClient;
+import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import edu.mit.broad.genepattern.gp.services.JobInfo;
+import edu.mit.broad.genepattern.gp.services.ParameterInfo;
+import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.CopyNumberData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
-import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.axis.types.URI.MalformedURIException;
-import org.apache.log4j.Logger;
-import org.bioconductor.cagrid.cadnacopy.DNAcopyAssays;
-import org.bioconductor.cagrid.cadnacopy.DNAcopyParameter;
-import org.bioconductor.cagrid.cadnacopy.DerivedDNAcopySegment;
-import org.bioconductor.cagrid.cadnacopy.ExpressionData;
-import org.bioconductor.packages.caDNAcopy.common.CaDNAcopyI;
-
 /**
- * Implementation that uses Bioconductor grid services.
+ * Adds segmentation data by invoking the GLAD GenePattern service.
  */
-public class BioconductorServiceImpl implements BioconductorService {
-    
-    private static final Logger LOGGER = Logger.getLogger(BioconductorServiceImpl.class);
-    private BioconductorClientFactory clientFactory = new BioconductorClientFactoryImpl();
+class GladSegmentationHandler {
 
-    /**
-     * {@inheritDoc}
-     * @throws DataRetrievalException 
-     */
-    public void addSegmentationData(CopyNumberData copyNumberData,
-            CopyNumberDataConfiguration configuration) 
-    throws ConnectionException, DataRetrievalException {
-        String url = configuration.getSegmentationService().getUrl();
+    private static final String OUTPUT_FILENAME = "output.glad";
+    private final GenePatternClient client;
+
+    GladSegmentationHandler(GenePatternClient client) {
+        this.client = client;
+    }
+
+    void addSegmentationData(CopyNumberData copyNumberData) 
+    throws DataRetrievalException {
         try {
-            CaDNAcopyI client = getClient(url);
-            DNAcopyAssays assays = buildAssays(copyNumberData);
-            DNAcopyParameter parameter = new DNAcopyParameter();
-            parameter.setChangePointSignificanceLevel(configuration.getChangePointSignificanceLevel());
-            parameter.setEarlyStoppingCriterion(configuration.getEarlyStoppingCriterion());
-            parameter.setPermutationReplicates(configuration.getPermutationReplicates());
-            parameter.setRandomNumberSeed(configuration.getRandomNumberSeed());
-            DerivedDNAcopySegment segment = client.getDerivedDNAcopySegment(assays, parameter);
-            addSegmentationData(segment, copyNumberData);
-        } catch (RemoteException e) {
-            LOGGER.error("Couldn't complete CaDNACopy job", e);
-            throw new DataRetrievalException("Couldn't complete CaDNACopy job: " + e.getMessage(), e);
+            List<ParameterInfo> parameters = new ArrayList<ParameterInfo>();
+            ParameterInfo inputFileParameter = new ParameterInfo();
+            inputFileParameter.setName("copy.number.input.file");
+            File inputFile = createInputFile(copyNumberData);
+            inputFileParameter.setValue(inputFile.getAbsolutePath());
+            parameters.add(inputFileParameter);
+            ParameterInfo outputFilenameParameter = new ParameterInfo();
+            outputFilenameParameter.setName("output.filename");
+            outputFilenameParameter.setValue(OUTPUT_FILENAME);
+            parameters.add(outputFilenameParameter);
+            JobInfo jobInfo = client.runAnalysis("GLAD", parameters);
+            jobInfo = GenePatternUtil.waitToComplete(jobInfo, client);
+            inputFile.delete();
+            handleResults(jobInfo, copyNumberData);
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't run GLAD job: " + e.getMessage(), e);
+        } catch (GenePatternServiceException e) {
+            throw new DataRetrievalException("Couldn't run GLAD job: " + e.getMessage(), e);
         }
     }
 
-    private CaDNAcopyI getClient(String url) throws ConnectionException {
-        try {
-            return getClientFactory().getCaDNAcopyI(url);
-        } catch (MalformedURIException e) {
-            throw new ConnectionException("Invalid URL: " + url, e);
-        } catch (RemoteException e) {
-            LOGGER.error("Couldn't connect to CaDNACopy service", e);
-            throw new ConnectionException("Couldn't connect to " + url + ": " + e.getMessage(), e);
-        }
+    private void handleResults(JobInfo jobInfo, CopyNumberData copyNumberData) 
+    throws IOException, GenePatternServiceException, DataRetrievalException {
+        File outputFile = getOutputFile(jobInfo);
+        addSegmentationData(outputFile, copyNumberData);
+        outputFile.delete();
     }
 
-    private void addSegmentationData(DerivedDNAcopySegment segment, CopyNumberData copyNumberData) {
+    private void addSegmentationData(File outputFile, CopyNumberData copyNumberData) throws IOException {
+        FileReader fileReader = new FileReader(outputFile);
+        CSVReader csvReader = new CSVReader(fileReader, '\t');
+        csvReader.readNext();    // skip header line;
         Map<String, ArrayData> arrayDataMap = getArrayDataMap(copyNumberData);
-        for (int segmentIndex = 0;  segmentIndex < segment.getSampleId().length; segmentIndex++) {
-            ArrayData arrayData = arrayDataMap.get(arrayDataKey(segment, segmentIndex));
-            SegmentData segmentData = createSegmentData(segment, segmentIndex);
-            segmentData.setArrayData(arrayData);
-            arrayData.getSegmentDatas().add(segmentData);
+        String[] fields;
+        while ((fields = csvReader.readNext()) != null) {
+            ArrayData arrayData = arrayDataMap.get(fields[0]);
+            handleSegmentDataLine(fields, arrayData);
         }
+        csvReader.close();
+        fileReader.close();
     }
 
-    private String arrayDataKey(DerivedDNAcopySegment segment, int segmentIndex) {
-        String sampleId = segment.getSampleId(segmentIndex);
-        if (sampleId.charAt(0) == 'X') {
-            return sampleId.substring(1);
-        } else {
-            return sampleId;
-        }
-    }
-
-    private SegmentData createSegmentData(DerivedDNAcopySegment segment, int segmentIndex) {
+    private void handleSegmentDataLine(String[] fields, ArrayData arrayData) {
+        String chromosome = fields[1];
+        int start = Integer.parseInt(fields[2]);
+        int end = Integer.parseInt(fields[3]);
+        int numberOfMarkers = Integer.parseInt(fields[4]);
+        float segmentValue = Float.parseFloat(fields[5]);
         SegmentData segmentData = new SegmentData();
         segmentData.setLocation(new ChromosomalLocation());
-        segmentData.setNumberOfMarkers(segment.getMarkersPerSegment(segmentIndex));
-        segmentData.setSegmentValue((float) segment.getAverageSegmentValue(segmentIndex));
-        segmentData.getLocation().setChromosome(segment.getChromosomeIndex(segmentIndex));
-        segmentData.getLocation().setStartPosition((int) segment.getStartMapPosition(segmentIndex));
-        segmentData.getLocation().setEndPosition((int) segment.getEndMapPosition(segmentIndex));
-        return segmentData;
+        segmentData.getLocation().setChromosome(chromosome);
+        segmentData.getLocation().setStartPosition(start);
+        segmentData.getLocation().setEndPosition(end);
+        segmentData.setNumberOfMarkers(numberOfMarkers);
+        segmentData.setSegmentValue(segmentValue);
+        arrayData.getSegmentDatas().add(segmentData);
     }
 
     private Map<String, ArrayData> getArrayDataMap(CopyNumberData copyNumberData) {
@@ -187,69 +191,57 @@ public class BioconductorServiceImpl implements BioconductorService {
         }
         return arrayDataMap;
     }
-
-    private DNAcopyAssays buildAssays(CopyNumberData copyNumberData) {
-        DNAcopyAssays assays = new DNAcopyAssays();
-        int reporterCount = getReporterCount(copyNumberData.getReporters());
-        configureMapInformation(copyNumberData, assays, reporterCount);
-        assays.setExpressionDataCollection(new ExpressionData[copyNumberData.getArrayDatas().size()]);
-        int index = 0;
-        for (ArrayData arrayData : copyNumberData.getArrayDatas()) {
-            assays.setExpressionDataCollection(index, buildExpressionData(copyNumberData, arrayData, reporterCount));
-            index++;
+    
+    private File getOutputFile(JobInfo jobInfo) throws IOException, GenePatternServiceException, 
+    DataRetrievalException {
+        FileWrapper outputFileWrapper = client.getResultFile(jobInfo, OUTPUT_FILENAME);
+        if (outputFileWrapper == null) {
+            throw new DataRetrievalException("GLAD job did not complete successfully, output was not returned");
         }
-        return assays;
+        File outputFile = File.createTempFile("output", ".glad");
+        FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
+        IOUtils.copy(outputFileWrapper.getDataHandler().getInputStream(), fileOutputStream);
+        fileOutputStream.close();
+        return outputFile;
     }
 
-    private ExpressionData buildExpressionData(CopyNumberData copyNumberData, ArrayData arrayData, int reporterCount) {
-        ExpressionData data = new ExpressionData();
-        data.setSampleId(String.valueOf(arrayData.getId()));
-        double[] values = new double[reporterCount];
-        int index = 0;
+    private File createInputFile(CopyNumberData copyNumberData) throws IOException {
+        File inputFile = File.createTempFile("glad_input", ".cn");
+        FileWriter writer = new FileWriter(inputFile);
+        List<ArrayData> arrayDatas = new ArrayList<ArrayData>();
+        arrayDatas.addAll(copyNumberData.getArrayDatas());
+        writeHeader(writer, arrayDatas);
+        writeData(writer, arrayDatas, copyNumberData);
+        writer.flush();
+        writer.close();
+        return inputFile;
+    }
+
+    private void writeData(FileWriter writer, List<ArrayData> arrayDatas, CopyNumberData copyNumberData) 
+    throws IOException {
         for (int i = 0; i < copyNumberData.getReporters().size(); i++) {
             DnaAnalysisReporter reporter = copyNumberData.getReporters().get(i);
             if (reporter.hasValidLocation()) {
-                values[index++] = copyNumberData.getValues(arrayData)[i];
-            }
-        }
-        data.setLogRatioValues(values);
-        return data;
-    }
-
-    private void configureMapInformation(CopyNumberData copyNumberData, DNAcopyAssays assays, int reporterCount) {
-        assays.setChromsomeId(new int[reporterCount]);
-        assays.setMapLocation(new long[reporterCount]);
-        int index = 0;
-        for (DnaAnalysisReporter reporter : copyNumberData.getReporters()) {
-            if (reporter.hasValidLocation()) {
-                assays.setChromsomeId(index, reporter.getChromosomeAsInt());
-                assays.setMapLocation(index++, reporter.getPosition());
+                writeDataLine(writer, arrayDatas, copyNumberData, i, reporter);
             }
         }
     }
 
-    private int getReporterCount(List<DnaAnalysisReporter> reporters) {
-       int reporterCount = 0;
-       for (DnaAnalysisReporter reporter : reporters) {
-           if (reporter.hasValidLocation()) {
-               reporterCount++;
-           }
-       } 
-       return reporterCount;
-    }
-    
-    /**
-     * @return the clientFactory
-     */
-    public BioconductorClientFactory getClientFactory() {
-        return clientFactory;
+    private void writeDataLine(FileWriter writer, List<ArrayData> arrayDatas, CopyNumberData copyNumberData, int i,
+            DnaAnalysisReporter reporter) throws IOException {
+        writer.write(reporter.getName() + "\t" + reporter.getChromosomeAsInt() + "\t" + reporter.getPosition());
+        for (ArrayData arrayData : arrayDatas) {
+            writer.write("\t" + Math.pow(2, copyNumberData.getValues(arrayData)[i]));
+        }
+        writer.write("\n");
     }
 
-    /**
-     * @param clientFactory the clientFactory to set
-     */
-    public void setClientFactory(BioconductorClientFactory clientFactory) {
-        this.clientFactory = clientFactory;
+    private void writeHeader(FileWriter writer, List<ArrayData> arrayDatas) throws IOException {
+        writer.write("SNP\tChromosome\tPhysicalPosition");
+        for (ArrayData arrayData : arrayDatas) {
+            writer.write("\t" + arrayData.getId());
+        }
+        writer.write("\n");
     }
 
 }

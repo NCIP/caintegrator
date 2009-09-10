@@ -92,7 +92,11 @@ package gov.nih.nci.caintegrator2.domain.genomic;
 public class DnaAnalysisReporter extends AbstractReporter {
 
     private static final long serialVersionUID = 1L;
-    
+
+    private static final int X_CHROMOSOME_VALUE = 23;
+    private static final int Y_CHROMOSOME_VALUE = 24;
+    private static final int MT_CHROMOSOME_VALUE = 25;
+
     private String chromosome;
     private Integer position;
     private String dbSnpId;
@@ -124,7 +128,7 @@ public class DnaAnalysisReporter extends AbstractReporter {
         } else if (reporter.getChromosome() == null) {
             return -1;
         } else {
-            return chromosome.compareTo(reporter.getChromosome());
+            return ((Integer) getChromosomeAsInt()).compareTo(reporter.getChromosomeAsInt());
         }
     }
 
@@ -212,5 +216,21 @@ public class DnaAnalysisReporter extends AbstractReporter {
     public boolean hasValidLocation() {
         return getChromosome() != null && getPosition() != null;
     }
+
+    /**
+     * @return the integer value for the chromosome.
+     */
+    public int getChromosomeAsInt() {
+        if ("X".equalsIgnoreCase(getChromosome())) {
+            return X_CHROMOSOME_VALUE;
+        } else if ("Y".equalsIgnoreCase(getChromosome())) {
+            return Y_CHROMOSOME_VALUE;
+        } else if ("MT".equalsIgnoreCase(getChromosome())) {
+            return MT_CHROMOSOME_VALUE;
+        } else {
+            return Integer.parseInt(chromosome);
+        }
+    }
+
 
 }

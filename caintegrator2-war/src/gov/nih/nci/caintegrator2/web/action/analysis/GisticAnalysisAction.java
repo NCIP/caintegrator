@@ -102,7 +102,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator2.web.ajax.IPersistedAnalysisJobAjaxUpdater;
 
@@ -259,7 +258,6 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     }
     
     private boolean loadParameters() throws InvalidCriterionException {
-        loadServers();
         loadQueries();
         return loadRefgeneFileParameter();
     }
@@ -308,12 +306,6 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
         return genomeVersions;
     }
 
-    private void loadServers() {
-        ServerConnectionProfile server = new ServerConnectionProfile();
-        server.setUrl(getCurrentGisticAnalysisJob().getGisticUrl());
-        getGisticParameters().setServer(server);
-    }
-    
     private void loadQueries() {
         if (!StringUtils.isBlank(getGisticAnalysisForm().getSelectedQuery())) {
             getGisticParameters().setClinicalQuery(getQuery(getGisticAnalysisForm().getSelectedQuery()));

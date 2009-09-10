@@ -106,7 +106,7 @@ public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBa
     @Before
     public void setUp() {
         super.setUp();
-        
+
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditCopyNumberDataConfigurationActionTest.class); 
         action = (EditCopyNumberDataConfigurationAction) context.getBean("editCopyNumberDataConfigurationAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
@@ -140,7 +140,7 @@ public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBa
         action.validate();
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
-        action.getCopyNumberDataConfiguration().getCaDNACopyService().setUrl("url");
+        action.getCopyNumberDataConfiguration().getSegmentationService().setUrl("url");
         action.validate();
         assertFalse(action.hasFieldErrors());
     }

@@ -33,7 +33,7 @@
             <s:hidden name="selectedAction" />
             <s:textfield name="currentGisticAnalysisJob.name" label="Job Name" size="50" required="true" />
             <br />
-            <s:select name="currentGisticAnalysisJob.gisticUrl"
+            <s:select name="gisticParameters.server.url"
                 list="gisticServices" label="GISTIC Server" required="true" />
             <br />
             <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin-left: 0px;height:110px">
