@@ -23,8 +23,18 @@
 
 <div id="appheader">
 
-    <div id="mainlogo"><a href="/caintegrator2/index.jsp"><img
-        src="/caintegrator2/images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a>
+    <div id="mainlogo">
+        <div>
+            <a href="index.jsp"><img src="/caintegrator2/images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a>
+        </div>
+        <s:set name="holdsvnurl" value="#application['svnUrl']"/>
+        <s:set name="holdsvntag" value="#application['caintegrator2Svntag']"/>
+        <s:set name="holdsvnrev" value="#application['svnRevision']"/>
+        <s:set name="holdbuilddate" value="#application['caintegrator2Builddate']"/>
+        <s:div id="versioninfo" title="caINTEGRATOR2, BUILD DATE: %{holdbuilddate}, SVNTAG: %{holdsvntag}, SVNURL: %{holdsvnurl}, SVNREV: %{holdsvnrev}">
+            build: <s:property value="%{holdsvntag}"/> | 
+            date: <s:property value="%{holdbuilddate}"/>           
+        </s:div>
     </div>
 
 </div>
