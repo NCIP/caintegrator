@@ -20,14 +20,14 @@
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/caintegrator2.css" />
         <s:head theme="ajax"/>
-        <script type="text/javascript" src="common/js/pde.js"></script>
-        <script type="text/javascript" src="common/js/prototype.js"></script>
-        <script type="text/javascript" src="common/js/scriptaculous.js"></script>
-        <script type="text/javascript" src="common/js/effects.js"></script>
-        <script type="text/javascript" src="common/js/prototype.js"></script>
-        <script type="text/javascript" src="common/js/caintegrator2.js"></script>
-        <script type="text/javascript" src="common/js/onlinehelp.js"></script>
-        <script type="text/javascript" src="./struts/optiontransferselect.js"></script>      
+        <script type="text/javascript" src="/caintegrator2/common/js/pde.js"></script>
+        <script type="text/javascript" src="/caintegrator2/common/js/prototype.js"></script>
+        <script type="text/javascript" src="/caintegrator2/common/js/scriptaculous.js"></script>
+        <script type="text/javascript" src="/caintegrator2/common/js/effects.js"></script>
+        <script type="text/javascript" src="/caintegrator2/common/js/prototype.js"></script>
+        <script type="text/javascript" src="/caintegrator2/common/js/caintegrator2.js"></script>
+        <script type="text/javascript" src="/caintegrator2/common/js/onlinehelp.js"></script>
+        <script type="text/javascript" src="/caintegrator2/struts/optiontransferselect.js"></script>      
 	</head>
 	
 	
