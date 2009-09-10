@@ -2,18 +2,25 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
             
 <div id="content">
-
-    <!--Page Help-->
-
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('login_help')" class="help">
-   (draft)</a>
-    </div>
     
-    <p>
+    <div class="box">
+    <h2 class="darker" style="padding: 6px 10px;">Welcome to caIntegrator2 </h2>
+    
+    <p style="padding: 0.25em 0pt 1em 2em; max-width: 800px;">
         caIntegrator2 is a web-based software application that allows researchers to set up custom, caBIG®-compatible web portals to conduct integrative research, without requiring programming experience. These portals bring together heterogeneous clinical, microarray and medical imaging data to enrich multidisciplinary research.
     </p>
+    </div>
+    
+    <hr>
 
-    <!--/Page Help-->        
+    <!--Page Help-->
+        
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('login_help')" class="help">
+   &nbsp;</a>
+    </div>
+    
+    <!--/Page Help-->
+    
     <font color="green"> <s:actionmessage /> </font>
     <!--ADD CONTENT HERE-->
     <s:if test="#session['ACEGI_SECURITY_LAST_EXCEPTION'] != null">
