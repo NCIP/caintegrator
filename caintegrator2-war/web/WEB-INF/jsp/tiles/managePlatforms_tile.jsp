@@ -11,7 +11,7 @@
 <!--Page Help-->
 
 <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('manage_platforms_help')" class="help">
-(draft)</a>
+&nbsp;</a>
 </div>
 
 <!--/Page Help-->

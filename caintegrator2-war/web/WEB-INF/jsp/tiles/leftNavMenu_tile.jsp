@@ -134,7 +134,7 @@
                 </s:if>
                 <li><a href="javascript:openWin('/caintegrator2//help/Getting_Started.2.8.html#1122280')">Support</a></li>
                 <li><a href="${tutorialsUrl}">Tutorials</a></li>
-                <li><a href="javascript:openUsersGuideWindow('top')">User Guide (draft)</a></li>
+                <li><a href="javascript:openUsersGuideWindow('top')">User Guide</a></li>
             </ul>
         </li>
     </ul>

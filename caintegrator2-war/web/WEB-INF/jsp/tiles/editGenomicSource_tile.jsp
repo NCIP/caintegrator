@@ -8,7 +8,7 @@
     <!--Page Help-->
 
     <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('edit_genomic_data_help')" class="help">
-   (draft)</a>
+   &nbsp;</a>
     </div>
 
     <!--/Page Help-->
