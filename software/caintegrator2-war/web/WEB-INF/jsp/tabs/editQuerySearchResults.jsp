@@ -185,7 +185,7 @@
         </s:else>
     </div>
     <!--Buttons-->
-
+    <s:if test="queryResult.numberOfRows > 0">
     <div class="actionsrow">
     <del class="btnwrapper">
     <ul class="btnrow">
@@ -197,22 +197,23 @@
         <s:else>
             <li><s:a href="#" cssClass="btn" onclick="submitForm('exportGenomicResults')"
                 onclick="openExportLink(); return false;">
-                <span class="btn_img"><span class="add">Export To CSV</span></span>
+                <span class="btn_img">Export To CSV</span>
             </s:a></li>
         </s:else>
         <s:if test="queryForm.hasImageDataSources()">
             <li><s:a href="#" cssClass="btn" 
                 onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
-                <span class="btn_img"><span class="add">Forward To NBIA</span></span>
+                <span class="btn_img">Forward To NBIA</span>
             </s:a></li>
             <li><s:a href="#" cssClass="btn" 
                 onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='retrieveDicomImages';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
-                <span class="btn_img"><span class="add">Retrieve Dicom Images</span></span>
+                <span class="btn_img">Retrieve Dicom Images</span>
             </s:a></li>
         </s:if>
     </ul>
     </del>
     </div>
+    </s:if>
 
     <!--/Buttons-->
 </s:div>

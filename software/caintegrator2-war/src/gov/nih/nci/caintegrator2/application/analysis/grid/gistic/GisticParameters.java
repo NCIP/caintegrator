@@ -106,8 +106,8 @@ public class GisticParameters {
     private static final String REMOVE_X_NO = "No";
     private static final int REMOVE_X_YES_VALUE = 1;
     private static final int REMOVE_X_NO_VALUE = 0;
-    private static final Float DEFAULT_AMPLIFICATIONS = .848f;
-    private static final Float DEFAULT_DELETIONS = .737f;
+    private static final Float DEFAULT_AMPLIFICATIONS = .1f;
+    private static final Float DEFAULT_DELETIONS = .1f;
     private static final Float DEFAULT_QV_THRESH = .25f;
     
     private Query clinicalQuery;
