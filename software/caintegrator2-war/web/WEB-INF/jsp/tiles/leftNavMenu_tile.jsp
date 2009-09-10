@@ -130,6 +130,7 @@
             <ul>
                 <s:if test="!#sessionHelper.authenticated">
                     <li><a href="/caintegrator2/index.jsp">Login</a></li>
+                    <li><a href="registration/input.action">Register</a></li>
                 </s:if>
                 <li><a href="javascript:openWin('/caintegrator2//help/Getting_Started.2.8.html#1122280')">Support</a></li>
                 <li><a href="${tutorialsUrl}">Tutorials</a></li>
