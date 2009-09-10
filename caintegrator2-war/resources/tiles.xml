@@ -104,7 +104,6 @@
     </definition>
     
     <definition name="registration" extends="cssBaseDef">
-        <put-attribute name="leftNavMenu" value=""/>
         <put-attribute name="globalHeader" value="/WEB-INF/jsp/tiles/loginHeader_tile.jsp" />
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/registration_tile.jsp" />
         <put-attribute name="subTitle" value="Register" />

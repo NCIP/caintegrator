@@ -25,7 +25,7 @@
 
     <div id="mainlogo">
         <div>
-            <a href="index.jsp"><img src="/caintegrator2/images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a>
+            <a href="/caintegrator2/index.jsp"><img src="/caintegrator2/images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a>
         </div>
         <s:set name="holdsvnurl" value="#application['svnUrl']"/>
         <s:set name="holdsvntag" value="#application['caintegrator2Svntag']"/>

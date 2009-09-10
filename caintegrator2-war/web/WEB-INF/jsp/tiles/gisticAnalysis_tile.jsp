@@ -51,7 +51,7 @@
                 list="controlSampleSets" label="Exclude Sample Control Set"
                 required="true" theme="css_xhtml"
                 title="Samples in this set will be excluded."/>
-            <s:textfield name="gisticParameters.amplificationsThreshold" label="Amplifications Threshold" size="50" required="false" />
+            <s:textfield name="gisticParameters.amplificationsThreshold" label="Amplifications Threshold" size="50" required="true" />
             <br />
             <s:textfield name="gisticParameters.deletionsThreshold" label="Deletions Threshold" size="50" required="true" />
             <br />
