@@ -14,7 +14,7 @@ public class FoldChangeCriterion extends AbstractGenomicCriterion implements Clo
     private RegulationTypeEnum regulationType;
     private String geneSymbol;
     private String controlSampleSetName;
-    private SampleSet compareToSampleSet = new SampleSet();
+    private transient SampleSet compareToSampleSet = new SampleSet();
     
 
     /**
