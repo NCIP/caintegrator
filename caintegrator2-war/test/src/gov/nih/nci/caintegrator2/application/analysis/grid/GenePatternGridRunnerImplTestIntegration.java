@@ -298,11 +298,9 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
     public void testRunGistic() throws ConnectionException, InvalidCriterionException, IOException, ParameterException {
         setupContext();
         StudySubscription subscription = setupStudySubscription(ArrayDataType.COPY_NUMBER);
-        ServerConnectionProfile server = new ServerConnectionProfile();
-        server.setUrl(GISTIC_URL);
         GisticParameters parameters = new GisticParameters();
         parameters.setRefgeneFile(GisticRefgeneFileEnum.HUMAN_HG16);
-        parameters.setServer(server);
+        parameters.getServer().setUrl(GISTIC_URL);
         File zipFile = null;
         GisticAnalysisJob job = new GisticAnalysisJob();
         job.setSubscription(subscription);

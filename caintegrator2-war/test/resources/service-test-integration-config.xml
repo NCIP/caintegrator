@@ -50,7 +50,12 @@
         <property name="copyNumberHandlerFactory">
             <ref local="copyNumberHandlerFactory" />
         </property>
+        <property name="genePatternClientFactory">
+            <ref local="genePatternClientFactory" />
+        </property>
     </bean>
+
+    <bean id="genePatternClientFactory" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactoryImpl" />
 
     <bean id="copyNumberHandlerFactory" 
         class="gov.nih.nci.caintegrator2.application.study.deployment.CopyNumberHandlerFactoryImpl" />

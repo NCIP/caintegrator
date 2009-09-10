@@ -18,7 +18,7 @@
         <s:hidden name="genomicSource.id" />
         <s:hidden name="action" />
         <s:file name="copyNumberMappingFile" label="Subject and Sample to Copy Number Mapping File" />
-        <s:select name="copyNumberDataConfiguration.caDNACopyService.url"
+        <s:select name="copyNumberDataConfiguration.segmentationService.url"
                 list="caDnaCopyServices" label="CaDNACopy Service URL" required="true" />
         <s:textfield name="copyNumberDataConfiguration.changePointSignificanceLevel" label="Change Point Significance Level" />
         <s:textfield name="copyNumberDataConfiguration.earlyStoppingCriterion" label="Early Stopping Criterion" />

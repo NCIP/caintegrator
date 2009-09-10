@@ -124,6 +124,8 @@ public class AuthorizationInterceptorTest {
 
     private static class ActionInvocationStub implements ActionInvocation {
 
+        private static final long serialVersionUID = 1L;
+        
         public void addPreResultListener(PreResultListener listener) {
             
         }

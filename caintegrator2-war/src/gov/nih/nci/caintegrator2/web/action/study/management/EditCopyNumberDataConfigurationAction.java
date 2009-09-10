@@ -181,7 +181,7 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
         } else if (copyNumberMappingFile.length() == 0) {
             addFieldError("copyNumberMappingFile", " File is empty");
         }
-        if (StringUtils.isBlank(getCopyNumberDataConfiguration().getCaDNACopyService().getUrl())) {
+        if (StringUtils.isBlank(getCopyNumberDataConfiguration().getSegmentationService().getUrl())) {
             addFieldError("copyNumberDataConfiguration.caDNACopyService.url", "CaDNACopy Service URL is required.");
         }
     }

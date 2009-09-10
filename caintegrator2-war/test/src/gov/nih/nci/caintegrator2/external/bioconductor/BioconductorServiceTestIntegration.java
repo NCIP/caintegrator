@@ -12,6 +12,7 @@ import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.deployment.PublicAffymetrixCopyNumberChpParser;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.CopyNumberData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
@@ -52,7 +53,7 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
         CopyNumberDataConfiguration configuration = new CopyNumberDataConfiguration();
         ServerConnectionProfile server = new ServerConnectionProfile();
         server.setUrl("http://ncias-d227-v.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
-        configuration.setCaDNACopyService(server);
+        configuration.setSegmentationService(server);
         configuration.setChangePointSignificanceLevel(0.0);
         configuration.setEarlyStoppingCriterion(0.0);
         configuration.setPermutationReplicates(0);

@@ -83,136 +83,94 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.application.study.deployment;
 
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import static org.junit.Assert.assertEquals;
+import edu.mit.broad.genepattern.gp.services.FileWrapper;
+import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import edu.mit.broad.genepattern.gp.services.JobInfo;
+import edu.mit.broad.genepattern.gp.services.ParameterInfo;
+import gov.nih.nci.caintegrator2.application.analysis.GenePatternClientStub;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.CopyNumberData;
+import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.Serializable;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Provides persistent access to a file that maps subjects to samples to copy number data files in caArray.
- * 
- * <p>The format of the file should be subject_id,sample_name,cnchp_filename on each line.
- */
-public class CopyNumberDataConfiguration implements Serializable {
+import javax.activation.DataHandler;
 
-    private static final long serialVersionUID = 1L;
-    private static final Double DEFAULT_CHANGE_POINT_SIGNIFICANCE_LEVEL = 0.01;
-    private static final Double DEFAULT_EARLY_STOPPING_CRITERION = 0.05;
-    private static final Integer DEFAULT_PERMUTATION_REPLICATES = 10000;
+import org.junit.Before;
+import org.junit.Test;
+
+public class GladSegmentationHandlerTest {
     
-    private String mappingFilePath;
-    private Double changePointSignificanceLevel = DEFAULT_CHANGE_POINT_SIGNIFICANCE_LEVEL;
-    private Double earlyStoppingCriterion = DEFAULT_EARLY_STOPPING_CRITERION;
-    private Integer permutationReplicates = DEFAULT_PERMUTATION_REPLICATES;
-    private Integer randomNumberSeed = 0;
-    private ServerConnectionProfile segmentationService = new ServerConnectionProfile();
-
-    /**
-     * @return the mappingFilePath
-     */
-    public String getMappingFilePath() {
-        return mappingFilePath;
+    private GladSegmentationHandler handler;
+    private LocalGenePatternClientStub clientStub = new LocalGenePatternClientStub();
+    
+    @Before
+    public void setUp() {
+        handler = new GladSegmentationHandler(clientStub);
     }
 
-    /**
-     * @param mappingFilePath the mappingFilePath to set
-     */
-    public void setMappingFilePath(String mappingFilePath) {
-        this.mappingFilePath = mappingFilePath;
+    @Test
+    public void testAddSegmentationData() throws DataRetrievalException {
+        List<DnaAnalysisReporter> reporters = new ArrayList<DnaAnalysisReporter>();
+        CopyNumberData copyNumberData = new CopyNumberData(reporters);
+        ArrayData arrayData1 = new ArrayData();
+        arrayData1.setId(1L);
+        copyNumberData.addCopyNumberData(arrayData1, new float[0]);
+        ArrayData arrayData2 = new ArrayData();
+        arrayData2.setId(2L);
+        copyNumberData.addCopyNumberData(arrayData2, new float[0]);
+        handler.addSegmentationData(copyNumberData);
+        assertEquals(1, arrayData1.getSegmentDatas().size());
+        assertEquals(1, arrayData2.getSegmentDatas().size());
+        SegmentData segmentData = arrayData1.getSegmentDatas().first();
+        assertEquals("17", segmentData.getLocation().getChromosome());
+        assertEquals(41419603, (int) segmentData.getLocation().getStartPosition());
+        assertEquals(36581538, (int) segmentData.getLocation().getEndPosition());
+        assertEquals(6427, (int) segmentData.getNumberOfMarkers());
+        assertEquals(2.06, (float) segmentData.getSegmentValue(), 0.001);
     }
-
-    /**
-     * The file.
-     * 
-     * @return the file.
-     * @throws FileNotFoundException when file path is null.
-     */
-    public File getMappingFile() throws FileNotFoundException {
-        if (getMappingFilePath() == null) {
-            throw new FileNotFoundException("File path is null.");
-        } else {
-            return new File(getMappingFilePath());
+    
+    private static class LocalGenePatternClientStub extends GenePatternClientStub {
+        
+        @Override
+        public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws GenePatternServiceException {
+            assertEquals("GLAD", taskName);
+            assertEquals(2, parameters.size());
+            return new JobInfo();
         }
-    }
 
-    /**
-     * @return the changePointSignificanceLevel
-     */
-    public Double getChangePointSignificanceLevel() {
-        return changePointSignificanceLevel;
-    }
-
-    /**
-     * @param changePointSignificanceLevel the changePointSignificanceLevel to set
-     */
-    public void setChangePointSignificanceLevel(Double changePointSignificanceLevel) {
-        this.changePointSignificanceLevel = changePointSignificanceLevel;
-    }
-
-    /**
-     * @return the earlyStoppingCriterion
-     */
-    public Double getEarlyStoppingCriterion() {
-        return earlyStoppingCriterion;
-    }
-
-    /**
-     * @param earlyStoppingCriterion the earlyStoppingCriterion to set
-     */
-    public void setEarlyStoppingCriterion(Double earlyStoppingCriterion) {
-        this.earlyStoppingCriterion = earlyStoppingCriterion;
-    }
-
-    /**
-     * @return the permutationReplicates
-     */
-    public Integer getPermutationReplicates() {
-        return permutationReplicates;
-    }
-
-    /**
-     * @param permutationReplicates the permutationReplicates to set
-     */
-    public void setPermutationReplicates(Integer permutationReplicates) {
-        this.permutationReplicates = permutationReplicates;
-    }
-
-    /**
-     * @return the randomNumberSeed
-     */
-    public Integer getRandomNumberSeed() {
-        return randomNumberSeed;
-    }
-
-    /**
-     * @param randomNumberSeed the randomNumberSeed to set
-     */
-    public void setRandomNumberSeed(Integer randomNumberSeed) {
-        this.randomNumberSeed = randomNumberSeed;
-    }
-
-    /**
-     * @return the segmentationService
-     */
-    public ServerConnectionProfile getSegmentationService() {
-        return segmentationService;
-    }
-
-    /**
-     * @param segmentationService the segmentationService to set
-     */
-    public void setSegmentationService(ServerConnectionProfile segmentationService) {
-        this.segmentationService = segmentationService;
-    }
-
-    /**
-     * @return true if configured to use CaDNACopy.
-     */
-    public boolean isCaDNACopyConfiguration() {
-        return getSegmentationService().getUrl().endsWith("/CaDNAcopy");
+        @Override
+        public JobInfo getStatus(JobInfo jobInfo) {
+            jobInfo.setStatus("Completed");
+            return jobInfo;
+        }
+        
+        @Override
+        public FileWrapper getResultFile(JobInfo jobInfo, String filename) {
+            assertEquals("output.glad", filename);
+            FileWrapper wrapper = new FileWrapper();
+            DataHandler dataHandler = new DataHandler(null, null) {
+                private static final String TEST_OUTPUT = "Sample\tChromosome\tStart.bp\tEnd.bp\tNum.SNPs\tSeg.CN\n"
+                    + "1\t17\t41419603\t36581538\t6427\t2.06\n"
+                    + "2\t18\t56507051\t10075159\t6732\t1.881\n";
+                
+                @Override
+                public InputStream getInputStream() throws IOException {
+                    return new ByteArrayInputStream(TEST_OUTPUT.getBytes());
+                }
+            };
+            wrapper.setDataHandler(dataHandler);
+            return wrapper;
+        }
     }
 
 }

@@ -96,7 +96,6 @@ public class GisticAnalysisJob extends AbstractPersistedAnalysisJob {
     
     private final transient GisticAnalysisForm gisticAnalysisForm = new GisticAnalysisForm();
     private ResultsZipFile resultsZipFile;
-    private String gisticUrl;
 
     /**
      * Default Constructor.
@@ -113,20 +112,6 @@ public class GisticAnalysisJob extends AbstractPersistedAnalysisJob {
     }
 
     /**
-     * @return the gisticUrl
-     */
-    public String getGisticUrl() {
-        return gisticUrl;
-    }
-
-    /**
-     * @param gisticUrl the gisticUrl to set
-     */
-    public void setGisticUrl(String gisticUrl) {
-        this.gisticUrl = gisticUrl;
-    }
-
-    /**
      * @return the resultsZipFile
      */
     public ResultsZipFile getResultsZipFile() {
@@ -138,5 +123,12 @@ public class GisticAnalysisJob extends AbstractPersistedAnalysisJob {
      */
     public void setResultsZipFile(ResultsZipFile resultsZipFile) {
         this.resultsZipFile = resultsZipFile;
+    }
+
+    /**
+     * @return true if a grid service invocation, false if web service invocation.
+     */
+    public boolean isGridServiceCall() {
+        return getGisticAnalysisForm().getGisticParameters().getServer().getUrl().endsWith("/Gistic");
     }
 }

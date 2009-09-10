@@ -101,6 +101,8 @@ import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotAnnot
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotClinicalQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotGenomicQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticRefgeneFileEnum;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotServiceImpl;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
@@ -111,14 +113,21 @@ import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceForKMPlotStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -152,6 +161,7 @@ public class AnalysisServiceTest {
         serviceImpl.setKmPlotService(kmPlotService);
         serviceImpl.setGePlotService(gePlotService);
         serviceImpl.setQueryManagementService(queryManagementServiceForKmPlotStub);
+        serviceImpl.setFileManager(new FileManagerStub());
         service = serviceImpl;
     }
 
@@ -175,6 +185,31 @@ public class AnalysisServiceTest {
         assertEquals("parameter3", parameterWithChoices.getName());
         assertEquals(2, parameterWithChoices.getChoiceKeys().size());
         assertEquals(Integer.valueOf(1), ((IntegerParameterValue) parameterWithChoices.getChoice("choice1")).getValue());
+    }
+    
+    @Test
+    public void testGisticWebService() throws ConnectionException, InvalidCriterionException, ParameterException, IOException {
+        GisticTestListener listener = new GisticTestListener();
+        GisticAnalysisJob job = new GisticAnalysisJob();
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(new Study());
+        job.setSubscription(subscription);
+        GisticParameters parameters = new GisticParameters();
+        job.getGisticAnalysisForm().setGisticParameters(parameters);
+        parameters.getServer().setUrl("http://genepattern.broadinstitute.org/gp/services/Analysis");
+        parameters.setRefgeneFile(GisticRefgeneFileEnum.HUMAN_HG16);
+        service.executeGridGistic(listener, job);
+        assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.PROCESSING_LOCALLY));
+        assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.PROCESSING_REMOTELY));
+        assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.COMPLETED));
+    }
+    
+    private static class GisticTestListener implements StatusUpdateListener {
+        private Set<AnalysisJobStatusEnum> statuses = new HashSet<AnalysisJobStatusEnum>();
+
+        public void updateStatus(AbstractPersistedAnalysisJob job) {
+            statuses.add(job.getStatus());
+        }
     }
     
     @Test
@@ -391,6 +426,12 @@ public class AnalysisServiceTest {
         private String taskName;
         private List<ParameterInfo> parameters;
 
+        @Override
+        public JobInfo getStatus(JobInfo jobInfo) {
+            jobInfo.setStatus("Completed");
+            return jobInfo;
+        }
+
         @SuppressWarnings("unchecked")
         public TaskInfo[] getTasks() throws GenePatternServiceException {
             TaskInfo[] tasks = new TaskInfo[4];
@@ -481,7 +522,7 @@ public class AnalysisServiceTest {
         public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws GenePatternServiceException {
             this.taskName = taskName;
             this.parameters = parameters;
-            return null;
+            return new JobInfo();
         }
 
 
@@ -490,6 +531,21 @@ public class AnalysisServiceTest {
     private static class DaoForAnalysisServiceStub extends CaIntegrator2DaoStub {
         
         public boolean returnNoGeneSymbols = false;
+        
+        /**
+         * {@inheritDoc}
+         */
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> T get(Long id, Class<T> objectClass) {
+            if (objectClass.equals(StudySubscription.class)) {
+                 StudySubscription studySubscription = new StudySubscription();
+                 studySubscription.setStudy(new Study());
+                 return (T) studySubscription;
+            } else {
+                return super.get(id, objectClass);
+            }
+        }
         
         @Override
         public void clear() {

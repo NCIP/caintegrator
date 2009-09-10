@@ -47,7 +47,6 @@
         </subclass>
         <subclass name="GisticAnalysisJob" lazy="false" discriminator-value="GISTIC">
             <!-- Attributes mapping for the GisticAnalysisJob class -->
-            <property name="gisticUrl" type="string" column="MAIN_GRID_URL"/>
             <component name="ResultsZipFile">
                 <property name="path" column="RESULTS_ZIP_FILE_PATH" />
             </component>

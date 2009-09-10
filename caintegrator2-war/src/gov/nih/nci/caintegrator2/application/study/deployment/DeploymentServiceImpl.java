@@ -91,6 +91,7 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactory;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
 import gov.nih.nci.caintegrator2.application.study.Status;
@@ -116,6 +117,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     private ArrayDataService arrayDataService;
     private BioconductorService bioconductorService;
     private CopyNumberHandlerFactory copyNumberHandlerFactory = new CopyNumberHandlerFactoryImpl();
+    private GenePatternClientFactory genePatternClientFactory;
 
     /**
      * {@inheritDoc}
@@ -165,9 +167,10 @@ public class DeploymentServiceImpl implements DeploymentService {
     private Status doDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener) 
     throws ConnectionException, DataRetrievalException, ValidationException {
         if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
-            new GenomicDataHelper(getCaArrayFacade(), 
-                    getArrayDataService(), getDao(), getBioconductorService(), getCopyNumberHandlerFactory())
-                .loadData(studyConfiguration);
+            GenomicDataHelper genomicDataHelper = new GenomicDataHelper(getCaArrayFacade(), 
+                    getArrayDataService(), getDao(), getBioconductorService(), getCopyNumberHandlerFactory());
+            genomicDataHelper.setGenePatternClientFactory(getGenePatternClientFactory());
+            genomicDataHelper.loadData(studyConfiguration);
         }
         studyConfiguration.setStatus(Status.DEPLOYED);
         studyConfiguration.setDeploymentFinishDate(new Date());
@@ -255,6 +258,20 @@ public class DeploymentServiceImpl implements DeploymentService {
      */
     public void setCopyNumberHandlerFactory(CopyNumberHandlerFactory copyNumberHandlerFactory) {
         this.copyNumberHandlerFactory = copyNumberHandlerFactory;
+    }
+
+    /**
+     * @return the genePatternClientFactory
+     */
+    public GenePatternClientFactory getGenePatternClientFactory() {
+        return genePatternClientFactory;
+    }
+
+    /**
+     * @param genePatternClientFactory the genePatternClientFactory to set
+     */
+    public void setGenePatternClientFactory(GenePatternClientFactory genePatternClientFactory) {
+        this.genePatternClientFactory = genePatternClientFactory;
     }
 
 }
