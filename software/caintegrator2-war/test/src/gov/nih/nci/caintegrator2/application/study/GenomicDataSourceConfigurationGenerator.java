@@ -116,10 +116,10 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
             assertEquals(originalConfig.getChangePointSignificanceLevel(), retrievedConfig.getChangePointSignificanceLevel());
             assertEquals(originalConfig.getEarlyStoppingCriterion(), retrievedConfig.getEarlyStoppingCriterion());
             assertEquals(originalConfig.getRandomNumberSeed(), retrievedConfig.getRandomNumberSeed());
-            if (originalConfig.getCaDNACopyService() == null) {
-                assertNull(retrievedConfig.getCaDNACopyService());
+            if (originalConfig.getSegmentationService() == null) {
+                assertNull(retrievedConfig.getSegmentationService());
             } else {
-                ServerConnectionProfileGenerator.INSTANCE.compare(originalConfig.getCaDNACopyService(), retrievedConfig.getCaDNACopyService());                
+                ServerConnectionProfileGenerator.INSTANCE.compare(originalConfig.getSegmentationService(), retrievedConfig.getSegmentationService());                
             }
         }
         if (original.getControlSampleSetCollection() == null) {
@@ -148,7 +148,7 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
             cnDataConfig.setEarlyStoppingCriterion(getUniqueDouble());
             cnDataConfig.setPermutationReplicates(getUniqueInt());
             cnDataConfig.setRandomNumberSeed(getUniqueInt());
-            ServerConnectionProfileGenerator.INSTANCE.setValues(cnDataConfig.getCaDNACopyService(), nonCascadedObjects);
+            ServerConnectionProfileGenerator.INSTANCE.setValues(cnDataConfig.getSegmentationService(), nonCascadedObjects);
         } else if (config.getDataType().equals(GenomicDataSourceDataTypeEnum.EXPRESSION)) {
             for (int i = 0; i < 3; i++) {
                 config.getSamples().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));

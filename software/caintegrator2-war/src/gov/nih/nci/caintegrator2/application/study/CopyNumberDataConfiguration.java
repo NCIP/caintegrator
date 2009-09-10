@@ -108,7 +108,7 @@ public class CopyNumberDataConfiguration implements Serializable {
     private Double earlyStoppingCriterion = DEFAULT_EARLY_STOPPING_CRITERION;
     private Integer permutationReplicates = DEFAULT_PERMUTATION_REPLICATES;
     private Integer randomNumberSeed = 0;
-    private ServerConnectionProfile caDNACopyService = new ServerConnectionProfile();
+    private ServerConnectionProfile segmentationService = new ServerConnectionProfile();
 
     /**
      * @return the mappingFilePath
@@ -195,17 +195,24 @@ public class CopyNumberDataConfiguration implements Serializable {
     }
 
     /**
-     * @return the caDNACopyService
+     * @return the segmentationService
      */
-    public ServerConnectionProfile getCaDNACopyService() {
-        return caDNACopyService;
+    public ServerConnectionProfile getSegmentationService() {
+        return segmentationService;
     }
 
     /**
-     * @param caDNACopyService the caDNACopyService to set
+     * @param segmentationService the segmentationService to set
      */
-    public void setCaDNACopyService(ServerConnectionProfile caDNACopyService) {
-        this.caDNACopyService = caDNACopyService;
+    public void setSegmentationService(ServerConnectionProfile segmentationService) {
+        this.segmentationService = segmentationService;
+    }
+
+    /**
+     * @return true if configured to use CaDNACopy.
+     */
+    public boolean isCaDNACopyConfiguration() {
+        return getSegmentationService().getUrl().endsWith("/CaDNAcopy");
     }
 
 }

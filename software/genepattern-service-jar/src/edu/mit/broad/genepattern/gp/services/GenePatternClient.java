@@ -140,4 +140,32 @@ public interface GenePatternClient {
      */
     JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws GenePatternServiceException;
 
+    /**
+     * Returns the current updated jobInfo for the given task.
+     * 
+     * @param jobInfo the current job info.
+     * @return the updated job info.
+     * @throws GenePatternServiceException if there's a failure communicating with GenePattern.
+     */
+    JobInfo getStatus(JobInfo jobInfo) throws GenePatternServiceException;
+
+    /**
+     * Returns the result files for the job.
+     * 
+     * @param jobInfo get files for this job.
+     * @return the file wrappers.
+     * @throws GenePatternServiceException if there's a failure communicating with GenePattern.
+     */
+    FileWrapper[] getResultFiles(JobInfo jobInfo) throws GenePatternServiceException;
+
+    /**
+     * Returns the file wrapper for the requested file.
+     * 
+     * @param jobInfo retrieve file from this job.
+     * @param filename the file to retrieve.
+     * @return the requested file or null.
+     * @throws GenePatternServiceException if there's a failure communicating with GenePattern.
+     */
+    FileWrapper getResultFile(JobInfo jobInfo, String filename) throws GenePatternServiceException;
+
 }

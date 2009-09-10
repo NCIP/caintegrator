@@ -349,4 +349,54 @@ public class GenePatternClientImpl implements GenePatternClient {
         this.password = password;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public JobInfo getStatus(JobInfo jobInfo) throws GenePatternServiceException {
+        try {
+            return getAnalysis().checkStatus(jobInfo.getJobNumber());
+        } catch (WebServiceException e) {
+            throw new GenePatternServiceException(e);
+        } catch (RemoteException e) {
+            throw new GenePatternServiceException(e);
+        } catch (GenePatternServiceException e) {
+            throw new GenePatternServiceException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public FileWrapper[] getResultFiles(JobInfo jobInfo) throws GenePatternServiceException {
+        try {
+            return getAnalysis().getResultFiles(jobInfo.getJobNumber());
+        } catch (WebServiceException e) {
+            throw new GenePatternServiceException(e);
+        } catch (RemoteException e) {
+            throw new GenePatternServiceException(e);
+        } catch (GenePatternServiceException e) {
+            throw new GenePatternServiceException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public FileWrapper getResultFile(JobInfo jobInfo, String filename) throws GenePatternServiceException {
+        try {
+            FileWrapper[] wrappers = getAnalysis().getResultFiles(jobInfo.getJobNumber(), new String[] {filename});
+            if (wrappers.length == 0) {
+                return null;
+            } else {
+                return wrappers[0];
+            }
+        } catch (WebServiceException e) {
+            throw new GenePatternServiceException(e);
+        } catch (RemoteException e) {
+            throw new GenePatternServiceException(e);
+        } catch (GenePatternServiceException e) {
+            throw new GenePatternServiceException(e);
+        }
+    }
+
 }

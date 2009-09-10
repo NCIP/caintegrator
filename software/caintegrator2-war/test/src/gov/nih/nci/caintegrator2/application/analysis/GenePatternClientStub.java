@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.analysis;
 
 import java.util.List;
 
+import edu.mit.broad.genepattern.gp.services.FileWrapper;
 import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import edu.mit.broad.genepattern.gp.services.JobInfo;
@@ -138,6 +139,27 @@ public class GenePatternClientStub implements GenePatternClient {
      */
     public void setPassword(String password) {
         // no-op
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public JobInfo getStatus(JobInfo jobInfo) {
+        return jobInfo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public FileWrapper[] getResultFiles(JobInfo jobInfo) {
+        return new FileWrapper[0];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public FileWrapper getResultFile(JobInfo jobInfo, String filename) {
+        return new FileWrapper();
     }
 
 }

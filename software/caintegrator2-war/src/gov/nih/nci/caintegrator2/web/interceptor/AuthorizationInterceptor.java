@@ -97,6 +97,8 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
  */
 public class AuthorizationInterceptor implements Interceptor {
     
+    private static final long serialVersionUID = 1L;
+    
     private static final String UNAUTHORIZED_PAGE = "unauthorized";
     
     /**

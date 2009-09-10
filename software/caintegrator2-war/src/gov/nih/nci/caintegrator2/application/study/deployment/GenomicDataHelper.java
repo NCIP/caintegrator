@@ -86,6 +86,8 @@
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import static gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType.EXPRESSION_SIGNAL;
+import edu.mit.broad.genepattern.gp.services.GenePatternClient;
+import gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactory;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
@@ -98,13 +100,13 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
+import gov.nih.nci.caintegrator2.domain.genomic.CopyNumberData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.bioconductor.BioconductorService;
-import gov.nih.nci.caintegrator2.external.bioconductor.CopyNumberData;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.util.Collection;
@@ -124,6 +126,7 @@ class GenomicDataHelper {
     private final CaIntegrator2Dao dao;
     private final BioconductorService bioconductorService;
     private final CopyNumberHandlerFactory copyNumberHandlerFactory;
+    private GenePatternClientFactory genePatternClientFactory;
 
     GenomicDataHelper(CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao,
             BioconductorService bioconductorService, CopyNumberHandlerFactory copyNumberHandlerFactory) {
@@ -178,7 +181,14 @@ class GenomicDataHelper {
             copyNumberData.addCopyNumberData(arrayData, 
                     values.getFloatValues(arrayData, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO));
         }
-        bioconductorService.addSegmentationData(copyNumberData, configuration);
+        if (configuration.isCaDNACopyConfiguration()) {
+            bioconductorService.addSegmentationData(copyNumberData, configuration);
+        } else {
+            GenePatternClient client = 
+                getGenePatternClientFactory().retrieveClient(configuration.getSegmentationService());
+            GladSegmentationHandler gladHandler = new GladSegmentationHandler(client);
+            gladHandler.addSegmentationData(copyNumberData);
+        }
     }
 
     @SuppressWarnings({ "unchecked", "PMD.UnnecessaryLocalBeforeReturn" })  // for efficient conversion of List.
@@ -242,6 +252,14 @@ class GenomicDataHelper {
         }
         dao.save(arrayData);
         return arrayData;
+    }
+
+    GenePatternClientFactory getGenePatternClientFactory() {
+        return genePatternClientFactory;
+    }
+
+    void setGenePatternClientFactory(GenePatternClientFactory genePatternClientFactory) {
+        this.genePatternClientFactory = genePatternClientFactory;
     }
 
 }

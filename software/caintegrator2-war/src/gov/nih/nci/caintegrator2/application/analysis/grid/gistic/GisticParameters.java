@@ -113,7 +113,7 @@ public class GisticParameters {
     private Query clinicalQuery;
     private SampleSet excludeControlSampleSet;
     private File cnvSegmentsToIgnoreFile;
-    private ServerConnectionProfile server;
+    private final ServerConnectionProfile server = new ServerConnectionProfile();
     private GisticRefgeneFileEnum refgeneFile;
     private Float amplificationsThreshold = DEFAULT_AMPLIFICATIONS;
     private Float deletionsThreshold = DEFAULT_DELETIONS;
@@ -128,13 +128,6 @@ public class GisticParameters {
      */
     public ServerConnectionProfile getServer() {
         return server;
-    }
-
-    /**
-     * @param server the server to set
-     */
-    public void setServer(ServerConnectionProfile server) {
-        this.server = server;
     }
 
     /**

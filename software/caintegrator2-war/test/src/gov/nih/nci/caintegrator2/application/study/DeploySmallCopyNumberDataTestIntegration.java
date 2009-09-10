@@ -122,14 +122,15 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
 
     @Test
     public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException, CSException {
-//        deployStudy();
-//        checkCopyNumberData();
+        deployStudy();
+        checkCopyNumberData();
     }
 
     @Override
     protected void configureSegmentationDataCalcuation(CopyNumberDataConfiguration copyNumberDataConfiguration) {
-        copyNumberDataConfiguration.getCaDNACopyService().setUrl("http://ncias-d227-v.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
-        copyNumberDataConfiguration.setRandomNumberSeed(1234567);
+        copyNumberDataConfiguration.getSegmentationService().setUrl("http://genepattern.broadinstitute.org/gp/services/Analysis");
+        copyNumberDataConfiguration.getSegmentationService().setUsername("etavela");
+        copyNumberDataConfiguration.getSegmentationService().setPassword("password");
     }
 
     private void checkCopyNumberData() {

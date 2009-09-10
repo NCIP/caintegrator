@@ -666,6 +666,9 @@
         <property name="copyNumberHandlerFactory">
             <ref local="copyNumberHandlerFactory" />
         </property>
+        <property name="genePatternClientFactory">
+            <ref local="genePatternClientFactory" />
+        </property>
     </bean>
 
     <bean id="copyNumberHandlerFactory" 
@@ -716,6 +719,9 @@
         </property>
         <property name="genePatternGridRunner">
             <ref local="genePatternGridRunner"/>
+        </property>
+        <property name="fileManager">
+            <ref local="fileManager"/>
         </property>
     </bean>
 

@@ -85,6 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
+import edu.mit.broad.genepattern.gp.services.GenePatternClient;
+import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import edu.mit.broad.genepattern.gp.services.JobInfo;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
@@ -118,6 +121,8 @@ import org.cabig.icr.asbp.parameter.StringParameter;
  */
 public final class GenePatternUtil {
     
+    private static final long STATUS_REFRESH_INTERVAL_MILLISECONDS = 10000;
+
     private GenePatternUtil() { }
     
     /**
@@ -295,5 +300,26 @@ public final class GenePatternUtil {
         stringParameter.setValue(value ? "1" : "0");
         return stringParameter;
     }
+
+    /**
+     * Polls GenePattern until a job is complete.
+     * 
+     * @param jobInfo the job to wait for
+     * @param client the GenePattern client.
+     * @return the updated job info.
+     * @throws GenePatternServiceException if the status couldn't be updated.
+     */
+    public static JobInfo waitToComplete(JobInfo jobInfo, GenePatternClient client) throws GenePatternServiceException {
+        JobInfo updatedInfo = jobInfo;
+        try {
+            while ("Processing".equals(updatedInfo.getStatus()) || "Pending".equals(updatedInfo.getStatus())) {
+                Thread.sleep(STATUS_REFRESH_INTERVAL_MILLISECONDS);
+                updatedInfo = client.getStatus(updatedInfo);
+            }
+            return updatedInfo;
+        } catch (InterruptedException e) {
+            throw new IllegalStateException("Thread shouldn't be interrupted.");
+        }
+     }
     
 }

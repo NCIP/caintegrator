@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.external.bioconductor;
 import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
+import gov.nih.nci.caintegrator2.domain.genomic.CopyNumberData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -112,10 +113,6 @@ import org.bioconductor.packages.caDNAcopy.common.CaDNAcopyI;
 public class BioconductorServiceImpl implements BioconductorService {
     
     private static final Logger LOGGER = Logger.getLogger(BioconductorServiceImpl.class);
-    
-    private static final int X_CHROMOSOME_VALUE = 23;
-    private static final int Y_CHROMOSOME_VALUE = 24;
-    private static final int MT_CHROMOSOME_VALUE = 25;
     private BioconductorClientFactory clientFactory = new BioconductorClientFactoryImpl();
 
     /**
@@ -125,7 +122,7 @@ public class BioconductorServiceImpl implements BioconductorService {
     public void addSegmentationData(CopyNumberData copyNumberData,
             CopyNumberDataConfiguration configuration) 
     throws ConnectionException, DataRetrievalException {
-        String url = configuration.getCaDNACopyService().getUrl();
+        String url = configuration.getSegmentationService().getUrl();
         try {
             CaDNAcopyI client = getClient(url);
             DNAcopyAssays assays = buildAssays(copyNumberData);
@@ -135,7 +132,7 @@ public class BioconductorServiceImpl implements BioconductorService {
             parameter.setPermutationReplicates(configuration.getPermutationReplicates());
             parameter.setRandomNumberSeed(configuration.getRandomNumberSeed());
             DerivedDNAcopySegment segment = client.getDerivedDNAcopySegment(assays, parameter);
-            addSegmenetationData(segment, copyNumberData);
+            addSegmentationData(segment, copyNumberData);
         } catch (RemoteException e) {
             LOGGER.error("Couldn't complete CaDNACopy job", e);
             throw new DataRetrievalException("Couldn't complete CaDNACopy job: " + e.getMessage(), e);
@@ -153,7 +150,7 @@ public class BioconductorServiceImpl implements BioconductorService {
         }
     }
 
-    private void addSegmenetationData(DerivedDNAcopySegment segment, CopyNumberData copyNumberData) {
+    private void addSegmentationData(DerivedDNAcopySegment segment, CopyNumberData copyNumberData) {
         Map<String, ArrayData> arrayDataMap = getArrayDataMap(copyNumberData);
         for (int segmentIndex = 0;  segmentIndex < segment.getSampleId().length; segmentIndex++) {
             ArrayData arrayData = arrayDataMap.get(arrayDataKey(segment, segmentIndex));
@@ -225,7 +222,7 @@ public class BioconductorServiceImpl implements BioconductorService {
         int index = 0;
         for (DnaAnalysisReporter reporter : copyNumberData.getReporters()) {
             if (reporter.hasValidLocation()) {
-                assays.setChromsomeId(index, getChromosomeAsInt(reporter.getChromosome()));
+                assays.setChromsomeId(index, reporter.getChromosomeAsInt());
                 assays.setMapLocation(index++, reporter.getPosition());
             }
         }
@@ -240,19 +237,7 @@ public class BioconductorServiceImpl implements BioconductorService {
        } 
        return reporterCount;
     }
-
-    private int getChromosomeAsInt(String chromosome) {
-        if ("X".equalsIgnoreCase(chromosome)) {
-            return X_CHROMOSOME_VALUE;
-        } else if ("Y".equalsIgnoreCase(chromosome)) {
-            return Y_CHROMOSOME_VALUE;
-        } else if ("MT".equalsIgnoreCase(chromosome)) {
-            return MT_CHROMOSOME_VALUE;
-        } else {
-            return Integer.parseInt(chromosome);
-        }
-    }
-
+    
     /**
      * @return the clientFactory
      */

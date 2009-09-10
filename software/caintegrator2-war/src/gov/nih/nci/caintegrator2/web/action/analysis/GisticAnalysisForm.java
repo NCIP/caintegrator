@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -98,21 +97,12 @@ public class GisticAnalysisForm {
     
     private GisticParameters gisticParameters;
     
-    private final ServerConnectionProfile server = new ServerConnectionProfile();
-
     private String selectedQuery = null;
     private String excludeControlSampleSetName;
     
     // JSP Select List Options
     private Map<String, String> clinicalQueries = new HashMap<String, String>();
 
-    /**
-     * 
-     * @return the server.
-     */
-    public ServerConnectionProfile getServer() {
-        return server;
-    }
 
     /**
      * @return the gisticParameters

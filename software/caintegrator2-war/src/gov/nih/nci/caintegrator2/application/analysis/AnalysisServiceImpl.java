@@ -108,6 +108,7 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -135,6 +136,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     private QueryManagementService queryManagementService;
     private GenePatternClientFactory genePatternClientFactory;
     private GenePatternGridRunner genePatternGridRunner;
+    private FileManager fileManager;
     
     /**
      * {@inheritDoc}
@@ -183,7 +185,14 @@ public class AnalysisServiceImpl implements AnalysisService {
     public File executeGridGistic(StatusUpdateListener updater, GisticAnalysisJob job) 
         throws ConnectionException, InvalidCriterionException, ParameterException, IOException {
         job.setSubscription(dao.get(job.getSubscription().getId(), StudySubscription.class));
-        return genePatternGridRunner.runGistic(updater, job);
+        if (job.isGridServiceCall()) {
+            return genePatternGridRunner.runGistic(updater, job);
+        } else {
+            ServerConnectionProfile server = job.getGisticAnalysisForm().getGisticParameters().getServer();
+            GisticWebServiceRunner gisticWebServiceRunner = 
+                new GisticWebServiceRunner(retrieveClient(server), getQueryManagementService(), getFileManager());
+            return gisticWebServiceRunner.runGistic(updater, job);
+        }
     }
     
     /**
@@ -349,5 +358,19 @@ public class AnalysisServiceImpl implements AnalysisService {
 
     private AbstractPersistedAnalysisJob getAnalysisJob(Long id) {
         return dao.get(id, AbstractPersistedAnalysisJob.class);
+    }
+
+    /**
+     * @return the fileManager
+     */
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    /**
+     * @param fileManager the fileManager to set
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 }
