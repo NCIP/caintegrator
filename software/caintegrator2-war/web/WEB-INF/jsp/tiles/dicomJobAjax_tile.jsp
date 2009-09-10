@@ -10,7 +10,7 @@
     <!--Page Help-->
 
     <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('DICOM_retrieval_help')" class="help">
-   (draft)</a>
+   &nbsp;</a>
     </div>
 
     <!--/Page Help-->

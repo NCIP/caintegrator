@@ -30,7 +30,7 @@
     <!--Page Help-->
 
     <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('edit_study_help')" class="help">
-   (draft)</a>
+   &nbsp;</a>
     </div>
 
     <!--/Page Help-->      
