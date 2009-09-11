@@ -5,89 +5,90 @@
   <i t="Getting Started with caIntegrator2" l="2">
     <i t="About caIntegrator2" l="3" />
     <i t="Registering as a New caIntegrator2 User" l="4" />
-    <i t="Using the caIntegrator2 Workspace" l="5">
-      <i t="caIntegrator2 Functions" l="6" />
+    <i t="Logging In" l="5" />
+    <i t="Using the caIntegrator2 Workspace" l="6">
+      <i t="caIntegrator2 Functions" l="7" />
     </i>
-    <i t="Using Online Help" l="7" />
-    <i t="Logging Out" l="8" />
-    <i t="Application Support" l="9" />
+    <i t="Using Online Help" l="8" />
+    <i t="Logging Out" l="9" />
+    <i t="Application Support" l="10" />
   </i>
-  <i t="Creating a New Study" l="10">
-    <i t="Creating a Study – Overview" l="11" />
-    <i t="Configuring and Deploying Study" l="12">
-      <i t="Creating/Editing a Study" l="13" />
-      <i t="Adding Clinical Data" l="14">
-        <i t="Assigning An Identifier or Annotation" l="15" />
-        <i t="Searching for Annotation Definitions" l="16" />
-        <i t="Defining Survival Values" l="17" />
+  <i t="Creating a New Study" l="11">
+    <i t="Creating a Study – Overview" l="12" />
+    <i t="Configuring and Deploying Study" l="13">
+      <i t="Creating/Editing a Study" l="14" />
+      <i t="Adding Clinical Data" l="15">
+        <i t="Assigning An Identifier or Annotation" l="16" />
+        <i t="Searching for Annotation Definitions" l="17" />
+        <i t="Defining Survival Values" l="18" />
       </i>
-      <i t="Adding/Editing Genomic Data" l="18">
-        <i t="Mapping Genomic Data to Clinical Data" l="19" />
-        <i t="Uploading Control Samples" l="20" />
-        <i t="Configuring Copy Number Data" l="21" />
+      <i t="Adding/Editing Genomic Data" l="19">
+        <i t="Mapping Genomic Data to Clinical Data" l="20" />
+        <i t="Uploading Control Samples" l="21" />
+        <i t="Configuring Copy Number Data" l="22" />
       </i>
-      <i t="Adding Imaging Data" l="22" />
-      <i t="Deploying the Study" l="23" />
+      <i t="Adding Imaging Data" l="23" />
+      <i t="Deploying the Study" l="24" />
     </i>
-    <i t="Managing a Study" l="24">
-      <i t="Managing Platforms" l="25" />
+    <i t="Managing a Study" l="25">
+      <i t="Managing Platforms" l="26" />
     </i>
   </i>
-  <i t="Searching a caIntegrator2 Study" l="26">
-    <i t="Search Overview" l="27" />
-    <i t="Searching a Study" l="28">
+  <i t="Searching a caIntegrator2 Study" l="27">
+    <i t="Search Overview" l="28" />
+    <i t="Searching a Study" l="29">
       <i t="Clinical and Image Series">
-        <i t="Clinical and Image Series" l="29" />
-        <i t="Gene Expression" l="30" />
+        <i t="Clinical and Image Series" l="30" />
+        <i t="Gene Expression" l="31" />
       </i>
-      <i t="Results Type and Sorting Tabs" l="31" />
+      <i t="Results Type and Sorting Tabs" l="32" />
     </i>
-    <i t="Managing Queries" l="32">
-      <i t="Saving a Query" l="33" />
-      <i t="Editing a Query" l="34" />
-      <i t="Exporting Query Results" l="35" />
+    <i t="Managing Queries" l="33">
+      <i t="Saving a Query" l="34" />
+      <i t="Editing a Query" l="35" />
+      <i t="Exporting Query Results" l="36" />
     </i>
   </i>
-  <i t="Viewing Query Results" l="36">
-    <i t="Query Results Overview" l="37" />
-    <i t="Browsing Query Results" l="38">
-      <i t="Clinical and Imaging Data" l="39" />
-      <i t="Genomic Data" l="40" />
-      <i t="Expanding Imaging Data Results" l="41">
-        <i t="caIntegrator2 and NBIA" l="42" />
-        <i t="Retrieving Dicom Images" l="43" />
-        <i t="Example of Retrieving Images:" l="44" />
+  <i t="Viewing Query Results" l="37">
+    <i t="Query Results Overview" l="38" />
+    <i t="Browsing Query Results" l="39">
+      <i t="Clinical and Imaging Data" l="40" />
+      <i t="Genomic Data" l="41" />
+      <i t="Expanding Imaging Data Results" l="42">
+        <i t="caIntegrator2 and NBIA" l="43" />
+        <i t="Retrieving Dicom Images" l="44" />
+        <i t="Example of Retrieving Images:" l="45" />
       </i>
-      <i t="Relationship of Patient to Study to Series to Images" l="45" />
-      <i t="Exporting Data" l="46" />
+      <i t="Relationship of Patient to Study to Series to Images" l="46" />
+      <i t="Exporting Data" l="47" />
     </i>
   </i>
-  <i t="Analyzing Studies" l="47">
-    <i t="Data Analysis Overview" l="48" />
-    <i t="Creating Kaplan-Meier Plots" l="49">
-      <i t="K-M Plot for Annotations" l="50" />
-      <i t="K-M Plot for Gene Expression" l="51" />
-      <i t="K-M Plot for Queries" l="52" />
+  <i t="Analyzing Studies" l="48">
+    <i t="Data Analysis Overview" l="49" />
+    <i t="Creating Kaplan-Meier Plots" l="50">
+      <i t="K-M Plot for Annotations" l="51" />
+      <i t="K-M Plot for Gene Expression" l="52" />
+      <i t="K-M Plot for Queries" l="53" />
     </i>
-    <i t="Creating Gene Expression Plots" l="53">
-      <i t="Gene Expression Value Plot for Annotation" l="54" />
-      <i t="Gene Expression Value Plot for Genomic Queries" l="55" />
-      <i t="Gene Expression Value Plot for Clinical Queries" l="56" />
-      <i t="Understanding a Gene Expression Plot" l="57" />
+    <i t="Creating Gene Expression Plots" l="54">
+      <i t="Gene Expression Value Plot for Annotation" l="55" />
+      <i t="Gene Expression Value Plot for Genomic Queries" l="56" />
+      <i t="Gene Expression Value Plot for Clinical Queries" l="57" />
+      <i t="Understanding a Gene Expression Plot" l="58" />
     </i>
-    <i t="Analyzing Data with GenePattern" l="58">
-      <i t="GenePattern Modules" l="59" />
-      <i t="Comparative Marker Selection (CMS) Analysis" l="60" />
-      <i t="Principal Component Analysis (PCA)" l="61" />
-      <i t="GISTIC-Supported Analysis" l="62" />
+    <i t="Analyzing Data with GenePattern" l="59">
+      <i t="GenePattern Modules" l="60" />
+      <i t="Comparative Marker Selection (CMS) Analysis" l="61" />
+      <i t="Principal Component Analysis (PCA)" l="62" />
+      <i t="GISTIC-Supported Analysis" l="63" />
     </i>
   </i>
-  <i t="Data Import Configurations" l="63">
-    <i t="Subject Clinical Data Configuration" l="64" />
-    <i t="Delimited-Text Annotation Import" l="65" />
-    <i t="Annotation Field Configuration" l="66" />
-    <i t="Sample Data Configuration" l="67" />
-    <i t="Genomic Data Configuration" l="68" />
-    <i t="Imaging Data Configuration" l="69" />
+  <i t="Data Import Configurations" l="64">
+    <i t="Subject Clinical Data Configuration" l="65" />
+    <i t="Delimited-Text Annotation Import" l="66" />
+    <i t="Annotation Field Configuration" l="67" />
+    <i t="Sample Data Configuration" l="68" />
+    <i t="Genomic Data Configuration" l="69" />
+    <i t="Imaging Data Configuration" l="70" />
   </i>
 </WebWorksHelpTOC>
