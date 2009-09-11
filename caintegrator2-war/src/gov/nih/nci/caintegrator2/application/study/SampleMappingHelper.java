@@ -105,15 +105,20 @@ class SampleMappingHelper {
 
     private final StudyConfiguration studyConfiguration;
     private final File mappingFile;
-
-    SampleMappingHelper(StudyConfiguration studyConfiguration, File mappingFile) {
+    private final GenomicDataSourceConfiguration genomicSource;
+    
+    SampleMappingHelper(StudyConfiguration studyConfiguration, File mappingFile, 
+            GenomicDataSourceConfiguration genomicSource) {
         this.studyConfiguration = studyConfiguration;
         this.mappingFile = mappingFile;
+        this.genomicSource = genomicSource;
+        
     }
 
     void mapSamples() throws ValidationException, IOException {
         CSVReader reader = new CSVReader(new FileReader(mappingFile));
         String[] values;
+        unmapSamples(); // First unmap the previous mappings.
         while ((values = reader.readNext()) != null) {
             if (values.length != 2) {
                 throw new ValidationException("Invalid file format - Expect 2 columns but has " + values.length);
@@ -121,19 +126,26 @@ class SampleMappingHelper {
             String subjectIdentifier = values[0].trim();
             String sampleName = values[1].trim();
                
-            StudySubjectAssignment sja = getSubjectAssignment(subjectIdentifier);
+            StudySubjectAssignment subjectAssignment = getSubjectAssignment(subjectIdentifier);
+            Sample sample = getSample(sampleName);
                 
             // map is throwing an exception.  This is a temporary check for null to prevent it.
-            if (sja == null) {
+            if (subjectAssignment == null) {
                 throw new ValidationException("Subject Identifier not found '" + subjectIdentifier + "'");
             }
             if (StringUtils.isBlank(sampleName)) {
                 throw new ValidationException("No sample name for subject '" + subjectIdentifier + "'");
             }
-            if (studyConfiguration.getSample(sampleName) == null) {
+            if (sample == null) {
                 throw new ValidationException("Sample not found '" + sampleName + "'");
             }
-            map(sja, studyConfiguration.getSample(sampleName));
+            map(subjectAssignment, sample);
+        }
+    }
+    
+    private void unmapSamples() {
+        for (Sample sample : genomicSource.getSamples()) {
+            sample.removeSampleAcquisitionAssociations();
         }
     }
 
@@ -143,9 +155,14 @@ class SampleMappingHelper {
         sample.setSampleAcquisition(sampleAcquisition);
         subjectAssignment.getSampleAcquisitionCollection().add(sampleAcquisition);
     }
+    
 
     private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier) {
         return studyConfiguration.getSubjectAssignment(subjectIdentifier);
+    }
+    
+    private Sample getSample(String sampleName) {
+        return genomicSource.getSample(sampleName);
     }
 
 }

@@ -119,5 +119,16 @@ public class Sample extends AbstractCaIntegrator2Object {
             return null;
         }
     }
+    
+    /**
+     * Removes the associations from the Sample Acquisition.
+     */
+    public void removeSampleAcquisitionAssociations() {
+        if (sampleAcquisition != null) {
+            sampleAcquisition.getAssignment().getSampleAcquisitionCollection().remove(sampleAcquisition);
+            sampleAcquisition.setAssignment(null);
+            sampleAcquisition = null;
+        }
+    }
 
 }
