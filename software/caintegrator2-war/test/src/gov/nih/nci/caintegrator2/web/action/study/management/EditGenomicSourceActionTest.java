@@ -108,7 +108,7 @@ import com.opensymphony.xwork2.Action;
 public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
 
     private EditGenomicSourceAction action;
-    private StudyManagementServiceStub studyManagementServiceStub;
+    private StudyManagmentServiceStubForGenomicSource studyManagementServiceStub;
     private CaArrayFacadeStubForAction caArrayFacadeStub;
 
     @Before
@@ -116,8 +116,9 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
         super.setUp();
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditGenomicSourceActionTest.class); 
         action = (EditGenomicSourceAction) context.getBean("editGenomicSourceAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
+        studyManagementServiceStub = new StudyManagmentServiceStubForGenomicSource();
         studyManagementServiceStub.clear();
+        action.setStudyManagementService(studyManagementServiceStub);
         action.setUpdater(new GenomicDataSourceAjaxUpdaterStub());
         caArrayFacadeStub = new CaArrayFacadeStubForAction();
         action.setCaArrayFacade(caArrayFacadeStub);
@@ -179,6 +180,17 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
         action.getGenomicSource().setId(1L);
         action.prepare();
         assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+    }
+    
+    private static class StudyManagmentServiceStubForGenomicSource extends StudyManagementServiceStub {
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> T getRefreshedStudyEntity(T entity) {
+            GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+            genomicSource.setStudyConfiguration(new StudyConfiguration());
+            super.getRefreshedStudyEntity(entity);
+            return (T) genomicSource;
+        }
     }
     
     private static class GenomicDataSourceAjaxUpdaterStub implements IGenomicDataSourceAjaxUpdater {

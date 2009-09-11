@@ -157,7 +157,8 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
     private String executeSampleMapping() {
         if (getSampleMappingFile() != null) {
             try {
-                getStudyManagementService().mapSamples(getStudyConfiguration(), getSampleMappingFile());
+                getStudyManagementService().mapSamples(getStudyConfiguration(), getSampleMappingFile(), 
+                        getGenomicSource());
                 persistFileName();
                 return SUCCESS;
             } catch (ValidationException e) {
@@ -170,13 +171,15 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
                 setSampleMappingFieldError("Something is very wrong in the code, please report this problem - " 
                         + e.getMessage());
                 return INPUT;
+            } finally {
+                super.prepare(); // Reloads the genomic source if there's an exception.
             }
         }
         return SUCCESS;
     }
 
     private void persistFileName() {
-        getGenomicSource().addSampleMappingFileName(getSampleMappingFileFileName());
+        getGenomicSource().setSampleMappingFileName(getSampleMappingFileFileName());
         getStudyManagementService().save(getStudyConfiguration());
     }
     

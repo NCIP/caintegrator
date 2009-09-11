@@ -9,7 +9,7 @@
 		<!-- Attributes mapping for the StudySubjectAssignment class -->
 		<property name="identifier" type="string" column="IDENTIFIER"/>
 		<!-- Associations mapping for the StudySubjectAssignment class -->
-		<set name="sampleAcquisitionCollection" lazy="true" cascade="all" >
+		<set name="sampleAcquisitionCollection" lazy="true" cascade="all,delete-orphan" >
 			<cache usage="read-write" />
 			<key column="STUDY_SUBJECT_ASSIGN_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition"/>

@@ -93,7 +93,6 @@ import gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -114,7 +113,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private GenomicDataSourceDataTypeEnum dataType = GenomicDataSourceDataTypeEnum.EXPRESSION;
     private String platformVendor;
     private String platformName;
-    private String sampleMappingCommaSeparatedFileNames;
+    private String sampleMappingFileName = NONE_CONFIGURED;
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
     private List<Sample> samples = new ArrayList<Sample>();
     private Set<SampleSet> controlSampleSetCollection = new HashSet<SampleSet>();
@@ -306,41 +305,17 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     }
     
     /**
-     * Adds the filename to the comma separated list of file names.
-     * @param filename to add to the list.
+     * @return the sampleMappingFileName
      */
-    public void addSampleMappingFileName(String filename) {
-        if (sampleMappingCommaSeparatedFileNames == null) {
-            setSampleMappingCommaSeparatedFileNames(filename);    
-        } else {
-            setSampleMappingCommaSeparatedFileNames(sampleMappingCommaSeparatedFileNames 
-                                                    + "," + filename);
-        }
+    public String getSampleMappingFileName() {
+        return sampleMappingFileName;
     }
 
     /**
-     * @return the sampleMappingCommaSeparatedFileNames
+     * @param sampleMappingFileName the sampleMappingFileName to set
      */
-    public String getSampleMappingCommaSeparatedFileNames() {
-        return sampleMappingCommaSeparatedFileNames;
-    }
-
-    private void setSampleMappingCommaSeparatedFileNames(String sampleMappingCommaSeparatedFileNames) {
-        this.sampleMappingCommaSeparatedFileNames = sampleMappingCommaSeparatedFileNames;
-    }
-
-    /**
-     * Used for the visual display of the sample mapping file names.
-     * @return list of sample mapping file names.
-     */
-    public List<String> getSampleMappingFileNames() {
-        List<String> sampleMappingFileNames = new ArrayList<String>();
-        if (StringUtils.isBlank(sampleMappingCommaSeparatedFileNames)) {
-            sampleMappingFileNames.add(NONE_CONFIGURED);
-        } else {
-            sampleMappingFileNames.addAll(Arrays.asList(StringUtils.split(sampleMappingCommaSeparatedFileNames, ",")));
-        }
-        return sampleMappingFileNames;
+    public void setSampleMappingFileName(String sampleMappingFileName) {
+        this.sampleMappingFileName = sampleMappingFileName;
     }
 
     /**

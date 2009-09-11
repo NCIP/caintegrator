@@ -434,7 +434,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.setPlatformVendor(getPlatformVendor());
             genomicSource.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
             if (getSampleMappingFile() != null) {
-                genomicSource.addSampleMappingFileName(getSampleMappingFile().getName());
+                genomicSource.setSampleMappingFileName(getSampleMappingFile().getName());
             }
             service.addGenomicSource(studyConfiguration, genomicSource);
             assertTrue(genomicSource.getSamples().size() > 0);
@@ -458,7 +458,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     private void mapSamples() throws ValidationException, IOException {
         if (getLoadSamples()) {
             logStart();
-            service.mapSamples(studyConfiguration, getSampleMappingFile());
+            service.mapSamples(studyConfiguration, getSampleMappingFile(), studyConfiguration.getGenomicDataSources().get(0));
             assertEquals(getExpectedMappedSampleCount(), studyConfiguration.getGenomicDataSources().get(0).getMappedSamples().size());
             logEnd();
         }

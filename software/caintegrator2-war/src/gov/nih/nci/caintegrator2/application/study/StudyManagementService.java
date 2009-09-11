@@ -398,11 +398,13 @@ public interface StudyManagementService {
      * 
      * @param studyConfiguration study containing the subjects and samples
      * @param mappingFile comma-separated value file that maps subject identifiers to sample names
+     * @param genomicSource to map samples for.
      * @throws ValidationException if the file was not a valid mapping file.
      * @throws IOException unexpected IO exception
      * 
      */
-    void mapSamples(StudyConfiguration studyConfiguration, File mappingFile)
+    void mapSamples(StudyConfiguration studyConfiguration, File mappingFile, 
+            GenomicDataSourceConfiguration genomicSource)
         throws ValidationException, IOException;
 
     /**
