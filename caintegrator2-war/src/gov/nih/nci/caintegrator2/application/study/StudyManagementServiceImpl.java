@@ -311,11 +311,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
         studyConfiguration.getGenomicDataSources().remove(genomicSource);
         for (Sample sample : genomicSource.getSamples()) {
-            SampleAcquisition sampleAcquisition = sample.getSampleAcquisition();
-            if (sampleAcquisition != null) {
-                sampleAcquisition.getAssignment().getSampleAcquisitionCollection().remove(sampleAcquisition);
-                sampleAcquisition.setAssignment(null);
-            }
+            sample.removeSampleAcquisitionAssociations();
             for (Array array : sample.getArrayCollection()) {
                 array.getSampleCollection().remove(sample);
                 if (array.getSampleCollection().isEmpty()) {
@@ -391,9 +387,11 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * @throws ValidationException 
      * @throws IOException 
      */
-    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile)
+    @Transactional(rollbackFor = {ValidationException.class, IOException.class })
+    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile, 
+            GenomicDataSourceConfiguration genomicSource)
         throws ValidationException, IOException {
-        new SampleMappingHelper(studyConfiguration, mappingFile).mapSamples();
+        new SampleMappingHelper(studyConfiguration, mappingFile, genomicSource).mapSamples();
         save(studyConfiguration);
     }
 

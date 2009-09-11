@@ -230,11 +230,10 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
         StringBuffer fileDescriptionString = new StringBuffer();
         String brString = "<br>";
         if (genomicSource.isExpressionData()) {
-            fileDescriptionString.append("<i>Mapping FIle(s): </i>");
-            for (String fileName : genomicSource.getSampleMappingFileNames()) {
-                fileDescriptionString.append(fileName);
-                fileDescriptionString.append(brString);
-            }
+            fileDescriptionString.append("<i>Mapping File: </i>");
+            fileDescriptionString.append(genomicSource.getSampleMappingFileName());
+            fileDescriptionString.append(brString);
+            
             fileDescriptionString.append("<i>Control Sample Mapping File(s): </i>");
             for (String fileName : genomicSource.getControlSampleMappingFileNames()) {
                 fileDescriptionString.append(fileName);

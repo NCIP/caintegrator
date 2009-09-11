@@ -439,7 +439,8 @@ public class StudyManagementServiceTest {
         sample2.setName("5500024030700072107989.G10");
         genomicDataSourceConfiguration.getSamples().add(sample2);
         studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
-        studyManagementService.mapSamples(studyConfiguration, TestDataFiles.SIMPLE_SAMPLE_MAPPING_FILE);
+        studyManagementService.mapSamples(studyConfiguration, TestDataFiles.SIMPLE_SAMPLE_MAPPING_FILE, 
+                genomicDataSourceConfiguration);
         assertEquals(1, assignment1.getSampleAcquisitionCollection().size());
         assertEquals(sample1, assignment1.getSampleAcquisitionCollection().iterator().next().getSample());
         assertEquals(1, assignment2.getSampleAcquisitionCollection().size());

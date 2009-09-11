@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.common.HibernateUtil;
 
 /**
  * Base class for actions that require retrieval of persistent <code>GenomicDataSourceConfigurations</code>.
@@ -101,6 +102,7 @@ public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
         super.prepare();
         if (getGenomicSource().getId() != null) {
             setGenomicSource(getStudyManagementService().getRefreshedStudyEntity(getGenomicSource()));
+            HibernateUtil.loadGenomicSource(getGenomicSource());
         }
     }
 

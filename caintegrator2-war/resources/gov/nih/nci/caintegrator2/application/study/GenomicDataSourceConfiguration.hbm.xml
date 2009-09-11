@@ -30,7 +30,7 @@
         <property name="dataType" type="DataType" column="DATA_TYPE"/>
         <property name="platformVendor" type="string" column="PLATFORM_VENDOR"/>
         <property name="platformName" type="string" column="PLATFORM_NAME"/>
-        <property name="sampleMappingCommaSeparatedFileNames" type="string" column="SAMPLE_MAPPING_FILE_NAME"/>
+        <property name="sampleMappingFileName" type="string" column="SAMPLE_MAPPING_FILE_NAME"/>
         <property name="status" type="Status" column="STATUS"/>
         <property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
         

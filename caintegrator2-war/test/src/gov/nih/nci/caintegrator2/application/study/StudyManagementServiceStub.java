@@ -277,7 +277,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         setDefinitionCalled = true;
     }
 
-    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile)throws ValidationException, IOException {
+    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile, GenomicDataSourceConfiguration genomicSource)throws ValidationException, IOException {
         mapSamplesCalled = true;
         if (studyConfiguration.getStudy().getShortTitleText().equals("Invalid")) {
             throw new ValidationException("Invalid");
