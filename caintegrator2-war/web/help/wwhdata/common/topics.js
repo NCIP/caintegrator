@@ -2,8 +2,9 @@ function  WWHBookData_MatchTopic(P)
 {
 var C=null;
 if(P=="register_user_help")C="Getting_Started.3.3.html#1141097";
-if(P=="welcome_help")C="Getting_Started.3.4.html#1127723";
-if(P=="logging_out")C="Getting_Started.3.7.html#1128246";
+if(P=="login_help")C="Getting_Started.3.4.html#1146398";
+if(P=="welcome_help")C="Getting_Started.3.5.html#1127723";
+if(P=="logging_out")C="Getting_Started.3.8.html#1128246";
 if(P=="edit_study_help")C="CreatingNewStudy.4.4.html#1073921";
 if(P=="define_fields_help")C="CreatingNewStudy.4.5.html#1075197";
 if(P=="assign_annotations_help")C="CreatingNewStudy.4.6.html#1082187";

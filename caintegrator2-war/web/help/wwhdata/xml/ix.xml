@@ -34,7 +34,7 @@
     </i>
     <i t="Application Support">
       <j l="1#1059005" />
-      <j l="9#1136641" />
+      <j l="10#1136641" />
     </i>
     <i t="assigning, annotation identifier">
       <j l="15#1081979" />
@@ -52,17 +52,20 @@
   </g>
   <g t="C" o="002">
     <i t="caIntegrator2">
+      <i t="logging in">
+        <j l="5#1146400" />
+      </i>
       <i t="logging out">
-        <j l="8#1141079" />
+        <j l="9#1141079" />
       </i>
       <i t="requesting user account">
         <j l="4#1141099" />
       </i>
       <i t="using workspace">
-        <j l="5#1122586" />
+        <j l="6#1122586" />
       </i>
       <i t="workspace">
-        <j l="5#1122586" />
+        <j l="6#1122586" />
       </i>
     </i>
     <i t="clinical study">
@@ -270,7 +273,7 @@
   </g>
   <g t="L" o="002">
     <i t="logout link">
-      <j l="8#1141079" />
+      <j l="9#1141079" />
     </i>
   </g>
   <g t="M" o="002">
@@ -300,7 +303,7 @@
     </i>
     <i t="NCICB Application Support">
       <j l="1#1059005" />
-      <j l="9#1136641" />
+      <j l="10#1136641" />
     </i>
   </g>
   <g t="O" o="002">
