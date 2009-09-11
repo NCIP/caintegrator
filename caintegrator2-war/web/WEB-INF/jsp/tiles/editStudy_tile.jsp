@@ -115,7 +115,7 @@
                                 </s:div>
                                 <s:div cssClass="wwctrl">
                                     <div id="study_logo">
-                                        <s:if test="studyConfiguration.studyLogo != null">
+                                        <s:if test="studyConfiguration.studyLogo.logoUrl != null">
                                         <s:set name="logo" id="logo" value="studyConfiguration.studyLogo.logoUrl"/>
                                         <img src="${logo}" alt="Study Logo" height="72" width="200"/>
                                         </s:if>
