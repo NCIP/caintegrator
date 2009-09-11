@@ -152,7 +152,10 @@
                  <param name="fileUpload.allowedTypes">image/pjpeg,image/jpeg,image/gif</param>
              </interceptor-ref>
 		    
-            <result type="tiles">editStudy</result>
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
             <result name="input" type="tiles">editStudy</result>
             <result name="error" type="tiles">editStudy</result>
         </action>
