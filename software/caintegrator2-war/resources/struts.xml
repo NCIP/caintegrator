@@ -410,7 +410,7 @@
             <result name="error" type="tiles">editImagingSource</result>
         </action>
         
-       <action name="cancelImagingSource" class="editGenomicSourceAction">
+       <action name="cancelImagingSource" class="editImagingSourceAction">
             <result type="redirectAction">
                 <param name="actionName">editStudy</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
