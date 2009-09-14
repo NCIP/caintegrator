@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.common.ConfigurationHelperStub;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
@@ -169,6 +170,7 @@ public class GisticAnalysisActionTest {
         action.setWorkspaceService(new WorkspaceServiceStub());
         action.setAjaxUpdater(new PersistedAnalysisJobAjaxUpdater());
         action.getGisticAnalysisForm().setGisticParameters(new GisticParameters());
+        action.setConfigurationHelper(new ConfigurationHelperStub());
     }
     
     @Test

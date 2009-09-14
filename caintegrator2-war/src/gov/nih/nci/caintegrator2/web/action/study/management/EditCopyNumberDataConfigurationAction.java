@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob;
 import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
+import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
+import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 
 import java.io.File;
 import java.util.Map;
@@ -115,6 +117,31 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
     private File copyNumberMappingFile;
     private String copyNumberMappingFileContentType;
     private String copyNumberMappingFileFileName;
+    private String gladUrl;
+    private String caDnaCopyUrl;
+    private boolean useGlad = true;
+    private ConfigurationHelper configurationHelper;
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepare() {
+        super.prepare();
+        if (getCopyNumberDataConfiguration() == null) {
+            CopyNumberDataConfiguration configuration = new CopyNumberDataConfiguration();
+            configuration.getSegmentationService().setUrl(
+                    configurationHelper.getString(ConfigurationParameter.GENE_PATTERN_URL));
+            getGenomicSource().setCopyNumberDataConfiguration(configuration);
+        }
+        if (getCopyNumberDataConfiguration().isCaDNACopyConfiguration()) {
+            setCaDnaCopyUrl(getCopyNumberDataConfiguration().getSegmentationService().getUrl());
+            setUseGlad(false);
+        } else {
+            setGladUrl(getCopyNumberDataConfiguration().getSegmentationService().getUrl());
+            setUseGlad(true);
+        }
+    }
 
     /**
      * {@inheritDoc}
@@ -141,9 +168,6 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
      * @return the configuration.
      */
     public CopyNumberDataConfiguration getCopyNumberDataConfiguration() {
-        if (getGenomicSource().getCopyNumberDataConfiguration() == null) {
-            getGenomicSource().setCopyNumberDataConfiguration(new CopyNumberDataConfiguration());
-        }
         return getGenomicSource().getCopyNumberDataConfiguration();
     }
     
@@ -154,6 +178,11 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
      */
     public String save() {
         try {
+            if (getUseGlad()) {
+                getCopyNumberDataConfiguration().getSegmentationService().setUrl(getGladUrl());
+            } else {
+                getCopyNumberDataConfiguration().getSegmentationService().setUrl(getCaDnaCopyUrl());
+            }
             getStudyManagementService().saveCopyNumberMappingFile(getGenomicSource(), getCopyNumberMappingFile(), 
                     getCopyNumberMappingFileFileName());
             getStudyManagementService().save(getStudyConfiguration());
@@ -247,5 +276,61 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
      */
     public Map<String, String> getCaDnaCopyServices() {
         return GridDiscoveryServiceJob.getGridCaDnaCopyServices();
+    }
+
+    /**
+     * @return the gladUrl
+     */
+    public String getGladUrl() {
+        return gladUrl;
+    }
+
+    /**
+     * @param gladUrl the gladUrl to set
+     */
+    public void setGladUrl(String gladUrl) {
+        this.gladUrl = gladUrl;
+    }
+
+    /**
+     * @return the caDnaCopyUrl
+     */
+    public String getCaDnaCopyUrl() {
+        return caDnaCopyUrl;
+    }
+
+    /**
+     * @param caDnaCopyUrl the caDnaCopyUrl to set
+     */
+    public void setCaDnaCopyUrl(String caDnaCopyUrl) {
+        this.caDnaCopyUrl = caDnaCopyUrl;
+    }
+
+    /**
+     * @return the useGlad
+     */
+    public boolean getUseGlad() {
+        return useGlad;
+    }
+
+    /**
+     * @param useGlad the useGlad to set
+     */
+    public void setUseGlad(boolean useGlad) {
+        this.useGlad = useGlad;
+    }
+
+    /**
+     * @return the configurationHelper
+     */
+    public ConfigurationHelper getConfigurationHelper() {
+        return configurationHelper;
+    }
+
+    /**
+     * @param configurationHelper the configurationHelper to set
+     */
+    public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
+        this.configurationHelper = configurationHelper;
     }
 }
