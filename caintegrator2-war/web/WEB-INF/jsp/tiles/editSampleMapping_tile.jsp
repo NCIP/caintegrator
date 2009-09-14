@@ -1,5 +1,21 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+
+<script type="text/javascript">
+    
+    function saveSampleMapping() {
+        if (document.sampleMappingForm.genomicSourceCurrentlyMapped.value == "true" 
+            && document.sampleMappingForm.sampleMappingFile.value != null 
+            && document.sampleMappingForm.sampleMappingFile.value != "") {
+                if (confirm('You are adding a new sample mapping file.  All previous sample mappings will be deleted and re-mapped based on the new file.  Please click OK or Cancel.')) {
+                    document.sampleMappingForm.submit();                
+                }
+        } else {
+            document.sampleMappingForm.submit();
+        }
+    }
+    
+</script>
             
 <div id="content">                      
             
@@ -26,9 +42,17 @@
                 <td colspan="2" style="padding: 5px;">    
 
                 <s:actionerror />
-                <s:form action="saveSampleMapping" method="post" enctype="multipart/form-data" >
+                <s:form id="sampleMappingForm" name="sampleMappingForm"
+                    action="saveSampleMapping" method="post" enctype="multipart/form-data" >
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="genomicSource.id" />
+                    <s:if test="%{genomicSource.mappedSamples.isEmpty}">
+                        <s:hidden name="genomicSourceCurrentlyMapped" value="false" />
+                    </s:if>
+                    <s:else>
+                        <s:hidden name="genomicSourceCurrentlyMapped" value="true" />
+                    </s:else>
+                    
                     <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" readonly="true" cssClass="readonly" />
                     <s:textfield label="caArray server JNDI Port" name="genomicSource.serverProfile.port" readonly="true" cssClass="readonly" />
                     <!-- NOTE - using custom struts theme to turn off autocomplete -->
@@ -36,11 +60,20 @@
                     <s:password label="caArrayPassword" name="genomicSource.serverProfile.password" readonly="true" cssClass="readonly" theme="cai2xhtml"/>
                     <!--/NOTE -->       
                     <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" cssClass="readonly" />
-                    <s:file name="sampleMappingFile" label="Subject to Sample Mapping File" size="35" />
+                    <s:file id="sampleMappingFile" name="sampleMappingFile" label="Subject to Sample Mapping File" size="35" />
                     
                     <s:textfield label="Control Sample Set Name" name="controlSampleSetName" required="true" theme="cai2xhtml" size="35"/>
                     <s:file name="controlSampleFile" label="Control Samples File" size="35" />
-                    <s:submit value="Map Samples" />
+                    <tr> 
+	                    <td></td>
+	                    <td>
+	                    <button type="button" 
+	                            onclick="document.sampleMappingForm.action = 'cancelGenomicSource.action';
+	                            document.sampleMappingForm.submit();"> Cancel 
+	                    </button>
+	                    <button type="button" onclick="saveSampleMapping()"> Map Samples </button>
+	                    </td> 
+	                </tr>
                 </s:form>
                 </td>
             </tr>
