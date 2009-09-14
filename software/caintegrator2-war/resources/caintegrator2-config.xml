@@ -270,6 +270,9 @@
          <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
+        <property name="configurationHelper">
+            <ref local="configurationHelper" />
+        </property>
     </bean>
 
     <!-- Query Management actions -->
@@ -390,6 +393,9 @@
         </property>
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
+        </property>
+        <property name="configurationHelper">
+            <ref local="configurationHelper" />
         </property>
         <property name="ajaxUpdater">
             <ref local="persistedAnalysisJobAjaxUpdater"/>

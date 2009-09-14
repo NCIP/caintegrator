@@ -85,11 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import org.junit.Before;
@@ -116,19 +118,30 @@ public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBa
     @Test
     public void testEdit() {
         action.getGenomicSource().setCopyNumberDataConfiguration(null);
+        action.prepare();
         action.edit();
         assertNotNull(action.getGenomicSource().getCopyNumberDataConfiguration());
+        assertEquals(ConfigurationParameter.GENE_PATTERN_URL.getDefaultValue(), action.getGladUrl());
     }
     
     @Test
     public void testSave() {
+        action.prepare();
+        action.setUseGlad(true);
+        action.setGladUrl("gladUrl");
+        action.setCaDnaCopyUrl("caDnaCopyUrl");
         action.save();
+        assertEquals("gladUrl", action.getCopyNumberDataConfiguration().getSegmentationService().getUrl());
         assertTrue(studyManagementServiceStub.saveCopyNumberMappingFileCalled);
         assertTrue(studyManagementServiceStub.saveCalled);
+        action.setUseGlad(false);
+        action.save();
+        assertEquals("caDnaCopyUrl", action.getCopyNumberDataConfiguration().getSegmentationService().getUrl());
     }
     
     @Test
     public void testValidate() {
+        action.prepare();
         action.setAction(EditCopyNumberDataConfigurationAction.EDIT_ACTION);
         action.validate();
         assertFalse(action.hasFieldErrors());
@@ -137,6 +150,7 @@ public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBa
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
         action.setCopyNumberMappingFile(TestDataFiles.XBA_COPY_NUMBER_CHP_FILE);
+        action.getCopyNumberDataConfiguration().getSegmentationService().setUrl("");
         action.validate();
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();

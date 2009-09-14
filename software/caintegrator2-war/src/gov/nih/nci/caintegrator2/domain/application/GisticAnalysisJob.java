@@ -129,6 +129,6 @@ public class GisticAnalysisJob extends AbstractPersistedAnalysisJob {
      * @return true if a grid service invocation, false if web service invocation.
      */
     public boolean isGridServiceCall() {
-        return getGisticAnalysisForm().getGisticParameters().getServer().getUrl().endsWith("/Gistic");
+        return getGisticAnalysisForm().isGridServiceCall();
     }
 }
