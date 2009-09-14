@@ -93,6 +93,8 @@ import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
+import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
@@ -143,6 +145,24 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     private StudyManagementService studyManagementService;
     private IPersistedAnalysisJobAjaxUpdater ajaxUpdater;
     private String selectedAction = OPEN_ACTION;
+    private String webServiceUrl;
+    private String gridServiceUrl;
+    private boolean useWebService = true;
+    private ConfigurationHelper configurationHelper;
+
+    /**
+     * @return the useWebService
+     */
+    public boolean getUseWebService() {
+        return useWebService;
+    }
+
+    /**
+     * @param useWebService the useWebService to set
+     */
+    public void setUseWebService(boolean useWebService) {
+        this.useWebService = useWebService;
+    }
 
     /**
      * {@inheritDoc}
@@ -164,7 +184,6 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     @Override
     public void validate() {
         super.validate();
-        
         if (EXECUTE_ACTION.equals(getSelectedAction())) {
             validateExecuteAnalysis();
         }
@@ -209,6 +228,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
         getGisticAnalysisForm().setClinicalQueries(new HashMap<String, String>());
         addClinnicalQueries();
         getGisticAnalysisForm().setGisticParameters(new GisticParameters());
+        setWebServiceUrl(getConfigurationHelper().getString(ConfigurationParameter.GENE_PATTERN_URL));
     }
 
     private void addClinnicalQueries() {
@@ -258,6 +278,11 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     }
     
     private boolean loadParameters() throws InvalidCriterionException {
+        if (getUseWebService()) {
+            getGisticParameters().getServer().setUrl(getWebServiceUrl());
+        } else {
+            getGisticParameters().getServer().setUrl(getGridServiceUrl());
+        }
         loadQueries();
         return loadRefgeneFileParameter();
     }
@@ -405,5 +430,47 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
      */
     public void setStudyManagementService(StudyManagementService studyManagementService) {
         this.studyManagementService = studyManagementService;
+    }
+
+    /**
+     * @return the webServiceUrl
+     */
+    public String getWebServiceUrl() {
+        return webServiceUrl;
+    }
+
+    /**
+     * @param webServiceUrl the webServiceUrl to set
+     */
+    public void setWebServiceUrl(String webServiceUrl) {
+        this.webServiceUrl = webServiceUrl;
+    }
+
+    /**
+     * @return the gridServiceUrl
+     */
+    public String getGridServiceUrl() {
+        return gridServiceUrl;
+    }
+
+    /**
+     * @param gridServiceUrl the gridServiceUrl to set
+     */
+    public void setGridServiceUrl(String gridServiceUrl) {
+        this.gridServiceUrl = gridServiceUrl;
+    }
+
+    /**
+     * @return the configurationHelper
+     */
+    public ConfigurationHelper getConfigurationHelper() {
+        return configurationHelper;
+    }
+
+    /**
+     * @param configurationHelper the configurationHelper to set
+     */
+    public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
+        this.configurationHelper = configurationHelper;
     }
 }

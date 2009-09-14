@@ -110,6 +110,7 @@ import gov.nih.nci.caintegrator2.external.bioconductor.BioconductorService;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -169,18 +170,47 @@ class GenomicDataHelper {
     throws DataRetrievalException, ConnectionException, ValidationException {
         AbstractCopyNumberMappingFileHandler handler = 
             copyNumberHandlerFactory.getHandler(genomicSource, caArrayFacade, arrayDataService, dao);
-        for (ArrayDataValues values : handler.loadCopyNumberData()) {
-            retrieveSegmentationData(values, genomicSource.getCopyNumberDataConfiguration());
+        List<ArrayDataValues> valuesList = handler.loadCopyNumberData();
+        if (genomicSource.getCopyNumberDataConfiguration().isCaDNACopyConfiguration()) {
+            for (ArrayDataValues values : valuesList) {
+                CopyNumberData copyNumberData = createCopyNumberData(values);
+                retrieveSegmentationData(copyNumberData, genomicSource.getCopyNumberDataConfiguration());
+            }            
+        } else {
+            CopyNumberData copyNumberData = createCopyNumberData(valuesList);
+            retrieveSegmentationData(copyNumberData, genomicSource.getCopyNumberDataConfiguration());
         }
     }
- 
-    private void retrieveSegmentationData(ArrayDataValues values,
-            CopyNumberDataConfiguration configuration) throws ConnectionException, DataRetrievalException {
+
+    private CopyNumberData createCopyNumberData(List<ArrayDataValues> valuesList) {
+        List<DnaAnalysisReporter> reporters;
+        if (valuesList.isEmpty()) {
+            reporters = Collections.emptyList();
+        } else {
+            reporters = convertToDnaAnalysisReporters(valuesList.get(0).getReporterList());
+        }
+        CopyNumberData copyNumberData = new CopyNumberData(reporters);
+        for (ArrayDataValues values : valuesList) {
+            addValues(values, copyNumberData);
+        }
+        return copyNumberData;
+    }
+
+    private CopyNumberData createCopyNumberData(ArrayDataValues values) {
         CopyNumberData copyNumberData = new CopyNumberData(convertToDnaAnalysisReporters(values.getReporterList()));
+        addValues(values, copyNumberData);
+        return copyNumberData;
+    }
+
+    private void addValues(ArrayDataValues values, CopyNumberData copyNumberData) {
         for (ArrayData arrayData : values.getArrayDatas()) {
             copyNumberData.addCopyNumberData(arrayData, 
                     values.getFloatValues(arrayData, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO));
         }
+    }
+
+    private void retrieveSegmentationData(CopyNumberData copyNumberData,
+            CopyNumberDataConfiguration configuration) throws ConnectionException, DataRetrievalException {
         if (configuration.isCaDNACopyConfiguration()) {
             bioconductorService.addSegmentationData(copyNumberData, configuration);
         } else {

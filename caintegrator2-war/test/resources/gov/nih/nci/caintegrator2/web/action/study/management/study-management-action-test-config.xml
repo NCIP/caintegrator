@@ -73,6 +73,9 @@
          <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
+        <property name="configurationHelper">
+            <ref local="configurationHelper"/>
+        </property>
     </bean>
     
     <bean id="loadClinicalSourceAction"
@@ -195,6 +198,11 @@
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
+    </bean>
+
+    <bean id="configurationHelper" 
+        class="gov.nih.nci.caintegrator2.common.ConfigurationHelperStub" 
+        singleton="true">
     </bean>
 
     <bean id="studyManagementService" 

@@ -159,4 +159,12 @@ public class GisticAnalysisForm {
     public void setExcludeControlSampleSetName(String excludeControlSampleSetName) {
         this.excludeControlSampleSetName = excludeControlSampleSetName;
     }
+
+    /**
+     * @return true if a grid service invocation, false if web service invocation.
+     */
+    public boolean isGridServiceCall() {
+        return getGisticParameters().getServer().getUrl().endsWith("/Gistic");
+    }
+    
 }

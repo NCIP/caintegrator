@@ -21,7 +21,7 @@
                 <br>
                 <s:div cssStyle="text-align:left; width: 550px; margin-left: auto; margin-right: auto;">
                 <span style="font-weight:bold;">Job Name</span> - Please enter a job name.<br>
-                <span style="font-weight:bold;">GISTIC Server</span> -  Select a GISTIC grid service from the dropdown.<br>
+                <span style="font-weight:bold;">GenePattern Server URL / GISTIC Server</span> -  Select whether to use the GISTIC web service or grid service and provide or select the service address. If the web service is selected, authentication information is also required<br>
                 <span style="font-weight:bold;">Clinical Queries</span> - (Optional) Select a saved Clinical query to specify which samples will be processed.<br>
                 <span style="font-weight:bold;">Exclude Sample Control Set</span> - (Optional) Select a Control Sample Set to be excluded from the Clinical Query.<br>
             </s:div>
@@ -33,8 +33,14 @@
             <s:hidden name="selectedAction" />
             <s:textfield name="currentGisticAnalysisJob.name" label="Job Name" size="50" required="true" />
             <br />
-            <s:select name="gisticParameters.server.url"
-                list="gisticServices" label="GISTIC Server" required="true" />
+            <s:radio theme="simple" name="useWebService" list="#{true:'Use GenePattern GISTIC Web Service'}" onclick="webServiceUrl.disabled = false; username.disabled = false; password.disabled = false; gridServiceUrl.disabled = true" />
+            <s:textfield id="webServiceUrl" name="webServiceUrl" label="GenePattern Server URL" size="50" required="true" />
+            <s:textfield id="username" name="gisticParameters.server.username" label="GenePattern Username" size="50" required="true" />
+            <s:password id="password" name="gisticParameters.server.password" label="GenePattern Password" size="50" showPassword="true" />
+            <br />
+            <s:radio theme="simple" name="useWebService" list="#{false:'Use GISTIC Grid Service'}" onclick="webServiceUrl.disabled = true; webServiceUrl.value = ''; username.disabled = true; username.value = ''; password.disabled = true; password.value = ''; gridServiceUrl.disabled = false" />
+            <s:select id="gridServiceUrl" name="gridServiceUrl"
+                list="gisticServices" label="GISTIC Server" required="true" disabled="true" />
             <br />
             <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin-left: 0px;height:110px">
                 <div class="wwlbl">&nbsp;</div >
