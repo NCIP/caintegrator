@@ -179,11 +179,13 @@ public final class HibernateUtil {
      * @param genomicSource to load.
      */
     public static void loadGenomicSource(GenomicDataSourceConfiguration genomicSource) {
-        loadSamples(genomicSource.getSamples());
-        loadSamples(genomicSource.getControlSamples());
-        loadSamples(genomicSource.getMappedSamples());
-        loadSampleSets(genomicSource.getControlSampleSetCollection());
-        Hibernate.initialize(genomicSource.getServerProfile());
+        if (genomicSource != null) {
+            loadSamples(genomicSource.getSamples());
+            loadSamples(genomicSource.getControlSamples());
+            loadSamples(genomicSource.getMappedSamples());
+            loadSampleSets(genomicSource.getControlSampleSetCollection());
+            Hibernate.initialize(genomicSource.getServerProfile());
+        }
     }
     
     /**
