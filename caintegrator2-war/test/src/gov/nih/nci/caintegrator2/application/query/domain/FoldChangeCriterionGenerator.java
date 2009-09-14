@@ -86,15 +86,15 @@
 package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.Set;
-
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleGenerator;
+
+import java.util.Set;
 
 /**
  * Gets called by the QueryResultTestIntegration through the CompoundCriterionGenerator.
@@ -109,8 +109,7 @@ public final class FoldChangeCriterionGenerator extends AbstractTestDataGenerato
     @Override
     public void compareFields(FoldChangeCriterion original, FoldChangeCriterion retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        compareCollections(original.getCompareToSampleSet().getSamples(), 
-                            retrieved.getCompareToSampleSet().getSamples(), SampleGenerator.INSTANCE);
+        assertTrue(retrieved.getCompareToSampleSet().getSamples().isEmpty());
         assertEquals(original.getFoldsUp(), retrieved.getFoldsUp());
         assertEquals(original.getFoldsDown(), retrieved.getFoldsDown());
         assertEquals(original.getRegulationType(), retrieved.getRegulationType());
