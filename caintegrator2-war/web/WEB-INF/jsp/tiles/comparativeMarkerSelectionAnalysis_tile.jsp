@@ -80,8 +80,16 @@
             <s:select name="comparativeMarkerSelectionParameters.phenotypeTest" label="Phenotype Test"
                 list="comparativeMarkerSelectionParameters.phenotypeTestOptions" required="true" />
             <br>
-            <s:submit value="Perform Analysis" align="center"
-                onclick="this.form.selectedAction.value = 'execute'; return true;" />
+            
+            <tr>
+                <td></td>
+                <td> 
+                <br>
+                <s:submit value="Perform Analysis" align="center"
+                    onclick="this.form.selectedAction.value = 'execute'; return true;" theme="simple" />
+                    <s:submit value="Cancel" action="cancelGenePatternAnalysis" theme="simple"/>
+                </td>
+            </tr>
 
         </s:form>
     </div>                                                                                                      
