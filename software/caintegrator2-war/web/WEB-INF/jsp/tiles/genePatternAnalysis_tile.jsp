@@ -24,7 +24,14 @@
             <s:textfield name="genePatternAnalysisForm.url" label="GenePattern Server URL" size="50" required="true" />
             <s:textfield name="genePatternAnalysisForm.username" label="GenePattern Username" size="50" required="true" />
             <s:password name="genePatternAnalysisForm.password" label="GenePattern Password" size="50" showPassword="true" />
-            <s:submit onclick="this.form.selectedAction.value = 'connect'; return true;" value="Connect" />
+            <tr>
+	            <td> </td>
+	            <td>
+	            <br>
+	            <s:submit onclick="this.form.selectedAction.value = 'connect'; return true;" value="Connect" theme="simple"/>
+	            <s:submit value="Cancel" action="cancelGenePatternAnalysis" theme="simple"/>
+	            </td>
+            </tr>
             <s:if test="%{!genePatternAnalysisForm.analysisMethodNames.empty}">
                 <s:textfield name="currentGenePatternAnalysisJob.name" label="Job Name" required="true" />
                 <s:select label="Analysis Method" 

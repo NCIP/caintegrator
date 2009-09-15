@@ -210,6 +210,14 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
     }
     
     /**
+     * Cancel action.
+     * @return struts return string.
+     */
+    public String cancel() {
+        return SUCCESS;
+    }
+    
+    /**
      * Edits the survival value definitions.
      * @return Struts result.
      */

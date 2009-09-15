@@ -228,10 +228,33 @@
             </result>
         </action>
         
+        <action name="cancelSurvivalValueDefinition" method="cancel" class="defineSurvivalDefinitionAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
+        
         <action name="editFileColumn" method="editFileColumn" class="defineFileColumnAction">
             <result type="tiles">editFileColumn</result>
             <result name="input" type="tiles">editFileColumn</result>
             <result name="error" type="tiles">editFileColumn</result>
+        </action>
+        
+        <action name="cancelFileColumn" method="cancel" class="defineFileColumnAction">
+            <result type="redirectAction">
+                <param name="actionName">editClinicalSource</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="clinicalSource.id">${clinicalSource.id}</param>
+            </result>
+        </action>
+        
+        <action name="cancelImagingFileColumn" method="cancel" class="defineImagingFileColumnAction">
+            <result type="redirectAction">
+                <param name="actionName">editImagingSourceAnnotations</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="imageSourceConfiguration.id">${imageSourceConfiguration.id}</param>
+            </result>
         </action>
    
          <action name="editImagingFileColumn" method="editFileColumn" class="defineImagingFileColumnAction">
@@ -514,6 +537,12 @@
             </result>
             <result name="input" type="tiles">genePatternAnalysis</result>
             <result name="error" type="tiles">genePatternAnalysis</result>
+        </action>
+        
+        <action name="cancelGenePatternAnalysis" method="cancel" class="genePatternAnalysisAction">
+            <result type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
         </action>
         
         <action name="comparativeMarkerSelectionAnalysis" class="comparativeMarkerSelectionAnalysisAction">

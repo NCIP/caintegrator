@@ -121,6 +121,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     
     private FileColumn fileColumn = new FileColumn();
     private boolean readOnly;
+    private boolean cancelEnabled;
     private List<String> availableUpdateList = new ArrayList<String>();
     private List<String> permissibleUpdateList = new ArrayList<String>();
     private int dataElementIndex;
@@ -158,6 +159,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
             }
         }
         setReadOnly(true);
+        cancelEnabled = true;
     }
     
     /**
@@ -175,6 +177,14 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      */
     public String editFileColumn() {
         clearCacheMemory();
+        return SUCCESS;
+    }
+    
+    /**
+     * Cancel returns you to the editClinicalSource action.
+     * @return struts result.
+     */
+    public String cancel() {
         return SUCCESS;
     }
     
@@ -223,6 +233,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
                                                      getStudyConfiguration().getStudy(),
                                                      EntityTypeEnum.SUBJECT);
         setReadOnly(false);
+        cancelEnabled = false;
         // Default the available values to be permissible on any new definition.
         getPermissibleUpdateList().addAll(getAvailableValues());
         updatePermissible();
@@ -550,5 +561,19 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      */
     public String getDefinitionType() {
         return getFileColumn().getFieldDescriptor().getDefinition().getType();
+    }
+
+    /**
+     * @return the cancelEnabled
+     */
+    public boolean isCancelEnabled() {
+        return cancelEnabled;
+    }
+
+    /**
+     * @param cancelEnabled the cancelEnabled to set
+     */
+    public void setCancelEnabled(boolean cancelEnabled) {
+        this.cancelEnabled = cancelEnabled;
     }
 }
