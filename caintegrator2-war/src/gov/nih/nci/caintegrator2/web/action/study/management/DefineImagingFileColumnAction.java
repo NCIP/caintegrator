@@ -237,6 +237,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
         setReadOnly(false);
         cancelEnabled = false;
         // Default the available values to be permissible on any new definition.
+        getPermissibleUpdateList().clear();
         getPermissibleUpdateList().addAll(getAvailableValues());
         updatePermissible();
         clearCacheMemory();
