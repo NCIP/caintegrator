@@ -170,6 +170,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         configuration.setExperimentIdentifier(getGenomicSource().getExperimentIdentifier());
         configuration.setPlatformVendor(getGenomicSource().getPlatformVendor());
         configuration.setPlatformName(getGenomicSource().getPlatformName());
+        configuration.setDataType(getGenomicSource().getDataType());
         return configuration;
     }
 
