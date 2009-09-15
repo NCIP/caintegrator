@@ -97,12 +97,11 @@
             </s:div>           
             <br>
             <br>
-
             <s:div cssClass="wwgrp">
-            <s:submit value="Perform Analysis" align="center"
-                onclick="this.form.selectedAction.value = 'execute'; return true;" cssClass="wwgrp"/>
-            </s:div>
-
+                <s:submit value="Perform Analysis" align="center"
+                    onclick="this.form.selectedAction.value = 'execute'; return true;" theme="simple" />
+                    <s:submit value="Cancel" action="cancelGenePatternAnalysis" theme="simple"/>
+			</s:div>
         </s:form>
             
     </div>                                                                                                      

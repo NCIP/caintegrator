@@ -41,6 +41,7 @@
             	    <s:a href="%{newSurvivalValueDefinition}" cssClass="btn" cssStyle="margin:0 5px;"><span class="btn_img"><span class="add">New</span></span></s:a>
             	    <s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.survivalDefinitionForm.action = 'deleteSurvivalValueDefinition.action';document.survivalDefinitionForm.actionType.value = 'modify';document.survivalDefinitionForm.submit();"><span class="btn_img"><span class="cancel">Remove</span></span></s:a>
             	    <s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.survivalDefinitionForm.action = 'editSurvivalValueDefinition.action';document.survivalDefinitionForm.actionType.value = 'modify';document.survivalDefinitionForm.submit();"><span class="btn_img"><span class="edit">Edit</span></span></s:a>
+            	    <s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.survivalDefinitionForm.action = 'cancelSurvivalValueDefinition.action';document.survivalDefinitionForm.submit();"><span class="btn_img"><span class="cancel">Cancel</span></span></s:a>
                 </s:form>
                 <s:if test="%{survivalValueDefinition.id != null}">
                 <br><br>

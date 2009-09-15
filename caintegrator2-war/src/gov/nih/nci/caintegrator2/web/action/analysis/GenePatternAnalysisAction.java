@@ -171,6 +171,14 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     }
     
     /**
+     * Cancel action.
+     * @return struts result.
+     */
+    public String cancel() {
+       return SUCCESS; 
+    }
+    
+    /**
      * Opens to the status page.
      * @return Status string.
      */

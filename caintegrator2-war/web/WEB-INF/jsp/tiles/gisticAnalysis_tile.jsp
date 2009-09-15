@@ -70,10 +70,18 @@
             <br />
             <s:file name="gisticParameters.cnvSegmentsToIgnoreFile" label="cnv File" />
             <br />
-            <s:div cssClass="wwgrp">
-            <s:submit value="Perform Analysis" align="center"
-                onclick="this.form.selectedAction.value = 'execute'; return true;" cssClass="wwgrp"/>
-            </s:div>
+            
+            <tr>
+                <td></td>
+                <td> 
+                <br>
+                <s:submit value="Perform Analysis" align="center"
+                    onclick="this.form.selectedAction.value = 'execute'; return true;" theme="simple" />
+                    <s:submit value="Cancel" action="cancelGenePatternAnalysis" theme="simple"/>
+                </td>
+            </tr>
+            
+            
         </s:form>
     </div>                                                                                                      
     </div>                                                                                                      

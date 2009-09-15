@@ -122,10 +122,22 @@
                                 disabled="%{fromCadsr}" 
                                 doubleDisabled="%{fromCadsr}"
                                 />
-                        </s:if>
-            	        <s:submit value="New" action="createNewDefinition" />
-                    </s:if>
-                    <s:submit value="Save" action="updateFileColumn" />
+                    	</s:if>
+                   	</s:if>
+                    <tr>
+	                    <td> </td>
+	                    <td>
+	                    <br>
+	                    <s:if test="%{columnTypeAnnotation}">
+                            <s:submit value="New" action="createNewDefinition" theme="simple"/>
+	                    </s:if>
+	                    <s:submit value="Save" action="updateFileColumn" theme="simple"/>
+	                    <s:if test="%{cancelEnabled}">
+	                        <s:submit value="Cancel" action="cancelFileColumn" theme="simple"/>
+	                    </s:if>
+                        </td>
+                    </tr>
+                    
                 </s:form>
                 </td>
             </tr>
