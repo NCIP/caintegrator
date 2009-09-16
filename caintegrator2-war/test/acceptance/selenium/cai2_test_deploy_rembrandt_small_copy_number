@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -20,6 +18,11 @@
 	<td>storeEval</td>
 	<td>var date = new Date(); var month = date.getMonth() + 1; if(month &lt; 10){month = '0' + month;} var day = date.getDate(); if(day &lt; 10){day = '0' + day;} displaytime = month + '/' + day + '/0' + (date.getYear() - 100); var hour = date.getHours(); if(hour &lt; 10){ hour = '0' + hour; } var min = date.getMinutes(); if(min &lt; 10){ min = '0' + min; } var sec = date.getSeconds(); if(sec &lt; 10){ sec = '0' + sec; } displaytime += ' ' + hour + ':' + min + ':' + sec; displaytime;</td>
 	<td>dateAndTime</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>${selenium.test.resources.dir}</td>
+	<td>testResourcesDirectory</td>
 </tr>
 <tr>
 	<td>store</td>
@@ -74,8 +77,13 @@
 </tr>
 <!--// add clinical data-->
 <tr>
+	<td>click</td>
+	<td>//a[@id='addClinicalFile_clinicalFile']/span/span</td>
+	<td></td>
+</tr>
+<tr>
 	<td>type</td>
-	<td>addClinicalFile_clinicalFile</td>
+	<td>clinicalFile</td>
 	<td>${selenium.test.resources.dir}rembrandt_clinical_Aug08_subset_mod_for_NCRI.csv</td>
 </tr>
 <tr>
@@ -91,7 +99,7 @@
 <!--//begin create identifier-->
 <tr>
 	<td>selectAndWait</td>
-	<td>saveColumnType_columnType</td>
+	<td>columnType</td>
 	<td>label=Identifier</td>
 </tr>
 <tr>
@@ -217,71 +225,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=65-69</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=15-19</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=30-34</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=55-59</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=45-49</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=25-29</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=40-44</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=60-64</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=35-39</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=70-74</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=0-4</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=50-54</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=20-24</td>
-</tr>
-<tr>
 	<td>click</td>
 	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
@@ -306,16 +249,6 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=M</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=F</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -364,26 +297,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=UNKNOWN</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=OLIGODENDROGLIOMA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=GBM</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=ASTROCYTOMA</td>
-</tr>
-<tr>
 	<td>click</td>
 	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
@@ -429,36 +342,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=UNKNOWN</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=WHITE</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=BLACK</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NATIVE HAWAIIAN</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=OTHER</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=ASIAN NOS</td>
-</tr>
-<tr>
 	<td>click</td>
 	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
@@ -482,11 +365,6 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NIH NEURO-ONCOLOGY BRANCH</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -534,66 +412,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=200</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=200, 18</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=250, 500, -1, 500</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=-1</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=200, 1600</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=200, 1500, 2000</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=2</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=210</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=6000</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=180</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=172, 200</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=</td>
-</tr>
-<tr>
 	<td>click</td>
 	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
@@ -617,61 +435,6 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=28</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=43</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=35, 10</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=-1</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=30, 1</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=30</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=30, 1, 1</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=33</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=40</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=15, 6, -1, 6</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -699,36 +462,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=3D CONFORMAL</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=PHOTON, RADIOSURGERY</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=PHOTON</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=RADIOSURGERY, RADIOSURGERY, RADIOSURGERY, RADIOSURGERY</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=PHOTON, RADIOSURGERY, RADIOSURGERY</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=3D CONFORMAL, RADIOSURGERY</td>
-</tr>
-<tr>
 	<td>click</td>
 	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
@@ -752,76 +485,6 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=BCNU</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=DOXORUBICIN, CYCLOPHOSPHAMIDE, VINCRISTINE</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=PROCARBAZINE, LOMUSTINE, VINCRISTINE, TEMOZOLOMIDE</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=BCNU, THALIDOMIDE, TEMOZOLOMIDE</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=LOMUSTINE, VINCRISTINE, PROCARBAZINE</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=TEMOZOLOMIDE</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=TAMOXIFEN CITRATE, TEMOZOLOMIDE</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=TEMOZOLOMIDE, TEMOZOLOMIDE</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=TEMOZOLOMIDE, TAMOXIFEN CITRATE, TEMOZOLOMIDE, 13-CIS RETINOIC ACID</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CC-5013</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CPT-11, TEMOZOLOMIDE, CARBOPLATIN, CPT-11, LOMUSTINE, CC-5013</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CPT-11, TEMOZOLOMIDE, ETOPOSIDE, THALIDOMIDE, CARBOPLATIN, TAMOXIFEN CITRATE, 13-CIS RETINOIC ACID</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CCNU (CARMUSTINE), PROCARBAZINE</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -849,56 +512,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=1, 1</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=1, 1, 3, 4, 4, 5</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=1, 1, 2, 3</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=1, 1, 2</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=1, 1, 1</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=1, 1, 2, 3, 3, 3, 2, 1</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=1, 2</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=1</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=1, 1, 1, 2</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=</td>
-</tr>
-<tr>
 	<td>click</td>
 	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
@@ -927,36 +540,6 @@
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewDefinition</td>
 	<td></td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=STEREOTACTIC BIOPSY</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CRANIOTOMY OPEN BIOPSY, CRANIOTOMY OPEN RESECTION, CRANIOTOMY OPEN RESECTION</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CRANIOTOMY OPEN RESECTION, CRANIOTOMY OPEN RESECTION</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CRANIOTOMY OPEN BIOPSY</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CRANIOTOMY OPEN RESECTION, CRANIOTOMY OPEN BIOPSY, CRANIOTOMY OPEN RESECTION</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CRANIOTOMY OPEN RESECTION</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -989,61 +572,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=OLIGODENDROGLIOMA, ASTROCYTOMA, OLIGODENDROGLIOMA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=TBD</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=GLIOBLASTOMA MULTIFORME, GLIOBLASTOMA MULTIFORME, GLIOBLASTOMA MULTIFORME</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=ASTROCYTOMA, MYELODYSPLASTIC SYNDROME NOS</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=GLIOBLASTOMA MULTIFORME</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=ANAPLASTIC ASTROCYTOMA, GLIOBLASTOMA MULTIFORME</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=ANAPLASTIC ASTROCYTOMA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=GLIOBLASTOMA MULTIFORME, GLIOBLASTOMA MULTIFORME</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NEUROBLASTOMA NOS</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=ASTROCYTOMA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=</td>
-</tr>
-<tr>
 	<td>click</td>
 	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
@@ -1069,66 +597,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=PR - PARTIAL RESECTION</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=BX - BIOPSY ONLY, PR - PARTIAL RESECTION, PR - PARTIAL RESECTION</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=BX - BIOPSY ONLY</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=PR - PARTIAL RESECTION, PR - PARTIAL RESECTION</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=BX - BIOPSY ONLY, BX - BIOPSY ONLY</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=PR - PARTIAL RESECTION, BX - BIOPSY ONLY</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CR - COMPLETE RESECTION, PR - PARTIAL RESECTION, CR - COMPLETE RESECTION</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CR - COMPLETE RESECTION, CR - COMPLETE RESECTION</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CR - COMPLETE RESECTION, BX - BIOPSY ONLY</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=BX - BIOPSY ONLY, BX - BIOPSY ONLY, PR - PARTIAL RESECTION</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CR - COMPLETE RESECTION</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=</td>
-</tr>
-<tr>
 	<td>click</td>
 	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
@@ -1145,25 +613,35 @@
 </tr>
 <!--// begin Load Clinical-->
 <tr>
+	<td>waitForElementPresent</td>
+	<td>//a//span[text()='Load All Clinical']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
-	<td>link=Load Clinical</td>
+	<td>//a//span[text()='Load All Clinical']</td>
 	<td></td>
 </tr>
 <!--// begin add genomic-->
 <tr>
+	<td>verifyElementPresent</td>
+	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
-	<td>action:addGenomicSource</td>
+	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>genomicSourceForm_genomicSource_serverProfile_hostname</td>
-	<td>ncias-d227-v.nci.nih.gov</td>
+	<td>array-stage.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>genomicSourceForm_genomicSource_serverProfile_port</td>
-	<td>31099</td>
+	<td>8080</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -1197,12 +675,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>saveSampleMapping_sampleMappingFile</td>
+	<td>sampleMappingFile</td>
 	<td>${selenium.test.resources.dir}ncri_sample_mapping.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>saveSampleMapping_0</td>
+	<td>//button[@type='button' and @onclick='saveSampleMapping()']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1217,24 +695,29 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>saveSampleMapping_controlSampleSetName</td>
+	<td>controlSampleSetName</td>
 	<td>Control Set 1</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>saveSampleMapping_controlSampleFile</td>
+	<td>controlSampleFile</td>
 	<td>${selenium.test.resources.dir}jagla_0034_control_samples.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>saveSampleMapping_saveControlSamples</td>
+	<td>//button[@type='button' and @onclick='saveSampleMapping()']</td>
 	<td></td>
 </tr>
 <!--// end map samples-->
 <!--// begin add copy number-->
 <tr>
+	<td>verifyElementPresent</td>
+	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
-	<td>action:addGenomicSource</td>
+	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1280,12 +763,17 @@
 <!--// configure copy number settings-->
 <tr>
 	<td>waitForElementPresent</td>
-	<td>//*[@id=&quot;genomicSourceJobStatusTable&quot;]//span[text()='${caarrayExperimentNameCopyNumber}']/parent::td/parent::tr//a[text()='ConfigureCopyNumberData']</td>
+	<td>//*[@id=&quot;genomicSourceJobStatusTable&quot;]//span[text()='${caarrayExperimentNameCopyNumber}']/parent::td/parent::tr//a//span[text()='ConfigureCopyNumberData']</td>
 	<td>true</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//*[@id=&quot;genomicSourceJobStatusTable&quot;]//span[text()='${caarrayExperimentNameCopyNumber}']/parent::td/parent::tr//a[text()='ConfigureCopyNumberData']</td>
+	<td>//*[@id=&quot;genomicSourceJobStatusTable&quot;]//span[text()='${caarrayExperimentNameCopyNumber}']/parent::td/parent::tr//a//span[text()='ConfigureCopyNumberData']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>saveCopyNumberDataConfiguration_useGladfalse</td>
 	<td></td>
 </tr>
 <tr>
