@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="" />
+<link rel="selenium.base" href="http://caintegrator2-dev.nci.nih.gov/" />
 <title>Manage Studies - Load DC Lung Full</title>
 </head>
 <body>
@@ -23,19 +23,26 @@
 </tr>
 <tr>
 	<td>store</td>
+	<td>${selenium.test.resources.dir}</td>
+	<td>testResourcesDirectory</td>
+</tr>
+<tr>
+	<td>store</td>
 	<td>DC Lung Full</td>
 	<td>Cai2StudyName</td>
 </tr>
+<!--// begin Check that the genomic platform has been loaded-->
 <tr>
-	<td>echo</td>
-	<td>${Cai2StudyName}</td>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
 	<td></td>
 </tr>
 <tr>
-	<td>open</td>
-	<td>/caintegrator2/createStudy.action</td>
-	<td></td>
+	<td>waitForElementPresent</td>
+	<td>//*[@id=&quot;platformDeploymentJobStatusTable&quot;]//td//span[text()='HG-U133A']</td>
+	<td>true</td>
 </tr>
+<!--// end Check that genomic platform has been loaded-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Create New Study</td>
@@ -44,7 +51,7 @@
 <tr>
 	<td>type</td>
 	<td>nameId</td>
-	<td>Demo Study based on ${Cai2StudyName} data</td>
+	<td>Demo Study based on ${Cai2StudyName} data.</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -56,25 +63,42 @@
 	<td>studyDeploymentForm_saveStudy</td>
 	<td></td>
 </tr>
+<!--// add logo-->
 <tr>
 	<td>type</td>
-	<td>addClinicalFile_clinicalFile</td>
-	<td>${selenium.test.resources.dir}dc_lung_clinical_data_public.csv</td>
+	<td>addStudyLogo_studyLogoFile</td>
+	<td>${testResourcesDirectory}dc_lung.jpg</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addStudyLogo_addStudyLogo</td>
+	<td></td>
+</tr>
+<!--// add clinical data-->
+<tr>
+	<td>click</td>
+	<td>//a[@id='addClinicalFile_clinicalFile']/span/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>clinicalFile</td>
+	<td>${testResourcesDirectory}dc_lung_clinical_data_public.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>addClinicalFile_addClinicalFile</td>
 	<td></td>
 </tr>
-<!--//begin create identifier-->
 <tr>
 	<td>clickAndWait</td>
 	<td>saveClinicalSource_</td>
 	<td></td>
 </tr>
+<!--//begin create identifier-->
 <tr>
 	<td>selectAndWait</td>
-	<td>saveColumnType_columnType</td>
+	<td>columnType</td>
 	<td>label=Identifier</td>
 </tr>
 <tr>
@@ -82,180 +106,26 @@
 	<td>updateDefinition_updateFileColumn</td>
 	<td></td>
 </tr>
-<!--//-->
 <!--//begin create karnofsky-->
-<!--//-->
-<!--//-->
 <tr>
 	<td>clickAndWait</td>
 	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[3]/td[1]/a</td>
 	<td></td>
 </tr>
-<!---->
 <tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewDefinition</td>
 	<td></td>
 </tr>
 <tr>
+	<td>select</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
+	<td>label=string</td>
+</tr>
+<tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=C1817G1</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=D117</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=B-NCI_U133A_86L.CHP</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A307</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=C3191I</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A29</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A84</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=C2323F</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A61</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=D148</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A80</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A234</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A215</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A14</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=C0184A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A6</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A257</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A313</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A291</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=B-NCI_U133A_42L.CHP</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A272</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A209</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=C4163D</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A259</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=C2658C</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=C0130D</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=B-NCI_U133A_54L.CHP</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A45</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A210</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A63</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=A213</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -278,731 +148,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 3354B</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung234_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_61L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung310_U133</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL20041110102AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_81_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung270_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_1L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung228_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_100_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung224_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_22_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung230_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_82_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 0711B</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_33L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_73_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung213_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL20041116112AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 0686G</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_56L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_96L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung49_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 2362A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_7L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung204_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 0438A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_24_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung274_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 3298E</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 1343G</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_7_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_67_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_101L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung215_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL2004111041AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL20041116113AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung271_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_12L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_85_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung298_U133</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 0757N</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL2005060346AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_17_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_62L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_23L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL2005060357AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung51_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 0344B</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL2004110909AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 2373H</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL20041119180AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung257_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_93L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_11_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 2323F</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_70_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung45_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 1400H</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL2004111098AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung249_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL20041116134AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 0459F</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_47L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung229_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_18_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 3265E</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL2004111048AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_92L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung232_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 2401B</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_19_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_72L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL2004111046AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_39L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_51L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_61_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung206_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_105L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung267_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL2005060332AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung289_U133</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung250_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_82L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_15_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_5L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_16L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_14L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung307_U133</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung53_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung52_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_54L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 0542F</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung57_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 4172B</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung43_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 2517G1</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL2004111022AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL20041110108AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL20041119191AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung205_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_99L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_71L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_53L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_46L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_77L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 2366C</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_95L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_15L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL2004111042AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 1835I</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung312_U133</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 3191I</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_89L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_63L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung263_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL2005060326AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung40_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL2005060333AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_98_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_55L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_59_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_48L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_8_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung58_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 1940G</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_85L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung273_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_107L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung294_U133</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_97L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=CL2004111003AA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 3021E</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung278_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung47_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung38_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_60_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_lung291_U133</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_78_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_94L_Rep</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 2658C</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_U133A_79L</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NCI_Lung_76_U133A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 0184A</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moff 1276H</td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_updateFileColumn</td>
 	<td></td>
@@ -1021,31 +166,6 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=MSKCC</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=MI</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=HLM</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=DFCI</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1068,21 +188,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=0</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=1</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_updateFileColumn</td>
 	<td></td>
@@ -1101,11 +206,6 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1153,41 +253,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Not Reported(98)</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Asian(05)</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Native Hawaiian or Other Pacific Islander(04)</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Black or African American(03)</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=White(01)</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Unknown(99)</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_updateFileColumn</td>
 	<td></td>
@@ -1206,26 +271,6 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Yes</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=No</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Unknown</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1248,26 +293,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Yes</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=No</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Unknown</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_updateFileColumn</td>
 	<td></td>
@@ -1288,21 +313,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Alive</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Dead</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_updateFileColumn</td>
 	<td></td>
@@ -1321,26 +331,6 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Yes</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=No</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Unknown</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1386,11 +376,6 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
-	<td>label=numeric</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1515,7 +500,7 @@
 <tr>
 	<td>select</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
-	<td>label=date</td>
+	<td>label=string</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1538,31 +523,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Unknown</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Never smoked</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Smoked in the past</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Currently smoking</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_updateFileColumn</td>
 	<td></td>
@@ -1581,21 +541,6 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=MICROSCOPICALLY POSITIVE MARGINS OR MICROSCOPIC RESIDUAL DISEASE</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=ALL MARGINS PATHOLOGICALLY NEGATIVE</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1618,31 +563,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=N0, ACCORDING TO AJCC CRITERIA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=NX, ACCORDING TO AJCC CRITERIA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=N2, ACCORDING TO AJCC CRITERIA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=N1, ACCORDING TO AJCC CRITERIA</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_updateFileColumn</td>
 	<td></td>
@@ -1661,36 +581,6 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=T1, ACCORDING TO AJCC CRITERIA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=T3, ACCORDING TO AJCC CRITERIA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=T2, ACCORDING TO AJCC CRITERIA</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=T4, ACCORDING TO AJCC CRITERIA</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1716,36 +606,6 @@
 	<td>select</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
 	<td>label=numeric</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=192</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=194</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=190</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=191</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=193</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1838,141 +698,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=3</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=17</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=14</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=1</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=6</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=16</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=24</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=15</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=11</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=4</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=23</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=12</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=7</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=18</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=2</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=20</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=25</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=21</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=10</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=13</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=26</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=22</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=9</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=19</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=8</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_updateFileColumn</td>
 	<td></td>
@@ -1993,31 +718,6 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=WELL DIFFERENTIATED</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Moderate Differentiation</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=POORLY DIFFERENTIATED</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_updateFileColumn</td>
 	<td></td>
@@ -2029,25 +729,35 @@
 </tr>
 <!--// begin Load Clinical-->
 <tr>
+	<td>waitForElementPresent</td>
+	<td>//a//span[text()='Load All Clinical']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
-	<td>link=Load Clinical</td>
+	<td>//a//span[text()='Load All Clinical']</td>
 	<td></td>
 </tr>
 <!--// begin add genomic-->
 <tr>
+	<td>verifyElementPresent</td>
+	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
-	<td>action:addGenomicSource</td>
+	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>genomicSourceForm_genomicSource_serverProfile_hostname</td>
-	<td>ncias-d227-v.nci.nih.gov</td>
+	<td>array-stage.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>genomicSourceForm_genomicSource_serverProfile_port</td>
-	<td>31099</td>
+	<td>8080</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -2111,7 +821,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>saveSampleMapping_saveControlSamples</td>
+	<td>saveSampleMapping_0</td>
 	<td></td>
 </tr>
 <!--// end map samples-->
