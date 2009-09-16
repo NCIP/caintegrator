@@ -31,7 +31,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
+	<td>platformFile</td>
 	<td>${testResourcesDesignsAffyDirectory}HG-U133_Plus_2.na26.annot.csv</td>
 </tr>
 <tr>

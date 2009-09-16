@@ -31,7 +31,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
+	<td>platformFile</td>
 	<td>${testResourcesDesignsAffyDirectory}HG-U133_Plus_2.na26.annot.csv</td>
 </tr>
 <tr>
@@ -46,7 +46,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
+	<td>platformFile</td>
 	<td>${testResourcesDesignsAffyDirectory}HG-U133A.na27.annot.csv</td>
 </tr>
 <tr>
@@ -71,7 +71,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
+	<td>platformFile</td>
 	<td>${testResourcesDesignsAgilentDirectory}AgilentG4502A_07_01.tcga.adf</td>
 </tr>
 <tr>
@@ -97,7 +97,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
+	<td>platformFile</td>
 	<td>${testResourcesDesignsAffyDirectory}Mapping50K_Hind240.na27.annot.csv</td>
 </tr>
 <tr>
@@ -107,7 +107,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
+	<td>platformFile</td>
 	<td>${testResourcesDesignsAffyDirectory}Mapping50K_Xba240.na27.annot.csv</td>
 </tr>
 <tr>
@@ -128,7 +128,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
+	<td>platformFile</td>
 	<td>${testResourcesDesignsAffyDirectory}HG-U133B.na27.annot.csv</td>
 </tr>
 <tr>
@@ -143,7 +143,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
+	<td>platformFile</td>
 	<td>${testResourcesDesignsAffyDirectory}HG_U95Av2.na27.annot.csv</td>
 </tr>
 <tr>
@@ -158,7 +158,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
+	<td>platformFile</td>
 	<td>${testResourcesDesignsAffyDirectory}HG_U95B.na27.annot.csv</td>
 </tr>
 <tr>
@@ -173,7 +173,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
+	<td>platformFile</td>
 	<td>${testResourcesDesignsAffyDirectory}HG_U95C.na27.annot.csv</td>
 </tr>
 <tr>
@@ -188,7 +188,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
+	<td>platformFile</td>
 	<td>${testResourcesDesignsAffyDirectory}HG_U95D.na27.annot.csv</td>
 </tr>
 <tr>
