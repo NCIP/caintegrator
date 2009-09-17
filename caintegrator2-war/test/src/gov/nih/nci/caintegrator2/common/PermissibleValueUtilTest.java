@@ -285,7 +285,7 @@ public class PermissibleValueUtilTest {
     }
     
     @Test
-    public void testRetrieveValuesNotPermissible() throws ParseException {
+    public void testRetrieveAnnotationValuesNotPermissible() throws ParseException {
         Study study = new Study();
         AnnotationDefinition annotationDefinition1 = new AnnotationDefinition();
         annotationDefinition1.setType(AnnotationTypeEnum.NUMERIC.getValue());
@@ -298,13 +298,13 @@ public class PermissibleValueUtilTest {
         annotationDefinition1.getAnnotationValueCollection().add(validValue);
         
         Set<String> invalidValues = 
-            PermissibleValueUtil.retrieveValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition1, dao);
+            PermissibleValueUtil.retrieveAnnotationValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition1, dao);
         assertTrue(invalidValues.isEmpty());
 
         annotationDefinition1.setType(null);
         try {
             invalidValues = 
-                PermissibleValueUtil.retrieveValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition1, dao);
+                PermissibleValueUtil.retrieveAnnotationValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition1, dao);
         } catch (Exception e) {
             assertEquals("Data Type for the Annotation Definition is unknown.", e.getMessage());
         }
@@ -312,7 +312,7 @@ public class PermissibleValueUtilTest {
         annotationDefinition1.setType("Unknown");
         try {
             invalidValues = 
-                PermissibleValueUtil.retrieveValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition1, dao);
+                PermissibleValueUtil.retrieveAnnotationValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition1, dao);
         } catch (Exception e) {
             assertEquals("No matching type for Unknown", e.getMessage());
         }
@@ -323,7 +323,7 @@ public class PermissibleValueUtilTest {
         invalidValue.setAnnotationDefinition(annotationDefinition1);
         annotationDefinition1.getAnnotationValueCollection().add(invalidValue);
         invalidValues = 
-            PermissibleValueUtil.retrieveValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition1, dao);
+            PermissibleValueUtil.retrieveAnnotationValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition1, dao);
         assertTrue(invalidValues.size() == 1);
         assertTrue(invalidValues.iterator().next().equals("1234.0"));
         
@@ -336,7 +336,7 @@ public class PermissibleValueUtilTest {
         validValue2.setAnnotationDefinition(annotationDefinition2);
         annotationDefinition2.getAnnotationValueCollection().add(validValue2);
         invalidValues = 
-            PermissibleValueUtil.retrieveValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition2, dao);
+            PermissibleValueUtil.retrieveAnnotationValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition2, dao);
         assertTrue(invalidValues.isEmpty());
         
         StringAnnotationValue invalidValue2 = new StringAnnotationValue();
@@ -344,7 +344,7 @@ public class PermissibleValueUtilTest {
         invalidValue2.setAnnotationDefinition(annotationDefinition2);
         annotationDefinition2.getAnnotationValueCollection().add(invalidValue2);
         invalidValues = 
-            PermissibleValueUtil.retrieveValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition2, dao);
+            PermissibleValueUtil.retrieveAnnotationValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition2, dao);
         assertTrue(invalidValues.size() == 1);
         assertTrue(invalidValues.iterator().next().equals("ABCDEF"));
 
@@ -356,7 +356,7 @@ public class PermissibleValueUtilTest {
         validValue3.setAnnotationDefinition(annotationDefinition3);
         annotationDefinition3.getAnnotationValueCollection().add(validValue3);
         invalidValues = 
-            PermissibleValueUtil.retrieveValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition3, dao);
+            PermissibleValueUtil.retrieveAnnotationValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition3, dao);
         assertTrue(invalidValues.size() == 1);
     }
     

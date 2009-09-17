@@ -144,6 +144,12 @@ public class DefineFileColumnActionTest extends AbstractSessionBasedTest {
         action.getDefinitions().add(null);
         assertEquals(Action.SUCCESS, action.selectDefinition());
         assertTrue(studyManagementServiceStub.setDefinitionCalled);
+        
+        studyManagementServiceStub.clear();
+        studyManagementServiceStub.throwValidationException = true;
+        assertEquals(Action.ERROR, action.selectDefinition());
+        assertFalse(action.getActionErrors().isEmpty());
+        
     }
     
     @Test
@@ -151,6 +157,18 @@ public class DefineFileColumnActionTest extends AbstractSessionBasedTest {
         action.getDataElements().add(new CommonDataElement());
         assertEquals(Action.SUCCESS, action.selectDataElement());
         assertTrue(studyManagementServiceStub.setDataElementCalled);
+        
+        studyManagementServiceStub.clear();
+        studyManagementServiceStub.throwValidationException = true;
+        assertEquals(Action.ERROR, action.selectDataElement());
+        assertFalse(action.getActionErrors().isEmpty());
+        
+        studyManagementServiceStub.clear();
+        action.clearErrorsAndMessages();
+        studyManagementServiceStub.throwConnectionException = true;
+        assertEquals(Action.ERROR, action.selectDataElement());
+        assertFalse(action.getActionErrors().isEmpty());
+        
     }
     
     @Test
@@ -192,6 +210,7 @@ public class DefineFileColumnActionTest extends AbstractSessionBasedTest {
     }
     
     @Test
+    @SuppressWarnings("deprecation")
     public void testCreateNewDefinition() throws ValidationException, ParseException {
         action.setFileColumn(new FileColumn());
         action.getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());

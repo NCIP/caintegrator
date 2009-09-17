@@ -214,12 +214,20 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
      * @return the Struts result.
      */
     public String selectDefinition() {
+        FileColumn originalFileColumn = getFileColumn();
         AnnotationDefinition definitionToUse = getStudyManagementService().
                         getRefreshedStudyEntity(getDefinitions().get(getDefinitionIndex()));
-        getStudyManagementService().setDefinition(getStudyConfiguration().getStudy(),
+        try {
+            getStudyManagementService().setDefinition(getStudyConfiguration().getStudy(),
                                                   getFileColumn(), 
                                                   definitionToUse,
                                                   EntityTypeEnum.IMAGESERIES);
+        } catch (ValidationException e) {
+            addActionError(e.getResult().getInvalidMessage());
+            setFileColumn(originalFileColumn);
+            prepare();
+            return ERROR;
+        }
         updateImageDataSourceStatus();
         return SUCCESS;
     }

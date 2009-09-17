@@ -85,13 +85,18 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
  * Represents a column in a <code>DelimitedTextFile</code>.
@@ -190,6 +195,48 @@ public class FileColumn extends AbstractCaIntegrator2Object implements Comparabl
             loadDataValues();
         }
         return dataValues;
+    }
+    
+    /**
+     * Retrieves the unique data values represented in the format of the class type.
+     * @param <T> the format of the class type.
+     * @param classType the format of the class type.
+     * @return Set of values.
+     * @throws ValidationException if file column is invalid.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> Set <T> getUniqueDataValues(Class<T> classType) throws ValidationException {
+        Set<String> uniqueStringDataValues = new HashSet<String>();
+        uniqueStringDataValues.addAll(getDataValues());
+        if (classType.equals(String.class)) {
+            return (Set<T>) uniqueStringDataValues;
+        }
+        Set<T> uniqueDataValues = new HashSet<T>();
+        for (String stringValue : uniqueStringDataValues) {
+            uniqueDataValues.add((T) retrieveValueAsClassType(classType, stringValue));
+        }
+        return uniqueDataValues;
+       
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> Object retrieveValueAsClassType(Class<T> classType, String stringValue)
+            throws ValidationException {
+        if (classType.equals(Double.class)) {
+            if (!NumberUtils.isNumber(stringValue)) {
+                throw new ValidationException("Cannot cast column as a number, because of value: " + stringValue);
+            }
+            return Double.valueOf(stringValue);
+        } else if (classType.equals(Date.class)) {
+            try {
+                return DateUtil.createDate(stringValue);
+            } catch (ParseException e) {
+                throw new ValidationException("Unable to parse date from the column, because of value: " 
+                        + stringValue, e);
+            }
+        } else {
+            throw new IllegalArgumentException("classType is not valid.");
+        }
     }
 
     private void loadDataValues() throws ValidationException {
