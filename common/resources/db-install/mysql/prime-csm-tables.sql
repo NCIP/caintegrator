@@ -24,8 +24,8 @@ values(1,1);
 # Replace <<application_context_name>> with your application name.
 #
 
-INSERT INTO CSM_APPLICATION(APPLICATION_NAME,APPLICATION_DESCRIPTION,DECLARATIVE_FLAG,ACTIVE_FLAG,UPDATE_DATE)
-VALUES ("caintegrator2","caIntegrator2 Data Portal",0,0,sysdate());
+INSERT INTO CSM_APPLICATION(APPLICATION_NAME,APPLICATION_DESCRIPTION,DECLARATIVE_FLAG,ACTIVE_FLAG,CSM_VERSION,UPDATE_DATE)
+VALUES ("caintegrator2","caIntegrator2 Data Portal",0,0,"4.2",sysdate());
 
 insert into CSM_USER (LOGIN_NAME,FIRST_NAME,LAST_NAME,PASSWORD,UPDATE_DATE)
 values ("cai2admin","cai2","Admin","SRsSeN2nfbO9DFmxlyl4eg==",sysdate());
@@ -442,5 +442,6 @@ VALUES (
                        AND p.privilege_name=''READ''
                        AND g.group_name IN (:GROUP_NAMES )
                        AND pe.application_id=:APPLICATION_ID))',2,sysdate());
+
 
 COMMIT;
