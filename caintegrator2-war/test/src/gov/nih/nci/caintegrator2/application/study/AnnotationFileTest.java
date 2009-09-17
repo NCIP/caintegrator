@@ -123,7 +123,7 @@ public class AnnotationFileTest {
     public void testLoad() throws ValidationException, IOException {
         AnnotationFile annotationFile = createAnnotationFile(VALID_FILE);
         assertNotNull(annotationFile);
-        assertEquals(4, annotationFile.getColumns().size());
+        assertEquals(5, annotationFile.getColumns().size());
         assertEquals("ID", annotationFile.getColumns().get(0).getName());
         assertEquals("Col1", annotationFile.getColumns().get(1).getName());
         assertEquals("Col2", annotationFile.getColumns().get(2).getName());

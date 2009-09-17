@@ -223,7 +223,7 @@ public class StudyManagementServiceTest {
             studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
         assertEquals(1, studyConfiguration.getClinicalConfigurationCollection().size());
         assertTrue(studyConfiguration.getClinicalConfigurationCollection().contains(sourceConfiguration));
-        assertEquals(4, sourceConfiguration.getAnnotationFile().getColumns().size());
+        assertEquals(5, sourceConfiguration.getAnnotationFile().getColumns().size());
         assertTrue(daoStub.saveCalled);
     }
     
@@ -252,6 +252,9 @@ public class StudyManagementServiceTest {
         definition = new AnnotationDefinition();
         definition.setType(AnnotationTypeEnum.STRING.getValue());
         sourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
+        definition = new AnnotationDefinition();
+        definition.setType(AnnotationTypeEnum.DATE.getValue());
+        sourceConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
         studyManagementService.loadClinicalAnnotation(studyConfiguration, sourceConfiguration); 
         studyManagementService.reLoadClinicalAnnotation(studyConfiguration); 
     }
@@ -301,7 +304,7 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testSetDefinition() {
+    public void testSetDefinition() throws ValidationException {
         Study study = new Study();
         study.setId(Long.valueOf(1L));
         FileColumn fileColumn = new FileColumn();
@@ -345,6 +348,7 @@ public class StudyManagementServiceTest {
         assertTrue(newDefinition.getAnnotationValueCollection().contains(value3));
     }
     
+    @SuppressWarnings("deprecation")
     @Test
     public void testSetDataElement() throws ConnectionException, ValidationException {
         Study study = new Study();
@@ -355,6 +359,8 @@ public class StudyManagementServiceTest {
         AnnotationDefinition originalDefinition = new AnnotationDefinition();
         originalDefinition.setType(AnnotationTypeEnum.STRING.getValue());
         fileColumn.getFieldDescriptor().setDefinition(originalDefinition);
+        fileColumn.setAnnotationFile(new AnnotationFile());
+        fileColumn.getAnnotationFile().setCurrentlyLoaded(Boolean.TRUE.toString());
         
         StringAnnotationValue validValue = new StringAnnotationValue();
         SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
@@ -497,7 +503,7 @@ public class StudyManagementServiceTest {
         studyManagementService.save(studyConfiguration);
         ImageAnnotationConfiguration imageAnnotationConfiguration = 
             studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
-        assertEquals(4, imageAnnotationConfiguration.getAnnotationFile().getColumns().size());
+        assertEquals(5, imageAnnotationConfiguration.getAnnotationFile().getColumns().size());
         assertTrue(daoStub.saveCalled);
     }
 
@@ -510,7 +516,7 @@ public class StudyManagementServiceTest {
         ImageAnnotationConfiguration imageAnnotationConfiguration = 
             studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
         imageDataSourceConfiguration.setImageAnnotationConfiguration(imageAnnotationConfiguration);
-        assertEquals(4, imageDataSourceConfiguration.getImageAnnotationConfiguration().getAnnotationFile().getColumns().size());
+        assertEquals(5, imageDataSourceConfiguration.getImageAnnotationConfiguration().getAnnotationFile().getColumns().size());
         assertTrue(studyConfiguration.getImageDataSources().contains(imageDataSourceConfiguration));
         assertTrue(daoStub.saveCalled);
         assertFalse(imageDataSourceConfiguration.getImageSeriesAcquisitions().isEmpty());
@@ -544,10 +550,14 @@ public class StudyManagementServiceTest {
         definition = new AnnotationDefinition();
         definition.setType(AnnotationTypeEnum.STRING.getValue());
         imageAnnotationConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
+        definition = new AnnotationDefinition();
+        definition.setType(AnnotationTypeEnum.DATE.getValue());
+        imageAnnotationConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
         imageDataSourceConfiguration.setImageAnnotationConfiguration(imageAnnotationConfiguration);
+        
         studyManagementService.loadImageAnnotation(imageDataSourceConfiguration); 
-        assertEquals(3, series1.getAnnotationCollection().size());
-        assertEquals(3, series2.getAnnotationCollection().size());
+        assertEquals(4, series1.getAnnotationCollection().size());
+        assertEquals(4, series2.getAnnotationCollection().size());
     }
     
     @Test

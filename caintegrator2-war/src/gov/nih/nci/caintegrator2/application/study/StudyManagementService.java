@@ -389,9 +389,10 @@ public interface StudyManagementService {
      * @param fileColumn column receiving definition.
      * @param annotationDefinition the selected definition.
      * @param entityType entity type for the annotation definition.
+     * @throws ValidationException if invalid definition for the given values.
      */
     void setDefinition(Study study, FileColumn fileColumn, AnnotationDefinition annotationDefinition, 
-            EntityTypeEnum entityType);
+            EntityTypeEnum entityType) throws ValidationException;
 
     /**
      * Create the associations between subjects in the study and samples.

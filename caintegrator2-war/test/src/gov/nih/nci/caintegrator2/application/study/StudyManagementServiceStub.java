@@ -268,13 +268,22 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return Collections.emptyList();
     }
 
-    public void setDataElement(FileColumn fileColumn, CommonDataElement dataElement, Study study, EntityTypeEnum entityType, String keywords) {
+    public void setDataElement(FileColumn fileColumn, CommonDataElement dataElement, Study study, EntityTypeEnum entityType, String keywords) throws ValidationException, ConnectionException {
         setDataElementCalled = true;
+        if (throwConnectionException) {
+            throw new ConnectionException("");
+        }
+        if (throwValidationException) {
+            throw new ValidationException("");
+        }
     }
 
     public void setDefinition(Study study, FileColumn fileColumn, AnnotationDefinition annotationDefinition, 
-                                EntityTypeEnum entityType) {
+                                EntityTypeEnum entityType) throws ValidationException {
         setDefinitionCalled = true;
+        if (throwValidationException) {
+            throw new ValidationException("");
+        }
     }
 
     public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile, GenomicDataSourceConfiguration genomicSource)throws ValidationException, IOException {

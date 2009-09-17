@@ -1,35 +1,39 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Annotation of allowed values for <code>AnnotationDefintion.type</code>.
  */
-public enum AnnotationTypeEnum {
+@SuppressWarnings("unchecked") // For the "Class" operations.
+public enum AnnotationTypeEnum  {
 
     /**
      * Date type.
      */
-    DATE("date"),
+    DATE("date", Date.class),
 
     /**
      * Numeric type.
      */
-    NUMERIC("numeric"),
+    NUMERIC("numeric", Double.class),
     
     /**
      * String type.
      */
-    STRING("string");
+    STRING("string", String.class);
     
     private static Map<String, AnnotationTypeEnum> valueToTypeMap = new HashMap<String, AnnotationTypeEnum>();
 
     private String value;
+    private Class classType;
     
-    private AnnotationTypeEnum(String value) {
+    private AnnotationTypeEnum(String value, Class classType) {
         this.value = value;
+        this.classType = classType;
     }
 
     /**
@@ -76,5 +80,19 @@ public enum AnnotationTypeEnum {
         if (value != null && !getValueToTypeMap().containsKey(value)) {
             throw new IllegalArgumentException("No matching type for " + value);
         }
+    }
+
+    /**
+     * @return the classType
+     */
+    public Class getClassType() {
+        return classType;
+    }
+
+    /**
+     * @param classType the classType to set
+     */
+    public void setClassType(Class classType) {
+        this.classType = classType;
     }
 }

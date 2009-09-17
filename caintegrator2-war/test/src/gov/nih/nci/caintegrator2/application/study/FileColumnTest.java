@@ -86,13 +86,17 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
-
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -129,6 +133,38 @@ public class FileColumnTest {
         dataValues = annotationFile.getColumns().get(3).getDataValues();
         assertEquals("N", dataValues.get(0));
         assertEquals("Y", dataValues.get(1));
+    }
+    
+    @Test
+    public void testGetUniqueDataValues() throws ValidationException {
+        AnnotationFile annotationFile = AnnotationFile.load(TestDataFiles.VALID_FILE, new CaIntegrator2DaoStub());
+        Set<String> stringDataValues = annotationFile.getColumns().get(0).getUniqueDataValues(String.class);
+        assertTrue(stringDataValues.contains("100"));
+        assertTrue(stringDataValues.contains("101"));
+        
+        Set<Double> doubleDataValues = annotationFile.getColumns().get(0).getUniqueDataValues(Double.class);
+        assertTrue(doubleDataValues.contains(100.0));
+        assertTrue(doubleDataValues.contains(101.0));
+        
+        Set<Date> dateDataValues = new HashSet<Date>();
+        try {
+            annotationFile.getColumns().get(0).getUniqueDataValues(Date.class);
+            fail();
+        } catch (ValidationException e) {
+            // noop - should catch exception.
+        }
+        
+        dateDataValues = annotationFile.getColumns().get(4).getUniqueDataValues(Date.class);
+        assertTrue(dateDataValues.contains(new Date(1104559200000l)));
+        assertTrue(dateDataValues.contains(new Date(1167631200000l)));
+        
+        try {
+            doubleDataValues = annotationFile.getColumns().get(4).getUniqueDataValues(Double.class);
+            fail();
+        } catch (ValidationException e) {
+            // noop - should catch exception.
+        }
+        
     }
 
 }
