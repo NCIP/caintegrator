@@ -155,8 +155,7 @@ public class FileColumnTest {
         }
         
         dateDataValues = annotationFile.getColumns().get(4).getUniqueDataValues(Date.class);
-        assertTrue(dateDataValues.contains(new Date(1104559200000l)));
-        assertTrue(dateDataValues.contains(new Date(1167631200000l)));
+        assertEquals(2, dateDataValues.size());
         
         try {
             doubleDataValues = annotationFile.getColumns().get(4).getUniqueDataValues(Double.class);
