@@ -568,37 +568,42 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         }
         annotationDefinition.setType(valueDomain.getDataType());
         addPermissibleValuesFromValueDomain(annotationDefinition, valueDomain);
-        ValidationResult validationResult = 
-            validateCurrentValuesWithPermissibleValues(study, entityType, annotationDefinition);
-        if (!validationResult.isValid()) {
-            throw new ValidationException(validationResult);
+        if (!annotationDefinition.getPermissibleValueCollection().isEmpty()) {
+            validateValuesWithPermissibleValues(study, entityType, fileColumn, annotationDefinition);
         }
         dao.save(dataElement);
         dao.save(annotationDefinition);
         dao.save(fileColumn);
     }
-
-    private ValidationResult validateCurrentValuesWithPermissibleValues(Study study, EntityTypeEnum entityType,
-            AnnotationDefinition annotationDefinition) {
+    
+    private void validateValuesWithPermissibleValues(Study study, EntityTypeEnum entityType, 
+            FileColumn fileColumn, AnnotationDefinition annotationDefinition) throws ValidationException {
         ValidationResult validationResult = new ValidationResult();
         validationResult.setValid(true);
-        if (!annotationDefinition.getPermissibleValueCollection().isEmpty() 
-            && !annotationDefinition.getAnnotationValueCollection().isEmpty()) {
-            Set<String> invalidValues = 
-                PermissibleValueUtil.retrieveValuesNotPermissible(study, entityType, annotationDefinition, dao);
-            if (!invalidValues.isEmpty()) {
-                StringBuffer message = new StringBuffer();
-                message.append("The following values exist that are NOT permissible for '" 
-                                + annotationDefinition.getDisplayName() + "': <br> {");
-                for (String invalidValue : invalidValues) {
-                    message.append(" '" + invalidValue + "' ");
-                }
-                message.append("} <br> Please select a different Data Element.");
-                validationResult.setValid(false);
-                validationResult.setInvalidMessage(message.toString());
-            }
+        Set<String> invalidValues = new HashSet<String>();
+        if (Boolean.valueOf(fileColumn.getAnnotationFile().getCurrentlyLoaded())) {
+            invalidValues = 
+                PermissibleValueUtil.retrieveAnnotationValuesNotPermissible(
+                        study, entityType, annotationDefinition, dao);
+        } else {
+            invalidValues = 
+                PermissibleValueUtil.retrieveFileColumnValuesNotPermissible(annotationDefinition, fileColumn);
         }
-        return validationResult;
+        if (!invalidValues.isEmpty()) {
+            StringBuffer message = new StringBuffer();
+            message.append("The following values exist that are NOT permissible for '" 
+                            + annotationDefinition.getDisplayName() + "': <br> {");
+            for (String invalidValue : invalidValues) {
+                message.append(" '" + invalidValue + "' ");
+            }
+            message.append("} <br> Please select a different Data Element.");
+            validationResult.setValid(false);
+            validationResult.setInvalidMessage(message.toString());
+        }
+        if (!validationResult.isValid()) {
+            throw new ValidationException(validationResult);
+        }
+        
     }
 
     private ValueDomain retrieveValueDomain(CommonDataElement dataElement)
@@ -626,11 +631,16 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
+    @Transactional(rollbackFor = ValidationException.class)
     public void setDefinition(Study study, FileColumn fileColumn, AnnotationDefinition annotationDefinition, 
-                                EntityTypeEnum entityType) {
+                                EntityTypeEnum entityType) throws ValidationException {
         if (fileColumn.getFieldDescriptor().getDefinition() == null 
             || !fileColumn.getFieldDescriptor().getDefinition().equals(annotationDefinition)) {
             addDefinitionToStudy(fileColumn.getFieldDescriptor(), study, entityType, annotationDefinition);
+            if (!annotationDefinition.getPermissibleValueCollection().isEmpty()) {
+                validateValuesWithPermissibleValues(study, entityType, fileColumn, annotationDefinition);
+            }
+            
             dao.save(annotationDefinition);
             dao.save(fileColumn);
             dao.save(study);

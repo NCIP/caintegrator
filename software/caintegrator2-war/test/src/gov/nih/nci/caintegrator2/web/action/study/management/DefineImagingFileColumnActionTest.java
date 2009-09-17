@@ -112,9 +112,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
 
-/**
- * 
- */
+
 public class DefineImagingFileColumnActionTest extends AbstractSessionBasedTest {
 
     private DefineImagingFileColumnAction action;
@@ -148,13 +146,32 @@ public class DefineImagingFileColumnActionTest extends AbstractSessionBasedTest 
         action.getDefinitions().add(null);
         assertEquals(Action.SUCCESS, action.selectDefinition());
         assertTrue(studyManagementServiceStub.setDefinitionCalled);
+        
+        studyManagementServiceStub.clear();
+        studyManagementServiceStub.throwValidationException = true;
+        assertEquals(Action.ERROR, action.selectDefinition());
+        assertFalse(action.getActionErrors().isEmpty());
+        
     }
+
     
     @Test
     public void testSelectDataElement() {
         action.getDataElements().add(new CommonDataElement());
         assertEquals(Action.SUCCESS, action.selectDataElement());
         assertTrue(studyManagementServiceStub.setDataElementCalled);
+        
+        studyManagementServiceStub.clear();
+        studyManagementServiceStub.throwValidationException = true;
+        assertEquals(Action.ERROR, action.selectDataElement());
+        assertFalse(action.getActionErrors().isEmpty());
+        
+        studyManagementServiceStub.clear();
+        action.clearErrorsAndMessages();
+        studyManagementServiceStub.throwConnectionException = true;
+        assertEquals(Action.ERROR, action.selectDataElement());
+        assertFalse(action.getActionErrors().isEmpty());
+        
     }
     
     @Test

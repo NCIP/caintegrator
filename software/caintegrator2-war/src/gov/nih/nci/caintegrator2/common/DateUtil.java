@@ -121,9 +121,12 @@ public final class DateUtil {
         return (Date) formatter.parse(formatDate(dateString));
     }
     
-    private static String formatDate(String dateString) {
+    private static String formatDate(String dateString) throws ParseException {
         String[] dateElements = (dateString.contains("-"))
             ? dateString.split("-", 3) : dateString.split("/", 3);
+        if (dateElements.length != 3) {
+            throw new ParseException("Invalid date string: " + dateString, 0);
+        }
         return twoDigit.format(Long.valueOf(dateElements[0])) + "/"
             + twoDigit.format(Long.valueOf(dateElements[1])) + "/"
             + dateElements[2];

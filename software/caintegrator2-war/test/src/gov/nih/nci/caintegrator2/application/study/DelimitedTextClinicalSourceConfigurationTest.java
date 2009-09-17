@@ -136,6 +136,9 @@ public class DelimitedTextClinicalSourceConfigurationTest {
         definition = new AnnotationDefinition();
         definition.setType(AnnotationTypeEnum.STRING.getValue());
         clinicalSourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
+        definition = new AnnotationDefinition();
+        definition.setType(AnnotationTypeEnum.DATE.getValue());
+        clinicalSourceConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
         clinicalSourceConfiguration.loadDescriptors();
         clinicalSourceConfiguration.loadAnnontation();
     }
