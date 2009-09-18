@@ -197,9 +197,6 @@
                 
                     <table class="data">
                         <tr>
-                            <th colspan="4">Clinical Data Sources</th>
-                        </tr>
-                        <tr>
                             <th>Type</th>
                             <th>Description</th>
                             <th>Status</th>
