@@ -108,7 +108,7 @@
                         <div class="wwctrl"><s:submit value="Create Platform" align="center" action="createPlatform"
                             onclick="return setSelectedAction('createPlatform', this.form.platformType.value);" theme="css_xhtml" /></div>
                         </div><br>
-                        
+                        </s:form>
                 </td>
             </tr>
     </table>
@@ -131,7 +131,6 @@
                             </tr>
                             <tbody id="platformDeploymentJobStatusTable" />
                         </table>
-                    </s:form>
 
                 </td>
             </tr>
