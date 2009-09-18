@@ -90,6 +90,7 @@ import gov.nih.nci.security.authorization.domainobjects.Application;
 import gov.nih.nci.security.authorization.domainobjects.ApplicationContext;
 import gov.nih.nci.security.authorization.domainobjects.FilterClause;
 import gov.nih.nci.security.authorization.domainobjects.Group;
+import gov.nih.nci.security.authorization.domainobjects.InstanceLevelMappingElement;
 import gov.nih.nci.security.authorization.domainobjects.Privilege;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
@@ -99,6 +100,7 @@ import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.authorization.jaas.AccessPermission;
 import gov.nih.nci.security.dao.ProtectionElementSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
+import gov.nih.nci.security.exceptions.CSDataAccessException;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
@@ -696,6 +698,30 @@ public class AuthorizationManagerStub implements AuthorizationManager {
             String protectionElementAttributeName) throws CSTransactionException {
         
 
+    }
+
+    public void createInstanceLevelMappingElement(InstanceLevelMappingElement instanceLevelMappingElement)
+            throws CSTransactionException {
+    }
+
+    public InstanceLevelMappingElement getInstanceLevelMappingElementById(String instanceLevelMappingElementId)
+            throws CSObjectNotFoundException {
+        return null;
+    }
+
+    public void maintainInstanceTables(String instanceLevelMappingElementId) throws CSObjectNotFoundException,
+            CSDataAccessException {
+    }
+
+    public void modifyInstanceLevelMappingElement(InstanceLevelMappingElement instanceLevelMappingElement)
+            throws CSTransactionException {
+    }
+
+    public void refreshInstanceTables(boolean instanceLevelSecurityForUser) throws CSObjectNotFoundException,
+            CSDataAccessException {
+    }
+
+    public void removeInstanceLevelMappingElement(String instanceLevelMappingElementId) throws CSTransactionException {
     }
 
 }
