@@ -117,14 +117,16 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 class GladSegmentationHandler {
 
     private static final String OUTPUT_FILENAME = "output.glad";
+
+    private static final float DECIMAL_1000 = 1000.0f;
+
     private final GenePatternClient client;
 
     GladSegmentationHandler(GenePatternClient client) {
         this.client = client;
     }
 
-    void addSegmentationData(CopyNumberData copyNumberData) 
-    throws DataRetrievalException {
+    void addSegmentationData(CopyNumberData copyNumberData) throws DataRetrievalException {
         try {
             List<ParameterInfo> parameters = new ArrayList<ParameterInfo>();
             ParameterInfo inputFileParameter = new ParameterInfo();
@@ -147,8 +149,8 @@ class GladSegmentationHandler {
         }
     }
 
-    private void handleResults(JobInfo jobInfo, CopyNumberData copyNumberData) 
-    throws IOException, GenePatternServiceException, DataRetrievalException {
+    private void handleResults(JobInfo jobInfo, CopyNumberData copyNumberData) throws IOException,
+            GenePatternServiceException, DataRetrievalException {
         File outputFile = getOutputFile(jobInfo);
         addSegmentationData(outputFile, copyNumberData);
         outputFile.delete();
@@ -157,7 +159,7 @@ class GladSegmentationHandler {
     private void addSegmentationData(File outputFile, CopyNumberData copyNumberData) throws IOException {
         FileReader fileReader = new FileReader(outputFile);
         CSVReader csvReader = new CSVReader(fileReader, '\t');
-        csvReader.readNext();    // skip header line;
+        csvReader.readNext(); // skip header line;
         Map<String, ArrayData> arrayDataMap = getArrayDataMap(copyNumberData);
         String[] fields;
         while ((fields = csvReader.readNext()) != null) {
@@ -191,9 +193,9 @@ class GladSegmentationHandler {
         }
         return arrayDataMap;
     }
-    
-    private File getOutputFile(JobInfo jobInfo) throws IOException, GenePatternServiceException, 
-    DataRetrievalException {
+
+    private File getOutputFile(JobInfo jobInfo) 
+    throws IOException, GenePatternServiceException, DataRetrievalException {
         FileWrapper outputFileWrapper = client.getResultFile(jobInfo, OUTPUT_FILENAME);
         if (outputFileWrapper == null) {
             throw new DataRetrievalException("GLAD job did not complete successfully, output was not returned");
@@ -217,8 +219,8 @@ class GladSegmentationHandler {
         return inputFile;
     }
 
-    private void writeData(FileWriter writer, List<ArrayData> arrayDatas, CopyNumberData copyNumberData) 
-    throws IOException {
+    private void writeData(FileWriter writer, List<ArrayData> arrayDatas, CopyNumberData copyNumberData)
+            throws IOException {
         for (int i = 0; i < copyNumberData.getReporters().size(); i++) {
             DnaAnalysisReporter reporter = copyNumberData.getReporters().get(i);
             if (reporter.hasValidLocation()) {
@@ -231,9 +233,14 @@ class GladSegmentationHandler {
             DnaAnalysisReporter reporter) throws IOException {
         writer.write(reporter.getName() + "\t" + reporter.getChromosomeAsInt() + "\t" + reporter.getPosition());
         for (ArrayData arrayData : arrayDatas) {
-            writer.write("\t" + Math.pow(2, copyNumberData.getValues(arrayData)[i]));
+            float nonLogTransformedValue = (float) Math.pow(2, copyNumberData.getValues(arrayData)[i]);
+            writer.write("\t" + roundToThreeDecimalPlaces(nonLogTransformedValue));
         }
         writer.write("\n");
+    }
+    
+    private float roundToThreeDecimalPlaces(float value) {
+        return Math.round(value * DECIMAL_1000) / DECIMAL_1000;        
     }
 
     private void writeHeader(FileWriter writer, List<ArrayData> arrayDatas) throws IOException {

@@ -119,7 +119,7 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
     private String copyNumberMappingFileFileName;
     private String gladUrl;
     private String caDnaCopyUrl;
-    private boolean useGlad = true;
+    private boolean useGlad = false;
     private ConfigurationHelper configurationHelper;
     
     /**
@@ -128,12 +128,6 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
     @Override
     public void prepare() {
         super.prepare();
-        if (getCopyNumberDataConfiguration() == null) {
-            CopyNumberDataConfiguration configuration = new CopyNumberDataConfiguration();
-            configuration.getSegmentationService().setUrl(
-                    configurationHelper.getString(ConfigurationParameter.GENE_PATTERN_URL));
-            getGenomicSource().setCopyNumberDataConfiguration(configuration);
-        }
         if (getCopyNumberDataConfiguration().isCaDNACopyConfiguration()) {
             setCaDnaCopyUrl(getCopyNumberDataConfiguration().getSegmentationService().getUrl());
             setUseGlad(false);
@@ -168,6 +162,14 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
      * @return the configuration.
      */
     public CopyNumberDataConfiguration getCopyNumberDataConfiguration() {
+        if (getGenomicSource().getCopyNumberDataConfiguration() == null) {
+            CopyNumberDataConfiguration configuration = new CopyNumberDataConfiguration();
+            getGenomicSource().setCopyNumberDataConfiguration(configuration);
+            if (getUseGlad()) {
+                configuration.getSegmentationService().setUrl(
+                        configurationHelper.getString(ConfigurationParameter.GENE_PATTERN_URL));
+            }
+        }
         return getGenomicSource().getCopyNumberDataConfiguration();
     }
     
@@ -178,11 +180,7 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
      */
     public String save() {
         try {
-            if (getUseGlad()) {
-                getCopyNumberDataConfiguration().getSegmentationService().setUrl(getGladUrl());
-            } else {
-                getCopyNumberDataConfiguration().getSegmentationService().setUrl(getCaDnaCopyUrl());
-            }
+            updateServiceUrl();
             getStudyManagementService().saveCopyNumberMappingFile(getGenomicSource(), getCopyNumberMappingFile(), 
                     getCopyNumberMappingFileFileName());
             getStudyManagementService().save(getStudyConfiguration());
@@ -191,6 +189,14 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
             addActionError("An unexpected error has occurred, please report this problem - " + e.getMessage());
             return INPUT;
         } 
+    }
+
+    private void updateServiceUrl() {
+        if (getUseGlad()) {
+            getCopyNumberDataConfiguration().getSegmentationService().setUrl(getGladUrl());
+        } else {
+            getCopyNumberDataConfiguration().getSegmentationService().setUrl(getCaDnaCopyUrl());
+        }
     }
     
     /**
@@ -210,8 +216,14 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
         } else if (copyNumberMappingFile.length() == 0) {
             addFieldError("copyNumberMappingFile", " File is empty");
         }
-        if (StringUtils.isBlank(getCopyNumberDataConfiguration().getSegmentationService().getUrl())) {
-            addFieldError("copyNumberDataConfiguration.caDNACopyService.url", "CaDNACopy Service URL is required.");
+        validateServiceUrl();
+    }
+
+    private void validateServiceUrl() {
+        if (getUseGlad() && StringUtils.isBlank(getGladUrl())) {
+            addFieldError("gladUrl", "GLAD Service URL is required.");
+        } else if (!getUseGlad() && StringUtils.isBlank(getCaDnaCopyUrl())) {
+            addFieldError("caDnaCopyUrl", "CaDNACopy Service URL is required.");
         }
     }
 
