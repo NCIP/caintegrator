@@ -1,5 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.annotation;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.Image;
@@ -8,7 +9,7 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 /**
  * 
  */
-public class AbstractAnnotationValue extends AbstractCaIntegrator2Object {
+public abstract class AbstractAnnotationValue extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
     
@@ -102,5 +103,11 @@ public class AbstractAnnotationValue extends AbstractCaIntegrator2Object {
     public void setImage(Image image) {
         this.image = image;
     }
+    
+    /**
+     * Method to retrieve valid annotation type for the value.
+     * @return AnnotationType associated with value.
+     */
+    public abstract AnnotationTypeEnum getValidAnnotationType();
 
 }

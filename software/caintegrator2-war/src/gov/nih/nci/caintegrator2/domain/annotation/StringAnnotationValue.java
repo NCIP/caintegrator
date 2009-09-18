@@ -1,5 +1,7 @@
 package gov.nih.nci.caintegrator2.domain.annotation;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+
 
 /**
  * 
@@ -30,6 +32,14 @@ public class StringAnnotationValue extends AbstractAnnotationValue {
     @Override
     public String toString() {
         return stringValue;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AnnotationTypeEnum getValidAnnotationType() {
+        return AnnotationTypeEnum.STRING;
     }
 
 }

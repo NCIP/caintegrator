@@ -1,5 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.annotation;
 
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 import java.util.HashSet;
@@ -136,4 +137,20 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
         this.permissibleValueCollection = permissibleValueCollection;
     }
     
+    /**
+     * Validates that all the values associated with definition match the type.
+     * @throws ValidationException if invalid values for type.
+     */
+    public void validateValuesWithType() throws ValidationException {
+        for (AbstractAnnotationValue value : annotationValueCollection) {
+            if (!type.equals(value.getValidAnnotationType().getValue())) {
+                throw new ValidationException(retrieveValidationError());
+            }
+        }
+    }
+    
+    private String retrieveValidationError() {
+        return "Values for '" + displayName + "' must be of the " + type + " type.";
+    }
+       
 }
