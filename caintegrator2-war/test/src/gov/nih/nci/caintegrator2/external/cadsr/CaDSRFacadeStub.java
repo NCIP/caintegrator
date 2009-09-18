@@ -114,6 +114,7 @@ public class CaDSRFacadeStub implements CaDSRFacade {
         retrieveValueDomainForDataElementCalled = true;
         ValueDomain valueDomain = new ValueDomain();
         valueDomain.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
+        valueDomain.setDataType("string");
         return valueDomain;
     }
 

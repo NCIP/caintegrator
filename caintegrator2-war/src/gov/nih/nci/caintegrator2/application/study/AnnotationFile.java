@@ -466,7 +466,8 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         try {
             annotationValue.setDateValue(getDateValue(value));
         } catch (ParseException e) {
-            throwValidationException(createFormatErrorMsg(annotationDescriptor, value));
+            throwValidationException(createFormatErrorMsg(annotationDescriptor, value, 
+                    "The two formats allowed are MM-dd-yyyy and MM/dd/yyyy"));
         }
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
         return annotationValue;
@@ -486,7 +487,7 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         try {
             annotationValue.setNumericValue(getNumericValue(value));
         } catch (NumberFormatException e) {
-            throwValidationException(createFormatErrorMsg(annotationDescriptor, value));
+            throwValidationException(createFormatErrorMsg(annotationDescriptor, value, null));
         }
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
         return annotationValue;
@@ -500,11 +501,11 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         }
     }
 
-    private String createFormatErrorMsg(AnnotationFieldDescriptor descriptor, String value) {
+    private String createFormatErrorMsg(AnnotationFieldDescriptor descriptor, String value, String allowedFormats) {
         return "Invalid format for data type '" + descriptor.getDefinition().getType()
             + "' on field '" + descriptor.getName()
             + "' of descriptor '" + descriptor.getDefinition().getDisplayName()
-            + "' with value = '" + value + "'. The two formats allowed are MM-dd-yyyy and MM/dd/yyyy ";
+            + "' with value = '" + value + "'. " + allowedFormats;
     }
     
     boolean isLoadable() {

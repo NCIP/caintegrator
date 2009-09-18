@@ -86,16 +86,11 @@
 package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.FileColumn;
-import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -272,49 +267,17 @@ public final class PermissibleValueUtil {
         return false;
     }
     
-    
     /**
-     * Retrieves all current Values for an AnnotationDefinition that don't belong to a PermissibleValue.
-     * @param study is the Study the values belong to.
-     * @param entityType the entity type of the Annotation definition.
-     * @param annotationDefinition the annotation to validate values are permissible.
-     * @param dao used to query on.
-     * @return a set of string values that are not permissible for this study.
+     * Given a set of uniqueValues and an AnnotationDefinition it will return all values that are not permissible.
+     * @param uniqueValues to check against.
+     * @param annotationDefinition to validate permissible values.
+     * @return all values that are non permissible (or empty set).
      */
-    @SuppressWarnings("unchecked")
-    public static Set<String> retrieveAnnotationValuesNotPermissible(Study study, 
-                                                           EntityTypeEnum entityType,
-                                                           AnnotationDefinition annotationDefinition, 
-                                                           CaIntegrator2Dao dao) {
-        AnnotationTypeEnum annotationType = AnnotationTypeEnum.getByValue(annotationDefinition.getType());
-        if (annotationType == null) {
-            throw new IllegalArgumentException("Data Type for the Annotation Definition is unknown.");
-        }
-
+    public static Set<String> retrieveValuesNotPermissible(Set<Object> uniqueValues, 
+            AnnotationDefinition annotationDefinition) {
         return retrieveValuesNotInPermissibleValues(
-                    retrieveUniquePermissibleValues(annotationDefinition), 
-                    dao.retrieveUniqueValuesForStudyAnnotation(study, annotationDefinition, entityType, 
-                            annotationType.getClassType()));
-
-    }
+                retrieveUniquePermissibleValues(annotationDefinition), uniqueValues);
     
-    /**
-     * Retrieves the values in the file column which are not permissible.  This is the case when user wishes
-     * to check against permissible values before the file has been loaded.
-     * @param annotationDefinition to retrieve permissible values from.
-     * @param fileColumn to retrieve the given values to check against the permissible values.
-     * @return a set of string values that are not permissible for this study.
-     * @throws ValidationException if the file column is invalid.
-     */
-    @SuppressWarnings("unchecked")
-    public static Set<String> retrieveFileColumnValuesNotPermissible(AnnotationDefinition annotationDefinition, 
-            FileColumn fileColumn) throws ValidationException {
-        AnnotationTypeEnum annotationType = AnnotationTypeEnum.getByValue(annotationDefinition.getType());
-        if (annotationType == null) {
-            throw new IllegalArgumentException("Data Type for the Annotation Definition is unknown.");
-        }
-        return retrieveValuesNotInPermissibleValues(retrieveUniquePermissibleValues(annotationDefinition),
-                fileColumn.getUniqueDataValues(annotationType.getClassType()));
     }
     
     private static <T> Set<String> retrieveValuesNotInPermissibleValues(Set<T> permissibleValues, 
