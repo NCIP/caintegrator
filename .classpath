@@ -89,7 +89,6 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/concurrent-1.4.1.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/csmapi-4.1.0.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ehcache-1.2.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ejb3-persistence-1.0.1.jar"/>
@@ -161,5 +160,6 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/cryptix-asn1-0.1.11.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/puretls-0.9b5.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/quartz-1.5.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/csmapi-4.2.jar"/>
 	<classpathentry kind="output" path="software/caintegrator2-war/target/classes"/>
 </classpath>
