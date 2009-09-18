@@ -303,12 +303,15 @@ public class StudyManagementServiceTest {
         assertTrue(caDSRFacadeStub.retreiveCandidateDataElementsCalled);
     }
     
+    @SuppressWarnings("deprecation")
     @Test
     public void testSetDefinition() throws ValidationException {
         Study study = new Study();
         study.setId(Long.valueOf(1L));
         FileColumn fileColumn = new FileColumn();
         fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
+        fileColumn.setAnnotationFile(new AnnotationFile());
+        fileColumn.getAnnotationFile().setCurrentlyLoaded(Boolean.TRUE.toString());
         SampleAcquisition sampleAcquisition = new SampleAcquisition();
         StudySubjectAssignment assignment = new StudySubjectAssignment();
         sampleAcquisition.setAssignment(assignment);
@@ -331,6 +334,7 @@ public class StudyManagementServiceTest {
         firstDefinition.getAnnotationValueCollection().add(value2);
         firstDefinition.getAnnotationValueCollection().add(value3);
         firstDefinition.setId(1L);
+        firstDefinition.setType(AnnotationTypeEnum.STRING.getValue());
         studyManagementService.setDefinition(study, fileColumn, firstDefinition, EntityTypeEnum.IMAGESERIES);
         assertTrue(daoStub.saveCalled);
         assertEquals(firstDefinition, fileColumn.getFieldDescriptor().getDefinition());
@@ -340,6 +344,7 @@ public class StudyManagementServiceTest {
         // Now create a new Definition and set it and verify the first definition is removed.
         AnnotationDefinition newDefinition = new AnnotationDefinition();
         newDefinition.setId(2L);
+        newDefinition.setType(AnnotationTypeEnum.STRING.getValue());
         studyManagementService.setDefinition(study, fileColumn, newDefinition, EntityTypeEnum.IMAGESERIES);
         assertFalse(study.getImageSeriesAnnotationCollection().contains(firstDefinition));
         assertTrue(study.getImageSeriesAnnotationCollection().contains(newDefinition));
@@ -417,6 +422,7 @@ public class StudyManagementServiceTest {
         dataElement2.setLongName("longName2");
         dataElement2.setDefinition("definition2");
         dataElement2.setPublicID(123L);
+        dataElement2.setType(AnnotationTypeEnum.STRING.getValue());
         studyManagementService.setDataElement(fileColumn, dataElement2, study, EntityTypeEnum.SUBJECT, "");
         AnnotationDefinition newDefinition = fileColumn.getFieldDescriptor().getDefinition();
         assertFalse(study.getSubjectAnnotationCollection().contains(firstDefinition));
