@@ -117,6 +117,7 @@ public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBa
     
     @Test
     public void testEdit() {
+        action.setUseGlad(true);
         action.getGenomicSource().setCopyNumberDataConfiguration(null);
         action.prepare();
         action.edit();
@@ -154,7 +155,8 @@ public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBa
         action.validate();
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
-        action.getCopyNumberDataConfiguration().getSegmentationService().setUrl("url");
+        action.setUseGlad(false);
+        action.setCaDnaCopyUrl("url");
         action.validate();
         assertFalse(action.hasFieldErrors());
     }

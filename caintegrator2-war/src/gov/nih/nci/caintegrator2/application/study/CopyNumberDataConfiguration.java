@@ -212,7 +212,7 @@ public class CopyNumberDataConfiguration implements Serializable {
      * @return true if configured to use CaDNACopy.
      */
     public boolean isCaDNACopyConfiguration() {
-        return getSegmentationService().getUrl().endsWith("/CaDNAcopy");
+        return getSegmentationService().getUrl() != null && getSegmentationService().getUrl().endsWith("/CaDNAcopy");
     }
 
 }
