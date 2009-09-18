@@ -263,7 +263,7 @@
         
         <table class="form_wrapper_table">
             <tbody><tr>
-                <th class="title">Genomic Data Sources <span id="genomicSourceLoader"> <img src="images/ajax-loader.gif"/> </span></th>
+                <th class="title">Genomic Data Sources<span id="genomicSourceLoader"> <img src="images/ajax-loader.gif"/> </span></th>
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
@@ -300,7 +300,7 @@
 
         <table class="form_wrapper_table">
             <tbody><tr>
-                <th class="title">Imaging Data Sources <span id="imagingSourceLoader"> <img src="images/ajax-loader.gif"/> </span></th>
+                <th class="title">Imaging Data Sources<span id="imagingSourceLoader"> <img src="images/ajax-loader.gif"/> </span></th>
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
