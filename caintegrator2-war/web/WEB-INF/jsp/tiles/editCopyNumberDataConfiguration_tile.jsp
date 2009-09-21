@@ -30,6 +30,7 @@
                 <s:form id="copyNumberDataConfigurationForm" name="copyNumberDataConfigurationForm" action="saveCopyNumberDataConfiguration" method="post" enctype="multipart/form-data" theme="css_xhtml">
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="genomicSource.id" />
+                    <s:hidden name="useGlad" value="false"/>
                     <s:hidden name="action" />
                     <s:file name="copyNumberMappingFile" label="Subject and Sample to Copy Number Mapping File" size="40"/><br>
                     <s:select id="caDnaCopyUrl" name="caDnaCopyUrl"
