@@ -31,7 +31,7 @@ insert into CSM_USER (LOGIN_NAME,FIRST_NAME,LAST_NAME,PASSWORD,UPDATE_DATE)
 values ("cai2admin","cai2","Admin","SRsSeN2nfbO9DFmxlyl4eg==",sysdate());
 
 insert into CSM_PROTECTION_ELEMENT(PROTECTION_ELEMENT_NAME,PROTECTION_ELEMENT_DESCRIPTION,OBJECT_ID,APPLICATION_ID,UPDATE_DATE)
-values("caintegrator2","caintegrator2 Data Portal","caintegrator2",2,sysdate());
+values("caintegrator2","caintegrator2 Data Portal","caintegrator2",1,sysdate());
 
 insert into CSM_USER_PE(PROTECTION_ELEMENT_ID,USER_ID)
 values(2,2);
