@@ -131,7 +131,7 @@
 	                    <s:if test="%{columnTypeAnnotation}">
                             <s:submit value="New" action="createNewImagingDefinition" theme="simple"/>
 	                    </s:if>
-	                    <s:submit value="Save" action="updateImagingFileColumn" theme="simple"/>
+	                    <s:submit value="Save" action="updateImagingAnnotationDefinition" theme="simple"/>
 	                    <s:if test="%{cancelEnabled}">
 	                        <s:submit value="Cancel" action="cancelImagingFileColumn" theme="simple"/>
 	                    </s:if>

@@ -243,11 +243,11 @@ public class DefineImagingFileColumnActionTest extends AbstractSessionBasedTest 
     }
     
     @Test
-    public void testUpdateFileColumn() throws ParseException {
+    public void testUpdateAnnotationDefinition() throws ParseException {
         action.setColumnType("Annotation");
         action.setFileColumn(new FileColumn());
         action.getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
-        assertEquals(Action.SUCCESS, action.updateFileColumn());
+        assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
         
         AnnotationDefinition definition = new AnnotationDefinition();
         action.getFileColumn().getFieldDescriptor().setDefinition(definition);
@@ -259,14 +259,15 @@ public class DefineImagingFileColumnActionTest extends AbstractSessionBasedTest 
         action.setPermissibleUpdateList(stringValues);
         stringValues.add("10-05-2004");
         stringValues.add("01/02/1999");
-        assertEquals(Action.SUCCESS, action.updateFileColumn());
+        assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
         assertEquals(definition.getPermissibleValueCollection().size(), 2);
         stringValues.add("11-10-2008");
-        assertEquals(Action.SUCCESS, action.updateFileColumn());
+        assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
         assertEquals(definition.getPermissibleValueCollection().size(), 3);
         
         stringValues.add("XYZ");
-        assertEquals(Action.ERROR, action.updateFileColumn());
+        assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
+        assertEquals(definition.getPermissibleValueCollection().size(), 0);
     }
 
 }

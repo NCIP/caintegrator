@@ -125,7 +125,7 @@ public class PermissibleValueUtilTest {
         
         NumericPermissibleValue val2 = new NumericPermissibleValue();
         val2.setNumericValue(Double.valueOf(123.0));
-        assertTrue("123.0".equalsIgnoreCase(val2.toString()));
+        assertEquals("123",val2.toString());
         
         DatePermissibleValue val3 = new DatePermissibleValue();
         Date date = DateUtil.createDate("10-11-2008");  
@@ -174,13 +174,13 @@ public class PermissibleValueUtilTest {
         permissibleValueCollection = new HashSet<AbstractPermissibleValue>();
         stringValues = new ArrayList<String>();
         stringValues.add("123.0");
-        stringValues.add("456.0");
+        stringValues.add("456.1");
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.NUMERIC.getValue(),
                 permissibleValueCollection, stringValues);
         assertTrue(permissibleValueCollection.size() == 2);
         
         List<String> stringValues2 = new ArrayList<String>();
-        stringValues2.add("456.0");
+        stringValues2.add("456.1");
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.NUMERIC.getValue(),
                 permissibleValueCollection, stringValues2);
         assertTrue(permissibleValueCollection.size() == 2);
@@ -224,14 +224,14 @@ public class PermissibleValueUtilTest {
         // Test NumericPermissibleValue
         permissibleValueCollection = new HashSet<AbstractPermissibleValue>();
         annotationValues = new ArrayList<String>();
-        annotationValues.add("123.0");
-        annotationValues.add("456.0");
+        annotationValues.add("123.1");
+        annotationValues.add("456.1");
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.NUMERIC.getValue(),
                 permissibleValueCollection, annotationValues);
         assertTrue(permissibleValueCollection.size() == 2);
         
         removePermissibleValues = new ArrayList<String>();
-        removePermissibleValues.add("456.0");
+        removePermissibleValues.add("456.1");
         PermissibleValueUtil.removeValue(permissibleValueCollection, removePermissibleValues);
         assertTrue(permissibleValueCollection.size() == 1);
         

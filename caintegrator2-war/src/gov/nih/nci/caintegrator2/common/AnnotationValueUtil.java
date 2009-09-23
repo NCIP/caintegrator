@@ -86,11 +86,16 @@
 package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.lang.math.NumberUtils;
+
 
 /**
  * This is a static utility class used by the UI to display the annotation value. 
@@ -113,6 +118,10 @@ public final class AnnotationValueUtil {
         Set<String> results = new HashSet<String>();
         for (String dataValue : dataValues) {
             if (dataValue != null && !filterList.contains(dataValue)) {
+                if (NumberUtils.isNumber(dataValue)) {
+                    dataValue = new DecimalFormat(NumericAnnotationValue.DECIMAL_FORMAT).format(
+                            Double.valueOf(dataValue));
+                }
                 results.add(dataValue);
             }
         }

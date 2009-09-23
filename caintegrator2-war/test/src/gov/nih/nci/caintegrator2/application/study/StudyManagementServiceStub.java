@@ -335,10 +335,13 @@ public class StudyManagementServiceStub implements StudyManagementService {
     }
 
 
-    public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType) {
+    public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType, AnnotationTypeEnum annotationType) {
         AnnotationDefinition definition = new AnnotationDefinition();
         if (descriptor != null) {
             descriptor.setDefinition(definition);
+        }
+        if (annotationType != null) {
+            definition.setType(annotationType.getValue());
         }
         createDefinitionCalled = true;
         return definition;
@@ -474,6 +477,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
             throw new CSSecurityException("invalid");
         }
         return refreshedStudyConfiguration;
+    }
+
+    public void save(AnnotationDefinition definition) throws ValidationException {
+        
     }
 
 }

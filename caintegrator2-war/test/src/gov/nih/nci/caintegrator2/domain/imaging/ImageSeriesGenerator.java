@@ -86,11 +86,9 @@
 package gov.nih.nci.caintegrator2.domain.imaging;
 
 import static org.junit.Assert.assertEquals;
-
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public final class ImageSeriesGenerator extends AbstractTestDataGenerator<ImageSeries> {
@@ -124,11 +122,8 @@ public final class ImageSeriesGenerator extends AbstractTestDataGenerator<ImageS
     @Override
     public void setValues(ImageSeries imageSeries, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         imageSeries.setIdentifier(getUniqueString());
-        if (imageSeries.getImageCollection() == null) {
-            imageSeries.setImageCollection(new HashSet<Image>());
-        } else {            
-            imageSeries.getImageCollection().clear();
-        }
+        imageSeries.getImageCollection().clear();
+
         for (int i = 0; i < 3; i++) {
             imageSeries.getImageCollection().add(ImageGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));
         }

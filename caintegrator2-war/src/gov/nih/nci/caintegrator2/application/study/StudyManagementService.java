@@ -112,6 +112,13 @@ public interface StudyManagementService {
     void save(StudyConfiguration studyConfiguration);
     
     /**
+     * Saves the annotation definition.
+     * @param definition to persist.
+     * @throws ValidationException if values are invalid for the given type.
+     */
+    void save(AnnotationDefinition definition) throws ValidationException;
+    
+    /**
      * Creates a protection element for the Study Configuration.
      * @param studyConfiguration to create protection element for.
      * @throws CSException if there's a problem creating the protection element.
@@ -427,9 +434,12 @@ public interface StudyManagementService {
      * @param descriptor annotation descriptor to use.
      * @param study object to correlate the newly created definition to.
      * @param entityType entity type for the annotation definition.
+     * @param annotationType data type for the annotation definition.
      * @return The annotation definition that was created.
+     * @throws ValidationException if there's a problem creating definition.
      */
-    AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType);
+    AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType,
+            AnnotationTypeEnum annotationType) throws ValidationException;
 
     /**
      * Adds the samples specified by identifier in the file to a new set of control samples in the
@@ -489,5 +499,4 @@ public interface StudyManagementService {
      */
     void saveCopyNumberMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration, 
             File mappingFile, String filename) throws IOException;
-
 }
