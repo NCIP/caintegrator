@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/caintegrator2/software/caintegrator2-war/test/src/gov/nih/nci/caintegrator2/application/study/DeployVasariTestIntegration.java"/>
+<listEntry value="/caintegrator2_1.0.x/software/caintegrator2-war/test/src/gov/nih/nci/caintegrator2/application/study/DeployVasariTestIntegration.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -16,6 +16,6 @@
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="gov.nih.nci.caintegrator2.application.study.DeployVasariTestIntegration"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="caintegrator2"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="caintegrator2_1.0.x"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx1024m"/>
 </launchConfiguration>

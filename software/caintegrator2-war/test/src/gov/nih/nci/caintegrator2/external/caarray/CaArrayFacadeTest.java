@@ -95,6 +95,7 @@ import gov.nih.nci.caarray.external.v1_0.data.DataSet;
 import gov.nih.nci.caarray.external.v1_0.data.DesignElement;
 import gov.nih.nci.caarray.external.v1_0.data.File;
 import gov.nih.nci.caarray.external.v1_0.data.FileMetadata;
+import gov.nih.nci.caarray.external.v1_0.data.FileStreamableContents;
 import gov.nih.nci.caarray.external.v1_0.data.FloatColumn;
 import gov.nih.nci.caarray.external.v1_0.data.HybridizationData;
 import gov.nih.nci.caarray.external.v1_0.experiment.Experiment;
@@ -140,7 +141,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.healthmarketscience.rmiio.DirectRemoteInputStream;
-import com.healthmarketscience.rmiio.RemoteInputStream;
 
 @SuppressWarnings("PMD")
 public class CaArrayFacadeTest {
@@ -313,7 +313,7 @@ public class CaArrayFacadeTest {
              * {@inheritDoc}
              */
             @Override
-            public RemoteInputStream streamFileContents(CaArrayEntityReference arg0, boolean arg1)
+            public FileStreamableContents streamFileContents(CaArrayEntityReference arg0, boolean arg1)
                     throws InvalidReferenceException, DataTransferException {
                 StringBuffer dataFile = new StringBuffer();
                 dataFile.append("TYPE\ttext\ttext\n");
@@ -325,7 +325,9 @@ public class CaArrayFacadeTest {
                 dataFile.append("*\n");
                 dataFile.append("DATA\tA_probeSet2\t-0.1234\n");
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(dataFile.toString().getBytes());
-                return new DirectRemoteInputStream(byteArrayInputStream, false);
+                FileStreamableContents contents =  new FileStreamableContents();
+                contents.setContentStream(new DirectRemoteInputStream(byteArrayInputStream, false));
+                return contents;
             }
         }
 

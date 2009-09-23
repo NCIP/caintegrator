@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd>
-    <workingSet>PMD Working Set</workingSet>
+    <workingSet>PMD Working Set 1.0.x</workingSet>
     <useProjectRuleSet>true</useProjectRuleSet>
     <ruleSetFile>.ruleset</ruleSetFile>
     <includeDerivedFiles>false</includeDerivedFiles>
