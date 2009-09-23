@@ -99,6 +99,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * This is a static utility class used by the UI to update the permissibleValue collection. 
  */
@@ -133,11 +135,10 @@ public final class PermissibleValueUtil {
      * @param type the type of the abstractPermissibleValue
      * @param abstractPermissibleValues the PermissibleValue collection
      * @param newList the new list of DisplayValues
-     * @throws ParseException Exception for parsing the Date string
      */
     public static void update(String type,
             Collection<AbstractPermissibleValue> abstractPermissibleValues,
-            List<String> newList) throws ParseException {
+            List<String> newList) {
         
         checkObsolete(abstractPermissibleValues, newList);
         addNewValue(type, abstractPermissibleValues, newList);
@@ -164,15 +165,22 @@ public final class PermissibleValueUtil {
      * @param type the type of the abstractPermissibleValue
      * @param abstractPermissibleValues the PermissibleValue collection
      * @param addList the list of DisplayString to add
-     * @throws ParseException Exception for parsing the Date string
      */
     public static void addNewValue(String type, Collection<AbstractPermissibleValue> abstractPermissibleValues,
-            List<String> addList) throws ParseException {
+            List<String> addList) {
         if (addList == null) {
             return;
         }
         for (String displayString : addList) {
-            addNewValue(type, abstractPermissibleValues, displayString);
+            try {
+                addNewValue(type, abstractPermissibleValues, displayString);
+            } catch (NumberFormatException e) {
+                abstractPermissibleValues.clear();
+                return;
+            } catch (ParseException e) {
+                abstractPermissibleValues.clear();
+                return;
+            }
         }
     }
 
@@ -221,7 +229,7 @@ public final class PermissibleValueUtil {
 
     private static void addNewValue(String type, Collection<AbstractPermissibleValue> abstractPermissibleValues,
             String displayString) throws ParseException {
-        if (containsDisplayString(abstractPermissibleValues, displayString)) {
+        if (containsDisplayString(abstractPermissibleValues, displayString) || StringUtils.isBlank(displayString)) {
             return;
         }
         if (type.equals(AnnotationTypeEnum.STRING.getValue())) {
@@ -285,7 +293,9 @@ public final class PermissibleValueUtil {
         Set<String> valuesNotInPemissibleList = new HashSet<String>();
         if (uniqueValues != null && !uniqueValues.isEmpty()) {
             for (T uniqueValue : uniqueValues) {
-                if (!permissibleValues.contains(uniqueValue)) {
+                if (!permissibleValues.contains(uniqueValue) 
+                     && uniqueValue != null
+                     && !StringUtils.isBlank(String.valueOf(uniqueValue))) {
                     valuesNotInPemissibleList.add(uniqueValue.toString());
                 }
             }

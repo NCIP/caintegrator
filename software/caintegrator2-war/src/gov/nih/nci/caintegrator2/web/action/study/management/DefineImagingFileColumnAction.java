@@ -152,8 +152,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
         if (getFileColumn().getId() != null) {
             setFileColumn(getStudyManagementService().getRefreshedStudyEntity(getFileColumn()));
             if (fileColumn.getFieldDescriptor() != null && fileColumn.getFieldDescriptor().getDefinition() != null) {
-                fileColumn.getFieldDescriptor().setDefinition(
-                        getStudyManagementService().getRefreshedStudyEntity(
+                fileColumn.getFieldDescriptor().setDefinition(getStudyManagementService().getRefreshedStudyEntity(
                                 fileColumn.getFieldDescriptor().getDefinition()));
                 HibernateUtil.loadCollections(fileColumn.getFieldDescriptor().getDefinition());
             }
@@ -239,9 +238,15 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
      * @throws ParseException Invalid data
      */
     public String createNewDefinition() throws ValidationException, ParseException {
+        AnnotationTypeEnum annotationType = AnnotationTypeEnum.STRING;
+        if (getFileColumn().getFieldDescriptor().getDefinition() != null) {
+            annotationType = AnnotationTypeEnum.getByValue(
+                    getFileColumn().getFieldDescriptor().getDefinition().getType());
+        }
         getStudyManagementService().createDefinition(getFileColumn().getFieldDescriptor(), 
                                                      getStudyConfiguration().getStudy(),
-                                                     EntityTypeEnum.IMAGESERIES);
+                                                     EntityTypeEnum.IMAGESERIES,
+                                                     annotationType);
         setReadOnly(false);
         cancelEnabled = false;
         // Default the available values to be permissible on any new definition.
@@ -294,29 +299,24 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
      * 
      * @return the Struts result.
      */
-    public String updateFileColumn() {
+    public String updateAnnotationDefinition() {
         try {
             updateColumnType();
+            if (isPermissibleOn() && !isFromCadsr()) {
+                updatePermissible();
+            }
+            getStudyManagementService().save(getFileColumn().getFieldDescriptor().getDefinition());
         } catch (ValidationException e) {
             addActionError(e.getMessage());
-        }
-        if (isPermissibleOn() && !isFromCadsr()) {
-            try {
-                updatePermissible();
-            } catch (ParseException e) {
-                addActionError("Error parsing the data field!!!");
-                clearCacheMemory();
-                return ERROR;
-            } catch (NumberFormatException e) {
-                addActionError("Error parsing the data field!!!");
-                clearCacheMemory();
-                return ERROR;
-            }
-        }
-        getStudyManagementService().save(getStudyConfiguration());
-        updateImageDataSourceStatus();
+            clearCacheMemory();
+            fileColumn.getFieldDescriptor().setDefinition(getStudyManagementService().getRefreshedStudyEntity(
+                    fileColumn.getFieldDescriptor().getDefinition()));
+            setReadOnly(false);
+            return ERROR;
+        } 
         return SUCCESS;
     }
+
 
     private void updateImageDataSourceStatus() {
         getStudyManagementService().updateImageDataSourceStatus(getStudyConfiguration()); // If it changes state
@@ -513,9 +513,8 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     
     /**
      * @return the Struts result.
-     * @throws ParseException 
      */
-    private void updatePermissible() throws ParseException {
+    private void updatePermissible() {
         PermissibleValueUtil.update(getType(),
                 getPermissibleCollection(), getPermissibleUpdateList());
     }

@@ -89,7 +89,6 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
@@ -249,28 +248,17 @@ public class StudyHelper {
         SampleAcquisition sampleAcquisition5 = new SampleAcquisition();
 
         ImageSeries imageSeries1 = new ImageSeries();
-        imageSeries1.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
-        
         ImageSeries imageSeries2 = new ImageSeries();
-        imageSeries2.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
-        
         ImageSeries imageSeries3 = new ImageSeries();
-        imageSeries3.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
-        
         ImageSeries imageSeries4 = new ImageSeries();
-        imageSeries4.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
-        
         ImageSeries imageSeries5 = new ImageSeries();
-        imageSeries5.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
         
         Image image1 = new Image();
         image1.setSeries(imageSeries1);
-        imageSeries1.setImageCollection(new HashSet<Image>());
         imageSeries1.getImageCollection().add(image1);
         
         Image image2 = new Image();
         image2.setSeries(imageSeries2);
-        imageSeries2.setImageCollection(new HashSet<Image>());
         imageSeries2.getImageCollection().add(image2);
         
         /**
@@ -584,12 +572,8 @@ public class StudyHelper {
         ImageSeries imageSeries = new ImageSeries();
         seriesCollection.add(imageSeries);
         imageSeriesAcquisition.setSeriesCollection(seriesCollection);
-        Set<Image> imageCollection = new HashSet<Image>();
-        Image image1 = new Image();
-        Image image2 = new Image();
-        imageCollection.add(image1);
-        imageCollection.add(image2);
-        imageSeries.setImageCollection(imageCollection);
+        imageSeries.getImageCollection().add(new Image());
+        imageSeries.getImageCollection().add(new Image());
         List<ImageSeriesAcquisition> imageSeriesAcquisitions = new ArrayList<ImageSeriesAcquisition>();
         imageSeriesAcquisitions.add(imageSeriesAcquisition);
         imageSeriesAcquisition.setAssignment(new StudySubjectAssignment());

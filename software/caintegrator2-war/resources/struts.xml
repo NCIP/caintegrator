@@ -327,7 +327,7 @@
             <result name="error" type="tiles">editImagingFileColumn</result>
         </action>
         
-        <action name="updateFileColumn" method="updateFileColumn" class="defineFileColumnAction">
+        <action name="updateAnnotationDefinition" method="updateAnnotationDefinition" class="defineFileColumnAction">
             <result type="redirectAction">
                 <param name="actionName">editClinicalSource</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
@@ -338,7 +338,7 @@
         </action>
 
         
-        <action name="updateImagingFileColumn" method="updateFileColumn" class="defineImagingFileColumnAction">
+        <action name="updateImagingAnnotationDefinition" method="updateAnnotationDefinition" class="defineImagingFileColumnAction">
             <result type="redirectAction">
                 <param name="actionName">editImagingSourceAnnotations</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
