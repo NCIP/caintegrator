@@ -89,6 +89,7 @@ import gov.nih.nci.caarray.external.v1_0.AbstractCaArrayEntity;
 import gov.nih.nci.caarray.external.v1_0.CaArrayEntityReference;
 import gov.nih.nci.caarray.external.v1_0.data.DataSet;
 import gov.nih.nci.caarray.external.v1_0.data.File;
+import gov.nih.nci.caarray.external.v1_0.data.FileStreamableContents;
 import gov.nih.nci.caarray.external.v1_0.data.MageTabFileSet;
 import gov.nih.nci.caarray.external.v1_0.data.QuantitationType;
 import gov.nih.nci.caarray.external.v1_0.experiment.Person;
@@ -98,7 +99,6 @@ import gov.nih.nci.caarray.external.v1_0.query.BiomaterialSearchCriteria;
 import gov.nih.nci.caarray.external.v1_0.query.DataSetRequest;
 import gov.nih.nci.caarray.external.v1_0.query.ExampleSearchCriteria;
 import gov.nih.nci.caarray.external.v1_0.query.ExperimentSearchCriteria;
-import gov.nih.nci.caarray.external.v1_0.query.FileDownloadRequest;
 import gov.nih.nci.caarray.external.v1_0.query.FileSearchCriteria;
 import gov.nih.nci.caarray.external.v1_0.query.HybridizationSearchCriteria;
 import gov.nih.nci.caarray.external.v1_0.query.KeywordSearchCriteria;
@@ -222,17 +222,12 @@ public class ServiceStubFactory implements CaArrayServiceFactory {
             return new DataSet();
         }
 
-        public RemoteInputStream streamFileContents(CaArrayEntityReference arg0, boolean arg1)
-                throws InvalidReferenceException, DataTransferException {
-            return null;
-        }
-
-        public RemoteInputStream streamFileContentsZip(FileDownloadRequest arg0, boolean arg1)
-                throws InvalidReferenceException, DataTransferException {
-            return null;
-        }
-
         public RemoteInputStream streamMageTabZip(CaArrayEntityReference arg0, boolean arg1)
+                throws InvalidReferenceException, DataTransferException {
+            return null;
+        }
+
+        public FileStreamableContents streamFileContents(CaArrayEntityReference arg0, boolean arg1)
                 throws InvalidReferenceException, DataTransferException {
             return null;
         }
