@@ -94,10 +94,10 @@ import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
@@ -323,16 +323,22 @@ public class StudyManagementServiceTest {
         SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
         subjectAnnotation.setStudySubjectAssignment(assignment);
         
-        AbstractAnnotationValue value1 = new StringAnnotationValue();
-        AbstractAnnotationValue value2 = new StringAnnotationValue();
-        AbstractAnnotationValue value3 = new StringAnnotationValue();
+        StringAnnotationValue value1 = new StringAnnotationValue();
+        StringAnnotationValue value2 = new StringAnnotationValue();
+        StringAnnotationValue value3 = new StringAnnotationValue();
         value1.setSampleAcquisition(sampleAcquisition);
         value2.setImageSeries(imageSeries);
         value3.setSubjectAnnotation(subjectAnnotation);
         AnnotationDefinition firstDefinition = new AnnotationDefinition();
         firstDefinition.getAnnotationValueCollection().add(value1);
+        value1.setAnnotationDefinition(firstDefinition);
+        value1.setStringValue("1.23");
         firstDefinition.getAnnotationValueCollection().add(value2);
+        value2.setAnnotationDefinition(firstDefinition);
+        value2.setStringValue("1.23");
         firstDefinition.getAnnotationValueCollection().add(value3);
+        value3.setAnnotationDefinition(firstDefinition);
+        value3.setStringValue("1.23");
         firstDefinition.setId(1L);
         firstDefinition.setType(AnnotationTypeEnum.STRING.getValue());
         studyManagementService.setDefinition(study, fileColumn, firstDefinition, EntityTypeEnum.IMAGESERIES);
@@ -344,13 +350,15 @@ public class StudyManagementServiceTest {
         // Now create a new Definition and set it and verify the first definition is removed.
         AnnotationDefinition newDefinition = new AnnotationDefinition();
         newDefinition.setId(2L);
-        newDefinition.setType(AnnotationTypeEnum.STRING.getValue());
+        newDefinition.setType(AnnotationTypeEnum.NUMERIC.getValue());
         studyManagementService.setDefinition(study, fileColumn, newDefinition, EntityTypeEnum.IMAGESERIES);
         assertFalse(study.getImageSeriesAnnotationCollection().contains(firstDefinition));
         assertTrue(study.getImageSeriesAnnotationCollection().contains(newDefinition));
-        assertTrue(newDefinition.getAnnotationValueCollection().contains(value1));
-        assertTrue(newDefinition.getAnnotationValueCollection().contains(value2));
-        assertTrue(newDefinition.getAnnotationValueCollection().contains(value3));
+        assertEquals(3, newDefinition.getAnnotationValueCollection().size());
+        assertTrue(firstDefinition.getAnnotationValueCollection().isEmpty());
+        
+        assertEquals(Double.valueOf(1.23),
+           ((NumericAnnotationValue)newDefinition.getAnnotationValueCollection().iterator().next()).getNumericValue());
     }
     
     @SuppressWarnings("deprecation")
@@ -375,6 +383,7 @@ public class StudyManagementServiceTest {
         validValue.setStringValue("Valid");
         validValue.setSubjectAnnotation(subjectAnnotation);
         originalDefinition.getAnnotationValueCollection().add(validValue);
+        validValue.setAnnotationDefinition(originalDefinition);
         
         CommonDataElement dataElement = new CommonDataElement();
         dataElement.setLongName("longName");
@@ -409,6 +418,7 @@ public class StudyManagementServiceTest {
         invalidValue.setStringValue("INVALID");
         invalidValue.setSubjectAnnotation(subjectAnnotation2);
         fileColumn.getFieldDescriptor().getDefinition().getAnnotationValueCollection().add(invalidValue);
+        invalidValue.setAnnotationDefinition(fileColumn.getFieldDescriptor().getDefinition());
         boolean exceptionCaught = false;
         try {
             studyManagementService.setDataElement(fileColumn, dataElement, study, EntityTypeEnum.SUBJECT, "");
@@ -594,17 +604,17 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testCreateDefinition() {
+    public void testCreateDefinition() throws ValidationException {
         AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
         Study study = new Study();
         descriptor.setName("testName");
-        AnnotationDefinition definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SUBJECT);
+        AnnotationDefinition definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SUBJECT, AnnotationTypeEnum.STRING);
         assertEquals(descriptor.getName(), definition.getDisplayName());
         assertEquals(descriptor.getName(), definition.getKeywords());
         assertEquals(1, study.getSubjectAnnotationCollection().size());
-        definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.IMAGESERIES);
+        definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.IMAGESERIES, AnnotationTypeEnum.STRING);
         assertEquals(1, study.getImageSeriesAnnotationCollection().size());
-        definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SAMPLE);
+        definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SAMPLE, AnnotationTypeEnum.STRING);
         assertEquals(1, study.getSampleAnnotationCollection().size());
     }
     
@@ -657,6 +667,30 @@ public class StudyManagementServiceTest {
         } catch (CSSecurityException e) {
             fail();
         }
+    }
+    
+    @Test
+    public void testSaveAnnotationDefinition() throws ValidationException {
+        AnnotationDefinition stringToNumericDefinition = new AnnotationDefinition();
+        stringToNumericDefinition.setType(AnnotationTypeEnum.NUMERIC.getValue());
+        StringAnnotationValue value = new StringAnnotationValue();
+        value.setAnnotationDefinition(stringToNumericDefinition);
+        stringToNumericDefinition.getAnnotationValueCollection().add(value);
+        value.setStringValue("invalid");
+        try {
+            studyManagementService.save(stringToNumericDefinition);
+            fail();
+        } catch (ValidationException e) {
+            value.setAnnotationDefinition(stringToNumericDefinition);
+            stringToNumericDefinition.getAnnotationValueCollection().clear();
+            stringToNumericDefinition.getAnnotationValueCollection().add(value);
+        }
+        value.setStringValue("1.23");
+        studyManagementService.save(stringToNumericDefinition);
+        assertEquals(1, stringToNumericDefinition.getAnnotationValueCollection().size());
+        assertEquals(Double.valueOf(1.23),
+                ((NumericAnnotationValue)stringToNumericDefinition.getAnnotationValueCollection().iterator().next()).getNumericValue());
+
     }
     
     private static class SecureDaoStub extends CaIntegrator2DaoStub {

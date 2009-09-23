@@ -1,5 +1,7 @@
 package gov.nih.nci.caintegrator2.domain.annotation;
 
+import java.text.DecimalFormat;
+
 /**
  * 
  */
@@ -73,7 +75,8 @@ public class NumericPermissibleValue extends AbstractPermissibleValue {
      */
     @Override
     public String toString() {
-        return numericValue.toString();
+        return numericValue != null ? new DecimalFormat(NumericAnnotationValue.DECIMAL_FORMAT).format(numericValue) 
+                : "";
     }
 
 }

@@ -3,7 +3,8 @@ package gov.nih.nci.caintegrator2.domain.imaging;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -14,8 +15,8 @@ public class ImageSeries extends AbstractCaIntegrator2Object {
     
     private String identifier;
     private ImageSeriesAcquisition imageStudy;
-    private Collection<AbstractAnnotationValue> annotationCollection;
-    private Collection<Image> imageCollection;
+    private Set<AbstractAnnotationValue> annotationCollection = new HashSet<AbstractAnnotationValue>();
+    private Set<Image> imageCollection = new HashSet<Image>();
     
     /**
      * @return the identifier
@@ -48,28 +49,30 @@ public class ImageSeries extends AbstractCaIntegrator2Object {
     /**
      * @return the annotationCollection
      */
-    public Collection<AbstractAnnotationValue> getAnnotationCollection() {
+    public Set<AbstractAnnotationValue> getAnnotationCollection() {
         return annotationCollection;
     }
     
     /**
      * @param annotationCollection the annotationCollection to set
      */
-    public void setAnnotationCollection(Collection<AbstractAnnotationValue> annotationCollection) {
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setAnnotationCollection(Set<AbstractAnnotationValue> annotationCollection) {
         this.annotationCollection = annotationCollection;
     }
     
     /**
      * @return the imageCollection
      */
-    public Collection<Image> getImageCollection() {
+    public Set<Image> getImageCollection() {
         return imageCollection;
     }
     
     /**
      * @param imageCollection the imageCollection to set
      */
-    public void setImageCollection(Collection<Image> imageCollection) {
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setImageCollection(Set<Image> imageCollection) {
         this.imageCollection = imageCollection;
     }
 

@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
@@ -121,7 +122,7 @@ public class AnnotationValueUtilTest {
         NumericAnnotationValue val2 = new NumericAnnotationValue();
         assertTrue("".equalsIgnoreCase(val2.toString()));
         val2.setNumericValue(Double.valueOf(123.0));
-        assertTrue("123.0".equalsIgnoreCase(val2.toString()));
+        assertEquals("123", val2.toString());
         
         DateAnnotationValue val3 = new DateAnnotationValue();
         val3.setDateValue(null);
@@ -156,7 +157,7 @@ public class AnnotationValueUtilTest {
         assertTrue(AnnotationValueUtil.getAdditionalValue(annotationValueCollection, dataValues, filterList).size() == 1);
         dataValues.add("345");
         assertTrue(AnnotationValueUtil.getAdditionalValue(annotationValueCollection, dataValues, filterList).size() == 2);
-        filterList.add("123.0");
+        filterList.add("123");
         assertTrue(AnnotationValueUtil.getAdditionalValue(annotationValueCollection, dataValues, filterList).size() == 1);
     }
 

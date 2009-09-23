@@ -85,14 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
+
+import java.util.Set;
 
 /**
  * Used to load annotation into existing <code>ImageSeries</code>.
@@ -124,9 +123,6 @@ public class ImageAnnotationHandler extends AbstractAnnotationHandler {
      */
     @Override
     void handleAnnotationValue(AbstractAnnotationValue annotationValue) {
-        if (currentImageSeries.getAnnotationCollection() == null) {
-            currentImageSeries.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
-        }
         currentImageSeries.getAnnotationCollection().add(annotationValue);
     }
 

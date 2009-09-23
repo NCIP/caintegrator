@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertNotNull;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
@@ -115,7 +114,6 @@ public class ResultHandlerImplTest {
         ResultRow row = new ResultRow();
         row.setSampleAcquisition(new SampleAcquisition());
         row.setImageSeries(new ImageSeries());
-        row.getImageSeries().setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
         row.setSubjectAssignment(new StudySubjectAssignment());
         row.setValueCollection(new ArrayList<ResultValue>());
         resultRows.add(row);

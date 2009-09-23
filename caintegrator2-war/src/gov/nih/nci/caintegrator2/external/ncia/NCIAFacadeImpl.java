@@ -167,7 +167,6 @@ public class NCIAFacadeImpl implements NCIAFacade {
     private ImageSeries convertToImageSeries(Series series, NCIASearchService client) throws ConnectionException {
         ImageSeries imageSeries = new ImageSeries();
         imageSeries.setIdentifier(series.getSeriesInstanceUID());
-        imageSeries.setImageCollection(new HashSet<gov.nih.nci.caintegrator2.domain.imaging.Image>());
         Image nciaImage = client.retrieveRepresentativeImageBySeries(series.getSeriesInstanceUID());
         // TODO - 5/25/09 Ngoc, temporary check because this method is only available on Dev
         if (nciaImage == null) {
