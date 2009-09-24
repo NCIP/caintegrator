@@ -120,7 +120,6 @@ public final class SessionHelper {
      * Singleton method to get the instance off of the sessionMap object or create a new one.
      * @return - CSMUserHelper object.
      */
-    @SuppressWarnings(UNCHECKED) // sessionMap is not parameterized in struts2.
     public static SessionHelper getInstance() {
         SessionHelper instance = 
             (SessionHelper) getSession().get(SESSION_HELPER_SESSION_KEY);
@@ -148,7 +147,6 @@ public final class SessionHelper {
      * 
      * @param workspaceService session used to retrieve workspace.
      */
-    @SuppressWarnings(UNCHECKED) // sessionMap is not parameterized in struts2.
     public void refresh(WorkspaceService workspaceService) {
         if (isAuthenticated()) {
             getDisplayableUserWorkspace().refresh(workspaceService);
@@ -230,7 +228,6 @@ public final class SessionHelper {
      * @param plotType the plot type to add the plot to.
      * @param kmPlot the kmPlot to set on the ValueStack.
      */
-    @SuppressWarnings(UNCHECKED) // sessionMap is not parameterized in struts2.
     public static void setKmPlot(PlotTypeEnum plotType, KMPlot kmPlot) {
         if (getSession().get(KM_PLOT_SESSION_KEY) == null) {
             getSession().put(KM_PLOT_SESSION_KEY, new KMPlotMapper());
@@ -291,7 +288,6 @@ public final class SessionHelper {
      * @param plotType the plot type to add the plot to.
      * @param gePlots the gePlots to set on the ValueStack.
      */
-    @SuppressWarnings(UNCHECKED) // sessionMap is not parameterized in struts2.
     public static void setGePlots(PlotTypeEnum plotType, GeneExpressionPlotGroup gePlots) {
         if (getSession().get(GE_PLOT_SESSION_KEY) == null) {
             getSession().put(GE_PLOT_SESSION_KEY, new GEPlotMapper());

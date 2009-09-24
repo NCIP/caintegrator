@@ -590,7 +590,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings(UNCHECKED)
     public int retrieveNumberImages(Collection<ImageSeries> imageSeries) {
         Criteria imageCriteria = getCurrentSession().createCriteria(Image.class);
         imageCriteria.add(Restrictions.in("series", imageSeries));

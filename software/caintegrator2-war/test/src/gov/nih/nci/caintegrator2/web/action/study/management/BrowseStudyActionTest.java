@@ -117,7 +117,6 @@ public class BrowseStudyActionTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testExecute() {
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(null);
         assertEquals(Action.ERROR, action.execute());

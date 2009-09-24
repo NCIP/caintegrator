@@ -219,7 +219,6 @@ public class FileColumn extends AbstractCaIntegrator2Object implements Comparabl
        
     }
 
-    @SuppressWarnings("unchecked")
     private <T> Object retrieveValueAsClassType(Class<T> classType, String stringValue)
             throws ValidationException {
         if (classType.equals(Double.class)) {

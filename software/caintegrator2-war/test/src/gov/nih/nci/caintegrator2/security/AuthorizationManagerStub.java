@@ -329,12 +329,12 @@ public class AuthorizationManagerStub implements AuthorizationManager {
         
 
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings("unchecked") // CSM API is untyped
     public List getAccessibleGroups(String objectId, String privilegeName) throws CSException {
         
         return null;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings("unchecked") // CSM API is untyped
     public List getAccessibleGroups(String objectId, String attributeName, String privilegeName) throws CSException {
         
         return null;
@@ -354,12 +354,12 @@ public class AuthorizationManagerStub implements AuthorizationManager {
         
         return null;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public List getAttributeMap(String userName, String className, String privilegeName) {
         
         return null;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public List getAttributeMapForGroup(String groupName, String className, String privilegeName) {
         
         return null;
@@ -374,7 +374,7 @@ public class AuthorizationManagerStub implements AuthorizationManager {
         
         return null;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public Set getGroups(String userId) throws CSObjectNotFoundException {
         Group group = new Group();
         group.setGroupId(Long.valueOf(1));
@@ -383,7 +383,7 @@ public class AuthorizationManagerStub implements AuthorizationManager {
         return groups;
     }
     
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public List getObjects(SearchCriteria searchCriteria) {
         if (searchCriteria instanceof ProtectionElementSearchCriteria) {
             ProtectionElement pe = new ProtectionElement();
@@ -393,7 +393,7 @@ public class AuthorizationManagerStub implements AuthorizationManager {
         }
         return null;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public Set getOwners(String protectionElementId) throws CSObjectNotFoundException {
         
         return null;
@@ -408,12 +408,12 @@ public class AuthorizationManagerStub implements AuthorizationManager {
         
         return null;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public Collection getPrivilegeMap(String userName, Collection protectionElements) throws CSException {
         
         return null;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public Set getPrivileges(String roleId) throws CSObjectNotFoundException {
         
         return null;
@@ -433,17 +433,17 @@ public class AuthorizationManagerStub implements AuthorizationManager {
         
         return null;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public Set getProtectionElementPrivilegeContextForGroup(String groupId) throws CSObjectNotFoundException {
         
         return null;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public Set getProtectionElementPrivilegeContextForUser(String userId) throws CSObjectNotFoundException {
         
         return null;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public Set getProtectionElements(String protectionGroupId) throws CSObjectNotFoundException {
         Set<ProtectionElement> protectionElements = new HashSet<ProtectionElement>();
         ProtectionElement element1 = new ProtectionElement();
@@ -465,7 +465,7 @@ public class AuthorizationManagerStub implements AuthorizationManager {
         
         return null;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public Set getProtectionGroupRoleContextForGroup(String groupId) throws CSObjectNotFoundException {
         Set<ProtectionGroupRoleContext> pgrcs = new HashSet<ProtectionGroupRoleContext>();
         ProtectionGroupRoleContext pgrc1 = new ProtectionGroupRoleContext();
@@ -491,17 +491,17 @@ public class AuthorizationManagerStub implements AuthorizationManager {
         pgrcs.add(pgrc2);
         return pgrcs;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public Set getProtectionGroupRoleContextForUser(String userId) throws CSObjectNotFoundException {
         
         return null;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public List getProtectionGroups() {
         
         return null;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public Set getProtectionGroups(String protectionElementId) throws CSObjectNotFoundException {
         
         return null;
@@ -522,7 +522,7 @@ public class AuthorizationManagerStub implements AuthorizationManager {
         
         return null;
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public Set getUsers(String groupId) throws CSObjectNotFoundException {
         
         return null;
@@ -662,7 +662,7 @@ public class AuthorizationManagerStub implements AuthorizationManager {
         
 
     }
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ "unchecked" }) // CSM API is untyped
     public Collection secureCollection(String userName, Collection objects) throws CSException {
         
         return null;

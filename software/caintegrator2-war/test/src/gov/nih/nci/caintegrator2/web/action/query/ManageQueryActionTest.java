@@ -134,7 +134,7 @@ public class ManageQueryActionTest {
         setupSession();
     }
 
-    @SuppressWarnings({"PMD", "unchecked"})
+    @SuppressWarnings({"PMD"})
     private void setupSession() {
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
