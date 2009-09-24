@@ -198,9 +198,9 @@
         </action>
         
         <action name="createNewImagingDefinition" method="createNewDefinition" class="defineImagingFileColumnAction">
-            <result type="tiles">editImagingFileColumn</result>
-            <result name="input" type="tiles">editImagingFileColumn</result>
-            <result name="error" type="tiles">editImagingFileColumn</result>
+            <result type="tiles">editFileColumn</result>
+            <result name="input" type="tiles">editFileColumn</result>
+            <result name="error" type="tiles">editFileColumn</result>
         </action>
         
         <action name="editSurvivalValueDefinitions" method="editSurvivalValueDefinitions" class="defineSurvivalDefinitionAction">
@@ -245,7 +245,7 @@
             <result type="redirectAction">
                 <param name="actionName">editClinicalSource</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
-                <param name="clinicalSource.id">${clinicalSource.id}</param>
+                <param name="clinicalSource.id">${sourceId}</param>
             </result>
         </action>
         
@@ -253,14 +253,14 @@
             <result type="redirectAction">
                 <param name="actionName">editImagingSourceAnnotations</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
-                <param name="imageSourceConfiguration.id">${imageSourceConfiguration.id}</param>
+                <param name="imageSourceConfiguration.id">${sourceId}</param>
             </result>
         </action>
    
          <action name="editImagingFileColumn" method="editFileColumn" class="defineImagingFileColumnAction">
-            <result type="tiles">editImagingFileColumn</result>
-            <result name="input" type="tiles">editImagingFileColumn</result>
-            <result name="error" type="tiles">editImagingFileColumn</result>
+            <result type="tiles">editFileColumn</result>
+            <result name="input" type="tiles">editFileColumn</result>
+            <result name="error" type="tiles">editFileColumn</result>
         </action>
         
         <action name="searchDefinitions" method="searchDefinitions" class="defineFileColumnAction">
@@ -276,22 +276,22 @@
         </action>
         
         <action name="saveImagingColumnType" method="saveColumnType" class="defineImagingFileColumnAction">
-            <result type="tiles">editImagingFileColumn</result>
-            <result name="input" type="tiles">editImagingFileColumn</result>
-            <result name="error" type="tiles">editImagingFileColumn</result>
+            <result type="tiles">editFileColumn</result>
+            <result name="input" type="tiles">editFileColumn</result>
+            <result name="error" type="tiles">editFileColumn</result>
         </action>
         
         <action name="searchImagingDefinitions" method="searchDefinitions" class="defineImagingFileColumnAction">
-            <result type="tiles">editImagingFileColumn</result>
-            <result name="input" type="tiles">editImagingFileColumn</result>
-            <result name="error" type="tiles">editImagingFileColumn</result>
+            <result type="tiles">editFileColumn</result>
+            <result name="input" type="tiles">editFileColumn</result>
+            <result name="error" type="tiles">editFileColumn</result>
         </action>
    
         <action name="selectDataElement" method="selectDataElement" class="defineFileColumnAction">
             <result type="redirectAction">
                 <param name="actionName">editClinicalSource</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
-                <param name="clinicalSource.id">${clinicalSource.id}</param>
+                <param name="clinicalSource.id">${sourceId}</param>
             </result>
             <result name="input" type="tiles">editFileColumn</result>
             <result name="error" type="tiles">editFileColumn</result>
@@ -299,19 +299,19 @@
    
         <action name="selectImagingDataElement" method="selectDataElement" class="defineImagingFileColumnAction">
             <result type="redirectAction">
-                <param name="actionName">editImagingSource</param>
+                <param name="actionName">editImagingSourceAnnotations</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
-                <param name="imageSourceConfiguration.id">${imageSourceConfiguration.id}</param>
+                <param name="imageSourceConfiguration.id">${sourceId}</param>
             </result>
-            <result name="input" type="tiles">editImagingFileColumn</result>
-            <result name="error" type="tiles">editImagingFileColumn</result>
+            <result name="input" type="tiles">editFileColumn</result>
+            <result name="error" type="tiles">editFileColumn</result>
         </action>
         
         <action name="selectDefinition" method="selectDefinition" class="defineFileColumnAction">
             <result type="redirectAction">
                 <param name="actionName">editClinicalSource</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
-                <param name="clinicalSource.id">${clinicalSource.id}</param>
+                <param name="clinicalSource.id">${sourceId}</param>
             </result>
             <result name="input" type="tiles">editFileColumn</result>
             <result name="error" type="tiles">editFileColumn</result>
@@ -319,19 +319,19 @@
    
         <action name="selectImagingDefinition" method="selectDefinition" class="defineImagingFileColumnAction">
             <result type="redirectAction">
-                <param name="actionName">editImagingSource</param>
+                <param name="actionName">editImagingSourceAnnotations</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
-                <param name="imageSourceConfiguration.id">${imageSourceConfiguration.id}</param>
+                <param name="imageSourceConfiguration.id">${sourceId}</param>
             </result>
-            <result name="input" type="tiles">editImagingFileColumn</result>
-            <result name="error" type="tiles">editImagingFileColumn</result>
+            <result name="input" type="tiles">editFileColumn</result>
+            <result name="error" type="tiles">editFileColumn</result>
         </action>
         
         <action name="updateAnnotationDefinition" method="updateAnnotationDefinition" class="defineFileColumnAction">
             <result type="redirectAction">
                 <param name="actionName">editClinicalSource</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
-                <param name="clinicalSource.id">${clinicalSource.id}</param>
+                <param name="clinicalSource.id">${sourceId}</param>
             </result>
             <result name="input" type="tiles">editFileColumn</result>
             <result name="error" type="tiles">editFileColumn</result>
@@ -342,10 +342,10 @@
             <result type="redirectAction">
                 <param name="actionName">editImagingSourceAnnotations</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
-                <param name="imageSourceConfiguration.id">${imageSourceConfiguration.id}</param>
+                <param name="imageSourceConfiguration.id">${sourceId}</param>
             </result>
-            <result name="input" type="tiles">editImagingFileColumn</result>
-            <result name="error" type="tiles">editImagingFileColumn</result>
+            <result name="input" type="tiles">editFileColumn</result>
+            <result name="error" type="tiles">editFileColumn</result>
         </action>
         
         <action name="homepage.getStudyDetails" method="getStudyDetails" class="homepageAction">

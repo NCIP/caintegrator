@@ -109,7 +109,7 @@ import java.util.Set;
 /**
  * Action used to edit the type and annotation of an imaging file column by a Study Manager.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") // See selectDataElement()
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" }) // See selectDataElement()
 public abstract class AbstractFileColumnAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;
@@ -127,6 +127,7 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     private int dataElementIndex;
     private int definitionIndex;
     private String columnType;
+    private String sourceId;
 
     private void clearCacheMemory() {
         columnType = null;
@@ -600,7 +601,50 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
      * Entity type for the action.
      * @return the entity type for the action. 
      */
-    protected abstract EntityTypeEnum getEntityType();
+    public abstract EntityTypeEnum getEntityType();
+    
+    /**
+     * The string for the SaveColumnType action.
+     * @return struts action string.
+     */
+    public abstract String getSaveColumnTypeAction();
+    
+    /**
+     * The string for the NewDefinition action.
+     * @return struts action string.
+     */
+    public abstract String getNewDefinitionAction();
+    
+    /**
+     * The string for the SaveDefinition action.
+     * @return struts action string.
+     */
+    public abstract String getSaveAnnotationDefinitionAction();
+    
+    /**
+     * The string for the Cancel action.
+     * @return struts action string.
+     */
+    public abstract String getCancelAction();
+    
+    /**
+     * The string for the Select Definition action.
+     * @return struts action string.
+     */
+    public abstract String getSelectDefinitionAction();
+    
+    /**
+     * The string for the Select Data Element action.
+     * @return struts action string.
+     */
+    public abstract String getSelectDataElementAction();
+    
+    /**
+     * The string for the EntityType action.
+     * @return struts action string.
+     */
+    public abstract String getEntityTypeForSearch();
+    
     
     /**
      * Updates the source status.
@@ -608,5 +652,19 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // empty default implementation
     protected void updateDataSourceStatus() {
         // default implementation is no-op; override if appropriate
+    }
+
+    /**
+     * @return the sourceId
+     */
+    public String getSourceId() {
+        return sourceId;
+    }
+
+    /**
+     * @param sourceId the sourceId to set
+     */
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
     }
 }

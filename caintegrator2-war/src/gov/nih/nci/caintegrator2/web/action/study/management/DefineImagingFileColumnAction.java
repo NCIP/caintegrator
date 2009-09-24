@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
 /**
@@ -96,33 +95,6 @@ public class DefineImagingFileColumnAction extends AbstractFileColumnAction {
 
     private static final long serialVersionUID = 1L;
 
-    private ImageDataSourceConfiguration imageSourceConfiguration = new ImageDataSourceConfiguration();
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void prepare() {
-        super.prepare();
-        if (getImageSourceConfiguration().getId() != null) {
-            setImageSourceConfiguration(
-                    getStudyManagementService().getRefreshedStudyEntity(getImageSourceConfiguration()));
-        }
-    }
-
-
-    /**
-     * @return the imageSource
-     */
-    public ImageDataSourceConfiguration getImageSourceConfiguration() {
-        return imageSourceConfiguration;
-    }
-
-    /**
-     * @param imageSourceConfiguration the imageSource to set
-     */
-    public void setImageSourceConfiguration(ImageDataSourceConfiguration imageSourceConfiguration) {
-        this.imageSourceConfiguration = imageSourceConfiguration;
-    }
 
     /**
      * {@inheritDoc}
@@ -132,12 +104,69 @@ public class DefineImagingFileColumnAction extends AbstractFileColumnAction {
         getStudyManagementService().updateImageDataSourceStatus(getStudyConfiguration()); // If it changes state
     }
 
+    
     /**
      * {@inheritDoc}
      */
     @Override
-    protected EntityTypeEnum getEntityType() {
+    public EntityTypeEnum getEntityType() {
         return EntityTypeEnum.IMAGESERIES;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getCancelAction() {
+        return "cancelImagingFileColumn";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getEntityTypeForSearch() {
+        return "image";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getNewDefinitionAction() {
+        return "createNewImagingDefinition";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSaveAnnotationDefinitionAction() {
+        return "updateImagingAnnotationDefinition";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSaveColumnTypeAction() {
+        return "saveImagingColumnType";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSelectDataElementAction() {
+        return "selectImagingDataElement";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSelectDefinitionAction() {
+        return "selectImagingDefinition";
     }
 
 }
