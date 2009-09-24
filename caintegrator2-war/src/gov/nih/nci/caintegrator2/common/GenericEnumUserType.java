@@ -198,7 +198,6 @@ public class GenericEnumUserType implements UserType, ParameterizedType {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public int[] sqlTypes() {
         return mySqlTypes.clone();
     }

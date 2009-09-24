@@ -213,7 +213,6 @@ public class DefineImagingFileColumnActionTest extends AbstractSessionBasedTest 
     }
     
     @Test
-    @SuppressWarnings("deprecation")
     public void testCreateNewDefinition() throws ValidationException, ParseException {
         action.setFileColumn(new FileColumn());
         action.getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());

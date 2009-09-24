@@ -123,7 +123,6 @@ public class RegistrationAction extends ActionSupport implements Preparable {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public void prepare() {
         ldapAuthenticate = Boolean.TRUE;
         ldapContextParams.putAll(registrationService.getLdapContextParams());
