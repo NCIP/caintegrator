@@ -20,11 +20,11 @@
         <div style="float: left; position: relative; width: 100px; margin-top: 0.3em;">
             <s:if test='%{query.resultType.value.equals("genomic")}'></s:if>
             <s:else>
-    	        <label>Results per Page:</label>
-    	        <s:select name="pageSize" list="{'10', '20', '50', '100'}" />
-    	        <s:a href="#" onclick="submitForm('updateResultsPerPage')">
-    	            <span class="btn_img">Apply</span>
-    	        </s:a>
+                <label>Results per Page:</label>
+                <s:select name="pageSize" list="{'10', '20', '50', '100'}" />
+                <s:a href="#" onclick="submitForm('updateResultsPerPage')">
+                    <span class="btn_img">Apply</span>
+                </s:a>
             </s:else>
         </div>
         <div class="tabhelp" style="white-space:nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;"><a href="javascript:openHelpWindowWithNavigation('query_results_help')" class="help">
@@ -122,12 +122,15 @@
             </s:else>
         </table>    
         <br>
-            <div class="exportlinks">
-				Export options:
-				<s:a href="#" onclick="submitForm('exportGenomicResults')">
-				<span class="export csv">CSV</span>
-				</s:a>
-			</div>
+            <s:if test="!genomicDataQueryResult.columnCollection.isEmpty() &&
+                    !genomicDataQueryResult.rowCollection.isEmpty()">
+                <div class="exportlinks">
+                    Export options:
+                    <s:a href="#" onclick="submitForm('exportGenomicResults')">
+                        <span class="export csv">CSV</span>
+                    </s:a>
+                </div>
+            </s:if>
         </s:if>
         <s:else>
             <s:set name="pageSizeVar" id="pageSizeVar" value="%{queryResult.pageSize}" />
@@ -185,7 +188,9 @@
         </s:else>
     </div>
     <!--Buttons-->
-    <s:if test="queryResult.numberOfRows > 0">
+    <s:if test="!queryResult.rows.isEmpty() ||
+         (!genomicDataQueryResult.columnCollection.isEmpty() &&
+          !genomicDataQueryResult.rowCollection.isEmpty())">
     <div class="actionsrow">
     <del class="btnwrapper">
     <ul class="btnrow">
