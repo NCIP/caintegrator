@@ -72,7 +72,7 @@
                                 </s:elseif>
                                 <s:url id="editImagingFileColumn" action="editImagingFileColumn">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                    <s:param name="imageSourceConfiguration.id" value="imageSourceConfiguration.id" />
+                                    <s:param name="sourceId" value="imageSourceConfiguration.id" />
                                     <s:param name="fileColumn.id" value="id" />
                                 </s:url>
                                 <br>
