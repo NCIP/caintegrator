@@ -240,7 +240,6 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         return path;
     }
 
-    @SuppressWarnings("unused")
     private void setPath(String path) {
         this.path = path;
     }

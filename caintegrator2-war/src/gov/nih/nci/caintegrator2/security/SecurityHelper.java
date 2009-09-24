@@ -168,7 +168,7 @@ public final class SecurityHelper {
         }
     }
 
-    @SuppressWarnings({ "unused", "unchecked" })
+    @SuppressWarnings("unchecked")
     private static Set<ProtectionGroup> retrieveProtectionGroups(String userId, String myRole) 
     throws CSException {
         Set<ProtectionGroup> protectionGroups = new HashSet<ProtectionGroup>();

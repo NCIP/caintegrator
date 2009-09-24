@@ -126,7 +126,6 @@ public class QueryManagementServiceForKMPlotStub implements QueryManagementServi
         deleteCalled = true;
     }
     
-    @SuppressWarnings("unchecked")
     public QueryResult execute(Query query) {
         executeCalled = true;
         switch (kmPlotType) {
