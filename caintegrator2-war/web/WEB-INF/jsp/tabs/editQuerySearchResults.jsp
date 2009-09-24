@@ -188,38 +188,43 @@
         </s:else>
     </div>
     <!--Buttons-->
-    <s:if test="!queryResult.rows.isEmpty() ||
-         (!genomicDataQueryResult.columnCollection.isEmpty() &&
-          !genomicDataQueryResult.rowCollection.isEmpty())">
-    <div class="actionsrow">
-    <del class="btnwrapper">
-    <ul class="btnrow">
-        <s:if test='%{query.resultType.value.equals("genomic")}'>
-            <li><s:a href="#" cssClass="btn" onclick="submitForm('exportGenomicResults')">
-                <span class="btn_img"><span class="add">Export To CSV</span></span>
-            </s:a></li>
+    <s:if test='%{query.resultType.value.equals("genomic")}'>
+        <s:if test="!genomicDataQueryResult.columnCollection.isEmpty() &&
+                !genomicDataQueryResult.rowCollection.isEmpty()">
+            <div class="actionsrow">
+                <del class="btnwrapper">
+                    <ul class="btnrow">
+                        <li><s:a href="#" cssClass="btn" onclick="submitForm('exportGenomicResults')">
+                            <span class="btn_img"><span class="add">Export To CSV</span></span>
+                        </s:a></li>
+                    </ul>
+                </del>
+            </div>
         </s:if>
-        <s:else>
-            <li><s:a href="#" cssClass="btn" onclick="submitForm('exportGenomicResults')"
-                onclick="openExportLink(); return false;">
-                <span class="btn_img">Export To CSV</span>
-            </s:a></li>
-        </s:else>
-        <s:if test="queryForm.hasImageDataSources()">
-            <li><s:a href="#" cssClass="btn" 
-                onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
-                <span class="btn_img">Forward To NBIA</span>
-            </s:a></li>
-            <li><s:a href="#" cssClass="btn" 
-                onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='retrieveDicomImages';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
-                <span class="btn_img">Retrieve Dicom Images</span>
-            </s:a></li>
-        </s:if>
-    </ul>
-    </del>
-    </div>
     </s:if>
-
+    <s:else>
+        <s:if test="!queryResult.rows.isEmpty()">
+            <div class="actionsrow">
+                <del class="btnwrapper">
+                    <ul class="btnrow">
+                        <li><s:a href="#" cssClass="btn" onclick="openExportLink(); return false;">
+                            <span class="btn_img">Export To CSV</span>
+                        </s:a></li>
+                        <s:if test="queryForm.hasImageDataSources()">
+                            <li><s:a href="#" cssClass="btn" 
+                                onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+                                <span class="btn_img">Forward To NBIA</span>
+                            </s:a></li>
+                            <li><s:a href="#" cssClass="btn" 
+                                onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='retrieveDicomImages';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+                                <span class="btn_img">Retrieve Dicom Images</span>
+                            </s:a></li>
+                        </s:if>
+                    </ul>
+                </del>
+           </div>
+        </s:if>
+    </s:else>
     <!--/Buttons-->
 </s:div>
 <!--/Search Results-->
