@@ -11,14 +11,14 @@
     
     initializeJsp();
     
-    function runSearch(studyConfigurationId, fileColumnId, keywords) {
+    function runSearch(entityType, studyConfigurationId, fileColumnId, keywords) {
         var searchResultJsp = "";
         if (document.getElementById("annotationDefinitionTable") == null) {
             searchResultJsp = "/WEB-INF/jsp/tiles/editFileColumn_searchResult.jsp";
         }
         
         dwr.engine.setActiveReverseAjax(true);
-        DataElementSearchAjaxUpdater.runSearch("subject", studyConfigurationId, fileColumnId,
+        DataElementSearchAjaxUpdater.runSearch(entityType, studyConfigurationId, fileColumnId,
             keywords, searchResultJsp);
     }
     
@@ -52,14 +52,13 @@
     <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('assign_annotations_help')" class="help">
    &nbsp;</a>
     </div>
-
+    
     <!--/Page Help-->
           
     <s:actionerror />
     <h1>Assign Annotation Definition for Column: <strong><s:property value="fileColumn.name" /></strong></h1>
     <p>Modify the current annotation definition and click <strong>Save</strong> or search for a new annotation definition and click <strong>Select</strong>.</p>
     <div class="form_wrapper_outer">
- 
     <table class="form_wrapper_table">
             <tr>
                 <th class="title" style="height: 2.5em;">Current Annotation Definition:</th>
@@ -68,9 +67,9 @@
             <tr>
                 <td colspan="2" style="padding: 0 0 1em 1em;"> 
 
-            	<s:form name="columnTypeForm" action="saveColumnType">
+            	<s:form name="columnTypeForm" action="%{saveColumnTypeAction}">
             	    <s:hidden name="studyConfiguration.id" />
-                    <s:hidden name="clinicalSource.id" />
+                    <s:hidden name="sourceId" />
                     <s:hidden name="fileColumn.id" />
             	
                     <s:select id="columnType" label="Column Type:" name="columnType"
@@ -81,7 +80,7 @@
                 
                 <s:form id="updateDefinition" cssClass="currentAnnotationDefinition">
                     <s:hidden name="studyConfiguration.id" />
-                    <s:hidden name="clinicalSource.id" />
+                    <s:hidden name="sourceId" />
                     <s:hidden name="fileColumn.id" />
             	    <s:if test="%{columnTypeAnnotation}">
             	        <s:if test="%{fileColumn.fieldDescriptor.definition != null}">
@@ -129,11 +128,11 @@
 	                    <td>
 	                    <br>
 	                    <s:if test="%{columnTypeAnnotation}">
-                            <s:submit value="New" action="createNewDefinition" theme="simple"/>
+                            <s:submit value="New" action="%{newDefinitionAction}" theme="simple"/>
 	                    </s:if>
-	                    <s:submit value="Save" action="updateAnnotationDefinition" theme="simple"/>
+	                    <s:submit value="Save" action="%{saveAnnotationDefinitionAction}" theme="simple"/>
 	                    <s:if test="%{cancelEnabled}">
-	                        <s:submit value="Cancel" action="cancelFileColumn" theme="simple"/>
+	                        <s:submit value="Cancel" action="%{cancelAction}" theme="simple"/>
 	                    </s:if>
                         </td>
                     </tr>
@@ -144,6 +143,7 @@
     </table>            
    
     <s:if test="%{columnTypeAnnotation}">
+    <s:set name="entityTypeForSearch" value="entityTypeForSearch" />
     <table class="form_wrapper_table">
             <tr>
                 <th class="title" style="height: 2.5em;">Search for an Annotation Definition: </th>
@@ -154,7 +154,7 @@
 
                 <s:form theme="simple">
                     <s:hidden id="searchFormStudyConfigurationId" name="studyConfiguration.id" />
-                    <s:hidden name="clinicalSource.id" />
+                    <s:hidden name="sourceId" />
                     <s:hidden id="searchFormFileColumnId" name="fileColumn.id" />
                     <table style="padding: 0 0 5px 5px;">
                     <tr>
@@ -162,7 +162,8 @@
                             <s:textfield label="Keywords" name="keywordsForSearch" id="keywordsForSearch"  />
                         </td>
                         <td> 
-        	               <button type="button" onclick="runSearch(document.getElementById('searchFormStudyConfigurationId').value, 
+        	               <button type="button" onclick="runSearch('${entityTypeForSearch}',
+        	            	                  document.getElementById('searchFormStudyConfigurationId').value, 
         	                                  document.getElementById('searchFormFileColumnId').value,
         	                                  document.getElementById('keywordsForSearch').value)"> Search </button>
                         </td>
@@ -174,8 +175,6 @@
                     <div id="errorMessages" style="color: red;"> </div>
                 </s:form>
                 
-                <s:set name="selectDefinitionAction" value="selectDefinition" />
-                <s:set name="selectDataElementAction" value="selectDataElement" />
                 <div id="searchResult" style="padding: 1em 0 0 1.5em;"></div>
                 
                 </td>

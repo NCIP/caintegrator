@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
 /**
@@ -96,37 +95,67 @@ public class DefineFileColumnAction extends AbstractFileColumnAction {
     
     private static final long serialVersionUID = 1L;
 
-    private DelimitedTextClinicalSourceConfiguration clinicalSource = new DelimitedTextClinicalSourceConfiguration();
-
     /**
      * {@inheritDoc}
      */
-    public void prepare() {
-        super.prepare();
-        if (getClinicalSource().getId() != null) {
-            setClinicalSource(getStudyManagementService().getRefreshedStudyEntity(getClinicalSource()));
-        }
-    }
-
-    /**
-     * @return the clinicalSource
-     */
-    public DelimitedTextClinicalSourceConfiguration getClinicalSource() {
-        return clinicalSource;
-    }
-
-    /**
-     * @param clinicalSource the clinicalSource to set
-     */
-    public void setClinicalSource(DelimitedTextClinicalSourceConfiguration clinicalSource) {
-        this.clinicalSource = clinicalSource;
+    @Override
+    public EntityTypeEnum getEntityType() {
+        return EntityTypeEnum.SUBJECT;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected EntityTypeEnum getEntityType() {
-        return EntityTypeEnum.SUBJECT;
+    public String getCancelAction() {
+        return "cancelFileColumn";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getEntityTypeForSearch() {
+        return "subject";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getNewDefinitionAction() {
+        return "createNewDefinition";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSaveAnnotationDefinitionAction() {
+        return "updateAnnotationDefinition";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSaveColumnTypeAction() {
+        return "saveColumnType";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSelectDataElementAction() {
+        return "selectDataElement";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSelectDefinitionAction() {
+        return "selectDefinition";
     }
 }
