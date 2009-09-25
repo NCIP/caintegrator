@@ -10,7 +10,7 @@
 
         <!-- @HIBERNATE_CONFIG_START@
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://@database.server@/@database.name@</property>
+        <property name="connection.url">jdbc:mysql://@database.server@:@database.port@/@database.name@</property>
         <property name="connection.username">@database.user@</property>
         <property name="connection.password">@database.password@</property>
         <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
