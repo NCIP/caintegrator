@@ -158,6 +158,10 @@ public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBa
         action.setUseGlad(false);
         action.setCaDnaCopyUrl("url");
         action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setCopyNumberMappingFile(TestDataFiles.REMBRANDT_COPY_NUMBER_FILE);
+        action.validate();
         assertFalse(action.hasFieldErrors());
     }
     
