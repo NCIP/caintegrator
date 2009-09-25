@@ -91,9 +91,13 @@ import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 
 /**
@@ -215,8 +219,30 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
             addFieldError("copyNumberMappingFile", " File is required");
         } else if (copyNumberMappingFile.length() == 0) {
             addFieldError("copyNumberMappingFile", " File is empty");
+        } else {
+            validateFileFormat();
         }
         validateServiceUrl();
+    }
+    
+    private void validateFileFormat() {
+        CSVReader reader;
+        try {
+            reader = new CSVReader(new FileReader(copyNumberMappingFile));
+            String[] fields;
+            int lineNum = 0;
+            while ((fields = reader.readNext()) != null) {
+                lineNum++;
+                if (fields.length != 3) {
+                    addFieldError("copyNumberMappingFile",
+                            " File must have 3 columns instead of " + fields.length
+                            + " on line number " + lineNum);
+                    return;
+                }
+            }
+        } catch (IOException e) {
+            addFieldError("copyNumberMappingFile", " Error reading mapping file");
+        }
     }
 
     private void validateServiceUrl() {

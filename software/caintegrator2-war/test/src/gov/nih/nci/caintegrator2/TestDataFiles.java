@@ -117,6 +117,7 @@ public class TestDataFiles {
     public static final String REMBRANDT_NCRI_IMAGE_ANNOTATION_FILE_PATH = "/ncri_image_annotations.csv";
     public static final String REMBRANDT_NCRI_IMAGE_SERIES_TO_SUBJECT_FILE_PATH = "/ncri_image_mapping.csv";
     public static final String REMBRANDT_NCRI_SAMPLE_MAPPING_FILE_PATH = "/ncri_sample_mapping.csv";
+    public static final String REMBRANDT_NCRI_COPY_NUMBER_MAPPING_FILE_PATH = "/rembrandt_copy_number_mapping.csv";
     
     public static final File VALID_FILE = getFile(VALID_FILE_RESOURCE_PATH);
     public static final File VALID_FILE_TIMEPOINT = getFile(VALID_FILE_TIMEPOINT_RESOURCE_PATH);
@@ -169,6 +170,7 @@ public class TestDataFiles {
     public static final File REMBRANDT_NCRI_IMAGE_ANNOTATION_FILE = getFile(REMBRANDT_NCRI_IMAGE_ANNOTATION_FILE_PATH);
     public static final File REMBRANDT_NCRI_IMAGE_SERIES_TO_SUBJECT_FILE = getFile(REMBRANDT_NCRI_IMAGE_SERIES_TO_SUBJECT_FILE_PATH);
     public static final File REMBRANDT_NCRI_SAMPLE_MAPPING_FILE = getFile(REMBRANDT_NCRI_SAMPLE_MAPPING_FILE_PATH);
+    public static final File REMBRANDT_NCRI_COPY_NUMBER_MAPPING_FILE = getFile(REMBRANDT_NCRI_COPY_NUMBER_MAPPING_FILE_PATH);
     
 
     // Copy number test data
