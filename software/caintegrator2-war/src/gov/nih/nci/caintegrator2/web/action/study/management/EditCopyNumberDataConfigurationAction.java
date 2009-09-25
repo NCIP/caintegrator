@@ -125,6 +125,7 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
     private String caDnaCopyUrl;
     private boolean useGlad = false;
     private ConfigurationHelper configurationHelper;
+    private static final String COPY_NUMBER_MAPPING_FILE = "copyNumberMappingFile";
     
     /**
      * {@inheritDoc}
@@ -216,9 +217,9 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
 
     private void validateSave() {
         if (copyNumberMappingFile == null) {
-            addFieldError("copyNumberMappingFile", " File is required");
+            addFieldError(COPY_NUMBER_MAPPING_FILE, " File is required");
         } else if (copyNumberMappingFile.length() == 0) {
-            addFieldError("copyNumberMappingFile", " File is empty");
+            addFieldError(COPY_NUMBER_MAPPING_FILE, " File is empty");
         } else {
             validateFileFormat();
         }
@@ -234,14 +235,14 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
             while ((fields = reader.readNext()) != null) {
                 lineNum++;
                 if (fields.length != 3) {
-                    addFieldError("copyNumberMappingFile",
+                    addFieldError(COPY_NUMBER_MAPPING_FILE,
                             " File must have 3 columns instead of " + fields.length
                             + " on line number " + lineNum);
                     return;
                 }
             }
         } catch (IOException e) {
-            addFieldError("copyNumberMappingFile", " Error reading mapping file");
+            addFieldError(COPY_NUMBER_MAPPING_FILE, " Error reading mapping file");
         }
     }
 
