@@ -131,10 +131,12 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+import java.util.zip.GZIPOutputStream;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -153,12 +155,6 @@ public class CaArrayFacadeTest {
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("caarray-test-config.xml", CaArrayFacadeTest.class); 
         caArrayFacade = (CaArrayFacade) context.getBean("CaArrayFacade"); 
-        CaArrayUtils.setCompressed(true);
-    }
-
-    @After
-    public void tearDown() {
-        CaArrayUtils.setCompressed(CaArrayUtils.COMPRESSED_DEFAULT);
     }
 
     @Test
@@ -324,10 +320,23 @@ public class CaArrayFacadeTest {
                 dataFile.append("DATA\tDarkCorner\t-0.0034\n");
                 dataFile.append("*\n");
                 dataFile.append("DATA\tA_probeSet2\t-0.1234\n");
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(dataFile.toString().getBytes());
+                byte[] gzippedBytes = getGzippedBytes(dataFile.toString());
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(gzippedBytes);
                 FileStreamableContents contents =  new FileStreamableContents();
                 contents.setContentStream(new DirectRemoteInputStream(byteArrayInputStream, false));
                 return contents;
+            }
+
+            private byte[] getGzippedBytes(String value) {
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                try {
+                    GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
+                    gzipOutputStream.write(value.getBytes());
+                    gzipOutputStream.close();
+                    return byteArrayOutputStream.toByteArray();
+                } catch (IOException e) {
+                    throw new IllegalStateException();
+                }
             }
         }
 
@@ -357,6 +366,7 @@ public class CaArrayFacadeTest {
                     throws InvalidReferenceException, UnsupportedCategoryException {
                 SearchResult<Biomaterial> result = new SearchResult<Biomaterial>();
                 result.getResults().add(sample);
+                result.setMaxAllowedResults(-1);
                 return result;
             }
 

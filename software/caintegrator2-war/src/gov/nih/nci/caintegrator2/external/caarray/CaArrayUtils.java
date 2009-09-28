@@ -89,7 +89,6 @@ import gov.nih.nci.caarray.external.v1_0.CaArrayEntityReference;
 import gov.nih.nci.caarray.external.v1_0.experiment.Experiment;
 import gov.nih.nci.caarray.external.v1_0.query.BiomaterialSearchCriteria;
 import gov.nih.nci.caarray.external.v1_0.query.ExperimentSearchCriteria;
-import gov.nih.nci.caarray.external.v1_0.query.LimitOffset;
 import gov.nih.nci.caarray.external.v1_0.query.SearchResult;
 import gov.nih.nci.caarray.external.v1_0.sample.Biomaterial;
 import gov.nih.nci.caarray.external.v1_0.sample.BiomaterialType;
@@ -98,13 +97,12 @@ import gov.nih.nci.caarray.services.external.v1_0.InvalidReferenceException;
 import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
 import gov.nih.nci.caarray.services.external.v1_0.data.DataTransferException;
 import gov.nih.nci.caarray.services.external.v1_0.data.JavaDataApiUtils;
+import gov.nih.nci.caarray.services.external.v1_0.search.JavaSearchApiUtils;
 import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -114,10 +112,6 @@ import java.util.Set;
  */
 final class CaArrayUtils {
     
-    static final boolean COMPRESSED_DEFAULT = false;
-    
-    private static boolean compressed = COMPRESSED_DEFAULT;
-    
     private CaArrayUtils() {
         super();
     }
@@ -125,13 +119,9 @@ final class CaArrayUtils {
     @SuppressWarnings("PMD.PreserveStackTrace")     // FileNotFoundException doesn't include a source Throwable
     static byte[] retrieveFile(DataService dataService, CaArrayEntityReference fileRef) 
     throws FileNotFoundException, ConnectionException {
+        JavaDataApiUtils dataServiceHelper = new JavaDataApiUtils(dataService);
         try {
-            JavaDataApiUtils dataServiceHelper = new JavaDataApiUtils(dataService);
-            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-            dataServiceHelper.copyFileContentsToOutputStream(fileRef, compressed, outStream);
-            byte[] byteArray = outStream.toByteArray();
-            outStream.close();
-            return byteArray;
+            return dataServiceHelper.getFileContents(fileRef, false);
         } catch (InvalidReferenceException e) {
             throw new FileNotFoundException(e.getMessage());
         } catch (DataTransferException e) {
@@ -140,21 +130,6 @@ final class CaArrayUtils {
             throw new FileNotFoundException(e.getMessage());
         }
     }
-
-    static boolean isCompressed() {
-        return compressed;
-    }
-
-    /**
-     * The setting for "compressed" should only be changed by tests that require a non-default
-     * value to work. These tests should ensure that the value is returned to the original default.
-     * 
-     * @param compressed the compressed to set
-     */
-    static void setCompressed(boolean compressed) {
-        CaArrayUtils.compressed = compressed;
-    }
-    
 
     static List<Biomaterial> getSamples(String experimentIdentifier, SearchService searchService) 
     throws ExperimentNotFoundException {
@@ -177,15 +152,7 @@ final class CaArrayUtils {
     
     private static List<Biomaterial> getSamples(SearchService searchService, BiomaterialSearchCriteria criteria)
             throws InvalidInputException {
-        List<Biomaterial> samples = new ArrayList<Biomaterial>();
-        LimitOffset limitOffset = new LimitOffset(-1, 0);
-        SearchResult<Biomaterial> result;
-        do {
-            result = searchService.searchForBiomaterials(criteria, limitOffset);
-            samples.addAll(result.getResults());
-            limitOffset.setOffset(limitOffset.getOffset() + result.getMaxAllowedResults());
-        } while (result.getResults().size() == result.getMaxAllowedResults());
-        return samples;
+        return new JavaSearchApiUtils(searchService).biomaterialsByCriteria(criteria).list();
     }
 
     static Experiment getExperiment(String experimentIdentifier, SearchService searchService) 
