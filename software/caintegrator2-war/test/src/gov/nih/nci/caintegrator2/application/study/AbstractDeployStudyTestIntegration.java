@@ -176,7 +176,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     
     public void deployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException, CSException {
         AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
-        authentication.setUsername("manager");
+        authentication.setUsername("ncimanager");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         loadDesigns();
         UserWorkspace userWorkspace = workspaceService.getWorkspace();
