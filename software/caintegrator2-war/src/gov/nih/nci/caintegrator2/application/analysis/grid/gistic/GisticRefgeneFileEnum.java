@@ -12,25 +12,27 @@ public enum GisticRefgeneFileEnum {
     /**
      * Human Hg16.
      */
-    HUMAN_HG16("Human Hg16"),
+    HUMAN_HG16("Human Hg16", "hg16_20070112.mat"),
 
     /**
      * Human Hg16.
      */
-    HUMAN_HG17("Human Hg17"),
+    HUMAN_HG17("Human Hg17", "hg17_20070131.mat"),
 
     /**
      * Human Hg16.
      */
-    HUMAN_HG18("Human Hg18");
+    HUMAN_HG18("Human Hg18", "hg18_with_miR_20080407.mat");
 
     
     private static Map<String, GisticRefgeneFileEnum> valueToTypeMap = new HashMap<String, GisticRefgeneFileEnum>();
 
-    private String value;
+    private final String value;
+    private final String parameterValue;
     
-    private GisticRefgeneFileEnum(String value) {
+    private GisticRefgeneFileEnum(String value, String parameterValue) {
         this.value = value;
+        this.parameterValue = parameterValue;
     }
 
     /**
@@ -38,13 +40,6 @@ public enum GisticRefgeneFileEnum {
      */
     public String getValue() {
         return value;
-    }
-
-    /**
-     * @param value the value to set
-     */
-    public void setValue(String value) {
-        this.value = value;
     }
 
     private static Map<String, GisticRefgeneFileEnum> getValueToTypeMap() {
@@ -77,5 +72,12 @@ public enum GisticRefgeneFileEnum {
         if (value != null && !getValueToTypeMap().containsKey(value)) {
             throw new IllegalArgumentException("No matching type for " + value);
         }
+    }
+
+    /**
+     * @return the parameterValue
+     */
+    public String getParameterValue() {
+        return parameterValue;
     }
 }
