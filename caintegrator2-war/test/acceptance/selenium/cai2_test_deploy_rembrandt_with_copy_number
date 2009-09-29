@@ -2,12 +2,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://caintegrator2-dev.nci.nih.gov/" />
-<title>Manage Studies - Load Rembrandt with NCRI images</title>
+<title>Manage Studies - Deploy Rembrandt with Small Copy Number</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Manage Studies - Load Rembrandt with NCRI images</td></tr>
+<tr><td rowspan="1" colspan="3">Manage Studies - Deploy Rembrandt with Copy Number</td></tr>
 </thead><tbody>
 <tr>
 	<td>setTimeout</td>
@@ -26,21 +26,24 @@
 </tr>
 <tr>
 	<td>store</td>
-	<td>Rembrandt with NCRI</td>
+	<td>Rembrandt Copy Number</td>
 	<td>Cai2StudyName</td>
 </tr>
-<!--// begin Check that the genomic platform has been loaded-->
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Manage Platforms</td>
+	<td>store</td>
+	<td>liu-00252</td>
+	<td>caarrayExperimentNameCopyNumber</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>${caarrayExperimentNameCopyNumber}</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForElementPresent</td>
-	<td>//*[@id=&quot;platformDeploymentJobStatusTable&quot;]//td//span[text()='HG-U133_Plus_2']</td>
-	<td>true</td>
+	<td>open</td>
+	<td>/caintegrator2/createStudy.action</td>
+	<td></td>
 </tr>
-<!--// end Check that genomic platform has been loaded-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Create New Study</td>
@@ -65,7 +68,7 @@
 <tr>
 	<td>type</td>
 	<td>addStudyLogo_studyLogoFile</td>
-	<td>${testResourcesDirectory}ncri logo.jpg</td>
+	<td>${selenium.test.resources.dir}ncri logo.jpg</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -81,7 +84,7 @@
 <tr>
 	<td>type</td>
 	<td>clinicalFile</td>
-	<td>${testResourcesDirectory}rembrandt_clinical_Aug08_subset_mod_for_NCRI.csv</td>
+	<td>${selenium.test.resources.dir}rembrandt_clinical_Aug08_subset_mod_for_NCRI.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -222,6 +225,11 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>//input[@value='Save']</td>
 	<td></td>
@@ -241,6 +249,11 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -284,6 +297,11 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>//input[@value='Save']</td>
 	<td></td>
@@ -324,6 +342,11 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>//input[@value='Save']</td>
 	<td></td>
@@ -342,6 +365,11 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -384,6 +412,11 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>//input[@value='Save']</td>
 	<td></td>
@@ -402,6 +435,11 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -424,6 +462,11 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>//input[@value='Save']</td>
 	<td></td>
@@ -442,6 +485,11 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -464,6 +512,11 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>//input[@value='Save']</td>
 	<td></td>
@@ -486,6 +539,11 @@
 <tr>
 	<td>clickAndWait</td>
 	<td>//input[@value='New']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -514,6 +572,11 @@
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>//input[@value='Save']</td>
 	<td></td>
@@ -532,6 +595,11 @@
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -608,11 +676,11 @@
 <tr>
 	<td>type</td>
 	<td>sampleMappingFile</td>
-	<td>${testResourcesDirectory}ncri_sample_mapping.csv</td>
+	<td>${selenium.test.resources.dir}ncri_sample_mapping.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//button[@type='button' and @onclick='saveSampleMapping()']</td>
+	<td>//button[contains(text(),'Map Samples')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -625,259 +693,121 @@
 	<td>link=Map Samples</td>
 	<td></td>
 </tr>
-<!--// add a set of control samples-->
 <tr>
 	<td>type</td>
 	<td>controlSampleSetName</td>
-	<td>control set 1</td>
+	<td>Control Set 1</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>controlSampleFile</td>
-	<td>${testResourcesDirectory}jagla_0034_control_samples.csv</td>
+	<td>${selenium.test.resources.dir}jagla_0034_control_samples.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//button[@type='button' and @onclick='saveSampleMapping()']</td>
+	<td>//button[contains(text(),'Map Samples')]</td>
 	<td></td>
 </tr>
 <!--// end map samples-->
-<!--// begin add imaging data source-->
-<tr>
-	<td>store</td>
-	<td>NCRI</td>
-	<td>nbiaCollectionUsedInThisStudy</td>
-</tr>
+<!--// begin add copy number-->
 <tr>
 	<td>verifyElementPresent</td>
-	<td>//th[text()='Imaging Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//th[text()='Imaging Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>nbiaUrl</td>
-	<td>http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService</td>
+	<td>genomicSourceForm_genomicSource_serverProfile_hostname</td>
+	<td>ncias-d227-v.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>nbiaUsername</td>
+	<td>genomicSourceForm_genomicSource_serverProfile_port</td>
+	<td>31099</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>genomicSourceForm_genomicSource_experimentIdentifier</td>
+	<td>liu-00252</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>genomicSourceForm_genomicSource_serverProfile_username</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>nbiaPassword</td>
+	<td>genomicSourceForm_genomicSource_serverProfile_password</td>
 	<td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>nbiaCollectionName</td>
-	<td>${nbiaCollectionUsedInThisStudy}</td>
+	<td>select</td>
+	<td>platformVendor</td>
+	<td>label=Affymetrix</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>imagingSourceForm_mappingTypeBy Image Series</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>imagingSourceForm_imageClinicalMappingFile</td>
-	<td>${testResourcesDirectory}ncri_image_mapping.csv</td>
+	<td>select</td>
+	<td>dataType</td>
+	<td>label=Copy Number</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//button[@type='button' and @onclick='saveDatasource()']</td>
+	<td>//button[@type='button' and @onclick='showConfirmMessage()']</td>
 	<td></td>
 </tr>
+<!--// configure copy number settings-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//*[@id=&quot;genomicSourceJobStatusTable&quot;]//span[text()='${caarrayExperimentNameCopyNumber}']/parent::td/parent::tr//a//span[text()='ConfigureCopyNumberData']</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//*[@id=&quot;genomicSourceJobStatusTable&quot;]//span[text()='${caarrayExperimentNameCopyNumber}']/parent::td/parent::tr//a//span[text()='ConfigureCopyNumberData']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>copyNumberMappingFile</td>
+	<td>${selenium.test.resources.dir}rembrandt_copy_number_mapping.csv</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>copyNumberDataConfigurationForm_copyNumberDataConfiguration_changePointSignificanceLevel</td>
+	<td>0.01</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>copyNumberDataConfigurationForm_copyNumberDataConfiguration_earlyStoppingCriterion</td>
+	<td>0.05</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>copyNumberDataConfigurationForm_copyNumberDataConfiguration_permutationReplicates</td>
+	<td>10000</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>copyNumberDataConfigurationForm_copyNumberDataConfiguration_randomNumberSeed</td>
+	<td>1234567</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[contains(text(),'Save Segmentation Data Calculation Configuration')]</td>
+	<td></td>
+</tr>
+<!--// end add copy number-->
+<!--// begin add imaging data source-->
 <!--// end add imaging data source-->
-<!--// begin to edit annotation definitions-->
-<tr>
-	<td>waitForElementPresent</td>
-	<td>//*[@id=&quot;imagingSourceJobStatusTable&quot;]//span[text()='${nbiaCollectionUsedInThisStudy}']/parent::td/parent::tr//a//span[text()='Edit Annotations']</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//*[@id=&quot;imagingSourceJobStatusTable&quot;]//span[text()='${nbiaCollectionUsedInThisStudy}']/parent::td/parent::tr//a//span[text()='Edit Annotations']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>imagingSourceForm_imageAnnotationFile</td>
-	<td>${testResourcesDirectory}ncri_image_annotations.csv</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//button[2]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>imagingSourceForm_</td>
-	<td></td>
-</tr>
-<tr>
-	<td>selectAndWait</td>
-	<td>columnType</td>
-	<td>label=Identifier</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='imagingSourceForm']/table[2]/tbody/tr[3]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='New']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='imagingSourceForm']/table[2]/tbody/tr[4]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='New']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='imagingSourceForm']/table[2]/tbody/tr[5]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='New']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='imagingSourceForm']/table[2]/tbody/tr[6]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='imagingSourceForm']/table[2]/tbody/tr[6]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='New']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='imagingSourceForm']/table[2]/tbody/tr[7]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='New']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='imagingSourceForm']/table[2]/tbody/tr[8]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='New']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>imagingSourceForm_0</td>
-	<td></td>
-</tr>
+<!--// begin assign imaging annotation-->
 <!--// end assign imaging annotation-->
-<!--// begin Load Image Annotations -->
-<tr>
-	<td>waitForElementPresent</td>
-	<td>//*[@id=&quot;imagingSourceJobStatusTable&quot;]//span[text()='${nbiaCollectionUsedInThisStudy}']/parent::td/parent::tr//a//span[text()='Load Annotations']</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//*[@id=&quot;imagingSourceJobStatusTable&quot;]//span[text()='${nbiaCollectionUsedInThisStudy}']/parent::td/parent::tr//a//span[text()='Load Annotations']</td>
-	<td></td>
-</tr>
-<!--// end Load Image Annotations -->
+<!--// begin load imaging-->
+<!--// endload imaging-->
 <!--// begin Save and Deploy-->
 <tr>
 	<td>clickAndWait</td>
