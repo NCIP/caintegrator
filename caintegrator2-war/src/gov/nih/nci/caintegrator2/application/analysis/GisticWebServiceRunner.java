@@ -129,9 +129,14 @@ class GisticWebServiceRunner {
 
     File runGistic(StatusUpdateListener updater, GisticAnalysisJob job) 
     throws ConnectionException, InvalidCriterionException, IOException {
+        GisticSamplesMarkers gisticSamplesMarkers = 
+            GenePatternUtil.createGisticSamplesMarkers(queryManagementService, 
+                    job.getGisticAnalysisForm().getGisticParameters(), job.getSubscription());
+        File segmentFile = GisticUtils.writeSampleFile(gisticSamplesMarkers.getSamples());
+        File markersFile = GisticUtils.writeMarkersFile(gisticSamplesMarkers.getMarkers());
         try {
             updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_LOCALLY);
-            List<ParameterInfo> parameters = createParameters(job);
+            List<ParameterInfo> parameters = createParameters(job, segmentFile, markersFile);
             updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_REMOTELY);
             JobInfo jobInfo = client.runAnalysis("GISTIC", parameters);
             jobInfo = GenePatternUtil.waitToComplete(jobInfo, client);
@@ -139,9 +144,12 @@ class GisticWebServiceRunner {
         } catch (GenePatternServiceException e) {
             updateStatus(updater, job, AnalysisJobStatusEnum.ERROR_CONNECTING);
             throw new ConnectionException("Couldn't connect to GISTIC service: " + e.getMessage(), e);
+        } finally {
+            segmentFile.delete();
+            markersFile.delete();
         }
     }
-    
+
     private void updateStatus(StatusUpdateListener updater,
             AbstractPersistedAnalysisJob job, AnalysisJobStatusEnum status) {
         job.setStatus(status);
@@ -171,21 +179,18 @@ class GisticWebServiceRunner {
         }
     }
 
-    private List<ParameterInfo> createParameters(GisticAnalysisJob job) throws InvalidCriterionException, IOException {
+    private List<ParameterInfo> createParameters(GisticAnalysisJob job, File segmentFile, File markersFile) 
+    throws InvalidCriterionException, IOException {
         List<ParameterInfo> parameters = new ArrayList<ParameterInfo>();
         GisticParameters gisticParams = job.getGisticAnalysisForm().getGisticParameters();
-        parameters.add(createParameter("refgene.file", gisticParams.getRefgeneFile().getValue()));
+        parameters.add(createParameter("refgene.file", gisticParams.getRefgeneFile().getParameterValue()));
         parameters.add(createParameter("amplifications.threshold", gisticParams.getAmplificationsThreshold()));
         parameters.add(createParameter("deletions.threshold", gisticParams.getAmplificationsThreshold()));
         parameters.add(createParameter("join.segment.size", gisticParams.getJoinSegmentSize()));
         parameters.add(createParameter("qv.thresh", gisticParams.getQvThresh()));
         parameters.add(createParameter("extension", gisticParams.getExtension()));
         parameters.add(createParameter("remove.X", gisticParams.getRemoveX()));
-        GisticSamplesMarkers gisticSamplesMarkers = 
-            GenePatternUtil.createGisticSamplesMarkers(queryManagementService, gisticParams, job.getSubscription());
-        File segFile = GisticUtils.writeSampleFile(gisticSamplesMarkers.getSamples());
-        parameters.add(createParameter("seg.file", segFile.getAbsolutePath()));
-        File markersFile = GisticUtils.writeMarkersFile(gisticSamplesMarkers.getMarkers());
+        parameters.add(createParameter("seg.file", segmentFile.getAbsolutePath()));
         parameters.add(createParameter("markers.file", markersFile.getAbsolutePath()));
         if (gisticParams.getCnvSegmentsToIgnoreFile() != null) {
             parameters.add(createParameter("cnv.file", gisticParams.getCnvSegmentsToIgnoreFile().getAbsolutePath()));

@@ -166,7 +166,7 @@ public class GisticParameters {
     public GenomeAnnotationInformation createGenomeBuild() {
         GenomeAnnotationInformation genomeBuild = new GenomeAnnotationInformation();
         genomeBuild.setSource("NCBI"); // Unsure what this means.  Got it from the demo client.
-        genomeBuild.setBuild(refgeneFile.getValue());
+        genomeBuild.setBuild(refgeneFile.getParameterValue());
         return genomeBuild;
     }
 
