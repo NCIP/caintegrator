@@ -143,8 +143,8 @@
                 <display:setProperty name="export.csv.include_header" value="true" />
                 <display:column 
                     title="Select <br> <font style='font-size:9px;text-decoration:underline;cursor:pointer;'>
-                    <s:a href='#' cssStyle='text-decoration: underline;' onclick='selectAll()'> All
-                    </s:a>&nbsp|&nbsp<s:a href='#' onclick='selectNone()'>None</s:a> </font>" 
+                    <s:a href='#' cssStyle='text-decoration: underline;' onclick='selectAll()'>
+                    All</s:a>&nbsp;|&nbsp;<s:a href='#' onclick='selectNone()'>None</s:a> </font>" 
                     media="html"
                     sortable="false">
                     <s:if test="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).imagingRow}">
