@@ -105,7 +105,13 @@
                         </tr>
                     </s:if>
                     
-                    <s:textfield required="true" label=" NBIA Server Grid URL " name="imageSourceConfiguration.serverProfile.url" id="nbiaUrl" size="40"/>
+                    <s:select name="imageSourceConfiguration.serverProfile.url" id="nbiaUrl" accesskey="false"
+                        headerKey="" headerValue="--Enter an NBIA Server Grid URL--"
+                        list="nbiaServices" label=" NBIA Server Grid URL " required="true"
+                        onkeydown="fnKeyDownHandler(this, event);"
+                        onkeyup="fnKeyUpHandler_A(this, event); return false;"
+                        onkeypress = "return fnKeyPressHandler_A(this, event);"
+                        onchange="fnChangeHandler_A(this, event);" />
                     <s:textfield label=" NBIA Username " name="imageSourceConfiguration.serverProfile.username" id="nbiaUsername" size="40"/>
                     <s:password label=" NBIA Password " name="imageSourceConfiguration.serverProfile.password" id="nbiaPassword" size="40"/>
                     <s:textfield required="true" label=" Collection Name " name="imageSourceConfiguration.collectionName" id="nbiaCollectionName" size="40"/>
