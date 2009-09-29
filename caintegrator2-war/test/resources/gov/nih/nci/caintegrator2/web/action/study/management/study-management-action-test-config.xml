@@ -159,6 +159,9 @@
         <property name="arrayDataService">
             <ref local="arrayDataService"/>
         </property>
+        <property name="configurationHelper">
+            <ref local="configurationHelper"/>
+        </property>
     </bean>
 
     <bean id="editSampleMappingAction"

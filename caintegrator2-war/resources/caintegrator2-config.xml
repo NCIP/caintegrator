@@ -237,6 +237,9 @@
         <property name="caArrayFacade">
             <ref local="caArrayFacade"/>
         </property>
+        <property name="configurationHelper">
+            <ref local="configurationHelper" />
+        </property>
     </bean>
 
     <bean id="editSampleMappingAction"

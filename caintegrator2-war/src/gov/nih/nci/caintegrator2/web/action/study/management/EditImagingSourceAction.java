@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
@@ -95,6 +96,7 @@ import gov.nih.nci.caintegrator2.web.ajax.IImagingDataSourceAjaxUpdater;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -384,6 +386,13 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
      */
     public void setUpdater(IImagingDataSourceAjaxUpdater updater) {
         this.updater = updater;
+    }
+
+    /**
+     * @return available NBIA services.
+     */
+    public Map<String, String> getNbiaServices() {
+        return GridDiscoveryServiceJob.getGridNbiaServices();
     }
 
 }
