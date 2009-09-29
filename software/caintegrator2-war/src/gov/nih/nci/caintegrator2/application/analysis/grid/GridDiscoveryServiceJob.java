@@ -103,12 +103,15 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 /**
  * Grid discovery job to query available services.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // Check for multiple grid services
 public class GridDiscoveryServiceJob extends QuartzJobBean {
 
     private static final Logger LOGGER = Logger.getLogger(GridDiscoveryServiceJob.class);
 
     private static GridDiscoveryClient gridDiscoveryClient;
     private static ConfigurationHelper configurationHelper;
+    private static Map<String, String> gridNbiaServices
+        = Collections.synchronizedMap(new HashMap<String, String>());
     private static Map<String, String> gridPreprocessServices
         = Collections.synchronizedMap(new HashMap<String, String>());
     private static Map<String, String> gridCmsServices
@@ -161,6 +164,7 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
     }
     
     private static void clearServices() {
+        gridNbiaServices.clear();
         gridPreprocessServices.clear();
         gridCmsServices.clear();
         gridPcaServices.clear();
@@ -169,11 +173,19 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
     }
     
     private static void setDefaultServices() {
+        setDefaultNbiaService();
         setDefaultPreprocessService();
         setDefaultCmsService();
         setDefaultPcaService();
         setDefaultCaDnaCopyService();
         setDefaultGisticService();
+    }
+    
+    private static void setDefaultNbiaService() {
+        if (gridNbiaServices.isEmpty()) {
+            String defaultUrl = configurationHelper.getString(ConfigurationParameter.NBIA_URL);
+            gridNbiaServices.put(defaultUrl, "Default NBIA service - " + defaultUrl);
+        }
     }
     
     private static void setDefaultPreprocessService() {
@@ -210,7 +222,8 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
             gridGisticServices.put(defaultUrl, "Default GISTIC service - " + defaultUrl);
         }
     }
-    
+
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Check for multiple grid services
     private static void extractSelectedServices(String hostingCenter, String url) {
         if (url.contains("MAGES")) {
             extractCmsServices(hostingCenter, url);
@@ -219,6 +232,8 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         } else if (shouldAdd(url, "CaDNAcopy", gridCaDnaCopyServices)) {
             gridCaDnaCopyServices.put(url, buildDisplayName(hostingCenter, url));
         } else if (shouldAdd(url, "Gistic", gridGisticServices)) {
+            gridGisticServices.put(url, buildDisplayName(hostingCenter, url));
+        } else if (shouldAdd(url, "NCIA", gridNbiaServices)) {
             gridGisticServices.put(url, buildDisplayName(hostingCenter, url));
         }
     }
@@ -239,6 +254,16 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
                 && !gridPreprocessServices.containsKey(url)) {
             gridPreprocessServices.put(url, buildDisplayName(hostingCenter, url));
         }
+    }
+
+    /**
+     * @return the gridNbiaServices
+     */
+    public static Map<String, String> getGridNbiaServices() {
+        if (gridNbiaServices.isEmpty()) {
+            setDefaultNbiaService();
+        }
+        return gridNbiaServices;
     }
 
     /**

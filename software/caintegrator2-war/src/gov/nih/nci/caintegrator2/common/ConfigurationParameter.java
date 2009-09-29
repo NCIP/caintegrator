@@ -139,6 +139,21 @@ public enum ConfigurationParameter {
      * Default GISTIC service URL.
      */
     GISTIC_URL("http://node255.broadinstitute.org:10010/wsrf/services/cagrid/Gistic"),
+            
+    /**
+     * Default NBIA service URL.
+     */
+    NBIA_URL("http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService"),
+            
+    /**
+     * Default CaArray service URL.
+     */
+    CAARRAY_HOST("http://array.nci.nih.gov"),
+            
+    /**
+     * Default CaArray service URL.
+     */
+    CAARRAY_PORT("8080"),
     
     /**
      * Default CaDNACopy service URL.
