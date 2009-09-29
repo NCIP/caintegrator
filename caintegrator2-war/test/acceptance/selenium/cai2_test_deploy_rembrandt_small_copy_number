@@ -104,7 +104,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <!--//begin create karnofsky-->
@@ -115,7 +115,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -130,7 +130,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -140,7 +140,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -155,7 +155,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -165,7 +165,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -180,7 +180,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -190,7 +190,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -205,7 +205,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <!--// begin create age-->
@@ -216,7 +216,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -231,7 +231,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <!--// begin create gender-->
@@ -242,7 +242,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -257,7 +257,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <!--// end create gender-->
@@ -268,7 +268,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -278,7 +278,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -288,7 +288,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -303,7 +303,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -313,7 +313,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -323,7 +323,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -333,7 +333,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -348,7 +348,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -358,7 +358,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -373,7 +373,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -383,7 +383,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -393,7 +393,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -403,7 +403,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -418,7 +418,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -428,7 +428,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -443,7 +443,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -453,7 +453,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -468,7 +468,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -478,7 +478,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -493,7 +493,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -503,7 +503,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -518,7 +518,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -528,7 +528,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -538,7 +538,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -553,7 +553,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -563,7 +563,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -578,7 +578,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -588,7 +588,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
@@ -603,7 +603,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -680,7 +680,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//button[@type='button' and @onclick='saveSampleMapping()']</td>
+	<td>//button[contains(text(),'Map Samples')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -705,7 +705,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//button[@type='button' and @onclick='saveSampleMapping()']</td>
+	<td>//button[contains(text(),'Map Samples')]</td>
 	<td></td>
 </tr>
 <!--// end map samples-->
@@ -772,38 +772,33 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>saveCopyNumberDataConfiguration_useGladfalse</td>
-	<td></td>
-</tr>
-<tr>
 	<td>type</td>
-	<td>saveCopyNumberDataConfiguration_copyNumberMappingFile</td>
+	<td>copyNumberMappingFile</td>
 	<td>${selenium.test.resources.dir}short_copy_number_mapping.csv</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>saveCopyNumberDataConfiguration_copyNumberDataConfiguration_changePointSignificanceLevel</td>
+	<td>copyNumberDataConfigurationForm_copyNumberDataConfiguration_changePointSignificanceLevel</td>
 	<td>0.01</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>saveCopyNumberDataConfiguration_copyNumberDataConfiguration_earlyStoppingCriterion</td>
+	<td>copyNumberDataConfigurationForm_copyNumberDataConfiguration_earlyStoppingCriterion</td>
 	<td>0.05</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>saveCopyNumberDataConfiguration_copyNumberDataConfiguration_permutationReplicates</td>
+	<td>copyNumberDataConfigurationForm_copyNumberDataConfiguration_permutationReplicates</td>
 	<td>10000</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>saveCopyNumberDataConfiguration_copyNumberDataConfiguration_randomNumberSeed</td>
+	<td>copyNumberDataConfigurationForm_copyNumberDataConfiguration_randomNumberSeed</td>
 	<td>1234567</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>saveCopyNumberDataConfiguration_0</td>
+	<td>//button[contains(text(),'Save Segmentation Data Calculation Configuration')]</td>
 	<td></td>
 </tr>
 <!--// end add copy number-->
