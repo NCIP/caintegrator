@@ -87,7 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.cadsr.freestylesearch.util.SearchException;
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -188,7 +188,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         }
     }
 
-    public void delete(Collection<AbstractPermissibleValue> abstractPermissibleValues) {
+    public void delete(Collection<PermissibleValue> abstractPermissibleValues) {
         deleteCalled = true;
     }
 
@@ -341,7 +341,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
             descriptor.setDefinition(definition);
         }
         if (annotationType != null) {
-            definition.setType(annotationType.getValue());
+            definition.getCommonDataElement().getValueDomain().setDataType(annotationType);
         }
         createDefinitionCalled = true;
         return definition;

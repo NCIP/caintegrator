@@ -1,5 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.annotation;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
@@ -13,29 +14,11 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
     
-    private String displayName;
     private String keywords;
-    private String preferredDefinition;
-    private String type;
-    private String unitsOfMeasure;
     
-    private CommonDataElement cde;
+    private CommonDataElement commonDataElement = new CommonDataElement();
     private Set<AbstractAnnotationValue> annotationValueCollection = new HashSet<AbstractAnnotationValue>();
-    private Set<AbstractPermissibleValue> permissibleValueCollection = new HashSet<AbstractPermissibleValue>();
     
-    /**
-     * @return the displayName
-     */
-    public String getDisplayName() {
-        return displayName;
-    }
-    
-    /**
-     * @param displayName the displayName to set
-     */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
     
     /**
      * @return the keywords
@@ -52,59 +35,17 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
     }
     
     /**
-     * @return the preferredDefinition
+     * @return the commonDataElement
      */
-    public String getPreferredDefinition() {
-        return preferredDefinition;
+    public CommonDataElement getCommonDataElement() {
+        return commonDataElement;
     }
     
     /**
-     * @param preferredDefinition the preferredDefinition to set
+     * @param commonDataElement the commonDataElement to set
      */
-    public void setPreferredDefinition(String preferredDefinition) {
-        this.preferredDefinition = preferredDefinition;
-    }
-    
-    /**
-     * @return the type
-     */
-    public String getType() {
-        return type;
-    }
-    
-    /**
-     * @param type the type to set
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
-    
-    /**
-     * @return the unitsOfMeasure
-     */
-    public String getUnitsOfMeasure() {
-        return unitsOfMeasure;
-    }
-    
-    /**
-     * @param unitsOfMeasure the unitsOfMeasure to set
-     */
-    public void setUnitsOfMeasure(String unitsOfMeasure) {
-        this.unitsOfMeasure = unitsOfMeasure;
-    }
-    
-    /**
-     * @return the cde
-     */
-    public CommonDataElement getCde() {
-        return cde;
-    }
-    
-    /**
-     * @param cde the cde to set
-     */
-    public void setCde(CommonDataElement cde) {
-        this.cde = cde;
+    public void setCommonDataElement(CommonDataElement commonDataElement) {
+        this.commonDataElement = commonDataElement;
     }
     
     /**
@@ -123,34 +64,60 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
     }
     
     /**
-     * @return the permissibleValueCollection
-     */
-    public Set<AbstractPermissibleValue> getPermissibleValueCollection() {
-        return permissibleValueCollection;
-    }
-    
-    /**
-     * @param permissibleValueCollection the permissibleValueCollection to set
-     */
-    @SuppressWarnings("unused")     // required by Hibernate
-    private void setPermissibleValueCollection(Set<AbstractPermissibleValue> permissibleValueCollection) {
-        this.permissibleValueCollection = permissibleValueCollection;
-    }
-    
-    /**
      * Validates that all the values associated with definition match the type.
      * @throws ValidationException if invalid values for type.
      */
     public void validateValuesWithType() throws ValidationException {
         for (AbstractAnnotationValue value : annotationValueCollection) {
-            if (!type.equals(value.getValidAnnotationType().getValue())) {
+            if (!getDataType().equals(value.getValidAnnotationType())) {
                 throw new ValidationException(retrieveValidationError());
             }
         }
     }
+
+    /**
+     * The datatype from the valuedomain.
+     * @return data type.
+     */
+    public AnnotationTypeEnum getDataType() {
+        return commonDataElement.getValueDomain().getDataType();
+    }
+    
+    /**
+     * Sets the data type of the valueDomain.
+     * @param dataType to set.
+     */
+    public void setDataType(AnnotationTypeEnum dataType) {
+        commonDataElement.getValueDomain().setDataType(dataType);
+    }
+    
+    /**
+     * Gets the permissible values from the value domain.
+     * @return permissible values.
+     */
+    public Set<PermissibleValue> getPermissibleValueCollection() {
+        return commonDataElement.getValueDomain().getPermissibleValueCollection();
+    }
+    
+    /**
+     * The display name.
+     * @return display name.
+     */
+    public String getDisplayName() {
+        return commonDataElement.getLongName();
+    }
+    
+    /**
+     * @param displayName to set the name to.
+     */
+    public void setDisplayName(String displayName) {
+        commonDataElement.setLongName(displayName);
+    }
     
     private String retrieveValidationError() {
-        return "Values for '" + displayName + "' must be of the " + type + " type.";
+        return "Values for '" + commonDataElement.getLongName() + "' must be of the " + getDataType() + " type.";
     }
+
+
        
 }

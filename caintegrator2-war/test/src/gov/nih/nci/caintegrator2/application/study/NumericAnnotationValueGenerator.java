@@ -86,21 +86,16 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.Set;
-
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 
-import org.apache.log4j.Logger;
+import java.util.Set;
 
 
 public final class NumericAnnotationValueGenerator extends AbstractTestDataGenerator<NumericAnnotationValue> {
 
     public static final NumericAnnotationValueGenerator INSTANCE = new NumericAnnotationValueGenerator();
-    private static final Logger LOGGER = Logger.getLogger(NumericAnnotationValueGenerator.class);
     
     private NumericAnnotationValueGenerator() { 
         super();
@@ -109,11 +104,6 @@ public final class NumericAnnotationValueGenerator extends AbstractTestDataGener
     public void compareFields(NumericAnnotationValue original, NumericAnnotationValue retrieved) {
         assertEquals(original.getId(), retrieved.getId());
         assertEquals(original.getNumericValue(), retrieved.getNumericValue());
-        if(retrieved.getBoundedValue() instanceof NumericPermissibleValue) {
-            NumericPermissibleValueGenerator.INSTANCE.compare((NumericPermissibleValue)original.getBoundedValue(), (NumericPermissibleValue)retrieved.getBoundedValue());
-        }  else {
-            LOGGER.error("**** getValue() should have cast to a NumericAnnotationValue object");
-        }
     }
 
     @Override
@@ -125,9 +115,7 @@ public final class NumericAnnotationValueGenerator extends AbstractTestDataGener
     public void setValues(NumericAnnotationValue numericAnnotationValue, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         
         numericAnnotationValue.setNumericValue(Double.valueOf(getUniqueInt()));
-        numericAnnotationValue.setAnnotationDefinition(new AnnotationDefinition());
-        numericAnnotationValue.setBoundedValue(NumericPermissibleValueGenerator.INSTANCE.createPersistentObject());
-        
+        numericAnnotationValue.setAnnotationDefinition(new AnnotationDefinition());        
     }
 
 }

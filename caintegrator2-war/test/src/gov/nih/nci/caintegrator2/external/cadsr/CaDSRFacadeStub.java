@@ -85,13 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.external.cadsr;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 public class CaDSRFacadeStub implements CaDSRFacade {
@@ -113,8 +112,7 @@ public class CaDSRFacadeStub implements CaDSRFacade {
         throws ConnectionException {
         retrieveValueDomainForDataElementCalled = true;
         ValueDomain valueDomain = new ValueDomain();
-        valueDomain.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
-        valueDomain.setDataType("string");
+        valueDomain.setDataType(AnnotationTypeEnum.STRING);
         return valueDomain;
     }
 

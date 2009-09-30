@@ -128,7 +128,7 @@ public class StudySubjectAssignment extends AbstractCaIntegrator2Object {
      * @return date annotation value corresponding to this subject and definition.
      */
     public DateAnnotationValue getDateAnnotation(AnnotationDefinition definition) {
-        if (!AnnotationTypeEnum.DATE.getValue().equals(definition.getType())) {
+        if (!AnnotationTypeEnum.DATE.equals(definition.getDataType())) {
             throw new IllegalArgumentException("Definition must be of Date type.");
         }
         return (DateAnnotationValue) getAnnotation(definition);

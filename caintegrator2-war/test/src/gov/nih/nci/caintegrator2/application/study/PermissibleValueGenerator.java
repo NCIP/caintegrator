@@ -86,41 +86,33 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 
 import java.util.Set;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 
+public final class PermissibleValueGenerator extends AbstractTestDataGenerator<PermissibleValue> {
 
-public final class NumericPermissibleValueGenerator extends AbstractTestDataGenerator<NumericPermissibleValue> {
-
-    public static final NumericPermissibleValueGenerator INSTANCE = new NumericPermissibleValueGenerator();
+    public static final PermissibleValueGenerator INSTANCE = new PermissibleValueGenerator();
     
-    private NumericPermissibleValueGenerator() { 
+    private PermissibleValueGenerator() { 
         super();
     }
     @Override
-    public void compareFields(NumericPermissibleValue original, NumericPermissibleValue retrieved) {
+    public void compareFields(PermissibleValue original, PermissibleValue retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getHighValue(), retrieved.getHighValue());
-        assertEquals(original.getIsRangeValue(), retrieved.getIsRangeValue());
-        assertEquals(original.getLowValue(), retrieved.getLowValue());
-        assertEquals(original.getNumericValue(), retrieved.getNumericValue());
+        assertEquals(original.getValue(), retrieved.getValue());
     }
 
     @Override
-    public NumericPermissibleValue createPersistentObject() {
-        return new NumericPermissibleValue();
+    public PermissibleValue createPersistentObject() {
+        return new PermissibleValue();
     }
 
     @Override
-    public void setValues(NumericPermissibleValue numericPermissibleValue, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
-        numericPermissibleValue.setHighValue(Double.valueOf(getUniqueInt()));
-        numericPermissibleValue.setIsRangeValue(getUniqueInt());
-        numericPermissibleValue.setLowValue(Double.valueOf(getUniqueInt()));
-        numericPermissibleValue.setNumericValue(Double.valueOf(getUniqueInt()));
-        
+    public void setValues(PermissibleValue permissibleValue, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
+        permissibleValue.setValue(getUniqueString());
     }
 
 }

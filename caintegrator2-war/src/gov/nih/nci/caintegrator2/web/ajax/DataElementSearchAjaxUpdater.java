@@ -278,11 +278,11 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
                                 + "&amp;fileColumn.id=" + fileColumnId
                                 + "&amp;definitionIndex=" + counter + "\">" + "Select" + "</a>";
             
-            if (definition.getCde() != null && definition.getCde().getPublicID() != null) {
-                rowString[0][2] = String.valueOf(definition.getCde().getPublicID());
+            if (definition.getCommonDataElement() != null && definition.getCommonDataElement().getPublicID() != null) {
+                rowString[0][2] = String.valueOf(definition.getCommonDataElement().getPublicID());
             }
-            rowString[0][3] = definition.getType();
-            rowString[0][4] = definition.getPreferredDefinition();
+            rowString[0][3] = definition.getDataType().getValue();
+            rowString[0][4] = definition.getCommonDataElement().getDefinition();
             utilThis.addRows(ANNOTATION_DEFINITION_TABLE, rowString, retrieveRowOptions(counter));
             counter++;
         }

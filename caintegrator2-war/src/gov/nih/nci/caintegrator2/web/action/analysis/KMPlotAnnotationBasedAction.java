@@ -90,12 +90,8 @@ import gov.nih.nci.caintegrator2.application.analysis.KMAnnotationBasedParameter
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
@@ -144,24 +140,8 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
             refreshSelectedAnnotationInstance();
             kmPlotParameters.getSelectedValues().clear();
             
-            AnnotationTypeEnum permissibleValuesType = AnnotationTypeEnum.getByValue(
-                                        kmPlotParameters.getSelectedAnnotation().getType());
             for (String id : getForm().getSelectedValuesIds()) {
-                AbstractPermissibleValue value = null;
-                switch(permissibleValuesType) {
-                case STRING:
-                    value = new StringPermissibleValue();
-                    break;
-                case NUMERIC:
-                    value = new NumericPermissibleValue();
-                    break;
-                case DATE:
-                    value = new DatePermissibleValue();
-                    break;
-                default:
-                    addActionError("Internal Error, Unknown Permissible Values Type.");
-                    return;
-                }
+                PermissibleValue value = new PermissibleValue();
                 value.setId(Long.valueOf(id));
                 kmPlotParameters.getSelectedValues().add(value);
             }
@@ -182,9 +162,9 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
     
     private void refreshSelectedAnnotationValuesInstance() {
         if (!kmPlotParameters.getSelectedValues().isEmpty()) {
-            Collection <AbstractPermissibleValue> newValues = new HashSet<AbstractPermissibleValue>();
-            for (AbstractPermissibleValue value : kmPlotParameters.getSelectedValues()) {
-                AbstractPermissibleValue newValue = getStudyManagementService().getRefreshedStudyEntity(value);
+            Collection <PermissibleValue> newValues = new HashSet<PermissibleValue>();
+            for (PermissibleValue value : kmPlotParameters.getSelectedValues()) {
+                PermissibleValue newValue = getStudyManagementService().getRefreshedStudyEntity(value);
                 newValues.add(newValue);
             }
             kmPlotParameters.getSelectedValues().clear();
@@ -305,7 +285,7 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
     }
 
     private void loadPermissibleValues() {
-        for (AbstractPermissibleValue value 
+        for (PermissibleValue value 
               : kmPlotParameters.getSelectedAnnotation().getPermissibleValueCollection()) {
             getForm().getPermissibleValues().put(value.getId().toString(), 
                     value.toString());

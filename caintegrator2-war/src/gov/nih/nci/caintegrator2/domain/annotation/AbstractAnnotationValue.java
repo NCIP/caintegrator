@@ -18,7 +18,6 @@ public abstract class AbstractAnnotationValue extends AbstractCaIntegrator2Objec
     private AnnotationDefinition annotationDefinition;
     private ImageSeries imageSeries;
     private SampleAcquisition sampleAcquisition;
-    private AbstractPermissibleValue boundedValue;
     private Image image;
     
     /**
@@ -61,7 +60,6 @@ public abstract class AbstractAnnotationValue extends AbstractCaIntegrator2Objec
             sampleAcquisition.getAnnotationCollection().remove(value);
             sampleAcquisition.getAnnotationCollection().add(this);
         }
-        boundedValue = value.getBoundedValue();
         image = value.getImage();
         if (image != null) {
             image.getAnnotationCollection().remove(value);
@@ -122,20 +120,6 @@ public abstract class AbstractAnnotationValue extends AbstractCaIntegrator2Objec
      */
     public void setSampleAcquisition(SampleAcquisition sampleAcquisition) {
         this.sampleAcquisition = sampleAcquisition;
-    }
-    
-    /**
-     * @return the boundedValue
-     */
-    public AbstractPermissibleValue getBoundedValue() {
-        return boundedValue;
-    }
-    
-    /**
-     * @param boundedValue the boundedValue to set
-     */
-    public void setBoundedValue(AbstractPermissibleValue boundedValue) {
-        this.boundedValue = boundedValue;
     }
     
     /**

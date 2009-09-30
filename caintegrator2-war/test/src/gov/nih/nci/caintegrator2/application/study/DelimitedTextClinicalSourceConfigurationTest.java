@@ -128,16 +128,16 @@ public class DelimitedTextClinicalSourceConfigurationTest {
     @Test
     public void testLoadAnnontation() throws ValidationException {
         AnnotationDefinition definition = new AnnotationDefinition();
-        definition.setType(AnnotationTypeEnum.NUMERIC.getValue());
+        definition.getCommonDataElement().getValueDomain().setDataType(AnnotationTypeEnum.NUMERIC);
         clinicalSourceConfiguration.getAnnotationFile().getColumns().get(1).getFieldDescriptor().setDefinition(definition);
         definition = new AnnotationDefinition();
-        definition.setType(AnnotationTypeEnum.STRING.getValue());
+        definition.getCommonDataElement().getValueDomain().setDataType(AnnotationTypeEnum.STRING);
         clinicalSourceConfiguration.getAnnotationFile().getColumns().get(2).getFieldDescriptor().setDefinition(definition);
         definition = new AnnotationDefinition();
-        definition.setType(AnnotationTypeEnum.STRING.getValue());
+        definition.getCommonDataElement().getValueDomain().setDataType(AnnotationTypeEnum.STRING);
         clinicalSourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
         definition = new AnnotationDefinition();
-        definition.setType(AnnotationTypeEnum.DATE.getValue());
+        definition.getCommonDataElement().getValueDomain().setDataType(AnnotationTypeEnum.DATE);
         clinicalSourceConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
         clinicalSourceConfiguration.loadDescriptors();
         clinicalSourceConfiguration.loadAnnontation();

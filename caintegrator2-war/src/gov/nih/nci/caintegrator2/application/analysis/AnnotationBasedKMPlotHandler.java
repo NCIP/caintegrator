@@ -95,7 +95,7 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
@@ -121,8 +121,8 @@ import java.util.Map;
 class AnnotationBasedKMPlotHandler extends AbstractKMPlotHandler {
 
     private final KMAnnotationBasedParameters kmParameters;
-    private final Map<SubjectGroup, AbstractPermissibleValue> subjectGroupPermissibleValue = 
-                                        new HashMap<SubjectGroup, AbstractPermissibleValue>();
+    private final Map<SubjectGroup, PermissibleValue> subjectGroupPermissibleValue = 
+                                        new HashMap<SubjectGroup, PermissibleValue>();
     
     AnnotationBasedKMPlotHandler(CaIntegrator2Dao dao, 
                                  SurvivalValueDefinition survivalValueDefinition, 
@@ -178,9 +178,9 @@ class AnnotationBasedKMPlotHandler extends AbstractKMPlotHandler {
         }
     }
 
-    private void retrieveSubjectGroups(Collection<AbstractPermissibleValue> plotGroupValues,
+    private void retrieveSubjectGroups(Collection<PermissibleValue> plotGroupValues,
             Collection<SubjectGroup> subjectGroupCollection) {
-        for (AbstractPermissibleValue plotGroupValue : plotGroupValues) {
+        for (PermissibleValue plotGroupValue : plotGroupValues) {
             SubjectGroup subjectGroup = new SubjectGroup();
             subjectGroup.setName(plotGroupValue.toString());
             subjectGroupPermissibleValue.put(subjectGroup, plotGroupValue);

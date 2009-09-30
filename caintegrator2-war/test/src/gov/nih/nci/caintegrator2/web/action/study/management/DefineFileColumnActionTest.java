@@ -94,7 +94,7 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
@@ -249,9 +249,9 @@ public class DefineFileColumnActionTest extends AbstractSessionBasedTest {
         
         AnnotationDefinition definition = new AnnotationDefinition();
         action.getFileColumn().getFieldDescriptor().setDefinition(definition);
-        definition.setType(AnnotationTypeEnum.DATE.getValue());
+        definition.setDataType(AnnotationTypeEnum.DATE);
         
-        Collection<AbstractPermissibleValue> permissibleValueCollection =  new HashSet<AbstractPermissibleValue>();
+        Collection<PermissibleValue> permissibleValueCollection =  new HashSet<PermissibleValue>();
         definition.getPermissibleValueCollection().addAll(permissibleValueCollection);
         List<String> stringValues = new ArrayList<String>();
         action.setPermissibleUpdateList(stringValues);

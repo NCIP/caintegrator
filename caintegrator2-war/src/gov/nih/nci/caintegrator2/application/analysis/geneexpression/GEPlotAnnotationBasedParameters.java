@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -101,7 +101,7 @@ import org.apache.commons.lang.StringUtils;
 public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
 
     private AnnotationDefinition selectedAnnotation = new AnnotationDefinition();
-    private final Collection <AbstractPermissibleValue> selectedValues = new HashSet<AbstractPermissibleValue>();    
+    private final Collection <PermissibleValue> selectedValues = new HashSet<PermissibleValue>();    
     private EntityTypeEnum entityType;
     private boolean addPatientsNotInQueriesGroup = false;
     private ReporterTypeEnum reporterType;
@@ -155,7 +155,7 @@ public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
     /**
      * @return the selectedValues
      */
-    public Collection<AbstractPermissibleValue> getSelectedValues() {
+    public Collection<PermissibleValue> getSelectedValues() {
         return selectedValues;
     }
 

@@ -87,13 +87,10 @@ package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.cagrid.common.ZipUtilities;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -122,6 +119,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
  * This is a static utility class used by different caIntegrator2 objects. 
@@ -215,7 +213,7 @@ public final class Cai2Util {
      * @return true or false value.
      */
     public static boolean annotationValueBelongToPermissibleValue(AbstractAnnotationValue value, 
-                                                                  AbstractPermissibleValue permissibleValue) {
+                                                                  PermissibleValue permissibleValue) {
         if (value instanceof StringAnnotationValue) {
             return handleStringValues(value, permissibleValue);
         } else if (value instanceof NumericAnnotationValue) {
@@ -227,52 +225,33 @@ public final class Cai2Util {
     }
     
     private static boolean handleStringValues(AbstractAnnotationValue value, 
-                                              AbstractPermissibleValue permissibleValue) {
-        if (permissibleValue instanceof StringPermissibleValue) {
-            StringPermissibleValue stringPermissibleValue = (StringPermissibleValue) permissibleValue;
-            StringAnnotationValue stringValue = (StringAnnotationValue) value;
-            if (stringValue.getStringValue().equalsIgnoreCase(stringPermissibleValue.getStringValue())) {
-                return true;
-            }
-        } else {
-            throw new IllegalArgumentException("value is of type String, but permissibleValue is not.");
+                                              PermissibleValue permissibleValue) {
+        StringAnnotationValue stringValue = (StringAnnotationValue) value;
+        if (stringValue.getStringValue() != null
+            && stringValue.getStringValue().equalsIgnoreCase(permissibleValue.getValue())) {
+            return true;
         }
         return false;
     }
     
     private static boolean handleNumericValues(AbstractAnnotationValue value, 
-                                               AbstractPermissibleValue permissibleValue) {
-        if (permissibleValue instanceof NumericPermissibleValue) {
-            NumericPermissibleValue numericPermissibleValue = (NumericPermissibleValue) permissibleValue;
-            NumericAnnotationValue numericValue = (NumericAnnotationValue) value;
-            if (numericPermissibleValue.getIsRangeValue() == null 
-                || numericPermissibleValue.getIsRangeValue() == 0) { // Not a ranged value. 
-                if (numericValue.getNumericValue() != null && numericPermissibleValue.getNumericValue() != null 
-                    && numericValue.getNumericValue().equals(numericPermissibleValue.getNumericValue())) {
-                    return true;
-                }
-            } else { // Ranged value
-                 if (numericValue.getNumericValue() <= numericPermissibleValue.getHighValue()
-                     && numericValue.getNumericValue() >= numericPermissibleValue.getLowValue()) {
-                     return true;
-                 }
-            }
-        } else {
-            throw new IllegalArgumentException("value is of type Numeric, but permissibleValue is not.");
+                                               PermissibleValue permissibleValue) {
+        if (!NumberUtils.isNumber(permissibleValue.getValue())) {
+            throw new IllegalArgumentException("value is of type Numeric, but permissibleValue is not.");    
+        }
+        NumericAnnotationValue numericValue = (NumericAnnotationValue) value;
+        if (numericValue.getNumericValue() != null 
+             && numericValue.getNumericValue().equals(Double.valueOf(permissibleValue.getValue()))) {
+            return true;
         }
         return false;
     }
 
-    private static boolean handleDateValues(AbstractAnnotationValue value, AbstractPermissibleValue permissibleValue) {
-        if (permissibleValue instanceof DatePermissibleValue) {
-            DatePermissibleValue datePermissibleValue = (DatePermissibleValue) permissibleValue;
-            DateAnnotationValue dateValue = (DateAnnotationValue) value;
-            if (dateValue.getDateValue() != null && datePermissibleValue.getDateValue() != null 
-                && dateValue.getDateValue().equals(datePermissibleValue.getDateValue())) {
-                return true;
-            }
-        } else {
-            throw new IllegalArgumentException("value is of type Date, but permissibleValue is not.");
+    private static boolean handleDateValues(AbstractAnnotationValue value, PermissibleValue permissibleValue) {
+        DateAnnotationValue dateValue = (DateAnnotationValue) value;
+        if (dateValue.getDateValue() != null && permissibleValue.getValue() != null 
+            && permissibleValue.getValue().equals(DateUtil.toString(dateValue.getDateValue()))) {
+            return true;
         }
         return false;
     }
