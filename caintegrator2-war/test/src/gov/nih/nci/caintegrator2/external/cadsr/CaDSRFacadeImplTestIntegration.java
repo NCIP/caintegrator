@@ -135,7 +135,7 @@ public class CaDSRFacadeImplTestIntegration {
         
         ValueDomain nonEnumeratedDateValueDomain = caDSRFacade.retrieveValueDomainForDataElement(VALID_NON_ENUMERATED_DATE_CDE_ID, null);
         assertNotNull(nonEnumeratedDateValueDomain);
-        assertNull(nonEnumeratedDateValueDomain.getPermissibleValueCollection());
+        assertTrue(nonEnumeratedDateValueDomain.getPermissibleValueCollection().isEmpty());
         
     }
 }

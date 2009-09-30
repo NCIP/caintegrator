@@ -1,28 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.caintegrator2.domain.annotation">
+	<!-- Create typedef's for the enums -->
+    <typedef name="AnnotationTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum</param> 
+    </typedef> 
+	
 	<class name="AnnotationDefinition" table="ANNOTATION_DEFINITION" lazy="false" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="ID">
 			<generator class="native" />
 		</id>
 		<!-- Attributes mapping for the AnnotationDefinition class -->
-		<property name="displayName" type="string" column="DISPLAY_NAME"/>
-		<property name="preferredDefinition" type="string" column="PREFERRED_DEFINITION"/>
-		<property name="type" type="string" column="TYPE"/>
 		<property name="keywords" type="string" column="KEYWORDS"/>
-		<property name="unitsOfMeasure" type="string" column="UNITS_OF_MEASURE"/>
 		<!-- Associations mapping for the AnnotationDefinition class -->
 		<set name="annotationValueCollection" lazy="extra" cascade="all-delete-orphan" >
 			<cache usage="read-write" />
 			<key column="ANNOTATION_DEFINITION_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue"/>
 		</set>
-		<set name="permissibleValueCollection" lazy="true" cascade="all-delete-orphan" >
-			<cache usage="read-write" />
-			<key column="ANNOTATION_DEFINITION_ID" />
-			<one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue"/>
-		</set>
-		<many-to-one name="cde" class="gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement" column="COMMON_DATA_ELEMENT_ID" unique="true" lazy="proxy" cascade="save-update,merge"/>
+		<component name="commonDataElement" class="CommonDataElement">
+            <property name="publicID" type="long" column="CDE_PUBLIC_ID"/>
+            <property name="version" type="string" column="CDE_VERSION"/>
+            <property name="longName" type="string" column="LONG_NAME"/>
+            <property name="preferredName" type="string" column="PREFERRED_NAME"/>
+            <property name="contextName" type="string" column="CONTEXT_NAME"/>
+            <property name="definition" type="string" column="DEFINITION"/>
+            <property name="registrationStatus" type="string" column="CDE_REGISTRATION_STATUS"/>
+            <property name="workflowStatus" type="string" column="CDE_WORKFLOW_STATUS"/>		
+            <component name="valueDomain" class="ValueDomain">
+                <property name="publicID" type="long" column="VD_PUBLIC_ID"/>
+		        <property name="longName" type="string" column="VD_LONG_NAME"/>
+		        <property name="highValueNumber" type="long" column="HIGH_VALUE_NUMBER"/>
+                <property name="lowValueNumber" type="long" column="LOW_VALUE_NUMBER"/>
+                <property name="maximumLength" type="integer" column="MAXIMUM_LENGTH"/>
+                <property name="minimumLength" type="integer" column="MINIMUM_LENGTH"/>
+                <property name="dataType" type="AnnotationTypeEnum" column="DATA_TYPE"/>
+		        <!-- Associations mapping for the AnnotationDefinition class -->
+		        <set name="permissibleValueCollection" lazy="true" cascade="all-delete-orphan" >
+		            <cache usage="read-write" />
+		            <key column="VALUE_DOMAIN_ID" />
+		            <one-to-many class="PermissibleValue"/>
+		        </set>
+            </component>  
+		</component>
 	</class>
 </hibernate-mapping>

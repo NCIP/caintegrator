@@ -110,11 +110,11 @@ public class AbstractAnnotationValueTest {
     @Before
     public void setUp() throws Exception {
         stringAnnotationDefinition = new AnnotationDefinition();
-        stringAnnotationDefinition.setType(AnnotationTypeEnum.STRING.getValue());
+        stringAnnotationDefinition.setDataType(AnnotationTypeEnum.STRING);
         dateAnnotationDefinition = new AnnotationDefinition();
-        dateAnnotationDefinition.setType(AnnotationTypeEnum.DATE.getValue());
+        dateAnnotationDefinition.setDataType(AnnotationTypeEnum.DATE);
         numericAnnotationDefinition = new AnnotationDefinition();
-        numericAnnotationDefinition.setType(AnnotationTypeEnum.NUMERIC.getValue());
+        numericAnnotationDefinition.setDataType(AnnotationTypeEnum.NUMERIC);
     }
     
     private void clearDefinitionValues() {

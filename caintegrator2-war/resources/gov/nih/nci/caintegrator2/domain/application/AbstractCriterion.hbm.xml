@@ -59,7 +59,7 @@
                 <set name="valueCollection" table="SELECTED_VALUE_CRITERIA_PERMISSIBLE_VALUES" lazy="true" cascade="save-update,merge" >
                     <cache usage="read-write" />
                     <key column="SELECTED_VALUE_CRITERION_ID" />
-                    <many-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue" column="ABSTRACT_PERMISSIBLE_VALUE_ID" />
+                    <many-to-many class="gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue" column="PERMISSIBLE_VALUE_ID" />
                 </set>
             </joined-subclass>
         </joined-subclass>

@@ -155,7 +155,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
             dateAnnotationDefinitions = new HashMap<String, AnnotationDefinition>();
             for (AnnotationDefinition definition 
                     : getStudyConfiguration().getStudy().getSubjectAnnotationCollection()) {
-                if (AnnotationTypeEnum.DATE.getValue().equals(definition.getType())) {
+                if (AnnotationTypeEnum.DATE.equals(definition.getDataType())) {
                     dateAnnotationDefinitions.put(definition.getId().toString(), definition);
                 }
             }

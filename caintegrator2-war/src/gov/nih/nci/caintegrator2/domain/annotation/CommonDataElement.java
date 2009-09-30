@@ -16,11 +16,10 @@ public class CommonDataElement extends AbstractCaIntegrator2Object {
     private String preferredName;
     private Long publicID;
     private String registrationStatus;
-    private String type;
     private String version;
     private String workflowStatus;
     
-    private ValueDomain valueDomain;
+    private ValueDomain valueDomain = new ValueDomain();
 
     /**
      * @return the contextName
@@ -104,20 +103,6 @@ public class CommonDataElement extends AbstractCaIntegrator2Object {
      */
     public void setRegistrationStatus(String registrationStatus) {
         this.registrationStatus = registrationStatus;
-    }
-
-    /**
-     * @return the type
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(String type) {
-        this.type = type;
     }
 
     /**

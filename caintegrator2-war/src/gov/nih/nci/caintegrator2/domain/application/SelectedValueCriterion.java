@@ -1,6 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -12,19 +12,19 @@ public class SelectedValueCriterion extends AbstractAnnotationCriterion implemen
     
     private static final long serialVersionUID = 1L;
     
-    private Collection<AbstractPermissibleValue> valueCollection;
+    private Collection<PermissibleValue> valueCollection;
 
     /**
      * @return the valueCollection
      */
-    public Collection<AbstractPermissibleValue> getValueCollection() {
+    public Collection<PermissibleValue> getValueCollection() {
         return valueCollection;
     }
 
     /**
      * @param valueCollection the valueCollection to set
      */
-    public void setValueCollection(Collection<AbstractPermissibleValue> valueCollection) {
+    public void setValueCollection(Collection<PermissibleValue> valueCollection) {
         this.valueCollection = valueCollection;
     }
 
@@ -38,9 +38,9 @@ public class SelectedValueCriterion extends AbstractAnnotationCriterion implemen
         return clone;
     }
     
-    private Collection<AbstractPermissibleValue> cloneValueCollection() {
-        Collection<AbstractPermissibleValue> clone = new HashSet<AbstractPermissibleValue>();
-        for (AbstractPermissibleValue abstractPermissibleValue : valueCollection) {
+    private Collection<PermissibleValue> cloneValueCollection() {
+        Collection<PermissibleValue> clone = new HashSet<PermissibleValue>();
+        for (PermissibleValue abstractPermissibleValue : valueCollection) {
             clone.add(abstractPermissibleValue);
         }
         return clone;

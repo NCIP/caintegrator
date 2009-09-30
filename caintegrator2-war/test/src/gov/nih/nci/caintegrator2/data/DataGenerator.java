@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
@@ -164,11 +165,11 @@ public class DataGenerator {
     
     private void addAnnotationDefinition() {
         ad = new AnnotationDefinition();
-        ad.setDisplayName("Congestive Heart Failure");
-        ad.setPreferredDefinition("Congestive heart failure (CHF), congestive cardiac failure (CCF) or just heart failure, "
+        ad.getCommonDataElement().setLongName("Congestive Heart Failure");
+        ad.getCommonDataElement().setDefinition("Congestive heart failure (CHF), congestive cardiac failure (CCF) or just heart failure, "
                 + "is a condition that can result from any structural or functional cardiac disorder that impairs the ability "
                 + "of the heart to fill with blood or pump a sufficient amount of blood through the body.");
-        ad.setType("boolean");
+        ad.setDataType(AnnotationTypeEnum.STRING);
         dao.save(ad);
     }
     

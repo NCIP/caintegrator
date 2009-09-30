@@ -157,7 +157,7 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 				
-	<cache name="gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue"
+	<cache name="gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -186,13 +186,6 @@
 		overflowToDisk="true"/>
 	
 	<cache name="gov.nih.nci.caintegrator2.domain.application.UserWorkspace.subscriptionCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -289,8 +282,8 @@
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
-			
-	<cache name="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition.permissibleValueCollection"
+
+	<cache name="gov.nih.nci.caintegrator2.domain.annotation.ValueDomain.permissibleValueCollection"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -347,13 +340,6 @@
 		overflowToDisk="true"/>
 		
 	<cache name="gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -466,13 +452,6 @@
 		overflowToDisk="true"/>
 	
 	<cache name="gov.nih.nci.caintegrator2.domain.application.SubjectList.subjectCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
