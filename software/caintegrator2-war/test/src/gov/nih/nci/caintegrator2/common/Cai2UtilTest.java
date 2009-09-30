@@ -94,11 +94,9 @@ import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
@@ -187,45 +185,26 @@ public class Cai2UtilTest {
     public void testAnnotationValueBelongToPermissibleValue() {
         StringAnnotationValue stringValue = new StringAnnotationValue();
         stringValue.setStringValue("TeSt");
-        StringPermissibleValue stringPermissibleValue = new StringPermissibleValue();
-        stringPermissibleValue.setStringValue("tEsT");
+        PermissibleValue stringPermissibleValue = new PermissibleValue();
+        stringPermissibleValue.setValue("tEsT");
         assertTrue(Cai2Util.annotationValueBelongToPermissibleValue(stringValue, stringPermissibleValue));
-        stringPermissibleValue.setStringValue("Not Equals");
+        stringPermissibleValue.setValue("Not Equals");
         assertFalse(Cai2Util.annotationValueBelongToPermissibleValue(stringValue, stringPermissibleValue));
         
         NumericAnnotationValue numericValue = new NumericAnnotationValue();
         numericValue.setNumericValue(50.0);
-        NumericPermissibleValue numericPermissibleValue = new NumericPermissibleValue();
-        numericPermissibleValue.setNumericValue(50.0);
+        PermissibleValue numericPermissibleValue = new PermissibleValue();
+        numericPermissibleValue.setValue("50.0");
         assertTrue(Cai2Util.annotationValueBelongToPermissibleValue(numericValue, numericPermissibleValue));
-        numericPermissibleValue = new NumericPermissibleValue();
-        numericPermissibleValue.setLowValue(40.0);
-        numericPermissibleValue.setHighValue(50.0);
-        numericPermissibleValue.setIsRangeValue(1);
-        assertTrue(Cai2Util.annotationValueBelongToPermissibleValue(numericValue, numericPermissibleValue));
-        numericPermissibleValue.setLowValue(51.0);
-        numericPermissibleValue.setHighValue(60.0);
-        assertFalse(Cai2Util.annotationValueBelongToPermissibleValue(numericValue, numericPermissibleValue));
-        numericPermissibleValue.setLowValue(50.0);
-        assertTrue(Cai2Util.annotationValueBelongToPermissibleValue(numericValue, numericPermissibleValue));
-        
-        
         DateAnnotationValue dateValue = new DateAnnotationValue();
         long currentTime = System.currentTimeMillis();
         dateValue.setDateValue(new Date(currentTime));
         
-        DatePermissibleValue datePermissibleValue = new DatePermissibleValue();
-        datePermissibleValue.setDateValue(new Date(currentTime));
+        PermissibleValue datePermissibleValue = new PermissibleValue();
+        datePermissibleValue.setValue(DateUtil.toString(new Date(currentTime)));
         
         assertTrue(Cai2Util.annotationValueBelongToPermissibleValue(dateValue, datePermissibleValue));
         
-        boolean exceptionThrown = false;
-        try {
-            Cai2Util.annotationValueBelongToPermissibleValue(dateValue, numericPermissibleValue);
-        } catch (IllegalArgumentException e) {
-            exceptionThrown = true;
-        }
-        assertTrue(exceptionThrown);
     }
     
     @Test

@@ -104,7 +104,7 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -130,8 +130,8 @@ public class KMPlotAnnotationBasedActionTest {
     private AnalysisServiceStub analysisServiceStub = new AnalysisServiceStub();
     private KMPlotServiceCaIntegratorImpl plotService = new KMPlotServiceCaIntegratorImpl();
     
-    private StringPermissibleValue val1 = new StringPermissibleValue();
-    private StringPermissibleValue val2 = new StringPermissibleValue();
+    private PermissibleValue val1 = new PermissibleValue();
+    private PermissibleValue val2 = new PermissibleValue();
     
     @Before
     public void setUp() {
@@ -163,12 +163,12 @@ public class KMPlotAnnotationBasedActionTest {
         AnnotationDefinition subjectDef1 = new AnnotationDefinition();
         subjectDef1.setId(Long.valueOf(1));
         val1.setId(Long.valueOf(1));
-        val1.setStringValue("M");
+        val1.setValue("M");
         val2.setId(Long.valueOf(2));
-        val2.setStringValue("F");
+        val2.setValue("F");
         subjectDef1.getPermissibleValueCollection().add(val1);
         subjectDef1.getPermissibleValueCollection().add(val2);
-        subjectDef1.getPermissibleValueCollection().add(new StringPermissibleValue());
+        subjectDef1.getPermissibleValueCollection().add(new PermissibleValue());
         AnnotationDefinition subjectDef2 = new AnnotationDefinition();
         subjectDef2.setId(Long.valueOf(2));
         study.getSubjectAnnotationCollection().add(subjectDef1);
@@ -308,7 +308,7 @@ public class KMPlotAnnotationBasedActionTest {
         AnnotationDefinition selectedAnnotation = new AnnotationDefinition();
         selectedAnnotation.getPermissibleValueCollection().add(val1);
         selectedAnnotation.getPermissibleValueCollection().add(val2);
-        selectedAnnotation.setType(AnnotationTypeEnum.STRING.getValue());
+        selectedAnnotation.setDataType(AnnotationTypeEnum.STRING);
         selectedAnnotation.setId(Long.valueOf(1));
         action.getKmPlotParameters().setSelectedAnnotation(selectedAnnotation);
     }

@@ -69,8 +69,7 @@ public class NumericAnnotationValue extends AbstractAnnotationValue {
      */
     @Override
     public void convertAnnotationValue(AnnotationDefinition annotationDefinition) throws ValidationException {
-        AnnotationTypeEnum annotationType = AnnotationTypeEnum.getByValue(annotationDefinition.getType());
-        switch (annotationType) {
+        switch (annotationDefinition.getDataType()) {
             case NUMERIC:
                 if (annotationDefinition.equals(this.getAnnotationDefinition())) {
                     return;

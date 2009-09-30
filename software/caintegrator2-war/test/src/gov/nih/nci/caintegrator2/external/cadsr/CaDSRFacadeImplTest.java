@@ -91,7 +91,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
@@ -129,11 +129,11 @@ public class CaDSRFacadeImplTest {
     @Test
     public void testRetrieveValueDomainForDataElement() throws ConnectionException {
         ValueDomain valueDomain = caDSRFacade.retrieveValueDomainForDataElement(Long.valueOf(1), null);
-        assertEquals(AnnotationTypeEnum.NUMERIC.getValue(), valueDomain.getDataType());
+        assertEquals(AnnotationTypeEnum.NUMERIC, valueDomain.getDataType());
         assertEquals(Long.valueOf(2),valueDomain.getPublicID());
         assertTrue(!valueDomain.getPermissibleValueCollection().isEmpty());
-        NumericPermissibleValue numericPermissibleValue = (NumericPermissibleValue) valueDomain.getPermissibleValueCollection().iterator().next();
-        assertTrue(numericPermissibleValue.getNumericValue().equals(1.0));
+        PermissibleValue numericPermissibleValue = (PermissibleValue) valueDomain.getPermissibleValueCollection().iterator().next();
+        assertTrue(numericPermissibleValue.getValue().equals("1.0"));
     }
 
 }

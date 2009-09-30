@@ -92,12 +92,8 @@ import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFou
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
@@ -155,24 +151,8 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
             refreshSelectedAnnotationInstance();
             plotParameters.getSelectedValues().clear();
             
-            AnnotationTypeEnum permissibleValuesType = AnnotationTypeEnum.getByValue(
-                    plotParameters.getSelectedAnnotation().getType());
             for (String id : getForm().getSelectedValuesIds()) {
-                AbstractPermissibleValue value = null;
-                switch(permissibleValuesType) {
-                case STRING:
-                    value = new StringPermissibleValue();
-                    break;
-                case NUMERIC:
-                    value = new NumericPermissibleValue();
-                    break;
-                case DATE:
-                    value = new DatePermissibleValue();
-                    break;
-                default:
-                    addActionError("Internal Error, Unknown Permissible Values Type.");
-                    return;
-                }
+                PermissibleValue value = new PermissibleValue();
                 value.setId(Long.valueOf(id));
                 plotParameters.getSelectedValues().add(value);
             }
@@ -193,9 +173,9 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     
     private void refreshSelectedAnnotationValuesInstance() {
         if (!plotParameters.getSelectedValues().isEmpty()) {
-            Collection <AbstractPermissibleValue> newValues = new HashSet<AbstractPermissibleValue>();
-            for (AbstractPermissibleValue value : plotParameters.getSelectedValues()) {
-                AbstractPermissibleValue newValue = getStudyManagementService().getRefreshedStudyEntity(value);
+            Collection <PermissibleValue> newValues = new HashSet<PermissibleValue>();
+            for (PermissibleValue value : plotParameters.getSelectedValues()) {
+                PermissibleValue newValue = getStudyManagementService().getRefreshedStudyEntity(value);
                 newValues.add(newValue);
             }
             plotParameters.getSelectedValues().clear();
@@ -316,7 +296,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     }
 
     private void loadPermissibleValues() {
-        for (AbstractPermissibleValue value 
+        for (PermissibleValue value 
               : plotParameters.getSelectedAnnotation().getPermissibleValueCollection()) {
             getForm().getPermissibleValues().put(value.getId().toString(), 
                     value.toString());

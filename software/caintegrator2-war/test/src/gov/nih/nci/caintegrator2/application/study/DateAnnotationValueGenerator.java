@@ -85,23 +85,20 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 
 import java.util.Date;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
 
 
 public final class DateAnnotationValueGenerator extends AbstractTestDataGenerator<DateAnnotationValue> {
 
     public static final DateAnnotationValueGenerator INSTANCE = new DateAnnotationValueGenerator();
-    private static final Logger LOGGER = Logger.getLogger(DateAnnotationValueGenerator.class);
     
     private DateAnnotationValueGenerator() { 
         super();
@@ -110,11 +107,7 @@ public final class DateAnnotationValueGenerator extends AbstractTestDataGenerato
     public void compareFields(DateAnnotationValue original, DateAnnotationValue retrieved) {
         assertEquals(original.getId(), retrieved.getId());
         assertTrue(DateUtil.equal(original.getDateValue(), retrieved.getDateValue()));
-        if(retrieved.getBoundedValue() instanceof DatePermissibleValue) {
-            DatePermissibleValueGenerator.INSTANCE.compare((DatePermissibleValue)original.getBoundedValue(), (DatePermissibleValue)retrieved.getBoundedValue());
-        }  else {
-            LOGGER.error("**** getValue() should have cast to a DateAnnotationValue object");
-        }
+        
     }
 
     @Override
@@ -126,9 +119,7 @@ public final class DateAnnotationValueGenerator extends AbstractTestDataGenerato
     public void setValues(DateAnnotationValue dateAnnotationValue, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         
         dateAnnotationValue.setDateValue(new Date());
-        dateAnnotationValue.setAnnotationDefinition(new AnnotationDefinition());
-        dateAnnotationValue.setBoundedValue(DatePermissibleValueGenerator.INSTANCE.createPersistentObject());
-        
+        dateAnnotationValue.setAnnotationDefinition(new AnnotationDefinition());        
     }
 
 }

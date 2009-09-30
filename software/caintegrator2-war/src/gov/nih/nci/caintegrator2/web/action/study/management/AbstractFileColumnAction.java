@@ -94,9 +94,9 @@ import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
@@ -140,10 +140,6 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
         return fileColumn.getFieldDescriptor().getDefinition().getAnnotationValueCollection();
     }
     
-    private String getType() {
-        return fileColumn.getFieldDescriptor().getDefinition().getType();
-    }
-
     /**
      * Refreshes the current source configuration.
      */
@@ -242,8 +238,8 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     public String createNewDefinition() throws ValidationException, ParseException {
         AnnotationTypeEnum annotationType = AnnotationTypeEnum.STRING;
         if (getFileColumn().getFieldDescriptor().getDefinition() != null) {
-            annotationType = AnnotationTypeEnum.getByValue(
-                    getFileColumn().getFieldDescriptor().getDefinition().getType());
+            annotationType = 
+                    getFileColumn().getFieldDescriptor().getDefinition().getDataType();
         }
         getStudyManagementService().createDefinition(getFileColumn().getFieldDescriptor(), 
                                                      getStudyConfiguration().getStudy(),
@@ -492,13 +488,18 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     /**
      * @return the availableValue
      * @throws ValidationException Invalid data
-     * @throws ParseException  Invalid data
     */
-   public Set<String> getAvailableValues() throws ValidationException, ParseException {
+    @SuppressWarnings("PMD.EmptyCatchBlock") // See message inside catch block.
+   public Set<String> getAvailableValues() throws ValidationException {
        List<String> fileDataValues = fileColumn.getAnnotationFile() != null
            ? fileColumn.getDataValues() : new ArrayList<String>();
        if (AnnotationTypeEnum.DATE.getValue().equalsIgnoreCase(getDefinitionType())) {
-           fileDataValues = DateUtil.toString(fileDataValues);
+           try {
+               fileDataValues = DateUtil.toString(fileDataValues);
+           } catch (ParseException e) {
+               // noop - if it doesn't fit the date format just let it keep going.  
+               // This function is for JSP display so it can't fail.
+           }
        }
        return AnnotationValueUtil.getAdditionalValue(getAnnotationValueCollection(),
            fileDataValues, getPermissibleValues());
@@ -515,11 +516,11 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
      * @return the Struts result.
      */
     private void updatePermissible() {
-        PermissibleValueUtil.update(getType(),
+        PermissibleValueUtil.update(getDefinitionType(),
                 getPermissibleCollection(), getPermissibleUpdateList());
     }
 
-    private Collection<AbstractPermissibleValue> getPermissibleCollection() {
+    private Collection<PermissibleValue> getPermissibleCollection() {
         return fileColumn.getFieldDescriptor().getDefinition().getPermissibleValueCollection();
     }
 
@@ -560,7 +561,7 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
         if (getFileColumn() != null 
             && getFileColumn().getFieldDescriptor() != null 
             && getFileColumn().getFieldDescriptor().getDefinition() != null 
-            && getFileColumn().getFieldDescriptor().getDefinition().getCde() != null) {
+            && getFileColumn().getFieldDescriptor().getDefinition().getCommonDataElement().getPublicID() != null) {
             return true;
         }
         return false;
@@ -580,7 +581,7 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
      * @return the column definition type.
      */
     public String getDefinitionType() {
-        return getFileColumn().getFieldDescriptor().getDefinition().getType();
+        return getFileColumn().getFieldDescriptor().getDefinition().getDataType().getValue();
     }
 
     /**

@@ -112,8 +112,8 @@ public class DisplayableResultValue {
      */
     public DisplayableResultValue(ResultValue resultValue) {
         if (resultValue != null) {
-            if (AnnotationTypeEnum.DATE.getValue().equals(
-                resultValue.getColumn().getAnnotationDefinition().getType())) {
+            if (AnnotationTypeEnum.DATE.equals(
+                resultValue.getColumn().getAnnotationDefinition().getDataType())) {
                 dateType = true;
                 DateAnnotationValue dateAnnotationValue = (DateAnnotationValue) resultValue.getValue();
                 dateValue = dateAnnotationValue.getDateValue();

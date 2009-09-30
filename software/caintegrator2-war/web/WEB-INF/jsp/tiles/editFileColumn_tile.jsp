@@ -85,13 +85,16 @@
             	    <s:if test="%{columnTypeAnnotation}">
             	        <s:if test="%{fileColumn.fieldDescriptor.definition != null}">
 
-            	            <s:textfield label="Name" name="fileColumn.fieldDescriptor.definition.displayName" readonly="%{readOnly}" />
-            	            <s:textarea label="Definition" name="fileColumn.fieldDescriptor.definition.preferredDefinition" cols="40" rows="4" readonly="%{readOnly}"/>
+            	            <s:textfield label="Name" name="fileColumn.fieldDescriptor.definition.commonDataElement.longName" readonly="%{readOnly}" />
+            	            <s:textarea label="Definition" name="fileColumn.fieldDescriptor.definition.commonDataElement.definition" cols="40" rows="4" readonly="%{readOnly}"/>
             	            <s:textfield label="Keywords" name="fileColumn.fieldDescriptor.definition.keywords"  />
-            	            <s:select label="Data Type" name="fileColumn.fieldDescriptor.definition.type" list="annotationDataTypes" disabled="%{readOnly}" />
+            	            <s:select label="Data Type" 
+            	            name="fileColumn.fieldDescriptor.definition.commonDataElement.valueDomain.dataTypeString" 
+            	            list="annotationDataTypes" 
+            	            disabled="%{readOnly}" />
             	        </s:if>
-            	        <s:if test="%{fileColumn.fieldDescriptor.definition.cde != null}">
-            	            <s:textfield label="CDE Public ID" value="%{fileColumn.fieldDescriptor.definition.cde.publicID}" 
+            	        <s:if test="%{fileColumn.fieldDescriptor.definition.commonDataElement.publicID != null}">
+            	            <s:textfield label="CDE Public ID" value="%{fileColumn.fieldDescriptor.definition.commonDataElement.publicID}" 
             	            readonly="%{readOnly}"/> 
             	        </s:if>
                         <s:if test="%{permissibleOn}">

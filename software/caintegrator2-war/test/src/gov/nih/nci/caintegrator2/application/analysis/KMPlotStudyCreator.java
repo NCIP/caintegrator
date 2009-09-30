@@ -88,11 +88,10 @@ package gov.nih.nci.caintegrator2.application.analysis;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -115,7 +114,7 @@ import java.util.Set;
 public class KMPlotStudyCreator {
     
     private AnnotationDefinition groupAnnotationField;
-    private Collection <AbstractPermissibleValue> plotGroupValues;
+    private Collection <PermissibleValue> plotGroupValues;
     private SurvivalValueDefinition survivalValueDefinition;
     private Set<StudySubjectAssignment> usedSubjects = new HashSet<StudySubjectAssignment>();
     
@@ -209,29 +208,29 @@ public class KMPlotStudyCreator {
         groupAnnotationField.getAnnotationValueCollection().add(female1Value);
         
         // Add the permissible values
-        plotGroupValues = new HashSet<AbstractPermissibleValue>();
-        StringPermissibleValue malePermissibleValue = new StringPermissibleValue();
-        malePermissibleValue.setStringValue("M");
-        StringPermissibleValue femalePermissibleValue = new StringPermissibleValue();
-        femalePermissibleValue.setStringValue("F");
+        plotGroupValues = new HashSet<PermissibleValue>();
+        PermissibleValue malePermissibleValue = new PermissibleValue();
+        malePermissibleValue.setValue("M");
+        PermissibleValue femalePermissibleValue = new PermissibleValue();
+        femalePermissibleValue.setValue("F");
         plotGroupValues.add(malePermissibleValue);
         plotGroupValues.add(femalePermissibleValue);
-        StringPermissibleValue invalidPermissibleValue1 = new StringPermissibleValue();
-        invalidPermissibleValue1.setStringValue("INVALID1");
-        StringPermissibleValue invalidPermissibleValue2 = new StringPermissibleValue();
-        invalidPermissibleValue2.setStringValue("INVALID2");
-        StringPermissibleValue invalidPermissibleValue3 = new StringPermissibleValue();
-        invalidPermissibleValue3.setStringValue("INVALID3");
-        StringPermissibleValue invalidPermissibleValue4 = new StringPermissibleValue();
-        invalidPermissibleValue4.setStringValue("INVALID4");
-        StringPermissibleValue invalidPermissibleValue5 = new StringPermissibleValue();
-        invalidPermissibleValue5.setStringValue("INVALID5");
-        StringPermissibleValue invalidPermissibleValue6 = new StringPermissibleValue();
-        invalidPermissibleValue6.setStringValue("INVALID6");
-        StringPermissibleValue invalidPermissibleValue7 = new StringPermissibleValue();
-        invalidPermissibleValue7.setStringValue("INVALID7");
-        StringPermissibleValue invalidPermissibleValue8 = new StringPermissibleValue();
-        invalidPermissibleValue8.setStringValue("INVALID8");
+        PermissibleValue invalidPermissibleValue1 = new PermissibleValue();
+        invalidPermissibleValue1.setValue("INVALID1");
+        PermissibleValue invalidPermissibleValue2 = new PermissibleValue();
+        invalidPermissibleValue2.setValue("INVALID2");
+        PermissibleValue invalidPermissibleValue3 = new PermissibleValue();
+        invalidPermissibleValue3.setValue("INVALID3");
+        PermissibleValue invalidPermissibleValue4 = new PermissibleValue();
+        invalidPermissibleValue4.setValue("INVALID4");
+        PermissibleValue invalidPermissibleValue5 = new PermissibleValue();
+        invalidPermissibleValue5.setValue("INVALID5");
+        PermissibleValue invalidPermissibleValue6 = new PermissibleValue();
+        invalidPermissibleValue6.setValue("INVALID6");
+        PermissibleValue invalidPermissibleValue7 = new PermissibleValue();
+        invalidPermissibleValue7.setValue("INVALID7");
+        PermissibleValue invalidPermissibleValue8 = new PermissibleValue();
+        invalidPermissibleValue8.setValue("INVALID8");
         plotGroupValues.add(invalidPermissibleValue1);
         plotGroupValues.add(invalidPermissibleValue2);
         plotGroupValues.add(invalidPermissibleValue3);
@@ -248,15 +247,15 @@ public class KMPlotStudyCreator {
         AnnotationDefinition survivalStartDateAnnotation = new AnnotationDefinition();
         survivalStartDateAnnotation.setDisplayName("Survival Start Date");
         survivalStartDateAnnotation.setId(Long.valueOf(2));
-        survivalStartDateAnnotation.setType(AnnotationTypeEnum.DATE.getValue());
+        survivalStartDateAnnotation.setDataType(AnnotationTypeEnum.DATE);
         AnnotationDefinition deathDateAnnotation = new AnnotationDefinition();
         deathDateAnnotation.setDisplayName("Death Date");
         deathDateAnnotation.setId(Long.valueOf(3));
-        deathDateAnnotation.setType(AnnotationTypeEnum.DATE.getValue());
+        deathDateAnnotation.setDataType(AnnotationTypeEnum.DATE);
         AnnotationDefinition lastFollowupDateAnnotation = new AnnotationDefinition();
         lastFollowupDateAnnotation.setDisplayName("Last Followup Date");
         lastFollowupDateAnnotation.setId(Long.valueOf(4));
-        lastFollowupDateAnnotation.setType(AnnotationTypeEnum.DATE.getValue());
+        lastFollowupDateAnnotation.setDataType(AnnotationTypeEnum.DATE);
         survivalValueDefinition.setSurvivalStartDate(survivalStartDateAnnotation);
         survivalValueDefinition.setDeathDate(deathDateAnnotation);
         survivalValueDefinition.setLastFollowupDate(lastFollowupDateAnnotation);
@@ -417,14 +416,14 @@ public class KMPlotStudyCreator {
     /**
      * @return the plotGroupValues
      */
-    public Collection<AbstractPermissibleValue> getPlotGroupValues() {
+    public Collection<PermissibleValue> getPlotGroupValues() {
         return plotGroupValues;
     }
 
     /**
      * @param plotGroupValues the plotGroupValues to set
      */
-    public void setPlotGroupValues(Collection<AbstractPermissibleValue> plotGroupValues) {
+    public void setPlotGroupValues(Collection<PermissibleValue> plotGroupValues) {
         this.plotGroupValues = plotGroupValues;
     }
 

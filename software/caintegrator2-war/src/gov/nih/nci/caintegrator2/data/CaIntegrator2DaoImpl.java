@@ -350,8 +350,8 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public AnnotationDefinition getAnnotationDefinition(String name) {
-        List values = getHibernateTemplate().findByNamedParam("from AnnotationDefinition where displayName = :name", 
-                "name", name);
+        List<AnnotationDefinition> values = getCurrentSession().createCriteria(AnnotationDefinition.class)
+                .add(Restrictions.eq("commonDataElement.longName", name)).list();
         if (values.isEmpty()) {
             return null;
         } else {
@@ -522,7 +522,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                                                                AnnotationDefinition definition,
                                                                EntityTypeEnum entityType,
                                                                Class<T> objectClass) {
-        AnnotationTypeEnum annotationType = AnnotationTypeEnum.getByValue(definition.getType());
+        AnnotationTypeEnum annotationType = definition.getDataType();
         if (annotationType == null) {
             throw new IllegalArgumentException("Data Type for the Annotation Definition is unknown.");
         }

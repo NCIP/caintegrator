@@ -90,7 +90,6 @@ import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
@@ -568,25 +567,17 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                                 EntityTypeEnum entityType,
                                 String keywords) 
     throws ConnectionException, ValidationException {
-        ValueDomain valueDomain = dataElement.getValueDomain();
-        if (valueDomain == null) {
-            valueDomain = retrieveValueDomain(dataElement);
-            dataElement.setValueDomain(valueDomain);
+        if (dataElement.getValueDomain() == null) {
+            retrieveValueDomain(dataElement);
         }
-        AnnotationDefinition annotationDefinition = createDefinition(fileColumn.getFieldDescriptor(), 
-                                                 study, 
-                                                 entityType,
-                                                 AnnotationTypeEnum.getByValue(valueDomain.getDataType()));
-        annotationDefinition.setDisplayName(dataElement.getLongName());
+        AnnotationDefinition annotationDefinition = new AnnotationDefinition();
+        annotationDefinition.setCommonDataElement(dataElement);
+        addDefinitionToStudy(fileColumn.getFieldDescriptor(), study, entityType, annotationDefinition);
         if (dataElement.getDefinition().length() > DEFINITION_LENGTH) {
             dataElement.setDefinition(dataElement.getDefinition().substring(0, DEFINITION_LENGTH - 7) + "...");
         }
-        annotationDefinition.setPreferredDefinition(dataElement.getDefinition());
-        annotationDefinition.setCde(dataElement);
         annotationDefinition.setKeywords(keywords);
-        addPermissibleValuesFromValueDomain(annotationDefinition, valueDomain);
         validateAnnotationDefinition(fileColumn, study, entityType, annotationDefinition);
-        dao.save(dataElement);
         dao.save(annotationDefinition);
         dao.save(fileColumn);
     }
@@ -603,7 +594,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     @SuppressWarnings("unchecked") // For the "class" type.
     private Set<Object> validateAndRetrieveUniqueValues(Study study, EntityTypeEnum entityType, 
             FileColumn fileColumn, AnnotationDefinition annotationDefinition) throws ValidationException {
-        AnnotationTypeEnum annotationType = AnnotationTypeEnum.getByValue(annotationDefinition.getType());
+        AnnotationTypeEnum annotationType = annotationDefinition.getDataType();
         if (annotationType == null) {
             throw new IllegalArgumentException("Data Type for the Annotation Definition is unknown.");
         }
@@ -638,26 +629,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         }
     }
 
-    private ValueDomain retrieveValueDomain(CommonDataElement dataElement)
+    private void retrieveValueDomain(CommonDataElement dataElement)
             throws ConnectionException {
         ValueDomain valueDomain;
         String dataElementVersion = dataElement.getVersion(); 
         valueDomain = caDSRFacade.retrieveValueDomainForDataElement(dataElement.getPublicID(), 
                                                     NumberUtils.isNumber(dataElementVersion) 
                                                     ? Float.valueOf(dataElementVersion) : null);
-        dao.save(valueDomain);
-        return valueDomain;
-    }
-
-    private void addPermissibleValuesFromValueDomain(AnnotationDefinition annotationDefinition, 
-                                                     ValueDomain valueDomain) {
-        if (valueDomain.getPermissibleValueCollection() != null 
-            && !valueDomain.getPermissibleValueCollection().isEmpty()) {
-            for (AbstractPermissibleValue permissibleValue 
-                : valueDomain.getPermissibleValueCollection()) {
-                annotationDefinition.getPermissibleValueCollection().add(permissibleValue);
-            }
-        }
+        dataElement.setValueDomain(valueDomain);
     }
 
     /**
@@ -835,8 +814,8 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                                                  EntityTypeEnum entityType,
                                                  AnnotationTypeEnum annotationType) throws ValidationException {
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
-        annotationDefinition.setDisplayName(descriptor.getName());
-        annotationDefinition.setType(annotationType.getValue());
+        annotationDefinition.getCommonDataElement().setLongName(descriptor.getName());
+        annotationDefinition.getCommonDataElement().getValueDomain().setDataType(annotationType);
         annotationDefinition.setKeywords(annotationDefinition.getDisplayName());
         addDefinitionToStudy(descriptor, study, entityType, annotationDefinition);
         dao.save(annotationDefinition);

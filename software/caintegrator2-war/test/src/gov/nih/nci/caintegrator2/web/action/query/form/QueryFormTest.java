@@ -93,9 +93,8 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -138,9 +137,9 @@ public class QueryFormTest {
     private AnnotationDefinition selectClinicalAnnotation1;
     private AnnotationDefinition selectClinicalAnnotation2;
     private AnnotationDefinition testImageSeriesAnnotation;
-    private StringPermissibleValue value1 = new StringPermissibleValue();
-    private StringPermissibleValue value2 = new StringPermissibleValue();
-    private StringPermissibleValue value3 = new StringPermissibleValue();
+    private PermissibleValue value1 = new PermissibleValue();
+    private PermissibleValue value2 = new PermissibleValue();
+    private PermissibleValue value3 = new PermissibleValue();
 
     @Before
     public void setUp() {
@@ -158,16 +157,16 @@ public class QueryFormTest {
         stringClinicalAnnotation2 = createDefinition("stringClinicalAnnotation2", AnnotationTypeEnum.STRING);
         numericClinicalAnnotation = createDefinition("numericClinicalAnnotation", AnnotationTypeEnum.NUMERIC);
         selectClinicalAnnotation1 = createDefinition("selectClinicalAnnotation1", AnnotationTypeEnum.STRING);
-        value1.setStringValue("value1");
-        value3.setStringValue("value3");
-        value2.setStringValue("value2");
+        value1.setValue("value1");
+        value3.setValue("value3");
+        value2.setValue("value2");
         selectClinicalAnnotation1.getPermissibleValueCollection().add(value1);
         selectClinicalAnnotation1.getPermissibleValueCollection().add(value2);
         selectClinicalAnnotation1.getPermissibleValueCollection().add(value3);
 
         selectClinicalAnnotation2 = createDefinition("selectClinicalAnnotation2", AnnotationTypeEnum.STRING);
-        StringPermissibleValue value2_1 = new StringPermissibleValue();
-        value2_1.setStringValue("value2_1");
+        PermissibleValue value2_1 = new PermissibleValue();
+        value2_1.setValue("value2_1");
         selectClinicalAnnotation2.getPermissibleValueCollection().add(value2_1);
 
         study.getSubjectAnnotationCollection().add(stringClinicalAnnotation1);
@@ -183,7 +182,7 @@ public class QueryFormTest {
         AnnotationDefinition definition = new AnnotationDefinition();
         definition.setDisplayName(name);
         definition.setId(nextId++);
-        definition.setType(type.getValue());
+        definition.setDataType(type);
         return definition;
     }
 
@@ -323,7 +322,7 @@ public class QueryFormTest {
         assertEquals(EntityTypeEnum.SUBJECT, criterion.getEntityType());
         assertTrue(criterion.getValueCollection().isEmpty());
         assertEquals(1, criterionRow.getParameters().size());
-        SelectListParameter<AbstractPermissibleValue> select = (SelectListParameter<AbstractPermissibleValue>) criterionRow.getParameters().get(0);
+        SelectListParameter<PermissibleValue> select = (SelectListParameter<PermissibleValue>) criterionRow.getParameters().get(0);
         assertEquals(CriterionOperatorEnum.EQUALS.getValue(), select.getOperator());
         assertTrue(select.getAvailableOperators().contains(CriterionOperatorEnum.EQUALS.getValue()));
         assertTrue(select.getAvailableOperators().contains(CriterionOperatorEnum.IN.getValue()));
@@ -335,7 +334,7 @@ public class QueryFormTest {
         assertTrue(criterion.getValueCollection().contains(value2));
         setOperator(select, CriterionOperatorEnum.IN.getValue());
         assertEquals(1, criterionRow.getParameters().size());
-        MultiSelectParameter<AbstractPermissibleValue> multiSelect = (MultiSelectParameter<AbstractPermissibleValue>) criterionRow.getParameters().get(0);
+        MultiSelectParameter<PermissibleValue> multiSelect = (MultiSelectParameter<PermissibleValue>) criterionRow.getParameters().get(0);
         assertEquals(CriterionOperatorEnum.IN.getValue(), multiSelect.getOperator());
         assertTrue(multiSelect.getAvailableOperators().contains(CriterionOperatorEnum.EQUALS.getValue()));
         assertTrue(multiSelect.getAvailableOperators().contains(CriterionOperatorEnum.IN.getValue()));
@@ -357,7 +356,7 @@ public class QueryFormTest {
         assertTrue(multiSelect.getValues()[1] == "value3");
         setFieldName(criterionRow, "selectClinicalAnnotation2");
         assertEquals(CriterionOperatorEnum.IN.getValue(), select.getOperator());
-        multiSelect = (MultiSelectParameter<AbstractPermissibleValue>) criterionRow.getParameters().get(0);
+        multiSelect = (MultiSelectParameter<PermissibleValue>) criterionRow.getParameters().get(0);
         assertEquals(1, multiSelect.getOptions().size());
         assertEquals("value2_1", multiSelect.getOptions().get(0).getDisplayValue());
         assertEquals(0, multiSelect.getValues().length);

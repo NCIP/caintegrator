@@ -86,12 +86,11 @@
 package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -116,9 +115,9 @@ public final class PermissibleValueUtil {
      * @return set of permissible values
      */
     public static Set<String> getDisplayPermissibleValue(
-            Collection<AbstractPermissibleValue> abstractPermissibleValues) {
+            Collection<PermissibleValue> abstractPermissibleValues) {
         Set<String> results = new HashSet<String>();
-        for (AbstractPermissibleValue abstractPermissibleValue : abstractPermissibleValues) {
+        for (PermissibleValue abstractPermissibleValue : abstractPermissibleValues) {
             String displayString = abstractPermissibleValue.toString();
             //TODO Need to decide how to display null value, for now we just skip it
             if (displayString != null) {
@@ -137,7 +136,7 @@ public final class PermissibleValueUtil {
      * @param newList the new list of DisplayValues
      */
     public static void update(String type,
-            Collection<AbstractPermissibleValue> abstractPermissibleValues,
+            Collection<PermissibleValue> abstractPermissibleValues,
             List<String> newList) {
         
         checkObsolete(abstractPermissibleValues, newList);
@@ -148,10 +147,10 @@ public final class PermissibleValueUtil {
      * @param abstractPermissibleValues
      * @param newList
      */
-    private static void checkObsolete(Collection<AbstractPermissibleValue> abstractPermissibleValues,
+    private static void checkObsolete(Collection<PermissibleValue> abstractPermissibleValues,
             List<String> newList) {
-        List<AbstractPermissibleValue> removeList = new ArrayList<AbstractPermissibleValue>();
-        for (AbstractPermissibleValue abstractPermissibleValue : abstractPermissibleValues) {
+        List<PermissibleValue> removeList = new ArrayList<PermissibleValue>();
+        for (PermissibleValue abstractPermissibleValue : abstractPermissibleValues) {
             if (newList == null || !newList.contains(abstractPermissibleValue.toString())) {
                 removeList.add(abstractPermissibleValue);
             }
@@ -166,7 +165,7 @@ public final class PermissibleValueUtil {
      * @param abstractPermissibleValues the PermissibleValue collection
      * @param addList the list of DisplayString to add
      */
-    public static void addNewValue(String type, Collection<AbstractPermissibleValue> abstractPermissibleValues,
+    public static void addNewValue(String type, Collection<PermissibleValue> abstractPermissibleValues,
             List<String> addList) {
         if (addList == null) {
             return;
@@ -190,7 +189,7 @@ public final class PermissibleValueUtil {
      * @param abstractPermissibleValues the PermissibleValue collection
      * @param removePermissibleDisplayValues the list PermissibleDisplayValue to be removed
      */
-    public static void removeValue(Collection<AbstractPermissibleValue> abstractPermissibleValues,
+    public static void removeValue(Collection<PermissibleValue> abstractPermissibleValues,
             List<String> removePermissibleDisplayValues) {
         if (removePermissibleDisplayValues == null) {
             return;
@@ -200,9 +199,9 @@ public final class PermissibleValueUtil {
         }
     }
     
-    private static void removeValue(Collection<AbstractPermissibleValue> abstractPermissibleValues,
+    private static void removeValue(Collection<PermissibleValue> abstractPermissibleValues,
             String removePermissibleDisplayValue) {
-        AbstractPermissibleValue abstractPermissibleValue = getObject(abstractPermissibleValues,
+        PermissibleValue abstractPermissibleValue = getObject(abstractPermissibleValues,
                 removePermissibleDisplayValue);
         if (abstractPermissibleValue == null) {
             return;
@@ -217,9 +216,9 @@ public final class PermissibleValueUtil {
      * @param removePermissibleDisplayValue
      * @return
      */
-    private static AbstractPermissibleValue getObject(Collection<AbstractPermissibleValue> abstractPermissibleValues,
+    private static PermissibleValue getObject(Collection<PermissibleValue> abstractPermissibleValues,
             String displayString) {
-        for (AbstractPermissibleValue abstractPermissibleValue : abstractPermissibleValues) {
+        for (PermissibleValue abstractPermissibleValue : abstractPermissibleValues) {
             if (displayString.equals(abstractPermissibleValue.toString())) {
                 return abstractPermissibleValue;
             }
@@ -227,7 +226,7 @@ public final class PermissibleValueUtil {
         return null;
     }
 
-    private static void addNewValue(String type, Collection<AbstractPermissibleValue> abstractPermissibleValues,
+    private static void addNewValue(String type, Collection<PermissibleValue> abstractPermissibleValues,
             String displayString) throws ParseException {
         if (containsDisplayString(abstractPermissibleValues, displayString) || StringUtils.isBlank(displayString)) {
             return;
@@ -243,31 +242,32 @@ public final class PermissibleValueUtil {
         }
     }
     
-    private static void addStringValue(Collection<AbstractPermissibleValue> abstractPermissibleValues,
+    private static void addStringValue(Collection<PermissibleValue> abstractPermissibleValues,
             String displayString) {
-        StringPermissibleValue newPermissibleValue = new StringPermissibleValue();
-        newPermissibleValue.setStringValue(displayString);
+        PermissibleValue newPermissibleValue = new PermissibleValue();
+        newPermissibleValue.setValue(displayString);
         abstractPermissibleValues.add(newPermissibleValue);
     }
     
-    private static void addNumericValue(Collection<AbstractPermissibleValue> abstractPermissibleValues,
+    private static void addNumericValue(Collection<PermissibleValue> abstractPermissibleValues,
             String displayString) {
-        NumericPermissibleValue newPermissibleValue = new NumericPermissibleValue();
-        newPermissibleValue.setNumericValue(new Double(displayString));
+        PermissibleValue newPermissibleValue = new PermissibleValue();
+        newPermissibleValue.setValue(new DecimalFormat(NumericAnnotationValue.DECIMAL_FORMAT).format(
+                Double.valueOf(displayString)));
         abstractPermissibleValues.add(newPermissibleValue);
     }
     
-    private static void addDateValue(Collection<AbstractPermissibleValue> abstractPermissibleValues,
+    private static void addDateValue(Collection<PermissibleValue> abstractPermissibleValues,
             String displayString) throws ParseException {
-        DatePermissibleValue newPermissibleValue = new DatePermissibleValue();
-        newPermissibleValue.setDateValue(DateUtil.createDate(displayString));
+        PermissibleValue newPermissibleValue = new PermissibleValue();
+        newPermissibleValue.setValue(DateUtil.toString(DateUtil.createDate(displayString)));
         abstractPermissibleValues.add(newPermissibleValue);
     }
     
-    private static boolean containsDisplayString(Collection<AbstractPermissibleValue> abstractPermissibleValues,
+    private static boolean containsDisplayString(Collection<PermissibleValue> abstractPermissibleValues,
             String displayString) {
 
-        for (AbstractPermissibleValue abstractPermissibleValue : abstractPermissibleValues) {
+        for (PermissibleValue abstractPermissibleValue : abstractPermissibleValues) {
             if (displayString.equals(abstractPermissibleValue.toString())) {
                 return true;
             }
@@ -306,24 +306,33 @@ public final class PermissibleValueUtil {
     @SuppressWarnings("unchecked")
     private static <T> Set <T> retrieveUniquePermissibleValues(AnnotationDefinition annotationDefinition) {
         Set<T> permissibleValues = new HashSet<T>();
-        for (AbstractPermissibleValue permissibleValue : annotationDefinition.getPermissibleValueCollection()) {
-            permissibleValues.add((T) retrievePermissibleValueAsPrimitiveType(permissibleValue));
+        for (PermissibleValue permissibleValue : annotationDefinition.getPermissibleValueCollection()) {
+            permissibleValues.add((T) retrievePermissibleValueAsPrimitiveType(permissibleValue, 
+                    annotationDefinition.getDataType()));
         }
         return permissibleValues;
     }
 
-    private static Object retrievePermissibleValueAsPrimitiveType(AbstractPermissibleValue permissibleValue) {
-        if (permissibleValue instanceof StringPermissibleValue) {
-            StringPermissibleValue stringPermissibleValue = (StringPermissibleValue) permissibleValue;
-            return stringPermissibleValue.getStringValue();    
-        } else if (permissibleValue instanceof NumericPermissibleValue) {
-            NumericPermissibleValue numericPermissibleValue = (NumericPermissibleValue) permissibleValue;
-            return numericPermissibleValue.getNumericValue();  
-        } else if (permissibleValue instanceof DatePermissibleValue) {
-            DatePermissibleValue datePermissibleValue = (DatePermissibleValue) permissibleValue;
-            return datePermissibleValue.getDateValue();
-        } 
-        throw new IllegalArgumentException("Unknown permissibleValue Type");
+    @SuppressWarnings("PMD.MissingBreakInSwitch") // No need for break, it returns instead.
+    private static Object retrievePermissibleValueAsPrimitiveType(PermissibleValue permissibleValue, 
+                        AnnotationTypeEnum dataType) {
+        if (dataType == null) {
+            throw new IllegalArgumentException("Data Type for the Annotation Definition is unknown.");
+        }
+        switch (dataType) {
+        case STRING:
+            return permissibleValue.getValue();
+        case NUMERIC:
+            return (Double.valueOf(permissibleValue.getValue()));
+        case DATE:
+            try {
+                return (DateUtil.createDate(permissibleValue.getValue()));
+            } catch (ParseException e) {
+                throw new IllegalStateException("Invalid date format as a Permissible Value, unable to parse.", e);
+            }
+        default: 
+            throw new IllegalArgumentException("Unknown permissibleValue Type");
+        }
     }
 
 }

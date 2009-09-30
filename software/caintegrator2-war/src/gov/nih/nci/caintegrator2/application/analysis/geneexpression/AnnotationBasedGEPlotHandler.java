@@ -93,7 +93,7 @@ import gov.nih.nci.caintegrator2.application.geneexpression.PlotSampleGroup;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -136,7 +136,7 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
     throws ControlSamplesNotMappedException, InvalidCriterionException {
         
         List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
-        for (AbstractPermissibleValue permissibleValue : parameters.getSelectedValues()) {
+        for (PermissibleValue permissibleValue : parameters.getSelectedValues()) {
             GenomicDataQueryResult result = retrieveGenomicResults(permissibleValue, subscription);
             fillUsedSubjects(result);
             genomicResults.add(result);
@@ -192,13 +192,13 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
                 SampleGroupType.CONTROL_GROUP, controlSampleSetName);
     }
 
-    private GenomicDataQueryResult retrieveGenomicResults(AbstractPermissibleValue permissibleValue,
+    private GenomicDataQueryResult retrieveGenomicResults(PermissibleValue permissibleValue,
             StudySubscription subscription) throws InvalidCriterionException {
         Query query = new Query();
         SelectedValueCriterion selectedValueCriterion = new SelectedValueCriterion();
         selectedValueCriterion.setAnnotationDefinition(parameters.getSelectedAnnotation());
         selectedValueCriterion.setEntityType(parameters.getEntityType());
-        selectedValueCriterion.setValueCollection(new HashSet<AbstractPermissibleValue>());
+        selectedValueCriterion.setValueCollection(new HashSet<PermissibleValue>());
         selectedValueCriterion.getValueCollection().add(permissibleValue);
         query.setName(permissibleValue.toString());
         
