@@ -425,7 +425,17 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      * @param platformFileFileName the platformFileFileName to set
      */
     public void setPlatformFileFileName(String platformFileFileName) {
-        this.platformFileFileName = platformFileFileName;
+        this.platformFileFileName = convertFileExtensionToLowercase(platformFileFileName);
+    }
+    
+    private String convertFileExtensionToLowercase(String fileName) {
+        String ext = "";
+        int i = fileName.lastIndexOf(".");
+        if (i > 0 && i < fileName.length() - 1) {
+            ext = fileName.substring(i).toLowerCase();
+            fileName = fileName.substring(0, i) + ext;
+        }
+        return fileName;
     }
 
     /**

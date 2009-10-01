@@ -143,6 +143,16 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
     }
     
     @Test
+    public void testSetPlatformFileFileName() {
+        action.setPlatformFileFileName("abcdef.XML");
+        assertTrue(action.getPlatformFileFileName().endsWith(".xml"));
+        action.setPlatformFileFileName("abcdef.test.adf");
+        assertTrue(action.getPlatformFileFileName().endsWith(".adf"));
+        action.setPlatformFileFileName("abcdef");
+        assertTrue(action.getPlatformFileFileName().endsWith("abcdef"));
+    }
+    
+    @Test
     public void testCreatePlatform() {
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue());
         action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
