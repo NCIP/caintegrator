@@ -2,7 +2,7 @@ truncate table CONFIGURATION_PARAMETER;
 insert into CONFIGURATION_PARAMETER (parameter, raw_value) values
     ("GRID_INDEX_URL", "@grid.index.url@"),
     ("NBIA_URL", "http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService"),
-    ("CAARRAY_HOST", "http://array.nci.nih.gov"),
+    ("CAARRAY_HOST", "array.nci.nih.gov"),
     ("PREPROCESS_DATASET_URL", "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService"),
     ("COMPARATIVE_MARKER_SELECTION_URL", "http://node255.broadinstitute.org:11010/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc"),
     ("PCA_URL", "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PCA"),
