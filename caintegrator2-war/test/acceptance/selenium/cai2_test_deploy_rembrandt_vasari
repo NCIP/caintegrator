@@ -83,12 +83,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_valueDomain_dataTypeString</td>
 	<td>label=numeric</td>
 </tr>
 <tr>
@@ -108,12 +108,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_valueDomain_dataTypeString</td>
 	<td>label=date</td>
 </tr>
 <tr>
@@ -133,12 +133,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_valueDomain_dataTypeString</td>
 	<td>label=date</td>
 </tr>
 <tr>
@@ -158,12 +158,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_valueDomain_dataTypeString</td>
 	<td>label=date</td>
 </tr>
 <tr>
@@ -184,7 +184,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -275,7 +275,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -311,7 +311,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -331,7 +331,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -376,7 +376,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -396,7 +396,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -451,7 +451,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -481,7 +481,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for Rembrandt / VASARI.</td>
 </tr>
 <tr>
@@ -501,7 +501,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -586,7 +586,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -666,7 +666,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -721,7 +721,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -816,7 +816,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -901,7 +901,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -956,7 +956,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -1036,7 +1036,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -1264,7 +1264,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via Selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -1304,7 +1304,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -1359,7 +1359,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via Selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -1399,7 +1399,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via Selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -1444,7 +1444,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -1479,7 +1479,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -1499,7 +1499,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -1534,7 +1534,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -1574,7 +1574,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
@@ -1614,7 +1614,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
