@@ -117,7 +117,7 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
      */
     public static final String SAVE_ACTION = "save";
     
-    private String action;
+    private String formAction;
     private File copyNumberMappingFile;
     private String copyNumberMappingFileContentType;
     private String copyNumberMappingFileFileName;
@@ -158,7 +158,7 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
      */
     public String edit() {
         getCopyNumberDataConfiguration();
-        setAction(SAVE_ACTION);
+        setFormAction(SAVE_ACTION);
         return SUCCESS;
     }
 
@@ -217,7 +217,7 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
      */
     @Override
     public void validate() {
-        if (SAVE_ACTION.equals(getAction())) {
+        if (SAVE_ACTION.equals(getFormAction())) {
             validateSave();
         }
         prepareValueStack();
@@ -307,15 +307,15 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
     /**
      * @return the action
      */
-    public String getAction() {
-        return action;
+    public String getFormAction() {
+        return formAction;
     }
 
     /**
      * @param action the action to set
      */
-    public void setAction(String action) {
-        this.action = action;
+    public void setFormAction(String action) {
+        this.formAction = action;
     }
 
     /**
