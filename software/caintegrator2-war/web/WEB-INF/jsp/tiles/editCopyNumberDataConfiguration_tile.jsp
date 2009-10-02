@@ -34,7 +34,7 @@
                     <s:hidden name="action" />
                     <s:file name="copyNumberMappingFile" label="Subject and Sample to Copy Number Mapping File" size="40"/><br>
                     <s:select id="caDnaCopyUrl" name="caDnaCopyUrl"
-                            list="caDnaCopyServices" label="CaDNACopy Service URL" required="true" disabled="%{useGlad}" /><br>
+                            list="caDnaCopyServices" label="CaDNACopy Service URL" required="true" /><br>
                     <s:textfield name="copyNumberDataConfiguration.changePointSignificanceLevel" label="Change Point Significance Level" /><br>
                     <s:textfield name="copyNumberDataConfiguration.earlyStoppingCriterion" label="Early Stopping Criterion" /><br>
                     <s:textfield name="copyNumberDataConfiguration.permutationReplicates" label="Permutation Replicates" /><br>
