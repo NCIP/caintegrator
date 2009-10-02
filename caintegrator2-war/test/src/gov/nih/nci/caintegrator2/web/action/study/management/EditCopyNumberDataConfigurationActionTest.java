@@ -144,10 +144,10 @@ public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBa
     @Test
     public void testValidate() {
         action.prepare();
-        action.setAction(EditCopyNumberDataConfigurationAction.EDIT_ACTION);
+        action.setFormAction(EditCopyNumberDataConfigurationAction.EDIT_ACTION);
         action.validate();
         assertFalse(action.hasFieldErrors());
-        action.setAction(EditCopyNumberDataConfigurationAction.SAVE_ACTION);
+        action.setFormAction(EditCopyNumberDataConfigurationAction.SAVE_ACTION);
         action.validate();
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();

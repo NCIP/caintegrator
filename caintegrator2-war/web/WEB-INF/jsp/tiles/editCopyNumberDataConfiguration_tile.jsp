@@ -31,7 +31,7 @@
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="genomicSource.id" />
                     <s:hidden name="useGlad" value="false"/>
-                    <s:hidden name="action" />
+                    <s:hidden name="formAction" />
                     <s:file name="copyNumberMappingFile" label="Subject and Sample to Copy Number Mapping File" size="40"/><br>
                     <s:select id="caDnaCopyUrl" name="caDnaCopyUrl"
                             list="caDnaCopyServices" label="CaDNACopy Service URL" required="true" /><br>
