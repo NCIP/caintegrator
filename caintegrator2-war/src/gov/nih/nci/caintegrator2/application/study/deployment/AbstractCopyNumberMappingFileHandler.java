@@ -139,9 +139,9 @@ public abstract class AbstractCopyNumberMappingFileHandler {
             CSVReader reader = new CSVReader(new FileReader(getFile()));
             String[] fields;
             while ((fields = reader.readNext()) != null) {
-                String subjectId = fields[0];
-                String sampleName = fields[1];
-                String copyNumberFilename = fields[2];
+                String subjectId = fields[0].trim();
+                String sampleName = fields[1].trim();
+                String copyNumberFilename = fields[2].trim();
                 parse(subjectId, sampleName, copyNumberFilename);
             }
             List<ArrayDataValues> arrayDataValues = loadArrayData();
