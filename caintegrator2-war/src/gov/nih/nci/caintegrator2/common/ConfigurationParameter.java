@@ -148,7 +148,7 @@ public enum ConfigurationParameter {
     /**
      * Default CaArray service URL.
      */
-    CAARRAY_HOST("http://array.nci.nih.gov"),
+    CAARRAY_HOST("array.nci.nih.gov"),
             
     /**
      * Default CaArray service URL.
