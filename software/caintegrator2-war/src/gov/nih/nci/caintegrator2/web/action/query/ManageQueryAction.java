@@ -178,8 +178,10 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             return;
         } else if ("selectedTabSearchResults".equals(selectedAction)) {
             return;
-        } else if (EXECUTE_QUERY.equals(selectedAction)
-                || "loadQuery".equals(selectedAction)) {
+        } else if ("loadQuery".equals(selectedAction)) {
+            getQueryForm().setQuery(null);
+            validateExecuteQuery(); 
+        } else if (EXECUTE_QUERY.equals(selectedAction)) {
             validateExecuteQuery(); 
         } else if ("saveQuery".equals(selectedAction)) {
             validateSaveQuery();
@@ -528,7 +530,6 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      * @param queryId the queryId to set
      */
     public void setQueryId(Long queryId) {
-        getQueryForm().setQuery(null);
         this.queryId = queryId;
     }
 
