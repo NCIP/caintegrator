@@ -118,6 +118,7 @@ public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBa
     @Test
     public void testEdit() {
         action.setUseGlad(true);
+        action.setGladUrl(ConfigurationParameter.GENE_PATTERN_URL.getDefaultValue());
         action.getGenomicSource().setCopyNumberDataConfiguration(null);
         action.prepare();
         action.edit();

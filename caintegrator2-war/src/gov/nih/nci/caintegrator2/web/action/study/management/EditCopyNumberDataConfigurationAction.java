@@ -133,6 +133,7 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
     @Override
     public void prepare() {
         super.prepare();
+        updateServiceUrl();
         if (getCopyNumberDataConfiguration().isCaDNACopyConfiguration()) {
             setCaDnaCopyUrl(getCopyNumberDataConfiguration().getSegmentationService().getUrl());
             setUseGlad(false);
@@ -167,14 +168,21 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
      * @return the configuration.
      */
     public CopyNumberDataConfiguration getCopyNumberDataConfiguration() {
+        
         if (getGenomicSource().getCopyNumberDataConfiguration() == null) {
             CopyNumberDataConfiguration configuration = new CopyNumberDataConfiguration();
             getGenomicSource().setCopyNumberDataConfiguration(configuration);
+            
             if (getUseGlad()) {
                 configuration.getSegmentationService().setUrl(
                         configurationHelper.getString(ConfigurationParameter.GENE_PATTERN_URL));
+            } else {
+                configuration.getSegmentationService().setUrl(
+                        configurationHelper.getString(ConfigurationParameter.CA_DNA_COPY_URL));
             }
+            
         }
+        
         return getGenomicSource().getCopyNumberDataConfiguration();
     }
     
