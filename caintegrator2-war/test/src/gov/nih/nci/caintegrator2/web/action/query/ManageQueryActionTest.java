@@ -204,6 +204,30 @@ public class ManageQueryActionTest {
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertTrue(queryManagementService.saveCalled);
         
+        // test load query
+        manageQueryAction.setSelectedAction("loadQuery");
+        manageQueryAction.setQueryId(1L);
+        manageQueryAction.validate();
+        assertFalse(manageQueryAction.hasErrors());
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertTrue(queryManagementService.executeCalled);
+        manageQueryAction.getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENOMIC.getValue());
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertEquals("criteria", manageQueryAction.getDisplayTab());
+        assertTrue(queryManagementService.executeGenomicDataQueryCalled);
+        
+        // test load & execute query
+        manageQueryAction.setSelectedAction("loadExecute");
+        manageQueryAction.setQueryId(1L);
+        manageQueryAction.validate();
+        assertFalse(manageQueryAction.hasErrors());
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertTrue(queryManagementService.executeCalled);
+        manageQueryAction.getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENOMIC.getValue());
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertEquals("searchResults", manageQueryAction.getDisplayTab());
+        assertTrue(queryManagementService.executeGenomicDataQueryCalled);        
+        
         // test - addition of criteria rows
         manageQueryAction.setSelectedAction("addCriterionRow");
         manageQueryAction.getQueryForm().getCriteriaGroup().setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());

@@ -178,7 +178,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             return;
         } else if ("selectedTabSearchResults".equals(selectedAction)) {
             return;
-        } else if ("loadQuery".equals(selectedAction)) {
+        } else if ("loadQuery".equals(selectedAction)
+                || "loadExecute".equals(selectedAction)) {
             getQueryForm().setQuery(null);
             validateExecuteQuery(); 
         } else if (EXECUTE_QUERY.equals(selectedAction)) {
@@ -229,7 +230,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         } else if ("addCriterionRow".equals(selectedAction)) {
             setQueryResult(null);
             returnValue = addCriterionRow();
-        } else if (EXECUTE_QUERY.equals(selectedAction)) {
+        } else if (EXECUTE_QUERY.equals(selectedAction)
+                || "loadExecute".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
             returnValue = executeQuery();
         } else if ("saveQuery".equals(selectedAction)) {
