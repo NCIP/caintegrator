@@ -240,7 +240,6 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         return path;
     }
 
-    @SuppressWarnings("unused")
     private void setPath(String path) {
         this.path = path;
     }
@@ -435,10 +434,11 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
     @SuppressWarnings("PMD.CyclomaticComplexity")   // switch statement and argument checking
      private AbstractAnnotationValue createAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
             String value) throws ValidationException {
-        if (annotationDescriptor.getDefinition() == null || annotationDescriptor.getDefinition().getType() == null) {
+        if (annotationDescriptor.getDefinition() == null 
+                || annotationDescriptor.getDefinition().getDataType() == null) {
             throwValidationException("Type for field " + annotationDescriptor.getName() + " was not set.");
         }
-        AnnotationTypeEnum type = AnnotationTypeEnum.getByValue(annotationDescriptor.getDefinition().getType());
+        AnnotationTypeEnum type = annotationDescriptor.getDefinition().getDataType();
         switch (type) {
         case DATE:
             return createDateAnnotationValue(annotationDescriptor, value);
@@ -502,7 +502,7 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
     }
 
     private String createFormatErrorMsg(AnnotationFieldDescriptor descriptor, String value, String allowedFormats) {
-        return "Invalid format for data type '" + descriptor.getDefinition().getType()
+        return "Invalid format for data type '" + descriptor.getDefinition().getDataType()
             + "' on field '" + descriptor.getName()
             + "' of descriptor '" + descriptor.getDefinition().getDisplayName()
             + "' with value = '" + value + "'. " + allowedFormats;

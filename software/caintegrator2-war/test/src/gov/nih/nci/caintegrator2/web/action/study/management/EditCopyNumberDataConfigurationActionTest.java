@@ -118,6 +118,7 @@ public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBa
     @Test
     public void testEdit() {
         action.setUseGlad(true);
+        action.setGladUrl(ConfigurationParameter.GENE_PATTERN_URL.getDefaultValue());
         action.getGenomicSource().setCopyNumberDataConfiguration(null);
         action.prepare();
         action.edit();
@@ -143,10 +144,10 @@ public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBa
     @Test
     public void testValidate() {
         action.prepare();
-        action.setAction(EditCopyNumberDataConfigurationAction.EDIT_ACTION);
+        action.setFormAction(EditCopyNumberDataConfigurationAction.EDIT_ACTION);
         action.validate();
         assertFalse(action.hasFieldErrors());
-        action.setAction(EditCopyNumberDataConfigurationAction.SAVE_ACTION);
+        action.setFormAction(EditCopyNumberDataConfigurationAction.SAVE_ACTION);
         action.validate();
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
@@ -157,6 +158,10 @@ public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBa
         action.clearErrorsAndMessages();
         action.setUseGlad(false);
         action.setCaDnaCopyUrl("url");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setCopyNumberMappingFile(TestDataFiles.REMBRANDT_COPY_NUMBER_FILE);
         action.validate();
         assertFalse(action.hasFieldErrors());
     }

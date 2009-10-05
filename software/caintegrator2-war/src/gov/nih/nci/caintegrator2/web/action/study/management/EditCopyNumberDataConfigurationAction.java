@@ -91,9 +91,13 @@ import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 
 /**
@@ -113,7 +117,7 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
      */
     public static final String SAVE_ACTION = "save";
     
-    private String action;
+    private String formAction;
     private File copyNumberMappingFile;
     private String copyNumberMappingFileContentType;
     private String copyNumberMappingFileFileName;
@@ -121,6 +125,7 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
     private String caDnaCopyUrl;
     private boolean useGlad = false;
     private ConfigurationHelper configurationHelper;
+    private static final String COPY_NUMBER_MAPPING_FILE = "copyNumberMappingFile";
     
     /**
      * {@inheritDoc}
@@ -128,6 +133,7 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
     @Override
     public void prepare() {
         super.prepare();
+        updateServiceUrl();
         if (getCopyNumberDataConfiguration().isCaDNACopyConfiguration()) {
             setCaDnaCopyUrl(getCopyNumberDataConfiguration().getSegmentationService().getUrl());
             setUseGlad(false);
@@ -152,7 +158,7 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
      */
     public String edit() {
         getCopyNumberDataConfiguration();
-        setAction(SAVE_ACTION);
+        setFormAction(SAVE_ACTION);
         return SUCCESS;
     }
 
@@ -162,14 +168,21 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
      * @return the configuration.
      */
     public CopyNumberDataConfiguration getCopyNumberDataConfiguration() {
+        
         if (getGenomicSource().getCopyNumberDataConfiguration() == null) {
             CopyNumberDataConfiguration configuration = new CopyNumberDataConfiguration();
             getGenomicSource().setCopyNumberDataConfiguration(configuration);
+            
             if (getUseGlad()) {
                 configuration.getSegmentationService().setUrl(
                         configurationHelper.getString(ConfigurationParameter.GENE_PATTERN_URL));
+            } else {
+                configuration.getSegmentationService().setUrl(
+                        configurationHelper.getString(ConfigurationParameter.CA_DNA_COPY_URL));
             }
+            
         }
+        
         return getGenomicSource().getCopyNumberDataConfiguration();
     }
     
@@ -204,7 +217,7 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
      */
     @Override
     public void validate() {
-        if (SAVE_ACTION.equals(getAction())) {
+        if (SAVE_ACTION.equals(getFormAction())) {
             validateSave();
         }
         prepareValueStack();
@@ -212,11 +225,33 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
 
     private void validateSave() {
         if (copyNumberMappingFile == null) {
-            addFieldError("copyNumberMappingFile", " File is required");
+            addFieldError(COPY_NUMBER_MAPPING_FILE, " File is required");
         } else if (copyNumberMappingFile.length() == 0) {
-            addFieldError("copyNumberMappingFile", " File is empty");
+            addFieldError(COPY_NUMBER_MAPPING_FILE, " File is empty");
+        } else {
+            validateFileFormat();
         }
         validateServiceUrl();
+    }
+    
+    private void validateFileFormat() {
+        CSVReader reader;
+        try {
+            reader = new CSVReader(new FileReader(copyNumberMappingFile));
+            String[] fields;
+            int lineNum = 0;
+            while ((fields = reader.readNext()) != null) {
+                lineNum++;
+                if (fields.length != 3) {
+                    addFieldError(COPY_NUMBER_MAPPING_FILE,
+                            " File must have 3 columns instead of " + fields.length
+                            + " on line number " + lineNum);
+                    return;
+                }
+            }
+        } catch (IOException e) {
+            addFieldError(COPY_NUMBER_MAPPING_FILE, " Error reading mapping file");
+        }
     }
 
     private void validateServiceUrl() {
@@ -272,15 +307,15 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
     /**
      * @return the action
      */
-    public String getAction() {
-        return action;
+    public String getFormAction() {
+        return formAction;
     }
 
     /**
      * @param action the action to set
      */
-    public void setAction(String action) {
-        this.action = action;
+    public void setFormAction(String action) {
+        this.formAction = action;
     }
 
     /**

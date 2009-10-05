@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
@@ -98,7 +98,7 @@ import java.util.HashSet;
 public class KMAnnotationBasedParameters extends AbstractKMParameters {
 
     private AnnotationDefinition selectedAnnotation = new AnnotationDefinition();
-    private final Collection <AbstractPermissibleValue> selectedValues = new HashSet<AbstractPermissibleValue>();    
+    private final Collection <PermissibleValue> selectedValues = new HashSet<PermissibleValue>();    
     private EntityTypeEnum entityType;
     
     
@@ -147,7 +147,7 @@ public class KMAnnotationBasedParameters extends AbstractKMParameters {
     /**
      * @return the selectedValues
      */
-    public Collection<AbstractPermissibleValue> getSelectedValues() {
+    public Collection<PermissibleValue> getSelectedValues() {
         return selectedValues;
     }
 

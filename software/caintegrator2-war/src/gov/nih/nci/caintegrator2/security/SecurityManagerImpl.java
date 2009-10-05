@@ -117,7 +117,6 @@ public class SecurityManagerImpl implements SecurityManager {
     private static final String STUDY_MANAGER_ROLE = "STUDY_MANAGER_ROLE";
     private static final String STUDY_OBJECT = "gov.nih.nci.caintegrator2.domain.translational.Study";
     private static final String STUDY_ATTRIBUTE = "id";
-    private static final String UNUSED = "unused";
     private static final String UNCHECKED = "unchecked";
     
     private AuthorizationManagerFactory authorizationManagerFactory;
@@ -141,7 +140,7 @@ public class SecurityManagerImpl implements SecurityManager {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings({ UNUSED, UNCHECKED }) // CSM API is untyped
+    @SuppressWarnings(UNCHECKED) // CSM API is untyped
     public void deleteProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
         ProtectionElement element = createProtectionElementInstance(studyConfiguration);
         SearchCriteria elementCriteria = new ProtectionElementSearchCriteria(element);
@@ -154,7 +153,7 @@ public class SecurityManagerImpl implements SecurityManager {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings({ UNUSED, UNCHECKED }) // CSM API is untyped
+    @SuppressWarnings(UNCHECKED) // CSM API is untyped
     public void initializeFiltersForUserGroups(String username, Session session) throws CSException {
         List<String> groupNames = new ArrayList<String>();
         String userId = String.valueOf(retrieveCsmUser(username).getUserId());
@@ -168,7 +167,6 @@ public class SecurityManagerImpl implements SecurityManager {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings({ UNUSED, UNCHECKED }) // CSM API is untyped
     public Set<StudyConfiguration> retrieveManagedStudyConfigurations(String username, Collection<Study> studies) 
         throws CSException {
         Set<StudyConfiguration> managedStudies = new HashSet<StudyConfiguration>();
@@ -188,7 +186,7 @@ public class SecurityManagerImpl implements SecurityManager {
         return managedStudies;
     }
     
-    @SuppressWarnings({ UNUSED, UNCHECKED }) // CSM API is untyped
+    @SuppressWarnings(UNCHECKED) // CSM API is untyped
     private Set<Long> retrieveStudyIds(Set<ProtectionGroup> protectionGroups) throws CSException {
         Set<Long> managedStudyIds = new HashSet<Long>();
         for (ProtectionGroup group : protectionGroups) {
@@ -218,7 +216,7 @@ public class SecurityManagerImpl implements SecurityManager {
         return getAuthorizationManager().getUser(username);
     }
     
-    @SuppressWarnings({ UNUSED, UNCHECKED }) // CSM API is untyped
+    @SuppressWarnings(UNCHECKED) // CSM API is untyped
     private Set<ProtectionGroup> retrieveStudyManagerProtectionGroups(String userId) 
     throws CSException {
         Set<ProtectionGroup> protectionGroups = new HashSet<ProtectionGroup>();

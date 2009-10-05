@@ -1,6 +1,13 @@
 package gov.nih.nci.caintegrator2.domain.annotation;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.common.DateUtil;
+
+import java.text.ParseException;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 
 /**
@@ -12,6 +19,23 @@ public class StringAnnotationValue extends AbstractAnnotationValue {
     
     private String stringValue;
 
+    /**
+     * Empty Constructor.
+     */
+    public StringAnnotationValue() { 
+        // Empty Constructor
+    }
+    
+    /**
+     * Converts the given annotation value to a new object, as well as moves it to the new 
+     * annotationDefinition.
+     * @param value to use to update this object.
+     * @param annotationDefinition is the new definition to move value to.
+     */
+    public StringAnnotationValue(AbstractAnnotationValue value, AnnotationDefinition annotationDefinition) {
+        super(value, annotationDefinition);
+    }
+    
     /**
      * @return the stringValue
      */
@@ -42,4 +66,49 @@ public class StringAnnotationValue extends AbstractAnnotationValue {
         return AnnotationTypeEnum.STRING;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void convertAnnotationValue(AnnotationDefinition annotationDefinition) 
+        throws ValidationException {
+        switch (annotationDefinition.getDataType()) {
+        case STRING:
+            if (annotationDefinition.equals(this.getAnnotationDefinition())) {
+                return;
+            }
+            StringAnnotationValue value = new StringAnnotationValue(this, annotationDefinition);
+            value.setStringValue(stringValue);
+            break;
+        case NUMERIC:
+            handleNumericType(annotationDefinition);
+            break;
+        case DATE:
+            handleDateType(annotationDefinition);
+            break;
+        default:
+            throw new IllegalArgumentException("Must input valid annotationType.");
+        }
+    }
+    
+    private void handleNumericType(AnnotationDefinition annotationDefinition) throws ValidationException {
+        NumericAnnotationValue numericValue = new NumericAnnotationValue(this, annotationDefinition);
+        if (StringUtils.isBlank(stringValue)) {
+            return;
+        }
+        if (!NumberUtils.isNumber(stringValue)) {
+            throw new ValidationException("Cannot convert String value '" + stringValue + "' to a number");
+        }
+        numericValue.setNumericValue(Double.valueOf(stringValue));
+    }
+    
+    private void handleDateType(AnnotationDefinition annotationDefinition) throws ValidationException {
+        DateAnnotationValue dateValue = new DateAnnotationValue(this, annotationDefinition);
+        try {
+            dateValue.setDateValue(DateUtil.createDate(stringValue));
+        } catch (ParseException e) {
+            throw new ValidationException("Cannot convert String value '" + stringValue + "' to a date", e);
+        }
+    }
 }

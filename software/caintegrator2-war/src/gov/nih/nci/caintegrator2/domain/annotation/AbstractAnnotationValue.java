@@ -1,6 +1,7 @@
 package gov.nih.nci.caintegrator2.domain.annotation;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.Image;
@@ -17,9 +18,54 @@ public abstract class AbstractAnnotationValue extends AbstractCaIntegrator2Objec
     private AnnotationDefinition annotationDefinition;
     private ImageSeries imageSeries;
     private SampleAcquisition sampleAcquisition;
-    private AbstractPermissibleValue boundedValue;
     private Image image;
     
+    /**
+     * Default empty constructor.
+     */
+    public AbstractAnnotationValue() { 
+        // Empty Constructor
+    }
+    
+    /**
+     * Converts the given annotation value to a a new object, as well as moves it to the new 
+     * annotationDefinition.
+     * @param oldValue to use to create this object.
+     * @param annotationDefinition is the new definition to move value to.
+     */
+    public AbstractAnnotationValue(AbstractAnnotationValue oldValue, AnnotationDefinition annotationDefinition) {
+        convertAnnotationDefinition(oldValue, annotationDefinition);
+        convertOldValue(oldValue);
+    }
+    
+    private void convertAnnotationDefinition(AbstractAnnotationValue oldValue, 
+            AnnotationDefinition newAnnotationDefinition) {
+        oldValue.getAnnotationDefinition().getAnnotationValueCollection().remove(oldValue);
+        this.annotationDefinition = newAnnotationDefinition;
+        annotationDefinition.getAnnotationValueCollection().add(this);
+    }
+
+    private void convertOldValue(AbstractAnnotationValue value) {
+        subjectAnnotation = value.getSubjectAnnotation();
+        if (subjectAnnotation != null) {
+            subjectAnnotation.setAnnotationValue(this);
+        }
+        imageSeries = value.getImageSeries();
+        if (imageSeries != null) {
+            imageSeries.getAnnotationCollection().remove(value);
+            imageSeries.getAnnotationCollection().add(this);
+        }
+        sampleAcquisition = value.getSampleAcquisition();
+        if (sampleAcquisition != null) {
+            sampleAcquisition.getAnnotationCollection().remove(value);
+            sampleAcquisition.getAnnotationCollection().add(this);
+        }
+        image = value.getImage();
+        if (image != null) {
+            image.getAnnotationCollection().remove(value);
+            image.getAnnotationCollection().add(this);
+        }
+    }
     /**
      * @return the subjectAnnotation
      */
@@ -77,20 +123,6 @@ public abstract class AbstractAnnotationValue extends AbstractCaIntegrator2Objec
     }
     
     /**
-     * @return the boundedValue
-     */
-    public AbstractPermissibleValue getBoundedValue() {
-        return boundedValue;
-    }
-    
-    /**
-     * @param boundedValue the boundedValue to set
-     */
-    public void setBoundedValue(AbstractPermissibleValue boundedValue) {
-        this.boundedValue = boundedValue;
-    }
-    
-    /**
      * @return the image
      */
     public Image getImage() {
@@ -109,5 +141,21 @@ public abstract class AbstractAnnotationValue extends AbstractCaIntegrator2Objec
      * @return AnnotationType associated with value.
      */
     public abstract AnnotationTypeEnum getValidAnnotationType();
+    
+    /**
+     * This function does 2 things:
+     * <ol><li>Converts the current annotation value to the data type of the given AnnotationDefinition.</li>
+     * <dl><dt>*If the type is the same as the current type then it will not convert.</dt> 
+     * <dt>*If the type is different, it will create a new AnnotationValue and convert itself into that type.</dt></dl>
+     * <li> Moves the value to the given AnnotationDefinition.</li>
+     * <dl><dt>*If the annotationDefinition is the same as the current annotationDefinition it will not move</dt></dl>
+     * </ol>
+     * NOTE: If the given annotationDefinition is different than current AnnotationDefinition then the current value 
+     * will be removed from the old annotationDefinition (and subsequently deleted).
+     * @param newAnnotationDefinition to move the value to.
+     * @throws ValidationException if conversion is not valid.
+     */
+    public abstract void convertAnnotationValue(AnnotationDefinition newAnnotationDefinition) 
+    throws ValidationException;
 
 }

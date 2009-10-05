@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
@@ -129,54 +129,54 @@ final class SelectedValueCriterionWrapper extends AbstractAnnotationCriterionWra
     }
 
     private AbstractCriterionParameter createMultiSelectParameter() {
-        ValuesSelectedHandler<AbstractPermissibleValue> handler = 
-            new ValuesSelectedHandler<AbstractPermissibleValue>() {
+        ValuesSelectedHandler<PermissibleValue> handler = 
+            new ValuesSelectedHandler<PermissibleValue>() {
 
-                public void valuesSelected(List<AbstractPermissibleValue> values) {
+                public void valuesSelected(List<PermissibleValue> values) {
                     criterion.getValueCollection().clear();
                     criterion.getValueCollection().addAll(values);
                 }
             
         };
-        MultiSelectParameter<AbstractPermissibleValue> parameter = 
-            new MultiSelectParameter<AbstractPermissibleValue>(0, getRow().getRowIndex(), 
+        MultiSelectParameter<PermissibleValue> parameter = 
+            new MultiSelectParameter<PermissibleValue>(0, getRow().getRowIndex(), 
                     getOptions(), handler, criterion.getValueCollection());
         parameter.setOperatorHandler(this);
         return parameter;
     }
 
     private AbstractCriterionParameter createSelectListParameter() {
-        ValueSelectedHandler<AbstractPermissibleValue> handler = new ValueSelectedHandler<AbstractPermissibleValue>() {
-            public void valueSelected(AbstractPermissibleValue value) {
+        ValueSelectedHandler<PermissibleValue> handler = new ValueSelectedHandler<PermissibleValue>() {
+            public void valueSelected(PermissibleValue value) {
                 criterion.getValueCollection().clear();
                 if (value != null) {
                     criterion.getValueCollection().add(value);
                 }
             }
         };
-        AbstractPermissibleValue value;
+        PermissibleValue value;
         if (criterion.getValueCollection().isEmpty()) {
             value = null;
         } else {
             value = criterion.getValueCollection().iterator().next();
         }
-        SelectListParameter<AbstractPermissibleValue> parameter = 
-            new SelectListParameter<AbstractPermissibleValue>(0, getRow().getRowIndex(), getOptions(), handler, value);
+        SelectListParameter<PermissibleValue> parameter = 
+            new SelectListParameter<PermissibleValue>(0, getRow().getRowIndex(), getOptions(), handler, value);
         parameter.setOperatorHandler(this);
         return parameter;
     }
     
-    private OptionList<AbstractPermissibleValue> getOptions() {
-        List<AbstractPermissibleValue> orderedValues = new ArrayList<AbstractPermissibleValue>();
+    private OptionList<PermissibleValue> getOptions() {
+        List<PermissibleValue> orderedValues = new ArrayList<PermissibleValue>();
         orderedValues.addAll(criterion.getAnnotationDefinition().getPermissibleValueCollection());
-        Comparator<AbstractPermissibleValue> valueComparator = new Comparator<AbstractPermissibleValue>() {
-            public int compare(AbstractPermissibleValue value1, AbstractPermissibleValue value2) {
+        Comparator<PermissibleValue> valueComparator = new Comparator<PermissibleValue>() {
+            public int compare(PermissibleValue value1, PermissibleValue value2) {
                 return value1.toString().compareTo(value2.toString());
             }
         };
         Collections.sort(orderedValues, valueComparator);
-        OptionList<AbstractPermissibleValue> options = new OptionList<AbstractPermissibleValue>();
-        for (AbstractPermissibleValue value : orderedValues) {
+        OptionList<PermissibleValue> options = new OptionList<PermissibleValue>();
+        for (PermissibleValue value : orderedValues) {
             options.addOption(value.toString(), value);
         }
         return options;

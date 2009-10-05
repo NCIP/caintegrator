@@ -88,7 +88,7 @@ package gov.nih.nci.caintegrator2.data;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
@@ -266,7 +266,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         
         // Try a selectedValueCriterion now (should be size 3)
         SelectedValueCriterion criterion3 = new SelectedValueCriterion();
-        Collection<AbstractPermissibleValue> permissibleValues1 = new HashSet<AbstractPermissibleValue>();
+        Collection<PermissibleValue> permissibleValues1 = new HashSet<PermissibleValue>();
         permissibleValues1.add(studyHelper.getPermval1());
         criterion3.setValueCollection(permissibleValues1);
         criterion3.setEntityType(EntityTypeEnum.SAMPLE);
@@ -277,7 +277,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         
         // Try the other permissible values (should be size 2)
         SelectedValueCriterion criterion4 = new SelectedValueCriterion();
-        Collection<AbstractPermissibleValue> permissibleValues2 = new HashSet<AbstractPermissibleValue>();
+        Collection<PermissibleValue> permissibleValues2 = new HashSet<PermissibleValue>();
         permissibleValues2.add(studyHelper.getPermval2());
         criterion4.setValueCollection(permissibleValues2);
         criterion4.setEntityType(EntityTypeEnum.SAMPLE);
@@ -420,7 +420,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         
         // First test is for Strings
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
-        annotationDefinition.setType(AnnotationTypeEnum.STRING.getValue());
+        annotationDefinition.setDataType(AnnotationTypeEnum.STRING);
         
         StringAnnotationValue genderStringValue1 = new StringAnnotationValue();
         genderStringValue1.setStringValue("M");
@@ -446,7 +446,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         
         // Next test is for numerics.
         AnnotationDefinition annotationDefinition2 = new AnnotationDefinition();
-        annotationDefinition2.setType(AnnotationTypeEnum.NUMERIC.getValue());
+        annotationDefinition2.setDataType(AnnotationTypeEnum.NUMERIC);
         
         NumericAnnotationValue numericValue1 = new NumericAnnotationValue();
         numericValue1.setNumericValue(1.0);
@@ -469,7 +469,8 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         annotationDefinition2.getAnnotationValueCollection().add(numericValue1);
         annotationDefinition2.getAnnotationValueCollection().add(numericValue2);
         annotationDefinition2.getAnnotationValueCollection().add(numericValue3);
-        
+        dao.save(annotationDefinition);
+        dao.save(annotationDefinition2);
         dao.save(study);
         // First test is 3 strings, M, M, and F, and we want just M / F to come out of it.
         List<String> values = dao.retrieveUniqueValuesForStudyAnnotation(study, annotationDefinition, EntityTypeEnum.SUBJECT, String.class);

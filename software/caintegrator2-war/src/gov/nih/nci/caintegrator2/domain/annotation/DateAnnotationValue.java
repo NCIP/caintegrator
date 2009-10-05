@@ -1,6 +1,7 @@
 package gov.nih.nci.caintegrator2.domain.annotation;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 
 import java.util.Date;
@@ -13,6 +14,23 @@ public class DateAnnotationValue extends AbstractAnnotationValue {
     private static final long serialVersionUID = 1L;
     
     private Date dateValue;
+    
+    /**
+     * Default empty constructor.
+     */
+    public DateAnnotationValue() { 
+        // Empty Constructor
+    }
+    
+    /**
+     * Converts the given annotation value to a a new object, as well as moves it to the new 
+     * annotationDefinition.
+     * @param value to use to update this object.
+     * @param annotationDefinition is the new definition to move value to.
+     */
+    public DateAnnotationValue(AbstractAnnotationValue value, AnnotationDefinition annotationDefinition) {
+        super(value, annotationDefinition);
+    }
 
     /**
      * @return the dateValue
@@ -44,4 +62,28 @@ public class DateAnnotationValue extends AbstractAnnotationValue {
         return AnnotationTypeEnum.DATE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void convertAnnotationValue(AnnotationDefinition annotationDefinition) 
+    throws ValidationException {
+        switch (annotationDefinition.getDataType()) {
+            case DATE:
+                if (annotationDefinition.equals(this.getAnnotationDefinition())) {
+                    return;
+                }
+                DateAnnotationValue dateAnnotationValue = new DateAnnotationValue(this, annotationDefinition);
+                dateAnnotationValue.setDateValue(dateValue);
+                break;
+            case STRING:
+                StringAnnotationValue stringAnnotationValue = new StringAnnotationValue(this, annotationDefinition);
+                stringAnnotationValue.setStringValue(this.toString());
+                break;
+            case NUMERIC:
+                throw new ValidationException("Cannot convert Date value '" + dateValue + "' to a number");
+            default:
+                throw new IllegalArgumentException("Must input valid annotationType.");
+        }
+    }
 }

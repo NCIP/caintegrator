@@ -102,9 +102,8 @@ import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
@@ -512,15 +511,15 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         String[] fields;
         while ((fields = reader.readNext()) != null) {
             AnnotationDefinition definition = new AnnotationDefinition();
-            definition.setDisplayName(fields[0]);
+            definition.getCommonDataElement().setLongName(fields[0]);
             definition.setKeywords(definition.getDisplayName());
-            definition.setType(AnnotationTypeEnum.getByValue(fields[1]).getValue());
+            definition.getCommonDataElement().getValueDomain().setDataType(AnnotationTypeEnum.getByValue(fields[1]));
             if (!StringUtils.isBlank(fields[2])) {
-                Collection<AbstractPermissibleValue> permissibleValues = new HashSet<AbstractPermissibleValue>();
+                Collection<PermissibleValue> permissibleValues = new HashSet<PermissibleValue>();
                 String[] values = fields[2].split(";");
                 for (String value : values) {
-                    StringPermissibleValue permissibleValue = new StringPermissibleValue();
-                    permissibleValue.setStringValue(value);
+                    PermissibleValue permissibleValue = new PermissibleValue();
+                    permissibleValue.setValue(value);
                     permissibleValues.add(permissibleValue);
                     dao.save(permissibleValue);
                 }

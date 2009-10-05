@@ -134,7 +134,7 @@ public class ManageQueryActionTest {
         setupSession();
     }
 
-    @SuppressWarnings({"PMD", "unchecked"})
+    @SuppressWarnings({"PMD"})
     private void setupSession() {
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
@@ -203,6 +203,30 @@ public class ManageQueryActionTest {
         assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertTrue(queryManagementService.saveCalled);
+        
+        // test load query
+        manageQueryAction.setSelectedAction("loadQuery");
+        manageQueryAction.setQueryId(1L);
+        manageQueryAction.validate();
+        assertFalse(manageQueryAction.hasErrors());
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertTrue(queryManagementService.executeCalled);
+        manageQueryAction.getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENOMIC.getValue());
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertEquals("criteria", manageQueryAction.getDisplayTab());
+        assertTrue(queryManagementService.executeGenomicDataQueryCalled);
+        
+        // test load & execute query
+        manageQueryAction.setSelectedAction("loadExecute");
+        manageQueryAction.setQueryId(1L);
+        manageQueryAction.validate();
+        assertFalse(manageQueryAction.hasErrors());
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertTrue(queryManagementService.executeCalled);
+        manageQueryAction.getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENOMIC.getValue());
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertEquals("searchResults", manageQueryAction.getDisplayTab());
+        assertTrue(queryManagementService.executeGenomicDataQueryCalled);        
         
         // test - addition of criteria rows
         manageQueryAction.setSelectedAction("addCriterionRow");

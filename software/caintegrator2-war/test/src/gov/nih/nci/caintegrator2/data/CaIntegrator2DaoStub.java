@@ -214,7 +214,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         findMatchesCalled = true;
         List<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
         AnnotationDefinition definition = new AnnotationDefinition();
-        definition.setDisplayName("definitionName");
+        definition.getCommonDataElement().setLongName("definitionName");
         definitions.add(definition);
         return definitions;
     }

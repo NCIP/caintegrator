@@ -89,6 +89,8 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
+import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -111,6 +113,20 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     private IGenomicDataSourceAjaxUpdater updater;
     private ArrayDataService arrayDataService;
     private CaArrayFacade caArrayFacade;
+    private ConfigurationHelper configurationHelper;
+
+    /**
+     * {@inheritDoc}
+     */
+    public void prepare() {
+        super.prepare();
+        if (getGenomicSource().getId() == null) {
+            getGenomicSource().getServerProfile().setHostname(
+                    getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_HOST));
+            getGenomicSource().getServerProfile().setPort(
+                Integer.valueOf(getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_PORT)));
+        }
+    }
 
     /**
      * {@inheritDoc}
@@ -264,6 +280,20 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      */
     public void setCaArrayFacade(CaArrayFacade caArrayFacade) {
         this.caArrayFacade = caArrayFacade;
+    }
+
+    /**
+     * @return the configurationHelper
+     */
+    public ConfigurationHelper getConfigurationHelper() {
+        return configurationHelper;
+    }
+
+    /**
+     * @param configurationHelper the configurationHelper to set
+     */
+    public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
+        this.configurationHelper = configurationHelper;
     }
        
 }

@@ -101,7 +101,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <!--//begin create karnofsky-->
@@ -112,22 +112,22 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_valueDomain_dataTypeString</td>
 	<td>label=numeric</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -137,22 +137,22 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_valueDomain_dataTypeString</td>
 	<td>label=date</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -162,22 +162,22 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_valueDomain_dataTypeString</td>
 	<td>label=date</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -187,22 +187,22 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_valueDomain_dataTypeString</td>
 	<td>label=date</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <!--// begin create age-->
@@ -213,17 +213,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <!--// begin create gender-->
@@ -234,17 +234,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <!--// end create gender-->
@@ -255,17 +255,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -275,17 +275,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -295,17 +295,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -315,17 +315,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -335,17 +335,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -355,17 +355,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -375,17 +375,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -395,17 +395,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -415,17 +415,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -435,17 +435,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -455,17 +455,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -475,7 +475,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -485,17 +485,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -505,17 +505,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -525,17 +525,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_createNewDefinition</td>
+	<td>//input[@value='New']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
 	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>updateDefinition_updateFileColumn</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -607,12 +607,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>saveSampleMapping_sampleMappingFile</td>
+	<td>sampleMappingFile</td>
 	<td>${selenium.test.resources.dir}rembrandt_caarray_sample_mapping.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>saveSampleMapping_0</td>
+	<td>//button[contains(text(),'Map Samples')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -628,17 +628,17 @@
 <!--// add a set of control samples-->
 <tr>
 	<td>type</td>
-	<td>saveSampleMapping_controlSampleSetName</td>
+	<td>controlSampleSetName</td>
 	<td>control set 1</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>saveSampleMapping_controlSampleFile</td>
+	<td>controlSampleFile</td>
 	<td>${selenium.test.resources.dir}rembrandt_control_samples.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>saveSampleMapping_0</td>
+	<td>//button[contains(text(),'Map Samples')]</td>
 	<td></td>
 </tr>
 <!--// end map samples-->

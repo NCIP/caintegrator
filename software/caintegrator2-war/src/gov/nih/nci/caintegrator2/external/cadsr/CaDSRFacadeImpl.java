@@ -87,24 +87,20 @@ package gov.nih.nci.caintegrator2.external.cadsr;
 
 import gov.nih.nci.cadsr.domain.AdministeredComponent;
 import gov.nih.nci.cadsr.domain.EnumeratedValueDomain;
-import gov.nih.nci.cadsr.domain.PermissibleValue;
 import gov.nih.nci.cadsr.domain.ValueDomainPermissibleValue;
+import gov.nih.nci.cadsr.domain.ValueMeaning;
 import gov.nih.nci.cadsr.freestylesearch.util.Search;
 import gov.nih.nci.cadsr.freestylesearch.util.SearchAC;
 import gov.nih.nci.cadsr.freestylesearch.util.SearchResults;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
-import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import org.acegisecurity.context.SecurityContext;
@@ -114,7 +110,7 @@ import org.acegisecurity.context.SecurityContextHolder;
 /**
  * Implements the CaDSRFacade interface.
  */
-@SuppressWarnings({ "PMD.CyclomaticComplexity" }) // See retrieveValueDomainForDataElement
+@SuppressWarnings("PMD.CyclomaticComplexity")
 public class CaDSRFacadeImpl implements CaDSRFacade {
     
     
@@ -134,7 +130,7 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
             if (i != keywords.size() - 1) {
                 sb.append(' ');
             }
-          }
+        }
 
         String keywordsString = sb.toString();
         search.setDataDescription(dataDescription);
@@ -168,9 +164,8 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
                     gov.nih.nci.cadsr.domain.DataElement.class, cadsrDataElement);
             
             if (!cadsrDataElements.isEmpty()) {
-                gov.nih.nci.cadsr.domain.DataElement cadsrRetrievedDataElement = 
-                    (gov.nih.nci.cadsr.domain.DataElement) cadsrDataElements.get(0);
-                gov.nih.nci.cadsr.domain.ValueDomain cadsrValueDomain = cadsrRetrievedDataElement.getValueDomain();
+                gov.nih.nci.cadsr.domain.ValueDomain cadsrValueDomain = 
+                    ((gov.nih.nci.cadsr.domain.DataElement) cadsrDataElements.get(0)).getValueDomain();
                 // Default will be String, Character, Alphanumeric, and Alpha DVG
                 AnnotationTypeEnum annotationType = AnnotationTypeEnum.STRING;
                 String cadsrDataType = cadsrValueDomain.getDatatypeName();
@@ -180,13 +175,10 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
                 if (cadsrDataType.matches("NUMBER")) {
                     annotationType = AnnotationTypeEnum.NUMERIC;
                 }
-                valueDomain.setDataType(annotationType.getValue());
+                valueDomain.setDataType(annotationType);
                 valueDomain.setLongName(cadsrValueDomain.getLongName());
                 valueDomain.setPublicID(cadsrValueDomain.getPublicID());
-                valueDomain.setValueDomainType(ValueDomainType.NON_ENUMERATED.getValue());
                 if (cadsrValueDomain instanceof EnumeratedValueDomain) {
-                    valueDomain.setValueDomainType(ValueDomainType.ENUMERATED.getValue());
-                    valueDomain.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
                     retrievePermissibleValues(valueDomain, cadsrValueDomain);
                 }
             }
@@ -204,41 +196,19 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
         EnumeratedValueDomain enumeratedValueDomain = (EnumeratedValueDomain) cadsrValueDomain;
         Collection<ValueDomainPermissibleValue> valueDomainPermissibleValues = 
                                 enumeratedValueDomain.getValueDomainPermissibleValueCollection();
-        AnnotationTypeEnum annotationType = AnnotationTypeEnum.getByValue(valueDomain.getDataType());
         for (ValueDomainPermissibleValue valueDomainPermissibleValue : valueDomainPermissibleValues) {
-            PermissibleValue cadsrPermissibleValue = valueDomainPermissibleValue.getPermissibleValue();
+            gov.nih.nci.cadsr.domain.PermissibleValue cadsrPermissibleValue = 
+                valueDomainPermissibleValue.getPermissibleValue();
             String stringValue = cadsrPermissibleValue.getValue();
-            AbstractPermissibleValue abstractValue = new AbstractPermissibleValue();
-            if (AnnotationTypeEnum.STRING.equals(annotationType)) {
-                StringPermissibleValue stringPermissibleValue = new StringPermissibleValue();
-                stringPermissibleValue.setStringValue(stringValue);
-                abstractValue = stringPermissibleValue;
-            } else if (AnnotationTypeEnum.NUMERIC.equals(annotationType)) {
-                abstractValue = retrieveNumericPermissibleValue(
-                        cadsrPermissibleValue, stringValue);
-            } else if (AnnotationTypeEnum.DATE.equals(annotationType)) {
-                // Larry Hebel mentioned that DATE doesn't have any caDSR instances of Permissible Values at this time.
-                DatePermissibleValue datePermissibleValue = new DatePermissibleValue();
-                abstractValue = datePermissibleValue;
-            }
+            PermissibleValue permissibleValue = new PermissibleValue();
+            permissibleValue.setValue(stringValue);
+            
             if (cadsrPermissibleValue.getValueMeaning() != null) {
-                abstractValue.setDescription(cadsrPermissibleValue.getValueMeaning().getDescription());
+                ValueMeaning valueMeaning = cadsrPermissibleValue.getValueMeaning();
+                permissibleValue.setValueMeaning(valueMeaning.getDescription());
             }
-            valueDomain.getPermissibleValueCollection().add(abstractValue);
+            valueDomain.getPermissibleValueCollection().add(permissibleValue);
         }
-    }
-
-    private NumericPermissibleValue retrieveNumericPermissibleValue(PermissibleValue cadsrPermissibleValue,
-            String stringValue) {
-        NumericPermissibleValue numericPermissibleValue = new NumericPermissibleValue();
-        numericPermissibleValue.setNumericValue(Double.valueOf(stringValue));
-        if (cadsrPermissibleValue.getHighValueNumber() != null) {
-            numericPermissibleValue.setHighValue(Double.valueOf(cadsrPermissibleValue.getHighValueNumber()));
-        }
-        if (cadsrPermissibleValue.getLowValueNumber() != null) {
-            numericPermissibleValue.setLowValue(Double.valueOf(cadsrPermissibleValue.getLowValueNumber()));    
-        }
-        return numericPermissibleValue;
     }
     
     private List<CommonDataElement> convertSearchResultsToDataElements(List<SearchResults> searchResults) {
@@ -252,7 +222,6 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
             de.setContextName(sr.getContextName());
             de.setPreferredName(sr.getPreferredName());
             de.setRegistrationStatus(sr.getRegistrationStatus());
-            de.setType(sr.getType().getName());
             de.setVersion(sr.getVersion());
             de.setWorkflowStatus(sr.getWorkflowStatus());
             dataElements.add(de);

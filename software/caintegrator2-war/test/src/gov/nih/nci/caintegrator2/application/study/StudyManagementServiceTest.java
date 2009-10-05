@@ -94,12 +94,11 @@ import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
@@ -244,16 +243,16 @@ public class StudyManagementServiceTest {
             studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
         sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
         AnnotationDefinition definition = new AnnotationDefinition();
-        definition.setType(AnnotationTypeEnum.NUMERIC.getValue());
+        definition.setDataType(AnnotationTypeEnum.NUMERIC);
         sourceConfiguration.getAnnotationFile().getColumns().get(1).getFieldDescriptor().setDefinition(definition);
         definition = new AnnotationDefinition();
-        definition.setType(AnnotationTypeEnum.STRING.getValue());
+        definition.setDataType(AnnotationTypeEnum.STRING);
         sourceConfiguration.getAnnotationFile().getColumns().get(2).getFieldDescriptor().setDefinition(definition);
         definition = new AnnotationDefinition();
-        definition.setType(AnnotationTypeEnum.STRING.getValue());
+        definition.setDataType(AnnotationTypeEnum.STRING);
         sourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
         definition = new AnnotationDefinition();
-        definition.setType(AnnotationTypeEnum.DATE.getValue());
+        definition.setDataType(AnnotationTypeEnum.DATE);
         sourceConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
         studyManagementService.loadClinicalAnnotation(studyConfiguration, sourceConfiguration); 
         studyManagementService.reLoadClinicalAnnotation(studyConfiguration); 
@@ -323,18 +322,24 @@ public class StudyManagementServiceTest {
         SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
         subjectAnnotation.setStudySubjectAssignment(assignment);
         
-        AbstractAnnotationValue value1 = new StringAnnotationValue();
-        AbstractAnnotationValue value2 = new StringAnnotationValue();
-        AbstractAnnotationValue value3 = new StringAnnotationValue();
+        StringAnnotationValue value1 = new StringAnnotationValue();
+        StringAnnotationValue value2 = new StringAnnotationValue();
+        StringAnnotationValue value3 = new StringAnnotationValue();
         value1.setSampleAcquisition(sampleAcquisition);
         value2.setImageSeries(imageSeries);
         value3.setSubjectAnnotation(subjectAnnotation);
         AnnotationDefinition firstDefinition = new AnnotationDefinition();
         firstDefinition.getAnnotationValueCollection().add(value1);
+        value1.setAnnotationDefinition(firstDefinition);
+        value1.setStringValue("1.23");
         firstDefinition.getAnnotationValueCollection().add(value2);
+        value2.setAnnotationDefinition(firstDefinition);
+        value2.setStringValue("1.23");
         firstDefinition.getAnnotationValueCollection().add(value3);
+        value3.setAnnotationDefinition(firstDefinition);
+        value3.setStringValue("1.23");
         firstDefinition.setId(1L);
-        firstDefinition.setType(AnnotationTypeEnum.STRING.getValue());
+        firstDefinition.setDataType(AnnotationTypeEnum.STRING);
         studyManagementService.setDefinition(study, fileColumn, firstDefinition, EntityTypeEnum.IMAGESERIES);
         assertTrue(daoStub.saveCalled);
         assertEquals(firstDefinition, fileColumn.getFieldDescriptor().getDefinition());
@@ -344,13 +349,15 @@ public class StudyManagementServiceTest {
         // Now create a new Definition and set it and verify the first definition is removed.
         AnnotationDefinition newDefinition = new AnnotationDefinition();
         newDefinition.setId(2L);
-        newDefinition.setType(AnnotationTypeEnum.STRING.getValue());
+        newDefinition.setDataType(AnnotationTypeEnum.NUMERIC);
         studyManagementService.setDefinition(study, fileColumn, newDefinition, EntityTypeEnum.IMAGESERIES);
         assertFalse(study.getImageSeriesAnnotationCollection().contains(firstDefinition));
         assertTrue(study.getImageSeriesAnnotationCollection().contains(newDefinition));
-        assertTrue(newDefinition.getAnnotationValueCollection().contains(value1));
-        assertTrue(newDefinition.getAnnotationValueCollection().contains(value2));
-        assertTrue(newDefinition.getAnnotationValueCollection().contains(value3));
+        assertEquals(3, newDefinition.getAnnotationValueCollection().size());
+        assertTrue(firstDefinition.getAnnotationValueCollection().isEmpty());
+        
+        assertEquals(Double.valueOf(1.23),
+           ((NumericAnnotationValue)newDefinition.getAnnotationValueCollection().iterator().next()).getNumericValue());
     }
     
     @SuppressWarnings("deprecation")
@@ -362,7 +369,7 @@ public class StudyManagementServiceTest {
         fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
         // Make an original definition with values already set.
         AnnotationDefinition originalDefinition = new AnnotationDefinition();
-        originalDefinition.setType(AnnotationTypeEnum.STRING.getValue());
+        originalDefinition.setDataType(AnnotationTypeEnum.STRING);
         fileColumn.getFieldDescriptor().setDefinition(originalDefinition);
         fileColumn.setAnnotationFile(new AnnotationFile());
         fileColumn.getAnnotationFile().setCurrentlyLoaded(Boolean.TRUE.toString());
@@ -375,27 +382,27 @@ public class StudyManagementServiceTest {
         validValue.setStringValue("Valid");
         validValue.setSubjectAnnotation(subjectAnnotation);
         originalDefinition.getAnnotationValueCollection().add(validValue);
+        validValue.setAnnotationDefinition(originalDefinition);
         
         CommonDataElement dataElement = new CommonDataElement();
         dataElement.setLongName("longName");
         dataElement.setDefinition("definition");
         dataElement.setPublicID(1234L);
         ValueDomain valueDomain = new ValueDomain();
-        valueDomain.setDataType(AnnotationTypeEnum.STRING.getValue());
+        valueDomain.setDataType(AnnotationTypeEnum.STRING);
         dataElement.setValueDomain(valueDomain);
-        valueDomain.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
-        StringPermissibleValue permissibleValue = new StringPermissibleValue();
+        PermissibleValue permissibleValue = new PermissibleValue();
         permissibleValue.setId(Long.valueOf(1));
-        permissibleValue.setStringValue("Valid");
+        permissibleValue.setValue("Valid");
         valueDomain.getPermissibleValueCollection().add(permissibleValue);
         
         studyManagementService.setDataElement(fileColumn, dataElement, study, EntityTypeEnum.SUBJECT, "");
         assertTrue(daoStub.saveCalled);
         assertNotNull(fileColumn.getFieldDescriptor().getDefinition());
-        assertNotNull(fileColumn.getFieldDescriptor().getDefinition().getCde());
+        assertNotNull(fileColumn.getFieldDescriptor().getDefinition().getCommonDataElement());
         assertEquals("longName", fileColumn.getFieldDescriptor().getDefinition().getDisplayName());
-        assertEquals("definition", fileColumn.getFieldDescriptor().getDefinition().getPreferredDefinition());
-        assertEquals(Long.valueOf(1234), fileColumn.getFieldDescriptor().getDefinition().getCde().getPublicID());
+        assertEquals("definition", fileColumn.getFieldDescriptor().getDefinition().getCommonDataElement().getDefinition());
+        assertEquals(Long.valueOf(1234), fileColumn.getFieldDescriptor().getDefinition().getCommonDataElement().getPublicID());
         AnnotationDefinition firstDefinition = fileColumn.getFieldDescriptor().getDefinition();
         assertTrue(firstDefinition.getPermissibleValueCollection().iterator().next().equals(permissibleValue));
         assertTrue(firstDefinition.getAnnotationValueCollection().size() == 1);
@@ -409,6 +416,7 @@ public class StudyManagementServiceTest {
         invalidValue.setStringValue("INVALID");
         invalidValue.setSubjectAnnotation(subjectAnnotation2);
         fileColumn.getFieldDescriptor().getDefinition().getAnnotationValueCollection().add(invalidValue);
+        invalidValue.setAnnotationDefinition(fileColumn.getFieldDescriptor().getDefinition());
         boolean exceptionCaught = false;
         try {
             studyManagementService.setDataElement(fileColumn, dataElement, study, EntityTypeEnum.SUBJECT, "");
@@ -422,7 +430,7 @@ public class StudyManagementServiceTest {
         dataElement2.setLongName("longName2");
         dataElement2.setDefinition("definition2");
         dataElement2.setPublicID(123L);
-        dataElement2.setType(AnnotationTypeEnum.STRING.getValue());
+        dataElement2.getValueDomain().setDataType(AnnotationTypeEnum.STRING);
         studyManagementService.setDataElement(fileColumn, dataElement2, study, EntityTypeEnum.SUBJECT, "");
         AnnotationDefinition newDefinition = fileColumn.getFieldDescriptor().getDefinition();
         assertFalse(study.getSubjectAnnotationCollection().contains(firstDefinition));
@@ -548,16 +556,16 @@ public class StudyManagementServiceTest {
             studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
         imageAnnotationConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
         AnnotationDefinition definition = new AnnotationDefinition();
-        definition.setType(AnnotationTypeEnum.NUMERIC.getValue());
+        definition.setDataType(AnnotationTypeEnum.NUMERIC);
         imageAnnotationConfiguration.getAnnotationFile().getColumns().get(1).getFieldDescriptor().setDefinition(definition);
         definition = new AnnotationDefinition();
-        definition.setType(AnnotationTypeEnum.STRING.getValue());
+        definition.setDataType(AnnotationTypeEnum.STRING);
         imageAnnotationConfiguration.getAnnotationFile().getColumns().get(2).getFieldDescriptor().setDefinition(definition);
         definition = new AnnotationDefinition();
-        definition.setType(AnnotationTypeEnum.STRING.getValue());
+        definition.setDataType(AnnotationTypeEnum.STRING);
         imageAnnotationConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
         definition = new AnnotationDefinition();
-        definition.setType(AnnotationTypeEnum.DATE.getValue());
+        definition.setDataType(AnnotationTypeEnum.DATE);
         imageAnnotationConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
         imageDataSourceConfiguration.setImageAnnotationConfiguration(imageAnnotationConfiguration);
         
@@ -594,17 +602,17 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testCreateDefinition() {
+    public void testCreateDefinition() throws ValidationException {
         AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
         Study study = new Study();
         descriptor.setName("testName");
-        AnnotationDefinition definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SUBJECT);
+        AnnotationDefinition definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SUBJECT, AnnotationTypeEnum.STRING);
         assertEquals(descriptor.getName(), definition.getDisplayName());
         assertEquals(descriptor.getName(), definition.getKeywords());
         assertEquals(1, study.getSubjectAnnotationCollection().size());
-        definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.IMAGESERIES);
+        definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.IMAGESERIES, AnnotationTypeEnum.STRING);
         assertEquals(1, study.getImageSeriesAnnotationCollection().size());
-        definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SAMPLE);
+        definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SAMPLE, AnnotationTypeEnum.STRING);
         assertEquals(1, study.getSampleAnnotationCollection().size());
     }
     
@@ -657,6 +665,30 @@ public class StudyManagementServiceTest {
         } catch (CSSecurityException e) {
             fail();
         }
+    }
+    
+    @Test
+    public void testSaveAnnotationDefinition() throws ValidationException {
+        AnnotationDefinition stringToNumericDefinition = new AnnotationDefinition();
+        stringToNumericDefinition.setDataType(AnnotationTypeEnum.NUMERIC);
+        StringAnnotationValue value = new StringAnnotationValue();
+        value.setAnnotationDefinition(stringToNumericDefinition);
+        stringToNumericDefinition.getAnnotationValueCollection().add(value);
+        value.setStringValue("invalid");
+        try {
+            studyManagementService.save(stringToNumericDefinition);
+            fail();
+        } catch (ValidationException e) {
+            value.setAnnotationDefinition(stringToNumericDefinition);
+            stringToNumericDefinition.getAnnotationValueCollection().clear();
+            stringToNumericDefinition.getAnnotationValueCollection().add(value);
+        }
+        value.setStringValue("1.23");
+        studyManagementService.save(stringToNumericDefinition);
+        assertEquals(1, stringToNumericDefinition.getAnnotationValueCollection().size());
+        assertEquals(Double.valueOf(1.23),
+                ((NumericAnnotationValue)stringToNumericDefinition.getAnnotationValueCollection().iterator().next()).getNumericValue());
+
     }
     
     private static class SecureDaoStub extends CaIntegrator2DaoStub {

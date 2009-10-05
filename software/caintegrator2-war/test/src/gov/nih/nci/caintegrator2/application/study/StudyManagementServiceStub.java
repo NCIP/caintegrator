@@ -87,7 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.cadsr.freestylesearch.util.SearchException;
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -188,7 +188,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         }
     }
 
-    public void delete(Collection<AbstractPermissibleValue> abstractPermissibleValues) {
+    public void delete(Collection<PermissibleValue> abstractPermissibleValues) {
         deleteCalled = true;
     }
 
@@ -335,10 +335,13 @@ public class StudyManagementServiceStub implements StudyManagementService {
     }
 
 
-    public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType) {
+    public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType, AnnotationTypeEnum annotationType) {
         AnnotationDefinition definition = new AnnotationDefinition();
         if (descriptor != null) {
             descriptor.setDefinition(definition);
+        }
+        if (annotationType != null) {
+            definition.getCommonDataElement().getValueDomain().setDataType(annotationType);
         }
         createDefinitionCalled = true;
         return definition;
@@ -474,6 +477,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
             throw new CSSecurityException("invalid");
         }
         return refreshedStudyConfiguration;
+    }
+
+    public void save(AnnotationDefinition definition) throws ValidationException {
+        
     }
 
 }

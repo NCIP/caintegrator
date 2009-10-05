@@ -144,8 +144,17 @@ public class DnaAnalysisReporter extends AbstractReporter {
      */
     public void setChromosome(String chromosome) {
         this.chromosome = chromosome;
+        validateChromosome();
     }
 
+    private void validateChromosome() {
+        try {
+            getChromosomeAsInt();
+        } catch (Exception e) {
+            this.chromosome = null;
+        }
+    }
+    
     /**
      * @return the position
      */

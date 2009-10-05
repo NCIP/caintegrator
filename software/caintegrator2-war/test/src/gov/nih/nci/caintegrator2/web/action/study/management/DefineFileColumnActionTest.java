@@ -94,7 +94,7 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
@@ -210,7 +210,6 @@ public class DefineFileColumnActionTest extends AbstractSessionBasedTest {
     }
     
     @Test
-    @SuppressWarnings("deprecation")
     public void testCreateNewDefinition() throws ValidationException, ParseException {
         action.setFileColumn(new FileColumn());
         action.getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
@@ -242,29 +241,30 @@ public class DefineFileColumnActionTest extends AbstractSessionBasedTest {
     }
     
     @Test
-    public void testUpdateFileColumn() throws ParseException {
+    public void testUpdateAnnotationDefinition() throws ParseException {
         action.setColumnType("Annotation");
         action.setFileColumn(new FileColumn());
         action.getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
-        assertEquals(Action.SUCCESS, action.updateFileColumn());
+        assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
         
         AnnotationDefinition definition = new AnnotationDefinition();
         action.getFileColumn().getFieldDescriptor().setDefinition(definition);
-        definition.setType(AnnotationTypeEnum.DATE.getValue());
+        definition.setDataType(AnnotationTypeEnum.DATE);
         
-        Collection<AbstractPermissibleValue> permissibleValueCollection =  new HashSet<AbstractPermissibleValue>();
+        Collection<PermissibleValue> permissibleValueCollection =  new HashSet<PermissibleValue>();
         definition.getPermissibleValueCollection().addAll(permissibleValueCollection);
         List<String> stringValues = new ArrayList<String>();
         action.setPermissibleUpdateList(stringValues);
         stringValues.add("10-05-2004");
         stringValues.add("01/02/1999");
-        assertEquals(Action.SUCCESS, action.updateFileColumn());
+        assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
         assertEquals(definition.getPermissibleValueCollection().size(), 2);
         stringValues.add("11-10-2008");
-        assertEquals(Action.SUCCESS, action.updateFileColumn());
+        assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
         assertEquals(definition.getPermissibleValueCollection().size(), 3);
         
         stringValues.add("XYZ");
-        assertEquals(Action.ERROR, action.updateFileColumn());
+        assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
+        assertEquals(definition.getPermissibleValueCollection().size(), 0);
     }
 }

@@ -45,11 +45,6 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editFileColumn_tile.jsp" />
         <put-attribute name="subTitle" value="Assign Annotation Definition for Column" />
     </definition>
-
-    <definition name="editImagingFileColumn" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editImagingFileColumn_tile.jsp" />
-        <put-attribute name="subTitle" value="Assign Annotation Definition for Imaging Column" />
-    </definition>
     
     <definition name="editGenomicSource" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editGenomicSource_tile.jsp" />

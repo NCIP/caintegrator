@@ -35,7 +35,7 @@ public class DisplayableQueryResultTest {
         assertTrue(result.getHasSubjects());
         assertFalse(result.getHasSamples());
         assertEquals("value1", result.getRows().get(0).getValues().get(0).toString());
-        assertEquals("2.0", result.getRows().get(0).getValues().get(1).toString());
+        assertEquals("2", result.getRows().get(0).getValues().get(1).toString());
         
         assertTrue(result.getSelectAll());
         result.setSelectAll(false);

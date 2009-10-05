@@ -90,7 +90,6 @@ import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
@@ -116,6 +115,7 @@ import gov.nih.nci.security.exceptions.CSSecurityException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -155,6 +155,21 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             getWorkspaceService().subscribe(getWorkspaceService().getWorkspace(), studyConfiguration.getStudy());
         }
         persist(studyConfiguration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(rollbackFor = ValidationException.class)
+    public void save(AnnotationDefinition definition) throws ValidationException {
+        if (!definition.getAnnotationValueCollection().isEmpty()) {
+            Set<AbstractAnnotationValue> valuesToUpdate = new HashSet<AbstractAnnotationValue>();
+            valuesToUpdate.addAll(definition.getAnnotationValueCollection());
+            for (AbstractAnnotationValue value : valuesToUpdate) {
+                value.convertAnnotationValue(definition);
+            }
+        }
+        dao.save(definition);
     }
     
     /**
@@ -483,6 +498,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     public <T> T getRefreshedStudyEntity(T entity) {
         Long id;
         try {
@@ -551,37 +567,34 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                                 EntityTypeEnum entityType,
                                 String keywords) 
     throws ConnectionException, ValidationException {
-        AnnotationDefinition annotationDefinition = createDefinition(fileColumn.getFieldDescriptor(), 
-                                                                     study, 
-                                                                     entityType);
-        annotationDefinition.setDisplayName(dataElement.getLongName());
+        if (dataElement.getValueDomain() == null) {
+            retrieveValueDomain(dataElement);
+        }
+        AnnotationDefinition annotationDefinition = new AnnotationDefinition();
+        annotationDefinition.setCommonDataElement(dataElement);
+        addDefinitionToStudy(fileColumn.getFieldDescriptor(), study, entityType, annotationDefinition);
         if (dataElement.getDefinition().length() > DEFINITION_LENGTH) {
             dataElement.setDefinition(dataElement.getDefinition().substring(0, DEFINITION_LENGTH - 7) + "...");
         }
-        annotationDefinition.setPreferredDefinition(dataElement.getDefinition());
-        annotationDefinition.setCde(dataElement);
         annotationDefinition.setKeywords(keywords);
-        ValueDomain valueDomain = dataElement.getValueDomain();
-        if (valueDomain == null) {
-            valueDomain = retrieveValueDomain(dataElement);
-            dataElement.setValueDomain(valueDomain);
-        }
-        annotationDefinition.setType(valueDomain.getDataType());
+        validateAnnotationDefinition(fileColumn, study, entityType, annotationDefinition);
+        dao.save(annotationDefinition);
+        dao.save(fileColumn);
+    }
+
+    private void validateAnnotationDefinition(FileColumn fileColumn, Study study, EntityTypeEnum entityType,
+            AnnotationDefinition annotationDefinition) throws ValidationException {
         Set<Object> uniqueValues = validateAndRetrieveUniqueValues(study, entityType, 
                 fileColumn, annotationDefinition); 
-        addPermissibleValuesFromValueDomain(annotationDefinition, valueDomain);
         if (!annotationDefinition.getPermissibleValueCollection().isEmpty()) {
             validateValuesWithPermissibleValues(uniqueValues, annotationDefinition);
         }
-        dao.save(dataElement);
-        dao.save(annotationDefinition);
-        dao.save(fileColumn);
     }
     
     @SuppressWarnings("unchecked") // For the "class" type.
     private Set<Object> validateAndRetrieveUniqueValues(Study study, EntityTypeEnum entityType, 
             FileColumn fileColumn, AnnotationDefinition annotationDefinition) throws ValidationException {
-        AnnotationTypeEnum annotationType = AnnotationTypeEnum.getByValue(annotationDefinition.getType());
+        AnnotationTypeEnum annotationType = annotationDefinition.getDataType();
         if (annotationType == null) {
             throw new IllegalArgumentException("Data Type for the Annotation Definition is unknown.");
         }
@@ -616,26 +629,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         }
     }
 
-    private ValueDomain retrieveValueDomain(CommonDataElement dataElement)
+    private void retrieveValueDomain(CommonDataElement dataElement)
             throws ConnectionException {
         ValueDomain valueDomain;
         String dataElementVersion = dataElement.getVersion(); 
         valueDomain = caDSRFacade.retrieveValueDomainForDataElement(dataElement.getPublicID(), 
                                                     NumberUtils.isNumber(dataElementVersion) 
                                                     ? Float.valueOf(dataElementVersion) : null);
-        dao.save(valueDomain);
-        return valueDomain;
-    }
-
-    private void addPermissibleValuesFromValueDomain(AnnotationDefinition annotationDefinition, 
-                                                     ValueDomain valueDomain) {
-        if (valueDomain.getPermissibleValueCollection() != null 
-            && !valueDomain.getPermissibleValueCollection().isEmpty()) {
-            for (AbstractPermissibleValue permissibleValue 
-                : valueDomain.getPermissibleValueCollection()) {
-                annotationDefinition.getPermissibleValueCollection().add(permissibleValue);
-            }
-        }
+        dataElement.setValueDomain(valueDomain);
     }
 
     /**
@@ -647,18 +648,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         if (fileColumn.getFieldDescriptor().getDefinition() == null 
             || !fileColumn.getFieldDescriptor().getDefinition().equals(annotationDefinition)) {
             addDefinitionToStudy(fileColumn.getFieldDescriptor(), study, entityType, annotationDefinition);
-            Set<Object> uniqueValues = validateAndRetrieveUniqueValues(study, entityType, 
-                    fileColumn, annotationDefinition); 
-            if (!annotationDefinition.getPermissibleValueCollection().isEmpty()) {
-                validateValuesWithPermissibleValues(uniqueValues, annotationDefinition);
-            }
+            validateAnnotationDefinition(fileColumn, study, entityType, annotationDefinition);
             
             dao.save(annotationDefinition);
             dao.save(fileColumn);
             dao.save(study);
         }
     }
-
+    
     /**
      * @return the nciaFacade
      */
@@ -814,10 +811,11 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, 
                                                  Study study, 
-                                                 EntityTypeEnum entityType) {
+                                                 EntityTypeEnum entityType,
+                                                 AnnotationTypeEnum annotationType) throws ValidationException {
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
-        annotationDefinition.setDisplayName(descriptor.getName());
-        annotationDefinition.setType(AnnotationTypeEnum.STRING.getValue());
+        annotationDefinition.getCommonDataElement().setLongName(descriptor.getName());
+        annotationDefinition.getCommonDataElement().getValueDomain().setDataType(annotationType);
         annotationDefinition.setKeywords(annotationDefinition.getDisplayName());
         addDefinitionToStudy(descriptor, study, entityType, annotationDefinition);
         dao.save(annotationDefinition);
@@ -828,7 +826,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     
     @SuppressWarnings({ "PMD.ExcessiveMethodLength" }) // Switch Statement and null checks
     private void addDefinitionToStudy(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType,
-            AnnotationDefinition annotationDefinition) {
+            AnnotationDefinition annotationDefinition) throws ValidationException {
         AnnotationDefinition annotationDefinitionToRemove = null;
         if (descriptor.getDefinition() != null) {
             annotationDefinitionToRemove = descriptor.getDefinition();
@@ -866,16 +864,20 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * @param study - Study that the values belong to.
      * @param annotationDefinition - new AnnotationDefinition where the Values will belong.
      * @param annotationDefinitionToRemove - Old AnnotationDefinition.
+     * @throws ValidationException if unable to move old values to new definition.
      */
     private void moveValuesToNewDefinition(Study study, AnnotationDefinition annotationDefinition,
-            AnnotationDefinition annotationDefinitionToRemove) {
+            AnnotationDefinition annotationDefinitionToRemove) throws ValidationException {
         if (annotationDefinitionToRemove.getAnnotationValueCollection() != null 
             && !annotationDefinitionToRemove.getAnnotationValueCollection().isEmpty()) {
+            List<AbstractAnnotationValue> valuesToConvert = new ArrayList<AbstractAnnotationValue>();
             for (AbstractAnnotationValue value : annotationDefinitionToRemove.getAnnotationValueCollection()) {
                 if (studyContainsAnnotationValue(value, study)) {
-                    value.setAnnotationDefinition(annotationDefinition);
-                    annotationDefinition.getAnnotationValueCollection().add(value);
+                    valuesToConvert.add(value); // To not get a ConcurrentModificationException.
                 }
+            }
+            for (AbstractAnnotationValue valueToConvert : valuesToConvert) {
+                valueToConvert.convertAnnotationValue(annotationDefinition);
             }
         }
     }
@@ -973,5 +975,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void setSecurityManager(SecurityManager securityManager) {
         this.securityManager = securityManager;
     }
+
+
 
 }

@@ -62,7 +62,6 @@ public class KMPlotServiceImpl implements KMPlotService {
         plotter.writeBufferedImage(out, image, imgType);
     }
 
-    @SuppressWarnings("deprecation")
     public void createPlotAsImageFile(File outFile, KMCriteriaDTO kmCrit, ImageTypes imgType)
     throws KMException {
         assert kmCrit != null;

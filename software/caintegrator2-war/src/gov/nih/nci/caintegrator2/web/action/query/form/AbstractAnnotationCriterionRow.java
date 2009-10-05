@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.DateComparisonCriterion;
@@ -149,14 +149,14 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
         }
         if (!field.getPermissibleValueCollection().isEmpty()) {
             return CriterionTypeEnum.SELECTED_VALUE;
-        } else if (AnnotationTypeEnum.STRING.getValue().equals(field.getType())) {
+        } else if (AnnotationTypeEnum.STRING.equals(field.getDataType())) {
             return CriterionTypeEnum.STRING_COMPARISON;
-        } else if (AnnotationTypeEnum.NUMERIC.getValue().equals(field.getType())) {
+        } else if (AnnotationTypeEnum.NUMERIC.equals(field.getDataType())) {
             return CriterionTypeEnum.NUMERIC_COMPARISON;
-        } else if (AnnotationTypeEnum.DATE.getValue().equals(field.getType())) {
+        } else if (AnnotationTypeEnum.DATE.equals(field.getDataType())) {
             return CriterionTypeEnum.DATE_COMPARISON;
         } else {
-            throw new IllegalArgumentException("Unsupported type " + field.getType());
+            throw new IllegalArgumentException("Unsupported type " + field.getDataType());
         }
     }
 
@@ -194,7 +194,7 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
         SelectedValueCriterion criterion = new SelectedValueCriterion();
         criterion.setAnnotationDefinition(field);
         criterion.setEntityType(getEntityType());
-        criterion.setValueCollection(new HashSet<AbstractPermissibleValue>());
+        criterion.setValueCollection(new HashSet<PermissibleValue>());
         return new SelectedValueCriterionWrapper(criterion, this);
     }
 

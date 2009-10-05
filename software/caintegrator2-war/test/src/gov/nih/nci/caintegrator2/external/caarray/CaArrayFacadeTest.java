@@ -382,7 +382,6 @@ public class CaArrayFacadeTest {
             }
 
             @Override
-            @SuppressWarnings("unused")
             public SearchResult<Hybridization> searchForHybridizations(HybridizationSearchCriteria criteria,
                     LimitOffset arg1) throws InvalidReferenceException {
                 SearchResult<Hybridization> result = new SearchResult<Hybridization>();
