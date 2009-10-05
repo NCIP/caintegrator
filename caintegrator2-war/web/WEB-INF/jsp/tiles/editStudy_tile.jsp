@@ -170,7 +170,7 @@
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
                             <li><a name="action:addClinicalFile_clinicalFile" id="addClinicalFile_clinicalFile" onclick="new Effect.toggle($('add_clinical'),'blind')" class="btn" style="margin: 0pt;" href="javascript://"><span class="btn_img"><span class="add">Add New</span></span></a></li>
-                                <s:url id="editSurvivalValueDefinitions" action="editSurvivalValueDefinitions">
+                                <s:url id="editSurvivalValueDefinitions" action="editSurvivalValueDefinitions" includeParams="none">
                                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                 </s:url>
                             <li><s:a href="%{editSurvivalValueDefinitions}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit">Edit Survival Values</span></span></s:a></li>
@@ -225,28 +225,28 @@
                                 </s:else>  
                             </td>
                             <td style="float: right;">
-                                <s:url id="editClinicalSource" action="editClinicalSource">
+                                <s:url id="editClinicalSource" action="editClinicalSource" includeParams="none">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="clinicalSource.id" value="id" />
                                 </s:url>
                                 <s:a href="%{editClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Annotations</span></span></s:a>
                                 <s:if test="%{loadable}" >
                                     <s:if test="%{currentlyLoaded}">
-                                       <s:url id="reLoadClinicalSource" action="reLoadClinicalSource">
+                                       <s:url id="reLoadClinicalSource" action="reLoadClinicalSource" includeParams="none">
                                           <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                           <s:param name="clinicalSource.id" value="id" />
                                        </s:url> 
                                        <s:a href="%{reLoadClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="reload">Reload All Clinical</span></span></s:a>
                                     </s:if>
                                     <s:else>
-                                       <s:url id="loadClinicalSource" action="loadClinicalSource">
+                                       <s:url id="loadClinicalSource" action="loadClinicalSource" includeParams="none">
                                           <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                           <s:param name="clinicalSource.id" value="id" />
                                        </s:url> 
                                        <s:a href="%{loadClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="load">Load All Clinical</span></span></s:a>
                                     </s:else>
                                 </s:if>
-                                <s:url id="deleteClinicalSource" action="deleteClinicalSource">
+                                <s:url id="deleteClinicalSource" action="deleteClinicalSource" includeParams="none">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="clinicalSource.id" value="id" />
                                 </s:url> 
@@ -267,7 +267,7 @@
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
-                                <s:url id="addGenomicSource" action="addGenomicSource">
+                                <s:url id="addGenomicSource" action="addGenomicSource" includeParams="none">
                                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                 </s:url>
                             <li><s:a href="%{addGenomicSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="add">Add New</span></span></s:a></li>
@@ -304,7 +304,7 @@
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
-                                <s:url id="addImagingSource" action="addImagingSource">
+                                <s:url id="addImagingSource" action="addImagingSource" includeParams="none">
                                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                 </s:url>
                             <li><s:a href="%{addImagingSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="add">Add New</span></span></s:a></li>
