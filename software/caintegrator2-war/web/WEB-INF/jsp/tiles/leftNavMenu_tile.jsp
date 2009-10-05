@@ -48,6 +48,7 @@
                             <ul>                                
                                 <s:iterator value="displayableWorkspace.userQueries">
                                     <s:url id="runQueryUrl" action="manageQuery" includeParams="none">
+                                        <s:param name="selectedAction" value="%{'loadExecute'}" />
                                         <s:param name="queryId" value="id" />
                                     </s:url>
                                     <s:url id="editQueryUrl" action="manageQuery" includeParams="none">
