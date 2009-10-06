@@ -131,4 +131,15 @@ public class GisticAnalysisJob extends AbstractPersistedAnalysisJob {
     public boolean isGridServiceCall() {
         return getGisticAnalysisForm().isGridServiceCall();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append(retrieveHeader("Gistic Analysis"));
+        sb.append(gisticAnalysisForm.getGisticParameters().toString());
+        return sb.toString();
+    }
 }

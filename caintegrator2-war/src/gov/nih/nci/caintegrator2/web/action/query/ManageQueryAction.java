@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
+import gov.nih.nci.caintegrator2.web.DownloadableFile;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.io.File;
@@ -286,7 +287,12 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
 
     private String exportGenomicResults() {
         File file = queryManagementService.createCsvFileFromGenomicResults(getGenomicDataQueryResult());
-        getDisplayableWorkspace().setTemporaryDownloadFile(file.getAbsolutePath());
+        DownloadableFile downloadableFile = new DownloadableFile();
+        downloadableFile.setPath(file.getAbsolutePath());
+        downloadableFile.setContentType(DownloadableFile.CONTENT_TYPE_TEXT);
+        downloadableFile.setFilename("genomicResults.csv");
+        downloadableFile.setDeleteFile(true);
+        getDisplayableWorkspace().setTemporaryDownloadFile(downloadableFile);
         return "exportGenomicResults";
     }
 

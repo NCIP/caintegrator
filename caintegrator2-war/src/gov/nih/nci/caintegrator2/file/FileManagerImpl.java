@@ -85,18 +85,31 @@
  */
 package gov.nih.nci.caintegrator2.file;
 
+import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
+import gov.nih.nci.caintegrator2.application.analysis.ClassificationsToClsConverter;
+import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
+import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
+import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.genepattern.cabig.util.ZipUtils;
+import org.genepattern.gistic.Marker;
+import org.genepattern.gistic.common.GisticUtils;
 
 /**
  * Implementation of file storage and retrieval subsystem.
@@ -176,6 +189,86 @@ public class FileManagerImpl implements FileManager {
 
     private File getStorageRootDirectory() {
         return new File(getConfigurationHelper().getString(ConfigurationParameter.STUDY_FILE_STORAGE_DIRECTORY));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File createNewStudySubscriptionFile(StudySubscription studySubscription, String filename) {
+        return new File(getUserDirectory(studySubscription) + File.separator 
+                + filename);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File createClassificationFile(StudySubscription studySubscription,
+            SampleClassificationParameterValue sampleClassifications, String clsFilename) {
+        return ClassificationsToClsConverter.writeAsCls(sampleClassifications, 
+                createNewStudySubscriptionFile(studySubscription, clsFilename).getAbsolutePath());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File createGctFile(StudySubscription studySubscription, GctDataset gctDataset, String filename) {
+        return GctDatasetFileWriter.writeAsGct(gctDataset, 
+                createNewStudySubscriptionFile(studySubscription, filename).getAbsolutePath());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File createSamplesFile(StudySubscription studySubscription, SampleWithChromosomalSegmentSet[] samples)
+            throws IOException {
+        File tmpFile = GisticUtils.writeSampleFile(samples); 
+        File resultFile = createNewStudySubscriptionFile(studySubscription, tmpFile.getName());
+        FileUtils.moveFile(tmpFile, resultFile);
+        return resultFile;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File createMarkersFile(StudySubscription studySubscription, Marker[] markers) throws IOException {
+        File tmpFile = GisticUtils.writeMarkersFile(markers); 
+        File resultFile = createNewStudySubscriptionFile(studySubscription, tmpFile.getName());
+        FileUtils.moveFile(tmpFile, resultFile);
+        return resultFile;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File renameCnvFile(File cnvFile) throws IOException {
+        File newCnvFile = new File(cnvFile.getParent(), 
+                GisticUtils.CNV_SEGMENT_FILE_PREFIX + System.currentTimeMillis() + ".txt");
+        FileUtils.copyFile(cnvFile, newCnvFile);
+        cnvFile.delete();
+        return newCnvFile;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ResultsZipFile createInputZipFile(StudySubscription studySubscription, AbstractPersistedAnalysisJob job,
+            String filename, File... files) {
+        try {
+            File inputParametersFile = createNewStudySubscriptionFile(studySubscription, "inputParameters_"
+                    + System.currentTimeMillis() + ".txt");
+            job.writeJobDescriptionToFile(inputParametersFile);
+            Set<File> fileSet = new HashSet<File>(Arrays.asList(files));
+            fileSet.add(inputParametersFile);
+            File tmpZipFile = new File(ZipUtils.writeZipFile(fileSet));
+            ResultsZipFile inputZipFile = new ResultsZipFile();
+            inputZipFile.setPath(createNewStudySubscriptionFile(studySubscription, filename).
+                    getAbsolutePath());
+            FileUtils.moveFile(tmpZipFile, inputZipFile.getFile());
+            inputParametersFile.delete();
+            return inputZipFile;
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Couldn't create the input zip file.", e);
+        }
     }
 
     /**
