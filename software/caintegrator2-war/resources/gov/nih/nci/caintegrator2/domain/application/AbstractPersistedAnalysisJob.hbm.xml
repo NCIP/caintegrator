@@ -19,6 +19,9 @@
         <property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
         <property name="creationDate" type="java.util.Date" column="CREATION_DATE"/>
         <property name="lastUpdateDate" type="java.util.Date" column="LAST_UPDATE_DATE"/>
+        <component name="inputZipFile" class="ResultsZipFile">
+            <property name="path" column="INPUT_ZIP_FILE_PATH" />
+        </component>
 
         <many-to-one name="subscription" class="gov.nih.nci.caintegrator2.domain.application.StudySubscription" column="STUDY_SUBSCRIPTION_ID" lazy="proxy" cascade="none" />
 

@@ -849,9 +849,6 @@
         <property name="genePatternGridClientFactory">
             <ref local="genePatternGridClientFactory" />
         </property>
-        <property name="queryManagementService">
-            <ref local="queryManagementService" />
-        </property>
         <property name="fileManager">
             <ref local="fileManager" />
         </property>

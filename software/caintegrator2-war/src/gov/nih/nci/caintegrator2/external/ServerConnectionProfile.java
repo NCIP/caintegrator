@@ -168,5 +168,18 @@ public class ServerConnectionProfile extends AbstractCaIntegrator2Object {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        String nl = "\n";
+        return "Hostname: " + hostname + nl
+               + "Url: " + url + nl
+               + "Port: " + port + nl
+               + "Username: " + username + nl;
+    }
 
 }

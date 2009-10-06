@@ -108,12 +108,14 @@ public interface GenePatternGridRunner {
      * preprocessed data and returns the Marker Results.
      * @param updater the ajax updater.
      * @param job the Analysis job.
+     * @param gctFile the input genomic file.
+     * @param clsFile the input class file.
      * @return zip file containing the ODF marker results file and the gct/cls input files.
      * @throws ConnectionException if unable to connect to grid services.
      * @throws InvalidCriterionException if criterion is not valid.
      */
     File runPreprocessComparativeMarkerSelection(StatusUpdateListener updater,
-            ComparativeMarkerSelectionAnalysisJob job)
+            ComparativeMarkerSelectionAnalysisJob job, File gctFile, File clsFile)
             throws ConnectionException, InvalidCriterionException;
             
     /**
@@ -121,37 +123,41 @@ public interface GenePatternGridRunner {
      * @param updater the ajax updater.
      * @param job the Analysis job.
      * @param parameters for preprocess dataset.
-     * @return preprocessed GCT file.
+     * @param gctFile original input gctFile.
      * @throws ConnectionException if unable to connect to grid service.
      * @throws InvalidCriterionException if criterion is not valid.
      */
-    File runPreprocessDataset(StatusUpdateListener updater,
-            AbstractPersistedAnalysisJob job, PreprocessDatasetParameters parameters)
+    void runPreprocessDataset(StatusUpdateListener updater,
+            AbstractPersistedAnalysisJob job, PreprocessDatasetParameters parameters, File gctFile)
     throws ConnectionException, InvalidCriterionException;
     
     /**
      * Executes the grid service PCA.
      * @param updater the ajax updater.
      * @param job the Analysis job.
-     * @param preprocessedGctFile (optional) parameter if needed to run preprocess dataset.
+     * @param gctFile the input genomic file.
      * @return zip file containing results.
      * @throws ConnectionException if unable to connect to grid service.
      * @throws InvalidCriterionException if criterion is not valid.
      */
     File runPCA(StatusUpdateListener updater,
-            PrincipalComponentAnalysisJob job, File preprocessedGctFile) 
+            PrincipalComponentAnalysisJob job, File gctFile) 
         throws ConnectionException, InvalidCriterionException; 
 
     /**
      * Runs Gistic grid service.
      * @param updater the ajax updater.
      * @param job the Analysis job.
+     * @param segmentFile segmentation input file.
+     * @param markersFile markers input file.
+     * @param cnvFile cnv input file.
      * @return GisticResults retrieved from grid.
      * @throws ConnectionException if unable to connect to grid service.
      * @throws InvalidCriterionException if criterion is not valid.
      * @throws ParameterException id parameter is invalid.
      * @throws IOException if there's a problem saving any of the files to the file system.
      */
-    File runGistic(StatusUpdateListener updater, GisticAnalysisJob job) 
+    File runGistic(StatusUpdateListener updater, GisticAnalysisJob job, File segmentFile, File markersFile, 
+            File cnvFile) 
         throws ConnectionException, InvalidCriterionException, ParameterException, IOException;
 }

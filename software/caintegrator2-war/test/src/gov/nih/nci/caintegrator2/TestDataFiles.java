@@ -190,6 +190,31 @@ public class TestDataFiles {
     
     public static final String SHORT_AGILENT_COPY_NUMBER_FILE_PATH = "/short_agilent_copy_number_mapping.csv";
     public static final File SHORT_AGILENT_COPY_NUMBER_FILE = getFile(SHORT_AGILENT_COPY_NUMBER_FILE_PATH);
+    
+    // Analysis Data Files
+    // CMS
+    public static final String CMS_CLASSIFICATIONS_FILE_PATH = "/cms_classifications.cls";
+    public static final File CMS_CLASSIFICATIONS_FILE = getFile(CMS_CLASSIFICATIONS_FILE_PATH);
+    
+    public static final String CMS_GCT_FILE_PATH = "/cms_features.gct";
+    public static final File CMS_GCT_FILE = getFile(CMS_GCT_FILE_PATH);
+    
+    // PCA
+    public static final String PCA_TRAIN_FILE_PATH = "/pca_train.gct";
+    public static final File PCA_TRAIN_FILE = getFile(PCA_TRAIN_FILE_PATH);
+    
+    // GISTIC
+    public static final String GISTIC_CNV_FILE_PATH = "/gistic_cnv.txt";
+    public static final File GISTIC_CNV_FILE = getFile(GISTIC_CNV_FILE_PATH);
+    
+    public static final String GISTIC_MARKERS_FILE_PATH = "/gistic_markers.txt";
+    public static final File GISTIC_MARKERS_FILE = getFile(GISTIC_MARKERS_FILE_PATH);
+    
+    public static final String GISTIC_SAMPLES_FILE_PATH = "/gistic_samples.txt";
+    public static final File GISTIC_SAMPLES_FILE = getFile(GISTIC_SAMPLES_FILE_PATH);
+    
+    
+    
 
     public static File getAffymetrixDataFile(String filename) {
         return getFile(AFFYMETRIX_DATA_FILE_DIRECTORY_PATH + "/" + filename);

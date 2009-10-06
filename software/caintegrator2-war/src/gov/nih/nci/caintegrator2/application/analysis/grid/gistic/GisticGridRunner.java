@@ -108,7 +108,6 @@ import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.cagrid.transfer.descriptor.Status;
 import org.genepattern.cabig.util.ZipUtils;
 import org.genepattern.gistic.common.GisticI;
-import org.genepattern.gistic.common.GisticUtils;
 import org.genepattern.gistic.context.client.GisticContextClient;
 import org.genepattern.gistic.context.stubs.types.AnalysisNotComplete;
 import org.genepattern.gistic.context.stubs.types.CannotLocateResource;
@@ -141,7 +140,9 @@ public class GisticGridRunner {
      * Runs GISTIC based on input parameters.
      * @param studySubscription study to save downloaded file to.
      * @param parameters from user input.
-     * @param gisticSamplesMarkers the wrapper object that contains the gistic samples and markers.
+     * @param segmentFile for segmentation data.
+     * @param markersFile for marker data.
+     * @param cnvFile for cnv.
      * @return Gistic Results.
      * @throws ParameterException if have invalid parameter.
      * @throws ConnectionException if unable to connect.
@@ -149,11 +150,11 @@ public class GisticGridRunner {
      * @throws InterruptedException if execution is interrupted.
      */
     public File execute(StudySubscription studySubscription, 
-            GisticParameters parameters, GisticSamplesMarkers gisticSamplesMarkers) 
+            GisticParameters parameters, File segmentFile, File markersFile, File cnvFile) 
     throws ParameterException, ConnectionException, IOException, InterruptedException {
         try {
             GisticContextClient analysisClient = client.createAnalysis(); 
-            postUpload(analysisClient, parameters, gisticSamplesMarkers);
+            postUpload(analysisClient, parameters, segmentFile, markersFile, cnvFile);
             return downloadResult(studySubscription, analysisClient);
         } catch (InvalidParameterException e) {
             throw new ParameterException("The given parameters were invalid: " + getDescription(e), e);
@@ -166,13 +167,13 @@ public class GisticGridRunner {
     }
 
     private void postUpload(GisticContextClient analysisClient, 
-            GisticParameters parameters, GisticSamplesMarkers gisticSamplesMarkers)
+            GisticParameters parameters, File segmentFile, File markersFile, File cnvFile)
             throws IOException, ConnectionException {
         TransferServiceContextReference up = analysisClient.submitData(parameters.createParameterList(), 
                                                                        parameters.createGenomeBuild());
         TransferServiceContextClient tClient = new TransferServiceContextClient(up.getEndpointReference());
         BufferedInputStream bis = null;
-        Set<File> fileSet = createGisticInputFileSet(parameters, gisticSamplesMarkers);
+        Set<File> fileSet = createGisticInputFileSet(segmentFile, markersFile, cnvFile);
         File zipFile = new File(ZipUtils.writeZipFile(fileSet));
         try {
             long size = zipFile.length();
@@ -193,13 +194,13 @@ public class GisticGridRunner {
         tClient.setStatus(Status.Staged);
     }
 
-    private Set<File> createGisticInputFileSet(GisticParameters parameters, GisticSamplesMarkers gisticSamplesMarkers)
+    private Set<File> createGisticInputFileSet(File segmentFile, File markersFile, File cnvFile)
             throws IOException {
         Set<File> fileSet = new HashSet<File>();
-        fileSet.add(createMarkersFile(gisticSamplesMarkers));
-        fileSet.add(createSamplesFile(gisticSamplesMarkers));
-        if (parameters.getCnvSegmentsToIgnoreFile() != null) {
-            fileSet.add(createCnvFile(parameters.getCnvSegmentsToIgnoreFile()));
+        fileSet.add(markersFile);
+        fileSet.add(segmentFile);
+        if (cnvFile != null) {
+            fileSet.add(cnvFile);
         }
         return fileSet;
     }
@@ -233,24 +234,6 @@ public class GisticGridRunner {
             throw new ConnectionException("Timed out trying to download GISTIC results");
         }
     }
-
-    private File createSamplesFile(GisticSamplesMarkers gisticSamplesMarkers) throws IOException {
-        return GisticUtils.writeSampleFile(gisticSamplesMarkers.getSamples());
-    }
-
-
-    private File createMarkersFile(GisticSamplesMarkers gisticSamplesMarkers) throws IOException {
-        return GisticUtils.writeMarkersFile(gisticSamplesMarkers.getMarkers());
-    }
-    
-    private File createCnvFile(File cnvFile) throws IOException {
-        File newFile = new File(cnvFile.getParent(), 
-                GisticUtils.CNV_SEGMENT_FILE_PREFIX + System.currentTimeMillis() + ".txt");
-        FileUtils.copyFile(cnvFile, newFile);
-        FileUtils.deleteQuietly(cnvFile);
-        return newFile;
-    }
-
 
     private String getDescription(InvalidParameterException e) {
         StringBuffer description = new StringBuffer();

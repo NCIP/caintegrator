@@ -101,8 +101,12 @@ import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotAnnot
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotClinicalQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotGenomicQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
+import gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunnerStub;
+import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticRefgeneFileEnum;
+import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotServiceImpl;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
@@ -113,14 +117,22 @@ import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceForKMPlotStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
+import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
+import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
@@ -148,6 +160,8 @@ public class AnalysisServiceTest {
     private DaoForAnalysisServiceStub daoStub = new DaoForAnalysisServiceStub();
     private QueryManagementServiceForKMPlotStub queryManagementServiceForKmPlotStub = 
                         new QueryManagementServiceForKMPlotStub();
+    private GenePatternGridRunnerStub genePatternGridRunnerStub = new GenePatternGridRunnerStub();
+    private FileManagerStub fileManagerStub = new FileManagerStub();
     
     @Before
     public void setUp() {
@@ -156,13 +170,16 @@ public class AnalysisServiceTest {
         kmPlotService.setCaIntegratorPlotService(caIntegratorPlotServiceStub);
         GeneExpressionPlotServiceImpl gePlotService = new GeneExpressionPlotServiceImpl();
         caIntegratorPlotServiceStub.clear();
+        fileManagerStub.clear();
         serviceImpl.setGenePatternClientFactory(genePatternClientFactoryStub); 
         serviceImpl.setDao(daoStub);
         serviceImpl.setKmPlotService(kmPlotService);
         serviceImpl.setGePlotService(gePlotService);
         serviceImpl.setQueryManagementService(queryManagementServiceForKmPlotStub);
-        serviceImpl.setFileManager(new FileManagerStub());
+        serviceImpl.setFileManager(fileManagerStub);
         service = serviceImpl;
+        genePatternGridRunnerStub.clear();
+        serviceImpl.setGenePatternGridRunner(genePatternGridRunnerStub);
     }
 
     @Test
@@ -189,7 +206,7 @@ public class AnalysisServiceTest {
     
     @Test
     public void testGisticWebService() throws ConnectionException, InvalidCriterionException, ParameterException, IOException {
-        GisticTestListener listener = new GisticTestListener();
+        StatusUpdateTestListener listener = new StatusUpdateTestListener();
         GisticAnalysisJob job = new GisticAnalysisJob();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(new Study());
@@ -202,15 +219,100 @@ public class AnalysisServiceTest {
         assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.PROCESSING_LOCALLY));
         assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.PROCESSING_REMOTELY));
         assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.COMPLETED));
+        assertTrue(fileManagerStub.createMarkersFileCalled);
+        assertTrue(fileManagerStub.createSamplesFileCalled);
+        
+        assertFalse(genePatternGridRunnerStub.runGisticCalled);
+        parameters.setCnvSegmentsToIgnoreFile(fileManagerStub.retrieveTmpFile());
+        parameters.getServer().setUrl("something/Gistic");
+        service.executeGridGistic(listener, job);
+        assertTrue(genePatternGridRunnerStub.runGisticCalled);
+        assertTrue(fileManagerStub.renameCnvFileCalled);
+        Query clinicalQuery = new Query();
+        clinicalQuery.setName("clinicalQueryName");
+        SampleSet sampleSet = new SampleSet();
+        sampleSet.setName("sampleSetName");
+        parameters.setExcludeControlSampleSet(sampleSet);
+        parameters.setClinicalQuery(clinicalQuery);
+        parameters.getServer().setHostname("hostname");
+        assertTrue(job.toString().contains(clinicalQuery.getName()));
+        assertTrue(job.toString().contains(sampleSet.getName()));
+        assertTrue(job.toString().contains(parameters.getServer().getHostname()));
     }
     
-    private static class GisticTestListener implements StatusUpdateListener {
+    private static class StatusUpdateTestListener implements StatusUpdateListener {
         private Set<AnalysisJobStatusEnum> statuses = new HashSet<AnalysisJobStatusEnum>();
 
         public void updateStatus(AbstractPersistedAnalysisJob job) {
             statuses.add(job.getStatus());
         }
     }
+    
+    @Test
+    public void testExecuteGridPCA() throws ConnectionException, InvalidCriterionException {
+        StatusUpdateTestListener updater = new StatusUpdateTestListener();
+        PrincipalComponentAnalysisJob job = new PrincipalComponentAnalysisJob();
+        PCAParameters pcaParameters = new PCAParameters();
+        Query query = new Query();
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.setName("queryNameString");
+        pcaParameters.getClinicalQueries().add(query);
+        SampleSet sampleSet = new SampleSet();
+        sampleSet.setName("sampleSetNameString");
+        pcaParameters.setExcludedControlSampleSet(sampleSet);
+        job.getForm().setPcaParameters(pcaParameters);
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(new Study());
+        job.setSubscription(subscription);
+        service.executeGridPCA(updater, job);
+        assertTrue(genePatternGridRunnerStub.runPCACalled);
+        assertTrue(fileManagerStub.createGctFileCalled);
+        assertTrue(fileManagerStub.createInputZipFileCalled);
+        assertTrue(job.toString().contains(query.getName()));
+        assertTrue(job.toString().contains(sampleSet.getName()));
+    }
+    
+    @Test
+    public void testExecuteGridPreprocessComparativeMarker() throws ConnectionException, InvalidCriterionException {
+        StatusUpdateTestListener updater = new StatusUpdateTestListener();
+        ComparativeMarkerSelectionAnalysisJob job = new ComparativeMarkerSelectionAnalysisJob();
+        PreprocessDatasetParameters preprocessParams = new PreprocessDatasetParameters();
+        ComparativeMarkerSelectionParameters cmsParams = new ComparativeMarkerSelectionParameters();
+        Query query = new Query();
+        ResultColumn column = new ResultColumn();
+        column.setAnnotationDefinition(new AnnotationDefinition());
+        column.setEntityType(EntityTypeEnum.SUBJECT);
+        column.setColumnIndex(0);
+        query.setColumnCollection(new HashSet<ResultColumn>());
+        query.getColumnCollection().add(column);
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
+        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
+        query.setName("queryNameString");
+        cmsParams.getClinicalQueries().add(query);
+        SampleSet sampleSet = new SampleSet();
+        sampleSet.setName("sampleSetNameString");
+        preprocessParams.setExcludedControlSampleSet(sampleSet);
+        job.getForm().setComparativeMarkerSelectionParameters(cmsParams);
+        job.getForm().setPreprocessDatasetparameters(preprocessParams);
+        KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
+        Study study = studyCreator.createKMPlotStudy();
+        StudySubscription subscription = new StudySubscription();
+        query.setSubscription(subscription);
+        subscription.setStudy(study);
+        job.setSubscription(subscription);
+        queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.ANNOTATION_BASED;
+        service.executeGridPreprocessComparativeMarker(updater, job);
+        assertTrue(fileManagerStub.createClassificationFileCalled);
+        assertTrue(fileManagerStub.createGctFileCalled);
+        assertTrue(fileManagerStub.createInputZipFileCalled);
+        assertTrue(genePatternGridRunnerStub.runPreprocessComparativeMarkerSelectionCalled);
+        assertTrue(job.toString().contains(query.getName()));
+        assertTrue(job.toString().contains(sampleSet.getName()));
+        
+    }
+    
+    
     
     @Test
     public void testExecuteGenePatternJob() throws GenePatternServiceException {

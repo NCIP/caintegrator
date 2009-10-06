@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caArray
+ * source code form and machine readable, binary, object code form. The caIntegrator2
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caArray Software License (the License) is between NCI and You. You (or 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caArray Software to (i) use, install, access, operate, 
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caArray Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator Software and any 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator2 Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,89 +83,75 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.domain.application;
-
-import gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisForm;
+package gov.nih.nci.caintegrator2.web;
 
 /**
- * Object representing a single gene pattern analysis job.
+ * 
  */
-public class ComparativeMarkerSelectionAnalysisJob extends AbstractPersistedAnalysisJob {
-
-    private static final long serialVersionUID = 1L;
+public class DownloadableFile {
+    /**
+     * For zip file type.
+     */
+    public static final String CONTENT_TYPE_ZIP = "application/zip";
+    /**
+     * For plain text file type.
+     */
+    public static final String CONTENT_TYPE_TEXT = "text/plain";
     
-    private final transient ComparativeMarkerSelectionAnalysisForm comparativeMarkerSelectionAnalysisForm
-        = new ComparativeMarkerSelectionAnalysisForm();
-    private String preprocessDataSetUrl;
-    private String comparativeMarkerSelectionUrl;
-    private ResultsZipFile resultsZipFile;
+    private String path;
+    private String filename;
+    private String contentType;
+    private boolean deleteFile;
+    
+
+    /**
+     * @return the path
+     */
+    public String getPath() {
+        return path;
+    }
+    /**
+     * @param path the path to set
+     */
+    public void setPath(String path) {
+        this.path = path;
+    }
+    /**
+     * @return the filename
+     */
+    public String getFilename() {
+        return filename;
+    }
+    /**
+     * @param filename the filename to set
+     */
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+    /**
+     * @return the contentType
+     */
+    public String getContentType() {
+        return contentType;
+    }
+    /**
+     * @param contentType the contentType to set
+     */
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
     
     /**
-     * Default Constructor.
+     * @return the deleteFile
      */
-    public ComparativeMarkerSelectionAnalysisJob() {
-        this.setJobType(AnalysisJobTypeEnum.CMS.getValue());
+    public boolean isDeleteFile() {
+        return deleteFile;
     }
-
     /**
-     * @return the analysisForm
+     * @param deleteFile the deleteFile to set
      */
-    public ComparativeMarkerSelectionAnalysisForm getForm() {
-        return comparativeMarkerSelectionAnalysisForm;
-    }
-
-    /**
-     * @return the preprocessDataSetUrl
-     */
-    public String getPreprocessDataSetUrl() {
-        return preprocessDataSetUrl;
-    }
-
-    /**
-     * @param preprocessDataSetUrl the preprocessDataSetUrl to set
-     */
-    public void setPreprocessDataSetUrl(String preprocessDataSetUrl) {
-        this.preprocessDataSetUrl = preprocessDataSetUrl;
-    }
-
-    /**
-     * @return the comparativeMarkerSelectionUrl
-     */
-    public String getComparativeMarkerSelectionUrl() {
-        return comparativeMarkerSelectionUrl;
-    }
-
-    /**
-     * @param comparativeMarkerSelectionUrl the comparativeMarkerSelectionUrl to set
-     */
-    public void setComparativeMarkerSelectionUrl(String comparativeMarkerSelectionUrl) {
-        this.comparativeMarkerSelectionUrl = comparativeMarkerSelectionUrl;
-    }
-
-    /**
-     * @return the resultsZipFile
-     */
-    public ResultsZipFile getResultsZipFile() {
-        return resultsZipFile;
-    }
-
-    /**
-     * @param resultsZipFile the resultsZipFile to set
-     */
-    public void setResultsZipFile(ResultsZipFile resultsZipFile) {
-        this.resultsZipFile = resultsZipFile;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append(retrieveHeader("Comparative Marker Selection"));
-        sb.append(getForm().getPreprocessDatasetparameters().toString());
-        sb.append(getForm().getComparativeMarkerSelectionParameters().toString());
-        return sb.toString();
+    public void setDeleteFile(boolean deleteFile) {
+        this.deleteFile = deleteFile;
     }
 
 }

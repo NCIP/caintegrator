@@ -85,8 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
-import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-
 import java.util.List;
 
 /**
@@ -97,8 +95,6 @@ import java.util.List;
  * 
  */
 public abstract class AbstractDeployedStudyAction extends AbstractCaIntegrator2Action {
-    
-    private static final String DOWNLOAD_RESULTS_FILE = "downloadResultFile";
     
     /**
      * {@inheritDoc}
@@ -133,20 +129,5 @@ public abstract class AbstractDeployedStudyAction extends AbstractCaIntegrator2A
      */
     public List<String> getControlSampleSets() {
         return getStudy().getStudyConfiguration().getControlSampleSetNames();
-    }
-    
-    /**
-     * For any <code>AbstractPersistedAnalysisJob</code> to use which will store the results zip file
-     * to the session and then send it out for the user to download.
-     * @param job to retrieve the zip file for.
-     * @return struts result.
-     */
-    protected String executeAnalysisJobZipDownload(AbstractPersistedAnalysisJob job) {
-        if (job.getResultsZipFile() != null) {
-            getDisplayableWorkspace().setTemporaryDownloadFile(job.getResultsZipFile().getPath());
-            return DOWNLOAD_RESULTS_FILE;
-        }
-        addActionError("The job doesn't contain a results file");
-        return INPUT;
     }
 }
