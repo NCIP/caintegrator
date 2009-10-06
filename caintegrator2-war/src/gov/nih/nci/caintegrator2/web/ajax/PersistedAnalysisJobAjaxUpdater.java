@@ -101,11 +101,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.directwebremoting.proxy.dwr.Util;
 
 /**
  * This is an object which is turned into an AJAX javascript file using the DWR framework.  
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // See method "addActionBars()"
 public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
     implements IPersistedAnalysisJobAjaxUpdater, StatusUpdateListener {
     
@@ -115,8 +117,11 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String JOB_STATUS = "jobStatus_";
     private static final String JOB_CREATION_DATE = "jobCreationDate_";
     private static final String JOB_LAST_UPDATE_DATE = "jobLastUpdateDate_";
-    private static final String ACTION = "action_";
-    private static final String JOB_URL = "jobUrl_";
+    private static final String DELETE_ACTION = "action_";
+    private static final String JOB_RESULTS_URL = "jobResultsUrl_";
+    private static final String JOB_INPUT_URL = "jobInputUrl_";
+    private static final String JOB_ACTION_BAR1 = "jobActionBar1_";
+    private static final String JOB_ACTION_BAR2 = "jobActionBar2_";
     private AnalysisService analysisService;
 
     /**
@@ -152,11 +157,14 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
         String endSpan = "\"> </span>";
         rowString[0][0] = startSpan + JOB_NAME + id + endSpan;
         rowString[0][1] = startSpan + JOB_TYPE + id + endSpan;
-        rowString[0][2] = startSpan + JOB_STATUS + id + endSpan
-                            + startSpan + JOB_URL + id + endSpan;
+        rowString[0][2] = startSpan + JOB_STATUS + id + endSpan;
         rowString[0][3] = startSpan + JOB_CREATION_DATE + id + endSpan;
         rowString[0][4] = startSpan + JOB_LAST_UPDATE_DATE + id + endSpan;
-        rowString[0][5] = startSpan + ACTION + id + endSpan;
+        rowString[0][5] = startSpan + DELETE_ACTION + id + endSpan
+                          + startSpan + JOB_ACTION_BAR1 + id + endSpan
+                          + startSpan + JOB_INPUT_URL + id + endSpan
+                          + startSpan + JOB_ACTION_BAR2 + id + endSpan
+                          + startSpan + JOB_RESULTS_URL + id + endSpan;
         return rowString;
     }
 
@@ -220,10 +228,7 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
             utilThis.setValue(JOB_LAST_UPDATE_DATE + jobId, 
                 getDateString(job.getLastUpdateDate()));
         }
-        addActionUrl(utilThis, job);
-        if (AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus())) {
-            addJobUrl(utilThis, job);
-        }
+        addJobUrls(utilThis, job);
     }
 
     /**
@@ -233,47 +238,80 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
         saveAndUpdateJobStatus(job);
     }
     
-    private void addActionUrl(Util utilThis, AbstractPersistedAnalysisJob job) {
+    private void addDeleteActionUrl(Util utilThis, AbstractPersistedAnalysisJob job) {
         String jobId = job.getId().toString();
         if (job.getStatus().isDeletable()) {
-            utilThis.setValue(ACTION + jobId,
+            utilThis.setValue(DELETE_ACTION + jobId,
                     "<a href=\"deleteGenePatternAnalysis.action?jobId=" + jobId
                     + "\" onclick=\"return confirm('This analysis job will be permanently deleted.')\">"
                     + "Delete</a>",
                     false);
-        } else {
-            utilThis.setValue(ACTION + jobId, "None");
         }
     }
 
-    private void addJobUrl(Util utilThis, AbstractPersistedAnalysisJob job) {
+    private void addJobUrls(Util utilThis, AbstractPersistedAnalysisJob job) {
         String jobId = job.getId().toString();
-        switch(AnalysisJobTypeEnum.getByValue(job.getJobType())) {
-        case CMS:
-            utilThis.setValue(JOB_URL + jobId, 
-                    " - <a href=\"comparativeMarkerSelectionAnalysisResults.action?jobId=" + jobId + "\">Download</a>",
+        utilThis.setValue(JOB_ACTION_BAR1 + jobId, "");
+        utilThis.setValue(JOB_ACTION_BAR2 + jobId, "");
+        updateJobUrls(utilThis, job, jobId);
+    }
+
+    private void updateJobUrls(Util utilThis, AbstractPersistedAnalysisJob job, String jobId) {
+        addDeleteActionUrl(utilThis, job);
+        boolean hasInputs = handleInputFile(utilThis, job, jobId);
+        boolean hasResults = handleResults(utilThis, job, jobId);
+        addActionBars(utilThis, jobId, hasInputs, hasResults, job.getStatus().isDeletable());
+    }
+
+
+    private boolean handleInputFile(Util utilThis, AbstractPersistedAnalysisJob job, String jobId) {
+        boolean hasInputs = false;
+        if (job.getInputZipFile() != null) {
+            utilThis.setValue(JOB_INPUT_URL + jobId, 
+                    retrieveJobDownloadLink(jobId, DownloadType.INPUT),
                     false);
-            break;
-        case GENE_PATTERN:
-            GenePatternAnalysisJob gpJob = (GenePatternAnalysisJob) job;
-            utilThis.setValue(JOB_URL + jobId, 
-                    " - <a href=\"" + gpJob.getJobUrl() + "\" target=\"_\">View " 
-                        + gpJob.getGpJobNumber() + "</a>", false);
-            break;
-        case PCA:
-            utilThis.setValue(JOB_URL + jobId, 
-                    " - <a href=\"principalComponentAnalysisResults.action?jobId=" + jobId + "\">Download</a>",
-                    false);
-            break;
-        case GISTIC:
-            utilThis.setValue(JOB_URL + jobId, 
-                    " - <a href=\"gisticAnalysisResults.action?jobId=" + jobId + "\">Download</a>",
-                    false);
-            break;
-        default:
-            throw new IllegalStateException("Job type doesn't have an associated Runner");
+            hasInputs = true;
         }
-        
+        return hasInputs;
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Figuring out what combination of actions are available.
+    private void addActionBars(Util utilThis, String jobId, 
+            boolean hasInputs, boolean hasResults, boolean isDeletable) {
+        if (isDeletable && (hasInputs || hasResults)) {
+            utilThis.setValue(JOB_ACTION_BAR1 + jobId, " | ");
+        }
+        if (hasInputs && hasResults) {
+            utilThis.setValue(JOB_ACTION_BAR2 + jobId, " | ");
+        }
+        if (!isDeletable && !hasInputs && !hasResults) {
+            utilThis.setValue(DELETE_ACTION, "None");
+        }
+    }
+
+    private boolean handleResults(Util utilThis, AbstractPersistedAnalysisJob job, String jobId) {
+        boolean hasResults = false;
+        if (job.getResultsZipFile() != null) {
+            utilThis.setValue(JOB_RESULTS_URL + jobId, 
+                    retrieveJobDownloadLink(jobId, DownloadType.RESULTS),
+                    false);
+            hasResults = true;
+        } else if (job instanceof GenePatternAnalysisJob 
+                && !StringUtils.isBlank(((GenePatternAnalysisJob) job).getJobUrl())) {
+            GenePatternAnalysisJob gpJob = (GenePatternAnalysisJob) job;
+            utilThis.setValue(JOB_RESULTS_URL + jobId, 
+                    "<a href=\"" + gpJob.getJobUrl() + "\" target=\"_\">View Results " 
+                        + gpJob.getGpJobNumber() + "</a>", false);
+            hasResults = true;
+        }
+        return hasResults;
+    }
+
+
+    private String retrieveJobDownloadLink(String jobId, DownloadType downloadType) {
+        return "<a href=\"analysisJobDownload.action?type=" 
+                + downloadType.getType() + "&jobId=" + jobId
+                + "\">" + downloadType.getDisplayString() + "</a>";
     }
     
     private String getStatusMessage(AnalysisJobStatusEnum jobStatus) {
@@ -301,6 +339,56 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
      */
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
+    }
+    
+    /**
+     * Enum for the download type.
+     */
+    public static enum DownloadType {
+        /**
+         * Input download type.
+         */
+        INPUT("Input", "Download Input"),
+        /**
+         * Results download type.
+         */
+        RESULTS("Result", "Download Results");
+        
+        private String type;
+        private String displayString;
+        
+        DownloadType(String type, String displayString) {
+            this.type = type;
+            this.displayString = displayString;
+        }
+
+        /**
+         * @return the type
+         */
+        public String getType() {
+            return type;
+        }
+
+        /**
+         * @param type the type to set
+         */
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        /**
+         * @return the displayString
+         */
+        public String getDisplayString() {
+            return displayString;
+        }
+
+        /**
+         * @param displayString the displayString to set
+         */
+        public void setDisplayString(String displayString) {
+            this.displayString = displayString;
+        }
     }
 
 

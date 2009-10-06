@@ -152,7 +152,7 @@ public class DisplayableUserWorkspace {
     private final DataElementSearchObject dataElementSearchObject = new DataElementSearchObject();
     private boolean createPlotSelected = false;
     private boolean createPlotRunning = false;
-    private String temporaryDownloadFile;
+    private DownloadableFile temporaryDownloadFile;
     private final Set<StudyConfiguration> managedStudies = new HashSet<StudyConfiguration>();
     private StudyConfiguration currentStudyConfiguration;
     
@@ -448,14 +448,14 @@ public class DisplayableUserWorkspace {
     /**
      * @return the temporaryDownloadFile
      */
-    public String getTemporaryDownloadFile() {
+    public DownloadableFile getTemporaryDownloadFile() {
         return temporaryDownloadFile;
     }
 
     /**
      * @param temporaryDownloadFile the temporaryDownloadFile to set
      */
-    public void setTemporaryDownloadFile(String temporaryDownloadFile) {
+    public void setTemporaryDownloadFile(DownloadableFile temporaryDownloadFile) {
         this.temporaryDownloadFile = temporaryDownloadFile;
     }
 

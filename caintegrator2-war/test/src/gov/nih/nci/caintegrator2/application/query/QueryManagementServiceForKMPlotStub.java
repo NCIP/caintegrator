@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
@@ -157,6 +158,9 @@ public class QueryManagementServiceForKMPlotStub implements QueryManagementServi
         assignment.setId(Long.valueOf(1));
         sampleAcquisition.setAssignment(assignment);
         column.setSampleAcquisition(sampleAcquisition);
+        Sample sample = new Sample();
+        sample.setName("sample");
+        sampleAcquisition.setSample(sample);
         value.setColumn(column);
         value.setValue(1f);
         GeneExpressionReporter reporter = new GeneExpressionReporter();

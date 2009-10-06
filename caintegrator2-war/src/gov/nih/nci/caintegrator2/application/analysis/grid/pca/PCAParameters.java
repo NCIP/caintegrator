@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.grid.pca;
 
+import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -95,6 +96,7 @@ import java.util.List;
 import org.cabig.icr.asbp.parameter.Parameter;
 import org.cabig.icr.asbp.parameter.ParameterList;
 import org.cabig.icr.asbp.parameter.StringParameter;
+import org.springframework.util.StringUtils;
 
 /**
  * Parameters to run PCA Gene Pattern grid service.
@@ -211,6 +213,36 @@ public class PCAParameters {
      */
     public void setExcludedControlSampleSet(SampleSet excludedControlSampleSet) {
         this.excludedControlSampleSet = excludedControlSampleSet;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        String nl = "\n";
+        StringBuffer sb = new StringBuffer();
+        sb.append("---------------------------------------").append(nl);
+        sb.append("Principal Component Analysis Parameters").append(nl);
+        sb.append("---------------------------------------").append(nl);
+        if (excludedControlSampleSet != null) {
+            sb.append("Excluded control samples: ").append(excludedControlSampleSet.getName()).append(nl);
+        }
+        if (!clinicalQueries.isEmpty()) {
+            String[] queryNames = new String[clinicalQueries.size()];
+            int count = 0;
+            for (Query query : clinicalQueries) {
+                queryNames[count] = query.getName();
+                count++;
+            }
+            sb.append("Input queries for classification: ").append(
+                    StringUtils.arrayToDelimitedString(queryNames, ", ")).append(nl);
+        }
+        if (server != null) {
+            sb.append(server.toString()).append(nl);
+        }
+        sb.append(GenePatternUtil.parameterListToString(createParameterList())).append(nl);
+        return sb.toString();
     }
 
 }

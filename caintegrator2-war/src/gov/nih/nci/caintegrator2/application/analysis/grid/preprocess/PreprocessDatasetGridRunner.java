@@ -86,12 +86,9 @@
 package gov.nih.nci.caintegrator2.application.analysis.grid.preprocess;
 
 import gov.nih.nci.cagrid.common.ZipUtilities;
-import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
-import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
 import gov.nih.nci.caintegrator2.common.CaGridUtil;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -120,44 +117,33 @@ public class PreprocessDatasetGridRunner {
     private static final int DOWNLOAD_REFRESH_INTERVAL = 1000;
     private static final int TIMEOUT_SECONDS = 300;
     private final PreprocessDatasetMAGEServiceI client;
-    private final FileManager fileManager;
     
     /**
      * Public Constructor.
      * @param client of grid service.
-     * @param fileManager to store gct file.
      */
-    public PreprocessDatasetGridRunner(PreprocessDatasetMAGEServiceI client,
-                                FileManager fileManager) {
+    public PreprocessDatasetGridRunner(PreprocessDatasetMAGEServiceI client) {
         this.client = client;
-        this.fileManager = fileManager;
     }
     
     /**
      * Executes the grid service PreprocessDataset.
      * @param studySubscription for current study.
      * @param parameters for preprocess dataset.
-     * @param dataset the GctDataset to run preprocess on.
-     * @return preprocessed GCT file.
+     * @param gctFile the unprocessed gct file to run preprocess on.
      * @throws ConnectionException if unable to connect to grid service.
      * @throws InterruptedException if thread is interrupted while waiting for file download.
      */
-    public File execute(StudySubscription studySubscription, PreprocessDatasetParameters parameters, 
-            GctDataset dataset) 
+    public void execute(StudySubscription studySubscription, PreprocessDatasetParameters parameters, 
+            File gctFile) 
         throws ConnectionException, InterruptedException {
-        File gctFile = createGctFile(studySubscription, parameters, dataset);
-        if (dataset.getValues().length > 0) {
-            return runPreprocessDataset(parameters, gctFile);
-        }
-        return gctFile;
+        // TODO figure out the "if" condition here, probably number of lines needs to be greater than something.
+//        if (dataset.getValues().length > 0) {
+            
+//        }
+        runPreprocessDataset(parameters, gctFile);
     }
 
-    private File createGctFile(StudySubscription studySubscription, PreprocessDatasetParameters parameters,
-            GctDataset dataset) {
-        return GctDatasetFileWriter.writeAsGct(dataset, 
-                new File(fileManager.getUserDirectory(studySubscription) + File.separator 
-                        + parameters.getProcessedGctFilename()).getAbsolutePath());
-    }
     
     private File runPreprocessDataset(PreprocessDatasetParameters parameters, File unprocessedGctFile) 
     throws ConnectionException, InterruptedException {

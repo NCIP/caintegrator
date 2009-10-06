@@ -175,8 +175,8 @@ public class PCAGridRunner {
     
     private File downloadResult(StudySubscription studySubscription, PCAContextClient analysisClient) 
         throws ConnectionException, MalformedURIException, RemoteException, InterruptedException {
-        String filename = new File(fileManager.getUserDirectory(studySubscription) + File.separator
-                            + "PCA_RESULTS_" + System.currentTimeMillis() + ".zip").getAbsolutePath();
+        String filename = fileManager.createNewStudySubscriptionFile(studySubscription,
+                "PCA_RESULTS_" + System.currentTimeMillis() + ".zip").getAbsolutePath(); 
         TransferServiceContextReference tscr = null;
         int callCount = 0;
         while (tscr == null) {

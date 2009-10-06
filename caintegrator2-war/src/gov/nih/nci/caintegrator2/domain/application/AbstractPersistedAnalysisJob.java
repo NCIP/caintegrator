@@ -87,7 +87,12 @@ package gov.nih.nci.caintegrator2.domain.application;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Date;
+
+import org.apache.commons.httpclient.util.DateUtil;
 
 /**
  * 
@@ -102,6 +107,8 @@ public abstract class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2
     private String jobType;
     private StudySubscription subscription;
     private String statusDescription;
+    private ResultsZipFile inputZipFile;
+
     private static final int DESCRIPTION_LENGTH = 250;
     
     /**
@@ -224,6 +231,38 @@ public abstract class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2
     }
     
     /**
+     * @return the inputZipFile
+     */
+    public ResultsZipFile getInputZipFile() {
+        return inputZipFile;
+    }
+
+    /**
+     * @param inputZipFile the inputZipFile to set
+     */
+    public void setInputZipFile(ResultsZipFile inputZipFile) {
+        this.inputZipFile = inputZipFile;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract String toString();
+    
+    /**
+     * Writes the job description to the given file.
+     * @param file to write to.
+     * @throws IOException if unable to write to file.
+     */
+    public void writeJobDescriptionToFile(File file) throws IOException {
+        FileWriter fw = new FileWriter(file);
+        fw.append(toString());
+        fw.flush();
+        fw.close();
+    }
+    
+    /**
      * To be overridden if there is a resultsZipFile.
      * @return the results file for the job.
      */
@@ -233,4 +272,20 @@ public abstract class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2
         return null;
     }
     
+    /**
+     * Retrieves the header for the toString() of subclasses.
+     * @param type of job.
+     * @return the header
+     */
+    protected String retrieveHeader(String type) {
+        String nl = "\n";
+        StringBuffer sb = new StringBuffer();
+        sb.append("Job Type: ").append(type).append(nl);
+        sb.append("Job ID: ").append(getId()).append(nl);
+        sb.append("Date: ").append(DateUtil.formatDate(new Date(), DateUtil.PATTERN_ASCTIME)).append(nl);
+        if (getSubscription() != null && getSubscription().getStudy() != null) {
+            sb.append("Study Name: ").append(getSubscription().getStudy().getLongTitleText()).append(nl);
+        }
+        return sb.toString();
+    }
 }

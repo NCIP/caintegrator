@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caArray
+ * source code form and machine readable, binary, object code form. The caIntegrator2
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caArray Software License (the License) is between NCI and You. You (or 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caArray Software to (i) use, install, access, operate, 
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caArray Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator Software and any 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator2 Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,89 +83,61 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.domain.application;
+package gov.nih.nci.caintegrator2.application.analysis.grid;
 
-import gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisForm;
+import gov.nih.nci.caintegrator2.application.analysis.StatusUpdateListener;
+import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ParameterException;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
- * Object representing a single gene pattern analysis job.
+ * 
  */
-public class ComparativeMarkerSelectionAnalysisJob extends AbstractPersistedAnalysisJob {
-
-    private static final long serialVersionUID = 1L;
+public class GenePatternGridRunnerStub implements GenePatternGridRunner {
     
-    private final transient ComparativeMarkerSelectionAnalysisForm comparativeMarkerSelectionAnalysisForm
-        = new ComparativeMarkerSelectionAnalysisForm();
-    private String preprocessDataSetUrl;
-    private String comparativeMarkerSelectionUrl;
-    private ResultsZipFile resultsZipFile;
+    public boolean runGisticCalled;
+    public boolean runPCACalled;
+    public boolean runPreprocessComparativeMarkerSelectionCalled;
+    public boolean runPreprocessDatasetCalled;
     
-    /**
-     * Default Constructor.
-     */
-    public ComparativeMarkerSelectionAnalysisJob() {
-        this.setJobType(AnalysisJobTypeEnum.CMS.getValue());
+    public void clear() {
+        runGisticCalled = false;
+        runPCACalled = false;
+        runPreprocessComparativeMarkerSelectionCalled = false;
+        runPreprocessDatasetCalled = false;
     }
 
-    /**
-     * @return the analysisForm
-     */
-    public ComparativeMarkerSelectionAnalysisForm getForm() {
-        return comparativeMarkerSelectionAnalysisForm;
+    public File runGistic(StatusUpdateListener updater, GisticAnalysisJob job, File segmentFile, File markersFile,
+            File cnvFile) throws ConnectionException, InvalidCriterionException, ParameterException, IOException {
+        runGisticCalled = true;
+        return null;
     }
 
-    /**
-     * @return the preprocessDataSetUrl
-     */
-    public String getPreprocessDataSetUrl() {
-        return preprocessDataSetUrl;
+
+    public File runPCA(StatusUpdateListener updater, PrincipalComponentAnalysisJob job, File gctFile)
+            throws ConnectionException, InvalidCriterionException {
+        runPCACalled = true;
+        return null;
     }
 
-    /**
-     * @param preprocessDataSetUrl the preprocessDataSetUrl to set
-     */
-    public void setPreprocessDataSetUrl(String preprocessDataSetUrl) {
-        this.preprocessDataSetUrl = preprocessDataSetUrl;
+    public File runPreprocessComparativeMarkerSelection(StatusUpdateListener updater,
+            ComparativeMarkerSelectionAnalysisJob job, File gctFile, File clsFile) throws ConnectionException,
+            InvalidCriterionException {
+        runPreprocessComparativeMarkerSelectionCalled = true;
+        return null;
     }
 
-    /**
-     * @return the comparativeMarkerSelectionUrl
-     */
-    public String getComparativeMarkerSelectionUrl() {
-        return comparativeMarkerSelectionUrl;
-    }
-
-    /**
-     * @param comparativeMarkerSelectionUrl the comparativeMarkerSelectionUrl to set
-     */
-    public void setComparativeMarkerSelectionUrl(String comparativeMarkerSelectionUrl) {
-        this.comparativeMarkerSelectionUrl = comparativeMarkerSelectionUrl;
-    }
-
-    /**
-     * @return the resultsZipFile
-     */
-    public ResultsZipFile getResultsZipFile() {
-        return resultsZipFile;
-    }
-
-    /**
-     * @param resultsZipFile the resultsZipFile to set
-     */
-    public void setResultsZipFile(ResultsZipFile resultsZipFile) {
-        this.resultsZipFile = resultsZipFile;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append(retrieveHeader("Comparative Marker Selection"));
-        sb.append(getForm().getPreprocessDatasetparameters().toString());
-        sb.append(getForm().getComparativeMarkerSelectionParameters().toString());
-        return sb.toString();
+    public void runPreprocessDataset(StatusUpdateListener updater, AbstractPersistedAnalysisJob job,
+            PreprocessDatasetParameters parameters, File gctFile) throws ConnectionException, InvalidCriterionException {
+        runPreprocessDatasetCalled = true;
     }
 
 }

@@ -107,12 +107,15 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.cabig.icr.asbp.parameter.FloatParameter;
 import org.cabig.icr.asbp.parameter.IntegerParameter;
+import org.cabig.icr.asbp.parameter.Parameter;
+import org.cabig.icr.asbp.parameter.ParameterList;
 import org.cabig.icr.asbp.parameter.StringParameter;
 
 
@@ -237,10 +240,11 @@ public final class GenePatternUtil {
      * @return gct dataset for the queries.
      * @throws InvalidCriterionException if criterion is not valid.
      */
-    public static GctDataset createGctDataset(StudySubscription studySubscription, Set<Query> clinicalQueries, 
+    public static GctDataset createGctDataset(StudySubscription studySubscription, Collection<Query> clinicalQueries, 
             SampleSet excludedControlSampleSet, QueryManagementService queryManagementService)
     throws InvalidCriterionException {
-        Query allGenomicDataQuery = Cai2Util.createAllGenomicDataQuery(studySubscription, clinicalQueries);
+        Set<Query> clinicalQuerySet = new HashSet<Query>(clinicalQueries);
+        Query allGenomicDataQuery = Cai2Util.createAllGenomicDataQuery(studySubscription, clinicalQuerySet);
         GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
         genomicData.excludeSampleSet(excludedControlSampleSet);
         if (genomicData.getRowCollection().isEmpty()) {
@@ -299,6 +303,32 @@ public final class GenePatternUtil {
         stringParameter.setName(name);
         stringParameter.setValue(value ? "1" : "0");
         return stringParameter;
+    }
+    
+    /**
+     * Creates a string of the parameter name/value pairs for the given parameter list.
+     * @param parameterList list of parameters.
+     * @return String value for the list of parameters.
+     */
+    public static String parameterListToString(ParameterList parameterList) {
+        String nl = "\n";
+        StringBuffer sb = new StringBuffer();
+        for (Parameter parameter : parameterList.getParameterCollection()) {
+            sb.append(parameter.getName()).append(": ").append(retrieveParameterValue(parameter)).append(nl);
+        }
+        return sb.toString();
+    }
+    
+    private static String retrieveParameterValue(Parameter parameter) {
+        if (parameter instanceof StringParameter) {
+            return ((StringParameter) parameter).getValue();
+        } else if (parameter instanceof FloatParameter) {
+            return String.valueOf(((FloatParameter) parameter).getValue());
+        } else if (parameter instanceof IntegerParameter) {
+            return String.valueOf(((IntegerParameter) parameter).getValue());
+        }
+        return "";
+        
     }
 
     /**

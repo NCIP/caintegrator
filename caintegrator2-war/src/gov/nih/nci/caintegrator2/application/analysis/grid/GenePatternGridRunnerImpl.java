@@ -85,29 +85,21 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.grid;
 
-import gov.nih.nci.caintegrator2.application.analysis.ClassificationsToClsConverter;
-import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
-import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactory;
 import gov.nih.nci.caintegrator2.application.analysis.StatusUpdateListener;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
-import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticSamplesMarkers;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAGridRunner;
-import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
-import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
@@ -115,10 +107,8 @@ import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
 import org.genepattern.gistic.common.GisticI;
@@ -130,23 +120,21 @@ import org.genepattern.pca.common.PCAI;
 public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     
     private GenePatternGridClientFactory genePatternGridClientFactory;
-    private QueryManagementService queryManagementService;
     private FileManager fileManager;
     
     /**
      * {@inheritDoc}
      */
-    public File runGistic(StatusUpdateListener updater, GisticAnalysisJob job) 
+    public File runGistic(StatusUpdateListener updater, GisticAnalysisJob job, File segmentFile, File markersFile,
+            File cnvFile) 
     throws ConnectionException, InvalidCriterionException, ParameterException, IOException {
         GisticParameters parameters = job.getGisticAnalysisForm().getGisticParameters();
         StudySubscription studySubscription = job.getSubscription();
         GisticI gisticClient = genePatternGridClientFactory.createGisticClient(parameters.getServer());
         GisticGridRunner runner = new GisticGridRunner(gisticClient, fileManager);
         try {
-            GisticSamplesMarkers gisticSamplesMarkers = GenePatternUtil.
-                createGisticSamplesMarkers(queryManagementService, parameters, studySubscription);
             updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_REMOTELY);
-            return runner.execute(studySubscription, parameters, gisticSamplesMarkers);
+            return runner.execute(studySubscription, parameters, segmentFile, markersFile, cnvFile);
         } catch (InterruptedException e) {
             return null;
         } finally {
@@ -159,14 +147,11 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
      * @throws InvalidCriterionException 
      */
     public File runPreprocessComparativeMarkerSelection(StatusUpdateListener updater,
-            ComparativeMarkerSelectionAnalysisJob job)
+            ComparativeMarkerSelectionAnalysisJob job, File gctFile, File clsFile)
     throws ConnectionException, InvalidCriterionException {
         StudySubscription studySubscription = job.getSubscription();
-        File gctFile = runPreprocessDataset(updater, job, job.getForm().getPreprocessDatasetparameters());
-        File clsFile = createClassificationFile(studySubscription, 
-                        job.getForm().getComparativeMarkerSelectionParameters().getClinicalQueries(), 
-                        job.getForm().getComparativeMarkerSelectionParameters().getClassificationFileName());
-        
+        runPreprocessDataset(updater, job, job.getForm().getPreprocessDatasetparameters(),
+                gctFile);
         File resultsFile = runComparativeMarkerSelection(updater, studySubscription, job, gctFile, clsFile);
         updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_LOCALLY);
         
@@ -176,22 +161,18 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     /**
      * {@inheritDoc}
      */
-    public File runPreprocessDataset(StatusUpdateListener updater,
-            AbstractPersistedAnalysisJob job, PreprocessDatasetParameters parameters)
+    public void runPreprocessDataset(StatusUpdateListener updater,
+            AbstractPersistedAnalysisJob job, PreprocessDatasetParameters parameters, File gctFile)
     throws ConnectionException, InvalidCriterionException {
         StudySubscription studySubscription = job.getSubscription();
-        Set<Query> querySet = new HashSet<Query>();
-        querySet.addAll(parameters.getClinicalQueries());
-        GctDataset gctDataset = GenePatternUtil.createGctDataset(studySubscription, querySet,
-                parameters.getExcludedControlSampleSet(), queryManagementService);
         updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_REMOTELY);
         PreprocessDatasetMAGEServiceI client = 
             genePatternGridClientFactory.createPreprocessDatasetClient(parameters.getServer());
-        PreprocessDatasetGridRunner runner = new PreprocessDatasetGridRunner(client, fileManager);
+        PreprocessDatasetGridRunner runner = new PreprocessDatasetGridRunner(client);
         try {
-            return runner.execute(studySubscription, parameters, gctDataset);
+            runner.execute(studySubscription, parameters, gctFile);
         } catch (InterruptedException e) {
-            return null;
+            return;
         } finally {
             updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_LOCALLY);
         }
@@ -201,25 +182,18 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
      * {@inheritDoc}
      */
     public File runPCA(StatusUpdateListener updater,
-            PrincipalComponentAnalysisJob job, File preprocessedGctFile)
+            PrincipalComponentAnalysisJob job, File gctFile)
     throws ConnectionException, InvalidCriterionException {
-        StudySubscription studySubscription = job.getSubscription();
-        PCAParameters parameters = job.getForm().getPcaParameters();
-        PCAI client = genePatternGridClientFactory.createPCAClient(parameters.getServer());
-        Set<Query> querySet = new HashSet<Query>();
-        querySet.addAll(parameters.getClinicalQueries());
-        File gctFile = preprocessedGctFile;
-        if (gctFile == null) {
-            gctFile = createGctFile(studySubscription, querySet, parameters);   
+        PCAI client = genePatternGridClientFactory.createPCAClient(job.getForm().getPcaParameters().getServer());
+        if (job.getForm().isUsePreprocessDataset()) {
+            runPreprocessDataset(updater,
+                    job, job.getForm().getPreprocessParameters(), gctFile);
         }
-        File clsFile = createClassificationFile(studySubscription, parameters.getClinicalQueries(), 
-                parameters.getClassificationFileName());
-            
-        return executePCA(updater, job, client, gctFile, clsFile);
+        return executePCA(updater, job, client, gctFile);
     }
     
     private File executePCA(StatusUpdateListener updater,
-            PrincipalComponentAnalysisJob job, PCAI client, File gctFile, File clsFile)
+            PrincipalComponentAnalysisJob job, PCAI client, File gctFile)
     throws ConnectionException {
         File zipFile = null;
         try {
@@ -227,18 +201,15 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
             PCAGridRunner runner = new PCAGridRunner(client, fileManager);
             zipFile = runner.execute(job.getSubscription(), job.getForm().getPcaParameters(), gctFile);
             updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_LOCALLY);
-            Cai2Util.addFilesToZipFile(zipFile, gctFile, clsFile);
+            Cai2Util.addFilesToZipFile(zipFile, gctFile);
         } catch (IOException e) {
-            if (zipFile != null) {
-                zipFile.delete();
-            }
+            FileUtils.deleteQuietly(zipFile);
             throw new IllegalStateException("Invalid Zip File retrieved from grid service:  " 
                                             + "Unable to add gct/cls files to the zip file.", e);
         } catch (InterruptedException e) {
             return null;
         } finally {
-            gctFile.delete();
-            clsFile.delete();
+            FileUtils.deleteQuietly(gctFile);
         }
         return zipFile;
     }
@@ -266,28 +237,10 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
         } catch (InterruptedException e) {
             return null;
         } finally {
-            gctFile.delete();
-            clsFile.delete();
+            FileUtils.deleteQuietly(gctFile);
+            FileUtils.deleteQuietly(clsFile);
         }
         return zipFile;
-    }
-    
-    private File createClassificationFile(StudySubscription studySubscription, List<Query> clinicalQueries,
-            String classificationFileName) throws InvalidCriterionException {
-        return ClassificationsToClsConverter.writeAsCls(
-                GenePatternUtil.createSampleClassification(queryManagementService, clinicalQueries), 
-                new File(fileManager.getUserDirectory(studySubscription) + File.separator 
-                        + classificationFileName).getAbsolutePath());
-    }
-    
-    private File createGctFile(StudySubscription studySubscription, Set<Query> querySet,
-            PCAParameters parameters)
-    throws InvalidCriterionException {
-        return GctDatasetFileWriter.writeAsGct(
-                GenePatternUtil.createGctDataset(studySubscription, querySet,
-                        parameters.getExcludedControlSampleSet(), queryManagementService), 
-                new File(fileManager.getUserDirectory(studySubscription) + File.separator 
-                        + parameters.getGctFileName()).getAbsolutePath());
     }
 
     /**
@@ -297,12 +250,6 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
         this.genePatternGridClientFactory = genePatternGridClientFactory;
     }
 
-    /**
-     * @param queryManagementService the queryManagementService to set
-     */
-    public void setQueryManagementService(QueryManagementService queryManagementService) {
-        this.queryManagementService = queryManagementService;
-    }
 
     /**
      * @param fileManager the fileManager to set

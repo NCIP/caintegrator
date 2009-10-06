@@ -92,7 +92,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.genepattern.gistic.common.GisticUtils;
 
 import edu.mit.broad.genepattern.gp.services.FileWrapper;
 import edu.mit.broad.genepattern.gp.services.GenePatternClient;
@@ -100,9 +99,7 @@ import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import edu.mit.broad.genepattern.gp.services.JobInfo;
 import edu.mit.broad.genepattern.gp.services.ParameterInfo;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
-import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticSamplesMarkers;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
@@ -117,23 +114,15 @@ import gov.nih.nci.caintegrator2.file.FileManager;
 class GisticWebServiceRunner {
 
     private final GenePatternClient client;
-    private final QueryManagementService queryManagementService;
     private final FileManager fileManager;
 
-    public GisticWebServiceRunner(GenePatternClient client, QueryManagementService queryManagementService, 
-            FileManager fileManager) {
+    public GisticWebServiceRunner(GenePatternClient client, FileManager fileManager) {
         this.client = client;
-        this.queryManagementService = queryManagementService;
         this.fileManager = fileManager;
     }
 
-    File runGistic(StatusUpdateListener updater, GisticAnalysisJob job) 
+    File runGistic(StatusUpdateListener updater, GisticAnalysisJob job, File segmentFile, File markersFile) 
     throws ConnectionException, InvalidCriterionException, IOException {
-        GisticSamplesMarkers gisticSamplesMarkers = 
-            GenePatternUtil.createGisticSamplesMarkers(queryManagementService, 
-                    job.getGisticAnalysisForm().getGisticParameters(), job.getSubscription());
-        File segmentFile = GisticUtils.writeSampleFile(gisticSamplesMarkers.getSamples());
-        File markersFile = GisticUtils.writeMarkersFile(gisticSamplesMarkers.getMarkers());
         try {
             updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_LOCALLY);
             List<ParameterInfo> parameters = createParameters(job, segmentFile, markersFile);
