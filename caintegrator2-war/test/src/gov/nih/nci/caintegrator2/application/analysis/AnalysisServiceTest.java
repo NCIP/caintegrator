@@ -481,6 +481,7 @@ public class AnalysisServiceTest {
         query1.setSubscription(subscription);
         query1.setResultType(ResultTypeEnum.GENOMIC);
         query1.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        query1.setCompoundCriterion(new CompoundCriterion());
         assertFalse(genomicQueryParameters.validate());
         genomicQueryParameters.setQuery(query1);
         genomicQueryParameters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
