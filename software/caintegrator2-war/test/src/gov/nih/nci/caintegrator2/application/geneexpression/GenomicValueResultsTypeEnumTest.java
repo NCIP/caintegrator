@@ -90,17 +90,17 @@ import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
-public class PlotCalculationTypeEnumTest {
+public class GenomicValueResultsTypeEnumTest {
 
     @Test
     public void testGetByValue() {
-        assertEquals(PlotCalculationTypeEnum.MEAN, PlotCalculationTypeEnum.getByValue(PlotCalculationTypeEnum.MEAN.getValue()));
+        assertEquals(GenomicValueResultsTypeEnum.GENE_EXPRESSION, GenomicValueResultsTypeEnum.getByValue(GenomicValueResultsTypeEnum.GENE_EXPRESSION.getValue()));
     }
     
     @Test
     public void testCheckType() {
-        assertFalse(PlotCalculationTypeEnum.checkType("not found"));
-        assertFalse(PlotCalculationTypeEnum.checkType(null));
+        assertFalse(GenomicValueResultsTypeEnum.checkType("not found"));
+        assertFalse(GenomicValueResultsTypeEnum.checkType(null));
     }
 
 }

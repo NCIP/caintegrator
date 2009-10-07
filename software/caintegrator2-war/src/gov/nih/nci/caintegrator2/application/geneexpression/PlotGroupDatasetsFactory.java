@@ -142,7 +142,7 @@ public final class PlotGroupDatasetsFactory {
     }
     
     private static double log2Intensity(Double value) {
-        return Math.log(value / Math.log(2));
+        return Math.log(Math.abs(value) / Math.log(2));
     }
 
     private static Double standardDeviation(List<Double> values, Double mean) {

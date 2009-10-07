@@ -117,7 +117,8 @@ public class GeneExpressionPlotServiceImplTest {
         GenomicDataQueryResult result = studyHelper.getQueryManagementService().executeGenomicDataQuery(query);
         List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
         genomicResults.add(result);
-        GeneExpressionPlotConfiguration configuration = GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
+        GeneExpressionPlotConfiguration configuration = GeneExpressionPlotConfigurationFactory.createPlotConfiguration(
+                genomicResults, GenomicValueResultsTypeEnum.GENE_EXPRESSION);
 
         GeneExpressionPlotServiceImpl plotService = new GeneExpressionPlotServiceImpl();
         GeneExpressionPlotGroup plotGroup = plotService.generatePlots(configuration);

@@ -12,8 +12,8 @@
             <s:set name="retrieveGenomicQueryGEPlot_bw" id="retrieveGenomicQueryGEPlot_bw" value="%{retrieveGePlotUrl('boxWhiskerLog2Intensity')}"/>
             <b> Plot Type: </b> <a href="#" id="genomicQueryTypeSelection1" style="background-color:yellow;" onclick="setDynamicPlot('genomicQueryBasedImage', '${retrieveGenomicQueryGEPlot_mean}', 'genomicQueryTypeSelection', '1')">Mean</a> | 
                                  <a href="#" id="genomicQueryTypeSelection2" onclick="setDynamicPlot('genomicQueryBasedImage', '${retrieveGenomicQueryGEPlot_median}', 'genomicQueryTypeSelection', '2')">Median</a> |
-                                 <a href="#" id="genomicQueryTypeSelection3" onclick="setDynamicPlot('genomicQueryBasedImage', '${retrieveGenomicQueryGEPlot_log2}', 'genomicQueryTypeSelection', '3')">Log2 Intensity</a> |
-                                 <a href="#" id="genomicQueryTypeSelection4" onclick="setDynamicPlot('genomicQueryBasedImage', '${retrieveGenomicQueryGEPlot_bw}', 'genomicQueryTypeSelection', '4')">Box and Whisker Log2 Intensity</a>
+                                 <a href="#" id="genomicQueryTypeSelection3" onclick="setDynamicPlot('genomicQueryBasedImage', '${retrieveGenomicQueryGEPlot_log2}', 'genomicQueryTypeSelection', '3')">Log2</a> |
+                                 <a href="#" id="genomicQueryTypeSelection4" onclick="setDynamicPlot('genomicQueryBasedImage', '${retrieveGenomicQueryGEPlot_bw}', 'genomicQueryTypeSelection', '4')">Box and Whisker Log2</a>
             <br>
             <div style="overflow:scroll;">
             <img id="genomicQueryBasedImage" src="${retrieveGenomicQueryGEPlot_mean}" />

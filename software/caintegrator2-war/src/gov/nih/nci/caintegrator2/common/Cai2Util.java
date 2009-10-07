@@ -422,6 +422,46 @@ public final class Cai2Util {
     }
     
     /**
+     * Determines if a query has fold change criterion.
+     * @param query check to see if this query has fold change criterion.
+     * @return T/F value.
+     */
+    public static boolean isFoldChangeQuery(Query query) {
+        return getFoldChangeCriterion(query) != null;
+    }
+
+    /**
+     * Retrieves the fold change criterion for a given query.
+     * @param query to retrieve fold change criterion for.
+     * @return the fold change criterion.
+     */
+    public static FoldChangeCriterion getFoldChangeCriterion(Query query) {
+        return getFoldChangeCriterionFromCompoundCriterion(query.getCompoundCriterion());
+    }
+
+    private static FoldChangeCriterion getFoldChangeCriterion(AbstractCriterion criterion) {
+        if (criterion instanceof FoldChangeCriterion) {
+            return (FoldChangeCriterion) criterion;
+        } else if (criterion instanceof CompoundCriterion) {
+            CompoundCriterion compoundCriterion = (CompoundCriterion) criterion;
+            return getFoldChangeCriterionFromCompoundCriterion(compoundCriterion);
+        } else {
+            return null;
+        }
+    }
+
+    private static FoldChangeCriterion getFoldChangeCriterionFromCompoundCriterion(
+            CompoundCriterion compoundCriterion) {
+        for (AbstractCriterion criterion : compoundCriterion.getCriterionCollection()) {
+            FoldChangeCriterion foldChangeCriterion = getFoldChangeCriterion(criterion);
+            if (foldChangeCriterion != null) {
+                return foldChangeCriterion;
+            }
+        }
+        return null;
+    }
+    
+    /**
      * Creates a query for all genomic data in the study, and limits it to the given clinical queries (if any
      * are given).
      * @param studySubscription for querying.
