@@ -12,8 +12,8 @@
             <s:set name="retrieveAnnotationGEPlot_bw" id="retrieveAnnotationGEPlot_bw" value="%{retrieveGePlotUrl('boxWhiskerLog2Intensity')}"/>
             <b> Plot Type: </b> <a href="#" id="annotationTypeSelection1" style="background-color:yellow;" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_mean}', 'annotationTypeSelection', '1')">Mean</a> | 
                                  <a href="#" id="annotationTypeSelection2" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_median}', 'annotationTypeSelection', '2')">Median</a> |
-                                 <a href="#" id="annotationTypeSelection3" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_log2}', 'annotationTypeSelection', '3')">Log2 Intensity</a> |
-                                 <a href="#" id="annotationTypeSelection4" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_bw}', 'annotationTypeSelection', '4')">Box and Whisker Log2 Intensity</a>
+                                 <a href="#" id="annotationTypeSelection3" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_log2}', 'annotationTypeSelection', '3')">Log2</a> |
+                                 <a href="#" id="annotationTypeSelection4" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_bw}', 'annotationTypeSelection', '4')">Box and Whisker Log2</a>
             <br>
             <div style="overflow:scroll;">
             <img id="annotationBasedImage" src="${retrieveAnnotationGEPlot_mean}" />

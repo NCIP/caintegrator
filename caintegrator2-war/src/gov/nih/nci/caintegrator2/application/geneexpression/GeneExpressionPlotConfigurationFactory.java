@@ -111,11 +111,13 @@ public final class GeneExpressionPlotConfigurationFactory {
     /**
      * Creates a configuration object from genomic query results.
      * @param genomicResults - results used to create plot configuration.
+     * @param genomicValueResultsType - to determine how to display the graph.
      * @return - plot configuration from given results.
      */
     public static GeneExpressionPlotConfiguration createPlotConfiguration(
-                                            List<GenomicDataQueryResult> genomicResults) {
+                    List<GenomicDataQueryResult> genomicResults, GenomicValueResultsTypeEnum genomicValueResultsType) {
         GeneExpressionPlotConfiguration configuration = new GeneExpressionPlotConfiguration();
+        configuration.setGenomicValueResultsType(genomicValueResultsType);
         addSampleGroups(genomicResults, configuration);
         return configuration;
     }

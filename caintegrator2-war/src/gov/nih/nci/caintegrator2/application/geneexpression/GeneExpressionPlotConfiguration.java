@@ -98,7 +98,22 @@ public class GeneExpressionPlotConfiguration {
     private final Set<String> geneNames = new HashSet<String>();
     private final List<String> genesNotFound = new ArrayList<String>();
     private List<PlotSampleGroup> plotSampleGroups = new ArrayList<PlotSampleGroup>();
+    private GenomicValueResultsTypeEnum genomicValueResultsType = GenomicValueResultsTypeEnum.GENE_EXPRESSION;
     
+    /**
+     * @return the genomicValueResultsType
+     */
+    public GenomicValueResultsTypeEnum getGenomicValueResultsType() {
+        return genomicValueResultsType;
+    }
+
+    /**
+     * @param genomicValueResultsType the genomicValueResultsType to set
+     */
+    public void setGenomicValueResultsType(GenomicValueResultsTypeEnum genomicValueResultsType) {
+        this.genomicValueResultsType = genomicValueResultsType;
+    }
+
     /**
      * @return the plotSampleGroups
      */

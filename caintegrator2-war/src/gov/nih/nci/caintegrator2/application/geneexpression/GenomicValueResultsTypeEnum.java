@@ -85,22 +85,81 @@
  */
 package gov.nih.nci.caintegrator2.application.geneexpression;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.junit.Test;
+/**
+ * 
+ */
+public enum GenomicValueResultsTypeEnum {
+    
+    /**
+     * Mean.
+     */
+    GENE_EXPRESSION("Expression Intensity"),
 
-public class PlotCalculationTypeEnumTest {
+    /**
+     * Median.
+     */
+    FOLD_CHANGE("Fold Change");
+        
+    private static Map<String, GenomicValueResultsTypeEnum> valueToTypeMap = 
+                    new HashMap<String, GenomicValueResultsTypeEnum>();
 
-    @Test
-    public void testGetByValue() {
-        assertEquals(PlotCalculationTypeEnum.MEAN, PlotCalculationTypeEnum.getByValue(PlotCalculationTypeEnum.MEAN.getValue()));
+    private String value;
+    
+    private GenomicValueResultsTypeEnum(String value) {
+        this.value = value;
+    }
+
+    /**
+     * @return the value
+     */
+    public String getValue() {
+        return value;
+    }
+
+    /**
+     * @param value the value to set
+     */
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    private static Map<String, GenomicValueResultsTypeEnum> getValueToTypeMap() {
+        if (valueToTypeMap.isEmpty()) {
+            for (GenomicValueResultsTypeEnum type : values()) {
+                valueToTypeMap.put(type.getValue(), type);
+            }
+        }
+        return valueToTypeMap;
     }
     
-    @Test
-    public void testCheckType() {
-        assertFalse(PlotCalculationTypeEnum.checkType("not found"));
-        assertFalse(PlotCalculationTypeEnum.checkType(null));
+    /**
+     * Returns the <code>GenomicValueResultsTypeEnum</code> corresponding to the given value. Returns null
+     * for null value.
+     * 
+     * @param value the value to match
+     * @return the matching type.
+     */
+    public static GenomicValueResultsTypeEnum getByValue(String value) {
+        if (!checkType(value)) {
+            return null;
+        }
+        return getValueToTypeMap().get(value);
+    }
+
+    /**
+     * Checks to see that the value given is a legal <code>AssayType</code> value.
+     * 
+     * @param value the value to check;
+     * @return T/F value if it exists.
+     */
+    public static boolean checkType(String value) {
+        if (value == null || !getValueToTypeMap().containsKey(value)) {
+            return false;
+        }
+        return true;
     }
 
 }

@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotCo
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotConfigurationFactory;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
+import gov.nih.nci.caintegrator2.application.geneexpression.GenomicValueResultsTypeEnum;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotSampleGroup;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
@@ -142,8 +143,8 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
             genomicResults.add(result);
         }
         addOptionalGroups(subscription, genomicResults, parameters.getControlSampleSetName());
-        GeneExpressionPlotConfiguration configuration = 
-                GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
+        GeneExpressionPlotConfiguration configuration = GeneExpressionPlotConfigurationFactory.createPlotConfiguration(
+                genomicResults, GenomicValueResultsTypeEnum.GENE_EXPRESSION);
         return createGeneExpressionPlot(parameters, configuration);
     }
 
