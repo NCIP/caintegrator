@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -211,10 +212,19 @@ public final class GeneExpressionPlotConfigurationFactory {
         if (configuration.getPlotSampleGroups().size() > 1) {
             allSamplesGroup.setName("All");
             allSamplesGroup.setNumberSubjects(numberSubjects);
-            for (PlotReporterGroup reporterGroup : configuration.getPlotSampleGroups().get(1).getReporterGroups()) {
+            for (PlotReporterGroup reporterGroup : retrievePlotReporterGroups(configuration)) {
                 allSamplesGroup.getReporterGroups().add(reporterNameToGroupMap.get(reporterGroup.getName()));
             }
         }
+    }
+
+    private static List<PlotReporterGroup> retrievePlotReporterGroups(GeneExpressionPlotConfiguration configuration) {
+        for (PlotSampleGroup plotSampleGroup : configuration.getPlotSampleGroups()) {
+            if (!plotSampleGroup.getReporterGroups().isEmpty()) {
+                return plotSampleGroup.getReporterGroups();
+            }
+        }
+        return new ArrayList<PlotReporterGroup>();
     }
 
     private static void configureNewReporterGroup(Map<String, PlotReporterGroup> reporterNameToGroupMap, String name) {
