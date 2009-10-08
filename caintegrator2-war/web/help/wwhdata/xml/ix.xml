@@ -2,7 +2,7 @@
 <WebWorksHelpIX version="5.0" xmlns="urn:WebWorks-Help-Index-Schema">
   <g t="A" o="002">
     <i t="account, requesting new user">
-      <j l="4#1141099" />
+      <j l="3#1141099" />
     </i>
     <i t="adding">
       <i t="clinical data">
@@ -14,16 +14,19 @@
       <i t="imaging data">
         <j l="22#1077974" />
       </i>
+      <i t="new user to user group">
+        <j l="70#1079800" />
+      </i>
     </i>
     <i t="annotation">
       <i t="assigning identifier">
         <j l="15#1081979" />
       </i>
       <i t="configuring field">
-        <j l="66#1073233" />
+        <j l="75#1073233" />
       </i>
       <i t="importing delimited text">
-        <j l="65#1073226" />
+        <j l="74#1073226" />
       </i>
       <i t="K-M plot for">
         <j l="50#1089381" />
@@ -33,8 +36,8 @@
       </i>
     </i>
     <i t="Application Support">
-      <j l="1#1059005" />
-      <j l="10#1136641" />
+      <j l="9#1136641" />
+      <j l="79#1083452" />
     </i>
     <i t="assigning, annotation identifier">
       <j l="15#1081979" />
@@ -53,19 +56,19 @@
   <g t="C" o="002">
     <i t="caIntegrator2">
       <i t="logging in">
-        <j l="5#1146400" />
+        <j l="4#1146400" />
       </i>
       <i t="logging out">
-        <j l="9#1141079" />
+        <j l="8#1141079" />
       </i>
       <i t="requesting user account">
-        <j l="4#1141099" />
+        <j l="3#1141099" />
       </i>
       <i t="using workspace">
-        <j l="6#1122586" />
+        <j l="5#1122586" />
       </i>
       <i t="workspace">
-        <j l="6#1122586" />
+        <j l="5#1122586" />
       </i>
     </i>
     <i t="clinical study">
@@ -86,22 +89,22 @@
     </i>
     <i t="configuring">
       <i t="annotation fields for import">
-        <j l="66#1073233" />
+        <j l="75#1073233" />
       </i>
       <i t="copy number data">
         <j l="21#1089928" />
       </i>
       <i t="genomic data for import">
-        <j l="68#1073253" />
+        <j l="77#1073253" />
       </i>
       <i t="imaging data for import">
-        <j l="69#1073265" />
+        <j l="78#1073265" />
       </i>
       <i t="sample data for import">
-        <j l="67#1073243" />
+        <j l="76#1073243" />
       </i>
       <i t="subject clinical data for import">
-        <j l="64#1073215" />
+        <j l="73#1073215" />
       </i>
     </i>
     <i t="control samples, uploading">
@@ -114,9 +117,18 @@
       <i t="K-M plot">
         <j l="49#1105761" />
       </i>
+      <i t="new user">
+        <j l="67#1079273" />
+      </i>
+      <i t="protection group">
+        <j l="68#1078147" />
+      </i>
       <i t="study">
         <j l="12#1079473" />
         <j l="13#1074101" />
+      </i>
+      <i t="user account">
+        <j l="64#1077886" />
       </i>
     </i>
   </g>
@@ -128,7 +140,7 @@
       <j l="17#1077702" />
     </i>
     <i t="delimited text annotation import">
-      <j l="65#1073226" />
+      <j l="74#1073226" />
     </i>
     <i t="DICOM, retrieving images">
       <j l="43#1168195" />
@@ -215,7 +227,7 @@
         <j l="18#1090798" />
       </i>
       <i t="configuring for import">
-        <j l="68#1073253" />
+        <j l="77#1073253" />
       </i>
       <i t="for study">
         <j l="11#1083477" />
@@ -240,14 +252,14 @@
         <j l="22#1077974" />
       </i>
       <i t="configuring for import">
-        <j l="69#1073265" />
+        <j l="78#1073265" />
       </i>
       <i t="for study">
         <j l="11#1083526" />
       </i>
     </i>
     <i t="importing delimited text annotations">
-      <j l="65#1073226" />
+      <j l="74#1073226" />
     </i>
   </g>
   <g t="K" o="002">
@@ -273,7 +285,7 @@
   </g>
   <g t="L" o="002">
     <i t="logout link">
-      <j l="9#1141079" />
+      <j l="8#1141079" />
     </i>
   </g>
   <g t="M" o="002">
@@ -286,6 +298,9 @@
       </i>
       <i t="study">
         <j l="24#1085452" />
+      </i>
+      <i t="user accounts">
+        <j l="64#1077886" />
       </i>
     </i>
     <i t="mapping genomic to clinical data">
@@ -302,8 +317,8 @@
       </i>
     </i>
     <i t="NCICB Application Support">
-      <j l="1#1059005" />
-      <j l="10#1136641" />
+      <j l="9#1136641" />
+      <j l="79#1083452" />
     </i>
   </g>
   <g t="O" o="002">
@@ -313,6 +328,9 @@
     </i>
   </g>
   <g t="P" o="002">
+    <i t="password, changing">
+      <j l="71#1078390" />
+    </i>
     <i t="patient">
       <i t="relationship to study, series, images">
         <j l="45#1168597" />
@@ -341,6 +359,14 @@
         <j l="61#1086355" />
       </i>
     </i>
+    <i t="protection group">
+      <i t="creating">
+        <j l="68#1078147" />
+      </i>
+      <i t="definition">
+        <j l="64#1079023" />
+      </i>
+    </i>
   </g>
   <g t="Q" o="002">
     <i t="query">
@@ -363,7 +389,7 @@
   </g>
   <g t="R" o="002">
     <i t="registering new user">
-      <j l="4#1141099" />
+      <j l="3#1141099" />
     </i>
     <i t="Results Type tab">
       <j l="31#1074611" />
@@ -371,7 +397,7 @@
   </g>
   <g t="S" o="002">
     <i t="sample data, configuring for import">
-      <j l="67#1073243" />
+      <j l="76#1073243" />
     </i>
     <i t="saving query">
       <j l="33#1075755" />
@@ -466,15 +492,66 @@
       </i>
     </i>
     <i t="subject clinical data, configuring for import">
-      <j l="64#1073215" />
+      <j l="73#1073215" />
     </i>
     <i t="survival values, defining">
       <j l="17#1077702" />
     </i>
   </g>
-  <g t="T" o="002">
-    <i t="Technical Support">
-      <j l="1#1059005" />
+  <g t="U" o="002">
+    <i t="UPT">
+      <i t="adding new user to user group">
+        <j l="70#1079800" />
+      </i>
+      <i t="assigning user group to protection group">
+        <j l="69#1077621" />
+      </i>
+      <i t="creating new user">
+        <j l="66#1077521" />
+      </i>
+      <i t="creating protection group">
+        <j l="68#1078147" />
+      </i>
+      <i t="creating user group">
+        <j l="67#1079273" />
+      </i>
+      <i t="description">
+        <j l="64#1077504" />
+      </i>
+      <i t="summary of steps">
+        <j l="65#1077940" />
+      </i>
+    </i>
+    <i t="user">
+      <i t="adding to user group">
+        <j l="70#1079800" />
+      </i>
+      <i t="changing password">
+        <j l="71#1078390" />
+      </i>
+      <i t="creating new">
+        <j l="66#1077521" />
+      </i>
+      <i t="creating user access, summary">
+        <j l="65#1077940" />
+      </i>
+      <i t="definition">
+        <j l="64#1077506" />
+      </i>
+    </i>
+    <i t="user account, new">
+      <j l="64#1077886" />
+    </i>
+    <i t="user group">
+      <i t="assigning to protection group">
+        <j l="69#1077621" />
+      </i>
+      <i t="creating">
+        <j l="67#1079273" />
+      </i>
+      <i t="definition">
+        <j l="64#1077507" />
+      </i>
     </i>
   </g>
 </WebWorksHelpIX>

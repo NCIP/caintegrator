@@ -33,8 +33,7 @@
     <blockquote>
       <div class="Heading2"><a name="1084723">Principal Component Analysis (PCA)</a></div>
       <div class="Body_Text"><a name="1086355">Principal Component Analysis is typically used to transform a collection of correlated </a>variables into a smaller number of uncorrelated variables, or components.  Those components are typically sorted so that the first one captures most of the underlying variability and each succeeding component captures as much of the remaining variability as possible.</div>
-      <div class="Body_Text"><a name="1092498"> optionally configure GenePattern grid PreprocessDataset parameters in addition to </a>PCA module parameters. All PreprocessDataset parameters are available on screen, but will be collapsed by default and will be disabled by default.  When selected, PreprocessDataset will be executed prior to PCA. (Similar behavior to grid based comparative marker selection.  Also, for the pca service settings, the user will see Rows selected by default.</div>
-      <div class="Body_Text"><a name="1086985">For more information, see the GenePattern website: </a><span class="HTTP"><a href="http://www.broad.mit.edu/cgi-bin/cancer/software/genepattern/modules/gp_modules.cgi" target="_window">http://www.broad.mit.edu/cgi-bin/cancer/software/genepattern/modules/gp_modules.cgi</a></span>.</div>
+      <div class="Body_Text"><a name="1092498">You can configure GenePattern grid parameters for preprocessing the dataset in </a>addition to PCA module parameters. For more information, see the GenePattern website: <span class="HTTP"><a href="http://www.broad.mit.edu/cgi-bin/cancer/software/genepattern/modules/gp_modules.cgi" target="_window">http://www.broad.mit.edu/cgi-bin/cancer/software/genepattern/modules/gp_modules.cgi</a></span>.</div>
       <div class="Body_Text"><a name="1087844">To perform a PCA analysis, follow these steps:</a></div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1087842">
@@ -134,7 +133,7 @@
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">5.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1087916">If you want to preprocess the data set, click</a><span style="font-weight: bold;"> Enable the Preprocess Dataset</span>. This opens an additional set of parameters, discussed in the following table  .</div>
+              <div class="Numbered_List_inner"><a name="1087916">If you want to preprocess the data set, click</a><span style="font-weight: bold;"> Enable the Preprocess Dataset</span>. This opens an additional set of parameters, discussed in the following table   The preprocessing is executed prior to running the PCA.</div>
             </td>
           </tr>
         </table>
@@ -254,6 +253,18 @@
             </td>
             <td width="100%">
               <div class="Numbered_List_inner"><a name="1090901">When you have completed the form, click </a><span style="font-weight: bold;">Perform Analysis</span>.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1108197">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">7.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1108197">When the job is complete, the system displays a completion date on the </a>GenePattern Analysis status page. Click the <span style="font-weight: bold;">Download</span> link. This downloads zipped result files to your local work station. The number of files and their file type will vary according to the processing. The results format is compatible with GenePattern visualizers and can be uploaded within GenePattern. </div>
             </td>
           </tr>
         </table>
