@@ -259,8 +259,8 @@
     // may be customized by minor modifications in the code (if condition below)
     // (you need to know the keycode/ASCII value of the  character to be allowed/disallowed.
     // - Subrata Chakrabarty
-
-    if ((keycode>47 && keycode<59)||(keycode>62 && keycode<127) ||(keycode==32))
+    //alert("Check keycode: " + keycode);
+    if (keycode>32 && keycode<127)
     {
       var vAllowableCharacter = "yes";
     }
