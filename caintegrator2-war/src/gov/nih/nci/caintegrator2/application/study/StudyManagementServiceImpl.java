@@ -576,7 +576,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         if (dataElement.getDefinition().length() > DEFINITION_LENGTH) {
             dataElement.setDefinition(dataElement.getDefinition().substring(0, DEFINITION_LENGTH - 7) + "...");
         }
-        annotationDefinition.setKeywords(keywords);
+        annotationDefinition.setKeywords(dataElement.getLongName());
         validateAnnotationDefinition(fileColumn, study, entityType, annotationDefinition);
         dao.save(annotationDefinition);
         dao.save(fileColumn);
