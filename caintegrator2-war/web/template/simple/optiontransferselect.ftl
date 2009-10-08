@@ -60,50 +60,62 @@
 
 </td>
 <td valign="middle" align="center">
-    <#if parameters.allowAddToRight?default(true)><#t/>
-        <#assign addToRightLabel=parameters.addToRightLabel?default("->")?html /><#t/>
-        <#if parameters.headerKey?exists><#t/>
-            <input type="button" 
-            <#if parameters.buttonCssClass?exists><#t/>
-             class="${parameters.buttonCssClass?html}" 
-            </#if><#t/>
-            <#if parameters.buttonCssStyle?exists><#t/>
-             style="${parameters.buttonCssStyle?html}"
-            </#if><#t/>
-             value="${addToRightLabel}" onclick="moveSelectedOptions(document.getElementById('${parameters.id?html}'), document.getElementById('${parameters.doubleId?html}'), false, '${parameters.headerKey}', '');<#if parameters.addToRightOnclick?has_content>${parameters.addToRightOnclick};</#if>" /><br /><br />
-        <#else><#t/>
-            <input type="button"
-            <#if parameters.buttonCssClass?exists><#t/>
-             class="${parameters.buttonCssClass?html}" 
-            </#if><#t/>
-            <#if parameters.buttonCssStyle?exists>
-             style="${parameters.buttonCssStyle?html}"
-            </#if><#t/>
-             value="${addToRightLabel}" onclick="moveSelectedOptions(document.getElementById('${parameters.id?html}'), document.getElementById('${parameters.doubleId?html}'), false, '');<#if parameters.addToRightOnclick?has_content>${parameters.addToRightOnclick};</#if>" /><br /><br />
+    
+    <#assign addToRightLabel=parameters.addToRightLabel?default("->")?html /><#t/>
+    <#if parameters.headerKey?exists><#t/>
+        <input type="button"  
+        <#if !parameters.allowAddToRight?default(true)><#t/>
+        disabled="disabled"  
         </#if><#t/>
-    </#if><#t/>
-    <#if parameters.allowAddToLeft?default(true)><#t/>
-        <#assign addToLeftLabel = parameters.addToLeftLabel?default("<-")?html/><#t/>
-        <#if parameters.doubleHeaderKey?exists><#t/>
-            <input type="button" 
-            <#if parameters.buttonCssClass?exists><#t/>
-             class="${parameters.buttonCssClass?html}" 
-            </#if><#t/>
-            <#if parameters.buttonCssStyle?exists><#t/>
-             style="${parameters.buttonCssStyle?html}"
-            </#if><#t/>
-             value="${addToLeftLabel}" onclick="moveSelectedOptions(document.getElementById('${parameters.doubleId?html}'), document.getElementById('${parameters.id?html}'), false, '${parameters.doubleHeaderKey}', '');<#if parameters.addToLeftOnclick?has_content>${parameters.addToLeftOnclick};</#if>" /><br /><br />
-        <#else><#t/>
-            <input type="button" 
-            <#if parameters.buttonCssClass?exists><#t/>
-             class="${parameters.buttonCssClass?html}" 
-            </#if><#t/>
-            <#if parameters.buttonCssStyle?exists><#t/>
-             style="${parameters.buttonCssStyle?html}"
-            </#if><#t/>
-             value="${addToLeftLabel}" onclick="moveSelectedOptions(document.getElementById('${parameters.doubleId?html}'), document.getElementById('${parameters.id?html}'), false, '');<#if parameters.addToLeftOnclick?has_content>${parameters.addToLeftOnclick};</#if>" /><br /><br />
+        <#if parameters.buttonCssClass?exists><#t/>
+         class="${parameters.buttonCssClass?html}" 
         </#if><#t/>
+        <#if parameters.buttonCssStyle?exists><#t/>
+         style="${parameters.buttonCssStyle?html}"
+        </#if><#t/>
+         value="${addToRightLabel}" onclick="moveSelectedOptions(document.getElementById('${parameters.id?html}'), document.getElementById('${parameters.doubleId?html}'), false, '${parameters.headerKey}', '');<#if parameters.addToRightOnclick?has_content>${parameters.addToRightOnclick};</#if>" /><br /><br />
+    <#else><#t/>
+        <input type="button" 
+        <#if !parameters.allowAddToRight?default(true)><#t/>
+        disabled="disabled" 
+        </#if><#t/>
+        <#if parameters.buttonCssClass?exists><#t/>
+         class="${parameters.buttonCssClass?html}" 
+        </#if><#t/>
+        <#if parameters.buttonCssStyle?exists>
+         style="${parameters.buttonCssStyle?html}"
+        </#if><#t/>
+         value="${addToRightLabel}" onclick="moveSelectedOptions(document.getElementById('${parameters.id?html}'), document.getElementById('${parameters.doubleId?html}'), false, '');<#if parameters.addToRightOnclick?has_content>${parameters.addToRightOnclick};</#if>" /><br /><br />
     </#if><#t/>
+
+    
+    <#assign addToLeftLabel = parameters.addToLeftLabel?default("<-")?html/><#t/>
+    <#if parameters.doubleHeaderKey?exists><#t/>
+        <input type="button" 
+        <#if !parameters.allowAddToLeft?default(true)><#t/>
+        disabled="disabled" 
+        </#if><#t/>
+        <#if parameters.buttonCssClass?exists><#t/>
+         class="${parameters.buttonCssClass?html}" 
+        </#if><#t/>
+        <#if parameters.buttonCssStyle?exists><#t/>
+         style="${parameters.buttonCssStyle?html}"
+        </#if><#t/>
+         value="${addToLeftLabel}" onclick="moveSelectedOptions(document.getElementById('${parameters.doubleId?html}'), document.getElementById('${parameters.id?html}'), false, '${parameters.doubleHeaderKey}', '');<#if parameters.addToLeftOnclick?has_content>${parameters.addToLeftOnclick};</#if>" /><br /><br />
+    <#else><#t/>
+        <input type="button" 
+        <#if !parameters.allowAddToLeft?default(true)><#t/>
+        disabled="disabled" 
+        </#if><#t/>
+        <#if parameters.buttonCssClass?exists><#t/>
+         class="${parameters.buttonCssClass?html}" 
+        </#if><#t/>
+        <#if parameters.buttonCssStyle?exists><#t/>
+         style="${parameters.buttonCssStyle?html}"
+        </#if><#t/>
+         value="${addToLeftLabel}" onclick="moveSelectedOptions(document.getElementById('${parameters.doubleId?html}'), document.getElementById('${parameters.id?html}'), false, '');<#if parameters.addToLeftOnclick?has_content>${parameters.addToLeftOnclick};</#if>" /><br /><br />
+    </#if><#t/>
+    
     <#if parameters.allowAddAllToRight?default(true)><#t/>
         <#assign addAllToRightLabel=parameters.addAllToRightLabel?default("-->>")?html /><#t/>
         <#if parameters.headerKey?exists><#t/>
