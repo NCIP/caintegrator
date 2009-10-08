@@ -769,7 +769,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
         -->
 
         <property name="selenium.browser" value="*chrome C:\Program Files\Mozilla Firefox 2\firefox.exe"/>
-		<property name="selenium.proxy.port" value="48444"/>
+		<property name="selenium.proxy.port" value="47444"/>
 		<property name="selenium.report.dir" value="${reports.dir}/selenium"/>
 		<property name="selenium.report.file" value="selenium-rpt.html"/>
         <property name="selenium.testcase.timeout" value="900"/>
