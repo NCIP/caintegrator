@@ -85,9 +85,9 @@
             	    <s:if test="%{columnTypeAnnotation}">
             	        <s:if test="%{fileColumn.fieldDescriptor.definition != null}">
 
-            	            <s:textfield label="Name" name="fileColumn.fieldDescriptor.definition.commonDataElement.longName" readonly="%{readOnly}" />
-            	            <s:textarea label="Definition" name="fileColumn.fieldDescriptor.definition.commonDataElement.definition" cols="40" rows="4" readonly="%{readOnly}"/>
-            	            <s:textfield label="Keywords" name="fileColumn.fieldDescriptor.definition.keywords"  />
+            	            <s:textfield label="Name" name="fileColumn.fieldDescriptor.definition.commonDataElement.longName" disabled="%{readOnly}" size="38"/>
+            	            <s:textarea label="Definition" name="fileColumn.fieldDescriptor.definition.commonDataElement.definition" cols="40" rows="4" disabled="%{readOnly}"/>
+            	            <s:textfield label="Keywords" name="fileColumn.fieldDescriptor.definition.keywords" disabled="%{fromCadsr}" size="38" />
             	            <s:select label="Data Type" 
             	            name="fileColumn.fieldDescriptor.definition.commonDataElement.valueDomain.dataTypeString" 
             	            list="annotationDataTypes" 
@@ -95,7 +95,7 @@
             	        </s:if>
             	        <s:if test="%{fileColumn.fieldDescriptor.definition.commonDataElement.publicID != null}">
             	            <s:textfield label="CDE Public ID" value="%{fileColumn.fieldDescriptor.definition.commonDataElement.publicID}" 
-            	            readonly="%{readOnly}"/> 
+            	            disabled="%{readOnly}"/> 
             	        </s:if>
                         <s:if test="%{permissibleOn}">
                             <tr><td><br/></td></tr>
@@ -118,11 +118,12 @@
                                 doubleSize="8"
                                 multiple="true"
                                 doubleMultiple="true"
-                                cssStyle="min-width:100px; vertical-align=middle;"
-                                buttonCssStyle="min-width:100px;"
+                                cssStyle="%{permissibleCssStyle}"
+                                doubleCssStyle="%{permissibleCssStyle}"
+                                buttonCssStyle="min-width:100px;" 
                                 label="Permissible Values"
-                                disabled="%{fromCadsr}" 
-                                doubleDisabled="%{fromCadsr}"
+                                allowAddToLeft="%{!fromCadsr}"
+                                allowAddToRight="%{!fromCadsr}"
                                 />
                     	</s:if>
                    	</s:if>
