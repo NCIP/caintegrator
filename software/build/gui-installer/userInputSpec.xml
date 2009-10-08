@@ -1000,7 +1000,7 @@ Guide to this file:
 	<!-- If you are signing jars for Java Web Starts then you may want to add com.izforge.izpack.util.PasswordEqualityValidator to each of the fields below.
 	-->
 	<panel order="23">
-		<field type="title" txt="Jar Signging configuration" bold="true" size="1" />
+		<field type="title" txt="Jar Signing configuration" bold="true" size="1" />
 		<field type="staticText" align="left" txt="This application can sign jars.  This page allows you to use your own java keystore to sign the jars or to have a self-signed one generated for you.  If you have an existing one put the full path to the file, the alias and password."/>
 		<field type="divider" align="top"/>
 
