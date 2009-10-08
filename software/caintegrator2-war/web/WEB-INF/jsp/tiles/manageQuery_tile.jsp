@@ -85,24 +85,13 @@
     }
     
     function openExportLink() {
-        
-        var allLinks, thisLink;
-        allLinks = document.evaluate(
-            "//div[@class='exportlinks']/a[@href]",
-            document,
-            null,
-            XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE,
-            null);
-        
-        if (allLinks.snapshotLength == 1) {
-            for (var i = 0; i < allLinks.snapshotLength; i++) {
-                thisLink = allLinks.snapshotItem(i);
-                window.location.href = thisLink;
-            }
+        var allLinks = document.getElementById("queryResultsDiv").getElementsByTagName("div");
+        if (allLinks.length == 1) {
+            window.location.href = allLinks[0].getElementsByTagName("a")[0].href;
         }
         else {
             alert ("Please report the error.\n" +
-                   "Export function is not available, error code: " + allLinks.snapshotLength);
+                "Export button is broken, error code: " + allLinks.length);
         }
     }
     
