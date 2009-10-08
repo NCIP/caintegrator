@@ -12,7 +12,7 @@
 				/http/remoteauthenticationmanager/**=sessionContextIntegrationFilter
 				/services/**=sessionContextIntegrationFilter
                 /**/tutorials.action/**=sessionContextIntegrationFilter
-                /**/registration/**=sessionContextIntegrationFilter
+                /registration/*.action/**=sessionContextIntegrationFilter
 				/**/login.action/**=sessionContextIntegrationFilter,logoutFilter
 				/http/applicationservice/**=sessionContextIntegrationFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
 				/gethtml/**=sessionContextIntegrationFilter,logoutFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
