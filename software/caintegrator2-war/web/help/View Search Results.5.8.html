@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Example of Retrieving Images:</title>
+    <title>Retrieving Dicom Images</title>
     <link rel="StyleSheet" href="css/View%20Search%20Results.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,99 +28,15 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="View%20Search%20Results.5.1.html#1171436">Viewing Query Results</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="View%20Search%20Results.5.3.html#1171436">Browsing Query Results</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="View%20Search%20Results.5.6.html#1171436">Imaging Data Results</a> &gt; Example of Retrieving Images:</div>
+      <a class="WebWorks_Breadcrumb_Link" href="View%20Search%20Results.5.1.html#1170682">Viewing Query Results</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="View%20Search%20Results.5.3.html#1170682">Browsing Query Results</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="View%20Search%20Results.5.6.html#1170682">Expanding Imaging Data Results</a> &gt; Retrieving Dicom Images</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading3"><a name="1171436">Example of Retrieving Images:</a></div>
-      <div class="Body_Text"><a name="1169876">You are searching a study that has image data and image annotation for at least one </a>image series.</div>
-      <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1159706">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1. </div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1159706">Open a study that has imaging data associated with it that points to the </a>production NBIA server (small-study doesn't currently). </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1162559">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2. </div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1162559">Make a query that will have image series or patients who are associated to </a>Image Studies and select a few of those patients in the check box. </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1162560">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3. </div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1162560">Click the </a><span style="font-weight: bold;">Retrieve Dicom Images</span> button</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text_Indent_2"><a name="1162563">Note that it aggregates to the image study</a></div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1162567">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">4. </div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1162567">Now go back to Columns tab, select all image annotations and run the query </a>again.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1162574">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">5. </div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1162574">Select an image series type column and click the </a><span style="font-weight: bold;">Retrieve Dicom Images</span> button.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text_Indent_2"><a name="1162575">caIntegrator2 now aggregates to the Image Series that were selected and not </a>the Image Study.</div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1162579">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">6. </div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1162579">Select a row that doesn't have image series data, and a row that does, and </a>push the button.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text_Indent_2"><a name="1170802">This should aggregate to the study for the rows selected.</a></div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1170803">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">7. </div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1170803">Click </a><span style="font-weight: bold;">Forward to NBIA</span>. You should see the same types of aggregation for these tests.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text"><a name="1162595">When the image Study is in the checked boxes (regardless of image series being there </a>or not), the system aggregates up to the Image Study level.</div>
+      <div class="Heading3"><a name="1170682">Retrieving Dicom Images</a></div>
+      <div class="Body_Text"><a name="1168799">Click the </a><span style="font-weight: bold;">Download DICOM</span> link to download and save the file. caIntegrator2 unzips the file and displays the list of images in the file. To open the DICOM images, you must have a DICOM image viewer application installed on your computer.  For more information, see <span class="HTTP"><a href="http://dicom.online.fr/fr/download.htm" target="_window">http://dicom.online.fr/fr/download.htm</a></span>.</div>
+      <div class="Body_Text"><a name="1164775">In the search results, not all of the patients in the data subset may be mapped to image </a>series IDs. If you select a mixture of patients that have image annotations as indicated by an image series ID and patients that do not have image annotations (no image series ID), when you click the <span style="font-weight: bold;">Retrieve DICOM Images</span> button, NBIA retrieves the images for the entire <span style="font-style: italic;">NBIA study instance UID </span>that includes the image seriesIDs you checked.</div>
+      <div class="Body_Text"><a name="1163616">If on the Search Results tab you select only patients that have image annotations as </a>indicated by an image series ID, when you click the <span style="font-weight: bold;">Retrieve DICOM Images</span> button, NBIA retrieves images for the <span style="font-style: italic;">NBIA image series</span> that were matched in the search. If the results are a mixture, but you select one specific row with a valid image annotation, caIntegrator2 aggregates to the <span style="font-style: italic;">images series</span>. If results are a mixture and you select multiple rows, caIntegrator2 aggregates to the NBIA study in which multiple image series you have selected in the search results are found.</div>
+      <div class="Body_Text"><a name="1164876">If your query does not have image annotations and all check boxes are selected, </a>results will go up to image series UID and gives all image series in it. Search results may ultimately depend on how the study was created. For example, if no image series display in query results, it means they were not mapped. in the study. In that case, the results “move” up to Study Instance UIDs. See <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'View%20Search%20Results.5.9.html#1171479', '');">Example of Retrieving Images:</a></span></div>
+      <div class="Body_Text"><a name="1169891">To best understand this, it is important to review the hierarchy of submissions in NBIA. </a>For more information, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'View%20Search%20Results.5.10.html#1168577', '');">Relationship of Patient to Study to Series to Images</a></span>.</div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
@@ -129,9 +45,7 @@
 
           // Add related topics
           //
-          WWHAddRelatedTopic("Clinical and Imaging Data", "caIntegrator2", "View%20Search%20Results.5.4.html#1163763");
-          WWHAddRelatedTopic("Genomic Data", "caIntegrator2", "View%20Search%20Results.5.5.html#1163775");
-          WWHAddRelatedTopic("Exporting Data", "caIntegrator2", "View%20Search%20Results.5.10.html#1162538");
+          WWHAddRelatedTopic("See also caIntegrator2 and NBIA", "caIntegrator2", "View%20Search%20Results.5.7.html#1164464");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->
