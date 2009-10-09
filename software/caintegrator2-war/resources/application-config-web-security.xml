@@ -12,7 +12,8 @@
 				/http/remoteauthenticationmanager/**=sessionContextIntegrationFilter
 				/services/**=sessionContextIntegrationFilter
                 /**/tutorials.action/**=sessionContextIntegrationFilter
-                /registration/*.action/**=sessionContextIntegrationFilter
+                /registration/input.action/**=sessionContextIntegrationFilter
+                /registration/save.action/**=sessionContextIntegrationFilter
 				/**/login.action/**=sessionContextIntegrationFilter,logoutFilter
 				/http/applicationservice/**=sessionContextIntegrationFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
 				/gethtml/**=sessionContextIntegrationFilter,logoutFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
