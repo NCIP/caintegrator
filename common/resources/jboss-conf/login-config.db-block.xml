@@ -1,5 +1,8 @@
 <application-policy name="@application.context.name@">
 	<authentication>
+        <login-module code="com.fiveamsolutions.nci.commons.authentication.SessionFixationProtectionLoginModule" flag="required">
+              <module-option name="migrateSessionAttributes">true</module-option>
+        </login-module>
 		<login-module code="gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule" flag="required"> 
 			<module-option name="driver">@database.driver@</module-option>
 			<module-option name="url">@database.url@</module-option>
