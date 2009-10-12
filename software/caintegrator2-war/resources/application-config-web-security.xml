@@ -36,7 +36,7 @@
 
  	<bean id="securityContextHolderAwareRequestFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter" lazy-init="default" autowire="default" dependency-check="default" /> 
 
-	<bean id="authenticationProcessingFilter" class="gov.nih.nci.caintegrator2.security.Cai2AuthenticationProcessingFilter">
+	<bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
 		<property name="authenticationManager" ref="authenticationManager"/>
 		<property name="authenticationFailureUrl" value="/login.action"/> 
 		<property name="defaultTargetUrl" value="/"/>

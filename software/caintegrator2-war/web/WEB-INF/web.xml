@@ -74,6 +74,17 @@
         </init-param>
     </filter>
     
+    <filter>
+        <filter-name>sessionFixation</filter-name>
+        <filter-class>com.fiveamsolutions.nci.commons.web.filter.SessionFixationProtectionFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>sessionFixation</filter-name>
+        <url-pattern>*.action</url-pattern>
+    </filter-mapping>
+    
+    
 	<filter-mapping>
 		<filter-name>ResponseOverrideFilter</filter-name>
 		<url-pattern>/*</url-pattern>

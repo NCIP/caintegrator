@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.security.SecurityHelper;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotMapper;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotMapper;
+import gov.nih.nci.logging.api.util.StringUtils;
 
 import java.util.Map;
 
@@ -194,7 +195,7 @@ public final class SessionHelper {
      * @return the studyManager
      */
     public boolean isStudyManager() {
-        if (studyManager == null) {
+        if (studyManager == null && !StringUtils.isBlank(getUsername())) {
             setStudyManager(SecurityHelper.isStudyManager(getUsername()));
         }
         return studyManager;
@@ -208,7 +209,7 @@ public final class SessionHelper {
      * @return the platformManager
      */
     public boolean isPlatformManager() {
-        if (platformManager == null) {
+        if (platformManager == null && !StringUtils.isBlank(getUsername())) {
             setPlatformManager(SecurityHelper.isPlatformManager(getUsername()));
         }
         return platformManager;
