@@ -147,6 +147,14 @@ public interface ArrayDataService {
      List<Platform> getPlatforms();
 
      /**
+      * Returns the PlatformConfiguration of name.
+      * 
+      * @param name the platformConfiguration name to get.
+      * @return the platformConfiguration.
+      */
+     PlatformConfiguration getPlatformConfiguration(String name);
+
+     /**
       * Returns all PlatformConfigurations.
       * 
       * @return the platformConfigurations.

@@ -266,6 +266,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         Platform platform = getExistingDesign(platformSource);
         if (platform == null) {
             PlatformConfiguration configuration = new PlatformConfiguration(platformSource);
+            configuration.setName(platformSource.getLoader().getPlatformName());
             arrayDataService.savePlatformConfiguration(configuration);
             platform = arrayDataService.loadArrayDesign(configuration, null).getPlatform();
         }

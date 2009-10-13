@@ -156,6 +156,13 @@ public class ArrayDataServiceStub implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
+    public PlatformConfiguration getPlatformConfiguration(String name) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Platform getPlatform(String name) {
         return null;
     }
