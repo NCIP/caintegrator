@@ -391,6 +391,20 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
+    public PlatformConfiguration getPlatformConfiguration(String name) {
+        List values = getHibernateTemplate().findByNamedParam("from PlatformConfiguration where name = :name", 
+                "name", name);
+        if (values.isEmpty()) {
+            return null;
+        } else {
+            return (PlatformConfiguration) values.get(0);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public Set<String> retrieveGeneSymbolsInStudy(Collection<String> symbols, Study study) {
         Criteria reporterCriteria = getCurrentSession().createCriteria(AbstractReporter.class);
         reporterCriteria.createCriteria("reporterList").
