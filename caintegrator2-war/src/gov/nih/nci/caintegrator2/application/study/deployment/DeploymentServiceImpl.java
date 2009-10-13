@@ -85,12 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
-import java.util.Date;
-
-import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactory;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
@@ -103,6 +97,12 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.bioconductor.BioconductorService;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+
+import java.util.Date;
+
+import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Performs study deployments and notifies clients.
@@ -128,7 +128,7 @@ public class DeploymentServiceImpl implements DeploymentService {
             studyConfiguration = getDao().get(studyConfiguration.getId(), StudyConfiguration.class);
             return startDeployment(studyConfiguration, listener);
         } catch (Exception e) {
-            return handleDeploymentException(studyConfiguration, listener, e);
+            return handleDeploymentFailure(studyConfiguration, listener, e);
         }
     }
 
@@ -144,15 +144,18 @@ public class DeploymentServiceImpl implements DeploymentService {
             }
             return doDeployment(studyConfiguration, listener);
         } catch (Exception e) {
-            return handleDeploymentException(studyConfiguration, listener, e);
+            return handleDeploymentFailure(studyConfiguration, listener, e);
+        } catch (Error e) {
+            return handleDeploymentFailure(studyConfiguration, listener, e);
         }
     }
 
-    private Status handleDeploymentException(StudyConfiguration studyConfiguration, DeploymentListener listener,
-            Exception e) {
-        LOGGER.error("Deployment of study " + studyConfiguration.getStudy().getShortTitleText() + " failed.", e);
+    private Status handleDeploymentFailure(StudyConfiguration studyConfiguration,
+            DeploymentListener listener, Throwable e) {
+        LOGGER.error("Deployment of study " + studyConfiguration.getStudy().getShortTitleText()
+                + " failed.", e);
+        studyConfiguration.setStatusDescription((e.getMessage() != null) ? e.getMessage() : e.toString());
         studyConfiguration.setStatus(Status.ERROR);
-        studyConfiguration.setStatusDescription(e.getMessage());
         updateStatus(studyConfiguration, listener);
         return studyConfiguration.getStatus();
     }
