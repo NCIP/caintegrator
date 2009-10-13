@@ -101,7 +101,7 @@
                                 action="addAnnotationFile" onclick="setSelectedAction('addAnnotationFile')" theme="css_xhtml" />
                             </div><br>
                             <s:textarea label="Additional Annotation File(s) Selected" name="platformForm.fileNames"
-                                rows="3" cols="50" theme="css_xhtml" /><br>
+                                disabled="true" rows="3" cols="50" theme="css_xhtml" /><br>
                         </s:div>
                         <div class="wwgrp">
                         <div class="wwlbl"><label class="label">&nbsp</label></div>
