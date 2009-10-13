@@ -341,7 +341,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
             addFieldError(PLATFORM_FILE, "Platform name not found in annotation file: "
                     + platformFileFileName);
             return false;
-        } else if (getArrayDataService().getPlatform(name) != null) {
+        } else if (getArrayDataService().getPlatformConfiguration(name) != null) {
             addActionError("Platform name is duplicate or the platform is already been loaded: "
                     + name);
             return false;

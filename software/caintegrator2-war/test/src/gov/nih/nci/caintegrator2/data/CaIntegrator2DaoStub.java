@@ -132,6 +132,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean findMatchingSubjectsCalled;
     public boolean getGeneCalled;
     public boolean getPlatformCalled;
+    public boolean getPlatformConfigurationCalled;
     private final StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
     private final Timepoint timepoint = new Timepoint();
     public boolean getArrayDataMatrixesCalled;
@@ -178,6 +179,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         findMatchingSubjectsCalled = false;
         getGeneCalled = false;
         getPlatformCalled = false;
+        getPlatformConfigurationCalled = false;
         getArrayDataMatrixesCalled = false;
         studySubjectAssignment.setId(Long.valueOf(1));
         timepoint.setId(Long.valueOf(1));
@@ -277,6 +279,16 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         Gene gene = new Gene();
         gene.setSymbol(symbol);
         return gene;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public PlatformConfiguration getPlatformConfiguration(String name) {
+        getPlatformConfigurationCalled = true;
+        PlatformConfiguration platformConfiguration = new PlatformConfiguration();
+        platformConfiguration.setName(name);
+        return platformConfiguration;
     }
 
     /**

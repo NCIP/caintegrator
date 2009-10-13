@@ -249,6 +249,14 @@ public interface CaIntegrator2Dao {
     Platform getPlatform(String name);
 
     /**
+     * Returns the platformConfiguration that matches the given name.
+     * 
+     * @param name the platformConfiguration name.
+     * @return the matching platformConfiguration.
+     */
+    PlatformConfiguration getPlatformConfiguration(String name);
+
+    /**
      * Returns the array design reporter list that matches the given name.
      * 
      * @param name the reporter list name.
