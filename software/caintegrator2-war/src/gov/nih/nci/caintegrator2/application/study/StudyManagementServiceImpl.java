@@ -105,7 +105,9 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+import gov.nih.nci.caintegrator2.external.caarray.CopyNumberFilesNotFoundException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
+import gov.nih.nci.caintegrator2.external.caarray.SamplesNotFoundException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAFacade;
 import gov.nih.nci.caintegrator2.file.FileManager;
@@ -114,6 +116,7 @@ import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSSecurityException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -452,14 +455,40 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     public void loadGenomicSource(GenomicDataSourceConfiguration genomicSource) 
     throws ConnectionException, ExperimentNotFoundException {
+        if (GenomicDataSourceDataTypeEnum.EXPRESSION.equals(genomicSource.getDataType())) {
+            handleLoadGeneExpression(genomicSource);
+        } else if (GenomicDataSourceDataTypeEnum.COPY_NUMBER.equals(genomicSource.getDataType())) {
+            handleLoadCopyNumber(genomicSource);
+        }
+        genomicSource.setStatus(Status.LOADED);
+        dao.save(genomicSource);
+    }
+
+    private void handleLoadGeneExpression(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
+            ExperimentNotFoundException {
         List<Sample> samples = getCaArrayFacade().getSamples(genomicSource.getExperimentIdentifier(), 
                 genomicSource.getServerProfile());
+        if (samples.isEmpty()) {
+            throw new SamplesNotFoundException(
+                    "No samples found for this caArray experiment (verify that sample data is accessible in caArray)");
+        }
         genomicSource.setSamples(samples);
         for (Sample sample : samples) {
             sample.setGenomicDataSource(genomicSource);
         }
-        genomicSource.setStatus(Status.LOADED);
-        dao.save(genomicSource);
+    }
+    
+    private void handleLoadCopyNumber(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
+    ExperimentNotFoundException {
+        String errorMessage = 
+            "No samples found for this caArray experiment (verify that sample data is accessible in caArray)";
+        try {
+            if (getCaArrayFacade().retrieveFilesForGenomicSource(genomicSource).isEmpty()) {
+                throw new CopyNumberFilesNotFoundException(errorMessage);
+            }
+        } catch (FileNotFoundException e) {
+            throw new CopyNumberFilesNotFoundException(errorMessage, e);
+        }
     }
     
     /**
