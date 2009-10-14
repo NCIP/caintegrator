@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -126,8 +127,8 @@ public abstract class AbstractCopyNumberMappingFileHandler {
     private final GenomicDataSourceConfiguration genomicSource;
     private final Map<Sample, List<String>> sampleToFilenamesMap = new HashMap<Sample, List<String>>();
 
-    AbstractCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
-            ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+    AbstractCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
+            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
                 this.genomicSource = genomicSource;
                 this.caArrayFacade = caArrayFacade;
                 this.arrayDataService = arrayDataService;
@@ -252,9 +253,26 @@ public abstract class AbstractCopyNumberMappingFileHandler {
         }
         return arrayData;
     }
-
-    abstract File getDataFile(String copyNumberFilename) 
-    throws ConnectionException, DataRetrievalException, ValidationException;
+    
+    File getDataFile(String copyNumberFilename) 
+    throws ConnectionException, DataRetrievalException, ValidationException {
+        try {
+            byte[] fileBytes = getCaArrayFacade().retrieveFile(getGenomicSource(), copyNumberFilename);
+            File tempFile = File.createTempFile("temp", "." + getFileType());
+            Cai2Util.byteArrayToFile(fileBytes, tempFile);
+            return tempFile;
+        } catch (FileNotFoundException e) {
+            throw new ValidationException("Experiment " + getGenomicSource().getExperimentIdentifier() 
+                    + " doesn't contain a file named " + copyNumberFilename, e);
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't write '" + getFileType() + "' file locally", e);
+        }
+    }
+    
+    /**
+     * @return the file type
+     */
+    abstract String getFileType();
 
     private Sample getSample(String sampleName, StudySubjectAssignment assignment) {
         Sample sample = genomicSource.getSample(sampleName);

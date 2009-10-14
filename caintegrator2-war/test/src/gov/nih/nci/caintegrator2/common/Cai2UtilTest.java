@@ -109,7 +109,9 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.file.FileManagerImpl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -233,6 +235,7 @@ public class Cai2UtilTest {
         FileUtils.copyFile(TestDataFiles.VALID_FILE, destFile2);
         File newZipFile = Cai2Util.addFilesToZipFile(zippedDirectory, destFile2);
         assertNotNull(newZipFile); // need to actually verify it contains 2 items now.
+        FileUtils.deleteDirectory(tempDirectory);
         FileUtils.deleteDirectory(tempDirectory2);
         try {
             Cai2Util.addFilesToZipFile(TestDataFiles.VALID_FILE, new File(""));
@@ -241,6 +244,24 @@ public class Cai2UtilTest {
             
         }
         
+    }
+    
+    @Test
+    public void testByteArrayToFile() throws IOException {
+        FileManagerImpl fileManager = new FileManagerImpl();
+        fileManager.setConfigurationHelper(new ConfigurationHelperStub());
+        File tempDirectory = fileManager.getNewTemporaryDirectory("cai2UtilTest3");
+        File destFile = new File(tempDirectory, "tempFile");
+        byte[] byteArray = "This is a test".getBytes();
+        Cai2Util.byteArrayToFile(byteArray, destFile);
+        assertEquals(destFile.length(), 14);
+        InputStream is = new FileInputStream(destFile);
+        byte[] byteCheck = new byte[14];
+        is.read(byteCheck);
+        is.close();
+        String stringCheck = new String(byteCheck);
+        assertTrue(stringCheck.equals("This is a test"));
+        FileUtils.deleteDirectory(tempDirectory);
     }
 
     @Test

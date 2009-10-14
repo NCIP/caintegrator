@@ -95,22 +95,19 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.io.FileUtils;
 
 /**
  * Reads and retrieves copy number data from a caArray instance.
  */
 class AgilentCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFileHandler {
+    
+    static final String FILE_TYPE = "raw";
     
     AgilentCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
@@ -120,22 +117,6 @@ class AgilentCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFileH
     @Override
     void doneWithFile(File cnchpFile) {
         cnchpFile.delete();
-    }
-
-    @Override
-    File getDataFile(String copyNumberFilename) 
-    throws ConnectionException, DataRetrievalException, ValidationException {
-        try {
-            byte[] fileBytes = getCaArrayFacade().retrieveFile(getGenomicSource(), copyNumberFilename);
-            File tempFile = File.createTempFile("temp", ".raw");
-            FileUtils.writeByteArrayToFile(tempFile, fileBytes);
-            return tempFile;
-        } catch (FileNotFoundException e) {
-            throw new ValidationException("Experiment " + getGenomicSource().getExperimentIdentifier() 
-                    + " doesn't contain a file named " + copyNumberFilename, e);
-        } catch (IOException e) {
-            throw new DataRetrievalException("Couldn't write Raw Data file locally", e);
-        }
     }
 
     @Override
@@ -152,6 +133,11 @@ class AgilentCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFileH
         }
         getArrayDataService().save(values);
         return values;
+    }
+
+    @Override
+    String getFileType() {
+        return FILE_TYPE;
     }
 
  }

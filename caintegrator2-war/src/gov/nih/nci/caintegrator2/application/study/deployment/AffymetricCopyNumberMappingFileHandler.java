@@ -96,25 +96,22 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.io.FileUtils;
 
 /**
  * Reads and retrieves copy number data from a caArray instance.
  */
 class AffymetrixCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFileHandler {
 
+    static final String FILE_TYPE = "cnchp";
+    
     AffymetrixCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
@@ -123,22 +120,6 @@ class AffymetrixCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFi
     @Override
     void doneWithFile(File cnchpFile) {
         cnchpFile.delete();
-    }
-
-    @Override
-    File getDataFile(String copyNumberFilename) 
-    throws ConnectionException, DataRetrievalException, ValidationException {
-        try {
-            byte[] fileBytes = getCaArrayFacade().retrieveFile(getGenomicSource(), copyNumberFilename);
-            File tempFile = File.createTempFile("temp", ".cnchp");
-            FileUtils.writeByteArrayToFile(tempFile, fileBytes);
-            return tempFile;
-        } catch (FileNotFoundException e) {
-            throw new ValidationException("Experiment " + getGenomicSource().getExperimentIdentifier() 
-                    + " doesn't contain a file named " + copyNumberFilename, e);
-        } catch (IOException e) {
-            throw new DataRetrievalException("Couldn't write CNCHP file locally", e);
-        }
     }
 
     @Override
@@ -168,6 +149,11 @@ class AffymetrixCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFi
         }
         getArrayDataService().save(values);
         return values;
+    }
+
+    @Override
+    String getFileType() {
+        return FILE_TYPE;
     }
 
 }

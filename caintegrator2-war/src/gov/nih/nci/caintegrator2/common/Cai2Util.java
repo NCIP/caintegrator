@@ -105,6 +105,7 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.awt.Color;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -254,6 +255,26 @@ public final class Cai2Util {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * Write a byte array to a file.
+     * @param fileBytes the byte array
+     * @param tempFile the output file
+     * @throws IOException the I/O exception
+     */
+    public static void byteArrayToFile(byte[] fileBytes, File tempFile) throws IOException {
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(tempFile));
+        int totalBytesWritten = 0;
+        int fileBytesLength = fileBytes.length;
+        while (totalBytesWritten < fileBytesLength) {
+            int lengthToWrite = fileBytesLength - totalBytesWritten < BUFFER_SIZE 
+                ? fileBytesLength - totalBytesWritten : BUFFER_SIZE;
+            bos.write(fileBytes, totalBytesWritten, lengthToWrite);
+            totalBytesWritten += lengthToWrite;
+        }
+        bos.flush();
+        bos.close();
     }
 
     /**
