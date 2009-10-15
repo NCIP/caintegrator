@@ -725,8 +725,10 @@ A.btn SPAN.load
 { background:url("../../images/ico_load.gif") no-repeat; }
 A.btn SPAN.edit_annotations
 { background:url("../../images/ico_edit_annotations.gif") no-repeat; }
-
-
+A.btn SPAN.externalsite
+{ background:url("../../images/ico_externalsite.gif") no-repeat; }
+A.btn SPAN.download
+{ background:url("../../images/arrow_down.gif") no-repeat; }
 
 /* Check List - Columns Tabs */
 
