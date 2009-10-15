@@ -63,7 +63,7 @@ P.fA("GenePattern Modules","PerformingAnalysis.6.13.html");
 P.fA("Comparative Marker Selection (CMS) Analysis","PerformingAnalysis.6.14.html");
 P.fA("Principal Component Analysis (PCA)","PerformingAnalysis.6.15.html");
 P.fA("GISTIC-Supported Analysis","PerformingAnalysis.6.16.html");
-P.fA("User Account Administration","User%20Admin.7.1.html");
+P.fA("Administering User Accounts","User%20Admin.7.1.html");
 P.fA("Administering caIntegrator2 User Accounts Using UPT","User%20Admin.7.2.html");
 P.fA("Steps for Creating User Access to caIntegrator2","User%20Admin.7.3.html");
 P.fA("Creating a New caIntegrator2 User","User%20Admin.7.4.html");
