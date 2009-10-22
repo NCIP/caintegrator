@@ -222,6 +222,14 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
                     + studyConfiguration.getId() 
                     + "\" onclick=\"return confirm('This study will be permanently deleted.')\">Delete</a>",
                     false);
+            if (Status.ERROR.equals(studyConfiguration.getStatus())) {
+                utilThis.setValue(JOB_STUDY_STATUS + studyConfigurationId, 
+                        "<a title=\"Click to view the Error description in the Study Overview\" "
+                        + "href=\"editStudy.action?studyConfiguration.id=" 
+                        + studyConfiguration.getId()
+                        + "\">Error</a>",
+                        false);
+            }
         } else {
             utilThis.setValue(JOB_EDIT_STUDY_URL + studyConfigurationId, "");
             utilThis.setValue(JOB_ACTION_BAR + studyConfigurationId, "");
