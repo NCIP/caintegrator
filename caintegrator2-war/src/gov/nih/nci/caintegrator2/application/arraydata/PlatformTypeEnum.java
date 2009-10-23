@@ -155,6 +155,7 @@ public enum PlatformTypeEnum {
      * @return the matching type.
      */
     public static PlatformTypeEnum getByValue(String value) {
+        checkType(value);
         return getValueToTypeMap().get(value);
     }
 
