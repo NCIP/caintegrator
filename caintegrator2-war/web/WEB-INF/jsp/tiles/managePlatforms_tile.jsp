@@ -27,24 +27,28 @@
         if (type == "Affymetrix Gene Expression") {
             document.getElementById("platformNameDiv").style.display = "none";
             document.getElementById("platformName").value = "N/A";
+            document.getElementById("commentNameDiv").style.display = "none";
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "block";
             document.getElementById("commentAdfGemlDiv").style.display = "none";
         } else if (type == "Affymetrix SNP"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
+            document.getElementById("commentNameDiv").style.display = "none";
             document.getElementById("addFileButtonDiv").style.display = "block";
             document.getElementById("commentCsvDiv").style.display = "block";
             document.getElementById("commentAdfGemlDiv").style.display = "none";
         } else if (type == "Agilent Gene Expression"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
+            document.getElementById("commentNameDiv").style.display = "none";
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "block";
             document.getElementById("commentAdfGemlDiv").style.display = "none";
         } else if (type == "Agilent Copy Number"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
+            document.getElementById("commentNameDiv").style.display = "block";
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "none";
             document.getElementById("commentAdfGemlDiv").style.display = "block";
@@ -82,8 +86,12 @@
                             list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum@getValuesToDisplay()"
                             onchange="CheckPlatformType(this.form.platformType.value);" theme="css_xhtml" /><br>
                         <s:div id="platformNameDiv" cssStyle="%{platformNameDisplay}">
-                            <s:textfield id="platformName" name="platformName" label="Platform Name (For NON-GEML xml file)"
+                            <s:textfield id="platformName" name="platformName" label="Platform Name"
                                 theme="css_xhtml" /><br>
+                        </s:div>
+                        <s:div id="commentNameDiv" cssClass="inlinehelp_form_element" cssStyle="%{adfGemlFileDisplay}">
+                            <span class="wwlbl">(not required for GEML annotation file)</span>
+                            <span class="wwctrl"></span>
                         </s:div>
                         <s:file id="platformFile" name="platformFile" label="Annotation File" />
                         <s:div id="commentAdfGemlDiv" cssClass="inlinehelp_form_element" cssStyle="%{adfGemlFileDisplay}">
