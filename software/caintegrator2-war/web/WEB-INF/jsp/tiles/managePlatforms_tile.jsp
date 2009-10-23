@@ -132,6 +132,7 @@
                         <table class="data">
                             <tr>
                                 <th>Platform Name</th>
+                                <th>Platform Type</th>
                                 <th>Vendor</th>
                                 <th>Array Name(s)</th>
                                 <th>Status</th>

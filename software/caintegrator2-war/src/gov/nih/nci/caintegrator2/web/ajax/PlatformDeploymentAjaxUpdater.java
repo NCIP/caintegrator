@@ -106,6 +106,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String UNAVAILABLE_STRING = "---";
     private static final String STATUS_TABLE = "platformDeploymentJobStatusTable";
     private static final String JOB_PLATFORM_NAME = "platformName_";
+    private static final String JOB_PLATFORM_TYPE = "platformType_";
     private static final String JOB_PLATFORM_VENDOR = "platformVendor_";
     private static final String JOB_PLATFORM_STATUS = "platformStatus_";
     private static final String JOB_ARRAY_NAME = "platformArrayName_";
@@ -145,15 +146,16 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     }
 
     private String[][] createRow(PlatformConfiguration platformConfiguration) {
-        String[][] rowString = new String[1][5];
+        String[][] rowString = new String[1][6];
         String id = platformConfiguration.getId().toString();
         String startSpan = "<span id=\"";
         String endSpan = "\"> </span>";
         rowString[0][0] = startSpan + JOB_PLATFORM_NAME + id + endSpan;
-        rowString[0][1] = startSpan + JOB_PLATFORM_VENDOR + id + endSpan;
-        rowString[0][2] = startSpan + JOB_ARRAY_NAME + id + endSpan;
-        rowString[0][3] = startSpan + JOB_PLATFORM_STATUS + id + endSpan;
-        rowString[0][4] = startSpan + JOB_DELETE_PLATFORM_URL + id + endSpan;
+        rowString[0][1] = startSpan + JOB_PLATFORM_TYPE + id + endSpan;
+        rowString[0][2] = startSpan + JOB_PLATFORM_VENDOR + id + endSpan;
+        rowString[0][3] = startSpan + JOB_ARRAY_NAME + id + endSpan;
+        rowString[0][4] = startSpan + JOB_PLATFORM_STATUS + id + endSpan;
+        rowString[0][5] = startSpan + JOB_DELETE_PLATFORM_URL + id + endSpan;
         return rowString;
     }
 
@@ -183,6 +185,8 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
         String platformConfigurationId = platformConfiguration.getId().toString();
         utilThis.setValue(JOB_PLATFORM_NAME + platformConfigurationId, 
                           retrievePlatformName(platformConfiguration));
+        utilThis.setValue(JOB_PLATFORM_TYPE + platformConfigurationId, 
+                            retrievePlatformType(platformConfiguration));
         utilThis.setValue(JOB_PLATFORM_VENDOR + platformConfigurationId, 
                           retrievePlatformVendor(platformConfiguration));
         utilThis.setValue(JOB_ARRAY_NAME + platformConfigurationId, 
@@ -196,6 +200,11 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
         return platformConfiguration.getPlatform() == null ? platformConfiguration.getName() 
                                        : platformConfiguration.getPlatform().getName();
     }
+    
+    private String retrievePlatformType(PlatformConfiguration platformConfiguration) {
+return platformConfiguration.getPlatform() == null ? UNAVAILABLE_STRING
+                                       : platformConfiguration.getPlatformType().getValue();
+    }    
 
     private String retrievePlatformVendor(PlatformConfiguration platformConfiguration) {
         return platformConfiguration.getPlatform() == null ? UNAVAILABLE_STRING 

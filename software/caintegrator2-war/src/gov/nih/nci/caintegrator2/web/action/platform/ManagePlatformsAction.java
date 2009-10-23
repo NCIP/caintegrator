@@ -354,6 +354,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         PlatformConfiguration configuration = new PlatformConfiguration(source);
         configuration.setName(name);
         configuration.setStatus(Status.PROCESSING);
+        configuration.setPlatformType(PlatformTypeEnum.getByValue(platformType));
         arrayDataService.savePlatformConfiguration(configuration);
         ajaxUpdater.runJob(configuration, getWorkspace().getUsername());
         getPlatformForm().clear();

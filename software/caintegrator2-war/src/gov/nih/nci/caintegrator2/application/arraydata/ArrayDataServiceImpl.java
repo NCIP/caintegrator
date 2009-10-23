@@ -139,12 +139,14 @@ public class ArrayDataServiceImpl implements ArrayDataService {
         try {
             LOGGER.info("Started loading design from " + platformSource.toString());
             getDao().setFlushMode(HibernateAccessor.FLUSH_COMMIT);
+            String platformName = platformSource.getPlatformName();
             Platform platform = platformSource.getLoader().load(getDao());
             LOGGER.info("Completed loading design from " + platformSource.toString());
             platformConfiguration.setPlatform(platform);
             platformConfiguration.setStatus(Status.LOADED);
             platformConfiguration.setDeploymentFinishDate(new Date());
             saveAndUpdateDeploymentStatus(platformConfiguration, listener);
+            LOGGER.info("Platform named " + platformName + " has been loaded.");
         } catch (PlatformLoadingException e) {
             handlePlatformLoadingException(platformConfiguration, listener, e);
         }
