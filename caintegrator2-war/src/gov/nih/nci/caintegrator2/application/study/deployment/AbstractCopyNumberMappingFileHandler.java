@@ -176,33 +176,9 @@ public abstract class AbstractCopyNumberMappingFileHandler {
         return genomicSource.getCopyNumberDataConfiguration().getMappingFile();
     }
 
-    private List<ArrayDataValues> loadArrayData() 
-    throws ConnectionException, DataRetrievalException, ValidationException {
-        List<ArrayDataValues> values = new ArrayList<ArrayDataValues>();
-        for (Sample sample : sampleToFilenamesMap.keySet()) {
-            values.add(loadArrayData(sample));
-        }
-        return values;
-    }
-
-    private ArrayDataValues loadArrayData(Sample sample) 
-    throws ConnectionException, DataRetrievalException, ValidationException {
-        List<File> dataFiles = new ArrayList<File>();
-        try {
-            for (String filename : sampleToFilenamesMap.get(sample)) {
-                dataFiles.add(getDataFile(filename));
-            }
-            return loadArrayData(sample, dataFiles);
-        } finally {
-            for (File file : dataFiles) {
-                doneWithFile(file);
-            }
-        }
-    }
-
-    abstract ArrayDataValues loadArrayData(Sample sample, List<File> dataFiles) 
-    throws DataRetrievalException, ValidationException;
-
+    abstract List<ArrayDataValues> loadArrayData()
+    throws ConnectionException, DataRetrievalException, ValidationException;
+    
     /**
      * Get the platform.
      * @param reporterListNames the set of report lists.
@@ -315,6 +291,13 @@ public abstract class AbstractCopyNumberMappingFileHandler {
 
     GenomicDataSourceConfiguration getGenomicSource() {
         return genomicSource;
+    }
+
+    /**
+     * @return the sampleToFilenamesMap
+     */
+    public Map<Sample, List<String>> getSampleToFilenamesMap() {
+        return sampleToFilenamesMap;
     }
 
 }
