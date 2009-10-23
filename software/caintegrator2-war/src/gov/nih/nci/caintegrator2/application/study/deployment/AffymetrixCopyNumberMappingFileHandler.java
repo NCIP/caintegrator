@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
@@ -123,7 +124,31 @@ class AffymetrixCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFi
     }
 
     @Override
-    ArrayDataValues loadArrayData(Sample sample, List<File> cnchpFiles) 
+    List<ArrayDataValues> loadArrayData() 
+    throws ConnectionException, DataRetrievalException, ValidationException {
+        List<ArrayDataValues> values = new ArrayList<ArrayDataValues>();
+        for (Sample sample : getSampleToFilenamesMap().keySet()) {
+            values.add(loadArrayData(sample));
+        }
+        return values;
+    }
+
+    private ArrayDataValues loadArrayData(Sample sample) 
+    throws ConnectionException, DataRetrievalException, ValidationException {
+        List<File> dataFiles = new ArrayList<File>();
+        try {
+            for (String filename : getSampleToFilenamesMap().get(sample)) {
+                dataFiles.add(getDataFile(filename));
+            }
+            return loadArrayData(sample, dataFiles);
+        } finally {
+            for (File file : dataFiles) {
+                doneWithFile(file);
+            }
+        }
+    }
+
+    private ArrayDataValues loadArrayData(Sample sample, List<File> cnchpFiles) 
     throws DataRetrievalException, ValidationException {
         List<AffymetrixCopyNumberChpParser> parsers = new ArrayList<AffymetrixCopyNumberChpParser>();
         Set<String> reporterListNames = new HashSet<String>();

@@ -1,9 +1,9 @@
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
@@ -11,7 +11,6 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.application.study.deployment.AgilentCopyNumberMappingFileHandler;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
@@ -20,12 +19,14 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.AgilentRawDataFileParser;
+import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataFileParser;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,7 +57,7 @@ public class AgilentCopyNumberMappingFileHandlerTest {
         }
         assertTrue(exceptionCaught);
         exceptionCaught = false;
-        source.getCopyNumberDataConfiguration().setMappingFilePath(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE.getAbsolutePath());
+        source.getCopyNumberDataConfiguration().setMappingFilePath(TestDataFiles.TCGA_AGILENT_COPY_NUMBER_MAPPING_FILE.getAbsolutePath());
         try {
             handler.loadCopyNumberData();
         } catch (DataRetrievalException e) {
@@ -94,19 +95,22 @@ public class AgilentCopyNumberMappingFileHandlerTest {
             }
             try {
                 Platform platform = new Platform();
-                addReporterList(platform, TestDataFiles.AGILENT_COPY_NUMBER_RAW_FILE, "TCGA_244A");
+                addReporterList(platform, TestDataFiles.TCGA_LEVEL_2_DATA_FILE, "TCGA_244A");
                 return platform;
             } catch (Exception e) {
                 throw new IllegalStateException(e);
             }
         }
 
-        private void addReporterList(Platform platform, File rawFile, String reporterListName)
+        private void addReporterList(Platform platform, File dataFile, String reporterListName)
         throws IOException, UnsignedOutOfLimitsException, DataRetrievalException {
-            Map<String, Float> dataMap = AgilentRawDataFileParser.INSTANCE.extractData(rawFile);
+            List<String> sampleNames = new ArrayList<String>();
+            sampleNames.add("TCGA-13-0805-01A-01D-0357-04");
+            Map<String, Map<String, Float>> dataMap = AgilentLevelTwoDataFileParser.INSTANCE.extractData(dataFile, sampleNames);
+            Map<String, Float> reporterMap = dataMap.values().iterator().next();
             
             ReporterList reporterList = platform.addReporterList(reporterListName, ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-            for (String probeName : dataMap.keySet()) {
+            for (String probeName : reporterMap.keySet()) {
                 DnaAnalysisReporter reporter = new DnaAnalysisReporter();
                 reporter.setName(probeName);
                 reporterList.getReporters().add(reporter);
@@ -130,7 +134,7 @@ public class AgilentCopyNumberMappingFileHandlerTest {
         @Override
         public byte[] retrieveFile(GenomicDataSourceConfiguration source, String filename) {
             try {
-                return FileUtils.readFileToByteArray(TestDataFiles.AGILENT_COPY_NUMBER_RAW_FILE);
+                return FileUtils.readFileToByteArray(TestDataFiles.TCGA_LEVEL_2_DATA_FILE);
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }
