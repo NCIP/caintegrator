@@ -115,11 +115,15 @@ public class DisplayableResultValue {
             if (AnnotationTypeEnum.DATE.equals(
                 resultValue.getColumn().getAnnotationDefinition().getDataType())) {
                 dateType = true;
-                DateAnnotationValue dateAnnotationValue = (DateAnnotationValue) resultValue.getValue();
-                dateValue = dateAnnotationValue.getDateValue();
+                dateValue = getDateValue(resultValue);
             }
-        displayString = resultValue.toString();
+            displayString = resultValue.toString();
         }
+    }
+    
+    private Date getDateValue(ResultValue resultValue) {
+        DateAnnotationValue dateAnnotationValue = (DateAnnotationValue) resultValue.getValue();
+        return (dateAnnotationValue != null) ? dateAnnotationValue.getDateValue() : null;
     }
     
     /**
