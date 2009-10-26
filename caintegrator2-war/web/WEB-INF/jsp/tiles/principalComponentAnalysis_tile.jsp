@@ -40,7 +40,7 @@
                 required="true" theme="css_xhtml"
                 title="Principle Component Analysis Server is a server which hosts the grid-enabled Gene Pattern Principle Component Analysis module.  Select one from the list and caIntegrator2 will use the selected server for this portion of the processing."/>
             <br />
-            <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin-left: 0px;height:110px">
+            <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin-left: 0px;height:110px;width:100%">
                 <div class="wwlbl">&nbsp;</div >
                 <div class="wwctrl" style="width: 300px; white-space:normal; text-align: left; padding-top: 1em; padding-bottom: 1em;">For the
                     Clinical query parameter below, choose either "All Samples" or a clinical query.  If "All Samples" is selected, then all samples will be used.  If a clinical query is selected, only those samples which map to the subjects in the clinical query results will be used.  The clinical queries in this list have been previously saved by the user.  Control samples can be excluded from this processing by selecting a control set name in the Exclude Sample Control Set dropdown.
@@ -101,7 +101,7 @@
                 <s:submit value="Perform Analysis" align="center"
                     onclick="this.form.selectedAction.value = 'execute'; return true;" theme="simple" />
                     <s:submit value="Cancel" action="cancelGenePatternAnalysis" theme="simple"/>
-			</s:div>
+            </s:div>
         </s:form>
             
     </div>                                                                                                      
