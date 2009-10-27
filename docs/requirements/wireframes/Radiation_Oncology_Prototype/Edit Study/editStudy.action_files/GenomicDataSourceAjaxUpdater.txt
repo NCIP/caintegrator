@@ -1,0 +1,104 @@
+
+// Provide a default path to dwr.engine
+if (dwr == null) var dwr = {};
+if (dwr.engine == null) dwr.engine = {};
+if (DWREngine == null) var DWREngine = dwr.engine;
+
+if (GenomicDataSourceAjaxUpdater == null) var GenomicDataSourceAjaxUpdater = {};
+GenomicDataSourceAjaxUpdater._path = '/caintegrator2/dwr';
+GenomicDataSourceAjaxUpdater.hashCode = function(callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'hashCode', callback);
+}
+GenomicDataSourceAjaxUpdater.indexOf = function(p0, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'indexOf', p0, callback);
+}
+GenomicDataSourceAjaxUpdater.indexOf = function(p0, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'indexOf', p0, callback);
+}
+GenomicDataSourceAjaxUpdater.equals = function(p0, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'equals', p0, callback);
+}
+GenomicDataSourceAjaxUpdater.toString = function(callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'toString', callback);
+}
+GenomicDataSourceAjaxUpdater.getTargetClass = function(callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'getTargetClass', callback);
+}
+GenomicDataSourceAjaxUpdater.getAdvisors = function(callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'getAdvisors', callback);
+}
+GenomicDataSourceAjaxUpdater.addAdvisor = function(p0, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'addAdvisor', p0, callback);
+}
+GenomicDataSourceAjaxUpdater.addAdvisor = function(p0, p1, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'addAdvisor', p0, p1, callback);
+}
+GenomicDataSourceAjaxUpdater.isFrozen = function(callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'isFrozen', callback);
+}
+GenomicDataSourceAjaxUpdater.getTargetObject = function(callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'getTargetObject', callback);
+}
+GenomicDataSourceAjaxUpdater.setTargetSource = function(p0, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'setTargetSource', p0, callback);
+}
+GenomicDataSourceAjaxUpdater.isProxyTargetClass = function(callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'isProxyTargetClass', callback);
+}
+GenomicDataSourceAjaxUpdater.addAdvice = function(p0, p1, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'addAdvice', p0, p1, callback);
+}
+GenomicDataSourceAjaxUpdater.addAdvice = function(p0, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'addAdvice', p0, callback);
+}
+GenomicDataSourceAjaxUpdater.setExposeProxy = function(p0, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'setExposeProxy', p0, callback);
+}
+GenomicDataSourceAjaxUpdater.isExposeProxy = function(callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'isExposeProxy', callback);
+}
+GenomicDataSourceAjaxUpdater.initializeJsp = function(callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'initializeJsp', callback);
+}
+GenomicDataSourceAjaxUpdater.runJob = function(p0, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'runJob', p0, callback);
+}
+GenomicDataSourceAjaxUpdater.getTargetSource = function(callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'getTargetSource', callback);
+}
+GenomicDataSourceAjaxUpdater.getProxiedInterfaces = function(callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'getProxiedInterfaces', callback);
+}
+GenomicDataSourceAjaxUpdater.isInterfaceProxied = function(p0, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'isInterfaceProxied', p0, callback);
+}
+GenomicDataSourceAjaxUpdater.removeAdvisor = function(p0, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'removeAdvisor', p0, callback);
+}
+GenomicDataSourceAjaxUpdater.removeAdvisor = function(p0, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'removeAdvisor', p0, callback);
+}
+GenomicDataSourceAjaxUpdater.replaceAdvisor = function(p0, p1, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'replaceAdvisor', p0, p1, callback);
+}
+GenomicDataSourceAjaxUpdater.removeAdvice = function(p0, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'removeAdvice', p0, callback);
+}
+GenomicDataSourceAjaxUpdater.toProxyConfigString = function(callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'toProxyConfigString', callback);
+}
+GenomicDataSourceAjaxUpdater.removeFromScope = function(callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'removeFromScope', callback);
+}
+GenomicDataSourceAjaxUpdater.isProxyClass = function(p0, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'isProxyClass', p0, callback);
+}
+GenomicDataSourceAjaxUpdater.getProxyClass = function(p0, p1, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'getProxyClass', p0, p1, callback);
+}
+GenomicDataSourceAjaxUpdater.newProxyInstance = function(p0, p1, p2, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'newProxyInstance', p0, p1, p2, callback);
+}
+GenomicDataSourceAjaxUpdater.getInvocationHandler = function(p0, callback) {
+  dwr.engine._execute(GenomicDataSourceAjaxUpdater._path, 'GenomicDataSourceAjaxUpdater', 'getInvocationHandler', p0, callback);
+}

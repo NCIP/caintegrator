@@ -1,0 +1,1595 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
+
+
+
+
+
+    
+    
+    
+    
+		<title>
+		caIntegrator2 
+		
+		    - Search Study
+		
+		</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<link rel="address bar icon" href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/favicon.ico">
+		<link rel="icon" href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/favicon.ico" type="image/x-icon">
+		<link rel="shortcut icon" href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" type="text/css" href="manageQuery.action_files/caintegrator2.css">
+        <link rel="stylesheet" href="manageQuery.action_files/styles.css" type="text/css">
+<script language="JavaScript" type="text/javascript">
+    // Dojo configuration
+    var djConfig = {
+        baseRelativePath: "/caintegrator2/struts/dojo",
+        isDebug: false,
+        bindEncoding: "UTF-8",
+        debugAtAllCosts: false // not needed, but allows the Venkman debugger to work with the includes
+    };
+</script>
+<script language="JavaScript" type="text/javascript" src="manageQuery.action_files/dojo.js"></script>
+<script language="JavaScript" type="text/javascript" src="manageQuery.action_files/dojoRequire.js"></script>
+<script type="text/javascript" src="manageQuery.action_files/dojoRequire_002.js"></script><style type="text/css">.dojoLayoutContainer{ position: relative; display: block; }
+body .dojoAlignTop, body .dojoAlignBottom, body .dojoAlignLeft, body .dojoAlignRight { position: absolute; overflow: hidden; }
+body .dojoAlignClient { position: absolute }
+.dojoAlignClient { overflow: auto; }
+</style><style type="text/css">.dojoTabContainer {
+	position : relative;
+}
+
+.dojoTabPaneWrapper {
+	border : 7px solid #5D7BA2;
+	_zoom: 1; /* force IE6 layout mode so top border doesnt disappear */
+	display: block;
+	clear: both;
+}
+
+.dojoTabLabels-top {
+	position : relative;
+	top : 0px;
+	left : 0px;
+	overflow : visible;
+	margin-bottom : -1px;
+	width : 100%;
+	z-index: 2;	/* so the bottom of the tab label will cover up the border of dojoTabPaneWrapper */
+}
+
+.dojoTabNoLayout.dojoTabLabels-top .dojoTab {
+	margin-bottom: -1px;
+	_margin-bottom: 0px; /* IE filter so top border lines up correctly */
+}
+
+.dojoTab {
+	position : relative;
+	float : left;
+	padding-left : 9px;
+	border-bottom : 1px solid #6290d2;
+	cursor: pointer;
+	white-space: nowrap;
+	z-index: 3;
+}
+
+.dojoTab div {
+	display : block;
+	color : #263d6b;
+	font-size:115%;
+font-weight:bold;
+text-decoration:none !important;
+margin:0;
+padding:5px 10px;
+background:#e4e4e4 url(/caintegrator2/images/bg_h2.gif) repeat-x 0 -10px;
+color:#475b82;
+text-decoration:none;
+border-top:2px solid #efefef;
+border-right:1px solid #ccc; 
+}
+
+.dojoTab .close {
+	display : inline-block;
+	height : 12px;
+	width : 12px;
+	padding : 0 12px 0 0;
+	margin : 0 -10px 0 10px;
+	cursor : default;
+	font-size: small;
+}
+
+.dojoTab .closeImage {
+	background : url(/caintegrator2/images/tab_close.gif) no-repeat right top;
+}
+
+.dojoTab .closeHover {
+	background-image : url(/caintegrator2/images/tab_close_h.gif);
+}
+
+.dojoTab.current {
+	padding-bottom : 1px;
+	border-bottom : 0;
+	background-position : 0 -150px;
+}
+
+.dojoTab.current div {
+	padding-bottom : 5px;
+	margin-bottom : -1px;
+	background-position : 100% -150px;
+    background-color:#5D7BA2;
+    background-image:none;
+    border-left:1px solid #475B82;
+    border-right:0 none;
+    border-top:3px solid #475B82;
+    color:#FFFFFF;
+}
+
+/* bottom tabs */
+
+.dojoTabLabels-bottom {
+	position : relative;
+	bottom : 0px;
+	left : 0px;
+	overflow : visible;
+	margin-top : -1px;
+	width : 100%;
+	z-index: 2;
+}
+
+.dojoTabNoLayout.dojoTabLabels-bottom {
+	position : relative;
+}
+
+.dojoTabLabels-bottom .dojoTab {
+	border-top :  1px solid #6290d2;
+	border-bottom : 0;
+	background : url(/caintegrator2/images/tab_bot_left.gif) no-repeat left bottom;
+}
+
+.dojoTabLabels-bottom .dojoTab div {
+	background : url(/caintegrator2/images/tab_bot_right.gif) no-repeat right bottom;
+}
+
+.dojoTabLabels-bottom .dojoTab.current {
+	border-top : 0;
+	background : url(/caintegrator2/images/tab_bot_left_curr.gif) no-repeat left bottom;
+}
+
+.dojoTabLabels-bottom .dojoTab.current div {
+	padding-top : 4px;
+	background : url(/caintegrator2/images/tab_bot_right_curr.gif) no-repeat right bottom;
+}
+
+/* right-h tabs */
+
+.dojoTabLabels-right-h {
+	overflow : visible;
+	margin-left : -1px;
+	z-index: 2;
+}
+
+.dojoTabLabels-right-h .dojoTab {
+	padding-left : 0;
+	border-left :  1px solid #6290d2;
+	border-bottom : 0;
+	background : url(/caintegrator2/images/tab_bot_right.gif) no-repeat right bottom;
+	float : none;
+}
+
+.dojoTabLabels-right-h .dojoTab div {
+	padding : 4px 15px 4px 15px;
+}
+
+.dojoTabLabels-right-h .dojoTab.current {
+	border-left :  0;
+	border-bottom :  1px solid #6290d2;
+}
+
+/* left-h tabs */
+
+.dojoTabLabels-left-h {
+	overflow : visible;
+	margin-right : -1px;
+	z-index: 2;
+}
+
+.dojoTabLabels-left-h .dojoTab {
+	border-right :  1px solid #6290d2;
+	border-bottom : 0;
+	float : none;
+	background : url(/caintegrator2/images/tab_top_left.gif) no-repeat left top;
+}
+
+.dojoTabLabels-left-h .dojoTab.current {
+	border-right : 0;
+	border-bottom :  1px solid #6290d2;
+	padding-bottom : 0;
+	background : url(/caintegrator2/images/tab_top_left.gif) no-repeat 0 -150px;
+}
+
+.dojoTabLabels-left-h .dojoTab div {
+	background : 0;
+	border-bottom :  1px solid #6290d2;
+}
+</style><style type="text/css">
+    div#queryResultsDiv{height:400px; overflow:scroll;}
+</style><style type="text/css" charset="utf-8">/* See license.txt for terms of usage */
+
+#firebugBody {
+    position: fixed;
+    top:0;
+    left:0;
+    margin:0;
+    padding:0;
+    width:1px;
+    height:1px;
+    overflow:visible;
+}
+
+.firebugCanvas {
+    position:fixed;
+    top: 0;
+    left: 0;
+    display:none;
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+.firebugHighlight {
+    z-index: 2147483647;
+    position: absolute;
+    background-color: #3875d7;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugLayoutBoxParent {
+    z-index: 2147483647;
+    position: absolute;
+    background-color: transparent;
+    border-top: 0 none;
+    border-right: 1px dashed #BBBBBB;
+    border-bottom: 1px dashed #BBBBBB;
+    border-left: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+.firebugRuler {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugRulerH {
+    top: -15px;
+    left: 0;
+    width: 100%;
+    height: 14px;
+    background: url(chrome://firebug/skin/rulerH.png) repeat-x;
+    border-top: 1px solid #BBBBBB;
+    border-right: 1px dashed #BBBBBB;
+    border-bottom: 1px solid #000000;
+}
+
+.firebugRulerV {
+    top: 0;
+    left: -15px;
+    width: 14px;
+    height: 100%;
+    background: url(chrome://firebug/skin/rulerV.png) repeat-y;
+    border-left: 1px solid #BBBBBB;
+    border-right: 1px solid #000000;
+    border-bottom: 1px dashed #BBBBBB;
+}
+
+.overflowRulerX > .firebugRulerV {
+    left: 0;
+}
+
+.overflowRulerY > .firebugRulerH {
+    top: 0;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.firebugLayoutBox {
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    outline: 0;
+}
+
+.firebugLayoutBoxOffset {
+    z-index: 2147483647;
+    position: absolute;
+    opacity: 0.8;
+}
+
+.firebugLayoutBoxMargin {
+    background-color: #EDFF64;
+}
+
+.firebugLayoutBoxBorder {
+    background-color: #666666;
+}
+
+.firebugLayoutBoxPadding {
+    background-color: SlateBlue;
+}
+
+.firebugLayoutBoxContent {
+    background-color: SkyBlue;
+}
+
+/*.firebugHighlightGroup .firebugLayoutBox {
+    background-color: transparent;
+}
+
+.firebugHighlightBox {
+    background-color: Blue !important;
+}*/
+
+.firebugLayoutLine {
+    z-index: 2147483647;
+    background-color: #000000;
+    opacity: 0.4;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugLayoutLineLeft,
+.firebugLayoutLineRight {
+    position: fixed;
+    width: 1px;
+    height: 100%;
+}
+
+.firebugLayoutLineTop,
+.firebugLayoutLineBottom {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+}
+
+.firebugLayoutLineTop {
+    margin-top: -1px;
+    border-top: 1px solid #999999;
+}
+
+.firebugLayoutLineRight {
+    border-right: 1px solid #999999;
+}
+
+.firebugLayoutLineBottom {
+    border-bottom: 1px solid #999999;
+}
+
+.firebugLayoutLineLeft {
+    margin-left: -1px;
+    border-left: 1px solid #999999;
+}
+</style></head><body><textarea id="dojo.widget.RichText.savedContent" style="overflow: hidden; display: none; position: absolute; top: -100px; left: -100px; height: 3px; width: 3px;"></textarea>
+<script type="text/javascript" src="manageQuery.action_files/CommonFunctions.js"></script>
+
+        <script type="text/javascript" src="manageQuery.action_files/pde.js"></script>
+        <script type="text/javascript" src="manageQuery.action_files/prototype.js"></script>
+        <script type="text/javascript" src="manageQuery.action_files/scriptaculous.js"></script><script type="text/javascript" src="manageQuery.action_files/builder.htm"></script><script type="text/javascript" src="manageQuery.action_files/effects.js"></script><script type="text/javascript" src="manageQuery.action_files/dragdrop.htm"></script><script type="text/javascript" src="manageQuery.action_files/controls.htm"></script><script type="text/javascript" src="manageQuery.action_files/slider.htm"></script><script type="text/javascript" src="manageQuery.action_files/sound.htm"></script>
+        <script type="text/javascript" src="manageQuery.action_files/effects.js"></script>
+        <script type="text/javascript" src="manageQuery.action_files/prototype.js"></script>
+        <script type="text/javascript" src="manageQuery.action_files/caintegrator2.js"></script>
+        <script type="text/javascript" src="manageQuery.action_files/onlinehelp.js"></script>
+        <script type="text/javascript" src="manageQuery.action_files/editableSelect.js"></script>
+        <script type="text/javascript" src="manageQuery.action_files/optiontransferselect.js"></script>      
+	
+		<a href="#content" id="navskip">Skip to Page Content</a>
+		
+		<div id="wrapper" class="curate">
+
+			<!-- Global Header -->	
+            
+            
+
+
+
+<!--NCI/NIH Header-->
+            
+<div id="nciheader">        
+    <div id="ncilogo"><a href="http://www.cancer.gov/"><img src="manageQuery.action_files/logotype.gif" alt="Logo: National Cancer Institute" width="283" height="37"></a>
+    </div>
+    <div id="nihtag"><a href="http://www.cancer.gov/"><img src="manageQuery.action_files/tagline.gif" alt="Logo: U.S. National Institutes of Health | www.cancer.gov" width="295" height="37"></a>
+    </div>
+
+</div>
+        
+<!--/NCI/NIH Header-->
+
+<!--PO-Curate Header-->
+
+<div id="appheader">
+
+    <div id="mainlogo">
+        <div>
+            <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/index.jsp"><img src="manageQuery.action_files/logo_caintegrator2.gif" alt="Logo: caIntegrator2"></a>
+        </div>
+        
+        
+        
+        
+        <div id="versioninfo" title="caINTEGRATOR2, BUILD DATE: '10/19/2009 12:19 AM', SVNTAG: software, SVNURL: svn://cbioapp520.nci.nih.gov/svnroot/caintegrator2/trunk/software, SVNREV: 2797">
+            build: software | 
+            date: '10/19/2009 12:19 AM'           
+        </div>
+    </div> 
+
+    <div id="userarea_wrapper">
+        
+        
+        <div id="user">Welcome, manager | <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/logout.jsp">Logout</a></div>
+        <div id="mystudies">
+               			
+<form id="workspace" name="workspace" onsubmit="return true;" action="/caintegrator2/workspace.action" method="post">
+
+                    <label for="currentStudySubscriptionId">My Studies:</label>
+                    <select name="currentStudySubscriptionId" id="workspace_currentStudySubscriptionId" onchange="this.form.submit();">
+    <option value="-1">-- Please Select --</option>
+    <option value="3">Demo Study based on DC Lung Full data.</option>
+    <option value="7">Demo Study based on Rembrandt Copy Number data.</option>
+    <option value="1" selected="selected">Demo Study based on Rembrandt with NCRI data.</option>
+    <option value="2">Demo Study based on Rembrandt with no images data.</option>
+    <option value="5">Demo Study based on Small Copy Number data.</option>
+    <option value="4">Demo Study based on TCGA Agilent data</option>
+
+
+</select>
+
+               </form>
+
+
+
+
+        </div>    
+   
+         
+        
+    </div>
+
+</div>
+
+<!--/PO-Curate Header-->
+
+            
+			<!-- /Global Header -->	
+
+			<!--Work Area-->
+				
+			<div id="main">				
+			    <!-- Begin hidden caBioGeneSearchForm -->
+			    <div id="TB_overlay" class="TB_overlayBG"></div>
+			    		
+<form id="caBioGeneSearchForm" name="caBioGeneSearchForm" onsubmit="runCaBioSearch(); return false;; return true;" action="/caintegrator2/manageQuery.action" method="post"><div dojotype="struts:BindDiv" refreshonshow="false" id="caBioGeneSearchInputDiv" style="overflow: auto; display: none; visibility: hidden; margin-left: -140px; margin-top: -62px; width: 508px; max-height: 300px;" href="caBioGeneSearchInput.action" loadingtext="&lt;img src='images/ajax-loader.gif'/&gt;" listentopics="caBioGeneSearchTopic" showerror="true">
+</div>
+
+			    <table class="wwFormTable">
+			        <!-- For caBio to know which form element to publish gene symbols to. -->
+			        <input name="geneSymbolElementId" value="" id="caBioGeneSearchForm_geneSymbolElementId" type="hidden">
+			        <input name="caBioGeneSearchTopicPublished" value="false" id="caBioGeneSearchForm_caBioGeneSearchTopicPublished" type="hidden">
+			        </table></form>
+
+
+
+
+                <!-- End caBioGeneSearchForm -->
+				<div id="contentwrapper">
+				    
+				    <!--Content-->
+						
+	                
+
+
+
+<script language="javascript">
+
+    function setClinicalAnnotations(onOff){
+        var size='20';
+        for(i=1;i<=size;i++){
+            var item = 'queryForm.resultConfiguration.subjectColumns.values-' + i;
+            document.manageQueryForm[item].checked = onOff;
+        }
+    }
+    function setImageAnnotations(onOff){
+        var size='6';
+        for(i=1;i<=size;i++){
+            var item = 'queryForm.resultConfiguration.imageSeriesColumns.values-' + i;
+            document.manageQueryForm[item].checked = onOff;
+        }
+    }
+    
+
+    function selectAll () {
+        document.manageQueryForm.selectedAction.value='selectAll';
+        document.manageQueryForm.submit();
+    }
+
+    function selectNone () {
+        document.manageQueryForm.selectedAction.value='selectNone';
+        document.manageQueryForm.submit();
+    }
+    
+    function filterParam (field) {
+        return field.name == "selectedAction";
+    }
+    
+    function deleteQuery () {
+        if (confirm('This query will be permanently deleted.')) {
+            submitForm("deleteQuery");
+        }
+    }
+
+    function runSearch() {
+        var isPotentiallyLargeQuery = 'false';
+        if (isPotentiallyLargeQuery == "true") {
+            if (confirm("This query includes all genes and will potentially take many minutes to complete.\n"
+                    + "Please confirm that you want to continue?")) {
+                submitForm("executeQuery");
+            }
+        }
+        else {
+            submitForm("executeQuery");
+        }
+    }
+    
+    function saveQuery(saveType) {
+        var orgName = '';
+        var newName = document.getElementById("saveName").value;
+        if (saveType == "save") {
+            if (orgName != "" && orgName != newName) {
+                if (confirm("You are about to save and rename '" + orgName + "' to '" + newName + "'.\n"
+                            + "If you want to save this query to a new query, please use the 'Save As' button.")) {
+                    submitForm("saveQuery");
+                }
+            }
+            else {
+                submitForm("saveQuery");
+            }
+        }
+        else if (saveType == "saveAs") {
+            if (orgName == newName) {
+                alert ("You need to enter a new name to save as.");
+                return false;
+            }
+            submitForm("saveAsQuery");
+        }
+    }
+    
+    function submitForm(selectAction) {
+        document.manageQueryForm.selectedAction.value = selectAction;
+        document.manageQueryForm.submit();
+    }
+    
+    function openExportLink() {
+        var allLinks = document.getElementById("queryResultsDiv").getElementsByTagName("div");
+        if (allLinks.length == 1) {
+            window.location.href = allLinks[0].getElementsByTagName("a")[0].href;
+        }
+        else {
+            alert ("Please report the error.\n" +
+                "Export button is broken, error code: " + allLinks.length);
+        }
+    }
+    
+</script>
+
+
+<div id="content">
+        <h1>Search Demo Study based on Rembrandt with NCRI data.</h1>
+        
+        
+        <!--Tab Box-->
+        
+        
+            
+        
+        
+            
+        
+        
+            
+        
+        
+            
+        
+        
+            
+        
+        
+        			
+<form id="manageQueryForm" name="manageQueryForm" onsubmit="return true;" action="/caintegrator2/manageQuery.action" method="post">
+            <script type="text/javascript">
+  dojo.require("dojo.widget.TabContainer");
+  dojo.require("dojo.widget.LinkPane");
+  dojo.require("dojo.widget.ContentPane");
+</script>
+
+<div style="" id="mainTabPanel" class="dojoTabContainer">
+	<div class="dojoTabLabels-top dojoTabNoLayout" role="wairole:tablist" wairole="tablist" dojoattachevent="onKey"><div dojoinsertionindex="0" class="dojoTab" dojoattachevent="onClick"><div dojoattachpoint="innerDiv"><span style="-moz-user-select: none;" role="wairole:tab" dojoattachpoint="titleNode" tabindex="-1" wairole="tab">Criteria</span><span dojoattachpoint="closeButtonNode" class="close closeImage" style="display: none;" dojoattachevent="onMouseOver:onCloseButtonMouseOver; onMouseOut:onCloseButtonMouseOut; onClick:onCloseButtonClick"></span></div></div><div dojoinsertionindex="1" class="dojoTab" dojoattachevent="onClick"><div dojoattachpoint="innerDiv"><span style="-moz-user-select: none;" role="wairole:tab" dojoattachpoint="titleNode" tabindex="-1" wairole="tab">Results Type</span><span dojoattachpoint="closeButtonNode" class="close closeImage" style="display: none;" dojoattachevent="onMouseOver:onCloseButtonMouseOver; onMouseOut:onCloseButtonMouseOut; onClick:onCloseButtonClick"></span></div></div><div dojoinsertionindex="2" class="dojoTab" dojoattachevent="onClick"><div dojoattachpoint="innerDiv"><span style="-moz-user-select: none;" role="wairole:tab" dojoattachpoint="titleNode" tabindex="-1" wairole="tab">Sorting</span><span dojoattachpoint="closeButtonNode" class="close closeImage" style="display: none;" dojoattachevent="onMouseOver:onCloseButtonMouseOver; onMouseOut:onCloseButtonMouseOut; onClick:onCloseButtonClick"></span></div></div><div dojoinsertionindex="3" class="dojoTab current" dojoattachevent="onClick"><div dojoattachpoint="innerDiv"><span style="-moz-user-select: none;" role="wairole:tab" dojoattachpoint="titleNode" tabindex="0" wairole="tab">Query Results</span><span dojoattachpoint="closeButtonNode" class="close closeImage" style="display: none;" dojoattachevent="onMouseOver:onCloseButtonMouseOver; onMouseOut:onCloseButtonMouseOut; onClick:onCloseButtonClick"></span></div></div><div dojoinsertionindex="4" class="dojoTab" dojoattachevent="onClick"><div dojoattachpoint="innerDiv"><span style="-moz-user-select: none;" role="wairole:tab" dojoattachpoint="titleNode" tabindex="-1" wairole="tab">Save as...</span><span dojoattachpoint="closeButtonNode" class="close closeImage" style="display: none;" dojoattachevent="onMouseOver:onCloseButtonMouseOver; onMouseOut:onCloseButtonMouseOut; onClick:onCloseButtonClick"></span></div></div></div>
+	<div role="wairole:tabpanel" class="dojoTabPaneWrapper" dojoattachpoint="containerNode" dojoattachevent="onKey" wairole="tabpanel">
+
+                <div style="display: none;" class="dojoTabPane" dojotype="struts:BindDiv" id="criteria" formid="manageQueryForm" formfilter="filterParam" label="Criteria" href="/caintegrator2/selectQueryTab.action?selectedAction=selectedTabCriteria" showerror="true">
+
+<!--Search Criteria-->
+
+    <h2>Define Query Criteria for:
+        
+        
+            Unsaved Query
+            
+    </h2>
+    <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
+        <div class="tabhelp" style="white-space: nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
+            <a href="javascript:openHelpWindowWithNavigation('search_criteria_help')" class="help">
+            &nbsp;</a>
+        </div>
+    </div>    
+    
+
+    <input name="selectedAction" value="" id="selectedAction" type="hidden">
+    <input name="rowNumber" value="" id="rowNumber" type="hidden">
+
+    <!-- Add query criterion row selection -->
+    <table class="data">
+        <tbody><tr>
+            
+        </tr>
+        <tr>
+            <td colspan="4" class="tableheader">
+                <select name="queryForm.criteriaGroup.criterionTypeName" id="searchcriteriaadd1" style="margin-top: 10px; margin-left: 5px; width: 200px;">
+    <option value="Clinical" selected="selected">Clinical</option>
+    <option value="Gene Expression">Gene Expression</option>
+    <option value="Image Series">Image Series</option>
+
+
+</select>
+                <ul class="btnrow" style="margin: -22px 0pt 0pt 200px; height: 32px;">
+                <li><a href="#" class="btn" style="margin: 0pt 5px;" onclick="submitForm('addCriterionRow')">
+                    <span class="btn_img"><span class="add">Add</span></span>
+                </a></li>
+            </ul>
+            </td>
+        </tr>
+
+        <!-- Reproduce existing query criteria rows if any -->
+
+        
+            
+                
+                <tr>
+                    <td class="label_inline">Clinical</td>
+                    <td class="value_inline">
+                        <select name="queryForm.criteriaGroup.rows[0].fieldName" id="queryForm_criteriaGroup_rows_0__fieldName" onchange="submitForm('updateCriteria')">
+    <option value="">-- Please Select --</option>
+    <option value="*Unique Identifier">*Unique Identifier</option>
+    <option value="Age">Age</option>
+    <option value="Death Date">Death Date</option>
+    <option value="Disease">Disease</option>
+    <option value="Followup Month">Followup Month</option>
+    <option value="Gender">Gender</option>
+    <option value="Grade">Grade</option>
+    <option value="Institution">Institution</option>
+    <option value="Karnofsky" selected="selected">Karnofsky</option>
+    <option value="Last Followup Date">Last Followup Date</option>
+    <option value="Prior Therapy Chemo Agent Name">Prior Therapy Chemo Agent Name</option>
+    <option value="Prior Therapy Chemo Course Count">Prior Therapy Chemo Course Count</option>
+    <option value="Prior Therapy Radiation Fraction Dose">Prior Therapy Radiation Fraction Dose</option>
+    <option value="Prior Therapy Radiation Fraction Number">Prior Therapy Radiation Fraction Number</option>
+    <option value="Prior Therapy Radiation Type">Prior Therapy Radiation Type</option>
+    <option value="Prior Therapy Surgery Outcome">Prior Therapy Surgery Outcome</option>
+    <option value="Prior Therapy Surgery Procedure Title">Prior Therapy Surgery Procedure Title</option>
+    <option value="Prior Therapy Surgery Tumor Histology">Prior Therapy Surgery Tumor Histology</option>
+    <option value="Race">Race</option>
+    <option value="Survival">Survival</option>
+    <option value="Survival Start Date">Survival Start Date</option>
+
+
+</select>
+                    </td>
+                    <td class="value_inline">
+                        <table class="criterion">
+                            
+                                <tbody><tr>
+                                    <td class="criterion">
+                                        
+                                        
+                                            <select name="queryForm.criteriaGroup.rows[0].parameters[0].operator" id="queryForm_criteriaGroup_rows_0__parameters_0__operator" onchange="submitForm('updateCriteria')">
+    <option value="equals" selected="selected">equals</option>
+    <option value="in">in</option>
+
+
+</select>
+                                        
+                                    </td>
+                                    <td class="criterion" style="white-space: nowrap;">
+                                        
+                                        
+                                            <select name="queryForm.criteriaGroup.rows[0].parameters[0].value" id="queryForm_criteriaGroup_rows_0__parameters_0__value" onchange="if (false) {submitForm('updateCriteria')}">
+    <option value="100">100</option>
+    <option value="50">50</option>
+    <option value="60" selected="selected">60</option>
+    <option value="80">80</option>
+    <option value="90">90</option>
+
+
+</select>
+                                        
+                                        
+                                    </td>
+                                </tr>
+                            
+                        </tbody></table>
+                    </td>
+                    <td class="action_inline"><a href="#" class="remove" onclick="document.manageQueryForm.rowNumber.value = 0;submitForm('remove');"><span class="remove">Remove</span></a></td>
+                </tr>
+            
+        
+        
+    </tbody></table>
+
+    <div class="tablefooter">
+    
+    
+<input name="queryForm.criteriaGroup.booleanOperator" id="queryForm_criteriaGroup_booleanOperatoror" value="or" type="radio"><label for="queryForm_criteriaGroup_booleanOperatoror">or</label>
+<input name="queryForm.criteriaGroup.booleanOperator" id="queryForm_criteriaGroup_booleanOperatorand" checked="checked" value="and" type="radio"><label for="queryForm_criteriaGroup_booleanOperatorand">and</label>
+    
+
+
+</div>
+
+    <!--Buttons-->
+
+    <div class="actionsrow">
+    <del class="btnwrapper">
+    <ul class="btnrow">
+        <li><a href="#" class="btn" onclick="runSearch()">
+            <span class="btn_img"><span class="search">Run Query</span></span>
+        </a></li>
+        <li><span class="btn_img"><span class="search"><br>
+        </span></span></li>
+    </ul>
+    </del>
+    </div>
+
+    <!--/Buttons-->
+
+<!--/Search Criteria-->
+</div>
+
+                <div style="display: none;" class="dojoTabPane" dojotype="struts:BindDiv" id="columns" formid="manageQueryForm" formfilter="filterParam" label="Results Type" href="/caintegrator2/selectQueryTab.action?selectedAction=selectedTabColumns" showerror="true">
+
+<!--Columns-->
+    
+    <h2 class="resultsColumnsTabHeader">Select Results Type:</h2>
+    <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
+        <div class="tabhelp" style="white-space: nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
+            <a href="javascript:openHelpWindowWithNavigation('search_columns_help')" class="help">
+            &nbsp;</a>
+        </div>
+    </div>
+    <div class="resultTypeSelector">
+        
+    
+    
+<input name="queryForm.resultConfiguration.resultType" id="queryForm_resultConfiguration_resultTypegenomic" value="genomic" onclick="this.form.selectedAction.value = 'updateColumns'; this.form.submit();" type="radio"><label for="queryForm_resultConfiguration_resultTypegenomic">Genomic</label>
+<input name="queryForm.resultConfiguration.resultType" id="queryForm_resultConfiguration_resultTypeclinical" checked="checked" value="clinical" onclick="this.form.selectedAction.value = 'updateColumns'; this.form.submit();" type="radio"><label for="queryForm_resultConfiguration_resultTypeclinical">Clinical</label>
+    
+
+
+<br>
+        
+        <div class="selectorNote">Genomic result type - will display a gene expression data matrix.<br>
+                Clinical result type - will display tabular data, including column selection.</div>
+    
+    </div>
+    
+    
+        <div style="margin-top: 10px;">
+        <h2>Select Columns for Results</h2>
+        
+            <div class="checklistwrapper">
+            
+            <h3>Subject Annotations</h3>
+            <ul class="checklist">
+                <input id="queryForm.resultConfiguration.subjectColumns.values-1_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Age" id="queryForm.resultConfiguration.subjectColumns.values-1" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-1" class="checkboxLabel">Age</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-2_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Death Date" id="queryForm.resultConfiguration.subjectColumns.values-2" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-2" class="checkboxLabel">Death Date</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-3_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Disease" id="queryForm.resultConfiguration.subjectColumns.values-3" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-3" class="checkboxLabel">Disease</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-4_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Followup Month" id="queryForm.resultConfiguration.subjectColumns.values-4" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-4" class="checkboxLabel">Followup Month</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-5_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Gender" id="queryForm.resultConfiguration.subjectColumns.values-5" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-5" class="checkboxLabel">Gender</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-6_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Grade" id="queryForm.resultConfiguration.subjectColumns.values-6" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-6" class="checkboxLabel">Grade</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-7_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Institution" id="queryForm.resultConfiguration.subjectColumns.values-7" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-7" class="checkboxLabel">Institution</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-8_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Karnofsky" id="queryForm.resultConfiguration.subjectColumns.values-8" checked="checked" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-8" class="checkboxLabel">Karnofsky</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-9_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Last Followup Date" id="queryForm.resultConfiguration.subjectColumns.values-9" checked="checked" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-9" class="checkboxLabel">Last Followup Date</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-10_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Prior Therapy Chemo Agent Name" id="queryForm.resultConfiguration.subjectColumns.values-10" checked="checked" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-10" class="checkboxLabel">Prior Therapy Chemo Agent Name</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-11_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Prior Therapy Chemo Course Count" id="queryForm.resultConfiguration.subjectColumns.values-11" checked="checked" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-11" class="checkboxLabel">Prior Therapy Chemo Course Count</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-12_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Prior Therapy Radiation Fraction Dose" id="queryForm.resultConfiguration.subjectColumns.values-12" checked="checked" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-12" class="checkboxLabel">Prior Therapy Radiation Fraction Dose</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-13_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Prior Therapy Radiation Fraction Number" id="queryForm.resultConfiguration.subjectColumns.values-13" checked="checked" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-13" class="checkboxLabel">Prior Therapy Radiation Fraction Number</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-14_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Prior Therapy Radiation Type" id="queryForm.resultConfiguration.subjectColumns.values-14" checked="checked" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-14" class="checkboxLabel">Prior Therapy Radiation Type</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-15_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Prior Therapy Surgery Outcome" id="queryForm.resultConfiguration.subjectColumns.values-15" checked="checked" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-15" class="checkboxLabel">Prior Therapy Surgery Outcome</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-16_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Prior Therapy Surgery Procedure Title" id="queryForm.resultConfiguration.subjectColumns.values-16" checked="checked" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-16" class="checkboxLabel">Prior Therapy Surgery Procedure Title</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-17_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Prior Therapy Surgery Tumor Histology" id="queryForm.resultConfiguration.subjectColumns.values-17" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-17" class="checkboxLabel">Prior Therapy Surgery Tumor Histology</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-18_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Race" id="queryForm.resultConfiguration.subjectColumns.values-18" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-18" class="checkboxLabel">Race</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-19_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Survival" id="queryForm.resultConfiguration.subjectColumns.values-19" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-19" class="checkboxLabel">Survival</label>
+<br>
+<input id="queryForm.resultConfiguration.subjectColumns.values-20_hidden" value="" name="queryForm.resultConfiguration.subjectColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.subjectColumns.values" value="Survival Start Date" id="queryForm.resultConfiguration.subjectColumns.values-20" type="checkbox">
+<label for="queryForm.resultConfiguration.subjectColumns.values-20" class="checkboxLabel">Survival Start Date</label>
+<br>
+
+            </ul>
+            <ul>
+                
+                    <input value="Select All" onclick="setClinicalAnnotations(1)" type="button">
+                    <input value="Unselect All" onclick="setClinicalAnnotations()" type="button">
+                
+            </ul>
+            </div>
+        </div>    
+        
+        <div class="checklistwrapper">
+        <h3>Image Annotations</h3>
+        <ul class="checklist">
+            <input id="queryForm.resultConfiguration.imageSeriesColumns.values-1_hidden" value="" name="queryForm.resultConfiguration.imageSeriesColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.imageSeriesColumns.values" value="Comments" id="queryForm.resultConfiguration.imageSeriesColumns.values-1" type="checkbox">
+<label for="queryForm.resultConfiguration.imageSeriesColumns.values-1" class="checkboxLabel">Comments</label>
+<br>
+<input id="queryForm.resultConfiguration.imageSeriesColumns.values-2_hidden" value="" name="queryForm.resultConfiguration.imageSeriesColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.imageSeriesColumns.values" value="Eloquent Cortex" id="queryForm.resultConfiguration.imageSeriesColumns.values-2" type="checkbox">
+<label for="queryForm.resultConfiguration.imageSeriesColumns.values-2" class="checkboxLabel">Eloquent Cortex</label>
+<br>
+<input id="queryForm.resultConfiguration.imageSeriesColumns.values-3_hidden" value="" name="queryForm.resultConfiguration.imageSeriesColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.imageSeriesColumns.values" value="Exam Number" id="queryForm.resultConfiguration.imageSeriesColumns.values-3" type="checkbox">
+<label for="queryForm.resultConfiguration.imageSeriesColumns.values-3" class="checkboxLabel">Exam Number</label>
+<br>
+<input id="queryForm.resultConfiguration.imageSeriesColumns.values-4_hidden" value="" name="queryForm.resultConfiguration.imageSeriesColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.imageSeriesColumns.values" value="Radiologist" id="queryForm.resultConfiguration.imageSeriesColumns.values-4" type="checkbox">
+<label for="queryForm.resultConfiguration.imageSeriesColumns.values-4" class="checkboxLabel">Radiologist</label>
+<br>
+<input id="queryForm.resultConfiguration.imageSeriesColumns.values-5_hidden" value="" name="queryForm.resultConfiguration.imageSeriesColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.imageSeriesColumns.values" value="Side of Tumor Epicenter" id="queryForm.resultConfiguration.imageSeriesColumns.values-5" type="checkbox">
+<label for="queryForm.resultConfiguration.imageSeriesColumns.values-5" class="checkboxLabel">Side of Tumor Epicenter</label>
+<br>
+<input id="queryForm.resultConfiguration.imageSeriesColumns.values-6_hidden" value="" name="queryForm.resultConfiguration.imageSeriesColumns.values" type="hidden">
+<input name="queryForm.resultConfiguration.imageSeriesColumns.values" value="Tumor Location" id="queryForm.resultConfiguration.imageSeriesColumns.values-6" type="checkbox">
+<label for="queryForm.resultConfiguration.imageSeriesColumns.values-6" class="checkboxLabel">Tumor Location</label>
+<br>
+
+        </ul>
+        
+        <ul>
+            
+                <input value="Select All" onclick="setImageAnnotations(1)" type="button">
+                <input value="Unselect All" onclick="setImageAnnotations()" type="button">
+            
+        </ul>
+        </div>
+    
+    
+    
+    <div class="actionsrow">
+    <del class="btnwrapper">
+    <ul class="btnrow">
+        <li><a href="#" class="btn" onclick="runSearch()">
+            <span class="btn_img"><span class="search">Run Query</span></span>
+        </a></li>
+    </ul>
+    </del>
+    </div>
+    
+    <div class="clear"></div>
+
+<!--/Columns-->
+</div>
+
+                <div style="display: none;" class="dojoTabPane" dojotype="struts:BindDiv" refreshonshow="true" id="sorting" formid="manageQueryForm" label="Sorting" href="/caintegrator2/selectQueryTab.action?selectedAction=selectedTabSorting" showerror="true">
+
+<!--Sort Order-->
+
+
+    <h2>Set Sort Order for Selected Columns</h2>
+    
+    
+    <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
+        <div class="tabhelp" style="white-space: nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
+	       <a href="javascript:openHelpWindowWithNavigation('search_columns_help')" class="help">
+	       &nbsp;</a>
+        </div>
+    </div>
+
+    <table class="data">
+        <tbody><tr>
+            <th>Column<br></th>
+            <th>Order (L-R)<br></th>
+        </tr>
+
+        
+            <tr>
+                <td>Prior Therapy Radiation Type</td>
+                <td><select name="queryForm.resultConfiguration.columnIndex['Prior Therapy Radiation Type']" id="queryForm_resultConfiguration_columnIndex_'Prior Therapy Radiation Type'_">
+    <option value="1" selected="selected">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+
+
+</select>
+                </td>
+            </tr>
+        
+            <tr>
+                <td>Last Followup Date</td>
+                <td><select name="queryForm.resultConfiguration.columnIndex['Last Followup Date']" id="queryForm_resultConfiguration_columnIndex_'Last Followup Date'_">
+    <option value="1">1</option>
+    <option value="2" selected="selected">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+
+
+</select>
+                </td>
+            </tr>
+        
+            <tr>
+                <td>Karnofsky</td>
+                <td><select name="queryForm.resultConfiguration.columnIndex['Karnofsky']" id="queryForm_resultConfiguration_columnIndex_'Karnofsky'_">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3" selected="selected">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+
+
+</select>
+                </td>
+            </tr>
+        
+            <tr>
+                <td>Prior Therapy Surgery Procedure Title</td>
+                <td><select name="queryForm.resultConfiguration.columnIndex['Prior Therapy Surgery Procedure Title']" id="queryForm_resultConfiguration_columnIndex_'Prior Therapy Surgery Procedure Title'_">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4" selected="selected">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+
+
+</select>
+                </td>
+            </tr>
+        
+            <tr>
+                <td>Prior Therapy Chemo Course Count</td>
+                <td><select name="queryForm.resultConfiguration.columnIndex['Prior Therapy Chemo Course Count']" id="queryForm_resultConfiguration_columnIndex_'Prior Therapy Chemo Course Count'_">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5" selected="selected">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+
+
+</select>
+                </td>
+            </tr>
+        
+            <tr>
+                <td>Prior Therapy Radiation Fraction Dose</td>
+                <td><select name="queryForm.resultConfiguration.columnIndex['Prior Therapy Radiation Fraction Dose']" id="queryForm_resultConfiguration_columnIndex_'Prior Therapy Radiation Fraction Dose'_">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6" selected="selected">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+
+
+</select>
+                </td>
+            </tr>
+        
+            <tr>
+                <td>Prior Therapy Chemo Agent Name</td>
+                <td><select name="queryForm.resultConfiguration.columnIndex['Prior Therapy Chemo Agent Name']" id="queryForm_resultConfiguration_columnIndex_'Prior Therapy Chemo Agent Name'_">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7" selected="selected">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+
+
+</select>
+                </td>
+            </tr>
+        
+            <tr>
+                <td>Prior Therapy Surgery Outcome</td>
+                <td><select name="queryForm.resultConfiguration.columnIndex['Prior Therapy Surgery Outcome']" id="queryForm_resultConfiguration_columnIndex_'Prior Therapy Surgery Outcome'_">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8" selected="selected">8</option>
+    <option value="9">9</option>
+
+
+</select>
+                </td>
+            </tr>
+        
+            <tr>
+                <td>Prior Therapy Radiation Fraction Number</td>
+                <td><select name="queryForm.resultConfiguration.columnIndex['Prior Therapy Radiation Fraction Number']" id="queryForm_resultConfiguration_columnIndex_'Prior Therapy Radiation Fraction Number'_">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9" selected="selected">9</option>
+
+
+</select>
+                </td>
+            </tr>
+        
+
+    </tbody></table>
+
+
+    <!--Buttons-->
+
+    <div class="actionsrow">
+    <del class="btnwrapper">
+    <ul class="btnrow">
+        <li><a href="#" class="btn" onclick="runSearch()">
+            <span class="btn_img"><span class="search">Run Query</span></span>
+        </a></li>
+    </ul>
+    </del>
+    </div>
+
+    <!--Buttons-->
+
+<!--/Sort Order-->
+</div>
+
+                <div style="" class="dojoTabPane" dojotype="struts:BindDiv" id="searchResults" formid="manageQueryForm" formfilter="filterParam" label="Query Results" href="/caintegrator2/selectQueryTab.action?selectedAction=selectedTabSearchResults" showerror="true">
+
+
+
+
+<!--Search Results-->
+<div id="">
+    <h2>Query Results for: 
+        
+        
+            Unsaved Query
+                
+    </h2>
+
+    <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
+        <div style="float: left; position: relative; width: 100px; margin-top: 0.3em;">
+            
+            
+                <label>Results per Page:</label>
+                
+    
+    <select name="pageSize" id="pageSize">
+    <option value="10">10</option>
+    <option value="20" selected="selected">20</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+
+
+</select>
+
+
+                <a href="#" onclick="submitForm('updateResultsPerPage')">
+                    <span class="btn_img">Apply</span>
+                </a>
+            
+        </div>
+        <div class="tabhelp" style="white-space: nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;"><a href="javascript:openHelpWindowWithNavigation('query_results_help')" class="help">
+   &nbsp;</a>
+        </div>
+    </div>
+
+    <div id="queryResultsDiv">
+        
+        
+            
+            <span class="pagebanner">2 items found, displaying all items.</span><span class="pagelinks"><strong>1</strong></span>
+<table class="data" id="queryResultRows">
+<thead>
+<tr>
+<th>Select <br> <font style="font-size: 9px; text-decoration: underline; cursor: pointer;">
+                    <s:a onclick="selectAll()" cssstyle="text-decoration: underline;" href="#">
+                    All</s:a>&nbsp;|&nbsp;<s:a onclick="selectNone()" href="#">None</s:a> </font></th>
+<th class="sortable">
+<a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageQuery.action?d-942404-p=1&amp;d-942404-s=1&amp;d-942404-o=2&amp;selectedAction=selectedTabSearchResults#">Subject Identifier</a></th>
+<th class="sortable">
+<a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageQuery.action?d-942404-p=1&amp;d-942404-s=1&amp;d-942404-o=2&amp;selectedAction=selectedTabSearchResults#">Timepoint</a></th>
+<th class="sortable">
+<a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageQuery.action?d-942404-p=1&amp;d-942404-s=2&amp;d-942404-o=2&amp;selectedAction=selectedTabSearchResults#">Prior Therapy Radiation Type</a></th>
+<th class="sortable">
+<a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageQuery.action?d-942404-p=1&amp;d-942404-s=3&amp;d-942404-o=2&amp;selectedAction=selectedTabSearchResults#">Last Followup Date</a></th>
+<th class="sortable">
+<a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageQuery.action?d-942404-p=1&amp;d-942404-s=4&amp;d-942404-o=2&amp;selectedAction=selectedTabSearchResults#">Karnofsky</a></th>
+<th class="sortable">
+<a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageQuery.action?d-942404-p=1&amp;d-942404-s=5&amp;d-942404-o=2&amp;selectedAction=selectedTabSearchResults#">Prior Therapy Surgery Procedure Title</a></th>
+<th class="sortable">
+<a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageQuery.action?d-942404-p=1&amp;d-942404-s=6&amp;d-942404-o=2&amp;selectedAction=selectedTabSearchResults#">Prior Therapy Chemo Course Count</a></th>
+<th class="sortable">
+<a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageQuery.action?d-942404-p=1&amp;d-942404-s=7&amp;d-942404-o=2&amp;selectedAction=selectedTabSearchResults#">Prior Therapy Radiation Fraction Dose</a></th>
+<th class="sortable">
+<a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageQuery.action?d-942404-p=1&amp;d-942404-s=8&amp;d-942404-o=2&amp;selectedAction=selectedTabSearchResults#">Prior Therapy Chemo Agent Name</a></th>
+<th class="sortable">
+<a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageQuery.action?d-942404-p=1&amp;d-942404-s=9&amp;d-942404-o=2&amp;selectedAction=selectedTabSearchResults#">Prior Therapy Surgery Outcome</a></th>
+<th class="sortable">
+<a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageQuery.action?d-942404-p=1&amp;d-942404-s=10&amp;d-942404-o=2&amp;selectedAction=selectedTabSearchResults#">Prior Therapy Radiation Fraction Number</a></th></tr></thead>
+<tbody>
+<tr class="odd">
+<td>
+                    
+                </td>
+<td>
+                        E09332
+                    </td>
+<td>
+                        Registration
+                    </td>
+<td>
+                                PHOTON, RADIOSURGERY, RADIOSURGERY
+                            </td>
+<td>03/04/2001</td>
+<td>
+                                60
+                            </td>
+<td>
+                                
+                            </td>
+<td>
+                                1, 2
+                            </td>
+<td>
+                                200, 1500, 2000
+                            </td>
+<td>
+                                TEMOZOLOMIDE, TEMOZOLOMIDE
+                            </td>
+<td>
+                                CR - COMPLETE RESECTION, BX - BIOPSY ONLY
+                            </td>
+<td>
+                                30, 1, 1
+                            </td></tr>
+<tr class="odd">
+<td>
+                    
+                </td>
+<td>
+                        E09332
+                    </td>
+<td>First Treatment</td>
+<td>
+                                PHOTON, RADIOSURGERY, RADIOSURGERY
+                            </td>
+<td>01/01/2002</td>
+<td>65</td>
+<td>
+                                
+                            </td>
+<td>
+                                1, 2
+                            </td>
+<td>
+                                200, 1500, 2000
+                            </td>
+<td>
+                                TEMOZOLOMIDE, TEMOZOLOMIDE
+                            </td>
+<td>
+                                CR - COMPLETE RESECTION, BX - BIOPSY ONLY
+                            </td>
+<td>
+                                30, 1, 1
+                            </td></tr>
+<tr class="even">
+<td>
+                    
+                        <input name="queryResult.rows[1].checkedRow" value="true" checked="checked" id="queryResult_rows_1__checkedRow" type="checkbox">
+<input name="__checkbox_queryResult.rows[1].checkedRow" value="true" type="hidden">
+                    
+                </td>
+<td>
+                        FPH118
+                    </td>
+<td>
+                        Registration
+                    </td>
+<td>
+                                3D CONFORMAL
+                            </td>
+<td>03/05/2002</td>
+<td>
+                                60
+                            </td>
+<td>
+                                
+                            </td>
+<td>
+                                1, 1, 2, 3
+                            </td>
+<td>
+                                180
+                            </td>
+<td>
+                                TEMOZOLOMIDE, TAMOXIFEN CITRATE, TEMOZOLOMIDE, 13-CIS RETINOIC ACID
+                            </td>
+<td>
+                                CR - COMPLETE RESECTION
+                            </td>
+<td>
+                                33
+                            </td></tr></tbody></table><span class="pagebanner">2 items found, displaying all items.</span><span class="pagelinks"><strong>1</strong></span><div class="exportlinks">Export options: 
+<a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageQuery.action?6578706f7274=1&amp;d-942404-e=1&amp;selectedAction=selectedTabSearchResults#"><span class="export csv">CSV </span></a></div>
+
+        
+    </div>
+    <!--Buttons-->
+    
+    
+        
+            <div class="actionsrow">
+                <del class="btnwrapper">
+                    <ul class="btnrow">
+                        <li><a href="#" class="btn" onclick="openExportLink(); return false;">
+                            <span class="btn_img"><span class="export">Export To CSV</span></span>
+                        </a></li>
+                        
+                            <li><a href="#" class="btn" onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+                                <span class="btn_img"><span class="externalsite">Forward To NBIA</span></span>
+                            </a></li>
+                            <li><a href="#" class="btn" onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='retrieveDicomImages';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+                                <span class="btn_img"><span class="download">Retrieve Dicom Images</span></span>
+                            </a></li>
+                        
+                    </ul>
+                </del>
+           </div>
+        
+    
+    <!--/Buttons-->
+</div>
+<!--/Search Results-->
+
+
+<div class="clear"><br>
+</div>
+</div>
+
+                <div style="display: none;" class="dojoTabPane" dojotype="struts:BindDiv" id="saveAs" formid="manageQueryForm" formfilter="filterParam" label="Save as..." href="/caintegrator2/selectQueryTab.action?selectedAction=selectedTabSaveAs" showerror="true">
+
+<!--Save Search-->
+
+    <h2>Save This Query</h2>
+    
+    <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
+        <div class="tabhelp" style="white-space: nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
+	        <a href="javascript:openHelpWindowWithNavigation('save_query_help')" class="help">
+	        &nbsp;</a>
+        </div>
+    </div>
+
+    <table class="form">
+
+        <tbody><tr>
+            <td class="label"><label for="searchname">Query Name:</label></td>
+            <td class="value"><input name="queryForm.query.name" value="" id="saveName" type="text"></td>
+        </tr>
+        <tr>
+            <td class="label"><label for="searchdesc">Query Description:</label></td>
+            <td class="value"><textarea name="queryForm.query.description" cols="40" rows="2" id="queryForm_query_description"></textarea></td>
+
+        </tr>
+
+    </tbody></table>
+
+    <!--Buttons-->
+
+    <div class="actionsrow">
+    <del class="btnwrapper">
+    <ul class="btnrow">
+        <li><a href="#" class="btn" onclick="saveQuery('save')">
+            <span class="btn_img"><span class="save">Save</span></span>
+        </a></li>
+        
+    </ul>
+    </del>
+    </div>
+
+    <!--Buttons-->
+    
+<!--/Save Search-->
+</div>
+
+
+            </div>
+</div>
+	    </form>
+
+
+
+
+        
+        <!--/Tab Box-->
+           
+</div>
+
+<div class="clear"><br></div>
+					
+					<!--/Content-->
+    
+                </div>
+                
+				<!--Left Navigation Column-->
+				
+				
+
+
+            
+<div id="leftnav">
+    
+    <!--Study Logo-->
+    
+	    <div id="study_logo">
+	        
+	        <img src="manageQuery.action_files/logo.jpg" alt="Study Logo" width="200" height="72">
+	    </div>
+    
+    
+    <!--/Study Logo-->
+    
+    <!--Menu-->
+    
+    
+    
+    
+    
+    
+    
+
+        
+    <ul class="menu">
+        <li class="stdnavforinvestigator">
+            <div>Demo Study based on Rembrandt with NCRI data.</div>
+            <ul>
+                <li>
+                    <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/workspace.action">Home</a>
+                </li>
+                <li class="stdnav">
+                    <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/newQuery.action">
+                    Search Demo Study based on Rembrandt with NCRI data.</a>
+                </li>
+            </ul>
+        </li>
+        
+        <!--Tree Control-->
+        
+        <li class="treenav"><div>Study Data</div>
+            <ul class="pde">
+                <li class="parent"><a class="parent_img" href="#"><img title="open section" alt="open section" src="manageQuery.action_files/arrow_right.gif"></a><a href="#">Queries</a>
+                    <ul class="hide" style="padding: 3px 0px 10px 10px;">
+                        <li class="parent"><a class="parent_img" href="#"><img title="open section" alt="open section" src="manageQuery.action_files/arrow_right.gif"></a><a href="#">My Queries</a>
+                            <ul class="hide">                                
+                                
+                                
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        
+        <li class="stdnavforinvestigator"><div>Analysis Tools</div>
+            <ul>
+                <li>
+                    
+                    <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/initializeKmPlot.action">KM Plot</a></li>
+                <li>
+                    
+                    <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/initializeGePlot.action">Gene Expression Plot</a></li>
+                <li>
+                    
+                    <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/genePatternAnalysisStatus.action">GenePattern Analysis</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    
+         
+    
+        <ul class="menu">   
+            <li class="stdnav"><div>Study Management</div>
+                <ul>
+                    <li>
+                    <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageStudies.action">Manage Studies</a></li>
+                    <li>
+                    <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/createStudy.action">Create New Study</a></li>
+                </ul>
+            </li>
+        </ul>
+    
+    
+        <ul class="menu">   
+            <li class="stdnav"><div>Application Management</div>
+                <ul>
+                    <li>
+                    <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/managePlatforms.action">Manage Platforms</a></li>
+                </ul>
+            </li>
+        </ul>
+    
+    
+    <ul class="menu">
+        <li class="stdnavforinvestigator" style="padding-bottom: 0pt;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
+            <ul>
+                
+                <li><a href="javascript:openWin('/caintegrator2//help/Getting_Started.2.8.html#1122280')">Support</a></li>
+                <li><a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/tutorials.action">Tutorials</a></li>
+                <li><a href="javascript:openUsersGuideWindow('top')">User Guide</a></li>
+            </ul>
+        </li>
+    </ul>
+    
+    <!--/Menu-->
+                
+</div>
+
+								
+				<!--/Left Navigation Column-->
+				
+			</div>			
+			
+			<!--/Work Area-->		
+		
+			<!--Footer-->
+			
+			
+
+            
+<div id="footerwrapper">
+    
+    <div id="footernav">
+    
+        <div id="footer">
+        
+            <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/contact.htm">CONTACT US</a>
+            <a href="http://www.nih.gov/about/privacy.htm">PRIVACY NOTICE</a>
+            <a href="http://www.nih.gov/about/disclaim.htm">DISCLAIMER</a>
+            <a href="http://www3.cancer.gov/accessibility/nci508.htm">ACCESSIBILITY</a>
+            <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/help.htm" class="last">SUPPORT</a> 
+        
+        </div>
+        
+    </div>
+
+    <div id="partnerlogos">             
+        <a href="http://www.cancer.gov/"><img src="manageQuery.action_files/footer_nci.gif" alt="Logo: National Cancer Institute" width="63" height="31"></a>
+        <a href="http://www.dhhs.gov/"><img src="manageQuery.action_files/footer_hhs.gif" alt="Logo: Department of Health and Human Services" width="39" height="31"></a>
+        <a href="http://www.nih.gov/"><img src="manageQuery.action_files/footer_nih.gif" alt="Logo: National Institutes of Health" width="46" height="31"></a>
+        <a href="http://www.usa.gov/"><img src="manageQuery.action_files/footer_usagov.gif" alt="Logo: USA.gov" width="91" height="31"></a>
+    </div>
+
+</div>
+
+			
+			<!--/Footer-->
+		
+		</div>
+        
+			
+	</body></html>

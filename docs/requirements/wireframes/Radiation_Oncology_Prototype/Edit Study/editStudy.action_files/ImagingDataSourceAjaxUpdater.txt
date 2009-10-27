@@ -1,0 +1,104 @@
+
+// Provide a default path to dwr.engine
+if (dwr == null) var dwr = {};
+if (dwr.engine == null) dwr.engine = {};
+if (DWREngine == null) var DWREngine = dwr.engine;
+
+if (ImagingDataSourceAjaxUpdater == null) var ImagingDataSourceAjaxUpdater = {};
+ImagingDataSourceAjaxUpdater._path = '/caintegrator2/dwr';
+ImagingDataSourceAjaxUpdater.hashCode = function(callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'hashCode', callback);
+}
+ImagingDataSourceAjaxUpdater.indexOf = function(p0, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'indexOf', p0, callback);
+}
+ImagingDataSourceAjaxUpdater.indexOf = function(p0, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'indexOf', p0, callback);
+}
+ImagingDataSourceAjaxUpdater.equals = function(p0, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'equals', p0, callback);
+}
+ImagingDataSourceAjaxUpdater.toString = function(callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'toString', callback);
+}
+ImagingDataSourceAjaxUpdater.getTargetClass = function(callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'getTargetClass', callback);
+}
+ImagingDataSourceAjaxUpdater.getAdvisors = function(callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'getAdvisors', callback);
+}
+ImagingDataSourceAjaxUpdater.addAdvisor = function(p0, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'addAdvisor', p0, callback);
+}
+ImagingDataSourceAjaxUpdater.addAdvisor = function(p0, p1, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'addAdvisor', p0, p1, callback);
+}
+ImagingDataSourceAjaxUpdater.isFrozen = function(callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'isFrozen', callback);
+}
+ImagingDataSourceAjaxUpdater.getTargetObject = function(callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'getTargetObject', callback);
+}
+ImagingDataSourceAjaxUpdater.setTargetSource = function(p0, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'setTargetSource', p0, callback);
+}
+ImagingDataSourceAjaxUpdater.isProxyTargetClass = function(callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'isProxyTargetClass', callback);
+}
+ImagingDataSourceAjaxUpdater.addAdvice = function(p0, p1, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'addAdvice', p0, p1, callback);
+}
+ImagingDataSourceAjaxUpdater.addAdvice = function(p0, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'addAdvice', p0, callback);
+}
+ImagingDataSourceAjaxUpdater.setExposeProxy = function(p0, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'setExposeProxy', p0, callback);
+}
+ImagingDataSourceAjaxUpdater.isExposeProxy = function(callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'isExposeProxy', callback);
+}
+ImagingDataSourceAjaxUpdater.initializeJsp = function(callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'initializeJsp', callback);
+}
+ImagingDataSourceAjaxUpdater.runJob = function(p0, p1, p2, p3, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'runJob', p0, p1, p2, p3, callback);
+}
+ImagingDataSourceAjaxUpdater.getTargetSource = function(callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'getTargetSource', callback);
+}
+ImagingDataSourceAjaxUpdater.getProxiedInterfaces = function(callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'getProxiedInterfaces', callback);
+}
+ImagingDataSourceAjaxUpdater.isInterfaceProxied = function(p0, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'isInterfaceProxied', p0, callback);
+}
+ImagingDataSourceAjaxUpdater.removeAdvisor = function(p0, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'removeAdvisor', p0, callback);
+}
+ImagingDataSourceAjaxUpdater.removeAdvisor = function(p0, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'removeAdvisor', p0, callback);
+}
+ImagingDataSourceAjaxUpdater.replaceAdvisor = function(p0, p1, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'replaceAdvisor', p0, p1, callback);
+}
+ImagingDataSourceAjaxUpdater.removeAdvice = function(p0, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'removeAdvice', p0, callback);
+}
+ImagingDataSourceAjaxUpdater.toProxyConfigString = function(callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'toProxyConfigString', callback);
+}
+ImagingDataSourceAjaxUpdater.removeFromScope = function(callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'removeFromScope', callback);
+}
+ImagingDataSourceAjaxUpdater.isProxyClass = function(p0, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'isProxyClass', p0, callback);
+}
+ImagingDataSourceAjaxUpdater.getProxyClass = function(p0, p1, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'getProxyClass', p0, p1, callback);
+}
+ImagingDataSourceAjaxUpdater.newProxyInstance = function(p0, p1, p2, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'newProxyInstance', p0, p1, p2, callback);
+}
+ImagingDataSourceAjaxUpdater.getInvocationHandler = function(p0, callback) {
+  dwr.engine._execute(ImagingDataSourceAjaxUpdater._path, 'ImagingDataSourceAjaxUpdater', 'getInvocationHandler', p0, callback);
+}

@@ -1,0 +1,1023 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
+
+
+
+
+
+    
+    
+    
+    
+		<title>
+		caIntegrator2 
+		
+		    - Edit Study
+		
+		</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<link rel="address bar icon" href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/favicon.ico">
+		<link rel="icon" href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/favicon.ico" type="image/x-icon">
+		<link rel="shortcut icon" href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" type="text/css" href="editStudy.action_files/caintegrator2.css">
+        <link rel="stylesheet" href="editStudy.action_files/styles.css" type="text/css">
+<script language="JavaScript" type="text/javascript">
+    // Dojo configuration
+    var djConfig = {
+        baseRelativePath: "/caintegrator2/struts/dojo",
+        isDebug: false,
+        bindEncoding: "UTF-8",
+        debugAtAllCosts: false // not needed, but allows the Venkman debugger to work with the includes
+    };
+</script>
+<script language="JavaScript" type="text/javascript" src="editStudy.action_files/dojo.js"></script>
+<script language="JavaScript" type="text/javascript" src="editStudy.action_files/dojoRequire.js"></script>
+<script type="text/javascript" src="editStudy.action_files/dojoRequire_002.js"></script><style type="text/css">.dojoLayoutContainer{ position: relative; display: block; }
+body .dojoAlignTop, body .dojoAlignBottom, body .dojoAlignLeft, body .dojoAlignRight { position: absolute; overflow: hidden; }
+body .dojoAlignClient { position: absolute }
+.dojoAlignClient { overflow: auto; }
+</style><style type="text/css" charset="utf-8">/* See license.txt for terms of usage */
+
+#firebugBody {
+    position: fixed;
+    top:0;
+    left:0;
+    margin:0;
+    padding:0;
+    width:1px;
+    height:1px;
+    overflow:visible;
+}
+
+.firebugCanvas {
+    position:fixed;
+    top: 0;
+    left: 0;
+    display:none;
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+.firebugHighlight {
+    z-index: 2147483647;
+    position: absolute;
+    background-color: #3875d7;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugLayoutBoxParent {
+    z-index: 2147483647;
+    position: absolute;
+    background-color: transparent;
+    border-top: 0 none;
+    border-right: 1px dashed #BBBBBB;
+    border-bottom: 1px dashed #BBBBBB;
+    border-left: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+.firebugRuler {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugRulerH {
+    top: -15px;
+    left: 0;
+    width: 100%;
+    height: 14px;
+    background: url(chrome://firebug/skin/rulerH.png) repeat-x;
+    border-top: 1px solid #BBBBBB;
+    border-right: 1px dashed #BBBBBB;
+    border-bottom: 1px solid #000000;
+}
+
+.firebugRulerV {
+    top: 0;
+    left: -15px;
+    width: 14px;
+    height: 100%;
+    background: url(chrome://firebug/skin/rulerV.png) repeat-y;
+    border-left: 1px solid #BBBBBB;
+    border-right: 1px solid #000000;
+    border-bottom: 1px dashed #BBBBBB;
+}
+
+.overflowRulerX > .firebugRulerV {
+    left: 0;
+}
+
+.overflowRulerY > .firebugRulerH {
+    top: 0;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.firebugLayoutBox {
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    outline: 0;
+}
+
+.firebugLayoutBoxOffset {
+    z-index: 2147483647;
+    position: absolute;
+    opacity: 0.8;
+}
+
+.firebugLayoutBoxMargin {
+    background-color: #EDFF64;
+}
+
+.firebugLayoutBoxBorder {
+    background-color: #666666;
+}
+
+.firebugLayoutBoxPadding {
+    background-color: SlateBlue;
+}
+
+.firebugLayoutBoxContent {
+    background-color: SkyBlue;
+}
+
+/*.firebugHighlightGroup .firebugLayoutBox {
+    background-color: transparent;
+}
+
+.firebugHighlightBox {
+    background-color: Blue !important;
+}*/
+
+.firebugLayoutLine {
+    z-index: 2147483647;
+    background-color: #000000;
+    opacity: 0.4;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugLayoutLineLeft,
+.firebugLayoutLineRight {
+    position: fixed;
+    width: 1px;
+    height: 100%;
+}
+
+.firebugLayoutLineTop,
+.firebugLayoutLineBottom {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+}
+
+.firebugLayoutLineTop {
+    margin-top: -1px;
+    border-top: 1px solid #999999;
+}
+
+.firebugLayoutLineRight {
+    border-right: 1px solid #999999;
+}
+
+.firebugLayoutLineBottom {
+    border-bottom: 1px solid #999999;
+}
+
+.firebugLayoutLineLeft {
+    margin-left: -1px;
+    border-left: 1px solid #999999;
+}
+</style><style type="text/css" charset="utf-8">/* See license.txt for terms of usage */
+
+#firebugBody {
+    position: fixed;
+    top:0;
+    left:0;
+    margin:0;
+    padding:0;
+    width:1px;
+    height:1px;
+    overflow:visible;
+}
+
+.firebugCanvas {
+    position:fixed;
+    top: 0;
+    left: 0;
+    display:none;
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+.firebugHighlight {
+    z-index: 2147483647;
+    position: absolute;
+    background-color: #3875d7;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugLayoutBoxParent {
+    z-index: 2147483647;
+    position: absolute;
+    background-color: transparent;
+    border-top: 0 none;
+    border-right: 1px dashed #BBBBBB;
+    border-bottom: 1px dashed #BBBBBB;
+    border-left: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+.firebugRuler {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugRulerH {
+    top: -15px;
+    left: 0;
+    width: 100%;
+    height: 14px;
+    background: url(chrome://firebug/skin/rulerH.png) repeat-x;
+    border-top: 1px solid #BBBBBB;
+    border-right: 1px dashed #BBBBBB;
+    border-bottom: 1px solid #000000;
+}
+
+.firebugRulerV {
+    top: 0;
+    left: -15px;
+    width: 14px;
+    height: 100%;
+    background: url(chrome://firebug/skin/rulerV.png) repeat-y;
+    border-left: 1px solid #BBBBBB;
+    border-right: 1px solid #000000;
+    border-bottom: 1px dashed #BBBBBB;
+}
+
+.overflowRulerX > .firebugRulerV {
+    left: 0;
+}
+
+.overflowRulerY > .firebugRulerH {
+    top: 0;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.firebugLayoutBox {
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    outline: 0;
+}
+
+.firebugLayoutBoxOffset {
+    z-index: 2147483647;
+    position: absolute;
+    opacity: 0.8;
+}
+
+.firebugLayoutBoxMargin {
+    background-color: #EDFF64;
+}
+
+.firebugLayoutBoxBorder {
+    background-color: #666666;
+}
+
+.firebugLayoutBoxPadding {
+    background-color: SlateBlue;
+}
+
+.firebugLayoutBoxContent {
+    background-color: SkyBlue;
+}
+
+/*.firebugHighlightGroup .firebugLayoutBox {
+    background-color: transparent;
+}
+
+.firebugHighlightBox {
+    background-color: Blue !important;
+}*/
+
+.firebugLayoutLine {
+    z-index: 2147483647;
+    background-color: #000000;
+    opacity: 0.4;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugLayoutLineLeft,
+.firebugLayoutLineRight {
+    position: fixed;
+    width: 1px;
+    height: 100%;
+}
+
+.firebugLayoutLineTop,
+.firebugLayoutLineBottom {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+}
+
+.firebugLayoutLineTop {
+    margin-top: -1px;
+    border-top: 1px solid #999999;
+}
+
+.firebugLayoutLineRight {
+    border-right: 1px solid #999999;
+}
+
+.firebugLayoutLineBottom {
+    border-bottom: 1px solid #999999;
+}
+
+.firebugLayoutLineLeft {
+    margin-left: -1px;
+    border-left: 1px solid #999999;
+}
+</style></head><body onload="initializeJsp();"><textarea id="dojo.widget.RichText.savedContent" style="overflow: hidden; display: none; position: absolute; top: -100px; left: -100px; height: 3px; width: 3px;"></textarea>
+<script type="text/javascript" src="editStudy.action_files/CommonFunctions.js"></script>
+
+        <script type="text/javascript" src="editStudy.action_files/pde.js"></script>
+        <script type="text/javascript" src="editStudy.action_files/prototype.js"></script>
+        <script type="text/javascript" src="editStudy.action_files/scriptaculous.js"></script><script type="text/javascript" src="editStudy.action_files/builder.htm"></script><script type="text/javascript" src="editStudy.action_files/effects.js"></script><script type="text/javascript" src="editStudy.action_files/dragdrop.htm"></script><script type="text/javascript" src="editStudy.action_files/controls.htm"></script><script type="text/javascript" src="editStudy.action_files/slider.htm"></script><script type="text/javascript" src="editStudy.action_files/sound.htm"></script>
+        <script type="text/javascript" src="editStudy.action_files/effects.js"></script>
+        <script type="text/javascript" src="editStudy.action_files/prototype.js"></script>
+        <script type="text/javascript" src="editStudy.action_files/caintegrator2.js"></script>
+        <script type="text/javascript" src="editStudy.action_files/onlinehelp.js"></script>
+        <script type="text/javascript" src="editStudy.action_files/editableSelect.js"></script>
+        <script type="text/javascript" src="editStudy.action_files/optiontransferselect.js"></script>      
+	
+		<a href="#content" id="navskip">Skip to Page Content</a>
+		
+		<div id="wrapper" class="curate">
+
+			<!-- Global Header -->	
+            
+            
+
+
+
+<!--NCI/NIH Header-->
+            
+<div id="nciheader">        
+    <div id="ncilogo"><a href="http://www.cancer.gov/"><img src="editStudy.action_files/logotype.gif" alt="Logo: National Cancer Institute" width="283" height="37"></a>
+    </div>
+    <div id="nihtag"><a href="http://www.cancer.gov/"><img src="editStudy.action_files/tagline.gif" alt="Logo: U.S. National Institutes of Health | www.cancer.gov" width="295" height="37"></a>
+    </div>
+
+</div>
+        
+<!--/NCI/NIH Header-->
+
+<!--PO-Curate Header-->
+
+<div id="appheader">
+
+    <div id="mainlogo">
+        <div>
+            <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/index.jsp"><img src="editStudy.action_files/logo_caintegrator2.gif" alt="Logo: caIntegrator2"></a>
+        </div>
+        
+        
+        
+        
+        <div id="versioninfo" title="caINTEGRATOR2, BUILD DATE: '10/19/2009 12:19 AM', SVNTAG: software, SVNURL: svn://cbioapp520.nci.nih.gov/svnroot/caintegrator2/trunk/software, SVNREV: 2797">
+            build: software | 
+            date: '10/19/2009 12:19 AM'           
+        </div>
+    </div> 
+
+    <div id="userarea_wrapper">
+        
+        
+        <div id="user">Welcome, manager | <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/logout.jsp">Logout</a></div>
+        <div id="mystudies">
+               			
+<form id="workspace" name="workspace" onsubmit="return true;" action="/caintegrator2/workspace.action" method="post">
+
+                    <label for="currentStudySubscriptionId">My Studies:</label>
+                    <select name="currentStudySubscriptionId" id="workspace_currentStudySubscriptionId" onchange="this.form.submit();">
+    <option value="-1">-- Please Select --</option>
+    <option value="3">Demo Study based on DC Lung Full data.</option>
+    <option value="7">Demo Study based on Rembrandt Copy Number data.</option>
+    <option value="1">Demo Study based on Rembrandt with NCRI data.</option>
+    <option value="2">Demo Study based on Rembrandt with no images data.</option>
+    <option value="5">Demo Study based on Small Copy Number data.</option>
+    <option value="4">Demo Study based on TCGA Agilent data</option>
+
+
+</select>
+
+               </form>
+
+
+
+
+        </div>    
+   
+         
+        
+    </div>
+
+</div>
+
+<!--/PO-Curate Header-->
+
+            
+			<!-- /Global Header -->	
+
+			<!--Work Area-->
+				
+			<div id="main">				
+			    <!-- Begin hidden caBioGeneSearchForm -->
+			    <div id="TB_overlay" class="TB_overlayBG"></div>
+			    		
+<form id="caBioGeneSearchForm" name="caBioGeneSearchForm" onsubmit="runCaBioSearch(); return false;; return true;" action="/caintegrator2/editStudy.action" method="post"><div dojotype="struts:BindDiv" refreshonshow="false" id="caBioGeneSearchInputDiv" style="overflow: auto; display: none; visibility: hidden; margin-left: -140px; margin-top: -62px; width: 508px; max-height: 300px;" href="caBioGeneSearchInput.action" loadingtext="&lt;img src='images/ajax-loader.gif'/&gt;" listentopics="caBioGeneSearchTopic" showerror="true">
+</div>
+
+			    <table class="wwFormTable">
+			        <!-- For caBio to know which form element to publish gene symbols to. -->
+			        <input name="geneSymbolElementId" value="" id="caBioGeneSearchForm_geneSymbolElementId" type="hidden">
+			        <input name="caBioGeneSearchTopicPublished" value="false" id="caBioGeneSearchForm_caBioGeneSearchTopicPublished" type="hidden">
+			        </table></form>
+
+
+
+
+                <!-- End caBioGeneSearchForm -->
+				<div id="contentwrapper">
+				    
+				    <!--Content-->
+						
+	                
+
+
+<script type="text/javascript" src="editStudy.action_files/GenomicDataSourceAjaxUpdater.txt"></script>
+<script type="text/javascript" src="editStudy.action_files/ImagingDataSourceAjaxUpdater.txt"></script>
+<script type="text/javascript" src="editStudy.action_files/engine.js"></script>
+<script type="text/javascript" src="editStudy.action_files/util.js"></script>
+
+<div id="content">                      
+    
+    <script type="text/javascript">
+
+    function initializeJsp() {
+        dwr.engine.setActiveReverseAjax(true);
+        GenomicDataSourceAjaxUpdater.initializeJsp();
+        ImagingDataSourceAjaxUpdater.initializeJsp();
+    }
+    
+    function enableDeployButton() {
+        document.studyDeploymentForm.deployButton.disabled = false;
+    }
+    
+    </script>
+
+        
+    <h1 style="padding: 5px; background: rgb(38, 61, 107) none repeat scroll 0% 0%; color: rgb(255, 255, 255); -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">editing: <strong>Demo Study based on Rembrandt with NCRI data.</strong></h1>
+        
+    
+    
+    <!--Page Help-->
+
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('edit_study_help')" class="help">
+   &nbsp;</a>
+    </div>
+
+    <!--/Page Help-->      
+    
+    <!--ADD CONTENT HERE-->
+    
+    
+        <h1>Edit Study</h1>
+                    
+        <p>Configure your study, and click the <strong>Save</strong> or <strong>Deploy Study</strong> button at the bottom of the page when complete.</p>
+    
+    
+    
+    <script language="javascript">
+        function verifyName(theName) {
+            if (theName.length > 50) {
+                alert("Study name exceeds maximum length of 50 characters.\nPlease shorten the Study name.");
+                return (false);
+            }
+            return (true);
+        }
+    </script>
+
+    <div class="form_wrapper_outer">
+
+        <table class="form_wrapper_table">
+                <tbody><tr>
+                    <th class="title" style="height: 2.5em;">Study Overview</th>
+                    <th class="alignright">&nbsp;</th>
+                </tr>
+                <tr>
+                    <td>
+
+                    		
+<form id="studyDeploymentForm" name="studyDeploymentForm" onsubmit="return verifyName(nameId.value); return true;" action="/caintegrator2/editStudy.action" method="post" class="form"><table class="form">        
+                        
+                        <input name="studyConfiguration.id" value="1" id="studyDeploymentForm_studyConfiguration_id" type="hidden">
+                        <tbody><tr>
+    <td class="tdLabel"><label for="nameId" class="label">Study Name:</label></td>
+    <td><input name="studyConfiguration.study.shortTitleText" value="Demo Study based on Rembrandt with NCRI data." id="nameId" style="width: 280px;" type="text"></td>
+</tr>
+
+                        <tr>
+    <td class="tdLabel"><label for="studyDeploymentForm_studyConfiguration_study_longTitleText" class="label">Study Description:</label></td>
+    <td><textarea name="studyConfiguration.study.longTitleText" cols="40" rows="4" id="studyDeploymentForm_studyConfiguration_study_longTitleText" style="width: 280px;">Rembrandt with NCRI.  Study created via selenium.</textarea></td>
+</tr>
+
+                        <tr>
+                            <td class="tdLabel" align="right">
+                                <label class="label">Status:</label>
+                            </td>
+                            <td>
+                                Deployed
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdLabel" align="right">
+                                <label class="label">Status Description:</label>
+                            </td>
+                            <td>
+                                Minutes for deployment (approx):  37
+                            </td>
+                        </tr>
+                        
+                        <tr>
+    <td colspan="2"><div align="right"><input id="studyDeploymentForm_saveStudy" name="action:saveStudy" value="Save" style="display: none;" type="submit">
+</div></td>
+</tr>
+
+                        
+                            
+                            
+                                <tr>
+    <td colspan="2"><div align="right"><input id="deployButton" name="action:deployStudy" value="Save and Deploy" disabled="disabled" style="display: none;" type="submit">
+</div></td>
+</tr>
+
+                            
+                        
+                    </tbody></table></form>
+
+
+
+
+        
+                    </td>
+                            
+                
+                    
+                    <td>
+
+                        			
+<form id="addStudyLogo" name="addStudyLogo" onsubmit="return true;" action="/caintegrator2/addStudyLogo.action" method="post" enctype="multipart/form-data">
+                            <input name="studyConfiguration.id" value="1" id="addStudyLogo_studyConfiguration_id" type="hidden">
+                            
+                            <!--Study Logo-->
+                            <div id="addStudyLogo_" class="wwgrp">
+                                <div id="addStudyLogo_" class="wwlbl">
+                                        <label class="label" for="addStudyLogo_studyLogoFile">Study Logo:</label>
+                                </div>
+                                <div id="addStudyLogo_" class="wwctrl">
+                                    <div id="study_logo">
+                                        
+                                        
+                                        <img src="editStudy.action_files/logo.jpg" alt="Study Logo" width="200" height="72">
+                                        
+                                        
+                                    </div>
+                                </div>
+                            </div>                        
+                            <!--/Study Logo-->
+                            
+                            
+                            <div id="wwgrp_addStudyLogo_studyLogoFile" class="wwgrp">
+<div id="wwlbl_addStudyLogo_studyLogoFile" class="wwlbl">
+<label for="addStudyLogo_studyLogoFile" class="label">        Logo File:
+</label></div> <div id="wwctrl_addStudyLogo_studyLogoFile" class="wwctrl">
+<input name="studyLogoFile" value="" accept="image/pjpeg,image/jpeg,image/gif" id="addStudyLogo_studyLogoFile" type="file"></div> </div>
+
+                            
+                            <div id="addStudyLogo_commentdiv" name="commentdiv" class="inlinehelp_form_element">
+                                <span class="wwlbl">
+                                &nbsp;
+                                </span>
+                                <span class="wwctrl">
+                                JPEG/GIF, 200x72 maximum
+                                </span>
+                            </div><br>
+                            <div id="addStudyLogo_" class="wwgrp">
+                                <div id="addStudyLogo_" class="wwlbl">
+                                    <label class="label" for="addStudyLogo_studyLogoFile">&nbsp;</label>
+                                </div>
+                                <div id="addStudyLogo_" class="wwctrl">
+                                    
+                                        <div id="wwctrl_addStudyLogo_addStudyLogo" align="right"><input alt="Change Study Logo" src="editStudy.action_files/btn_upload.gif" id="addStudyLogo_addStudyLogo" name="action:addStudyLogo" value="Change Study Logo" type="image">
+</div>     
+                                    
+                                    
+                                </div>
+                            </div>
+                        </form>
+
+
+
+
+                    </td>
+                    
+                
+                
+                </tr>
+        </tbody></table>
+        
+        
+        
+                
+        <table class="form_wrapper_table">
+            <tbody><tr>
+                <th class="title">Clinical Data Sources</th>
+                <th class="thbutton">
+                    <del class="btnwrapper">                    
+                        <ul class="btnrow">
+                            <li><a name="action:addClinicalFile_clinicalFile" id="addClinicalFile_clinicalFile" onclick="new Effect.toggle($('add_clinical'),'blind')" class="btn" style="margin: 0pt;" href="javascript://"><span class="btn_img"><span class="add">Add New</span></span></a></li>
+                                
+                                        
+                                
+                            <li><a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/editSurvivalValueDefinitions.action?studyConfiguration.id=1" class="btn" style="margin: 0pt;"><span class="btn_img"><span class="edit">Edit Survival Values</span></span></a></li>
+                        </ul>   
+                    </del>
+                </th>
+            </tr>
+            <tr>
+                <td class="table_wrapper" colspan="2">              
+                    
+                    <!--Clinical File Upload--> 
+                
+                    <div class="formbox" id="add_clinical" style="display: none;">
+                        
+                        			
+<form id="addClinicalFile" name="addClinicalFile" onsubmit="return true;" action="/caintegrator2/addClinicalFile.action" method="post" enctype="multipart/form-data" class="form"><table class="form">
+                                    <input name="studyConfiguration.id" value="1" id="addClinicalFile_studyConfiguration_id" type="hidden">
+                                    <tbody><tr>
+    <td class="tdLabel"><label for="addClinicalFile_clinicalFile" class="label">Add New Clinical Data Source:</label></td>
+    <td><input name="clinicalFile" value="" id="addClinicalFile_clinicalFile" type="file"></td>
+</tr>
+
+                                    <tr>
+    <td colspan="2"><div align="center"><input alt="Upload Now" src="editStudy.action_files/btn_upload.gif" id="addClinicalFile_addClinicalFile" name="action:addClinicalFile" value="Upload Now" class="editStudyFile" type="image">
+</div></td>
+</tr>
+
+                        </tbody></table></form>
+
+
+
+
+                        
+                    </div>
+                    
+                    <!--/Clinical File Upload-->
+                
+                    <table class="data">
+                        <tbody><tr>
+                            <th>Timepoint</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        
+                            
+                              <tr class="odd">
+                            
+                                        
+                            <td>Registration</td>
+                            <td>DELIMITED_TEXT</td>
+                            <td>rembrandt_clinical_Aug08_subset_mod_for_NCRI.csv</td>
+                            <td>
+                                
+                                
+                                    
+                                            Loaded
+                                    
+                                    
+                                  
+                            </td>
+                            <td style="float: right;">
+                                
+                                    
+                                    
+                                
+                                <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/editClinicalSource.action?studyConfiguration.id=1&amp;clinicalSource.id=1" class="btn" style="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Annotations</span></span></a>
+                                
+                                    
+                                       
+                                          
+                                          
+                                        
+                                       <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/reLoadClinicalSource.action?studyConfiguration.id=1&amp;clinicalSource.id=1" class="btn" style="margin: 0pt;"><span class="btn_img"><span class="reload">Reload All Clinical</span></span></a>
+                                    
+                                    
+                                
+                                
+                                    
+                                    
+                                 
+                                <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/deleteClinicalSource.action?studyConfiguration.id=1&amp;clinicalSource.id=1" class="btn" style="margin: 0pt;" onclick="return confirm('This clinical source file will be permanently deleted.')"><span class="btn_img"><span class="delete">Delete</span></span></a>                                
+                            </td>
+                        </tr>
+                              <tr class="even">
+                            
+                                        
+                            <td>First Treatment</td>
+                            <td>DELIMITED_TEXT</td>
+                            <td>rembrandt_clinical_Dec08_followup.csv</td>
+                            <td>
+                                
+                                
+                                    
+                                            Loaded
+                                    
+                                    
+                                  
+                            </td>
+                            <td style="float: right;">
+                                
+                                    
+                                    
+                                
+                                <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/editClinicalSource.action?studyConfiguration.id=1&amp;clinicalSource.id=1" class="btn" style="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Annotations</span></span></a>
+                                
+                                    
+                                       
+                                          
+                                          
+                                        
+                                       <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/reLoadClinicalSource.action?studyConfiguration.id=1&amp;clinicalSource.id=1" class="btn" style="margin: 0pt;"><span class="btn_img"><span class="reload">Reload All Clinical</span></span></a>
+                                    
+                                    
+                                
+                                
+                                    
+                                    
+                                 
+                                <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/deleteClinicalSource.action?studyConfiguration.id=1&amp;clinicalSource.id=1" class="btn" style="margin: 0pt;" onclick="return confirm('This clinical source file will be permanently deleted.')"><span class="btn_img"><span class="delete">Delete</span></span></a>                                
+                            </td>
+                        </tr>                        
+                        
+                    </tbody></table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        
+        <table class="form_wrapper_table">
+            <tbody><tr>
+                <th class="title">Genomic Data Sources<span id="genomicSourceLoader"></span></th>
+                <th class="thbutton">
+                    <del class="btnwrapper">                    
+                        <ul class="btnrow">
+                                
+                                        
+                                
+                            <li><a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/addGenomicSource.action?studyConfiguration.id=1" class="btn" style="margin: 0pt;"><span class="btn_img"><span class="add">Add New</span></span></a></li>
+                        </ul>   
+                    </del>
+                </th>
+            </tr>
+            <tr>
+                <td class="table_wrapper" colspan="2">              
+        
+                    			
+<form id="editStudy" name="editStudy" onsubmit="return true;" action="/caintegrator2/editStudy.action" method="post"><table class="wwFormTable">
+                    <input name="studyConfiguration.id" value="1" id="editStudy_studyConfiguration_id" type="hidden">
+                    </table><table class="data">
+                        <tbody><tr>
+                            <th>Timepoint</th>
+                            <th>Host Name</th>
+                            <th>Experiment Identifier</th>
+                            <th>File Description</th>
+                            <th>Data Type</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        </tbody><tbody id="genomicSourceJobStatusTable">
+                    <tr style=""><td id="dwrCellID_0"><span id="genomicSourceHostName_1">Registration</span></td><td id="dwrCellID_0"><span id="genomicSourceHostName_1">array-stage.nci.nih.gov</span></td><td id="dwrCellID_1"><span id="genomicSourceExperimentId_1">jagla-00034</span></td><td id="dwrCellID_2"><span id="genomicSourceFileDescription_1"><i>Mapping File: </i>ncri_sample_mapping.csv<br><i>Control Sample Mapping File(s): </i>jagla_0034_control_samples.csv<br></span></td><td id="dwrCellID_3"><span id="genomicSourceDataType_1">Expression</span></td><td id="dwrCellID_4"><span id="genomicSourceStatus_1">Loaded</span></td><td id="dwrCellID_5"><span id="genomicSourceEditUrl_1"><a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/editGenomicSource.action?studyConfiguration.id=1&amp;genomicSource.id=1" class="btn" style="margin: 0pt;"><span class="btn_img"><span class="edit">Edit</span></span></a></span><span id="genomicSourceMapSamplesUrl_1"><a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/editSampleMapping.action?studyConfiguration.id=1&amp;genomicSource.id=1" class="btn" style="margin: 0pt;"><span class="btn_img"><span class="map">Map Samples</span></span></a></span><span id="genomicSourceDeleteUrl_1"><a onclick="return confirm('The Genomic Data Source jagla-00034 will be permanently deleted.')" href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/deleteGenomicSource.action?studyConfiguration.id=1&amp;genomicSource.id=1" class="btn" style="margin: 0pt;"><span class="btn_img"><span class="delete">Delete</span></span></a></span></td></tr></tbody></table>
+                    </form></td></tr></tbody></table>
+
+
+
+
+                    
+                
+            
+            
+                            
+
+        <table class="form_wrapper_table">
+            <tbody><tr>
+                <th class="title">Imaging Data Sources<span id="imagingSourceLoader"></span></th>
+                <th class="thbutton">
+                    <del class="btnwrapper">                    
+                        <ul class="btnrow">
+                                
+                                        
+                                
+                            <li><a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/addImagingSource.action?studyConfiguration.id=1" class="btn" style="margin: 0pt;"><span class="btn_img"><span class="add">Add New</span></span></a></li>
+                        </ul>   
+                    </del>
+                </th>
+            </tr>
+            <tr>
+                <td class="table_wrapper" colspan="2">
+
+                    			
+<form id="editStudy" name="editStudy" onsubmit="return true;" action="/caintegrator2/editStudy.action" method="post"><table class="wwFormTable">
+                    <input name="studyConfiguration.id" value="1" id="editStudy_studyConfiguration_id" type="hidden">
+                    </table><table class="data">
+                        <tbody><tr>
+                            <th>Timepoint</th>
+<th>Host Name</th>
+                            <th>Collection Name</th>
+                            <th>File Description</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        </tbody><tbody id="imagingSourceJobStatusTable">
+                    <tr style=""><td id="dwrCellID_0"><span id="imagingSourceHostName_1">First Treatment</span></td><td id="dwrCellID_0"><span id="imagingSourceHostName_1">imaging.nci.nih.gov</span></td><td id="dwrCellID_1"><span id="imagingSourceCollectionName_1">NCRI</span></td><td id="dwrCellID_2"><span id="imagingSourceFileDescription_1"><i>Annotation File: </i>ncri_image_annotations.csv<br><i>Mapping File: </i>ncri_image_mapping.csv</span></td><td id="dwrCellID_3"><span id="imagingSourceStatus_1">Loaded</span></td><td id="dwrCellID_4"><span id="imagingSourceEditUrl_1"><a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/editImagingSource.action?studyConfiguration.id=1&amp;imageSourceConfiguration.id=1" class="btn" style="margin: 0pt;"><span class="btn_img"><span class="edit">Edit</span></span></a></span><span id="imagingSourceEditAnnotationsUrl_1"><a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/editImagingSourceAnnotations.action?studyConfiguration.id=1&amp;imageSourceConfiguration.id=1" class="btn" style="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Annotations</span></span></a></span><span id="imagingSourceLoadAnnotationsUrl_1"> </span><span id="imagingSourceDeleteUrl_1"><a onclick="return confirm('The Imaging Data Source NCRI will be permanently deleted.')" href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/deleteImagingSource.action?studyConfiguration.id=1&amp;imageSourceConfiguration.id=1" class="btn" style="margin: 0pt;"><span class="btn_img"><span class="delete">Delete</span></span></a></span></td></tr></tbody></table>
+                    </form></td></tr></tbody></table>
+
+
+
+
+                    
+                
+            
+            
+         
+        
+    
+        <br>
+        <div class="bottombtns">
+            <ul class="btnrow">
+            
+                
+                
+                    <li><img alt="deploy disabled" src="editStudy.action_files/btn_deploy_disabled.gif"></li>
+                
+            
+            <li><input src="editStudy.action_files/btn_save.gif" alt="Save" name="action:saveStudy" id="editStudy_saveStudy" onclick="document.getElementById('studyDeploymentForm').action='/caintegrator2/saveStudy.action'; document.getElementById('studyDeploymentForm').submit()" type="image"></li>
+            </ul>   
+        </div>
+    
+    </div>
+    
+</div>
+
+<div class="clear"><br></div>
+
+					
+					<!--/Content-->
+    
+                </div>
+                
+				<!--Left Navigation Column-->
+				
+				
+
+
+            
+<div id="leftnav">
+    
+    <!--Study Logo-->
+    
+    
+    <!--/Study Logo-->
+    
+    <!--Menu-->
+    
+    
+    
+    
+    
+    
+    
+
+    
+         
+    
+        <ul class="menu">   
+            <li class="stdnav"><div>Study Management</div>
+                <ul>
+                    <li>
+                    <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageStudies.action">Manage Studies</a></li>
+                    <li>
+                    <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/createStudy.action">Create New Study</a></li>
+                </ul>
+            </li>
+        </ul>
+    
+    
+        <ul class="menu">   
+            <li class="stdnav"><div>Application Management</div>
+                <ul>
+                    <li>
+                    <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/managePlatforms.action">Manage Platforms</a></li>
+                </ul>
+            </li>
+        </ul>
+    
+    
+    <ul class="menu">
+        <li class="stdnavforinvestigator" style="padding-bottom: 0pt;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
+            <ul>
+                
+                <li><a href="javascript:openWin('/caintegrator2//help/Getting_Started.2.8.html#1122280')">Support</a></li>
+                <li><a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/tutorials.action">Tutorials</a></li>
+                <li><a href="javascript:openUsersGuideWindow('top')">User Guide</a></li>
+            </ul>
+        </li>
+    </ul>
+    
+    <!--/Menu-->
+                
+</div>
+
+								
+				<!--/Left Navigation Column-->
+				
+			</div>			
+			
+			<!--/Work Area-->		
+		
+			<!--Footer-->
+			
+			
+
+            
+<div id="footerwrapper">
+    
+    <div id="footernav">
+    
+        <div id="footer">
+        
+            <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/contact.htm">CONTACT US</a>
+            <a href="http://www.nih.gov/about/privacy.htm">PRIVACY NOTICE</a>
+            <a href="http://www.nih.gov/about/disclaim.htm">DISCLAIMER</a>
+            <a href="http://www3.cancer.gov/accessibility/nci508.htm">ACCESSIBILITY</a>
+            <a href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/help.htm" class="last">SUPPORT</a> 
+        
+        </div>
+        
+    </div>
+
+    <div id="partnerlogos">             
+        <a href="http://www.cancer.gov/"><img src="editStudy.action_files/footer_nci.gif" alt="Logo: National Cancer Institute" width="63" height="31"></a>
+        <a href="http://www.dhhs.gov/"><img src="editStudy.action_files/footer_hhs.gif" alt="Logo: Department of Health and Human Services" width="39" height="31"></a>
+        <a href="http://www.nih.gov/"><img src="editStudy.action_files/footer_nih.gif" alt="Logo: National Institutes of Health" width="46" height="31"></a>
+        <a href="http://www.usa.gov/"><img src="editStudy.action_files/footer_usagov.gif" alt="Logo: USA.gov" width="91" height="31"></a>
+    </div>
+
+</div>
+
+			
+			<!--/Footer-->
+		
+		</div>
+        
+			
+	</body></html>
