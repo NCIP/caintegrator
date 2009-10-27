@@ -13,7 +13,7 @@ public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneab
     private Integer columnIndex;
     private EntityTypeEnum entityType;
     private Integer sortOrder;
-    private SortTypeEnum sortType;
+    private SortTypeEnum sortType = SortTypeEnum.UNSORTED;
     private AnnotationDefinition annotationDefinition;
 
     /**

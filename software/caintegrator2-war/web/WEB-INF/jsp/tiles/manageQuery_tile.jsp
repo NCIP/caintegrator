@@ -94,6 +94,15 @@
                 "Export button is broken, error code: " + allLinks.length);
         }
     }
+
+    function resetSorting(numberColumns) {
+    	for (i=1;i<=numberColumns;i++) {
+    		document.getElementById("sortType_" + i + "Ascending").checked = false;
+    		document.getElementById("sortType_" + i + "Descending").checked = false;
+    		document.getElementById("sortType_" + i + "No Sort").checked = true;
+    		document.getElementById("columnIndex_" + i).selectedIndex = i - 1;
+    	}
+    }
     
 </script>
 
