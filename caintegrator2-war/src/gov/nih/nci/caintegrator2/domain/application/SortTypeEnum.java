@@ -1,7 +1,9 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,12 +14,17 @@ public enum SortTypeEnum {
     /**
      * Ascending.
      */
-    ASCENDING("ascending"),
+    ASCENDING("Ascending"),
 
     /**
      * Descending.
      */
-    DESCENDING("descending");
+    DESCENDING("Descending"),
+    
+    /**
+     * No Sort.
+     */
+    UNSORTED("No Sort");
     
     private static Map<String, SortTypeEnum> valueToTypeMap = new HashMap<String, SortTypeEnum>();
 
@@ -48,6 +55,20 @@ public enum SortTypeEnum {
             }
         }
         return valueToTypeMap;
+    }
+    
+    /**
+     * Used in the JSP's to retrieve the displayable string version of the Enum values.
+     * Ex usage: 
+     * list="@gov.nih.nci.caintegrator2.domain.application.SortTypeEnum@getDisplayableValues()"
+     * @return List of Displayable Strings for this enum.
+     */
+    public static List<String> getDisplayableValues() {
+        List<String> list = new ArrayList<String>();
+        list.add(SortTypeEnum.ASCENDING.getValue());
+        list.add(SortTypeEnum.DESCENDING.getValue());
+        list.add(SortTypeEnum.UNSORTED.getValue());
+        return list;
     }
     
     /**

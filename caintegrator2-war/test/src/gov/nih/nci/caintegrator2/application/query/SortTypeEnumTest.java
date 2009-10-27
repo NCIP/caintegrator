@@ -94,7 +94,7 @@ public class SortTypeEnumTest {
 
     @Test
     public void testGetByValue() {
-        assertEquals(SortTypeEnum.ASCENDING, SortTypeEnum.getByValue("ascending"));
+        assertEquals(SortTypeEnum.ASCENDING, SortTypeEnum.getByValue("Ascending"));
         assertNull(SortTypeEnum.getByValue(null));
     }
 

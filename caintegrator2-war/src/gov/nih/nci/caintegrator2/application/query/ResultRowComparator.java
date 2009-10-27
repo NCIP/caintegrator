@@ -263,7 +263,12 @@ final class ResultRowComparator implements Comparator <ResultRow> {
     }
     
     private int getSortOrder(SortTypeEnum sortType) {
-        return sortType == SortTypeEnum.ASCENDING ? 1 : -1;
+        if (SortTypeEnum.ASCENDING.equals(sortType)) {
+            return 1;
+        } else if (SortTypeEnum.DESCENDING.equals(sortType)) {
+            return -1;
+        }
+        return 0;
     }
 
 
