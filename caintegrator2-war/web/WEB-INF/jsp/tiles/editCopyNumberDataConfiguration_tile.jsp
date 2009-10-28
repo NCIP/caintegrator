@@ -33,6 +33,10 @@
                     <s:hidden name="useGlad" value="false"/>
                     <s:hidden name="formAction" />
                     <s:file name="copyNumberMappingFile" label="Subject and Sample to Copy Number Mapping File" size="40"/><br>
+                        <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
+                            <span class="wwlbl">(csv file format)</span>
+                            <span class="wwctrl"></span>
+                        </s:div>
                     <s:select id="caDnaCopyUrl" name="caDnaCopyUrl"
                             list="caDnaCopyServices" label="CaDNACopy Service URL" required="true" /><br>
                     <s:textfield name="copyNumberDataConfiguration.changePointSignificanceLevel" label="Change Point Significance Level" /><br>
