@@ -42,10 +42,10 @@
                 </s:div>
             </s:div>
             <br />
-            <s:div id="webServiceInputParams" cssStyle="display: block;">
-            <s:textfield id="webServiceUrl" name="webServiceUrl" label="GenePattern Web Service URL" size="50" required="true" /> <br />
-            <s:textfield id="username" name="gisticParameters.server.username" label="GenePattern Username" size="50" required="true" /> <br />
-            <s:password id="password" name="gisticParameters.server.password" label="GenePattern Password" size="50" showPassword="true" />
+            <s:div id="webServiceInputParams" cssStyle="%{useWebServiceOn}">
+                <s:textfield id="webServiceUrl" name="webServiceUrl" label="GenePattern Web Service URL" size="50" required="true" /> <br />
+                <s:textfield id="username" name="gisticParameters.server.username" label="GenePattern Username" size="50" required="true" /> <br />
+                <s:password id="password" name="gisticParameters.server.password" label="GenePattern Password" size="50" showPassword="true" />
             </s:div>
             <br />
             <s:div id="gridServiceInputParams" cssStyle="display: none;">
