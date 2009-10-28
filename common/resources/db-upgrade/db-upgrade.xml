@@ -15,4 +15,8 @@
 		<comment>Need to have at least one changeset to allow tagging to work.</comment>
 		<sql>select now()</sql>
 	</changeSet>
+	<changeSet id="1.1" author="tandrews">
+        <comment>Updates DB for v1.1</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.sql"/>
+    </changeSet>
 </databaseChangeLog>
