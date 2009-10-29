@@ -202,7 +202,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     }
     
     private String retrievePlatformType(PlatformConfiguration platformConfiguration) {
-return platformConfiguration.getPlatform() == null ? UNAVAILABLE_STRING
+        return platformConfiguration.getPlatformType() == null ? UNAVAILABLE_STRING
                                        : platformConfiguration.getPlatformType().getValue();
     }    
 
