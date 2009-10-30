@@ -108,7 +108,7 @@ public class DataRetrievalException extends Exception {
      * @param e exception to extract the message
      */
     public DataRetrievalException(String message, Exception e) {
-        super(message + e.getMessage());
+        super(message + " " + e.getMessage());
     }
 
 }
