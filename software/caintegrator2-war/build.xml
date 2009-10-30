@@ -601,7 +601,12 @@
         <antcall target="database:recreate-database" />
         <antcall target="database:create-tables" />
         <antcall target="database:upgrade" />
+        <antcall target="database:run-upgrades" />
+    </target>
+    
+    <target name="database:run-upgrades" description="Run upgrade scripts">
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/upgrade-1.1.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/upgrade-1.1.1.sql" />
     </target>
 
 

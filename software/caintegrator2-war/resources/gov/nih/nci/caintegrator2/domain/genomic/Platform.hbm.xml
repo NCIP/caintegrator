@@ -14,7 +14,8 @@
 		</id>
 		<!-- Attributes mapping for the Platform class -->
 		<property name="name" type="string" column="NAME"/>
-		<property name="vendor" type="Vendor" column="VENDOR"/>
+        <property name="version" type="string" column="VERSION"/>
+        <property name="vendor" type="Vendor" column="VENDOR"/>
 		<!-- Associations mapping for the Platform class -->
 		<set name="reporterListsInternal" lazy="true" sort="natural" cascade="all" >
 			<cache usage="read-write" />
