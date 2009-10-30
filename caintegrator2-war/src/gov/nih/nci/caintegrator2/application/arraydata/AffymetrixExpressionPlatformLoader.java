@@ -118,6 +118,8 @@ class AffymetrixExpressionPlatformLoader extends AbstractExpressionPlatformLoade
     private static final String UNIGENE_ID_HEADER = "UniGene ID";
 
     private static final String CHIP_TYPE_HEADER = "chip_type";
+    private static final String VERSION_HEADER = "netaffx-annotation-netaffx-build";
+    private static final String GENOME_VERSION_HEADER = "genome-version";
     private static final String NO_VALUE_INDICATOR = "---";
 
     private Map<String, String> fileHeaders;
@@ -146,7 +148,7 @@ class AffymetrixExpressionPlatformLoader extends AbstractExpressionPlatformLoade
         try {
             setAnnotationFileReader(new CSVReader(new FileReader(annotationFile)));
             loadHeaders();
-            return fileHeaders.get(CHIP_TYPE_HEADER);
+            return getHeaderValue(CHIP_TYPE_HEADER);
         } catch (FileNotFoundException e) {
             LOGGER.error("Annotation file not found: " + e.getMessage());
         } catch (IOException e) {
@@ -160,9 +162,11 @@ class AffymetrixExpressionPlatformLoader extends AbstractExpressionPlatformLoade
         try {
             String chipType = getChipType(annotationFile);
             platform.setName(chipType);
+            platform.setVersion(getHeaderValue(VERSION_HEADER));
             ReporterList geneReporters = platform.addReporterList(chipType, ReporterTypeEnum.GENE_EXPRESSION_GENE);
             ReporterList probeSetReporters = 
                 platform.addReporterList(chipType, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+            probeSetReporters.setGenomeVersion(getHeaderValue(GENOME_VERSION_HEADER));
             loadAnnotations(geneReporters, probeSetReporters, dao);
             probeSetReporters.sortAndLoadReporterIndexes();
             geneReporters.sortAndLoadReporterIndexes();
@@ -192,6 +196,10 @@ class AffymetrixExpressionPlatformLoader extends AbstractExpressionPlatformLoade
             symbols[i] = symbols[i].trim();
         }
         return symbols;
+    }
+
+    private String getHeaderValue(String headerName) {
+        return fileHeaders.get(headerName);
     }
 
     private Set<Gene> handleGeneSymbols(String[] symbols, String[] fields, ReporterList geneReporters, 
