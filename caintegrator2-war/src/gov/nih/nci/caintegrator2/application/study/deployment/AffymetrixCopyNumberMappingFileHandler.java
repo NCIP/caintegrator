@@ -138,6 +138,7 @@ class AffymetrixCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFi
         List<File> dataFiles = new ArrayList<File>();
         try {
             for (String filename : getSampleToFilenamesMap().get(sample)) {
+                validateDataFileExtension(filename);
                 dataFiles.add(getDataFile(filename));
             }
             return loadArrayData(sample, dataFiles);
@@ -145,6 +146,12 @@ class AffymetrixCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFi
             for (File file : dataFiles) {
                 doneWithFile(file);
             }
+        }
+    }
+
+    private void validateDataFileExtension(String filename) throws ValidationException {
+        if (!filename.endsWith(".cnchp")) {
+            throw new ValidationException("Data file must be '.cnchp' type instead of: " + filename);
         }
     }
 
