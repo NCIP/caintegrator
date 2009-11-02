@@ -125,7 +125,10 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     @Override
     public void validate() {
         super.validate();
-        validateStudyHasGenomicData("GeneExpression plot");
+        if (!getCurrentStudy().hasExpressionData()) {
+            addActionError("There are no gene expression data defined for this study, "
+                    + "unable to perform GeneExpression plot.");
+        }
     }
 
     /**

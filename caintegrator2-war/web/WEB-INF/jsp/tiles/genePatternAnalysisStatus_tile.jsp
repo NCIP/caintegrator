@@ -27,16 +27,13 @@
     <s:set name="displayableWorkspace" value="#session['displayableWorkspace']" />
     <div id="errors" style="color: red;"> </div>
     <br><br>
-        <s:form theme="simple"><table><tr>
+        <s:form action="selectAnalysis" theme="simple"><table><tr>
         <td>
-            <s:select id="analysisType" name="analysisType" label="Analysis Type" value="GPM" 
-                list="#{'genePatternModules':'Gene Pattern Modules', 
-                        'comparativeMarkerSelection':'Comparative Marker Selection (Grid Service)',
-                        'principalComponentAnalysis':'Principal Component Analysis (Grid Service)',
-                        'gistic':'GISTIC (Grid Service)'}" />
+            <s:select id="analysisType" name="analysisType" label="Analysis Type"
+                list="analysisTypes" />
         </td>
         <td>
-            <s:submit value="New Analysis Job" action="selectAnalysis" />
+            <s:submit value="New Analysis Job" />
         </td>
         </tr></table></s:form>
     <br><br>
