@@ -105,8 +105,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -117,6 +119,7 @@ import org.apache.commons.lang.StringUtils;
 public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     
     private static final long serialVersionUID = 1L;
+    private String analysisType = "genePatternModules";
 
     /**
      * Indicates action should open the analysis page.
@@ -428,6 +431,36 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
      */
     public void setJobId(Long jobId) {
         this.jobId = jobId;
+    }
+    
+    /**
+     * @return a list if available analysis types for this study.
+     */
+    public Map<String, String> getAnalysisTypes() {
+        Map<String, String> types = new HashMap<String, String>();
+        if (getCurrentStudy().hasCopyNumberData()) {
+            types.put("gistic", "GISTIC (Grid Service)");
+        }
+        if (getCurrentStudy().hasExpressionData()) {
+            types.put("comparativeMarkerSelection", "Comparative Marker Selection (Grid Service)");
+        }
+        types.put("principalComponentAnalysis", "Principal Component Analysis (Grid Service)");
+        types.put("genePatternModules", "Gene Pattern Modules");
+        return types;
+    }
+
+    /**
+     * @return the analysisType
+     */
+    public String getAnalysisType() {
+        return analysisType;
+    }
+
+    /**
+     * @param analysisType the analysisType to set
+     */
+    public void setAnalysisType(String analysisType) {
+        this.analysisType = analysisType;
     }
 
 }

@@ -92,6 +92,8 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
@@ -163,13 +165,17 @@ public class GEPlotGenomicQueryBasedActionTest {
     
     @Test
     public void testValidate() {
-        action.clearErrorsAndMessages();
-        ActionContext.getContext().getValueStack().setValue("studySubscription", null);
         action.validate();
-        assertTrue(action.getActionErrors().size() == 1);
+        assertTrue(action.getActionErrors().size() > 0);
         action.clearErrorsAndMessages();
-        ActionContext.getContext().getValueStack().setValue("studySubscription", new StudySubscription());
+        action.getCurrentStudy().setStudyConfiguration(new StudyConfiguration());
+        GenomicDataSourceConfiguration gdsc =  new GenomicDataSourceConfiguration();
+        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(gdsc);
         assertTrue(action.getActionErrors().isEmpty());
+        gdsc.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
+        action.clearErrorsAndMessages();
+        action.validate();
+        assertTrue(action.getActionErrors().size() > 0);
     }
 
     @Test
