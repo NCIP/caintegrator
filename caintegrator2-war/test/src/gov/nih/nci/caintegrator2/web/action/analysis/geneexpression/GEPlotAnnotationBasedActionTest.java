@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
@@ -180,20 +181,17 @@ public class GEPlotAnnotationBasedActionTest {
         action.clearErrorsAndMessages();
         action.validate();
         assertTrue(action.getActionErrors().size() > 0);
-        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(
-                new GenomicDataSourceConfiguration());
+        action.getCurrentStudy().setStudyConfiguration(new StudyConfiguration());
+        action.getCurrentStudy().getStudyConfiguration().setStatus(Status.DEPLOYED);
+        GenomicDataSourceConfiguration gdsc =  new GenomicDataSourceConfiguration();
+        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(gdsc);
         action.clearErrorsAndMessages();
         action.validate();
         assertTrue(action.getActionErrors().isEmpty());
-        StudySubscription validStudySubscription = (StudySubscription)
-            ActionContext.getContext().getValueStack().getContext().get("studySubscription");
-        ActionContext.getContext().getValueStack().setValue("studySubscription", null);
+        gdsc.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
         action.clearErrorsAndMessages();
         action.validate();
         assertTrue(action.getActionErrors().size() > 0);
-        action.clearErrorsAndMessages();
-        ActionContext.getContext().getValueStack().setValue("studySubscription", validStudySubscription);
-        assertTrue(action.getActionErrors().isEmpty());
     }
 
     @Test

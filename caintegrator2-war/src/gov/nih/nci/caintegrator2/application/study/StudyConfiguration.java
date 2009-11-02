@@ -564,4 +564,28 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
             }
         return controlSampleSetNames;
     }
+
+    /**
+     * @return the boolean of whether the study has Expression Data
+     */
+    public boolean hasExpressionData() {
+        for (GenomicDataSourceConfiguration genomicDataSourceConfiguration : genomicDataSources) {
+            if (genomicDataSourceConfiguration.isExpressionData()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return the boolean of whether the study has Copy Number Data
+     */
+    public boolean hasCopyNumberData() {
+        for (GenomicDataSourceConfiguration genomicDataSourceConfiguration : genomicDataSources) {
+            if (genomicDataSourceConfiguration.isCopyNumberData()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
