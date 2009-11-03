@@ -102,6 +102,8 @@ import affymetrix.calvin.data.CHPMultiDataData.MultiDataType;
 import affymetrix.calvin.exception.UnsignedOutOfLimitsException;
 import affymetrix.calvin.parameter.ParameterNameValue;
 import affymetrix.calvin.parsers.GenericFileReader;
+import affymetrix.calvin.parsers.InvalidFileTypeException;
+import affymetrix.calvin.parsers.InvalidVersionException;
 import affymetrix.fusion.chp.FusionCHPData;
 import affymetrix.fusion.chp.FusionCHPDataReg;
 import affymetrix.fusion.chp.FusionCHPMultiDataData;
@@ -202,6 +204,10 @@ class AffymetrixCopyNumberChpParser {
                 .getValueAscii();
             reader.close();
             return name;
+        } catch (InvalidVersionException e) {
+            throw new DataRetrievalException("Invalid version from " + copyNumberChpFile.getAbsolutePath(), e);
+        } catch (InvalidFileTypeException e) {
+            throw new DataRetrievalException("Invalid file type from " + copyNumberChpFile.getAbsolutePath(), e);
         } catch (Exception e) {
             throw new DataRetrievalException("Couldn't retrieve data from " + copyNumberChpFile.getAbsolutePath(), e);
         }
