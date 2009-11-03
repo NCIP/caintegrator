@@ -150,7 +150,7 @@ public abstract class AbstractCopyNumberMappingFileHandler {
             reader.close();
             return arrayDataValues;
         } catch (FileNotFoundException e) {
-            throw new DataRetrievalException("Couldn't read copy number mapping file: ", e);
+            throw new DataRetrievalException("Copy number mapping file not found: ", e);
         } catch (IOException e) {
             throw new DataRetrievalException("Couldn't read copy number mapping file: ", e);
         }
