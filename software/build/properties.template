@@ -5,7 +5,7 @@
 application.base.path=
 authentication.type=
 #application.url=
-
+struts.devMode=
 ###########################
 ###  DATABASE SETTINGS  ###
 ###########################

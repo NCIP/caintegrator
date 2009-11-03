@@ -400,7 +400,7 @@
     
     <property name="web-inf.working.dir" location="${caintegrator2.war.target.dir}" />
     
-    <target name="caintegrator2.war" depends="svn:getinfo2,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy">
+    <target name="caintegrator2.war" depends="svn:getinfo2,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy,struts.properties.deploy">
         
         <copy todir="${web-inf.working.dir}" filtering="true" overwrite="true">
             <fileset dir="${caintegrator2.war.web.src.dir}/WEB-INF">
@@ -432,7 +432,9 @@
             <classes dir="${caintegrator2.war.java.classes.dir}" />
             <classes dir="${caintegrator2.war.resources.src.dir}">
                 <exclude name="*hibernate.cfg.xml" />
+                <exclude name="struts.properties" />
             </classes>
+            
             <webinf dir="${caintegrator2.war.resources.src.dir}">
                 <include name="tiles.xml"/>
             </webinf>
@@ -545,6 +547,15 @@
     <target name="test:compile:caintegrator2.war.test.classes" depends="compile:caintegrator2.war,path:caintegrator2.war.test.dependencies">
         <mkdir dir="${caintegrator2.war.test.classes.dir}" />
         <javac srcdir="${caintegrator2.war.test.src.dir}" destdir="${caintegrator2.war.test.classes.dir}" classpathref="caintegrator2.war.test.dependencies.path" debug="true" />
+    </target>
+    
+    <property name="struts.properties.src" value="${caintegrator2.war.resources.src.dir}/struts.properties" />
+    <property name="struts.properties.deploy" value="${caintegrator2.war.java.classes.dir}/struts.properties" />
+    
+    <target name="struts.properties.deploy">
+        <copy file="${struts.properties.src}" tofile="${struts.properties.deploy}" overwrite="true">
+            <filterset refid="caintegrator2.filterset" />
+        </copy>
     </target>
 
 
