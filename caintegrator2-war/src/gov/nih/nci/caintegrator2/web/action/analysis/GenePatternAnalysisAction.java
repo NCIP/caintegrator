@@ -105,8 +105,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -437,15 +437,15 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
      * @return a list if available analysis types for this study.
      */
     public Map<String, String> getAnalysisTypes() {
-        Map<String, String> types = new HashMap<String, String>();
-        if (getCurrentStudy().hasCopyNumberData()) {
-            types.put("gistic", "GISTIC (Grid Service)");
-        }
+        Map<String, String> types = new LinkedHashMap<String, String>();
+        types.put("genePatternModules", "Gene Pattern Modules");
+        types.put("principalComponentAnalysis", "Principal Component Analysis (Grid Service)");
         if (getCurrentStudy().hasExpressionData()) {
             types.put("comparativeMarkerSelection", "Comparative Marker Selection (Grid Service)");
         }
-        types.put("principalComponentAnalysis", "Principal Component Analysis (Grid Service)");
-        types.put("genePatternModules", "Gene Pattern Modules");
+        if (getCurrentStudy().hasCopyNumberData()) {
+            types.put("gistic", "GISTIC (Grid Service)");
+        }
         return types;
     }
 
