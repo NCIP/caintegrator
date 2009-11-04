@@ -87,7 +87,9 @@ package gov.nih.nci.caintegrator2.external.cabio;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.cabio.CaBioApplicationServiceFactoryStub.ApplicationServiceStub;
 
 import java.util.List;
 
@@ -99,25 +101,32 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class CaBioFacadeImplTest {
 
     CaBioFacadeImpl caBioFacade;
-
+    ApplicationServiceStub applicationServiceStub;
+    
     @Before
     public void setUp() throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("cabio-test-config.xml", CaBioFacadeImplTest.class); 
         caBioFacade = (CaBioFacadeImpl) context.getBean("caBioFacadeUnit"); 
+        applicationServiceStub = (ApplicationServiceStub) 
+            caBioFacade.getCaBioApplicationServiceFactory().retrieveCaBioApplicationService("");
     }
 
     @Test
     public void testRetrieveGeneSymbolsFromKeywords() throws ConnectionException {
         CaBioGeneSearchParameters params = new CaBioGeneSearchParameters();
-        params.setKeywords("test");
+        params.setKeywords("test here");
         params.setFilterGenesOnStudy(false);
         List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenes(params);
         assertEquals("BRCA1", genes.get(0).getSymbol());
         assertEquals("EGFR", genes.get(1).getSymbol());
         assertEquals("EGFR", genes.get(2).getSymbol());
-        
+        assertTrue(applicationServiceStub.hqlString.contains("lower(g.fullName) LIKE ?  OR  lower(g.fullName) LIKE ?"));
+        params.setKeywords("test here");
         params.setFilterGenesOnStudy(true);
+        params.setSearchPreferenceForDisplay(KeywordSearchPreferenceEnum.ALL.getValue());
         genes = caBioFacade.retrieveGenes(params);
+        assertTrue(applicationServiceStub.hqlString.contains("lower(g.fullName) LIKE ?  AND  lower(g.fullName) LIKE ?"));
+        assertTrue(applicationServiceStub.hqlString.contains("g.taxon.commonName LIKE ?"));
         assertEquals(1, genes.size());
         assertEquals("BRCA1", genes.get(0).getSymbol());
     }

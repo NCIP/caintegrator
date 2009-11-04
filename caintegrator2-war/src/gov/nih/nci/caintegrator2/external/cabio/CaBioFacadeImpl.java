@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.system.applicationservice.CaBioApplicationService;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
@@ -101,6 +102,7 @@ import java.util.Set;
 
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Facade to retrieve data from CaBio.
@@ -119,14 +121,14 @@ public class CaBioFacadeImpl implements CaBioFacade {
         // When using an ApplicationService must store our context and re-set it so that the user still has old
         // authentication.
         SecurityContext originalContext = SecurityContextHolder.getContext();
-        ApplicationService caBioApplicationService = 
+        CaBioApplicationService caBioApplicationService =  
             caBioApplicationServiceFactory.retrieveCaBioApplicationService(caBioUrl);
         StringBuffer hqlString = 
             new StringBuffer("SELECT DISTINCT g.symbol, g.id, g.fullName, g.taxon.commonName " 
                                 + " FROM gov.nih.nci.cabio.domain.Gene g"
-                                + " WHERE g.symbol is not null and lower(g.fullName) LIKE ? ");
+                                + " WHERE g.symbol is not null ");
         List<String> params = new ArrayList<String>();
-        params.add("%" + searchParams.getKeywords().toLowerCase(Locale.getDefault()) + "%");
+        addKeywordsToSearch(searchParams, hqlString, params);
         // Filter out based on TAXON if that is what is selected.
         if (!CaBioGeneSearchParameters.ALL_TAXONS.equals(searchParams.getTaxon())) {
             hqlString.append(" and g.taxon.commonName LIKE ?");
@@ -143,6 +145,22 @@ public class CaBioFacadeImpl implements CaBioFacade {
             SecurityContextHolder.setContext(originalContext);
         }
         return createCaBioDisplayableGenes(geneResults, searchParams);
+    }
+
+    private void addKeywordsToSearch(CaBioGeneSearchParameters searchParams, StringBuffer hqlString, 
+            List<String> params) {
+        int keywordNum = 0;
+        for (String keyword : StringUtils.split(searchParams.getKeywords())) {
+            if (keywordNum == 0) {
+                hqlString.append(" AND (");
+            } else {
+                hqlString.append(" " + searchParams.getSearchPreference().getLogicalOperator() + " ");
+            }
+            hqlString.append(" lower(g.fullName) LIKE ? ");
+            params.add("%" + keyword.toLowerCase(Locale.getDefault()).trim() + "%");
+            keywordNum++;
+        }
+        hqlString.append(" )");
     }
     
     /**
