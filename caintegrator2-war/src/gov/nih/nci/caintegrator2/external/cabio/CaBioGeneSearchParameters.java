@@ -105,6 +105,7 @@ public class CaBioGeneSearchParameters {
     private String taxon = HUMAN_TAXON;
     private Study study;
     private boolean filterGenesOnStudy = true;
+    private KeywordSearchPreferenceEnum searchPreference = KeywordSearchPreferenceEnum.ANY;
     
     /**
      * @return the keywords
@@ -153,6 +154,34 @@ public class CaBioGeneSearchParameters {
      */
     public void setFilterGenesOnStudy(boolean filterGenesOnStudy) {
         this.filterGenesOnStudy = filterGenesOnStudy;
+    }
+    
+    /**
+     * @return the searchPreference
+     */
+    public KeywordSearchPreferenceEnum getSearchPreference() {
+        return searchPreference;
+    }
+    
+    /**
+     * @param searchPreference the searchPreference to set
+     */
+    public void setSearchPreference(KeywordSearchPreferenceEnum searchPreference) {
+        this.searchPreference = searchPreference;
+    }
+    
+    /**
+     * @return the searchPreference
+     */
+    public String getSearchPreferenceForDisplay() {
+        return searchPreference.getValue();
+    }
+    
+    /**
+     * @param searchPreferenceForDisplay the searchPreference to set
+     */
+    public void setSearchPreferenceForDisplay(String searchPreferenceForDisplay) {
+        this.searchPreference = KeywordSearchPreferenceEnum.getByValue(searchPreferenceForDisplay);
     }
 
 }
