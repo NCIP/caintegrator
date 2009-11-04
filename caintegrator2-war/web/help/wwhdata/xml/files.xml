@@ -69,11 +69,12 @@
     <Document title="Searching a Study" href="SearchingWithinAStudy.4.3.html" />
     <Document title="Clinical and Image Series" href="SearchingWithinAStudy.4.4.html" />
     <Document title="Gene Expression" href="SearchingWithinAStudy.4.5.html" />
-    <Document title="Results Type and Sorting Tabs" href="SearchingWithinAStudy.4.6.html" />
-    <Document title="Managing Queries" href="SearchingWithinAStudy.4.7.html" />
-    <Document title="Saving a Query" href="SearchingWithinAStudy.4.8.html" />
-    <Document title="Editing a Query" href="SearchingWithinAStudy.4.9.html" />
-    <Document title="Exporting Query Results" href="SearchingWithinAStudy.4.10.html" />
+    <Document title="Results Type Tab" href="SearchingWithinAStudy.4.6.html" />
+    <Document title="Sorting Tab" href="SearchingWithinAStudy.4.7.html" />
+    <Document title="Managing Queries" href="SearchingWithinAStudy.4.8.html" />
+    <Document title="Saving a Query" href="SearchingWithinAStudy.4.9.html" />
+    <Document title="Editing a Query" href="SearchingWithinAStudy.4.10.html" />
+    <Document title="Exporting Query Results" href="SearchingWithinAStudy.4.11.html" />
     <Document title="Viewing Query Results" href="View%20Search%20Results.5.1.html" />
     <Document title="Query Results Overview" href="View%20Search%20Results.5.2.html" />
     <Document title="Browsing Query Results" href="View%20Search%20Results.5.3.html" />
@@ -131,12 +132,14 @@
     <Topic name="survival_values_help" href="CreatingNewStudy.3.8.html#1077698" />
     <Topic name="edit_genomic_data_help" href="CreatingNewStudy.3.9.html#1076975" />
     <Topic name="edit_sample_mappings_help" href="CreatingNewStudy.3.10.html#1081247" />
+    <Topic name="configure_copy_number_help" href="CreatingNewStudy.3.12.html#1089873" />
     <Topic name="edit_imaging_data_help" href="CreatingNewStudy.3.13.html#1075831" />
     <Topic name="manage_study_help" href="CreatingNewStudy.3.15.html#1076280" />
     <Topic name="manage_platforms_help" href="CreatingNewStudy.3.16.html#1078043" />
     <Topic name="search_criteria_help" href="SearchingWithinAStudy.4.3.html#1074305" />
-    <Topic name="search_columns_help" href="SearchingWithinAStudy.4.6.html#1074610" />
-    <Topic name="save_query_help" href="SearchingWithinAStudy.4.8.html#1075754" />
+    <Topic name="results_type_tab_help" href="SearchingWithinAStudy.4.6.html#1089375" />
+    <Topic name="sorting_tab_help" href="SearchingWithinAStudy.4.7.html#1089355" />
+    <Topic name="save_query_help" href="SearchingWithinAStudy.4.9.html#1075754" />
     <Topic name="query_results_help" href="View%20Search%20Results.5.2.html#1167812" />
     <Topic name="DICOM_retrieval_help" href="View%20Search%20Results.5.8.html#1170682" />
     <Topic name="K-M_plot_help" href="PerformingAnalysis.6.3.html#1084273" />

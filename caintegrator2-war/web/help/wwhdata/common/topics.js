@@ -12,12 +12,14 @@ if(P=="search_annotation_definitions_help")C="CreatingNewStudy.3.7.html#1082197"
 if(P=="survival_values_help")C="CreatingNewStudy.3.8.html#1077698";
 if(P=="edit_genomic_data_help")C="CreatingNewStudy.3.9.html#1076975";
 if(P=="edit_sample_mappings_help")C="CreatingNewStudy.3.10.html#1081247";
+if(P=="configure_copy_number_help")C="CreatingNewStudy.3.12.html#1089873";
 if(P=="edit_imaging_data_help")C="CreatingNewStudy.3.13.html#1075831";
 if(P=="manage_study_help")C="CreatingNewStudy.3.15.html#1076280";
 if(P=="manage_platforms_help")C="CreatingNewStudy.3.16.html#1078043";
 if(P=="search_criteria_help")C="SearchingWithinAStudy.4.3.html#1074305";
-if(P=="search_columns_help")C="SearchingWithinAStudy.4.6.html#1074610";
-if(P=="save_query_help")C="SearchingWithinAStudy.4.8.html#1075754";
+if(P=="results_type_tab_help")C="SearchingWithinAStudy.4.6.html#1089375";
+if(P=="sorting_tab_help")C="SearchingWithinAStudy.4.7.html#1089355";
+if(P=="save_query_help")C="SearchingWithinAStudy.4.9.html#1075754";
 if(P=="query_results_help")C="View%20Search%20Results.5.2.html#1167812";
 if(P=="DICOM_retrieval_help")C="View%20Search%20Results.5.8.html#1170682";
 if(P=="K-M_plot_help")C="PerformingAnalysis.6.3.html#1084273";
