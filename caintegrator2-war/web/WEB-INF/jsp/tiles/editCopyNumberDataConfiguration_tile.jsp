@@ -7,7 +7,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('edit_genomic_data_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('configure_copy_number_help')" class="help">
    &nbsp;</a>
     </div>
 
