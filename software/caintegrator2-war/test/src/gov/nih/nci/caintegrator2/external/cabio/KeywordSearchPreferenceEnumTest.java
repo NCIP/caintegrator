@@ -85,152 +85,25 @@
  */
 package gov.nih.nci.caintegrator2.external.cabio;
 
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.search.GridIdQuery;
-import gov.nih.nci.search.RangeQuery;
-import gov.nih.nci.search.SearchQuery;
-import gov.nih.nci.system.applicationservice.ApplicationException;
-import gov.nih.nci.system.applicationservice.CaBioApplicationService;
-import gov.nih.nci.system.query.cql.CQLQuery;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.Test;
 
-import org.hibernate.criterion.DetachedCriteria;
+/**
+ * 
+ */
+public class KeywordSearchPreferenceEnumTest {
 
-@SuppressWarnings("unchecked")
-public class CaBioApplicationServiceFactoryStub implements CaBioApplicationServiceFactory {
-    
-    ApplicationServiceStub applicationServiceStub = new ApplicationServiceStub();
-    
-    public CaBioApplicationService retrieveCaBioApplicationService(String caBioUrl) throws ConnectionException {
-        
-        return applicationServiceStub;
+    @Test
+    public void testGetByValue() {
+        assertEquals(KeywordSearchPreferenceEnum.ALL, KeywordSearchPreferenceEnum.getByValue("All"));
+        assertNull(KeywordSearchPreferenceEnum.getByValue(null));
     }
-    
-    static class ApplicationServiceStub implements CaBioApplicationService {
-        public String hqlString = "";
 
-        public List<Object> getAssociation(Object source, String associationName) throws ApplicationException {
-            return null;
-        }
-
-        public Integer getMaxRecordsCount() throws ApplicationException {
-            return null;
-        }
-
-        public Integer getQueryRowCount(Object criteria, String targetClassName) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> query(CQLQuery cqlQuery) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> query(DetachedCriteria detachedCriteria) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> query(HQLCriteria hqlCriteria) throws ApplicationException {
-            hqlString = hqlCriteria.getHqlString();
-            List<Object> objects = new ArrayList<Object>();
-            Object[] object1 = new Object[4];
-            Long id1 = 1l;
-            String symbol1 = "EGFR";
-            String fullName1 = "Fullname Test";
-            String taxon1 = "human";
-            object1[0] = symbol1;
-            object1[1] = id1;
-            object1[2] = fullName1;
-            object1[3] = taxon1;
-            objects.add(object1);
-            
-            Object[] object2 = new Object[4];
-            Long id2 = 2l;
-            String symbol2 = "brca1";
-            String fullName2 = "Fullname Test";
-            String taxon2 = "human";
-            object2[0] = symbol2;
-            object2[1] = id2;
-            object2[2] = fullName2;
-            object2[3] = taxon2;
-            objects.add(object2);
-            
-            Object[] object3 = new Object[4];
-            Long id3 = 3l;
-            String symbol3 = "egfr";
-            String fullName3 = "Fullname Test";
-            String taxon3 = "mouse";
-            object3[0] = symbol3;
-            object3[1] = id3;
-            object3[2] = fullName3;
-            object3[3] = taxon3;
-            objects.add(object3);
-            
-            return objects;
-        }
-
-        public List<Object> query(CQLQuery cqlQuery, String targetClassName) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> query(DetachedCriteria detachedCriteria, String targetClassName)
-                throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> query(HQLCriteria hqlCriteria, String targetClassName) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> query(Object criteria, Integer firstRow, String targetClassName)
-                throws ApplicationException {
-            return null;
-        }
-
-
-        public List<Object> search(Class targetClass, List<?> objList) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> search(Class targetClass, Object obj) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> search(String path, List<?> objList) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> search(String path, Object obj) throws ApplicationException {
-            return null;
-        }
-
-        public boolean exist(String bigId) throws ApplicationException {
-            return false;
-        }
-
-        public Object getDataObject(String bigId) throws ApplicationException {
-            return null;
-        }
-
-        public List search(SearchQuery searchQuery) throws ApplicationException {
-            return null;
-        }
-
-        public List search(RangeQuery rangeQuery) throws ApplicationException {
-            return null;
-        }
-
-        public List search(GridIdQuery gridIdQuery) throws ApplicationException {
-            return null;
-        }
-
-        public List search(Class targetClass, RangeQuery rangeQuery) throws ApplicationException {
-            return null;
-        }
-        
-        
+    @Test(expected = IllegalArgumentException.class)
+    public void testCheckType() {
+        KeywordSearchPreferenceEnum.checkType("no match");
     }
 
 }

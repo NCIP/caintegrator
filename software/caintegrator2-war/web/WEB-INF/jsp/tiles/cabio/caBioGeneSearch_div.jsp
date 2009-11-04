@@ -24,7 +24,17 @@
             <em>Search caBio for genes</em>
         </td>
     </tr>
-    
+    <tr>
+        <br/>
+        <label class="label" for="caBioSearchPreference">Match Terms:</label>   
+	    
+		<s:radio
+		    id="caBioSearchPreference"
+		    name="geneSearchParams.searchPreferenceForDisplay"
+		    list="@gov.nih.nci.caintegrator2.external.cabio.KeywordSearchPreferenceEnum@getDisplayableValues()"
+		    theme="simple"/>
+	    
+    </tr>
     <tr><br>
         <s:select name="geneSearchParams.taxon" list="taxonList" label="Choose Taxon"/>
     </tr>
