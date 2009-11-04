@@ -48,7 +48,7 @@
     <del class="btnwrapper">
     <ul class="btnrow">
         <li><s:a href="#" cssClass="btn" onclick="resetSorting(%{numberColumns})">
-            <span class="btn_img">Reset</span>
+            <span class="btn_img"><span class="cancel">Reset</span></span>
         </s:a></li>
         <li><s:a href="#" cssClass="btn" onclick="runSearch()">
             <span class="btn_img"><span class="search">Run Query</span></span>
