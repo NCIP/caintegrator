@@ -135,7 +135,7 @@ public class CaBioApplicationServiceFactoryStub implements CaBioApplicationServi
         public List<Object> query(HQLCriteria hqlCriteria) throws ApplicationException {
             hqlString = hqlCriteria.getHqlString();
             List<Object> objects = new ArrayList<Object>();
-            Object[] object1 = new Object[4];
+            Object[] object1 = new Object[5];
             Long id1 = 1l;
             String symbol1 = "EGFR";
             String fullName1 = "Fullname Test";
@@ -144,9 +144,10 @@ public class CaBioApplicationServiceFactoryStub implements CaBioApplicationServi
             object1[1] = id1;
             object1[2] = fullName1;
             object1[3] = taxon1;
+            object1[4] = symbol1;
             objects.add(object1);
             
-            Object[] object2 = new Object[4];
+            Object[] object2 = new Object[5];
             Long id2 = 2l;
             String symbol2 = "brca1";
             String fullName2 = "Fullname Test";
@@ -155,17 +156,20 @@ public class CaBioApplicationServiceFactoryStub implements CaBioApplicationServi
             object2[1] = id2;
             object2[2] = fullName2;
             object2[3] = taxon2;
+            object2[4] = symbol2;
             objects.add(object2);
             
-            Object[] object3 = new Object[4];
+            Object[] object3 = new Object[5];
             Long id3 = 3l;
             String symbol3 = "egfr";
             String fullName3 = "Fullname Test";
             String taxon3 = "mouse";
+            
             object3[0] = symbol3;
             object3[1] = id3;
             object3[2] = fullName3;
             object3[3] = taxon3;
+            object3[4] = symbol3;
             objects.add(object3);
             
             return objects;
