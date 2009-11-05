@@ -106,6 +106,7 @@ public class CaBioGeneSearchParameters {
     private Study study;
     private boolean filterGenesOnStudy = true;
     private KeywordSearchPreferenceEnum searchPreference = KeywordSearchPreferenceEnum.ANY;
+    private CaBioSearchTypeEnum searchType = CaBioSearchTypeEnum.GENE_KEYWORDS;
     
     /**
      * @return the keywords
@@ -182,6 +183,32 @@ public class CaBioGeneSearchParameters {
      */
     public void setSearchPreferenceForDisplay(String searchPreferenceForDisplay) {
         this.searchPreference = KeywordSearchPreferenceEnum.getByValue(searchPreferenceForDisplay);
+    }
+    
+    /**
+     * @return the searchType
+     */
+    public CaBioSearchTypeEnum getSearchType() {
+        return searchType;
+    }
+    /**
+     * @param searchType the searchType to set
+     */
+    public void setSearchType(CaBioSearchTypeEnum searchType) {
+        this.searchType = searchType;
+    }
+    
+    /**
+     * @return the searchType
+     */
+    public String getSearchTypeForDisplay() {
+        return searchType.getValue();
+    }
+    /**
+     * @param searchTypeForDisplay the searchType to set
+     */
+    public void setSearchTypeForDisplay(String searchTypeForDisplay) {
+        this.searchType = CaBioSearchTypeEnum.getByValue(searchTypeForDisplay);
     }
 
 }

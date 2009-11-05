@@ -124,12 +124,11 @@ public class CaBioFacadeImpl implements CaBioFacade {
         CaBioApplicationService caBioApplicationService =  
             caBioApplicationServiceFactory.retrieveCaBioApplicationService(caBioUrl);
         StringBuffer hqlString = 
-            new StringBuffer("SELECT DISTINCT g.symbol, g.id, g.fullName, g.taxon.commonName " 
+            new StringBuffer("SELECT DISTINCT g.symbol, g.id, g.fullName, g.taxon.commonName, g.hugoSymbol " 
                                 + " FROM gov.nih.nci.cabio.domain.Gene g"
                                 + " WHERE g.symbol is not null ");
         List<String> params = new ArrayList<String>();
-        addKeywordsToSearch(searchParams, hqlString, params);
-        // Filter out based on TAXON if that is what is selected.
+        addKeywordsToQuery(searchParams, hqlString, params);
         if (!CaBioGeneSearchParameters.ALL_TAXONS.equals(searchParams.getTaxon())) {
             hqlString.append(" and g.taxon.commonName LIKE ?");
             params.add(searchParams.getTaxon());
@@ -147,7 +146,7 @@ public class CaBioFacadeImpl implements CaBioFacade {
         return createCaBioDisplayableGenes(geneResults, searchParams);
     }
 
-    private void addKeywordsToSearch(CaBioGeneSearchParameters searchParams, StringBuffer hqlString, 
+    private void addKeywordsToQuery(CaBioGeneSearchParameters searchParams, StringBuffer hqlString, 
             List<String> params) {
         int keywordNum = 0;
         for (String keyword : StringUtils.split(searchParams.getKeywords())) {
@@ -156,11 +155,23 @@ public class CaBioFacadeImpl implements CaBioFacade {
             } else {
                 hqlString.append(" " + searchParams.getSearchPreference().getLogicalOperator() + " ");
             }
-            hqlString.append(" lower(g.fullName) LIKE ? ");
-            params.add("%" + keyword.toLowerCase(Locale.getDefault()).trim() + "%");
+            addAttributesMatchingKeywords(searchParams.getSearchType(), hqlString, params, keyword);
             keywordNum++;
         }
         hqlString.append(" )");
+    }
+
+    private void addAttributesMatchingKeywords(CaBioSearchTypeEnum searchType, StringBuffer hqlString,
+            List<String> params, String keyword) {
+        int attributeNum = 0;
+        for (String attribute : searchType.getCaBioObjectAttributes()) {
+            if (attributeNum != 0) {
+                hqlString.append(" OR ");
+            }
+            hqlString.append(" lower(g." + attribute + ") LIKE ? ");
+            params.add("%" + keyword.toLowerCase(Locale.getDefault()).trim() + "%");
+            attributeNum++;
+        }
     }
     
     /**
@@ -198,6 +209,7 @@ public class CaBioFacadeImpl implements CaBioFacade {
             gene.setId(String.valueOf((Long) geneObject[1]));
             gene.setFullName((String) geneObject[2]);
             gene.setTaxonCommonName((String) geneObject[3]);
+            gene.setHugoSymbol((String) geneObject[4]);
             genes.add(gene);
         }
         if (searchParams.isFilterGenesOnStudy() && !genes.isEmpty()) {

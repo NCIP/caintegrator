@@ -85,63 +85,91 @@
  */
 package gov.nih.nci.caintegrator2.external.cabio;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.cabio.CaBioApplicationServiceFactoryStub.ApplicationServiceStub;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+/**
+ * Enum of different types of Genomic Annotations.
+ */
+public enum CaBioSearchTypeEnum {
+    /**
+     * Search on keywords.
+     */
+    GENE_KEYWORDS("Gene Keywords", "fullName"),
 
-public class CaBioFacadeImplTest {
-
-    CaBioFacadeImpl caBioFacade;
-    ApplicationServiceStub applicationServiceStub;
+    /**
+     * Search on gene symbol.
+     */
+    GENE_SYMBOL("Gene Symbol", "symbol", "hugoSymbol");
     
-    @Before
-    public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("cabio-test-config.xml", CaBioFacadeImplTest.class); 
-        caBioFacade = (CaBioFacadeImpl) context.getBean("caBioFacadeUnit"); 
-        applicationServiceStub = (ApplicationServiceStub) 
-            caBioFacade.getCaBioApplicationServiceFactory().retrieveCaBioApplicationService("");
+    private static Map<String, CaBioSearchTypeEnum> valueToTypeMap = 
+        new HashMap<String, CaBioSearchTypeEnum>();
+
+    private String value;
+    private List<String> caBioObjectAttributes = new ArrayList<String>();
+    
+    private CaBioSearchTypeEnum(String value, String... caBioObjectAttributes) {
+        this.value = value;
+        this.caBioObjectAttributes.addAll(Arrays.asList(caBioObjectAttributes));
     }
 
-    @Test
-    public void testRetrieveGeneSymbolsFromKeywords() throws ConnectionException {
-        CaBioGeneSearchParameters params = new CaBioGeneSearchParameters();
-        params.setKeywords("test here");
-        params.setFilterGenesOnStudy(false);
-        params.setSearchType(CaBioSearchTypeEnum.GENE_KEYWORDS);
-        params.setSearchPreferenceForDisplay(KeywordSearchPreferenceEnum.ANY.getValue());
-        List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenes(params);
-        assertEquals("BRCA1", genes.get(0).getSymbol());
-        assertEquals("EGFR", genes.get(1).getSymbol());
-        assertEquals("EGFR", genes.get(2).getSymbol());
-        assertTrue(applicationServiceStub.hqlString.contains("lower(g.fullName) LIKE ?  OR  lower(g.fullName) LIKE ?"));
-        params.setKeywords("test here");
-        params.setFilterGenesOnStudy(true);
-        params.setSearchPreferenceForDisplay(KeywordSearchPreferenceEnum.ALL.getValue());
-        genes = caBioFacade.retrieveGenes(params);
-        assertTrue(applicationServiceStub.hqlString.contains("lower(g.fullName) LIKE ?  AND  lower(g.fullName) LIKE ?"));
-        assertTrue(applicationServiceStub.hqlString.contains("g.taxon.commonName LIKE ?"));
-        assertEquals(1, genes.size());
-        assertEquals("BRCA1", genes.get(0).getSymbol());
-        
-        params.setSearchType(CaBioSearchTypeEnum.GENE_SYMBOL);
-        params.setKeywords("egfr brca");
-        params.setSearchPreference(KeywordSearchPreferenceEnum.ANY);
-        genes = caBioFacade.retrieveGenes(params);
-        // Should contain 4 keyword matches, because 2 keywords, and 2 fields (symbol and hugoSymbol)
-        assertTrue(applicationServiceStub.hqlString.contains("lower(g.symbol) LIKE ?  OR  lower(g.hugoSymbol) LIKE ?  OR  lower(g.symbol) LIKE ?  OR  lower(g.hugoSymbol) LIKE ?"));
-        params.setSearchPreference(KeywordSearchPreferenceEnum.ALL);
-        genes = caBioFacade.retrieveGenes(params);
-        // Should contain 4 keyword matches, because 2 keywords, and 2 fields (symbol and hugoSymbol), but it must match both keywords, hence the AND instead of OR.
-        assertTrue(applicationServiceStub.hqlString.contains("lower(g.symbol) LIKE ?  OR  lower(g.hugoSymbol) LIKE ?  AND  lower(g.symbol) LIKE ?  OR  lower(g.hugoSymbol) LIKE ?"));
+    /**
+     * @return the value
+     */
+    public String getValue() {
+        return value;
     }
 
+    /**
+     * @return the geneAttributeValue
+     */
+    public List<String> getCaBioObjectAttributes() {
+        return caBioObjectAttributes;
+    }
+
+    private static Map<String, CaBioSearchTypeEnum> getValueToTypeMap() {
+        if (valueToTypeMap.isEmpty()) {
+            for (CaBioSearchTypeEnum type : values()) {
+                valueToTypeMap.put(type.getValue(), type);
+            }
+        }
+        return valueToTypeMap;
+    }
+    
+    /**
+     * Used in the JSP's to retrieve the displayable string version of the Enum values.
+     * @return List of Displayable Strings for this enum.
+     */
+    public static List<String> getDisplayableValues() {
+        List<String> list = new ArrayList<String>();
+        list.add(CaBioSearchTypeEnum.GENE_KEYWORDS.getValue());
+        list.add(CaBioSearchTypeEnum.GENE_SYMBOL.getValue());
+        return list;
+    }
+    
+    /**
+     * Returns the <code>GenomicAnnotationEnum</code> corresponding to the given value. Returns null
+     * for null value.
+     * 
+     * @param value the value to match
+     * @return the matching type.
+     */
+    public static CaBioSearchTypeEnum getByValue(String value) {
+        checkType(value);
+        return getValueToTypeMap().get(value);
+    }
+
+    /**
+     * Checks to see that the value given is a legal <code>AssayType</code> value.
+     * 
+     * @param value the value to check;
+     */
+    public static void checkType(String value) {
+        if (value != null && !getValueToTypeMap().containsKey(value)) {
+            throw new IllegalArgumentException("No matching type for " + value);
+        }
+    }    
 }

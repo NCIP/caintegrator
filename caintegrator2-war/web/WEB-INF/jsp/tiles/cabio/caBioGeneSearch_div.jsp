@@ -13,16 +13,10 @@
 
 <s:div cssStyle="padding-left: 5px;">
     <tr>
-        <s:textfield label="Keywords" name="geneSearchParams.keywords" id="geneKeywords" />
-
-        <td style="border:0px"> 
-        <button type="button" 
-            onclick="runCaBioSearch();"> Search 
-            </button>
-        </td>
-        <td style="border:0px">
-            <em>Search caBio for genes</em>
-        </td>
+        <s:textfield label="Search Terms" name="geneSearchParams.keywords" id="geneKeywords" /> in 
+        <s:select name="geneSearchParams.searchTypeForDisplay" 
+        list="@gov.nih.nci.caintegrator2.external.cabio.CaBioSearchTypeEnum@getDisplayableValues()"/>
+        
     </tr>
     <tr>
         <br/>
@@ -40,6 +34,13 @@
     </tr>
     <tr><br>
         <s:checkbox name="geneSearchParams.filterGenesOnStudy" label="Show only genes that are part of this study" />
+    </tr>
+    <tr><br/>
+    <td style="border:0px"> 
+        <button type="button" 
+            onclick="runCaBioSearch();"> Search 
+            </button>
+    </td>
     </tr>
 </s:div>
 <!-- /caBio Inputs -->
