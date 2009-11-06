@@ -277,6 +277,14 @@
             <ref local="configurationHelper" />
         </property>
     </bean>
+    
+    <bean id="manageGeneListAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.genelist.ManageGeneListAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
 
     <!-- Query Management actions -->
     
