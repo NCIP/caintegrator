@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.workspace;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
@@ -117,6 +118,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public boolean refreshAnnotationDefinitionsCalled;
     public boolean createDisplayableStudySummaryCalled;
     public boolean savePersistedAnalysisJobCalled;
+    public boolean createGeneListCalled;
     
     public void clear() {
         subscribeCalled = false;
@@ -128,6 +130,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
         createDisplayableStudySummaryCalled = false;
         savePersistedAnalysisJobCalled = false;
         unSubscribeAllCalled = false;
+        createGeneListCalled = false;
     }
     public UserWorkspace getWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
@@ -217,6 +220,18 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     public AbstractPersistedAnalysisJob getPersistedAnalysisJob(Long id) {
         return null;
+    }
+
+    public GeneList getGeneList(String name, StudySubscription subscription) {
+        return null;
+    }
+
+    public GeneList getGeneList(Long id) {
+        return null;
+    }
+
+    public void createGeneList(GeneList geneList, List<String> geneSymbols) {
+        createGeneListCalled = true;
     }
 
 }

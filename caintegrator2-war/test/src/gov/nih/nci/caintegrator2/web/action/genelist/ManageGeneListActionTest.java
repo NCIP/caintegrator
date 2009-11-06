@@ -83,100 +83,73 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
+package gov.nih.nci.caintegrator2.web.action.genelist;
 
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.GeneList;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
-import gov.nih.nci.security.exceptions.CSException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
+import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.file.FileManagerStub;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import java.util.List;
-import java.util.Set;
+import org.junit.Before;
+import org.junit.Test;
 
-/**
- * Provides <code>UserWorkspace</code> access and management functionality.
- */
-public interface WorkspaceService {
+public class ManageGeneListActionTest extends AbstractSessionBasedTest {
+
+    ManageGeneListAction action = new ManageGeneListAction();
+    WorkspaceServiceStub workspaceServiceStub = new WorkspaceServiceStub();
+
+    @Before
+    public void setUp() {
+        super.setUp();
+        SessionHelper.getInstance().getDisplayableUserWorkspace().
+            setCurrentStudySubscription(new StudySubscription());
+        action.setWorkspaceService(workspaceServiceStub);     
+        action.setFileManager(new FileManagerStub());
+    }
     
-    /**
-     * Returns the workspace belonging to the current user.
-     * 
-     * @return the current user's workspace.
-     */
-    UserWorkspace getWorkspace();
-    
-    /**
-     * Retrieves the studyConfigurationJobs for the user workspace.
-     * 
-     * @param userWorkspace workspace of the user.
-     * @return all study configuraiton jobs for this users workspace.
-     * @throws CSException if there's a problem accessing CSM.
-    */
-    Set<StudyConfiguration> retrieveStudyConfigurationJobs(UserWorkspace userWorkspace) 
-        throws CSException;
-   
-   /**
-    * Subscribes a user to a study.
-     * 
-     * @param workspace workspace of the user.
-     * @param study - study to subscribe to.
-     */
-    void subscribe(UserWorkspace workspace, Study study);
+    @Test
+    public void testAll() {
+        // Test Validate
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.setSelectedAction("createGeneList");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.setGeneListName("Test");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        assertTrue(action.hasActionErrors());
+        action.setGeneSymbols("egfr");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        assertFalse(action.hasActionErrors());
+        assertEquals(1, action.getGeneSymbolList().size());
+        action.setGeneSymbols("egfr cox412");
+        action.validate();
+        assertEquals(1, action.getGeneSymbolList().size());
+        action.setGeneSymbols("egfr,cox412");
+        action.validate();
+        assertEquals(2, action.getGeneSymbolList().size());
+        action.setGeneSymbols(null);
+        action.setGeneListFile(TestArrayDesignFiles.EMPTY_FILE);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.setGeneListFile(TestDataFiles.GENE_LIST_SAMPLES_FILE);
+        action.validate();
+        assertEquals(4, action.getGeneSymbolList().size());
+        action.setGeneSymbols("egfr,cox412");
+        action.validate();
+        assertEquals(6, action.getGeneSymbolList().size());
         
-    /**
-     * Subscribe to all studies that the user has read access.
-     * @param userWorkspace - object to use.
-     */
-    void subscribeAll(UserWorkspace userWorkspace);
-
-    /**
-     * Unsubscribes a user to a study.
-     * 
-     * @param workspace workspace of the user.
-     * @param study - study to subscribe to.
-     */
-    void unsubscribe(UserWorkspace workspace, Study study);
-    
-    /**
-     * Un-subscribes all users from the given study.
-     * @param study to un-subscribe from.
-     */
-    void unsubscribeAll(Study study);
-
-    /**
-     * Saves the current changes.
-     * @param workspace - object that needs to be updated.
-     */
-    void saveUserWorkspace(UserWorkspace workspace);
-    
-    /**
-     * Get the Analysis Job.
-     * @param id - id to be retrieved.
-     * @return Analysis Job
-     */
-    AbstractPersistedAnalysisJob getPersistedAnalysisJob(Long id);
-    
-    /**
-     * Saves the current changes.
-     * @param job - object to be updated.
-     */
-    void savePersistedAnalysisJob(AbstractPersistedAnalysisJob job);
-    
-    /**
-     * Creates a <code> DisplayableStudySummary </code> from the given Study. 
-     * @param study - object to use.
-     * @return - DisplayableStudySummary object created from the study.
-     */
-    DisplayableStudySummary createDisplayableStudySummary(Study study);
-    
-    /**
-     * 
-     * @param geneList the gene list to create
-     * @param geneSymbols the list of gene symbols
-     */
-    void createGeneList(GeneList geneList, List<String> geneSymbols);
-
+        // Test execute
+        action.setDescription("Test description");
+        assertEquals(ManageGeneListAction.SUCCESS, action.createGeneList());
+        assertTrue(workspaceServiceStub.createGeneListCalled);
+    }
 }
