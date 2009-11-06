@@ -105,6 +105,7 @@ public class TestDataFiles {
     public static final String SHORT_REMBRANDT_CONTROL_SAMPLE_SET_NAME = "Short Rembrandt Control Sample Set";
     public static final String SHORT_REMBRANDT_CONTROL_SAMPLES_FILE_PATH = "/short_rembrandt_control_samples.csv";
     public static final String SHORT_REMBRANDT_SAMPLE_MAPPING_FILE_PATH = "/short_rembrandt_sample_mapping.csv";
+    public static final String GENE_LIST_SAMPLES_FILE_PATH = "/gene_list_samples.csv";
     public static final String JAGLA_00034_CONTROL_SAMPLES_SET_NAME = "JAGLA 00034 Control Sample Set";
     public static final String JAGLA_00034_CONTROL_SAMPLES_FILE_PATH = "/jagla_0034_control_samples.csv";
     public static final String VASARI_IMAGE_ANNOTATION_FILE_PATH = "/vasari_image_annotation_mapped.csv";
@@ -161,6 +162,9 @@ public class TestDataFiles {
     public static final File DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE = getFile(DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE_PATH);
     public static final File DC_LUNG_PUBLIC_ANNOTATION_DEFINITIONS_FILE = getFile(DC_LUNG_PUBLIC_ANNOTATION_DEFINITIONS_FILE_PATH);
 
+    
+    // Samples of genelist file upload
+    public static final File GENE_LIST_SAMPLES_FILE = getFile(GENE_LIST_SAMPLES_FILE_PATH);
     
     // Samples from caArray Experiment jagla-00034
     public static final File JAGLA_00034_CONTROL_SAMPLES_FILE = getFile(JAGLA_00034_CONTROL_SAMPLES_FILE_PATH);

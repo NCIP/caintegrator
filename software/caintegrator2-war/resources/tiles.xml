@@ -143,6 +143,15 @@
         <put-attribute name="subTitle" value="Edit Sample Mappings" />
     </definition>
 
+    <!-- Gene List Management page -->
+    <!-- Gene List Management page -->
+    <!-- Gene List Management page -->
+    
+    <definition name="manageGeneList" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageGeneList_tile.jsp" />
+        <put-attribute name="subTitle" value="Manage Gene List" />
+    </definition>
+
     <!-- Query Management pages -->
     <!-- Query Management pages -->
     <!-- Query Management pages -->

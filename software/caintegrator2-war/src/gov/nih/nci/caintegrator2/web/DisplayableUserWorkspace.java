@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
@@ -318,7 +319,6 @@ public class DisplayableUserWorkspace {
         } else {
             return LOGO_SERVLET_URL;
         }
-                            
     }
     
     /**
@@ -351,6 +351,14 @@ public class DisplayableUserWorkspace {
         };
         Collections.sort(queries, nameComparator);
         return queries;
+    }
+    
+    /**
+     * @return the saved gene lists.
+     */
+    public List<GeneList> getGeneLists() {
+        return (getCurrentStudySubscription() == null)
+            ? null : getCurrentStudySubscription().getGeneLists();
     }
 
     /**

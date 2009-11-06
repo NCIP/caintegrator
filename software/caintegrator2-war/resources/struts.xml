@@ -468,6 +468,12 @@
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
             </result>
         </action>
+        
+        <action name="manageGeneList" class="manageGeneListAction">
+            <result type="tiles">manageGeneList</result>
+            <result name="error" type="tiles">manageGeneList</result>
+            <result name="input" type="tiles">manageGeneList</result>
+        </action>
                 
         <!--  Query Actions -->
         <!--  Query Actions -->
