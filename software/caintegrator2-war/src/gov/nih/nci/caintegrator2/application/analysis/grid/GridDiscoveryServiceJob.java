@@ -234,7 +234,7 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         } else if (shouldAdd(url, "Gistic", gridGisticServices)) {
             gridGisticServices.put(url, buildDisplayName(hostingCenter, url));
         } else if (shouldAdd(url, "NCIA", gridNbiaServices)) {
-            gridGisticServices.put(url, buildDisplayName(hostingCenter, url));
+            gridNbiaServices.put(url, buildDisplayName(hostingCenter, url));
         }
     }
 
