@@ -54,10 +54,10 @@
                     </s:else>
                     
                     <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" readonly="true" cssClass="readonly" />
-                    <s:textfield label="caArray server JNDI Port" name="genomicSource.serverProfile.port" readonly="true" cssClass="readonly" />
+                    <s:textfield label="caArray Server JNDI Port" name="genomicSource.serverProfile.port" readonly="true" cssClass="readonly" />
                     <!-- NOTE - using custom struts theme to turn off autocomplete -->
-                    <s:textfield label="caArrayUsername" name="genomicSource.serverProfile.username" readonly="true" cssClass="readonly" theme="cai2xhtml" />
-                    <s:password label="caArrayPassword" name="genomicSource.serverProfile.password" readonly="true" cssClass="readonly" theme="cai2xhtml"/>
+                    <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" readonly="true" cssClass="readonly" theme="cai2xhtml" />
+                    <s:password label="caArray Password" name="genomicSource.serverProfile.password" readonly="true" cssClass="readonly" theme="cai2xhtml"/>
                     <!--/NOTE -->       
                     <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" cssClass="readonly" />
                     <s:file id="sampleMappingFile" name="sampleMappingFile" label="Subject to Sample Mapping File" size="35" />
