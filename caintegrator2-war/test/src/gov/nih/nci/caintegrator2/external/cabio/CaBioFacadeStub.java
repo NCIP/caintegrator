@@ -100,15 +100,19 @@ public class CaBioFacadeStub implements CaBioFacade {
     public boolean isConnectionException;
     public boolean retrieveAllTaxonsCalled;
     public boolean isReturnResults;
+    public boolean retrievePathwaysCalled;
+    public boolean retrieveGenesFromPathwaysCalled;
     
     public void clear() {
         retrieveGenesCalled = false;
         isConnectionException = false;
         retrieveAllTaxonsCalled = false;
         isReturnResults = false;
+        retrievePathwaysCalled = false;
+        retrieveGenesFromPathwaysCalled = false;
     }
     
-    public List<CaBioDisplayableGene> retrieveGenes(CaBioGeneSearchParameters params) throws ConnectionException {
+    public List<CaBioDisplayableGene> retrieveGenes(CaBioSearchParameters params) throws ConnectionException {
         retrieveGenesCalled = true;
         if (isConnectionException) {
             throw new ConnectionException("");
@@ -123,6 +127,27 @@ public class CaBioFacadeStub implements CaBioFacade {
     public List<String> retrieveAllTaxons() throws ConnectionException {
         retrieveAllTaxonsCalled = true;
         return Collections.emptyList();
+    }
+    
+    public List<CaBioDisplayablePathway> retrievePathways(CaBioSearchParameters searchParams)
+            throws ConnectionException {
+        retrievePathwaysCalled = true;
+        List<CaBioDisplayablePathway> pathways = new ArrayList<CaBioDisplayablePathway>();
+        CaBioDisplayablePathway pathway = new CaBioDisplayablePathway();
+        if (isReturnResults) {
+            pathways.add(pathway);
+        }
+        return pathways;
+    }
+
+    public List<CaBioDisplayableGene> retrieveGenesFromPathways(CaBioSearchParameters searchParams)
+            throws ConnectionException {
+        retrieveGenesFromPathwaysCalled = true;
+        List<CaBioDisplayableGene> genes = new ArrayList<CaBioDisplayableGene>();
+        if (isReturnResults) {
+            genes.add(new CaBioDisplayableGene());
+        }
+        return genes;
     }
     
 }

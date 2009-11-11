@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.external.cabio;
 
+import gov.nih.nci.cabio.domain.Gene;
+import gov.nih.nci.cabio.domain.Taxon;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.search.GridIdQuery;
 import gov.nih.nci.search.RangeQuery;
@@ -111,6 +113,7 @@ public class CaBioApplicationServiceFactoryStub implements CaBioApplicationServi
     
     static class ApplicationServiceStub implements CaBioApplicationService {
         public String hqlString = "";
+        public boolean searchCalled = false;
 
         public List<Object> getAssociation(Object source, String associationName) throws ApplicationException {
             return null;
@@ -134,6 +137,53 @@ public class CaBioApplicationServiceFactoryStub implements CaBioApplicationServi
 
         public List<Object> query(HQLCriteria hqlCriteria) throws ApplicationException {
             hqlString = hqlCriteria.getHqlString();
+            if (hqlString.contains("Gene o")) {
+                return retrieveGenes();
+            } else if (hqlString.contains("Pathway o")) {
+                return retrievePathways();
+            }
+            return null;
+        }
+        
+        private List<Object> retrievePathways() {
+            List<Object> objects = new ArrayList<Object>();
+            Object[] object1 = new Object[4];
+            Long id1 = 1l;
+            String name1 = "pathway1";
+            String title1 = "Fullname Test";
+            String description1 = "description";
+            object1[0] = name1;
+            object1[1] = id1;
+            object1[2] = title1;
+            object1[3] = description1;
+            objects.add(object1);
+            
+            Object[] object2 = new Object[4];
+            Long id2 = 2l;
+            String name2 = "pathway1";
+            String title2 = "Fullname Test";
+            String description2 = "description";
+            object2[0] = name2;
+            object2[1] = id2;
+            object2[2] = title2;
+            object2[3] = description2;
+            objects.add(object2);
+            
+            Object[] object3 = new Object[4];
+            Long id3 = 3l;
+            String name3 = "pathway3";
+            String title3 = "Fullname Test";
+            String description3 = "description";
+            object3[0] = name3;
+            object3[1] = id3;
+            object3[2] = title3;
+            object3[3] = description3;
+            objects.add(object3);
+            
+            return objects;
+        }
+
+        private List<Object> retrieveGenes() {
             List<Object> objects = new ArrayList<Object>();
             Object[] object1 = new Object[5];
             Long id1 = 1l;
@@ -199,7 +249,20 @@ public class CaBioApplicationServiceFactoryStub implements CaBioApplicationServi
         }
 
         public List<Object> search(Class targetClass, Object obj) throws ApplicationException {
-            return null;
+            searchCalled = true;
+            List<Object> objects = new ArrayList<Object>();
+            if (Gene.class.equals(targetClass)) {
+                Taxon taxon = new Taxon();
+                taxon.setCommonName("human");
+                Gene gene1 = new Gene();
+                gene1.setId(1l);
+                gene1.setSymbol("EGFR");
+                gene1.setTaxon(taxon);
+                gene1.setHugoSymbol("EGFR");
+                gene1.setFullName("Some description");
+                objects.add(gene1);
+            }
+            return objects;
         }
 
         public List<Object> search(String path, List<?> objList) throws ApplicationException {

@@ -103,17 +103,22 @@ public enum CaBioSearchTypeEnum {
     /**
      * Search on gene symbol.
      */
-    GENE_SYMBOL("Gene Symbol", "symbol", "hugoSymbol");
+    GENE_SYMBOL("Gene Symbol", "symbol", "hugoSymbol"),
+    
+    /**
+     * Search on pathways.
+     */
+    PATHWAYS("Pathways", "name", "displayValue", "description");
     
     private static Map<String, CaBioSearchTypeEnum> valueToTypeMap = 
         new HashMap<String, CaBioSearchTypeEnum>();
 
     private String value;
-    private List<String> caBioObjectAttributes = new ArrayList<String>();
+    private List<String> searchableAttributes = new ArrayList<String>();
     
-    private CaBioSearchTypeEnum(String value, String... caBioObjectAttributes) {
+    private CaBioSearchTypeEnum(String value, String... searchableAttributes) {
         this.value = value;
-        this.caBioObjectAttributes.addAll(Arrays.asList(caBioObjectAttributes));
+        this.searchableAttributes.addAll(Arrays.asList(searchableAttributes));
     }
 
     /**
@@ -126,8 +131,8 @@ public enum CaBioSearchTypeEnum {
     /**
      * @return the geneAttributeValue
      */
-    public List<String> getCaBioObjectAttributes() {
-        return caBioObjectAttributes;
+    public List<String> getSearchableAttributes() {
+        return searchableAttributes;
     }
 
     private static Map<String, CaBioSearchTypeEnum> getValueToTypeMap() {
@@ -147,6 +152,7 @@ public enum CaBioSearchTypeEnum {
         List<String> list = new ArrayList<String>();
         list.add(CaBioSearchTypeEnum.GENE_KEYWORDS.getValue());
         list.add(CaBioSearchTypeEnum.GENE_SYMBOL.getValue());
+        list.add(CaBioSearchTypeEnum.PATHWAYS.getValue());
         return list;
     }
     

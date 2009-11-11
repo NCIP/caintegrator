@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caCORE.caBIO/4.2/gov.nih.nci.cabio.pathways" xmlns:gov.nih.nci.cabio.domain="gme://caCORE.caBIO/4.2/gov.nih.nci.cabio.domain" xmlns:gov.nih.nci.common.domain="gme://caCORE.caBIO/4.2/gov.nih.nci.common.domain" xmlns:gov.nih.nci.common.provenance.domain="gme://caCORE.caBIO/4.2/gov.nih.nci.common.provenance.domain" targetNamespace="gme://caCORE.caBIO/4.2/gov.nih.nci.cabio.pathways" elementFormDefault="qualified">
-  <xs:import namespace="gme://caCORE.caBIO/4.2/gov.nih.nci.cabio.domain" schemaLocation="gov.nih.nci.cabio.domain.xsd" />
-  <xs:import namespace="gme://caCORE.caBIO/4.2/gov.nih.nci.common.domain" schemaLocation="gov.nih.nci.common.domain.xsd" />
-  <xs:import namespace="gme://caCORE.caBIO/4.2/gov.nih.nci.common.provenance.domain" schemaLocation="gov.nih.nci.common.provenance.domain.xsd" />
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caCORE.caBIO/4.3/gov.nih.nci.cabio.pathways" xmlns:gov.nih.nci.cabio.domain="gme://caCORE.caBIO/4.3/gov.nih.nci.cabio.domain" targetNamespace="gme://caCORE.caBIO/4.3/gov.nih.nci.cabio.pathways" elementFormDefault="qualified">
+  <xs:import namespace="gme://caCORE.caBIO/4.3/gov.nih.nci.cabio.domain" schemaLocation="gov.nih.nci.cabio.domain.xsd" />
+  <xs:import namespace="gme://caCORE.caBIO/4.3/gov.nih.nci.cabio.domain" schemaLocation="gov.nih.nci.cabio.domain.xsd" />
+  <xs:import namespace="gme://caCORE.caBIO/4.3/gov.nih.nci.cabio.domain" schemaLocation="gov.nih.nci.cabio.domain.xsd" />
+  <xs:import namespace="gme://caCORE.caBIO/4.3/gov.nih.nci.cabio.domain" schemaLocation="gov.nih.nci.cabio.domain.xsd" />
+  <xs:import namespace="gme://caCORE.caBIO/4.3/gov.nih.nci.cabio.domain" schemaLocation="gov.nih.nci.cabio.domain.xsd" />
   <xs:element name="PhysicalEntity" type="PhysicalEntity" />
   <xs:complexType name="PhysicalEntity">
     <xs:sequence>
-      <xs:element name="entityNameCollection" minOccurs="0" maxOccurs="1">
+      <xs:element name="memberCollection" minOccurs="0" maxOccurs="1">
         <xs:complexType>
           <xs:sequence>
-            <xs:element ref="EntityName" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element ref="FamilyMember" minOccurs="0" maxOccurs="unbounded" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -27,10 +29,10 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:element name="memberCollection" minOccurs="0" maxOccurs="1">
+      <xs:element name="entityNameCollection" minOccurs="0" maxOccurs="1">
         <xs:complexType>
           <xs:sequence>
-            <xs:element ref="FamilyMember" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element ref="EntityName" minOccurs="0" maxOccurs="unbounded" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -151,17 +153,10 @@
   <xs:element name="Interaction" type="Interaction" />
   <xs:complexType name="Interaction">
     <xs:sequence>
-      <xs:element name="evidenceCodeCollection" minOccurs="0" maxOccurs="1">
+      <xs:element name="referenceCollection" minOccurs="0" maxOccurs="1">
         <xs:complexType>
           <xs:sequence>
-            <xs:element ref="gov.nih.nci.cabio.domain:EvidenceCode" minOccurs="0" maxOccurs="unbounded" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="participantCollection" minOccurs="0" maxOccurs="1">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element ref="Participant" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element ref="gov.nih.nci.cabio.domain:Evidence" minOccurs="0" maxOccurs="unbounded" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -172,10 +167,17 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:element name="referenceCollection" minOccurs="0" maxOccurs="1">
+      <xs:element name="participantCollection" minOccurs="0" maxOccurs="1">
         <xs:complexType>
           <xs:sequence>
-            <xs:element ref="gov.nih.nci.cabio.domain:Evidence" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element ref="Participant" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="evidenceCodeCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="gov.nih.nci.cabio.domain:EvidenceCode" minOccurs="0" maxOccurs="unbounded" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -294,17 +296,17 @@
     <xs:complexContent>
       <xs:extension base="PhysicalEntity">
         <xs:sequence>
-          <xs:element name="subunitCollection" minOccurs="0" maxOccurs="1">
-            <xs:complexType>
-              <xs:sequence>
-                <xs:element ref="ProteinSubunit" minOccurs="0" maxOccurs="unbounded" />
-              </xs:sequence>
-            </xs:complexType>
-          </xs:element>
           <xs:element name="proteinCollection" minOccurs="0" maxOccurs="1">
             <xs:complexType>
               <xs:sequence>
                 <xs:element ref="gov.nih.nci.cabio.domain:Protein" minOccurs="0" maxOccurs="unbounded" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="subunitCollection" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="ProteinSubunit" minOccurs="0" maxOccurs="unbounded" />
               </xs:sequence>
             </xs:complexType>
           </xs:element>

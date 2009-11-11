@@ -85,130 +85,106 @@
  */
 package gov.nih.nci.caintegrator2.external.cabio;
 
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.logging.api.util.StringUtils;
 
 /**
  * 
  */
-public class CaBioGeneSearchParameters {
-    /**
-     * To use all taxons.
-     */
-    public static final String ALL_TAXONS = "ALL";
+public class CaBioDisplayablePathway implements Comparable<CaBioDisplayablePathway> {
+    private static final int MAX_DESCRIPTION_LENGTH = 100;
+    private static final int MAX_NAME_LENGTH = 19;
+    
+    private String id;
+    private String name;
+    private String displayValue;
+    private String description;
+    private boolean checked = true;
     
     /**
-     * Human taxon (default).
+     * @return the id
      */
-    public static final String HUMAN_TAXON = "human";
-    
-    private String keywords;
-    private String taxon = HUMAN_TAXON;
-    private Study study;
-    private boolean filterGenesOnStudy = true;
-    private KeywordSearchPreferenceEnum searchPreference = KeywordSearchPreferenceEnum.ANY;
-    private CaBioSearchTypeEnum searchType = CaBioSearchTypeEnum.GENE_KEYWORDS;
-    
-    /**
-     * @return the keywords
-     */
-    public String getKeywords() {
-        return keywords;
+    public String getId() {
+        return id;
     }
     /**
-     * @param keywords the keywords to set
+     * @param id the id to set
      */
-    public void setKeywords(String keywords) {
-        this.keywords = keywords;
+    public void setId(String id) {
+        this.id = id;
+    }    
+    /**
+     * @return the name substring.
+     */
+    public String getDisplayableName() {
+        if (StringUtils.isBlank(name)) {
+            return name;
+        }
+        return name.length() > MAX_NAME_LENGTH 
+            ? name.substring(0, MAX_NAME_LENGTH - 3) + "..." : name;
     }
     /**
-     * @return the taxon
+     * @return the name
      */
-    public String getTaxon() {
-        return taxon;
+    public String getName() {
+        return name;
     }
     /**
-     * @param taxon the taxon to set
+     * @param name the name to set
      */
-    public void setTaxon(String taxon) {
-        this.taxon = taxon;
+    public void setName(String name) {
+        this.name = name;
     }
     /**
-     * @return the study
+     * @return the displayValue
      */
-    public Study getStudy() {
-        return study;
+    public String getDisplayValue() {
+        return displayValue;
     }
     /**
-     * @param study the study to set
+     * @param displayValue the displayValue to set
      */
-    public void setStudy(Study study) {
-        this.study = study;
+    public void setDisplayValue(String displayValue) {
+        this.displayValue = displayValue;
     }
     /**
-     * @return the filterGenesOnStudy
+     * @return the description
      */
-    public boolean isFilterGenesOnStudy() {
-        return filterGenesOnStudy;
+    public String getDisplayableDescription() {
+        if (StringUtils.isBlank(description)) {
+            return description;
+        }
+        return description.length() > MAX_DESCRIPTION_LENGTH 
+            ? description.substring(0, MAX_DESCRIPTION_LENGTH - 3) + "..." : description;
     }
     /**
-     * @param filterGenesOnStudy the filterGenesOnStudy to set
+     * @return the description
      */
-    public void setFilterGenesOnStudy(boolean filterGenesOnStudy) {
-        this.filterGenesOnStudy = filterGenesOnStudy;
-    }
-    
-    /**
-     * @return the searchPreference
-     */
-    public KeywordSearchPreferenceEnum getSearchPreference() {
-        return searchPreference;
-    }
-    
-    /**
-     * @param searchPreference the searchPreference to set
-     */
-    public void setSearchPreference(KeywordSearchPreferenceEnum searchPreference) {
-        this.searchPreference = searchPreference;
-    }
-    
-    /**
-     * @return the searchPreference
-     */
-    public String getSearchPreferenceForDisplay() {
-        return searchPreference.getValue();
-    }
-    
-    /**
-     * @param searchPreferenceForDisplay the searchPreference to set
-     */
-    public void setSearchPreferenceForDisplay(String searchPreferenceForDisplay) {
-        this.searchPreference = KeywordSearchPreferenceEnum.getByValue(searchPreferenceForDisplay);
-    }
-    
-    /**
-     * @return the searchType
-     */
-    public CaBioSearchTypeEnum getSearchType() {
-        return searchType;
+    public String getDescription() {
+        return description;
     }
     /**
-     * @param searchType the searchType to set
+     * @param description the description to set
      */
-    public void setSearchType(CaBioSearchTypeEnum searchType) {
-        this.searchType = searchType;
-    }
-    
-    /**
-     * @return the searchType
-     */
-    public String getSearchTypeForDisplay() {
-        return searchType.getValue();
+    public void setDescription(String description) {
+        this.description = description;
     }
     /**
-     * @param searchTypeForDisplay the searchType to set
+     * @return the checked
      */
-    public void setSearchTypeForDisplay(String searchTypeForDisplay) {
-        this.searchType = CaBioSearchTypeEnum.getByValue(searchTypeForDisplay);
+    public boolean isChecked() {
+        return checked;
+    }
+    /**
+     * @param checked the checked to set
+     */
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(CaBioDisplayablePathway o) {
+        return this.getName().compareTo(o.getName());
     }
 
 }

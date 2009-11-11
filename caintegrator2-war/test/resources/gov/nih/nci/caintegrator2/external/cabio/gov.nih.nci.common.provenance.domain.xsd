@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caCORE.caBIO/4.2/gov.nih.nci.common.provenance.domain" xmlns:gov.nih.nci.cabio.domain="gme://caCORE.caBIO/4.2/gov.nih.nci.cabio.domain" xmlns:gov.nih.nci.cabio.pathways="gme://caCORE.caBIO/4.2/gov.nih.nci.cabio.pathways" xmlns:gov.nih.nci.common.domain="gme://caCORE.caBIO/4.2/gov.nih.nci.common.domain" targetNamespace="gme://caCORE.caBIO/4.2/gov.nih.nci.common.provenance.domain" elementFormDefault="qualified">
-  <xs:import namespace="gme://caCORE.caBIO/4.2/gov.nih.nci.cabio.domain" schemaLocation="gov.nih.nci.cabio.domain.xsd" />
-  <xs:import namespace="gme://caCORE.caBIO/4.2/gov.nih.nci.cabio.pathways" schemaLocation="gov.nih.nci.cabio.pathways.xsd" />
-  <xs:import namespace="gme://caCORE.caBIO/4.2/gov.nih.nci.common.domain" schemaLocation="gov.nih.nci.common.domain.xsd" />
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caCORE.caBIO/4.3/gov.nih.nci.common.provenance.domain" targetNamespace="gme://caCORE.caBIO/4.3/gov.nih.nci.common.provenance.domain" elementFormDefault="qualified">
   <xs:element name="PublicationSource" type="PublicationSource" />
   <xs:complexType name="PublicationSource">
     <xs:complexContent>
@@ -83,6 +80,13 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="sourceReference" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="SourceReference" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element name="originalSource" minOccurs="0" maxOccurs="1">
         <xs:complexType>
           <xs:sequence>
@@ -94,13 +98,6 @@
         <xs:complexType>
           <xs:sequence>
             <xs:element ref="Source" minOccurs="0" maxOccurs="1" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="sourceReference" minOccurs="0" maxOccurs="1">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element ref="SourceReference" minOccurs="0" maxOccurs="1" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>

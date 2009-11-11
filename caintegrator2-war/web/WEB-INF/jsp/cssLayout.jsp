@@ -54,7 +54,7 @@
 			        <s:hidden name="caBioGeneSearchTopicPublished" value="false" />
 			        <s:div theme="ajax" 
 			            id="caBioGeneSearchInputDiv"
-			            href="caBioGeneSearchInput.action"
+			            href="caBioSearchInput.action"
 			            loadingText="<img src='images/ajax-loader.gif'/>"
 			            listenTopics="caBioGeneSearchTopic"
 			            refreshOnShow="false" 
