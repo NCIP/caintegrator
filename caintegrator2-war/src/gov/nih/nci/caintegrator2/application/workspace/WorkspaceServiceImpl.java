@@ -355,12 +355,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      * {@inheritDoc}
      */
     public void createGeneList(GeneList geneList, List<String> geneSymbols) {
-        Set<Gene> geneSet = new HashSet<Gene>();
         for (String symbol : geneSymbols) {
-            geneSet.add(lookupOrCreateGene(symbol));
+            geneList.getGeneCollection().add(lookupOrCreateGene(symbol));
         }
-        geneList.setGeneCollection(geneSet);
-        getDao().save(geneList);
         geneList.getSubscription().getListCollection().add(geneList);
         saveUserWorkspace(geneList.getSubscription().getUserWorkspace());
     }

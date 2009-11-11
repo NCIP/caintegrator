@@ -854,9 +854,13 @@ TABLE.data TBODY#studyDeploymentJobStatusTable TR TD#dwrCellID_3
 { white-space: nowrap; }
 
 
+/** style for picking gene list **/
+A.geneListIcon
+{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll left top; padding:1px 18px 1px 1px;}
+
 /** style for link to CGAP site **/
 A.cgapLogo
-{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cgaplogo.gif') no-repeat scroll left top; padding:1px 70px 5px 8px;}
+{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cgaplogo.gif') no-repeat scroll left top; padding:1px 70px 1px 1px;}
 
 /** style for link to caBio site **/
 A.caBioLogo
@@ -955,6 +959,69 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
     padding:7px 0 5px 10px;
     margin-bottom:1px;
 }
+
+#TB_GL_overlay {
+    position: fixed;
+    z-index:100;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    display:none;
+}
+
+.TB_GL_overlayMacFFBGHack {background: url(macFFBgHack.png) repeat;}
+.TB_GL_overlayBG {
+    background-color:#000;
+    filter:alpha(opacity=75);
+    -moz-opacity: 0.75;
+    opacity: 0.75;
+}
+* html #TB_GL_overlay { /* ie6 hack */
+     position: absolute;
+     height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');
+}
+
+#geneListSearchInputDiv {
+    position: fixed;
+    background: #ffffff;
+    z-index: 102;
+    color:#000000;
+    display:block;
+    visibility:hidden;
+    border: 4px solid #525252;
+    text-align:left;
+    top:25%;
+    left:50%;
+}
+
+* html #geneListSearchInputDiv { /* ie6 hack */
+position: absolute;
+margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');
+}
+
+#geneListSearchInputDiv img#TB_Image {
+    display:block;
+    margin: 15px 0 0 15px;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #666;
+    border-left: 1px solid #666;
+}
+
+#TB_GL_closeAjaxWindow{
+    padding:7px 10px 5px 0;
+    margin-bottom:1px;
+    text-align:right;
+    float:right;
+}
+
+#TB_GL_ajaxWindowTitle{
+    float:left;
+    padding:7px 0 5px 10px;
+    margin-bottom:1px;
+}
+
 /* ----------------------------------------------------------------------------------------------------------------*/
 /* ---------->>> END thickbox specific link and font settings <<<------------------------------------------------*/
 /* ----------------------------------------------------------------------------------------------------------------*/

@@ -45,21 +45,37 @@
 
 			<!--Work Area-->
 				
-			<div id="main">				
-			    <!-- Begin hidden caBioGeneSearchForm -->
-			    <s:div id="TB_overlay" cssClass="TB_overlayBG"/>
-			    <s:form name="caBioGeneSearchForm" id="caBioGeneSearchForm" onsubmit="runCaBioSearch(); return false;">
-			        <!-- For caBio to know which form element to publish gene symbols to. -->
-			        <s:hidden name="geneSymbolElementId" />
-			        <s:hidden name="caBioGeneSearchTopicPublished" value="false" />
-			        <s:div theme="ajax" 
-			            id="caBioGeneSearchInputDiv"
-			            href="caBioSearchInput.action"
-			            loadingText="<img src='images/ajax-loader.gif'/>"
-			            listenTopics="caBioGeneSearchTopic"
-			            refreshOnShow="false" 
-			            cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:608px;max-height: 300px; overflow:auto;"/>
-			    </s:form>
+			<div id="main">	
+                <!-- Begin hidden geneListSearchForm -->
+                <s:div id="TB_GL_overlay" cssClass="TB_GL_overlayBG"/>
+                <s:form name="geneListSearchForm" id="geneListSearchForm" onsubmit="runGeneListSearch(); return false;">
+                    <!-- For gene list to know which form element to publish gene symbols to. -->
+                    <s:hidden name="geneSymbolElementId" />
+                    <s:hidden name="geneListSearchTopicPublished" value="false" />
+                    <s:div theme="ajax" 
+                        id="geneListSearchInputDiv"
+                        href="geneListSearchInput.action"
+                        loadingText="<img src='images/ajax-loader.gif'/>"
+                        listenTopics="geneListSearchTopic"
+                        refreshOnShow="false" 
+                        cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:458px;max-height: 300px; overflow:auto;"/>
+                </s:form>
+                <!-- End geneListSearchForm -->
+                
+                <!-- Begin hidden caBioGeneSearchForm -->
+                <s:div id="TB_overlay" cssClass="TB_overlayBG"/>
+                <s:form name="caBioGeneSearchForm" id="caBioGeneSearchForm" onsubmit="runCaBioSearch(); return false;">
+                    <!-- For caBio to know which form element to publish gene symbols to. -->
+                    <s:hidden name="geneSymbolElementId" />
+                    <s:hidden name="caBioGeneSearchTopicPublished" value="false" />
+                    <s:div theme="ajax" 
+                        id="caBioGeneSearchInputDiv"
+                        href="caBioSearchInput.action"
+                        loadingText="<img src='images/ajax-loader.gif'/>"
+                        listenTopics="caBioGeneSearchTopic"
+                        refreshOnShow="false" 
+                        cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:608px;max-height: 300px; overflow:auto;"/>
+                </s:form>
                 <!-- End caBioGeneSearchForm -->
 				<div id="contentwrapper">
 				    
