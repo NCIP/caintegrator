@@ -39,12 +39,56 @@
     function checkUncheckAll(theElement, excludeThisElementName) {
         var theForm = theElement.form, z = 0;
         for(z=0; z<theForm.length;z++){
-            if(theForm[z].type == 'checkbox' && theForm[z].name != 'checkall' && theForm[z].name != excludeThisElementName){
-                theForm[z].checked = theElement.checked;
+            if (excludeThisElementName == null) {
+                if(theForm[z].type == 'checkbox' && theForm[z].name != 'checkall'){
+                    theForm[z].checked = theElement.checked;
+                }
+            } else {
+                if(theForm[z].type == 'checkbox' && theForm[z].name != 'checkall' && theForm[z].name != excludeThisElementName){
+                    theForm[z].checked = theElement.checked;
+                }
             }
         }
     }
     
+    function showGeneListInputForm(geneSymbolElementIdValue) {
+        document.getElementById('TB_GL_overlay').style.display = 'block';
+        document.getElementById('geneListSearchInputDiv').style.display = 'block';
+        document.getElementById('geneListSearchInputDiv').style.visibility = 'visible';
+        if (document.geneListSearchForm.geneListSearchTopicPublished.value == 'false') {
+            document.geneListSearchForm.geneListSearchTopicPublished.value = true;
+            dojo.event.topic.publish('geneListSearchTopic');
+            dojo.event.topic.publish('searchGeneList');
+        } else {
+            document.getElementById('geneListSearchResultsDiv').style.display = 'block';
+            document.getElementById('geneListSearchResultsDiv').style.visibility = 'visible';
+        }
+        document.geneListSearchForm.geneSymbolElementId.value = geneSymbolElementIdValue;
+    }
+    
+    function runGeneListSearch() {
+        document.geneListSearchForm.runSearchSelected.value = 'true';
+        dojo.event.topic.publish('searchGeneList');
+        document.getElementById('geneListSearchResultsDiv').style.display = 'block';
+        document.getElementById('geneListSearchResultsDiv').style.visibility = 'visible';
+    }
+    
+    function hideGeneListInputForm() {
+        document.getElementById('TB_GL_overlay').style.display = 'none';
+        document.getElementById('geneListSearchInputDiv').style.visibility = 'hidden';
+        hideGeneListSearchResults();
+    }
+    
+    function hideGeneListSearchResults() {
+        document.getElementById('geneListSearchResultsDiv').style.display = 'none';
+        document.getElementById('geneListSearchResultsDiv').style.visibility = 'hidden';
+    }
+    
+    function captureGeneListCheckBoxes(geneSymbolsTextbox) {
+        var inputForm = document.geneListSearchForm;
+        captureCheckBoxes(inputForm, geneSymbolsTextbox);
+        hideGeneListInputForm(inputForm);
+    }
     
     function showCaBioInputForm(geneSymbolElementIdValue) {
         document.getElementById('TB_overlay').style.display = 'block';
@@ -95,20 +139,27 @@
     }
     
     function captureCaBioCheckBoxes(geneSymbolsTextbox) {
-        var cbResults = '';
         var inputForm = document.caBioGeneSearchForm;
+        captureCheckBoxes(inputForm, geneSymbolsTextbox);
+        hideCaBioInputForm(inputForm);
+    }
+    
+    function captureCheckBoxes(inputForm, geneSymbolsTextbox) {
+        var cbResults = '';
         var cb_symbols_length = inputForm.cb_symbols.length;
         if (cb_symbols_length == 0 || cb_symbols_length == null) { // Only 1 checkbox
             cbResults = inputForm.cb_symbols.value;
         } else { // Multiple checkboxes.
             for (var i = 0; i < inputForm.cb_symbols.length; i++ ) {
                 if (inputForm.cb_symbols[i].checked == true) {
-                    cbResults += inputForm.cb_symbols[i].value + ',';
+                    if (cbResults != '') {
+                        cbResults += ',';
+                    }
+                    cbResults += inputForm.cb_symbols[i].value;
                 }
             }
         }
         document.getElementById(geneSymbolsTextbox).value = cbResults;
-        hideCaBioInputForm(inputForm);
     }
     
     function ignoreReturnKey(e) {

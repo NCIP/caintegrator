@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.genelist;
 
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.file.FileManager;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
@@ -343,5 +344,12 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
      */
     public List<String> getGeneSymbolList() {
         return geneSymbolList;
+    }
+    
+    /**
+     * @return the study subscription
+     */
+    public StudySubscription getSubscription() {
+        return getStudySubscription();
     }
 }

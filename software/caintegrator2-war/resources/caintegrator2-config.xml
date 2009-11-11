@@ -285,6 +285,14 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
+    
+    <bean id="searchGeneListAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.genelist.SearchGeneListAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
 
     <!-- Query Management actions -->
     

@@ -16,7 +16,7 @@
 			<key column="ID" />
 			<!-- Attributes mapping for the GeneList class -->
 			<!-- Associations mapping for the GeneList class -->
-			<set name="geneCollection" table="GENE_LIST_GENE" lazy="true" inverse="true" cascade="save-update,merge" >
+			<set name="geneCollection" table="GENE_LIST_GENE" lazy="true" cascade="save-update,merge" >
 				<cache usage="read-write" />
 				<key column="GENE_LIST_ID" />
 				<many-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Gene" column="GENE_ID" />
@@ -26,7 +26,7 @@
 			<key column="ID" />
 			<!-- Attributes mapping for the SubjectList class -->
 			<!-- Associations mapping for the SubjectList class -->
-			<set name="subjectCollection" table="SUBJECT_LIST_SUBJECT" lazy="true" inverse="true" cascade="save-update,merge" >
+			<set name="subjectCollection" table="SUBJECT_LIST_SUBJECT" lazy="true" cascade="save-update,merge" >
 				<cache usage="read-write" />
 				<key column="SUBJECT_LIST_ID" />
 				<many-to-many class="gov.nih.nci.caintegrator2.domain.translational.Subject" column="SUBJECT_ID" />
@@ -35,7 +35,7 @@
 		<joined-subclass name="SampleList" table="SAMPLE_LIST" lazy="false">
 			<key column="ID" />
 			<!-- Associations mapping for the SampleList class -->
-			<set name="sampleCollection" table="SAMPLE_LIST_SAMPLE" lazy="true" inverse="true" cascade="save-update,merge" >
+			<set name="sampleCollection" table="SAMPLE_LIST_SAMPLE" lazy="true" cascade="save-update,merge" >
 				<cache usage="read-write" />
 				<key column="SAMPLE_LIST_ID" />
 				<many-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Sample" column="SAMPLE_ID" />
