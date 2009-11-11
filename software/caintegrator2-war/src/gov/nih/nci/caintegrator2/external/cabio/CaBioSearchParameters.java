@@ -83,106 +83,144 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.analysis.cabio;
+package gov.nih.nci.caintegrator2.external.cabio;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.external.cabio.CaBioDisplayablePathway;
-import gov.nih.nci.caintegrator2.external.cabio.CaBioFacadeStub;
-import gov.nih.nci.caintegrator2.external.cabio.CaBioSearchTypeEnum;
+import gov.nih.nci.cabio.domain.Pathway;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.acegisecurity.context.SecurityContextHolder;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.opensymphony.xwork2.ActionContext;
-
-
-public class CaBioSearchActionTest {
+/**
+ * 
+ */
+public class CaBioSearchParameters {
+    /**
+     * To use all taxons.
+     */
+    public static final String ALL_TAXONS = "ALL";
     
-    private CaBioSearchAction action;
-    private CaBioFacadeStub caBioFacade;
-
-    @Before
-    public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("cabio-test-config.xml", CaBioFacadeStub.class);
-
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-
-        action = (CaBioSearchAction) context.getBean("caBioSearchAction");
-        caBioFacade = (CaBioFacadeStub) context.getBean("caBioFacadeStub");
-                
+    /**
+     * Human taxon (default).
+     */
+    public static final String HUMAN_TAXON = "human";
+    
+    private String keywords;
+    private String taxon = HUMAN_TAXON;
+    private Study study;
+    private boolean filterGenesOnStudy = true;
+    private KeywordSearchPreferenceEnum searchPreference = KeywordSearchPreferenceEnum.ANY;
+    private CaBioSearchTypeEnum searchType = CaBioSearchTypeEnum.GENE_KEYWORDS;
+    private final List<Pathway> pathways = new ArrayList<Pathway>();
+    
+    /**
+     * @return the keywords
+     */
+    public String getKeywords() {
+        return keywords;
     }
-
-
-    @Test
-    public void testInput() {
-        assertEquals(CaBioSearchAction.SUCCESS, action.input());
+    /**
+     * @param keywords the keywords to set
+     */
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
-
-
-    @Test
-    public void testSearchCaBio() {
-        // If it's not "runSearchSelected" set to true it returns success.
-        assertEquals(CaBioSearchAction.SUCCESS, action.searchCaBio());
-        
-        // If no keywords.
-        assertFalse(caBioFacade.retrieveGenesCalled);
-        action.setRunSearchSelected(true);
-        assertEquals(CaBioSearchAction.INPUT, action.searchCaBio());
-        
-        // If keywords exist but nothing is returned.
-        action.setRunSearchSelected(true);
-        action.getSearchParams().setKeywords("keywords");
-        assertEquals(CaBioSearchAction.INPUT, action.searchCaBio());
-        assertTrue(caBioFacade.retrieveGenesCalled);
-        assertFalse(action.isRunSearchSelected());
-        
-        // If keywords exist and something is returned.
-        action.setRunSearchSelected(true);
-        action.getSearchParams().setKeywords("keywords");
-        caBioFacade.isReturnResults = true;
-        assertEquals(CaBioSearchAction.SUCCESS, action.searchCaBio());
-        assertTrue(caBioFacade.retrieveGenesCalled);
-        assertFalse(action.isRunSearchSelected());
-        
-        // Now do a connection exception.
-        action.setRunSearchSelected(true);
-        action.getSearchParams().setKeywords("keywords");
-        caBioFacade.isConnectionException = true;
-        assertEquals(CaBioSearchAction.ERROR, action.searchCaBio());
-        
-        // Search on pathways now.
-        action.setRunSearchSelected(true);
-        action.getSearchParams().setKeywords("keywords");
-        action.getSearchParams().setSearchType(CaBioSearchTypeEnum.PATHWAYS);
-        caBioFacade.isReturnResults = false;
-        assertEquals(CaBioSearchAction.INPUT, action.searchCaBio());
-        caBioFacade.isReturnResults = true;
-        assertEquals(CaBioSearchAction.SUCCESS, action.searchCaBio());
-        assertTrue(caBioFacade.retrievePathwaysCalled);
-        
-        // Now search for genes based on given pathways
-        action.setRunSearchSelected(false);
-        action.setRunCaBioGeneSearchFromPathways(true);
-        action.setCheckedPathwayBoxes("0 ");
-        CaBioDisplayablePathway pathway = new CaBioDisplayablePathway();
-        pathway.setId("1");
-        // First without any pathways selected.
-        assertEquals(CaBioSearchAction.INPUT, action.searchCaBio());
-        action.getCaBioPathways().add(pathway);
-        // Now with pathways.
-        action.setRunSearchSelected(false);
-        action.setRunCaBioGeneSearchFromPathways(true);
-        assertEquals(CaBioSearchAction.SUCCESS, action.searchCaBio());
-        assertTrue(caBioFacade.retrieveGenesFromPathwaysCalled);
+    /**
+     * @return the taxon
+     */
+    public String getTaxon() {
+        return taxon;
+    }
+    /**
+     * @param taxon the taxon to set
+     */
+    public void setTaxon(String taxon) {
+        this.taxon = taxon;
+    }
+    /**
+     * @return the study
+     */
+    public Study getStudy() {
+        return study;
+    }
+    /**
+     * @param study the study to set
+     */
+    public void setStudy(Study study) {
+        this.study = study;
+    }
+    /**
+     * @return the filterGenesOnStudy
+     */
+    public boolean isFilterGenesOnStudy() {
+        return filterGenesOnStudy;
+    }
+    /**
+     * @param filterGenesOnStudy the filterGenesOnStudy to set
+     */
+    public void setFilterGenesOnStudy(boolean filterGenesOnStudy) {
+        this.filterGenesOnStudy = filterGenesOnStudy;
+    }
+    
+    /**
+     * @return the searchPreference
+     */
+    public KeywordSearchPreferenceEnum getSearchPreference() {
+        return searchPreference;
+    }
+    
+    /**
+     * @param searchPreference the searchPreference to set
+     */
+    public void setSearchPreference(KeywordSearchPreferenceEnum searchPreference) {
+        this.searchPreference = searchPreference;
+    }
+    
+    /**
+     * @return the searchPreference
+     */
+    public String getSearchPreferenceForDisplay() {
+        return searchPreference.getValue();
+    }
+    
+    /**
+     * @param searchPreferenceForDisplay the searchPreference to set
+     */
+    public void setSearchPreferenceForDisplay(String searchPreferenceForDisplay) {
+        this.searchPreference = KeywordSearchPreferenceEnum.getByValue(searchPreferenceForDisplay);
+    }
+    
+    /**
+     * @return the searchType
+     */
+    public CaBioSearchTypeEnum getSearchType() {
+        return searchType;
+    }
+    /**
+     * @param searchType the searchType to set
+     */
+    public void setSearchType(CaBioSearchTypeEnum searchType) {
+        this.searchType = searchType;
+    }
+    
+    /**
+     * @return the searchType
+     */
+    public String getSearchTypeForDisplay() {
+        return searchType.getValue();
+    }
+    /**
+     * @param searchTypeForDisplay the searchType to set
+     */
+    public void setSearchTypeForDisplay(String searchTypeForDisplay) {
+        this.searchType = CaBioSearchTypeEnum.getByValue(searchTypeForDisplay);
+    }
+    
+    /**
+     * @return the pathways
+     */
+    public List<Pathway> getPathways() {
+        return pathways;
     }
 
 }

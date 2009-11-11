@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.external.cabio;
 
+import gov.nih.nci.cabio.domain.Gene;
+import gov.nih.nci.cabio.domain.Pathway;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -116,21 +118,18 @@ public class CaBioFacadeImpl implements CaBioFacade {
     /**
      * {@inheritDoc}
      */
-    public List<CaBioDisplayableGene> retrieveGenes(CaBioGeneSearchParameters searchParams) 
+    public List<CaBioDisplayableGene> retrieveGenes(CaBioSearchParameters searchParams) 
     throws ConnectionException {
         // When using an ApplicationService must store our context and re-set it so that the user still has old
         // authentication.
         SecurityContext originalContext = SecurityContextHolder.getContext();
         CaBioApplicationService caBioApplicationService =  
             caBioApplicationServiceFactory.retrieveCaBioApplicationService(caBioUrl);
-        StringBuffer hqlString = 
-            new StringBuffer("SELECT DISTINCT g.symbol, g.id, g.fullName, g.taxon.commonName, g.hugoSymbol " 
-                                + " FROM gov.nih.nci.cabio.domain.Gene g"
-                                + " WHERE g.symbol is not null ");
+        StringBuffer hqlString = new StringBuffer(getGeneQueryString());
         List<String> params = new ArrayList<String>();
         addKeywordsToQuery(searchParams, hqlString, params);
-        if (!CaBioGeneSearchParameters.ALL_TAXONS.equals(searchParams.getTaxon())) {
-            hqlString.append(" and g.taxon.commonName LIKE ?");
+        if (!CaBioSearchParameters.ALL_TAXONS.equals(searchParams.getTaxon())) {
+            hqlString.append(" and o.taxon.commonName LIKE ?");
             params.add(searchParams.getTaxon());
         }
         HQLCriteria hqlCriteria = new HQLCriteria(hqlString.toString(), params);
@@ -138,15 +137,82 @@ public class CaBioFacadeImpl implements CaBioFacade {
         try {
             geneResults = caBioApplicationService.query(hqlCriteria);
         } catch (ApplicationException e) {
-            throw new IllegalStateException("HQL Query Failed", e);
+            throw new ConnectionException("HQL Query Failed", e);
         } finally {
             // Restore context as described above.
             SecurityContextHolder.setContext(originalContext);
         }
-        return createCaBioDisplayableGenes(geneResults, searchParams);
+        return createCaBioDisplayableGenesFromObjects(geneResults, searchParams);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<CaBioDisplayableGene> retrieveGenesFromPathways(CaBioSearchParameters searchParams) 
+    throws ConnectionException {
+        SecurityContext originalContext = SecurityContextHolder.getContext();
+        CaBioApplicationService caBioApplicationService =  
+            caBioApplicationServiceFactory.retrieveCaBioApplicationService(caBioUrl);
+        List<Gene> results = new ArrayList<Gene>();
+        List<CaBioDisplayableGene> displayableGenes = new ArrayList<CaBioDisplayableGene>();
+        try {
+            for (Pathway pathway : searchParams.getPathways()) {
+                for (Object geneResult : caBioApplicationService.search(Gene.class, pathway)) {
+                    results.add((Gene) geneResult);
+                }
+            }
+            displayableGenes = createCaBioDisplayableGenesFromGenes(results, searchParams);
+        } catch (ApplicationException e) {
+            throw new ConnectionException("CaBio search failed", e);
+        } finally {
+            SecurityContextHolder.setContext(originalContext);
+        }
+        return displayableGenes;
     }
 
-    private void addKeywordsToQuery(CaBioGeneSearchParameters searchParams, StringBuffer hqlString, 
+    /**
+     * {@inheritDoc}
+     */
+    public List<CaBioDisplayablePathway> retrievePathways(CaBioSearchParameters searchParams) 
+    throws ConnectionException {
+        // When using an ApplicationService must store our context and re-set it so that the user still has old
+        // authentication.
+        SecurityContext originalContext = SecurityContextHolder.getContext();
+        CaBioApplicationService caBioApplicationService =  
+            caBioApplicationServiceFactory.retrieveCaBioApplicationService(caBioUrl);
+        StringBuffer hqlString = new StringBuffer(getPathwayQueryString());
+        List<String> params = new ArrayList<String>();
+        addKeywordsToQuery(searchParams, hqlString, params);
+        if (!CaBioSearchParameters.ALL_TAXONS.equals(searchParams.getTaxon())) {
+            hqlString.append(" and o.taxon.commonName LIKE ?");
+            params.add(searchParams.getTaxon());
+        }
+        HQLCriteria hqlCriteria = new HQLCriteria(hqlString.toString(), params);
+        List<Object> pathwayResults;
+        try {
+            pathwayResults = caBioApplicationService.query(hqlCriteria);
+        } catch (ApplicationException e) {
+            throw new ConnectionException("HQL Query Failed", e);
+        } finally {
+            // Restore context as described above.
+            SecurityContextHolder.setContext(originalContext);
+        }
+        return createCaBioDisplayablePathways(pathwayResults);
+    }
+
+    private String getGeneQueryString() {
+        return "SELECT DISTINCT o.symbol, o.id, o.fullName, o.taxon.commonName, o.hugoSymbol " 
+                            + " FROM gov.nih.nci.cabio.domain.Gene o"
+                            + " WHERE o.symbol is not null ";
+    }
+    
+    private String getPathwayQueryString() {
+        return "SELECT o.name, o.id, o.displayValue, o.description " 
+                            + " FROM gov.nih.nci.cabio.domain.Pathway o"
+                            + " WHERE o.name is not null ";
+    }
+
+    private void addKeywordsToQuery(CaBioSearchParameters searchParams, StringBuffer hqlString, 
             List<String> params) {
         int keywordNum = 0;
         for (String keyword : StringUtils.split(searchParams.getKeywords())) {
@@ -164,14 +230,16 @@ public class CaBioFacadeImpl implements CaBioFacade {
     private void addAttributesMatchingKeywords(CaBioSearchTypeEnum searchType, StringBuffer hqlString,
             List<String> params, String keyword) {
         int attributeNum = 0;
-        for (String attribute : searchType.getCaBioObjectAttributes()) {
+        hqlString.append(" ( ");
+        for (String attribute : searchType.getSearchableAttributes()) {
             if (attributeNum != 0) {
                 hqlString.append(" OR ");
             }
-            hqlString.append(" lower(g." + attribute + ") LIKE ? ");
+            hqlString.append(" lower(o." + attribute + ") LIKE ? ");
             params.add("%" + keyword.toLowerCase(Locale.getDefault()).trim() + "%");
             attributeNum++;
         }
+        hqlString.append(" ) ");
     }
     
     /**
@@ -199,8 +267,8 @@ public class CaBioFacadeImpl implements CaBioFacade {
         return taxonResults;
     }
 
-    private List<CaBioDisplayableGene> createCaBioDisplayableGenes(List<Object> geneResults, 
-            CaBioGeneSearchParameters searchParams) {
+    private List<CaBioDisplayableGene> createCaBioDisplayableGenesFromObjects(List<Object> geneResults, 
+            CaBioSearchParameters searchParams) {
         List<CaBioDisplayableGene> genes = new ArrayList<CaBioDisplayableGene>();
         for (Object result : geneResults) {
             Object[] geneObject = (Object[]) result;
@@ -217,6 +285,49 @@ public class CaBioFacadeImpl implements CaBioFacade {
         }
         Collections.sort(genes);
         return genes;
+    }
+    
+    private List<CaBioDisplayableGene> createCaBioDisplayableGenesFromGenes(List<Gene> geneResults, 
+            CaBioSearchParameters searchParams) {
+        List<CaBioDisplayableGene> genes = new ArrayList<CaBioDisplayableGene>();
+        Set<String> usedGeneSymbols = new HashSet<String>();
+        for (Gene gene : geneResults) {
+            if (!usedGeneSymbols.contains(gene.getSymbol())) {
+                usedGeneSymbols.add(gene.getSymbol());
+                CaBioDisplayableGene displayableGene = new CaBioDisplayableGene();
+                displayableGene.setId(String.valueOf(gene.getId()));
+                displayableGene.setFullName(gene.getFullName());
+                displayableGene.setHugoSymbol(gene.getHugoSymbol());
+                displayableGene.setSymbol(gene.getSymbol());
+                displayableGene.setTaxonCommonName(gene.getTaxon().getCommonName());
+                genes.add(displayableGene);
+            }
+        }
+        if (searchParams.isFilterGenesOnStudy() && !genes.isEmpty()) {
+            genes = filterGenesNotInStudy(genes, searchParams.getStudy());
+        }
+        Collections.sort(genes);
+        return genes;
+    }
+    
+    private List<CaBioDisplayablePathway> createCaBioDisplayablePathways(List<Object> pathwayResults) {
+        List<CaBioDisplayablePathway> pathways = new ArrayList<CaBioDisplayablePathway>();
+        Set<String> usedNames = new HashSet<String>();
+        for (Object result : pathwayResults) {
+            Object[] pathwayObject = (Object[]) result;
+            String name = ((String) pathwayObject[0]);
+            if (!usedNames.contains(name)) {
+                usedNames.add(name);
+                CaBioDisplayablePathway pathway = new CaBioDisplayablePathway();
+                pathway.setName(name);
+                pathway.setId(String.valueOf((Long) pathwayObject[1]));
+                pathway.setDisplayValue((String) pathwayObject[2]);
+                pathway.setDescription((String) pathwayObject[3]);
+                pathways.add(pathway);
+            }
+        }
+        Collections.sort(pathways);
+        return pathways;
     }
     
     private List<CaBioDisplayableGene> filterGenesNotInStudy(List<CaBioDisplayableGene> genes, Study study) {

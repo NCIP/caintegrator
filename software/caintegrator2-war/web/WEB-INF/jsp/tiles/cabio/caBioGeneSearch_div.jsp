@@ -2,6 +2,8 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <s:hidden name="runSearchSelected" value="false" />
+<s:hidden name="runCaBioGeneSearchFromPathways" value="false" />
+<s:hidden name="checkedPathwayBoxes" value="" />
 
 <!-- caBio Inputs -->
 <s:div id="TB_ajaxWindowTitle"/>
@@ -13,8 +15,8 @@
 
 <s:div cssStyle="padding-left: 5px;">
     <tr>
-        <s:textfield label="Search Terms" name="geneSearchParams.keywords" id="geneKeywords" /> in 
-        <s:select name="geneSearchParams.searchTypeForDisplay" 
+        <s:textfield label="Search Terms" name="searchParams.keywords" /> in 
+        <s:select name="searchParams.searchTypeForDisplay" 
         list="@gov.nih.nci.caintegrator2.external.cabio.CaBioSearchTypeEnum@getDisplayableValues()"/>
         
     </tr>
@@ -24,16 +26,16 @@
 	    
 		<s:radio
 		    id="caBioSearchPreference"
-		    name="geneSearchParams.searchPreferenceForDisplay"
+		    name="searchParams.searchPreferenceForDisplay"
 		    list="@gov.nih.nci.caintegrator2.external.cabio.KeywordSearchPreferenceEnum@getDisplayableValues()"
 		    theme="simple"/>
 	    
     </tr>
     <tr><br>
-        <s:select name="geneSearchParams.taxon" list="taxonList" label="Choose Taxon"/>
+        <s:select name="searchParams.taxon" list="taxonList" label="Choose Taxon"/>
     </tr>
     <tr><br>
-        <s:checkbox name="geneSearchParams.filterGenesOnStudy" label="Show only genes that are part of this study" />
+        <s:checkbox name="searchParams.filterGenesOnStudy" label="Show only genes that are part of this study" />
     </tr>
     <tr><br/>
     <td style="border:0px"> 
@@ -44,13 +46,13 @@
     </tr>
 </s:div>
 <!-- /caBio Inputs -->
-<s:url id="caBioGeneSearch" action="caBioGeneSearch"/>
+<s:url id="caBioSearch" action="caBioSearch"/>
 
 <br>
 
 <s:div id="caBioGeneSearchResultsDiv" 
         theme="ajax" 
-        href="%{caBioGeneSearch}" 
+        href="%{caBioSearch}" 
         formId="caBioGeneSearchForm" 
         loadingText="<img src='images/ajax-loader.gif'/>"
         listenTopics="searchCaBio" 

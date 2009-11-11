@@ -100,7 +100,24 @@ public interface CaBioFacade {
      * @return list of displayable genes.
      * @throws ConnectionException if unable to connect to caBio.
      */
-    List<CaBioDisplayableGene> retrieveGenes(CaBioGeneSearchParameters searchParams) throws ConnectionException;
+    List<CaBioDisplayableGene> retrieveGenes(CaBioSearchParameters searchParams) throws ConnectionException;
+    
+    /**
+     * Retrieves genes from caBio given pathways.
+     * @param searchParams to search genes on.
+     * @return list of displayable genes.
+     * @throws ConnectionException if unable to connect to caBio.
+     */
+    List<CaBioDisplayableGene> retrieveGenesFromPathways(CaBioSearchParameters searchParams) 
+    throws ConnectionException;
+    
+    /**
+     * Retrievs pathways from caBio given input parameters.
+     * @param searchParams to search pathways on.
+     * @return list of displayable pathways.
+     * @throws ConnectionException if unable to connect to caBio.
+     */
+    List<CaBioDisplayablePathway> retrievePathways(CaBioSearchParameters searchParams) throws ConnectionException;
 
     /**
      * Retrieves all taxons from caBio.
