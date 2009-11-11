@@ -468,7 +468,7 @@
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
             </result>
         </action>
-        
+                
         <action name="manageGeneList" class="manageGeneListAction">
             <result type="tiles">manageGeneList</result>
             <result name="error" type="tiles">manageGeneList</result>
@@ -875,11 +875,11 @@
         </action>
         
         <!-- CaBio Actions -->
-        <action name="caBioGeneSearchInput" method="input" class="caBioSearchAction">
+        <action name="caBioSearchInput" method="input" class="caBioSearchAction">
             <result>/WEB-INF/jsp/tiles/cabio/caBioGeneSearch_div.jsp</result>
         </action>
         
-        <action name="caBioGeneSearch" method="searchForGenes" class="caBioSearchAction">
+        <action name="caBioSearch" method="searchCaBio" class="caBioSearchAction">
             <result>/WEB-INF/jsp/tiles/cabio/caBioGeneSearchResults_div.jsp</result>
             <result name="input">/WEB-INF/jsp/tiles/cabio/caBioGeneSearchResults_div.jsp</result>
             <result name="error">/WEB-INF/jsp/tiles/cabio/caBioGeneSearchResults_div.jsp</result>

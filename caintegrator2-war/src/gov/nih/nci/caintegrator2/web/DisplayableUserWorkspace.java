@@ -100,6 +100,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.external.cabio.CaBioDisplayablePathway;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
@@ -156,6 +157,7 @@ public class DisplayableUserWorkspace {
     private DownloadableFile temporaryDownloadFile;
     private final Set<StudyConfiguration> managedStudies = new HashSet<StudyConfiguration>();
     private StudyConfiguration currentStudyConfiguration;
+    private List<CaBioDisplayablePathway> caBioPathways = new ArrayList<CaBioDisplayablePathway>();
     
     /**
      * Refreshes the workspace for this session, ensuring it is attached to the current Hibernate request.
@@ -523,6 +525,20 @@ public class DisplayableUserWorkspace {
      */
     public void setCurrentStudyConfiguration(StudyConfiguration currentStudyConfiguration) {
         this.currentStudyConfiguration = currentStudyConfiguration;
+    }
+
+    /**
+     * @return the caBioPathways
+     */
+    public List<CaBioDisplayablePathway> getCaBioPathways() {
+        return caBioPathways;
+    }
+
+    /**
+     * @param caBioPathways the caBioPathways to set
+     */
+    public void setCaBioPathways(List<CaBioDisplayablePathway> caBioPathways) {
+        this.caBioPathways = caBioPathways;
     }
 
 }
