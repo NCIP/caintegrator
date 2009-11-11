@@ -96,7 +96,6 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
     }
     
     /**
-     * 
      * @return a list of gene lists, ordered by name.
      */
     public List<GeneList> getGeneLists() {
@@ -118,17 +117,22 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
     }
     
     /**
-     * 
+     * @return a list of gene list names
+     */
+    public List<String> getGeneListNames() {
+        List<String> geneListNames = new ArrayList<String>();
+        for (GeneList list : getGeneLists()) {
+            geneListNames.add(list.getName());
+        }
+        return geneListNames;
+    }
+    
+    /**
      * @param name then gene list name to check
      * @return T/F if gene list name exist
      */
     public boolean isDuplicateGeneListName(String name) {
-        for (GeneList geneList : getGeneLists()) {
-            if (geneList.getName().equals(name)) {
-                return true;
-            }
-        }
-        return false;
+        return getGeneListNames().contains(name);
     }
 
 }

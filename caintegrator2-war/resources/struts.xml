@@ -474,6 +474,17 @@
             <result name="error" type="tiles">manageGeneList</result>
             <result name="input" type="tiles">manageGeneList</result>
         </action>
+        
+        <!-- Gene List Actions -->
+        <action name="geneListSearchInput" class="searchGeneListAction">
+            <result>/WEB-INF/jsp/tiles/geneListSearch_div.jsp</result>
+        </action>
+        
+        <action name="geneListSearch" method="searchForGenes" class="searchGeneListAction">
+            <result>/WEB-INF/jsp/tiles/geneListSearchResults_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/geneListSearchResults_div.jsp</result>
+            <result name="error">/WEB-INF/jsp/tiles/geneListSearchResults_div.jsp</result>
+        </action>
                 
         <!--  Query Actions -->
         <!--  Query Actions -->
