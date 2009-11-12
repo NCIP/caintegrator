@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.logging.api.util.StringUtils;
 
 import java.io.File;
 import java.io.FileReader;
@@ -100,6 +101,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -176,8 +178,10 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
         reporterList.getReporters().add(reporter);
         reporter.setReporterList(reporterList);
         reporter.getGenes().addAll(genes);
-        reporter.setAlleleA(getAnnotationValue(fields, ALLELE_A_HEADER).charAt(0));
-        reporter.setAlleleB(getAnnotationValue(fields, ALLELE_B_HEADER).charAt(0));
+        String alleleA = getAnnotationValue(fields, ALLELE_A_HEADER); 
+        reporter.setAlleleA(StringUtils.isBlank(alleleA) ? null : alleleA.charAt(0));
+        String alleleB = getAnnotationValue(fields, ALLELE_B_HEADER);
+        reporter.setAlleleB(StringUtils.isBlank(alleleB) ? null : alleleB.charAt(0));
         reporter.setChromosome(getAnnotationValue(fields, CHROMOSOME_HEADER, NO_VALUE_INDICATOR));
         reporter.setDbSnpId(getAnnotationValue(fields, DBSNP_RS_ID_HEADER, NO_VALUE_INDICATOR));
         reporter.setPosition(getIntegerValue(fields, POSITION_HEADER));
@@ -185,11 +189,10 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
 
     private Integer getIntegerValue(String[] fields, String header) {
         String value = getAnnotationValue(fields, header);
-        if (NO_VALUE_INDICATOR.equals(value)) {
+        if (!NumberUtils.isNumber(value)) {
             return null;
-        } else {
-            return Integer.parseInt(value);
         }
+        return Integer.parseInt(value);
     }
 
     private Set<Gene> getGenes(String[] symbols, String[] fields, CaIntegrator2Dao dao) {
