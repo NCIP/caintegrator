@@ -217,7 +217,7 @@ public abstract class AbstractPlatformLoader {
      */
     protected String getAnnotationValue(String[] fields, String header, String noValueSymbol) {
         String value = fields[getHeaderToIndexMap().get(header)];
-        return value.equals(noValueSymbol) ? null : value;
+        return (value == null || value.equals(noValueSymbol)) ? null : value;
     }
 
     /**

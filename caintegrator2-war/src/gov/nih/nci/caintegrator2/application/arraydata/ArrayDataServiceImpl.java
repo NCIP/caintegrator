@@ -147,15 +147,17 @@ public class ArrayDataServiceImpl implements ArrayDataService {
             platformConfiguration.setDeploymentFinishDate(new Date());
             saveAndUpdateDeploymentStatus(platformConfiguration, listener);
             LOGGER.info("Platform named " + platformName + " has been loaded.");
-        } catch (PlatformLoadingException e) {
-            handlePlatformLoadingException(platformConfiguration, listener, e);
+        } catch (Exception e) {
+            handlePlatformException(platformConfiguration, listener, e);
+        } catch (Error e) {
+            handlePlatformException(platformConfiguration, listener, e);
         }
         return platformConfiguration;
         
     }
 
-    private void handlePlatformLoadingException(PlatformConfiguration platformConfiguration,
-            PlatformDeploymentListener listener, PlatformLoadingException e) {
+    private void handlePlatformException(PlatformConfiguration platformConfiguration,
+            PlatformDeploymentListener listener, Throwable e) {
         LOGGER.error("Deployment of platform " + platformConfiguration.getName() + " failed.", e);
         platformConfiguration.setStatus(Status.ERROR);
         platformConfiguration.setStatusDescription(e.getMessage());
