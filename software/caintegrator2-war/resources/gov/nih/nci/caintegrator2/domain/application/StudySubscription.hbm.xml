@@ -14,7 +14,7 @@
 			<key column="STUDY_SUBSCRIPTION_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.application.Query"/>
 		</set>
-		<set name="listCollection" lazy="true" cascade="save-update,merge" >
+		<set name="listCollection" lazy="true" cascade="all-delete-orphan" >
 			<cache usage="read-write" />
 			<key column="STUDY_SUBSCRIPTION_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.application.AbstractList"/>

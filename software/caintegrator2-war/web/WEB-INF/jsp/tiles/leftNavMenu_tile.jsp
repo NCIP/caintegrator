@@ -87,24 +87,28 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="#">My Gene Lists</a>
-                    <ul>
-                        <s:iterator value="displayableWorkspace.geneLists">
-                            <s:url id="editGeneListUrl" action="manageGeneList" includeParams="none">
-                                <s:param name="selectedAction" value="%{'loadGeneList'}" />
-                                <s:param name="geneListId" value="id" />
-                            </s:url>
+                <li><a href="#">Saved Lists</a>
+                    <ul style="padding: 3px 0px 10px 10px;">
+                        <li><a href="#">My Gene Lists</a>
+                            <ul>
+                                <s:iterator value="displayableWorkspace.geneLists">
+                                    <s:url id="editGeneListUrl" action="editGeneList" includeParams="none">
+                                        <s:param name="selectedAction" value="%{'editGeneList'}" />
+                                        <s:param name="geneListName" value="name" />
+                                    </s:url>
 
-                            <li style="padding: 0px 0px 2px 0px">
-                                <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
-                                    <div style="float: right; width: 110px; white-space: normal; padding: 0px 0px 0px 0px;">
-                                        <s:a href="%{editGeneListUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
-                                            title="Description: %{description}"><s:property value="name" />
-                                        </s:a>
-                                    </div>
-                                </div>
-                            </li>
-                        </s:iterator>
+                                    <li style="padding: 0px 0px 2px 0px">
+                                        <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
+                                            <div style="float: right; width: 110px; white-space: normal; padding: 0px 0px 0px 0px;">
+                                                <s:a href="%{editGeneListUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
+                                                    title="Description: %{description}"><s:property value="name" />
+                                                </s:a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </s:iterator>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
             </ul>

@@ -151,6 +151,11 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageGeneList_tile.jsp" />
         <put-attribute name="subTitle" value="Manage Gene List" />
     </definition>
+    
+    <definition name="editGeneList" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editGeneList_tile.jsp" />
+        <put-attribute name="subTitle" value="Edit Gene List" />
+    </definition>
 
     <!-- Query Management pages -->
     <!-- Query Management pages -->

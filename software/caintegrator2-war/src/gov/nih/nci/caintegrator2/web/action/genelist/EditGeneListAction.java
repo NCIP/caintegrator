@@ -87,58 +87,89 @@ package gov.nih.nci.caintegrator2.web.action.genelist;
 
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.file.FileManager;
-import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import org.apache.commons.lang.StringUtils;
-
-import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Provides functionality to list and add array designs.
  */
 @SuppressWarnings("PMD") // See createPlatform method
-public class ManageGeneListAction extends AbstractDeployedStudyAction {
+public class EditGeneListAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
-    private FileManager fileManager;
-    private File geneListFile;
-    private String geneListFileContentType;
-    private String geneListFileFileName;
+    private String geneListOldName;
     private String geneListName;
-    private String description;
-    private String geneSymbols;
     private String selectedAction;
-    private String geneListId;
-    private List<String> geneSymbolList = new ArrayList<String>();
+    private boolean editOn = true;
 
-    private static final String CREATE_GENE_LIST_ACTION = "createGeneList";
+    private static final String EDIT_ACTION = "editGeneList";
+    private static final String DELETE_ACTION = "deleteGeneList";
+    private static final String RENAME_ACTION = "renameGeneList";
     private static final String GENE_LIST_NAME = "geneListName";
-    private static final String GENE_LIST_FILE = "geneListFile";
+    private static final String HOME_PAGE = "homePage";
     private static final String EDIT_PAGE = "editPage";
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected boolean isFileUpload() {
-        return CREATE_GENE_LIST_ACTION.equalsIgnoreCase(selectedAction);
-    }
     
     /**
      * @return the Struts result.
      */
     public String execute() {
-        if (CREATE_GENE_LIST_ACTION.equals(selectedAction)) {
-            return createGeneList();
+        if (EDIT_ACTION.equals(selectedAction)) {
+            return editGeneList();
+        } else if (DELETE_ACTION.equals(selectedAction)) {
+            return deleteGeneList();
+        } else if (RENAME_ACTION.equals(selectedAction)) {
+            return renameGeneList();
         }
         return SUCCESS;
+    }
+    
+    /**
+     * Go to the edit page.
+     * @return the Struts result.
+     */
+    public String editGeneList() {
+        setGeneListOldName(getGeneListName());
+        return SUCCESS;
+    }
+    
+    /**
+     * Delete the gene list.
+     * @return the Struts result.
+     */
+    public String renameGeneList() {
+        GeneList geneList = getStudySubscription().getGeneList(geneListOldName);
+        if (geneList != null) {
+            geneList.setName(geneListName);
+            getWorkspaceService().saveUserWorkspace(getWorkspace());
+            geneListOldName = geneListName;
+            return EDIT_PAGE;
+        } else {
+            geneListNoLongerAvailable();
+            return SUCCESS;
+        }
+    }
+    
+    /**
+     * Delete the gene list.
+     * @return the Struts result.
+     */
+    public String deleteGeneList() {
+        GeneList geneList = getStudySubscription().getGeneList(getGeneListName());
+        if (geneList != null) {
+            getStudySubscription().getListCollection().remove(geneList);
+            getWorkspaceService().saveUserWorkspace(getWorkspace());
+            return HOME_PAGE;
+        } else {
+            geneListNoLongerAvailable();
+            return SUCCESS;
+        }
+    }
+    
+    private void geneListNoLongerAvailable() {
+        addActionError("The gene list '" + geneListOldName + "' is no longer available.");
+        editOn = false;
     }
     
     /**
@@ -147,12 +178,19 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
     @Override
     public void validate() {
         clearErrorsAndMessages();
-        if (CREATE_GENE_LIST_ACTION.equalsIgnoreCase(selectedAction)) {
+        if (EDIT_ACTION.equalsIgnoreCase(selectedAction)) {
+            prepareValueStack();
+            validateGeneList();
+        } else if (RENAME_ACTION.equalsIgnoreCase(selectedAction)) {
             prepareValueStack();
             validateGeneListName();
-            validateGeneListData();
-        } else {
-            super.validate();
+        }
+    }
+    
+    private void validateGeneList() {
+        if (getStudySubscription().getGeneList(getGeneListName()) == null) {
+            addActionError("The requested gene list '" + getGeneListName() + "' doesn't exist.");
+            editOn = false;
         }
     }
     
@@ -161,112 +199,8 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
             addFieldError(GENE_LIST_NAME, "Gene List name is required");
         } else if (getStudySubscription().getGeneList(getGeneListName()) != null) {
             addFieldError(GENE_LIST_NAME, "Gene List name is duplicate: " + getGeneListName());
+            setGeneListName(geneListOldName);
         }
-    }
-    
-    private void validateGeneListData() {
-        geneSymbolList.clear();
-        extractGeneSymbols(getGeneListFile());
-        extractGeneSymbols(getGeneSymbols());
-        if (geneSymbolList.isEmpty()) {
-            addActionError("There is nothing to save, you need to enter some genes or upload from a file.");
-        }
-    }
-    
-    private void extractGeneSymbols(String inputSymbols) {
-        if (!StringUtils.isEmpty(inputSymbols)) {
-            for (String symbol : inputSymbols.split(",")) {
-                geneSymbolList.add(symbol.trim());
-            }
-        }
-    }
-    
-    private void extractGeneSymbols(File uploadFile) {
-        if (uploadFile != null) {
-            CSVReader reader;
-            try {
-                reader = new CSVReader(new FileReader(uploadFile));
-                String[] symbols;
-                while ((symbols = reader.readNext()) != null) {
-                    for (String symbol : symbols) {
-                        geneSymbolList.add(symbol.trim()); 
-                    }
-                }
-                if (geneSymbolList.isEmpty()) {
-                    addFieldError(GENE_LIST_FILE, "The upload file is empty");
-                }
-            } catch (IOException e) {
-                addFieldError(GENE_LIST_FILE, " Error reading gene list file");
-            }
-        }
-    }
-
-    /**
-     * @return SUCCESS
-     */
-    private String createGeneList() {
-        GeneList geneList = new GeneList();
-        geneList.setName(getGeneListName());
-        geneList.setDescription(getDescription());
-        geneList.setSubscription(getStudySubscription());
-        getWorkspaceService().createGeneList(geneList, geneSymbolList);
-        return EDIT_PAGE;
-    }
-
-    /**
-     * @return the geneListFile
-     */
-    public File getGeneListFile() {
-        return geneListFile;
-    }
-
-    /**
-     * @param geneListFile the geneListFile to set
-     */
-    public void setGeneListFile(File geneListFile) {
-        this.geneListFile = geneListFile;
-    }
-
-    /**
-     * @return the geneListFileContentType
-     */
-    public String getGeneListFileContentType() {
-        return geneListFileContentType;
-    }
-
-    /**
-     * @param geneListFileContentType the geneListFileContentType to set
-     */
-    public void setGeneListFileContentType(String geneListFileContentType) {
-        this.geneListFileContentType = geneListFileContentType;
-    }
-
-    /**
-     * @return the geneListFileFileName
-     */
-    public String getGeneListFileFileName() {
-        return geneListFileFileName;
-    }
-
-    /**
-     * @param geneListFileFileName the platformFileFileName to set
-     */
-    public void setGeneListFileFileName(String geneListFileFileName) {
-        this.geneListFileFileName = geneListFileFileName;
-    }
-
-    /**
-     * @return the fileManager
-     */
-    public FileManager getFileManager() {
-        return fileManager;
-    }
-
-    /**
-     * @param fileManager the fileManager to set
-     */
-    public void setFileManager(FileManager fileManager) {
-        this.fileManager = fileManager;
     }
     
     /**
@@ -296,60 +230,44 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
     public void setGeneListName(String geneListName) {
         this.geneListName = geneListName;
     }
-
-    /**
-     * @return the geneListId
-     */
-    public String getGeneListId() {
-        return geneListId;
-    }
-
-    /**
-     * @param geneListId the geneListId to set
-     */
-    public void setGeneListId(String geneListId) {
-        this.geneListId = geneListId;
-    }
-
-    /**
-     * @return the geneSymbols
-     */
-    public String getGeneSymbols() {
-        return geneSymbols;
-    }
-
-    /**
-     * @param geneSymbols the geneSymbols to set
-     */
-    public void setGeneSymbols(String geneSymbols) {
-        this.geneSymbols = geneSymbols;
-    }
-
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * @return the geneSymbolList
-     */
-    public List<String> getGeneSymbolList() {
-        return geneSymbolList;
-    }
     
     /**
      * @return the study subscription
      */
     public StudySubscription getSubscription() {
         return getStudySubscription();
+    }
+    
+    /**
+     * @return the gene symbol listing
+     */
+    public String getGeneSymbolListing() {
+        StringBuffer listing = new StringBuffer();
+        for (Gene gene : getStudySubscription().getGeneList(getGeneListName()).getGeneCollection()) {
+            listing.append(gene.getSymbol());
+            listing.append('\n');
+        }
+        return listing.toString();
+    }
+
+    /**
+     * @return the geneListOldName
+     */
+    public String getGeneListOldName() {
+        return geneListOldName;
+    }
+
+    /**
+     * @param geneListOldName the geneListOldName to set
+     */
+    public void setGeneListOldName(String geneListOldName) {
+        this.geneListOldName = geneListOldName;
+    }
+
+    /**
+     * @return the editOn
+     */
+    public boolean isEditOn() {
+        return editOn;
     }
 }
