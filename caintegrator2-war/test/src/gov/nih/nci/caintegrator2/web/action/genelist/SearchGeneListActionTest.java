@@ -124,18 +124,18 @@ public class SearchGeneListActionTest extends AbstractSessionBasedTest {
     public void testAll() {
         // Test Execute
         assertEquals(ManageGeneListAction.SUCCESS, action.execute());
-        assertEquals(null, action.getGeneList());
+        assertEquals(null, action.getGeneListName());
         
         GeneList geneList = new GeneList();
         geneList.setName("List1");
         subscription.getListCollection().add(geneList);
         assertEquals(ManageGeneListAction.SUCCESS, action.execute());
-        assertEquals("List1", action.getGeneList());
+        assertEquals("List1", action.getGeneListName());
         assertEquals(0, action.getGenes().size());
         
         geneList.getGeneCollection().add(new Gene());
         assertEquals(ManageGeneListAction.SUCCESS, action.execute());
-        assertEquals("List1", action.getGeneList());
+        assertEquals("List1", action.getGeneListName());
         assertEquals(1, action.getGenes().size());
     }
 }

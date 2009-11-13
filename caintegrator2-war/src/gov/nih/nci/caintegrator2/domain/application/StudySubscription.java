@@ -128,11 +128,17 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
     }
     
     /**
-     * @param name then gene list name to check
-     * @return T/F if gene list name exist
+     * @param name then gene list name to get
+     * @return The gene list
      */
-    public boolean isDuplicateGeneListName(String name) {
-        return getGeneListNames().contains(name);
+    public GeneList getGeneList(String name) {
+        for (GeneList list : getGeneLists()) {
+            if (list.getName().equals(name)) {
+                return list;
+            }
+        }
+        return null;
     }
+    
 
 }

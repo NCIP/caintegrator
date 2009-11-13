@@ -88,69 +88,80 @@ package gov.nih.nci.caintegrator2.web.action.genelist;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
-import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.AbstractList;
+import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.file.FileManagerStub;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class ManageGeneListActionTest extends AbstractSessionBasedTest {
+import com.opensymphony.xwork2.ActionContext;
 
-    ManageGeneListAction action = new ManageGeneListAction();
-    WorkspaceServiceStub workspaceServiceStub = new WorkspaceServiceStub();
+public class EditGeneListActionTest extends AbstractSessionBasedTest {
+
+    EditGeneListAction action = new EditGeneListAction();
+    StudySubscription subscription = new StudySubscription();
+    WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
 
     @Before
     public void setUp() {
         super.setUp();
+        subscription.setId(1L);
+        subscription.setStudy(new Study());
+        subscription.getStudy().setStudyConfiguration(new StudyConfiguration());
+        subscription.setListCollection(new ArrayList<AbstractList>());
         SessionHelper.getInstance().getDisplayableUserWorkspace().
-            setCurrentStudySubscription(new StudySubscription());
-        action.setWorkspaceService(workspaceServiceStub);     
-        action.setFileManager(new FileManagerStub());
+            setCurrentStudySubscription(subscription);
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
+        workspaceService.setSubscription(subscription);
+        action.setWorkspaceService(workspaceService);
+        
+        GeneList geneList = new GeneList();
+        geneList.setName("List1");
+        subscription.getListCollection().add(geneList);
+        geneList = new GeneList();
+        geneList.setName("List2");
+        subscription.getListCollection().add(geneList);
     }
     
     @Test
     public void testAll() {
-        // Test Validate
+        action.setSelectedAction("editGeneList");
         action.validate();
         assertFalse(action.hasFieldErrors());
-        action.setSelectedAction("createGeneList");
+        
+        action.setSelectedAction("renameGeneList");
         action.validate();
         assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        assertEquals("success", action.execute());
+        
+        action.setGeneListName("List1");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        
         action.setGeneListName("Test");
         action.validate();
         assertFalse(action.hasFieldErrors());
-        assertTrue(action.hasActionErrors());
-        action.setGeneSymbols("egfr");
-        action.validate();
-        assertFalse(action.hasFieldErrors());
-        assertFalse(action.hasActionErrors());
-        assertEquals(1, action.getGeneSymbolList().size());
-        action.setGeneSymbols("egfr cox412");
-        action.validate();
-        assertEquals(1, action.getGeneSymbolList().size());
-        action.setGeneSymbols("egfr,cox412");
-        action.validate();
-        assertEquals(2, action.getGeneSymbolList().size());
-        action.setGeneSymbols(null);
-        action.setGeneListFile(TestArrayDesignFiles.EMPTY_FILE);
-        action.validate();
-        assertTrue(action.hasFieldErrors());
-        action.setGeneListFile(TestDataFiles.GENE_LIST_SAMPLES_FILE);
-        action.validate();
-        assertEquals(4, action.getGeneSymbolList().size());
-        action.setGeneSymbols("egfr,cox412");
-        action.validate();
-        assertEquals(6, action.getGeneSymbolList().size());
+        action.clearErrorsAndMessages();
+        assertEquals("success", action.execute());
         
-        // Test execute
-        action.setDescription("Test description");
-        action.setSelectedAction("createGeneList");
-        assertEquals("editPage", action.execute());
-        assertTrue(workspaceServiceStub.createGeneListCalled);
+        action.setSelectedAction("deleteGeneList");
+        action.setGeneListName("Test");
+        action.execute();
+        assertFalse(action.hasFieldErrors());
+        
+        action.setGeneListName("List1");
+        action.execute();
+        assertFalse(action.hasFieldErrors());
     }
 }

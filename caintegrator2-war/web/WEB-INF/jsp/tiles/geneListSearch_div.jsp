@@ -15,11 +15,11 @@
 
 <s:div cssStyle="padding-left: 5px;">
     <tr>
-        <s:if test="genes.isEmpty()">
+        <s:if test="studySubscription.geneListNames.isEmpty()">
             No Gene List available.
         </s:if>
         <s:else>
-            <s:select name="geneList" list="studySubscription.geneListNames" label="Gene List"
+            <s:select name="geneListName" list="studySubscription.geneListNames" label="Gene List"
                 onchange="runGeneListSearch();"/>
         </s:else>
     </tr>

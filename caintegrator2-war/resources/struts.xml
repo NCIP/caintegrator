@@ -469,13 +469,33 @@
             </result>
         </action>
                 
+        
+        <!-- Gene List Actions -->
         <action name="manageGeneList" class="manageGeneListAction">
             <result type="tiles">manageGeneList</result>
             <result name="error" type="tiles">manageGeneList</result>
             <result name="input" type="tiles">manageGeneList</result>
+            <result name="editPage" type="redirectAction">
+                <param name="actionName">editGeneList</param>
+                <param name="selectedAction">editGeneList</param>
+                <param name="geneListName">${geneListName}</param>
+            </result>
         </action>
         
-        <!-- Gene List Actions -->
+        <action name="editGeneList" class="editGeneListAction">
+            <result type="tiles">editGeneList</result>
+            <result name="error" type="tiles">editGeneList</result>
+            <result name="input" type="tiles">editGeneList</result>
+            <result name="editPage" type="redirectAction">
+                <param name="actionName">editGeneList</param>
+                <param name="selectedAction">editGeneList</param>
+                <param name="geneListName">${geneListName}</param>
+            </result>
+            <result name="homePage" type="redirectAction">
+                <param name="actionName">workspace</param>
+            </result>
+        </action>
+        
         <action name="geneListSearchInput" class="searchGeneListAction">
             <result>/WEB-INF/jsp/tiles/geneListSearch_div.jsp</result>
         </action>
