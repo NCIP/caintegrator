@@ -107,12 +107,8 @@ public class StudyDeploymentAjaxRunner implements Runnable, DeploymentListener {
      * {@inheritDoc}
      */
     public void run() {
-        setupSession();
+        username = job.getLastModifiedBy().getUsername();
         updater.getDeploymentService().performDeployment(job, this);
-    }
-
-    private void setupSession() {
-        username = job.getUserWorkspace().getUsername();
     }
 
     /**

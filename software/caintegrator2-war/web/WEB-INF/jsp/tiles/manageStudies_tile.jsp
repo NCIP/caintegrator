@@ -44,7 +44,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
-                        <th>Owner</th>
+                        <th>Last Modified By</th>
                         <th>Status</th>
                         <th>Deployment Start Date</th>
                         <th>Deployment Finish Date</th>

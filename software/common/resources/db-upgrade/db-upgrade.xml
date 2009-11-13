@@ -23,4 +23,8 @@
         <comment>Updates DB for v1.1.1</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.1.sql"/>
     </changeSet>
+    <changeSet id="1.1.2" author="tandrews">
+        <comment>Adds column "LAST_MODIFIED_BY_USER_ID" to STUDY_CONFIGURATION table</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.2.sql"/>
+    </changeSet>
 </databaseChangeLog>

@@ -128,7 +128,7 @@ public class GenomicDataSourceAjaxRunner implements Runnable {
 
     private void setupSession() {
         genomicSource = updater.getStudyManagementService().getRefreshedGenomicSource(genomicSourceId);
-        username = genomicSource.getStudyConfiguration().getUserWorkspace().getUsername();
+        username = genomicSource.getStudyConfiguration().getLastModifiedBy().getUsername();
     }
 
     private void addError(String message, Exception e) {

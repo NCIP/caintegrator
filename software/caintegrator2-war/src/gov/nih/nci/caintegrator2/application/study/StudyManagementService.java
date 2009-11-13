@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
@@ -499,4 +500,11 @@ public interface StudyManagementService {
      */
     void saveCopyNumberMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration, 
             File mappingFile, String filename) throws IOException;
+
+    /**
+     * Sets the lastModifiedBy attribute of a StudyConfiguration to the current user's workspace.
+     * @param studyConfiguration that is being modified by the user.
+     * @param lastModifiedBy the user to last modify this study.
+     */
+    void setLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy);
 }

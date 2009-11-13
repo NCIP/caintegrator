@@ -122,6 +122,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
     private List<ImageDataSourceConfiguration> imageDataSources = new ArrayList<ImageDataSourceConfiguration>();
     private StudyLogo studyLogo;
     private UserWorkspace userWorkspace;
+    private UserWorkspace lastModifiedBy;
     private Date deploymentStartDate;
     private Date deploymentFinishDate;
     private transient Map<String, StudySubjectAssignment> identifierToSubjectAssignmentMap;
@@ -470,6 +471,20 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
      */
     public void setUserWorkspace(UserWorkspace userWorkspace) {
         this.userWorkspace = userWorkspace;
+    }
+
+    /**
+     * @return the lastModifiedBy
+     */
+    public UserWorkspace getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    /**
+     * @param lastModifiedBy the lastModifiedBy to set
+     */
+    public void setLastModifiedBy(UserWorkspace lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 
     /**
