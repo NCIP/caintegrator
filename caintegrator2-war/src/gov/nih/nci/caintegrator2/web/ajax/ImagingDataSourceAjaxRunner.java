@@ -142,7 +142,7 @@ public class ImagingDataSourceAjaxRunner implements Runnable {
 
     private void setupSession() {
         imagingSource = updater.getStudyManagementService().getRefreshedImageSource(imageDataSourceId);
-        username = imagingSource.getStudyConfiguration().getUserWorkspace().getUsername();
+        username = imagingSource.getStudyConfiguration().getLastModifiedBy().getUsername();
     }
 
     private void addSource() throws ConnectionException {

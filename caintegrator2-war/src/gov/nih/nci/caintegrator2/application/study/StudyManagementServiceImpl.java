@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -1003,6 +1004,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     public void setSecurityManager(SecurityManager securityManager) {
         this.securityManager = securityManager;
+    }
+
+   /**
+    * {@inheritDoc}
+    */
+    public void setLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy) {
+        studyConfiguration.setLastModifiedBy(lastModifiedBy);
+        dao.save(studyConfiguration);
     }
 
 

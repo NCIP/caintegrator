@@ -87,7 +87,22 @@
                                 <s:property value="studyConfiguration.statusDescription"/>
                             </td>
                         </tr>
-                        
+                        <tr>
+                            <td class="tdLabel" align="right">
+                                <label class="label">Owner:</label>
+                            </td>
+                            <td>
+                                <s:property value="studyConfiguration.userWorkspace.username"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdLabel" align="right">
+                                <label class="label">Last Modified By:</label>
+                            </td>
+                            <td>
+                                <s:property value="studyConfiguration.lastModifiedBy.username"/>
+                            </td>
+                        </tr>
                         <s:submit action="saveStudy" value="Save" cssStyle="display:none;"/>
                         <s:if test="%{studyConfiguration.id != null}">
                             <s:if test="%{studyConfiguration.deployable}">
