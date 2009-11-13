@@ -196,6 +196,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             return INPUT;
         }
         getImageSourceConfiguration().setStatus(Status.PROCESSING);
+        setLastModifiedByCurrentUser();
         if (!mapOnly) {
             getStudyManagementService().addImageSourceToStudy(getStudyConfiguration(), getImageSourceConfiguration());
         }

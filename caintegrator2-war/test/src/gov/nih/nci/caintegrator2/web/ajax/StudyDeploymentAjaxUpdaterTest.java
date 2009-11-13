@@ -144,6 +144,7 @@ public class StudyDeploymentAjaxUpdaterTest {
     @Test
     public void testRunJob() throws InterruptedException {
         studyConfiguration.setUserWorkspace(workspaceService.getWorkspace());
+        studyConfiguration.setLastModifiedBy(workspaceService.getWorkspace());
         deploymentServiceStub.refreshedStudyConfiguration = studyConfiguration;
         updater.runJob(studyConfiguration);
         Thread.sleep(500);

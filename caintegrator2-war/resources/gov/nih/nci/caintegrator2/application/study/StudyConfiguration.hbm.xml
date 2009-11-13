@@ -57,5 +57,8 @@
         
         <many-to-one name="userWorkspace" class="gov.nih.nci.caintegrator2.domain.application.UserWorkspace" column="USER_WORKSPACE_ID"
             lazy="proxy" cascade="none" />
+            
+        <many-to-one name="lastModifiedBy" class="gov.nih.nci.caintegrator2.domain.application.UserWorkspace" column="LAST_MODIFIED_BY_USER_ID"
+            lazy="proxy" cascade="none" />
 	</class>
 </hibernate-mapping>

@@ -197,7 +197,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         ImageDataSourceConfiguration imageSource = loadImages();
         mapImages(imageSource);
         loadImageAnnotation(imageSource);
-        deploy();
+        deploy(userWorkspace);
         checkArrayData();
         checkQueries();
     }
@@ -483,8 +483,9 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
 
     abstract protected String getControlSamplesFileName();
     
-    private void deploy() {
+    private void deploy(UserWorkspace userWorkspace) {
         logStart();
+        service.setLastModifiedByCurrentUser(studyConfiguration, userWorkspace);
         deploymentService.prepareForDeployment(studyConfiguration, null);
         Status status = deploymentService.performDeployment(studyConfiguration, null);
         logEnd();

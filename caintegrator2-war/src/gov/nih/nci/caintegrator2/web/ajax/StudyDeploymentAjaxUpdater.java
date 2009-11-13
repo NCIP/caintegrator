@@ -107,7 +107,7 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String JOB_STUDY_NAME = "studyName_";
     private static final String JOB_STUDY_DESCRIPTION = "studyDescription_";
     private static final String JOB_STUDY_STATUS = "studyStatus_";
-    private static final String JOB_STUDY_OWNER = "studyOwner_";
+    private static final String JOB_LAST_MODIFIED_BY = "studyLastModified_";
     private static final String JOB_EDIT_STUDY_URL = "studyJobEditUrl_";
     private static final String JOB_DELETE_STUDY_URL = "studyJobDeleteUrl_";
     private static final String JOB_START_DATE = "studyJobStartDate_";
@@ -155,7 +155,7 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
         String endSpan = "\"> </span>";
         rowString[0][0] = startSpan + JOB_STUDY_NAME + id + endSpan;
         rowString[0][1] = startSpan + JOB_STUDY_DESCRIPTION + id + endSpan;
-        rowString[0][2] = startSpan + JOB_STUDY_OWNER + id + endSpan;
+        rowString[0][2] = startSpan + JOB_LAST_MODIFIED_BY + id + endSpan;
         rowString[0][3] = startSpan + JOB_STUDY_STATUS + id + endSpan;
         rowString[0][4] = startSpan + JOB_START_DATE + id + endSpan;
         rowString[0][5] = startSpan + JOB_FINISH_DATE + id + endSpan;
@@ -203,8 +203,8 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
                           studyConfiguration.getStudy().getShortTitleText());
         utilThis.setValue(JOB_STUDY_DESCRIPTION + studyConfigurationId, 
                           studyConfiguration.getStudy().getLongTitleText());
-        utilThis.setValue(JOB_STUDY_OWNER + studyConfigurationId, 
-                          studyConfiguration.getUserWorkspace().getUsername());
+        utilThis.setValue(JOB_LAST_MODIFIED_BY + studyConfigurationId, 
+                          studyConfiguration.getLastModifiedBy().getUsername());
         utilThis.setValue(JOB_STUDY_STATUS + studyConfigurationId, 
                           getStatusMessage(studyConfiguration.getStatus()));
         utilThis.setValue(JOB_START_DATE + studyConfigurationId, 
