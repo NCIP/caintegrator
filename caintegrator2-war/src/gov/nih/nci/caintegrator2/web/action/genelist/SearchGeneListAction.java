@@ -93,7 +93,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ * Action to search for gene list.
  */
 public class SearchGeneListAction extends AbstractCaIntegrator2Action {
 
@@ -102,7 +102,7 @@ public class SearchGeneListAction extends AbstractCaIntegrator2Action {
     // JSP Form Hidden Variables
     private String geneSymbolElementId;
     private boolean geneListSearchTopicPublished = false;
-    private String geneList = null;
+    private String geneListName = null;
     private List<Gene> genes;
 
     /**
@@ -110,13 +110,13 @@ public class SearchGeneListAction extends AbstractCaIntegrator2Action {
      */
     public String execute() {
         setDefaultGeneList();
-        retrieveGenes();
         return SUCCESS;
     }
     
     private void setDefaultGeneList() {
         if (!getStudySubscription().getGeneLists().isEmpty()) {
-            geneList = getStudySubscription().getGeneLists().get(0).getName();
+            geneListName = getStudySubscription().getGeneLists().get(0).getName();
+            retrieveGenes();
         }
     }
     
@@ -131,11 +131,9 @@ public class SearchGeneListAction extends AbstractCaIntegrator2Action {
     
     private void retrieveGenes() {
         genes = new ArrayList<Gene>();
-        for (GeneList list : getStudySubscription().getGeneLists()) {
-            if (list.getName().equals(getGeneList())) {
-                genes.addAll(list.getGeneCollection());
-                return;
-            }
+        GeneList list = getStudySubscription().getGeneList(getGeneListName());
+        if (list != null) {
+            genes.addAll(list.getGeneCollection());
         }
     }
 
@@ -168,17 +166,17 @@ public class SearchGeneListAction extends AbstractCaIntegrator2Action {
     }
     
     /**
-     * @return the geneList
+     * @return the geneListName
      */
-    public String getGeneList() {
-        return geneList;
+    public String getGeneListName() {
+        return geneListName;
     }
 
     /**
-     * @param geneList the geneList to set
+     * @param geneListName the geneListName to set
      */
-    public void setGeneList(String geneList) {
-        this.geneList = geneList;
+    public void setGeneListName(String geneListName) {
+        this.geneListName = geneListName;
     }
 
     /**
