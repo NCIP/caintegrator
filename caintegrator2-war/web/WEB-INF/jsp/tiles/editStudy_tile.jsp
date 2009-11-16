@@ -103,6 +103,14 @@
                                 <s:property value="studyConfiguration.lastModifiedBy.username"/>
                             </td>
                         </tr>
+                        <tr>
+                            <td class="tdLabel" align="right">
+                                <label class="label">Last Modified Date:</label>
+                            </td>
+                            <td>
+                                <s:property value="studyConfiguration.displayableLastModifiedDate"/>
+                            </td>
+                        </tr>
                         <s:submit action="saveStudy" value="Save" cssStyle="display:none;"/>
                         <s:if test="%{studyConfiguration.id != null}">
                             <s:if test="%{studyConfiguration.deployable}">
@@ -362,6 +370,9 @@
                 </s:else>
             </s:if>
             <li><input type="image" src="images/btn_save.gif" alt="Save" name="action:saveStudy" id="editStudy_saveStudy" onClick="document.getElementById('studyDeploymentForm').action='/caintegrator2/saveStudy.action'; document.getElementById('studyDeploymentForm').submit()"/></li>
+            <li> <s:url id="manageStudiesUrl" includeParams="none" action="manageStudies" />
+            <s:a href="%{manageStudiesUrl}" cssClass="btn" cssStyle="margin:0 5px;"><span class="btn_img"><span class="cancel">Cancel</span></span></s:a></li>
+            
             </ul>   
         </div>
     

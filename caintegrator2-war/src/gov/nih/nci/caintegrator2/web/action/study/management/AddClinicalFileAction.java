@@ -119,6 +119,7 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
                 getStudyManagementService().addClinicalAnnotationFile(getStudyConfiguration(), getClinicalFile(), 
                         getClinicalFileFileName());
             setClinicalSource(clinicalSource);
+            setLastModifiedByCurrentUser();
             return SUCCESS;
         } catch (ValidationException e) {
             setFieldError("Invalid file: " + e.getResult().getInvalidMessage());
