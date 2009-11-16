@@ -197,6 +197,7 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
             getStudyManagementService().saveCopyNumberMappingFile(getGenomicSource(), getCopyNumberMappingFile(), 
                     getCopyNumberMappingFileFileName());
             getStudyManagementService().save(getStudyConfiguration());
+            setLastModifiedByCurrentUser();
             return SUCCESS;
         } catch (Exception e) {
             addActionError("An unexpected error has occurred, please report this problem - " + e.getMessage());

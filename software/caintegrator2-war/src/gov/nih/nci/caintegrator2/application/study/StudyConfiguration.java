@@ -97,18 +97,21 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Subject;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * Holds data about the sources of study data and authorization for access to data.
  */
+@SuppressWarnings({"PMD.ExcessiveClassLength", "PMD.TooManyFields" })
 public class StudyConfiguration extends AbstractCaIntegrator2Object {
     
     private static final long serialVersionUID = 1L;
@@ -123,6 +126,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
     private StudyLogo studyLogo;
     private UserWorkspace userWorkspace;
     private UserWorkspace lastModifiedBy;
+    private Date lastModifiedDate;
     private Date deploymentStartDate;
     private Date deploymentFinishDate;
     private transient Map<String, StudySubjectAssignment> identifierToSubjectAssignmentMap;
@@ -485,6 +489,28 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
      */
     public void setLastModifiedBy(UserWorkspace lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
+    }
+
+    /**
+     * @return the lastModifiedDate
+     */
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    /**
+     * @param lastModifiedDate the lastModifiedDate to set
+     */
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+    
+    /**
+     * @return the lastModifiedDate to display to user.
+     */
+    public String getDisplayableLastModifiedDate() {
+        return lastModifiedDate == null ? "" 
+                : new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(lastModifiedDate); 
     }
 
     /**

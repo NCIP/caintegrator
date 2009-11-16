@@ -141,6 +141,7 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
             try {
                 getStudyManagementService().addControlSampleSet(getGenomicSource(),
                         getControlSampleSetName(), getControlSampleFile(), getControlSampleFileFileName());
+                setLastModifiedByCurrentUser();
                 return SUCCESS;
             } catch (ValidationException e) {
                 setControlMappingFieldError("Invalid file: " + e.getResult().getInvalidMessage());
@@ -160,6 +161,7 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
                 getStudyManagementService().mapSamples(getStudyConfiguration(), getSampleMappingFile(), 
                         getGenomicSource());
                 persistFileName();
+                setLastModifiedByCurrentUser();
                 return SUCCESS;
             } catch (ValidationException e) {
                 setSampleMappingFieldError("Invalid file: " + e.getResult().getInvalidMessage());

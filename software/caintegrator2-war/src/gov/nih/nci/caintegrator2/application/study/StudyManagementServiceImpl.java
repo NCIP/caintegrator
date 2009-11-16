@@ -121,6 +121,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -1011,6 +1012,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     */
     public void setLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy) {
         studyConfiguration.setLastModifiedBy(lastModifiedBy);
+        studyConfiguration.setLastModifiedDate(new Date());
         dao.save(studyConfiguration);
     }
 

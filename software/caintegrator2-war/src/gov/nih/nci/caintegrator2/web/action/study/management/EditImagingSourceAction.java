@@ -219,6 +219,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
      */
     public String delete() {
         try {
+            setLastModifiedByCurrentUser();
             getStudyManagementService().delete(getStudyConfiguration(), getImageSourceConfiguration());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
@@ -249,6 +250,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             return INPUT;
         }
         try {
+            setLastModifiedByCurrentUser();
             getImageSourceConfiguration().setImageAnnotationConfiguration(
                     getStudyManagementService().addImageAnnotationFile(getImageSourceConfiguration(),
                             getImageAnnotationFile(), getImageAnnotationFileFileName()));
@@ -268,6 +270,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
      */
     public String loadImageAnnotations() {
         try {
+            setLastModifiedByCurrentUser();
             getStudyManagementService().loadImageAnnotation(getImageSourceConfiguration());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
