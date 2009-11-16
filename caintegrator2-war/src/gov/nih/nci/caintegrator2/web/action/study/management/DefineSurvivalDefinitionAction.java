@@ -241,6 +241,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
      * @return the Struts result.
      */
     public String newSurvivalValueDefinition() {
+        setLastModifiedByCurrentUser();
         survivalValueDefinition = getStudyManagementService().
                                     createNewSurvivalValueDefinition(getStudyConfiguration().getStudy());
         survivalDefinitionFormValues.clear();
@@ -254,6 +255,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
      * @return the Struts result.
      */
     public String deleteSurvivalValueDefinition() {
+        setLastModifiedByCurrentUser();
         getStudyManagementService().
             removeSurvivalValueDefinition(getStudyConfiguration().getStudy(), getSurvivalValueDefinition());
         this.clear();
@@ -276,7 +278,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
         if (lastFollowupDate.getId() != null) {
             survivalValueDefinition.setLastFollowupDate(lastFollowupDate);
         }
-                    
+        setLastModifiedByCurrentUser();
         getStudyManagementService().save(getStudyConfiguration());
         survivalDefinitionFormValues.clear();
         return SUCCESS;

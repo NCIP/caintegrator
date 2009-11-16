@@ -153,6 +153,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
            || !getStudyConfiguration().getGenomicDataSources().contains(getGenomicSource())) {
             return SUCCESS;
         }
+        setLastModifiedByCurrentUser();
         getStudyManagementService().delete(getStudyConfiguration(), getGenomicSource());
         return SUCCESS;
     }

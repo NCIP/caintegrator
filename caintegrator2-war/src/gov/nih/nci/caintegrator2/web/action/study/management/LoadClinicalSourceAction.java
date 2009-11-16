@@ -101,6 +101,7 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
     @Override
     public String execute() {
         try {
+            setLastModifiedByCurrentUser();
             getStudyManagementService().loadClinicalAnnotation(getStudyConfiguration(), getClinicalSource());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
@@ -115,6 +116,7 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
      */
     public String reLoad() {
         try {
+            setLastModifiedByCurrentUser();
             getStudyManagementService().reLoadClinicalAnnotation(getStudyConfiguration());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
@@ -129,6 +131,7 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
      */
     public String delete() {
         try {
+            setLastModifiedByCurrentUser();
             getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
             getStudyManagementService().delete(getStudyConfiguration(), getClinicalSource());
         } catch (ValidationException e) {
