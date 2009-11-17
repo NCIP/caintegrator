@@ -124,6 +124,8 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
     private static final String CHROMOSOME_HEADER = "Chromosome";
     private static final String POSITION_HEADER = "Physical Position";
     private Map<String, String> fileHeaders;
+    private static final String[] REQUIRED_HEADERS = {PROBE_SET_ID_HEADER, GENE_SYMBOL_HEADER,
+        ALLELE_A_HEADER, ALLELE_B_HEADER, CHROMOSOME_HEADER, POSITION_HEADER}; 
 
     AffymetrixDnaAnalysisPlatformLoader(AffymetrixDnaPlatformSource source) {
         super(source);
@@ -223,9 +225,10 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
     }
 
     private void loadHeaders() throws PlatformLoadingException, IOException {
-        AffymetrixAnnotationHeaderReader headerReader = new AffymetrixAnnotationHeaderReader(getAnnotationFileReader());
+        AffymetrixAnnotationHeaderReader headerReader = new AffymetrixAnnotationHeaderReader(
+                getAnnotationFileReader());
         fileHeaders = headerReader.getFileHeaders();
-        loadAnnotationHeaders(headerReader.getDataHeaders());
+        loadAnnotationHeaders(headerReader.getDataHeaders(), REQUIRED_HEADERS);
     }
 
     @Override

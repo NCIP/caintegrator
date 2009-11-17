@@ -112,16 +112,17 @@ class AffymetrixExpressionPlatformLoader extends AbstractExpressionPlatformLoade
     private static final Logger LOGGER = Logger.getLogger(AffymetrixExpressionPlatformLoader.class);
     
     private static final String PROBE_SET_ID_HEADER = "Probe Set ID";
-    static final String GENE_SYMBOL_HEADER = "Gene Symbol";
+    private static final String GENE_SYMBOL_HEADER = "Gene Symbol";
     private static final String ENTREZ_GENE_HEADER = "Entrez Gene";
     private static final String ENSEMBL_HEADER = "Ensembl";
     private static final String UNIGENE_ID_HEADER = "UniGene ID";
-
     private static final String CHIP_TYPE_HEADER = "chip_type";
     private static final String VERSION_HEADER = "netaffx-annotation-netaffx-build";
     private static final String GENOME_VERSION_HEADER = "genome-version";
     private static final String NO_VALUE_INDICATOR = "---";
-
+    private static final String[] REQUIRED_HEADERS = {PROBE_SET_ID_HEADER, GENE_SYMBOL_HEADER, ENTREZ_GENE_HEADER,
+        ENSEMBL_HEADER, UNIGENE_ID_HEADER};
+    
     private Map<String, String> fileHeaders;
 
     AffymetrixExpressionPlatformLoader(AffymetrixExpressionPlatformSource source) {
@@ -176,9 +177,10 @@ class AffymetrixExpressionPlatformLoader extends AbstractExpressionPlatformLoade
     }
 
     private void loadHeaders() throws PlatformLoadingException, IOException {
-        AffymetrixAnnotationHeaderReader headerReader = new AffymetrixAnnotationHeaderReader(getAnnotationFileReader());
+        AffymetrixAnnotationHeaderReader headerReader = new AffymetrixAnnotationHeaderReader(
+                getAnnotationFileReader());
         fileHeaders = headerReader.getFileHeaders();
-        loadAnnotationHeaders(headerReader.getDataHeaders());
+        loadAnnotationHeaders(headerReader.getDataHeaders(), REQUIRED_HEADERS);
     }
     
     void loadAnnotations(String[] fields, ReporterList geneReporters, ReporterList probeSetReporters, 
