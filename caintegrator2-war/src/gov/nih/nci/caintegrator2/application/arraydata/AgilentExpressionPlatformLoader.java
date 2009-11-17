@@ -114,16 +114,21 @@ class AgilentExpressionPlatformLoader extends AbstractExpressionPlatformLoader {
     private static final String GENE_NAME_HEADER = "GeneName";
     private static final String ACCESSIONS_HEADER = "Accessions";
     private static final String NO_GENE_SYMBOL = "";
+    private static final String[] REQUIRED_HEADERS = {PROBE_SET_ID_HEADER, GENE_SYMBOL_HEADER, GENE_NAME_HEADER,
+        ACCESSIONS_HEADER};
 
     // ADF file headers
     private static final String ADF_FIRST_FIELD_HEADER = "X_Block";
     private static final String ADF_PROBE_SET_ID_HEADER = "Reporter_ID";
     private static final String ADF_GENE_SYMBOL_HEADER = "Composite";
     private static final String ADF_NO_GENE_SYMBOL = "NOMATCH";
+    private static final String[] ADF_REQUIRED_HEADERS = {ADF_FIRST_FIELD_HEADER, ADF_PROBE_SET_ID_HEADER,
+        ADF_GENE_SYMBOL_HEADER};
 
     private String firstFieldHeader;
     private String probeIdHeader;
     private String geneSymbolHeader;
+    private String[] requiredHeaders;
     private String noGeneSymbol;
     private final Set<String> probeSetNames;
 
@@ -144,11 +149,13 @@ class AgilentExpressionPlatformLoader extends AbstractExpressionPlatformLoader {
             probeIdHeader = ADF_PROBE_SET_ID_HEADER;
             geneSymbolHeader = ADF_GENE_SYMBOL_HEADER;
             noGeneSymbol = ADF_NO_GENE_SYMBOL;
+            requiredHeaders = ADF_REQUIRED_HEADERS;
         } else {
             firstFieldHeader = PROBE_SET_ID_HEADER;
             probeIdHeader = PROBE_SET_ID_HEADER;
             geneSymbolHeader = GENE_SYMBOL_HEADER;
             noGeneSymbol = NO_GENE_SYMBOL;
+            requiredHeaders = REQUIRED_HEADERS;
         }
     }
 
@@ -187,7 +194,7 @@ class AgilentExpressionPlatformLoader extends AbstractExpressionPlatformLoader {
         String[] fields;
         while ((fields = getAnnotationFileReader().readNext()) != null) {
             if (isAnnotationHeadersLine(fields, firstFieldHeader)) {
-                loadAnnotationHeaders(fields);
+                loadAnnotationHeaders(fields, requiredHeaders);
                 return;
             }
         }        
