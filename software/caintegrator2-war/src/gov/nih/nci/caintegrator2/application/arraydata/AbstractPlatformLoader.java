@@ -162,10 +162,22 @@ public abstract class AbstractPlatformLoader {
     /**
      * 
      * @param headers the mapping header
+     * @param requiredHeaders the headers to validate
+     * @throws PlatformLoadingException when headers don't match
      */
-    protected void loadAnnotationHeaders(String[] headers) {
+    protected void loadAnnotationHeaders(String[] headers, String[] requiredHeaders)
+    throws PlatformLoadingException {
         for (int i = 0; i < headers.length; i++) {
             headerToIndexMap.put(headers[i], i);
+        }
+        validate(requiredHeaders);
+    }
+    
+    private void validate(String[] requiredHeaders) throws PlatformLoadingException {
+        for (String header : requiredHeaders) {
+            if (!headerToIndexMap.containsKey(header)) {
+                throw new PlatformLoadingException("Invalid file format; Headers not match.");
+            }
         }
     }
 
