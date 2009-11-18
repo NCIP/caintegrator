@@ -99,7 +99,11 @@
 
                                     <li style="padding: 0px 0px 2px 0px">
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
-                                            <div style="float: right; width: 110px; white-space: normal; padding: 0px 0px 0px 0px;">
+                                            <div style="float: left; white-space: nowrap; width: 22px;">
+                                                <s:a href="%{editGeneListUrl}" cssClass="queryAction" cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    title="Edit List: %{name}">&nbsp;</s:a>
+                                            </div>
+                                            <div style="float: left; width: 110px; white-space: normal; padding: 0px 0px 0px 0px;">
                                                 <s:a href="%{editGeneListUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
                                                     title="Description: %{description}"><s:property value="name" />
                                                 </s:a>
