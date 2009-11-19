@@ -7,11 +7,11 @@
     
         <div id="footer">
         
-            <a href="contact.htm">CONTACT US</a>
+            <a href="mailto:ncicb@pop.nci.nih.gov?subject=caIntegrator2">CONTACT US</a>
             <a href="http://www.nih.gov/about/privacy.htm">PRIVACY NOTICE</a>
             <a href="http://www.nih.gov/about/disclaim.htm">DISCLAIMER</a>
             <a href="http://www3.cancer.gov/accessibility/nci508.htm">ACCESSIBILITY</a>
-            <a href="help.htm" class="last">SUPPORT</a> 
+            <a href="javascript:openWin('/caintegrator2//help/wwhelp/wwhimpl/js/html/wwhelp.htm?href=Getting_Started.2.9.html#1136640')" class="last">SUPPORT</a> 
         
         </div>
         
