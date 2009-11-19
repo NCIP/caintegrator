@@ -83,135 +83,126 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.caarray;
+package gov.nih.nci.caintegrator2.application.study.deployment;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataSingleFileParser;
+import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import au.com.bytecode.opencsv.CSVReader;
+import org.apache.log4j.Logger;
 
 /**
- * Reads data in Agilent data file.
+ * Reads and retrieves copy number data from a caArray instance.
  */
-public final class AgilentLevelTwoDataFileParser {
+class AgilentCopyNumberMappingSingleFileHandler extends AbstractCopyNumberMappingFileHandler {
+    
+    static final String FILE_TYPE = "data";
+    
+    private static final Logger LOGGER = Logger.getLogger(AgilentCopyNumberMappingSingleFileHandler.class);
+    
+    AgilentCopyNumberMappingSingleFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
+            ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+        super(genomicSource, caArrayFacade, arrayDataService, dao);
+    }
 
-    /**
-     * The INSTANCE of the AgilentDataLevelTwoFileParser.
-     */
-    public static final AgilentLevelTwoDataFileParser INSTANCE = new AgilentLevelTwoDataFileParser();
+    @Override
+    void doneWithFile(File dataFile) {
+        dataFile.delete();
+    }
+
+    @Override
+    List<ArrayDataValues> loadArrayData() 
+    throws ConnectionException, DataRetrievalException, ValidationException {
+        List<ArrayDataValues> arrayDataValuesList = new ArrayList<ArrayDataValues>();
+        File dataFile = getDataFile(getDataFileName());
+        try {
+            PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(
+                    getGenomicSource().getPlatformName()));
+            Set<ReporterList> reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+            Map<String, Map<String, Float>> agilentDataMap = AgilentLevelTwoDataSingleFileParser.INSTANCE.extractData(
+                    dataFile, getSampleList());
+            loadArrayData(arrayDataValuesList, platformHelper, reporterLists, agilentDataMap);
+            return arrayDataValuesList;
+        } finally {
+            doneWithFile(dataFile);
+        }
+    }
+
+    private List<String> getSampleList() {
+        List<String> samples = new ArrayList<String>();
+        for (Sample sample : getSampleToFilenamesMap().keySet()) {
+            samples.add(sample.getName());
+        }
+        return samples;
+    }
+
+    private Sample getSample(String sampleName) {
+        for (Sample sample : getSampleToFilenamesMap().keySet()) {
+            if (sampleName.equals(sample.getName())) {
+                return sample;
+            }
+        }
+        return null;
+    }
     
-    private CSVReader dataFileReader;
-    private static final String SAMPLE_HEADER = "Hybridization Ref";
-    private static final String PROBE_NAME = "ProbeID";
-    private final Map<String, Integer> sampleToIndexMap = new HashMap<String, Integer>();
-    
-    /**
-     * Extract data from the data file.
-     * @param dataFile the data file.
-     * @param sampleList the list of mapped samples
-     * @return the extracted data.
-     * @throws DataRetrievalException when error parsing.
-     */
-    public Map<String, Map<String, Float>> extractData(File dataFile, List<String> sampleList)
+    private void loadArrayData(List<ArrayDataValues> arrayDataValuesList, PlatformHelper platformHelper,
+            Set<ReporterList> reporterLists, Map<String, Map<String, Float>> agilentDataMap)
     throws DataRetrievalException {
-        try {
-            return extractData(new InputStreamReader(new FileInputStream(dataFile)), sampleList);
-        } catch (IOException e) {
-            throw new DataRetrievalException("Couldn't read Agilent data file.", e);
-        }
-    }
-    
-    private Map<String, Map<String, Float>> extractData(InputStreamReader inputStreamReader,
-            List<String> sampleList) throws DataRetrievalException {
-        try {
-            dataFileReader = new CSVReader(inputStreamReader, '\t');
-            loadHeaders(sampleList);
-            Map<String, Map<String, Float>> agilentDataMap = new HashMap<String, Map<String, Float>>();
-            loadData(agilentDataMap);
-            validateSampleMapping(agilentDataMap, sampleList);
-            return agilentDataMap;
-        } catch (IOException e) {
-            throw new DataRetrievalException("Couldn't read Agilent data file.", e);
-        }
-    }
-
-    /**
-     * @param agilentDataMap
-     * @throws IOException
-     */
-    private void loadData(Map<String, Map<String, Float>> agilentDataMap) throws IOException {
-        String[] fields;
-        while ((fields = dataFileReader.readNext()) != null) {
-            String probeName = fields[0];
-            for (String sampleName : sampleToIndexMap.keySet()) {
-                Float log2Ratio = getLog2Ratio(fields, sampleToIndexMap.get(sampleName));
-                if (log2Ratio != null) {
-                    Map<String, Float> reporterMap = getReporterMap(agilentDataMap, sampleName);
-                    reporterMap.put(probeName, log2Ratio);
+        for (String sampleName : agilentDataMap.keySet()) {
+            LOGGER.info("Start LoadArrayData for : " + sampleName);
+            ArrayData arrayData = createArrayData(getSample(sampleName), reporterLists);
+            getDao().save(arrayData);
+            ArrayDataValues values = new ArrayDataValues(platformHelper
+                    .getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
+            arrayDataValuesList.add(values);
+            Map<String, Float> reporterMap = agilentDataMap.get(sampleName);
+            for (String probeName : reporterMap.keySet()) {
+                AbstractReporter reporter = getReporter(platformHelper, probeName);
+                if (reporter == null) {
+                    LOGGER.warn("Reporter with name " + probeName + " was not found in platform "
+                            + platformHelper.getPlatform().getName());
+                } else {
+                    values.setFloatValue(arrayData, reporter, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, reporterMap
+                            .get(probeName).floatValue());
                 }
             }
+            getArrayDataService().save(values);
+            LOGGER.info("Done LoadArrayData for : " + sampleName);
         }
     }
 
-    private void validateSampleMapping(Map<String, Map<String, Float>> agilentDataMap, List<String> sampleList)
-    throws DataRetrievalException {
-        StringBuffer errorMsg = new StringBuffer();
-        for (String sampleName : sampleList) {
-            if (!agilentDataMap.containsKey(sampleName)) {
-                if (errorMsg.length() > 0) {
-                    errorMsg.append(", ");
-                }
-                errorMsg.append(sampleName);
-            }
-        }
-        if (errorMsg.length() > 0) {
-            throw new DataRetrievalException("Sample not found error: " + errorMsg.toString());
-        }
-    }
-    
-    private Float getLog2Ratio(String[] fields, int index) {
-        try {
-            return new Float(fields[index]);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-    
-    private Map<String, Float> getReporterMap(Map<String, Map<String, Float>> agilentDataMap, String sampleName) {
-        if (!agilentDataMap.containsKey(sampleName)) {
-            Map<String, Float> reporterMap = new HashMap<String, Float>();
-            agilentDataMap.put(sampleName, reporterMap);
-        }
-        return agilentDataMap.get(sampleName);
+    private AbstractReporter getReporter(PlatformHelper platformHelper, String probeSetName) {
+        AbstractReporter reporter = platformHelper.getReporter(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, 
+                probeSetName); 
+        return reporter;
     }
 
-    private void loadHeaders(List<String> sampleList) throws IOException, DataRetrievalException {
-        String[] fields;
-        fields = dataFileReader.readNext();
-        checkHeadersLine(fields, SAMPLE_HEADER);
-        loadSampleHeaders(fields, sampleList);
-        fields = dataFileReader.readNext();
-        checkHeadersLine(fields, PROBE_NAME);
+    private String getDataFileName() {
+        return getSampleToFilenamesMap().entrySet().iterator().next().getValue().get(0);
     }
 
-    private void loadSampleHeaders(String[] headers, List<String> sampleList) {
-        for (int i = 3; i < headers.length; i++) {
-            if (sampleList.contains(headers[i])) {
-                sampleToIndexMap.put(headers[i], i);
-            }
-        }
+    @Override
+    String getFileType() {
+        return FILE_TYPE;
     }
-    
-    private void checkHeadersLine(String[] fields, String keyword) throws DataRetrievalException {
-        if (!keyword.equals(fields[0])) {
-            throw new DataRetrievalException("Invalid header for Agilent data file.");
-        }
-    }
-}
+
+ }

@@ -19,7 +19,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataFileParser;
+import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataSingleFileParser;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub;
 
@@ -48,7 +48,7 @@ public class AgilentCopyNumberMappingFileHandlerTest {
         source.setStudyConfiguration(studyConfiguration);
         source.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
         source.setCopyNumberDataConfiguration(new CopyNumberDataConfiguration());
-        AgilentCopyNumberMappingFileHandler handler = new AgilentCopyNumberMappingFileHandler(source, caArrayFacade, arrayDataService, dao);
+        AgilentCopyNumberMappingSingleFileHandler handler = new AgilentCopyNumberMappingSingleFileHandler(source, caArrayFacade, arrayDataService, dao);
         boolean exceptionCaught = false;
         try {
             handler.loadCopyNumberData();
@@ -106,7 +106,7 @@ public class AgilentCopyNumberMappingFileHandlerTest {
         throws IOException, UnsignedOutOfLimitsException, DataRetrievalException {
             List<String> sampleNames = new ArrayList<String>();
             sampleNames.add("TCGA-13-0805-01A-01D-0357-04");
-            Map<String, Map<String, Float>> dataMap = AgilentLevelTwoDataFileParser.INSTANCE.extractData(dataFile, sampleNames);
+            Map<String, Map<String, Float>> dataMap = AgilentLevelTwoDataSingleFileParser.INSTANCE.extractData(dataFile, sampleNames);
             Map<String, Float> reporterMap = dataMap.values().iterator().next();
             
             ReporterList reporterList = platform.addReporterList(reporterListName, ReporterTypeEnum.DNA_ANALYSIS_REPORTER);

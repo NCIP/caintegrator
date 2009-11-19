@@ -97,7 +97,7 @@ import java.util.Map;
 import org.junit.Test;
 
 @SuppressWarnings("PMD")
-public class AgilentDataLevelTwoFileParserTest {
+public class AgilentLevelTwoDataSingleFileParserTest {
 
     private String sample1 = "TCGA-13-0805-01A-01D-0357-04";
     private String sample2 = "TCGA-13-0805-10A-01D-0357-04";
@@ -113,13 +113,13 @@ public class AgilentDataLevelTwoFileParserTest {
         sampleList.add(sample2);
         boolean exceptionCaught = false;
         try {
-            agilentData = AgilentLevelTwoDataFileParser.INSTANCE.extractData(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE, sampleList);
+            agilentData = AgilentLevelTwoDataSingleFileParser.INSTANCE.extractData(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE, sampleList);
         } catch (DataRetrievalException e) {
             assertEquals(e.getMessage(), "Invalid header for Agilent data file.");
             exceptionCaught = true;
         }
         assertTrue(exceptionCaught);
-        agilentData = AgilentLevelTwoDataFileParser.INSTANCE.extractData(
+        agilentData = AgilentLevelTwoDataSingleFileParser.INSTANCE.extractData(
                 TestDataFiles.TCGA_LEVEL_2_DATA_FILE, sampleList);
         assertEquals(2, agilentData.keySet().size());
         for (Map<String, Float> reporterList : agilentData.values()) {
@@ -130,7 +130,7 @@ public class AgilentDataLevelTwoFileParserTest {
         sampleList.add(sample4);
         exceptionCaught = false;
         try {
-            agilentData = AgilentLevelTwoDataFileParser.INSTANCE.extractData(
+            agilentData = AgilentLevelTwoDataSingleFileParser.INSTANCE.extractData(
                 TestDataFiles.TCGA_LEVEL_2_DATA_FILE, sampleList);
         } catch (DataRetrievalException e) {
             exceptionCaught = true;

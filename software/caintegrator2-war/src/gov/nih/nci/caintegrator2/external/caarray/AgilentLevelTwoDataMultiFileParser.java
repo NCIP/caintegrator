@@ -85,100 +85,94 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
-import gov.nih.nci.caarray.external.v1_0.CaArrayEntityReference;
-import gov.nih.nci.caarray.external.v1_0.data.File;
-import gov.nih.nci.caarray.external.v1_0.query.FileSearchCriteria;
-import gov.nih.nci.caarray.external.v1_0.sample.Hybridization;
-import gov.nih.nci.caarray.services.external.v1_0.InvalidInputException;
-import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
-import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
-import org.apache.log4j.Logger;
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
- * Responsible for retrieving array data from caArray.
+ * Parse Agilent level 2 data file.
  */
-class AgilentDataRetrievalHelper extends AbstractDataRetrievalHelper {
-
-    private static final Logger LOGGER = Logger.getLogger(AgilentDataRetrievalHelper.class);
-    private final DataService dataService;
+public final class AgilentLevelTwoDataMultiFileParser {
 
     /**
-     * @param genomicSource
-     * @param dataService
-     * @param searchService
-     * @param dao
+     * The INSTANCE of the AgilentRawDataFileParser.
      */
-    AgilentDataRetrievalHelper(GenomicDataSourceConfiguration genomicSource, DataService dataService,
-            SearchService searchService, CaIntegrator2Dao dao) {
-        super(genomicSource, searchService, dao);
-        this.dataService = dataService;
-    }
-
-    protected ArrayDataValues retrieveData() 
-    throws DataRetrievalException, FileNotFoundException, ConnectionException, InvalidInputException {
-        Set<Hybridization> hybridizationSet = getAllHybridizations();
-        if (hybridizationSet.isEmpty()) {
-            return new ArrayDataValues(new ArrayList<AbstractReporter>());
-        }
-        setPlatformHelper(new PlatformHelper(getDao().getPlatform(getGenomicSource().getPlatformName())));
-        init();
-        populateArrayDataValues(hybridizationSet);
-        return getArrayDataValues();
-    }
+    public static final AgilentLevelTwoDataMultiFileParser INSTANCE = new AgilentLevelTwoDataMultiFileParser();
     
-    private void populateArrayDataValues(Set<Hybridization> hybridizationSet) 
-    throws DataRetrievalException, FileNotFoundException, 
-    ConnectionException, InvalidInputException {
-        for (Hybridization hybridization : hybridizationSet) {
-            File dataFile = getDataFile(hybridization);
-            byte[] byteArray = CaArrayUtils.retrieveFile(dataService, dataFile.getReference());
-            ArrayData arrayData = createArrayData(hybridization);
-            Map<String, Float> agilentDataMap = AgilentLevelTwoDataMultiFileParser.INSTANCE.extractData(
-                    new InputStreamReader(new ByteArrayInputStream(byteArray)));
-            loadArrayDataValues(agilentDataMap, arrayData);
-        }
-    }
-
-    private File getDataFile(Hybridization hybridization) throws DataRetrievalException, InvalidInputException {
-        FileSearchCriteria criteria = new FileSearchCriteria();
-        Set<CaArrayEntityReference> nodes = new HashSet<CaArrayEntityReference>();
-        criteria.setExperimentGraphNodes(nodes);
-        nodes.add(hybridization.getReference());
-        List<File> files =  getSearchService().searchForFiles(criteria, null).getResults();
-        if (files.isEmpty()) {
-            throw new DataRetrievalException("No matching file for hybridization.");
-        }
-        return files.get(0);
-    }
+    private CSVReader dataFileReader;
+    private static final String PROBE_NAME_HEADER = "ID";
+    private static final String LOG_RATIO_HEADER = "logratio";
+    private final Map<String, Integer> headerToIndexMap = new HashMap<String, Integer>();
     
-    private void loadArrayDataValues(Map<String, Float> agilentDataMap, ArrayData arrayData) {
-        for (String probeName : agilentDataMap.keySet()) {
-            AbstractReporter reporter = getReporter(probeName);
-            if (reporter == null) {
-                LOGGER.warn("Reporter with name " + probeName + " was not found in platform " 
-                        + getPlatformHelper().getPlatform().getName());
-            } else {
-                setValue(arrayData, reporter, agilentDataMap.get(probeName).floatValue());
+    /**
+     * Extract data from the raw file.
+     * @param inputStreamReader of the raw file
+     * @return the extracted data.
+     * @throws DataRetrievalException when error parsing.
+     */
+    public Map<String, Float> extractData(InputStreamReader inputStreamReader) throws DataRetrievalException {
+        try {
+            dataFileReader = new CSVReader(inputStreamReader, '\t');
+            loadHeaders();
+            Map<String, Float> agilentDataMap = new HashMap<String, Float>();
+            String[] fields;
+            while ((fields = dataFileReader.readNext()) != null) {
+                String probeName = fields[headerToIndexMap.get(PROBE_NAME_HEADER)];
+                if (probeName.startsWith("A_")) {
+                    Float logRatio;
+                    try {
+                        logRatio = new Float(fields[headerToIndexMap.get(LOG_RATIO_HEADER)]);
+                        agilentDataMap.put(probeName, logRatio);
+                    } catch (NumberFormatException e) {
+                        logRatio = 0.0f; // The logratio is missing ignore this reporter.
+                    }
+                }
             }
+            return agilentDataMap;
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't read Agilent data file.", e);
         }
     }
 
+    /**
+     * Extract data from the raw file.
+     * @param dataFile the raw file.
+     * @return the extracted data.
+     * @throws DataRetrievalException when error parsing.
+     */
+    public Map<String, Float> extractData(File dataFile) throws DataRetrievalException {
+        try {
+            return extractData(new InputStreamReader(new FileInputStream(dataFile)));
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't read Agilent data file.", e);
+        }
+    }
+
+    private void loadHeaders() throws IOException, DataRetrievalException {
+        String[] fields;
+        while ((fields = dataFileReader.readNext()) != null) {
+            if (isFeatutreHeadersLine(fields)) {
+                loadFeatutreHeaders(fields);
+                return;
+            }
+        }        
+        throw new DataRetrievalException("Invalid Agilent data file; headers not found in file.");
+    }
+
+    private void loadFeatutreHeaders(String[] headers) {
+        for (int i = 0; i < headers.length; i++) {
+            headerToIndexMap.put(headers[i], i);
+        }
+    }
+    
+    private boolean isFeatutreHeadersLine(String[] fields) {
+        return fields.length > 0 && PROBE_NAME_HEADER.equals(fields[0]);
+    }
 }
