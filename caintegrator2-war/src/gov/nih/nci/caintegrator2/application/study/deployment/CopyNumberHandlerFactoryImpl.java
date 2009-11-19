@@ -107,11 +107,23 @@ public class CopyNumberHandlerFactoryImpl implements CopyNumberHandlerFactory {
         case AFFYMETRIX:
             return new AffymetrixCopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
         case AGILENT:
-            return new AgilentCopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
+            return singleOrMultiFileHandler(genomicSource, caArrayFacade,
+                        arrayDataService, dao);
         default:
             throw new DataRetrievalException("Unknown platform vendor.");
         }
 
+    }
+    
+    private AbstractCopyNumberMappingFileHandler singleOrMultiFileHandler(GenomicDataSourceConfiguration genomicSource,
+            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+        if (genomicSource.getCopyNumberDataConfiguration().isSingleDataFile()) {
+            return new AgilentCopyNumberMappingSingleFileHandler(genomicSource, caArrayFacade,
+                    arrayDataService, dao);
+        } else {
+            return new AgilentCopyNumberMappingMultiFileHandler(genomicSource, caArrayFacade,
+                    arrayDataService, dao);
+        }
     }
 
 }

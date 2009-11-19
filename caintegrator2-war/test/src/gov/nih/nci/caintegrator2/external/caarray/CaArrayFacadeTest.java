@@ -219,7 +219,7 @@ public class CaArrayFacadeTest {
         ((CaArrayFacadeImpl) caArrayFacade).setServiceFactory(new RetrieveDataServiceFactoryStub());
         GenomicDataSourceConfiguration source = new GenomicDataSourceConfiguration();
         byte[] bytes = caArrayFacade.retrieveFile(source, "filename");
-        assertEquals(118, bytes.length);
+        assertEquals(124, bytes.length);
     }
 
     private GeneExpressionReporter createTestReporter(String name) {
@@ -312,14 +312,11 @@ public class CaArrayFacadeTest {
             public FileStreamableContents streamFileContents(CaArrayEntityReference arg0, boolean arg1)
                     throws InvalidReferenceException, DataTransferException {
                 StringBuffer dataFile = new StringBuffer();
-                dataFile.append("TYPE\ttext\ttext\n");
-                dataFile.append("\n");
-                dataFile.append("FEATURES\tProbeName\tLogRatio\n");
-                dataFile.append("\n");
-                dataFile.append("DATA\tA_probeSet1\t0.05\n");
-                dataFile.append("DATA\tDarkCorner\t-0.0034\n");
+                dataFile.append("ID\tChromosome\tPhysical.Position\tlogratio\n");
+                dataFile.append("A_probeSet1\t1\t123456\t0.05\n");
+                dataFile.append("DarkCorner\t1\t56789\t-0.0034\n");
                 dataFile.append("*\n");
-                dataFile.append("DATA\tA_probeSet2\t-0.1234\n");
+                dataFile.append("A_probeSet2\t1\t98765\t-0.1234\n");
                 byte[] gzippedBytes = getGzippedBytes(dataFile.toString());
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(gzippedBytes);
                 FileStreamableContents contents =  new FileStreamableContents();

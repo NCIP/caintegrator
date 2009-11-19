@@ -92,7 +92,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.AgilentRawDataFileParser;
+import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataMultiFileParser;
 
 import java.io.File;
 import java.util.Map;
@@ -112,8 +112,8 @@ public final class AgilentCopyNumberDataRetrieval {
     private static final Logger LOGGER = Logger.getLogger(AgilentCopyNumberDataRetrieval.class);
     
     /**
-     * Parsing the raw data file.
-     * @param dataFile the raw file.
+     * Parsing the level 2 data file.
+     * @param dataFile the level 2 file.
      * @param values ArrayDataValues to be populated.
      * @param arrayData ArrayData mapping.
      * @param platformHelper the platformHelper.
@@ -121,7 +121,7 @@ public final class AgilentCopyNumberDataRetrieval {
      */
     public void parseDataFile(File dataFile, ArrayDataValues values, ArrayData arrayData,
             PlatformHelper platformHelper) throws DataRetrievalException {
-        Map<String, Float> agilentDataMap = AgilentRawDataFileParser.INSTANCE.extractData(dataFile);
+        Map<String, Float> agilentDataMap = AgilentLevelTwoDataMultiFileParser.INSTANCE.extractData(dataFile);
         loadArrayDataValues(agilentDataMap, values, arrayData, platformHelper);
     }
     
