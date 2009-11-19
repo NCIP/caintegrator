@@ -201,6 +201,9 @@ public class TestDataFiles {
     public static final String TCGA_LEVEL_2_DATA_FILE_PATH = "/arraydata/agilent/tcga_level_2_test_data.txt";
     public static final File TCGA_LEVEL_2_DATA_FILE = getFile(TCGA_LEVEL_2_DATA_FILE_PATH);
     
+    public static final String HUAITIAN_LEVEL_2_DATA_FILE_PATH = "/arraydata/agilent/Huaitian_level2_test_data.txt";
+    public static final File HUAITIAN_LEVEL_2_DATA_FILE = getFile(HUAITIAN_LEVEL_2_DATA_FILE_PATH);
+    
     // Analysis Data Files
     // CMS
     public static final String CMS_CLASSIFICATIONS_FILE_PATH = "/cms_classifications.cls";
