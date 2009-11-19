@@ -2,7 +2,7 @@
 
 <!--Sort Order-->
 
-<s:if test="queryForm.resultConfiguration.selectedColumns.size() > 1">
+<s:if test="!queryForm.resultConfiguration.selectedColumns.isEmpty()">
     <h2>Set Sort Order for Selected Columns</h2>
     
     
