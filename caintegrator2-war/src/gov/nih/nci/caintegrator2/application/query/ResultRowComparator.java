@@ -190,14 +190,15 @@ final class ResultRowComparator implements Comparator <ResultRow> {
         AbstractAnnotationValue value1 = rv1.getValue();
         AbstractAnnotationValue value2 = rv2.getValue();
         
-        if (value1 instanceof NumericAnnotationValue) {
+        if (value1 instanceof NumericAnnotationValue || value2 instanceof NumericAnnotationValue) {
             return handleNumericValues((NumericAnnotationValue) value1, (NumericAnnotationValue) value2, sortType);
-        } else if (value1 instanceof StringAnnotationValue) {
+        } else if (value1 instanceof StringAnnotationValue || value2 instanceof StringAnnotationValue) {
             return handleStringValues((StringAnnotationValue) value1, (StringAnnotationValue) value2, sortType);
-        } else if (value1 instanceof DateAnnotationValue) {
+        } else if (value1 instanceof DateAnnotationValue || value2 instanceof DateAnnotationValue) {
             return handleDateValues((DateAnnotationValue) value1, (DateAnnotationValue) value2, sortType);
         } else {
-            // throw an error.
+            // Equal when both values are null (imaging data with no annotation)
+            // Or could be an error if the values are not one of the above instance.
             return 0;
         }
     }
@@ -206,8 +207,8 @@ final class ResultRowComparator implements Comparator <ResultRow> {
     private int handleNumericValues(NumericAnnotationValue value1, 
                                     NumericAnnotationValue value2,
                                     SortTypeEnum sortType) {
-        boolean val1null = value1.getNumericValue() == null ? true : false;
-        boolean val2null = value2.getNumericValue() == null ? true : false;
+        boolean val1null = value1 == null || value1.getNumericValue() == null;
+        boolean val2null = value2 == null || value2.getNumericValue() == null;
         
         if (!val1null && !val2null) {
             if (value1.getNumericValue() < value2.getNumericValue()) {
@@ -227,8 +228,8 @@ final class ResultRowComparator implements Comparator <ResultRow> {
     private int handleDateValues(DateAnnotationValue value1, 
                                  DateAnnotationValue value2,
                                  SortTypeEnum sortType) {
-        boolean val1null = value1.getDateValue() == null ? true : false;
-        boolean val2null = value2.getDateValue() == null ? true : false;
+        boolean val1null = value1 == null || value1.getDateValue() == null;
+        boolean val2null = value2 == null || value2.getDateValue() == null;
 
         if (!val1null && !val2null) {
             return DateUtil.toStringForComparison(value1.getDateValue()).compareTo(
@@ -241,8 +242,8 @@ final class ResultRowComparator implements Comparator <ResultRow> {
     private int handleStringValues(StringAnnotationValue value1, 
                                     StringAnnotationValue value2, 
                                     SortTypeEnum sortType) {
-        boolean val1null = value1.getStringValue() == null ? true : false;
-        boolean val2null = value2.getStringValue() == null ? true : false;
+        boolean val1null = value1 == null || value1.getStringValue() == null;
+        boolean val2null = value2 == null || value2.getStringValue() == null;
 
         if (!val1null && !val2null) {
             return value1.getStringValue().compareTo(value2.getStringValue()) * getSortOrder(sortType);
@@ -270,6 +271,4 @@ final class ResultRowComparator implements Comparator <ResultRow> {
         }
         return 0;
     }
-
-
 }
