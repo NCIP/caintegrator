@@ -123,7 +123,8 @@
     
     <table class="form_wrapper_table">
         <tr>
-            <th class="title" style="height: 2.5em;">Existing Platforms</th>
+            <th class="title" style="height: 2.5em;">Existing Platforms<span id="platformLoader">
+                 <img src="images/ajax-loader.gif"/></span></th>
             <th class="alignright">&nbsp;</th>
         </tr>
         <tr>
