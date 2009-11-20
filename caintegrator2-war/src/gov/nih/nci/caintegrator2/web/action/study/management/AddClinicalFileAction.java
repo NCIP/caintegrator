@@ -122,10 +122,10 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
             setLastModifiedByCurrentUser();
             return SUCCESS;
         } catch (ValidationException e) {
-            setFieldError("Invalid file: " + e.getResult().getInvalidMessage());
+            addActionError("Invalid file: " + e.getResult().getInvalidMessage());
             return INPUT;
         } catch (IOException e) {
-            setFieldError("Unexpected IO exception: " + e.getMessage());
+            addActionError("Unexpected IO exception: " + e.getMessage());
             return INPUT;
         }
     }
@@ -136,17 +136,13 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
     @Override
     public void validate() {
         if (clinicalFile == null) {
-            setFieldError("Clinical File is required");
+            addActionError("Clinical File is required");
         } else if (clinicalFile.length() == 0) {
-            setFieldError("Clinical File is empty");
+            addActionError("Clinical File is empty");
         }
         prepareValueStack();
     }
     
-    private void setFieldError(String errorMessage) {
-        addFieldError("clinicalFile", errorMessage);
-    }
-
     /**
      * @return the clinicalFile
      */
