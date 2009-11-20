@@ -111,29 +111,33 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String JOB_PLATFORM_STATUS = "platformStatus_";
     private static final String JOB_ARRAY_NAME = "platformArrayName_";
     private static final String JOB_DELETE_PLATFORM_URL = "platformJobDeleteUrl_";
+    private static final String PLATFORM_LOADER = "platformLoader";
     private ArrayDataService arrayDataService;
 
     /**
      * {@inheritDoc}
      */
     protected void initializeDynamicTable(DisplayableUserWorkspace workspace) {
-        int counter = 0;
-        List <PlatformConfiguration> platformConfigurationList = new ArrayList<PlatformConfiguration>();
-        platformConfigurationList.addAll(arrayDataService.getPlatformConfigurations());
-        Comparator<PlatformConfiguration> nameComparator = new Comparator<PlatformConfiguration>() {
-            public int compare(PlatformConfiguration configuration1, PlatformConfiguration configuration2) {
-                return retrievePlatformName(configuration1).
-                       compareToIgnoreCase(retrievePlatformName(configuration2));
-            }
-        };
-        Collections.sort(platformConfigurationList, nameComparator);
         String username = workspace.getUserWorkspace().getUsername();
-        for (PlatformConfiguration platformConfiguration : platformConfigurationList) {
-            getDwrUtil(username).addRows(STATUS_TABLE, 
-                                            createRow(platformConfiguration), 
-                                            retrieveRowOptions(counter));
-            updateJobStatus(username, platformConfiguration);
-            counter++;
+        try {
+            int counter = 0;
+            List<PlatformConfiguration> platformConfigurationList = new ArrayList<PlatformConfiguration>();
+            platformConfigurationList.addAll(arrayDataService.getPlatformConfigurations());
+            Comparator<PlatformConfiguration> nameComparator = new Comparator<PlatformConfiguration>() {
+                public int compare(PlatformConfiguration configuration1, PlatformConfiguration configuration2) {
+                    return retrievePlatformName(configuration1).compareToIgnoreCase(
+                            retrievePlatformName(configuration2));
+                }
+            };
+            Collections.sort(platformConfigurationList, nameComparator);
+            for (PlatformConfiguration platformConfiguration : platformConfigurationList) {
+                getDwrUtil(username).addRows(STATUS_TABLE, createRow(platformConfiguration),
+                        retrieveRowOptions(counter));
+                updateJobStatus(username, platformConfiguration);
+                counter++;
+            }
+        } finally {
+            getDwrUtil(username).setValue(PLATFORM_LOADER, "");
         }
     }
     
