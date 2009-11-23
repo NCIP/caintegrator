@@ -60,6 +60,7 @@
             <property name="earlyStoppingCriterion" type="double" column="COPY_NUMBER_EARLY_STOPPING_CRITERION" />
             <property name="permutationReplicates" type="integer" column="COPY_NUMBER_PERMUTATION_REPLICATES" />
             <property name="randomNumberSeed" type="integer" column="COPY_NUMBER_RANDOM_NUMBER_SEED" />
+            <property name="singleDataFile" type="boolean" column="COPY_NUMBER_SINGLE_DATA_FILE" />
             <many-to-one name="segmentationService" cascade="all" column="SEGMENTATION_SERVICE_ID" />
         </component>
         

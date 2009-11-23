@@ -31,4 +31,8 @@
         <comment>Adds column "LAST_MODIFIED_DATE" to STUDY_CONFIGURATION table</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.3.sql"/>
     </changeSet>
+    <changeSet id="1.1.4" author="nnguyen">
+        <comment>Adds column "LAST_MODIFIED_DATE" to STUDY_CONFIGURATION table</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.4.sql"/>
+    </changeSet>
 </databaseChangeLog>
