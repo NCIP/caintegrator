@@ -32,7 +32,11 @@
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.3.sql"/>
     </changeSet>
     <changeSet id="1.1.4" author="nnguyen">
-        <comment>Adds column "LAST_MODIFIED_DATE" to STUDY_CONFIGURATION table</comment>
+        <comment>Adds COPY_NUMBER_SINGLE_DATA_FILE to GENOMIC_DATA_SOURCE_CONFIGURATION table</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.4.sql"/>
+    </changeSet>
+    <changeSet id="1.1.4.1" author="nnguyen">
+        <comment>Sets default value for COPY_NUMBER_SINGLE_DATA_FILE</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.4.1.sql"/>
     </changeSet>
 </databaseChangeLog>
