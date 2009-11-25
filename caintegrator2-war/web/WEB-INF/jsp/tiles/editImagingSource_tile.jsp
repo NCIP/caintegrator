@@ -1,9 +1,24 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
+<script type="text/javascript" src="/caintegrator2/common/js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="/caintegrator2/common/js/jquery.editable-select.js"></script>
 <script type="text/javascript">
-    
+    $(function() {
+	  $('.editable-select').editableSelect(
+	    {
+	      bg_iframe: true,
+	      onSelect: false,
+	      case_sensitive: false, // If set to true, the user has to type in an exact
+	                             // match for the item to get highlighted
+	      items_then_scroll: 10 // If there are more than 10 items, display a scrollbar
+	    }
+	  );
+      document.getElementById("nbiaUrl").value = document.imagingSourceForm.serverProfileUrl.value;
+	});
+
     function saveDatasource() {
+    	document.imagingSourceForm.serverProfileUrl.value = document.getElementById("nbiaUrl").value; // The value isn't set without doing this.
         if (document.imagingSourceForm.imageSourceId.value != null && document.imagingSourceForm.imageSourceId.value != "") {
             if ((origUrl != document.getElementById("nbiaUrl").value) 
                 || (origCollection != document.getElementById("nbiaCollectionName").value)
@@ -92,7 +107,9 @@
                 </tr>
                 <tr>
                     <s:hidden name="studyConfiguration.id" />
+                    <s:hidden name="cancelAction" />
                     <s:hidden name="imageSourceConfiguration.id" id="imageSourceId"/>
+                    <s:hidden name="imageSourceConfiguration.serverProfile.url" id="serverProfileUrl" />
                     
                     <s:if test="imageSourceConfiguration.statusDescription != null && imageSourceConfiguration.statusDescription.length() > 0">
                         <tr>
@@ -108,17 +125,14 @@
                     <s:select name="imageSourceConfiguration.serverProfile.url" id="nbiaUrl" accesskey="false"
                         headerKey="" headerValue="--Enter an NBIA Server Grid URL--"
                         list="nbiaServices" label=" NBIA Server Grid URL " required="true"
-                        onkeydown="fnKeyDownHandler(this, event);"
-                        onkeyup="fnKeyUpHandler_A(this, event); return false;"
-                        onkeypress = "return fnKeyPressHandler_A(this, event);"
-                        onchange="fnChangeHandler_A(this, event);" />
+                        cssClass="editable-select" />
                     <s:textfield label=" NBIA Username " name="imageSourceConfiguration.serverProfile.username" id="nbiaUsername" size="40"/>
                     <s:password label=" NBIA Password " name="imageSourceConfiguration.serverProfile.password" id="nbiaPassword" size="40"/>
                     <s:textfield required="true" label=" Collection Name " name="imageSourceConfiguration.collectionName" id="nbiaCollectionName" size="40"/>
             
                 </tr>
                      <script type="text/javascript">
-                        var origUrl = document.imagingSourceForm.nbiaUrl.value;
+                        var origUrl = document.imagingSourceForm.serverProfileUrl.value;
                         var origCollection = document.imagingSourceForm.nbiaCollectionName.value;
                         var origUsername = document.imagingSourceForm.nbiaUsername.value;
                         var origPassword = document.imagingSourceForm.nbiaPassword.value;
@@ -146,6 +160,7 @@
             	    <td>
             	    <button type="button" 
             	            onclick="document.imagingSourceForm.action = 'cancelImagingSource.action';
+            	            document.imagingSourceForm.cancelAction.value = 'true';
             	            document.imagingSourceForm.submit();"> Cancel 
             	    </button>
             	    <button type="button" onclick="saveDatasource()"> Save </button>

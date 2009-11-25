@@ -125,6 +125,18 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
         updaterStub.clear();
         action.setUpdater(updaterStub);
     }
+    
+    @Test
+    public void testValidate() {
+        action.getImageSourceConfiguration().getServerProfile().setUrl("http://test, http://test2");
+        action.setCancelAction(true);
+        action.validate();
+        assertEquals("http://test, http://test2", action.getImageSourceConfiguration().getServerProfile().getUrl());
+        action.setCancelAction(false);
+        action.validate();
+        assertEquals("http://test", action.getImageSourceConfiguration().getServerProfile().getUrl());
+        
+    }
 
     @Test
     public void testExecute() {
