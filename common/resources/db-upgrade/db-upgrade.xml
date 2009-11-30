@@ -39,4 +39,8 @@
         <comment>Sets default value for COPY_NUMBER_SINGLE_DATA_FILE</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.4.1.sql"/>
     </changeSet>
+    <changeSet id="1.1.5" author="nnguyen">
+        <comment>Sets default value for SHOW_IN_BROWSE</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.5.sql"/>
+    </changeSet>
 </databaseChangeLog>

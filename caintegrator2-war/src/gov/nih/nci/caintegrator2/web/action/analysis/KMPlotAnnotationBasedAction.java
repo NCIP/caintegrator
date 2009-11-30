@@ -240,10 +240,12 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
         Collection<AnnotationDefinition> studyDefinitionCollection = new HashSet<AnnotationDefinition>();
         switch (annotationEntityType) {
         case SUBJECT:
-            studyDefinitionCollection = getStudy().getSubjectAnnotationCollection();
+            studyDefinitionCollection = getStudy().getStudyConfiguration()
+                .getVisibleSubjectAnnotationCollection();
             break;
         case IMAGESERIES:
-            studyDefinitionCollection = getStudy().getImageSeriesAnnotationCollection();
+            studyDefinitionCollection = getStudy().getStudyConfiguration()
+                .getVisibleImageSeriesAnnotationCollection();
             break;
         case SAMPLE:
             studyDefinitionCollection = getStudy().getSampleAnnotationCollection();

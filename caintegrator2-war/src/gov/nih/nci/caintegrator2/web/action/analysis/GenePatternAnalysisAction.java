@@ -206,9 +206,11 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
         getGenePatternAnalysisForm().setUrl(configurationHelper.getString(ConfigurationParameter.GENE_PATTERN_URL));
         getGenePatternAnalysisForm().setGenomicQueries(getGenomicQueries());
         Collection<AnnotationDefinition> subjectClassifications = 
-            getClassificationAnnotations(getStudy().getSubjectAnnotationCollection());
+            getClassificationAnnotations(getStudy().getStudyConfiguration()
+                    .getVisibleSubjectAnnotationCollection());
         Collection<AnnotationDefinition> imageSeriesClassifications = 
-            getClassificationAnnotations(getStudy().getImageSeriesAnnotationCollection());
+            getClassificationAnnotations(getStudy().getStudyConfiguration()
+                    .getVisibleImageSeriesAnnotationCollection());
         Collection<AnnotationDefinition> sampleClassifications = 
             getClassificationAnnotations(getStudy().getSampleAnnotationCollection());
         getGenePatternAnalysisForm().clearClassificationAnnotations();

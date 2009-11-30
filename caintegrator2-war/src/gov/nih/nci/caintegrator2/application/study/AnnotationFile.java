@@ -537,7 +537,19 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         this.currentlyLoaded = currentlyLoaded;
     }
 
-    
+    /**
+     * @return a list of visible annotation definitions
+     */
+    public List<AnnotationDefinition> getVisibleAnnotationDefinition() {
+        List<AnnotationDefinition> visibleList = new ArrayList<AnnotationDefinition>();
+        for (FileColumn fileColumn : columns) {
+            if (fileColumn.getFieldDescriptor() != null
+                    && fileColumn.getFieldDescriptor().isShownInBrowse()) {
+                visibleList.add(fileColumn.getFieldDescriptor().getDefinition());
+            }
+        }
+        return visibleList;
+    }
 
 
 }

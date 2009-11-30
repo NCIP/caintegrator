@@ -112,10 +112,12 @@ public class ResultConfiguration {
 
     ResultConfiguration(QueryForm form) {
         this.form = form;
-        subjectColumns = 
-            new ColumnSelectionList(this, getStudy().getSubjectAnnotationCollection(), EntityTypeEnum.SUBJECT);
-        imageSeriesColumns = 
-            new ColumnSelectionList(this, getStudy().getImageSeriesAnnotationCollection(), EntityTypeEnum.IMAGESERIES);
+        subjectColumns = new ColumnSelectionList(this,
+                getStudy().getStudyConfiguration()
+                    .getVisibleSubjectAnnotationCollection(), EntityTypeEnum.SUBJECT);
+        imageSeriesColumns = new ColumnSelectionList(this,
+                getStudy().getStudyConfiguration()
+                    .getVisibleImageSeriesAnnotationCollection(), EntityTypeEnum.IMAGESERIES);
     }
 
     Study getStudy() {

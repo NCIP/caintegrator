@@ -98,7 +98,7 @@ public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
     private String name;
     private AnnotationFieldType type;
     private AnnotationDefinition definition;
-    private Boolean shownInBrowse = false;
+    private boolean shownInBrowse = true;
 
     /**
      * @return the name
@@ -145,14 +145,14 @@ public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
     /**
      * @return the shownInBrowse
      */
-    public Boolean getShownInBrowse() {
+    public boolean isShownInBrowse() {
         return shownInBrowse;
     }
 
     /**
      * @param shownInBrowse the shownInBrowse to set
      */
-    public void setShownInBrowse(Boolean shownInBrowse) {
+    public void setShownInBrowse(boolean shownInBrowse) {
         this.shownInBrowse = shownInBrowse;
     }
 

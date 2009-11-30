@@ -97,7 +97,11 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImp
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -155,6 +159,7 @@ public class KMPlotAnnotationBasedActionTest {
         analysisServiceStub.clear();
     }
     
+    @SuppressWarnings("deprecation") // Use dummy AnnotationFile for testing
     private Study createFakeStudy() {
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -176,7 +181,24 @@ public class KMPlotAnnotationBasedActionTest {
         SurvivalValueDefinition survivalValue = new SurvivalValueDefinition();
         survivalValue.setId(Long.valueOf(1));
         study.getSurvivalValueDefinitionCollection().add(survivalValue);
+
+        DelimitedTextClinicalSourceConfiguration clinicalConf = new DelimitedTextClinicalSourceConfiguration();
+        studyConfiguration.getClinicalConfigurationCollection().add(clinicalConf);
+        AnnotationFile annotationFile = new AnnotationFile();
+        clinicalConf.setAnnotationFile(annotationFile);
+
+        addColumn(annotationFile, subjectDef1);
+        addColumn(annotationFile, subjectDef2);
         return study;
+    }
+    
+    private void addColumn(AnnotationFile annotationFile, AnnotationDefinition subjectDef) {
+        FileColumn column = new FileColumn();
+        AnnotationFieldDescriptor fieldDescriptor = new AnnotationFieldDescriptor();
+        fieldDescriptor.setShownInBrowse(true);
+        fieldDescriptor.setDefinition(subjectDef);
+        column.setFieldDescriptor(fieldDescriptor);
+        annotationFile.getColumns().add(column);
     }
     
     @Test
