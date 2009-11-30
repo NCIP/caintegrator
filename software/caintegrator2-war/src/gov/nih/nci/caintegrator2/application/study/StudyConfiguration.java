@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -628,5 +629,39 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
             }
         }
         return false;
+    }
+    
+    /**
+     * @return a set of visible annotation definition
+     */
+    public Set<AnnotationDefinition> getVisibleSubjectAnnotationCollection() {
+        Set<AnnotationDefinition> visibleSet = new HashSet<AnnotationDefinition>();
+        for (AbstractClinicalSourceConfiguration source : clinicalConfigurationCollection) {
+            visibleSet.addAll(getVisibleClinicalAnnotationDefinition(source.getAnnotationDescriptors()));
+        }
+        return visibleSet;
+    }
+    
+    private List<AnnotationDefinition> getVisibleClinicalAnnotationDefinition(
+            List<AnnotationFieldDescriptor> descriptors) {
+        List<AnnotationDefinition> visibleList = new ArrayList<AnnotationDefinition>();
+        for (AnnotationFieldDescriptor descriptor : descriptors) {
+            if (descriptor.isShownInBrowse()) {
+                visibleList.add(descriptor.getDefinition());
+            }
+        }
+        return visibleList;
+    }
+    
+    /**
+     * @return a set of visible annotation definition
+     */
+    public Set<AnnotationDefinition> getVisibleImageSeriesAnnotationCollection() {
+        Set<AnnotationDefinition> visibleSet = new HashSet<AnnotationDefinition>();
+        for (ImageDataSourceConfiguration source : imageDataSources) {
+            visibleSet.addAll(source.getImageAnnotationConfiguration()
+                    .getAnnotationFile().getVisibleAnnotationDefinition());
+        }
+        return visibleSet;
     }
 }

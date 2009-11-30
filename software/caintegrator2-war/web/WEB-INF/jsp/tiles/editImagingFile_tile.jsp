@@ -49,17 +49,24 @@
                 <s:else>
                 <table class="data">
                     <tr>
+                        <th>Visisble</th>
                         <th>Field Definition</th>
                         <th>Field Header from File</th>
                         <th colspan="3" />Data from File</th>
                     </tr>
-                    <s:iterator value="imageSourceConfiguration.imageAnnotationConfiguration.annotationFile.columns" status="status">
-                        <s:if test="#status.odd == true">
+                    <s:iterator value="imageSourceConfiguration.imageAnnotationConfiguration.annotationFile.columns" status="columnIterator">
+                        <s:if test="#columnIterator.odd == true">
                           <tr class="odd">
                         </s:if>
                         <s:else>
                           <tr class="even">
-                        </s:else>
+                        </s:else>          
+                            <td>
+                                <s:if test="%{fieldDescriptor.definition != null}">
+                                    <s:checkbox name="imageSourceConfiguration.imageAnnotationConfiguration.annotationFile.columns.get(%{#columnIterator.count - 1}).fieldDescriptor.shownInBrowse"
+                                        theme="simple" />
+                                </s:if>
+                            </td>
                             <td>
                                 <s:if test="%{identifierColumn}">
                                     Identifier
