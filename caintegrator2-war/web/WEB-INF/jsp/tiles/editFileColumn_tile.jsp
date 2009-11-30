@@ -11,8 +11,11 @@
     
     initializeJsp();
     
-    function runSearch(entityType, studyConfigurationId, fileColumnId, keywords) {
+    function runSearch(entityType) {
         var searchResultJsp = "";
+        var studyConfigurationId = document.getElementById('searchFormStudyConfigurationId').value; 
+        var fileColumnId = document.getElementById('searchFormFileColumnId').value;
+        var keywords = document.getElementById('keywordsForSearch').value;
         if (document.getElementById("annotationDefinitionTable") == null) {
             searchResultJsp = "/WEB-INF/jsp/tiles/editFileColumn_searchResult.jsp";
         }
@@ -156,7 +159,9 @@
             <tr>
                 <td colspan="2" style="padding: 5px;">     
 
-                <s:form theme="simple">
+                <s:form name="keywordSearchForm" id="keywordSearchForm" 
+                        theme="simple" 
+                        onsubmit="runSearch('%{entityTypeForSearch}'); return false;">
                     <s:hidden id="searchFormStudyConfigurationId" name="studyConfiguration.id" />
                     <s:hidden name="sourceId" />
                     <s:hidden id="searchFormFileColumnId" name="fileColumn.id" />
@@ -166,10 +171,7 @@
                             <s:textfield label="Keywords" name="keywordsForSearch" id="keywordsForSearch"  />
                         </td>
                         <td> 
-        	               <button type="button" onclick="runSearch('${entityTypeForSearch}',
-        	            	                  document.getElementById('searchFormStudyConfigurationId').value, 
-        	                                  document.getElementById('searchFormFileColumnId').value,
-        	                                  document.getElementById('keywordsForSearch').value)"> Search </button>
+        	               <button type="button" onclick="runSearch('${entityTypeForSearch}')"> Search </button>
                         </td>
                         <td style="padding: 0 0 0 1em">
                             <em>Search existing studies and caDSR for definitions.</em>
