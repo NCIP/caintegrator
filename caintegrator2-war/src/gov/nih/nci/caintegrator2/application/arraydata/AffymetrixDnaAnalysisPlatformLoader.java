@@ -100,6 +100,8 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+//import java.util.List;
+//import java.util.ArrayList;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -109,6 +111,7 @@ import au.com.bytecode.opencsv.CSVReader;
 /**
  * Loader for Affymetrix SNP array designs.
  */
+
 class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
 
     static final String DBSNP_RS_ID_HEADER = "dbSNP RS ID";
@@ -211,14 +214,61 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
         return genes;
     }
 
-    @SuppressWarnings("PMD.UseStringBufferForStringAppends")    // Invalid rule violation
     private String[] getSymbols(String[] fields) {
-        String[] symbols = getAnnotationValue(fields, GENE_SYMBOL_HEADER).split("///");
-        for (int i = 0; i < symbols.length; i++) {
-            symbols[i] = symbols[i].trim();
-        }
+        //
+        // This method parses the value from the gene symbol column
+        // which is obtained from the manufacturers platform annotation file.
+        // This involves breaking the string down into substrings and
+        // then finally extracting the gene symbol.
+        //
+        // An example of this value is as follows:
+        // "NM_181714 // intron // 0 // Hs.21945 // LCA5 // 167691 // Leber congenital amaurosis 5
+        // /// NM_001122769 // intron // 0 // Hs.21945 // LCA5 // 167691 // Leber congenital amaurosis 5
+        //
+        // Note in the above string, the top level separator is /// (3 forward slashes)
+        // and the second level separator is // (2 forward slashes)
+        // A second example of this value is as follows:
+        // LCA5 /// LCA5
+
+        // Get the gene symbol field and separate into substrings.
+        String[] subField = getAnnotationValue(fields, GENE_SYMBOL_HEADER).split("///");
+        
+        // extract the symbols from the array of substrings
+        Set<String> symbolsSet = parseSubString(subField);
+        
+        // convert to array
+        String[] symbols = symbolsSet.toArray(new String[symbolsSet.size()]);
+        
         return symbols;
     }
+
+    private Set<String> parseSubString(String[] subField) {
+        Set<String> symbols = new HashSet<String>();
+        for (String subfield : subField) {
+            String tempStr = parseSubString2(subfield);
+            if (!StringUtils.isBlank(tempStr)) {
+                symbols.add(tempStr);
+            }
+        }
+        return symbols;
+     }
+
+
+    private String parseSubString2(String subField) {
+        String[] holdSymbols = subField.split("//");
+        String symbol = ""; 
+
+        if (holdSymbols.length == 1) {
+            if (!holdSymbols[0].trim().equalsIgnoreCase(NO_VALUE_INDICATOR)) {
+                symbol = holdSymbols[0].trim();
+            }
+        } else if ((holdSymbols.length > 4)
+                    && (!holdSymbols[4].trim().equalsIgnoreCase(NO_VALUE_INDICATOR))) {                
+            symbol = holdSymbols[4].trim();
+        }
+        
+        return symbol;
+    }    
 
     private String getHeaderValue(String headerName) {
         return fileHeaders.get(headerName);
