@@ -251,10 +251,12 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
         Collection<AnnotationDefinition> studyDefinitionCollection = new HashSet<AnnotationDefinition>();
         switch (annotationEntityType) {
         case SUBJECT:
-            studyDefinitionCollection = getStudy().getSubjectAnnotationCollection();
+            studyDefinitionCollection = getStudy().getStudyConfiguration()
+                .getVisibleSubjectAnnotationCollection();
             break;
         case IMAGESERIES:
-            studyDefinitionCollection = getStudy().getImageSeriesAnnotationCollection();
+            studyDefinitionCollection = getStudy().getStudyConfiguration()
+                .getVisibleImageSeriesAnnotationCollection();
             break;
         case SAMPLE:
             studyDefinitionCollection = getStudy().getSampleAnnotationCollection();
