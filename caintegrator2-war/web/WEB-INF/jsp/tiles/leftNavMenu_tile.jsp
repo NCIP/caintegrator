@@ -46,7 +46,7 @@
         
         <li class="treenav"><div>Study Data</div>
             <ul class="pde">
-                <li><a href="#">Queries</a>
+                <li><a href="#">Saved Queries</a>
                     <ul style="padding: 3px 0px 10px 10px;">
                         <li><a href="#">My Queries</a>
                             <ul>                                
