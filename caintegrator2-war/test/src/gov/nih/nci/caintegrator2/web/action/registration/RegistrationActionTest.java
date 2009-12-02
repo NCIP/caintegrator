@@ -89,6 +89,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.registration.RegistrationRequest;
 import gov.nih.nci.caintegrator2.application.registration.RegistrationService;
+import gov.nih.nci.caintegrator2.common.ConfigurationHelperStub;
 import gov.nih.nci.caintegrator2.security.SecurityManagerStub;
 import gov.nih.nci.security.exceptions.internal.CSInternalConfigurationException;
 import gov.nih.nci.security.exceptions.internal.CSInternalInsufficientAttributesException;
@@ -157,6 +158,7 @@ public class RegistrationActionTest {
     @Test
     public void testSave() {
         action.clearErrorsAndMessages();
+        action.setConfigurationHelper(new ConfigurationHelperStub());
         registrationService.throwMessagingException = true;
         action.save();
         assertTrue(action.hasActionErrors());
