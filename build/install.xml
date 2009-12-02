@@ -295,6 +295,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
                     token="@user.admin.email.address.to@" value="${user.admin.email.address.to}" />
         <replace file="${db-install.dir.dest}/${database.type}/db-init-application-properties.sql"
                     token="@user.admin.email.address.from@" value="${user.admin.email.address.from}" />
+        <replace file="${db-install.dir.dest}/${database.type}/db-init-application-properties.sql" 
+                    token="@upt.url@" value="${upt.url}" />
         <database-install
             db.install.create.file.list="db-init-application-properties.sql"
             />

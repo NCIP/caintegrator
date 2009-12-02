@@ -10,4 +10,5 @@ insert into CONFIGURATION_PARAMETER (parameter, raw_value) values
     ("GISTIC_URL", "http://node255.broadinstitute.org:10010/wsrf/services/cagrid/Gistic"),
     ("GENE_PATTERN_URL", "http://genepattern.broadinstitute.org/gp/services/Analysis"),
     ("REGISTRATION_EMAIL_TO", "@user.admin.email.address.to@"),
-    ("REGISTRATION_EMAIL_FROM", "@user.admin.email.address.from@");
+    ("REGISTRATION_EMAIL_FROM", "@user.admin.email.address.from@"),
+    ("UPT_URL", "@upt.url@");
