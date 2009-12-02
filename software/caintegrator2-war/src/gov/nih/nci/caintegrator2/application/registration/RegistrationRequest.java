@@ -99,8 +99,10 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 public class RegistrationRequest {
     private static final String NEW_LINE = "\n";
     private static final String SEPARATOR_STRING = "----------------------------------------------------------";
-    private static final String MAIL_BODY_HEADING = "This is a registration request for access to caIntegrator2" 
-                                       + NEW_LINE + SEPARATOR_STRING;
+    private static final String MAIL_BODY_HEADING = "Someone has requested access to caIntegrator2." 
+                                       + NEW_LINE + SEPARATOR_STRING
+                                       + NEW_LINE + "The registrant entered the following information:"
+                                       + NEW_LINE;
     
     private String loginName;
     private String firstName;
