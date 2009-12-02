@@ -74,6 +74,9 @@
         <property name="registrationService">
             <ref local="registrationService" />
         </property>
+        <property name="configurationHelper">
+            <ref local="configurationHelper" />
+        </property>
     </bean>
     
     <!-- Study Management -->

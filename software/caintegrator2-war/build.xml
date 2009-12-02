@@ -588,6 +588,7 @@
         <replace file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@grid.index.url@" value="${grid.index.url}" />
         <replace file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@user.admin.email.address.to@" value="${user.admin.email.address.to}" />
         <replace file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@user.admin.email.address.from@" value="${user.admin.email.address.from}" />
+        <replace file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@upt.url@" value="${upt.url}" />
         <run-sql-script onerror="continue" sql.file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" />
     </target>
 

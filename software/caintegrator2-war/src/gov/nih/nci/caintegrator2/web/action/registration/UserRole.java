@@ -11,11 +11,7 @@ public enum UserRole {
     /** 
      * Study Investigator Role. 
      */
-    STUDY_INVESTIGATOR ("Study Investigator"),
-    /** 
-     * Platform Manager Role. 
-     */
-    PLATFORM_MANAGER ("Platform Manager");
+    STUDY_INVESTIGATOR ("Study Investigator");
 
     private final String name;
 

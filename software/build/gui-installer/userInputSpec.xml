@@ -725,6 +725,9 @@ Guide to this file:
         <field type="title" txt="UPT Settings" bold="true" size="1" />
         <field type="staticText" align="left" txt="These options are for properties regarding the User Provisioning Tool, for user administration."/>
         <field type="divider" align="top"/>
+        <field type="text" variable="upt.url">
+            <spec txt="UPT URL:" size="25" set="http://[server]:[port]/upt42"/>
+        </field>
        <field type="text" variable="user.admin.email.address.from">
             <spec txt="UPT Admin Email Address From:" size="25" set=""/>
         </field>
