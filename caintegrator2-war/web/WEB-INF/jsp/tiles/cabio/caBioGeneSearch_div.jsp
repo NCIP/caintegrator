@@ -13,9 +13,9 @@
 
 <h2><img style="vertical-align: middle" src="/caintegrator2/images/cabiologo.gif"> caBio Gene Search</h2>
 
-<s:div cssStyle="padding-left: 5px;">
+<s:div cssStyle="padding: 1px 0px 0px 5px;">
     <tr>
-        <s:textfield label="Search Terms" name="searchParams.keywords" /> in 
+        <s:textfield label="Search Terms" name="searchParams.keywords" cssStyle="padding:0px;"/> in 
         <s:select name="searchParams.searchTypeForDisplay" 
         list="@gov.nih.nci.caintegrator2.external.cabio.CaBioSearchTypeEnum@getDisplayableValues()"/>
         
@@ -48,12 +48,11 @@
 <!-- /caBio Inputs -->
 <s:url id="caBioSearch" action="caBioSearch"/>
 
-<br>
-
 <s:div id="caBioGeneSearchResultsDiv" 
         theme="ajax" 
         href="%{caBioSearch}" 
         formId="caBioGeneSearchForm" 
         loadingText="<img src='images/ajax-loader.gif'/>"
         listenTopics="searchCaBio" 
-        refreshOnShow="false" />
+        refreshOnShow="false"
+        cssStyle="padding: 0 0 0 5px;" />

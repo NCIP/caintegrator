@@ -11,7 +11,7 @@
                     onclick="checkUncheckAll(this);" />
             </s:div>
             <s:div cssClass="columnHeader" cssStyle="float: left; width: 100px;"> Symbol </s:div>
-            <s:div cssClass="columnHeader" cssStyle="float: left; width: 300px;"> Full Name </s:div>
+            <s:div cssClass="columnHeader" cssStyle="float: left; width: 300px; padding-left: 2px;"> Full Name </s:div>
         </s:div><br>
         <s:iterator value="genes" status="status">
             <s:if test="#status.odd == true">

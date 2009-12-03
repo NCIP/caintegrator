@@ -790,7 +790,7 @@ TABLE.data TBODY TR TH FORM TABLE.editStudyFile TBODY TR TD
 .form_wrapper_outer
 { border:1px solid #999; background:#eee; padding:10px 10px 5px 10px; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius:10px;}
 .form_wrapper_outer .bottombtns 
-{ margin:0 auto; width:25em; height:3em; }
+{ margin:0 auto; width:28em; height:3em; }
 TABLE.form_wrapper_table
 { border:1px solid #ccc; width:100%; background:#fff; margin-bottom:15px; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px;}
 TABLE.form_wrapper_table TH
@@ -1092,7 +1092,7 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
    min-width: 300px;
    border-right:1px solid #A8B8CE;
    padding-bottom: 5px;
-   padding-left: 0px;
+   padding-left: 2px;
 }
 
 /* ----------------------------------------------------------------------------------------------------------------*/
