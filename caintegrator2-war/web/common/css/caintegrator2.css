@@ -856,15 +856,15 @@ TABLE.data TBODY#studyDeploymentJobStatusTable TR TD#dwrCellID_3
 
 /** style for picking gene list **/
 A.geneListIcon
-{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll left top; padding:1px 18px 1px 1px;}
+{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll center top; padding:1px 12px 4px 12px;}
 
 /** style for link to CGAP site **/
 A.cgapLogo
-{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cgaplogo.gif') no-repeat scroll left top; padding:1px 70px 1px 1px;}
+{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cgaplogo.gif') no-repeat scroll center top; padding:1px 35px 1px 35px;}
 
 /** style for link to caBio site **/
 A.caBioLogo
-{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cabiologo.gif') no-repeat scroll left top; padding:8px 21px 18px 3px;}
+{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cabiologo.gif') no-repeat scroll center top; padding:8px 10px 18px 10px;}
 /** Styles when using struts css_xhtml theme **/
 .wwgrp
 {position: relative; white-space: nowrap; margin-top: 10px; margin-bottom: 10px;}
