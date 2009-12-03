@@ -28,7 +28,7 @@
                 <s:hidden name="clinicalSource.id" />
                 <table class="data">
                     <tr>
-                        <th>Visisble</th>
+                        <th>Visible</th>
                         <th>Field Definition</th>
                         <th>Field Header from File</th>
                         <th colspan="3" />Data from File</th>
