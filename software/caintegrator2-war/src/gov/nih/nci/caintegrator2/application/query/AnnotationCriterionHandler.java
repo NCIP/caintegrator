@@ -143,9 +143,23 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
     }
 
     private void handleImageSeriesRow(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes,
-            Set<ResultRow> rows) {
+            Set<ResultRow> rows) throws InvalidCriterionException {
+        checkImageSeriesVisibility(study);
         ResultRowFactory rowFactory = new ResultRowFactory(entityTypes);
         rows.addAll(rowFactory.getImageSeriesRows(dao.findMatchingImageSeries(abstractAnnotationCriterion, study)));
+    }
+    
+    private void checkImageSeriesVisibility(Study study) throws InvalidCriterionException {
+        if (!study.getStudyConfiguration().getVisibleImageSeriesAnnotationCollection().
+                contains(abstractAnnotationCriterion.getAnnotationDefinition())) {
+            throw new InvalidCriterionException(errorNotVisible());
+        }
+    }
+    
+    private String errorNotVisible() {
+        return "Invalid criterion exist due to '"
+            + abstractAnnotationCriterion.getAnnotationDefinition().getDisplayName()
+            + "' is not visible.";
     }
 
     private void handleSampleRow(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes,
@@ -156,9 +170,17 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity" }) // Lots of type checking and row adding.
     private void handleSubjectRow(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes,
-            Set<ResultRow> rows) {
+            Set<ResultRow> rows) throws InvalidCriterionException {
+        checkSubjectVisibility(study);
         ResultRowFactory rowFactory = new ResultRowFactory(entityTypes);
         rows.addAll(rowFactory.getSubjectRows(dao.findMatchingSubjects(abstractAnnotationCriterion, study)));
+    }
+    
+    private void checkSubjectVisibility(Study study) throws InvalidCriterionException {
+        if (!study.getStudyConfiguration().getVisibleSubjectAnnotationCollection().
+                contains(abstractAnnotationCriterion.getAnnotationDefinition())) {
+            throw new InvalidCriterionException(errorNotVisible());
+        }
     }
 
     @Override
