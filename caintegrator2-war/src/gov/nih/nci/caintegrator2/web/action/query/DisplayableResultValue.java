@@ -105,6 +105,14 @@ public class DisplayableResultValue {
      */
     @SuppressWarnings("PMD.UncommentedEmptyConstructor")
     public DisplayableResultValue() { }
+
+    /**
+     * Constructor which wraps the given string.
+     * @param value - A string value.
+     */
+    public DisplayableResultValue(String value) {
+        displayString = value;
+    }
     
     /**
      * Constructor which wraps the given ResultValue object.

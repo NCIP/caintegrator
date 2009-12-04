@@ -115,6 +115,7 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String JOB_NAME = "jobName_";
     private static final String JOB_TYPE = "jobType_";
     private static final String JOB_STATUS = "jobStatus_";
+    private static final String JOB_STATUS_DESCRIPTION = "jobStatusDescription_";
     private static final String JOB_CREATION_DATE = "jobCreationDate_";
     private static final String JOB_LAST_UPDATE_DATE = "jobLastUpdateDate_";
     private static final String DELETE_ACTION = "action_";
@@ -151,16 +152,17 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
     }
 
     private String[][] createRow(AbstractPersistedAnalysisJob job) {
-        String[][] rowString = new String[1][6];
+        String[][] rowString = new String[1][7];
         String id = job.getId().toString();
         String startSpan = "<span id=\"";
         String endSpan = "\"> </span>";
         rowString[0][0] = startSpan + JOB_NAME + id + endSpan;
         rowString[0][1] = startSpan + JOB_TYPE + id + endSpan;
         rowString[0][2] = startSpan + JOB_STATUS + id + endSpan;
-        rowString[0][3] = startSpan + JOB_CREATION_DATE + id + endSpan;
-        rowString[0][4] = startSpan + JOB_LAST_UPDATE_DATE + id + endSpan;
-        rowString[0][5] = startSpan + DELETE_ACTION + id + endSpan
+        rowString[0][3] = startSpan + JOB_STATUS_DESCRIPTION + id + endSpan;
+        rowString[0][4] = startSpan + JOB_CREATION_DATE + id + endSpan;
+        rowString[0][5] = startSpan + JOB_LAST_UPDATE_DATE + id + endSpan;
+        rowString[0][6] = startSpan + DELETE_ACTION + id + endSpan
                           + startSpan + JOB_ACTION_BAR1 + id + endSpan
                           + startSpan + JOB_INPUT_URL + id + endSpan
                           + startSpan + JOB_ACTION_BAR2 + id + endSpan
@@ -224,6 +226,7 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
         utilThis.setValue(JOB_CREATION_DATE + jobId, 
                 getDateString(job.getCreationDate()));
         utilThis.setValue(JOB_STATUS + jobId, getStatusMessage(job.getStatus()));
+        utilThis.setValue(JOB_STATUS_DESCRIPTION + jobId, job.getStatusDescription());
         if (job.getLastUpdateDate() != null) {
             utilThis.setValue(JOB_LAST_UPDATE_DATE + jobId, 
                 getDateString(job.getLastUpdateDate()));
