@@ -127,7 +127,7 @@ public class GisticAjaxRunner implements Runnable {
             + " - " + e.getMessage(), AnalysisJobStatusEnum.ERROR_CONNECTING);
         } catch (ParameterException e) {
             addErrorMessage("Couldn't execute GISTIC analysis job: " + job.getName()
-            + " - " + e.getMessage(), e.getMessage(), AnalysisJobStatusEnum.INVALID_PARAMETER);
+            + " - " + e.getMessage(), AnalysisJobStatusEnum.INVALID_PARAMETER);
         } catch (InvalidCriterionException e) {
             addErrorMessage(e.getMessage(), AnalysisJobStatusEnum.LOCAL_ERROR);
         } catch (IOException e) {
@@ -139,12 +139,8 @@ public class GisticAjaxRunner implements Runnable {
         updater.addError(errorMessage, job);
         LOGGER.error(errorMessage);
         job.setStatus(errorState);
+        job.setStatusDescription(errorMessage);
         updater.saveAndUpdateJobStatus(job);
-    }
-    
-    private void addErrorMessage(String errorMessage, String statusDescription, AnalysisJobStatusEnum errorState) {
-        job.setStatusDescription(statusDescription);
-        addErrorMessage(errorMessage, errorState);
     }
 
     private void process() throws ConnectionException, InvalidCriterionException, ParameterException,

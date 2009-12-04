@@ -42,6 +42,7 @@
             <th> Job Name </th>
             <th> Job Type </th>
             <th> Status </th>
+            <th> Status Description </th>
             <th> Creation Date </th>
             <th> Status Update Date </th>
             <th> Action </th>
