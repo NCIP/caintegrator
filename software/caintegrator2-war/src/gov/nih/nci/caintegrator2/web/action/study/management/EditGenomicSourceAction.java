@@ -153,6 +153,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
            || !getStudyConfiguration().getGenomicDataSources().contains(getGenomicSource())) {
             return SUCCESS;
         }
+        setLastModifiedByCurrentUser();
         getStudyManagementService().delete(getStudyConfiguration(), getGenomicSource());
         return SUCCESS;
     }
@@ -193,6 +194,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     private void runAsynchronousGenomicDataRetrieval(GenomicDataSourceConfiguration genomicSource) {
         getDisplayableWorkspace().setCurrentStudyConfiguration(getStudyConfiguration());
         genomicSource.setStatus(Status.PROCESSING);
+        setLastModifiedByCurrentUser();
         getStudyManagementService().addGenomicSourceToStudy(getStudyConfiguration(), genomicSource);
         updater.runJob(genomicSource.getId());
     }

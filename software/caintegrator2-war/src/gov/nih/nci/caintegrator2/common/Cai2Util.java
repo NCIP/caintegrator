@@ -105,6 +105,7 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.awt.Color;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -254,6 +255,26 @@ public final class Cai2Util {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * Write a byte array to a file.
+     * @param fileBytes the byte array
+     * @param tempFile the output file
+     * @throws IOException the I/O exception
+     */
+    public static void byteArrayToFile(byte[] fileBytes, File tempFile) throws IOException {
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(tempFile));
+        int totalBytesWritten = 0;
+        int fileBytesLength = fileBytes.length;
+        while (totalBytesWritten < fileBytesLength) {
+            int lengthToWrite = fileBytesLength - totalBytesWritten < BUFFER_SIZE 
+                ? fileBytesLength - totalBytesWritten : BUFFER_SIZE;
+            bos.write(fileBytes, totalBytesWritten, lengthToWrite);
+            totalBytesWritten += lengthToWrite;
+        }
+        bos.flush();
+        bos.close();
     }
 
     /**
@@ -419,6 +440,46 @@ public final class Cai2Util {
             }
         }
         return false;
+    }
+    
+    /**
+     * Determines if a query has fold change criterion.
+     * @param query check to see if this query has fold change criterion.
+     * @return T/F value.
+     */
+    public static boolean isFoldChangeQuery(Query query) {
+        return getFoldChangeCriterion(query) != null;
+    }
+
+    /**
+     * Retrieves the fold change criterion for a given query.
+     * @param query to retrieve fold change criterion for.
+     * @return the fold change criterion.
+     */
+    public static FoldChangeCriterion getFoldChangeCriterion(Query query) {
+        return getFoldChangeCriterionFromCompoundCriterion(query.getCompoundCriterion());
+    }
+
+    private static FoldChangeCriterion getFoldChangeCriterion(AbstractCriterion criterion) {
+        if (criterion instanceof FoldChangeCriterion) {
+            return (FoldChangeCriterion) criterion;
+        } else if (criterion instanceof CompoundCriterion) {
+            CompoundCriterion compoundCriterion = (CompoundCriterion) criterion;
+            return getFoldChangeCriterionFromCompoundCriterion(compoundCriterion);
+        } else {
+            return null;
+        }
+    }
+
+    private static FoldChangeCriterion getFoldChangeCriterionFromCompoundCriterion(
+            CompoundCriterion compoundCriterion) {
+        for (AbstractCriterion criterion : compoundCriterion.getCriterionCollection()) {
+            FoldChangeCriterion foldChangeCriterion = getFoldChangeCriterion(criterion);
+            if (foldChangeCriterion != null) {
+                return foldChangeCriterion;
+            }
+        }
+        return null;
     }
     
     /**

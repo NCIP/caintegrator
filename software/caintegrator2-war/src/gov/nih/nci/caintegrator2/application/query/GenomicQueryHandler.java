@@ -89,12 +89,10 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
@@ -192,7 +190,7 @@ class GenomicQueryHandler {
         request.addReporters(reporters);
         request.addArrayDatas(arrayDatas);
         request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
-        if (isFoldChangeQuery()) {
+        if (Cai2Util.isFoldChangeQuery(query)) {
             return arrayDataService.getFoldChangeValues(request, getControlArrayDatas());
         } else {
             return arrayDataService.getData(request);
@@ -201,40 +199,13 @@ class GenomicQueryHandler {
 
     private Collection<ArrayData> getControlArrayDatas() {
         Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
-        for (Sample sample : getFoldChangeCriterion().getCompareToSampleSet().getSamples()) {
+        for (Sample sample : Cai2Util.getFoldChangeCriterion(query).getCompareToSampleSet().getSamples()) {
             arrayDatas.addAll(sample.getArrayDatas(query.getReporterType()));
         }
         return arrayDatas;
     }
 
-    private boolean isFoldChangeQuery() {
-        return getFoldChangeCriterion() != null;
-    }
 
-    private FoldChangeCriterion getFoldChangeCriterion() {
-        return getFoldChangeCriterionFromCompoundCriterion(query.getCompoundCriterion());
-    }
-
-    private FoldChangeCriterion getFoldChangeCriterion(AbstractCriterion criterion) {
-        if (criterion instanceof FoldChangeCriterion) {
-            return (FoldChangeCriterion) criterion;
-        } else if (criterion instanceof CompoundCriterion) {
-            CompoundCriterion compoundCriterion = (CompoundCriterion) criterion;
-            return getFoldChangeCriterionFromCompoundCriterion(compoundCriterion);
-        } else {
-            return null;
-        }
-    }
-
-    private FoldChangeCriterion getFoldChangeCriterionFromCompoundCriterion(CompoundCriterion compoundCriterion) {
-        for (AbstractCriterion criterion : compoundCriterion.getCriterionCollection()) {
-            FoldChangeCriterion foldChangeCriterion = getFoldChangeCriterion(criterion);
-            if (foldChangeCriterion != null) {
-                return foldChangeCriterion;
-            }
-        }
-        return null;
-    }
 
     private Collection<ArrayData> getMatchingArrayDatas() throws InvalidCriterionException {
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());

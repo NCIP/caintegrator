@@ -173,7 +173,12 @@ public enum ConfigurationParameter {
     /**
      * Default email to send registration confirmations from.
      */
-    REGISTRATION_EMAIL_FROM("NCICB@pop.nci.nih.gov");
+    REGISTRATION_EMAIL_FROM("NCICB@pop.nci.nih.gov"),
+    
+    /**
+     * URL For UPT.
+     */
+    UPT_URL("[Unknown UPT URL]");
 
     private String defaultValue;
 

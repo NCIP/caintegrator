@@ -97,6 +97,7 @@ public class PlotCalculationTypeEnumTest {
         assertEquals(PlotCalculationTypeEnum.MEAN, PlotCalculationTypeEnum.getByValue(PlotCalculationTypeEnum.MEAN.getValue()));
     }
     
+    @Test
     public void testCheckType() {
         assertFalse(PlotCalculationTypeEnum.checkType("not found"));
         assertFalse(PlotCalculationTypeEnum.checkType(null));

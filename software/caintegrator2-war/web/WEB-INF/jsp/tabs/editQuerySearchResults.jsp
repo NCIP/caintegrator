@@ -208,16 +208,16 @@
                 <del class="btnwrapper">
                     <ul class="btnrow">
                         <li><s:a href="#" cssClass="btn" onclick="openExportLink(); return false;">
-                            <span class="btn_img">Export To CSV</span>
+                            <span class="btn_img"><span class="export">Export To CSV</span></span>
                         </s:a></li>
                         <s:if test="queryForm.hasImageDataSources()">
                             <li><s:a href="#" cssClass="btn" 
                                 onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
-                                <span class="btn_img">Forward To NBIA</span>
+                                <span class="btn_img"><span class="externalsite">Forward To NBIA</span></span>
                             </s:a></li>
                             <li><s:a href="#" cssClass="btn" 
                                 onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='retrieveDicomImages';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
-                                <span class="btn_img">Retrieve Dicom Images</span>
+                                <span class="btn_img"><span class="download">Retrieve Dicom Images</span></span>
                             </s:a></li>
                         </s:if>
                     </ul>

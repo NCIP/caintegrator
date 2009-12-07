@@ -473,4 +473,12 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
     }
+    
+    /**
+     * Display web service parameters.
+     * @return whether to display the web service parameters.
+     */
+    public String getUseWebServiceOn() {
+        return (useWebService) ? "display: block;" : "display: none;";
+    }
 }

@@ -6,6 +6,10 @@
     <typedef name="Status" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
        <param name="enumClass">gov.nih.nci.caintegrator2.application.study.Status</param> 
     </typedef> 
+    
+    <typedef name="PlatformType" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum</param> 
+    </typedef>     
 
 	<class name="PlatformConfiguration" table="PLATFORM_CONFIGURATION" lazy="false" polymorphism="explicit">
 		<cache usage="read-write" />
@@ -20,5 +24,6 @@
         <property name="deploymentFinishDate" type="java.util.Date" column="DEPLOYMENT_FINISH_DATE"/>
         <many-to-one name="platform" class="Platform" column="PLATFORM_ID"
             unique="true" lazy="proxy" cascade="delete" />
+        <property name="platformType" type="PlatformType" column="PLATFORM_TYPE"/>  
 	</class>
 </hibernate-mapping>

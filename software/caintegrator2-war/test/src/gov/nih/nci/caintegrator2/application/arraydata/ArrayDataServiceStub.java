@@ -156,6 +156,13 @@ public class ArrayDataServiceStub implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
+    public PlatformConfiguration getPlatformConfiguration(String name) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Platform getPlatform(String name) {
         return null;
     }
@@ -212,6 +219,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
         platform.setName("name2");
         platform.setVendor(PlatformVendorEnum.AFFYMETRIX);
         config2.setPlatform(platform);
+        config2.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
         platformConfigurations.add(config1);
         platformConfigurations.add(config2);
         return platformConfigurations;

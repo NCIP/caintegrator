@@ -96,7 +96,9 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
@@ -254,6 +256,21 @@ public class GenePatternAnalysisActionTest {
     @Test
     public void testDeleteAnalysisJob() {
         assertEquals(ActionSupport.SUCCESS, action.deleteAnalysisJob());
+    }
+    
+    @Test
+    public void testGetAnalysisTypes() {
+        assertEquals(2, action.getAnalysisTypes().size());
+        GenomicDataSourceConfiguration gdsc = new GenomicDataSourceConfiguration();
+        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(gdsc);
+        gdsc.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        assertEquals(3, action.getAnalysisTypes().size());
+        gdsc.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
+        gdsc.setCopyNumberDataConfiguration(new CopyNumberDataConfiguration());
+        assertEquals(3, action.getAnalysisTypes().size());gdsc = new GenomicDataSourceConfiguration();
+        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(gdsc);
+        gdsc.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        assertEquals(4, action.getAnalysisTypes().size());
     }
 
 }

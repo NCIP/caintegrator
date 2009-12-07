@@ -154,4 +154,18 @@ public class PrincipalComponentAnalysisJob extends AbstractPersistedAnalysisJob 
     public void setPreprocessDataSetUrl(String preprocessDataSetUrl) {
         this.preprocessDataSetUrl = preprocessDataSetUrl;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append(retrieveHeader("Principal Component Analysis"));
+        if (getForm().isUsePreprocessDataset()) {
+            sb.append(getForm().getPreprocessParameters().toString());
+        }
+        sb.append(getForm().getPcaParameters().toString());
+        return sb.toString();
+    }
 }

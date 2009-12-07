@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultsOrientationEnum;
+import gov.nih.nci.caintegrator2.domain.application.SortTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
@@ -111,10 +112,12 @@ public class ResultConfiguration {
 
     ResultConfiguration(QueryForm form) {
         this.form = form;
-        subjectColumns = 
-            new ColumnSelectionList(this, getStudy().getSubjectAnnotationCollection(), EntityTypeEnum.SUBJECT);
-        imageSeriesColumns = 
-            new ColumnSelectionList(this, getStudy().getImageSeriesAnnotationCollection(), EntityTypeEnum.IMAGESERIES);
+        subjectColumns = new ColumnSelectionList(this,
+                getStudy().getStudyConfiguration()
+                    .getVisibleSubjectAnnotationCollection(), EntityTypeEnum.SUBJECT);
+        imageSeriesColumns = new ColumnSelectionList(this,
+                getStudy().getStudyConfiguration()
+                    .getVisibleImageSeriesAnnotationCollection(), EntityTypeEnum.IMAGESERIES);
     }
 
     Study getStudy() {
@@ -273,6 +276,32 @@ public class ResultConfiguration {
             }
         }
         return null;
+    }
+    
+    /**
+     * For getting the sortType as a string (for JSP purposes).
+     * @param columnName get index of this column.
+     * @return sortType.
+     */
+    public String getSortType(String columnName) {
+        if (getColumn(columnName).getSortType() != null) {
+            return getColumn(columnName).getSortType().getValue();
+        } else {
+            return "";
+        }
+    }
+    
+    /**
+     * Sets sort type based on string input.
+     * @param columnName get index of this column.
+     * @param sortType to set sortType.
+     */
+    public void setSortType(String columnName, String sortType) {
+        if (StringUtils.isBlank(sortType)) {
+            getColumn(columnName).setSortType(null);
+        } else {
+            getColumn(columnName).setSortType(SortTypeEnum.getByValue(sortType));
+        }
     }
 
     /**

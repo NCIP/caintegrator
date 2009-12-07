@@ -725,8 +725,10 @@ A.btn SPAN.load
 { background:url("../../images/ico_load.gif") no-repeat; }
 A.btn SPAN.edit_annotations
 { background:url("../../images/ico_edit_annotations.gif") no-repeat; }
-
-
+A.btn SPAN.externalsite
+{ background:url("../../images/ico_externalsite.gif") no-repeat; }
+A.btn SPAN.download
+{ background:url("../../images/arrow_down.gif") no-repeat; }
 
 /* Check List - Columns Tabs */
 
@@ -788,7 +790,7 @@ TABLE.data TBODY TR TH FORM TABLE.editStudyFile TBODY TR TD
 .form_wrapper_outer
 { border:1px solid #999; background:#eee; padding:10px 10px 5px 10px; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius:10px;}
 .form_wrapper_outer .bottombtns 
-{ margin:0 auto; width:25em; height:3em; }
+{ margin:0 auto; width:28em; height:3em; }
 TABLE.form_wrapper_table
 { border:1px solid #ccc; width:100%; background:#fff; margin-bottom:15px; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px;}
 TABLE.form_wrapper_table TH
@@ -852,13 +854,17 @@ TABLE.data TBODY#studyDeploymentJobStatusTable TR TD#dwrCellID_3
 { white-space: nowrap; }
 
 
+/** style for picking gene list **/
+A.geneListIcon
+{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll center top; padding:1px 12px 4px 12px;}
+
 /** style for link to CGAP site **/
 A.cgapLogo
-{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cgaplogo.gif') no-repeat scroll left top; padding:1px 70px 5px 8px;}
+{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cgaplogo.gif') no-repeat scroll center top; padding:1px 35px 1px 35px;}
 
 /** style for link to caBio site **/
 A.caBioLogo
-{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cabiologo.gif') no-repeat scroll left top; padding:8px 21px 18px 3px;}
+{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cabiologo.gif') no-repeat scroll center top; padding:8px 10px 18px 10px;}
 /** Styles when using struts css_xhtml theme **/
 .wwgrp
 {position: relative; white-space: nowrap; margin-top: 10px; margin-bottom: 10px;}
@@ -953,6 +959,69 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
     padding:7px 0 5px 10px;
     margin-bottom:1px;
 }
+
+#TB_GL_overlay {
+    position: fixed;
+    z-index:100;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    display:none;
+}
+
+.TB_GL_overlayMacFFBGHack {background: url(macFFBgHack.png) repeat;}
+.TB_GL_overlayBG {
+    background-color:#000;
+    filter:alpha(opacity=75);
+    -moz-opacity: 0.75;
+    opacity: 0.75;
+}
+* html #TB_GL_overlay { /* ie6 hack */
+     position: absolute;
+     height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');
+}
+
+#geneListSearchInputDiv {
+    position: fixed;
+    background: #ffffff;
+    z-index: 102;
+    color:#000000;
+    display:block;
+    visibility:hidden;
+    border: 4px solid #525252;
+    text-align:left;
+    top:25%;
+    left:50%;
+}
+
+* html #geneListSearchInputDiv { /* ie6 hack */
+position: absolute;
+margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');
+}
+
+#geneListSearchInputDiv img#TB_Image {
+    display:block;
+    margin: 15px 0 0 15px;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #666;
+    border-left: 1px solid #666;
+}
+
+#TB_GL_closeAjaxWindow{
+    padding:7px 10px 5px 0;
+    margin-bottom:1px;
+    text-align:right;
+    float:right;
+}
+
+#TB_GL_ajaxWindowTitle{
+    float:left;
+    padding:7px 0 5px 10px;
+    margin-bottom:1px;
+}
+
 /* ----------------------------------------------------------------------------------------------------------------*/
 /* ---------->>> END thickbox specific link and font settings <<<------------------------------------------------*/
 /* ----------------------------------------------------------------------------------------------------------------*/
@@ -1001,6 +1070,15 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
    position: relative;
    float: left;
    left: 0px;
+   width: 100px;
+   border-right:1px solid #A8B8CE;
+   padding-bottom: 5px;
+   padding-left: 0px;
+}
+.left4{
+   position: relative;
+   float: left;
+   left: 0px;
    width: 50px;
    border-right:1px solid #A8B8CE;
    padding-bottom: 5px;
@@ -1014,5 +1092,48 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
    min-width: 300px;
    border-right:1px solid #A8B8CE;
    padding-bottom: 5px;
-   padding-left: 0px;
+   padding-left: 2px;
 }
+
+/* ----------------------------------------------------------------------------------------------------------------*/
+/* ---------->>> Editable-Select Settings <<<----------------------------------------------------------------------*/
+/* ----------------------------------------------------------------------------------------------------------------*/
+
+input.editable-select {
+  background: #FFF url(/caintegrator2/images/arrow-down.gif) right center no-repeat;
+  padding-right: 13px;
+}
+.editable-select-options {
+  position: absolute;
+  display: none;
+  overflow: auto;
+  margin: 0;
+  padding: 0;
+  background: #FFF;
+  border: 1px solid #CCC;
+  z-index: 10;
+}
+.editable-select-iframe {
+  position: absolute;
+  background: #FFF;
+  z-index: 9;
+  display: none;
+}
+.editable-select-options ul {
+    margin: 0;
+    padding: 0;
+    z-index: 10;
+    list-style: none;
+    list-style-image: none;
+}
+.editable-select-options li {
+  cursor: default;
+  padding: 2px;
+}
+.editable-select-options li.selected {
+  background: #EAEAEA;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------*/
+/* ---------->>> End Editable-Select Settings <<<-------------------------------------------------------*/
+/* ----------------------------------------------------------------------------------------------------------------*/

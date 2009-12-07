@@ -3,8 +3,12 @@ package gov.nih.nci.caintegrator2.domain.application;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -90,5 +94,51 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
     private void setAnalysisJobCollection(Set<AbstractPersistedAnalysisJob> analysisJobCollection) {
         this.analysisJobCollection = analysisJobCollection;
     }
+    
+    /**
+     * @return a list of gene lists, ordered by name.
+     */
+    public List<GeneList> getGeneLists() {
+        List<GeneList> geneLists = new ArrayList<GeneList>();
+        if (listCollection != null) {
+            for (AbstractList abstractList : listCollection) {
+                if (abstractList instanceof GeneList) {
+                    geneLists.add((GeneList) abstractList);
+                }
+            }
+            Comparator<GeneList> nameComparator = new Comparator<GeneList>() {
+                public int compare(GeneList geneList1, GeneList geneList2) {
+                    return geneList1.getName().compareToIgnoreCase(geneList2.getName());
+                }
+            };
+            Collections.sort(geneLists, nameComparator);
+        }
+        return geneLists;
+    }
+    
+    /**
+     * @return a list of gene list names
+     */
+    public List<String> getGeneListNames() {
+        List<String> geneListNames = new ArrayList<String>();
+        for (GeneList list : getGeneLists()) {
+            geneListNames.add(list.getName());
+        }
+        return geneListNames;
+    }
+    
+    /**
+     * @param name then gene list name to get
+     * @return The gene list
+     */
+    public GeneList getGeneList(String name) {
+        for (GeneList list : getGeneLists()) {
+            if (list.getName().equals(name)) {
+                return list;
+            }
+        }
+        return null;
+    }
+    
 
 }

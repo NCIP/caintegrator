@@ -265,4 +265,20 @@ public class Study extends AbstractCaIntegrator2Object {
             && studyConfiguration.isDeployed();
     }
 
+    /**
+     * @return the boolean of whether the study has Expression data
+     */
+    public boolean hasExpressionData() {
+        return studyConfiguration != null
+            && studyConfiguration.hasExpressionData();
+    }
+
+    /**
+     * @return the boolean of whether the study has Copy Number data
+     */
+    public boolean hasCopyNumberData() {
+        return studyConfiguration != null
+            && studyConfiguration.hasCopyNumberData();
+    }
+
 }

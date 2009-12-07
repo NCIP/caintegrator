@@ -110,7 +110,7 @@
 <!--//begin create karnofsky-->
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[10]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[10]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -135,7 +135,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[20]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[20]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -160,7 +160,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[21]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[21]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -185,7 +185,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[22]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[22]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -211,7 +211,7 @@
 <!--// begin create age-->
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[3]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[3]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -237,7 +237,7 @@
 <!--// begin create gender-->
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[4]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[4]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -263,7 +263,7 @@
 <!--// end create gender-->
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[5]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[5]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -283,52 +283,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[6]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='New']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
-	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[7]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='New']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
-	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[8]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[6]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -353,7 +308,27 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[9]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[7]/td[2]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='New']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[8]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -378,27 +353,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[11]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='New']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
-	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[12]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[9]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -423,7 +378,27 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[13]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[11]/td[2]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='New']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[12]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -448,7 +423,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[14]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[13]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -473,7 +448,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[15]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[14]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -498,7 +473,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[16]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[15]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -523,42 +498,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[17]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[17]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='New']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' Add &gt; ']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
-	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[18]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[16]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -583,7 +523,67 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[19]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[17]/td[2]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[17]/td[2]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='New']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[18]/td[2]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='New']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' Add &gt; ']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[19]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>

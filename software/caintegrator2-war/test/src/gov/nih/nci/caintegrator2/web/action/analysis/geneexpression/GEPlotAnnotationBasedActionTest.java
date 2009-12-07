@@ -91,8 +91,13 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
@@ -145,7 +150,8 @@ public class GEPlotAnnotationBasedActionTest {
         studyManagementServiceStub.clear();
         analysisServiceStub.clear();
     }
-    
+
+    @SuppressWarnings("deprecation") // Use dummy AnnotationFile for testing
     private Study createFakeStudy() {
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -164,7 +170,25 @@ public class GEPlotAnnotationBasedActionTest {
         subjectDef2.setId(Long.valueOf(2));
         study.getSubjectAnnotationCollection().add(subjectDef1);
         study.getSubjectAnnotationCollection().add(subjectDef2);
+        
+        DelimitedTextClinicalSourceConfiguration clinicalConf = new DelimitedTextClinicalSourceConfiguration();
+        studyConfiguration.getClinicalConfigurationCollection().add(clinicalConf);
+        AnnotationFile annotationFile = new AnnotationFile();
+        clinicalConf.setAnnotationFile(annotationFile);
+
+        addColumn(annotationFile, subjectDef1);
+        addColumn(annotationFile, subjectDef2);
+        
         return study;
+    }
+    
+    private void addColumn(AnnotationFile annotationFile, AnnotationDefinition subjectDef) {
+        FileColumn column = new FileColumn();
+        AnnotationFieldDescriptor fieldDescriptor = new AnnotationFieldDescriptor();
+        fieldDescriptor.setShownInBrowse(true);
+        fieldDescriptor.setDefinition(subjectDef);
+        column.setFieldDescriptor(fieldDescriptor);
+        annotationFile.getColumns().add(column);
     }
     
     @Test
@@ -180,20 +204,17 @@ public class GEPlotAnnotationBasedActionTest {
         action.clearErrorsAndMessages();
         action.validate();
         assertTrue(action.getActionErrors().size() > 0);
-        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(
-                new GenomicDataSourceConfiguration());
+        action.getCurrentStudy().setStudyConfiguration(new StudyConfiguration());
+        action.getCurrentStudy().getStudyConfiguration().setStatus(Status.DEPLOYED);
+        GenomicDataSourceConfiguration gdsc =  new GenomicDataSourceConfiguration();
+        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(gdsc);
         action.clearErrorsAndMessages();
         action.validate();
         assertTrue(action.getActionErrors().isEmpty());
-        StudySubscription validStudySubscription = (StudySubscription)
-            ActionContext.getContext().getValueStack().getContext().get("studySubscription");
-        ActionContext.getContext().getValueStack().setValue("studySubscription", null);
+        gdsc.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
         action.clearErrorsAndMessages();
         action.validate();
         assertTrue(action.getActionErrors().size() > 0);
-        action.clearErrorsAndMessages();
-        ActionContext.getContext().getValueStack().setValue("studySubscription", validStudySubscription);
-        assertTrue(action.getActionErrors().isEmpty());
     }
 
     @Test

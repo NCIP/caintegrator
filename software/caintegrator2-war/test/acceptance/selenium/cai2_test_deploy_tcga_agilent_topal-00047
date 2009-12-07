@@ -111,7 +111,7 @@
 <!--//begin creation of additional annotation definitions-->
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[3]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[3]/td[2]/a</td>
 	<td></td>
 </tr>
 <!--//-->
@@ -137,7 +137,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[4]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[4]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -162,7 +162,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[5]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[5]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -187,7 +187,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[6]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[6]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -212,7 +212,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[7]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[7]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -237,7 +237,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[8]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[8]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -262,7 +262,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[9]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[9]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -287,7 +287,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[10]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[10]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -312,7 +312,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[11]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[11]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -337,7 +337,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[12]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[12]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -362,7 +362,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[13]/td[1]/a</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[13]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>

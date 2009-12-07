@@ -11,16 +11,23 @@
 &nbsp;
 
 <@s.a theme="simple" href="" 
-    cssClass="cgapLogo" 
-    title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)" 
-    onclick="gotoCGAP('${displayableWorkspace.cgapUrl}','${parameters.textFieldId}')">
+    cssClass="caBioLogo" 
+    title="Click to search caBio for genes based on keywords, symbols, or pathways." 
+    onclick="showCaBioInputForm('${parameters.textFieldId}')">
     &nbsp;
 </@s.a>
 
 <@s.a theme="simple" href="" 
-    cssClass="caBioLogo" 
-    title="Click to search caBio for genes based on keywords." 
-    onclick="showCaBioInputForm('${parameters.textFieldId}')">
+    cssClass="geneListIcon" 
+    title="Click to get genes from the gene list." 
+    onclick="showGeneListInputForm('${parameters.textFieldId}')">
+    &nbsp;
+</@s.a>
+
+<@s.a theme="simple" href="" 
+    cssClass="cgapLogo" 
+    title="Click to find these Gene Symbols in the Cancer Genome Anatomy Project (CGAP)" 
+    onclick="gotoCGAP('${displayableWorkspace.cgapUrl}','${parameters.textFieldId}')">
     &nbsp;
 </@s.a>
 

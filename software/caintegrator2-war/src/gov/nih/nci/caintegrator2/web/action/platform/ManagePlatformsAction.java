@@ -341,7 +341,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
             addFieldError(PLATFORM_FILE, "Platform name not found in annotation file: "
                     + platformFileFileName);
             return false;
-        } else if (getArrayDataService().getPlatform(name) != null) {
+        } else if (getArrayDataService().getPlatformConfiguration(name) != null) {
             addActionError("Platform name is duplicate or the platform is already been loaded: "
                     + name);
             return false;
@@ -354,6 +354,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         PlatformConfiguration configuration = new PlatformConfiguration(source);
         configuration.setName(name);
         configuration.setStatus(Status.PROCESSING);
+        configuration.setPlatformType(PlatformTypeEnum.getByValue(platformType));
         arrayDataService.savePlatformConfiguration(configuration);
         ajaxUpdater.runJob(configuration, getWorkspace().getUsername());
         getPlatformForm().clear();

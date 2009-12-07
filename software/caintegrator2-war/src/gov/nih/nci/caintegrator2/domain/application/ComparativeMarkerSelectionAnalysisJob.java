@@ -156,4 +156,16 @@ public class ComparativeMarkerSelectionAnalysisJob extends AbstractPersistedAnal
         this.resultsZipFile = resultsZipFile;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append(retrieveHeader("Comparative Marker Selection"));
+        sb.append(getForm().getPreprocessDatasetparameters().toString());
+        sb.append(getForm().getComparativeMarkerSelectionParameters().toString());
+        return sb.toString();
+    }
+
 }

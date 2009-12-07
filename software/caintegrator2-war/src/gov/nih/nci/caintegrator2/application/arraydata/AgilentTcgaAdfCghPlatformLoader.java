@@ -95,8 +95,10 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -114,10 +116,17 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
     private static final String FIRST_FIELD_HEADER = "X_Block";
     private static final String PROBE_SET_ID_HEADER = "Reporter_ID";
     private static final String GENE_SYMBOL_HEADER = "Genomic_Symbol";
-    private static final String COMPOSITE_CHR_COORDS = "Composite_chr_coords";
+    private static final String COMPOSITE_CHR_COORDS_HEADER = "Composite_chr_coords";
     private static final String NO_GENE_SYMBOL = "unmapped";
     private static final String NA_COORDS = "NA-NA";
-
+    private static final String[] REQUIRED_HEADERS = {FIRST_FIELD_HEADER, PROBE_SET_ID_HEADER,
+        GENE_SYMBOL_HEADER, COMPOSITE_CHR_COORDS_HEADER};
+    
+    private static final Map<String, String> GENOMIC_VERSION_MAPPING = new HashMap<String, String>();
+    static {
+        GENOMIC_VERSION_MAPPING.put("36", "Hg18");
+        GENOMIC_VERSION_MAPPING.put("37", "Hg19");
+    }
 
     AgilentTcgaAdfCghPlatformLoader(AgilentDnaPlatformSource source) {
         super(source);
@@ -165,7 +174,7 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
         String[] fields;
         while ((fields = getAnnotationFileReader().readNext()) != null) {
             if (isAnnotationHeadersLine(fields, FIRST_FIELD_HEADER)) {
-                loadAnnotationHeaders(fields);
+                loadAnnotationHeaders(fields, REQUIRED_HEADERS);
                 return;
             }
         }        
@@ -189,10 +198,14 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
         reporterList.getReporters().add(reporter);
         reporter.setReporterList(reporterList);
         reporter.getGenes().addAll(genes);
-        String[] chrCoords = getAnnotationValue(fields, COMPOSITE_CHR_COORDS).split(":");
-        reporterList.setGenomeVersion(chrCoords[0].substring(1));
+        String[] chrCoords = getAnnotationValue(fields, COMPOSITE_CHR_COORDS_HEADER).split(":");
+        reporterList.setGenomeVersion(mapGenomicVersion(chrCoords[0].substring(1)));
         reporter.setChromosome(chrCoords[1]);
         reporter.setPosition(getIntegerValue(chrCoords[2]));
+    }
+    
+    private String mapGenomicVersion(String version) {
+        return GENOMIC_VERSION_MAPPING.get(version.split("\\.")[0]);
     }
     
     private Integer getIntegerValue(String value) {

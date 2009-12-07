@@ -27,6 +27,9 @@
 		<property name="deploymentStartDate" type="java.util.Date" column="DEPLOYMENT_START_DATE"/>
 		
         <property name="deploymentFinishDate" type="java.util.Date" column="DEPLOYMENT_FINISH_DATE"/>
+        
+        <property name="lastModifiedDate" type="java.util.Date" column="LAST_MODIFIED_DATE"/>
+        
     
         <list name="clinicalConfigurationCollection" lazy="false" cascade="all">
             <cache usage="read-write" />
@@ -56,6 +59,9 @@
             lazy="proxy" cascade="all" />
         
         <many-to-one name="userWorkspace" class="gov.nih.nci.caintegrator2.domain.application.UserWorkspace" column="USER_WORKSPACE_ID"
+            lazy="proxy" cascade="none" />
+            
+        <many-to-one name="lastModifiedBy" class="gov.nih.nci.caintegrator2.domain.application.UserWorkspace" column="LAST_MODIFIED_BY_USER_ID"
             lazy="proxy" cascade="none" />
 	</class>
 </hibernate-mapping>

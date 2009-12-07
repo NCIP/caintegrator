@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="lib" path="software/lib/src/spring-src.zip" sourcepath="software/lib/src/spring-src.zip"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/displaytag-1.2.jar" sourcepath="software/lib/src/displaytag-1.2-src.zip"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/servlet-2.3.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-sdkQuery4-beans-1.2.jar"/>
@@ -30,14 +31,16 @@
 	<classpathentry kind="lib" path="software/lib/external-runtime/Gistic-client.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/Gistic-common.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/clm-4.1.jar"/>
-	<classpathentry kind="lib" path="software/lib/external-runtime/cabio42-beans.jar"/>
-	<classpathentry kind="lib" path="software/lib/external-runtime/cabio42-client-framework.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-search-3.1.1.GA.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/caarray-client-external-v1_0.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/rmiio-2.0.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/acegi-security-1.0.7.jar" sourcepath="software/lib/src/acegi-security-1.0.7-sources.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/google-collections-1.0-rc1.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/cabio43-beans.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/cabio43-client-framework.jar"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/src"/>
+	<classpathentry kind="src" path="software/caintegrator2-war/target/classes"/>
+	<classpathentry kind="src" path="software/lib/src"/>
 	<classpathentry kind="src" output="software/genepattern-service-jar/target/classes" path="software/genepattern-service-jar/src"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/src"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/resources"/>
@@ -133,7 +136,7 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xml-apis-1.2.01.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xmlsec-1.2.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xwork-2.0.4.jar" sourcepath="software/lib/src/xwork-2.0.4-sources.jar"/>
-	<classpathentry kind="lib" path="software/lib/external-runtime/nci-commons-core-1.0.9.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/nci-commons-core-1.2.3.jar" sourcepath="software/lib/src/nci-commons-core-1.2.3-sources.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/NCIACoreService-client.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/NCIACoreService-common.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/NCIACoreService-stubs.jar"/>

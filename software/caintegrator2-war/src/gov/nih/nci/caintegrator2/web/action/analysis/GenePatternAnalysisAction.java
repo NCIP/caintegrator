@@ -106,7 +106,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -117,6 +119,7 @@ import org.apache.commons.lang.StringUtils;
 public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     
     private static final long serialVersionUID = 1L;
+    private String analysisType = "genePatternModules";
 
     /**
      * Indicates action should open the analysis page.
@@ -203,9 +206,11 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
         getGenePatternAnalysisForm().setUrl(configurationHelper.getString(ConfigurationParameter.GENE_PATTERN_URL));
         getGenePatternAnalysisForm().setGenomicQueries(getGenomicQueries());
         Collection<AnnotationDefinition> subjectClassifications = 
-            getClassificationAnnotations(getStudy().getSubjectAnnotationCollection());
+            getClassificationAnnotations(getStudy().getStudyConfiguration()
+                    .getVisibleSubjectAnnotationCollection());
         Collection<AnnotationDefinition> imageSeriesClassifications = 
-            getClassificationAnnotations(getStudy().getImageSeriesAnnotationCollection());
+            getClassificationAnnotations(getStudy().getStudyConfiguration()
+                    .getVisibleImageSeriesAnnotationCollection());
         Collection<AnnotationDefinition> sampleClassifications = 
             getClassificationAnnotations(getStudy().getSampleAnnotationCollection());
         getGenePatternAnalysisForm().clearClassificationAnnotations();
@@ -428,6 +433,36 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
      */
     public void setJobId(Long jobId) {
         this.jobId = jobId;
+    }
+    
+    /**
+     * @return a list if available analysis types for this study.
+     */
+    public Map<String, String> getAnalysisTypes() {
+        Map<String, String> types = new LinkedHashMap<String, String>();
+        types.put("genePatternModules", "Gene Pattern Modules");
+        types.put("principalComponentAnalysis", "Principal Component Analysis (Grid Service)");
+        if (getCurrentStudy().hasExpressionData()) {
+            types.put("comparativeMarkerSelection", "Comparative Marker Selection (Grid Service)");
+        }
+        if (getCurrentStudy().hasCopyNumberData()) {
+            types.put("gistic", "GISTIC (Grid Service)");
+        }
+        return types;
+    }
+
+    /**
+     * @return the analysisType
+     */
+    public String getAnalysisType() {
+        return analysisType;
+    }
+
+    /**
+     * @param analysisType the analysisType to set
+     */
+    public void setAnalysisType(String analysisType) {
+        this.analysisType = analysisType;
     }
 
 }

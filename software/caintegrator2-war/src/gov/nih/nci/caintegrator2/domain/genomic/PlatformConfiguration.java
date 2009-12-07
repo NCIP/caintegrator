@@ -1,6 +1,7 @@
 package gov.nih.nci.caintegrator2.domain.genomic;
 
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
@@ -15,6 +16,7 @@ public class PlatformConfiguration extends AbstractCaIntegrator2Object {
     private transient AbstractPlatformSource platformSource;
     private transient boolean inUse = false;
     private Platform platform;
+    private PlatformTypeEnum platformType;
     private String name;
     private Date deploymentStartDate;
     private Date deploymentFinishDate;
@@ -149,4 +151,18 @@ public class PlatformConfiguration extends AbstractCaIntegrator2Object {
     public void setName(String name) {
         this.name = name;
     }
+    
+    /**
+     * @return the platformType
+     */
+    public PlatformTypeEnum getPlatformType() {
+        return platformType;
+    }
+
+    /**
+     * @param platformType the platformType to set
+     */
+    public void setPlatformType(PlatformTypeEnum platformType) {
+        this.platformType = platformType;
+    }     
 }

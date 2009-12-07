@@ -85,14 +85,16 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
-import java.util.Set;
-
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 import gov.nih.nci.security.exceptions.CSException;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * Provides <code>UserWorkspace</code> access and management functionality.
@@ -169,5 +171,12 @@ public interface WorkspaceService {
      * @return - DisplayableStudySummary object created from the study.
      */
     DisplayableStudySummary createDisplayableStudySummary(Study study);
+    
+    /**
+     * 
+     * @param geneList the gene list to create
+     * @param geneSymbols the list of gene symbols
+     */
+    void createGeneList(GeneList geneList, List<String> geneSymbols);
 
 }

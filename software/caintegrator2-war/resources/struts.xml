@@ -469,6 +469,43 @@
             </result>
         </action>
                 
+        
+        <!-- Gene List Actions -->
+        <action name="manageGeneList" class="manageGeneListAction">
+            <result type="tiles">manageGeneList</result>
+            <result name="error" type="tiles">manageGeneList</result>
+            <result name="input" type="tiles">manageGeneList</result>
+            <result name="editPage" type="redirectAction">
+                <param name="actionName">editGeneList</param>
+                <param name="selectedAction">editGeneList</param>
+                <param name="geneListName">${geneListName}</param>
+            </result>
+        </action>
+        
+        <action name="editGeneList" class="editGeneListAction">
+            <result type="tiles">editGeneList</result>
+            <result name="error" type="tiles">editGeneList</result>
+            <result name="input" type="tiles">editGeneList</result>
+            <result name="editPage" type="redirectAction">
+                <param name="actionName">editGeneList</param>
+                <param name="selectedAction">editGeneList</param>
+                <param name="geneListName">${geneListName}</param>
+            </result>
+            <result name="homePage" type="redirectAction">
+                <param name="actionName">workspace</param>
+            </result>
+        </action>
+        
+        <action name="geneListSearchInput" class="searchGeneListAction">
+            <result>/WEB-INF/jsp/tiles/geneListSearch_div.jsp</result>
+        </action>
+        
+        <action name="geneListSearch" method="searchForGenes" class="searchGeneListAction">
+            <result>/WEB-INF/jsp/tiles/geneListSearchResults_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/geneListSearchResults_div.jsp</result>
+            <result name="error">/WEB-INF/jsp/tiles/geneListSearchResults_div.jsp</result>
+        </action>
+                
         <!--  Query Actions -->
         <!--  Query Actions -->
         <!--  Query Actions -->
@@ -489,11 +526,7 @@
             <result name="export" type="tiles">exportSearchResults</result>
             <result name="dicomJobAjax" type="tiles">dicomJobAjax</result>
             <result name="dicomJobCurrentlyRunning" type="tiles">genericError</result>
-            <result name="exportGenomicResults" type="temporaryDownloadFileResult">
-                <param name="fileName">genomicResults.csv</param>
-                <param name="contentType">text/plain</param>
-                <param name="deleteFile">true</param>
-            </result>
+            <result name="exportGenomicResults" type="temporaryDownloadFileResult"/>
         </action>
         
         <action name="downloadDicomFile" method="downloadDicomFile" class="nciaDicomRetrievalAction">
@@ -553,16 +586,6 @@
             <result name="input" type="tiles">comparativeMarkerSelectionAnalysis</result>
         </action>
         
-        <action name="comparativeMarkerSelectionAnalysisResults" class="downloadAnalysisResultsAction">
-            <result name="input" type="tiles">genericError</result>
-            <result name="error" type="tiles">genericError</result>
-            <result name="downloadResultFile" type="temporaryDownloadFileResult">
-                <param name="fileName">cmsResults.zip</param>
-                <param name="contentType">application/zip</param>
-                <param name="deleteFile">false</param>
-            </result>
-        </action>
-        
         <action name="deleteGenePatternAnalysis" class="genePatternAnalysisAction" method="deleteAnalysisJob">
             <result type="tiles">genePatternAnalysisStatus</result>
         </action>
@@ -580,14 +603,10 @@
             <result name="input" type="tiles">principalComponentAnalysis</result>
         </action>
         
-        <action name="principalComponentAnalysisResults" class="downloadAnalysisResultsAction">
+        <action name="analysisJobDownload" class="downloadAnalysisResultsAction">
             <result name="input" type="tiles">genericError</result>
             <result name="error" type="tiles">genericError</result>
-            <result name="downloadResultFile" type="temporaryDownloadFileResult">
-                <param name="fileName">pcaResults.zip</param>
-                <param name="contentType">application/zip</param>
-                <param name="deleteFile">false</param>
-            </result>
+            <result name="downloadResultFile" type="temporaryDownloadFileResult"/>
         </action>
         
         <action name="gisticAnalysis" class="gisticAnalysisAction">
@@ -596,16 +615,6 @@
                 <param name="actionName">genePatternAnalysisStatus</param>
             </result>
             <result name="input" type="tiles">gisticAnalysis</result>
-        </action>
-        
-        <action name="gisticAnalysisResults" class="downloadAnalysisResultsAction">
-            <result name="input" type="tiles">genericError</result>
-            <result name="error" type="tiles">genericError</result>
-            <result name="downloadResultFile" type="temporaryDownloadFileResult">
-                <param name="fileName">gisticResults.zip</param>
-                <param name="contentType">application/zip</param>
-                <param name="deleteFile">false</param>
-            </result>
         </action>
         
         <!-- Kaplan-Meier Actions -->
@@ -897,11 +906,11 @@
         </action>
         
         <!-- CaBio Actions -->
-        <action name="caBioGeneSearchInput" method="input" class="caBioSearchAction">
+        <action name="caBioSearchInput" method="input" class="caBioSearchAction">
             <result>/WEB-INF/jsp/tiles/cabio/caBioGeneSearch_div.jsp</result>
         </action>
         
-        <action name="caBioGeneSearch" method="searchForGenes" class="caBioSearchAction">
+        <action name="caBioSearch" method="searchCaBio" class="caBioSearchAction">
             <result>/WEB-INF/jsp/tiles/cabio/caBioGeneSearchResults_div.jsp</result>
             <result name="input">/WEB-INF/jsp/tiles/cabio/caBioGeneSearchResults_div.jsp</result>
             <result name="error">/WEB-INF/jsp/tiles/cabio/caBioGeneSearchResults_div.jsp</result>

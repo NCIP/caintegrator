@@ -139,21 +139,25 @@ public class ArrayDataServiceImpl implements ArrayDataService {
         try {
             LOGGER.info("Started loading design from " + platformSource.toString());
             getDao().setFlushMode(HibernateAccessor.FLUSH_COMMIT);
+            String platformName = platformSource.getPlatformName();
             Platform platform = platformSource.getLoader().load(getDao());
             LOGGER.info("Completed loading design from " + platformSource.toString());
             platformConfiguration.setPlatform(platform);
             platformConfiguration.setStatus(Status.LOADED);
             platformConfiguration.setDeploymentFinishDate(new Date());
             saveAndUpdateDeploymentStatus(platformConfiguration, listener);
-        } catch (PlatformLoadingException e) {
-            handlePlatformLoadingException(platformConfiguration, listener, e);
+            LOGGER.info("Platform named " + platformName + " has been loaded.");
+        } catch (Exception e) {
+            handlePlatformException(platformConfiguration, listener, e);
+        } catch (Error e) {
+            handlePlatformException(platformConfiguration, listener, e);
         }
         return platformConfiguration;
         
     }
 
-    private void handlePlatformLoadingException(PlatformConfiguration platformConfiguration,
-            PlatformDeploymentListener listener, PlatformLoadingException e) {
+    private void handlePlatformException(PlatformConfiguration platformConfiguration,
+            PlatformDeploymentListener listener, Throwable e) {
         LOGGER.error("Deployment of platform " + platformConfiguration.getName() + " failed.", e);
         platformConfiguration.setStatus(Status.ERROR);
         platformConfiguration.setStatusDescription(e.getMessage());
@@ -188,6 +192,13 @@ public class ArrayDataServiceImpl implements ArrayDataService {
      */
     public List<Platform> getPlatforms() {
         return dao.getPlatforms();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public PlatformConfiguration getPlatformConfiguration(String name) {
+        return dao.getPlatformConfiguration(name);
     }
 
     /**

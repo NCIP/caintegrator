@@ -105,6 +105,14 @@ public class DisplayableResultValue {
      */
     @SuppressWarnings("PMD.UncommentedEmptyConstructor")
     public DisplayableResultValue() { }
+
+    /**
+     * Constructor which wraps the given string.
+     * @param value - A string value.
+     */
+    public DisplayableResultValue(String value) {
+        displayString = value;
+    }
     
     /**
      * Constructor which wraps the given ResultValue object.
@@ -115,11 +123,15 @@ public class DisplayableResultValue {
             if (AnnotationTypeEnum.DATE.equals(
                 resultValue.getColumn().getAnnotationDefinition().getDataType())) {
                 dateType = true;
-                DateAnnotationValue dateAnnotationValue = (DateAnnotationValue) resultValue.getValue();
-                dateValue = dateAnnotationValue.getDateValue();
+                dateValue = getDateValue(resultValue);
             }
-        displayString = resultValue.toString();
+            displayString = resultValue.toString();
         }
+    }
+    
+    private Date getDateValue(ResultValue resultValue) {
+        DateAnnotationValue dateAnnotationValue = (DateAnnotationValue) resultValue.getValue();
+        return (dateAnnotationValue != null) ? dateAnnotationValue.getDateValue() : null;
     }
     
     /**

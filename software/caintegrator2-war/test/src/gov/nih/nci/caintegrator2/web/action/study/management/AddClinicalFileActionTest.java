@@ -127,16 +127,16 @@ public class AddClinicalFileActionTest extends AbstractSessionBasedTest {
         String fileType;
         
         action.validate();
-        assertTrue(action.hasFieldErrors());
+        assertTrue(action.hasActionErrors());
         
         action.setClinicalFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
         action.validate();
-        assertTrue(action.hasFieldErrors());
+        assertTrue(action.hasActionErrors());
         
         action.setClinicalFile(TestDataFiles.VALID_FILE);
         assertNull(action.getClinicalFileContentType());
         action.validate();
-        assertTrue(action.hasFieldErrors());        
+        assertTrue(action.hasActionErrors());        
         
         action.setClinicalFile(TestDataFiles.VALID_FILE);
         FileSystemView fileSystemView = FileSystemView.getFileSystemView();   
@@ -146,12 +146,12 @@ public class AddClinicalFileActionTest extends AbstractSessionBasedTest {
         action.getClinicalFileContentType();
         action.clearErrorsAndMessages();
         action.validate();
-        assertFalse(action.hasFieldErrors());         
+        assertFalse(action.hasActionErrors());         
         
         action.setClinicalFile(TestDataFiles.VALID_FILE);
         action.clearErrorsAndMessages();
         action.validate();
-        assertFalse(action.hasFieldErrors());
+        assertFalse(action.hasActionErrors());
     }
 
 

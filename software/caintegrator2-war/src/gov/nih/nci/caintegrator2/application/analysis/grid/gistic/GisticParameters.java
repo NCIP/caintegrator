@@ -114,7 +114,7 @@ public class GisticParameters {
     private SampleSet excludeControlSampleSet;
     private File cnvSegmentsToIgnoreFile;
     private final ServerConnectionProfile server = new ServerConnectionProfile();
-    private GisticRefgeneFileEnum refgeneFile;
+    private GisticRefgeneFileEnum refgeneFile = GisticRefgeneFileEnum.HUMAN_HG16;
     private Float amplificationsThreshold = DEFAULT_AMPLIFICATIONS;
     private Float deletionsThreshold = DEFAULT_DELETIONS;
     private Integer joinSegmentSize = 4;
@@ -308,5 +308,31 @@ public class GisticParameters {
      */
     public void setExcludeControlSampleSet(SampleSet excludeControlSampleSet) {
         this.excludeControlSampleSet = excludeControlSampleSet;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        String nl = "\n";
+        StringBuffer sb = new StringBuffer();
+        sb.append("--------------------------").append(nl);
+        sb.append("Gistic Analysis Parameters").append(nl);
+        sb.append("--------------------------").append(nl);
+        if (excludeControlSampleSet != null) {
+            sb.append("Excluded control samples: ").append(excludeControlSampleSet.getName()).append(nl);
+        }
+        if (clinicalQuery != null) {
+            sb.append("Input query for classification: ").append(clinicalQuery.getName()).append(nl);
+        }
+        if (server != null) {
+            sb.append(server.toString()).append(nl);
+        }
+        GenomeAnnotationInformation genomeBuild = createGenomeBuild();
+        sb.append("Genome Build Information: ").append(genomeBuild.getSource()).append(", ").
+                append(genomeBuild.getBuild()).append(nl);
+        sb.append(GenePatternUtil.parameterListToString(createParameterList())).append(nl);
+        return sb.toString();
     }
 }

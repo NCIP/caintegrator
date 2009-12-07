@@ -138,5 +138,14 @@ public class GenePatternAnalysisJob extends AbstractPersistedAnalysisJob {
     public void setGpJobNumber(int gpJobNumber) {
         this.gpJobNumber = gpJobNumber;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

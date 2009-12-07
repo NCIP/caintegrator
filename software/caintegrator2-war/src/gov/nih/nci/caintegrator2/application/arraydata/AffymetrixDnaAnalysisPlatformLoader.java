@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.logging.api.util.StringUtils;
 
 import java.io.File;
 import java.io.FileReader;
@@ -99,7 +100,10 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+//import java.util.List;
+//import java.util.ArrayList;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -107,11 +111,13 @@ import au.com.bytecode.opencsv.CSVReader;
 /**
  * Loader for Affymetrix SNP array designs.
  */
+
 class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
 
     static final String DBSNP_RS_ID_HEADER = "dbSNP RS ID";
     private static final Logger LOGGER = Logger.getLogger(AffymetrixDnaAnalysisPlatformLoader.class);
     private static final String CHIP_TYPE_HEADER = "chip_type";
+    private static final String VERSION_HEADER = "netaffx-annotation-netaffx-build";
     private static final String GENOME_VERSION_HEADER = "genome-version";
     private static final String PROBE_SET_ID_HEADER = "Probe Set ID";
     private static final String GENE_SYMBOL_HEADER = "Associated Gene";
@@ -121,6 +127,8 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
     private static final String CHROMOSOME_HEADER = "Chromosome";
     private static final String POSITION_HEADER = "Physical Position";
     private Map<String, String> fileHeaders;
+    private static final String[] REQUIRED_HEADERS = {PROBE_SET_ID_HEADER, GENE_SYMBOL_HEADER,
+        ALLELE_A_HEADER, ALLELE_B_HEADER, CHROMOSOME_HEADER, POSITION_HEADER}; 
 
     AffymetrixDnaAnalysisPlatformLoader(AffymetrixDnaPlatformSource source) {
         super(source);
@@ -144,6 +152,7 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
         try {
             setAnnotationFileReader(new CSVReader(new FileReader(annotationFile)));
             loadHeaders();
+            platform.setVersion(getHeaderValue(VERSION_HEADER));
             ReporterList reporterList = 
                 platform.addReporterList(getHeaderValue(CHIP_TYPE_HEADER), ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
             reporterList.setGenomeVersion(getHeaderValue(GENOME_VERSION_HEADER));
@@ -174,8 +183,10 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
         reporterList.getReporters().add(reporter);
         reporter.setReporterList(reporterList);
         reporter.getGenes().addAll(genes);
-        reporter.setAlleleA(getAnnotationValue(fields, ALLELE_A_HEADER).charAt(0));
-        reporter.setAlleleB(getAnnotationValue(fields, ALLELE_B_HEADER).charAt(0));
+        String alleleA = getAnnotationValue(fields, ALLELE_A_HEADER); 
+        reporter.setAlleleA(StringUtils.isBlank(alleleA) ? null : alleleA.charAt(0));
+        String alleleB = getAnnotationValue(fields, ALLELE_B_HEADER);
+        reporter.setAlleleB(StringUtils.isBlank(alleleB) ? null : alleleB.charAt(0));
         reporter.setChromosome(getAnnotationValue(fields, CHROMOSOME_HEADER, NO_VALUE_INDICATOR));
         reporter.setDbSnpId(getAnnotationValue(fields, DBSNP_RS_ID_HEADER, NO_VALUE_INDICATOR));
         reporter.setPosition(getIntegerValue(fields, POSITION_HEADER));
@@ -183,11 +194,10 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
 
     private Integer getIntegerValue(String[] fields, String header) {
         String value = getAnnotationValue(fields, header);
-        if (NO_VALUE_INDICATOR.equals(value)) {
+        if (!NumberUtils.isNumber(value)) {
             return null;
-        } else {
-            return Integer.parseInt(value);
         }
+        return Integer.parseInt(value);
     }
 
     private Set<Gene> getGenes(String[] symbols, String[] fields, CaIntegrator2Dao dao) {
@@ -204,23 +214,71 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
         return genes;
     }
 
-    @SuppressWarnings("PMD.UseStringBufferForStringAppends")    // Invalid rule violation
     private String[] getSymbols(String[] fields) {
-        String[] symbols = getAnnotationValue(fields, GENE_SYMBOL_HEADER).split("///");
-        for (int i = 0; i < symbols.length; i++) {
-            symbols[i] = symbols[i].trim();
-        }
+        //
+        // This method parses the value from the gene symbol column
+        // which is obtained from the manufacturers platform annotation file.
+        // This involves breaking the string down into substrings and
+        // then finally extracting the gene symbol.
+        //
+        // An example of this value is as follows:
+        // "NM_181714 // intron // 0 // Hs.21945 // LCA5 // 167691 // Leber congenital amaurosis 5
+        // /// NM_001122769 // intron // 0 // Hs.21945 // LCA5 // 167691 // Leber congenital amaurosis 5
+        //
+        // Note in the above string, the top level separator is /// (3 forward slashes)
+        // and the second level separator is // (2 forward slashes)
+        // A second example of this value is as follows:
+        // LCA5 /// LCA5
+
+        // Get the gene symbol field and separate into substrings.
+        String[] subField = getAnnotationValue(fields, GENE_SYMBOL_HEADER).split("///");
+        
+        // extract the symbols from the array of substrings
+        Set<String> symbolsSet = parseSubString(subField);
+        
+        // convert to array
+        String[] symbols = symbolsSet.toArray(new String[symbolsSet.size()]);
+        
         return symbols;
     }
+
+    private Set<String> parseSubString(String[] subField) {
+        Set<String> symbols = new HashSet<String>();
+        for (String subfield : subField) {
+            String tempStr = parseSubString2(subfield);
+            if (!StringUtils.isBlank(tempStr)) {
+                symbols.add(tempStr);
+            }
+        }
+        return symbols;
+     }
+
+
+    private String parseSubString2(String subField) {
+        String[] holdSymbols = subField.split("//");
+        String symbol = ""; 
+
+        if (holdSymbols.length == 1) {
+            if (!holdSymbols[0].trim().equalsIgnoreCase(NO_VALUE_INDICATOR)) {
+                symbol = holdSymbols[0].trim();
+            }
+        } else if ((holdSymbols.length > 4)
+                    && (!holdSymbols[4].trim().equalsIgnoreCase(NO_VALUE_INDICATOR))) {                
+            symbol = holdSymbols[4].trim();
+        }
+        
+        return symbol;
+    }    
 
     private String getHeaderValue(String headerName) {
         return fileHeaders.get(headerName);
     }
 
     private void loadHeaders() throws PlatformLoadingException, IOException {
-        AffymetrixAnnotationHeaderReader headerReader = new AffymetrixAnnotationHeaderReader(getAnnotationFileReader());
+        AffymetrixAnnotationHeaderReader headerReader = new AffymetrixAnnotationHeaderReader(
+                getAnnotationFileReader());
         fileHeaders = headerReader.getFileHeaders();
-        loadAnnotationHeaders(headerReader.getDataHeaders());
+        loadAnnotationHeaders(headerReader.getDataHeaders(), REQUIRED_HEADERS);
     }
 
     @Override

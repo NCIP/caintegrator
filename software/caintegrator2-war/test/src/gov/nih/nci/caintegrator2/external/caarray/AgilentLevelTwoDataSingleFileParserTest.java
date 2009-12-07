@@ -83,91 +83,58 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study.deployment;
+package gov.nih.nci.caintegrator2.external.caarray;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
+import org.junit.Test;
 
-/**
- * Reads and retrieves copy number data from a caArray instance.
- */
-class AffymetrixCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFileHandler {
+@SuppressWarnings("PMD")
+public class AgilentLevelTwoDataSingleFileParserTest {
 
-    AffymetrixCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
-            ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
-        super(genomicSource, caArrayFacade, arrayDataService, dao);
-    }
-
-    @Override
-    void doneWithFile(File cnchpFile) {
-        cnchpFile.delete();
-    }
-
-    @Override
-    File getDataFile(String copyNumberFilename) 
-    throws ConnectionException, DataRetrievalException, ValidationException {
+    private String sample1 = "TCGA-13-0805-01A-01D-0357-04";
+    private String sample2 = "TCGA-13-0805-10A-01D-0357-04";
+    private String sample3 = "BAD_1";
+    private String sample4 = "BAD_2";
+    
+    @Test
+    public void testExtractData() throws DataRetrievalException {
+        
+        Map<String, Map<String, Float>> agilentData;
+        List<String> sampleList = new ArrayList<String>();
+        sampleList.add(sample1);
+        sampleList.add(sample2);
+        boolean exceptionCaught = false;
         try {
-            byte[] fileBytes = getCaArrayFacade().retrieveFile(getGenomicSource(), copyNumberFilename);
-            File tempFile = File.createTempFile("temp", ".cnchp");
-            FileUtils.writeByteArrayToFile(tempFile, fileBytes);
-            return tempFile;
-        } catch (FileNotFoundException e) {
-            throw new ValidationException("Experiment " + getGenomicSource().getExperimentIdentifier() 
-                    + " doesn't contain a file named " + copyNumberFilename, e);
-        } catch (IOException e) {
-            throw new DataRetrievalException("Couldn't write CNCHP file locally", e);
+            agilentData = AgilentLevelTwoDataSingleFileParser.INSTANCE.extractData(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE, sampleList);
+        } catch (DataRetrievalException e) {
+            assertEquals(e.getMessage(), "Invalid header for Agilent data file.");
+            exceptionCaught = true;
         }
-    }
-
-    @Override
-    ArrayDataValues loadArrayData(Sample sample, List<File> cnchpFiles) 
-    throws DataRetrievalException, ValidationException {
-        List<AffymetrixCopyNumberChpParser> parsers = new ArrayList<AffymetrixCopyNumberChpParser>();
-        Set<String> reporterListNames = new HashSet<String>();
-        for (File cnchpFile : cnchpFiles) {
-            AffymetrixCopyNumberChpParser parser = new AffymetrixCopyNumberChpParser(cnchpFile);
-            parsers.add(parser);
-            reporterListNames.add(parser.getArrayDesignName());
+        assertTrue(exceptionCaught);
+        agilentData = AgilentLevelTwoDataSingleFileParser.INSTANCE.extractData(
+                TestDataFiles.TCGA_LEVEL_2_DATA_FILE, sampleList);
+        assertEquals(2, agilentData.keySet().size());
+        for (Map<String, Float> reporterList : agilentData.values()) {
+            assertTrue(reporterList.keySet().size() > 0);
         }
-        Platform platform = getPlatform(reporterListNames);
-        return loadArrayData(sample, platform, parsers);
-    }
 
-    private ArrayDataValues loadArrayData(Sample sample, Platform platform, 
-            List<AffymetrixCopyNumberChpParser> parsers) throws DataRetrievalException {
-        PlatformHelper helper = new PlatformHelper(platform);
-        Set<ReporterList> reporterLists = helper.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        ArrayData arrayData = createArrayData(sample, reporterLists);
-        getDao().save(arrayData);
-        ArrayDataValues values = 
-            new ArrayDataValues(helper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
-        for (AffymetrixCopyNumberChpParser parser : parsers) {
-            parser.parse(values, arrayData);
+        sampleList.add(sample3);
+        sampleList.add(sample4);
+        exceptionCaught = false;
+        try {
+            agilentData = AgilentLevelTwoDataSingleFileParser.INSTANCE.extractData(
+                TestDataFiles.TCGA_LEVEL_2_DATA_FILE, sampleList);
+        } catch (DataRetrievalException e) {
+            exceptionCaught = true;
         }
-        getArrayDataService().save(values);
-        return values;
+        assertTrue(exceptionCaught);
     }
-
 }

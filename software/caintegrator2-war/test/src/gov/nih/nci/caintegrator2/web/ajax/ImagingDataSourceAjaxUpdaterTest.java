@@ -157,6 +157,7 @@ public class ImagingDataSourceAjaxUpdaterTest {
     @Test
     public void testRunJob() throws InterruptedException {
         studyConfiguration.setUserWorkspace(workspaceService.getWorkspace());
+        studyConfiguration.setLastModifiedBy(workspaceService.getWorkspace());
         updater.runJob(1l, null, ImageDataSourceMappingTypeEnum.AUTO, false);
         Thread.sleep(500);
         assertTrue(studyManagementServiceStub.loadImageSourceCalled);

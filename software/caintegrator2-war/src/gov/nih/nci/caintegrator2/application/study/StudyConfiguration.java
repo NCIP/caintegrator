@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -97,18 +98,21 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Subject;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * Holds data about the sources of study data and authorization for access to data.
  */
+@SuppressWarnings({"PMD.ExcessiveClassLength", "PMD.TooManyFields" })
 public class StudyConfiguration extends AbstractCaIntegrator2Object {
     
     private static final long serialVersionUID = 1L;
@@ -122,6 +126,8 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
     private List<ImageDataSourceConfiguration> imageDataSources = new ArrayList<ImageDataSourceConfiguration>();
     private StudyLogo studyLogo;
     private UserWorkspace userWorkspace;
+    private UserWorkspace lastModifiedBy;
+    private Date lastModifiedDate;
     private Date deploymentStartDate;
     private Date deploymentFinishDate;
     private transient Map<String, StudySubjectAssignment> identifierToSubjectAssignmentMap;
@@ -473,6 +479,42 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
     }
 
     /**
+     * @return the lastModifiedBy
+     */
+    public UserWorkspace getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    /**
+     * @param lastModifiedBy the lastModifiedBy to set
+     */
+    public void setLastModifiedBy(UserWorkspace lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    /**
+     * @return the lastModifiedDate
+     */
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    /**
+     * @param lastModifiedDate the lastModifiedDate to set
+     */
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+    
+    /**
+     * @return the lastModifiedDate to display to user.
+     */
+    public String getDisplayableLastModifiedDate() {
+        return lastModifiedDate == null ? "" 
+                : new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(lastModifiedDate); 
+    }
+
+    /**
      * @return the deploymentStartDate
      */
     public Date getDeploymentStartDate() {
@@ -563,5 +605,63 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
                 controlSampleSetNames.addAll(genomicSource.getControlSampleSetNames());
             }
         return controlSampleSetNames;
+    }
+
+    /**
+     * @return the boolean of whether the study has Expression Data
+     */
+    public boolean hasExpressionData() {
+        for (GenomicDataSourceConfiguration genomicDataSourceConfiguration : genomicDataSources) {
+            if (genomicDataSourceConfiguration.isExpressionData()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return the boolean of whether the study has Copy Number Data
+     */
+    public boolean hasCopyNumberData() {
+        for (GenomicDataSourceConfiguration genomicDataSourceConfiguration : genomicDataSources) {
+            if (genomicDataSourceConfiguration.isCopyNumberData()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * @return a set of visible annotation definition
+     */
+    public Set<AnnotationDefinition> getVisibleSubjectAnnotationCollection() {
+        Set<AnnotationDefinition> visibleSet = new HashSet<AnnotationDefinition>();
+        for (AbstractClinicalSourceConfiguration source : clinicalConfigurationCollection) {
+            visibleSet.addAll(getVisibleClinicalAnnotationDefinition(source.getAnnotationDescriptors()));
+        }
+        return visibleSet;
+    }
+    
+    private List<AnnotationDefinition> getVisibleClinicalAnnotationDefinition(
+            List<AnnotationFieldDescriptor> descriptors) {
+        List<AnnotationDefinition> visibleList = new ArrayList<AnnotationDefinition>();
+        for (AnnotationFieldDescriptor descriptor : descriptors) {
+            if (descriptor.isShownInBrowse()) {
+                visibleList.add(descriptor.getDefinition());
+            }
+        }
+        return visibleList;
+    }
+    
+    /**
+     * @return a set of visible annotation definition
+     */
+    public Set<AnnotationDefinition> getVisibleImageSeriesAnnotationCollection() {
+        Set<AnnotationDefinition> visibleSet = new HashSet<AnnotationDefinition>();
+        for (ImageDataSourceConfiguration source : imageDataSources) {
+            visibleSet.addAll(source.getImageAnnotationConfiguration()
+                    .getAnnotationFile().getVisibleAnnotationDefinition());
+        }
+        return visibleSet;
     }
 }

@@ -151,5 +151,12 @@ implements ModelDriven<StudyConfiguration> {
     public final void setStudyManagementService(StudyManagementService studyManagementService) {
         this.studyManagementService = studyManagementService;
     }
+    
+    /**
+     * Sets the lastModifiedBy attribute of a StudyConfiguration to the current user's workspace.
+     */
+    protected void setLastModifiedByCurrentUser() {
+        getStudyManagementService().setLastModifiedByCurrentUser(getStudyConfiguration(), getWorkspace());
+    }
 
 }

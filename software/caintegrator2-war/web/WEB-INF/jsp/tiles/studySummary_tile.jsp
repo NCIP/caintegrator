@@ -156,6 +156,13 @@
                         <td />
                     </tr>
                 </s:elseif>
+                <s:if test="!#genomicDataSourceStatus.last">
+                    <tr>
+                    <td colspan="4">
+                    <hr align="center" width="80%"/>
+                    </td>
+                    </tr>
+                </s:if>
             </s:iterator>
         </s:if>
     

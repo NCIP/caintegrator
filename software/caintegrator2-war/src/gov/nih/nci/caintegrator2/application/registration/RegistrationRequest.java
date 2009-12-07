@@ -95,10 +95,14 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 /**
  * 
  */
+@SuppressWarnings("PMD.TooManyFields") // A lot of fields required for registration.
 public class RegistrationRequest {
     private static final String NEW_LINE = "\n";
-    private static final String MAIL_BODY_HEADING = "This is a registration request for access to caIntegrator2" 
-                                       + NEW_LINE + "----------------------------------------------------------";
+    private static final String SEPARATOR_STRING = "----------------------------------------------------------";
+    private static final String MAIL_BODY_HEADING = "Someone has requested access to caIntegrator2." 
+                                       + NEW_LINE + SEPARATOR_STRING
+                                       + NEW_LINE + "The registrant entered the following information:"
+                                       + NEW_LINE;
     
     private String loginName;
     private String firstName;
@@ -115,6 +119,7 @@ public class RegistrationRequest {
     private String country;
     private String zip;
     private String requestedStudies;
+    private String uptUrl;
     
     /**
      * @return the loginName
@@ -313,18 +318,29 @@ public class RegistrationRequest {
         this.requestedStudies = requestedStudies;
     }
     
+    /**
+     * @return the uptUrl
+     */
+    public String getUptUrl() {
+        return uptUrl;
+    }
+    
+    /**
+     * @param uptUrl the uptUrl to set
+     */
+    public void setUptUrl(String uptUrl) {
+        this.uptUrl = uptUrl;
+    }
     
     /**
      * The mail body for registration request.
      * @return mail body.
      */
     public String getMailBody() {
-        
         String ldapAuthenticationString = StringUtils.isBlank(getLoginName())
                 ? "No LDAP Authentication" : "LDAP Authentication Username: " + loginName;
         String requestedStudiesString = StringUtils.isBlank(requestedStudies) 
                 ? "" : "Requested studies to be accessed: " + requestedStudies;
-                
         return MAIL_BODY_HEADING + NEW_LINE
             +  ldapAuthenticationString + NEW_LINE 
             + "First Name: " + firstName + NEW_LINE
@@ -339,8 +355,22 @@ public class RegistrationRequest {
             + "State: " + state + NEW_LINE
             + "Country: " + country + NEW_LINE
             + "Zip: " + zip + NEW_LINE
-            + "Requested Role(s): " + role + NEW_LINE
-            + requestedStudiesString;
+            + "Requested Role(s): " + role + NEW_LINE + NEW_LINE
+            + requestedStudiesString + NEW_LINE + SEPARATOR_STRING
+            + NEW_LINE + NEW_LINE + getAdditionalInformationString();
+    }
+
+    private String getAdditionalInformationString() {
+        String additionalInformationString = "Please go here " + uptUrl + ", then Login, click \"Group\", then click "
+        + "\"Select an Existing Group\" and search for \"*" + organization
+        + "*\" to see if there is already an existing user group for this persons organization.  Note that the user " 
+        + " group name may already exist under a slightly different variation so you may need to search on the " 
+        + " possible variations of the organization (example Univ. instead of University).  Please contact the "
+        + "group administrator for permission to add this registrant.  " + NEW_LINE + NEW_LINE 
+        + " If there is not an existing user group for this registrant, then create a new user group, named according "
+        + "to the Requested Roles above.  For example create one user group named \"" + organization 
+        + " Study Managers\" and one group named \"" + organization + " Study Investigators\".";
+        return additionalInformationString;
     }
 
 }

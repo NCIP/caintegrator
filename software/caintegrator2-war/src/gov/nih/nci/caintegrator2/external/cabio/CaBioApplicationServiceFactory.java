@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.external.cabio;
 
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.system.applicationservice.CaBioApplicationService;
 
 /**
  * Interface to create caBIO ApplicationService objects.
@@ -99,6 +99,6 @@ public interface CaBioApplicationServiceFactory {
      * @return ApplicationService object based on URL.
      * @throws ConnectionException - Unable to get the connection.
      */
-    ApplicationService retrieveCaBioApplicationService(String caBioUrl) throws ConnectionException;
+    CaBioApplicationService retrieveCaBioApplicationService(String caBioUrl) throws ConnectionException;
 
 }

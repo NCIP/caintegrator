@@ -151,7 +151,7 @@ class AgilentDataRetrievalHelper extends AbstractDataRetrievalHelper {
             File dataFile = getDataFile(hybridization);
             byte[] byteArray = CaArrayUtils.retrieveFile(dataService, dataFile.getReference());
             ArrayData arrayData = createArrayData(hybridization);
-            Map<String, Float> agilentDataMap = AgilentRawDataFileParser.INSTANCE.extractData(
+            Map<String, Float> agilentDataMap = AgilentLevelTwoDataMultiFileParser.INSTANCE.extractData(
                     new InputStreamReader(new ByteArrayInputStream(byteArray)));
             loadArrayDataValues(agilentDataMap, arrayData);
         }

@@ -23,22 +23,29 @@
             <tr>
                 <td colspan="2" style="padding: 5px;">
 
-                <s:form action="saveClinicalSource">
+                <s:form action="saveClinicalSource" method="post" enctype="multipart/form-data">
                 <s:hidden name="studyConfiguration.id" />
                 <s:hidden name="clinicalSource.id" />
                 <table class="data">
                     <tr>
+                        <th>Visible</th>
                         <th>Field Definition</th>
                         <th>Field Header from File</th>
                         <th colspan="3" />Data from File</th>
                     </tr>
-                    <s:iterator value="clinicalSource.annotationFile.columns" status="status">
-                        <s:if test="#status.odd == true">
+                    <s:iterator value="clinicalSource.annotationFile.columns" status="columnIterator">
+                        <s:if test="#columnIterator.odd == true">
                           <tr class="odd">
                         </s:if>
                         <s:else>
                           <tr class="even">
-                        </s:else>
+                        </s:else>         
+                            <td>
+                                <s:if test="%{fieldDescriptor != null}">
+                                    <s:checkbox name="clinicalSource.annotationFile.columns.get(%{#columnIterator.count - 1}).fieldDescriptor.shownInBrowse"
+                                        theme="simple" disabled="false"/>
+                                </s:if>
+                            </td>
                             <td>
                                 <s:if test="%{identifierColumn}">
                                     Identifier

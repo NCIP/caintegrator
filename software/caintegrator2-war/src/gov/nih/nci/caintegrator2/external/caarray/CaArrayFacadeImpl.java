@@ -89,7 +89,6 @@ import gov.nih.nci.caarray.external.v1_0.CaArrayEntityReference;
 import gov.nih.nci.caarray.external.v1_0.data.File;
 import gov.nih.nci.caarray.external.v1_0.experiment.Experiment;
 import gov.nih.nci.caarray.external.v1_0.query.FileSearchCriteria;
-import gov.nih.nci.caarray.external.v1_0.query.SearchResult;
 import gov.nih.nci.caarray.external.v1_0.sample.Biomaterial;
 import gov.nih.nci.caarray.services.external.v1_0.InvalidInputException;
 import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
@@ -220,26 +219,34 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
         return CaArrayUtils.retrieveFile(dataService, fileRef);
     }
 
-    @SuppressWarnings("PMD.PreserveStackTrace")     // FileNotFoundException doesn't include a source Throwable
     private File getFile(GenomicDataSourceConfiguration genomicSource, String filename) 
     throws ConnectionException, FileNotFoundException {
+        List<File> results = retrieveFilesForGenomicSource(genomicSource);
+        for (File file : results) {
+            if (filename.equals(file.getMetadata().getName())) {
+                return file;
+            }
+        }
+        throw new FileNotFoundException("The experiment did not contain a file named " + filename);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("PMD.PreserveStackTrace")     // FileNotFoundException doesn't include a source Throwable
+    public List<File> retrieveFilesForGenomicSource(GenomicDataSourceConfiguration genomicSource)
+        throws ConnectionException, FileNotFoundException {
         try {
             SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
             Experiment experiment = CaArrayUtils.getExperiment(genomicSource.getExperimentIdentifier(), searchService);
             FileSearchCriteria criteria = new FileSearchCriteria();
             criteria.setExperiment(experiment.getReference());
-            SearchResult<File> result = searchService.searchForFiles(criteria, null);
-            for (File file : result.getResults()) {
-                if (filename.equals(file.getMetadata().getName())) {
-                    return file;
-                }
-            }
+            return searchService.searchForFiles(criteria, null).getResults();
         } catch (InvalidInputException e) {
             throw new FileNotFoundException(e.getMessage());
         } catch (ExperimentNotFoundException e) {
             throw new FileNotFoundException(e.getMessage());
         }
-        throw new FileNotFoundException("The experiment did not contain a file named " + filename);
     }
     
     /**
@@ -249,7 +256,6 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
         throws ConnectionException, ExperimentNotFoundException {
         SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
         CaArrayUtils.getExperiment(genomicSource.getExperimentIdentifier(), searchService);
-        
     }
 
 }

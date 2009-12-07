@@ -117,6 +117,8 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     private static final String ANNOTATION_TYPE = "Annotation";
     private static final String IDENTIFIER_TYPE = "Identifier";
     private static final String TIMEPOINT_TYPE = "Timepoint";
+    private static final String GRAY_BACKGROUND = "background-color:#e9e9e9;";
+    private static final String GRAY_FOREGROUND = "color:#999999;";
     private static final String[] COLUMN_TYPES = new String[] {ANNOTATION_TYPE, IDENTIFIER_TYPE};
     
     private FileColumn fileColumn = new FileColumn();
@@ -667,5 +669,15 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
      */
     public void setSourceId(String sourceId) {
         this.sourceId = sourceId;
+    }
+    
+    /**
+     * Permissible value select box css style.
+     * @return css style for the permissible value boxes.
+     */
+    public String getPermissibleCssStyle() {
+        String styleString = "min-width:100px; vertical-align=middle;"; 
+        return isFromCadsr() 
+             ? styleString + GRAY_BACKGROUND + GRAY_FOREGROUND : styleString; 
     }
 }

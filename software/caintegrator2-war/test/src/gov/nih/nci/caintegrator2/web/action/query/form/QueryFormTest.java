@@ -89,8 +89,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -141,6 +147,7 @@ public class QueryFormTest {
     private PermissibleValue value2 = new PermissibleValue();
     private PermissibleValue value3 = new PermissibleValue();
 
+    @SuppressWarnings("deprecation") // Use dummy AnnotationFile for testing
     @Before
     public void setUp() {
         subscription = new StudySubscription();
@@ -176,6 +183,36 @@ public class QueryFormTest {
         study.getSubjectAnnotationCollection().add(selectClinicalAnnotation2);
         testImageSeriesAnnotation = createDefinition("testImageSeriesAnnotation", AnnotationTypeEnum.STRING);
         study.getImageSeriesAnnotationCollection().add(testImageSeriesAnnotation);
+        
+        DelimitedTextClinicalSourceConfiguration clinicalConf = new DelimitedTextClinicalSourceConfiguration();
+        studyConfiguration.getClinicalConfigurationCollection().add(clinicalConf);
+        AnnotationFile annotationFile = new AnnotationFile();
+        clinicalConf.setAnnotationFile(annotationFile);
+
+        addColumn(annotationFile, stringClinicalAnnotation1);
+        addColumn(annotationFile, stringClinicalAnnotation2);
+        addColumn(annotationFile, numericClinicalAnnotation);
+        addColumn(annotationFile, selectClinicalAnnotation1);
+        addColumn(annotationFile, selectClinicalAnnotation2);
+
+        ImageDataSourceConfiguration imagingSourceConf = new ImageDataSourceConfiguration();
+        studyConfiguration.getImageDataSources().add(imagingSourceConf);
+        ImageAnnotationConfiguration imageConf = new ImageAnnotationConfiguration();
+        imagingSourceConf.setImageAnnotationConfiguration(imageConf);
+        AnnotationFile imageAnnotationFile = new AnnotationFile();
+        imageConf.setAnnotationFile(imageAnnotationFile);
+
+        addColumn(imageAnnotationFile, testImageSeriesAnnotation);
+        
+    }
+    
+    private void addColumn(AnnotationFile annotationFile, AnnotationDefinition subjectDef) {
+        FileColumn column = new FileColumn();
+        AnnotationFieldDescriptor fieldDescriptor = new AnnotationFieldDescriptor();
+        fieldDescriptor.setShownInBrowse(true);
+        fieldDescriptor.setDefinition(subjectDef);
+        column.setFieldDescriptor(fieldDescriptor);
+        annotationFile.getColumns().add(column);
     }
 
     private AnnotationDefinition createDefinition(String name, AnnotationTypeEnum type) {
@@ -655,7 +692,7 @@ public class QueryFormTest {
         queryForm.validate(validationAware);
         assertFalse(validationAware.hasFieldErrors());
         
-        assertFalse(queryForm.hasImageDataSources());
+        assertTrue(queryForm.hasImageDataSources());
     }
 
     @Test

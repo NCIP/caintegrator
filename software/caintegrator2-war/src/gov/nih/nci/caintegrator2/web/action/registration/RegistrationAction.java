@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.web.action.registration;
 
 import gov.nih.nci.caintegrator2.application.registration.RegistrationRequest;
 import gov.nih.nci.caintegrator2.application.registration.RegistrationService;
+import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
+import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.security.SecurityManager;
 import gov.nih.nci.security.exceptions.internal.CSInternalConfigurationException;
 import gov.nih.nci.security.exceptions.internal.CSInternalInsufficientAttributesException;
@@ -114,6 +116,7 @@ public class RegistrationAction extends ActionSupport implements Preparable {
     
     private SecurityManager securityManager;
     private RegistrationService registrationService;
+    private ConfigurationHelper configurationHelper;
     
     private final Map<String, String> ldapContextParams = new HashMap<String, String>();
     private RegistrationRequest registrationRequest = new RegistrationRequest();
@@ -179,6 +182,7 @@ public class RegistrationAction extends ActionSupport implements Preparable {
      */
     public String save() {
         try {
+            registrationRequest.setUptUrl(configurationHelper.getString(ConfigurationParameter.UPT_URL));
             registrationService.registerUser(registrationRequest);
             addActionMessage("Registration request sent successfully!");
             return SUCCESS;
@@ -272,6 +276,21 @@ public class RegistrationAction extends ActionSupport implements Preparable {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the configurationHelper
+     */
+    public ConfigurationHelper getConfigurationHelper() {
+        return configurationHelper;
+    }
+
+
+    /**
+     * @param configurationHelper the configurationHelper to set
+     */
+    public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
+        this.configurationHelper = configurationHelper;
     }
 
 }

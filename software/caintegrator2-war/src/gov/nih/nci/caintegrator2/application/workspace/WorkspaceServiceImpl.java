@@ -91,8 +91,10 @@ import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -347,6 +349,26 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      */
     public void setSecurityManager(SecurityManager securityManager) {
         this.securityManager = securityManager;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void createGeneList(GeneList geneList, List<String> geneSymbols) {
+        for (String symbol : geneSymbols) {
+            geneList.getGeneCollection().add(lookupOrCreateGene(symbol));
+        }
+        geneList.getSubscription().getListCollection().add(geneList);
+        saveUserWorkspace(geneList.getSubscription().getUserWorkspace());
+    }
+    
+    private Gene lookupOrCreateGene(String symbol) {
+        Gene gene = getDao().getGene(symbol);
+        if (gene == null) {
+            gene = new Gene();
+            gene.setSymbol(symbol);
+        }
+        return gene;
     }
 
 }

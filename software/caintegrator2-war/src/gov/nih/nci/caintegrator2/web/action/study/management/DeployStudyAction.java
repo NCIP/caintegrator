@@ -102,6 +102,7 @@ public class DeployStudyAction extends AbstractStudyAction {
      */
     @Override
     public String execute() {
+        setLastModifiedByCurrentUser();
         getDeploymentService().prepareForDeployment(getStudyConfiguration(), null);
         ajaxUpdater.runJob(getStudyConfiguration());
         return SUCCESS;

@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
+import gov.nih.nci.caintegrator2.web.DownloadableFile;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.io.DataInputStream;
@@ -108,21 +109,20 @@ public class TemporaryDownloadFileResult implements Result {
 
     private static final long serialVersionUID = 1L;
     private static final Integer BUFSIZE = 4096;
-    private String contentType;
-    private String fileName;
-    private boolean deleteFile = false;
 
     /**
      * {@inheritDoc}
      */
     public void execute(ActionInvocation invocation) throws IOException {
-        File tempFile = new File(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile());
+        DownloadableFile downloadableFile = SessionHelper.getInstance().
+                                                getDisplayableUserWorkspace().getTemporaryDownloadFile();
+        File tempFile = new File(downloadableFile.getPath());
         SessionHelper.getInstance().getDisplayableUserWorkspace().setTemporaryDownloadFile(null);
         HttpServletResponse response = ServletActionContext.getResponse();
         ServletOutputStream op = response.getOutputStream();
-        response.setContentType(contentType);
+        response.setContentType(downloadableFile.getContentType());
         response.setContentLength((int) tempFile.length());
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\""); 
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + downloadableFile.getFilename() + "\""); 
         
         byte[] bbuf = new byte[BUFSIZE];
         DataInputStream in = new DataInputStream(new FileInputStream(tempFile));
@@ -132,50 +132,9 @@ public class TemporaryDownloadFileResult implements Result {
         }
         in.close();
         op.flush();
-        if (isDeleteFile()) {
+        if (downloadableFile.isDeleteFile()) {
             tempFile.delete();
         }
     }
 
-    /**
-     * @return the contentType
-     */
-    public String getContentType() {
-        return contentType;
-    }
-
-    /**
-     * @param contentType the contentType to set
-     */
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    /**
-     * @return the fileName
-     */
-    public String getFileName() {
-        return fileName;
-    }
-
-    /**
-     * @param fileName the fileName to set
-     */
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    /**
-     * @return the deleteFile
-     */
-    public boolean isDeleteFile() {
-        return deleteFile;
-    }
-
-    /**
-     * @param deleteFile the deleteFile to set
-     */
-    public void setDeleteFile(boolean deleteFile) {
-        this.deleteFile = deleteFile;
-    }
 }

@@ -96,7 +96,8 @@ import gov.nih.nci.caintegrator2.web.ajax.IImagingDataSourceAjaxUpdater;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -113,13 +114,17 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
     private String imageClinicalMappingFileFileName;
     private ImageDataSourceMappingTypeEnum mappingType = ImageDataSourceMappingTypeEnum.AUTO;
     private IImagingDataSourceAjaxUpdater updater;
-    
+    private boolean cancelAction = false;
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void validate() {
-        prepareValueStack();
+        if (!cancelAction) {
+            fixUrlFromInternetExplorer();
+            prepareValueStack();
+        }
     }
     
     private boolean validateAddSource() {
@@ -187,7 +192,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
     }
 
     private String runAsynchronousJob(boolean mapOnly) {
-        storeImageMappingFileName();
+        storeImageMappingFileName();      
         File newMappingFile = null;
         try {
             newMappingFile = storeTemporaryMappingFile();
@@ -196,6 +201,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             return INPUT;
         }
         getImageSourceConfiguration().setStatus(Status.PROCESSING);
+        setLastModifiedByCurrentUser();
         if (!mapOnly) {
             getStudyManagementService().addImageSourceToStudy(getStudyConfiguration(), getImageSourceConfiguration());
         }
@@ -218,6 +224,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
      */
     public String delete() {
         try {
+            setLastModifiedByCurrentUser();
             getStudyManagementService().delete(getStudyConfiguration(), getImageSourceConfiguration());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
@@ -248,6 +255,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             return INPUT;
         }
         try {
+            setLastModifiedByCurrentUser();
             getImageSourceConfiguration().setImageAnnotationConfiguration(
                     getStudyManagementService().addImageAnnotationFile(getImageSourceConfiguration(),
                             getImageAnnotationFile(), getImageAnnotationFileFileName()));
@@ -267,6 +275,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
      */
     public String loadImageAnnotations() {
         try {
+            setLastModifiedByCurrentUser();
             getStudyManagementService().loadImageAnnotation(getImageSourceConfiguration());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
@@ -293,7 +302,19 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             getImageSourceConfiguration().setMappingFileName(ImageDataSourceConfiguration.AUTOMATIC_MAPPING);
         }
     }
-        
+    
+    /**
+     * This is because the editable-select for internet explorer submits an extra URL after comma.
+     * ex: "http://url, http://url" instead of just "http://url".
+     */
+    private void fixUrlFromInternetExplorer() {
+       if (!StringUtils.isBlank(getImageSourceConfiguration().getServerProfile().getUrl())) {
+           getImageSourceConfiguration().getServerProfile().setUrl(
+                    Pattern.compile(",\\s.*").matcher(getImageSourceConfiguration().getServerProfile().getUrl())
+                            .replaceAll(""));
+       }
+    }
+
     /**
      * @return the Imaging File
      */
@@ -391,8 +412,22 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
     /**
      * @return available NBIA services.
      */
-    public Map<String, String> getNbiaServices() {
-        return GridDiscoveryServiceJob.getGridNbiaServices();
+    public Set<String> getNbiaServices() {
+        return GridDiscoveryServiceJob.getGridNbiaServices().keySet();
+    }
+    
+    /**
+     * @return the cancelAction
+     */
+    public boolean isCancelAction() {
+        return cancelAction;
+    }
+
+    /**
+     * @param cancelAction the cancelAction to set
+     */
+    public void setCancelAction(boolean cancelAction) {
+        this.cancelAction = cancelAction;
     }
 
 }

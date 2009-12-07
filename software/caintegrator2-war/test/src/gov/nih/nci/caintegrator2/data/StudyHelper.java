@@ -85,8 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -146,7 +151,7 @@ public class StudyHelper {
     private Timepoint defaultTimepoint;
     private ArrayDataType arrayDataType = ArrayDataType.GENE_EXPRESSION;
     
-    @SuppressWarnings({"PMD"}) // This is a long method for setting up test data
+    @SuppressWarnings({"PMD", "deprecation"}) // This is a long method for setting up test data
     public StudySubscription populateAndRetrieveStudy() {
         Study myStudy = new Study();
         myStudy.setShortTitleText("Test Study");
@@ -186,6 +191,23 @@ public class StudyHelper {
         myStudy.getSampleAnnotationCollection().addAll(sampleDefinitions);
         myStudy.getImageSeriesAnnotationCollection().addAll(imageSeriesDefinitions);
         myStudy.getSubjectAnnotationCollection().addAll(subjectDefinitions);
+
+        DelimitedTextClinicalSourceConfiguration clinicalConf = new DelimitedTextClinicalSourceConfiguration();
+        myStudy.getStudyConfiguration().getClinicalConfigurationCollection().add(clinicalConf);
+        AnnotationFile annotationFile = new AnnotationFile();
+        clinicalConf.setAnnotationFile(annotationFile);
+        
+        addColumn(annotationFile, subjectAnnotationDefinition);
+
+
+        ImageDataSourceConfiguration imagingSourceConf = new ImageDataSourceConfiguration();
+        myStudy.getStudyConfiguration().getImageDataSources().add(imagingSourceConf);
+        ImageAnnotationConfiguration imageConf = new ImageAnnotationConfiguration();
+        imagingSourceConf.setImageAnnotationConfiguration(imageConf);
+        AnnotationFile imageAnnotationFile = new AnnotationFile();
+        imageConf.setAnnotationFile(imageAnnotationFile);
+
+        addColumn(imageAnnotationFile, imageSeriesAnnotationDefinition);
         
         Subject subject1 = new Subject();
         Subject subject2 = new Subject();
@@ -464,6 +486,15 @@ public class StudyHelper {
         ssaCollection.add(studySubjectAssignment5);
         
         return studySubscription;
+    }
+    
+    private void addColumn(AnnotationFile annotationFile, AnnotationDefinition subjectDef) {
+        FileColumn column = new FileColumn();
+        AnnotationFieldDescriptor fieldDescriptor = new AnnotationFieldDescriptor();
+        fieldDescriptor.setShownInBrowse(true);
+        fieldDescriptor.setDefinition(subjectDef);
+        column.setFieldDescriptor(fieldDescriptor);
+        annotationFile.getColumns().add(column);
     }
     
     /**

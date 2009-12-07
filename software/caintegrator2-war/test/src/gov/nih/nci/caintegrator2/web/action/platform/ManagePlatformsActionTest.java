@@ -219,6 +219,29 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         action.validate();
         assertFalse(action.hasFieldErrors());
         action.clearErrorsAndMessages();
+
+        // test invalid file extension
+        action.setSelectedAction("addAnnotationFile");
+        action.setPlatformFile(TestArrayDesignFiles.HG_U133A_CDF_FILE);
+        action.setPlatformFileFileName(TestArrayDesignFiles.HG_U133A_CDF_PATH);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();        
+        
+        action.clearErrorsAndMessages();
+        action.setSelectedAction("addAnnotationFile");
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
+        action.setPlatformFile(TestArrayDesignFiles.HG_U133A_CDF_FILE);
+        action.setPlatformFileFileName(TestArrayDesignFiles.HG_U133A_CDF_PATH);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        
+        //action.clearErrorsAndMessages();
+        //action.setSelectedAction("addAnnotationFile");
+        //action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
+        //action.setPlatformFileFileName(TestArrayDesignFiles.HG_U133A_ANNOTATION_PATH);
+        //action.setPlatformType("notAValidPlatformType");
+        //action.validate();
         
         // Test createPlatform
         action.setSelectedAction("createPlatform");
@@ -227,17 +250,21 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         assertTrue(action.hasFieldErrors());
         
         action.clearErrorsAndMessages();
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
         action.setPlatformName("Test");
         action.validate();
-        assertTrue(action.hasFieldErrors());
+        assertFalse(action.hasFieldErrors());
+        assertTrue(action.hasActionErrors());
         
         action.clearErrorsAndMessages();
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue());
         action.setPlatformFile(TestArrayDesignFiles.EMPTY_FILE);
         action.validate();
         assertTrue(action.hasFieldErrors());
         
         action.clearErrorsAndMessages();
         action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
+        action.setPlatformFileFileName(TestArrayDesignFiles.HG_U133A_ANNOTATION_PATH);
         action.validate();
         assertFalse(action.hasFieldErrors());
         

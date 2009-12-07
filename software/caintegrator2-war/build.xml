@@ -400,7 +400,7 @@
     
     <property name="web-inf.working.dir" location="${caintegrator2.war.target.dir}" />
     
-    <target name="caintegrator2.war" depends="svn:getinfo2,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy">
+    <target name="caintegrator2.war" depends="svn:getinfo2,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy,struts.properties.deploy">
         
         <copy todir="${web-inf.working.dir}" filtering="true" overwrite="true">
             <fileset dir="${caintegrator2.war.web.src.dir}/WEB-INF">
@@ -432,7 +432,9 @@
             <classes dir="${caintegrator2.war.java.classes.dir}" />
             <classes dir="${caintegrator2.war.resources.src.dir}">
                 <exclude name="*hibernate.cfg.xml" />
+                <exclude name="struts.properties" />
             </classes>
+            
             <webinf dir="${caintegrator2.war.resources.src.dir}">
                 <include name="tiles.xml"/>
             </webinf>
@@ -546,6 +548,15 @@
         <mkdir dir="${caintegrator2.war.test.classes.dir}" />
         <javac srcdir="${caintegrator2.war.test.src.dir}" destdir="${caintegrator2.war.test.classes.dir}" classpathref="caintegrator2.war.test.dependencies.path" debug="true" />
     </target>
+    
+    <property name="struts.properties.src" value="${caintegrator2.war.resources.src.dir}/struts.properties" />
+    <property name="struts.properties.deploy" value="${caintegrator2.war.java.classes.dir}/struts.properties" />
+    
+    <target name="struts.properties.deploy">
+        <copy file="${struts.properties.src}" tofile="${struts.properties.deploy}" overwrite="true">
+            <filterset refid="caintegrator2.filterset" />
+        </copy>
+    </target>
 
 
     <!-- ******************************************************************* -->
@@ -577,6 +588,7 @@
         <replace file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@grid.index.url@" value="${grid.index.url}" />
         <replace file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@user.admin.email.address.to@" value="${user.admin.email.address.to}" />
         <replace file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@user.admin.email.address.from@" value="${user.admin.email.address.from}" />
+        <replace file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@upt.url@" value="${upt.url}" />
         <run-sql-script onerror="continue" sql.file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" />
     </target>
 
@@ -601,6 +613,17 @@
         <antcall target="database:recreate-database" />
         <antcall target="database:create-tables" />
         <antcall target="database:upgrade" />
+        <antcall target="database:run-upgrades" />
+    </target>
+    
+    <target name="database:run-upgrades" description="Run upgrade scripts">
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/upgrade-1.1.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/upgrade-1.1.1.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/upgrade-1.1.2.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/upgrade-1.1.3.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/upgrade-1.1.4.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/upgrade-1.1.4.1.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/upgrade-1.1.5.sql" />
     </target>
 
 

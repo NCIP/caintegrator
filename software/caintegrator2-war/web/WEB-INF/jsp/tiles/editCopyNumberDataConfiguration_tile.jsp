@@ -7,7 +7,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('edit_genomic_data_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('configure_copy_number_help')" class="help">
    &nbsp;</a>
     </div>
 
@@ -33,21 +33,33 @@
                     <s:hidden name="useGlad" value="false"/>
                     <s:hidden name="formAction" />
                     <s:file name="copyNumberMappingFile" label="Subject and Sample to Copy Number Mapping File" size="40"/><br>
+                        <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
+                            <span class="wwlbl">(csv file format)</span>
+                            <span class="wwctrl"></span>
+                        </s:div>
                     <s:select id="caDnaCopyUrl" name="caDnaCopyUrl"
                             list="caDnaCopyServices" label="CaDNACopy Service URL" required="true" /><br>
                     <s:textfield name="copyNumberDataConfiguration.changePointSignificanceLevel" label="Change Point Significance Level" /><br>
                     <s:textfield name="copyNumberDataConfiguration.earlyStoppingCriterion" label="Early Stopping Criterion" /><br>
                     <s:textfield name="copyNumberDataConfiguration.permutationReplicates" label="Permutation Replicates" /><br>
                     <s:textfield name="copyNumberDataConfiguration.randomNumberSeed" label="Random Number Seed" /><br>
-                    
-                    <s:div cssClass="wwgrp" cssStyle="margin: 1em 0 1em 0px;">
-                        <s:div cssClass="wwlbl">&nbsp;</s:div>
-                        <s:div cssClass="wwctrl" cssStyle="width: 350px;">
-                            <s:submit type="button" value="Cancel" onclick="document.copyNumberDataConfigurationForm.action = 'cancelGenomicSource.action';
-                                document.copyNumberDataConfigurationForm.submit();" cssStyle="float: right;"/>
-                            <s:submit type="button" value="Save Segmentation Data Calculation Configuration" cssStyle="float: right;"/>
+                    <s:checkbox name="copyNumberDataConfiguration.singleDataFile" label="Single Data File"
+                        labelposition="left" /><br>
+                        <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
+                            <span class="wwlbl">(one data file for all samples)</span>
+                            <span class="wwctrl"></span>
                         </s:div>
-                    </s:div><br>
+                    
+                    <tr>
+                        <td></td>
+                        <td><br>
+                            <s:submit type="button" value="Save Segmentation Data Calculation Configuration" 
+                                align="center" theme="simple"/>
+                            <s:submit type="button" value="Cancel"
+                                onclick="document.copyNumberDataConfigurationForm.action = 'cancelGenomicSource.action';
+                                    document.copyNumberDataConfigurationForm.submit();"  theme="simple"/>
+                        </td>
+                    </tr><br>
                 </s:form>
                 </td>
             </tr>

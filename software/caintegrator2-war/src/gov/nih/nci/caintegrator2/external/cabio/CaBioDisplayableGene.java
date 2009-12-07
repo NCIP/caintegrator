@@ -94,6 +94,7 @@ public class CaBioDisplayableGene implements Comparable<CaBioDisplayableGene> {
     private String symbol;
     private String fullName;
     private String taxonCommonName;
+    private String hugoSymbol;
     
     /**
      * @return the id
@@ -145,6 +146,18 @@ public class CaBioDisplayableGene implements Comparable<CaBioDisplayableGene> {
         this.taxonCommonName = taxonCommonName;
     }
 
+    /**
+     * @return the hugoSymbol
+     */
+    public String getHugoSymbol() {
+        return hugoSymbol;
+    }
+    /**
+     * @param hugoSymbol the hugoSymbol to set
+     */
+    public void setHugoSymbol(String hugoSymbol) {
+        this.hugoSymbol = hugoSymbol;
+    }
     /**
      * {@inheritDoc}
      */

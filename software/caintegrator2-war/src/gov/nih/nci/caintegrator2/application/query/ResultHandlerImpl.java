@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.application.SortTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -215,7 +216,9 @@ public class ResultHandlerImpl implements ResultHandler {
             Collection <ResultRow> rowsCollection = queryResult.getRowCollection();
             List<ResultColumn> sortColumns = new ArrayList<ResultColumn>();
             for (ResultColumn column : columnsCollection) {
-                if (column.getSortOrder() != null) {
+                if (!SortTypeEnum.UNSORTED.equals(column.getSortType())) {
+                    // Sort Order and Column Index are the same for now, can be changed later
+                    column.setSortOrder(column.getColumnIndex());
                     sortColumns.add(column);
                 }
             }

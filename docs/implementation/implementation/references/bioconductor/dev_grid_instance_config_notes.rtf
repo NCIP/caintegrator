@@ -1,0 +1,228 @@
+{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf540
+{\fonttbl\f0\fnil\fcharset0 Verdana;\f1\fswiss\fcharset0 ArialMT;\f2\fswiss\fcharset0 Helvetica;
+\f3\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww25100\viewh19600\viewkind0
+\deftab720
+\pard\pardeftab720\ql\qnatural
+
+\f0\fs26 \cf0 DEV GRID INSTANCE CONFIGURATION\
+=======================\
+\
+Hostname:\'a0
+\f1 ncias-d227-v.nci.nih.gov
+\f0 \
+
+\f1 OS Version:\'a0
+\f0 Red Hat Enterprise Linux ES release 4 (Nahant Update 6) -- 64 Bit\
+
+\f1 GenePattern URL:\'a0
+\f0 http://ncias-d227-v.nci.nih.gov:8080/gp/pages/index.jsf\
+
+\f1 Bioconductor grid URL:\'a0
+\f0 http://ncias-d227-v.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy\
+PCA grid URL: http://ncias-d227-v.nci.nih.gov:9080/wsrf/services/cagrid/PCA\
+Comparative Marker Selection grid URL: http://ncias-d227-v.nci.nih.gov:10080/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc\
+GISTIC grid URL: http://ncias-d227-v.nci.nih.gov:11080/wsrf/services/cagrid/Gistic\
+PreprocessDataset grid URL: http://ncias-d227-v.nci.nih.gov:12080/wsrf/services/cagrid/Gistic\
+Staging caGrid portal: http://cagrid-portal-stage.nci.nih.gov/web/guest/home\
+caArray: http://ncias-d227-v.nci.nih.gov:38080/caarray\
+\'a0\'a0 \'a0- Username: caarrayadmin\
+\'a0\'a0 \'a0- Password: caArray2!\
+\'a0\'a0 \'a0- JNDI port: 31099\
+\
+- Add ANT_HOME to /etc/profile\
+\
+- Add GLOBUS_LOCATION to /etc/profile\
+\
+- Install 64 bit Java 1.5.0_19 JDK, set JAVA_HOME\
+\
+- Install ActiveMQ 4.0.2 to /usr/local/incubator-activemq-4.0.2, set JMS_HOME\
+\'a0\'a0 \'a0- Add automatic startup of activemq (as tomcat5)\
+\
+- Install tomcat-5.0.28 to /usr/local/jakarta-tomcat-5.0.28, set CATALINA_HOME\
+\'a0\'a0 \'a0- Install Axis 1.4 webapp\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Download and include activation.jar in WEB-INF/lib\
+\'a0\'a0 \'a0- Remove automatic start up of Apache 2.2.4 (Tomcat 5.5.17?)\
+\'a0\'a0 \'a0- Add automatic start of 5.0.28\
+\'a0\'a0 \'a0- Remove automatic start up of JBoss\
+\
+- Checkout the following repositories to /usr/local/ncicb_svn:\
+\'a0\'a0 \'a0http://gforge.nci.nih.gov/svnroot/bioconductor/trunk\
+\'a0\'a0 \'a0http://gforge.nci.nih.gov/svnroot/genepattern/trunk/genepattern\
+\
+- Install Bioconductor and dependencies\
+\
+\'a0\'a0 \'a0- Download and install R-2.9.0 from http://cran.fhcrc.org/src/base/R-2/R-2.9.0.tar.gz.\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Build from source per Bioconductor Grid installation instructions\
+\'a0\'a0 \'a0\'a0\'a0 \'a0\'a0\'a0 \'a0- configure with ./configure --enable-R-shlib --with-readline=no --with-x=no\
+\'a0\'a0 \'a0\'a0\'a0 \'a0\'a0\'a0 \'a0- Make fix to $R_HOME/src/modules/Makefile described at http://tolstoy.newcastle.edu.au/R/e6/devel/09/04/1434.html\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Add and export R_HOME to /etc/profile\
+\
+\'a0\'a0 \'a0- Download and install RCurl_0.97-3.tar.gz\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Requires download and installation of latest Curl from source from http://curl.haxx.se/download.html\
+\'a0\'a0 \'a0\'a0\'a0 \'a0\'a0\'a0 \'a0- Copy libcurl.so* to $R_HOME/lib\
+\
+\'a0\'a0 \'a0- Download and install SJava-0.69-5-1 http://bioconductor.org/packages/2.4/extra/html/SJava.html\
+\
+\'a0\'a0 \'a0- Download and install RWebServices-1.8.0 from http://www.bioconductor.org/packages/2.4/bioc/html/RWebServices.html\
+\
+\'a0\'a0 \'a0- Install caDNAcopy to Bioconductor from SVN checkout\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- And create RWebService for caDNAcopy\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Set up automatic startup of "ant start-worker"\
+\
+\'a0\'a0 \'a0- Copy activemq/lib/*.jar to /usr/local/jakarta-tomcat-5.0.28/webapps/wsrf/WEB-INF/lib/\
+\
+\'a0\'a0 \'a0- Configure Tomcat for caGrid applications: $GLOBUS_LOCATION>\'a0
+\f2 ant -f share/globus_wsrf_common/tomcat/tomcat.xml deployTomcat -Dtomcat.dir="$CATALINA_HOME"
+\f0 \
+\
+\'a0\'a0 \'a0- Install Bioconductor grid service: /usr/local/ncicb_svn/bioconductor/services/caDNAcopy/caGrid/CaDNAcopy> ant deployTomcat\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- To increase jms timeout (necessary for larger data), unjar org/bioconductor/rserviceJms/services/caDNAcopy in /usr/local/tomcat5/webapps/wsrf/WEB-INF/lib/caDNAcopy.jar and adjust jms.timeout in RWebServices4java.properties and re-jar this file.\
+\
+\'a0\'a0 \'a0- Configure CaDNAcopy service registration\
+\'a0\'a0 \'a0 \'a0 \'a0- Update /usr/local/tomcat5/webapps/wsrf/WEB-INF/web.xml WSRFServlet info to\
+\'a0\'a0<servlet>\
+\'a0\'a0 \'a0<servlet-name>WSRFServlet</servlet-name>\
+\'a0\'a0 \'a0<display-name>WSRF Container Servlet</display-name>\
+\'a0\'a0 \'a0<servlet-class>\
+\'a0\'a0 \'a0 \'a0 \'a0org.globus.wsrf.container.AxisServlet\
+\'a0\'a0 \'a0</servlet-class>\
+\'a0\'a0 \'a0<init-param>\
+\'a0\'a0 \'a0 \'a0 \'a0 \'a0 \'a0<param-name>defaultProtocol</param-name>\
+\'a0\'a0 \'a0 \'a0 \'a0 \'a0 \'a0<param-value>http</param-value>\
+\'a0\'a0 \'a0 \'a0 \'a0</init-param>\
+\'a0\'a0 \'a0 \'a0 \'a0<init-param>\
+\'a0\'a0 \'a0 \'a0 \'a0 \'a0 \'a0<param-name>defaultPort</param-name>\
+\'a0\'a0 \'a0 \'a0 \'a0 \'a0 \'a0<param-value>8080</param-value>\
+\'a0\'a0 \'a0</init-param>\
+\'a0\'a0 \'a0<load-on-startup>true</load-on-startup>\
+\'a0\'a0</servlet>\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- In /usr/local/tomcat5/webapps/wsrf/WEB-INF/etc/cagrid_CaDNAcopy/serviceMetadata.xml, replace <ns15:ResearchCenter... with:\
+\'a0\'a0<ns15:ResearchCenter displayName="caIntegrator 2 Development Team - NCICB/CBIIT" shortName="caIntegrator2 Development" xmlns:ns15="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">\
+\'a0\'a0 <ns15:Address country="US" locality="Rockville" postalCode="20852" stateProvince="MD" street1="2115 E Jefferson Ave." street2=""/>\
+\'a0\'a0 <ns15:ResearchCenterDescription description="" homepageURL="http://ncicb.nci.nih.gov" imageURL="" rssNewsURL=""/>\
+\'a0\'a0 <ns15:pointOfContactCollection>\
+\'a0\'a0 \'a0<ns15:PointOfContact affiliation="NCICB" email="tavelae@mail.nih.gov" firstName="Eric" lastName="Tavela" phoneNumber="602-722-1560" role="developer"/>\
+\'a0\'a0 </ns15:pointOfContactCollection>\
+\'a0\'a0</ns15:ResearchCenter>\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Edit /usr/local/tomcat5/webapps/wsrf/WEB-INF/etc/globus_wsrf_core/server-config.wsdd to include the following under <globalConfiguration>:\
+\'a0\'a0 \'a0 \'a0 \'a0<parameter name="logicalHost" value="ncias-d227-v.nci.nih.gov"/>\'a0\
+\'a0\'a0 \'a0 \'a0 \'a0<parameter name="publishHostName" value="true"/>\'a0\
+\
+- Install GenePattern from WAR, instructions at:\
+\'a0\'a0 \'a0 \'a0 \'a0http://www.broad.mit.edu/cancer/software/genepattern/download/gp_server_install_warfile.html\
+\
+- Install PCA grid service\
+\'a0\'a0 \'a0- Install a new tomcat 5.0.28 instance into /usr/local/tomcat5-pca,\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Change ports to 9080, etc.\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Add start/stop script to /etc/rc3.d\
+\'a0\'a0 \'a0- Follow instructions in PCA_GN_install.doc\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Edit /usr/local/ncicb_svn/genepattern/cabig_ey2_2008/gridServiceUtils/GpIntegrationServlet/src/org/genepattern/integration/GenePattern.properties\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Edit /usr/local/ncicb_svn/genepattern/cabig_ey2_2008/PCA_GN/code/PCA/src/org/genepattern/pca/service/GenePattern.properties\
+\'a0\'a0 \'a0\'a0\'a0 \'a0\'a0\'a0 \'a0- Create GenePattern user "gpintegration" and use this value.\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Before deploying PCA grid service, edit deploy.properties, updated index.service.url to http\\://cagrid-index-stage.nci.nih.gov\\:8080/wsrf/services/DefaultIndexService\
+\'a0\'a0 \'a0- Configure service registration\
+\'a0\'a0 \'a0- TODO: Fix this error:\
+\'a0\'a0 \'a0 [java] org.xml.sax.SAXException: Unable to create JavaBean of type org.cabig.icr.asbp.parameter.Parameter. \'a0Missing default constructor? \'a0Error was: java.lang.InstantiationException.\
+\'a0\'a0 \'a0 [java] at org.apache.axis.message.SOAPFaultBuilder.createFault(SOAPFaultBuilder.java:221)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.message.SOAPFaultBuilder.endElement(SOAPFaultBuilder.java:128)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.encoding.DeserializationContext.endElement(DeserializationContext.java:1087)\
+\'a0\'a0 \'a0 [java] at org.apache.xerces.parsers.AbstractSAXParser.endElement(Unknown Source)\
+\'a0\'a0 \'a0 [java] at org.apache.xerces.impl.XMLNSDocumentScannerImpl.scanEndElement(Unknown Source)\
+\'a0\'a0 \'a0 [java] at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl$FragmentContentDispatcher.dispatch(Unknown Source)\
+\'a0\'a0 \'a0 [java] at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.scanDocument(Unknown Source)\
+\'a0\'a0 \'a0 [java] at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)\
+\'a0\'a0 \'a0 [java] at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)\
+\'a0\'a0 \'a0 [java] at org.apache.xerces.parsers.XMLParser.parse(Unknown Source)\
+\'a0\'a0 \'a0 [java] at org.apache.xerces.parsers.AbstractSAXParser.parse(Unknown Source)\
+\'a0\'a0 \'a0 [java] at javax.xml.parsers.SAXParser.parse(SAXParser.java:375)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.encoding.DeserializationContext.parse(DeserializationContext.java:227)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.SOAPPart.getAsSOAPEnvelope(SOAPPart.java:645)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.Message.getSOAPEnvelope(Message.java:424)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.message.addressing.handler.AddressingHandler.processClientResponse(AddressingHandler.java:305)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.message.addressing.handler.AddressingHandler.invoke(AddressingHandler.java:110)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.strategies.InvocationStrategy.visit(InvocationStrategy.java:32)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.SimpleChain.doVisiting(SimpleChain.java:118)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.SimpleChain.invoke(SimpleChain.java:83)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.client.AxisClient.invoke(AxisClient.java:190)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.client.Call.invokeEngine(Call.java:2727)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.client.Call.invoke(Call.java:2710)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.client.Call.invoke(Call.java:2386)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.client.Call.invoke(Call.java:2309)\
+\'a0\'a0 \'a0 [java] at org.apache.axis.client.Call.invoke(Call.java:1766)\
+\'a0\'a0 \'a0 [java] at org.genepattern.pca.stubs.bindings.PCAPortTypeSOAPBindingStub.performAnalysis(PCAPortTypeSOAPBindingStub.java:1332)\
+\
+\
+- Install Comparative Marker Selection grid service\
+\'a0\'a0 \'a0- Install a new tomcat 5.0.28 instance into /usr/local/tomcat5-cms,\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Change ports to 10080, etc.\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Add start/stop script to /etc/rc3.d\
+\'a0\'a0 \'a0- Install globus to tomcat5-cms\
+\'a0\'a0 \'a0- ant deployTomcat in /usr/local/ncicb_svn/genepattern/gridExtensions_y3/code/gpCaGridServer/ComparativeMarkerSelectionMAGEService\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Edit /usr/local/tomcat5-cms/webapps/wsrf/WEB-INF/etc/_cagrid_ComparativeMarkerSelMAGESvc/registration.xml, set index service to http://cagrid-index-stage.nci.nih.gov:8080/wsrf/services/DefaultIndexService\
+\'a0\'a0 \'a0- Configure service registration\
+\
+- Install GenePattern GISTIC service\
+\'a0\'a0 \'a0- While installing, set CATALINA_HOME=/usr/local/tomcat5-gistic\
+\'a0\'a0 \'a0- Install a new tomcat 5.0.28 instance into /usr/local/tomcat5-gistic,\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Change ports to 11080, etc.\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Add start/stop script to /etc/rc3.d\
+\'a0\'a0 \'a0- Install globus to tomcat5-gistic\
+\'a0\'a0 \'a0- Edit /usr/local/ncicb_svn/genepattern/cabig_ey2_2008/gistic/service/src/org/genepattern/gistic/service/GenePattern.properties per instructions in GISTIC_caGrid_Server_Install.doc\
+\'a0\'a0 \'a0- Edit deploy.properties\
+\'a0\'a0 \'a0\'a0\'a0 \'a0index.service.url=http\\://cagrid-index-stage.nci.nih.gov\\:8080/wsrf/services/DefaultIndexService\
+\'a0\'a0 \'a0- ant clean all deployTomcat\
+\'a0\'a0 \'a0- Configure service registration\
+\
+- Install: PreprocessDataSetMAGEService\
+\'a0\'a0 \'a0- While installing, set CATALINA_HOME=/usr/local/tomcat5-preprocess\
+\'a0\'a0 \'a0- Install a new tomcat 5.0.28 instance into /usr/local/tomcat5-preprocess,\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Change ports to 12080, etc.\
+\'a0\'a0 \'a0\'a0\'a0 \'a0- Add start/stop script to /etc/rc3.d\
+\'a0\'a0 \'a0- Install globus to tomcat5-gistic\
+\'a0\'a0 \'a0- Edit .../oldServicesUpdatedToCaGrid1.2/code/PreprocessDatasetMAGEService/src/org/genepattern/cagrid/service/preprocessdataset/mage/service/GenePattern.properties per instructions in GISTIC_caGrid_Server_Install.doc\
+\'a0\'a0 \'a0- Edit deploy.properties\
+\'a0\'a0 \'a0\'a0\'a0 \'a0index.service.url=http\\://cagrid-index-stage.nci.nih.gov\\:8080/wsrf/services/DefaultIndexService\
+\'a0\'a0 \'a0- ant clean all deployTomcat\
+\'a0\'a0 \'a0- Configure service registration\
+\
+\
+- TODO: Check/fix staging index service registration of all services.\
+\
+- Install caArray 2.3\
+\'a0\'a0 \'a0- Checkout caArray 2.3 SVN to /usr/local/ncicb_svn/caarray2.3\
+\'a0\'a0 \'a0- Update software/project.properties\
+\'a0\'a0 \'a0- ant deploy:local:install\
+\'a0\'a0 \'a0- set -Xmx1024m for jboss startup\
+\'a0\'a0 \'a0- set threshhold of jboss logging to INFO\
+\'a0\'a0 \'a0- Comment out binding for ejb3 invoker in conf/bindings.xml and edit the deploy/ejb3.deployer/META-INF/jboss-service.xml as follows:\
+\'a0\'a0 <mbean code="org.jboss.remoting.transport.Connector"\
+\'a0\'a0 \'a0 \'a0 \'a0 \'a0xmbean-dd="org/jboss/remoting/transport/Connector.xml"\
+\'a0\'a0 \'a0 \'a0 \'a0 \'a0name="jboss.remoting:type=Connector,name=DefaultEjb3Connector,handler=ejb3">\
+\'a0\'a0 \'a0 \'a0<depends>jboss.aop:service=AspectDeployer</depends>\
+\'a0\'a0 \'a0 \'a0<!-- attribute name="InvokerLocator">socket://$\{jboss.bind.address\}:13873</attribute -->\
+\'a0\'a0 \'a0 \'a0<attribute name="Configuration">\
+\'a0\'a0 \'a0 \'a0 \'a0<config>\
+\'a0\'a0 \'a0 \'a0 \'a0 \'a0 \'a0<invoker transport="socket">\
+\'a0\'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0<attribute name="serverBindAddress">$\{jboss.bind.address\}</attribute>\
+\'a0\'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0<attribute name="serverBindPort">13873</attribute>\
+\'a0\'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0<attribute name="clientConnectAddress">137.187.182.17</attribute>\
+\'a0\'a0 \'a0 \'a0 \'a0 \'a0 \'a0</invoker>\
+\'a0\'a0 \'a0 \'a0 \'a0 <handlers>\
+\'a0\'a0 \'a0 \'a0 \'a0 \'a0 \'a0<handler subsystem="AOP">org.jboss.aspects.remoting.AOPRemotingInvocationHandler</handler>\
+\'a0\'a0 \'a0 \'a0 \'a0 </handlers>\
+</config>\
+\'a0\'a0 \'a0 \'a0</attribute>\
+\'a0\'a0 </mbean>\
+\
+\'a0\'a0 \'a0\'a0- May need to update encrypted passwords to\'a0
+\f3 bjIDy3/e82K8j2uyHEABIQ==
+\f0 \
+\pard\pardeftab720\ql\qnatural
+
+\f3 \cf0 \'a0\'a0\
+\pard\pardeftab720\ql\qnatural
+
+\f0 \cf0 \
+}

@@ -96,6 +96,7 @@ import java.util.List;
 
 import org.cabig.icr.asbp.parameter.Parameter;
 import org.cabig.icr.asbp.parameter.ParameterList;
+import org.springframework.util.StringUtils;
 
 import valuedomain.PreprocessDatasetPreprocessingFlag;
 
@@ -266,4 +267,33 @@ public class PreprocessDatasetParameters {
         this.excludedControlSampleSet = excludedControlSampleSet;
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        String nl = "\n";
+        StringBuffer sb = new StringBuffer();
+        sb.append("-----------------------------").append(nl);
+        sb.append("Preprocess Dataset Parameters").append(nl);
+        sb.append("-----------------------------").append(nl);
+        if (excludedControlSampleSet != null) {
+            sb.append("Excluded control samples: ").append(excludedControlSampleSet.getName()).append(nl);
+        }
+        if (!clinicalQueries.isEmpty()) {
+            String[] queryNames = new String[clinicalQueries.size()];
+            int count = 0;
+            for (Query query : clinicalQueries) {
+                queryNames[count] = query.getName();
+                count++;
+            }
+            sb.append("Input queries for classification: ").append(
+                    StringUtils.arrayToDelimitedString(queryNames, ", ")).append(nl);
+        }
+        if (server != null) {
+            sb.append(server.toString()).append(nl);
+        }
+        sb.append(GenePatternUtil.parameterListToString(createParameterList())).append(nl);
+        return sb.toString();
+    }
 }

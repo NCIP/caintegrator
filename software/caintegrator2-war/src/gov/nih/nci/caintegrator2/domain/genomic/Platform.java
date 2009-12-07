@@ -19,6 +19,7 @@ public class Platform extends AbstractCaIntegrator2Object {
     private static final long serialVersionUID = 1L;
     
     private String name;
+    private String version = "";
     private PlatformVendorEnum vendor;
     private SortedSet<ReporterList> reporterListsInternal = new TreeSet<ReporterList>();
     private Map<ReporterTypeEnum, SortedSet<ReporterList>> typeToReporterListMap;
@@ -158,6 +159,20 @@ public class Platform extends AbstractCaIntegrator2Object {
             }
         }
         return arrayNames.toString();
+    }
+
+    /**
+     * @return the version
+     */
+    public String getVersion() {
+        return version;
+    }
+
+    /**
+     * @param version the version to set
+     */
+    public void setVersion(String version) {
+        this.version = version;
     }
 
 }

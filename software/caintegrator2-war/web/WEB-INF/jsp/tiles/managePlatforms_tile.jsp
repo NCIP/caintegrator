@@ -27,24 +27,28 @@
         if (type == "Affymetrix Gene Expression") {
             document.getElementById("platformNameDiv").style.display = "none";
             document.getElementById("platformName").value = "N/A";
+            document.getElementById("commentNameDiv").style.display = "none";
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "block";
             document.getElementById("commentAdfGemlDiv").style.display = "none";
         } else if (type == "Affymetrix SNP"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
+            document.getElementById("commentNameDiv").style.display = "none";
             document.getElementById("addFileButtonDiv").style.display = "block";
             document.getElementById("commentCsvDiv").style.display = "block";
             document.getElementById("commentAdfGemlDiv").style.display = "none";
         } else if (type == "Agilent Gene Expression"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
+            document.getElementById("commentNameDiv").style.display = "none";
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "block";
             document.getElementById("commentAdfGemlDiv").style.display = "none";
         } else if (type == "Agilent Copy Number"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
+            document.getElementById("commentNameDiv").style.display = "block";
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "none";
             document.getElementById("commentAdfGemlDiv").style.display = "block";
@@ -52,12 +56,12 @@
     }
     
     function setSelectedAction(selectAction, type) {
+        document.managePlatformForm.selectedAction.value = selectAction;
         if (selectAction == "createPlatform" && type == "Affymetrix SNP" 
             && document.getElementById("platformFile").value != "") {
             return confirm ("The annotation file must be added to the list of file(s) selected\n"
                 + "or it will not be included in the platform creation.");
         }
-        document.managePlatformForm.selectedAction.value = selectAction;
         return true;
     }
 </script>
@@ -82,8 +86,12 @@
                             list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum@getValuesToDisplay()"
                             onchange="CheckPlatformType(this.form.platformType.value);" theme="css_xhtml" /><br>
                         <s:div id="platformNameDiv" cssStyle="%{platformNameDisplay}">
-                            <s:textfield id="platformName" name="platformName" label="Platform Name (For NON-GEML xml file)"
+                            <s:textfield id="platformName" name="platformName" label="Platform Name"
                                 theme="css_xhtml" /><br>
+                        </s:div>
+                        <s:div id="commentNameDiv" cssClass="inlinehelp_form_element" cssStyle="%{adfGemlFileDisplay}">
+                            <span class="wwlbl">(not required for GEML annotation file)</span>
+                            <span class="wwctrl"></span>
                         </s:div>
                         <s:file id="platformFile" name="platformFile" label="Annotation File" />
                         <s:div id="commentAdfGemlDiv" cssClass="inlinehelp_form_element" cssStyle="%{adfGemlFileDisplay}">
@@ -101,7 +109,7 @@
                                 action="addAnnotationFile" onclick="setSelectedAction('addAnnotationFile')" theme="css_xhtml" />
                             </div><br>
                             <s:textarea label="Additional Annotation File(s) Selected" name="platformForm.fileNames"
-                                rows="3" cols="50" theme="css_xhtml" /><br>
+                                disabled="true" rows="3" cols="50" theme="css_xhtml" /><br>
                         </s:div>
                         <div class="wwgrp">
                         <div class="wwlbl"><label class="label">&nbsp</label></div>
@@ -115,7 +123,8 @@
     
     <table class="form_wrapper_table">
         <tr>
-            <th class="title" style="height: 2.5em;">Existing Platforms</th>
+            <th class="title" style="height: 2.5em;">Existing Platforms<span id="platformLoader">
+                 <img src="images/ajax-loader.gif"/></span></th>
             <th class="alignright">&nbsp;</th>
         </tr>
         <tr>
@@ -124,6 +133,7 @@
                         <table class="data">
                             <tr>
                                 <th>Platform Name</th>
+                                <th>Platform Type</th>
                                 <th>Vendor</th>
                                 <th>Array Name(s)</th>
                                 <th>Status</th>

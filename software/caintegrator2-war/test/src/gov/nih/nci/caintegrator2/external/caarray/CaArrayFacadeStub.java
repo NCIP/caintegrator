@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
+import gov.nih.nci.caarray.external.v1_0.data.File;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -100,7 +101,9 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CaArrayFacadeStub implements CaArrayFacade {
@@ -166,6 +169,12 @@ public class CaArrayFacadeStub implements CaArrayFacade {
 
     public void validateGenomicSourceConnection(GenomicDataSourceConfiguration genomicSource)
             throws ConnectionException, ExperimentNotFoundException {
+    }
+
+
+    public List<File> retrieveFilesForGenomicSource(GenomicDataSourceConfiguration genomicSource)
+            throws ConnectionException, FileNotFoundException {
+        return Collections.emptyList();
     }
 
 }

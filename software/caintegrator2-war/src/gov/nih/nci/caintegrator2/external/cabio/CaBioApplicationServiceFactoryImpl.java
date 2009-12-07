@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.external.cabio;
 
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.system.applicationservice.CaBioApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 /**
@@ -98,9 +98,10 @@ public class CaBioApplicationServiceFactoryImpl implements CaBioApplicationServi
     /**
      * {@inheritDoc}
      */
-    public ApplicationService retrieveCaBioApplicationService(String caBioUrl) throws ConnectionException {
+    public CaBioApplicationService retrieveCaBioApplicationService(String caBioUrl) throws ConnectionException {
         try {
-            return ApplicationServiceProvider.getApplicationServiceFromUrl(
+            return (CaBioApplicationService)
+            ApplicationServiceProvider.getApplicationServiceFromUrl(
                     caBioUrl, CABIO_SERVICE);
         } catch (Exception e) {
             throw new ConnectionException("Error occurred when trying to create caBIO Application Service.", e);

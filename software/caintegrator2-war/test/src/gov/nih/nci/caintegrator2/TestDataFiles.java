@@ -105,6 +105,7 @@ public class TestDataFiles {
     public static final String SHORT_REMBRANDT_CONTROL_SAMPLE_SET_NAME = "Short Rembrandt Control Sample Set";
     public static final String SHORT_REMBRANDT_CONTROL_SAMPLES_FILE_PATH = "/short_rembrandt_control_samples.csv";
     public static final String SHORT_REMBRANDT_SAMPLE_MAPPING_FILE_PATH = "/short_rembrandt_sample_mapping.csv";
+    public static final String GENE_LIST_SAMPLES_FILE_PATH = "/gene_list_samples.csv";
     public static final String JAGLA_00034_CONTROL_SAMPLES_SET_NAME = "JAGLA 00034 Control Sample Set";
     public static final String JAGLA_00034_CONTROL_SAMPLES_FILE_PATH = "/jagla_0034_control_samples.csv";
     public static final String VASARI_IMAGE_ANNOTATION_FILE_PATH = "/vasari_image_annotation_mapped.csv";
@@ -162,6 +163,9 @@ public class TestDataFiles {
     public static final File DC_LUNG_PUBLIC_ANNOTATION_DEFINITIONS_FILE = getFile(DC_LUNG_PUBLIC_ANNOTATION_DEFINITIONS_FILE_PATH);
 
     
+    // Samples of genelist file upload
+    public static final File GENE_LIST_SAMPLES_FILE = getFile(GENE_LIST_SAMPLES_FILE_PATH);
+    
     // Samples from caArray Experiment jagla-00034
     public static final File JAGLA_00034_CONTROL_SAMPLES_FILE = getFile(JAGLA_00034_CONTROL_SAMPLES_FILE_PATH);
 
@@ -179,8 +183,8 @@ public class TestDataFiles {
     public static final String XBA_COPY_NUMBER_CHP_FILE_PATH = "/arraydata/affymetrix/E07733_T_Xba.CN4.cnchp";
     public static final File XBA_COPY_NUMBER_CHP_FILE = getFile(XBA_COPY_NUMBER_CHP_FILE_PATH);
     
-    public static final String AGILENT_COPY_NUMBER_RAW_FILE_PATH = "/arraydata/agilent/MSK_0344-1_251469338762_S01_CGH-v4_91.txt";
-    public static final File AGILENT_COPY_NUMBER_RAW_FILE = getFile(AGILENT_COPY_NUMBER_RAW_FILE_PATH);
+    public static final String AGILENT_COPY_NUMBER_DATA_FILE_PATH = "/arraydata/agilent/mskcc.org_OV.HG-CGH-244A.9.data.txt";
+    public static final File AGILENT_COPY_NUMBER_DATA_FILE = getFile(AGILENT_COPY_NUMBER_DATA_FILE_PATH);
 
     public static final String REMBRANDT_COPY_NUMBER_FILE_PATH = "/rembrandt_copy_number_mapping.csv";
     public static final File REMBRANDT_COPY_NUMBER_FILE = getFile(REMBRANDT_COPY_NUMBER_FILE_PATH);
@@ -191,6 +195,37 @@ public class TestDataFiles {
     public static final String SHORT_AGILENT_COPY_NUMBER_FILE_PATH = "/short_agilent_copy_number_mapping.csv";
     public static final File SHORT_AGILENT_COPY_NUMBER_FILE = getFile(SHORT_AGILENT_COPY_NUMBER_FILE_PATH);
 
+    public static final String TCGA_AGILENT_COPY_NUMBER_MAPPING_FILE_PATH = "/tcga_agilent_copy_number_mapping.csv";
+    public static final File TCGA_AGILENT_COPY_NUMBER_MAPPING_FILE = getFile(TCGA_AGILENT_COPY_NUMBER_MAPPING_FILE_PATH);
+    
+    public static final String TCGA_LEVEL_2_DATA_FILE_PATH = "/arraydata/agilent/tcga_level_2_test_data.txt";
+    public static final File TCGA_LEVEL_2_DATA_FILE = getFile(TCGA_LEVEL_2_DATA_FILE_PATH);
+    
+    public static final String HUAITIAN_LEVEL_2_DATA_FILE_PATH = "/arraydata/agilent/Huaitian_level2_test_data.txt";
+    public static final File HUAITIAN_LEVEL_2_DATA_FILE = getFile(HUAITIAN_LEVEL_2_DATA_FILE_PATH);
+    
+    // Analysis Data Files
+    // CMS
+    public static final String CMS_CLASSIFICATIONS_FILE_PATH = "/cms_classifications.cls";
+    public static final File CMS_CLASSIFICATIONS_FILE = getFile(CMS_CLASSIFICATIONS_FILE_PATH);
+    
+    public static final String CMS_GCT_FILE_PATH = "/cms_features.gct";
+    public static final File CMS_GCT_FILE = getFile(CMS_GCT_FILE_PATH);
+    
+    // PCA
+    public static final String PCA_TRAIN_FILE_PATH = "/pca_train.gct";
+    public static final File PCA_TRAIN_FILE = getFile(PCA_TRAIN_FILE_PATH);
+    
+    // GISTIC
+    public static final String GISTIC_CNV_FILE_PATH = "/gistic_cnv.txt";
+    public static final File GISTIC_CNV_FILE = getFile(GISTIC_CNV_FILE_PATH);
+    
+    public static final String GISTIC_MARKERS_FILE_PATH = "/gistic_markers.txt";
+    public static final File GISTIC_MARKERS_FILE = getFile(GISTIC_MARKERS_FILE_PATH);
+    
+    public static final String GISTIC_SAMPLES_FILE_PATH = "/gistic_samples.txt";
+    public static final File GISTIC_SAMPLES_FILE = getFile(GISTIC_SAMPLES_FILE_PATH);
+    
     public static File getAffymetrixDataFile(String filename) {
         return getFile(AFFYMETRIX_DATA_FILE_DIRECTORY_PATH + "/" + filename);
     }

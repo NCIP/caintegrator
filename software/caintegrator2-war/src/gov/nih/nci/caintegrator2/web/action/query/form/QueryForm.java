@@ -135,8 +135,10 @@ public class QueryForm {
     private void initialize() {
         if (query != null) {
             Study study = getQuery().getSubscription().getStudy();
-            clinicalAnnotations = new AnnotationDefinitionList(study.getSubjectAnnotationCollection(), true);
-            imageSeriesAnnotations = new AnnotationDefinitionList(study.getImageSeriesAnnotationCollection(), true);
+            clinicalAnnotations = new AnnotationDefinitionList(
+                    study.getStudyConfiguration().getVisibleSubjectAnnotationCollection(), true);
+            imageSeriesAnnotations = new AnnotationDefinitionList(
+                    study.getStudyConfiguration().getVisibleImageSeriesAnnotationCollection(), true);
             criteriaGroup = new CriteriaGroup(this);
             resultConfiguration = new ResultConfiguration(this);
             controlSamplesInStudy = study.getStudyConfiguration().hasControlSamples();

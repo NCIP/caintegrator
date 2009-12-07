@@ -35,6 +35,10 @@
                     <a href='<s:property value="#newQueryUrl" />'>
                     Search <s:property value="currentStudy.shortTitleText"/></a>
                 </li>
+                <li><s:url id="createGeneListUrl" includeParams="none" action="manageGeneList" />
+                                <s:param name="selectedAction" value="%{'newGeneList'}" />
+                    <a href="${createGeneListUrl}">Create New Gene List</a>
+                </li>
             </ul>
         </li>
         
@@ -42,7 +46,7 @@
         
         <li class="treenav"><div>Study Data</div>
             <ul class="pde">
-                <li><a href="#">Queries</a>
+                <li><a href="#">Saved Queries</a>
                     <ul style="padding: 3px 0px 10px 10px;">
                         <li><a href="#">My Queries</a>
                             <ul>                                
@@ -56,7 +60,7 @@
                                         <s:param name="queryId" value="id" />
                                     </s:url>
                           
-                                    <li style="padding: 0px 0px 25px 0px">
+                                    <li style="padding: 0px 0px 2px 0px">
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
                                             <div style="float: left; white-space: nowrap; width: 32px;">
                                                 <s:a href="%{runQueryUrl}" cssClass="searches" cssStyle="background:transparent url('/caintegrator2/images/ico_search.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
@@ -79,6 +83,34 @@
                                     
                                 </s:iterator>
                                 
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="#">Saved Lists</a>
+                    <ul style="padding: 3px 0px 10px 10px;">
+                        <li><a href="#">My Gene Lists</a>
+                            <ul>
+                                <s:iterator value="displayableWorkspace.geneLists">
+                                    <s:url id="editGeneListUrl" action="editGeneList" includeParams="none">
+                                        <s:param name="selectedAction" value="%{'editGeneList'}" />
+                                        <s:param name="geneListName" value="name" />
+                                    </s:url>
+
+                                    <li style="padding: 0px 0px 2px 0px">
+                                        <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
+                                            <div style="float: left; white-space: nowrap; width: 22px;">
+                                                <s:a href="%{editGeneListUrl}" cssClass="queryAction" cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    title="Edit List: %{name}">&nbsp;</s:a>
+                                            </div>
+                                            <div style="float: left; width: 110px; white-space: normal; padding: 0px 0px 0px 0px;">
+                                                <s:a href="%{editGeneListUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
+                                                    title="Description: %{description}"><s:property value="name" />
+                                                </s:a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </s:iterator>
                             </ul>
                         </li>
                     </ul>
@@ -133,7 +165,7 @@
                     <li><a href="/caintegrator2/index.jsp">Login</a></li>
                     <li><a href="registration/input.action">Register</a></li>
                 </s:if>
-                <li><a href="javascript:openWin('/caintegrator2//help/Getting_Started.2.8.html#1122280')">Support</a></li>
+                <li><a href="javascript:openWin('/caintegrator2//help/wwhelp/wwhimpl/js/html/wwhelp.htm?href=Getting_Started.2.9.html#1136640')">Support</a></li>
                 <li><a href="${tutorialsUrl}">Tutorials</a></li>
                 <li><a href="javascript:openUsersGuideWindow('top')">User Guide</a></li>
             </ul>

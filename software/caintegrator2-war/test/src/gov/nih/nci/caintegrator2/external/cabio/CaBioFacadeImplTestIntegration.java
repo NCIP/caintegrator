@@ -86,15 +86,13 @@
 package gov.nih.nci.caintegrator2.external.cabio;
 
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
-import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
+import gov.nih.nci.cabio.domain.Pathway;
+import gov.nih.nci.cabio.domain.Taxon;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -116,8 +114,8 @@ public class CaBioFacadeImplTestIntegration {
     }
 
     @Test
-    public void testRetrieveGeneSymbolsFromKeywords() throws ConnectionException {
-        CaBioGeneSearchParameters params = new CaBioGeneSearchParameters();
+    public void testRetrieveGenes() throws ConnectionException {
+        CaBioSearchParameters params = new CaBioSearchParameters();
         params.setKeywords("heart");
         params.setTaxon("human");
         params.setFilterGenesOnStudy(false);
@@ -134,9 +132,39 @@ public class CaBioFacadeImplTestIntegration {
         assertFalse(checkSymbolExists("CDH13", genes));
         assertTrue(checkSymbolExists("FABP3", genes));
         
-        params.setTaxon(CaBioGeneSearchParameters.ALL_TAXONS);
+        params.setTaxon(CaBioSearchParameters.ALL_TAXONS);
         genes = caBioFacade.retrieveGenes(params);
         assertTrue(!genes.isEmpty());
+    }
+    
+    @Test 
+    public void testRetrievePathways() throws ConnectionException {
+        CaBioSearchParameters params = new CaBioSearchParameters();
+        params.setKeywords("h_41bbPathway");
+        params.setTaxon("human");
+        params.setSearchType(CaBioSearchTypeEnum.PATHWAYS);
+        List<CaBioDisplayablePathway> pathways = caBioFacade.retrievePathways(params);
+        assertEquals(1, pathways.size());
+        assertEquals("1", pathways.get(0).getId());
+    }
+    
+    @Test
+    public void testRetrieveGenesFromPathways() throws ConnectionException {
+        CaBioSearchParameters params = new CaBioSearchParameters();
+        Taxon taxon = new Taxon();
+        taxon.setCommonName("human");
+        params.setTaxon("human");
+        params.setFilterGenesOnStudy(false);
+        Pathway pathway = new Pathway();
+        pathway.setId(1l);
+        pathway.setTaxon(taxon);
+        Pathway pathway2 = new Pathway();
+        pathway2.setId(2l);
+        pathway2.setTaxon(taxon);
+        params.getPathways().add(pathway);
+        params.getPathways().add(pathway2);
+        List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenesFromPathways(params);
+        assertEquals(22, genes.size());
     }
     
     @Test

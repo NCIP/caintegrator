@@ -83,76 +83,63 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.cabio;
+package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
-/**
- * 
- */
-public class CaBioGeneSearchParameters {
-    /**
-     * To use all taxons.
-     */
-    public static final String ALL_TAXONS = "ALL";
-    
-    /**
-     * Human taxon (default).
-     */
-    public static final String HUMAN_TAXON = "human";
-    
-    private String keywords;
-    private String taxon = HUMAN_TAXON;
-    private Study study;
-    private boolean filterGenesOnStudy = true;
-    
-    /**
-     * @return the keywords
-     */
-    public String getKeywords() {
-        return keywords;
-    }
-    /**
-     * @param keywords the keywords to set
-     */
-    public void setKeywords(String keywords) {
-        this.keywords = keywords;
-    }
-    /**
-     * @return the taxon
-     */
-    public String getTaxon() {
-        return taxon;
-    }
-    /**
-     * @param taxon the taxon to set
-     */
-    public void setTaxon(String taxon) {
-        this.taxon = taxon;
-    }
-    /**
-     * @return the study
-     */
-    public Study getStudy() {
-        return study;
-    }
-    /**
-     * @param study the study to set
-     */
-    public void setStudy(Study study) {
-        this.study = study;
-    }
-    /**
-     * @return the filterGenesOnStudy
-     */
-    public boolean isFilterGenesOnStudy() {
-        return filterGenesOnStudy;
-    }
-    /**
-     * @param filterGenesOnStudy the filterGenesOnStudy to set
-     */
-    public void setFilterGenesOnStudy(boolean filterGenesOnStudy) {
-        this.filterGenesOnStudy = filterGenesOnStudy;
-    }
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
 
+import org.junit.Test;
+
+public class AffymetrixDnaAnalysisPlatformLoaderTest {
+
+    private CaIntegrator2Dao dao = new CaIntegrator2DaoStub();
+    
+    @Test
+    public void testLoad() throws PlatformLoadingException {
+        List<File> annotationFiles = new ArrayList<File>();
+        annotationFiles.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_TEST_FILE);
+        annotationFiles.add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_TEST_FILE);
+        AffymetrixDnaPlatformSource affymetrixDnaPlatformSource = new AffymetrixDnaPlatformSource (
+                annotationFiles, "AffymetrixDnaPlatform");
+
+        AffymetrixDnaAnalysisPlatformLoader loader = new AffymetrixDnaAnalysisPlatformLoader(
+                affymetrixDnaPlatformSource);
+        
+        Platform platform = loader.load(dao);
+        assertTrue("AffymetrixDnaPlatform".equals(loader.getPlatformName()));
+        assertTrue("AffymetrixDnaPlatform".equals(platform.getName()));
+        SortedSet<ReporterList> reporterLists = platform.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        assertEquals(2, reporterLists.size());
+        ReporterList reporterList = reporterLists.iterator().next();
+        assertTrue("hg18".equals(reporterList.getGenomeVersion()));
+        assertEquals(10, reporterList.getReporters().size());
+        
+        // Test wrong header file
+        annotationFiles.clear();
+        annotationFiles.add(TestArrayDesignFiles.AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_TEST_BAD_FILE);
+        affymetrixDnaPlatformSource = new AffymetrixDnaPlatformSource (
+                annotationFiles, "AffymetrixDnaPlatform");
+
+        loader = new AffymetrixDnaAnalysisPlatformLoader(
+                affymetrixDnaPlatformSource);
+        boolean hasException = false;
+        try {
+            platform = loader.load(dao);
+        } catch (PlatformLoadingException e) {
+            hasException = true;
+            assertEquals("Invalid file format; Headers not match.", e.getMessage());
+        }
+        assertTrue(hasException);
+    }
 }

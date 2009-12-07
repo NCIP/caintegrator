@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -126,8 +127,8 @@ public abstract class AbstractCopyNumberMappingFileHandler {
     private final GenomicDataSourceConfiguration genomicSource;
     private final Map<Sample, List<String>> sampleToFilenamesMap = new HashMap<Sample, List<String>>();
 
-    AbstractCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
-            ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+    AbstractCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
+            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
                 this.genomicSource = genomicSource;
                 this.caArrayFacade = caArrayFacade;
                 this.arrayDataService = arrayDataService;
@@ -149,7 +150,7 @@ public abstract class AbstractCopyNumberMappingFileHandler {
             reader.close();
             return arrayDataValues;
         } catch (FileNotFoundException e) {
-            throw new DataRetrievalException("Couldn't read copy number mapping file: ", e);
+            throw new DataRetrievalException("Copy number mapping file not found: ", e);
         } catch (IOException e) {
             throw new DataRetrievalException("Couldn't read copy number mapping file: ", e);
         }
@@ -175,33 +176,9 @@ public abstract class AbstractCopyNumberMappingFileHandler {
         return genomicSource.getCopyNumberDataConfiguration().getMappingFile();
     }
 
-    private List<ArrayDataValues> loadArrayData() 
-    throws ConnectionException, DataRetrievalException, ValidationException {
-        List<ArrayDataValues> values = new ArrayList<ArrayDataValues>();
-        for (Sample sample : sampleToFilenamesMap.keySet()) {
-            values.add(loadArrayData(sample));
-        }
-        return values;
-    }
-
-    private ArrayDataValues loadArrayData(Sample sample) 
-    throws ConnectionException, DataRetrievalException, ValidationException {
-        List<File> dataFiles = new ArrayList<File>();
-        try {
-            for (String filename : sampleToFilenamesMap.get(sample)) {
-                dataFiles.add(getDataFile(filename));
-            }
-            return loadArrayData(sample, dataFiles);
-        } finally {
-            for (File file : dataFiles) {
-                doneWithFile(file);
-            }
-        }
-    }
-
-    abstract ArrayDataValues loadArrayData(Sample sample, List<File> dataFiles) 
-    throws DataRetrievalException, ValidationException;
-
+    abstract List<ArrayDataValues> loadArrayData()
+    throws ConnectionException, DataRetrievalException, ValidationException;
+    
     /**
      * Get the platform.
      * @param reporterListNames the set of report lists.
@@ -252,9 +229,26 @@ public abstract class AbstractCopyNumberMappingFileHandler {
         }
         return arrayData;
     }
-
-    abstract File getDataFile(String copyNumberFilename) 
-    throws ConnectionException, DataRetrievalException, ValidationException;
+    
+    File getDataFile(String copyNumberFilename) 
+    throws ConnectionException, DataRetrievalException, ValidationException {
+        try {
+            byte[] fileBytes = getCaArrayFacade().retrieveFile(getGenomicSource(), copyNumberFilename);
+            File tempFile = File.createTempFile("temp", "." + getFileType());
+            Cai2Util.byteArrayToFile(fileBytes, tempFile);
+            return tempFile;
+        } catch (FileNotFoundException e) {
+            throw new ValidationException("Experiment " + getGenomicSource().getExperimentIdentifier() 
+                    + " doesn't contain a file named " + copyNumberFilename, e);
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't write '" + getFileType() + "' file locally", e);
+        }
+    }
+    
+    /**
+     * @return the file type
+     */
+    abstract String getFileType();
 
     private Sample getSample(String sampleName, StudySubjectAssignment assignment) {
         Sample sample = genomicSource.getSample(sampleName);
@@ -297,6 +291,13 @@ public abstract class AbstractCopyNumberMappingFileHandler {
 
     GenomicDataSourceConfiguration getGenomicSource() {
         return genomicSource;
+    }
+
+    /**
+     * @return the sampleToFilenamesMap
+     */
+    public Map<Sample, List<String>> getSampleToFilenamesMap() {
+        return sampleToFilenamesMap;
     }
 
 }

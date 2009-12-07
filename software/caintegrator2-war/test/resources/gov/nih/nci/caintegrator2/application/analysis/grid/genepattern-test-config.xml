@@ -15,9 +15,6 @@
         <property name="genePatternGridClientFactory">
             <ref local="genePatternGridClientFactoryIntegration"/>
         </property>
-        <property name="queryManagementService">
-            <ref local="queryManagementService"/>
-        </property>
         <property name="fileManager">
             <ref local="fileManager"/>
         </property>        
@@ -37,43 +34,5 @@
 
     <bean id="genePatternGridClientFactoryIntegration" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryImpl" />    
     
-    <bean id="queryManagementService" 
-        class="gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl">
-        <property name="dao">
-            <ref local="caIntegrator2Dao"/>
-        </property>
-        <property name="arrayDataService">
-            <ref local="arrayDataService"/>
-        </property>
-        <property name="resultHandler">
-            <ref local="resultHandler"/>
-        </property>
-    </bean>
-    
-    <bean id="arrayDataService" 
-        class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub"/>
-    
-    <bean id="resultHandler" class="gov.nih.nci.caintegrator2.application.query.ResultHandlerImpl" />
-    
-    <bean id="caIntegrator2Dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl" scope="singleton">
-        <property name="sessionFactory">
-            <ref bean="sessionFactory" />
-        </property>
-    </bean>
-    
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-        <property name="sessionFactory">
-            <ref local="sessionFactory"/>
-        </property>
-    </bean>
-    
-    <tx:annotation-driven transaction-manager="transactionManager" />
-    
-    <bean id="sessionFactory" 
-        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-        <property name="configLocation">
-            <value>classpath:hibernate.cfg.xml</value>
-        </property>
-    </bean>
     
 </beans>

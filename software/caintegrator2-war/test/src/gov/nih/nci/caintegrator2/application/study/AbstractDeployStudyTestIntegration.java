@@ -175,7 +175,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     
     public void deployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException, CSException {
         AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
-        authentication.setUsername("ncimanager");
+        authentication.setUsername("manager");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         loadDesigns();
         UserWorkspace userWorkspace = workspaceService.getWorkspace();
@@ -197,7 +197,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         ImageDataSourceConfiguration imageSource = loadImages();
         mapImages(imageSource);
         loadImageAnnotation(imageSource);
-        deploy();
+        deploy(userWorkspace);
         checkArrayData();
         checkQueries();
     }
@@ -266,6 +266,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         Platform platform = getExistingDesign(platformSource);
         if (platform == null) {
             PlatformConfiguration configuration = new PlatformConfiguration(platformSource);
+            configuration.setName(platformSource.getLoader().getPlatformName());
             arrayDataService.savePlatformConfiguration(configuration);
             platform = arrayDataService.loadArrayDesign(configuration, null).getPlatform();
         }
@@ -482,8 +483,9 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
 
     abstract protected String getControlSamplesFileName();
     
-    private void deploy() {
+    private void deploy(UserWorkspace userWorkspace) {
         logStart();
+        service.setLastModifiedByCurrentUser(studyConfiguration, userWorkspace);
         deploymentService.prepareForDeployment(studyConfiguration, null);
         Status status = deploymentService.performDeployment(studyConfiguration, null);
         logEnd();

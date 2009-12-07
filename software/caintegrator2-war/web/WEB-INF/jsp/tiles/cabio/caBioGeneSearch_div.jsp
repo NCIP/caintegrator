@@ -2,6 +2,8 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <s:hidden name="runSearchSelected" value="false" />
+<s:hidden name="runCaBioGeneSearchFromPathways" value="false" />
+<s:hidden name="checkedPathwayBoxes" value="" />
 
 <!-- caBio Inputs -->
 <s:div id="TB_ajaxWindowTitle"/>
@@ -11,36 +13,46 @@
 
 <h2><img style="vertical-align: middle" src="/caintegrator2/images/cabiologo.gif"> caBio Gene Search</h2>
 
-<s:div cssStyle="padding-left: 5px;">
+<s:div cssStyle="padding: 1px 0px 0px 5px;">
     <tr>
-        <s:textfield label="Keywords" name="geneSearchParams.keywords" id="geneKeywords" />
-
-        <td style="border:0px"> 
+        <s:textfield label="Search Terms" name="searchParams.keywords" cssStyle="padding:0px;"/> in 
+        <s:select name="searchParams.searchTypeForDisplay" 
+        list="@gov.nih.nci.caintegrator2.external.cabio.CaBioSearchTypeEnum@getDisplayableValues()"/>
+        
+    </tr>
+    <tr>
+        <br/>
+        <label class="label" for="caBioSearchPreference">Match Terms:</label>   
+	    
+		<s:radio
+		    id="caBioSearchPreference"
+		    name="searchParams.searchPreferenceForDisplay"
+		    list="@gov.nih.nci.caintegrator2.external.cabio.KeywordSearchPreferenceEnum@getDisplayableValues()"
+		    theme="simple"/>
+	    
+    </tr>
+    <tr><br>
+        <s:select name="searchParams.taxon" list="taxonList" label="Choose Taxon"/>
+    </tr>
+    <tr><br>
+        <s:checkbox name="searchParams.filterGenesOnStudy" label="Show only genes that are part of this study" />
+    </tr>
+    <tr><br/>
+    <td style="border:0px"> 
         <button type="button" 
             onclick="runCaBioSearch();"> Search 
             </button>
-        </td>
-        <td style="border:0px">
-            <em>Search caBio for genes</em>
-        </td>
-    </tr>
-    
-    <tr><br>
-        <s:select name="geneSearchParams.taxon" list="taxonList" label="Choose Taxon"/>
-    </tr>
-    <tr><br>
-        <s:checkbox name="geneSearchParams.filterGenesOnStudy" label="Show only genes that are part of this study" />
+    </td>
     </tr>
 </s:div>
 <!-- /caBio Inputs -->
-<s:url id="caBioGeneSearch" action="caBioGeneSearch"/>
-
-<br>
+<s:url id="caBioSearch" action="caBioSearch"/>
 
 <s:div id="caBioGeneSearchResultsDiv" 
         theme="ajax" 
-        href="%{caBioGeneSearch}" 
+        href="%{caBioSearch}" 
         formId="caBioGeneSearchForm" 
         loadingText="<img src='images/ajax-loader.gif'/>"
         listenTopics="searchCaBio" 
-        refreshOnShow="false" />
+        refreshOnShow="false"
+        cssStyle="padding: 0 0 0 5px;" />

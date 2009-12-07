@@ -90,11 +90,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableGenomicSource;
 import gov.nih.nci.caintegrator2.web.DisplayableImageSource;
@@ -198,6 +200,18 @@ public class WorkspaceServiceTest {
         assertEquals(1, imageSource.getNumberImageSeries());
         assertEquals(1, imageSource.getNumberImageStudies());
         assertEquals("collection", imageSource.getCollectionName());
+        
+        GenomicDataSourceConfiguration gdsc = genomicSource.getGenomicDataSourceConfiguration();
+        assertEquals("", gdsc.getControlSampleSetCommaSeparated());
+        SampleSet sampleSet = new SampleSet();
+        sampleSet.setName("Sample1");
+        gdsc.getControlSampleSetCollection().add(sampleSet);
+        sampleSet = new SampleSet();
+        sampleSet.setName("Sample2");
+        gdsc.getControlSampleSetCollection().add(sampleSet);
+
+        assertTrue(gdsc.getControlSampleSetCommaSeparated().contains("Sample1: 0"));
+        assertTrue(gdsc.getControlSampleSetCommaSeparated().contains("Sample2: 0"));
     }
     
     @Test(expected=IllegalArgumentException.class)
