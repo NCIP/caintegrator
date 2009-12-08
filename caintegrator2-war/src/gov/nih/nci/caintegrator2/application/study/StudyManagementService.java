@@ -172,6 +172,13 @@ public interface StudyManagementService {
      */
     void delete(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource) 
     throws ValidationException;
+    
+    /**
+     * Deletes an externalLinkList.
+     * @param studyConfiguration of the external links.
+     * @param externalLinkList to delete.
+     */
+    void delete(StudyConfiguration studyConfiguration, ExternalLinkList externalLinkList);
 
     /**
      * Adds a clinical annotation file for use. The file given will be copied to permanent storage allowing the
@@ -507,4 +514,14 @@ public interface StudyManagementService {
      * @param lastModifiedBy the user to last modify this study.
      */
     void setLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy);
+    
+    /**
+     * Adds the given ExternalLinkList to the StudyConfiguration.
+     * @param studyConfiguration to add externalLinkList to.
+     * @param externalLinkList to load and add to study.
+     * @throws ValidationException if invalid file format.
+     * @throws IOException if there's a problem with opening the file.
+     */
+    void addExternalLinksToStudy(StudyConfiguration studyConfiguration, ExternalLinkList externalLinkList) 
+    throws ValidationException, IOException;
 }

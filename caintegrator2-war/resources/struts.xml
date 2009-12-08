@@ -164,6 +164,26 @@
             <result type="tiles">editClinicalFile</result>
             <result name="input" type="tiles">editStudy</result>
         </action>
+        
+        <action name="addExternalLinks" class="addExternalLinksAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editStudy</result>
+        </action>
+        
+        <action name="deleteExternalLinks" class="deleteExternalLinksAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="error" type="tiles">editStudy</result>
+        </action>
+        
+        <action name="viewExternalLinks" class="viewExternalLinksAction">
+            <result type="tiles">viewExternalLinks</result>
+        </action>
        
         <action name="editClinicalSource" class="editClinicalSourceAction">
             <result type="tiles">editClinicalFile</result>

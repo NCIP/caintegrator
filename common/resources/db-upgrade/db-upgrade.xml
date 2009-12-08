@@ -43,4 +43,8 @@
         <comment>Sets default value for SHOW_IN_BROWSE</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.5.sql"/>
     </changeSet>
+    <changeSet id="1.1.6" author="tandrews">
+        <comment>Adds EXTERNAL_LINK_LIST and EXTERNAL_LINK tables.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.6.sql"/>
+    </changeSet>
 </databaseChangeLog>
