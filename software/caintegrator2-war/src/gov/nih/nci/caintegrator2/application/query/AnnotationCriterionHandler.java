@@ -177,7 +177,8 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
     }
     
     private void checkSubjectVisibility(Study study) throws InvalidCriterionException {
-        if (!study.getStudyConfiguration().getVisibleSubjectAnnotationCollection().
+        if (abstractAnnotationCriterion.getAnnotationDefinition() != null
+                && !study.getStudyConfiguration().getVisibleSubjectAnnotationCollection().
                 contains(abstractAnnotationCriterion.getAnnotationDefinition())) {
             throw new InvalidCriterionException(errorNotVisible());
         }
