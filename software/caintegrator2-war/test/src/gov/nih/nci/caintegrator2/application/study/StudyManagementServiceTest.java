@@ -691,6 +691,16 @@ public class StudyManagementServiceTest {
 
     }
     
+    @Test
+    public void testAddExternalLinksToStudy() throws ValidationException, IOException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        ExternalLinkList externalLinkList = new ExternalLinkList();
+        externalLinkList.setFile(TestDataFiles.SIMPLE_EXTERNAL_LINKS_FILE);
+        studyManagementService.addExternalLinksToStudy(studyConfiguration, externalLinkList);
+        assertEquals(2, externalLinkList.getExternalLinks().size());
+        assertTrue(studyConfiguration.getExternalLinkLists().contains(externalLinkList));
+    }
+    
     private static class SecureDaoStub extends CaIntegrator2DaoStub {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         

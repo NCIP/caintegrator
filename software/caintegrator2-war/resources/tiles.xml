@@ -242,5 +242,11 @@
         <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyDwrAjax_tile.jsp" />
         <put-attribute name="subTitle" value="Manage Platforms" />
     </definition>
-
+    
+    <!-- View External Links -->
+    <definition name="viewExternalLinks" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/viewExternalLinks_tile.jsp" />
+        <put-attribute name="subTitle" value="View External Links" />
+    </definition>
+    
 </tiles-definitions>

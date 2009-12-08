@@ -132,6 +132,21 @@
                 </li>
             </ul>
         </li>
+        <s:if test = "%{!currentStudy.studyConfiguration.externalLinkLists.isEmpty()}" >
+        <li class="stdnavforinvestigator"><div>External Links</div>
+            <ul>
+                <s:iterator value="currentStudy.studyConfiguration.externalLinkLists" >
+                    <li>
+                        <s:url id="externalLinkUrl" includeParams="none" action="viewExternalLinks" >
+                            <s:param name="externalLinkList.id" value="id"/>
+                        </s:url>
+                        <a href="${ externalLinkUrl }" title='Description: <s:property value="description"/>' ><s:property value="name"/></a>
+                    </li>
+                </s:iterator>
+            </ul>
+        </li>
+        </s:if>
+        
     </ul>
     </s:if>
          
