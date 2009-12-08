@@ -112,6 +112,7 @@ public class TestDataFiles {
     public static final String REMBRANDT_IMAGE_STUDIES_TO_SUBJECT_FILE_PATH = "/rembrandt_ncia_image_studies.csv";
     public static final String SIMPLE_SAMPLE_MAPPING_FILE_PATH = "/simple_sample_mapping.csv";
     public static final String SIMPLE_IMAGE_MAPPING_FILE_PATH = "/simple_image_mapping.csv";
+    public static final String SIMPLE_EXTERNAL_LINKS_FILE_PATH = "/simple_external_links.csv";
     public static final String ISPY_IMAGE_ANNOTATION_FILE_PATH = "/ispy_image_annotations.csv";
     public static final String ISPY_IMAGE_SERIES_TO_SUBJECT_FILE_PATH = "/ispy_clinical_image_mapping.csv";
     public static final String REMBRANDT_NCRI_CLINICAL_FILE_PATH = "/rembrandt_clinical_Aug08_subset_mod_for_NCRI.csv";
@@ -134,6 +135,7 @@ public class TestDataFiles {
     public static final File SHORT_REMBRANDT_CONTROL_SAMPLES_FILE = getFile(SHORT_REMBRANDT_CONTROL_SAMPLES_FILE_PATH);
     public static final File SIMPLE_SAMPLE_MAPPING_FILE = getFile(SIMPLE_SAMPLE_MAPPING_FILE_PATH);
     public static final File SIMPLE_IMAGE_MAPPING_FILE = getFile(SIMPLE_IMAGE_MAPPING_FILE_PATH);
+    public static final File SIMPLE_EXTERNAL_LINKS_FILE = getFile(SIMPLE_EXTERNAL_LINKS_FILE_PATH);
     public static final File VASARI_IMAGE_ANNOTATION_FILE = getFile(VASARI_IMAGE_ANNOTATION_FILE_PATH);
     public static final File REMBRANDT_IMAGE_STUDIES_TO_SUBJECT_FILE = getFile(REMBRANDT_IMAGE_STUDIES_TO_SUBJECT_FILE_PATH);
     public static final File ISPY_IMAGE_ANNOTATION_FILE = getFile(ISPY_IMAGE_ANNOTATION_FILE_PATH);

@@ -83,162 +83,94 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
+package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.application.study.Status;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.GeneList;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.lang.time.DateUtils;
+import java.io.File;
 
 /**
- * Stubbed implementation of WorkspaceService for testing.
+ * 
  */
-public class WorkspaceServiceStub implements WorkspaceService {
-
-    private StudySubscription subscription;
-    public boolean subscribeCalled;
-    public boolean subscribeAllCalled;
-    public boolean retrieveStudyConfigurationJobsCalled;
-    public boolean unSubscribeCalled;
-    public boolean unSubscribeAllCalled;
-    public boolean saveUserWorspaceCalled;
-    public boolean refreshAnnotationDefinitionsCalled;
-    public boolean createDisplayableStudySummaryCalled;
-    public boolean savePersistedAnalysisJobCalled;
-    public boolean createGeneListCalled;
-    public boolean getRefreshedEntityCalled;
+public class ExternalLinkList extends AbstractCaIntegrator2Object {
     
-    public void clear() {
-        subscribeCalled = false;
-        retrieveStudyConfigurationJobsCalled = false;
-        subscribeAllCalled = false;
-        unSubscribeCalled = false;
-        saveUserWorspaceCalled = false;
-        refreshAnnotationDefinitionsCalled = false;
-        createDisplayableStudySummaryCalled = false;
-        savePersistedAnalysisJobCalled = false;
-        unSubscribeAllCalled = false;
-        createGeneListCalled = false;
-        getRefreshedEntityCalled = false;
-    }
-    public UserWorkspace getWorkspace() {
-        UserWorkspace workspace = new UserWorkspace();
-        workspace.setDefaultSubscription(getSubscription());
-        workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
-        workspace.getSubscriptionCollection().add(workspace.getDefaultSubscription());
-        workspace.setUsername("username");
-        return workspace;
-    }
-
-    public StudySubscription retrieveStudySubscription(Long id) {
-        return subscription;
-    }
-
-    public void saveUserWorkspace(UserWorkspace workspace) {
-        saveUserWorspaceCalled = true; 
-    }
-
-    public Set<StudyConfiguration> retrieveStudyConfigurationJobs(UserWorkspace workspace) {
-        retrieveStudyConfigurationJobsCalled = true;
-        HashSet<StudyConfiguration> results = new HashSet<StudyConfiguration>();
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        results.add(studyConfiguration);
-        studyConfiguration.setStatus(Status.PROCESSING);
-        Date today = new Date();
-        studyConfiguration.setDeploymentStartDate(DateUtils.addHours(today, -13));
-        studyConfiguration = new StudyConfiguration();
-        results.add(studyConfiguration);
-        studyConfiguration.setStatus(Status.PROCESSING);
-        studyConfiguration.setDeploymentStartDate(today);
-        return results;
+    private String name;
+    private String description;
+    private String fileName;
+    private List<ExternalLink> externalLinks = new ArrayList<ExternalLink>();
+    private transient File file;
+    
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
     }
     
-    public void subscribeAll(UserWorkspace userWorkspace) {
-        subscribeAllCalled = true;
-    }
-
-    public void subscribe(UserWorkspace workspace, Study study) {
-        subscribeCalled = true;
-    }
-
-    public void unsubscribe(UserWorkspace workspace, Study study) {
-        unSubscribeCalled = true;
-        
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
     
-    public void unsubscribeAll(Study study) {
-        unSubscribeAllCalled = true;
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
     }
     
-    public void setSubscription(StudySubscription subscription) {
-        this.subscription = subscription;
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
     
-    public StudySubscription getSubscription() {
-        if (subscription == null) {
-            subscription = new StudySubscription();
-            subscription.setId(Long.valueOf(1));
-            subscription.setStudy(new Study());
-            subscription.getStudy().setShortTitleText("Study Name");
-            subscription.getStudy().setStudyConfiguration(new StudyConfiguration());
-            subscription.setQueryCollection(new HashSet<Query>());
-        }
-        return subscription;
+    /**
+     * @return the fileName
+     */
+    public String getFileName() {
+        return fileName;
     }
     
-    public List<StudySubscription> getStudySubscriptions() {
-        List<StudySubscription> studySubscriptions = new ArrayList<StudySubscription>();
-        studySubscriptions.add(getSubscription());
-        return studySubscriptions;
-    }
-
-
-    public void refreshAnnotationDefinitions() {
-        refreshAnnotationDefinitionsCalled = true;
+    /**
+     * @param fileName the fileName to set
+     */
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
     
-    public DisplayableStudySummary createDisplayableStudySummary(Study study) {
-        createDisplayableStudySummaryCalled = true;
-        return new DisplayableStudySummary(study);
+    /**
+     * @return the externalLinks
+     */
+    public List<ExternalLink> getExternalLinks() {
+        return externalLinks;
+    }
+    
+    /**
+     * @param externalLinks the externalLinks to set
+     */
+    @SuppressWarnings("unused") // For hibernate.
+    private void setExternalLinks(List<ExternalLink> externalLinks) {
+        this.externalLinks = externalLinks;
     }
 
-
-    public void savePersistedAnalysisJob(AbstractPersistedAnalysisJob job) {
-        savePersistedAnalysisJobCalled = true;
+    /**
+     * @return the file
+     */
+    public File getFile() {
+        return file;
     }
 
-    public AbstractPersistedAnalysisJob getPersistedAnalysisJob(Long id) {
-        return null;
-    }
-
-    public GeneList getGeneList(String name, StudySubscription subscription) {
-        return null;
-    }
-
-    public GeneList getGeneList(Long id) {
-        return null;
-    }
-
-    public void createGeneList(GeneList geneList, List<String> geneSymbols) {
-        createGeneListCalled = true;
-    }
-
-    public <T> T getRefreshedEntity(T entity) {
-        getRefreshedEntityCalled = true;
-        return entity;
+    /**
+     * @param file the file to set
+     */
+    public void setFile(File file) {
+        this.file = file;
     }
 
 }

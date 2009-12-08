@@ -178,5 +178,14 @@ public interface WorkspaceService {
      * @param geneSymbols the list of gene symbols
      */
     void createGeneList(GeneList geneList, List<String> geneSymbols);
+    
+    /**
+     * Returns the refreshed entity attached to the current Hibernate session.
+     * 
+     * @param <T> type of object being returned.
+     * @param entity a persistent entity with the id set.
+     * @return the refreshed entity.
+     */
+    <T> T getRefreshedEntity(T entity);
 
 }

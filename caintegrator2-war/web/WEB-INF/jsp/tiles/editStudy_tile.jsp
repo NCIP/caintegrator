@@ -356,6 +356,71 @@
             </tr>
             </tbody>
         </table> 
+        
+        <table class="form_wrapper_table">
+            <tbody><tr>
+                <th class="title">External Links</th>
+                <th class="thbutton">
+                    <del class="btnwrapper">                    
+                        <ul class="btnrow">
+                            <li><a name="action:addExternalLinks_externalLinksFile" id="addExternalLinks_externalLinksFile" onclick="new Effect.toggle($('add_external_links'),'blind')" class="btn" style="margin: 0pt;" href="javascript://"><span class="btn_img"><span class="add">Add New</span></span></a></li>
+                        </ul>   
+                    </del>
+                </th>
+            </tr>
+            <tr>
+                <td class="table_wrapper" colspan="2">              
+                    
+                    <!--External Links File Upload--> 
+                
+                    <div class="formbox" id="add_external_links" style="display: none;">
+                        
+                        <s:form action="addExternalLinks" method="post" enctype="multipart/form-data" cssClass="form" >
+                                    <s:hidden name="studyConfiguration.id" />
+                                    <s:textfield label="Name" name="externalLinkList.name" />
+                                    <s:textarea label="Description" name="externalLinkList.description" cols="50" rows="3"/>
+                                    <s:file name="externalLinksFile" label="Add New External Links" />
+                                    <s:submit value="Upload Now" action="addExternalLinks" type="image" src="images/btn_upload.gif" cssClass="editStudyFile" align="center" />
+                        </s:form>
+                        
+                    </div>
+                    
+                    <!--/External Links File Upload-->
+                
+                    <table class="data">
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>File Name</th>
+                            <th>Number of Links</th>
+                            <th>Action</th>
+                        </tr>
+                        <s:iterator value="studyConfiguration.externalLinkLists" status="status">
+                            <s:if test="#status.odd == true">
+                              <tr class="odd">
+                            </s:if>
+                            <s:else>
+                              <tr class="even">
+                            </s:else>            
+                            <td><s:property value="name" /></td>
+                            <td><s:property value="description" /></td>
+                            <td><s:property value="fileName"/></td>
+                            <td><s:property value="externalLinks.size"/></td>
+                            <td style="float: right;">
+                            <s:url id="deleteExternalLinks" action="deleteExternalLinks" includeParams="none">
+                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                                    <s:param name="externalLinkList.id" value="id" />
+                                </s:url> 
+                                <s:a href="%{deleteExternalLinks}" cssClass="btn" cssStyle="margin: 0pt;" onclick="return confirm('These External Links will be permanantly deleted.')"><span class="btn_img"><span class="delete">Delete</span></span></s:a>                                
+                            </td>
+                            
+                        </tr>
+                        </s:iterator>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
         </s:if>
     
         <br>

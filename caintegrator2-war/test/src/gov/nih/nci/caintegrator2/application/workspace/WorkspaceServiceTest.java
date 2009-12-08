@@ -90,6 +90,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.ExternalLinkList;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
@@ -232,6 +233,26 @@ public class WorkspaceServiceTest {
         public UserWorkspace getWorkspace(String username) {
             return null;
         }
+    }
+    
+    @Test
+    public void testGetEntity() {
+        ExternalLinkList externalLinkList = new ExternalLinkList();
+        externalLinkList.setId(1L);
+        assertNotNull(workspaceService.getRefreshedEntity(externalLinkList));
+        assertTrue(daoStub.getCalled);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetEntityNoId() {
+        ExternalLinkList externalLinkList = new ExternalLinkList();
+        workspaceService.getRefreshedEntity(externalLinkList);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetEntityIllegalClass() {
+        Object object = new Object();
+        workspaceService.getRefreshedEntity(object);
     }
 
 }

@@ -52,6 +52,13 @@
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration"/>
         </list>
         
+        <list name="externalLinkLists" lazy="false" cascade="all">
+            <cache usage="read-write" />
+            <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
+            <list-index column="LIST_INDEX"/>
+            <one-to-many class="ExternalLinkList"/>
+        </list>
+        
 		<many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID"
 		    unique="true" lazy="proxy" cascade="all" />
 		    

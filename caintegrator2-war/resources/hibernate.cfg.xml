@@ -40,6 +40,8 @@
         <mapping resource="gov/nih/nci/caintegrator2/application/study/AbstractClinicalSourceConfiguration.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/application/study/AnnotationFieldDescriptor.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/application/study/AnnotationFile.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator2/application/study/ExternalLinkList.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator2/application/study/ExternalLink.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/application/study/FileColumn.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/application/study/GenomicDataSourceConfiguration.hbm.xml" />        
         <mapping resource="gov/nih/nci/caintegrator2/application/study/ImageAnnotationConfiguration.hbm.xml" />

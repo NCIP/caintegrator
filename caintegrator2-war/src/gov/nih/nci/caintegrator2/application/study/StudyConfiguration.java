@@ -124,6 +124,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
         new ArrayList<AbstractClinicalSourceConfiguration>();   
     private List<GenomicDataSourceConfiguration> genomicDataSources = new ArrayList<GenomicDataSourceConfiguration>();
     private List<ImageDataSourceConfiguration> imageDataSources = new ArrayList<ImageDataSourceConfiguration>();
+    private List<ExternalLinkList> externalLinkLists = new ArrayList<ExternalLinkList>();
     private StudyLogo studyLogo;
     private UserWorkspace userWorkspace;
     private UserWorkspace lastModifiedBy;
@@ -351,6 +352,21 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
     @SuppressWarnings("unused")
     private void setImageDataSources(List<ImageDataSourceConfiguration> imageDataSources) {
         this.imageDataSources = imageDataSources;
+    }
+
+    /**
+     * @return the externalLinkLists
+     */
+    public List<ExternalLinkList> getExternalLinkLists() {
+        return externalLinkLists;
+    }
+
+    /**
+     * @param externalLinkLists the externalLinkLists to set
+     */
+    @SuppressWarnings("unused")
+    private void setExternalLinkLists(List<ExternalLinkList> externalLinkLists) {
+        this.externalLinkLists = externalLinkLists;
     }
 
     ImageSeries getImageSeries(String identifier) {

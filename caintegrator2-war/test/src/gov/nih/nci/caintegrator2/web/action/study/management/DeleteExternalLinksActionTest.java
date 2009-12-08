@@ -83,162 +83,51 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.application.study.Status;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.GeneList;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import org.apache.commons.lang.time.DateUtils;
+import com.opensymphony.xwork2.Action;
 
-/**
- * Stubbed implementation of WorkspaceService for testing.
- */
-public class WorkspaceServiceStub implements WorkspaceService {
-
-    private StudySubscription subscription;
-    public boolean subscribeCalled;
-    public boolean subscribeAllCalled;
-    public boolean retrieveStudyConfigurationJobsCalled;
-    public boolean unSubscribeCalled;
-    public boolean unSubscribeAllCalled;
-    public boolean saveUserWorspaceCalled;
-    public boolean refreshAnnotationDefinitionsCalled;
-    public boolean createDisplayableStudySummaryCalled;
-    public boolean savePersistedAnalysisJobCalled;
-    public boolean createGeneListCalled;
-    public boolean getRefreshedEntityCalled;
+public class DeleteExternalLinksActionTest extends AbstractSessionBasedTest {
     
-    public void clear() {
-        subscribeCalled = false;
-        retrieveStudyConfigurationJobsCalled = false;
-        subscribeAllCalled = false;
-        unSubscribeCalled = false;
-        saveUserWorspaceCalled = false;
-        refreshAnnotationDefinitionsCalled = false;
-        createDisplayableStudySummaryCalled = false;
-        savePersistedAnalysisJobCalled = false;
-        unSubscribeAllCalled = false;
-        createGeneListCalled = false;
-        getRefreshedEntityCalled = false;
-    }
-    public UserWorkspace getWorkspace() {
-        UserWorkspace workspace = new UserWorkspace();
-        workspace.setDefaultSubscription(getSubscription());
-        workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
-        workspace.getSubscriptionCollection().add(workspace.getDefaultSubscription());
-        workspace.setUsername("username");
-        return workspace;
-    }
-
-    public StudySubscription retrieveStudySubscription(Long id) {
-        return subscription;
-    }
-
-    public void saveUserWorkspace(UserWorkspace workspace) {
-        saveUserWorspaceCalled = true; 
-    }
-
-    public Set<StudyConfiguration> retrieveStudyConfigurationJobs(UserWorkspace workspace) {
-        retrieveStudyConfigurationJobsCalled = true;
-        HashSet<StudyConfiguration> results = new HashSet<StudyConfiguration>();
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        results.add(studyConfiguration);
-        studyConfiguration.setStatus(Status.PROCESSING);
-        Date today = new Date();
-        studyConfiguration.setDeploymentStartDate(DateUtils.addHours(today, -13));
-        studyConfiguration = new StudyConfiguration();
-        results.add(studyConfiguration);
-        studyConfiguration.setStatus(Status.PROCESSING);
-        studyConfiguration.setDeploymentStartDate(today);
-        return results;
-    }
+    private DeleteExternalLinksAction action;
+    private StudyManagementServiceStub studyManagementServiceStub;
     
-    public void subscribeAll(UserWorkspace userWorkspace) {
-        subscribeAllCalled = true;
+    @Before
+    public void setUp() {
+        super.setUp();
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditStudyActionTest.class); 
+        action = (DeleteExternalLinksAction) context.getBean("deleteExternalLinksAction");
+        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
+        studyManagementServiceStub.clear();
     }
 
-    public void subscribe(UserWorkspace workspace, Study study) {
-        subscribeCalled = true;
-    }
-
-    public void unsubscribe(UserWorkspace workspace, Study study) {
-        unSubscribeCalled = true;
+    @Test
+    public void testPrepare() {
+        action.prepare();
+        assertFalse(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+        action.getExternalLinkList().setId(1l);
+        action.prepare();
+        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
         
     }
-    
-    public void unsubscribeAll(Study study) {
-        unSubscribeAllCalled = true;
-    }
-    
-    public void setSubscription(StudySubscription subscription) {
-        this.subscription = subscription;
-    }
-    
-    public StudySubscription getSubscription() {
-        if (subscription == null) {
-            subscription = new StudySubscription();
-            subscription.setId(Long.valueOf(1));
-            subscription.setStudy(new Study());
-            subscription.getStudy().setShortTitleText("Study Name");
-            subscription.getStudy().setStudyConfiguration(new StudyConfiguration());
-            subscription.setQueryCollection(new HashSet<Query>());
-        }
-        return subscription;
-    }
-    
-    public List<StudySubscription> getStudySubscriptions() {
-        List<StudySubscription> studySubscriptions = new ArrayList<StudySubscription>();
-        studySubscriptions.add(getSubscription());
-        return studySubscriptions;
-    }
 
-
-    public void refreshAnnotationDefinitions() {
-        refreshAnnotationDefinitionsCalled = true;
-    }
-    
-    public DisplayableStudySummary createDisplayableStudySummary(Study study) {
-        createDisplayableStudySummaryCalled = true;
-        return new DisplayableStudySummary(study);
-    }
-
-
-    public void savePersistedAnalysisJob(AbstractPersistedAnalysisJob job) {
-        savePersistedAnalysisJobCalled = true;
-    }
-
-    public AbstractPersistedAnalysisJob getPersistedAnalysisJob(Long id) {
-        return null;
-    }
-
-    public GeneList getGeneList(String name, StudySubscription subscription) {
-        return null;
-    }
-
-    public GeneList getGeneList(Long id) {
-        return null;
-    }
-
-    public void createGeneList(GeneList geneList, List<String> geneSymbols) {
-        createGeneListCalled = true;
-    }
-
-    public <T> T getRefreshedEntity(T entity) {
-        getRefreshedEntityCalled = true;
-        return entity;
+    @Test
+    public void testExecute() {
+        assertEquals(Action.ERROR, action.execute());
+        action.getExternalLinkList().setName("validName");
+        assertEquals(Action.SUCCESS, action.execute());
+        
     }
 
 }
