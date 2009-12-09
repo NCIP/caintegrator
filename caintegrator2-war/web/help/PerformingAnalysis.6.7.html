@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Creating Gene Expression Plots</title>
+    <title>K-M Plot for Queries</title>
     <link rel="StyleSheet" href="css/PerformingAnalysis.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,49 +28,124 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="PerformingAnalysis.6.1.html#1082800">Analyzing Studies</a> &gt; Creating Gene Expression Plots</div>
+      <a class="WebWorks_Breadcrumb_Link" href="PerformingAnalysis.6.1.html#1073776">Analyzing Studies</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="PerformingAnalysis.6.3.html#1073776">Creating Kaplan-Meier Plots</a> &gt; K-M Plot for Queries</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading1"><a name="1082800">Creating Gene Expression Plots</a></div>
-      <div class="Body_Text"><a name="1084199">Gene expression plots compare signal values from reporters or genes. This statistical </a>tool allows you to compare values for multiple genes at a time, but it does not require only two sets of data to be compared. It also allows you to compare expression levels for selected genes against expression levels for a set of control samples designated at the time of study definition.</div>
-      <div class="Body_Text"><a name="1087122">caIntegrator2 provides three ways to generate meaningful gene expression plots, </a>indicated by tabs on the page. The tabs are independent of each other and allow you to select the genes, reporters and sample groups to be analyzed on the plot.</div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1087123">
+      <div class="Heading2"><a name="1073776">K-M Plot for Queries</a></div>
+      <div class="Body_Text"><a name="1073748">You can identify data sets using the query feature in the application. You can </a>manipulate the queries to find the groups you want to compare, save the queries, then configure the K-M to compare the query groups. This is one method of limiting the data considered in the K-M plot calculation.</div>
+      <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1082735">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
+              <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1. </div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.6.8.html#1084201', '');" name="1087123">Gene Expression Value Plot for Annotation</a></span> – You can locate genes in the CGAP and caBio directories and criteria can be defined using clinical and image annotations.</div>
+              <div class="Numbered_List_1_inner"><a name="1082735">Select the study whose data you want to analyze in the upper right portion of </a>the caIntegrator page. You must select a study for which the queries you will identify for the K-M plot have been saved.</div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1087128">
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1082736">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2. </div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.6.9.html#1083368', '');" name="1087128">Gene Expression Value Plot for Genomic Queries</a></span> – You can select data based on saved genomic queries.</div>
+              <div class="Numbered_List_inner"><a name="1082736">Under Analysis Tools on the left sidebar, select </a><span style="font-weight: bold;">K-M Plot</span>.</div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1087133">
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1082737">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3. </div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.6.10.html#1077378', '');" name="1087133">Gene Expression Value Plot for Clinical Queries</a></span> – You can select data based on saved clinical queries.</div>
+              <div class="Numbered_List_inner"><a name="1082737">Select the </a><span style="font-weight: bold;">For Queries</span> tab.</div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text"><a name="1089440">See also </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.6.11.html#1088652', '');">Understanding a Gene Expression Plot</a></span>.</div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1114790">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">4. </div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><span style="font-weight: bold;"><a name="1114790">Queries</a></span> – Select <span style="font-weight: bold;">Queries</span> whose data you want to analyze from the <span style="font-weight: bold;">All </span><span style="font-weight: bold;">Available Queries</span> panel and move them to the <span style="font-weight: bold;">Selected Queries</span> panel using the <span style="font-weight: bold;">Add &gt;&gt;</span> button.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Note_Indent_outer" style="margin-left: 50.25pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1114875">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Note_Indent_inner" style="width: 25px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1114875" border="0" width="30" height="30" />
+                </span>
+              </div>
+            </td>
+            <td width="100%">
+              <div class="Note_Indent_inner"><a name="1114875">Genomic queries do not appear in the lists; they cannot be selected for </a>this type of K-M plot.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1114853">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">5.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><span style="font-weight: bold;"><a name="1114853">Exclusive Subject in Queries</a></span> – Check the box if you want to exclude any subjects that appear in both (or all) queries selected for the plot, thus eliminating overlap.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1114865">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">6.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><span style="font-weight: bold;"><a name="1114865">Add Additional Group...all other subjects</a></span> – Check the box to create an additional group of all other subjects that are not in selected query groups.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1114885">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">7.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><span style="font-weight: bold;"><a name="1114885">Survival value </a></span>– The length of time the patient lived. Select the survival measure which is the unit of measurement for the survival value to be used for the plot.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1114782">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">8.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1114782">Click the </a><span style="font-weight: bold;">Create Plot</span> button. caIntegrator2 generates the plot which then displays below the plot criteria.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text"><a name="1120166">See </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.6.8.html#1120168', '');">K-M Plot for Queries Display</a></span>.</div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
