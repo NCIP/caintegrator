@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
@@ -142,4 +143,20 @@ abstract class AbstractCriterionHandler {
     abstract boolean hasEntityCriterion();
 
     abstract boolean hasReporterCriterion();
+
+    /**
+     * Determines if the handler has reporter values which are narrowed down by the criterion.
+     * @return true if has criterion specified reporter values (fold change criterion for example).
+     */
+    abstract boolean hasCriterionSpecifiedReporterValues();
+
+    /**
+     * Determines if the value matches the criterion specified for the genes, 
+     * at the current time only foldChangeCriterion would use this, but if we ever do 
+     * copy number data or other genomic criterion, that would as well.
+     * @param genes the genes associated with a given reporter to check the value against.
+     * @param value is the value to match criterion against.
+     * @return true if the given value matches the criterion.
+     */
+    abstract boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value);
 }

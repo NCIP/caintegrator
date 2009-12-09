@@ -198,6 +198,7 @@ public class QueryManagementServiceImplTest {
         study.getAssignmentCollection().add(assignment);
         GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
         Gene gene = new Gene();
+        gene.setSymbol("GENE");
         reporter = new GeneExpressionReporter();
         Platform platform = new Platform();
         ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);

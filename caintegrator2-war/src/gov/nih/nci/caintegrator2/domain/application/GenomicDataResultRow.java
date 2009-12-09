@@ -16,6 +16,7 @@ public class GenomicDataResultRow extends AbstractCaIntegrator2Object {
     
     private AbstractReporter reporter;
     private final List<GenomicDataResultValue> values = new ArrayList<GenomicDataResultValue>();
+    private boolean hasMatchingValues = false;
 
     /**
      * @return the reporter
@@ -48,6 +49,20 @@ public class GenomicDataResultRow extends AbstractCaIntegrator2Object {
             }
         }
         values.removeAll(removedValues);
+    }
+
+    /**
+     * @return the hasMatchingValues
+     */
+    public boolean isHasMatchingValues() {
+        return hasMatchingValues;
+    }
+
+    /**
+     * @param hasMatchingValues the hasMatchingValues to set
+     */
+    public void setHasMatchingValues(boolean hasMatchingValues) {
+        this.hasMatchingValues = hasMatchingValues;
     }
 
 }

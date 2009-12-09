@@ -34,6 +34,7 @@
 
     <div id="queryResultsDiv" >
         <s:if test='%{query.resultType.value.equals("genomic")}'>
+        <s:set name="genomicDataNeedsHighlighting" value="genomicDataQueryResult.hasCriterionSpecifiedReporterValues" />
         <table class="data">
             <s:if test='%{query.orientation.value.equals("subjectsAsColumns")}'>
                 <tr>
@@ -77,7 +78,12 @@
                         <td><b><s:property value="reporter.name" /></b></td>
                     </s:if>
                     <td /><s:iterator value="values">
-                        <td><s:property value="value" /></td>
+                        <s:if test="#genomicDataNeedsHighlighting && meetsCriterion">
+                            <td bgcolor="#00FF33"><b><s:property value="value" /></b></td>
+                        </s:if>
+                        <s:else>
+                            <td><s:property value="value" /></td>
+                        </s:else>
                     </s:iterator>
                 </s:iterator>
             </s:if>
@@ -115,7 +121,12 @@
                     <td><b><s:property value="sampleAcquisition.sample.name" /></b></td>
                     <td/>
                     <s:iterator value="values">
-                        <td><s:property value="value" /></td>
+                        <s:if test="#genomicDataNeedsHighlighting && meetsCriterion">
+                            <td bgcolor="#00FF33"><b><s:property value="value" /></b></td>
+                        </s:if>
+                        <s:else>
+                            <td><s:property value="value" /></td>
+                        </s:else>
                     </s:iterator>
                     </tr>
                 </s:iterator>

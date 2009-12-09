@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -178,6 +179,21 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
     @Override
     boolean hasReporterCriterion() {
         return true;
+    }
+
+    @Override
+    boolean hasCriterionSpecifiedReporterValues() {
+        return false;
+    }
+
+    @Override
+    boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
+        for (Gene gene : genes) {
+            if (criterion.getGeneSymbol().contains(gene.getSymbol())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
