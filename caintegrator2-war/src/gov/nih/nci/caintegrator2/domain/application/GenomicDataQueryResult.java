@@ -15,7 +15,8 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
     
     private List<GenomicDataResultRow> rowCollection = new ArrayList<GenomicDataResultRow>();
     private Query query;
-    private List<GenomicDataResultColumn> columnCollection = new ArrayList<GenomicDataResultColumn>();;
+    private List<GenomicDataResultColumn> columnCollection = new ArrayList<GenomicDataResultColumn>();
+    private boolean hasCriterionSpecifiedReporterValues = false;
     
     /**
      * @return the rowCollection
@@ -105,5 +106,19 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
         for (GenomicDataResultRow row : rowCollection) {
             row.excludeSampleSet(excludedSampleSet);
         }
+    }
+
+    /**
+     * @return the hasCriterionSpecifiedReporterValues
+     */
+    public boolean isHasCriterionSpecifiedReporterValues() {
+        return hasCriterionSpecifiedReporterValues;
+    }
+
+    /**
+     * @param hasCriterionSpecifiedReporterValues the hasCriterionSpecifiedReporterValues to set
+     */
+    public void setHasCriterionSpecifiedReporterValues(boolean hasCriterionSpecifiedReporterValues) {
+        this.hasCriterionSpecifiedReporterValues = hasCriterionSpecifiedReporterValues;
     }
 }

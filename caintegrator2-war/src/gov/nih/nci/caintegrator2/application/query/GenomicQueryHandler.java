@@ -148,6 +148,8 @@ class GenomicQueryHandler {
 
     private void addToResult(ArrayDataValues values, GenomicDataQueryResult result,
         Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap, ArrayData arrayData) {
+        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
+        result.setHasCriterionSpecifiedReporterValues(criterionHandler.hasCriterionSpecifiedReporterValues());
         GenomicDataResultColumn column = result.addColumn();
         column.setSampleAcquisition(arrayData.getSample().getSampleAcquisition());
         for (AbstractReporter reporter : values.getReporters()) {
@@ -158,6 +160,11 @@ class GenomicQueryHandler {
             Float floatValue = values.getFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL);
             if (floatValue != null) {
                 value.setValue(Math.round(floatValue * DECIMAL_100) / DECIMAL_100);
+            }
+            if (result.isHasCriterionSpecifiedReporterValues()) {
+                value.setMeetsCriterion(criterionHandler.
+                        isGenomicValueMatchCriterion(reporter.getGenes(), value.getValue()));
+                row.setHasMatchingValues(row.isHasMatchingValues() || value.isMeetsCriterion());
             }
             row.getValues().add(value);
         }

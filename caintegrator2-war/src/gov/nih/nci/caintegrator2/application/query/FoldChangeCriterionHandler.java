@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -174,6 +175,20 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
                 throw new IllegalStateException("Illegal regulation type: " + criterion.getRegulationType());
         }
     }
+    
+    boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
+        boolean reporterMatch = false;
+        for (Gene gene : genes) {
+            if (criterion.getGeneSymbol().contains(gene.getSymbol())) {
+                reporterMatch = true;
+                break;
+            }
+        }
+        if (reporterMatch && isFoldChangeMatch(value)) {
+            return true;
+        }
+        return false;
+    }
 
     private boolean isFoldsDownMatch(Float foldChangeValue) {
         return foldChangeValue <= -criterion.getFoldsDown();
@@ -249,6 +264,11 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
      */
     @Override
     boolean isReporterMatchHandler() {
+        return true;
+    }
+    
+    @Override
+    boolean hasCriterionSpecifiedReporterValues() {
         return true;
     }
 

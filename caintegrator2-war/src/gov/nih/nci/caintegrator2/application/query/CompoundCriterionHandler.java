@@ -90,7 +90,6 @@ import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
@@ -98,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
@@ -274,26 +274,11 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
 
     @Override
     Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType) {
-        Set<AbstractReporter> reporters = null;
+        Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
         for (AbstractCriterionHandler handler : handlers) {
             if (handler.isReporterMatchHandler()) {
-                reporters = getCombinedReporterMatches(reporters, handler.getReporterMatches(dao, study, reporterType));
+                reporters.addAll(handler.getReporterMatches(dao, study, reporterType));
             }
-        }
-        return reporters;
-    }
-
-    private Set<AbstractReporter> getCombinedReporterMatches(Set<AbstractReporter> reporters,
-            Set<AbstractReporter> reporterMatches) {
-        BooleanOperatorEnum operator = compoundCriterion.getBooleanOperator();
-        if (reporters == null) {
-            return reporterMatches;
-        } else if (reporterMatches == null) {
-            return reporters;
-        } else if (BooleanOperatorEnum.AND.equals(operator)) {
-            reporters.retainAll(reporterMatches);
-        } else if (BooleanOperatorEnum.OR.equals(operator)) {
-            reporters.addAll(reporterMatches);
         }
         return reporters;
     }
@@ -327,4 +312,22 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         return hasReporterCriterion;
     }
     
+    @Override
+    boolean hasCriterionSpecifiedReporterValues() {
+        boolean hasCriterionSpecifiedReporterValues = false;
+        for (AbstractCriterionHandler handler : handlers) {
+            hasCriterionSpecifiedReporterValues |= handler.hasCriterionSpecifiedReporterValues();
+        }
+        return hasCriterionSpecifiedReporterValues;
+    }
+
+
+    @Override
+    boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
+        boolean isReporterValueMatchCriterion = false;
+        for (AbstractCriterionHandler handler : handlers) {
+            isReporterValueMatchCriterion |= handler.isGenomicValueMatchCriterion(genes, value);
+        }
+        return isReporterValueMatchCriterion;
+    }
 }
