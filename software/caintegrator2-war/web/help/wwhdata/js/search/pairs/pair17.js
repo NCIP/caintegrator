@@ -162,7 +162,6 @@ x.t("following","three");
 x.t("death","date");
 x.t("setting","survival");
 x.t("uploaded","drop-down");
-x.t("plots","page");
 x.t("adding","clinical");
 x.t("plot","survival");
 x.t("plot","during");

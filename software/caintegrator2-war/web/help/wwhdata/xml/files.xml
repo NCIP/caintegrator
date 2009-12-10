@@ -80,28 +80,34 @@
     <Document title="Browsing Query Results" href="View%20Search%20Results.5.3.html" />
     <Document title="Clinical and Imaging Data" href="View%20Search%20Results.5.4.html" />
     <Document title="Genomic Data" href="View%20Search%20Results.5.5.html" />
-    <Document title="Expanding Imaging Data Results" href="View%20Search%20Results.5.6.html" />
-    <Document title="caIntegrator2 and NBIA" href="View%20Search%20Results.5.7.html" />
-    <Document title="Retrieving Dicom Images" href="View%20Search%20Results.5.8.html" />
-    <Document title="Example of Retrieving Images:" href="View%20Search%20Results.5.9.html" />
-    <Document title="Relationship of Patient to Study to Series to Images" href="View%20Search%20Results.5.10.html" />
-    <Document title="Exporting Data" href="View%20Search%20Results.5.11.html" />
+    <Document title="Creating a Gene List" href="View%20Search%20Results.5.6.html" />
+    <Document title="Editing a Gene List" href="View%20Search%20Results.5.7.html" />
+    <Document title="Expanding Imaging Data Results" href="View%20Search%20Results.5.8.html" />
+    <Document title="caIntegrator2 and NBIA" href="View%20Search%20Results.5.9.html" />
+    <Document title="Retrieving Dicom Images" href="View%20Search%20Results.5.10.html" />
+    <Document title="Example of Retrieving Images:" href="View%20Search%20Results.5.11.html" />
+    <Document title="Relationship of Patient to Study to Series to Images" href="View%20Search%20Results.5.12.html" />
+    <Document title="Exporting Data" href="View%20Search%20Results.5.13.html" />
     <Document title="Analyzing Studies" href="PerformingAnalysis.6.1.html" />
     <Document title="Data Analysis Overview" href="PerformingAnalysis.6.2.html" />
     <Document title="Creating Kaplan-Meier Plots" href="PerformingAnalysis.6.3.html" />
     <Document title="K-M Plot for Annotations" href="PerformingAnalysis.6.4.html" />
     <Document title="K-M Plot for Gene Expression" href="PerformingAnalysis.6.5.html" />
-    <Document title="K-M Plot for Queries" href="PerformingAnalysis.6.6.html" />
-    <Document title="Creating Gene Expression Plots" href="PerformingAnalysis.6.7.html" />
-    <Document title="Gene Expression Value Plot for Annotation" href="PerformingAnalysis.6.8.html" />
-    <Document title="Gene Expression Value Plot for Genomic Queries" href="PerformingAnalysis.6.9.html" />
-    <Document title="Gene Expression Value Plot for Clinical Queries" href="PerformingAnalysis.6.10.html" />
-    <Document title="Understanding a Gene Expression Plot" href="PerformingAnalysis.6.11.html" />
-    <Document title="Analyzing Data with GenePattern" href="PerformingAnalysis.6.12.html" />
-    <Document title="GenePattern Modules" href="PerformingAnalysis.6.13.html" />
-    <Document title="Comparative Marker Selection (CMS) Analysis" href="PerformingAnalysis.6.14.html" />
-    <Document title="Principal Component Analysis (PCA)" href="PerformingAnalysis.6.15.html" />
-    <Document title="GISTIC-Supported Analysis" href="PerformingAnalysis.6.16.html" />
+    <Document title="KM Plot from Gene Expression Data Display" href="PerformingAnalysis.6.6.html" />
+    <Document title="K-M Plot for Queries" href="PerformingAnalysis.6.7.html" />
+    <Document title="K-M Plot for Queries Display" href="PerformingAnalysis.6.8.html" />
+    <Document title="Creating Gene Expression Plots" href="PerformingAnalysis.6.9.html" />
+    <Document title="Gene Expression Value Plot for Annotation" href="PerformingAnalysis.6.10.html" />
+    <Document title="Gene Expression Plot for Annotation Display" href="PerformingAnalysis.6.11.html" />
+    <Document title="Gene Expression Value Plot for Genomic Queries" href="PerformingAnalysis.6.12.html" />
+    <Document title="Gene Expression Value Plot for Clinical Queries" href="PerformingAnalysis.6.13.html" />
+    <Document title="Gene Expression Plot for Clinical Queries Display" href="PerformingAnalysis.6.14.html" />
+    <Document title="Understanding a Gene Expression Plot" href="PerformingAnalysis.6.15.html" />
+    <Document title="Analyzing Data with GenePattern" href="PerformingAnalysis.6.16.html" />
+    <Document title="GenePattern Modules" href="PerformingAnalysis.6.17.html" />
+    <Document title="Comparative Marker Selection (CMS) Analysis" href="PerformingAnalysis.6.18.html" />
+    <Document title="Principal Component Analysis (PCA)" href="PerformingAnalysis.6.19.html" />
+    <Document title="GISTIC-Supported Analysis" href="PerformingAnalysis.6.20.html" />
     <Document title="Administering User Accounts" href="User%20Admin.7.1.html" />
     <Document title="Administering caIntegrator2 User Accounts Using UPT" href="User%20Admin.7.2.html" />
     <Document title="Steps for Creating User Access to caIntegrator2" href="User%20Admin.7.3.html" />
@@ -141,15 +147,17 @@
     <Topic name="sorting_tab_help" href="SearchingWithinAStudy.4.7.html#1089355" />
     <Topic name="save_query_help" href="SearchingWithinAStudy.4.9.html#1075754" />
     <Topic name="query_results_help" href="View%20Search%20Results.5.2.html#1167812" />
-    <Topic name="DICOM_retrieval_help" href="View%20Search%20Results.5.8.html#1170682" />
+    <Topic name="create_gene_list_help" href="View%20Search%20Results.5.6.html#1182721" />
+    <Topic name="edit_genes_list_help" href="View%20Search%20Results.5.7.html#1183103" />
+    <Topic name="DICOM_retrieval_help" href="View%20Search%20Results.5.10.html#1170682" />
     <Topic name="K-M_plot_help" href="PerformingAnalysis.6.3.html#1084273" />
     <Topic name="KM_annotation_help" href="PerformingAnalysis.6.4.html#1073490" />
-    <Topic name="KM_gene-expression_help" href="PerformingAnalysis.6.5.html#1080552" />
-    <Topic name="KM_queries_help" href="PerformingAnalysis.6.6.html#1073776" />
-    <Topic name="GE_plot_annotation_help" href="PerformingAnalysis.6.8.html#1084201" />
-    <Topic name="GE_plot_gen_queries_help" href="PerformingAnalysis.6.9.html#1083368" />
-    <Topic name="GE_plot_clin_queries_help" href="PerformingAnalysis.6.10.html#1077378" />
-    <Topic name="gene_pattern_help" href="PerformingAnalysis.6.12.html#1077363" />
+    <Topic name="KM_queries_help" href="PerformingAnalysis.6.7.html#1073776" />
+    <Topic name="GE_plot_annotation_help" href="PerformingAnalysis.6.10.html#1084201" />
+    <Topic name="GE_plot_gen_queries_help" href="PerformingAnalysis.6.12.html#1083368" />
+    <Topic name="GE_plot_clin_queries_help" href="PerformingAnalysis.6.13.html#1077378" />
+    <Topic name="KM_gene-expression_help" href="PerformingAnalysis.6.13.html#1114584" />
+    <Topic name="gene_pattern_help" href="PerformingAnalysis.6.16.html#1077363" />
     <Topic name="app_support_help" href="Application%20Support.9.1.html#1069426" />
   </TopicMap>
 </WebWorksHelpBook>

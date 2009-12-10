@@ -291,6 +291,24 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         }
         return false;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
+    public <T> T getRefreshedEntity(T entity) {
+        Long id;
+        try {
+            id = (Long) entity.getClass().getMethod("getId").invoke(entity);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Entity doesn't have a getId() method", e);
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("Id was null");
+        }
+        return (T) dao.get(id, entity.getClass());
+    }
 
     
     /**

@@ -16,7 +16,6 @@ x.t("exporting","data");
 x.t("running","search");
 x.t("query","results");
 x.t("information","exporting");
-x.t("data","page");
 x.t("result","subset");
 x.t("export","result");
 x.t("subset","tab-delimited");

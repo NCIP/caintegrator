@@ -354,6 +354,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         reLoadImageAnnotation(studyConfiguration);
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public void delete(StudyConfiguration studyConfiguration, ExternalLinkList externalLinkList) {
+        studyConfiguration.getExternalLinkLists().remove(externalLinkList);
+        dao.delete(externalLinkList);
+    }
+    
     private void deleteImageAnnotation(StudyConfiguration studyConfiguration) {
         Study study = studyConfiguration.getStudy();
         for (StudySubjectAssignment studySubjectAssignment : study.getAssignmentCollection()) {
@@ -928,6 +936,16 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void addExternalLinksToStudy(StudyConfiguration studyConfiguration, ExternalLinkList externalLinkList) 
+        throws ValidationException, IOException {
+        ExternalLinksLoader.loadLinks(externalLinkList);
+        studyConfiguration.getExternalLinkLists().add(externalLinkList);
+        dao.save(studyConfiguration);
     }
 
     /**

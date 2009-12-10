@@ -150,6 +150,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean getRefreshedStudyConfigurationCalled;
     public boolean getRefreshedGenomicSourceCalled;
     public boolean isThrowCSException = false;
+    public boolean addExternalLinksToStudyCalled;
     
     public ImageDataSourceConfiguration refreshedImageSource = new ImageDataSourceConfiguration();
     public GenomicDataSourceConfiguration refreshedGenomicSource = new GenomicDataSourceConfiguration();
@@ -233,6 +234,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         getRefreshedStudyConfigurationCalled = false;
         getRefreshedGenomicSourceCalled = false;
         isThrowCSException = false;
+        addExternalLinksToStudyCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -485,6 +487,22 @@ public class StudyManagementServiceStub implements StudyManagementService {
     }
 
     public void setLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy) {
+        
+    }
+
+    public void addExternalLinksToStudy(StudyConfiguration studyConfiguration, ExternalLinkList externalLinkList)
+            throws ValidationException, IOException {
+        if (throwValidationException) {
+            throw new ValidationException("");
+        }
+        if (throwIOException) {
+            throw new IOException();
+        }
+        addExternalLinksToStudyCalled = true;
+    }
+
+    public void delete(StudyConfiguration studyConfiguration, ExternalLinkList externalLinkList) {
+        deleteCalled = true;
         
     }
 

@@ -131,6 +131,36 @@
         </property>
     </bean>
     
+   <bean id="addExternalLinksAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.AddExternalLinksAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
+    
+    <bean id="deleteExternalLinksAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.DeleteExternalLinksAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
+    
+    <bean id="viewExternalLinksAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.ViewExternalLinksAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
+    
     <bean id="addStudyLogoAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.AddStudyLogoAction">

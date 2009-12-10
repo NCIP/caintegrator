@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
@@ -206,6 +207,16 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
     
     @Override
     boolean hasReporterCriterion() {
+        return false;
+    }
+
+    @Override
+    boolean hasCriterionSpecifiedReporterValues() {
+        return false;
+    }
+
+    @Override
+    boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
         return false;
     }
 

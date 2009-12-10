@@ -12,6 +12,7 @@ public class GenomicDataResultValue extends AbstractCaIntegrator2Object {
     
     private Float value;
     private GenomicDataResultColumn column;
+    private boolean meetsCriterion = false;
     
     /**
      * @return the value
@@ -39,6 +40,20 @@ public class GenomicDataResultValue extends AbstractCaIntegrator2Object {
      */
     public void setColumn(GenomicDataResultColumn column) {
         this.column = column;
+    }
+
+    /**
+     * @return the meetsCriterion
+     */
+    public boolean isMeetsCriterion() {
+        return meetsCriterion;
+    }
+
+    /**
+     * @param meetsCriterion the meetsCriterion to set
+     */
+    public void setMeetsCriterion(boolean meetsCriterion) {
+        this.meetsCriterion = meetsCriterion;
     }
 
 }

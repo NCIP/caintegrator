@@ -6,7 +6,7 @@
 
 <!--Page Help-->
 
-<div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('manage_gene_lists_help')" class="help">
+<div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('create_gene_list_help')" class="help">
 &nbsp;</a>
 </div>
 

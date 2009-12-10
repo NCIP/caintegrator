@@ -132,6 +132,21 @@
                 </li>
             </ul>
         </li>
+        <s:if test = "%{!currentStudy.studyConfiguration.externalLinkLists.isEmpty()}" >
+        <li class="stdnavforinvestigator"><div>External Links</div>
+            <ul>
+                <s:iterator value="currentStudy.studyConfiguration.externalLinkLists" >
+                    <li>
+                        <s:url id="externalLinkUrl" includeParams="none" action="viewExternalLinks" >
+                            <s:param name="externalLinkList.id" value="id"/>
+                        </s:url>
+                        <a href="${ externalLinkUrl }" title='Description: <s:property value="description"/>' ><s:property value="name"/></a>
+                    </li>
+                </s:iterator>
+            </ul>
+        </li>
+        </s:if>
+        
     </ul>
     </s:if>
          
@@ -165,7 +180,7 @@
                     <li><a href="/caintegrator2/index.jsp">Login</a></li>
                     <li><a href="registration/input.action">Register</a></li>
                 </s:if>
-                <li><a href="javascript:openWin('/caintegrator2//help/wwhelp/wwhimpl/js/html/wwhelp.htm?href=Getting_Started.2.9.html#1136640')">Support</a></li>
+                <li><a href="javascript:openHelpWindowWithNavigation('app_support_help')">Support</a></li>
                 <li><a href="${tutorialsUrl}">Tutorials</a></li>
                 <li><a href="javascript:openUsersGuideWindow('top')">User Guide</a></li>
             </ul>

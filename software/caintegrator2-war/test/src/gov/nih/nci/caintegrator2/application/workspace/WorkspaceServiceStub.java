@@ -119,6 +119,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public boolean createDisplayableStudySummaryCalled;
     public boolean savePersistedAnalysisJobCalled;
     public boolean createGeneListCalled;
+    public boolean getRefreshedEntityCalled;
     
     public void clear() {
         subscribeCalled = false;
@@ -131,6 +132,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
         savePersistedAnalysisJobCalled = false;
         unSubscribeAllCalled = false;
         createGeneListCalled = false;
+        getRefreshedEntityCalled = false;
     }
     public UserWorkspace getWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
@@ -232,6 +234,11 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     public void createGeneList(GeneList geneList, List<String> geneSymbols) {
         createGeneListCalled = true;
+    }
+
+    public <T> T getRefreshedEntity(T entity) {
+        getRefreshedEntityCalled = true;
+        return entity;
     }
 
 }
