@@ -179,7 +179,7 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
     boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
         boolean reporterMatch = false;
         for (Gene gene : genes) {
-            if (criterion.getGeneSymbol().contains(gene.getSymbol())) {
+            if (criterion.getGeneSymbol().toUpperCase().contains(gene.getSymbol().toUpperCase())) {
                 reporterMatch = true;
                 break;
             }
