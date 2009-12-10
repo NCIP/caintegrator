@@ -13,7 +13,7 @@
     <!--/Page Help-->         
     
     <!--ADD CONTENT HERE-->
-
+    
     <h1><s:property value="externalLinkList.name" /></h1>
     <strong>Description:  </strong>
         <s:if test="externalLinkList.description != null && externalLinkList.description != ''" >
@@ -23,13 +23,17 @@
             N/A
         </s:else>
     <br/> <br/>
-    <ul>
-    <s:iterator value="externalLinkList.externalLinks">
-        <li>
-        <a href='<s:property value="%{url}" escape="false"/>' target="_"><s:property value="name" /></a>
-        </li>
-    </s:iterator>
-    </ul>
+    <div class="form_wrapper_outer">
+        <table class="form_wrapper_table">
+        <s:iterator value="externalLinkList.externalLinks">
+            <tr height="30px">
+            <td style="padding: 5px;">
+            <a href='<s:property value="%{url}" escape="false"/>' target="_"><s:property value="name" /></a>
+            </td>
+            </tr>
+        </s:iterator>
+        </table>
+    </div>
 </div>
 
 <div class="clear"><br /></div>
