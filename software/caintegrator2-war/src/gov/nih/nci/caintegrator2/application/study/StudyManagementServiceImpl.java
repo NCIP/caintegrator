@@ -608,8 +608,8 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             dataElement.setDefinition(dataElement.getDefinition().substring(0, DEFINITION_LENGTH - 7) + "...");
         }
         annotationDefinition.setKeywords(dataElement.getLongName());
-        validateAnnotationDefinition(fileColumn, study, entityType, annotationDefinition);
         dao.save(annotationDefinition);
+        validateAnnotationDefinition(fileColumn, study, entityType, annotationDefinition);
         dao.save(fileColumn);
     }
 
