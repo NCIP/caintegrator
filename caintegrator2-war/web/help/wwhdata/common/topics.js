@@ -7,7 +7,7 @@ if(P=="welcome_help")C="Getting_Started.2.5.html#1127723";
 if(P=="logging_out")C="Getting_Started.2.8.html#1128246";
 if(P=="edit_study_help")C="CreatingNewStudy.3.4.html#1073921";
 if(P=="define_fields_help")C="CreatingNewStudy.3.5.html#1075197";
-if(P=="assign_annotations_help")C="CreatingNewStudy.3.6.html#1082187";
+if(P=="assign_annotations_help")C="CreatingNewStudy.3.6.html#1125074";
 if(P=="search_annotation_definitions_help")C="CreatingNewStudy.3.7.html#1082197";
 if(P=="survival_values_help")C="CreatingNewStudy.3.8.html#1077698";
 if(P=="edit_genomic_data_help")C="CreatingNewStudy.3.9.html#1076975";
