@@ -87,9 +87,11 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.File;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * 
@@ -171,6 +173,21 @@ public class ExternalLinkList extends AbstractCaIntegrator2Object {
      */
     public void setFile(File file) {
         this.file = file;
+    }
+    
+    /**
+     * @return a map of category -> list of external links.
+     */
+    public SortedMap<String, List<ExternalLink>> getLinksByCategory() {
+        SortedMap<String, List<ExternalLink>> linksByCategory = new TreeMap<String, List<ExternalLink>>();
+        for (ExternalLink externalLink : externalLinks) {
+            String category = externalLink.getCategory() == null ? "" : externalLink.getCategory();
+            if (linksByCategory.get(category) == null) {
+                linksByCategory.put(category, new ArrayList<ExternalLink>());
+            }
+            linksByCategory.get(category).add(externalLink);
+        }
+        return linksByCategory;
     }
 
 }
