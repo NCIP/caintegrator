@@ -213,6 +213,8 @@ B=A.fA("user group");
 C=B.fA("assigning to protection group",new Array("76#1077621"));
 C=B.fA("creating",new Array("74#1079273"));
 C=B.fA("definition",new Array("71#1077507"));
+A=P.fA("V",null,null,"002");
+B=A.fA("visibility, for annotation data",new Array("14#1125093"));
 }
 
 function  WWHBookData_MaxIndexLevel()
