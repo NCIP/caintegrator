@@ -101,15 +101,16 @@ final class ExternalLinksLoader {
         CSVReader reader = new CSVReader(new FileReader(externalLinkList.getFile()));
         String[] values;
         while ((values = reader.readNext()) != null) {
-            if (values.length != 2) {
-                throw new ValidationException("Invalid file format - Expect 2 columns but has " + values.length);
+            if (values.length != 3) {
+                throw new ValidationException("Invalid file format - Expect 3 columns but has " + values.length);
             }
             ExternalLink link = new ExternalLink();
-            link.setName(values[0]);
-            link.setUrl(values[1]);
+            link.setCategory(values[0]);
+            link.setName(values[1]);
+            link.setUrl(values[2]);
             if (!link.getUrl().startsWith("http")) {
-                throw new ValidationException("Invalid File Format - CSV must be of format 'link_name','link_url' "
-                        + "and URL must start with 'http'");
+                throw new ValidationException("Invalid File Format - CSV must be of format "
+                        + "'category','link_name','link_url' and URL must start with 'http'");
             }
             externalLinkList.getExternalLinks().add(link);
         }
