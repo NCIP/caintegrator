@@ -697,7 +697,8 @@ public class StudyManagementServiceTest {
         ExternalLinkList externalLinkList = new ExternalLinkList();
         externalLinkList.setFile(TestDataFiles.SIMPLE_EXTERNAL_LINKS_FILE);
         studyManagementService.addExternalLinksToStudy(studyConfiguration, externalLinkList);
-        assertEquals(2, externalLinkList.getExternalLinks().size());
+        assertEquals(6, externalLinkList.getExternalLinks().size());
+        assertEquals(3, externalLinkList.getLinksByCategory().keySet().size());
         assertTrue(studyConfiguration.getExternalLinkLists().contains(externalLinkList));
     }
     

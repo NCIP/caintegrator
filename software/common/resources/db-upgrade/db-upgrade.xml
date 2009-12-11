@@ -47,4 +47,8 @@
         <comment>Adds EXTERNAL_LINK_LIST and EXTERNAL_LINK tables.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.6.sql"/>
     </changeSet>
+    <changeSet id="1.1.7" author="tandrews">
+        <comment>Adds CATEGORY field to EXTERNAL_LINK table.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.7.sql"/>
+    </changeSet>
 </databaseChangeLog>

@@ -92,9 +92,22 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
  */
 public class ExternalLink extends AbstractCaIntegrator2Object {
     
+    private String category;
     private String name;
     private String url;
     
+    /**
+     * @return the category
+     */
+    public String getCategory() {
+        return category;
+    }
+    /**
+     * @param category the category to set
+     */
+    public void setCategory(String category) {
+        this.category = category;
+    }
     /**
      * @return the name
      */

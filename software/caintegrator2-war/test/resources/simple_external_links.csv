@@ -1,2 +1,6 @@
-DNA Methylation of 169 GBM samples in 1961 genes using Illumina submitted by JHU-USC,https://cgwb.nci.nih.gov/cgi-bin/heatmap?ds=7;launch=1
-Gene expression of 188 GBM samples using AffyU133 organized by 1000 genes with variable expression,https://cgwb.nci.nih.gov/cgi-bin/heatmap?ds=1;launch=1
+gene based view of gene_methylation data,DNA Methylation of 169 GBM samples in 1961 genes using Illumina submitted by JHU-USC,https://cgwb.nci.nih.gov/cgi-bin/heatmap?ds=7;launch=1
+gene based view of gene_expression data,Gene expression of 188 GBM samples using AffyU133 organized by 1000 genes with variable expression,https://cgwb.nci.nih.gov/cgi-bin/heatmap?ds=1;launch=1
+gene based view of gene_expression data,Gene Expression TCGA GBM UNC Agilent (Top 5% Most Varied Genes),https://cgwb.nci.nih.gov/cgi-bin/heatmap?ds=123;launch=1
+gene based view of gene_expression data,Gene Expression TCGA GBM UNC Agilent (Clustered By Top 5% Most Varied Genes),https://cgwb.nci.nih.gov/cgi-bin/heatmap?ds=122;launch=1
+gene based view of gene_expression data,Gene Expression TCGA GBM UNC Agilent,https://cgwb.nci.nih.gov/cgi-bin/heatmap?ds=168;launch=1
+,"Gene somatic mutation, copy number, expression and methylation",https://cgwb.nci.nih.gov/cgi-bin/heatmap?ds=65;launch=1

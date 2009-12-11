@@ -24,15 +24,22 @@
         </s:else>
     <br/> <br/>
     <div class="form_wrapper_outer">
+        <s:iterator value="externalLinkList.linksByCategory" >
         <table class="form_wrapper_table">
-        <s:iterator value="externalLinkList.externalLinks">
+        <tr>
+            <th class="title"><s:property value="key"/></th>
+        </tr>
+        <tr>
+        <s:iterator value="value">
             <tr height="30px">
             <td style="padding: 5px;">
             <a href='<s:property value="%{url}" escape="false"/>' target="_"><s:property value="name" /></a>
             </td>
             </tr>
         </s:iterator>
+        </tr>
         </table>
+        </s:iterator>
     </div>
 </div>
 
