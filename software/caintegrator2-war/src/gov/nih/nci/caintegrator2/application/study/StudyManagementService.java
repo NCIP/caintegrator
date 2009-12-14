@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.application.CaIntegrator2EntityRefresher;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -103,7 +104,7 @@ import java.util.List;
 /**
  * Service used to create, define, deploy and update studies.
  */
-public interface StudyManagementService {
+public interface StudyManagementService extends CaIntegrator2EntityRefresher {
     
     /**
      * Saves a study.
@@ -354,15 +355,6 @@ public interface StudyManagementService {
      * @return refreshed entity.
      */
     ImageDataSourceConfiguration getRefreshedImageSource(Long id);
-    
-    /**
-     * Returns the refreshed entity attached to the current Hibernate session.
-     * 
-     * @param <T> type of object being returned.
-     * @param entity a persistent entity with the id set.
-     * @return the refreshed entity.
-     */
-    <T> T getRefreshedStudyEntity(T entity);
 
     /**
      * Returns an ordered list of existing definitions that match the keywords contained

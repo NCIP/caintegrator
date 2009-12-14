@@ -104,7 +104,7 @@ public class DeleteExternalLinksAction extends AbstractStudyAction {
     public void prepare() {
         super.prepare();
         if (externalLinkList.getId() != null) {
-            externalLinkList = getStudyManagementService().getRefreshedStudyEntity(externalLinkList);
+            externalLinkList = getStudyManagementService().getRefreshedEntity(externalLinkList);
         }
     }
 

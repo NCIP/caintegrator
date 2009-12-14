@@ -100,7 +100,7 @@ public abstract class AbstractClinicalSourceAction extends AbstractStudyAction {
     public void prepare() {
         super.prepare();
         if (getClinicalSource().getId() != null) {
-            setClinicalSource(getStudyManagementService().getRefreshedStudyEntity(getClinicalSource()));
+            setClinicalSource(getStudyManagementService().getRefreshedEntity(getClinicalSource()));
         }
     }
 

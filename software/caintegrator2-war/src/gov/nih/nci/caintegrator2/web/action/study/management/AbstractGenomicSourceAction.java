@@ -101,7 +101,7 @@ public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
     public void prepare() {
         super.prepare();
         if (getGenomicSource().getId() != null) {
-            setGenomicSource(getStudyManagementService().getRefreshedStudyEntity(getGenomicSource()));
+            setGenomicSource(getStudyManagementService().getRefreshedEntity(getGenomicSource()));
             HibernateUtil.loadGenomicSource(getGenomicSource());
         }
     }

@@ -94,6 +94,8 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
@@ -157,9 +159,24 @@ public final class HibernateUtil {
             loadCollection(assignment.getImageStudyCollection());
             loadCollection(assignment.getSubjectAnnotationCollection());
             for (SampleAcquisition sampleAcquisition : assignment.getSampleAcquisitionCollection()) {
+                loadCollection(sampleAcquisition.getAnnotationCollection());
                 loadSampleCollections(sampleAcquisition.getSample());
             }
         }
+    }
+    
+    /**
+     * Make sure all persistent collections are loaded.
+     * @param studySubscription to load from hibernate.
+     */
+    public static void loadCollection(StudySubscription studySubscription) {
+        loadCollection(studySubscription.getQueryCollection());
+        loadCollection(studySubscription.getListCollection());
+        loadCollection(studySubscription.getAnalysisJobCollection());
+        for (Query query : studySubscription.getQueryCollection()) {
+            loadCollection(query);
+        }
+        loadCollection(studySubscription.getStudy().getStudyConfiguration());
     }
 
     /**
@@ -264,6 +281,9 @@ public final class HibernateUtil {
     public static void loadSampleCollections(Sample sample) {
         loadCollection(sample.getArrayCollection());
         loadCollection(sample.getArrayDataCollection());
+        for (ArrayData arrayData : sample.getArrayDataCollection()) {
+            loadCollection(arrayData.getReporterLists());
+        }
     }
 
     /**

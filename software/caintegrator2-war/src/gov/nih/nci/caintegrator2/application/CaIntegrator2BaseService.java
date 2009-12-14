@@ -83,40 +83,52 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package gov.nih.nci.caintegrator2.application;
 
-package gov.nih.nci.caintegrator2.web.action.study.management;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 
-import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Base class for actions that require retrieval of persistent <code>ImageAnnotationConfigurations</code>.
+ * Base service class for CaIntegrator2 Services.
  */
-public abstract class AbstractImagingSourceAction extends AbstractStudyAction {
-
-    private ImageDataSourceConfiguration imageSourceConfiguration = new ImageDataSourceConfiguration();
+public class CaIntegrator2BaseService {
+    
+    private CaIntegrator2Dao dao;
+    
     /**
-     * {@inheritDoc}
+     * Returns the refreshed entity attached to the current Hibernate session.
+     * 
+     * @param <T> type of object being returned.
+     * @param entity a persistent entity with the id set.
+     * @return the refreshed entity.
      */
-    public void prepare() {
-        super.prepare();
-        if (getImageSourceConfiguration().getId() != null) {
-            setImageSourceConfiguration(
-                    getStudyManagementService().getRefreshedEntity(getImageSourceConfiguration()));
+    @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
+    public <T> T getRefreshedEntity(T entity) {
+        Long id;
+        try {
+            id = (Long) entity.getClass().getMethod("getId").invoke(entity);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Entity doesn't have a getId() method", e);
         }
-    }
-
-
-    /**
-     * @return the imageSource
-     */
-    public ImageDataSourceConfiguration getImageSourceConfiguration() {
-        return imageSourceConfiguration;
+        if (id == null) {
+            throw new IllegalArgumentException("Id was null");
+        }
+        return (T) dao.get(id, entity.getClass());
     }
 
     /**
-     * @param imageSourceConfiguration the imageSource to set
+     * @return the dao
      */
-    public void setImageSourceConfiguration(ImageDataSourceConfiguration imageSourceConfiguration) {
-        this.imageSourceConfiguration = imageSourceConfiguration;
+    public CaIntegrator2Dao getDao() {
+        return dao;
+    }
+
+    /**
+     * @param dao the dao to set
+     */
+    public void setDao(CaIntegrator2Dao dao) {
+        this.dao = dao;
     }
 }
