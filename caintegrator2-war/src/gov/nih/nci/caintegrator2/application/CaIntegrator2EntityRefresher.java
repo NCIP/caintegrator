@@ -83,40 +83,20 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package gov.nih.nci.caintegrator2.web.action.study.management;
-
-import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
+package gov.nih.nci.caintegrator2.application;
 
 /**
- * Base class for actions that require retrieval of persistent <code>ImageAnnotationConfigurations</code>.
+ * Interface for objects that need to refresh objects. 
  */
-public abstract class AbstractImagingSourceAction extends AbstractStudyAction {
-
-    private ImageDataSourceConfiguration imageSourceConfiguration = new ImageDataSourceConfiguration();
+public interface CaIntegrator2EntityRefresher {
+    
     /**
-     * {@inheritDoc}
+     * Returns the refreshed entity attached to the current Hibernate session.
+     * 
+     * @param <T> type of object being returned.
+     * @param entity a persistent entity with the id set.
+     * @return the refreshed entity.
      */
-    public void prepare() {
-        super.prepare();
-        if (getImageSourceConfiguration().getId() != null) {
-            setImageSourceConfiguration(
-                    getStudyManagementService().getRefreshedEntity(getImageSourceConfiguration()));
-        }
-    }
+    <T> T getRefreshedEntity(T entity);
 
-
-    /**
-     * @return the imageSource
-     */
-    public ImageDataSourceConfiguration getImageSourceConfiguration() {
-        return imageSourceConfiguration;
-    }
-
-    /**
-     * @param imageSourceConfiguration the imageSource to set
-     */
-    public void setImageSourceConfiguration(ImageDataSourceConfiguration imageSourceConfiguration) {
-        this.imageSourceConfiguration = imageSourceConfiguration;
-    }
 }

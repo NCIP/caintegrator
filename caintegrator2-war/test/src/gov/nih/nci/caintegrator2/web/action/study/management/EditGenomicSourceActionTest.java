@@ -185,10 +185,10 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
     private static class StudyManagmentServiceStubForGenomicSource extends StudyManagementServiceStub {
         @SuppressWarnings("unchecked")
         @Override
-        public <T> T getRefreshedStudyEntity(T entity) {
+        public <T> T getRefreshedEntity(T entity) {
             GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
             genomicSource.setStudyConfiguration(new StudyConfiguration());
-            super.getRefreshedStudyEntity(entity);
+            super.getRefreshedEntity(entity);
             return (T) genomicSource;
         }
     }

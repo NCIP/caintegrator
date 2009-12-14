@@ -87,8 +87,12 @@ package gov.nih.nci.caintegrator2.web.ajax;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.JobInfoWrapper;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
+import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
+import gov.nih.nci.caintegrator2.web.action.analysis.AbstractAnalysisFormParameter;
+
+import java.util.List;
 
 /**
  * Asynchronous thread that runs GenePatternAnalysis jobs and updates the status of those jobs.  Still
@@ -111,12 +115,17 @@ public class GenePatternAjaxRunner implements Runnable {
         updater.saveAndUpdateJobStatus(job);
         try {
             processLocally();
-        } catch (GenePatternServiceException e) {
-            updater.addError("Couldn't execute GenePattern analysis job: " + e.getMessage(), job);
+        } catch (Exception e) {
+            String errorMessage = "Couldn't execute GenePattern analysis job: " + e.getMessage();
+            updater.addError(errorMessage, job);
+            job.setStatus(AnalysisJobStatusEnum.LOCAL_ERROR);
+            job.setStatusDescription(errorMessage);
+            updater.saveAndUpdateJobStatus(job);
         }
     }
 
-    private JobInfoWrapper processLocally() throws GenePatternServiceException {
+    private JobInfoWrapper processLocally() throws GenePatternServiceException, InvalidCriterionException {
+        configureInvocationParameters(job.getGenePatternAnalysisForm().getParameters());
         JobInfoWrapper jobInfo = updater.getAnalysisService().executeGenePatternJob(
                 job.getGenePatternAnalysisForm().getServer(), job.getGenePatternAnalysisForm().getInvocation());
         job.setJobUrl(jobInfo.getUrl().toExternalForm());
@@ -124,6 +133,14 @@ public class GenePatternAjaxRunner implements Runnable {
         job.setGpJobNumber(jobInfo.getJobInfo().getJobNumber());
         updater.saveAndUpdateJobStatus(job);
         return jobInfo;
+    }
+    
+    private void configureInvocationParameters(List <AbstractAnalysisFormParameter> parameters) 
+    throws InvalidCriterionException {
+        job.setSubscription(updater.getAnalysisService().getRefreshedStudySubscription(job.getSubscription()));
+        for (AbstractAnalysisFormParameter formParameter : parameters) {
+            formParameter.configureForInvocation(job.getSubscription(), updater.getQueryManagementService());
+        }
     }
 
 }

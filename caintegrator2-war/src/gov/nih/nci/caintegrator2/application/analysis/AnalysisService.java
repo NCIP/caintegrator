@@ -90,6 +90,7 @@ import java.io.IOException;
 import java.util.List;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import gov.nih.nci.caintegrator2.application.CaIntegrator2EntityRefresher;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
@@ -107,7 +108,7 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 /**
  * Interface to analysis functionality.
  */
-public interface AnalysisService {
+public interface AnalysisService extends CaIntegrator2EntityRefresher {
     
     /**
      * Returns a list of GenePattern analysis tasks that may be run.
@@ -195,4 +196,11 @@ public interface AnalysisService {
      * @param jobId the id of the analysis job to delete.
      */
     void deleteAnalysisJob(Long jobId);
+    
+    /**
+     * Refreshes studySubscription object from the database so it can be used.
+     * @param studySubscription to be refreshed from the database.
+     * @return refreshed studySubscription.
+     */
+    StudySubscription getRefreshedStudySubscription(StudySubscription studySubscription);
 }

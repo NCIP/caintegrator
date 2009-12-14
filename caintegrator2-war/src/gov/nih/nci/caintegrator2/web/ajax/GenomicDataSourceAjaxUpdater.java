@@ -123,7 +123,7 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
         try {
             StudyConfiguration studyConfiguration = workspace.getCurrentStudyConfiguration();
             if (studyConfiguration != null && studyConfiguration.getId() != null) {
-                studyConfiguration = studyManagementService.getRefreshedStudyEntity(studyConfiguration);
+                studyConfiguration = studyManagementService.getRefreshedEntity(studyConfiguration);
                 int counter = 0;
                 for (GenomicDataSourceConfiguration genomicSource : studyConfiguration.getGenomicDataSources()) {
                     getDwrUtil(username).addRows(STATUS_TABLE, 

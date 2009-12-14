@@ -253,7 +253,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return new DelimitedTextClinicalSourceConfiguration();
     }
 
-    public <T> T getRefreshedStudyEntity(T entity) {
+    public <T> T getRefreshedEntity(T entity) {
         getRefreshedStudyEntityCalled = true;
         return entity;
     }

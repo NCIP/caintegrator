@@ -140,7 +140,7 @@ public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
         if (!kmPlotParameters.getQueries().isEmpty()) {
             List <Query> newValues = new ArrayList<Query>();
             for (Query value : kmPlotParameters.getQueries()) {
-                Query newValue = getStudyManagementService().getRefreshedStudyEntity(value);
+                Query newValue = getStudyManagementService().getRefreshedEntity(value);
                 newValues.add(newValue);
             }
             kmPlotParameters.getQueries().clear();

@@ -198,4 +198,12 @@ public class AnalysisServiceStub implements AnalysisService {
     public void deleteAnalysisJob(Long jobId) {
         deleteAnalysisJobCalled = true;
     }
+
+    public <T> T getRefreshedEntity(T entity) {
+        return entity;
+    }
+
+    public StudySubscription getRefreshedStudySubscription(StudySubscription studySubscription) {
+        return studySubscription;
+    }
 }

@@ -272,20 +272,20 @@ public class StudyManagementServiceTest {
     public void testGetStudyEntity() {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setId(1L);
-        assertNotNull(studyManagementService.getRefreshedStudyEntity(studyConfiguration));
+        assertNotNull(studyManagementService.getRefreshedEntity(studyConfiguration));
         assertTrue(daoStub.getCalled);
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void testGetStudyEntityNoId() {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyManagementService.getRefreshedStudyEntity(studyConfiguration);
+        studyManagementService.getRefreshedEntity(studyConfiguration);
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void testGetStudyEntityIllegalClass() {
         Object object = new Object();
-        studyManagementService.getRefreshedStudyEntity(object);
+        studyManagementService.getRefreshedEntity(object);
     }
     
     @Test

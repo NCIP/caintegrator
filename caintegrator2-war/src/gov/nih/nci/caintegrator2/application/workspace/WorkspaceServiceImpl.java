@@ -85,11 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
+import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -119,9 +119,8 @@ import org.springframework.transaction.annotation.Transactional;
  * Implementation entry point for the WorkspaceService subsystem.
  */
 @Transactional(propagation = Propagation.REQUIRED)
-public class WorkspaceServiceImpl implements WorkspaceService {
+public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements WorkspaceService  {
     
-    private CaIntegrator2Dao dao;
     private SecurityManager securityManager;
     
     private static final int TWELVE_HOURS = 12;
@@ -131,7 +130,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      */
     public UserWorkspace getWorkspace() {
         String username = SecurityHelper.getCurrentUsername();
-        UserWorkspace userWorkspace = dao.getWorkspace(username);
+        UserWorkspace userWorkspace = getDao().getWorkspace(username);
         if (userWorkspace == null) {
             userWorkspace = createUserWorkspace(username);
             saveUserWorkspace(userWorkspace);
@@ -146,26 +145,12 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
         return userWorkspace;
     }
-
-    /**
-     * @return the dao
-     */
-    public CaIntegrator2Dao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(CaIntegrator2Dao dao) {
-        this.dao = dao;
-    }
     
     /**
      * @param workspace saves workspace.
      */
     public void saveUserWorkspace(UserWorkspace workspace) {
-        dao.save(workspace);
+        getDao().save(workspace);
     }
 
     /**
@@ -181,9 +166,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void savePersistedAnalysisJob(AbstractPersistedAnalysisJob job) {
         if (job.getId() == null) {
-            dao.save(job);
+            getDao().save(job);
         } else {
-            dao.merge(job);
+            getDao().merge(job);
         }
     }
 
@@ -191,7 +176,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      * {@inheritDoc}
      */
     public void subscribeAll(UserWorkspace userWorkspace) {
-        List<Study> myStudies = dao.getStudies(userWorkspace.getUsername());
+        List<Study> myStudies = getDao().getStudies(userWorkspace.getUsername());
         removeOldSubscriptions(userWorkspace, myStudies);
         subscribeAll(userWorkspace, myStudies);
     }
@@ -209,7 +194,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         throws CSException {
         Set<StudyConfiguration> results = securityManager.retrieveManagedStudyConfigurations(
                 userWorkspace.getUsername(), 
-                        dao.getStudies(userWorkspace.getUsername()));
+                getDao().getStudies(userWorkspace.getUsername()));
         updateStatus(results);
         return results;
     }
@@ -220,7 +205,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                     && isTimeout(studyConfiguration.getDeploymentStartDate())) {
                 studyConfiguration.setStatus(Status.ERROR);
                 studyConfiguration.setStatusDescription("TImeout after 12 hours");
-                dao.save(studyConfiguration);
+                getDao().save(studyConfiguration);
             }
         }
     }
@@ -265,7 +250,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                     workspace.setDefaultSubscription(null);
                 }
                 saveUserWorkspace(workspace);
-                dao.delete(subscription);
+                getDao().delete(subscription);
                 return;
             }
         }
@@ -275,7 +260,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      * {@inheritDoc}
      */
     public void unsubscribeAll(Study study) {
-        List<UserWorkspace> workspaces = dao.retrieveAllSubscribedWorkspaces(study);
+        List<UserWorkspace> workspaces = getDao().retrieveAllSubscribedWorkspaces(study);
         if (workspaces != null && !workspaces.isEmpty()) {
             for (UserWorkspace workspace : workspaces) {
                 unsubscribe(workspace, study);
@@ -291,25 +276,6 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         }
         return false;
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Transactional(readOnly = true)
-    public <T> T getRefreshedEntity(T entity) {
-        Long id;
-        try {
-            id = (Long) entity.getClass().getMethod("getId").invoke(entity);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Entity doesn't have a getId() method", e);
-        }
-        if (id == null) {
-            throw new IllegalArgumentException("Id was null");
-        }
-        return (T) dao.get(id, entity.getClass());
-    }
-
     
     /**
      * {@inheritDoc}
@@ -336,7 +302,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                     displayableImageSource.setNumberImageSeries(displayableImageSource.getNumberImageSeries()
                             + imageSeriesAcquisition.getSeriesCollection().size());
                     displayableImageSource.setNumberImages(displayableImageSource.getNumberImages()
-                            + dao.retrieveNumberImages(imageSeriesAcquisition.getSeriesCollection()));
+                            + getDao().retrieveNumberImages(imageSeriesAcquisition.getSeriesCollection()));
                 }
             }
             studySummary.getImageDataSources().add(displayableImageSource);
@@ -347,7 +313,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         for (GenomicDataSourceConfiguration genomicConfig  
                 : studySummary.getStudy().getStudyConfiguration().getGenomicDataSources()) {
             DisplayableGenomicSource displayableGenomicSource = new DisplayableGenomicSource(genomicConfig);
-            List<Platform> platforms = dao.retrievePlatformsForGenomicSource(genomicConfig);
+            List<Platform> platforms = getDao().retrievePlatformsForGenomicSource(genomicConfig);
             if (platforms != null && !platforms.isEmpty()) {
                 displayableGenomicSource.getPlatforms().addAll(platforms);
             }

@@ -164,19 +164,19 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
     
     private void refreshObjectInstances() {
         if (survivalValueDefinition.getId() != null) {
-            survivalValueDefinition = getStudyManagementService().getRefreshedStudyEntity(survivalValueDefinition);
+            survivalValueDefinition = getStudyManagementService().getRefreshedEntity(survivalValueDefinition);
         }
         
         if (survivalStartDate.getId() != null) {
-            survivalStartDate = getStudyManagementService().getRefreshedStudyEntity(survivalStartDate);
+            survivalStartDate = getStudyManagementService().getRefreshedEntity(survivalStartDate);
         }
         
         if (survivalDeathDate.getId() != null) {
-            survivalDeathDate = getStudyManagementService().getRefreshedStudyEntity(survivalDeathDate);
+            survivalDeathDate = getStudyManagementService().getRefreshedEntity(survivalDeathDate);
         }
         
         if (lastFollowupDate.getId() != null) {
-            lastFollowupDate = getStudyManagementService().getRefreshedStudyEntity(lastFollowupDate);
+            lastFollowupDate = getStudyManagementService().getRefreshedEntity(lastFollowupDate);
         }
     }
 
