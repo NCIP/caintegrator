@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.analysis;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotHandler;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
@@ -103,7 +104,7 @@ import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.GenePatternUtil;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
@@ -136,9 +137,8 @@ import org.springframework.transaction.annotation.Transactional;
  * Implementation of the AnalysisService subsystem.
  */
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-public class AnalysisServiceImpl implements AnalysisService {
+public class AnalysisServiceImpl extends CaIntegrator2BaseService implements AnalysisService {
     
-    private CaIntegrator2Dao dao;
     private KMPlotService kmPlotService;
     private GeneExpressionPlotService gePlotService;
     private QueryManagementService queryManagementService;
@@ -184,7 +184,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     public File executeGridPreprocessComparativeMarker(StatusUpdateListener updater,
             ComparativeMarkerSelectionAnalysisJob job) 
         throws ConnectionException, InvalidCriterionException {
-        StudySubscription studySubscription = dao.get(job.getSubscription().getId(), StudySubscription.class);
+        StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class);
         PreprocessDatasetParameters preprocessParams = job.getForm().getPreprocessDatasetparameters();
         job.setSubscription(studySubscription);
         File gctFile = createGctFile(studySubscription, preprocessParams.getClinicalQueries(),
@@ -204,7 +204,7 @@ public class AnalysisServiceImpl implements AnalysisService {
      */
     public File executeGridGistic(StatusUpdateListener updater, GisticAnalysisJob job) 
         throws ConnectionException, InvalidCriterionException, ParameterException, IOException {
-        StudySubscription studySubscription = dao.get(job.getSubscription().getId(), StudySubscription.class); 
+        StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class); 
         job.setSubscription(studySubscription);
         GisticSamplesMarkers gisticSamplesMarkers = 
             GenePatternUtil.createGisticSamplesMarkers(queryManagementService, 
@@ -237,7 +237,7 @@ public class AnalysisServiceImpl implements AnalysisService {
      */
     public File executeGridPCA(StatusUpdateListener updater,
             PrincipalComponentAnalysisJob job) throws ConnectionException, InvalidCriterionException {
-        StudySubscription studySubscription = dao.get(job.getSubscription().getId(), StudySubscription.class); 
+        StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class); 
         job.setSubscription(studySubscription);
         PCAParameters parameters = job.getForm().getPcaParameters();
         File gctFile = createGctFile(studySubscription, parameters.getClinicalQueries(), 
@@ -255,7 +255,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     public KMPlot createKMPlot(StudySubscription subscription,
                                AbstractKMParameters kmParameters) throws InvalidCriterionException {
         AbstractKMPlotHandler kmPlotHandler = AbstractKMPlotHandler.createKMPlotHandler(
-                dao, kmParameters.getSurvivalValueDefinition(), queryManagementService, kmParameters);
+                getDao(), kmParameters.getSurvivalValueDefinition(), queryManagementService, kmParameters);
         return kmPlotHandler.createPlot(kmPlotService, subscription);
 
     }
@@ -270,7 +270,7 @@ public class AnalysisServiceImpl implements AnalysisService {
             validateGeneSymbols(studySubscription, plotParameters);
         }
         AbstractGEPlotHandler gePlotHandler = AbstractGEPlotHandler.createGeneExpressionPlotHandler(
-                dao, queryManagementService, plotParameters, gePlotService);
+                getDao(), queryManagementService, plotParameters, gePlotService);
         
         return gePlotHandler.createPlots(studySubscription);
     }
@@ -279,7 +279,7 @@ public class AnalysisServiceImpl implements AnalysisService {
             throws GenesNotFoundInStudyException {
         plotParameters.getGenesNotFound().clear();
         List<String> inputGeneSymbols = Arrays.asList(plotParameters.getGeneSymbol().replaceAll(" ", "").split(","));
-        Set<String> genesInStudy = dao.retrieveGeneSymbolsInStudy(inputGeneSymbols, studySubscription.getStudy());
+        Set<String> genesInStudy = getDao().retrieveGeneSymbolsInStudy(inputGeneSymbols, studySubscription.getStudy());
         if (genesInStudy.isEmpty()) {
             throw new GenesNotFoundInStudyException("None of the specified genes were found in study.");
         }
@@ -306,20 +306,14 @@ public class AnalysisServiceImpl implements AnalysisService {
                 GenePatternUtil.createGctDataset(studySubscription, querySet,
                         excludedSet, queryManagementService), filename);
     }
-
+    
     /**
-     * @return the dao
+     * {@inheritDoc}
      */
-    public CaIntegrator2Dao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao
-     *            the dao to set
-     */
-    public void setDao(CaIntegrator2Dao dao) {
-        this.dao = dao;
+    public StudySubscription getRefreshedStudySubscription(StudySubscription studySubscription) {
+        StudySubscription refreshedStudySubscription = getRefreshedEntity(studySubscription);
+        HibernateUtil.loadCollection(refreshedStudySubscription);
+        return refreshedStudySubscription;
     }
 
     /**
@@ -400,7 +394,7 @@ public class AnalysisServiceImpl implements AnalysisService {
         AbstractPersistedAnalysisJob job = getAnalysisJob(jobId);
         job.getSubscription().getAnalysisJobCollection().remove(job);
         deleteFiles(job);
-        dao.delete(job);
+        getDao().delete(job);
     }
     
     private void deleteFiles(AbstractPersistedAnalysisJob job) {
@@ -413,7 +407,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
 
     private AbstractPersistedAnalysisJob getAnalysisJob(Long id) {
-        return dao.get(id, AbstractPersistedAnalysisJob.class);
+        return getDao().get(id, AbstractPersistedAnalysisJob.class);
     }
 
     /**

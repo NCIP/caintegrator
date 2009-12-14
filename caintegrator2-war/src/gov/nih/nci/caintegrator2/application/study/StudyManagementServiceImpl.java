@@ -85,10 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
@@ -138,12 +138,11 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(propagation = Propagation.REQUIRED)
 @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" })   // see configure study
-public class StudyManagementServiceImpl implements StudyManagementService {
+public class StudyManagementServiceImpl extends CaIntegrator2BaseService implements StudyManagementService {
 
     @SuppressWarnings("unused")
     private static final Logger LOGGER = Logger.getLogger(StudyManagementServiceImpl.class);
     private static final int DEFINITION_LENGTH = 1000;
-    private CaIntegrator2Dao dao;
     private FileManager fileManager;
     private CaDSRFacade caDSRFacade;
     private NCIAFacade nciaFacade;
@@ -174,7 +173,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                 value.convertAnnotationValue(definition);
             }
         }
-        dao.save(definition);
+        getDao().save(definition);
     }
     
     /**
@@ -188,14 +187,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     public void saveGenomicDataSource(GenomicDataSourceConfiguration genomicSource) {
-        dao.save(genomicSource);
+        getDao().save(genomicSource);
     }
     
     /**
      * {@inheritDoc}
      */
     public void saveImagingDataSource(ImageDataSourceConfiguration imagingSource) {
-        dao.save(imagingSource);
+        getDao().save(imagingSource);
     }
 
     /**
@@ -205,9 +204,9 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         securityManager.deleteProtectionElement(studyConfiguration);
         fileManager.deleteStudyDirectory(studyConfiguration);
         getWorkspaceService().unsubscribeAll(studyConfiguration.getStudy());
-        dao.save(studyConfiguration.getUserWorkspace());
+        getDao().save(studyConfiguration.getUserWorkspace());
         studyConfiguration.setUserWorkspace(null);
-        dao.delete(studyConfiguration);
+        getDao().delete(studyConfiguration);
     }
     
     private boolean isNew(StudyConfiguration studyConfiguration) {
@@ -242,10 +241,10 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,
             File inputFile, String filename) throws ValidationException, IOException {
         File permanentFile = getFileManager().storeStudyFile(inputFile, filename, studyConfiguration);
-        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, dao);
+        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, getDao());
         DelimitedTextClinicalSourceConfiguration clinicalSourceConfig = 
             new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfiguration);
-        dao.save(studyConfiguration);
+        getDao().save(studyConfiguration);
         return clinicalSourceConfig;
     }
     
@@ -263,14 +262,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         studyConfiguration.getStudyLogo().setFileType(fileType);
         File studyLogoFile = getFileManager().storeStudyFile(imageFile, fileName, studyConfiguration);
         studyConfiguration.getStudyLogo().setPath(studyLogoFile.getPath());
-        dao.save(studyConfiguration);
+        getDao().save(studyConfiguration);
     }
     
     /**
      * {@inheritDoc}
      */
     public StudyLogo retrieveStudyLogo(Long studyId, String studyShortTitleText) {
-        return dao.retrieveStudyLogo(studyId, studyShortTitleText);
+        return getDao().retrieveStudyLogo(studyId, studyShortTitleText);
     }
 
     /**
@@ -292,14 +291,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                 : studyConfiguration.getClinicalConfigurationCollection()) {
             configuration.reLoadAnnontation();
         }
-        dao.removeObjects(studyConfiguration.removeObsoleteSubjectAssignment());
+        getDao().removeObjects(studyConfiguration.removeObsoleteSubjectAssignment());
         refreshAnnotationDefinitions(studyConfiguration.getStudy());
         save(studyConfiguration);
     }
     
     private void refreshAnnotationDefinitions(Study study) {
         for (AnnotationDefinition annotationDefinition : study.getSubjectAnnotationCollection()) {
-            dao.refresh(annotationDefinition);
+            getDao().refresh(annotationDefinition);
         }
     }
     
@@ -307,7 +306,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         Study study = studyConfiguration.getStudy();
         for (StudySubjectAssignment studySubjectAssignment : study.getAssignmentCollection()) {
             for (SubjectAnnotation subjectAnnotation : studySubjectAssignment.getSubjectAnnotationCollection()) {
-                dao.delete(subjectAnnotation);
+                getDao().delete(subjectAnnotation);
             }
             studySubjectAssignment.getSubjectAnnotationCollection().clear();
         }
@@ -321,7 +320,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             AbstractClinicalSourceConfiguration clinicalSource) throws ValidationException {
         deleteClinicalAnnotation(studyConfiguration);
         studyConfiguration.getClinicalConfigurationCollection().remove(clinicalSource);
-        dao.delete(clinicalSource);
+        getDao().delete(clinicalSource);
         reLoadClinicalAnnotation(studyConfiguration);
     }
     
@@ -335,12 +334,12 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             for (Array array : sample.getArrayCollection()) {
                 array.getSampleCollection().remove(sample);
                 if (array.getSampleCollection().isEmpty()) {
-                    dao.delete(array);
+                    getDao().delete(array);
                 }
             }
             sample.getArrayCollection().clear();
         }
-        dao.delete(genomicSource);
+        getDao().delete(genomicSource);
     }
     
     /**
@@ -349,7 +348,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void delete(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource) 
         throws ValidationException {
         studyConfiguration.getImageDataSources().remove(imageSource);
-        dao.delete(imageSource);
+        getDao().delete(imageSource);
         
         reLoadImageAnnotation(studyConfiguration);
     }
@@ -359,14 +358,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     public void delete(StudyConfiguration studyConfiguration, ExternalLinkList externalLinkList) {
         studyConfiguration.getExternalLinkLists().remove(externalLinkList);
-        dao.delete(externalLinkList);
+        getDao().delete(externalLinkList);
     }
     
     private void deleteImageAnnotation(StudyConfiguration studyConfiguration) {
         Study study = studyConfiguration.getStudy();
         for (StudySubjectAssignment studySubjectAssignment : study.getAssignmentCollection()) {
             for (ImageSeriesAcquisition imageSeriesAcquisition : studySubjectAssignment.getImageStudyCollection()) {
-                dao.delete(imageSeriesAcquisition);
+                getDao().delete(imageSeriesAcquisition);
             }
             studySubjectAssignment.getImageStudyCollection().clear();
         }
@@ -381,7 +380,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                 configuration.getImageAnnotationConfiguration().reLoadAnnontation();
             }
         }
-        dao.removeObjects(studyConfiguration.removeObsoleteSubjectAssignment());
+        getDao().removeObjects(studyConfiguration.removeObsoleteSubjectAssignment());
         refreshAnnotationDefinitions(studyConfiguration.getStudy());
         save(studyConfiguration);
     }
@@ -390,23 +389,23 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
             saveSubjectAnnotations(assignment.getSubjectAnnotationCollection());
             saveSampleAcquisitions(assignment.getSampleAcquisitionCollection());
-            dao.save(assignment.getSubject());
-            dao.save(assignment);
+            getDao().save(assignment.getSubject());
+            getDao().save(assignment);
         }
-        dao.save(studyConfiguration);
+        getDao().save(studyConfiguration);
     }
 
     private void saveSampleAcquisitions(Collection<SampleAcquisition> sampleAcquisitionCollection) {
         for (SampleAcquisition sampleAcquisition : sampleAcquisitionCollection) {
-            dao.save(sampleAcquisition.getSample());
-            dao.save(sampleAcquisition);
+            getDao().save(sampleAcquisition.getSample());
+            getDao().save(sampleAcquisition);
         }
     }
 
     private void saveSubjectAnnotations(Collection<SubjectAnnotation> subjectAnnotations) {
         for (SubjectAnnotation annotation : subjectAnnotations) {
-            dao.save(annotation.getAnnotationValue());
-            dao.save(annotation);
+            getDao().save(annotation.getAnnotationValue());
+            getDao().save(annotation);
         }
     }
     
@@ -433,13 +432,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                 controlSampleFileName);
         save(genomicSource.getStudyConfiguration());
     }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(CaIntegrator2Dao dao) {
-        this.dao = dao;
-    }
     
     /**
      * {@inheritDoc}
@@ -457,7 +449,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                                         GenomicDataSourceConfiguration genomicSource) {
         studyConfiguration.getGenomicDataSources().add(genomicSource);
         genomicSource.setStudyConfiguration(studyConfiguration);
-        dao.save(studyConfiguration);
+        getDao().save(studyConfiguration);
     }
 
     /**
@@ -471,7 +463,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             handleLoadCopyNumber(genomicSource);
         }
         genomicSource.setStatus(Status.LOADED);
-        dao.save(genomicSource);
+        getDao().save(genomicSource);
     }
 
     private void handleLoadGeneExpression(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
@@ -507,7 +499,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public GenomicDataSourceConfiguration getRefreshedGenomicSource(Long id) {
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         genomicSource.setId(id);
-        genomicSource = getRefreshedStudyEntity(genomicSource);
+        genomicSource = getRefreshedEntity(genomicSource);
         HibernateUtil.loadCollection(genomicSource.getStudyConfiguration());
         return genomicSource;
     }
@@ -519,11 +511,11 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     throws CSSecurityException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setId(id);
-        studyConfiguration = getRefreshedStudyEntity(studyConfiguration);
+        studyConfiguration = getRefreshedEntity(studyConfiguration);
         Set<StudyConfiguration> managedStudyConfigurations = new HashSet<StudyConfiguration>();
         try {
             managedStudyConfigurations = 
-                securityManager.retrieveManagedStudyConfigurations(username, dao.getStudies(username)); 
+                securityManager.retrieveManagedStudyConfigurations(username, getDao().getStudies(username)); 
         } catch (CSException e) {
             throw new IllegalStateException("Error retrieving CSM data from SecurityManager.");
         }
@@ -531,24 +523,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             throw new CSSecurityException("User doesn't have access to this study.");
         } 
         return studyConfiguration;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Transactional(readOnly = true)
-    public <T> T getRefreshedStudyEntity(T entity) {
-        Long id;
-        try {
-            id = (Long) entity.getClass().getMethod("getId").invoke(entity);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Entity doesn't have a getId() method", e);
-        }
-        if (id == null) {
-            throw new IllegalArgumentException("Id was null");
-        }
-        return (T) dao.get(id, entity.getClass());
     }
 
     /**
@@ -570,7 +544,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     @Transactional(readOnly = true)
     public List<AnnotationDefinition> getMatchingDefinitions(List<String> keywords) {
-        return dao.findMatches(keywords);
+        return getDao().findMatches(keywords);
     }
 
     /**
@@ -616,9 +590,9 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             dataElement.setDefinition(dataElement.getDefinition().substring(0, DEFINITION_LENGTH - 7) + "...");
         }
         annotationDefinition.setKeywords(dataElement.getLongName());
-        dao.save(annotationDefinition);
+        getDao().save(annotationDefinition);
         validateAnnotationDefinition(fileColumn, study, entityType, annotationDefinition);
-        dao.save(fileColumn);
+        getDao().save(fileColumn);
     }
 
     private void validateAnnotationDefinition(FileColumn fileColumn, Study study, EntityTypeEnum entityType,
@@ -640,8 +614,8 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         Set<Object> valueObjects = new HashSet<Object>();
         if (Boolean.valueOf(fileColumn.getAnnotationFile().getCurrentlyLoaded())) {
             annotationDefinition.validateValuesWithType();
-            valueObjects.addAll(dao.retrieveUniqueValuesForStudyAnnotation(study, annotationDefinition, entityType, 
-                    annotationType.getClassType()));
+            valueObjects.addAll(getDao().retrieveUniqueValuesForStudyAnnotation(study, annotationDefinition, 
+                    entityType, annotationType.getClassType()));
         } else {
             valueObjects.addAll(fileColumn.getUniqueDataValues(annotationType.getClassType()));
         }
@@ -689,9 +663,9 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             addDefinitionToStudy(fileColumn.getFieldDescriptor(), study, entityType, annotationDefinition);
             validateAnnotationDefinition(fileColumn, study, entityType, annotationDefinition);
             
-            dao.save(annotationDefinition);
-            dao.save(fileColumn);
-            dao.save(study);
+            getDao().save(annotationDefinition);
+            getDao().save(fileColumn);
+            getDao().save(study);
         }
     }
     
@@ -738,14 +712,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             File inputFile, String filename) throws ValidationException, IOException {
         File permanentFile = getFileManager().storeStudyFile(inputFile, filename,
                 imageDataSourceConfiguration.getStudyConfiguration());
-        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, dao);
+        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, getDao());
         ImageAnnotationConfiguration imageAnnotationConfiguration = 
             new ImageAnnotationConfiguration(annotationFile, imageDataSourceConfiguration);
         imageAnnotationConfiguration.setImageDataSourceConfiguration(imageDataSourceConfiguration);
         imageDataSourceConfiguration.setImageAnnotationConfiguration(imageAnnotationConfiguration);
         imageDataSourceConfiguration.setStatus(retrieveImageSourceStatus(imageDataSourceConfiguration
                 .getImageAnnotationConfiguration()));
-        dao.save(imageAnnotationConfiguration);
+        getDao().save(imageAnnotationConfiguration);
         return imageAnnotationConfiguration;
     }
 
@@ -765,8 +739,8 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             ImageDataSourceConfiguration imageSource) {
         imageSource.setStudyConfiguration(studyConfiguration);
         studyConfiguration.getImageDataSources().add(imageSource);
-        dao.save(imageSource);
-        dao.save(studyConfiguration);
+        getDao().save(imageSource);
+        getDao().save(studyConfiguration);
     }
     
     /**
@@ -780,7 +754,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             acquisition.setImageDataSource(imageSource);
         }
         imageSource.setStatus(Status.LOADED);
-        dao.save(imageSource);
+        getDao().save(imageSource);
     }
 
     /**
@@ -789,7 +763,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void loadImageAnnotation(ImageDataSourceConfiguration imageDataSource) throws ValidationException {
         imageDataSource.getImageAnnotationConfiguration().loadAnnontation();
         imageDataSource.setStatus(retrieveImageSourceStatus(imageDataSource.getImageAnnotationConfiguration()));
-        dao.save(imageDataSource);
+        getDao().save(imageDataSource);
     }
 
     /**
@@ -801,7 +775,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         new ImageSeriesAcquisitionMappingHelper(studyConfiguration, mappingFile, 
                 mappingType, imageSource).mapImageSeries();
         imageSource.setStatus(retrieveImageSourceStatus(imageSource.getImageAnnotationConfiguration()));
-        dao.save(imageSource);
+        getDao().save(imageSource);
     }
     
     /**
@@ -815,7 +789,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             Status status = retrieveImageSourceStatus(imageSource.getImageAnnotationConfiguration());
             if (imageSource.getStatus() != status) {
                 imageSource.setStatus(status);
-                dao.save(imageSource);
+                getDao().save(imageSource);
             }
         }
     }
@@ -840,7 +814,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public ImageDataSourceConfiguration getRefreshedImageSource(Long id) {
         ImageDataSourceConfiguration imagingSource = new ImageDataSourceConfiguration();
         imagingSource.setId(id);
-        imagingSource = getRefreshedStudyEntity(imagingSource);
+        imagingSource = getRefreshedEntity(imagingSource);
         HibernateUtil.loadCollection(imagingSource.getStudyConfiguration());
         return imagingSource;
     }
@@ -857,9 +831,9 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         annotationDefinition.getCommonDataElement().getValueDomain().setDataType(annotationType);
         annotationDefinition.setKeywords(annotationDefinition.getDisplayName());
         addDefinitionToStudy(descriptor, study, entityType, annotationDefinition);
-        dao.save(annotationDefinition);
-        dao.save(descriptor);
-        dao.save(study);
+        getDao().save(annotationDefinition);
+        getDao().save(descriptor);
+        getDao().save(study);
         return annotationDefinition;
     }
     
@@ -945,7 +919,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         throws ValidationException, IOException {
         ExternalLinksLoader.loadLinks(externalLinkList);
         studyConfiguration.getExternalLinkLists().add(externalLinkList);
-        dao.save(studyConfiguration);
+        getDao().save(studyConfiguration);
     }
 
     /**
@@ -967,7 +941,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     @Transactional(readOnly = true)
     public boolean isDuplicateStudyName(Study study, String username) {
-        return dao.isDuplicateStudyName(study, username);
+        return getDao().isDuplicateStudyName(study, username);
     }
     
     /**
@@ -977,7 +951,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         SurvivalValueDefinition survivalValueDefinition = new SurvivalValueDefinition();
         study.getSurvivalValueDefinitionCollection().add(survivalValueDefinition);
         survivalValueDefinition.setName("[New Name]");
-        dao.save(study);
+        getDao().save(study);
         return survivalValueDefinition;
     }
     
@@ -988,15 +962,15 @@ public class StudyManagementServiceImpl implements StudyManagementService {
        study.getSurvivalValueDefinitionCollection().remove(survivalValueDefinition);
        Collection <SurvivalValueDefinition> objectsToRemove = new HashSet<SurvivalValueDefinition>();
        objectsToRemove.add(survivalValueDefinition);
-       dao.removeObjects(objectsToRemove);
-       dao.save(study);
+       getDao().removeObjects(objectsToRemove);
+       getDao().save(study);
     }
 
     /**
      * {@inheritDoc}
      */
     public ImageDataSourceConfiguration retrieveImageDataSource(Study study) {
-        ImageDataSourceConfiguration dataSource = dao.retrieveImagingDataSourceForStudy(study);
+        ImageDataSourceConfiguration dataSource = getDao().retrieveImagingDataSourceForStudy(study);
         if (dataSource != null) {
             Hibernate.initialize(dataSource.getServerProfile());
         }
@@ -1015,7 +989,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             source.setCopyNumberDataConfiguration(new CopyNumberDataConfiguration());
         }
         source.getCopyNumberDataConfiguration().setMappingFilePath(savedFile.getAbsolutePath());
-        dao.save(source);
+        getDao().save(source);
     }
 
     /**
@@ -1031,7 +1005,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void setLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy) {
         studyConfiguration.setLastModifiedBy(lastModifiedBy);
         studyConfiguration.setLastModifiedDate(new Date());
-        dao.save(studyConfiguration);
+        getDao().save(studyConfiguration);
     }
 
 

@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
+import gov.nih.nci.caintegrator2.application.CaIntegrator2EntityRefresher;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
@@ -99,7 +100,7 @@ import java.util.Set;
 /**
  * Provides <code>UserWorkspace</code> access and management functionality.
  */
-public interface WorkspaceService {
+public interface WorkspaceService extends CaIntegrator2EntityRefresher {
     
     /**
      * Returns the workspace belonging to the current user.
@@ -178,14 +179,5 @@ public interface WorkspaceService {
      * @param geneSymbols the list of gene symbols
      */
     void createGeneList(GeneList geneList, List<String> geneSymbols);
-    
-    /**
-     * Returns the refreshed entity attached to the current Hibernate session.
-     * 
-     * @param <T> type of object being returned.
-     * @param entity a persistent entity with the id set.
-     * @return the refreshed entity.
-     */
-    <T> T getRefreshedEntity(T entity);
 
 }

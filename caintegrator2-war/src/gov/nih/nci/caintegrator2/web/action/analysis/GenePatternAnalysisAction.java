@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
-import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
@@ -265,12 +264,12 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     
     private void validateConnect() {
         if (StringUtils.isEmpty(getGenePatternAnalysisForm().getUrl())) {
-            addFieldError("analysisForm.url", "URL is required");
+            addFieldError("genePatternAnalysisForm.url", "URL is required");
         } else {
             validateUrl();
         }
         if (StringUtils.isEmpty(getGenePatternAnalysisForm().getUsername())) {
-            addFieldError("analysisForm.username", "Username is required");
+            addFieldError("genePatternAnalysisForm.username", "Username is required");
         }
     }
 
@@ -278,13 +277,13 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
         try {
             new URL(getGenePatternAnalysisForm().getUrl());
         } catch (MalformedURLException e) {
-            addFieldError("analysisForm.url", "Invalid URL format");
+            addFieldError("genePatternAnalysisForm.url", "Invalid URL format");
         }
     }
 
     private void validateExecuteAnalysis() {
         if (StringUtils.isBlank(getCurrentGenePatternAnalysisJob().getName())) {
-            addFieldError("currentAnalysisJob.name", "Job name required.");
+            addFieldError("currentGenePatternAnalysisJob.name", "Job name required.");
         }
         getGenePatternAnalysisForm().validate(this);
     }
@@ -315,12 +314,6 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     }
     
     private String executeAnalysis() {
-        try {
-            configureInvocationParameters();
-        } catch (InvalidCriterionException e) {
-            addActionError(e.getMessage());
-            return ERROR;
-        }
         getCurrentGenePatternAnalysisJob().setCreationDate(new Date());
         getCurrentGenePatternAnalysisJob().setStatus(AnalysisJobStatusEnum.SUBMITTED);
         getStudySubscription().getAnalysisJobCollection().add(getCurrentGenePatternAnalysisJob());
@@ -328,12 +321,6 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
         getWorkspaceService().saveUserWorkspace(getWorkspace());
         ajaxUpdater.runJob(getCurrentGenePatternAnalysisJob());
         return STATUS_ACTION;
-    }
-
-    private void configureInvocationParameters() throws InvalidCriterionException {
-        for (AbstractAnalysisFormParameter formParameter : getGenePatternAnalysisForm().getParameters()) {
-            formParameter.configureForInvocation(getStudySubscription(), getQueryManagementService());
-        }
     }
 
     /**

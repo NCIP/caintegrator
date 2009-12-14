@@ -157,7 +157,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
                 params.getSurvivalValueDefinition().setId(
                        Long.valueOf(getKmPlotForm().getSurvivalValueDefinitionId()));
                 params.setSurvivalValueDefinition(getStudyManagementService().
-                        getRefreshedStudyEntity(params.getSurvivalValueDefinition()));
+                        getRefreshedEntity(params.getSurvivalValueDefinition()));
        }
     }
     

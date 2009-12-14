@@ -276,6 +276,7 @@ class GenomicQueryHandler {
     private Collection<AbstractReporter> getAllReporters(Collection<ArrayData> arrayDatas) {
         HashSet<AbstractReporter> reporters = new HashSet<AbstractReporter>();
         for (ArrayData arrayData : arrayDatas) {
+            arrayData = dao.get(arrayData.getId(), ArrayData.class);
             reporters.addAll(arrayData.getReporters());
         }
         return reporters;

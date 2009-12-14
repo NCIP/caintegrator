@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.analysis.StatusUpdateListener;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobTypeEnum;
@@ -124,6 +125,7 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String JOB_ACTION_BAR1 = "jobActionBar1_";
     private static final String JOB_ACTION_BAR2 = "jobActionBar2_";
     private AnalysisService analysisService;
+    private QueryManagementService queryManagementService;
 
     /**
      * {@inheritDoc}
@@ -344,6 +346,20 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
         this.analysisService = analysisService;
     }
     
+    /**
+     * @return the queryManagementService
+     */
+    public QueryManagementService getQueryManagementService() {
+        return queryManagementService;
+    }
+
+    /**
+     * @param queryManagementService the queryManagementService to set
+     */
+    public void setQueryManagementService(QueryManagementService queryManagementService) {
+        this.queryManagementService = queryManagementService;
+    }
+
     /**
      * Enum for the download type.
      */

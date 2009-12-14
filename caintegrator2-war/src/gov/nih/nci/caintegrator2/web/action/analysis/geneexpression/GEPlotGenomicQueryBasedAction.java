@@ -137,7 +137,7 @@ public class GEPlotGenomicQueryBasedAction extends AbstractGeneExpressionAction 
     
     private void refreshObjectInstances() {
         if (plotParameters.getQuery() != null) {
-            plotParameters.setQuery(getStudyManagementService().getRefreshedStudyEntity(plotParameters.getQuery()));
+            plotParameters.setQuery(getStudyManagementService().getRefreshedEntity(plotParameters.getQuery()));
         }
     }
     

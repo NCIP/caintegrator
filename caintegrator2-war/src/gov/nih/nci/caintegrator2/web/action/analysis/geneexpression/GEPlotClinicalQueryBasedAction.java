@@ -151,7 +151,7 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
         if (!plotParameters.getQueries().isEmpty()) {
             List <Query> newValues = new ArrayList<Query>();
             for (Query value : plotParameters.getQueries()) {
-                Query newValue = getStudyManagementService().getRefreshedStudyEntity(value);
+                Query newValue = getStudyManagementService().getRefreshedEntity(value);
                 newValues.add(newValue);
             }
             plotParameters.getQueries().clear();

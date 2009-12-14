@@ -149,9 +149,9 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     public void prepare() {
         super.prepare();
         if (getFileColumn().getId() != null) {
-            setFileColumn(getStudyManagementService().getRefreshedStudyEntity(getFileColumn()));
+            setFileColumn(getStudyManagementService().getRefreshedEntity(getFileColumn()));
             if (fileColumn.getFieldDescriptor() != null && fileColumn.getFieldDescriptor().getDefinition() != null) {
-                fileColumn.getFieldDescriptor().setDefinition(getStudyManagementService().getRefreshedStudyEntity(
+                fileColumn.getFieldDescriptor().setDefinition(getStudyManagementService().getRefreshedEntity(
                                 fileColumn.getFieldDescriptor().getDefinition()));
                 HibernateUtil.loadCollections(fileColumn.getFieldDescriptor().getDefinition());
             }
@@ -215,7 +215,7 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     public String selectDefinition() {
         FileColumn originalFileColumn = getFileColumn();
         AnnotationDefinition definitionToUse = getStudyManagementService().
-                        getRefreshedStudyEntity(getDefinitions().get(getDefinitionIndex()));
+                        getRefreshedEntity(getDefinitions().get(getDefinitionIndex()));
         try {
             getStudyManagementService().setDefinition(getStudyConfiguration().getStudy(),
                                                   getFileColumn(), 
@@ -312,7 +312,7 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
         } catch (ValidationException e) {
             addActionError(e.getMessage());
             clearCacheMemory();
-            fileColumn.getFieldDescriptor().setDefinition(getStudyManagementService().getRefreshedStudyEntity(
+            fileColumn.getFieldDescriptor().setDefinition(getStudyManagementService().getRefreshedEntity(
                     fileColumn.getFieldDescriptor().getDefinition()));
             setReadOnly(false);
             return ERROR;
