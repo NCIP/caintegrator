@@ -51,4 +51,8 @@
         <comment>Adds CATEGORY field to EXTERNAL_LINK table.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.7.sql"/>
     </changeSet>
+    <changeSet id="1.1.8" author="tandrews">
+        <comment>Updates the sizes of the GENE_SYMBOL columns to 1200.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.8.sql"/>
+    </changeSet>
 </databaseChangeLog>
