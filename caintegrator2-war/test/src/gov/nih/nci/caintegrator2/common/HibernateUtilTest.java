@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
+import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -115,11 +117,17 @@ public class HibernateUtilTest {
         
     }
     
+    @SuppressWarnings("deprecation")
     @Test
     public void testLoadCollectionStudyConfiguration() {
         StudyHelper studyHelper = new StudyHelper();
         StudyConfiguration studyConfiguration = studyHelper.
                     populateAndRetrieveStudyWithSourceConfigurations().getStudyConfiguration();
+        ImageAnnotationConfiguration imageConf = new ImageAnnotationConfiguration();
+        studyConfiguration.getImageDataSources().get(0).setImageAnnotationConfiguration(imageConf);
+        AnnotationFile imageAnnotationFile = new AnnotationFile();
+        imageConf.setAnnotationFile(imageAnnotationFile);
+
         HibernateUtil.loadCollection(studyConfiguration);
     }
 
