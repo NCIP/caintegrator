@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
+import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
@@ -153,7 +154,10 @@ public final class HibernateUtil {
         loadCollection(studyConfiguration.getClinicalConfigurationCollection());
         loadGenomicSources(studyConfiguration.getGenomicDataSources());
         loadImagingSources(studyConfiguration.getImageDataSources());
+        loadClinicalSources(studyConfiguration.getClinicalConfigurationCollection());
         HibernateUtil.loadCollection(studyConfiguration.getStudy().getAssignmentCollection());
+        HibernateUtil.loadCollection(studyConfiguration.getVisibleSubjectAnnotationCollection());
+        HibernateUtil.loadCollection(studyConfiguration.getVisibleImageSeriesAnnotationCollection());
         for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
             loadCollection(assignment.getSampleAcquisitionCollection());
             loadCollection(assignment.getImageStudyCollection());
@@ -164,7 +168,8 @@ public final class HibernateUtil {
             }
         }
     }
-    
+
+
     /**
      * Make sure all persistent collections are loaded.
      * @param studySubscription to load from hibernate.
@@ -213,6 +218,12 @@ public final class HibernateUtil {
         loadCollection(imageSources);
         for (ImageDataSourceConfiguration imageSource : imageSources) {
             loadImagingSource(imageSource);
+        }
+    }
+    
+    private static void loadClinicalSources(List<AbstractClinicalSourceConfiguration> clinicalConfigurationCollection) {
+        for (AbstractClinicalSourceConfiguration clinicalSource : clinicalConfigurationCollection) {
+            HibernateUtil.loadCollection(clinicalSource.getAnnotationDescriptors());
         }
     }
 
