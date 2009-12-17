@@ -102,6 +102,7 @@ class KMPlotImpl implements KMPlot {
     
     private static final int DEFAULT_WIDTH = 800;
     private static final int DEFAULT_HEIGHT = 500;
+    private static final int HEIGHT_INCREMENTER = 50;
     
     private static final Logger LOGGER = Logger.getLogger(KMPlotImpl.class);
     
@@ -119,12 +120,18 @@ class KMPlotImpl implements KMPlot {
      * {@inheritDoc}
      */
     public void writePlotImage(OutputStream out) {
+        fixHeight();
         BufferedImage bufferedImage = getPlotChart().createBufferedImage(width, height);
         try {
             ChartUtilities.writeBufferedImageAsPNG(out, bufferedImage);
         } catch (IOException e) {
             LOGGER.warn("Couldn't write KMPlot image", e);
         }
+    }
+    
+    private void fixHeight() {
+        height = height
+            + (int) (HEIGHT_INCREMENTER * (configuration.getGroups().size() / 3)); // For every 3 groups, increment
     }
 
     int getWidth() {

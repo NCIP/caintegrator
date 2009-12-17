@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.analysis;
 
 import edu.mit.broad.genepattern.gp.services.JobInfo;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
@@ -205,5 +206,10 @@ public class AnalysisServiceStub implements AnalysisService {
 
     public StudySubscription getRefreshedStudySubscription(StudySubscription studySubscription) {
         return studySubscription;
+    }
+
+    public List<String> validateGeneSymbols(StudySubscription studySubscription, List<String> geneSymbols)
+            throws GenesNotFoundInStudyException {
+        return geneSymbols;
     }
 }

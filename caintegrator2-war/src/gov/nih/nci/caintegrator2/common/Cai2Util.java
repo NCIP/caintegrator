@@ -111,9 +111,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -516,6 +519,16 @@ public final class Cai2Util {
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
         query.setSubscription(studySubscription);
         return query;
+    }
+    
+    /**
+     * Turns a comma separated list of Gene Symbols into a List of gene symbols.
+     * @param geneSymbols comma separated list of gene symbols.
+     * @return List of gene symbols.
+     */
+    public static List<String> createGeneListFromString(String geneSymbols) {
+        return StringUtils.isBlank(geneSymbols) ? new ArrayList<String>()
+            : Arrays.asList(geneSymbols.replaceAll(" ", "").split(","));
     }
     
 }

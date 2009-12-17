@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
@@ -110,7 +111,8 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * KM Plot Handler for Gene Expression Based KM Plots.
@@ -118,14 +120,12 @@ import java.util.Set;
 class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
 
     private final KMGeneExpressionBasedParameters kmParameters;
-    private final Set<StudySubjectAssignment> usedSubjects = new HashSet<StudySubjectAssignment>();
-
-    
-    GeneExpressionBasedKMPlotHandler(CaIntegrator2Dao dao, 
+        
+    GeneExpressionBasedKMPlotHandler(StudySubscription studySubscription, CaIntegrator2Dao dao, 
                                  SurvivalValueDefinition survivalValueDefinition, 
                                  QueryManagementService queryManagementService, 
                                  KMGeneExpressionBasedParameters kmParameters) {
-        super(dao, survivalValueDefinition, queryManagementService);
+        super(studySubscription, dao, survivalValueDefinition, queryManagementService);
         this.kmParameters = kmParameters;
     }
     
@@ -133,21 +133,28 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
      * {@inheritDoc}
      */
     @Override
-    KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription) throws InvalidCriterionException {
+    KMPlot createPlot(KMPlotService kmPlotService) throws InvalidCriterionException {
         validateSurvivalValueDefinition();
         KMPlotConfiguration configuration = new KMPlotConfiguration();
         Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
-        retrieveSubjectGroups(subscription, subjectGroupCollection);
+        for (String geneSymbol : kmParameters.getGenesFoundInStudy()) {
+            retrieveSubjectGroups(getStudySubscription(), subjectGroupCollection, geneSymbol);    
+        }
         filterGroupsWithoutSurvivalData(configuration, subjectGroupCollection);
+        configuration.getGenesNotFound().addAll(kmParameters.getGenesNotFound());
+        if (kmParameters.getGenesFoundInStudy().size() > 1) {
+            configuration.setTitle("OVERLAYED " + configuration.getTitle());
+        }
         return kmPlotService.generatePlot(configuration);
     }
 
 
     private void retrieveSubjectGroups(StudySubscription subscription, 
-                                       Collection<SubjectGroup> subjectGroupCollection) 
+                                       Collection<SubjectGroup> subjectGroupCollection,
+                                       String geneSymbol) 
         throws InvalidCriterionException {
         // Up Regulated
-        SubjectGroup upRegulatedGroup = retrieveGroup(kmParameters.getGeneSymbol() + " >= " 
+        SubjectGroup upRegulatedGroup = retrieveGroup(geneSymbol, geneSymbol + " >= " 
                                                                 + kmParameters.getOverexpressedFoldChangeNumber() 
                                                                 + "-fold Overexpressed",
                                                                 RegulationTypeEnum.UP,
@@ -156,7 +163,7 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
         upRegulatedGroup.setColor(Cai2Util.getColor(subjectGroupCollection.size()));
         
         // Down Regulated
-        SubjectGroup downRegulatedGroup = retrieveGroup(kmParameters.getGeneSymbol() + " >= " 
+        SubjectGroup downRegulatedGroup = retrieveGroup(geneSymbol, geneSymbol + " >= " 
                                                         + kmParameters.getUnderexpressedFoldChangeNumber() 
                                                         + "-fold Underexpressed",
                                                         RegulationTypeEnum.DOWN,
@@ -165,19 +172,19 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
         downRegulatedGroup.setColor(Cai2Util.getColor(subjectGroupCollection.size()));
         
         // Intermediate
-        SubjectGroup intermediateGroup = retrieveGroup("Intermediate",
+        SubjectGroup intermediateGroup = retrieveGroup(geneSymbol, geneSymbol + " intermediate",
                                                         RegulationTypeEnum.UNCHANGED,
                                                         subscription);
         subjectGroupCollection.add(intermediateGroup);
         intermediateGroup.setColor(Cai2Util.getColor(subjectGroupCollection.size()));
     }
     
-    private SubjectGroup retrieveGroup(String groupName, RegulationTypeEnum regulationType, 
+    private SubjectGroup retrieveGroup(String geneSymbol, String groupName, RegulationTypeEnum regulationType, 
                                        StudySubscription subscription) throws InvalidCriterionException {
         SubjectGroup group = new SubjectGroup();
         group.setName(groupName);
         Collection<FoldChangeCriterion> criterionCollection = new HashSet<FoldChangeCriterion>();
-        criterionCollection.add(retrieveFoldChangeCriterion(regulationType));
+        criterionCollection.add(retrieveFoldChangeCriterion(geneSymbol, regulationType));
         Collection<ResultRow> rows = retrieveFoldChangeRows(subscription, criterionCollection);
         assignRowsToGroup(group, rows);
         return group;
@@ -185,28 +192,21 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
 
     private void assignRowsToGroup(SubjectGroup group, Collection<ResultRow> rows) {
         for (ResultRow row : rows) {
-            StudySubjectAssignment subjectAssignment = row.getSubjectAssignment();
-            if (!usedSubjects.contains(subjectAssignment)) {
-                SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(subjectAssignment);
-                if (subjectSurvivalData != null) {
-                    group.getSurvivalData().add(subjectSurvivalData);
-                    usedSubjects.add(subjectAssignment);
-                }
+        StudySubjectAssignment subjectAssignment = row.getSubjectAssignment();
+            SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(subjectAssignment);
+            if (subjectSurvivalData != null) {
+                group.getSurvivalData().add(subjectSurvivalData);
             }
         }
     }
     
-    private FoldChangeCriterion retrieveFoldChangeCriterion(RegulationTypeEnum regulationType) {
+    private FoldChangeCriterion retrieveFoldChangeCriterion(String geneSymbol, RegulationTypeEnum regulationType) {
         FoldChangeCriterion criterion = new FoldChangeCriterion();
         criterion.setRegulationType(regulationType);
         criterion.setFoldsUp(kmParameters.getOverexpressedFoldChangeNumber().floatValue());
-        if (RegulationTypeEnum.UNCHANGED.equals(regulationType)) {
-            criterion.setFoldsDown(1 / kmParameters.getUnderexpressedFoldChangeNumber().floatValue());
-        } else {
-            criterion.setFoldsDown(kmParameters.getUnderexpressedFoldChangeNumber().floatValue());
-        }
+        criterion.setFoldsDown(kmParameters.getUnderexpressedFoldChangeNumber().floatValue());
         criterion.setControlSampleSetName(kmParameters.getControlSampleSetName());
-        criterion.setGeneSymbol(kmParameters.getGeneSymbol());
+        criterion.setGeneSymbol(geneSymbol);
         return criterion;
     }
     
@@ -223,5 +223,20 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
         query.setSubscription(subscription);
         QueryResult queryResult = getQueryManagementService().execute(query);
         return queryResult.getRowCollection();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void setupAndValidateParameters(AnalysisService analysisService) throws GenesNotFoundInStudyException {
+        if (StringUtils.isNotBlank(kmParameters.getGeneSymbol())) {
+            kmParameters.getGenesFoundInStudy().clear();
+            kmParameters.getGenesFoundInStudy().addAll(Cai2Util.createGeneListFromString(kmParameters.getGeneSymbol()));
+            kmParameters.getGenesNotFound().clear();
+            kmParameters.getGenesNotFound().addAll(analysisService.validateGeneSymbols(getStudySubscription(), 
+                    kmParameters.getGenesFoundInStudy()));
+            kmParameters.getGenesFoundInStudy().removeAll(kmParameters.getGenesNotFound());
+        }
     }
 }

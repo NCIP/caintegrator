@@ -12,6 +12,16 @@
             <img src="${retrieveGeneExpressionKMPlot}"/>
             <br>
             
+            <s:if test="!genesNotFound.isEmpty()">
+            <strong>Genes Not Found in Study</strong>
+            <br/>
+            <font color="red">
+            <s:iterator value="genesNotFound" status="geneIteratorStatus">
+                <s:if test="#geneIteratorStatus.first == false">, </s:if><s:property />
+            </s:iterator>
+             </font>
+            </s:if>
+            <br/>
             <strong>Log-rank P-value for significance of difference in survival between groups</strong>
             <br>
             <table cellspacing="10">
