@@ -88,10 +88,11 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import gov.nih.nci.caintegrator2.application.analysis.KMGeneExpressionBasedParameters;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.math.NumberUtils;
@@ -180,7 +181,7 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
                 try {
                     KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
                     SessionHelper.setKmPlot(PlotTypeEnum.GENE_EXPRESSION, plot);
-                } catch (InvalidCriterionException e) {
+                } catch (Exception e) {
                     SessionHelper.setKmPlot(PlotTypeEnum.GENE_EXPRESSION, null);
                     addActionError(e.getMessage());
                 }
@@ -206,6 +207,17 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
             return retrieveAllStringPValues(SessionHelper.getGeneExpressionBasedKmPlot());
         }
         return new HashMap<String, Map<String, String>>();
+    }
+    
+    /**
+     * 
+     * @return list of genesNotFound.
+     */
+    public List<String> getGenesNotFound() {
+        if (SessionHelper.getGeneExpressionBasedKmPlot() != null) {
+            return SessionHelper.getGeneExpressionBasedKmPlot().getConfiguration().getGenesNotFound();
+        }
+        return new ArrayList<String>();
     }
     
     /**

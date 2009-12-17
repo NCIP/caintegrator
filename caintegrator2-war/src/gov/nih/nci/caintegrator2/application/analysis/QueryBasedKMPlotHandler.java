@@ -113,11 +113,11 @@ class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
     private final KMQueryBasedParameters kmParameters;
     private final Set<StudySubjectAssignment> usedSubjects = new HashSet<StudySubjectAssignment>();
     
-    QueryBasedKMPlotHandler(CaIntegrator2Dao dao, 
+    QueryBasedKMPlotHandler(StudySubscription studySubscription, CaIntegrator2Dao dao, 
                                  SurvivalValueDefinition survivalValueDefinition, 
                                  QueryManagementService queryManagementService, 
                                  KMQueryBasedParameters kmParameters) {
-        super(dao, survivalValueDefinition, queryManagementService);
+        super(studySubscription, dao, survivalValueDefinition, queryManagementService);
         this.kmParameters = kmParameters;
     }
     
@@ -125,11 +125,11 @@ class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
      * {@inheritDoc}
      */
     @Override
-    KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription) throws InvalidCriterionException {
+    KMPlot createPlot(KMPlotService kmPlotService) throws InvalidCriterionException {
         validateSurvivalValueDefinition();
         KMPlotConfiguration configuration = new KMPlotConfiguration();
         Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
-        retrieveSubjectGroups(subscription, subjectGroupCollection);
+        retrieveSubjectGroups(getStudySubscription(), subjectGroupCollection);
         filterGroupsWithoutSurvivalData(configuration, subjectGroupCollection);
         return kmPlotService.generatePlot(configuration);
     }

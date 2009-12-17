@@ -89,7 +89,6 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import gov.nih.nci.caintegrator2.application.analysis.KMQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
@@ -228,7 +227,7 @@ public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
                 try {
                     KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
                     SessionHelper.setKmPlot(PlotTypeEnum.QUERY_BASED, plot);
-                } catch (InvalidCriterionException e) {
+                } catch (Exception e) {
                     SessionHelper.setKmPlot(PlotTypeEnum.QUERY_BASED, null);
                     addActionError(e.getMessage());
                 }

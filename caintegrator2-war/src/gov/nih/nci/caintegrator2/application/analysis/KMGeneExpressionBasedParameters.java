@@ -85,6 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -96,6 +99,8 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
     private Float overexpressedFoldChangeNumber;
     private String controlSampleSetName;
     private String geneSymbol;
+    private final List<String> genesNotFound = new ArrayList<String>();
+    private final List<String> genesFoundInStudy = new ArrayList<String>();
 
     /**
      * {@inheritDoc}
@@ -195,5 +200,17 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
         this.controlSampleSetName = controlSampleSetName;
     }
     
+    /**
+     * @return the genesNotFound
+     */
+    public List<String> getGenesNotFound() {
+        return genesNotFound;
+    }
 
+    /**
+     * @return the genesFoundInStudy
+     */
+    public List<String> getGenesFoundInStudy() {
+        return genesFoundInStudy;
+    }
 }

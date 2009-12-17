@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
@@ -111,31 +112,34 @@ abstract class AbstractKMPlotHandler {
     private final CaIntegrator2Dao dao;
     private final SurvivalValueDefinition survivalValueDefinition;
     private final QueryManagementService queryManagementService;
-    
-    protected AbstractKMPlotHandler(CaIntegrator2Dao dao, 
+    private final StudySubscription studySubscription;
+
+    protected AbstractKMPlotHandler(StudySubscription studySubscription, CaIntegrator2Dao dao, 
             SurvivalValueDefinition survivalValueDefinition, 
             QueryManagementService queryManagementService) {
+        this.studySubscription = studySubscription;
         this.dao = dao;
         this.survivalValueDefinition = survivalValueDefinition;
         this.queryManagementService = queryManagementService;
     }
     
-    public static AbstractKMPlotHandler createKMPlotHandler(CaIntegrator2Dao dao, 
+    public static AbstractKMPlotHandler createKMPlotHandler(StudySubscription studySubscription,
+                                                            CaIntegrator2Dao dao, 
                                                             SurvivalValueDefinition survivalValueDefinition, 
                                                             QueryManagementService queryManagementService,
                                                             AbstractKMParameters kmParameters) {
         if (kmParameters instanceof KMAnnotationBasedParameters) {
-            return new AnnotationBasedKMPlotHandler(dao, 
+            return new AnnotationBasedKMPlotHandler(studySubscription, dao, 
                                                     survivalValueDefinition, 
                                                     queryManagementService, 
                                                     (KMAnnotationBasedParameters) kmParameters);
         } else if (kmParameters instanceof KMGeneExpressionBasedParameters) {
-            return new GeneExpressionBasedKMPlotHandler(dao, 
+            return new GeneExpressionBasedKMPlotHandler(studySubscription, dao,
                                                         survivalValueDefinition, 
                                                         queryManagementService, 
                                                         (KMGeneExpressionBasedParameters) kmParameters);
         } else if (kmParameters instanceof KMQueryBasedParameters) {
-            return new QueryBasedKMPlotHandler(dao, 
+            return new QueryBasedKMPlotHandler(studySubscription, dao,
                     survivalValueDefinition, 
                     queryManagementService, 
                     (KMQueryBasedParameters) kmParameters);
@@ -143,8 +147,13 @@ abstract class AbstractKMPlotHandler {
         throw new IllegalArgumentException("Unknown Parameter Type");         
     }
     
-    abstract KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription) 
+    abstract KMPlot createPlot(KMPlotService kmPlotService) 
         throws InvalidCriterionException; 
+    
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // empty default implementation
+    void setupAndValidateParameters(AnalysisService analysisService) throws GenesNotFoundInStudyException {
+        // no-op : default implementation is no-op, override if necessary.
+    }
 
     protected void filterGroupsWithoutSurvivalData(KMPlotConfiguration configuration,
             Collection<SubjectGroup> subjectGroupCollection) {
@@ -235,6 +244,13 @@ abstract class AbstractKMPlotHandler {
      */
     public QueryManagementService getQueryManagementService() {
         return queryManagementService;
+    }
+    
+    /**
+     * @return the studySubscription
+     */
+    public StudySubscription getStudySubscription() {
+        return studySubscription;
     }
 
 }

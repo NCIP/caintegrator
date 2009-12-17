@@ -124,25 +124,26 @@ class AnnotationBasedKMPlotHandler extends AbstractKMPlotHandler {
     private final Map<SubjectGroup, PermissibleValue> subjectGroupPermissibleValue = 
                                         new HashMap<SubjectGroup, PermissibleValue>();
     
-    AnnotationBasedKMPlotHandler(CaIntegrator2Dao dao, 
+    AnnotationBasedKMPlotHandler(StudySubscription studySubscription, CaIntegrator2Dao dao, 
                                  SurvivalValueDefinition survivalValueDefinition, 
                                  QueryManagementService queryManagementService, 
                                  KMAnnotationBasedParameters kmParameters) {
-        super(dao, survivalValueDefinition, queryManagementService);
+        super(studySubscription, dao, survivalValueDefinition, queryManagementService);
         this.kmParameters = kmParameters;
     }
     
     /**
      * {@inheritDoc}
      */
-    KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription) throws InvalidCriterionException {
+    KMPlot createPlot(KMPlotService kmPlotService) throws InvalidCriterionException {
         validateSurvivalValueDefinition();
         KMPlotConfiguration configuration = new KMPlotConfiguration();
         AnnotationDefinition groupAnnotationField = kmParameters.getSelectedAnnotation(); 
         Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
         retrieveSubjectGroups(kmParameters.getSelectedValues(), subjectGroupCollection);
         Collection <ResultRow> subjectRows = 
-                retrieveSubjectRowsFromDatabase(kmParameters.getEntityType(), groupAnnotationField, subscription);
+                retrieveSubjectRowsFromDatabase(kmParameters.getEntityType(), groupAnnotationField, 
+                        getStudySubscription());
         retrieveSubjectSurvivalData(groupAnnotationField, subjectRows, subjectGroupCollection);
         filterGroupsWithoutSurvivalData(configuration, subjectGroupCollection);
         return kmPlotService.generatePlot(configuration);
