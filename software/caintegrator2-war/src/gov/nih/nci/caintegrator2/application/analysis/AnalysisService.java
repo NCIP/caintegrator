@@ -172,9 +172,10 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @param kmParameters are the input parameters for the KMPlot.
      * @return the plot object.
      * @throws InvalidCriterionException if the Criterion is no longer valid for queries.
+     * @throws GenesNotFoundInStudyException if the criterion is supposed to have gene input and none found in study. 
      */
     KMPlot createKMPlot(StudySubscription subscription, AbstractKMParameters kmParameters) 
-    throws InvalidCriterionException;
+    throws InvalidCriterionException, GenesNotFoundInStudyException;
 
     /**
      * Creates the GeneExpressionPlotGroup which is a group of plots based on the input parameters, the plot
@@ -196,6 +197,16 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @param jobId the id of the analysis job to delete.
      */
     void deleteAnalysisJob(Long jobId);
+    
+    /**
+     * Validates the gene symbols and returns all symbols that exist in the study.
+     * @param studySubscription to check gene symbols against.
+     * @param geneSymbols to validate existance in the study.
+     * @return all valid gene symbols.
+     * @throws GenesNotFoundInStudyException if no genes are found.
+     */
+    List<String> validateGeneSymbols(StudySubscription studySubscription, List<String> geneSymbols)
+        throws GenesNotFoundInStudyException;
     
     /**
      * Refreshes studySubscription object from the database so it can be used.

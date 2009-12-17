@@ -293,4 +293,10 @@ public class Cai2UtilTest {
         compoundCriterion2.getCriterionCollection().add(new FoldChangeCriterion());
         assertTrue(Cai2Util.isCompoundCriterionGenomic(compoundCriterion1));
     }
+    
+    @Test
+    public void testCreateGeneListFromString() {
+        assertTrue(Cai2Util.createGeneListFromString(null).isEmpty());
+        assertEquals(2, Cai2Util.createGeneListFromString("egfr, brca1").size());
+    }
 }

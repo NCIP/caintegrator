@@ -1,26 +1,38 @@
 package gov.nih.nci.caintegrator.plots.kaplanmeier;
 
-import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.chart.*;
-import org.jfree.chart.title.LegendTitle;
+import gov.nih.nci.caintegrator.plots.kaplanmeier.model.GroupCoordinates;
+import gov.nih.nci.caintegrator.plots.kaplanmeier.model.KMPlotPoint;
+import gov.nih.nci.caintegrator.plots.kaplanmeier.model.KMPlotPointSeries;
+import gov.nih.nci.caintegrator.plots.kaplanmeier.model.KMPlotPointSeriesSet;
+import gov.nih.nci.caintegrator.plots.kaplanmeier.model.XYCoordinate;
+import gov.nih.nci.caintegrator.plots.services.KMPlotServiceImpl;
+
+import java.awt.Color;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.LegendItem;
+import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.LegendItemSource;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.apache.log4j.Logger;
-
-import java.io.OutputStream;
-import java.io.IOException;
-import java.awt.image.BufferedImage;
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.ArrayList;
-
-import gov.nih.nci.caintegrator.plots.kaplanmeier.model.*;
-import gov.nih.nci.caintegrator.plots.services.KMPlotServiceImpl;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.data.xy.XYSeriesCollection;
 
 /**
 * @author caIntegrator Team
@@ -57,8 +69,8 @@ public class JFreeChartIKMPlottermpl implements KMPlotter {
 
      public JFreeChart createKMPlot(Collection<GroupCoordinates> groupsToBePlotted, String title, String xAxisLabel,
                                     String yAxisLabel) {
-         Collection<KMPlotPointSeriesSet> kmPlotSets =
-                                     convertToKaplanMeierPlotPointSeriesSet(groupsToBePlotted);
+         List<KMPlotPointSeriesSet> kmPlotSets =
+                 new ArrayList<KMPlotPointSeriesSet> (convertToKaplanMeierPlotPointSeriesSet(groupsToBePlotted));
 
          XYSeriesCollection finalDataCollection =  new XYSeriesCollection();
          /*  Repackage all the datasets to go into the XYSeriesCollection */
@@ -155,16 +167,21 @@ public class JFreeChartIKMPlottermpl implements KMPlotter {
         return   plotPointSeriesSetCollection;
     }
 
-    public static void createLegend(JFreeChart kmPlot, Collection<KMPlotPointSeriesSet> plotPointSeriesSetCollection) {
+    public static void createLegend(JFreeChart kmPlot, List<KMPlotPointSeriesSet> plotPointSeriesSetCollection) {
        LegendTitle legend = kmPlot.getLegend();
        LegendItemSource[] sources = new LegendItemSource[1];
        KMLegendItemSource legendSrc = new KMLegendItemSource();
+       Comparator<KMPlotPointSeriesSet> nameComparator = new Comparator<KMPlotPointSeriesSet>() {
+           public int compare(KMPlotPointSeriesSet series1, KMPlotPointSeriesSet series2) {
+               return series1.getName().compareToIgnoreCase(series2.getName());
+           }
+       };
+       Collections.sort(plotPointSeriesSetCollection, nameComparator);
+
        LegendItem item ;
-       for (Iterator<KMPlotPointSeriesSet> iterator = plotPointSeriesSetCollection.iterator();
-            iterator.hasNext();) {
-           KMPlotPointSeriesSet KMPlotPointSeriesSet = iterator.next();
-           Color color = KMPlotPointSeriesSet.getColor();
-           String title = KMPlotPointSeriesSet.getLegendTitle() + " (" + KMPlotPointSeriesSet.getGroupSize() + ")";
+       for (KMPlotPointSeriesSet plotPointSeries : plotPointSeriesSetCollection) {
+           Color color = plotPointSeries.getColor();
+           String title = plotPointSeries.getLegendTitle() + " (" + plotPointSeries.getGroupSize() + ")";
            item = new LegendItem(title, null, null, null, new Rectangle2D.Double(2,2,10,10), color);
            legendSrc.addLegendItem(item);
        }

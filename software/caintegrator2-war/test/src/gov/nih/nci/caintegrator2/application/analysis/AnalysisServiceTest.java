@@ -339,7 +339,7 @@ public class AnalysisServiceTest {
     }
     
     private void runKMPlotTest(KMPlotStudyCreator studyCreator, StudySubscription subscription, AbstractKMParameters annotationParameters) 
-    throws InvalidCriterionException {
+    throws InvalidCriterionException, GenesNotFoundInStudyException {
         KMPlot kmPlot = service.createKMPlot(subscription, annotationParameters);
         
         assertNotNull(kmPlot);
@@ -366,7 +366,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateAnnotationBasedKMPlot() throws InvalidCriterionException {
+    public void testCreateAnnotationBasedKMPlot() throws InvalidCriterionException, GenesNotFoundInStudyException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
@@ -384,7 +384,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateGeneExpressionBasedKMPlot() throws InvalidCriterionException {
+    public void testCreateGeneExpressionBasedKMPlot() throws InvalidCriterionException, GenesNotFoundInStudyException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
@@ -402,7 +402,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateQueryBasedKMPlot() throws InvalidCriterionException {
+    public void testCreateQueryBasedKMPlot() throws InvalidCriterionException, GenesNotFoundInStudyException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();

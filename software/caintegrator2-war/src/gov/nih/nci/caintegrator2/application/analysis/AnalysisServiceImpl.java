@@ -122,7 +122,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -252,11 +251,12 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * {@inheritDoc}
      */
-    public KMPlot createKMPlot(StudySubscription subscription,
-                               AbstractKMParameters kmParameters) throws InvalidCriterionException {
+    public KMPlot createKMPlot(StudySubscription subscription, AbstractKMParameters kmParameters) 
+        throws InvalidCriterionException, GenesNotFoundInStudyException {
         AbstractKMPlotHandler kmPlotHandler = AbstractKMPlotHandler.createKMPlotHandler(
-                getDao(), kmParameters.getSurvivalValueDefinition(), queryManagementService, kmParameters);
-        return kmPlotHandler.createPlot(kmPlotService, subscription);
+            subscription, getDao(), kmParameters.getSurvivalValueDefinition(), queryManagementService, kmParameters);
+        kmPlotHandler.setupAndValidateParameters(this);
+        return kmPlotHandler.createPlot(kmPlotService);
 
     }
     
@@ -267,7 +267,9 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
             AbstractGEPlotParameters plotParameters) 
     throws ControlSamplesNotMappedException, InvalidCriterionException, GenesNotFoundInStudyException {
         if (StringUtils.isNotBlank(plotParameters.getGeneSymbol())) {
-            validateGeneSymbols(studySubscription, plotParameters);
+            plotParameters.getGenesNotFound().clear();
+            plotParameters.getGenesNotFound().addAll(validateGeneSymbols(studySubscription, 
+                    Cai2Util.createGeneListFromString(plotParameters.getGeneSymbol())));
         }
         AbstractGEPlotHandler gePlotHandler = AbstractGEPlotHandler.createGeneExpressionPlotHandler(
                 getDao(), queryManagementService, plotParameters, gePlotService);
@@ -275,22 +277,25 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         return gePlotHandler.createPlots(studySubscription);
     }
 
-    private void validateGeneSymbols(StudySubscription studySubscription, AbstractGEPlotParameters plotParameters)
+    /**
+     * {@inheritDoc}
+     */
+    public List<String> validateGeneSymbols(StudySubscription studySubscription, List<String> geneSymbols)
             throws GenesNotFoundInStudyException {
-        plotParameters.getGenesNotFound().clear();
-        List<String> inputGeneSymbols = Arrays.asList(plotParameters.getGeneSymbol().replaceAll(" ", "").split(","));
-        Set<String> genesInStudy = getDao().retrieveGeneSymbolsInStudy(inputGeneSymbols, studySubscription.getStudy());
+        List<String> genesNotFound = new ArrayList<String>();
+        Set<String> genesInStudy = getDao().retrieveGeneSymbolsInStudy(geneSymbols, studySubscription.getStudy());
         if (genesInStudy.isEmpty()) {
             throw new GenesNotFoundInStudyException("None of the specified genes were found in study.");
         }
-        for (String geneSymbol : inputGeneSymbols) {
+        for (String geneSymbol : geneSymbols) {
             if (!Cai2Util.containsIgnoreCase(genesInStudy, geneSymbol)) {
-                plotParameters.getGenesNotFound().add(geneSymbol);
+                genesNotFound.add(geneSymbol);
             }
         }
-        if (!plotParameters.getGenesNotFound().isEmpty()) {
-            Collections.sort(plotParameters.getGenesNotFound());
+        if (!genesNotFound.isEmpty()) {
+            Collections.sort(genesNotFound);
         }
+        return genesNotFound;
     }
     
     private File createClassificationFile(StudySubscription studySubscription, List<Query> clinicalQueries,
