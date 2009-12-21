@@ -125,7 +125,7 @@ class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
 
     private final Map<String, Gene> symbolToGeneMap = new HashMap<String, Gene>();
 
-    AgilentGemlCghPlatformLoader(AgilentDnaPlatformSource source) {
+    AgilentGemlCghPlatformLoader(AbstractPlatformSource source) {
         super(source);
         gemlSaxParser = new GemlSaxParser();
     }

@@ -210,6 +210,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
             
         case AGILENT_GENE_EXPRESSION:
             if (!platformFileFileName.endsWith(".csv")
+                    && !platformFileFileName.endsWith(".xml")
                     && !platformFileFileName.endsWith(".adf")) {
                 extensionNotSupported();
             }
