@@ -331,7 +331,7 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         action.clearErrorsAndMessages();
         action.setPlatformFileFileName("abc.xml");
         action.validate();
-        assertTrue(action.hasFieldErrors());
+        assertFalse(action.hasFieldErrors());
         
         action.clearErrorsAndMessages();
         action.setPlatformType(PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue());
