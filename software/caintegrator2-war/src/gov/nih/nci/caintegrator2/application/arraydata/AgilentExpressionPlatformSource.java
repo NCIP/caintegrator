@@ -110,12 +110,17 @@ public class AgilentExpressionPlatformSource extends AbstractPlatformSource {
         this.platformFileName = platformFileName;
     }
 
+    private boolean isXmlFile() {
+        return platformFileName.endsWith(".xml");
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public AbstractPlatformLoader getLoader() {
-        return new AgilentExpressionPlatformLoader(this);
+        return isXmlFile() ? new AgilentGemlCghPlatformLoader(this)
+            : new AgilentExpressionPlatformLoader(this);
     }
     
     /**
