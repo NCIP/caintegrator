@@ -50,7 +50,7 @@ public class AffymetrixCopyNumberMappingFileHandlerTest {
         source.setCopyNumberDataConfiguration(new CopyNumberDataConfiguration());
         source.getCopyNumberDataConfiguration().setMappingFilePath(TestDataFiles.SHORT_COPY_NUMBER_FILE.getAbsolutePath());
         AffymetrixCopyNumberMappingFileHandler handler = new AffymetrixCopyNumberMappingFileHandler(source, caArrayFacade, arrayDataService, dao);
-        handler.loadCopyNumberData();
+        handler.loadArrayData();
         Set<ArrayData> arrayDatas = studyConfiguration.getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
         assertEquals(1, arrayDatas.size());
         for (ArrayData arrayData : arrayDatas) {

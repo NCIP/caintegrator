@@ -93,8 +93,8 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataMultiFileParser;
+import gov.nih.nci.caintegrator2.external.caarray.Level2DataFile;
 
-import java.io.File;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -113,15 +113,15 @@ public final class AgilentCopyNumberDataRetrieval {
     
     /**
      * Parsing the level 2 data file.
-     * @param dataFile the level 2 file.
+     * @param level2DataFile the level 2 data file detail.
      * @param values ArrayDataValues to be populated.
      * @param arrayData ArrayData mapping.
      * @param platformHelper the platformHelper.
      * @throws DataRetrievalException when unable to parse.
      */
-    public void parseDataFile(File dataFile, ArrayDataValues values, ArrayData arrayData,
+    public void parseDataFile(Level2DataFile level2DataFile, ArrayDataValues values, ArrayData arrayData,
             PlatformHelper platformHelper) throws DataRetrievalException {
-        Map<String, Float> agilentDataMap = AgilentLevelTwoDataMultiFileParser.INSTANCE.extractData(dataFile);
+        Map<String, Float> agilentDataMap = AgilentLevelTwoDataMultiFileParser.INSTANCE.extractData(level2DataFile);
         loadArrayDataValues(agilentDataMap, values, arrayData, platformHelper);
     }
     

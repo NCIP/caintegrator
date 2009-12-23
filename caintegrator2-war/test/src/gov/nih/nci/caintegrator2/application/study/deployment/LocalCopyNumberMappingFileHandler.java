@@ -109,7 +109,7 @@ class LocalCopyNumberMappingFileHandler extends AffymetrixCopyNumberMappingFileH
     }
 
     @Override
-    void doneWithFile(File cnchpFile) {
+    protected void doneWithFile(File cnchpFile) {
         // no-op: don't delete
     }
 

@@ -182,16 +182,11 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
         SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
         DataService dataService = 
             getServiceFactory().createDataService(genomicSource.getServerProfile());
-        switch (PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor())) {
-        case AFFYMETRIX:
+        if (PlatformVendorEnum.AFFYMETRIX.equals(PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor()))) {
             return new AffymetrixDataRetrievalHelper(genomicSource, dataService,
                     searchService, dao);
-        case AGILENT:
-            return new AgilentDataRetrievalHelper(genomicSource, dataService,
-                 searchService, dao);
-        default:
-            throw new DataRetrievalException("Unknown platform vendor.");
         }
+        throw new DataRetrievalException("Unsupport platform vendor: " + genomicSource.getPlatformVendor());
     }
 
     /**

@@ -90,6 +90,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
@@ -161,7 +162,18 @@ public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBa
         action.validate();
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
+        GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+        genomicSource.setPlatformVendor("Affymetrix");
+        action.setGenomicSource(genomicSource);
         action.setCopyNumberMappingFile(TestDataFiles.REMBRANDT_COPY_NUMBER_FILE);
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        genomicSource.setPlatformVendor("Agilent");
+        action.setCopyNumberMappingFile(TestDataFiles.REMBRANDT_COPY_NUMBER_FILE);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setCopyNumberMappingFile(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE);
         action.validate();
         assertFalse(action.hasFieldErrors());
     }
