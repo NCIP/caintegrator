@@ -91,7 +91,8 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
  * 
  */
 public class ExternalLink extends AbstractCaIntegrator2Object {
-    
+
+    private static final long serialVersionUID = 1L;
     private String category;
     private String name;
     private String url;
