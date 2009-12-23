@@ -103,6 +103,9 @@ import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataSingleFileP
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -110,12 +113,16 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import au.com.bytecode.opencsv.CSVReader;
+
 /**
  * Reads and retrieves copy number data from a caArray instance.
  */
 class AgilentCopyNumberMappingSingleFileHandler extends AbstractCopyNumberMappingFileHandler {
     
     static final String FILE_TYPE = "data";
+    private String dataFileName;
+    private final List<Sample> samples = new ArrayList<Sample>();
     
     private static final Logger LOGGER = Logger.getLogger(AgilentCopyNumberMappingSingleFileHandler.class);
     
@@ -124,16 +131,38 @@ class AgilentCopyNumberMappingSingleFileHandler extends AbstractCopyNumberMappin
         super(genomicSource, caArrayFacade, arrayDataService, dao);
     }
 
-    @Override
-    void doneWithFile(File dataFile) {
-        dataFile.delete();
+    List<ArrayDataValues> loadArrayData()
+    throws DataRetrievalException, ConnectionException, ValidationException {
+        try {
+            CSVReader reader = new CSVReader(new FileReader(getMappingFile()));
+            String[] fields;
+            while ((fields = reader.readNext()) != null) {
+                String subjectId = fields[0].trim();
+                String sampleName = fields[1].trim();
+                dataFileName = fields[2].trim();
+                mappingSample(subjectId, sampleName);
+            }
+            List<ArrayDataValues> arrayDataValues = loadArrayDataValue();
+            getDao().save(getGenomicSource().getStudyConfiguration());
+            reader.close();
+            return arrayDataValues;
+        } catch (FileNotFoundException e) {
+            throw new DataRetrievalException("Copy number mapping file not found: ", e);
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't read copy number mapping file: ", e);
+        }
     }
 
-    @Override
-    List<ArrayDataValues> loadArrayData() 
+    private void mappingSample(String subjectIdentifier, String sampleName) 
+    throws ValidationException, FileNotFoundException {
+        Sample sample = getSample(sampleName, subjectIdentifier);
+        samples.add(sample);
+    }
+
+    private List<ArrayDataValues> loadArrayDataValue() 
     throws ConnectionException, DataRetrievalException, ValidationException {
         List<ArrayDataValues> arrayDataValuesList = new ArrayList<ArrayDataValues>();
-        File dataFile = getDataFile(getDataFileName());
+        File dataFile = getDataFile(dataFileName);
         try {
             PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(
                     getGenomicSource().getPlatformName()));
@@ -148,15 +177,15 @@ class AgilentCopyNumberMappingSingleFileHandler extends AbstractCopyNumberMappin
     }
 
     private List<String> getSampleList() {
-        List<String> samples = new ArrayList<String>();
-        for (Sample sample : getSampleToFilenamesMap().keySet()) {
-            samples.add(sample.getName());
+        List<String> sampleNames = new ArrayList<String>();
+        for (Sample sample : samples) {
+            sampleNames.add(sample.getName());
         }
-        return samples;
+        return sampleNames;
     }
 
     private Sample getSample(String sampleName) {
-        for (Sample sample : getSampleToFilenamesMap().keySet()) {
+        for (Sample sample : samples) {
             if (sampleName.equals(sample.getName())) {
                 return sample;
             }
@@ -194,10 +223,6 @@ class AgilentCopyNumberMappingSingleFileHandler extends AbstractCopyNumberMappin
         AbstractReporter reporter = platformHelper.getReporter(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, 
                 probeSetName); 
         return reporter;
-    }
-
-    private String getDataFileName() {
-        return getSampleToFilenamesMap().entrySet().iterator().next().getValue().get(0);
     }
 
     @Override

@@ -98,11 +98,18 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+import gov.nih.nci.caintegrator2.external.caarray.Level2DataFile;
 
-import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Reads and retrieves copy number data from a caArray instance.
@@ -110,43 +117,78 @@ import java.util.Set;
 class AgilentCopyNumberMappingMultiFileHandler extends AbstractCopyNumberMappingFileHandler {
     
     static final String FILE_TYPE = "data";
+    private final Map<Sample, List<Level2DataFile>> sampleToDataFileMap = new HashMap<Sample, List<Level2DataFile>>();
     
     AgilentCopyNumberMappingMultiFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
     }
 
-    @Override
-    void doneWithFile(File dataFile) {
-        dataFile.delete();
+    List<ArrayDataValues> loadArrayData() throws DataRetrievalException, ConnectionException, ValidationException {
+        try {
+            CSVReader reader = new CSVReader(new FileReader(getMappingFile()));
+            String[] fields;
+            while ((fields = reader.readNext()) != null) {
+                String subjectId = fields[0].trim();
+                String sampleName = fields[1].trim();
+                Level2DataFile level2DataFile = new Level2DataFile();
+                level2DataFile.setFileName(fields[2].trim());
+                level2DataFile.setProbeNameHeader(fields[3].trim());
+                level2DataFile.setLogRatioHeader(fields[4].trim());
+                mappingSample(subjectId, sampleName, level2DataFile);
+            }
+            List<ArrayDataValues> arrayDataValues = loadArrayDataValues();
+            getDao().save(getGenomicSource().getStudyConfiguration());
+            reader.close();
+            return arrayDataValues;
+        } catch (FileNotFoundException e) {
+            throw new DataRetrievalException("Copy number mapping file not found: ", e);
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't read copy number mapping file: ", e);
+        }
     }
 
-    @Override
-    List<ArrayDataValues> loadArrayData() 
+    private void mappingSample(String subjectIdentifier, String sampleName, Level2DataFile level2DataFile) 
+    throws ValidationException, FileNotFoundException {
+        Sample sample = getSample(sampleName, subjectIdentifier);
+        addCopyNumberFile(sample, level2DataFile);
+    }
+
+    private void addCopyNumberFile(Sample sample, Level2DataFile level2DataFile) {
+        List<Level2DataFile> level2DataFiles = sampleToDataFileMap.get(sample);
+        if (level2DataFiles == null) {
+            level2DataFiles = new ArrayList<Level2DataFile>();
+            sampleToDataFileMap.put(sample, level2DataFiles);
+        }
+        level2DataFiles.add(level2DataFile);
+    }
+
+    private List<ArrayDataValues> loadArrayDataValues() 
     throws ConnectionException, DataRetrievalException, ValidationException {
         List<ArrayDataValues> values = new ArrayList<ArrayDataValues>();
-        for (Sample sample : getSampleToFilenamesMap().keySet()) {
-            values.add(loadArrayData(sample));
+        for (Sample sample : sampleToDataFileMap.keySet()) {
+            values.add(loadArrayDataValues(sample));
         }
         return values;
     }
 
-    private ArrayDataValues loadArrayData(Sample sample) 
+    private ArrayDataValues loadArrayDataValues(Sample sample) 
     throws ConnectionException, DataRetrievalException, ValidationException {
-        List<File> dataFiles = new ArrayList<File>();
+        List<Level2DataFile> level2DataFiles = new ArrayList<Level2DataFile>();
         try {
-            for (String filename : getSampleToFilenamesMap().get(sample)) {
-                dataFiles.add(getDataFile(filename));
+            for (Level2DataFile level2DataFile : sampleToDataFileMap.get(sample)) {
+                level2DataFile.setFile(getDataFile(level2DataFile.getFileName()));
+                level2DataFiles.add(level2DataFile);
             }
-            return loadArrayData(sample, dataFiles);
+            return loadArrayDataValues(sample, level2DataFiles);
         } finally {
-            for (File file : dataFiles) {
-                doneWithFile(file);
+            for (Level2DataFile level2DataFile : level2DataFiles) {
+                doneWithFile(level2DataFile.getFile());
             }
         }
     }
 
-    private ArrayDataValues loadArrayData(Sample sample, List<File> dataFiles) 
+    private ArrayDataValues loadArrayDataValues(Sample sample, List<Level2DataFile> level2DataFiles) 
     throws DataRetrievalException, ValidationException {
         PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(getGenomicSource().getPlatformName()));
         Set<ReporterList> reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
@@ -154,8 +196,8 @@ class AgilentCopyNumberMappingMultiFileHandler extends AbstractCopyNumberMapping
         getDao().save(arrayData);
         ArrayDataValues values = 
             new ArrayDataValues(platformHelper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
-        for (File dataFile : dataFiles) {
-            AgilentCopyNumberDataRetrieval.INSTANCE.parseDataFile(dataFile, values, arrayData, platformHelper);
+        for (Level2DataFile level2DataFile : level2DataFiles) {
+            AgilentCopyNumberDataRetrieval.INSTANCE.parseDataFile(level2DataFile, values, arrayData, platformHelper);
         }
         getArrayDataService().save(values);
         return values;

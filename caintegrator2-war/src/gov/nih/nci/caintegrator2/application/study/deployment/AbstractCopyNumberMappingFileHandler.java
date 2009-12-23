@@ -105,16 +105,10 @@ import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
-import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Provides base handling to retrieve copy number data based on a copy number mapping file.
@@ -125,8 +119,7 @@ public abstract class AbstractCopyNumberMappingFileHandler {
     private final ArrayDataService arrayDataService;
     private final CaIntegrator2Dao dao;
     private final GenomicDataSourceConfiguration genomicSource;
-    private final Map<Sample, List<String>> sampleToFilenamesMap = new HashMap<Sample, List<String>>();
-
+    
     AbstractCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
                 this.genomicSource = genomicSource;
@@ -135,44 +128,38 @@ public abstract class AbstractCopyNumberMappingFileHandler {
                 this.dao = dao;
     }
 
-    List<ArrayDataValues> loadCopyNumberData() throws DataRetrievalException, ConnectionException, ValidationException {
-        try {
-            CSVReader reader = new CSVReader(new FileReader(getFile()));
-            String[] fields;
-            while ((fields = reader.readNext()) != null) {
-                String subjectId = fields[0].trim();
-                String sampleName = fields[1].trim();
-                String copyNumberFilename = fields[2].trim();
-                parse(subjectId, sampleName, copyNumberFilename);
-            }
-            List<ArrayDataValues> arrayDataValues = loadArrayData();
-            dao.save(genomicSource.getStudyConfiguration());
-            reader.close();
-            return arrayDataValues;
-        } catch (FileNotFoundException e) {
-            throw new DataRetrievalException("Copy number mapping file not found: ", e);
-        } catch (IOException e) {
-            throw new DataRetrievalException("Couldn't read copy number mapping file: ", e);
+    /**
+     * 
+     * @param sampleName the sample name to retirieve
+     * @param subjectIdentifier the study assigment id
+     * @return the sample object
+     * @throws ValidationException Validation exception
+     * @throws FileNotFoundException IO exception
+     */
+    protected Sample getSample(String sampleName, String subjectIdentifier)
+    throws FileNotFoundException, ValidationException {
+        Sample sample = genomicSource.getSample(sampleName);
+        if (sample == null) {
+            StudySubjectAssignment assignment = getSubjectAssignment(subjectIdentifier);
+            sample = new Sample();
+            sample.setName(sampleName);
+            SampleAcquisition acquisition = new SampleAcquisition();
+            acquisition.setAssignment(assignment);
+            acquisition.setSample(sample);
+            sample.setSampleAcquisition(acquisition);
+            assignment.getSampleAcquisitionCollection().add(acquisition);
+            genomicSource.getSamples().add(sample);
+            dao.save(sample);
         }
+        return sample;
     }
 
-    private void parse(String subjectIdentifier, String sampleName, String copyNumberFilename) 
-    throws ValidationException, FileNotFoundException {
-        StudySubjectAssignment assignment = getSubjectAssignment(subjectIdentifier);
-        Sample sample = getSample(sampleName, assignment);
-        addCopyNumberFile(sample, copyNumberFilename);
-    }
-
-    private void addCopyNumberFile(Sample sample, String copyNumberFilename) {
-        List<String> filenames = sampleToFilenamesMap.get(sample);
-        if (filenames == null) {
-            filenames = new ArrayList<String>();
-            sampleToFilenamesMap.put(sample, filenames);
-        }
-        filenames.add(copyNumberFilename);
-    }
-
-    private File getFile() throws FileNotFoundException {
+    /**
+     * 
+     * @return the mapping file.
+     * @throws FileNotFoundException IO exception.
+     */
+    protected File getMappingFile() throws FileNotFoundException {
         return genomicSource.getCopyNumberDataConfiguration().getMappingFile();
     }
 
@@ -201,7 +188,15 @@ public abstract class AbstractCopyNumberMappingFileHandler {
         return platforms.iterator().next();
     }
 
-    abstract void doneWithFile(File dataFile);
+    /**
+     * Clean up.
+     * @param dataFile the data file to delete.
+     */
+    protected void doneWithFile(File dataFile) {
+        dataFile.delete();
+    }
+    
+    abstract String getFileType();
 
     /**
      * Create the ArrayData for the sample.
@@ -244,27 +239,6 @@ public abstract class AbstractCopyNumberMappingFileHandler {
             throw new DataRetrievalException("Couldn't write '" + getFileType() + "' file locally", e);
         }
     }
-    
-    /**
-     * @return the file type
-     */
-    abstract String getFileType();
-
-    private Sample getSample(String sampleName, StudySubjectAssignment assignment) {
-        Sample sample = genomicSource.getSample(sampleName);
-        if (sample == null) {
-            sample = new Sample();
-            sample.setName(sampleName);
-            SampleAcquisition acquisition = new SampleAcquisition();
-            acquisition.setAssignment(assignment);
-            acquisition.setSample(sample);
-            sample.setSampleAcquisition(acquisition);
-            assignment.getSampleAcquisitionCollection().add(acquisition);
-            genomicSource.getSamples().add(sample);
-            dao.save(sample);
-        }
-        return sample;
-    }
 
     private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier)
     throws ValidationException, FileNotFoundException {
@@ -272,7 +246,7 @@ public abstract class AbstractCopyNumberMappingFileHandler {
             genomicSource.getStudyConfiguration().getSubjectAssignment(subjectIdentifier);
         if (assignment == null) {
             throw new ValidationException("Subject identifier " + subjectIdentifier + " in copy number mapping file " 
-                    + getFile().getAbsolutePath() + " doesn't map to a known subject in the study.");
+                    + getMappingFile().getAbsolutePath() + " doesn't map to a known subject in the study.");
         }
         return assignment;
     }
@@ -291,13 +265,6 @@ public abstract class AbstractCopyNumberMappingFileHandler {
 
     GenomicDataSourceConfiguration getGenomicSource() {
         return genomicSource;
-    }
-
-    /**
-     * @return the sampleToFilenamesMap
-     */
-    public Map<Sample, List<String>> getSampleToFilenamesMap() {
-        return sampleToFilenamesMap;
     }
 
 }
