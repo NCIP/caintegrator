@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
@@ -241,11 +242,15 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
             reader = new CSVReader(new FileReader(copyNumberMappingFile));
             String[] fields;
             int lineNum = 0;
+            int columnNumber = 5;
+            if (PlatformVendorEnum.AFFYMETRIX.getValue().equals(getGenomicSource().getPlatformVendor())) {
+                columnNumber = 3;
+            }
             while ((fields = reader.readNext()) != null) {
                 lineNum++;
-                if (fields.length != 3) {
+                if (fields.length != columnNumber) {
                     addFieldError(COPY_NUMBER_MAPPING_FILE,
-                            " File must have 3 columns instead of " + fields.length
+                            " File must have " + columnNumber + " columns instead of " + fields.length
                             + " on line number " + lineNum);
                     return;
                 }

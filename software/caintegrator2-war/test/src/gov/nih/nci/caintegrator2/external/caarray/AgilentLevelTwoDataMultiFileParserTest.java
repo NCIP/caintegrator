@@ -104,7 +104,12 @@ public class AgilentLevelTwoDataMultiFileParserTest {
         Map<String, Float> agilentData;
         boolean exceptionCaught = false;
         try {
-            agilentData = AgilentLevelTwoDataMultiFileParser.INSTANCE.extractData(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE);
+            Level2DataFile level2DataFile = new Level2DataFile();
+            level2DataFile.setFileName(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE_PATH);
+            level2DataFile.setFile(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE);
+            level2DataFile.setProbeNameHeader("ID");
+            level2DataFile.setLogRatioHeader("logratio");
+            agilentData = AgilentLevelTwoDataMultiFileParser.INSTANCE.extractData(level2DataFile);
         } catch (DataRetrievalException e) {
             assertEquals(e.getMessage(), "Invalid Agilent data file; headers not found in file.");
             exceptionCaught = true;
@@ -113,8 +118,12 @@ public class AgilentLevelTwoDataMultiFileParserTest {
         
         exceptionCaught = false;
         try {
-            agilentData = AgilentLevelTwoDataMultiFileParser.INSTANCE.extractData(
-                TestDataFiles.HUAITIAN_LEVEL_2_DATA_FILE);
+            Level2DataFile level2DataFile = new Level2DataFile();
+            level2DataFile.setFileName(TestDataFiles.HUAITIAN_LEVEL_2_DATA_FILE_PATH);
+            level2DataFile.setFile(TestDataFiles.HUAITIAN_LEVEL_2_DATA_FILE);
+            level2DataFile.setProbeNameHeader("ID");
+            level2DataFile.setLogRatioHeader("logratio");
+            agilentData = AgilentLevelTwoDataMultiFileParser.INSTANCE.extractData(level2DataFile);
             assertEquals(4, agilentData.keySet().size());
         } catch (DataRetrievalException e) {
             assertEquals(e.getMessage(), "Invalid Agilent data file; headers not found in file.");

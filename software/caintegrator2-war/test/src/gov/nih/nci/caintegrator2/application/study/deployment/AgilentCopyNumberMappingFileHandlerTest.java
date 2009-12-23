@@ -51,7 +51,7 @@ public class AgilentCopyNumberMappingFileHandlerTest {
         AgilentCopyNumberMappingSingleFileHandler handler = new AgilentCopyNumberMappingSingleFileHandler(source, caArrayFacade, arrayDataService, dao);
         boolean exceptionCaught = false;
         try {
-            handler.loadCopyNumberData();
+            handler.loadArrayData();
         } catch (DataRetrievalException e) {
             exceptionCaught = true;
         }
@@ -59,7 +59,7 @@ public class AgilentCopyNumberMappingFileHandlerTest {
         exceptionCaught = false;
         source.getCopyNumberDataConfiguration().setMappingFilePath(TestDataFiles.TCGA_AGILENT_COPY_NUMBER_MAPPING_FILE.getAbsolutePath());
         try {
-            handler.loadCopyNumberData();
+            handler.loadArrayData();
         } catch (DataRetrievalException e) {
             exceptionCaught = true;
         }

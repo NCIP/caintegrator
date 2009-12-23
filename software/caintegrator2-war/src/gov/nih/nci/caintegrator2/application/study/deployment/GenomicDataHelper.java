@@ -157,7 +157,7 @@ class GenomicDataHelper {
     }
     
     private void loadExpressionData(GenomicDataSourceConfiguration genomicSource)
-    throws ConnectionException, DataRetrievalException {
+    throws ConnectionException, DataRetrievalException, ValidationException {
         if (!genomicSource.getSamples().isEmpty()) {
             ArrayDataValues probeSetValues = caArrayFacade.retrieveData(genomicSource);
             ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
@@ -170,7 +170,7 @@ class GenomicDataHelper {
     throws DataRetrievalException, ConnectionException, ValidationException {
         AbstractCopyNumberMappingFileHandler handler = 
             copyNumberHandlerFactory.getHandler(genomicSource, caArrayFacade, arrayDataService, dao);
-        List<ArrayDataValues> valuesList = handler.loadCopyNumberData();
+        List<ArrayDataValues> valuesList = handler.loadArrayData();
         if (genomicSource.getCopyNumberDataConfiguration().isCaDNACopyConfiguration()) {
             for (ArrayDataValues values : valuesList) {
                 CopyNumberData copyNumberData = createCopyNumberData(values);

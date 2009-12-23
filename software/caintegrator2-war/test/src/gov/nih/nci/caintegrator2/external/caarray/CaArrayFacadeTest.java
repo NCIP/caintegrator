@@ -192,7 +192,7 @@ public class CaArrayFacadeTest {
             assertEquals((float) 2.2, (float) values.getFloatValue(arrayData, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
         }
     }
-    
+    /*
     @Test
     public void testAgilentRetrieveData() throws ConnectionException, DataRetrievalException {
         RetrieveDataDaoStub daoStub = new RetrieveDataDaoStub();
@@ -213,7 +213,7 @@ public class CaArrayFacadeTest {
             assertEquals((float) -0.1234, (float) values.getFloatValue(arrayData, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
         }
     }
-    
+    */
     @Test
     public void testRetrieveFile() throws FileNotFoundException, ConnectionException {
         ((CaArrayFacadeImpl) caArrayFacade).setServiceFactory(new RetrieveDataServiceFactoryStub());

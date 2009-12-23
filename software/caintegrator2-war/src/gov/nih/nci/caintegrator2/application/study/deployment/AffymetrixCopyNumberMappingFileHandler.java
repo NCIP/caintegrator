@@ -101,10 +101,17 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Reads and retrieves copy number data from a caArray instance.
@@ -112,36 +119,69 @@ import java.util.Set;
 class AffymetrixCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFileHandler {
 
     static final String FILE_TYPE = "cnchp";
+    private final Map<Sample, List<String>> sampleToFilenamesMap = new HashMap<Sample, List<String>>();
+    
     
     AffymetrixCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
     }
-
+    
     @Override
-    void doneWithFile(File cnchpFile) {
-        cnchpFile.delete();
+    List<ArrayDataValues> loadArrayData() throws DataRetrievalException, ConnectionException, ValidationException {
+        try {
+            CSVReader reader = new CSVReader(new FileReader(getMappingFile()));
+            String[] fields;
+            while ((fields = reader.readNext()) != null) {
+                String subjectId = fields[0].trim();
+                String sampleName = fields[1].trim();
+                String copyNumberFilename = fields[2].trim();
+                mappingSample(subjectId, sampleName, copyNumberFilename);
+            }
+            List<ArrayDataValues> arrayDataValues = loadArrayDataValues();
+            getDao().save(getGenomicSource().getStudyConfiguration());
+            reader.close();
+            return arrayDataValues;
+        } catch (FileNotFoundException e) {
+            throw new DataRetrievalException("Copy number mapping file not found: ", e);
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't read copy number mapping file: ", e);
+        }
     }
 
-    @Override
-    List<ArrayDataValues> loadArrayData() 
+    private void mappingSample(String subjectIdentifier, String sampleName, String copyNumberFilename) 
+    throws ValidationException, FileNotFoundException {
+        Sample sample = getSample(sampleName, subjectIdentifier);
+        addCopyNumberFile(sample, copyNumberFilename);
+    }
+
+    private void addCopyNumberFile(Sample sample, String copyNumberFilename) {
+        List<String> filenames = sampleToFilenamesMap.get(sample);
+        if (filenames == null) {
+            filenames = new ArrayList<String>();
+            sampleToFilenamesMap.put(sample, filenames);
+        }
+        filenames.add(copyNumberFilename);
+    }
+
+    List<ArrayDataValues> loadArrayDataValues() 
     throws ConnectionException, DataRetrievalException, ValidationException {
         List<ArrayDataValues> values = new ArrayList<ArrayDataValues>();
-        for (Sample sample : getSampleToFilenamesMap().keySet()) {
-            values.add(loadArrayData(sample));
+        for (Sample sample : sampleToFilenamesMap.keySet()) {
+            values.add(loadArrayDataValues(sample));
         }
         return values;
     }
 
-    private ArrayDataValues loadArrayData(Sample sample) 
+    private ArrayDataValues loadArrayDataValues(Sample sample) 
     throws ConnectionException, DataRetrievalException, ValidationException {
         List<File> dataFiles = new ArrayList<File>();
         try {
-            for (String filename : getSampleToFilenamesMap().get(sample)) {
+            for (String filename : sampleToFilenamesMap.get(sample)) {
                 validateDataFileExtension(filename);
                 dataFiles.add(getDataFile(filename));
             }
-            return loadArrayData(sample, dataFiles);
+            return loadArrayDataValues(sample, dataFiles);
         } finally {
             for (File file : dataFiles) {
                 doneWithFile(file);
@@ -155,7 +195,7 @@ class AffymetrixCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFi
         }
     }
 
-    private ArrayDataValues loadArrayData(Sample sample, List<File> cnchpFiles) 
+    private ArrayDataValues loadArrayDataValues(Sample sample, List<File> cnchpFiles) 
     throws DataRetrievalException, ValidationException {
         List<AffymetrixCopyNumberChpParser> parsers = new ArrayList<AffymetrixCopyNumberChpParser>();
         Set<String> reporterListNames = new HashSet<String>();
@@ -165,10 +205,10 @@ class AffymetrixCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFi
             reporterListNames.add(parser.getArrayDesignName());
         }
         Platform platform = getPlatform(reporterListNames);
-        return loadArrayData(sample, platform, parsers);
+        return loadArrayDataValues(sample, platform, parsers);
     }
 
-    private ArrayDataValues loadArrayData(Sample sample, Platform platform, 
+    private ArrayDataValues loadArrayDataValues(Sample sample, Platform platform, 
             List<AffymetrixCopyNumberChpParser> parsers) throws DataRetrievalException {
         PlatformHelper helper = new PlatformHelper(platform);
         Set<ReporterList> reporterLists = helper.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
