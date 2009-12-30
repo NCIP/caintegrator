@@ -119,7 +119,7 @@ public class AgilentExpressionPlatformSource extends AbstractPlatformSource {
      */
     @Override
     public AbstractPlatformLoader getLoader() {
-        return isXmlFile() ? new AgilentGemlCghPlatformLoader(this)
+        return isXmlFile() ? new AgilentExpressionXmlPlatformLoader(this)
             : new AgilentExpressionPlatformLoader(this);
     }
     

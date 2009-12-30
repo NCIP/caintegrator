@@ -993,6 +993,18 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     }
 
     /**
+     * {@inheritDoc}
+     * 
+     * @throws IOException 
+     */
+    public void saveSampleMappingFile(GenomicDataSourceConfiguration source,
+            File mappingFile, String filename) throws IOException {
+        File savedFile = getFileManager().storeStudyFile(mappingFile, filename, source.getStudyConfiguration());
+        source.setSampleMappingFilePath(savedFile.getAbsolutePath());
+        getDao().save(source);
+    }
+
+    /**
      * @param securityManager the securityManager to set
      */
     public void setSecurityManager(SecurityManager securityManager) {

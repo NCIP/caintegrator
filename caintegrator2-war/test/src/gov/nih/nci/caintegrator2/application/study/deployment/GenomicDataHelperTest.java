@@ -2,6 +2,7 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
@@ -28,12 +29,14 @@ public class GenomicDataHelperTest {
     private CaIntegrator2Dao dao = new CaIntegrator2DaoStub();
     private BioconductorService biocondutor;
     private CopyNumberHandlerFactory copyNumberHandlerFactory = new LocalCopyNumberHandlerFactoryImpl();
+    private ExpressionHandlerFactory expressionHandlerFactory = new LocalExpressionHandlerFactoryImpl();
     
     @Before
     public void setUp() {
         caArrayFacade.reset();
         arrayDataService.reset();
         helper = new GenomicDataHelper(caArrayFacade, arrayDataService, dao, biocondutor, copyNumberHandlerFactory );
+        helper.setExpressionHandlerFactory(expressionHandlerFactory);
     }
 
     @Test
@@ -43,12 +46,31 @@ public class GenomicDataHelperTest {
         Sample sample = new Sample();
         genomicDataConfiguration.getSamples().add(sample);
         genomicDataConfiguration.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        genomicDataConfiguration.setPlatformVendor("Affymetrix");
         studyConfiguration.getGenomicDataSources().add(genomicDataConfiguration);
         helper.loadData(studyConfiguration);
         assertTrue(arrayDataService.saveCalled);
         assertTrue(caArrayFacade.retrieveDataCalled);
         assertEquals(1, sample.getArrayCollection().size());
         assertEquals(2, sample.getArrayDataCollection().size());
+    }
+
+    @Test
+    public void testAgilentExpressionLoadData() throws ConnectionException, DataRetrievalException, ValidationException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        GenomicDataSourceConfiguration genomicDataConfiguration = new GenomicDataSourceConfiguration();
+        Sample sample = new Sample();
+        sample.setName("testSample");
+        genomicDataConfiguration.getSamples().add(sample);
+        genomicDataConfiguration.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        genomicDataConfiguration.setPlatformVendor("Agilent");
+        genomicDataConfiguration.setSampleMappingFilePath(TestDataFiles.TEST_AGILENT_SAMPLE_MAPPING_FILE.getAbsolutePath());
+        studyConfiguration.getGenomicDataSources().add(genomicDataConfiguration);
+        genomicDataConfiguration.setStudyConfiguration(studyConfiguration);
+        helper.loadData(studyConfiguration);
+        assertTrue(arrayDataService.saveCalled);
+        assertEquals(2, sample.getArrayCollection().size());
+        assertEquals(3, sample.getArrayDataCollection().size());
     }
 
 }
