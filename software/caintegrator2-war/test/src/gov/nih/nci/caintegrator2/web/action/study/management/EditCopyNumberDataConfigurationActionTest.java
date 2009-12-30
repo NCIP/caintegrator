@@ -154,6 +154,7 @@ public class EditCopyNumberDataConfigurationActionTest extends AbstractSessionBa
         action.clearErrorsAndMessages();
         action.setCopyNumberMappingFile(TestDataFiles.XBA_COPY_NUMBER_CHP_FILE);
         action.getCopyNumberDataConfiguration().getSegmentationService().setUrl("");
+        action.getGenomicSource().setPlatformVendor("Affymetrix");
         action.validate();
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();

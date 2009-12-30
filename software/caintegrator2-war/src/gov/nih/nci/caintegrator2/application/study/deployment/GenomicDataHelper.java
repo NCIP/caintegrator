@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -127,6 +128,7 @@ class GenomicDataHelper {
     private final CaIntegrator2Dao dao;
     private final BioconductorService bioconductorService;
     private final CopyNumberHandlerFactory copyNumberHandlerFactory;
+    private ExpressionHandlerFactory expressionHandlerFactory;
     private GenePatternClientFactory genePatternClientFactory;
 
     GenomicDataHelper(CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao,
@@ -159,11 +161,35 @@ class GenomicDataHelper {
     private void loadExpressionData(GenomicDataSourceConfiguration genomicSource)
     throws ConnectionException, DataRetrievalException, ValidationException {
         if (!genomicSource.getSamples().isEmpty()) {
-            ArrayDataValues probeSetValues = caArrayFacade.retrieveData(genomicSource);
-            ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
-            arrayDataService.save(probeSetValues);
-            arrayDataService.save(geneValues);
+            switch (PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor())) {
+            case AFFYMETRIX:
+                loadAffymetrixExpressionData(genomicSource);
+                break;
+            case AGILENT:
+                loadAgilentExpressionData(genomicSource);
+                break;
+            default:
+                throw new DataRetrievalException("Unknown platform vendor.");
+            }
         }
+    }
+
+    private void loadAffymetrixExpressionData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
+            DataRetrievalException {
+        ArrayDataValues probeSetValues = caArrayFacade.retrieveData(genomicSource);
+        ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
+        arrayDataService.save(probeSetValues);
+        arrayDataService.save(geneValues);
+    }
+    
+    private void loadAgilentExpressionData(GenomicDataSourceConfiguration genomicSource)
+    throws DataRetrievalException, ConnectionException, ValidationException {
+        AgilentSampleMappingFileHandler handler = expressionHandlerFactory.getHandler(
+                genomicSource, caArrayFacade, arrayDataService, dao);
+        ArrayDataValues probeSetValues = handler.loadArrayData();
+        ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
+        arrayDataService.save(probeSetValues);
+        arrayDataService.save(geneValues);
     }
 
     private void handleCopyNumberData(GenomicDataSourceConfiguration genomicSource) 
@@ -290,6 +316,20 @@ class GenomicDataHelper {
 
     void setGenePatternClientFactory(GenePatternClientFactory genePatternClientFactory) {
         this.genePatternClientFactory = genePatternClientFactory;
+    }
+
+    /**
+     * @return the expressionHandlerFactory
+     */
+    public ExpressionHandlerFactory getExpressionHandlerFactory() {
+        return expressionHandlerFactory;
+    }
+
+    /**
+     * @param expressionHandlerFactory the expressionHandlerFactory to set
+     */
+    public void setExpressionHandlerFactory(ExpressionHandlerFactory expressionHandlerFactory) {
+        this.expressionHandlerFactory = expressionHandlerFactory;
     }
 
 }

@@ -242,10 +242,8 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
             reader = new CSVReader(new FileReader(copyNumberMappingFile));
             String[] fields;
             int lineNum = 0;
-            int columnNumber = 5;
-            if (PlatformVendorEnum.AFFYMETRIX.getValue().equals(getGenomicSource().getPlatformVendor())) {
-                columnNumber = 3;
-            }
+            int columnNumber = PlatformVendorEnum.getByValue(
+                    getGenomicSource().getPlatformVendor()).getCopyNumberMappingColumns();
             while ((fields = reader.readNext()) != null) {
                 lineNum++;
                 if (fields.length != columnNumber) {

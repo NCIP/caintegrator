@@ -117,6 +117,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     private ArrayDataService arrayDataService;
     private BioconductorService bioconductorService;
     private CopyNumberHandlerFactory copyNumberHandlerFactory = new CopyNumberHandlerFactoryImpl();
+    private ExpressionHandlerFactory expressionHandlerFactory = new ExpressionHandlerFactoryImpl();
     private GenePatternClientFactory genePatternClientFactory;
 
     /**
@@ -172,6 +173,7 @@ public class DeploymentServiceImpl implements DeploymentService {
         if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
             GenomicDataHelper genomicDataHelper = new GenomicDataHelper(getCaArrayFacade(), 
                     getArrayDataService(), getDao(), getBioconductorService(), getCopyNumberHandlerFactory());
+            genomicDataHelper.setExpressionHandlerFactory(getExpressionHandlerFactory());
             genomicDataHelper.setGenePatternClientFactory(getGenePatternClientFactory());
             genomicDataHelper.loadData(studyConfiguration);
         }
@@ -275,6 +277,20 @@ public class DeploymentServiceImpl implements DeploymentService {
      */
     public void setGenePatternClientFactory(GenePatternClientFactory genePatternClientFactory) {
         this.genePatternClientFactory = genePatternClientFactory;
+    }
+
+    /**
+     * @return the expressionHandlerFactory
+     */
+    public ExpressionHandlerFactory getExpressionHandlerFactory() {
+        return expressionHandlerFactory;
+    }
+
+    /**
+     * @param expressionHandlerFactory the expressionHandlerFactory to set
+     */
+    public void setExpressionHandlerFactory(ExpressionHandlerFactory expressionHandlerFactory) {
+        this.expressionHandlerFactory = expressionHandlerFactory;
     }
 
 }

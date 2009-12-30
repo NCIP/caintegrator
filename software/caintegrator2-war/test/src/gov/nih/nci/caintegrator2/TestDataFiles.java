@@ -90,6 +90,7 @@ import java.io.File;
 public class TestDataFiles {
 
     private static final String AFFYMETRIX_DATA_FILE_DIRECTORY_PATH = "/arraydata/affymetrix";
+    private static final String AGILENT_DATA_FILE_DIRECTORY_PATH = "/arraydata/agilent";
 
     public static final String VALID_FILE_RESOURCE_PATH = "/csvtestclinical.csv";
     public static final String VALID_FILE_TIMEPOINT_RESOURCE_PATH = "/csvtestclinical-timepoint.csv";
@@ -110,6 +111,7 @@ public class TestDataFiles {
     public static final String JAGLA_00034_CONTROL_SAMPLES_FILE_PATH = "/jagla_0034_control_samples.csv";
     public static final String VASARI_IMAGE_ANNOTATION_FILE_PATH = "/vasari_image_annotation_mapped.csv";
     public static final String REMBRANDT_IMAGE_STUDIES_TO_SUBJECT_FILE_PATH = "/rembrandt_ncia_image_studies.csv";
+    public static final String SIMPLE_AGILENT_SAMPLE_MAPPING_FILE_PATH = "/simple_Agilent_sample_mapping.csv";
     public static final String SIMPLE_SAMPLE_MAPPING_FILE_PATH = "/simple_sample_mapping.csv";
     public static final String SIMPLE_IMAGE_MAPPING_FILE_PATH = "/simple_image_mapping.csv";
     public static final String SIMPLE_EXTERNAL_LINKS_FILE_PATH = "/simple_external_links.csv";
@@ -133,6 +135,7 @@ public class TestDataFiles {
     public static final File REMBRANDT_CONTROL_SAMPLES_FILE = getFile(REMBRANDT_CONTROL_SAMPLES_FILE_PATH);
     public static final File SHORT_REMBRANDT_SAMPLE_MAPPING_FILE = getFile(SHORT_REMBRANDT_SAMPLE_MAPPING_FILE_PATH);
     public static final File SHORT_REMBRANDT_CONTROL_SAMPLES_FILE = getFile(SHORT_REMBRANDT_CONTROL_SAMPLES_FILE_PATH);
+    public static final File SIMPLE_AGILENT_SAMPLE_MAPPING_FILE = getFile(SIMPLE_AGILENT_SAMPLE_MAPPING_FILE_PATH);
     public static final File SIMPLE_SAMPLE_MAPPING_FILE = getFile(SIMPLE_SAMPLE_MAPPING_FILE_PATH);
     public static final File SIMPLE_IMAGE_MAPPING_FILE = getFile(SIMPLE_IMAGE_MAPPING_FILE_PATH);
     public static final File SIMPLE_EXTERNAL_LINKS_FILE = getFile(SIMPLE_EXTERNAL_LINKS_FILE_PATH);
@@ -140,6 +143,11 @@ public class TestDataFiles {
     public static final File REMBRANDT_IMAGE_STUDIES_TO_SUBJECT_FILE = getFile(REMBRANDT_IMAGE_STUDIES_TO_SUBJECT_FILE_PATH);
     public static final File ISPY_IMAGE_ANNOTATION_FILE = getFile(ISPY_IMAGE_ANNOTATION_FILE_PATH);
     public static final File ISPY_IMAGE_SERIES_TO_SUBJECT_FILE = getFile(ISPY_IMAGE_SERIES_TO_SUBJECT_FILE_PATH);
+    
+    // Test genomic data files
+    public static final String TEST_AGILENT_SAMPLE_MAPPING_FILE_PATH = "/test_Agilent_sample_mapping.csv";
+    public static final File TEST_AGILENT_SAMPLE_MAPPING_FILE = getFile(TEST_AGILENT_SAMPLE_MAPPING_FILE_PATH);
+    
 
     // Files for DC Lung Study (liu-00175 in caarray-stage)
     public static final String DC_LUNG_CLINICAL_FILE_PATH = "/dc_lung_clinical_data.csv";
@@ -230,6 +238,10 @@ public class TestDataFiles {
     
     public static File getAffymetrixDataFile(String filename) {
         return getFile(AFFYMETRIX_DATA_FILE_DIRECTORY_PATH + "/" + filename);
+    }
+    
+    public static File getAgilentDataFile(String filename) {
+        return getFile(AGILENT_DATA_FILE_DIRECTORY_PATH + "/" + filename);
     }
     
     public static File getFile(String resourcePath) {

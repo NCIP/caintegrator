@@ -31,6 +31,7 @@
         <property name="platformVendor" type="string" column="PLATFORM_VENDOR"/>
         <property name="platformName" type="string" column="PLATFORM_NAME"/>
         <property name="sampleMappingFileName" type="string" column="SAMPLE_MAPPING_FILE_NAME"/>
+        <property name="sampleMappingFilePath" type="string" column="SAMPLE_MAPPING_FILE_PATH"/>
         <property name="status" type="Status" column="STATUS"/>
         <property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
         

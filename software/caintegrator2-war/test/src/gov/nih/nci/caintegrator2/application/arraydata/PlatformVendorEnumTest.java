@@ -127,5 +127,13 @@ public class PlatformVendorEnumTest {
         assertTrue(PlatformVendorEnum.getValuesToDisplay().contains(PlatformVendorEnum.AFFYMETRIX.getValue()));
         assertTrue(PlatformVendorEnum.getValuesToDisplay().contains(PlatformVendorEnum.AGILENT.getValue()));
     }
+    
+    @Test
+    public void testGetNumberColumns() {
+        assertEquals(2, PlatformVendorEnum.AFFYMETRIX.getSampleMappingColumns());
+        assertEquals(3, PlatformVendorEnum.AFFYMETRIX.getCopyNumberMappingColumns());
+        assertEquals(5, PlatformVendorEnum.AGILENT.getSampleMappingColumns());
+        assertEquals(5, PlatformVendorEnum.AGILENT.getCopyNumberMappingColumns());
+    }
 
 }

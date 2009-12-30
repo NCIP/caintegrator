@@ -136,6 +136,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean throwSearchError;
     public boolean retrieveImageDataSourceCalled;
     public boolean saveCopyNumberMappingFileCalled;
+    public boolean saveSampleMappingFileCalled;
     public boolean loadGenomicSourceCalled;
     public boolean saveGenomicSourceCalled;
     public boolean throwConnectionException = false;
@@ -218,7 +219,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
         createNewSurvivalValueDefinitionCalled = false;
         removeSurvivalValueDefinitionCalled = false;
         throwSearchError = false;
-        saveCopyNumberMappingFileCalled = false;       
+        saveCopyNumberMappingFileCalled = false;
+        saveSampleMappingFileCalled = false;
         retrieveImageDataSourceCalled = false;
         loadGenomicSourceCalled = false;
         saveGenomicSourceCalled = false;
@@ -409,7 +411,15 @@ public class StudyManagementServiceStub implements StudyManagementService {
      */
     public void saveCopyNumberMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration,
             File mappingFile, String filename) {
-        saveCopyNumberMappingFileCalled = true;       
+        saveCopyNumberMappingFileCalled = true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void saveSampleMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration,
+            File mappingFile, String filename) throws IOException {
+        saveSampleMappingFileCalled = true;   
     }
 
     public void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {

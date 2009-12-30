@@ -104,6 +104,7 @@ public class AgilentExpressionPlatformLoaderTest {
     
     @Test
     public void testLoad() throws PlatformLoadingException {
+        // Test with csv file
         AgilentExpressionPlatformSource agilentExpressionPlatformSource = new AgilentExpressionPlatformSource (
                 TestArrayDesignFiles.AGILENT_G4502A_07_01_ANNOTATION_TEST_FILE,
                 "Agilent_G4502A",
@@ -132,6 +133,23 @@ public class AgilentExpressionPlatformLoaderTest {
         platform = loader.load(dao);
         assertTrue("Agilent_G4502A".equals(loader.getPlatformName()));
         assertTrue("Agilent_G4502A".equals(platform.getName()));
+        reporterLists = platform.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        assertEquals(1, reporterLists.size());
+        reporterList = reporterLists.iterator().next();
+        assertEquals(4, reporterList.getReporters().size());
+
+        // Test with XML file
+        agilentExpressionPlatformSource = new AgilentExpressionPlatformSource (
+                TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_XML_ANNOTATION_TEST_FILE,
+                "Agilent_G4502A",
+                TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_XML_ANNOTATION_TEST_PATH);
+
+        AgilentExpressionXmlPlatformLoader xmlLoader = new AgilentExpressionXmlPlatformLoader(
+                agilentExpressionPlatformSource);
+        
+        platform = xmlLoader.load(dao);
+        assertTrue("Agilent-017804".equals(xmlLoader.getPlatformName()));
+        assertTrue("Agilent-017804".equals(platform.getName()));
         reporterLists = platform.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         assertEquals(1, reporterLists.size());
         reporterList = reporterLists.iterator().next();
