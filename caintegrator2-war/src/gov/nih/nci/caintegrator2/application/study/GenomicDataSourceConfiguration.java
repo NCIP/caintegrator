@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -114,6 +115,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private String platformVendor;
     private String platformName;
     private String sampleMappingFileName = NONE_CONFIGURED;
+    private String sampleMappingFilePath;
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
     private List<Sample> samples = new ArrayList<Sample>();
     private Set<SampleSet> controlSampleSetCollection = new HashSet<SampleSet>();
@@ -481,5 +483,33 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public boolean isCopyNumberData() {
         return GenomicDataSourceDataTypeEnum.COPY_NUMBER.equals(dataType);
+    }
+
+    /**
+     * @return the sampleMappingFilePath
+     */
+    public String getSampleMappingFilePath() {
+        return sampleMappingFilePath;
+    }
+
+    /**
+     * @param sampleMappingFilePath the sampleMappingFilePath to set
+     */
+    public void setSampleMappingFilePath(String sampleMappingFilePath) {
+        this.sampleMappingFilePath = sampleMappingFilePath;
+    }
+
+    /**
+     * The file.
+     * 
+     * @return the file.
+     * @throws FileNotFoundException when file path is null.
+     */
+    public File getSampleMappingFile() throws FileNotFoundException {
+        if (getSampleMappingFilePath() == null) {
+            throw new FileNotFoundException("Sample mapping file path is null.");
+        } else {
+            return new File(getSampleMappingFilePath());
+        }
     }
 }

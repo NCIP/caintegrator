@@ -146,6 +146,7 @@ public class TestArrayDesignFiles {
 
     // Agilent files
     public static final String HUMAN_GENOME_CGH244A_ANNOTATION_PATH = "/arraydesign/agilent/014693_D_GeneList_20070207.txt";
+    public static final String AGILENT_G4502A_07_01_TCGA_XML_ANNOTATION_TEST_PATH = "/arraydesign/agilent/AgilentG4502A_07_01.tcga_Test.xml";
     public static final String AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_PATH = "/arraydesign/agilent/AgilentG4502A_07_01.tcga.adf";
     public static final String AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_TEST_PATH = "/arraydesign/agilent/AgilentG4502A_07_01.tcga_Test.adf";
     public static final String AGILENT_G4502A_07_01_ANNOTATION_TEST_PATH = "/arraydesign/agilent/AgilentG4502A_07_01_Test.tsv";
@@ -156,6 +157,7 @@ public class TestArrayDesignFiles {
     public static final String AGILENT_014693_XML_ANNOTATION_FILE_TEST_PATH = "/arraydesign/agilent/014693_D_F_20080627_Test.xml";
     
     public static final File HUMAN_GENOME_CGH244A_ANNOTATION_FILE = getFile(HUMAN_GENOME_CGH244A_ANNOTATION_PATH);
+    public static final File AGILENT_G4502A_07_01_TCGA_XML_ANNOTATION_TEST_FILE = getFile(AGILENT_G4502A_07_01_TCGA_XML_ANNOTATION_TEST_PATH);
     public static final File AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_FILE = getFile(AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_PATH);
     public static final File AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_TEST_FILE = getFile(AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_TEST_PATH);
     public static final File AGILENT_G4502A_07_01_ANNOTATION_TEST_FILE = getFile(AGILENT_G4502A_07_01_ANNOTATION_TEST_PATH);

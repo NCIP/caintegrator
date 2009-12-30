@@ -55,4 +55,8 @@
         <comment>Updates the sizes of the GENE_SYMBOL columns to 1200.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.8.sql"/>
     </changeSet>
+    <changeSet id="1.1.9" author="nguyennh">
+        <comment>Add SAMPLE_MAPPING_FILE_PATH to GENOMIC_DATA_SOURCE_CONFIGURATION table.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.9.sql"/>
+    </changeSet>
 </databaseChangeLog>

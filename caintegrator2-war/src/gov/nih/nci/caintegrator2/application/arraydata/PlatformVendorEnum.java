@@ -14,19 +14,23 @@ public enum PlatformVendorEnum {
     /**
      * Affymetrix platform.
      */
-    AFFYMETRIX("Affymetrix"),
+    AFFYMETRIX("Affymetrix", 2, 3),
     
     /**
      * Agilent platform.
      */
-    AGILENT("Agilent");
+    AGILENT("Agilent", 5, 5);
     
     private static Map<String, PlatformVendorEnum> valueToTypeMap = new HashMap<String, PlatformVendorEnum>();
 
     private String value;
+    private int sampleMappingColumns;
+    private int copyNumberMappingColumns;
     
-    private PlatformVendorEnum(String value) {
+    private PlatformVendorEnum(String value, int sampleMappingColumns, int copyNumberMappingColumns) {
         this.value = value;
+        this.sampleMappingColumns = sampleMappingColumns;
+        this.copyNumberMappingColumns = copyNumberMappingColumns;
     }
 
     /**
@@ -87,5 +91,33 @@ public enum PlatformVendorEnum {
             list.add(vendor.getValue());
         }
         return list;
+    }
+
+    /**
+     * @return the sampleMappingColumns
+     */
+    public int getSampleMappingColumns() {
+        return sampleMappingColumns;
+    }
+
+    /**
+     * @param sampleMappingColumns the sampleMappingColumns to set
+     */
+    public void setSampleMappingColumns(int sampleMappingColumns) {
+        this.sampleMappingColumns = sampleMappingColumns;
+    }
+
+    /**
+     * @return the copyNumberMappingColumns
+     */
+    public int getCopyNumberMappingColumns() {
+        return copyNumberMappingColumns;
+    }
+
+    /**
+     * @param copyNumberMappingColumns the copyNumberMappingColumns to set
+     */
+    public void setCopyNumberMappingColumns(int copyNumberMappingColumns) {
+        this.copyNumberMappingColumns = copyNumberMappingColumns;
     }
 }

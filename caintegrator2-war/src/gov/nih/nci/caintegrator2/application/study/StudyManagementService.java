@@ -501,6 +501,17 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
             File mappingFile, String filename) throws IOException;
 
     /**
+     * Associates a sample mapping file to the given genomic data source.
+     * 
+     * @param genomicDataSourceConfiguration  copy number data is associated to this source.
+     * @param mappingFile the file containing the mapping of subjects to samples to level2 data files.
+     * @param filename the filename to save the file as. 
+     * @throws IOException if the file couldn't be saved.
+     */
+    void saveSampleMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration, 
+            File mappingFile, String filename) throws IOException;
+
+    /**
      * Sets the lastModifiedBy attribute of a StudyConfiguration to the current user's workspace.
      * @param studyConfiguration that is being modified by the user.
      * @param lastModifiedBy the user to last modify this study.

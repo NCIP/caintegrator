@@ -450,6 +450,7 @@ public class StudyManagementServiceTest {
         assignment2.setIdentifier("E05012");
         studyConfiguration.getStudy().getAssignmentCollection().add(assignment2);
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        genomicDataSourceConfiguration.setPlatformVendor("Affymetrix");
         Sample sample1 = new Sample();
         sample1.setId(1L);
         sample1.setName("5500024030700072107989.B09");
@@ -461,6 +462,44 @@ public class StudyManagementServiceTest {
         studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
         studyManagementService.mapSamples(studyConfiguration, TestDataFiles.SIMPLE_SAMPLE_MAPPING_FILE, 
                 genomicDataSourceConfiguration);
+        assertEquals(1, assignment1.getSampleAcquisitionCollection().size());
+        assertEquals(sample1, assignment1.getSampleAcquisitionCollection().iterator().next().getSample());
+        assertEquals(1, assignment2.getSampleAcquisitionCollection().size());
+        assertEquals(sample2, assignment2.getSampleAcquisitionCollection().iterator().next().getSample());
+    }
+    
+    @Test
+    public void testMapAgilentSamples() throws ValidationException, IOException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        StudySubjectAssignment assignment1 = new StudySubjectAssignment();
+        assignment1.setId(1L);
+        assignment1.setIdentifier("E05004");
+        studyConfiguration.getStudy().getAssignmentCollection().add(assignment1);
+        StudySubjectAssignment assignment2 = new StudySubjectAssignment();
+        assignment2.setId(2L);
+        assignment2.setIdentifier("E05012");
+        studyConfiguration.getStudy().getAssignmentCollection().add(assignment2);
+        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        genomicDataSourceConfiguration.setPlatformVendor("Agilent");
+        Sample sample1 = new Sample();
+        sample1.setId(1L);
+        sample1.setName("5500024030700072107989.B09");
+        genomicDataSourceConfiguration.getSamples().add(sample1);
+        Sample sample2 = new Sample();
+        sample2.setId(2L);
+        sample2.setName("5500024030700072107989.G10");
+        genomicDataSourceConfiguration.getSamples().add(sample2);
+        studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
+        boolean hasException = true;
+        try {
+            studyManagementService.mapSamples(studyConfiguration, TestDataFiles.SIMPLE_SAMPLE_MAPPING_FILE, 
+                genomicDataSourceConfiguration);
+        } catch (ValidationException e) {
+            hasException = true;
+        }
+        assertTrue(hasException);
+        studyManagementService.mapSamples(studyConfiguration, TestDataFiles.SIMPLE_AGILENT_SAMPLE_MAPPING_FILE, 
+            genomicDataSourceConfiguration);
         assertEquals(1, assignment1.getSampleAcquisitionCollection().size());
         assertEquals(sample1, assignment1.getSampleAcquisitionCollection().iterator().next().getSample());
         assertEquals(1, assignment2.getSampleAcquisitionCollection().size());

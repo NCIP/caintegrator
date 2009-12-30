@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE project SYSTEM "GEMLPattern.dtd">
+<!--Copyright (c) 2004 Agilent Technologies-->
+<!--Layout notes:-->
+<!--1) Layout is High-density (interlaced rectilinear grids).-->
+<!--2) Feature numbers are LR-TB relative to Agilent scanned images-->
+<!--(DNA back, barcode left).-->
+<!--3) X and Y are relative to writer (DNA front, barcode top).-->
+<!--AgilentTagVersion=2-->
+<!--NumFeaturesRows=534, NumFeaturesColumns=912, AG_X_OFFSET_MICRONS=36.661742000000004, AG_Y_OFFSET_MICRONS=63.5-->
+<project by="Agilent Technologies" date="2007/10/03" name="Agilent-017804" company="Agilent Technologies">
+  <pattern name="Agilent-017804" owner="Agilent Technologies" description="UNC_Perou_Lab_244K_custom_V3" species_database="H. sapiens">
+    <reporter name="GE_BrightCorner" systematic_name="GE_BrightCorner" control_type="pos">
+      <feature number="1">
+        <position x="0.0" y="0.0" units="mm"></position>
+      </feature>
+      <gene systematic_name="GE_BrightCorner" primary_name="GE_BrightCorner"></gene>
+    </reporter>
+    <reporter name="A_23_P100001" systematic_name="A_23_P100001" control_type="pos">
+      <feature number="1">
+        <position x="0.0" y="0.0" units="mm"></position>
+      </feature>
+      <gene systematic_name="A_23_P100001" primary_name="A_23_P100001"></gene>
+    </reporter>
+    <reporter name="A_23_P100001" systematic_name="A_23_P100001" control_type="pos">
+      <feature number="1">
+        <position x="0.0" y="0.0" units="mm"></position>
+      </feature>
+      <gene systematic_name="A_23_P100001" primary_name="A_23_P100001"></gene>
+    </reporter>
+    <reporter name="A_23_P100002" systematic_name="A_23_P100002" control_type="pos">
+      <feature number="1">
+        <position x="0.0" y="0.0" units="mm"></position>
+      </feature>
+      <gene systematic_name="A_23_P100002" primary_name="A_23_P100002"></gene>
+    </reporter>
+    <reporter name="A_23_P100011" systematic_name="A_23_P100011" control_type="pos">
+      <feature number="1">
+        <position x="0.0" y="0.0" units="mm"></position>
+      </feature>
+      <gene systematic_name="A_23_P100011" primary_name="A_23_P100011"></gene>
+    </reporter>
+    <reporter name="A_23_P100013" systematic_name="A_23_P100013" control_type="pos">
+      <feature number="1">
+        <position x="0.0" y="0.0" units="mm"></position>
+      </feature>
+      <gene systematic_name="A_23_P100013" primary_name="A_23_P100013"></gene>
+    </reporter>
+    <other name="AG_TAG_VERSION" value="2"></other>
+    <other name="AG_ROW_SPACING_MICRONS" value="73.32348400000001"></other>
+    <other name="AG_COL_SPACING_MICRONS" value="127.0"></other>
+    <other name="AG_X_OFFSET_MICRONS" value="36.661742000000004"></other>
+    <other name="AG_Y_OFFSET_MICRONS" value="63.5"></other>
+    <other name="AG_ROW_SPOTSIZE_MICRONS" value="65.0"></other>
+    <other name="AG_COL_SPOTSIZE_MICRONS" value="65.0"></other>
+    <other name="NumArrays" value="1"></other>
+    <other name="ArraySpacingCol" value="0.01"></other>
+    <other name="ArraySpacingRow" value="0.01"></other>
+    <other name="NumArrayRows" value="1"></other>
+    <other name="NumArrayCols" value="1"></other>
+    <other name="ArrayPadding" value="2.0"></other>
+    <other name="Array1LocRow" value="2.972100000000001"></other>
+    <other name="Array1LocCol" value="13.0"></other>
+    <other name="Fiducial1LocRow" value="0.0"></other>
+    <other name="Fiducial1LocCol" value="0.0"></other><!--Total Number of Reporters: 243504.0-->
+    <other name="AMADID" value="017804"></other>
+    <other name="array_design_type" value="Expression"></other>
+    <other name="control_grid_id" value="IS-243504-1-V1_244K_GX_EQC_V20060608"></other>
+    <other name="genomic_build" value="hg18:NCBI36:Mar2006"></other>
+    <other name="created_by" value="earray"></other>
+  </pattern>
+</project>
+    
