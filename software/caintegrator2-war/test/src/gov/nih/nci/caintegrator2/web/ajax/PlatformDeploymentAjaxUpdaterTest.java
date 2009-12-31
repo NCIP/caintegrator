@@ -87,28 +87,24 @@ package gov.nih.nci.caintegrator2.web.ajax;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import javax.servlet.ServletException;
 
-import org.acegisecurity.context.SecurityContextHolder;
 import org.directwebremoting.WebContextFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.opensymphony.xwork2.ActionContext;
 
-
-public class PlatformDeploymentAjaxUpdaterTest {
+public class PlatformDeploymentAjaxUpdaterTest extends AbstractSessionBasedTest {
 
     private PlatformDeploymentAjaxUpdater updater;
     private DwrUtilFactory dwrUtilFactory;
@@ -116,7 +112,8 @@ public class PlatformDeploymentAjaxUpdaterTest {
     private ArrayDataServiceStub arrayDataService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        super.setUp();
         updater = new PlatformDeploymentAjaxUpdater();
         dwrUtilFactory = new DwrUtilFactory();
         workspaceService = new WorkspaceServicePlatformDeploymentJobStub();
@@ -126,8 +123,6 @@ public class PlatformDeploymentAjaxUpdaterTest {
         updater.setWorkspaceService(workspaceService);
         updater.setDwrUtilFactory(dwrUtilFactory);
         updater.setArrayDataService(arrayDataService);
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
         WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
     }
 

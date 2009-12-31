@@ -115,7 +115,7 @@ public abstract class AbstractDwrAjaxUpdater {
         WebContext wctx = WebContextFactory.get();
         DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) 
                         wctx.getSession().getAttribute("displayableWorkspace");
-        workspace.refresh(workspaceService);
+        workspace.refresh(workspaceService, true);
         associateJobWithSession(dwrUtilFactory, workspace.getUserWorkspace().getUsername(), 
                                 new Util(wctx.getScriptSession()));
         initializeDynamicTable(workspace);

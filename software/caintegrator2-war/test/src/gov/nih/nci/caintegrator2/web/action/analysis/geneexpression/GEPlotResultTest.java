@@ -87,30 +87,26 @@ package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.io.IOException;
-import java.util.HashMap;
 
-import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.struts2.ServletActionContext;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.mock.MockActionInvocation;
 
-public class GEPlotResultTest {
+public class GEPlotResultTest extends AbstractSessionBasedTest {
 
     @Test
     public void testExecute() throws IOException {
+        super.setUp();
         ServletActionContext.setResponse(new MockHttpServletResponse());
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
         GeneExpressionPlotStub meanBasedGePlot = new GeneExpressionPlotStub();
         meanBasedGePlot.clear();
         GeneExpressionPlotGroup plotGroup = new GeneExpressionPlotGroup();

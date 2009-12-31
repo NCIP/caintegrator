@@ -89,7 +89,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.kmplot.CaIntegratorKMPlotServiceStub;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
@@ -108,19 +107,18 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.awt.Color;
-import java.util.HashMap;
 import java.util.HashSet;
 
-import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class KMPlotGeneExpressionBasedActionTest {
+public class KMPlotGeneExpressionBasedActionTest extends AbstractSessionBasedTest {
     
     private KMPlotGeneExpressionBasedAction action;
     private StudyManagementServiceStub studyManagementServiceStub = new StudyManagementServiceStub();
@@ -129,8 +127,7 @@ public class KMPlotGeneExpressionBasedActionTest {
     
     @Before
     public void setUp() {
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        super.setUp();
         StudySubscription subscription = new StudySubscription();
         subscription.setId(Long.valueOf(1));
         Study study = createFakeStudy();
@@ -147,6 +144,7 @@ public class KMPlotGeneExpressionBasedActionTest {
         action.setStudyManagementService(studyManagementServiceStub);
         studyManagementServiceStub.clear();
         analysisServiceStub.clear();
+        SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceService, true);
     }
     
     private Study createFakeStudy() {

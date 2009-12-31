@@ -91,6 +91,7 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.util.HashMap;
@@ -119,6 +120,7 @@ public class SaveStudyActionTest extends AbstractSessionBasedTest {
         workspaceServiceStub = (WorkspaceServiceStub) context.getBean("workspaceService");
         workspaceServiceStub.clear();
         studyManagementServiceStub.clear();
+        SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceServiceStub, true);
     }
 
     @Test

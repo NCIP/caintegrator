@@ -87,29 +87,25 @@ package gov.nih.nci.caintegrator2.web.ajax;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import javax.servlet.ServletException;
 
-import org.acegisecurity.context.SecurityContextHolder;
 import org.directwebremoting.WebContextFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.opensymphony.xwork2.ActionContext;
 
-
-public class StudyDeploymentAjaxUpdaterTest {
+public class StudyDeploymentAjaxUpdaterTest extends AbstractSessionBasedTest {
 
     private StudyDeploymentAjaxUpdater updater;
     private DwrUtilFactory dwrUtilFactory;
@@ -118,7 +114,8 @@ public class StudyDeploymentAjaxUpdaterTest {
     private StudyConfiguration studyConfiguration;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        super.setUp();
         updater = new StudyDeploymentAjaxUpdater();
         dwrUtilFactory = new DwrUtilFactory();
         workspaceService = new WorkspaceServiceStudyDeploymentJobStub();
@@ -127,8 +124,6 @@ public class StudyDeploymentAjaxUpdaterTest {
         updater.setWorkspaceService(workspaceService);
         updater.setDwrUtilFactory(dwrUtilFactory);
         updater.setDeploymentService(deploymentServiceStub);
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
         WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
         StudyHelper studyHelper = new StudyHelper();
         studyConfiguration = studyHelper.populateAndRetrieveStudyWithSourceConfigurations().getStudyConfiguration();

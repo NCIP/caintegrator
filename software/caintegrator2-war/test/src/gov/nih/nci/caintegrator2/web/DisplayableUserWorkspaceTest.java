@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -105,18 +106,19 @@ import org.junit.Test;
 import com.opensymphony.xwork2.ActionContext;
 
 
-public class DisplayableUserWorkspaceTest {
+public class DisplayableUserWorkspaceTest extends AbstractSessionBasedTest {
     private UserWorkspace userWorkspace;
     private static Integer ID = 1;
     
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        super.setUp();
         AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
         authentication.setUsername("user");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         
-        SessionHelper.getInstance().refresh(new WorkspaceServiceStub());
+        SessionHelper.getInstance().refresh(new WorkspaceServiceStub(), true);
         userWorkspace = SessionHelper.getInstance().getDisplayableUserWorkspace().getUserWorkspace();
     }
 

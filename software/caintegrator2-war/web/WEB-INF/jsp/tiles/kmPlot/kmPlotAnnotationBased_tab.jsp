@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <s:form name="kaplanMeierAnnotationInputForm" id="kaplanMeierAnnotationInputForm" theme="simple">
                 
@@ -86,10 +87,10 @@
     
     <br><br>
     <center>
-    <s:div id="annotationKmPlotDiv" 
-            theme="ajax" 
+    <sx:div id="annotationKmPlotDiv" 
             href="%{createAnnotationBasedKMPlot}" 
             formId="kaplanMeierAnnotationInputForm" 
+            showLoadingText="true"
             loadingText="<img src='images/ajax-loader-processing.gif'/>"
             listenTopics="createAnnotationPlot" refreshOnShow="true" />
         

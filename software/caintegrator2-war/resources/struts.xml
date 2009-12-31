@@ -6,6 +6,7 @@
     <package name="caintegrator2" extends="struts-default">
         <result-types>
             <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+            <result-type name="studyLogoResult" class="gov.nih.nci.caintegrator2.web.action.StudyLogoResult"/>
             <result-type name="kmPlotResult" class="gov.nih.nci.caintegrator2.web.action.analysis.KMPlotResult"/>
             <result-type name="gePlotResult" class="gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotResult"/>
             <result-type name="dicomFileResult" class="gov.nih.nci.caintegrator2.web.action.query.NCIADicomFileResult"/>
@@ -113,10 +114,18 @@
             <result name="workspaceNoStudy" type="tiles">homepage</result>
         </action>
         
+        <action name="retrieveStudyLogo" method="retrieveStudyLogo" class="workspaceAction">
+            <result type="studyLogoResult"/> 
+        </action>
+        
         <!--  Study Actions -->
         <!--  Study Actions -->
         <!--  Study Actions -->
    
+        <action name="retrieveStudyLogoPreview" method="retrieveStudyLogoPreview" class="editStudyAction">
+            <result type="studyLogoResult"/> 
+        </action>
+        
         <action name="manageStudies" method="manageStudies" class="editStudyAction">
             <result type="tiles">manageStudies</result>
         </action>

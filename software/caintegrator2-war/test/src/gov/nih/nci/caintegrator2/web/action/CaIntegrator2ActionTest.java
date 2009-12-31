@@ -92,19 +92,15 @@ import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 
-import java.util.HashMap;
-
 import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.opensymphony.xwork2.ActionContext;
-
-public class CaIntegrator2ActionTest {
+public class CaIntegrator2ActionTest extends AbstractSessionBasedTest {
     
     @Before
     public void setUp() {
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        super.setUp();
     }
 
     @Test

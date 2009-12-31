@@ -5,9 +5,9 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
        xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
        http://www.directwebremoting.org/schema/spring-dwr
        http://www.directwebremoting.org/schema/spring-dwr-2.0.xsd"
     default-lazy-init="false" 
@@ -930,13 +930,6 @@
     </bean>
     
     <bean id="authorizationManagerFactory" class="gov.nih.nci.caintegrator2.security.AuthorizationManagerFactoryImpl"/>
-    
-    <bean id="logoRenderingServlet" 
-        class="gov.nih.nci.caintegrator2.web.LogoRenderingServlet">
-        <property name="studyManagementService">
-            <ref local="studyManagementService"/>
-        </property>
-    </bean>
 
     <!-- ******************************************************************* -->
     <!-- ** SERVICES                                                      ** -->

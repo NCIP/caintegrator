@@ -138,4 +138,14 @@ public class EditStudyAction extends AbstractStudyAction {
         }
         return SUCCESS;
     }
+    
+    /**
+     * Returns the result type "studyLogoResult".
+     * @return current study logo.
+     */
+    public String retrieveStudyLogoPreview() {
+        getDisplayableWorkspace().setStudyLogo(
+                getDisplayableWorkspace().getCurrentStudyConfiguration().getStudyLogo());
+        return SUCCESS;
+    }
 }
