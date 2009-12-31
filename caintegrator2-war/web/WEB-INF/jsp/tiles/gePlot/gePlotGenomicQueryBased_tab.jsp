@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <s:form name="geneExpressionGenomicQueryInputForm" id="geneExpressionGenomicQueryInputForm" theme="simple">
                 
@@ -79,10 +80,10 @@
     
     <br>
     <center>
-    <s:div id="genomicQueryGePlotDiv" 
-            theme="ajax" 
+    <sx:div id="genomicQueryGePlotDiv" 
             href="%{createGenomicQueryBasedGEPlot}" 
             formId="geneExpressionGenomicQueryInputForm" 
+            showLoadingText="true"
             loadingText="<img src='images/ajax-loader-processing.gif'/>"
             listenTopics="createGenomicQueryPlot" refreshOnShow="true" />
         

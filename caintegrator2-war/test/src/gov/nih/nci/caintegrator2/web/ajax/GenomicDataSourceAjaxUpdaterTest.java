@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.web.ajax;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
@@ -96,22 +95,19 @@ import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import javax.servlet.ServletException;
 
-import org.acegisecurity.context.SecurityContextHolder;
 import org.directwebremoting.WebContextFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.opensymphony.xwork2.ActionContext;
 
-
-public class GenomicDataSourceAjaxUpdaterTest {
+public class GenomicDataSourceAjaxUpdaterTest extends AbstractSessionBasedTest {
 
     private GenomicDataSourceAjaxUpdater updater;
     private DwrUtilFactory dwrUtilFactory;
@@ -121,7 +117,8 @@ public class GenomicDataSourceAjaxUpdaterTest {
     private GenomicDataSourceConfiguration genomicDataSource;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        super.setUp();
         updater = new GenomicDataSourceAjaxUpdater();
         dwrUtilFactory = new DwrUtilFactory();
         workspaceService = new WorkspaceServiceStudyDeploymentJobStub();
@@ -131,8 +128,6 @@ public class GenomicDataSourceAjaxUpdaterTest {
         updater.setWorkspaceService(workspaceService);
         updater.setDwrUtilFactory(dwrUtilFactory);
         updater.setStudyManagementService(studyManagementServiceStub);
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
         WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
         StudyHelper studyHelper = new StudyHelper();
         studyConfiguration = studyHelper.populateAndRetrieveStudyWithSourceConfigurations().getStudyConfiguration();

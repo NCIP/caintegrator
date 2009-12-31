@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <s:hidden name="runSearchSelected" value="false" />
 <s:hidden name="runCaBioGeneSearchFromPathways" value="false" />
@@ -48,10 +49,10 @@
 <!-- /caBio Inputs -->
 <s:url id="caBioSearch" action="caBioSearch"/>
 
-<s:div id="caBioGeneSearchResultsDiv" 
-        theme="ajax" 
+<sx:div id="caBioGeneSearchResultsDiv" 
         href="%{caBioSearch}" 
         formId="caBioGeneSearchForm" 
+        showLoadingText="true"
         loadingText="<img src='images/ajax-loader.gif'/>"
         listenTopics="searchCaBio" 
         refreshOnShow="false"

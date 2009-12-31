@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-            
+<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
+ 
 <s:form name="kaplanMeierGeneExpressionInputForm" id="kaplanMeierGeneExpressionInputForm" theme="simple">
     <s:hidden name="createPlotSelected" value="false" />
     <s:hidden name="resetSelected" value="false" />
@@ -96,10 +97,10 @@
     
     <br><br>
     <center>
-    <s:div id="geneExpressionKmPlotDiv" 
-            theme="ajax" 
+    <sx:div id="geneExpressionKmPlotDiv" 
             href="%{createGeneExpressionBasedKMPlot}" 
             formId="kaplanMeierGeneExpressionInputForm" 
+            showLoadingText="true"
             loadingText="<img src='images/ajax-loader-processing.gif'/>"
             listenTopics="createGeneExpressionPlot" refreshOnShow="true" />
         

@@ -7,7 +7,7 @@
     <!--Study Logo-->
     <s:if test="currentStudy != null">
 	    <div id="study_logo">
-	        <s:set name="logo" id="logo" value="%{displayableWorkspace.logoUrl}"/>
+	        <s:set name="logo" id="logo" value="'retrieveStudyLogo.action'"/>
 	        <img src="${logo}" alt="Study Logo" height="72" width="200"/>
 	    </div>
     </s:if>

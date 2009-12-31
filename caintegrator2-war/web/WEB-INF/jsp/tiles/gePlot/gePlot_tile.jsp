@@ -4,6 +4,7 @@
     pageEncoding="ISO-8859-1"%>
 
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <script language="javascript">
 
@@ -16,7 +17,7 @@
 
      }
 </script>
-
+<link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/TabContainer.css" />
 <div id="content">
 
         <h1><s:property value="#subTitleText" /></h1>
@@ -38,29 +39,12 @@
         </s:url>
 
       <s:set name="displayTab" id="displayTab" value="%{displayTab}"/>
-
-    <!-- See the following issue to see why I used a TabContainer instead of tabPanel, basically IE was erroring out
-         when switching tabs and trying to do "Create Plot" (dynamic div inside a tab panel). 
-https://issues.apache.org/struts/browse/WW-1906?page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel 
-    -->
-	<div dojoType="TabContainer" id="mainTabPanel"
-		selectedChild="${displayTab}" doLayout="false"
-		templateCssPath="/caintegrator2/common/css/TabContainer.css">
-		<div dojoType="ContentPane" label="For Annotation" id="annotationTab">
-			<div dojoType="struts:BindDiv" href="${annotationBasedUrl}"
-				theme="ajax" refreshOnShow="true">
-			</div>
-		</div>
-		<div dojoType="ContentPane" label="For Genomic Queries" id="genomicQueryTab">
-			<div dojoType="struts:BindDiv" href="${genomicQueryBasedUrl}" theme="ajax"
-				refreshOnShow="true" dojoType="ContentPane"></div>
-		</div>
-		<div dojoType="ContentPane" label="For Clinical Queries" id="clinicalQueryTab">
-            <div dojoType="struts:BindDiv" href="${clinicalQueryBasedUrl}" theme="ajax"
-                refreshOnShow="true" dojoType="ContentPane"></div>
-        </div>
-	</div>
-
+    
+    <sx:tabbedpanel id="mainTabPanel" selectedTab="%{displayTab}" templateCssPath="/common/css/TabContainer.css">
+        <sx:div href="%{annotationBasedUrl}" id="annotationTab" label="For Annotation" showLoadingText="true" />
+        <sx:div href="%{genomicQueryBasedUrl}" id="genomicQueryTab" label="For Genomic Queries" showLoadingText="true"/>
+        <sx:div href="%{clinicalQueryBasedUrl}" id="clinicalQueryTab" label="For Clinical Queries" showLoadingText="true"/>
+    </sx:tabbedpanel>
 
 	<!--/Tab Box-->
 

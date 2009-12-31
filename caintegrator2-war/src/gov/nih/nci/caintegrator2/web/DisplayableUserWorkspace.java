@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web;
 
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
@@ -135,7 +136,7 @@ public class DisplayableUserWorkspace {
     private static final String CURRENT_STUDY_VALUE_STACK_KEY = "study";
     private static final String CURRENT_QUERY_RESULT_VALUE_STACK_KEY = "queryResult";
     private static final String CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY = "genomicDataQueryResult";
-    private static final String LOGO_SERVLET_URL = "/caintegrator2/logo?";
+    private static final String CURRENT_STUDY_LOGO_KEY = "studyLogo";
     
     private Long currentStudySubscriptionId;
     private GenePatternAnalysisJob currentGenePatternAnalysisJob = new GenePatternAnalysisJob();
@@ -162,11 +163,18 @@ public class DisplayableUserWorkspace {
     /**
      * Refreshes the workspace for this session, ensuring it is attached to the current Hibernate request.
      *
-     * @param workspaceService service used to 
+     * @param workspaceService service used to
+     * @param isStudyNeedRefresh determines if we need to refresh study on the stack or not. 
      */
-    public void refresh(WorkspaceService workspaceService) {
+    public void refresh(WorkspaceService workspaceService, boolean isStudyNeedRefresh) {
         setUserWorkspace(workspaceService.getWorkspace());
         workspaceService.subscribeAll(getUserWorkspace());
+        if (isStudyNeedRefresh) {
+            refreshStudyObjects();    
+        }
+    }
+    
+    private void refreshStudyObjects() {
         if (getCurrentStudySubscriptionId() == null  && getUserWorkspace().getDefaultSubscription() != null) {
             currentStudySubscriptionId = getUserWorkspace().getDefaultSubscription().getId();
         }
@@ -194,6 +202,21 @@ public class DisplayableUserWorkspace {
 
     private void setUserWorkspace(UserWorkspace userWorkspace) {
         getValueStack().set(USER_WORKSPACE_VALUE_STACK_KEY, userWorkspace);
+    }
+    
+    /**
+     * @return the studyLogo
+     */
+    public StudyLogo getStudyLogo() {
+        return (StudyLogo) getValueStack().findValue(CURRENT_STUDY_LOGO_KEY);
+    }
+    
+    /**
+     * Sets current study logo.
+     * @param studyLogo to set.
+     */
+    public void setStudyLogo(StudyLogo studyLogo) {
+        getValueStack().set(CURRENT_STUDY_LOGO_KEY, studyLogo);
     }
 
     /**
@@ -248,7 +271,6 @@ public class DisplayableUserWorkspace {
                         .getGenomicDataSources());
             }
         }
-
         getValueStack().set(CURRENT_STUDY_SUBSCRIPTION_VALUE_STACK_KEY, currentStudySubscription);
         getValueStack().set(CURRENT_STUDY_VALUE_STACK_KEY, currentStudy);
     }
@@ -308,19 +330,6 @@ public class DisplayableUserWorkspace {
     public void setGenomicDataQueryResult(GenomicDataQueryResult genomicDataQueryResult) {
         this.genomicDataQueryResult = genomicDataQueryResult;
         getValueStack().set(CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY, genomicDataQueryResult);
-    }
-
-    /**
-     * Retrieves the Logo URL for the leftNavMenu.
-     * @return - URL for the logo servlet.
-     */
-    public String getLogoUrl() {
-        if (getCurrentStudySubscription() != null) {
-            return LOGO_SERVLET_URL + "studyId=" + getCurrentStudySubscription().getStudy().getId() 
-                + "&studyName=" + getCurrentStudySubscription().getStudy().getShortTitleText();
-        } else {
-            return LOGO_SERVLET_URL;
-        }
     }
     
     /**

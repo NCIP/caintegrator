@@ -117,7 +117,7 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
         DisplayableUserWorkspace displayableWorkspace = 
             SessionHelper.getInstance().getDisplayableUserWorkspace();
-        displayableWorkspace.refresh(workspaceService);
+        displayableWorkspace.refresh(workspaceService, true);
         
         ajaxUpdater = new PlatformDeploymentAjaxUpdaterStub();
         action.setWorkspaceService(workspaceService);

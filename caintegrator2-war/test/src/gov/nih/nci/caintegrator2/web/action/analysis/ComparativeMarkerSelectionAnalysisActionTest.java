@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -104,27 +103,25 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator2.web.ajax.PersistedAnalysisJobAjaxUpdater;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
-import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class ComparativeMarkerSelectionAnalysisActionTest {
+public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessionBasedTest {
     
     private ComparativeMarkerSelectionAnalysisAction action;
     private QueryManagementServiceStubComparativeMarker queryManagementService;
 
     @Before
     public void setUp() {
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        super.setUp();
         StudySubscription subscription = new StudySubscription();
         queryManagementService = new QueryManagementServiceStubComparativeMarker();
         Study study = new Study();

@@ -88,37 +88,28 @@ package gov.nih.nci.caintegrator2.web.action.analysis.cabio;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.external.cabio.CaBioDisplayablePathway;
 import gov.nih.nci.caintegrator2.external.cabio.CaBioFacadeStub;
 import gov.nih.nci.caintegrator2.external.cabio.CaBioSearchTypeEnum;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import java.util.HashMap;
-
-import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.opensymphony.xwork2.ActionContext;
 
-
-public class CaBioSearchActionTest {
+public class CaBioSearchActionTest extends AbstractSessionBasedTest {
     
     private CaBioSearchAction action;
     private CaBioFacadeStub caBioFacade;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        super.setUp();
         ApplicationContext context = new ClassPathXmlApplicationContext("cabio-test-config.xml", CaBioFacadeStub.class);
-
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-
         action = (CaBioSearchAction) context.getBean("caBioSearchAction");
         caBioFacade = (CaBioFacadeStub) context.getBean("caBioFacadeStub");
-                
     }
 
 

@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <s:form name="geneExpressionAnnotationInputForm" id="geneExpressionAnnotationInputForm" theme="simple">
                 
@@ -137,10 +138,10 @@
     
     <br>
     <center>
-    <s:div id="annotationGePlotDiv" 
-            theme="ajax" 
+    <sx:div id="annotationGePlotDiv" 
             href="%{createAnnotationBasedGEPlot}" 
             formId="geneExpressionAnnotationInputForm" 
+            showLoadingText="true"
             loadingText="<img src='images/ajax-loader-processing.gif'/>"
             listenTopics="createAnnotationPlot" refreshOnShow="true" />
         

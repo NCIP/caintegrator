@@ -87,33 +87,27 @@ package gov.nih.nci.caintegrator2.web.ajax;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeStub;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import java.util.HashMap;
-
-import org.acegisecurity.context.SecurityContextHolder;
 import org.directwebremoting.WebContextFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.opensymphony.xwork2.ActionContext;
 
-
-public class DicomRetrievalAjaxUpdaterTest {
+public class DicomRetrievalAjaxUpdaterTest extends AbstractSessionBasedTest {
 
     private DicomRetrievalAjaxUpdater updater;
     private NCIAFacadeStub nciaFacade;
     
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        super.setUp();
         updater = new DicomRetrievalAjaxUpdater();
         nciaFacade = new NCIAFacadeStub();
         updater.setNciaFacade(nciaFacade);
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
         NCIADicomJob dicomJob = new NCIADicomJob();
         dicomJob.setCompleted(false);
         dicomJob.setCurrentlyRunning(true);

@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -96,13 +97,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
 
-public class LoadClinicalSourceActionTest {
+public class LoadClinicalSourceActionTest extends AbstractSessionBasedTest {
 
     private LoadClinicalSourceAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
 
     @Before
     public void setUp() {
+        super.setUp();
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", LoadClinicalSourceActionTest.class); 
         action = (LoadClinicalSourceAction) context.getBean("loadClinicalSourceAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");

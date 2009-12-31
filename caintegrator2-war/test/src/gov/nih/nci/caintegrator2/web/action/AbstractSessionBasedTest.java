@@ -92,10 +92,25 @@ import java.util.HashMap;
 import org.acegisecurity.context.SecurityContextHolder;
 
 import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.config.Configuration;
+import com.opensymphony.xwork2.config.ConfigurationManager;
+import com.opensymphony.xwork2.config.providers.XWorkConfigurationProvider;
+import com.opensymphony.xwork2.inject.Container;
+import com.opensymphony.xwork2.util.ValueStack;
+import com.opensymphony.xwork2.util.ValueStackFactory;
 
 public abstract class AbstractSessionBasedTest {
     
     public void setUp() {
+        ConfigurationManager configurationManager = new ConfigurationManager();
+        configurationManager.addContainerProvider(new XWorkConfigurationProvider());
+        Configuration config = configurationManager.getConfiguration();
+        Container container = config.getContainer();
+
+        ValueStack stack = container.getInstance(ValueStackFactory.class).createValueStack();
+        stack.getContext().put(ActionContext.CONTAINER, container);
+        ActionContext.setContext(new ActionContext(stack.getContext()));
+
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
     }
