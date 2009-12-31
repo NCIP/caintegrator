@@ -131,5 +131,14 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
     public void setCurrentStudySubscriptionId(Long currentStudySubscriptionId) {
         getDisplayableWorkspace().setCurrentStudySubscriptionId(currentStudySubscriptionId);
     }
+    
+    /**
+     * Returns the result type "studyLogoResult".
+     * @return current study logo.
+     */
+    public String retrieveStudyLogo() {
+        getDisplayableWorkspace().setStudyLogo(getStudy().getStudyConfiguration().getStudyLogo());
+        return SUCCESS;
+    }
 
 }

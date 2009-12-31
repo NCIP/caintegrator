@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-
+<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <s:form name="kaplanMeierQueryInputForm" id="kaplanMeierQueryInputForm" theme="simple">
     <s:hidden name="createPlotSelected" value="false" />
@@ -104,10 +104,10 @@
     
     <br><br>
     <center>
-    <s:div id="queryKmPlotDiv" 
-            theme="ajax" 
+    <sx:div id="queryKmPlotDiv" 
             href="%{createQueryBasedKMPlot}" 
             formId="kaplanMeierQueryInputForm" 
+            showLoadingText="true"
             loadingText="<img src='images/ajax-loader-processing.gif'/>"
             listenTopics="createQueryBasedKMPlot" refreshOnShow="true" />
         

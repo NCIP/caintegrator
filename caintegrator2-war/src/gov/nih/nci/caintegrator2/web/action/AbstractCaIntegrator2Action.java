@@ -165,10 +165,12 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
      * refresh data on the value stack.
      */
     protected final void prepareValueStack() {
-        SessionHelper.getInstance().refresh(getWorkspaceService());
+        boolean isStudyNeedRefresh = true;
         if (isManagementAction()) {
+            isStudyNeedRefresh = false;
             setStudySubscription(null);
         }
+        SessionHelper.getInstance().refresh(getWorkspaceService(), isStudyNeedRefresh);
     }
    
     

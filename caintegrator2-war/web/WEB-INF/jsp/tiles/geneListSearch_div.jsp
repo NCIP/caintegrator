@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <s:hidden name="runSearchSelected" value="false" />
 
@@ -24,10 +25,10 @@
         </s:else>
     </tr>
     <br>
-    <s:div id="geneListSearchResultsDiv" 
-        theme="ajax" 
+    <sx:div id="geneListSearchResultsDiv" 
         href="geneListSearch.action" 
         formId="geneListSearchForm" 
+        showLoadingText="true"
         loadingText="<img src='images/ajax-loader.gif'/>"
         listenTopics="searchGeneList" 
         refreshOnShow="false" />

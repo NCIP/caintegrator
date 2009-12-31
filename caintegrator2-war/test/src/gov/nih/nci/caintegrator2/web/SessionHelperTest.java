@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -104,7 +105,7 @@ import org.junit.Test;
 
 import com.opensymphony.xwork2.ActionContext;
 
-public class SessionHelperTest {
+public class SessionHelperTest extends AbstractSessionBasedTest {
     
     private SessionHelper sessionHelper;
     private UserWorkspace userWorkspace;
@@ -112,6 +113,7 @@ public class SessionHelperTest {
     
     @Before
     public void setUp() {
+        super.setUp();
         AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
         authentication.setUsername("user");
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -138,7 +140,7 @@ public class SessionHelperTest {
     @Test
     public void testRefresh() {
         WorkspaceServiceStub workspaceServiceStub = new WorkspaceServiceStub();
-        sessionHelper.refresh(workspaceServiceStub);
+        sessionHelper.refresh(workspaceServiceStub, true);
         assertTrue(sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().size() == 1);
         assertEquals(sessionHelper.getUsername(), "user");
         assertTrue(sessionHelper.isAuthenticated());

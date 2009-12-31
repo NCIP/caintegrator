@@ -87,29 +87,25 @@ package gov.nih.nci.caintegrator2.web.action.query;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import java.util.HashMap;
-
-import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Test;
 
 import com.opensymphony.xwork2.ActionContext;
 
 /**
  * 
- */public class NewQueryActionTest {
+ */public class NewQueryActionTest extends AbstractSessionBasedTest {
      
      @Test
      public void testNewQueryAction() throws Exception {
-         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-         ActionContext.getContext().setSession(new HashMap<String, Object>());
+         super.setUp();
          StudySubscription subscription = new StudySubscription();
          subscription.setId(Long.valueOf(1));
          Study study = new Study();

@@ -186,13 +186,6 @@
         </property>
     </bean>
     
-    <bean id="logoRenderingServlet" 
-        class="gov.nih.nci.caintegrator2.web.LogoRenderingServlet">
-        <property name="studyManagementService">
-            <ref local="studyManagementService"/>
-        </property>
-    </bean>
-    
     <bean id="defineSurvivalDefinitionAction"  
         class="gov.nih.nci.caintegrator2.web.action.study.management.DefineSurvivalDefinitionAction">
         <property name="studyManagementService">

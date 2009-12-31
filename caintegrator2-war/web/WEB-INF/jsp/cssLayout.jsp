@@ -1,4 +1,5 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -19,7 +20,7 @@
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/caintegrator2.css" />
-        <s:head theme="ajax"/>
+        <sx:head parseContent="true"/>
         <script type="text/javascript" src="/caintegrator2/common/js/pde.js"></script>
         <script type="text/javascript" src="/caintegrator2/common/js/prototype.js"></script>
         <script type="text/javascript" src="/caintegrator2/common/js/scriptaculous.js"></script>
@@ -47,14 +48,15 @@
 				
 			<div id="main">	
                 <!-- Begin hidden geneListSearchForm -->
-                <s:div id="TB_GL_overlay" cssClass="TB_GL_overlayBG"/>
+                <sx:div id="TB_GL_overlay" cssClass="TB_GL_overlayBG"/>
                 <s:form name="geneListSearchForm" id="geneListSearchForm" onsubmit="runGeneListSearch(); return false;">
                     <!-- For gene list to know which form element to publish gene symbols to. -->
                     <s:hidden name="geneSymbolElementId" />
                     <s:hidden name="geneListSearchTopicPublished" value="false" />
-                    <s:div theme="ajax" 
+                    <sx:div 
                         id="geneListSearchInputDiv"
                         href="geneListSearchInput.action"
+                        showLoadingText="true"
                         loadingText="<img src='images/ajax-loader.gif'/>"
                         listenTopics="geneListSearchTopic"
                         refreshOnShow="false" 
@@ -63,14 +65,14 @@
                 <!-- End geneListSearchForm -->
                 
                 <!-- Begin hidden caBioGeneSearchForm -->
-                <s:div id="TB_overlay" cssClass="TB_overlayBG"/>
+                <sx:div id="TB_overlay" cssClass="TB_overlayBG"/>
                 <s:form name="caBioGeneSearchForm" id="caBioGeneSearchForm" onsubmit="runCaBioSearch(); return false;">
                     <!-- For caBio to know which form element to publish gene symbols to. -->
                     <s:hidden name="geneSymbolElementId" />
                     <s:hidden name="caBioGeneSearchTopicPublished" value="false" />
-                    <s:div theme="ajax" 
-                        id="caBioGeneSearchInputDiv"
+                    <sx:div id="caBioGeneSearchInputDiv"
                         href="caBioSearchInput.action"
+                        showLoadingText="true"
                         loadingText="<img src='images/ajax-loader.gif'/>"
                         listenTopics="caBioGeneSearchTopic"
                         refreshOnShow="false" 

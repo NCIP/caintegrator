@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-
+<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <s:form name="geneExpressionClinicalQueryInputForm" id="geneExpressionClinicalQueryInputForm" theme="simple">
     <s:hidden name="createPlotSelected" value="false" />
@@ -141,10 +141,10 @@
     
     <br><br>
     <center>
-    <s:div id="clinicalQueryGePlotDiv" 
-            theme="ajax" 
+    <sx:div id="clinicalQueryGePlotDiv"  
             href="%{createClinicalQueryBasedGEPlot}" 
             formId="geneExpressionClinicalQueryInputForm" 
+            showLoadingText="true"
             loadingText="<img src='images/ajax-loader-processing.gif'/>"
             listenTopics="createClinicalQueryBasedGEPlot" refreshOnShow="true" />
         

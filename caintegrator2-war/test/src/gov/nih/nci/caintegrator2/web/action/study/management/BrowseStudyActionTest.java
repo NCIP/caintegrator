@@ -86,33 +86,26 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
 
-public class BrowseStudyActionTest {
+public class BrowseStudyActionTest extends AbstractSessionBasedTest {
     
     private BrowseStudyAction action;
     
     @Before
     public void setUp() {
+        super.setUp();
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", BrowseStudyActionTest.class); 
         action = (BrowseStudyAction) context.getBean("browseStudyAction");
-        Map<String, Object> session = new HashMap<String, Object>();
-        ActionContext.getContext().setSession(session);
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         action.prepare();
     }
 

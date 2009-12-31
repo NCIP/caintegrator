@@ -87,39 +87,34 @@ package gov.nih.nci.caintegrator2.web.ajax;
 
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.cadsr.freestylesearch.util.SearchException;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
 
-import org.acegisecurity.context.SecurityContextHolder;
 import org.directwebremoting.WebContextFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.opensymphony.xwork2.ActionContext;
 
-
-public class DataElementSearchAjaxUpdaterTest {
+public class DataElementSearchAjaxUpdaterTest extends AbstractSessionBasedTest {
 
     private DataElementSearchAjaxUpdater updater;
     private StudyManagementServiceStubForSearch studyManagementService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        super.setUp();
         updater = new DataElementSearchAjaxUpdater();
         studyManagementService = new StudyManagementServiceStubForSearch();
         studyManagementService.clear();
         updater.setStudyManagementService(studyManagementService);
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
         WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
     }
 

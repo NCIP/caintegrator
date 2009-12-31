@@ -89,7 +89,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -101,21 +100,19 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator2.web.action.query.form.CriterionRowTypeEnum;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
-import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
 
-public class ManageQueryActionTest {
+public class ManageQueryActionTest extends AbstractSessionBasedTest {
 
     private ManageQueryAction manageQueryAction;
     
@@ -136,8 +133,7 @@ public class ManageQueryActionTest {
 
     @SuppressWarnings({"PMD"})
     private void setupSession() {
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        super.setUp();
         SessionHelper sessionHelper = SessionHelper.getInstance();
         manageQueryAction.prepare();
         assertEquals("criteria", manageQueryAction.getDisplayTab());

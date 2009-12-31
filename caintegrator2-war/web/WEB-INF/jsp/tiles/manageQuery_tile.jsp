@@ -4,7 +4,7 @@
     pageEncoding="ISO-8859-1"%>
 
 <%@ taglib prefix="s" uri="/struts-tags"%>
-
+<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 <script language="javascript">
 
     function setClinicalAnnotations(onOff){
@@ -130,16 +130,17 @@
         </s:url>
         
         <s:form action="manageQuery" name="manageQueryForm" id="manageQueryForm" theme="simple">
-            <s:tabbedPanel id="mainTabPanel" selectedTab="%{displayTab}"
+        <link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/TabContainer.css" />
+            <sx:tabbedpanel id="mainTabPanel" selectedTab="%{displayTab}"
                 templateCssPath="/common/css/TabContainer.css">
 
-                <s:div href="%{criteriaUrl}" id="criteria" label="Criteria" theme="ajax" formId="manageQueryForm" formFilter="filterParam"/>
-                <s:div href="%{columnsUrl}" id="columns" label="Results Type" theme="ajax" formId="manageQueryForm" formFilter="filterParam"/>
-                <s:div href="%{sortingUrl}" id="sorting" label="Sorting" theme="ajax" formId="manageQueryForm" refreshOnShow="true" />
-                <s:div href="%{searchResultsUrl}" id="searchResults" label="Query Results" theme="ajax" formId="manageQueryForm" formFilter="filterParam"/>
-                <s:div href="%{saveAsUrl}" id="saveAs" label="Save as..." theme="ajax" formId="manageQueryForm" formFilter="filterParam"/>
+                <sx:div href="%{criteriaUrl}" id="criteria" label="Criteria" formId="manageQueryForm" formFilter="filterParam" showLoadingText="true"/>
+                <sx:div href="%{columnsUrl}" id="columns" label="Results Type" formId="manageQueryForm" formFilter="filterParam" showLoadingText="true"/>
+                <sx:div href="%{sortingUrl}" id="sorting" label="Sorting" formId="manageQueryForm" refreshOnShow="true" showLoadingText="true"/>
+                <sx:div href="%{searchResultsUrl}" id="searchResults" label="Query Results" formId="manageQueryForm" formFilter="filterParam" showLoadingText="true"/>
+                <sx:div href="%{saveAsUrl}" id="saveAs" label="Save as..." formId="manageQueryForm" formFilter="filterParam" showLoadingText="true"/>
 
-            </s:tabbedPanel>
+            </sx:tabbedpanel>
 	    </s:form>
         
         <!--/Tab Box-->

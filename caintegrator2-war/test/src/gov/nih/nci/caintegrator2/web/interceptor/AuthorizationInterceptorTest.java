@@ -87,8 +87,7 @@ package gov.nih.nci.caintegrator2.web.interceptor;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
-
-import java.util.HashMap;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import org.junit.Test;
 
@@ -102,12 +101,12 @@ import com.opensymphony.xwork2.interceptor.PreResultListener;
 import com.opensymphony.xwork2.util.ValueStack;
 
 
-public class AuthorizationInterceptorTest {
+public class AuthorizationInterceptorTest extends AbstractSessionBasedTest {
 
     
     @Test
     public void testIntercept() throws Exception {
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        super.setUp();
         AuthorizationInterceptor interceptor = new AuthorizationInterceptor();
         ActionInvocationStub invocation = new ActionInvocationStub();
         
@@ -172,6 +171,10 @@ public class AuthorizationInterceptorTest {
 
         public void setResultCode(String resultCode) {
 
+        }
+
+        public void init(ActionProxy arg0) {
+            
         }
         
     }

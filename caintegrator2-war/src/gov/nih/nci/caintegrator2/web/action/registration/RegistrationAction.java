@@ -102,14 +102,12 @@ import org.apache.commons.lang.StringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.Validation;
 import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
 /**
  * Action for registering a user to cai2.
  */
 @SuppressWarnings("PMD.ReplaceHashtableWithMap") // LDAPHelper.authenticate uses a Hashtable.
-@Validation
 public class RegistrationAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;

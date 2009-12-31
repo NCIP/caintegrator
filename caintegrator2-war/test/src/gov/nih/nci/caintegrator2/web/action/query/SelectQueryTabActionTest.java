@@ -85,24 +85,18 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import java.util.HashMap;
-
-import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Test;
-
-import com.opensymphony.xwork2.ActionContext;
 
 /**
  * 
- */public class SelectQueryTabActionTest {
+ */public class SelectQueryTabActionTest extends AbstractSessionBasedTest {
      
      @Test
      public void testSelectQueryTabAction() throws Exception {
-         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-         ActionContext.getContext().setSession(new HashMap<String, Object>());
+         super.setUp();
 
          SelectQueryTabAction action = new SelectQueryTabAction();
          action.setSelectedAction("selectSortingTab");

@@ -103,7 +103,6 @@ import com.opensymphony.xwork2.util.ValueStack;
  * Stores helper variables to our session.
  */
 public final class SessionHelper {
-    private static final String UNCHECKED = "unchecked";
     private static final String SESSION_HELPER_SESSION_KEY = "sessionHelper"; 
     private static final String DISPLAYABLE_USER_WORKSPACE_SESSION_KEY = "displayableWorkspace";
     private static final String DISPLAYABLE_USER_WORKSPACE_VALUE_STACK_KEY = "displayableWorkspace";
@@ -147,10 +146,11 @@ public final class SessionHelper {
      * </ul>
      * 
      * @param workspaceService session used to retrieve workspace.
+     * @param isStudyNeedRefresh determines if we need to refresh study on the stack or not.
      */
-    public void refresh(WorkspaceService workspaceService) {
+    public void refresh(WorkspaceService workspaceService, boolean isStudyNeedRefresh) {
         if (isAuthenticated()) {
-            getDisplayableUserWorkspace().refresh(workspaceService);
+            getDisplayableUserWorkspace().refresh(workspaceService, isStudyNeedRefresh);
             getValueStack().set(DISPLAYABLE_USER_WORKSPACE_VALUE_STACK_KEY, getDisplayableUserWorkspace());
         }
     }
@@ -182,7 +182,6 @@ public final class SessionHelper {
         return displayableUserWorkspace;
     }
 
-    @SuppressWarnings(UNCHECKED)  // Session attribute map is untyped
     private static Map<String, Object> getSession() {
         return ActionContext.getContext().getSession();
     }
