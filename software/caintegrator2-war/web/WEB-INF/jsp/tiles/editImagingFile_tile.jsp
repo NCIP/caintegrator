@@ -63,7 +63,7 @@
                         </s:else>          
                             <td>
                                 <s:if test="%{fieldDescriptor.definition != null}">
-                                    <s:checkbox name="imageSourceConfiguration.imageAnnotationConfiguration.annotationFile.columns.get(%{#columnIterator.count - 1}).fieldDescriptor.shownInBrowse"
+                                    <s:checkbox name="imageSourceConfiguration.imageAnnotationConfiguration.annotationFile.columns[%{#columnIterator.count - 1}].fieldDescriptor.shownInBrowse"
                                         theme="simple" />
                                 </s:if>
                             </td>
