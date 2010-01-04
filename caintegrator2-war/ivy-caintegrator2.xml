@@ -99,7 +99,7 @@
     <dependency org="c3p0" name="c3p0" rev="0.9.0" conf="runtime"/>
     <dependency org="org.codehaus.castor" name="castor" rev="1.0.2" conf="runtime"/>
     <dependency org="ncicb" name="csm" rev="4.2" conf="runtime->master"/>
-    <dependency org="ncicb" name="nci-commons-core" rev="1.2.3" conf="runtime->default"/>
+    <dependency org="ncicb" name="nci-commons-core" rev="1.2.7" conf="runtime"/>
     <dependency org="org.hibernate" name="ejb3-persistence" rev="1.0.1" conf="runtime"/>
     <dependency org="org.hibernate" name="hibernate-annotations" rev="1.0" conf="runtime"/>
     <dependency org="org.hibernate" name="hibernate" rev="3.2.0.ga" conf="runtime"/>
