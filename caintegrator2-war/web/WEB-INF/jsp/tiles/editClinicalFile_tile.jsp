@@ -42,7 +42,7 @@
                         </s:else>         
                             <td>
                                 <s:if test="%{fieldDescriptor != null}">
-                                    <s:checkbox name="clinicalSource.annotationFile.columns.get(%{#columnIterator.count - 1}).fieldDescriptor.shownInBrowse"
+                                    <s:checkbox name="clinicalSource.annotationFile.columns[%{#columnIterator.count - 1}].fieldDescriptor.shownInBrowse"
                                         theme="simple" disabled="false"/>
                                 </s:if>
                             </td>
