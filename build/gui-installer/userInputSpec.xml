@@ -432,6 +432,7 @@ Guide to this file:
 	<!-- Jboss Continued -->
 	<panel order="8">
 		<field type="title" txt="JBoss Configuration continued" bold="true" size="1" />
+        <field type="staticText" align="left" txt="Please click Next to continue."/>
 		<field type="divider" align="top"/>
 
 		<field type="text" variable="jboss.jmx-rmi.port">
