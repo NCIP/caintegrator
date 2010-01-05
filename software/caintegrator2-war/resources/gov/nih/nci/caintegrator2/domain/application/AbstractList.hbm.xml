@@ -26,10 +26,10 @@
 			<key column="ID" />
 			<!-- Attributes mapping for the SubjectList class -->
 			<!-- Associations mapping for the SubjectList class -->
-			<set name="subjectCollection" table="SUBJECT_LIST_SUBJECT" lazy="true" cascade="save-update,merge" >
+			<set name="subjectIdentifiers" lazy="true" cascade="all-delete-orphan" >
 				<cache usage="read-write" />
 				<key column="SUBJECT_LIST_ID" />
-				<many-to-many class="gov.nih.nci.caintegrator2.domain.translational.Subject" column="SUBJECT_ID" />
+				<one-to-many class="SubjectIdentifier" />
 			</set>
 		</joined-subclass>
 		<joined-subclass name="SampleList" table="SAMPLE_LIST" lazy="false">

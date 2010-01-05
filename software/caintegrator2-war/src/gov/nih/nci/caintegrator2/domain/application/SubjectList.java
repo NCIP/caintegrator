@@ -1,8 +1,7 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
-import gov.nih.nci.caintegrator2.domain.translational.Subject;
-
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -11,20 +10,22 @@ public class SubjectList extends AbstractList {
 
     private static final long serialVersionUID = 1L;
     
-    private Collection<Subject> subjectCollection;
+    private List<SubjectIdentifier> subjectIdentifiers = new ArrayList<SubjectIdentifier>();
 
     /**
-     * @return the subjectCollection
+     * @return the subjectIdentifiers
      */
-    public Collection<Subject> getSubjectCollection() {
-        return subjectCollection;
+    public List<SubjectIdentifier> getSubjectIdentifiers() {
+        return subjectIdentifiers;
     }
 
     /**
-     * @param subjectCollection the subjectCollection to set
+     * @param subjectIdentifiers the subjectIdentifiers to set
      */
-    public void setSubjectCollection(Collection<Subject> subjectCollection) {
-        this.subjectCollection = subjectCollection;
+    @SuppressWarnings("unused") // Used only for hibernate.
+    private void setSubjectIdentifiers(List<SubjectIdentifier> subjectIdentifiers) {
+        this.subjectIdentifiers = subjectIdentifiers;
     }
 
+    
 }

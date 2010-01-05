@@ -59,4 +59,8 @@
         <comment>Add SAMPLE_MAPPING_FILE_PATH to GENOMIC_DATA_SOURCE_CONFIGURATION table.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.9.sql"/>
     </changeSet>
+        <changeSet id="1.1.10" author="tandrews">
+        <comment>Update database to use new SUBJECT_LIST/SUBJECT_LIST_CRITERION.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.10.sql"/>
+    </changeSet>
 </databaseChangeLog>
