@@ -675,8 +675,10 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
     public Set<AnnotationDefinition> getVisibleImageSeriesAnnotationCollection() {
         Set<AnnotationDefinition> visibleSet = new HashSet<AnnotationDefinition>();
         for (ImageDataSourceConfiguration source : imageDataSources) {
-            visibleSet.addAll(source.getImageAnnotationConfiguration()
+            if (source.getImageAnnotationConfiguration() != null) {
+                visibleSet.addAll(source.getImageAnnotationConfiguration()
                     .getAnnotationFile().getVisibleAnnotationDefinition());
+            }
         }
         return visibleSet;
     }
