@@ -110,7 +110,6 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
@@ -221,10 +220,6 @@ public class StudyHelper {
         subjectCollection.add(subject3);
         subjectCollection.add(subject4);
         subjectCollection.add(subject5);
-        
-        SubjectList subjectList = new SubjectList();
-        subjectList.setSubjectCollection(subjectCollection);
-        subjectList.setSubscription(studySubscription);
         
         StudySubjectAssignment studySubjectAssignment1 = new StudySubjectAssignment();
         StudySubjectAssignment studySubjectAssignment2 = new StudySubjectAssignment();
