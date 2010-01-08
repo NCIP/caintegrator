@@ -95,6 +95,12 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
         this.analysisJobCollection = analysisJobCollection;
     }
     
+    private final Comparator<AbstractList> abstractListNameComparator = new Comparator<AbstractList>() {
+        public int compare(AbstractList list1, AbstractList list2) {
+            return list1.getName().compareToIgnoreCase(list2.getName());
+        }
+    };
+    
     /**
      * @return a list of gene lists, ordered by name.
      */
@@ -106,12 +112,7 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
                     geneLists.add((GeneList) abstractList);
                 }
             }
-            Comparator<GeneList> nameComparator = new Comparator<GeneList>() {
-                public int compare(GeneList geneList1, GeneList geneList2) {
-                    return geneList1.getName().compareToIgnoreCase(geneList2.getName());
-                }
-            };
-            Collections.sort(geneLists, nameComparator);
+            Collections.sort(geneLists, abstractListNameComparator);
         }
         return geneLists;
     }
@@ -140,5 +141,43 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
         return null;
     }
     
-
+    /**
+     * @return a list of subject lists, ordered by name.
+     */
+    public List<SubjectList> getSubjectLists() {
+        List<SubjectList> subjectLists = new ArrayList<SubjectList>();
+        if (listCollection != null) {
+            for (AbstractList abstractList : listCollection) {
+                if (abstractList instanceof SubjectList) {
+                    subjectLists.add((SubjectList) abstractList);
+                }
+            }
+            Collections.sort(subjectLists, abstractListNameComparator);
+        }
+        return subjectLists;
+    }
+    
+    /**
+     * @return a list of subject list names
+     */
+    public List<String> getSubjectListNames() {
+        List<String> subjectListNames = new ArrayList<String>();
+        for (SubjectList list : getSubjectLists()) {
+            subjectListNames.add(list.getName());
+        }
+        return subjectListNames;
+    }
+    
+    /**
+     * @param name then subject list name to get
+     * @return The subject list
+     */
+    public SubjectList getSubjectList(String name) {
+        for (SubjectList list : getSubjectLists()) {
+            if (list.getName().equals(name)) {
+                return list;
+            }
+        }
+        return null;
+    }
 }

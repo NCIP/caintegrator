@@ -143,6 +143,15 @@
         <put-attribute name="subTitle" value="Edit Sample Mappings" />
     </definition>
 
+    <!-- Subject List Edit page -->
+    <!-- Subject List Edit page -->
+    <!-- Subject List Edit page -->
+    
+    <definition name="editSubjectList" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editSubjectList_tile.jsp" />
+        <put-attribute name="subTitle" value="Edit Subject List" />
+    </definition>
+
     <!-- Gene List Management page -->
     <!-- Gene List Management page -->
     <!-- Gene List Management page -->

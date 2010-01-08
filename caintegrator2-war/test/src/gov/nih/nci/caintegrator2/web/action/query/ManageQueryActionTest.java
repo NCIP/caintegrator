@@ -200,6 +200,24 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertTrue(queryManagementService.saveCalled);
         
+        // test save subject
+        manageQueryAction.setSelectedAction("saveSubjectList");
+        manageQueryAction.prepare();
+        manageQueryAction.validate();
+        assertTrue(manageQueryAction.hasErrors());
+        manageQueryAction.clearErrorsAndMessages();
+        studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setStatus(Status.DEPLOYED);
+        manageQueryAction.getCurrentStudy().setStudyConfiguration(studyConfiguration);
+        manageQueryAction.getQueryForm().getQuery().setName("query name");
+        manageQueryAction.validate();
+        assertTrue(manageQueryAction.hasErrors());
+        manageQueryAction.clearErrorsAndMessages();
+        manageQueryAction.setSubjectListName("Subject list 1");
+        manageQueryAction.validate();
+        assertFalse(manageQueryAction.hasErrors());
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
         // test load query
         manageQueryAction.setSelectedAction("loadQuery");
         manageQueryAction.setQueryId(1L);

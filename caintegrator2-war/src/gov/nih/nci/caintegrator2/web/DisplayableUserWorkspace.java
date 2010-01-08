@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.cabio.CaBioDisplayablePathway;
@@ -370,6 +371,14 @@ public class DisplayableUserWorkspace {
     public List<GeneList> getGeneLists() {
         return (getCurrentStudySubscription() == null)
             ? null : getCurrentStudySubscription().getGeneLists();
+    }
+    
+    /**
+     * @return the saved subject lists.
+     */
+    public List<SubjectList> getSubjectLists() {
+        return (getCurrentStudySubscription() == null)
+            ? null : getCurrentStudySubscription().getSubjectLists();
     }
 
     /**

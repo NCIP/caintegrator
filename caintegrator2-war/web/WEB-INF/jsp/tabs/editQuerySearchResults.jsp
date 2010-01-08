@@ -16,6 +16,9 @@
         </s:else>        
     </h2>
 
+    <s:hidden name="subjectListName" value="" />
+    <s:hidden name="subjectListDescription" value="" />
+    
     <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
         <div style="float: left; position: relative; width: 100px; margin-top: 0.3em;">
             <s:if test='%{query.resultType.value.equals("genomic")}'></s:if>
@@ -153,16 +156,22 @@
                 <display:setProperty name="export.csv.filename" value="StudySearchResults.csv" />
                 <display:setProperty name="export.csv.include_header" value="true" />
                 <display:column 
-                    title="Select <br> <font style='font-size:9px;text-decoration:underline;cursor:pointer;'>
+                    title="Select Image <br> <font style='font-size:9px;text-decoration:underline;cursor:pointer;'>
                     <s:a href='#' cssStyle='text-decoration: underline;' onclick='selectAll()'>
                     All</s:a>&nbsp;|&nbsp;<s:a href='#' onclick='selectNone()'>None</s:a> </font>" 
-                    media="html"
-                    sortable="false">
+                    media="html" sortable="false">
                     <s:if test="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).imagingRow}">
                         <s:checkbox theme="simple" name="queryResult.rows[%{#attr.queryResultRows_rowNum - 1}].checkedRow"/>
                     </s:if>
                 </display:column>
                 <s:if test="queryResult.hasSubjects">
+                    <display:column 
+                        title="Select Subject<br> <font style='font-size:9px;text-decoration:underline;cursor:pointer;'>
+                        <s:a href='#' cssStyle='text-decoration: underline;' onclick='selectAllSubject()'>
+                        All</s:a>&nbsp;|&nbsp;<s:a href='#' onclick='selectNoneSubject()'>None</s:a> </font>" 
+                        media="html" sortable="false">
+                        <s:checkbox theme="simple" name="queryResult.rows[%{#attr.queryResultRows_rowNum - 1}].selectedSubject"/>
+                    </display:column>
                     <display:column title="Subject Identifier" sortable="true">
                         <s:property
                             value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).subjectAssignment.identifier}" />
@@ -173,8 +182,7 @@
                         <s:if test="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).imageSeries != null}">
                             <s:property
                                 value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).imageSeries.identifier}" />
-                            <a
-                                href='<s:property value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).nciaLink}" escape="false"/>'
+                            <a href='<s:property value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).nciaLink}" escape="false"/>'
                                 target="_">View in NBIA</a>
                         </s:if>
                     </display:column>
@@ -221,6 +229,11 @@
                         <li><s:a href="#" cssClass="btn" onclick="openExportLink(); return false;">
                             <span class="btn_img"><span class="export">Export To CSV</span></span>
                         </s:a></li>
+                        <s:if test="queryResult.hasSubjects">
+                            <li><s:a href="#" cssClass="btn" onclick="saveSubjectList(); return false;">
+                                <span class="btn_img"><span class="save">Save Subject List</span></span>
+                            </s:a></li>
+                        </s:if>
                         <s:if test="queryForm.hasImageDataSources()">
                             <li><s:a href="#" cssClass="btn" 
                                 onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">

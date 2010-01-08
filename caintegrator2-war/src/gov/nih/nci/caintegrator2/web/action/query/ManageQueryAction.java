@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.DownloadableFile;
@@ -104,7 +105,9 @@ import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -135,6 +138,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     private int rowNumber;
     private Long queryId = null;
     private boolean export = false;
+    private String subjectListName = "";
+    private String subjectListDescription = "";
 
     /**
      * {@inheritDoc}
@@ -191,6 +196,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             validateSaveQuery();
         } else if ("addCriterionRow".equals(selectedAction)) {
             validateAddCriterionRow();
+        } else if ("saveSubjectList".equals(selectedAction)) {
+            validateSaveSubjectList();
         }
     }
     
@@ -207,6 +214,17 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         getQueryForm().validateForSave(this);
         if (this.hasErrors()) {
             displayTab = SAVE_AS_TAB;
+        }
+    }
+    
+    private void validateSaveSubjectList() {
+        if (getSubjectListName().length() == 0) {
+            addActionError("Subject list name is empty");
+        } else if (getStudySubscription().getSubjectListNames().contains(getSubjectListName())) {
+            addActionError("There is already a Subject List named " + getSubjectListName() + ".");
+        }
+        if (this.hasErrors()) {
+            displayTab = RESULTS_TAB;
         }
     }
     
@@ -272,12 +290,23 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             displayTab = RESULTS_TAB;
             getDisplayableWorkspace().getQueryResult().setSelectAll(false);
             returnValue = toggleCheckboxSelections();
+        } else if ("selectAllSubject".equals(selectedAction)) {
+            displayTab = RESULTS_TAB;
+            getDisplayableWorkspace().getQueryResult().setSelectAllSubject(true);
+            returnValue = toggleSubjectCheckboxSelections();
+        } else if ("selectNoneSubject".equals(selectedAction)) {
+            displayTab = RESULTS_TAB;
+            getDisplayableWorkspace().getQueryResult().setSelectAllSubject(false);
+            returnValue = toggleSubjectCheckboxSelections();
         } else if ("retrieveDicomImages".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
             returnValue = createDicomJob();
         } else if ("loadQuery".equals(selectedAction)) {
             displayTab = CRITERIA_TAB;
             returnValue = executeQuery();
+        } else if ("saveSubjectList".equals(selectedAction)) {
+            displayTab = RESULTS_TAB;
+            returnValue = saveSubjectList();
         } else {
             addActionError("Unknown action '" + selectedAction + "'");
             returnValue = ERROR; 
@@ -316,6 +345,21 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
                 && !getQueryResult().getRows().isEmpty()) {
             for (DisplayableResultRow row : getQueryResult().getRows()) {
                 row.setCheckedRow(getDisplayableWorkspace().getQueryResult().getSelectAll());
+            }
+        }
+        return SUCCESS;
+    }
+
+    /**
+     * Selects all subject checkboxes.
+     * @return the Struts result.
+     */
+    public String toggleSubjectCheckboxSelections() {
+        if (getQueryResult() != null 
+                && getQueryResult().getRows() != null
+                && !getQueryResult().getRows().isEmpty()) {
+            for (DisplayableResultRow row : getQueryResult().getRows()) {
+                row.setSelectedSubject(getDisplayableWorkspace().getQueryResult().getSelectAllSubject());
             }
         }
         return SUCCESS;
@@ -363,6 +407,20 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             }
         }
         return checkedRows;
+    }
+
+    private Set<String> retrieveSelectedSubjects() {
+        Set <String> selectedIdentifiers = new HashSet<String>();
+        if (getQueryResult() != null 
+            && getQueryResult().getRows() != null
+            && !getQueryResult().getRows().isEmpty()) {
+            for (DisplayableResultRow row : getQueryResult().getRows()) {
+                if (row.isSelectedSubject()) {
+                    selectedIdentifiers.add(row.getSubjectAssignment().getIdentifier());
+                }
+            }
+        }
+        return selectedIdentifiers;
     }
     
     /**
@@ -480,6 +538,20 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         getWorkspaceService().saveUserWorkspace(getWorkspace());
         getQueryForm().createQuery(getStudySubscription());
         setQueryResult(null);
+        return SUCCESS;
+    }
+    
+    /**
+     * Save the subject list.
+     * 
+     * @return the Struts result.
+     */
+    public String saveSubjectList() {
+        SubjectList subjectList = new SubjectList();
+        subjectList.setName(getSubjectListName());
+        subjectList.setDescription(getSubjectListDescription());
+        subjectList.setSubscription(getStudySubscription());
+        getWorkspaceService().createSubjectList(subjectList, retrieveSelectedSubjects());
         return SUCCESS;
     }
 
@@ -610,5 +682,37 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     public String getNciaBasketUrl() {
         ImageDataSourceConfiguration dataSource = studyManagementService.retrieveImageDataSource(getStudy());
        return "https://" + dataSource.getServerProfile().getHostname() + "/ncia/externalDataBasketDisplay.jsf";
+    }
+
+
+    /**
+     * @return the subjectListName
+     */
+    public String getSubjectListName() {
+        return subjectListName;
+    }
+
+
+    /**
+     * @param subjectListName the subjectListName to set
+     */
+    public void setSubjectListName(String subjectListName) {
+        this.subjectListName = subjectListName.trim();
+    }
+
+
+    /**
+     * @return the subjectListDescription
+     */
+    public String getSubjectListDescription() {
+        return subjectListDescription;
+    }
+
+
+    /**
+     * @param subjectListDescription the subjectListDescription to set
+     */
+    public void setSubjectListDescription(String subjectListDescription) {
+        this.subjectListDescription = subjectListDescription.trim();
     }
 }

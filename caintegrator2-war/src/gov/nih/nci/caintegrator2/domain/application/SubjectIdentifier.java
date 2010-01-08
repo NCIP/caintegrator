@@ -94,6 +94,21 @@ public class SubjectIdentifier extends AbstractCaIntegrator2Object {
     private static final long serialVersionUID = 1L;
     
     private String identifier;
+    
+    /**
+     * Default constructor.
+     */
+    public SubjectIdentifier() {
+        super();
+    }
+
+    /**
+     * @param identifier the identifier to set
+     */
+    public SubjectIdentifier(String identifier) {
+        super();
+        this.identifier = identifier;
+    }
 
     /**
      * @return the identifier

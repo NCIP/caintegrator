@@ -21,7 +21,6 @@
             document.manageQueryForm[item].checked = onOff;
         }
     }
-    
 
     function selectAll () {
         document.manageQueryForm.selectedAction.value='selectAll';
@@ -30,6 +29,16 @@
 
     function selectNone () {
         document.manageQueryForm.selectedAction.value='selectNone';
+        document.manageQueryForm.submit();
+    }
+
+    function selectAllSubject () {
+        document.manageQueryForm.selectedAction.value='selectAllSubject';
+        document.manageQueryForm.submit();
+    }
+
+    function selectNoneSubject () {
+        document.manageQueryForm.selectedAction.value='selectNoneSubject';
         document.manageQueryForm.submit();
     }
     
@@ -77,6 +86,14 @@
             }
             submitForm("saveAsQuery");
         }
+    }
+    
+    function saveSubjectList() {
+        var name = prompt("Please type in the Subject List name:", "");
+        var description = prompt("Please type in the Subject List description:", "");
+        document.manageQueryForm.subjectListName.value = name;
+        document.manageQueryForm.subjectListDescription.value = description;
+        submitForm("saveSubjectList");
     }
     
     function submitForm(selectAction) {
@@ -130,7 +147,7 @@
         </s:url>
         
         <s:form action="manageQuery" name="manageQueryForm" id="manageQueryForm" theme="simple">
-        <link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/TabContainer.css" />
+            <link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/TabContainer.css" />
             <sx:tabbedpanel id="mainTabPanel" selectedTab="%{displayTab}"
                 templateCssPath="/common/css/TabContainer.css">
 

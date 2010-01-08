@@ -6,7 +6,7 @@
 
 <!--Page Help-->
 
-<div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('edit_gene_list_help')" class="help">
+<div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('edit_subject_list_help')" class="help">
 &nbsp;</a>
 </div>
 
@@ -15,21 +15,21 @@
 <script language="javascript">
 
     function deleteList () {
-        if (confirm('This gene list will be permanently deleted.')) {
+        if (confirm('This subject list will be permanently deleted.')) {
             submitForm("deleteList");
         }
     }
     
     function submitForm(selectAction) {
-        document.editGeneListForm.selectedAction.value = selectAction;
-        document.editGeneListForm.submit();
+        document.editListForm.selectedAction.value = selectAction;
+        document.editListForm.submit();
     }
     
 </script>
 
     <h1><s:property value="#subTitleText" /></h1>
     
-    <p>Click <strong>Rename or Delete</strong> to perform editing on this gene list.</p>
+    <p>Click <strong>Rename or Delete</strong> to perform editing on this subject list.</p>
     <div class="form_wrapper_outer">
  
     <table class="form_wrapper_table">
@@ -39,13 +39,13 @@
                     <s:actionmessage/>
                     <s:actionerror/>
                     <s:if test="editOn">
-                        <s:form id="editGeneListForm" name="editGeneListForm" action="editList"
+                        <s:form id="editListForm" name="editListForm" action="editSubjectList"
                             method="post" enctype="multipart/form-data" theme="css_xhtml">
                             <s:hidden name="selectedAction" />
                             <s:hidden name="listOldName" />
-                            <s:textfield id="listName" name="listName" label="Gene List Name"
+                            <s:textfield id="listName" name="listName" label="Subject List Name"
                                 theme="css_xhtml" /><br>
-                            <s:textarea label="Gene Symbols" name="geneSymbolListing"
+                            <s:textarea label="Subject identifiers" name="subjectIdentifierListing"
                                 disabled="true" rows="5" cols="20" theme="css_xhtml" /><br>
 
                             <!--Buttons-->

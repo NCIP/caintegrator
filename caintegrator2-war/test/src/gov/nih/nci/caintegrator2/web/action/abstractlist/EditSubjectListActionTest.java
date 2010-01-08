@@ -83,120 +83,95 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.genelist;
+package gov.nih.nci.caintegrator2.web.action.abstractlist;
 
-import gov.nih.nci.caintegrator2.domain.application.GeneList;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.AbstractList;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectIdentifier;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
-/**
- * Action to search for gene list.
- */
-public class SearchGeneListAction extends AbstractCaIntegrator2Action {
+import org.junit.Before;
+import org.junit.Test;
 
-    private static final long serialVersionUID = 1L;
+import com.opensymphony.xwork2.ActionContext;
 
-    // JSP Form Hidden Variables
-    private String geneSymbolElementId;
-    private boolean geneListSearchTopicPublished = false;
-    private String geneListName = null;
-    private List<Gene> genes;
+public class EditSubjectListActionTest extends AbstractSessionBasedTest {
 
-    /**
-     * {@inheritDoc}
-     */
-    public String execute() {
-        setDefaultGeneList();
-        return SUCCESS;
+    EditSubjectListAction action = new EditSubjectListAction();
+    StudySubscription subscription = new StudySubscription();
+    WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
+
+    @Before
+    public void setUp() {
+        super.setUp();
+        subscription.setId(1L);
+        subscription.setStudy(new Study());
+        subscription.getStudy().setStudyConfiguration(new StudyConfiguration());
+        subscription.setListCollection(new ArrayList<AbstractList>());
+        SessionHelper.getInstance().getDisplayableUserWorkspace().
+            setCurrentStudySubscription(subscription);
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
+        workspaceService.setSubscription(subscription);
+        action.setWorkspaceService(workspaceService);
+        
+        SubjectList list = new SubjectList();
+        list.setName("List1");
+        SubjectIdentifier subjectIdentifier = new SubjectIdentifier();
+        subjectIdentifier.setIdentifier("ABC123");
+        list.getSubjectIdentifiers().add(subjectIdentifier);
+        subjectIdentifier = new SubjectIdentifier();
+        subjectIdentifier.setIdentifier("DEF123");
+        list.getSubjectIdentifiers().add(subjectIdentifier);
+        subscription.getListCollection().add(list);
+        list = new SubjectList();
+        list.setName("List2");
+        subscription.getListCollection().add(list);
     }
     
-    private void setDefaultGeneList() {
-        if (!getStudySubscription().getGeneLists().isEmpty()) {
-            geneListName = getStudySubscription().getGeneLists().get(0).getName();
-            retrieveGenes();
-        }
-    }
-    
-    /**
-     * Searches gene list for genes.
-     * @return struts result.
-     */
-    public String searchForGenes() {
-        retrieveGenes();
-        return SUCCESS;
-    }
-    
-    private void retrieveGenes() {
-        genes = new ArrayList<Gene>();
-        GeneList list = getStudySubscription().getGeneList(getGeneListName());
-        if (list != null) {
-            genes.addAll(list.getGeneCollection());
-        }
-    }
-
-    /**
-     * @return the geneSymbolElementId
-     */
-    public String getGeneSymbolElementId() {
-        return geneSymbolElementId;
-    }
-
-    /**
-     * @param geneSymbolElementId the geneSymbolElementId to set
-     */
-    public void setGeneSymbolElementId(String geneSymbolElementId) {
-        this.geneSymbolElementId = geneSymbolElementId;
-    }
-
-    /**
-     * @return the caBioGeneSearchTopicPublished
-     */
-    public boolean isCaBioGeneSearchTopicPublished() {
-        return geneListSearchTopicPublished;
-    }
-
-    /**
-     * @param caBioGeneSearchTopicPublished the caBioGeneSearchTopicPublished to set
-     */
-    public void setCaBioGeneSearchTopicPublished(boolean caBioGeneSearchTopicPublished) {
-        this.geneListSearchTopicPublished = caBioGeneSearchTopicPublished;
-    }
-    
-    /**
-     * @return the geneListName
-     */
-    public String getGeneListName() {
-        return geneListName;
-    }
-
-    /**
-     * @param geneListName the geneListName to set
-     */
-    public void setGeneListName(String geneListName) {
-        this.geneListName = geneListName;
-    }
-
-    /**
-     * @return the geneListSearchTopicPublished
-     */
-    public boolean isGeneListSearchTopicPublished() {
-        return geneListSearchTopicPublished;
-    }
-
-    /**
-     * @param geneListSearchTopicPublished the geneListSearchTopicPublished to set
-     */
-    public void setGeneListSearchTopicPublished(boolean geneListSearchTopicPublished) {
-        this.geneListSearchTopicPublished = geneListSearchTopicPublished;
-    }
-
-    /**
-     * @return the geneSymbols
-     */
-    public List<Gene> getGenes() {
-        return genes;
+    @Test
+    public void testAll() {
+        action.setSelectedAction("editList");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        
+        action.setListName("List1");
+        assertEquals(13, action.getSubjectIdentifierListing().length());
+        
+        action.setSelectedAction("renameList");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        assertEquals("success", action.execute());
+        
+        action.setListName("List1");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        
+        action.setListName("Test");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        assertEquals("success", action.execute());
+        
+        action.setSelectedAction("deleteList");
+        action.setListName("Test");
+        action.execute();
+        assertFalse(action.hasFieldErrors());
+        
+        action.setListName("List1");
+        action.execute();
+        assertFalse(action.hasFieldErrors());
     }
 }

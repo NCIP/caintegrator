@@ -638,6 +638,9 @@ public class StudyManagementServiceTest {
                 TestDataFiles.SIMPLE_IMAGE_MAPPING_FILE, ImageDataSourceMappingTypeEnum.IMAGE_SERIES);
         assertEquals("100", assignment1.getImageStudyCollection().iterator().next().getIdentifier());
         assertEquals("101", assignment2.getImageStudyCollection().iterator().next().getIdentifier());
+        
+        assertEquals(2, imageDataSourceConfiguration.getMappedImageSeriesAcquisitions().size());
+        assertEquals(0, imageDataSourceConfiguration.getUnmappedImageSeriesAcquisitions().size());
     }
     
     @Test
