@@ -44,5 +44,19 @@ public class SubjectListCriterion extends AbstractCriterion implements Cloneable
         }
         return clone;
     }
+    
+    /**
+     * Retrieves the list of subject identifiers for this criterion.
+     * @return subject identifiers in this criterion.
+     */
+    public Set<String> getSubjectIdentifiers() {
+        Set<String> identifiers = new HashSet<String>();
+        for (SubjectList subjectList : getSubjectListCollection()) {
+            for (SubjectIdentifier subjectIdentifier : subjectList.getSubjectIdentifiers()) {
+                identifiers.add(subjectIdentifier.getIdentifier());
+            }
+        }
+        return identifiers;
+    }
 
 }

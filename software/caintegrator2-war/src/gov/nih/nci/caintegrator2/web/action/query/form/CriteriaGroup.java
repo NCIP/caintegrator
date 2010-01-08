@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
@@ -138,18 +139,24 @@ public class CriteriaGroup {
     private CriterionRowTypeEnum getCriterionRowType(AbstractCriterion criterion) {
         if (criterion instanceof AbstractGenomicCriterion) {
             return CriterionRowTypeEnum.GENE_EXPRESSION;
+        } else if (criterion instanceof SubjectListCriterion) {
+            return CriterionRowTypeEnum.CLINICAL;
         } else if (criterion instanceof AbstractAnnotationCriterion) {
-            AbstractAnnotationCriterion annotationCriterion = (AbstractAnnotationCriterion) criterion;
-            switch (annotationCriterion.getEntityType()) {
-            case IMAGESERIES:
-                return CriterionRowTypeEnum.IMAGE_SERIES;
-            case SUBJECT:
-                return CriterionRowTypeEnum.CLINICAL;
-            default:
-                throw new IllegalArgumentException("Unsupported entity type: " + annotationCriterion.getEntityType());
-            }
+            return getCriterionRowTypeForAnnotationCriterion(criterion);
         } else {
             throw new IllegalArgumentException("Unsupported criterion: " + criterion.getClass());
+        }
+    }
+
+    private CriterionRowTypeEnum getCriterionRowTypeForAnnotationCriterion(AbstractCriterion criterion) {
+        AbstractAnnotationCriterion annotationCriterion = (AbstractAnnotationCriterion) criterion;
+        switch (annotationCriterion.getEntityType()) {
+        case IMAGESERIES:
+            return CriterionRowTypeEnum.IMAGE_SERIES;
+        case SUBJECT:
+            return CriterionRowTypeEnum.CLINICAL;
+        default:
+            throw new IllegalArgumentException("Unsupported entity type: " + annotationCriterion.getEntityType());
         }
     }
 

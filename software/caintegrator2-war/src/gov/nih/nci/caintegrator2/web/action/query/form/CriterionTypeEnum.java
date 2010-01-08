@@ -95,6 +95,7 @@ enum CriterionTypeEnum {
     NUMERIC_COMPARISON,
     DATE_COMPARISON,
     SELECTED_VALUE,
+    SUBJECT_LIST,
     GENE_NAME,
     FOLD_CHANGE;
 

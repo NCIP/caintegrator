@@ -26,7 +26,7 @@
 			<key column="ID" />
 			<!-- Attributes mapping for the SubjectList class -->
 			<!-- Associations mapping for the SubjectList class -->
-			<set name="subjectIdentifiers" lazy="true" cascade="all-delete-orphan" >
+			<set name="subjectIdentifiers" lazy="false" cascade="all-delete-orphan" >
 				<cache usage="read-write" />
 				<key column="SUBJECT_LIST_ID" />
 				<one-to-many class="SubjectIdentifier" />

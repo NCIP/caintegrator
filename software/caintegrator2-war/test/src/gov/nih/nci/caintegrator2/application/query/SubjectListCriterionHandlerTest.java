@@ -83,59 +83,97 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.query.form;
+package gov.nih.nci.caintegrator2.application.query;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectIdentifier;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import org.junit.Before;
+import org.junit.Test;
 
-
-/**
- * Holds information for a single clinical criterion.
- */
-public class ImageSeriesCriterionRow extends AbstractAnnotationCriterionRow {
-
-    ImageSeriesCriterionRow(CriteriaGroup group) {
-        super(group);
+public class SubjectListCriterionHandlerTest {
+    
+    private static final String SUBJECT_ID = "SubjectID";
+    private static final Long ASSIGNMENT_ID = Long.valueOf(1);
+    private CaIntegrator2DaoStub daoStub = new DaoStub();
+    private Query query;
+    private Study study;
+    private SubjectList subjectList;
+    private StudySubjectAssignment assignment;
+    
+    @Before
+    public void setUp() {
+        daoStub.clear();
+        subjectList = new SubjectList();
+        SubjectIdentifier subjectIdentifier = new SubjectIdentifier();
+        subjectIdentifier.setIdentifier(SUBJECT_ID);
+        subjectList.getSubjectIdentifiers().add(subjectIdentifier);
+        study = new Study();
+        query = new Query();
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(study);
+        query.setSubscription(subscription);
+        assignment = new StudySubjectAssignment();
+        study.getAssignmentCollection().add(assignment);
+        assignment.setId(ASSIGNMENT_ID);
+        assignment.setIdentifier(SUBJECT_ID);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    AnnotationDefinitionList getAnnotationDefinitionList() {
-        return getGroup().getForm().getImageSeriesAnnotations();
+    @Test
+    public void testGetMatches() throws InvalidCriterionException {
+        SubjectListCriterion criterion = new SubjectListCriterion();
+        criterion.getSubjectListCollection().add(subjectList);
+        SubjectListCriterionHandler handler = SubjectListCriterionHandler.create(criterion);
+        assertTrue(criterion.getSubjectIdentifiers().contains(SUBJECT_ID));
+        
+        Set<ResultRow> rows = handler.getMatches(daoStub, null, query, new HashSet<EntityTypeEnum>());
+        ResultRow row = rows.iterator().next();
+        assertEquals(ASSIGNMENT_ID, row.getSubjectAssignment().getId());
+        assertNull(row.getSampleAcquisition());
+    }
+    
+    @Test
+    public void testIsReporterMatchHandler() {
+        assertFalse(SubjectListCriterionHandler.create(null).isReporterMatchHandler());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    EntityTypeEnum getEntityType() {
-        return EntityTypeEnum.IMAGESERIES;
+    @Test
+    public void testIsEntityMatchHandler() {
+        assertTrue(SubjectListCriterionHandler.create(null).isEntityMatchHandler());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getRowType() {
-        return CriterionRowTypeEnum.IMAGE_SERIES.getValue();
+    @Test
+    public void testHasEntityCriterion() {
+        assertTrue(SubjectListCriterionHandler.create(null).hasEntityCriterion());
+    }
+    
+    private class DaoStub extends CaIntegrator2DaoStub {
+
+        @Override
+        public java.util.List<StudySubjectAssignment> findMatchingSubjects(SubjectListCriterion subjectListCriterion, Study study) {
+            List<StudySubjectAssignment> studySubjectAssignments = new ArrayList<StudySubjectAssignment>();
+            studySubjectAssignments.add(assignment);
+            findMatchingSubjectsCalled = true;
+            return studySubjectAssignments;
+        }
+        
     }
 
-    @Override
-    List<String> getNonAnnotationFieldNames() {
-        List<String> nonAnnotationFieldNames = new ArrayList<String>();
-        nonAnnotationFieldNames.add(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME);
-        return nonAnnotationFieldNames;
-    }
-
-    @Override
-    CriterionTypeEnum getCriterionTypeForNonAnnotationField(String fieldName) {
-        if (IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME.equals(fieldName)) {
-            return CriterionTypeEnum.IDENTIFIER;
-        } 
-        throw new IllegalArgumentException("Field name doesn't exist in the non annotation field names: " + fieldName);
-    }
 }

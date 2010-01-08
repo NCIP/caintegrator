@@ -117,6 +117,9 @@ import gov.nih.nci.caintegrator2.domain.application.ResultsOrientationEnum;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectIdentifier;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
@@ -204,6 +207,18 @@ public class QueryFormTest {
 
         addColumn(imageAnnotationFile, testImageSeriesAnnotation);
         
+        SubjectList subjectList = new SubjectList();
+        SubjectIdentifier identifier1 = new SubjectIdentifier();
+        identifier1.setIdentifier("subject1");
+        subjectList.getSubjectIdentifiers().add(identifier1);
+        SubjectIdentifier identifier2 = new SubjectIdentifier();
+        identifier2.setIdentifier("subject2");
+        subjectList.getSubjectIdentifiers().add(identifier2);
+        SubjectIdentifier identifier3 = new SubjectIdentifier();
+        identifier3.setIdentifier("subject3");
+        subjectList.getSubjectIdentifiers().add(identifier3);
+        subjectList.setName("subjectList");
+        subscription.getListCollection().add(subjectList);
     }
     
     private void addColumn(AnnotationFile annotationFile, AnnotationDefinition subjectDef) {
@@ -229,8 +244,8 @@ public class QueryFormTest {
         assertNotNull(queryForm.getQuery());
         assertNotNull(queryForm.getCriteriaGroup());
         assertEquals(subscription, queryForm.getQuery().getSubscription());
-        assertEquals(6, queryForm.getClinicalAnnotations().getNames().size());
-        assertEquals("numericClinicalAnnotation", queryForm.getClinicalAnnotations().getNames().get(1));
+        assertEquals(5, queryForm.getClinicalAnnotations().getNames().size());
+        assertEquals("selectClinicalAnnotation1", queryForm.getClinicalAnnotations().getNames().get(1));
         assertEquals(stringClinicalAnnotation1, queryForm.getClinicalAnnotations().getDefinition("stringClinicalAnnotation1"));
 
         queryForm.getQuery().getSubscription().getStudy().getStudyConfiguration().getGenomicDataSources().clear();
@@ -311,6 +326,7 @@ public class QueryFormTest {
         checkChangeToSelectField(criterionRow);
         checkChangeToNumericField(criterionRow);
         checkChangeNumericOperator(criterionRow);
+        checkChangeToSubjectListField(criterionRow);
         checkAddImageSeriesCriterion(group);
         checkAddGeneExpressionCriterion(group);
         checkRemoveRow(group);
@@ -399,6 +415,16 @@ public class QueryFormTest {
         assertEquals(0, multiSelect.getValues().length);
         multiSelect.setValues(new String[] {"invalid value"});
         assertEquals(0, multiSelect.getValues().length);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void checkChangeToSubjectListField(ClinicalCriterionRow criterionRow) {
+        setFieldName(criterionRow, SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME);
+        SubjectListCriterion criterion = (SubjectListCriterion) criterionRow.getCriterion();
+        MultiSelectParameter<PermissibleValue> multiSelect = (MultiSelectParameter<PermissibleValue>) criterionRow.getParameters().get(0);
+        assertEquals("subjectList", multiSelect.getOptions().get(0).getDisplayValue());
+        multiSelect.setValues(new String[] {"subjectList"});
+        assertEquals(3, criterion.getSubjectIdentifiers().size());
     }
 
     private void checkChangeNumericOperator(ClinicalCriterionRow criterionRow) {
@@ -552,7 +578,7 @@ public class QueryFormTest {
     }
 
     private void checkNewCriterionRow(CriteriaGroup group, ClinicalCriterionRow criterionRow) {
-        assertEquals(6, criterionRow.getAvailableFieldNames().size());
+        assertEquals(7, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("stringClinicalAnnotation1"));
         assertEquals(group, criterionRow.getGroup());
         assertEquals(0 , criterionRow.getParameters().size());

@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -144,6 +145,8 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
                     handlers.add(GeneNameCriterionHandler.create((GeneNameCriterion) abstractCriterion));
                 } else if (abstractCriterion instanceof FoldChangeCriterion) {
                     handlers.add(FoldChangeCriterionHandler.create((FoldChangeCriterion) abstractCriterion));
+                } else if (abstractCriterion instanceof SubjectListCriterion) {
+                    handlers.add(SubjectListCriterionHandler.create((SubjectListCriterion) abstractCriterion));
                 } else {
                     throw new IllegalStateException("Unknown AbstractCriterion class: " + abstractCriterion);
                 }

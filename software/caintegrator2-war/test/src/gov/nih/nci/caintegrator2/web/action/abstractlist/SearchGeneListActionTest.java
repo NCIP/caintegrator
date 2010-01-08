@@ -87,14 +87,12 @@ package gov.nih.nci.caintegrator2.web.action.abstractlist;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.application.AbstractList;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.junit.Before;
@@ -111,7 +109,6 @@ public class SearchGeneListActionTest extends AbstractSessionBasedTest {
     @Before
     public void setUp() {
         super.setUp();
-        subscription.setListCollection(new ArrayList<AbstractList>());
         SessionHelper.getInstance().getDisplayableUserWorkspace().
             setCurrentStudySubscription(subscription);
         ActionContext.getContext().setSession(new HashMap<String, Object>());

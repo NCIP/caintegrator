@@ -115,7 +115,8 @@ abstract class AbstractAnnotationCriterionWrapper extends AbstractCriterionWrapp
             return getAbstractAnnotationCriterion().getAnnotationDefinition().getDisplayName();
         }
     }
-
+    
+    @Override
     void setField(AnnotationDefinition field) {
         getAbstractAnnotationCriterion().setAnnotationDefinition(field);
     }
