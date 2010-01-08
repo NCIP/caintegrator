@@ -93,6 +93,8 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectIdentifier;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -353,6 +355,17 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
             gene.setSymbol(symbol);
         }
         return gene;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void createSubjectList(SubjectList subjectList, Set<String> subjects) {
+        for (String subject : subjects) {
+            subjectList.getSubjectIdentifiers().add(new SubjectIdentifier(subject));
+        }
+        subjectList.getSubscription().getListCollection().add(subjectList);
+        saveUserWorkspace(subjectList.getSubscription().getUserWorkspace());
     }
 
 }

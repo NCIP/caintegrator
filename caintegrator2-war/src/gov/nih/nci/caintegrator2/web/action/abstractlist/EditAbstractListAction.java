@@ -83,85 +83,180 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.genelist;
+package gov.nih.nci.caintegrator2.web.action.abstractlist;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractList;
-import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
-import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
+import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import org.apache.commons.lang.StringUtils;
 
-import org.junit.Before;
-import org.junit.Test;
+/**
+ * Provides functionality to list and add array designs.
+ */
+@SuppressWarnings("PMD") // See createPlatform method
+public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action {
 
-import com.opensymphony.xwork2.ActionContext;
+    private static final long serialVersionUID = 1L;
+    private String listOldName;
+    private String listName;
+    private String selectedAction;
+    private boolean editOn = true;
 
-public class EditGeneListActionTest extends AbstractSessionBasedTest {
-
-    EditGeneListAction action = new EditGeneListAction();
-    StudySubscription subscription = new StudySubscription();
-    WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
-
-    @Before
-    public void setUp() {
-        super.setUp();
-        subscription.setId(1L);
-        subscription.setStudy(new Study());
-        subscription.getStudy().setStudyConfiguration(new StudyConfiguration());
-        subscription.setListCollection(new ArrayList<AbstractList>());
-        SessionHelper.getInstance().getDisplayableUserWorkspace().
-            setCurrentStudySubscription(subscription);
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-        ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
-        workspaceService.setSubscription(subscription);
-        action.setWorkspaceService(workspaceService);
-        
-        GeneList geneList = new GeneList();
-        geneList.setName("List1");
-        subscription.getListCollection().add(geneList);
-        geneList = new GeneList();
-        geneList.setName("List2");
-        subscription.getListCollection().add(geneList);
+    static final String EDIT_ACTION = "editList";
+    static final String DELETE_ACTION = "deleteList";
+    static final String RENAME_ACTION = "renameList";
+    static final String LIST_NAME = "listName";
+    static final String HOME_PAGE = "homePage";
+    static final String EDIT_PAGE = "editPage";
+    
+    /**
+     * @return the Struts result.
+     */
+    public String execute() {
+        if (EDIT_ACTION.equals(selectedAction)) {
+            return editList();
+        } else if (DELETE_ACTION.equals(selectedAction)) {
+            return deleteList();
+        } else if (RENAME_ACTION.equals(selectedAction)) {
+            return renameList();
+        }
+        return SUCCESS;
     }
     
-    @Test
-    public void testAll() {
-        action.setSelectedAction("editGeneList");
-        action.validate();
-        assertFalse(action.hasFieldErrors());
-        
-        action.setSelectedAction("renameGeneList");
-        action.validate();
-        assertTrue(action.hasFieldErrors());
-        action.clearErrorsAndMessages();
-        assertEquals("success", action.execute());
-        
-        action.setGeneListName("List1");
-        action.validate();
-        assertTrue(action.hasFieldErrors());
-        
-        action.setGeneListName("Test");
-        action.validate();
-        assertFalse(action.hasFieldErrors());
-        action.clearErrorsAndMessages();
-        assertEquals("success", action.execute());
-        
-        action.setSelectedAction("deleteGeneList");
-        action.setGeneListName("Test");
-        action.execute();
-        assertFalse(action.hasFieldErrors());
-        
-        action.setGeneListName("List1");
-        action.execute();
-        assertFalse(action.hasFieldErrors());
+    abstract AbstractList getAbstractList(String name);
+    
+    /**
+     * Go to the edit page.
+     * @return the Struts result.
+     */
+    public String editList() {
+        setListOldName(getListName());
+        return SUCCESS;
+    }
+    
+    /**
+     * Rename the subject list.
+     * @return the Struts result.
+     */
+    public String renameList() {
+        AbstractList list = getAbstractList(listOldName);
+        if (list != null) {
+            list.setName(listName);
+            getWorkspaceService().saveUserWorkspace(getWorkspace());
+            listOldName = listName;
+            return EDIT_PAGE;
+        } else {
+            listNoLongerAvailable();
+            return SUCCESS;
+        }
+    }
+    
+    /**
+     * Delete the subject list.
+     * @return the Struts result.
+     */
+    public String deleteList() {
+        AbstractList list = getAbstractList(listName);
+        if (list != null) {
+            getStudySubscription().getListCollection().remove(list);
+            getWorkspaceService().saveUserWorkspace(getWorkspace());
+            return HOME_PAGE;
+        } else {
+            listNoLongerAvailable();
+            return SUCCESS;
+        }
+    }
+    
+    private void listNoLongerAvailable() {
+        addActionError("The subject list '" + listOldName + "' is no longer available.");
+        editOn = false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        clearErrorsAndMessages();
+        if (EDIT_ACTION.equalsIgnoreCase(selectedAction)) {
+            prepareValueStack();
+            validateList();
+        } else if (RENAME_ACTION.equalsIgnoreCase(selectedAction)) {
+            prepareValueStack();
+            validateListName();
+        }
+    }
+    
+    private void validateList() {
+        if (getListName() == null) {
+            addActionError("The requested list '" + getListName() + "' doesn't exist.");
+            editOn = false;
+        }
+    }
+    
+    private void validateListName() {
+        if (StringUtils.isEmpty(getListName())) {
+            addFieldError(LIST_NAME, "List name is required");
+        } else if (getAbstractList(listName) != null) {
+            addFieldError(LIST_NAME, "List name is duplicate: " + getListName());
+            setListName(listOldName);
+        }
+    }
+    
+    /**
+     * @return the selectedAction
+     */
+    public String getSelectedAction() {
+        return selectedAction;
+    }
+
+    /**
+     * @param selectedAction the selectedAction to set
+     */
+    public void setSelectedAction(String selectedAction) {
+        this.selectedAction = selectedAction;
+    }
+
+    /**
+     * @return the listName
+     */
+    public String getListName() {
+        return listName;
+    }
+
+    /**
+     * @param listName the listName to set
+     */
+    public void setListName(String listName) {
+        this.listName = listName;
+    }
+    
+    /**
+     * @return the study subscription
+     */
+    public StudySubscription getSubscription() {
+        return getStudySubscription();
+    }
+
+    /**
+     * @return the listOldName
+     */
+    public String getListOldName() {
+        return listOldName;
+    }
+
+    /**
+     * @param listOldName the listOldName to set
+     */
+    public void setListOldName(String listOldName) {
+        this.listOldName = listOldName;
+    }
+
+    /**
+     * @return the editOn
+     */
+    public boolean isEditOn() {
+        return editOn;
     }
 }

@@ -83,109 +83,59 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
+package gov.nih.nci.caintegrator2.web.action.abstractlist;
 
-import gov.nih.nci.caintegrator2.application.CaIntegrator2EntityRefresher;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.AbstractList;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
-import gov.nih.nci.caintegrator2.domain.application.SubjectList;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
-import gov.nih.nci.security.exceptions.CSException;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import java.util.List;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-/**
- * Provides <code>UserWorkspace</code> access and management functionality.
- */
-public interface WorkspaceService extends CaIntegrator2EntityRefresher {
+import org.junit.Before;
+import org.junit.Test;
+
+import com.opensymphony.xwork2.ActionContext;
+
+public class SearchGeneListActionTest extends AbstractSessionBasedTest {
+
+    SearchGeneListAction action = new SearchGeneListAction();
+    StudySubscription subscription = new StudySubscription();
+    WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
+
+    @Before
+    public void setUp() {
+        super.setUp();
+        subscription.setListCollection(new ArrayList<AbstractList>());
+        SessionHelper.getInstance().getDisplayableUserWorkspace().
+            setCurrentStudySubscription(subscription);
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
+        workspaceService.setSubscription(subscription);
+        action.setWorkspaceService(workspaceService);
+    }
     
-    /**
-     * Returns the workspace belonging to the current user.
-     * 
-     * @return the current user's workspace.
-     */
-    UserWorkspace getWorkspace();
-    
-    /**
-     * Retrieves the studyConfigurationJobs for the user workspace.
-     * 
-     * @param userWorkspace workspace of the user.
-     * @return all study configuraiton jobs for this users workspace.
-     * @throws CSException if there's a problem accessing CSM.
-    */
-    Set<StudyConfiguration> retrieveStudyConfigurationJobs(UserWorkspace userWorkspace) 
-        throws CSException;
-   
-   /**
-    * Subscribes a user to a study.
-     * 
-     * @param workspace workspace of the user.
-     * @param study - study to subscribe to.
-     */
-    void subscribe(UserWorkspace workspace, Study study);
+    @Test
+    public void testAll() {
+        // Test Execute
+        assertEquals(ManageGeneListAction.SUCCESS, action.execute());
+        assertEquals(null, action.getGeneListName());
         
-    /**
-     * Subscribe to all studies that the user has read access.
-     * @param userWorkspace - object to use.
-     */
-    void subscribeAll(UserWorkspace userWorkspace);
-
-    /**
-     * Unsubscribes a user to a study.
-     * 
-     * @param workspace workspace of the user.
-     * @param study - study to subscribe to.
-     */
-    void unsubscribe(UserWorkspace workspace, Study study);
-    
-    /**
-     * Un-subscribes all users from the given study.
-     * @param study to un-subscribe from.
-     */
-    void unsubscribeAll(Study study);
-
-    /**
-     * Saves the current changes.
-     * @param workspace - object that needs to be updated.
-     */
-    void saveUserWorkspace(UserWorkspace workspace);
-    
-    /**
-     * Get the Analysis Job.
-     * @param id - id to be retrieved.
-     * @return Analysis Job
-     */
-    AbstractPersistedAnalysisJob getPersistedAnalysisJob(Long id);
-    
-    /**
-     * Saves the current changes.
-     * @param job - object to be updated.
-     */
-    void savePersistedAnalysisJob(AbstractPersistedAnalysisJob job);
-    
-    /**
-     * Creates a <code> DisplayableStudySummary </code> from the given Study. 
-     * @param study - object to use.
-     * @return - DisplayableStudySummary object created from the study.
-     */
-    DisplayableStudySummary createDisplayableStudySummary(Study study);
-    
-    /**
-     * 
-     * @param geneList the gene list to create
-     * @param geneSymbols the list of gene symbols
-     */
-    void createGeneList(GeneList geneList, List<String> geneSymbols);
-    
-    /**
-     * 
-     * @param subjectList the subject list to create
-     * @param subjects the set of subject identifier
-     */
-    void createSubjectList(SubjectList subjectList, Set<String>subjects);
-
+        GeneList geneList = new GeneList();
+        geneList.setName("List1");
+        subscription.getListCollection().add(geneList);
+        assertEquals(ManageGeneListAction.SUCCESS, action.execute());
+        assertEquals("List1", action.getGeneListName());
+        assertEquals(0, action.getGenes().size());
+        
+        geneList.getGeneCollection().add(new Gene());
+        assertEquals(ManageGeneListAction.SUCCESS, action.execute());
+        assertEquals("List1", action.getGeneListName());
+        assertEquals(1, action.getGenes().size());
+    }
 }

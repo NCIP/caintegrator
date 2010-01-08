@@ -500,6 +500,21 @@
         </action>
                 
         
+        <!-- Subject List Actions -->
+        <action name="editSubjectList" class="editSubjectListAction">
+            <result type="tiles">editSubjectList</result>
+            <result name="error" type="tiles">editSubjectList</result>
+            <result name="input" type="tiles">editSubjectList</result>
+            <result name="editPage" type="redirectAction">
+                <param name="actionName">editSubjectList</param>
+                <param name="selectedAction">editSubjectList</param>
+                <param name="subjectListName">${subjectListName}</param>
+            </result>
+            <result name="homePage" type="redirectAction">
+                <param name="actionName">workspace</param>
+            </result>
+        </action>
+        
         <!-- Gene List Actions -->
         <action name="manageGeneList" class="manageGeneListAction">
             <result type="tiles">manageGeneList</result>
