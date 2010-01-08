@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
@@ -439,6 +440,13 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
     public List<PlatformConfiguration> getPlatformConfigurations() {
         return null;
+    }
+
+    public List<StudySubjectAssignment> findMatchingSubjects(SubjectListCriterion subjectListCriterion, Study study) {
+        findMatchingSubjectsCalled = true;
+        List<StudySubjectAssignment> ssaList = new ArrayList<StudySubjectAssignment>();
+        ssaList.add(studySubjectAssignment);
+        return ssaList;
     }
 
 }

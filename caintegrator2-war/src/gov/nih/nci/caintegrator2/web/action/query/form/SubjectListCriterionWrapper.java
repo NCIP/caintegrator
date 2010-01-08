@@ -85,57 +85,94 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-
-
 /**
- * Holds information for a single clinical criterion.
+ * Wraps access to a <code>IdentifierCriterion</code>.
  */
-public class ImageSeriesCriterionRow extends AbstractAnnotationCriterionRow {
+final class SubjectListCriterionWrapper extends AbstractCriterionWrapper implements OperatorHandler {
+    
+    public static final String SUBJECT_LIST_FIELD_NAME = "*My Subject List";
+    private final SubjectListCriterion criterion;
+    private final AbstractCriterionRow row;
+    private final StudySubscription studySubscription;
 
-    ImageSeriesCriterionRow(CriteriaGroup group) {
-        super(group);
+    SubjectListCriterionWrapper(SubjectListCriterion criterion, StudySubscription studySubscription, 
+            AbstractCriterionRow row) {
+        this.criterion = criterion;
+        this.row = row;
+        this.studySubscription = studySubscription;
+        getParameters().add(createMultiSelectParameter());
+    }
+    
+    private AbstractCriterionParameter createMultiSelectParameter() {
+        ValuesSelectedHandler<SubjectList> handler = 
+            new ValuesSelectedHandler<SubjectList>() {
+
+                public void valuesSelected(List<SubjectList> values) {
+                    criterion.getSubjectListCollection().clear();
+                    criterion.getSubjectListCollection().addAll(values);
+                }
+            
+        };
+        MultiSelectParameter<SubjectList> parameter = 
+            new MultiSelectParameter<SubjectList>(0, row.getRowIndex(), 
+                    getOptions(), handler, criterion.getSubjectListCollection());
+        parameter.setLabel("in list (select one or more Subject Lists)");
+        parameter.setOperatorHandler(this);
+        return parameter;
+    }
+    
+    private OptionList<SubjectList> getOptions() {
+        List<SubjectList> orderedValues = new ArrayList<SubjectList>();
+        orderedValues.addAll(studySubscription.getSubjectLists());
+        OptionList<SubjectList> options = new OptionList<SubjectList>();
+        for (SubjectList value : orderedValues) {
+            options.addOption(value.getName(), value);
+        }
+        return options;
+    }
+
+    @Override
+    String getFieldName() {
+        return SUBJECT_LIST_FIELD_NAME;
+    }
+
+
+    @Override
+    CriterionTypeEnum getCriterionType() {
+        return CriterionTypeEnum.SUBJECT_LIST;
+    }
+
+    @Override
+    AbstractCriterion getCriterion() {
+        return criterion;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    AnnotationDefinitionList getAnnotationDefinitionList() {
-        return getGroup().getForm().getImageSeriesAnnotations();
+    public CriterionOperatorEnum[] getAvailableOperators() {
+        return new CriterionOperatorEnum[0];
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public CriterionOperatorEnum getOperator() {
+        return null;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    EntityTypeEnum getEntityType() {
-        return EntityTypeEnum.IMAGESERIES;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getRowType() {
-        return CriterionRowTypeEnum.IMAGE_SERIES.getValue();
-    }
-
-    @Override
-    List<String> getNonAnnotationFieldNames() {
-        List<String> nonAnnotationFieldNames = new ArrayList<String>();
-        nonAnnotationFieldNames.add(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME);
-        return nonAnnotationFieldNames;
-    }
-
-    @Override
-    CriterionTypeEnum getCriterionTypeForNonAnnotationField(String fieldName) {
-        if (IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME.equals(fieldName)) {
-            return CriterionTypeEnum.IDENTIFIER;
-        } 
-        throw new IllegalArgumentException("Field name doesn't exist in the non annotation field names: " + fieldName);
+    public void operatorChanged(AbstractCriterionParameter parameter, CriterionOperatorEnum operator) {
+        // No-op, this should never change.
     }
 }

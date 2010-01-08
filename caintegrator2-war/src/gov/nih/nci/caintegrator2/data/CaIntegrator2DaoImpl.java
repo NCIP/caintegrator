@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
@@ -299,6 +300,17 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             createStudySubjectAssignmentCriteria(studySubjectAssignmentCrit, study);
         return studySubjectAssignmentCrit.list();
 
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
+    public List<StudySubjectAssignment> findMatchingSubjects(SubjectListCriterion subjectListCriterion, Study study) {
+        Criteria studySubjectAssignmentCrit = getCurrentSession().createCriteria(StudySubjectAssignment.class);
+        studySubjectAssignmentCrit.add(Restrictions.in("identifier", subjectListCriterion.getSubjectIdentifiers()));
+        createStudySubjectAssignmentCriteria(studySubjectAssignmentCrit, study);
+        return studySubjectAssignmentCrit.list();
     }
 
     /**

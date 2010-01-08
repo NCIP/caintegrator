@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
@@ -182,6 +183,16 @@ public interface CaIntegrator2Dao {
      * @return the list of matches.
      */
     List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion, Study study);
+    
+    /**
+     * Returns the subjects (via their linked <code>StudySubjectAssignments</code> that match
+     * the corresponding subject list criterion.
+     * 
+     * @param subjectListCriterion find subjects that exist in the given subjectListCriterion.
+     * @param study restrict the search to the given study.
+     * @return the list of matches.
+     */
+    List<StudySubjectAssignment> findMatchingSubjects(SubjectListCriterion subjectListCriterion, Study study);
     
     /**
      * Returns the subjects (via their linked <code>ImageSeries</code> that match

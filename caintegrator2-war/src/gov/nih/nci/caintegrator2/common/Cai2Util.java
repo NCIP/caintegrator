@@ -522,13 +522,13 @@ public final class Cai2Util {
     }
     
     /**
-     * Turns a comma separated list of Gene Symbols into a List of gene symbols.
-     * @param geneSymbols comma separated list of gene symbols.
-     * @return List of gene symbols.
+     * Turns a comma separated list of strings into a List of strings.
+     * @param commaDelimitedString comma separated list of strings.
+     * @return List of strings.
      */
-    public static List<String> createGeneListFromString(String geneSymbols) {
-        return StringUtils.isBlank(geneSymbols) ? new ArrayList<String>()
-            : Arrays.asList(geneSymbols.replaceAll(" ", "").split(","));
+    public static List<String> createListFromCommaDelimitedString(String commaDelimitedString) {
+        return StringUtils.isBlank(commaDelimitedString) ? new ArrayList<String>()
+            : Arrays.asList(commaDelimitedString.replaceAll(" ", "").split(","));
     }
     
 }

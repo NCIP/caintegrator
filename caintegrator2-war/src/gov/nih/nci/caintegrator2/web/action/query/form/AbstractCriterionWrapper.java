@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 import java.util.ArrayList;
 import java.util.List;
 
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 
 /**
@@ -105,5 +106,10 @@ abstract class AbstractCriterionWrapper {
 
     List<AbstractCriterionParameter> getParameters() {
         return parameters;
+    }
+
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // empty default implementation
+    void setField(AnnotationDefinition field) {
+        // default is no-op, override if necessary.
     }
 }

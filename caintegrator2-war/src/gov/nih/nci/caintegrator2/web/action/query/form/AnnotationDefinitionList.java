@@ -103,13 +103,9 @@ class AnnotationDefinitionList {
     private final List<String> names = new ArrayList<String>();
     private final Map<String, AnnotationDefinition> nameToDefinitionMap = new HashMap<String, AnnotationDefinition>();
     
-    AnnotationDefinitionList(Collection<AnnotationDefinition> definitions, boolean addIdentifierToList) {
+    AnnotationDefinitionList(Collection<AnnotationDefinition> definitions) {
         if (definitions == null) {
             throw new IllegalArgumentException("Argument definitions was null.");
-        }
-        if (addIdentifierToList) {
-            names.add(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME);
-            nameToDefinitionMap.put(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME, null);
         }
         for (AnnotationDefinition definition : definitions) {
             names.add(definition.getDisplayName());
