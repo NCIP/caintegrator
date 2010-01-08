@@ -68,7 +68,7 @@
                                                 <s:a href="%{editQueryUrl}" cssClass="queryAction" cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Edit query: %{name}">&nbsp;</s:a>
                                             </div>
-                                            <div style="float: right; width: 110px; white-space: normal; padding: 0px 0px 0px 0px;">
+                                            <div style="float: right; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
                                                 <s:a href="%{runQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;" title="Description: %{description}">
                                                     <s:if test="id == openQueryId">
                                                         <strong><s:property value="name"/></strong>
@@ -104,7 +104,7 @@
                                                     cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Edit List: %{name}">&nbsp;</s:a>
                                             </div>
-                                            <div style="float: left; width: 110px; white-space: normal; padding: 0px 0px 0px 0px;">
+                                            <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
                                                 <s:a href="%{editGeneListUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
                                                     title="Description: %{description}"><s:property value="name" />
                                                 </s:a>
@@ -129,7 +129,7 @@
                                                     cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Edit List: %{name}">&nbsp;</s:a>
                                             </div>
-                                            <div style="float: left; width: 110px; white-space: normal; padding: 0px 0px 0px 0px;">
+                                            <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
                                                 <s:a href="%{editSubjectListUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
                                                     title="Description: %{description}"><s:property value="name" />
                                                 </s:a>
