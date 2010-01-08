@@ -115,6 +115,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultsOrientationEnum;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
+import gov.nih.nci.caintegrator2.domain.application.SortTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectIdentifier;
@@ -739,6 +740,14 @@ public class QueryFormTest {
         assertFalse(validationAware.hasFieldErrors());
         
         assertTrue(queryForm.hasImageDataSources());
+        
+        queryForm.getResultConfiguration().setSortType("invalidColumn", SortTypeEnum.ASCENDING.getValue());
+        assertEquals("", queryForm.getResultConfiguration().getSortType("invalidColumn"));
+        queryForm.getResultConfiguration().setSortType("stringClinicalAnnotation2", SortTypeEnum.ASCENDING.getValue());
+        assertEquals(SortTypeEnum.ASCENDING.getValue(), queryForm.getResultConfiguration().getSortType("stringClinicalAnnotation2"));
+        queryForm.getResultConfiguration().setSortType("stringClinicalAnnotation2", "");
+        assertEquals("", queryForm.getResultConfiguration().getSortType("stringClinicalAnnotation2"));
+        
     }
 
     @Test
