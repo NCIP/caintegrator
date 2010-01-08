@@ -87,6 +87,9 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Holds information for a single clinical criterion.
  */
@@ -118,6 +121,24 @@ public class ClinicalCriterionRow extends AbstractAnnotationCriterionRow {
     @Override
     public String getRowType() {
         return CriterionRowTypeEnum.CLINICAL.getValue();
+    }
+
+    @Override
+    List<String> getNonAnnotationFieldNames() {
+        List<String> nonAnnotationFieldNames = new ArrayList<String>();
+        nonAnnotationFieldNames.add(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME);
+        nonAnnotationFieldNames.add(SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME);
+        return nonAnnotationFieldNames;
+    }
+
+    @Override
+    CriterionTypeEnum getCriterionTypeForNonAnnotationField(String fieldName) {
+        if (IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME.equals(fieldName)) {
+            return CriterionTypeEnum.IDENTIFIER;
+        } else if (SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME.equals(fieldName)) {
+            return CriterionTypeEnum.SUBJECT_LIST;
+        }
+        throw new IllegalArgumentException("Field name doesn't exist in the non annotation field names: " + fieldName);
     }
 
 }

@@ -296,7 +296,7 @@ public class Cai2UtilTest {
     
     @Test
     public void testCreateGeneListFromString() {
-        assertTrue(Cai2Util.createGeneListFromString(null).isEmpty());
-        assertEquals(2, Cai2Util.createGeneListFromString("egfr, brca1").size());
+        assertTrue(Cai2Util.createListFromCommaDelimitedString(null).isEmpty());
+        assertEquals(2, Cai2Util.createListFromCommaDelimitedString("egfr, brca1").size());
     }
 }

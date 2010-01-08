@@ -86,8 +86,8 @@
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.DateComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.DateComparisonOperatorEnum;
@@ -97,7 +97,10 @@ import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -109,7 +112,7 @@ import org.apache.commons.lang.StringUtils;
 @SuppressWarnings("PMD.CyclomaticComplexity") // see createNewCriterion
 public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRow {
     
-    private AbstractAnnotationCriterionWrapper annotationCriterionWrapper;
+    private AbstractCriterionWrapper annotationCriterionWrapper;
 
     AbstractAnnotationCriterionRow(CriteriaGroup group) {
         super(group);
@@ -134,7 +137,7 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
             createAnnotationCriterionWrapper(fieldName);
         } else {
             AnnotationDefinition field = getAnnotationDefinitionList().getDefinition(fieldName);
-            CriterionTypeEnum criterionType = getCriterionType(field);
+            CriterionTypeEnum criterionType = getCriterionType(fieldName, field);
             if (criterionType.equals(getAnnotationCriterionWrapper().getCriterionType())) {
                 getAnnotationCriterionWrapper().setField(field);
             } else {
@@ -143,9 +146,9 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
         }
     }
 
-    private CriterionTypeEnum getCriterionType(AnnotationDefinition field) {
-        if (field == null) { // Assumption that a null field is an Identifier.
-            return CriterionTypeEnum.IDENTIFIER;
+    private CriterionTypeEnum getCriterionType(String fieldName, AnnotationDefinition field) {
+        if (getNonAnnotationFieldNames().contains(fieldName)) { 
+            return getCriterionTypeForNonAnnotationField(fieldName);
         }
         if (!field.getPermissibleValueCollection().isEmpty()) {
             return CriterionTypeEnum.SELECTED_VALUE;
@@ -162,7 +165,7 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
 
     void createAnnotationCriterionWrapper(String fieldName) {
         AnnotationDefinition field = getAnnotationDefinitionList().getDefinition(fieldName);
-        CriterionTypeEnum type = getCriterionType(field);
+        CriterionTypeEnum type = getCriterionType(fieldName, field);
         switch (type) {
         case NUMERIC_COMPARISON:
             setAnnotationCriterionWrapper(createNumericCriterionWrapper(field));
@@ -179,6 +182,10 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
         case IDENTIFIER:
             setAnnotationCriterionWrapper(createIdentifierCriterionWrapper());
             break;
+        case SUBJECT_LIST:
+            setAnnotationCriterionWrapper(createSubjectListCriterionWrapper(
+                    getSubscription()));
+            break;
         default:
             throw new IllegalStateException("Unsupported AnnotationType " + type);
         }
@@ -188,6 +195,11 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
         IdentifierCriterion criterion = new IdentifierCriterion();
         criterion.setEntityType(getEntityType());
         return new IdentifierCriterionWrapper(criterion, this);
+    }
+    
+    private SubjectListCriterionWrapper createSubjectListCriterionWrapper(StudySubscription studySubscription) {
+        SubjectListCriterion criterion = new SubjectListCriterion();
+        return new SubjectListCriterionWrapper(criterion, studySubscription, this);
     }
 
     private SelectedValueCriterionWrapper createSelectedValueCriterionWrapper(AnnotationDefinition field) {
@@ -231,11 +243,11 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
         return getAnnotationCriterionWrapper();
     }
 
-    private AbstractAnnotationCriterionWrapper getAnnotationCriterionWrapper() {
+    private AbstractCriterionWrapper getAnnotationCriterionWrapper() {
         return annotationCriterionWrapper;
     }
 
-    private void setAnnotationCriterionWrapper(AbstractAnnotationCriterionWrapper annotationCriterionWrapper) {
+    private void setAnnotationCriterionWrapper(AbstractCriterionWrapper annotationCriterionWrapper) {
         if (this.annotationCriterionWrapper != null) {
             removeCriterionFromQuery();
         }
@@ -255,7 +267,10 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
      */
     @Override
     public List<String> getAvailableFieldNames() {
-        return getAnnotationDefinitionList().getNames();
+        List<String> availableFieldNames = new ArrayList<String>();
+        availableFieldNames.addAll(getNonAnnotationFieldNames());
+        availableFieldNames.addAll(getAnnotationDefinitionList().getNames());
+        return availableFieldNames;
     }
 
     @Override
@@ -263,7 +278,7 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
         this.annotationCriterionWrapper = createCriterionWrapper(criterion);
     };
     
-    private AbstractAnnotationCriterionWrapper createCriterionWrapper(AbstractCriterion criterion) {
+    private AbstractCriterionWrapper createCriterionWrapper(AbstractCriterion criterion) {
         if (criterion instanceof StringComparisonCriterion) {
             StringComparisonCriterion stringComparisonCriterion = (StringComparisonCriterion) criterion;
             return new StringComparisonCriterionWrapper(stringComparisonCriterion, this);
@@ -276,9 +291,20 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
         } else if (criterion instanceof SelectedValueCriterion) {
             SelectedValueCriterion selectedValueCriterion = (SelectedValueCriterion) criterion;
             return new SelectedValueCriterionWrapper(selectedValueCriterion, this);
+        } else if (criterion instanceof SubjectListCriterion) {
+            SubjectListCriterion subjectListCriterion = (SubjectListCriterion) criterion;
+            return new SubjectListCriterionWrapper(subjectListCriterion, getSubscription(), this);
         } else {
             throw new IllegalArgumentException("Illegal criterion type " + criterion.getClass());
         }
     }
+        
+    private StudySubscription getSubscription() {
+        return getGroup().getForm().getQuery().getSubscription();
+    }
+    
+    abstract List<String> getNonAnnotationFieldNames();
+    
+    abstract CriterionTypeEnum getCriterionTypeForNonAnnotationField(String fieldName);
 
 }

@@ -269,7 +269,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         if (StringUtils.isNotBlank(plotParameters.getGeneSymbol())) {
             plotParameters.getGenesNotFound().clear();
             plotParameters.getGenesNotFound().addAll(validateGeneSymbols(studySubscription, 
-                    Cai2Util.createGeneListFromString(plotParameters.getGeneSymbol())));
+                    Cai2Util.createListFromCommaDelimitedString(plotParameters.getGeneSymbol())));
         }
         AbstractGEPlotHandler gePlotHandler = AbstractGEPlotHandler.createGeneExpressionPlotHandler(
                 getDao(), queryManagementService, plotParameters, gePlotService);

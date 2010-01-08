@@ -19,7 +19,7 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
     private static final long serialVersionUID = 1L;
     
     private Study study;
-    private Collection<AbstractList> listCollection;
+    private Set<AbstractList> listCollection = new HashSet<AbstractList>();
     private Collection<Query> queryCollection;
     private Set<AbstractPersistedAnalysisJob> analysisJobCollection = new HashSet<AbstractPersistedAnalysisJob>();
     private UserWorkspace userWorkspace;
@@ -41,14 +41,15 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
     /**
      * @return the listCollection
      */
-    public Collection<AbstractList> getListCollection() {
+    public Set<AbstractList> getListCollection() {
         return listCollection;
     }
     
     /**
      * @param listCollection the listCollection to set
      */
-    public void setListCollection(Collection<AbstractList> listCollection) {
+    @SuppressWarnings("unused") // For hibernate.
+    private void setListCollection(Set<AbstractList> listCollection) {
         this.listCollection = listCollection;
     }
     

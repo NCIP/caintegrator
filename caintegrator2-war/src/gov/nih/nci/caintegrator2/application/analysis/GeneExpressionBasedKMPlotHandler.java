@@ -232,7 +232,8 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
     void setupAndValidateParameters(AnalysisService analysisService) throws GenesNotFoundInStudyException {
         if (StringUtils.isNotBlank(kmParameters.getGeneSymbol())) {
             kmParameters.getGenesFoundInStudy().clear();
-            kmParameters.getGenesFoundInStudy().addAll(Cai2Util.createGeneListFromString(kmParameters.getGeneSymbol()));
+            kmParameters.getGenesFoundInStudy().addAll(Cai2Util.
+                    createListFromCommaDelimitedString(kmParameters.getGeneSymbol()));
             kmParameters.getGenesNotFound().clear();
             kmParameters.getGenesNotFound().addAll(analysisService.validateGeneSymbols(getStudySubscription(), 
                     kmParameters.getGenesFoundInStudy()));
