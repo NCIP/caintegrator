@@ -284,7 +284,7 @@ public class ResultConfiguration {
      * @return sortType.
      */
     public String getSortType(String columnName) {
-        if (getColumn(columnName).getSortType() != null) {
+        if (getColumn(columnName) != null && getColumn(columnName).getSortType() != null) {
             return getColumn(columnName).getSortType().getValue();
         } else {
             return "";
@@ -297,10 +297,14 @@ public class ResultConfiguration {
      * @param sortType to set sortType.
      */
     public void setSortType(String columnName, String sortType) {
+        ResultColumn column = getColumn(columnName);
+        if (column == null) {
+            return;
+        }
         if (StringUtils.isBlank(sortType)) {
-            getColumn(columnName).setSortType(null);
+            column.setSortType(null);
         } else {
-            getColumn(columnName).setSortType(SortTypeEnum.getByValue(sortType));
+            column.setSortType(SortTypeEnum.getByValue(sortType));
         }
     }
 
