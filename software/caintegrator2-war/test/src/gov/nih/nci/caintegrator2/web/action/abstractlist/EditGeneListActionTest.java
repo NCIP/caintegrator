@@ -83,14 +83,18 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.genelist;
+package gov.nih.nci.caintegrator2.web.action.abstractlist;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractList;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
@@ -102,15 +106,18 @@ import org.junit.Test;
 
 import com.opensymphony.xwork2.ActionContext;
 
-public class SearchGeneListActionTest extends AbstractSessionBasedTest {
+public class EditGeneListActionTest extends AbstractSessionBasedTest {
 
-    SearchGeneListAction action = new SearchGeneListAction();
+    EditGeneListAction action = new EditGeneListAction();
     StudySubscription subscription = new StudySubscription();
     WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
 
     @Before
     public void setUp() {
         super.setUp();
+        subscription.setId(1L);
+        subscription.setStudy(new Study());
+        subscription.getStudy().setStudyConfiguration(new StudyConfiguration());
         subscription.setListCollection(new ArrayList<AbstractList>());
         SessionHelper.getInstance().getDisplayableUserWorkspace().
             setCurrentStudySubscription(subscription);
@@ -118,24 +125,53 @@ public class SearchGeneListActionTest extends AbstractSessionBasedTest {
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         workspaceService.setSubscription(subscription);
         action.setWorkspaceService(workspaceService);
-    }
-    
-    @Test
-    public void testAll() {
-        // Test Execute
-        assertEquals(ManageGeneListAction.SUCCESS, action.execute());
-        assertEquals(null, action.getGeneListName());
         
         GeneList geneList = new GeneList();
         geneList.setName("List1");
         subscription.getListCollection().add(geneList);
-        assertEquals(ManageGeneListAction.SUCCESS, action.execute());
-        assertEquals("List1", action.getGeneListName());
-        assertEquals(0, action.getGenes().size());
+        Gene gene = new Gene();
+        gene.setSymbol("symbol1");
+        geneList.getGeneCollection().add(gene);
+        gene = new Gene();
+        gene.setSymbol("symbol2");
+        geneList.getGeneCollection().add(gene);
+        geneList = new GeneList();
+        geneList.setName("List2");
+        subscription.getListCollection().add(geneList);
+    }
+    
+    @Test
+    public void testAll() {
+        action.setSelectedAction("editList");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+
+        action.setListName("List1");
+        assertEquals(15, action.getGeneSymbolListing().length());
         
-        geneList.getGeneCollection().add(new Gene());
-        assertEquals(ManageGeneListAction.SUCCESS, action.execute());
-        assertEquals("List1", action.getGeneListName());
-        assertEquals(1, action.getGenes().size());
+        action.setSelectedAction("renameList");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        assertEquals("success", action.execute());
+        
+        action.setListName("List1");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        
+        action.setListName("Test");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        assertEquals("success", action.execute());
+        
+        action.setSelectedAction("deleteList");
+        action.setListName("Test");
+        action.execute();
+        assertFalse(action.hasFieldErrors());
+        
+        action.setListName("List1");
+        action.execute();
+        assertFalse(action.hasFieldErrors());
     }
 }

@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
@@ -119,6 +120,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public boolean createDisplayableStudySummaryCalled;
     public boolean savePersistedAnalysisJobCalled;
     public boolean createGeneListCalled;
+    public boolean createSubjectListCalled;
     public boolean getRefreshedEntityCalled;
     
     public void clear() {
@@ -132,6 +134,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
         savePersistedAnalysisJobCalled = false;
         unSubscribeAllCalled = false;
         createGeneListCalled = false;
+        createSubjectListCalled = false;
         getRefreshedEntityCalled = false;
     }
     public UserWorkspace getWorkspace() {
@@ -234,6 +237,10 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     public void createGeneList(GeneList geneList, List<String> geneSymbols) {
         createGeneListCalled = true;
+    }
+
+    public void createSubjectList(SubjectList subjectList, Set<String> subjects) {
+        createSubjectListCalled = true;
     }
 
     public <T> T getRefreshedEntity(T entity) {

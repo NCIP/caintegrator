@@ -112,6 +112,7 @@ public final class DisplayableQueryResult {
     private boolean hasImageSeries;
     private int pageSize = DEFAULT_PAGE_SIZE;
     private Boolean selectAll = true;
+    private Boolean selectAllSubject = true;
     
     DisplayableQueryResult(QueryResult result) {
         this.result = result;
@@ -239,5 +240,19 @@ public final class DisplayableQueryResult {
      */
     public void setSelectAll(Boolean selectAll) {
         this.selectAll = selectAll;
+    }
+
+    /**
+     * @return the selectAllSubject
+     */
+    public Boolean getSelectAllSubject() {
+        return selectAllSubject;
+    }
+
+    /**
+     * @param selectAllSubject the selectAllSubject to set
+     */
+    public void setSelectAllSubject(Boolean selectAllSubject) {
+        this.selectAllSubject = selectAllSubject;
     }
 }

@@ -313,7 +313,7 @@
 
     <bean id="manageGeneListAction"
         scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.genelist.ManageGeneListAction">
+        class="gov.nih.nci.caintegrator2.web.action.abstractlist.ManageGeneListAction">
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
@@ -321,7 +321,7 @@
 
     <bean id="editGeneListAction"
         scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.genelist.EditGeneListAction">
+        class="gov.nih.nci.caintegrator2.web.action.abstractlist.EditGeneListAction">
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
@@ -329,7 +329,15 @@
     
     <bean id="searchGeneListAction"
         scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.genelist.SearchGeneListAction">
+        class="gov.nih.nci.caintegrator2.web.action.abstractlist.SearchGeneListAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
+
+    <bean id="editSubjectListAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.abstractlist.EditSubjectListAction">
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
