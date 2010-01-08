@@ -86,8 +86,6 @@
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
@@ -182,19 +180,7 @@ public class GeneExpressionCriterionRow extends AbstractCriterionRow {
 
     @Override
     void setCriterion(AbstractCriterion criterion) {
-        this.genomicCriterionWrapper = createCriterionWrapper(criterion);
-    }
-    
-    private AbstractGenomicCriterionWrapper createCriterionWrapper(AbstractCriterion criterion) {
-        if (criterion instanceof FoldChangeCriterion) {
-            FoldChangeCriterion foldChangeCriterion = (FoldChangeCriterion) criterion;
-            return new FoldChangeCriterionWrapper(study, foldChangeCriterion, this);
-        } else if (criterion instanceof GeneNameCriterion) {
-            GeneNameCriterion geneNameCriterion = (GeneNameCriterion) criterion;
-            return new GeneNameCriterionWrapper(geneNameCriterion, this);
-        } else {
-            throw new IllegalArgumentException("Illegal criterion type " + criterion.getClass());
-        }
+        this.genomicCriterionWrapper = CriterionWrapperBuilder.createGenomicCriterionWrapper(criterion, this, study);
     }
 
     /**
