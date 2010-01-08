@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
@@ -249,6 +250,10 @@ public class CriteriaGroup {
         } else {
             criterionType = CriterionRowTypeEnum.getByValue(criterionTypeName);
         }
+    }
+    
+    StudySubscription getSubscription() {
+        return getForm().getQuery().getSubscription();
     }
 
     QueryForm getForm() {

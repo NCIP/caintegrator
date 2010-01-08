@@ -275,32 +275,12 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
 
     @Override
     void setCriterion(AbstractCriterion criterion) {
-        this.annotationCriterionWrapper = createCriterionWrapper(criterion);
+        this.annotationCriterionWrapper = CriterionWrapperBuilder.createAnnotationCriterionWrapper(criterion, this, 
+                getSubscription());
     };
-    
-    private AbstractCriterionWrapper createCriterionWrapper(AbstractCriterion criterion) {
-        if (criterion instanceof StringComparisonCriterion) {
-            StringComparisonCriterion stringComparisonCriterion = (StringComparisonCriterion) criterion;
-            return new StringComparisonCriterionWrapper(stringComparisonCriterion, this);
-        } else if (criterion instanceof NumericComparisonCriterion) {
-            NumericComparisonCriterion numericComparisonCriterion = (NumericComparisonCriterion) criterion;
-            return new NumericComparisonCriterionWrapper(numericComparisonCriterion, this);
-        } else if (criterion instanceof DateComparisonCriterion) {
-            DateComparisonCriterion dateComparisonCriterion = (DateComparisonCriterion) criterion;
-            return new DateComparisonCriterionWrapper(dateComparisonCriterion, this);
-        } else if (criterion instanceof SelectedValueCriterion) {
-            SelectedValueCriterion selectedValueCriterion = (SelectedValueCriterion) criterion;
-            return new SelectedValueCriterionWrapper(selectedValueCriterion, this);
-        } else if (criterion instanceof SubjectListCriterion) {
-            SubjectListCriterion subjectListCriterion = (SubjectListCriterion) criterion;
-            return new SubjectListCriterionWrapper(subjectListCriterion, getSubscription(), this);
-        } else {
-            throw new IllegalArgumentException("Illegal criterion type " + criterion.getClass());
-        }
-    }
         
     private StudySubscription getSubscription() {
-        return getGroup().getForm().getQuery().getSubscription();
+        return getGroup().getSubscription();
     }
     
     abstract List<String> getNonAnnotationFieldNames();

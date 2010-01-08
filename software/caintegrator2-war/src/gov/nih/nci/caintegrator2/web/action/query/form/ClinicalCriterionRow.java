@@ -94,9 +94,15 @@ import java.util.List;
  * Holds information for a single clinical criterion.
  */
 public class ClinicalCriterionRow extends AbstractAnnotationCriterionRow {
+    
+    private final List<String> nonAnnotationFieldNames = new ArrayList<String>();
 
     ClinicalCriterionRow(CriteriaGroup group) {
         super(group);
+        nonAnnotationFieldNames.add(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME);
+        if (!getGroup().getSubscription().getSubjectLists().isEmpty()) {
+            nonAnnotationFieldNames.add(SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME);
+        }
     }
 
     /**
@@ -125,9 +131,6 @@ public class ClinicalCriterionRow extends AbstractAnnotationCriterionRow {
 
     @Override
     List<String> getNonAnnotationFieldNames() {
-        List<String> nonAnnotationFieldNames = new ArrayList<String>();
-        nonAnnotationFieldNames.add(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME);
-        nonAnnotationFieldNames.add(SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME);
         return nonAnnotationFieldNames;
     }
 

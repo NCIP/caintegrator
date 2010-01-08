@@ -333,6 +333,17 @@ public class QueryFormTest {
         
     }
     
+    @Test
+    public void testCriterionRowNoSubjectLists() {
+        subscription.getListCollection().clear();
+        queryForm.createQuery(subscription);
+        CriteriaGroup group = queryForm.getCriteriaGroup();
+        group.setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
+        group.addCriterion(subscription.getStudy());
+        ClinicalCriterionRow criterionRow = (ClinicalCriterionRow) group.getRows().get(0);
+        checkNewCriterionNoSubjectLists(group, criterionRow);
+    }
+    
     private GenomicDataSourceConfiguration getFirstGenomicSource(StudySubscription subscription) {
         return subscription.getStudy().getStudyConfiguration().getGenomicDataSources().get(0);
     }
@@ -580,6 +591,15 @@ public class QueryFormTest {
     private void checkNewCriterionRow(CriteriaGroup group, ClinicalCriterionRow criterionRow) {
         assertEquals(7, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("stringClinicalAnnotation1"));
+        assertEquals(group, criterionRow.getGroup());
+        assertEquals(0 , criterionRow.getParameters().size());
+        assertEquals("", criterionRow.getFieldName());
+    }
+    
+    private void checkNewCriterionNoSubjectLists(CriteriaGroup group, ClinicalCriterionRow criterionRow) {
+        assertEquals(6, criterionRow.getAvailableFieldNames().size());
+        assertTrue(criterionRow.getAvailableFieldNames().contains("stringClinicalAnnotation1"));
+        assertFalse(criterionRow.getAvailableFieldNames().contains(SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME));
         assertEquals(group, criterionRow.getGroup());
         assertEquals(0 , criterionRow.getParameters().size());
         assertEquals("", criterionRow.getFieldName());
