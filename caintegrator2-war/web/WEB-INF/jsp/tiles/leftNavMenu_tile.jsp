@@ -121,10 +121,16 @@
                                         <s:param name="selectedAction" value="%{'editList'}" />
                                         <s:param name="listName" value="name" />
                                     </s:url>
+                                    <s:url id="runSubjectListQueryUrl" action="manageQuery" includeParams="none">
+                                        <s:param name="selectedAction" value="%{'loadSubjectListExecute'}" />
+                                        <s:param name="subjectListName" value="name" />
+                                    </s:url>
 
                                     <li style="padding: 0px 0px 2px 0px">
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
-                                            <div style="float: left; white-space: nowrap; width: 22px;">
+                                            <div style="float: left; white-space: nowrap; width: 38px;">
+                                                <s:a href="%{runSubjectListQueryUrl}" cssClass="searches" cssStyle="background:transparent url('/caintegrator2/images/ico_search.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    title="Run query: %{name}">&nbsp;</s:a>
                                                 <s:a href="%{editSubjectListUrl}" cssClass="queryAction"
                                                     cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Edit List: %{name}">&nbsp;</s:a>
