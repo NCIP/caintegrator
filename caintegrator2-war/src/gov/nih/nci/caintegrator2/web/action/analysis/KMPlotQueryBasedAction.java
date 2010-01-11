@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.analysis.KMQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.web.Cai2WebUtil;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.ArrayList;
@@ -98,6 +99,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Action dealing with Kaplan-Meier Query Based plotting.
@@ -116,6 +118,12 @@ public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
     public void prepare() {
         super.prepare();
         setDisplayTab(QUERY_TAB);
+        getForm().setDisplayableQueries(
+                Cai2WebUtil.retrieveDisplayableQueries(getStudySubscription(), getQueryManagementService(), true));
+        getForm().getDisplayableQueryMap().clear();
+        for (DisplayableQuery displayableQuery : getForm().getDisplayableQueries()) {
+            getForm().getDisplayableQueryMap().put(displayableQuery.getDisplayName(), displayableQuery);
+        }
         retrieveFormValues();
         refreshObjectInstances();
         populateQueries();
@@ -125,12 +133,10 @@ public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
     private void retrieveFormValues() {
         kmPlotParameters.setExclusiveGroups(getForm().isExclusiveGroups());
         kmPlotParameters.setAddPatientsNotInQueriesGroup(getForm().isAddPatientsNotInQueriesGroup());
-        if (!getForm().getSelectedQueryIDs().isEmpty()) {
+        if (!getForm().getSelectedQueryNames().isEmpty()) {
             kmPlotParameters.getQueries().clear();
-            for (String id : getForm().getSelectedQueryIDs()) {
-                Query query = new Query();
-                query.setId(Long.valueOf(id));
-                kmPlotParameters.getQueries().add(query);
+            for (String name : getForm().getSelectedQueryNames()) {
+                kmPlotParameters.getQueries().add(getForm().getDisplayableQueryMap().get(name).getQuery());
             }
         }
     }
@@ -139,8 +145,12 @@ public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
         if (!kmPlotParameters.getQueries().isEmpty()) {
             List <Query> newValues = new ArrayList<Query>();
             for (Query value : kmPlotParameters.getQueries()) {
-                Query newValue = getStudyManagementService().getRefreshedEntity(value);
-                newValues.add(newValue);
+                if (!value.isSubjectListQuery()) {
+                    Query newValue = getQueryManagementService().getRefreshedEntity(value);
+                    newValues.add(newValue);
+                } else {
+                    newValues.add(value);
+                }
             }
             kmPlotParameters.getQueries().clear();
             kmPlotParameters.getQueries().addAll(newValues);
@@ -148,43 +158,40 @@ public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
     }
     
     private void populateQueries() {
-        initialize();
-        loadSelectedQueries();
+        initialize(getForm().getDisplayableQueries());
+        loadSelectedQueries(getForm().getDisplayableQueries());
     }
 
-    private void initialize() {
-        if (getStudySubscription() != null 
-            && getStudySubscription().getQueryCollection() != null
-            && getKmPlotForm().getQueryBasedForm().getSelectedQueries().isEmpty() 
-            && getKmPlotForm().getQueryBasedForm().getUnselectedQueries().isEmpty()) {
-            getKmPlotForm().getQueryBasedForm().setUnselectedQueries(new HashMap<String, Query>());
-            for (Query query 
-                    : getStudySubscription().getQueryCollection()) {
-                getKmPlotForm().getQueryBasedForm().getUnselectedQueries().
-                                                    put(query.getId().toString(), query);
+    private void initialize(List<DisplayableQuery> displayableQueries) {
+        if (!displayableQueries.isEmpty()
+            && getForm().getSelectedQueries().isEmpty() 
+            && getForm().getUnselectedQueries().isEmpty()) {
+            getForm().setUnselectedQueries(new TreeMap<String, DisplayableQuery>());
+            for (DisplayableQuery query : displayableQueries) {
+                getForm().getUnselectedQueries().put(query.getDisplayName(), query);
             }
         }
     }
     
-    private void loadSelectedQueries() {
+    private void loadSelectedQueries(List<DisplayableQuery> displayableQueries) {
         if (!kmPlotParameters.getQueries().isEmpty()) {
-            getKmPlotForm().getQueryBasedForm().getSelectedQueries().clear();
+            getForm().getSelectedQueries().clear();
             Set<Query> usedQueries = new HashSet<Query>();
             for (Query query : kmPlotParameters.getQueries()) {
-                getKmPlotForm().getQueryBasedForm().getSelectedQueries().put(query.getId().toString(), query);
+                DisplayableQuery displayableQuery = getForm().getDisplayableQueryMap().get(DisplayableQuery
+                        .getDisplayableQueryName(query));
+                getForm().getSelectedQueries().put(displayableQuery.getDisplayName(), displayableQuery);
                 usedQueries.add(query);
             }
-            loadAvailableQueries(usedQueries);
+            loadAvailableQueries(displayableQueries, usedQueries);
         }
     }
 
-    private void loadAvailableQueries(Set<Query> usedQueries) {
-        getKmPlotForm().getQueryBasedForm().getUnselectedQueries().clear();
-        for (Query query 
-                : getStudySubscription().getQueryCollection()) {
-            if (!usedQueries.contains(query)) {
-                getKmPlotForm().getQueryBasedForm().getUnselectedQueries().
-                                                put(query.getId().toString(), query);
+    private void loadAvailableQueries(List<DisplayableQuery> displayableQueries, Set<Query> usedQueries) {
+        getForm().getUnselectedQueries().clear();
+        for (DisplayableQuery displayableQuery : displayableQueries) {
+            if (!usedQueries.contains(displayableQuery.getQuery())) {
+                getForm().getUnselectedQueries().put(displayableQuery.getDisplayName(), displayableQuery);
             }
         }
     }

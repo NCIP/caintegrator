@@ -97,9 +97,9 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImp
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -119,7 +119,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class KMPlotGeneExpressionBasedActionTest extends AbstractSessionBasedTest {
     
     private KMPlotGeneExpressionBasedAction action;
-    private StudyManagementServiceStub studyManagementServiceStub = new StudyManagementServiceStub();
+    private QueryManagementServiceStub queryManagementServiceStub = new QueryManagementServiceStub();
     private AnalysisServiceStub analysisServiceStub = new AnalysisServiceStub();
     private KMPlotServiceCaIntegratorImpl plotService = new KMPlotServiceCaIntegratorImpl();
     
@@ -138,8 +138,8 @@ public class KMPlotGeneExpressionBasedActionTest extends AbstractSessionBasedTes
         workspaceService.setSubscription(subscription);
         action.setWorkspaceService(workspaceService);
         
-        action.setStudyManagementService(studyManagementServiceStub);
-        studyManagementServiceStub.clear();
+        action.setQueryManagementService(queryManagementServiceStub);
+        queryManagementServiceStub.clear();
         analysisServiceStub.clear();
         SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceService, true);
     }
@@ -163,7 +163,7 @@ public class KMPlotGeneExpressionBasedActionTest extends AbstractSessionBasedTes
         action.getKmPlotParameters().setSurvivalValueDefinition(svd);
         setupActionVariables();
         action.prepare();
-        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+        assertTrue(queryManagementServiceStub.getRefreshedEntityCalled);
         assertTrue(!action.getKmPlotForm().getSurvivalValueDefinitions().isEmpty());
     }
     

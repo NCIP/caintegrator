@@ -154,7 +154,7 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
     
     private void refreshSelectedAnnotationInstance() {
         if (kmPlotParameters.getSelectedAnnotation().getId() != null) {
-            kmPlotParameters.setSelectedAnnotation(getStudyManagementService().
+            kmPlotParameters.setSelectedAnnotation(getQueryManagementService().
                     getRefreshedEntity(kmPlotParameters.getSelectedAnnotation()));
         }
     }
@@ -163,7 +163,7 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
         if (!kmPlotParameters.getSelectedValues().isEmpty()) {
             Collection <PermissibleValue> newValues = new HashSet<PermissibleValue>();
             for (PermissibleValue value : kmPlotParameters.getSelectedValues()) {
-                PermissibleValue newValue = getStudyManagementService().getRefreshedEntity(value);
+                PermissibleValue newValue = getQueryManagementService().getRefreshedEntity(value);
                 newValues.add(newValue);
             }
             kmPlotParameters.getSelectedValues().clear();

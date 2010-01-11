@@ -96,9 +96,9 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImp
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -119,14 +119,15 @@ import com.opensymphony.xwork2.ActionSupport;
 public class KMPlotQueryBasedActionTest extends AbstractSessionBasedTest {
     
     private KMPlotQueryBasedAction action;
-    private StudyManagementServiceStub studyManagementServiceStub = new StudyManagementServiceStub();
+    private QueryManagementServiceStub queryManagementServiceStub = new QueryManagementServiceStub();
     private AnalysisServiceStub analysisServiceStub = new AnalysisServiceStub();
     private KMPlotServiceCaIntegratorImpl plotService = new KMPlotServiceCaIntegratorImpl();
+    private StudySubscription subscription;
     
     @Before
     public void setUp() {
         super.setUp();
-        StudySubscription subscription = new StudySubscription();
+        subscription = new StudySubscription();
         subscription.setId(Long.valueOf(1));
         Study study = createFakeStudy();
         subscription.setStudy(study);
@@ -138,8 +139,8 @@ public class KMPlotQueryBasedActionTest extends AbstractSessionBasedTest {
         workspaceService.setSubscription(subscription);
         action.setWorkspaceService(workspaceService);
         
-        action.setStudyManagementService(studyManagementServiceStub);
-        studyManagementServiceStub.clear();
+        action.setQueryManagementService(queryManagementServiceStub);
+        queryManagementServiceStub.clear();
         analysisServiceStub.clear();
     }
     
@@ -162,7 +163,7 @@ public class KMPlotQueryBasedActionTest extends AbstractSessionBasedTest {
         action.getKmPlotParameters().setSurvivalValueDefinition(svd);
         setupActionVariables();
         action.prepare();
-        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+        assertTrue(queryManagementServiceStub.getRefreshedEntityCalled);
         assertTrue(!action.getKmPlotForm().getSurvivalValueDefinitions().isEmpty());
     }
     
@@ -249,12 +250,18 @@ public class KMPlotQueryBasedActionTest extends AbstractSessionBasedTest {
         action.getKmPlotParameters().setAddPatientsNotInQueriesGroup(true);
         action.getKmPlotParameters().getQueries().add(new Query());
         action.getKmPlotParameters().getQueries().add(new Query());
+        Query query1 = new Query();
+        query1.setName("1");
+        Query query2 = new Query();
+        query2.setName("2");
+        subscription.getQueryCollection().add(query1);
+        subscription.getQueryCollection().add(query2);
         action.getKmPlotForm().getQueryBasedForm().setAddPatientsNotInQueriesGroup(true);
         action.getKmPlotForm().getQueryBasedForm().setExclusiveGroups(true);
-        action.getKmPlotForm().getQueryBasedForm().getSelectedQueryIDs().add("1");
-        action.getKmPlotForm().getQueryBasedForm().getUnselectedQueryIDs().add("2");
-        action.getKmPlotForm().getQueryBasedForm().getSelectedQueries().put("1", new Query());
-        action.getKmPlotForm().getQueryBasedForm().getUnselectedQueries().put("2", new Query());
+        action.getKmPlotForm().getQueryBasedForm().getSelectedQueryNames().add(DisplayableQuery.getDisplayableQueryName(query1));
+        action.getKmPlotForm().getQueryBasedForm().getUnselectedQueryNames().add(DisplayableQuery.getDisplayableQueryName(query1));
+        action.getKmPlotForm().getQueryBasedForm().getSelectedQueries().put(DisplayableQuery.getDisplayableQueryName(query1), new DisplayableQuery(query1));
+        action.getKmPlotForm().getQueryBasedForm().getUnselectedQueries().put(DisplayableQuery.getDisplayableQueryName(query2), new DisplayableQuery(query2));
     }
     
 

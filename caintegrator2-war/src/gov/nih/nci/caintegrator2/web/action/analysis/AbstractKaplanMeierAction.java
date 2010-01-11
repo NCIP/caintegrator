@@ -91,7 +91,7 @@ import gov.nih.nci.caintegrator2.application.analysis.AbstractKMParameters;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
@@ -126,7 +126,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     private static final Double SMALLEST_TWO_DIGIT_DECIMAL = .01;
     private static final Integer DELAY_TIME_BETWEEN_PLOT_CREATE = 25;
     private static final String KMPLOT_RESULT = "kmPlotResult";
-    private StudyManagementService studyManagementService;
+    private QueryManagementService queryManagementService;
     private AnalysisService analysisService;
     private String displayTab;
 
@@ -156,7 +156,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
                 && params.getSurvivalValueDefinition() != null) {
                 params.getSurvivalValueDefinition().setId(
                        Long.valueOf(getKmPlotForm().getSurvivalValueDefinitionId()));
-                params.setSurvivalValueDefinition(getStudyManagementService().
+                params.setSurvivalValueDefinition(getQueryManagementService().
                         getRefreshedEntity(params.getSurvivalValueDefinition()));
        }
     }
@@ -330,18 +330,19 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     }
 
     /**
-     * @return the studyManagementService
+     * @return the queryManagementService
      */
-    public StudyManagementService getStudyManagementService() {
-        return studyManagementService;
+    public QueryManagementService getQueryManagementService() {
+        return queryManagementService;
     }
 
     /**
-     * @param studyManagementService the studyManagementService to set
+     * @param queryManagementService the queryManagementService to set
      */
-    public void setStudyManagementService(StudyManagementService studyManagementService) {
-        this.studyManagementService = studyManagementService;
+    public void setQueryManagementService(QueryManagementService queryManagementService) {
+        this.queryManagementService = queryManagementService;
     }
+
 
     /**
      * @return the analysisService
