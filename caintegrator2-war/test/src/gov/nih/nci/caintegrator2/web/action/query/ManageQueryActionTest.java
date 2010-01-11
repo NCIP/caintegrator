@@ -94,7 +94,6 @@ import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -102,8 +101,6 @@ import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator2.web.action.query.form.CriterionRowTypeEnum;
-
-import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -152,7 +149,6 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         study.setStudyConfiguration(studyConfiguration);
         studySubscription.setStudy(study);
         studySubscription.setId(id);
-        studySubscription.setQueryCollection(new HashSet<Query>());
         SessionHelper.getInstance().getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription);
         return studySubscription;
     }

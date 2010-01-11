@@ -4,7 +4,6 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -20,7 +19,7 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
     
     private Study study;
     private Set<AbstractList> listCollection = new HashSet<AbstractList>();
-    private Collection<Query> queryCollection;
+    private Set<Query> queryCollection = new HashSet<Query>();
     private Set<AbstractPersistedAnalysisJob> analysisJobCollection = new HashSet<AbstractPersistedAnalysisJob>();
     private UserWorkspace userWorkspace;
     
@@ -56,14 +55,15 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
     /**
      * @return the queryCollection
      */
-    public Collection<Query> getQueryCollection() {
+    public Set<Query> getQueryCollection() {
         return queryCollection;
     }
     
     /**
      * @param queryCollection the queryCollection to set
      */
-    public void setQueryCollection(Collection<Query> queryCollection) {
+    @SuppressWarnings("unused") // For hibernate.
+    private void setQueryCollection(Set<Query> queryCollection) {
         this.queryCollection = queryCollection;
     }
 

@@ -91,11 +91,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -104,8 +104,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
-
-import java.util.HashSet;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
@@ -117,7 +115,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class GEPlotGenomicQueryBasedActionTest extends AbstractSessionBasedTest {
     
     private GEPlotGenomicQueryBasedAction action;
-    private StudyManagementServiceStub studyManagementServiceStub = new StudyManagementServiceStub();
+    private QueryManagementServiceStub queryManagementServiceStub = new QueryManagementServiceStub();
     private AnalysisServiceStub analysisServiceStub = new AnalysisServiceStub();
     
     @Before
@@ -127,7 +125,6 @@ public class GEPlotGenomicQueryBasedActionTest extends AbstractSessionBasedTest 
         subscription.setId(Long.valueOf(1));
         Study study = createFakeStudy();
         subscription.setStudy(study);
-        subscription.setQueryCollection(new HashSet<Query>());
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new GEPlotGenomicQueryBasedAction();
@@ -136,8 +133,8 @@ public class GEPlotGenomicQueryBasedActionTest extends AbstractSessionBasedTest 
         workspaceService.setSubscription(subscription);
         action.setWorkspaceService(workspaceService);
         
-        action.setStudyManagementService(studyManagementServiceStub);
-        studyManagementServiceStub.clear();
+        action.setQueryManagementService(queryManagementServiceStub);
+        queryManagementServiceStub.clear();
         analysisServiceStub.clear();
         SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceService, true);
     }
@@ -157,7 +154,7 @@ public class GEPlotGenomicQueryBasedActionTest extends AbstractSessionBasedTest 
     public void testPrepare() {
         setupActionVariables();
         action.prepare();
-        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+        assertTrue(queryManagementServiceStub.getRefreshedEntityCalled);
         assertNotNull(action.getGePlotForm().getGenomicQueryBasedForm().getSelectedQueryId());
     }
     

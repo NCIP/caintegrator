@@ -109,7 +109,6 @@ import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.awt.Color;
-import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -131,7 +130,6 @@ public class KMPlotQueryBasedActionTest extends AbstractSessionBasedTest {
         subscription.setId(Long.valueOf(1));
         Study study = createFakeStudy();
         subscription.setStudy(study);
-        subscription.setQueryCollection(new HashSet<Query>());
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new KMPlotQueryBasedAction();

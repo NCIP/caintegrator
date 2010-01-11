@@ -88,11 +88,14 @@ package gov.nih.nci.caintegrator2.application.query;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -106,6 +109,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public boolean executeGenomicDataQueryCalled;
     public boolean createCsvFileFromGenomicResultCalled;
     private GenomicDataQueryResult expectedGenomicResult = new GenomicDataQueryResult();
+    public boolean getRefreshedEntityCalled;
 
     public void save(Query query) {
         query.setId(1L);
@@ -139,6 +143,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
         executeCalled = false;
         executeGenomicDataQueryCalled = false;
         createCsvFileFromGenomicResultCalled = false;
+        getRefreshedEntityCalled = false;
     }
 
 
@@ -168,6 +173,28 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public File createCsvFileFromGenomicResults(GenomicDataQueryResult result) {
         createCsvFileFromGenomicResultCalled = true;
         return new File(System.getProperty("java.io.tmpdir"));
+    }
+
+    public List<Query> createQueriesFromSubjectLists(Collection<SubjectList> subjectLists) {
+        List<Query> queryList = new ArrayList<Query>();
+        for (SubjectList subjectList : subjectLists) {
+            queryList.add(createQueryFromSubjectList(subjectList));
+        }
+        return queryList;
+    }
+
+    public Query createQueryFromSubjectList(SubjectList subjectList) {
+        Query query = new Query();
+        query.setName(subjectList.getName());
+        query.setSubjectListQuery(true);
+        
+        return query;
+    }
+
+    
+    public <T> T getRefreshedEntity(T entity) {
+        getRefreshedEntityCalled = true;
+        return entity;
     }
     
 }

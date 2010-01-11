@@ -90,6 +90,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
@@ -99,18 +100,14 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
-
-import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -121,7 +118,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
     private GEPlotAnnotationBasedAction action;
-    private StudyManagementServiceStub studyManagementServiceStub = new StudyManagementServiceStub();
+    private QueryManagementServiceStub queryManagementServiceStub = new QueryManagementServiceStub();
     private AnalysisServiceStub analysisServiceStub = new AnalysisServiceStub();
     
     private PermissibleValue val1 = new PermissibleValue();
@@ -134,7 +131,6 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
         subscription.setId(Long.valueOf(1));
         Study study = createFakeStudy();
         subscription.setStudy(study);
-        subscription.setQueryCollection(new HashSet<Query>());
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new GEPlotAnnotationBasedAction();
@@ -143,8 +139,8 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
         workspaceService.setSubscription(subscription);
         action.setWorkspaceService(workspaceService);
         
-        action.setStudyManagementService(studyManagementServiceStub);
-        studyManagementServiceStub.clear();
+        action.setQueryManagementService(queryManagementServiceStub);
+        queryManagementServiceStub.clear();
         analysisServiceStub.clear();
         SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceService, true);
     }

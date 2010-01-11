@@ -148,7 +148,6 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
         assignment.getSampleAcquisitionCollection().add(acquisition);
         study.getAssignmentCollection().add(assignment);
         subscription.setStudy(study);
-        subscription.setQueryCollection(new HashSet<Query>());
         Query query1 = new Query();
         query1.setName("query1");
         query1.setId(Long.valueOf(1));

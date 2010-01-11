@@ -93,7 +93,6 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.util.HashMap;
@@ -127,7 +126,6 @@ public class SessionHelperTest extends AbstractSessionBasedTest {
         studySubscription.setId(Long.valueOf(1));
         Query query1 = new Query();
         Query query2 = new Query();
-        studySubscription.setQueryCollection(new HashSet<Query>());
         studySubscription.getQueryCollection().add(query1);
         studySubscription.getQueryCollection().add(query2);
         userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
