@@ -137,7 +137,7 @@ class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
     private void retrieveSubjectGroups(StudySubscription subscription, 
                                        Collection<SubjectGroup> subjectGroupCollection) 
     throws InvalidCriterionException {
-        
+        Cai2Util.setColorPalette((kmParameters.getQueries().size() + 1));
         for (Query query : kmParameters.getQueries()) {
             query.setResultType(ResultTypeEnum.CLINICAL);
             SubjectGroup group = retrieveGroup(query);

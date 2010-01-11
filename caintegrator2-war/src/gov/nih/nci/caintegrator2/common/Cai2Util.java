@@ -132,6 +132,11 @@ import org.apache.commons.lang.math.NumberUtils;
 public final class Cai2Util {
     private static final Integer BUFFER_SIZE = 4096;
     private static final String ZIP_FILE_SUFFIX = ".zip";
+    private static final double COLOR_SATURATION = 0.89;
+    private static final double COLOR_BRIGHTNESS = 0.89;
+    private static final double GOLDEN_ANGLE = 0.381966;
+    private static final double MAX_ANGLE_CONSTANT = 360;
+    private static final Set<Color> COLOR_PALETTE = new HashSet<Color>();
     
     private Cai2Util() { }
     
@@ -391,13 +396,69 @@ public final class Cai2Util {
             }
         }
     }
-    
+
     /**
-     * Used by classes to retrieve a color based on a number (1-10 are different colors, anything else is black).
-     * @param colorNumber - number to use.
+     * Used by classes to create a palette of unique colors.
+     * @param totalNumberOfUniqueColors - total number of unique colors to be created in the palette.
+     */
+    public static void setColorPalette(int totalNumberOfUniqueColors) {
+
+        for (int i = 0; i < MAX_ANGLE_CONSTANT; i += MAX_ANGLE_CONSTANT / totalNumberOfUniqueColors) {
+            double colorNumberAsAngle = i * GOLDEN_ANGLE;
+            double hue = colorNumberAsAngle - Math.floor(colorNumberAsAngle);
+
+            COLOR_PALETTE.add(Color.getHSBColor((float) hue, (float) COLOR_SATURATION, (float) COLOR_BRIGHTNESS));
+        }
+    }
+
+    /**
+     * Used by classes to retrieve a color based on a number (0-10) uses a basic
+     * ten color palette.  Greater than 9 uses an unlimited color palette.
+     * @param colorNumber - a number which selects the color in the palette.
      * @return - Color object for that number.
      */
     public static Color getColor(int colorNumber) {
+
+        Color colorToBeReturned;
+
+        if (colorNumber > 10) {
+            colorToBeReturned = getUnlimitedColor(colorNumber);
+        } else {
+            colorToBeReturned = getBasicColor(colorNumber);
+        }
+        return colorToBeReturned;
+    }
+    
+    /**
+     * Used by classes to retrieve a color based on a number from an unlimited number of colors.
+     * @param colorNumber - number to use.
+     * @return - Color object for that number.
+     */
+    public static Color getUnlimitedColor(int colorNumber) {
+
+        int maxColorsInPalette = COLOR_PALETTE.size();
+        Color[] colorsArray = new Color[maxColorsInPalette];
+        Color colorToBeReturned;
+        
+        colorsArray = COLOR_PALETTE.toArray(colorsArray);
+
+        if (colorNumber < 1 || colorsArray.length == 0) {
+            colorToBeReturned = Color.BLACK;
+        } else if (colorNumber > maxColorsInPalette) {
+            colorToBeReturned = Color.BLACK;
+        } else {
+            colorToBeReturned = colorsArray[colorNumber - 1];
+        }
+        return colorToBeReturned;
+    }
+    
+    /**
+     * Used by classes to retrieve a color based on a number from a ten color palette.
+     * (1-10) are colors and anything else returns black.
+     * @param colorNumber - number to use.
+     * @return - Color object for that number.
+     */
+    public static Color getBasicColor(int colorNumber) {
         switch(colorNumber) {
             case 1:
                 return Color.GREEN;
