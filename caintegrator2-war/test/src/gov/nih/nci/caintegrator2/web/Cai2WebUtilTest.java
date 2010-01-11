@@ -89,6 +89,7 @@ package gov.nih.nci.caintegrator2.web;
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableQuery;
@@ -103,22 +104,33 @@ import org.junit.Test;
 public class Cai2WebUtilTest {
     
     @Test
-    public void testRetrieveDisplayableClinicalQueries() {
+    public void testRetrieveDisplayableQueries() {
         QueryManagementServiceStub queryManagementServiceStub = new QueryManagementServiceStub();
         StudySubscription studySubscription = new StudySubscription();
         Query query1 = new Query();
         query1.setName("query1");
         Query query2 = new Query();
         query2.setName("query2");
+        Query query3 = new Query();
+        query3.setName("query3");
+        query3.setResultType(ResultTypeEnum.GENOMIC);
         SubjectList subjectList1 = new SubjectList();
         subjectList1.setName("subjectList1");
         studySubscription.getListCollection().add(subjectList1);
         studySubscription.getQueryCollection().add(query1);
         studySubscription.getQueryCollection().add(query2);
+        studySubscription.getQueryCollection().add(query3);
         List<DisplayableQuery> displayableQueries = 
-            Cai2WebUtil.retrieveDisplayableClinicalQueries(studySubscription, queryManagementServiceStub);
+            Cai2WebUtil.retrieveDisplayableQueries(studySubscription, queryManagementServiceStub, false);
         assertEquals("[Q]-query1", displayableQueries.get(0).getDisplayName());
         assertEquals("[Q]-query2", displayableQueries.get(1).getDisplayName());
         assertEquals("[SL]-subjectList1", displayableQueries.get(2).getDisplayName());
+        displayableQueries = 
+            Cai2WebUtil.retrieveDisplayableQueries(studySubscription, queryManagementServiceStub, true);
+        assertEquals("[Q]-query1", displayableQueries.get(0).getDisplayName());
+        assertEquals("[Q]-query2", displayableQueries.get(1).getDisplayName());
+        assertEquals("[Q]-query3", displayableQueries.get(2).getDisplayName());
+        assertEquals("[SL]-subjectList1", displayableQueries.get(3).getDisplayName());
+        
     }
 }

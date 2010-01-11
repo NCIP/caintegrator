@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImp
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
@@ -104,7 +105,6 @@ import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
@@ -126,7 +126,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
     
     private KMPlotAnnotationBasedAction action;
-    private StudyManagementServiceStub studyManagementServiceStub = new StudyManagementServiceStub();
+    private QueryManagementServiceStub queryManagementServiceStub = new QueryManagementServiceStub();
     private AnalysisServiceStub analysisServiceStub = new AnalysisServiceStub();
     private KMPlotServiceCaIntegratorImpl plotService = new KMPlotServiceCaIntegratorImpl();
     
@@ -148,8 +148,8 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
         workspaceService.setSubscription(subscription);
         action.setWorkspaceService(workspaceService);
         
-        action.setStudyManagementService(studyManagementServiceStub);
-        studyManagementServiceStub.clear();
+        action.setQueryManagementService(queryManagementServiceStub);
+        queryManagementServiceStub.clear();
         analysisServiceStub.clear();
         SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceService, true);
     }
@@ -203,7 +203,7 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
         action.getKmPlotParameters().setSurvivalValueDefinition(svd);
         setupActionVariables();
         action.prepare();
-        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+        assertTrue(queryManagementServiceStub.getRefreshedEntityCalled);
         assertTrue(!action.getKmPlotForm().getSurvivalValueDefinitions().isEmpty());
     }
     

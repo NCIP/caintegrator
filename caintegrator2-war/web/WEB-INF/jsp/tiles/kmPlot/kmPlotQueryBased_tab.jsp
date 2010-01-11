@@ -7,7 +7,7 @@
     <s:hidden name="resetSelected" value="false" />
           
     <!-- Kaplan-Meier Inputs -->
-    <h2>Query Based Kaplan-Meier Survival Plots</h2>
+    <h2>Kaplan-Meier Survival Plots based on Saved Queries and Saved Lists</h2>
 
         <table class="data">
             <tr>
@@ -15,18 +15,18 @@
                     1.) 
                 </td>
                 <td class="value_inline">
-                    Select Queries:
+                    Select Saved Queries and Lists:
                 </td>
                 <td class="optiontransferselect">
                     <s:optiontransferselect
                     id="allQueries"
                     doubleId="querySelections"
-                    name="kmPlotForm.queryBasedForm.unselectedQueryIDs"
+                    name="kmPlotForm.queryBasedForm.unselectedQueryNames"
                     list="kmPlotForm.queryBasedForm.unselectedQueries"
-                    listValue="value.name"
-                    doubleName="kmPlotForm.queryBasedForm.selectedQueryIDs"
+                    listValue="value.displayName"
+                    doubleName="kmPlotForm.queryBasedForm.selectedQueryNames"
                     doubleList="kmPlotForm.queryBasedForm.selectedQueries"
-                    doubleListValue="value.name"
+                    doubleListValue="value.displayName"
                     allowAddAllToLeft="false"
                     allowAddAllToRight="false"
                     allowUpDownOnLeft="false"
@@ -53,7 +53,7 @@
                     2.) 
                 </td>
 		        <td colspan="2" class="value_inline">
-                    <s:checkbox name="kmPlotForm.queryBasedForm.exclusiveGroups"/>Exclusive Subjects in Queries (Subjects in upper queries are removed from subsequent queries) 
+                    <s:checkbox name="kmPlotForm.queryBasedForm.exclusiveGroups"/>Exclusive Subjects (Subjects in upper Selected Queries or Lists are removed from subsequent Selected Queries or Lists) 
                 </td> 
             </tr>
             <tr>
@@ -61,7 +61,7 @@
                     3.)
                 </td>
                 <td colspan="2" class="value_inline">
-                    <s:checkbox name="kmPlotForm.queryBasedForm.addPatientsNotInQueriesGroup"/>Add additional group containing all other subjects not found in selected queries.
+                    <s:checkbox name="kmPlotForm.queryBasedForm.addPatientsNotInQueriesGroup"/>Add additional group containing all other subjects not found in selected queries and lists.
                 </td>
             </tr>
             <tr>
