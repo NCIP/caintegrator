@@ -96,6 +96,8 @@ import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectIdentifier;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
@@ -112,6 +114,7 @@ import com.opensymphony.xwork2.Action;
 public class ManageQueryActionTest extends AbstractSessionBasedTest {
 
     private ManageQueryAction manageQueryAction;
+    private SessionHelper sessionHelper;
     
     // Study objects
     private final QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
@@ -131,7 +134,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
     @SuppressWarnings({"PMD"})
     private void setupSession() {
         super.setUp();
-        SessionHelper sessionHelper = SessionHelper.getInstance();
+        sessionHelper = SessionHelper.getInstance();
         manageQueryAction.prepare();
         assertEquals("criteria", manageQueryAction.getDisplayTab());
         
@@ -143,15 +146,26 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
 
     private StudySubscription createStudySubscription(long id) {
         StudySubscription studySubscription = new StudySubscription();
+        addSubjectList(studySubscription);
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
         study.setStudyConfiguration(studyConfiguration);
         studySubscription.setStudy(study);
         studySubscription.setId(id);
-        SessionHelper.getInstance().getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription);
+        sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription);
         return studySubscription;
     }
+    
+    private void addSubjectList(StudySubscription studySubscription) {
+        SubjectList subjectList = new SubjectList();
+        subjectList.setName("SubjectList1");
+        subjectList.setSubscription(studySubscription);
+        SubjectIdentifier subjectIdentifier = new SubjectIdentifier("100");
+        subjectList.getSubjectIdentifiers().add(subjectIdentifier);
+        studySubscription.getListCollection().add(subjectList);
+    }
+
 
     @Test
     @SuppressWarnings({"PMD"})
@@ -170,6 +184,19 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENOMIC.getValue());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertTrue(queryManagementService.executeGenomicDataQueryCalled);
+        
+        // test load & execute my subject list
+        manageQueryAction.setSelectedAction("loadSubjectListExecute");
+        manageQueryAction.setSubjectListName("SubjectList1");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertTrue(queryManagementService.executeCalled);
+        assertEquals("searchResults", manageQueryAction.getDisplayTab());
+        // Clean up after testing
+        manageQueryAction.setSubjectListName("");
+        manageQueryAction.setSelectedAction("remove");
+        manageQueryAction.setRowNumber("0");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+
         
         // test save query
         manageQueryAction.setSelectedAction("saveQuery");
@@ -212,7 +239,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.setSubjectListName("Subject list 1");
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());      
         
         // test load query
         manageQueryAction.setSelectedAction("loadQuery");
@@ -282,7 +309,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         // Test creating NCIA basket
         manageQueryAction.setSelectedAction("forwardToNcia");
         assertEquals("nciaBasket", manageQueryAction.execute());
-        DisplayableUserWorkspace displayableUserWorkspace = SessionHelper.getInstance().getDisplayableUserWorkspace();
+        DisplayableUserWorkspace displayableUserWorkspace = sessionHelper.getDisplayableUserWorkspace();
         DisplayableQueryResult displayableQueryResult = DisplayableQueryResultTest.getTestResult();
         displayableUserWorkspace.setQueryResult(displayableQueryResult);
         manageQueryAction.prepare();
@@ -320,13 +347,13 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.setPageSize(20);
         manageQueryAction.setSelectedAction("updateResultsPerPage");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        assertEquals(20, SessionHelper.getInstance().getDisplayableUserWorkspace().getQueryResult().getPageSize());
+        assertEquals(20, sessionHelper.getDisplayableUserWorkspace().getQueryResult().getPageSize());
         
         // Test exporting genomic results.
         manageQueryAction.setSelectedAction("exportGenomicResults");
         assertEquals("exportGenomicResults", manageQueryAction.execute());
         assertTrue(queryManagementService.createCsvFileFromGenomicResultCalled);
-        assertNotNull(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile());
+        assertNotNull(sessionHelper.getDisplayableUserWorkspace().getTemporaryDownloadFile());
     }
     
 }

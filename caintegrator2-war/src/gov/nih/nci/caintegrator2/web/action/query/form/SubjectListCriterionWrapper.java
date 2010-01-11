@@ -96,8 +96,11 @@ import java.util.List;
 /**
  * Wraps access to a <code>IdentifierCriterion</code>.
  */
-final class SubjectListCriterionWrapper extends AbstractCriterionWrapper implements OperatorHandler {
+public final class SubjectListCriterionWrapper extends AbstractCriterionWrapper implements OperatorHandler {
     
+    /**
+     * My Subject List label.
+     */
     public static final String SUBJECT_LIST_FIELD_NAME = "*My Subject List";
     private final SubjectListCriterion criterion;
     private final AbstractCriterionRow row;

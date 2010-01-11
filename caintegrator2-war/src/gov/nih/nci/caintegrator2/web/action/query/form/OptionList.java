@@ -131,6 +131,14 @@ class OptionList<E> {
         return actualValues;
     }
     
+    List<E> getAllActualValues() {
+        List<E> actualValues = new ArrayList<E>();
+        for (String key : keyToOptionMap.keySet()) {
+            actualValues.add(keyToOptionMap.get(key).getActualValue());
+        }
+        return actualValues;
+    }
+    
     String[] getKeys(Collection<E> actualValues) {
         List<String> selectedKeys = new ArrayList<String>();
         for (E actualValue : actualValues) {
