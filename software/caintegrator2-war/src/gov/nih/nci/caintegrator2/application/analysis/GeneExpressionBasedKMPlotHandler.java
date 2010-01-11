@@ -153,6 +153,7 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
                                        Collection<SubjectGroup> subjectGroupCollection,
                                        String geneSymbol) 
         throws InvalidCriterionException {
+        Cai2Util.setColorPalette(3 * kmParameters.getGenesFoundInStudy().size());
         // Up Regulated
         SubjectGroup upRegulatedGroup = retrieveGroup(geneSymbol, geneSymbol + " >= " 
                                                                 + kmParameters.getOverexpressedFoldChangeNumber() 
