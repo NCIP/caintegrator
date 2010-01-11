@@ -125,7 +125,7 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
         super.prepare();
         setDisplayTab(CLINICAL_QUERY_TAB);
         getForm().setDisplayableQueries(
-                Cai2WebUtil.retrieveDisplayableClinicalQueries(getStudySubscription(), getQueryManagementService()));
+                Cai2WebUtil.retrieveDisplayableQueries(getStudySubscription(), getQueryManagementService(), false));
         getForm().getDisplayableQueryMap().clear();
         for (DisplayableQuery displayableQuery : getForm().getDisplayableQueries()) {
             getForm().getDisplayableQueryMap().put(displayableQuery.getDisplayName(), displayableQuery);
