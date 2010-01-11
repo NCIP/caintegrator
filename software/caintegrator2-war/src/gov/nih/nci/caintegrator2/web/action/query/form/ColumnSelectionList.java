@@ -171,6 +171,17 @@ public class ColumnSelectionList {
         handleExistingAndRemovedColumns(resultConfiguration.getQuery().getColumnCollection(), selectedColumns);
         addNewSelectedColumns(resultConfiguration.getQuery().getColumnCollection(), selectedColumns);
     }
+    
+    /**
+     * Seelect all columns.
+     */
+    public void selectAllValues() {
+        Set<AnnotationDefinition> selectedColumns = new HashSet<AnnotationDefinition>();
+        selectedColumns.addAll(getColumnList().getAllActualValues());
+        handleExistingAndRemovedColumns(resultConfiguration.getQuery().getColumnCollection(), selectedColumns);
+        addNewSelectedColumns(resultConfiguration.getQuery().getColumnCollection(), selectedColumns);
+        
+    }
 
     private void addNewSelectedColumns(Collection<ResultColumn> columnCollection,
             Set<AnnotationDefinition> selectedColumns) {

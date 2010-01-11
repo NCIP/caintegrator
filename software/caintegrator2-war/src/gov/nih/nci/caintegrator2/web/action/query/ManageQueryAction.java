@@ -101,6 +101,10 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.DownloadableFile;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+import gov.nih.nci.caintegrator2.web.action.query.form.AbstractCriterionRow;
+import gov.nih.nci.caintegrator2.web.action.query.form.CriterionRowTypeEnum;
+import gov.nih.nci.caintegrator2.web.action.query.form.MultiSelectParameter;
+import gov.nih.nci.caintegrator2.web.action.query.form.SubjectListCriterionWrapper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -276,9 +280,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             displayTab = RESULTS_TAB;
             returnValue = exportGenomicResults();
         } else if ("createNewQuery".equals(selectedAction)) {
-            getQueryForm().createQuery(getStudySubscription());
-            setQueryResult(null);
-            returnValue = SUCCESS;    
+            returnValue = createNewQuery();    
         } else if ("forwardToNcia".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
             returnValue = forwardToNciaBasket();
@@ -307,11 +309,37 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         } else if ("saveSubjectList".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
             returnValue = saveSubjectList();
+        } else if ("loadSubjectListExecute".equals(selectedAction)) {
+            returnValue = loadSubjectListExecute();
         } else {
             addActionError("Unknown action '" + selectedAction + "'");
             returnValue = ERROR; 
         }
         return returnValue;
+    }
+
+    private String createNewQuery() {
+        getQueryForm().createQuery(getStudySubscription());
+        setQueryResult(null);
+        return SUCCESS;
+    }
+    
+    private String loadSubjectListExecute() {
+        createNewQuery();
+        loadSubjectList();
+        getQueryForm().getResultConfiguration().getSubjectColumns().selectAllValues();
+        displayTab = RESULTS_TAB;
+        return executeQuery();
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void loadSubjectList() {
+        getQueryForm().getCriteriaGroup().setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
+        addCriterionRow();
+        AbstractCriterionRow criterionRow = getQueryForm().getCriteriaGroup().getRows().get(0);
+        criterionRow.setFieldName(SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME);
+        updateCriteria();
+        ((MultiSelectParameter) criterionRow.getParameters().get(0)).setValues(new String[]{subjectListName});
     }
 
     private String exportGenomicResults() {
