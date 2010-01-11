@@ -85,11 +85,17 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -101,6 +107,9 @@ import gov.nih.nci.caintegrator2.file.FileManager;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
@@ -111,9 +120,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @SuppressWarnings("PMD.CyclomaticComplexity") // See handleCheckedRowForImageStudy()
 @Transactional(propagation = Propagation.REQUIRED)
-public class QueryManagementServiceImpl implements QueryManagementService {
+public class QueryManagementServiceImpl extends CaIntegrator2BaseService implements QueryManagementService {
     
-    private CaIntegrator2Dao dao;
     private ResultHandler resultHandler;
     private ArrayDataService arrayDataService;
     private FileManager fileManager;
@@ -131,7 +139,7 @@ public class QueryManagementServiceImpl implements QueryManagementService {
     @Transactional(readOnly = true)
     public QueryResult execute(Query query) throws InvalidCriterionException {
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        QueryTranslator queryTranslator = new QueryTranslator(query, dao, arrayDataService, resultHandler);
+        QueryTranslator queryTranslator = new QueryTranslator(query, getDao(), arrayDataService, resultHandler);
         return queryTranslator.execute();
     }
     
@@ -140,8 +148,39 @@ public class QueryManagementServiceImpl implements QueryManagementService {
      */
     @Transactional(readOnly = true)
     public GenomicDataQueryResult executeGenomicDataQuery(Query query) throws InvalidCriterionException {
-        GenomicQueryHandler handler = new GenomicQueryHandler(query, dao, arrayDataService);
+        GenomicQueryHandler handler = new GenomicQueryHandler(query, getDao(), arrayDataService);
         return handler.execute();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<Query> createQueriesFromSubjectLists(Collection<SubjectList> subjectLists) {
+        List<Query> queries = new ArrayList<Query>();
+        for (SubjectList subjectList : subjectLists) {
+            Query query = createQueryFromSubjectList(subjectList);
+            queries.add(query);
+        }
+        return queries;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Query createQueryFromSubjectList(SubjectList subjectList) {
+        Query query = new Query();
+        SubjectListCriterion criterion = new SubjectListCriterion();
+        criterion.getSubjectListCollection().add(subjectList);
+        query.setName(subjectList.getName());
+        query.setDescription(subjectList.getDescription());
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
+        query.setColumnCollection(new HashSet<ResultColumn>());
+        query.setSubscription(subjectList.getSubscription());
+        query.setResultType(ResultTypeEnum.CLINICAL);
+        query.getCompoundCriterion().getCriterionCollection().add(criterion);
+        query.setSubjectListQuery(true);
+        return query;
     }
     
     /**
@@ -206,7 +245,7 @@ public class QueryManagementServiceImpl implements QueryManagementService {
     private void handleCheckedRowForImageStudy(NCIAImageAggregator imageAggregator, DisplayableResultRow row) {
         StudySubjectAssignment studySubjectAssignment = row.getSubjectAssignment();
         if (studySubjectAssignment != null) {
-            studySubjectAssignment = dao.get(row.getSubjectAssignment().getId(), StudySubjectAssignment.class);
+            studySubjectAssignment = getDao().get(row.getSubjectAssignment().getId(), StudySubjectAssignment.class);
         }
         if (studySubjectAssignment != null 
             && studySubjectAssignment.getImageStudyCollection() != null
@@ -230,9 +269,9 @@ public class QueryManagementServiceImpl implements QueryManagementService {
      */
     public void save(Query query) {
         if (query.getId() == null) {
-            dao.save(query);
+            getDao().save(query);
         } else {
-            dao.merge(query);
+            getDao().merge(query);
         }
     }
 
@@ -240,14 +279,7 @@ public class QueryManagementServiceImpl implements QueryManagementService {
      * {@inheritDoc}
      */
     public void delete(Query query) {
-        dao.delete(query);
-    }
-
-    /**
-     * @param dao the dao to set.
-     */
-    public void setDao(CaIntegrator2Dao dao) {
-        this.dao = dao;
+        getDao().delete(query);
     }
 
     /**

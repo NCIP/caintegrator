@@ -106,7 +106,6 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import org.junit.Before;
@@ -183,7 +182,6 @@ public class AnalysisFormTest {
         query.setResultType(ResultTypeEnum.GENOMIC);
         queries.add(query);
         formParameter3.getForm().setGenomicQueries(queries);
-        studySubscription.setQueryCollection(new HashSet<Query>());
         studySubscription.getQueryCollection().add(query);
         
         Collection<AnnotationDefinition> annotations = new ArrayList<AnnotationDefinition>();

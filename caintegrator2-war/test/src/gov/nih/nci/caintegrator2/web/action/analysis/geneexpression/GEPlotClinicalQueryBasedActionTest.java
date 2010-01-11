@@ -90,11 +90,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -102,8 +102,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
-
-import java.util.HashSet;
+import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableQuery;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -114,17 +113,17 @@ import com.opensymphony.xwork2.ActionSupport;
 public class GEPlotClinicalQueryBasedActionTest extends AbstractSessionBasedTest {
     
     private GEPlotClinicalQueryBasedAction action;
-    private StudyManagementServiceStub studyManagementServiceStub = new StudyManagementServiceStub();
+    private QueryManagementServiceStub queryManagementServiceStub = new QueryManagementServiceStub();
     private AnalysisServiceStub analysisServiceStub = new AnalysisServiceStub();
+    private StudySubscription subscription;
     
     @Before
     public void setUp() {
         super.setUp();
-        StudySubscription subscription = new StudySubscription();
+        subscription = new StudySubscription();
         subscription.setId(Long.valueOf(1));
         Study study = createFakeStudy();
         subscription.setStudy(study);
-        subscription.setQueryCollection(new HashSet<Query>());
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new GEPlotClinicalQueryBasedAction();
@@ -133,8 +132,8 @@ public class GEPlotClinicalQueryBasedActionTest extends AbstractSessionBasedTest
         workspaceService.setSubscription(subscription);
         action.setWorkspaceService(workspaceService);
         
-        action.setStudyManagementService(studyManagementServiceStub);
-        studyManagementServiceStub.clear();
+        action.setQueryManagementService(queryManagementServiceStub);
+        queryManagementServiceStub.clear();
         analysisServiceStub.clear();
         SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceService, true);
     }
@@ -152,7 +151,7 @@ public class GEPlotClinicalQueryBasedActionTest extends AbstractSessionBasedTest
         setupActionVariables();
         action.getGePlotForm().getClinicalQueryBasedForm().setGeneSymbol("EGFR");
         action.prepare();
-        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+        assertTrue(queryManagementServiceStub.getRefreshedEntityCalled);
         action.prepare();
         assertEquals("EGFR", action.getPlotParameters().getGeneSymbol());
     }
@@ -217,10 +216,17 @@ public class GEPlotClinicalQueryBasedActionTest extends AbstractSessionBasedTest
         action.getPlotParameters().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         action.getPlotParameters().setAddPatientsNotInQueriesGroup(true);
         action.getPlotParameters().setExclusiveGroups(true);
-        action.getGePlotForm().getClinicalQueryBasedForm().getSelectedQueryIDs().add("1");
-        action.getGePlotForm().getClinicalQueryBasedForm().getUnselectedQueryIDs().add("2");
-        action.getGePlotForm().getClinicalQueryBasedForm().getSelectedQueries().put("1", new Query());
-        action.getGePlotForm().getClinicalQueryBasedForm().getSelectedQueries().put("2", new Query());
+        
+        Query query1 = new Query();
+        query1.setName("1");
+        Query query2 = new Query();
+        query2.setName("2");
+        subscription.getQueryCollection().add(query1);
+        subscription.getQueryCollection().add(query2);
+        action.getGePlotForm().getClinicalQueryBasedForm().getSelectedQueryNames().add(DisplayableQuery.getDisplayableQueryName(query1));
+        action.getGePlotForm().getClinicalQueryBasedForm().getUnselectedQueryNames().add(DisplayableQuery.getDisplayableQueryName(query2));
+        action.getGePlotForm().getClinicalQueryBasedForm().getSelectedQueries().put(DisplayableQuery.getDisplayableQueryName(query1), new DisplayableQuery(query1));
+        action.getGePlotForm().getClinicalQueryBasedForm().getSelectedQueries().put(DisplayableQuery.getDisplayableQueryName(query2), new DisplayableQuery(query2));
         action.getGePlotForm().getClinicalQueryBasedForm().
                 setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         action.getGePlotForm().getClinicalQueryBasedForm().setAddPatientsNotInQueriesGroup(true);

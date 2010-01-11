@@ -9,7 +9,7 @@
     <s:hidden name="geneSymbolElementId" />
 
     <!-- Gene Expression Inputs -->
-    <h2>Clinical Query Based Gene Expression Plots</h2>
+    <h2>Gene Expression Plots based on Saved Queries and Saved Lists</h2>
     
     <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
         <div class="tabhelp" style="white-space:nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
@@ -55,24 +55,24 @@
                     3.) 
                 </td>
                 <td class="value_inline">
-                    Select Queries:
+                    Select Saved Queries and Lists:
                 </td>
                 <td class="optiontransferselect">
                     <s:optiontransferselect
                     id="allQueries"
                     doubleId="querySelections"
-                    name="gePlotForm.clinicalQueryBasedForm.unselectedQueryIDs"
+                    name="gePlotForm.clinicalQueryBasedForm.unselectedQueryNames"
                     list="gePlotForm.clinicalQueryBasedForm.unselectedQueries"
-                    listValue="value.name"
-                    doubleName="gePlotForm.clinicalQueryBasedForm.selectedQueryIDs"
+                    listValue="value.displayName"
+                    doubleName="gePlotForm.clinicalQueryBasedForm.selectedQueryNames"
                     doubleList="gePlotForm.clinicalQueryBasedForm.selectedQueries"
-                    doubleListValue="value.name"
+                    doubleListValue="value.displayName"
                     allowAddAllToLeft="false"
                     allowAddAllToRight="false"
                     allowUpDownOnLeft="false"
                     allowUpDownOnRight="true"
-                    leftTitle="All Available Queries"
-                    rightTitle="Selected Queries"
+                    leftTitle="Available Queries and Lists"
+                    rightTitle="Selected Queries and Lists"
                     rightUpLabel="    ^    "
                     rightDownLabel="    v    "
                     addToRightLabel=" Add >"
@@ -93,7 +93,7 @@
                     4.) 
                 </td>
 		        <td colspan="2" class="value_inline">
-                    <s:checkbox name="gePlotForm.clinicalQueryBasedForm.exclusiveGroups"/>Exclusive Subjects in Queries (Subjects in upper queries are removed from subsequent queries) 
+                    <s:checkbox name="gePlotForm.clinicalQueryBasedForm.exclusiveGroups"/>Exclusive Subjects (Subjects in upper Selected Queries or Lists are removed from subsequent Selected Queries or Lists) 
                 </td> 
             </tr>
             <tr>
@@ -101,7 +101,7 @@
                     5.)
                 </td>
                 <td colspan="2" class="value_inline">
-                    <s:checkbox name="gePlotForm.clinicalQueryBasedForm.addPatientsNotInQueriesGroup"/>Add additional group containing all other subjects not found in selected queries.
+                    <s:checkbox name="gePlotForm.clinicalQueryBasedForm.addPatientsNotInQueriesGroup"/>Add additional group containing all other subjects not found in selected queries and lists.
                 </td>
             </tr>
             <tr>

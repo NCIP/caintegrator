@@ -504,8 +504,8 @@
         <property name="analysisService">
             <ref local="analysisService"/>
         </property>
-        <property name="studyManagementService">
-            <ref local="studyManagementService"/>
+        <property name="queryManagementService">
+            <ref local="queryManagementService"/>
         </property>
     </bean>   
     
@@ -518,8 +518,8 @@
         <property name="analysisService">
             <ref local="analysisService"/>
         </property>
-        <property name="studyManagementService">
-            <ref local="studyManagementService"/>
+        <property name="queryManagementService">
+            <ref local="queryManagementService"/>
         </property>
     </bean>   
     
@@ -532,8 +532,8 @@
         <property name="analysisService">
             <ref local="analysisService"/>
         </property>
-        <property name="studyManagementService">
-            <ref local="studyManagementService"/>
+        <property name="queryManagementService">
+            <ref local="queryManagementService"/>
         </property>
     </bean>   
     

@@ -146,7 +146,6 @@ public class DisplayableUserWorkspaceTest extends AbstractSessionBasedTest {
         studySubscription.setId(Long.valueOf(ID++));
         Query query1 = new Query();
         Query query2 = new Query();
-        studySubscription.setQueryCollection(new HashSet<Query>());
         studySubscription.getQueryCollection().add(query1);
         studySubscription.getQueryCollection().add(query2);
         StudyConfiguration studyConfiguration = new StudyConfiguration();

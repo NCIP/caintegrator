@@ -89,7 +89,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
@@ -115,7 +115,8 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
 
     private static final Integer DELAY_TIME_BETWEEN_PLOT_CREATE = 25;
     private static final String GEPLOT_RESULT = "gePlotResult";
-    private StudyManagementService studyManagementService;
+    private QueryManagementService queryManagementService;
+
     private AnalysisService analysisService;
     private String displayTab;
     
@@ -267,17 +268,17 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     }
 
     /**
-     * @return the studyManagementService
+     * @return the queryManagementService
      */
-    public StudyManagementService getStudyManagementService() {
-        return studyManagementService;
+    public QueryManagementService getQueryManagementService() {
+        return queryManagementService;
     }
 
     /**
-     * @param studyManagementService the studyManagementService to set
+     * @param queryManagementService the queryManagementService to set
      */
-    public void setStudyManagementService(StudyManagementService studyManagementService) {
-        this.studyManagementService = studyManagementService;
+    public void setQueryManagementService(QueryManagementService queryManagementService) {
+        this.queryManagementService = queryManagementService;
     }
 
     /**
