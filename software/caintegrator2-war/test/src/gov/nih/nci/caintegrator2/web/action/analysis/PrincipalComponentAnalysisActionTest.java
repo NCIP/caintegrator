@@ -129,7 +129,6 @@ public class PrincipalComponentAnalysisActionTest extends AbstractSessionBasedTe
         studyConfiguration.setStatus(Status.DEPLOYED);
         study.setStudyConfiguration(studyConfiguration);
         subscription.setStudy(study);
-        subscription.setQueryCollection(new HashSet<Query>());
         Query query1 = new Query();
         query1.setName("query1");
         query1.setId(Long.valueOf(1));

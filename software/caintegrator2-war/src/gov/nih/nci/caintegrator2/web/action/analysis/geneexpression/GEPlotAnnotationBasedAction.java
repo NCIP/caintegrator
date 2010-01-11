@@ -166,7 +166,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     
     private void refreshSelectedAnnotationInstance() {
         if (plotParameters.getSelectedAnnotation().getId() != null) {
-            plotParameters.setSelectedAnnotation(getStudyManagementService().
+            plotParameters.setSelectedAnnotation(getQueryManagementService().
                     getRefreshedEntity(plotParameters.getSelectedAnnotation()));
         }
     }
@@ -175,7 +175,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
         if (!plotParameters.getSelectedValues().isEmpty()) {
             Collection <PermissibleValue> newValues = new HashSet<PermissibleValue>();
             for (PermissibleValue value : plotParameters.getSelectedValues()) {
-                PermissibleValue newValue = getStudyManagementService().getRefreshedEntity(value);
+                PermissibleValue newValue = getQueryManagementService().getRefreshedEntity(value);
                 newValues.add(newValue);
             }
             plotParameters.getSelectedValues().clear();

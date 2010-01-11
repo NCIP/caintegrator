@@ -86,21 +86,24 @@
 
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.CaIntegrator2EntityRefresher;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
 
 /**
  * Interface to the service which manages query data for a user's workspace.
  */
-public interface QueryManagementService {
+public interface QueryManagementService extends CaIntegrator2EntityRefresher {
 
     /**
      * Executes a clinical query and returns back the result.
@@ -118,6 +121,20 @@ public interface QueryManagementService {
      * @throws InvalidCriterionException if criterion is invalid. 
      */
     GenomicDataQueryResult executeGenomicDataQuery(Query query) throws InvalidCriterionException;
+    
+    /**
+     * Creates a list of queries given a group of subject lists.
+     * @param subjectLists to create queries from.
+     * @return list of queries.
+     */
+    List<Query> createQueriesFromSubjectLists(Collection<SubjectList> subjectLists);
+    
+    /**
+     * Creates a query from a subject list.
+     * @param subjectList to create query from.
+     * @return query created from SubjectList.
+     */
+    Query createQueryFromSubjectList(SubjectList subjectList);
     
     /**
      * Creates a Dicom Job object based on the checked rows.

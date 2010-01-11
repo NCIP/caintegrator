@@ -21,8 +21,9 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
     private String visibility;
     
     private StudySubscription subscription;
-    private CompoundCriterion compoundCriterion;
+    private CompoundCriterion compoundCriterion = new CompoundCriterion();
     private Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
+    private transient boolean subjectListQuery = false;
     
     /**
      * @return the description
@@ -173,6 +174,20 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
      */
     public void setOrientation(ResultsOrientationEnum orientation) {
         this.orientation = orientation;
+    }
+
+    /**
+     * @return the subjectListQuery
+     */
+    public boolean isSubjectListQuery() {
+        return subjectListQuery;
+    }
+
+    /**
+     * @param subjectListQuery the subjectListQuery to set
+     */
+    public void setSubjectListQuery(boolean subjectListQuery) {
+        this.subjectListQuery = subjectListQuery;
     }
 
 }

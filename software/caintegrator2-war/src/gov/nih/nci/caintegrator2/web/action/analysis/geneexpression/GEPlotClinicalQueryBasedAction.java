@@ -92,17 +92,17 @@ import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFou
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.web.Cai2WebUtil;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableQuery;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Action dealing with Gene Expression Clinical Query Based plotting.
@@ -124,6 +124,12 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
     public void prepare() {
         super.prepare();
         setDisplayTab(CLINICAL_QUERY_TAB);
+        getForm().setDisplayableQueries(
+                Cai2WebUtil.retrieveDisplayableClinicalQueries(getStudySubscription(), getQueryManagementService()));
+        getForm().getDisplayableQueryMap().clear();
+        for (DisplayableQuery displayableQuery : getForm().getDisplayableQueries()) {
+            getForm().getDisplayableQueryMap().put(displayableQuery.getDisplayName(), displayableQuery);
+        }
         retrieveFormValues();
         refreshObjectInstances();
         populateQueries();
@@ -137,12 +143,10 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
         plotParameters.setAddPatientsNotInQueriesGroup(getForm().isAddPatientsNotInQueriesGroup());
         plotParameters.setAddControlSamplesGroup(getForm().isAddControlSamplesGroup());
         plotParameters.setControlSampleSetName(getForm().getControlSampleSetName());
-        if (!getForm().getSelectedQueryIDs().isEmpty()) {
+        if (!getForm().getSelectedQueryNames().isEmpty()) {
             plotParameters.getQueries().clear();
-            for (String id : getForm().getSelectedQueryIDs()) {
-                Query query = new Query();
-                query.setId(Long.valueOf(id));
-                plotParameters.getQueries().add(query);
+            for (String name : getForm().getSelectedQueryNames()) {
+                plotParameters.getQueries().add(getForm().getDisplayableQueryMap().get(name).getQuery());
             }
         }
     }
@@ -151,8 +155,12 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
         if (!plotParameters.getQueries().isEmpty()) {
             List <Query> newValues = new ArrayList<Query>();
             for (Query value : plotParameters.getQueries()) {
-                Query newValue = getStudyManagementService().getRefreshedEntity(value);
-                newValues.add(newValue);
+                if (!value.isSubjectListQuery()) {
+                    Query newValue = getQueryManagementService().getRefreshedEntity(value);
+                    newValues.add(newValue);
+                } else {
+                    newValues.add(value);
+                }
             }
             plotParameters.getQueries().clear();
             plotParameters.getQueries().addAll(newValues);
@@ -160,51 +168,44 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
     }
     
     private void populateQueries() {
-        initialize();
-        loadSelectedQueries();
+        initialize(getForm().getDisplayableQueries());
+        loadSelectedQueries(getForm().getDisplayableQueries());
     }
 
-    private void initialize() {
-        if (getStudySubscription() != null 
-            && getStudySubscription().getQueryCollection() != null
+    private void initialize(List<DisplayableQuery> displayableQueries) {
+        if (!displayableQueries.isEmpty()
             && getForm().getSelectedQueries().isEmpty() 
             && getForm().getUnselectedQueries().isEmpty()) {
-            getForm().setUnselectedQueries(new HashMap<String, Query>());
-            addNonGenomicQueries();
+            getForm().setUnselectedQueries(new TreeMap<String, DisplayableQuery>());
+            addQueriesToForm(displayableQueries);
         }
     }
 
-    private void addNonGenomicQueries() {
-        for (Query query 
-                : getStudySubscription().getQueryCollection()) {
-            if (!ResultTypeEnum.GENOMIC.equals(query.getResultType()) 
-                && !Cai2Util.isCompoundCriterionGenomic(query.getCompoundCriterion())) {
-                getForm().getUnselectedQueries().put(query.getId().toString(), query);
-            }
+    private void addQueriesToForm(List<DisplayableQuery> displayableQueries) {
+        for (DisplayableQuery query : displayableQueries) {
+            getForm().getUnselectedQueries().put(query.getDisplayName(), query);
         }
     }
     
-    private void loadSelectedQueries() {
+    private void loadSelectedQueries(List<DisplayableQuery> displayableQueries) {
         if (!plotParameters.getQueries().isEmpty()) {
             getForm().getSelectedQueries().clear();
             Set<Query> usedQueries = new HashSet<Query>();
             for (Query query : plotParameters.getQueries()) {
-                getForm().getSelectedQueries().put(query.getId().toString(), query);
+                DisplayableQuery displayableQuery = getForm().getDisplayableQueryMap().get(DisplayableQuery
+                        .getDisplayableQueryName(query));
+                getForm().getSelectedQueries().put(displayableQuery.getDisplayName(), displayableQuery);
                 usedQueries.add(query);
             }
-            loadAvailableQueries(usedQueries);
+            loadAvailableQueries(displayableQueries, usedQueries);
         }
     }
 
-    private void loadAvailableQueries(Set<Query> usedQueries) {
+    private void loadAvailableQueries(List<DisplayableQuery> displayableQueries, Set<Query> usedQueries) {
         getForm().getUnselectedQueries().clear();
-        for (Query query 
-                : getStudySubscription().getQueryCollection()) {
-            if (!usedQueries.contains(query)
-                && !ResultTypeEnum.GENOMIC.equals(query.getResultType()) 
-                && !Cai2Util.isCompoundCriterionGenomic(query.getCompoundCriterion())) {
-                getForm().getUnselectedQueries().
-                                                put(query.getId().toString(), query);
+        for (DisplayableQuery displayableQuery : displayableQueries) {
+            if (!usedQueries.contains(displayableQuery.getQuery())) {
+                getForm().getUnselectedQueries().put(displayableQuery.getDisplayName(), displayableQuery);
             }
         }
     }
@@ -264,7 +265,7 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
             setCreatePlotRunning(false);
         }
     }
-
+    
     /**
      * {@inheritDoc}
      */
