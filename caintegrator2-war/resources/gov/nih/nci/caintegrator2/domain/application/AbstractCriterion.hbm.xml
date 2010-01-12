@@ -93,7 +93,7 @@
         <joined-subclass name="SubjectListCriterion" table="SUBJECT_LIST_CRITERION" lazy="false">
             <key column="ID" />
             <!-- Associations mapping for the SelectedValueCriterion class -->
-            <set name="subjectListCollection" table="SUBJECT_LIST_CRITERIA_SUBJECT_LIST" lazy="true" cascade="save-update,merge" >
+            <set name="subjectListCollection" table="SUBJECT_LIST_CRITERIA_SUBJECT_LIST" lazy="true" cascade="none" >
                 <cache usage="read-write" />
                 <key column="SUBJECT_LIST_CRITERION_ID" />
                 <many-to-many class="SubjectList" column="SUBJECT_LIST_ID" />

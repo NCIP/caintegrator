@@ -592,4 +592,32 @@ public final class Cai2Util {
             : Arrays.asList(commaDelimitedString.replaceAll(" ", "").split(","));
     }
     
+    /**
+     * Goes through all criterion in a query looking for the given abstractCriterionType and returning that set.
+     * @param <T> a subclass of AbstractCriterion.
+     * @param query to retrieve criterion from.
+     * @param abstractCriterionType must be a subclass of AbstractCriterion.
+     * @return Set of all criterion matching the given class type.
+     */
+    public static <T> Set <T> getCriterionTypeFromQuery(Query query, 
+            Class<T> abstractCriterionType) {
+        Set<T> criterionSet = new HashSet<T>();
+        CompoundCriterion compoundCriterion = query.getCompoundCriterion();
+        getCriterionFromCompoundCriterion(abstractCriterionType, criterionSet, compoundCriterion);
+        return criterionSet;
+    }
+
+   @SuppressWarnings("unchecked") // converting T to the class type.
+   private static <T> void getCriterionFromCompoundCriterion(Class<T> type,
+            Set<T> criterionSet, CompoundCriterion compoundCriterion) {
+        for (AbstractCriterion criterion : compoundCriterion.getCriterionCollection()) {
+            if (criterion.getClass().equals(type)) {
+                criterionSet.add((T) criterion);
+            } else if (criterion instanceof CompoundCriterion) {
+                getCriterionFromCompoundCriterion(type, criterionSet, (CompoundCriterion) criterion);
+            }
+            
+        }
+    }
+    
 }

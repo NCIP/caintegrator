@@ -167,6 +167,13 @@ public class EditSubjectListActionTest extends AbstractSessionBasedTest {
         action.execute();
         assertFalse(action.hasFieldErrors());
         
+        action.setSelectedAction("deleteList");
+        action.setListName("List1");
+        action.execute();
+        assertTrue(workspaceService.deleteAbstractListCalled);
+        assertFalse(action.hasFieldErrors());
+        
+        
         action.setListName("List1");
         action.execute();
         assertFalse(action.hasFieldErrors());

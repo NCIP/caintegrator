@@ -161,8 +161,7 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
     public String deleteList() {
         AbstractList list = getAbstractList(listName);
         if (list != null) {
-            getStudySubscription().getListCollection().remove(list);
-            getWorkspaceService().saveUserWorkspace(getWorkspace());
+            getWorkspaceService().deleteAbstractList(list);
             return HOME_PAGE;
         } else {
             listNoLongerAvailable();
