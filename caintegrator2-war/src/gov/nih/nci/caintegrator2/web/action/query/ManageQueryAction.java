@@ -258,10 +258,13 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             displayTab = RESULTS_TAB;
             returnValue = executeQuery();
         } else if ("saveQuery".equals(selectedAction)) {
+            clearAnalysisCache();
             returnValue = saveQuery();
         } else if ("saveAsQuery".equals(selectedAction)) {
+            clearAnalysisCache();
             returnValue = saveAsQuery();
         } else if ("deleteQuery".equals(selectedAction)) {
+            clearAnalysisCache();
             returnValue = deleteQuery();
         } else if ("updateCriteria".equals(selectedAction)) {
             updateCriteria();

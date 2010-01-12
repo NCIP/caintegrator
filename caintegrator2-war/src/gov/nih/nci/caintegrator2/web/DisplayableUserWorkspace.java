@@ -558,5 +558,13 @@ public class DisplayableUserWorkspace {
     public void setCaBioPathways(List<CaBioDisplayablePathway> caBioPathways) {
         this.caBioPathways = caBioPathways;
     }
+    
+    /**
+     * Clears the analysis form cache.
+     */
+    public void clearAnalysisCache() {
+        gePlotForm.clear();
+        kmPlotForm.clear();
+    }
 
 }
