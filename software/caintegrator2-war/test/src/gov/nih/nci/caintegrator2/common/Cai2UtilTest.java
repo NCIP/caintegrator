@@ -101,10 +101,12 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.file.FileManagerImpl;
 
@@ -298,5 +300,20 @@ public class Cai2UtilTest {
     public void testCreateGeneListFromString() {
         assertTrue(Cai2Util.createListFromCommaDelimitedString(null).isEmpty());
         assertEquals(2, Cai2Util.createListFromCommaDelimitedString("egfr, brca1").size());
+    }
+    
+    @Test
+    public void testGetCriterionTypeFromQuery() {
+        Query query = new Query();
+        CompoundCriterion compoundCriterion1 = new CompoundCriterion();
+        CompoundCriterion compoundCriterion2 = new CompoundCriterion();
+        compoundCriterion1.getCriterionCollection().add(new GeneNameCriterion());
+        compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
+        compoundCriterion2.getCriterionCollection().add(new SubjectListCriterion());
+        compoundCriterion2.getCriterionCollection().add(new SubjectListCriterion());
+        query.setCompoundCriterion(compoundCriterion1);
+        assertEquals(1, Cai2Util.getCriterionTypeFromQuery(query, GeneNameCriterion.class).size());
+        assertEquals(2, Cai2Util.getCriterionTypeFromQuery(query, SubjectListCriterion.class).size());
+        assertEquals(0, Cai2Util.getCriterionTypeFromQuery(query, StringComparisonCriterion.class).size());
     }
 }

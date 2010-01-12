@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.workspace;
 
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.domain.application.AbstractList;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -121,6 +122,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public boolean createGeneListCalled;
     public boolean createSubjectListCalled;
     public boolean getRefreshedEntityCalled;
+    public boolean deleteAbstractListCalled;
     
     public void clear() {
         subscribeCalled = false;
@@ -135,6 +137,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
         createGeneListCalled = false;
         createSubjectListCalled = false;
         getRefreshedEntityCalled = false;
+        deleteAbstractListCalled = false;
     }
     public UserWorkspace getWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
@@ -244,6 +247,10 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public <T> T getRefreshedEntity(T entity) {
         getRefreshedEntityCalled = true;
         return entity;
+    }
+
+    public void deleteAbstractList(AbstractList abstractList) {
+        deleteAbstractListCalled = true;
     }
 
 }

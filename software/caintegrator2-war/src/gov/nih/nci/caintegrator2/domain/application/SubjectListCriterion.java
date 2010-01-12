@@ -33,7 +33,7 @@ public class SubjectListCriterion extends AbstractCriterion implements Cloneable
     @Override
     protected SubjectListCriterion clone() throws CloneNotSupportedException {
         SubjectListCriterion clone = (SubjectListCriterion) super.clone();
-        clone.getSubjectListCollection().addAll(cloneValueCollection());
+        clone.setSubjectListCollection(cloneValueCollection());
         return clone;
     }
     

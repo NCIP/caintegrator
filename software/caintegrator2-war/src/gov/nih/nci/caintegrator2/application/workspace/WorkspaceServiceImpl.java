@@ -90,11 +90,15 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.domain.application.AbstractList;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectIdentifier;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -366,6 +370,23 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
         }
         subjectList.getSubscription().getListCollection().add(subjectList);
         saveUserWorkspace(subjectList.getSubscription().getUserWorkspace());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void deleteAbstractList(AbstractList abstractList) {
+        if (abstractList instanceof SubjectList) {
+            for (Query query : abstractList.getSubscription().getQueryCollection()) {
+                Set<SubjectListCriterion> subjectListCriteria = 
+                    Cai2Util.getCriterionTypeFromQuery(query, SubjectListCriterion.class);
+                for (SubjectListCriterion subjectListCriterion : subjectListCriteria) {
+                    subjectListCriterion.getSubjectListCollection().remove(abstractList);
+                }
+            }
+        }
+        abstractList.getSubscription().getListCollection().remove(abstractList);
+        saveUserWorkspace(getWorkspace());
     }
 
 }

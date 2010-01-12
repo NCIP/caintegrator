@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.workspace;
 
 import gov.nih.nci.caintegrator2.application.CaIntegrator2EntityRefresher;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.domain.application.AbstractList;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
@@ -187,5 +188,11 @@ public interface WorkspaceService extends CaIntegrator2EntityRefresher {
      * @param subjects the set of subject identifier
      */
     void createSubjectList(SubjectList subjectList, Set<String>subjects);
+    
+    /**
+     * 
+     * @param abstractList to delete from the workspace.
+     */
+    void deleteAbstractList(AbstractList abstractList);
 
 }

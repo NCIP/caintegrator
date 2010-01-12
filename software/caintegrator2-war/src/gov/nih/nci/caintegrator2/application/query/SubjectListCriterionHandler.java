@@ -124,6 +124,10 @@ class SubjectListCriterionHandler extends AbstractCriterionHandler {
     @Override
     Set<ResultRow> getMatches(CaIntegrator2Dao dao, ArrayDataService arrayDataService, Query query, 
             Set<EntityTypeEnum> entityTypes) throws InvalidCriterionException {
+        if (subjectListCriterion.getSubjectListCollection().isEmpty()) {
+            throw new InvalidCriterionException(
+                    "Must supply at least one SubjectList to use a SubjectListCriterion in a query.");
+        }
         Study study = query.getSubscription().getStudy();
         Set<ResultRow> resultRows = new HashSet<ResultRow>();
         ResultRowFactory rowFactory = new ResultRowFactory(entityTypes);
