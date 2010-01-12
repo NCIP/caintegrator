@@ -117,8 +117,10 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
         if (EDIT_ACTION.equals(selectedAction)) {
             return editList();
         } else if (DELETE_ACTION.equals(selectedAction)) {
+            clearAnalysisCache();
             return deleteList();
         } else if (RENAME_ACTION.equals(selectedAction)) {
+            clearAnalysisCache();
             return renameList();
         }
         return SUCCESS;

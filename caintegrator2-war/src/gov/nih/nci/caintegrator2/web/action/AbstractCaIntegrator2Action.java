@@ -463,6 +463,15 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
             return null;
         }
     }
+    
+    /**
+     * Clears the analysis form cache.
+     */
+    protected void clearAnalysisCache() {
+        if (getDisplayableWorkspace() != null) {
+            getDisplayableWorkspace().clearAnalysisCache();
+        }
+    }
 
     /**
      * @return a Map of annotation types
