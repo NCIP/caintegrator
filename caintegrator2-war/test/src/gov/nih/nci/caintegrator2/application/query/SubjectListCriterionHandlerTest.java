@@ -149,6 +149,14 @@ public class SubjectListCriterionHandlerTest {
         assertNull(row.getSampleAcquisition());
     }
     
+    @Test(expected = InvalidCriterionException.class)
+    public void testGetMatchesInvalidCriterion() throws InvalidCriterionException {
+        SubjectListCriterion criterion = new SubjectListCriterion();
+        SubjectListCriterionHandler handler = SubjectListCriterionHandler.create(criterion);
+        
+        handler.getMatches(daoStub, null, query, new HashSet<EntityTypeEnum>());
+    }
+    
     @Test
     public void testIsReporterMatchHandler() {
         assertFalse(SubjectListCriterionHandler.create(null).isReporterMatchHandler());
