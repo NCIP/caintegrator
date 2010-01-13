@@ -87,8 +87,8 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * Used for Struts representation of the currently configured analysis method.
@@ -101,7 +101,7 @@ public class GisticAnalysisForm {
     private String excludeControlSampleSetName;
     
     // JSP Select List Options
-    private Map<String, String> clinicalQueries = new HashMap<String, String>();
+    private final SortedMap<String, DisplayableQuery> clinicalQueries = new TreeMap<String, DisplayableQuery>();
 
 
     /**
@@ -135,15 +135,8 @@ public class GisticAnalysisForm {
     /**
      * @return the unselectedQueries
      */
-    public Map<String, String> getClinicalQueries() {
+    public SortedMap<String, DisplayableQuery> getClinicalQueries() {
         return clinicalQueries;
-    }
-
-    /**
-     * @param clinicalQueries the clinicalQueries to set
-     */
-    public void setClinicalQueries(Map<String, String> clinicalQueries) {
-        this.clinicalQueries = clinicalQueries;
     }
 
     /**

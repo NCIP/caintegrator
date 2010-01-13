@@ -248,7 +248,7 @@ public final class GenePatternUtil {
         GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
         genomicData.excludeSampleSet(excludedControlSampleSet);
         if (genomicData.getRowCollection().isEmpty()) {
-            throw new InvalidCriterionException("No data found from selection.");
+            throw new InvalidCriterionException("Unable to create GCT file: No data found from selection.");
         }
         return new GctDataset(genomicData);
     }

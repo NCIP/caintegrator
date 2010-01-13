@@ -90,18 +90,16 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJ
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.web.Cai2WebUtil;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator2.web.ajax.IPersistedAnalysisJobAjaxUpdater;
 import gridextensions.PreprocessDatasetParameterSet;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -176,9 +174,7 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
     }
     
     private void loadDefaultValues() {
-        getPrincipalComponentAnalysisForm().setQueries(new HashMap<String, String>());
-        
-        addNonGenomicQueries();
+        populateClinicalQueriesAndLists();
         getPrincipalComponentAnalysisForm().setPreprocessParameters(new PreprocessDatasetParameters());
         getPrincipalComponentAnalysisForm().setPcaParameters(new PCAParameters());
 
@@ -189,13 +185,11 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
         getPcaParameters().setClusterBy(getPcaParameters().getClusterByOptions().get(1));
     }
 
-    private void addNonGenomicQueries() {
-        for (Query query 
-                : getStudySubscription().getQueryCollection()) {
-            if (!ResultTypeEnum.GENOMIC.equals(query.getResultType()) 
-                && !Cai2Util.isCompoundCriterionGenomic(query.getCompoundCriterion())) {
-                getPrincipalComponentAnalysisForm().getQueries().put(query.getId().toString(), query.getName());
-            }
+    private void populateClinicalQueriesAndLists() {
+        getPrincipalComponentAnalysisForm().getQueries().clear();
+        for (DisplayableQuery query 
+                : Cai2WebUtil.retrieveDisplayableQueries(getStudySubscription(), getQueryManagementService(), false)) {
+            getPrincipalComponentAnalysisForm().getQueries().put(query.getDisplayName(), query);
         }
     }
     
@@ -233,8 +227,8 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
     private void loadQueries() {
         getPreprocessDatasetParameters().getClinicalQueries().clear();
         getPcaParameters().getClinicalQueries().clear();
-        if (!StringUtils.isEmpty(getPrincipalComponentAnalysisForm().getSelectedQueryID())) {
-            Query currentQuery = getQuery(getPrincipalComponentAnalysisForm().getSelectedQueryID());
+        if (!StringUtils.isEmpty(getPrincipalComponentAnalysisForm().getSelectedQueryName())) {
+            Query currentQuery = getQuery(getPrincipalComponentAnalysisForm().getSelectedQueryName());
             getPcaParameters().getClinicalQueries().add(currentQuery);
             getPreprocessDatasetParameters().getClinicalQueries().add(currentQuery);
         }
@@ -250,14 +244,18 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
         }
     }
     
-    private Query getQuery(String id) {
-        for (Query query : getStudySubscription().getQueryCollection()) {
-            if (id.equals(query.getId().toString())) {
-                HibernateUtil.loadCollection(query);
-                return query;
-            }
+    private Query getQuery(String displayableQueryName) {
+        DisplayableQuery displayableQuery = getPrincipalComponentAnalysisForm().getQueries().
+            get(displayableQueryName);
+        if (displayableQuery == null) {
+            return null;
         }
-        return null;
+        Query query = displayableQuery.getQuery();
+        if (!query.isSubjectListQuery()) {
+            query = getQueryManagementService().getRefreshedEntity(query);
+            HibernateUtil.loadCollection(query);
+        }
+        return query;
     }
 
     /**

@@ -118,11 +118,12 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
     
     private ComparativeMarkerSelectionAnalysisAction action;
     private QueryManagementServiceStubComparativeMarker queryManagementService;
+    private StudySubscription subscription;
 
     @Before
     public void setUp() {
         super.setUp();
-        StudySubscription subscription = new StudySubscription();
+        subscription = new StudySubscription();
         queryManagementService = new QueryManagementServiceStubComparativeMarker();
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -168,8 +169,8 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
-        action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().add("1");
-        action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().add("2");
+        action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().add("[Q]-query1");
+        action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().add("[Q]-query2");
         action.validate();
         assertFalse(action.hasErrors());
     }
@@ -181,8 +182,8 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
         assertEquals("status", action.execute());
         testOpen();
         action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.EXECUTE_ACTION);
-        action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().add("1");
-        action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().add("2");
+        action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().add("[Q]-query1");
+        action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().add("[Q]-query2");
         queryManagementService.setupInvalidQueryResult();
         assertEquals("input", action.execute());
         testOpen();
