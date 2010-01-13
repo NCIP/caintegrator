@@ -92,25 +92,23 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticRefgeneF
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.web.Cai2WebUtil;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator2.web.ajax.IPersistedAnalysisJobAjaxUpdater;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
@@ -225,19 +223,16 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     }
     
     private void loadDefaultValues() {
-        getGisticAnalysisForm().setClinicalQueries(new HashMap<String, String>());
-        addClinnicalQueries();
+        populateClinicalQueriesAndLists();
         getGisticAnalysisForm().setGisticParameters(new GisticParameters());
         setWebServiceUrl(getConfigurationHelper().getString(ConfigurationParameter.GENE_PATTERN_URL));
     }
 
-    private void addClinnicalQueries() {
-        for (Query query 
-                : getStudySubscription().getQueryCollection()) {
-            if (ResultTypeEnum.CLINICAL.equals(query.getResultType()) 
-                && !Cai2Util.isCompoundCriterionGenomic(query.getCompoundCriterion())) {
-                getGisticAnalysisForm().getClinicalQueries().put(query.getId().toString(), query.getName());
-            }
+    private void populateClinicalQueriesAndLists() {
+        getGisticAnalysisForm().getClinicalQueries().clear();
+        for (DisplayableQuery query 
+                : Cai2WebUtil.retrieveDisplayableQueries(getStudySubscription(), getQueryManagementService(), false)) {
+            getGisticAnalysisForm().getClinicalQueries().put(query.getDisplayName(), query);
         }
     }
     
@@ -337,15 +332,18 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
         }
     }
     
-    private Query getQuery(String id) {
-        for (Query query 
-                : getStudySubscription().getQueryCollection()) {
-            if (id.equals(query.getId().toString())) {
-                HibernateUtil.loadCollection(query);
-                return query;
-            }
+    private Query getQuery(String displayableQueryName) {
+        DisplayableQuery displayableQuery = getGisticAnalysisForm().getClinicalQueries().
+            get(displayableQueryName);
+        if (displayableQuery == null) {
+            return null;
         }
-        return null;
+        Query query = displayableQuery.getQuery();
+        if (!query.isSubjectListQuery()) {
+            query = getQueryManagementService().getRefreshedEntity(query);
+            HibernateUtil.loadCollection(query);
+        }
+        return query;
     }
 
     /**

@@ -118,11 +118,12 @@ public class PrincipalComponentAnalysisActionTest extends AbstractSessionBasedTe
     
     private PrincipalComponentAnalysisAction action;
     private QueryManagementServiceStubComparativeMarker queryManagementService;
-
+    private StudySubscription subscription;
+    
     @Before
     public void setUp() {
         super.setUp();
-        StudySubscription subscription = new StudySubscription();
+        subscription = new StudySubscription();
         queryManagementService = new QueryManagementServiceStubComparativeMarker();
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -168,7 +169,7 @@ public class PrincipalComponentAnalysisActionTest extends AbstractSessionBasedTe
         action.validate();
         assertFalse(action.hasErrors());
         action.clearErrorsAndMessages();
-        action.getPrincipalComponentAnalysisForm().setSelectedQueryID("1");
+        action.getPrincipalComponentAnalysisForm().setSelectedQueryName("[Q]-query1");
         action.validate();
         assertFalse(action.hasErrors());
     }

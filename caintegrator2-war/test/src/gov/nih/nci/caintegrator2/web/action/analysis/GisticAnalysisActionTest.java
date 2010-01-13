@@ -125,11 +125,12 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
     
     private GisticAnalysisAction action;
     private QueryManagementServiceStubGistic queryManagementService;
-
+    private StudySubscription subscription;
+    
     @Before
     public void setUp() {
         super.setUp();
-        StudySubscription subscription = new StudySubscription();
+        subscription = new StudySubscription();
         queryManagementService = new QueryManagementServiceStubGistic();
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -201,7 +202,7 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
         testOpen();
         queryManagementService.setupValidQueryResult();
         action.setSelectedAction(GisticAnalysisAction.EXECUTE_ACTION);
-        action.getGisticAnalysisForm().setSelectedQuery("1");
+        action.getGisticAnalysisForm().setSelectedQuery("[Q]-query1");
         assertEquals("status", action.execute());
     }
     

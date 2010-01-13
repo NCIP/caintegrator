@@ -89,8 +89,8 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * Used for Struts representation of the currently configured analysis method.
@@ -102,12 +102,11 @@ public class PrincipalComponentAnalysisForm {
     
     private final ServerConnectionProfile server = new ServerConnectionProfile();
     private boolean usePreprocessDataset = false;
-
-    private String selectedQueryID;
+    private String selectedQueryName;
     private String excludeControlSampleSetName;
     
     // JSP Select List Options
-    private Map<String, String> queries = new HashMap<String, String>();
+    private final SortedMap<String, DisplayableQuery> queries = new TreeMap<String, DisplayableQuery>();
 
     /**
      * 
@@ -118,31 +117,17 @@ public class PrincipalComponentAnalysisForm {
     }
 
     /**
-     * @return the selectedQueryIDs
+     * @return the selectedQueryName
      */
-    public String getSelectedQueryID() {
-        return selectedQueryID;
+    public String getSelectedQueryName() {
+        return selectedQueryName;
     }
 
     /**
-     * @param selectedQueryID the selectedQueryID to set
+     * @param selectedQueryName the selectedQueryName to set
      */
-    public void setSelectedQueryID(String selectedQueryID) {
-        this.selectedQueryID = selectedQueryID;
-    }
-
-    /**
-     * @return the queries
-     */
-    public Map<String, String> getQueries() {
-        return queries;
-    }
-
-    /**
-     * @param queries the queries to set
-     */
-    public void setQueries(Map<String, String> queries) {
-        this.queries = queries;
+    public void setSelectedQueryName(String selectedQueryName) {
+        this.selectedQueryName = selectedQueryName;
     }
 
     /**
@@ -199,5 +184,12 @@ public class PrincipalComponentAnalysisForm {
      */
     public void setExcludeControlSampleSetName(String excludeControlSampleSetName) {
         this.excludeControlSampleSetName = excludeControlSampleSetName;
+    }
+
+    /**
+     * @return the queries
+     */
+    public SortedMap<String, DisplayableQuery> getQueries() {
+        return queries;
     }
 }

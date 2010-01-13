@@ -23,7 +23,7 @@
                     <s:div cssStyle="text-align:left; width: 550px; margin-left: auto; margin-right: auto;">
                     <span style="font-weight:bold;">Job Name</span> - Please enter a job name.<br>
                     <span style="font-weight:bold;">GISTIC Service Type</span> -  Select whether to use the GISTIC web service or grid service and provide or select the service address. If the web service is selected, authentication information is also required<br>
-                    <span style="font-weight:bold;">Clinical Query</span> - (Optional) Select a saved Clinical query to specify which samples will be processed.<br>
+                    <span style="font-weight:bold;">Clinical Query or List</span> - (Optional) Select a saved Clinical query or list to specify which samples will be processed.<br>
                     <span style="font-weight:bold;">Exclude Sample Control Set</span> - (Optional) Select a Control Sample Set to be excluded from the Clinical Query.<br>
                     </s:div>
                 </div>
@@ -56,13 +56,13 @@
             <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin: 1em 0 0 0px; height:110px; padding-bottom: 0;">
                 <div class="wwlbl">&nbsp;</div >
                 <div class="wwctrl" style="width: 300px; white-space:normal; text-align: left; padding-top: 1em; padding-bottom: 1em;">For the
-                    Clinical Query parameter below, choose either "All Samples" or a clinical query.  If "All Samples" is selected, then all samples will be used.  If a clinical query is selected, only those samples which map to the subjects in the clinical query results will be used.  The clinical queries in this list have been previously saved by the user.  Control samples can be excluded from this processing by selecting a control set name in the Exclude Sample Control Set dropdown.
+                    Clinical Query / List parameter below, choose either "All Samples" or a clinical query or list.  If "All Samples" is selected, then all samples will be used.  If a clinical query or list is selected, only those samples which map to the subjects in the clinical query/list results will be used.  The clinical queries and lists in this list have been previously saved by the user.  Control samples can be excluded from this processing by selecting a control set name in the Exclude Sample Control Set dropdown.
                 </div>
             </s:div>
             <br />
             <s:select name="gisticAnalysisForm.selectedQuery"
                 headerKey="" headerValue="All Samples"
-                list="gisticAnalysisForm.clinicalQueries" label="Clinical Query" />
+                list="gisticAnalysisForm.clinicalQueries" listValue="value.displayName" label="Clinical Queries and Lists" />
             <br />
             <s:select name="gisticAnalysisForm.excludeControlSampleSetName"
                 headerKey="" headerValue="None"
