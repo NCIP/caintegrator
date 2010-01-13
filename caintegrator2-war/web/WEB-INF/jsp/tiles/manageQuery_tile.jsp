@@ -5,6 +5,12 @@
 
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
+
+<link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/dhtmlwindow.css" />
+<link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/dhtmlmodal.css" />
+
+<script type="text/javascript" src="/caintegrator2/common/js/dhtmlwindow.js"></script> 
+<script type="text/javascript" src="/caintegrator2/common/js/dhtmlmodal.js"></script>
 <script language="javascript">
 
     function setClinicalAnnotations(onOff){
@@ -89,11 +95,18 @@
     }
     
     function saveSubjectList() {
-        var name = prompt("Please type in the Subject List name:", "");
-        var description = prompt("Please type in the Subject List description:", "");
-        document.manageQueryForm.subjectListName.value = name;
-        document.manageQueryForm.subjectListDescription.value = description;
-        submitForm("saveSubjectList");
+        //Open a modal window populated with the contents of a hidden DIV.
+        slwindow = dhtmlmodal.open('Subject List', 'div', 'subjectlistdiv', 'Subject List Info',
+            'width=390px,height=130px,center=1,resize=0,scrolling=1')
+
+        slwindow.onclose=function(){
+            var name = document.getElementById("slName").value;
+            if (name == "*cancel*") return true;
+            document.manageQueryForm.subjectListName.value = name;
+            document.manageQueryForm.subjectListDescription.value = document.getElementById("slDescription").value;
+            submitForm("saveSubjectList");
+            return true;
+        }
     }
     
     function submitForm(selectAction) {
@@ -163,5 +176,20 @@
         <!--/Tab Box-->
            
 </div>
+
+<s:div id="subjectlistdiv" cssStyle="display:none">
+    <h4>Please enter the name and description</h4>
+    <s:form id="myform">
+        <s:textfield id="slName" label="Name" name="T1" size="30" />
+        <s:textfield id="slDescription" label="Description" name="T2" size="50" />
+        <tr>
+            <td></td>
+            <td><br>
+                <button type="button" onClick="slwindow.hide()">Save</button>
+                <button type="button" onClick="document.myform.slName.value='*cancel*'; slwindow.hide()">Cancel</button>
+            </td>
+        </tr>
+    </s:form>
+</s:div>
 
 <div class="clear"><br /></div>
