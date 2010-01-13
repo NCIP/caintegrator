@@ -4,7 +4,7 @@ background-color: #03277C;
 
 #interVeil{ /*CSS for veil that covers entire page while modal window is visible*/
 position: absolute;
-background: black url(blackdot.gif);
+background: black url(images/dhtml/blackdot.gif);
 width: 10px;
 left: 0;
 top: 0;

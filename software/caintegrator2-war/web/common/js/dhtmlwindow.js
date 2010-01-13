@@ -8,7 +8,7 @@
 // -------------------------------------------------------------------
 
 var dhtmlwindow={
-imagefiles:['windowfiles/min.gif', 'windowfiles/close.gif', 'windowfiles/restore.gif', 'windowfiles/resize.gif'], //Path to 4 images used by script, in that order
+imagefiles:['images/dhtml/min.gif', 'images/dhtml/close.gif', 'images/dhtml/restore.gif', 'images/dhtml/resize.gif'], //Path to 4 images used by script, in that order
 ajaxbustcache: true, //Bust caching when fetching a file via Ajax?
 ajaxloadinghtml: '<b>Loading Page. Please wait...</b>', //HTML to show while window fetches Ajax Content?
 
