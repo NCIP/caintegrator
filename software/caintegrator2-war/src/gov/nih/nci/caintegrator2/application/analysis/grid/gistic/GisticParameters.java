@@ -324,7 +324,7 @@ public class GisticParameters {
             sb.append("Excluded control samples: ").append(excludeControlSampleSet.getName()).append(nl);
         }
         if (clinicalQuery != null) {
-            sb.append("Input query for classification: ").append(clinicalQuery.getName()).append(nl);
+            sb.append("Input query/list for classification: ").append(clinicalQuery.getName()).append(nl);
         }
         if (server != null) {
             sb.append(server.toString()).append(nl);

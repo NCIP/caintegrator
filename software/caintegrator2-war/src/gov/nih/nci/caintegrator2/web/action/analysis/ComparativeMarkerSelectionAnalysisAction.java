@@ -91,21 +91,19 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.Com
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.web.Cai2WebUtil;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator2.web.ajax.IPersistedAnalysisJobAjaxUpdater;
 import gridextensions.ComparativeMarkerSelectionParameterSet;
 import gridextensions.PreprocessDatasetParameterSet;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -168,8 +166,8 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
         if (StringUtils.isBlank(getCurrentComparativeMarkerSelectionAnalysisJob().getName())) {
             addFieldError("currentComparativeMarkerSelectionAnalysisJob.name", "Job name required.");
         }
-        if (getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().size() != 2) {
-            addFieldError("comparativeMarkerSelectionAnalysisForm.unselectedQueryIDs", "2 Queries required.");
+        if (getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().size() != 2) {
+            addFieldError("comparativeMarkerSelectionAnalysisForm.unselectedQueryNames", "2 Queries/Lists required.");
         }
     }
     
@@ -183,9 +181,7 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
     }
     
     private void loadDefaultValues() {
-        getComparativeMarkerSelectionAnalysisForm().setUnselectedQueries(new HashMap<String, Query>());
-        
-        addNonGenomicQueries();
+        populateClinicalQueriesAndLists();
         getComparativeMarkerSelectionAnalysisForm().setPreprocessDatasetparameters(new PreprocessDatasetParameters());
         getComparativeMarkerSelectionAnalysisForm().setComparativeMarkerSelectionParameters(
                 new ComparativeMarkerSelectionParameters());
@@ -195,13 +191,17 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
         getComparativeMarkerSelectionParameters().setClassificationFileName(fileName + ".cls");
     }
 
-    private void addNonGenomicQueries() {
-        for (Query query 
-                : getStudySubscription().getQueryCollection()) {
-            if (!ResultTypeEnum.GENOMIC.equals(query.getResultType()) 
-                && !Cai2Util.isCompoundCriterionGenomic(query.getCompoundCriterion())) {
-                getComparativeMarkerSelectionAnalysisForm().getUnselectedQueries().put(query.getId().toString(), query);
-            }
+    private void populateClinicalQueriesAndLists() {
+        getComparativeMarkerSelectionAnalysisForm().setDisplayableQueries(
+                Cai2WebUtil.retrieveDisplayableQueries(getStudySubscription(), getQueryManagementService(), false));
+        getComparativeMarkerSelectionAnalysisForm().getDisplayableQueryMap().clear();
+        for (DisplayableQuery displayableQuery : getComparativeMarkerSelectionAnalysisForm().getDisplayableQueries()) {
+            getComparativeMarkerSelectionAnalysisForm().getDisplayableQueryMap().put(displayableQuery.getDisplayName(),
+                    displayableQuery);
+        }
+        getComparativeMarkerSelectionAnalysisForm().getUnselectedQueries().clear();
+        for (DisplayableQuery query : getComparativeMarkerSelectionAnalysisForm().getDisplayableQueries()) {
+            getComparativeMarkerSelectionAnalysisForm().getUnselectedQueries().put(query.getDisplayName(), query);
         }
     }
     
@@ -240,11 +240,11 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
     }
     
     private boolean loadQueries() throws InvalidCriterionException {
-        if (!getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().isEmpty()) {
+        if (!getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().isEmpty()) {
             getPreprocessDatasetParameters().getClinicalQueries().clear();
             getComparativeMarkerSelectionParameters().getClinicalQueries().clear();
-            for (String id : getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs()) {
-                Query currentQuery = getQuery(id);
+            for (String name : getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames()) {
+                Query currentQuery = getQuery(name);
                 if (!validateQuerySampleCount(currentQuery)) {
                     return false;
                 }
@@ -266,22 +266,26 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
                 break;
             }
         }
+        return verifySampleCounts(currentQuery, numSamples);
+    }
+
+    private boolean verifySampleCounts(Query currentQuery, int numSamples) {
         if (numSamples < 2) {
-            addActionError("Query " + currentQuery.getName() + " is invalid because it contains less than 2 samples.");
+            addActionError(currentQuery.isSubjectListQuery() ? "Subject List" : "Query " 
+                + currentQuery.getName() + " is invalid because it contains less than 2 samples.");
             return false;
         }
         return true;
     }
     
-    private Query getQuery(String id) {
-        for (Query query 
-                : getStudySubscription().getQueryCollection()) {
-            if (id.equals(query.getId().toString())) {
-                HibernateUtil.loadCollection(query);
-                return query;
-            }
+    private Query getQuery(String displayableQueryName) {
+        Query query = getComparativeMarkerSelectionAnalysisForm().getDisplayableQueryMap().
+            get(displayableQueryName).getQuery();
+        if (!query.isSubjectListQuery()) {
+            query = getQueryManagementService().getRefreshedEntity(query);
+            HibernateUtil.loadCollection(query);
         }
-        return null;
+        return query;
     }
 
     /**

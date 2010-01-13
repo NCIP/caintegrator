@@ -235,7 +235,7 @@ public class PCAParameters {
                 queryNames[count] = query.getName();
                 count++;
             }
-            sb.append("Input queries for classification: ").append(
+            sb.append("Input queries/lists for classification: ").append(
                     StringUtils.arrayToDelimitedString(queryNames, ", ")).append(nl);
         }
         if (server != null) {
