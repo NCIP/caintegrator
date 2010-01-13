@@ -222,7 +222,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     }
     
     private void validateSaveSubjectList() {
-        if (getSubjectListName().length() == 0) {
+        if (StringUtils.isEmpty(getSubjectListName())) {
             addActionError("Subject list name is empty");
         } else if (getStudySubscription().getSubjectListNames().contains(getSubjectListName())) {
             addActionError("There is already a Subject List named " + getSubjectListName() + ".");
