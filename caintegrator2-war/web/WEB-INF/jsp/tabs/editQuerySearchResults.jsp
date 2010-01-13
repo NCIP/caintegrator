@@ -131,7 +131,6 @@
                             <td><s:property value="value" /></td>
                         </s:else>
                     </s:iterator>
-                    </tr>
                 </s:iterator>
             </s:else>
         </table>    
