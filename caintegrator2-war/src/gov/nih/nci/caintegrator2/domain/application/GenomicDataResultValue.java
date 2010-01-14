@@ -9,6 +9,8 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 public class GenomicDataResultValue extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
+    private static final String NEGATIVE_COLOR_CODE_BLUE = "#0066CC";
+    private static final String POSITIVE_COLOR_CODE_RED = "#CC3333";
     
     private Float value;
     private GenomicDataResultColumn column;
@@ -54,6 +56,14 @@ public class GenomicDataResultValue extends AbstractCaIntegrator2Object {
      */
     public void setMeetsCriterion(boolean meetsCriterion) {
         this.meetsCriterion = meetsCriterion;
+    }
+    
+    /**
+     * For the JSP to get the color to highlight based on the value.
+     * @return highlight color.
+     */
+    public String getHighlightColor() {
+        return value >= 0 ? POSITIVE_COLOR_CODE_RED : NEGATIVE_COLOR_CODE_BLUE;
     }
 
 }
