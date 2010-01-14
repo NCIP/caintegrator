@@ -135,7 +135,7 @@ public class PreprocessDatasetParameters {
         datasetParameters.setMaxSigmaBinning(1);
         datasetParameters.setProbabilityThreshold(DEFAULT_PROBABILITY_THRESHOLD);
         datasetParameters.setNumExclude(0);
-        datasetParameters.setLogBaseTwo(false);
+        datasetParameters.setLogBaseTwo(true);
         datasetParameters.setNumberOfColumnsAboveThreshold(1);
     }
     
