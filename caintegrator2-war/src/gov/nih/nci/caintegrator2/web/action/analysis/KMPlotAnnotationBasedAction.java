@@ -301,9 +301,10 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
         setPermissibleValuesNeedUpdate(false);
         if (!isCreatePlotRunning()) {
             setCreatePlotRunning(true);
-            loadAnnotationDefinitions();
-            loadPermissibleValues();
+            clearAnnotationBasedKmPlot();
             if (kmPlotParameters.validate()) {
+                loadAnnotationDefinitions();
+                loadPermissibleValues();
                 kmPlotParameters.setEntityType(EntityTypeEnum.getByValue(getForm().getAnnotationTypeSelection()));
                 KMPlot plot;
                 try {

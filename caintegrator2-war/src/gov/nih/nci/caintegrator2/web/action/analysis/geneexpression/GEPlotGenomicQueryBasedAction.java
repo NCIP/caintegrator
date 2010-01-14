@@ -194,6 +194,7 @@ public class GEPlotGenomicQueryBasedAction extends AbstractGeneExpressionAction 
     protected void runFirstCreatePlotThread() {
         if (!isCreatePlotRunning()) {
             setCreatePlotRunning(true);
+            clearGenomicQueryBasedGePlot();
             if (getPlotParameters().validate()) {
                 try {
                     GeneExpressionPlotGroup plots = getAnalysisService().

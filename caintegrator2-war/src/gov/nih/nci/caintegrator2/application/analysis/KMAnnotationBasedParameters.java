@@ -109,12 +109,13 @@ public class KMAnnotationBasedParameters extends AbstractKMParameters {
     public boolean validate() {
         getErrorMessages().clear();
         boolean isValid = true;
-        if (getSelectedAnnotation().getId() == null) {
-            getErrorMessages().add("Selected Annotation is null, please select a valid Selected Annotation.");
+        if (getSelectedAnnotation() == null 
+             || getSelectedAnnotation().getId() == null) {
+            getErrorMessages().add("Selected Annotation is null, please select a valid annotation.");
             isValid = false;
         }
         if (getSelectedValues().size() < 2) {
-            getErrorMessages().add("Must select at least 2 grouping values");
+            getErrorMessages().add("Must select at least 2 Patient Groups");
             isValid = false;
         }
         isValid = validateSurvivalValueDefinition(isValid);
