@@ -100,7 +100,7 @@
             <s:div cssClass="wwgrp">
                 <s:submit value="Perform Analysis" align="center"
                     onclick="this.form.selectedAction.value = 'execute'; return true;" theme="simple" />
-                    <s:submit value="Cancel" action="cancelGenePatternAnalysis" theme="simple"/>
+                <s:submit value="Cancel" action="cancelPrincipalComponentAnalysis" theme="simple"/>
             </s:div>
         </s:form>
             
