@@ -136,6 +136,14 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
     private String selectedAction = OPEN_ACTION;
 
     /**
+     * Cancel action.
+     * @return struts result.
+     */
+    public String cancel() {
+       return SUCCESS; 
+    }
+    
+    /**
      * {@inheritDoc}
      */
     public String execute() {

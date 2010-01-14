@@ -130,6 +130,14 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
     private QueryManagementService queryManagementService;
     private IPersistedAnalysisJobAjaxUpdater ajaxUpdater;
     private String selectedAction = OPEN_ACTION;
+    
+    /**
+     * Cancel action.
+     * @return struts result.
+     */
+    public String cancel() {
+       return SUCCESS; 
+    }
 
     /**
      * {@inheritDoc}
