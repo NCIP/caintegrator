@@ -631,6 +631,12 @@
             <result name="input" type="tiles">comparativeMarkerSelectionAnalysis</result>
         </action>
         
+        <action name="cancelComparativeMarkerSelectionAnalysis" method="cancel" class="comparativeMarkerSelectionAnalysisAction">
+            <result type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
+        </action>
+        
         <action name="deleteGenePatternAnalysis" class="genePatternAnalysisAction" method="deleteAnalysisJob">
             <result type="tiles">genePatternAnalysisStatus</result>
         </action>
@@ -646,6 +652,12 @@
                 <param name="actionName">genePatternAnalysisStatus</param>
             </result>
             <result name="input" type="tiles">principalComponentAnalysis</result>
+        </action>
+        
+        <action name="cancelPrincipalComponentAnalysis" method="cancel" class="principalComponentAnalysisAction">
+            <result type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
         </action>
         
         <action name="analysisJobDownload" class="downloadAnalysisResultsAction">

@@ -85,9 +85,9 @@
                 <td></td>
                 <td> 
                 <br>
-                <s:submit value="Perform Analysis" align="center"
-                    onclick="this.form.selectedAction.value = 'execute'; return true;" theme="simple" />
-                    <s:submit value="Cancel" action="cancelGenePatternAnalysis" theme="simple"/>
+                    <s:submit value="Perform Analysis" align="center"
+                        onclick="this.form.selectedAction.value = 'execute'; return true;" theme="simple" />
+                    <s:submit value="Cancel" action="cancelComparativeMarkerSelectionAnalysis" theme="simple"/>
                 </td>
             </tr>
 
