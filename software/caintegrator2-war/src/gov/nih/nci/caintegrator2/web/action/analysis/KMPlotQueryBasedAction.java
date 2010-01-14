@@ -230,6 +230,7 @@ public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
     protected void runFirstCreatePlotThread() {
         if (!isCreatePlotRunning()) {
             setCreatePlotRunning(true);
+            clearQueryBasedKmPlot();
             if (kmPlotParameters.validate()) {
                 try {
                     KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);

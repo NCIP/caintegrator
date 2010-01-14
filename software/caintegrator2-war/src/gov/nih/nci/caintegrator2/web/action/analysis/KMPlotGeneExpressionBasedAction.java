@@ -162,11 +162,15 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
      */
     public String reset() {
         if (isResetSelected()) {
-            SessionHelper.setKmPlot(PlotTypeEnum.GENE_EXPRESSION, null);
+            clearGeneExpressionBasedKmPlot();
             getForm().clear();
             kmPlotParameters.clear();
         }
         return SUCCESS;
+    }
+
+    private void clearGeneExpressionBasedKmPlot() {
+        SessionHelper.setKmPlot(PlotTypeEnum.GENE_EXPRESSION, null);
     }
     
 
@@ -177,12 +181,12 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
     protected void runFirstCreatePlotThread() {
         if (!isCreatePlotRunning()) {
             setCreatePlotRunning(true);
+            clearGeneExpressionBasedKmPlot();
             if (kmPlotParameters.validate()) {
                 try {
                     KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
                     SessionHelper.setKmPlot(PlotTypeEnum.GENE_EXPRESSION, plot);
                 } catch (Exception e) {
-                    SessionHelper.setKmPlot(PlotTypeEnum.GENE_EXPRESSION, null);
                     addActionError(e.getMessage());
                 }
             }

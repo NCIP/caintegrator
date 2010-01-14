@@ -118,11 +118,11 @@ public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
             isValid = false;
         }
         if (getSelectedAnnotation() == null) {
-            getErrorMessages().add("Selected Annotation is null, please select a valid Selected Annotation.");
+            getErrorMessages().add("Selected Annotation is null, please select a valid annotation.");
             isValid = false;
         }
         if (getSelectedValues().size() < 1) {
-            getErrorMessages().add("Must select at least 1 grouping value");
+            getErrorMessages().add("Must select at least 1 sample group.");
             isValid = false;
         }
         return isValid;
