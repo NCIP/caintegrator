@@ -102,6 +102,7 @@ import com.opensymphony.xwork2.ValidationAware;
 public abstract class AbstractAnalysisFormParameter {
 
     private static final String FILE_PARAMETER_SUFFIX_REGEX = "\\.filename";
+    private static final String LOG_BASE_TWO = "log.base.two";
     private final GenePatternAnalysisForm form;
     private AbstractParameterValue parameterValue;
 
@@ -182,6 +183,9 @@ public abstract class AbstractAnalysisFormParameter {
 
     static AbstractAnalysisFormParameter create(GenePatternAnalysisForm form, AbstractParameterValue parameterValue) {
         if (!parameterValue.getParameter().getChoiceKeys().isEmpty()) {
+            if (LOG_BASE_TWO.equals(parameterValue.getParameter().getName())) {
+                return new SelectListFormParameter(form, getYesParameterValue(parameterValue));
+            }
             return new SelectListFormParameter(form, parameterValue);
         } else if (parameterValue.getParameter().getType().equals(AnalysisParameterType.GENOMIC_DATA)) {
             return new GenomicDataFormParameter(form, parameterValue);
@@ -190,6 +194,10 @@ public abstract class AbstractAnalysisFormParameter {
         } else {
             return new TextFieldFormParameter(form, parameterValue);
         }
+    }
+    
+    private static AbstractParameterValue getYesParameterValue(AbstractParameterValue parameterValue) {
+        return parameterValue.getParameter().getChoice("yes");
     }
 
     GenePatternAnalysisForm getForm() {

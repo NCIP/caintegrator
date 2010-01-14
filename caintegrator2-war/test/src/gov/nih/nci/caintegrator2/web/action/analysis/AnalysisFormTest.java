@@ -253,5 +253,23 @@ public class AnalysisFormTest {
         form.setUrl("http://genepattern.broadinstitute.org/gp/services/Analysis?");
         assertEquals("http://genepattern.broadinstitute.org/gp/getTaskDoc.jsp", form.getAnalysisMethodInformationUrl());
     }
+    
+    @Test
+    public void testLogBasTwoParameter() {
+        AnalysisParameter parameter = new AnalysisParameter();
+        parameter.setType(AnalysisParameterType.STRING);
+        parameter.setName("log.base.two");
+        parameter.addChoice("no", "false");
+        parameter.addChoice("yes", "true");
+        parameter.setDefaultValue(parameter.getChoice("false"));
+
+        StringParameterValue parameterValue = new StringParameterValue();
+        parameterValue.setParameter(parameter);
+        parameterValue.setValue("false");
+
+        SelectListFormParameter formParameter = (SelectListFormParameter) AbstractAnalysisFormParameter.create(form, parameterValue);
+        assertEquals("log.base.two", formParameter.getName());
+        assertEquals("yes", formParameter.getValue());
+    }
 
 }
