@@ -82,10 +82,10 @@
                     </s:if>
                     <td /><s:iterator value="values">
                         <s:if test="#genomicDataNeedsHighlighting && meetsCriterion">
-                            <td bgcolor="#00FF33"><b><s:property value="value" /></b></td>
+                            <td nowrap="nowrap" bgcolor="<s:property value='highlightColor'/>"><b><font color="white"><s:property value="value" /></font></b></td>
                         </s:if>
                         <s:else>
-                            <td><s:property value="value" /></td>
+                            <td nowrap="nowrap"><s:property value="value" /></td>
                         </s:else>
                     </s:iterator>
                 </s:iterator>
@@ -125,10 +125,10 @@
                     <td/>
                     <s:iterator value="values">
                         <s:if test="#genomicDataNeedsHighlighting && meetsCriterion">
-                            <td bgcolor="#00FF33"><b><s:property value="value" /></b></td>
+                            <td nowrap="nowrap" bgcolor="<s:property value='highlightColor'/>"><b><font color="white"><s:property value="value" /></font></b></td>
                         </s:if>
                         <s:else>
-                            <td><s:property value="value" /></td>
+                            <td nowrap="nowrap"><s:property value="value" /></td>
                         </s:else>
                     </s:iterator>
                 </s:iterator>
