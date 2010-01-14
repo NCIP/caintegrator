@@ -313,9 +313,10 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
         setPermissibleValuesNeedUpdate(false);
         if (!isCreatePlotRunning()) {
             setCreatePlotRunning(true);
-            loadAnnotationDefinitions();
-            loadPermissibleValues();
+            clearAnnotationBasedGePlot();
             if (plotParameters.validate()) {
+                loadAnnotationDefinitions();
+                loadPermissibleValues();
                 try {
                     plotParameters.setEntityType(EntityTypeEnum.getByValue(getForm().getAnnotationTypeSelection()));
                     GeneExpressionPlotGroup plots = getAnalysisService().

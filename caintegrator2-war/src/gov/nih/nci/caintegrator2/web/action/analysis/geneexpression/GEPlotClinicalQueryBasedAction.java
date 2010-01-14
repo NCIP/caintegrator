@@ -245,6 +245,7 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
     protected void runFirstCreatePlotThread() {
         if (!isCreatePlotRunning()) {
             setCreatePlotRunning(true);
+            clearClinicalQueryBasedGePlot();
             if (plotParameters.validate()) {
                 try {
                     GeneExpressionPlotGroup plots = getAnalysisService().

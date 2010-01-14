@@ -74,12 +74,10 @@
                 document.kaplanMeierAnnotationInputForm.submit();"> Reset 
         </button>
         
-        <s:if test="creatable">
-            <button type="button" 
-                    onclick="document.kaplanMeierAnnotationInputForm.createPlotSelected.value = 'true';
-                    dojo.event.topic.publish('createAnnotationPlot');"> Create Plot 
-            </button>
-        </s:if>
+        <button type="button" 
+                onclick="document.kaplanMeierAnnotationInputForm.createPlotSelected.value = 'true';
+                dojo.event.topic.publish('createAnnotationPlot');"> Create Plot 
+        </button>
         </center>
         </div>
     <!-- /Kaplan-Meier Inputs -->

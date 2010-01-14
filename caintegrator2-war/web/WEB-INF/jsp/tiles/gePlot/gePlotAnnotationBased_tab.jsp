@@ -54,8 +54,8 @@
             </tr>
 
             <tr>
-                <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
-                <td class="value_inline" style="min-width: 5px; width: 190px; white-space: nowrap;">
+                <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;" />
+                <td class="value_inline" style="min-width: 5px; width: 190px; white-space: nowrap;" />
                 <th> Annotation Type</th>
                 <th> Annotation </th>
                 <th> Values </th>
@@ -125,12 +125,10 @@
                 document.geneExpressionAnnotationInputForm.submit();"> Reset 
         </button>
         
-        <s:if test="creatable">
-            <button type="button" 
-                    onclick="document.geneExpressionAnnotationInputForm.createPlotSelected.value = 'true';
-                    dojo.event.topic.publish('createAnnotationPlot');"> Create Plot 
-            </button>
-        </s:if>
+        <button type="button" 
+                onclick="document.geneExpressionAnnotationInputForm.createPlotSelected.value = 'true';
+                dojo.event.topic.publish('createAnnotationPlot');"> Create Plot 
+        </button>
         </center>
         </div>
     <!-- /Gene Expression Inputs -->
