@@ -7,8 +7,6 @@
 
 <div id="content">                      
     <script type="text/javascript">
-    
-    initializeJsp();
 
     function initializeJsp() {
         dwr.engine.setActiveReverseAjax(true);

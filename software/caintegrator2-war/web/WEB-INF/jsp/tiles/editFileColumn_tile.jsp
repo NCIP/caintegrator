@@ -8,9 +8,7 @@
 <div id="content">                      
 
     <script type="text/javascript">
-    
-    initializeJsp();
-    
+
     function runSearch(entityType) {
         var searchResultJsp = "";
         var studyConfigurationId = document.getElementById('searchFormStudyConfigurationId').value; 
