@@ -181,8 +181,12 @@
                         <s:if test="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).imageSeries != null}">
                             <s:property
                                 value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).imageSeries.identifier}" />
+                        </s:if>
+                    </display:column>
+                    <display:column title="View in NBIA" sortable="false" media="html">
+                        <s:if test="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).imageSeries != null}">
                             <a href='<s:property value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).nciaLink}" escape="false"/>'
-                                target="_">View in NBIA</a>
+                                target="_"><img src="/caintegrator2/images/ico_nbia.gif" border="none" title="View Image in NBIA"/></a>
                         </s:if>
                     </display:column>
                 </s:if>
