@@ -102,7 +102,7 @@ public class GenePatternAnalysisJob extends AbstractPersistedAnalysisJob {
      * Default Constructor.
      */
     public GenePatternAnalysisJob() {
-        this.setJobType(AnalysisJobTypeEnum.GENE_PATTERN.getValue());
+        this.setJobType(AnalysisJobTypeEnum.GENE_PATTERN);
     }
     /**
      * @return the analysisForm

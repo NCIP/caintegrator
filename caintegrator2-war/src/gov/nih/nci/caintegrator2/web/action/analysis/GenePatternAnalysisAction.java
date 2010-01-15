@@ -314,6 +314,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     }
     
     private String executeAnalysis() {
+        getCurrentGenePatternAnalysisJob().setMethod(getAnalysisMethodName());
         getCurrentGenePatternAnalysisJob().setCreationDate(new Date());
         getCurrentGenePatternAnalysisJob().setStatus(AnalysisJobStatusEnum.SUBMITTED);
         getStudySubscription().getAnalysisJobCollection().add(getCurrentGenePatternAnalysisJob());

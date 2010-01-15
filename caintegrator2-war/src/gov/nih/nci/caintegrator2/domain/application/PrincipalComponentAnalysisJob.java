@@ -103,7 +103,8 @@ public class PrincipalComponentAnalysisJob extends AbstractPersistedAnalysisJob 
      * Default Constructor.
      */
     public PrincipalComponentAnalysisJob() {
-        this.setJobType(AnalysisJobTypeEnum.PCA.getValue());
+        this.setJobType(AnalysisJobTypeEnum.PCA);
+        this.setMethod(AnalysisJobTypeEnum.PCA.getValue());
     }
 
     /**
