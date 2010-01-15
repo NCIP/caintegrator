@@ -101,7 +101,8 @@ public class GisticAnalysisJob extends AbstractPersistedAnalysisJob {
      * Default Constructor.
      */
     public GisticAnalysisJob() {
-        this.setJobType(AnalysisJobTypeEnum.GISTIC.getValue());
+        this.setJobType(AnalysisJobTypeEnum.GISTIC);
+        this.setMethod(AnalysisJobTypeEnum.GISTIC.getValue());
     }
 
     /**

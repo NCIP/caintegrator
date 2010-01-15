@@ -115,6 +115,7 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String STATUS_TABLE = "analysisJobStatusTable";
     private static final String JOB_NAME = "jobName_";
     private static final String JOB_TYPE = "jobType_";
+    private static final String JOB_METHOD = "jobMethod_";
     private static final String JOB_STATUS = "jobStatus_";
     private static final String JOB_STATUS_DESCRIPTION = "jobStatusDescription_";
     private static final String JOB_CREATION_DATE = "jobCreationDate_";
@@ -154,17 +155,18 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
     }
 
     private String[][] createRow(AbstractPersistedAnalysisJob job) {
-        String[][] rowString = new String[1][7];
+        String[][] rowString = new String[1][8];
         String id = job.getId().toString();
         String startSpan = "<span id=\"";
         String endSpan = "\"> </span>";
         rowString[0][0] = startSpan + JOB_NAME + id + endSpan;
         rowString[0][1] = startSpan + JOB_TYPE + id + endSpan;
-        rowString[0][2] = startSpan + JOB_STATUS + id + endSpan;
-        rowString[0][3] = startSpan + JOB_STATUS_DESCRIPTION + id + endSpan;
-        rowString[0][4] = startSpan + JOB_CREATION_DATE + id + endSpan;
-        rowString[0][5] = startSpan + JOB_LAST_UPDATE_DATE + id + endSpan;
-        rowString[0][6] = startSpan + DELETE_ACTION + id + endSpan
+        rowString[0][2] = startSpan + JOB_METHOD + id + endSpan;
+        rowString[0][3] = startSpan + JOB_STATUS + id + endSpan;
+        rowString[0][4] = startSpan + JOB_STATUS_DESCRIPTION + id + endSpan;
+        rowString[0][5] = startSpan + JOB_CREATION_DATE + id + endSpan;
+        rowString[0][6] = startSpan + JOB_LAST_UPDATE_DATE + id + endSpan;
+        rowString[0][7] = startSpan + DELETE_ACTION + id + endSpan
                           + startSpan + JOB_ACTION_BAR1 + id + endSpan
                           + startSpan + JOB_INPUT_URL + id + endSpan
                           + startSpan + JOB_ACTION_BAR2 + id + endSpan
@@ -177,22 +179,26 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
      */
     public void runJob(AbstractPersistedAnalysisJob job) {
         Thread jobRunner = null;
-        switch(AnalysisJobTypeEnum.getByValue(job.getJobType())) {
-        case CMS:
-            jobRunner = new Thread(new ComparativeMarkerSelectionAjaxRunner(this, 
-                    (ComparativeMarkerSelectionAnalysisJob) job));
-            break;
-        case GENE_PATTERN:
+        if (AnalysisJobTypeEnum.GENE_PATTERN.equals(job.getJobType())) {
             jobRunner = new Thread(new GenePatternAjaxRunner(this, (GenePatternAnalysisJob) job));
-            break;
-        case PCA:
-            jobRunner = new Thread(new PCAAjaxRunner(this, (PrincipalComponentAnalysisJob) job));
-            break;
-        case GISTIC:
-            jobRunner = new Thread(new GisticAjaxRunner(this, (GisticAnalysisJob) job));
-            break;
-        default:
-            throw new IllegalStateException("Job type doesn't have an associated Runner");
+        } else {
+            switch (AnalysisJobTypeEnum.getByValue(job.getMethod())) {
+            case CMS:
+                jobRunner = new Thread(new ComparativeMarkerSelectionAjaxRunner(this,
+                        (ComparativeMarkerSelectionAnalysisJob) job));
+                break;
+            case GENE_PATTERN:
+                jobRunner = new Thread(new GenePatternAjaxRunner(this, (GenePatternAnalysisJob) job));
+                break;
+            case PCA:
+                jobRunner = new Thread(new PCAAjaxRunner(this, (PrincipalComponentAnalysisJob) job));
+                break;
+            case GISTIC:
+                jobRunner = new Thread(new GisticAjaxRunner(this, (GisticAnalysisJob) job));
+                break;
+            default:
+                throw new IllegalStateException("Job type doesn't have an associated Runner");
+            }
         }
         jobRunner.start();
     }
@@ -224,7 +230,8 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
         Util utilThis = getDwrUtil(job.getUserWorkspace().getUsername());
         String jobId = job.getId().toString();
         utilThis.setValue(JOB_NAME + jobId, job.getName());
-        utilThis.setValue(JOB_TYPE + jobId, job.getJobType());
+        utilThis.setValue(JOB_TYPE + jobId, job.getJobType().getType());
+        utilThis.setValue(JOB_METHOD + jobId, job.getMethod());
         utilThis.setValue(JOB_CREATION_DATE + jobId, 
                 getDateString(job.getCreationDate()));
         utilThis.setValue(JOB_STATUS + jobId, getStatusMessage(job.getStatus()));
