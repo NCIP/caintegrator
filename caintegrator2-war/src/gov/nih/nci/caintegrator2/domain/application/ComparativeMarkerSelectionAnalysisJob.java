@@ -104,7 +104,8 @@ public class ComparativeMarkerSelectionAnalysisJob extends AbstractPersistedAnal
      * Default Constructor.
      */
     public ComparativeMarkerSelectionAnalysisJob() {
-        this.setJobType(AnalysisJobTypeEnum.CMS.getValue());
+        this.setJobType(AnalysisJobTypeEnum.CMS);
+        this.setMethod(AnalysisJobTypeEnum.CMS.getValue());
     }
 
     /**

@@ -12,30 +12,32 @@ public enum AnalysisJobTypeEnum {
     /**
      * Gene Pattern.
      */
-    GENE_PATTERN("Gene Pattern"),
+    GENE_PATTERN("Gene Pattern", "Gene Pattern"),
     
     /**
      * Comparative Marker Selection.
      */
-    CMS("Comparative Marker Selection"),
+    CMS("Comparative Marker Selection", "Gene Pattern - Grid"),
 
     /**
      * PCA.
      */
-    PCA("Principal Component Analysis"),
+    PCA("Principal Component Analysis", "Gene Pattern - Grid"),
 
     /**
      * GISTIC.
      */
-    GISTIC("Gistic");
+    GISTIC("Gistic", "Gene Pattern - Grid");
     
     private static Map<String, AnalysisJobTypeEnum> valueToTypeMap = 
                     new HashMap<String, AnalysisJobTypeEnum>();
 
     private String value;
+    private String type;
     
-    private AnalysisJobTypeEnum(String value) {
+    private AnalysisJobTypeEnum(String value, String type) {
         this.value = value;
+        this.type = type;
     }
 
     /**
@@ -50,6 +52,20 @@ public enum AnalysisJobTypeEnum {
      */
     public void setValue(String value) {
         this.value = value;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
     }
 
     private static Map<String, AnalysisJobTypeEnum> getValueToTypeMap() {

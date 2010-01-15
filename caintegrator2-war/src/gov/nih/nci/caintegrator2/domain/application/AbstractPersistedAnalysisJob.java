@@ -104,7 +104,8 @@ public abstract class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2
     private AnalysisJobStatusEnum status = AnalysisJobStatusEnum.NOT_SUBMITTED;
     private Date creationDate;
     private Date lastUpdateDate;
-    private String jobType;
+    private AnalysisJobTypeEnum jobType;
+    private String method;
     private StudySubscription subscription;
     private String statusDescription;
     private ResultsZipFile inputZipFile;
@@ -219,17 +220,31 @@ public abstract class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2
     /**
      * @return the jobType
      */
-    public String getJobType() {
+    public AnalysisJobTypeEnum getJobType() {
         return jobType;
     }
 
     /**
      * @param jobType the jobType to set
      */
-    public void setJobType(String jobType) {
+    public void setJobType(AnalysisJobTypeEnum jobType) {
         this.jobType = jobType;
     }
     
+    /**
+     * @return the method
+     */
+    public String getMethod() {
+        return method;
+    }
+
+    /**
+     * @param method the method to set
+     */
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
     /**
      * @return the inputZipFile
      */

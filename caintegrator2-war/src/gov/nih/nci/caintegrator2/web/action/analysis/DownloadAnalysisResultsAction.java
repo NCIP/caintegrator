@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobTypeEnum;
 import gov.nih.nci.caintegrator2.web.DownloadableFile;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator2.web.ajax.PersistedAnalysisJobAjaxUpdater;
@@ -166,7 +165,7 @@ public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction 
     }
     
     private String getFilenamePrefix() {
-        switch(AnalysisJobTypeEnum.getByValue(job.getJobType())) {
+        switch(job.getJobType()) {
         case CMS:
             return "cms";
         case GENE_PATTERN:

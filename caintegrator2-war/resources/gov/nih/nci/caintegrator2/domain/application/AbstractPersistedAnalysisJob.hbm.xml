@@ -14,7 +14,8 @@
 		</id>
 		<!-- Attributes mapping for the AbstractPersistedJob class -->
 		<discriminator column="TYPE" />
-		<property name="name" type="string" column="NAME"/>
+        <property name="name" type="string" column="NAME"/>
+        <property name="method" type="string" column="METHOD"/>
         <property name="status" type="AnalysisJobStatusEnum" column="STATUS"/>
         <property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
         <property name="creationDate" type="java.util.Date" column="CREATION_DATE"/>
