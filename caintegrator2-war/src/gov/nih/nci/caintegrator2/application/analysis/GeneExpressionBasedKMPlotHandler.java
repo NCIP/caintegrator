@@ -142,9 +142,7 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
         }
         filterGroupsWithoutSurvivalData(configuration, subjectGroupCollection);
         configuration.getGenesNotFound().addAll(kmParameters.getGenesNotFound());
-        if (kmParameters.getGenesFoundInStudy().size() > 1) {
-            configuration.setTitle("OVERLAYED " + configuration.getTitle());
-        }
+
         return kmPlotService.generatePlot(configuration);
     }
 
