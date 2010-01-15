@@ -44,6 +44,7 @@
     <definition name="editFileColumn" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editFileColumn_tile.jsp" />
         <put-attribute name="subTitle" value="Assign Annotation Definition for Column" />
+        <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyDwrAjax_tile.jsp" />
     </definition>
     
     <definition name="editGenomicSource" extends="cssBaseDef">
@@ -128,6 +129,7 @@
     <definition name="manageStudies" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageStudies_tile.jsp" />
         <put-attribute name="subTitle" value="Manage Studies" />
+        <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyDwrAjax_tile.jsp" />
     </definition>
 
     <definition name="workspaceStudy" extends="cssBaseDef">
@@ -211,6 +213,7 @@
     <definition name="genePatternAnalysisStatus" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/genePatternAnalysisStatus_tile.jsp" />
         <put-attribute name="subTitle" value="GenePattern Analysis Status" />
+        <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyDwrAjax_tile.jsp" />
     </definition>
     
     <definition name="comparativeMarkerSelectionAnalysis" extends="cssBaseDef">
