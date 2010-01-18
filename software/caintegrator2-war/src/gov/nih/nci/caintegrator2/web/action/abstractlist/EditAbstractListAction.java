@@ -115,18 +115,21 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
      */
     public String execute() {
         if (EDIT_ACTION.equals(selectedAction)) {
+            setOpenList(listName);
             return editList();
         } else if (DELETE_ACTION.equals(selectedAction)) {
             clearAnalysisCache();
             return deleteList();
         } else if (RENAME_ACTION.equals(selectedAction)) {
             clearAnalysisCache();
+            setOpenList(listName);
             return renameList();
         }
         return SUCCESS;
     }
-    
+
     abstract AbstractList getAbstractList(String name);
+    abstract void setOpenList(String name);
     
     /**
      * Go to the edit page.
