@@ -39,7 +39,7 @@
                     <s:actionmessage/>
                     <s:actionerror/>
                     <s:if test="editOn">
-                        <s:form id="editGeneListForm" name="editGeneListForm" action="editList"
+                        <s:form id="editGeneListForm" name="editGeneListForm" action="editGeneList"
                             method="post" enctype="multipart/form-data" theme="css_xhtml">
                             <s:hidden name="selectedAction" />
                             <s:hidden name="listOldName" />
