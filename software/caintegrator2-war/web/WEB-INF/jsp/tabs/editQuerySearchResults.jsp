@@ -233,7 +233,7 @@
                             <span class="btn_img"><span class="export">Export To CSV</span></span>
                         </s:a></li>
                         <s:if test="queryResult.hasSubjects">
-                            <li><s:a href="#" cssClass="btn" onclick="saveSubjectList(); return false;">
+                            <li><s:a href="#" cssClass="btn" onclick="showSubjectListForm(); return false;">
                                 <span class="btn_img"><span class="save">Save Subject List</span></span>
                             </s:a></li>
                         </s:if>

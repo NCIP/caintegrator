@@ -7,9 +7,9 @@
 <s:hidden name="checkedPathwayBoxes" value="" />
 
 <!-- caBio Inputs -->
-<s:div id="TB_ajaxWindowTitle"/>
-<s:div id="TB_closeAjaxWindow">
-        <s:a href="" id="TB_closeWindowButton" title="Click to close." onclick="hideCaBioInputForm()" cssStyle="cursor: pointer;"><img src="/caintegrator2/images/close.gif" border="none" align="center"/>&nbsp;</s:a>
+<s:div cssClass="TB_ajaxWindowTitle"/>
+<s:div cssClass="TB_closeAjaxWindow">
+        <s:a href="" title="Click to close." onclick="hideCaBioInputForm()" cssStyle="cursor: pointer;"><img src="/caintegrator2/images/close.gif" border="none" align="center"/>&nbsp;</s:a>
 </s:div>
 
 <h2><img style="vertical-align: middle" src="/caintegrator2/images/cabiologo.gif"> caBio Gene Search</h2>
