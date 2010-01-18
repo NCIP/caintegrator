@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.common;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
@@ -95,12 +96,16 @@ import java.util.List;
 
 import org.junit.Test;
 
-
-/**
- * 
- */
 public class DateUtilTest {
 
+    @Test
+    public void testItimeout() throws ParseException {
+        Date startDate = new Date();
+        assertFalse(DateUtil.isTimeout(startDate));
+        startDate = DateUtil.createDate("01/14/2010");
+        assertTrue(DateUtil.isTimeout(startDate));
+    }
+    
     @Test
     public void testCreateDate() throws ParseException {
         Date date = DateUtil.createDate("01/02/1970");

@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.application.AbstractList;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
@@ -112,12 +113,10 @@ import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -128,8 +127,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements WorkspaceService  {
     
     private SecurityManager securityManager;
-    
-    private static final int TWELVE_HOURS = 12;
 
     /**
      * {@inheritDoc}
@@ -208,16 +205,12 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
     private void updateStatus(Set<StudyConfiguration> studsyConfigurations) {
         for (StudyConfiguration studyConfiguration : studsyConfigurations) {
             if (Status.PROCESSING.equals(studyConfiguration.getStatus())
-                    && isTimeout(studyConfiguration.getDeploymentStartDate())) {
+                    && DateUtil.isTimeout(studyConfiguration.getDeploymentStartDate())) {
                 studyConfiguration.setStatus(Status.ERROR);
-                studyConfiguration.setStatusDescription("TImeout after 12 hours");
+                studyConfiguration.setStatusDescription("Timeout after 12 hours");
                 getDao().save(studyConfiguration);
             }
         }
-    }
-    
-    private boolean isTimeout(Date date) {
-        return DateUtils.addHours(date, TWELVE_HOURS).before(new Date());
     }
     
     private void removeOldSubscriptions(UserWorkspace userWorkspace, List<Study> myStudies) {
