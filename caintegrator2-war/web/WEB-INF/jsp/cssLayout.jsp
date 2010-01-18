@@ -20,6 +20,7 @@
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/caintegrator2.css" />
+		<link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/cai2modal.css" />
         <sx:head parseContent="true"/>
         <script type="text/javascript" src="/caintegrator2/common/js/pde.js"></script>
         <script type="text/javascript" src="/caintegrator2/common/js/prototype.js"></script>
@@ -27,6 +28,7 @@
         <script type="text/javascript" src="/caintegrator2/common/js/effects.js"></script>
         <script type="text/javascript" src="/caintegrator2/common/js/prototype.js"></script>
         <script type="text/javascript" src="/caintegrator2/common/js/caintegrator2.js"></script>
+        <script type="text/javascript" src="/caintegrator2/common/js/cai2modal.js"></script>
         <script type="text/javascript" src="/caintegrator2/common/js/onlinehelp.js"></script>
         <script type="text/javascript" src="/caintegrator2/common/js/editableSelect.js"></script>
         <script type="text/javascript" src="/caintegrator2/struts/optiontransferselect.js"></script>      
@@ -47,8 +49,8 @@
 			<!--Work Area-->
 				
 			<div id="main">	
+                <sx:div id="TB_overlay" cssClass="TB_overlayBG"/>
                 <!-- Begin hidden geneListSearchForm -->
-                <sx:div id="TB_GL_overlay" cssClass="TB_GL_overlayBG"/>
                 <s:form name="geneListSearchForm" id="geneListSearchForm" onsubmit="runGeneListSearch(); return false;">
                     <!-- For gene list to know which form element to publish gene symbols to. -->
                     <s:hidden name="geneSymbolElementId" />
@@ -65,7 +67,6 @@
                 <!-- End geneListSearchForm -->
                 
                 <!-- Begin hidden caBioGeneSearchForm -->
-                <sx:div id="TB_overlay" cssClass="TB_overlayBG"/>
                 <s:form name="caBioGeneSearchForm" id="caBioGeneSearchForm" onsubmit="runCaBioSearch(); return false;">
                     <!-- For caBio to know which form element to publish gene symbols to. -->
                     <s:hidden name="geneSymbolElementId" />
