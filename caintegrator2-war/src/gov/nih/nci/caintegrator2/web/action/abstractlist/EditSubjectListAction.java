@@ -100,6 +100,11 @@ public class EditSubjectListAction extends EditAbstractListAction {
     AbstractList getAbstractList(String name) {
         return getStudySubscription().getSubjectList(name);
     }
+
+    @Override
+    void setOpenList(String name) {
+        setOpenSubjectListName(name);
+    }
     
     /**
      * @return the subject identifier listing

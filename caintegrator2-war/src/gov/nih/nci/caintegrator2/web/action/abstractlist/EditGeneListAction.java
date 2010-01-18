@@ -100,7 +100,11 @@ public class EditGeneListAction extends EditAbstractListAction {
     AbstractList getAbstractList(String name) {
         return getStudySubscription().getGeneList(name);
     }
-    
+
+    @Override
+    void setOpenList(String name) {
+        setOpenGeneListName(name);
+    }
     
     /**
      * @return the gene symbol listing
