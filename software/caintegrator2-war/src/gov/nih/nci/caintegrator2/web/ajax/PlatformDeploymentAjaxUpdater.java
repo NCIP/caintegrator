@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
@@ -131,6 +132,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
             };
             Collections.sort(platformConfigurationList, nameComparator);
             for (PlatformConfiguration platformConfiguration : platformConfigurationList) {
+                checkTimeout(platformConfiguration);
                 getDwrUtil(username).addRows(STATUS_TABLE, createRow(platformConfiguration),
                         retrieveRowOptions(counter));
                 updateJobStatus(username, platformConfiguration);
@@ -141,6 +143,15 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
         }
     }
     
+    private void checkTimeout(PlatformConfiguration platformConfiguration) {
+        if (Status.PROCESSING.equals(platformConfiguration.getStatus())
+                && DateUtil.isTimeout(platformConfiguration.getDeploymentStartDate())) {
+            platformConfiguration.setStatus(Status.ERROR);
+            platformConfiguration.setStatusDescription("Time out after 12 hours");
+            arrayDataService.savePlatformConfiguration(platformConfiguration);
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
