@@ -6,11 +6,6 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
-<link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/dhtmlwindow.css" />
-<link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/dhtmlmodal.css" />
-
-<script type="text/javascript" src="/caintegrator2/common/js/dhtmlwindow.js"></script> 
-<script type="text/javascript" src="/caintegrator2/common/js/dhtmlmodal.js"></script>
 <script language="javascript">
 
     function setClinicalAnnotations(onOff){
@@ -94,21 +89,6 @@
         }
     }
     
-    function saveSubjectList() {
-        //Open a modal window populated with the contents of a hidden DIV.
-        slwindow = dhtmlmodal.open('Subject List', 'div', 'subjectlistdiv', 'Subject List Info',
-            'width=390px,height=130px,center=1,resize=0,scrolling=1')
-
-        slwindow.onclose=function(){
-            var name = document.getElementById("slName").value;
-            if (name == "*cancel*") return true;
-            document.manageQueryForm.subjectListName.value = name;
-            document.manageQueryForm.subjectListDescription.value = document.getElementById("slDescription").value;
-            submitForm("saveSubjectList");
-            return true;
-        }
-    }
-    
     function submitForm(selectAction) {
         document.manageQueryForm.selectedAction.value = selectAction;
         document.manageQueryForm.submit();
@@ -177,16 +157,20 @@
            
 </div>
 
-<s:div id="subjectlistdiv" cssStyle="display:none">
-    <h4>Please enter the name and description</h4>
+<s:div id="subjectlistdiv" cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:390px;max-height: 130px; overflow:auto;">
+    <s:div cssClass="TB_ajaxWindowTitle"/>
+    <s:div cssClass="TB_closeAjaxWindow">
+        <s:a href="" title="Click to close." onclick="hideSubjectListForm()" cssStyle="cursor: pointer;"><img src="/caintegrator2/images/close.gif" border="none" align="center"/>&nbsp;</s:a>
+    </s:div>
+    <h2>Please enter the name and description</h2>
     <s:form id="myform">
         <s:textfield id="slName" label="Name" name="T1" size="30" />
         <s:textfield id="slDescription" label="Description" name="T2" size="50" />
         <tr>
             <td></td>
             <td><br>
-                <button type="button" onClick="slwindow.hide()">Save</button>
-                <button type="button" onClick="document.myform.slName.value='*cancel*'; slwindow.hide()">Cancel</button>
+                <button type="button" onClick="submitSubjectListForm()">Save</button>
+                <button type="button" onClick="hideSubjectListForm()">Cancel</button>
             </td>
         </tr>
     </s:form>

@@ -5,9 +5,9 @@
 <s:hidden name="runSearchSelected" value="false" />
 
 <!-- Gene List Inputs -->
-<s:div id="TB_GL_ajaxWindowTitle"/>
-<s:div id="TB_GL_closeAjaxWindow">
-        <s:a href="" id="TB_GL_closeWindowButton" title="Click to close." onclick="hideGeneListInputForm()"
+<s:div cssClass="TB_ajaxWindowTitle"/>
+<s:div cssClass="TB_closeAjaxWindow">
+        <s:a href="" title="Click to close." onclick="hideGeneListInputForm()"
             cssStyle="cursor: pointer;"><img src="/caintegrator2/images/close.gif"
             border="none" align="center"/>&nbsp;</s:a>
 </s:div>
