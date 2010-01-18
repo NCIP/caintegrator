@@ -343,6 +343,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         criterionRow.setFieldName(SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME);
         updateCriteria();
         ((MultiSelectParameter) criterionRow.getParameters().get(0)).setValues(new String[]{subjectListName});
+        setOpenSubjectListName(subjectListName);
     }
 
     private String exportGenomicResults() {
@@ -663,6 +664,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             return null;
         }
     }
+    
     /**
      * @return the studyManagementService
      */

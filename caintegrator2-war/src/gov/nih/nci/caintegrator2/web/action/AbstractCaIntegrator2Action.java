@@ -121,12 +121,16 @@ import com.opensymphony.xwork2.Preparable;
 public abstract class AbstractCaIntegrator2Action extends ActionSupport implements Preparable {
     
     private WorkspaceService workspaceService;
+    private String openGeneListName = "";
+    private String openSubjectListName = "";
 
     /**
      * {@inheritDoc}
      */
     public void prepare() {
         setAuthorizedPage(true);
+        openGeneListName = "";
+        openSubjectListName = "";
         if (!isFileUpload()) {
             prepareValueStack();
         }
@@ -483,6 +487,34 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
             annotationTypes.put(EntityTypeEnum.IMAGESERIES.getValue(), "Image Series");
         }
         return annotationTypes;
+    }
+
+    /**
+     * @return the openGeneListName
+     */
+    public String getOpenGeneListName() {
+        return openGeneListName;
+    }
+
+    /**
+     * @param openGeneListName the openGeneListName to set
+     */
+    public void setOpenGeneListName(String openGeneListName) {
+        this.openGeneListName = openGeneListName;
+    }
+
+    /**
+     * @return the openSubjectListName
+     */
+    public String getOpenSubjectListName() {
+        return openSubjectListName;
+    }
+
+    /**
+     * @param openSubjectListName the openSubjectListName to set
+     */
+    public void setOpenSubjectListName(String openSubjectListName) {
+        this.openSubjectListName = openSubjectListName;
     }
     
 }

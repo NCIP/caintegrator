@@ -106,7 +106,13 @@
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
                                                 <s:a href="%{editGeneListUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
-                                                    title="Description: %{description}"><s:property value="name" />
+                                                    title="Description: %{description}">
+                                                    <s:if test="name == openGeneListName">
+                                                        <strong><s:property value="name"/></strong>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:property value="name"/>
+                                                    </s:else>
                                                 </s:a>
                                             </div>
                                         </div>
@@ -137,7 +143,13 @@
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
                                                 <s:a href="%{runSubjectListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
-                                                    title="Description: %{description}"><s:property value="name" />
+                                                    title="Description: %{description}">
+                                                    <s:if test="name == openSubjectListName">
+                                                        <strong><s:property value="name"/></strong>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:property value="name"/>
+                                                    </s:else>
                                                 </s:a>
                                             </div>
                                         </div>
