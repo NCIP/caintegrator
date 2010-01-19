@@ -91,7 +91,7 @@ import gov.nih.nci.caintegrator2.web.ajax.IStudyDeploymentAjaxUpdater;
 /**
  * Action that deploys a study.
  */
-public class DeployStudyAction extends AbstractStudyAction {
+public class DeployStudyAction extends SaveStudyAction {
 
     private static final long serialVersionUID = 1L;
     private IStudyDeploymentAjaxUpdater ajaxUpdater;
@@ -106,6 +106,15 @@ public class DeployStudyAction extends AbstractStudyAction {
         getDeploymentService().prepareForDeployment(getStudyConfiguration(), null);
         ajaxUpdater.runJob(getStudyConfiguration());
         return SUCCESS;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @SuppressWarnings("PMD.UselessOverridingMethod") // In case we ever do other validation here, must still call super
+    public void validate() {
+        super.validate();
     }
 
     /**
