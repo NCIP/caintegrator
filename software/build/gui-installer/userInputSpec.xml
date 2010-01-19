@@ -493,8 +493,7 @@ Guide to this file:
         </field>
 
         <field type="text" variable="jboss.ssl.port">
-            <spec txt="JBoss SSL" size="5" set="47380"/>
-            <validator class="com.izforge.izpack.util.PortValidator" txt="JBoss SSL port number is already in use"/>
+            <spec txt="JBoss SSL (if using SSL)" size="5" set="47380"/>
         </field>
 
         <field type="text" variable="jboss.jms2.netty.port">
