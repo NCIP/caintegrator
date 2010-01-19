@@ -162,8 +162,9 @@
     <s:div cssClass="TB_closeAjaxWindow">
         <s:a href="" title="Click to close." onclick="hideSubjectListForm()" cssStyle="cursor: pointer;"><img src="/caintegrator2/images/close.gif" border="none" align="center"/>&nbsp;</s:a>
     </s:div>
-    <h2>Please enter the name and description</h2>
+    <h2>Save Subject List</h2>
     <s:form id="myform">
+        <tr><td colspan="2"><strong>Please enter the name and description</strong></td></tr>
         <s:textfield id="slName" label="Name" name="T1" size="30" />
         <s:textfield id="slDescription" label="Description" name="T2" size="50" />
         <tr>
