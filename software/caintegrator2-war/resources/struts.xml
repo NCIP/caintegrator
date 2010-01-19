@@ -507,7 +507,7 @@
             <result name="input" type="tiles">editSubjectList</result>
             <result name="editPage" type="redirectAction">
                 <param name="actionName">editSubjectList</param>
-                <param name="selectedAction">editSubjectList</param>
+                <param name="selectedAction">editList</param>
                 <param name="listName">${listName}</param>
             </result>
             <result name="homePage" type="redirectAction">
@@ -522,8 +522,8 @@
             <result name="input" type="tiles">manageGeneList</result>
             <result name="editPage" type="redirectAction">
                 <param name="actionName">editGeneList</param>
-                <param name="selectedAction">editGeneList</param>
-                <param name="geneListName">${geneListName}</param>
+                <param name="selectedAction">editList</param>
+                <param name="listName">${geneListName}</param>
             </result>
         </action>
         
@@ -533,7 +533,7 @@
             <result name="input" type="tiles">editGeneList</result>
             <result name="editPage" type="redirectAction">
                 <param name="actionName">editGeneList</param>
-                <param name="selectedAction">editGeneList</param>
+                <param name="selectedAction">editList</param>
                 <param name="listName">${listName}</param>
             </result>
             <result name="homePage" type="redirectAction">

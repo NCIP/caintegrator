@@ -33,18 +33,18 @@
     <ul class="btnrow">
         <li><s:a href="#" cssClass="btn"
             onclick="saveQuery('save')">
-            <span class="btn_img"><span class="save">Save</span></span>
+            <span class="btn_img"><span class="save">Save Query</span></span>
         </s:a></li>
         <s:if test="queryForm.isSavedQuery()">
             <li>
                 <s:a href="#" cssClass="btn"
                     onclick="saveQuery('saveAs')">
-                    <span class="btn_img"><span class="save">Save As</span></span>
+                    <span class="btn_img"><span class="save">Save Query As</span></span>
             </s:a></li>
             <li>
                 <s:a href="#" cssClass="btn"
                     onclick="deleteQuery()">
-                    <span class="btn_img"><span class="delete">Delete</span></span>
+                    <span class="btn_img"><span class="delete">Delete Query</span></span>
             </s:a></li>
         </s:if>
     </ul>
