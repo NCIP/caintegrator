@@ -121,6 +121,7 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
     private boolean runCaBioGeneSearchFromPathways = false;
     // This variable is a space delimited string which contains the indeces of the checked pathway checkboxes.
     private String checkedPathwayBoxes = "";
+    private boolean ableToConnect = false;
     
     /**
      * {@inheritDoc}
@@ -128,8 +129,10 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
     public String input() {
         try {
             reset();
-        } catch (ConnectionException e) {
-            addActionError("Unable to connect to caBio.");
+            ableToConnect = true;
+        } catch (Exception e) {
+            addActionError("Unable to connect to caBio: " + e.getMessage());
+            ableToConnect = false;
         }
         return SUCCESS;
     }
@@ -373,6 +376,13 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
      */
     public void setCheckedPathwayBoxes(String checkedPathwayBoxes) {
         this.checkedPathwayBoxes = checkedPathwayBoxes;
+    }
+
+    /**
+     * @return the ableToConnect
+     */
+    public boolean isAbleToConnect() {
+        return ableToConnect;
     }
 
 }

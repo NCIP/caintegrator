@@ -15,6 +15,8 @@
 <h2><img style="vertical-align: middle" src="/caintegrator2/images/cabiologo.gif"> caBio Gene Search</h2>
 
 <s:div cssStyle="padding: 1px 0px 0px 5px;">
+    <tr><s:actionerror /></tr>
+    <s:if test="%{ableToConnect}">
     <tr>
         <s:textfield label="Search Terms" name="searchParams.keywords" cssStyle="padding:0px;"/> in 
         <s:select name="searchParams.searchTypeForDisplay" 
@@ -45,6 +47,7 @@
             </button>
     </td>
     </tr>
+    </s:if>
 </s:div>
 <!-- /caBio Inputs -->
 <s:url id="caBioSearch" action="caBioSearch"/>
