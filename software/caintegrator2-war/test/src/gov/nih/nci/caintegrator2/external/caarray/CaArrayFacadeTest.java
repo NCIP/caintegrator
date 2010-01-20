@@ -179,6 +179,7 @@ public class CaArrayFacadeTest {
         ((CaArrayFacadeImpl) caArrayFacade).setDao(daoStub);
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         genomicSource.setExperimentIdentifier("test-data");
+        genomicSource.setPlatformName("test design");
         genomicSource.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
         genomicSource.setStudyConfiguration(new StudyConfiguration());
         Sample sample = new Sample();
