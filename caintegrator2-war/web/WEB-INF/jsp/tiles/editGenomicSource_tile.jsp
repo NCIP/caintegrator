@@ -14,17 +14,21 @@
     <!--/Page Help-->
     
     <script type="text/javascript">
-        function CheckPlatformVendor(vendor) {
-            if (vendor != "Agilent") {
-                document.getElementById("platformName").disabled = true;
-            } else {
+        function CheckPlatformVendor(vendor, dataType) {
+            if (vendor == "Agilent"
+                    || (vendor == "Affymetrix" && dataType == "Expression")) {
                 document.getElementById("platformName").disabled = false;
+            } else {
+                document.getElementById("platformName").disabled = true;
             }
         }
         
         function showConfirmMessage() {
-            if (document.genomicSourceForm.genomicSourceId.value != null && document.genomicSourceForm.genomicSourceId.value != "") {
-                if (confirm('You are about to update the configuration information for this data source.  Doing so will require you to remap your samples. Please click OK to update the data source or click Cancel to go back.')) {
+            if (document.genomicSourceForm.genomicSourceId.value != null
+                    && document.genomicSourceForm.genomicSourceId.value != "") {
+                if (confirm("You are about to update the configuration information for this data source.  "
+                        + "Doing so will require you to remap your samples. "
+                        + "Please click OK to update the data source or click Cancel to go back.")) {
                     document.genomicSourceForm.submit();                
                 }
             } else {
@@ -70,21 +74,21 @@
                     <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" />
                     <s:select id="platformVendor" name="genomicSource.platformVendor" label="Vendor"
                         list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum@getValuesToDisplay()"
-                        onchange="CheckPlatformVendor(this.form.platformVendor.value);"/>
+                        onchange="CheckPlatformVendor(this.form.platformVendor.value, this.form.dataType.value);"/>
                     <s:select id="dataType" name="genomicSource.dataTypeString" label="Data Type"
-                        list="@gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum@getStringValues()"/>
-                    <s:select id="platformName" name="genomicSource.platformName" label="Platform (only needed for Agilent)"
-                        list="agilentPlatformNames" disabled="platformNameDisable"/>
-                    
+                        list="@gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum@getStringValues()"
+                        onchange="CheckPlatformVendor(this.form.platformVendor.value, this.form.dataType.value);"/>
+                    <s:select id="platformName" name="genomicSource.platformName" label="Platform (needed for Agilent and Affy Expression)"
+                        list="allPlatformNames" disabled="platformNameDisable"/>
                     <tr> 
-                    <td></td>
-                    <td>
-                    <button type="button" 
-                            onclick="document.genomicSourceForm.action = 'cancelGenomicSource.action';
-                            document.genomicSourceForm.submit();"> Cancel 
-                    </button>
-                    <button type="button" onclick="showConfirmMessage()"> Save </button>
-                    </td> 
+                        <td></td>
+                        <td>
+                            <button type="button" 
+                                onclick="document.genomicSourceForm.action = 'cancelGenomicSource.action';
+                                document.genomicSourceForm.submit();"> Cancel 
+                            </button>
+                            <button type="button" onclick="showConfirmMessage()"> Save </button>
+                        </td> 
                     </tr>
                 </s:form>
                 </td>
