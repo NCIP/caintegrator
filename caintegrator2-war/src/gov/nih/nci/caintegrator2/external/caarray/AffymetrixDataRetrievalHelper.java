@@ -146,7 +146,13 @@ class AffymetrixDataRetrievalHelper extends AbstractDataRetrievalHelper {
     private DataSetRequest createRequest() throws InvalidInputException {
         DataSetRequest request = new DataSetRequest();
         for (Hybridization hybridization : getAllHybridizations()) {
-            request.getHybridizations().add(hybridization.getReference());
+            if (getGenomicSource().getPlatformName().equals(hybridization.getArrayDesign().getName())) {
+                request.getHybridizations().add(hybridization.getReference());
+            }
+        }
+        if (request.getHybridizations().isEmpty()) {
+            throw new InvalidInputException("No caArray data found with Array Design: "
+                    + getGenomicSource().getPlatformName());
         }
         request.getQuantitationTypes().add(getSignal().getReference());
         return request;

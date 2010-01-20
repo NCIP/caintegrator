@@ -86,9 +86,11 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -125,21 +127,32 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
     }
     
     @Test
+    public void testAddNew() {
+        action.addNew();
+        assertEquals(PlatformVendorEnum.AFFYMETRIX.getValue(), action.getGenomicSource().getPlatformVendor());
+        assertEquals(GenomicDataSourceDataTypeEnum.EXPRESSION, action.getGenomicSource().getDataType());
+    }
+    
+    @Test
     public void testGetPlatformNameDisable() {
         action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AGILENT.getValue());
         assertEquals("false", action.getPlatformNameDisable());
         action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
+        assertEquals("false", action.getPlatformNameDisable());
+        action.getGenomicSource().setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
         assertEquals("true", action.getPlatformNameDisable());
     }
 
     @Test
     public void testGetAgilentPlatformNames() {
-        assertEquals(2, action.getAgilentPlatformNames().size());
+        assertEquals(2, action.getAllPlatformNames().size());
     }
 
     @Test
     public void testExecute() {
         assertEquals(Action.SUCCESS, action.execute());
+        assertEquals(Action.SUCCESS, action.cancel());
+        assertNotNull(action.getCaArrayFacade());
     }
     
     @Test

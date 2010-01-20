@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
@@ -98,8 +99,8 @@ import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.web.ajax.IGenomicDataSourceAjaxUpdater;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -133,6 +134,17 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      */
     @Override
     public String execute() {
+        return SUCCESS;
+    }
+    
+    /**
+     * Set default platform vendor and type.
+     * @return struts string.
+     */
+    public String addNew() {
+        getGenomicSource().setPlatformName("");
+        getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
+        getGenomicSource().setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
         return SUCCESS;
     }
     
@@ -200,7 +212,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     }
 
     private boolean validateSave() {
-        if (PlatformVendorEnum.AGILENT.getValue().equals(getGenomicSource().getPlatformVendor())
+        if (isPlatformNameRequired()
                 && StringUtils.isEmpty(getGenomicSource().getPlatformName())) {
             addFieldError("genomicSource.platformName", "Platform name is required for Agilent");
             return false;
@@ -217,18 +229,27 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         return true;
     }
     
+    private boolean isPlatformNameRequired() {
+        return isAgilent() || isAffyExpression();
+    }
     
+    private boolean isAgilent() {
+        return PlatformVendorEnum.AGILENT.getValue().equals(getGenomicSource().getPlatformVendor());
+    }
+    
+    private boolean isAffyExpression() {
+        return PlatformVendorEnum.AFFYMETRIX.getValue().equals(getGenomicSource().getPlatformVendor())
+        && GenomicDataSourceDataTypeEnum.EXPRESSION.equals(getGenomicSource().getDataType());
+    }
     
     /**
      * @return all platform names
      */
-    public List<String> getAgilentPlatformNames() {
-        List<String> platformNames = new ArrayList<String>();
-        platformNames.add("");
+    public Map<String, String> getAllPlatformNames() {
+        Map<String, String> platformNames = new HashMap<String, String>();
+        platformNames.put("", "");
         for (Platform platform : getArrayDataService().getPlatforms()) {
-            if (platform.getVendor().equals(PlatformVendorEnum.AGILENT)) {
-                platformNames.add(platform.getName());
-            }
+            platformNames.put(platform.getName(), platform.getVendor().getValue() + " - " + platform.getName());
         }
         return platformNames;
     }
@@ -238,8 +259,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      * @return whether to disable the platform names.
      */
     public String getPlatformNameDisable() {
-        return PlatformVendorEnum.AGILENT.getValue().equals(getGenomicSource().getPlatformVendor())
-            ? "false" : "true";
+        return isPlatformNameRequired() ? "false" : "true";
     }
 
     /**

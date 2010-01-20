@@ -94,8 +94,10 @@ import gov.nih.nci.caintegrator2.application.study.ExternalLinkList;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
+import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -103,8 +105,10 @@ import gov.nih.nci.caintegrator2.web.DisplayableGenomicSource;
 import gov.nih.nci.caintegrator2.web.DisplayableImageSource;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -253,6 +257,66 @@ public class WorkspaceServiceTest {
     public void testGetEntityIllegalClass() {
         Object object = new Object();
         workspaceService.getRefreshedEntity(object);
+    }
+    
+    @Test
+    public void testCreateList() {
+        UserWorkspace workspace = workspaceService.getWorkspace();
+        workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
+        StudySubscription studySubscription = new StudySubscription();
+        studySubscription.setStudy(new Study());
+        workspace.getSubscriptionCollection().add(studySubscription);
+        
+        // Test Gene List
+        GeneList geneList = new GeneList();
+        geneList.setSubscription(studySubscription);
+        List<String> geneSymbols = new ArrayList<String>();
+        geneList.setName("Gene List 1");
+        geneSymbols.add("egfr");
+        geneSymbols.add("brca1");
+        workspaceService.createGeneList(geneList, geneSymbols);
+        assertEquals(1, studySubscription.getGeneLists().size());
+        assertNotNull(studySubscription.getGeneList("Gene List 1"));
+        assertNull(studySubscription.getGeneList("Gene List 2"));
+        
+        geneList = new GeneList();
+        geneList.setSubscription(studySubscription);
+        geneList.setName("Gene List 2");
+        workspaceService.createGeneList(geneList, geneSymbols);
+        assertEquals(2, studySubscription.getGeneLists().size());
+        assertNotNull(studySubscription.getGeneList("Gene List 1"));
+        assertNotNull(studySubscription.getGeneList("Gene List 2"));
+        
+        workspaceService.deleteAbstractList(geneList);
+        assertEquals(1, studySubscription.getGeneLists().size());
+        assertNotNull(studySubscription.getGeneList("Gene List 1"));
+        assertNull(studySubscription.getGeneList("Gene List 2"));
+        
+        
+        // Test Subject List
+        SubjectList subjectList = new SubjectList();
+        subjectList.setSubscription(studySubscription);
+        Set<String> subjects = new HashSet<String>();
+        subjectList.setName("Subject List 1");
+        subjects.add("100");
+        subjects.add("200");
+        workspaceService.createSubjectList(subjectList, subjects);
+        assertEquals(1, studySubscription.getSubjectLists().size());
+        assertNotNull(studySubscription.getSubjectList("Subject List 1"));
+        assertNull(studySubscription.getSubjectList("Subject List 2"));
+        
+        subjectList = new SubjectList();
+        subjectList.setSubscription(studySubscription);
+        subjectList.setName("Subject List 2");
+        workspaceService.createSubjectList(subjectList, subjects);
+        assertEquals(2, studySubscription.getSubjectLists().size());
+        assertNotNull(studySubscription.getSubjectList("Subject List 1"));
+        assertNotNull(studySubscription.getSubjectList("Subject List 2"));
+        
+        workspaceService.deleteAbstractList(subjectList);
+        assertEquals(1, studySubscription.getSubjectLists().size());
+        assertNotNull(studySubscription.getSubjectList("Subject List 1"));
+        assertNull(studySubscription.getSubjectList("Subject List 2"));
     }
 
 }
