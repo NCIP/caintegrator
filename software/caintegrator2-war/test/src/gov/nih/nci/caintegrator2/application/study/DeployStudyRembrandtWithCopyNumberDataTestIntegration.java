@@ -294,6 +294,11 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     }
 
     @Override
+    protected String getPlatformName() {
+        return "HG-U133_Plus_2";
+    }
+
+    @Override
     protected String getPlatformVendor() {
         return "Affymetrix";
     }

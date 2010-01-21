@@ -431,6 +431,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.getServerProfile().setUsername(getCaArrayUsername());
             genomicSource.getServerProfile().setPassword(getCaArrayPassword());
             genomicSource.setExperimentIdentifier(getCaArrayId());
+            genomicSource.setPlatformName(getPlatformName());
             genomicSource.setPlatformVendor(getPlatformVendor());
             genomicSource.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
             if (getSampleMappingFile() != null) {
@@ -609,6 +610,8 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         query.getSubscription().setStudy(studyConfiguration.getStudy());
         return query;
     }
+
+    abstract protected String getPlatformName();
 
     abstract protected String getPlatformVendor();
 
