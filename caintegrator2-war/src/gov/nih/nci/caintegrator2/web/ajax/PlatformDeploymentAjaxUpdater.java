@@ -110,6 +110,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String JOB_PLATFORM_TYPE = "platformType_";
     private static final String JOB_PLATFORM_VENDOR = "platformVendor_";
     private static final String JOB_PLATFORM_STATUS = "platformStatus_";
+    private static final String JOB_PLATFORM_STATUS_DESCRIPTION = "platformStatusDescription_";
     private static final String JOB_ARRAY_NAME = "platformArrayName_";
     private static final String JOB_DELETE_PLATFORM_URL = "platformJobDeleteUrl_";
     private static final String PLATFORM_LOADER = "platformLoader";
@@ -161,7 +162,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     }
 
     private String[][] createRow(PlatformConfiguration platformConfiguration) {
-        String[][] rowString = new String[1][6];
+        String[][] rowString = new String[1][7];
         String id = platformConfiguration.getId().toString();
         String startSpan = "<span id=\"";
         String endSpan = "\"> </span>";
@@ -170,7 +171,8 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
         rowString[0][2] = startSpan + JOB_PLATFORM_VENDOR + id + endSpan;
         rowString[0][3] = startSpan + JOB_ARRAY_NAME + id + endSpan;
         rowString[0][4] = startSpan + JOB_PLATFORM_STATUS + id + endSpan;
-        rowString[0][5] = startSpan + JOB_DELETE_PLATFORM_URL + id + endSpan;
+        rowString[0][5] = startSpan + JOB_PLATFORM_STATUS_DESCRIPTION + id + endSpan;
+        rowString[0][6] = startSpan + JOB_DELETE_PLATFORM_URL + id + endSpan;
         return rowString;
     }
 
@@ -207,7 +209,9 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
         utilThis.setValue(JOB_ARRAY_NAME + platformConfigurationId, 
                           retrievePlatformArrayNames(platformConfiguration));
         utilThis.setValue(JOB_PLATFORM_STATUS + platformConfigurationId, 
-                          getStatusMessage(platformConfiguration.getStatus()));
+                getStatusMessage(platformConfiguration.getStatus()));
+        utilThis.setValue(JOB_PLATFORM_STATUS_DESCRIPTION + platformConfigurationId, 
+                platformConfiguration.getStatusDescription());
         updateRowActions(platformConfiguration, utilThis, platformConfigurationId);
     }
 
