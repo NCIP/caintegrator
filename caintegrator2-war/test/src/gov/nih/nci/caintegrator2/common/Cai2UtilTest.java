@@ -92,11 +92,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
@@ -315,5 +317,83 @@ public class Cai2UtilTest {
         assertEquals(1, Cai2Util.getCriterionTypeFromQuery(query, GeneNameCriterion.class).size());
         assertEquals(2, Cai2Util.getCriterionTypeFromQuery(query, SubjectListCriterion.class).size());
         assertEquals(0, Cai2Util.getCriterionTypeFromQuery(query, StringComparisonCriterion.class).size());
+    }
+    
+    @Test
+    public void testRetrieveValidSurvivalValueDefinitions() {
+        
+        Set <SurvivalValueDefinition> survivalValues = new HashSet<SurvivalValueDefinition>();
+        
+        AnnotationDefinition validStartDate = new AnnotationDefinition();
+        validStartDate.setDataType(AnnotationTypeEnum.DATE);
+        
+        AnnotationDefinition validDeathDate = new AnnotationDefinition();
+        validDeathDate.setDataType(AnnotationTypeEnum.DATE);
+        
+        AnnotationDefinition validFollowupDate = new AnnotationDefinition();
+        validFollowupDate.setDataType(AnnotationTypeEnum.DATE);
+        
+        SurvivalValueDefinition validSurvivalDefinition = new SurvivalValueDefinition();
+        validSurvivalDefinition.setSurvivalStartDate(validStartDate);
+        validSurvivalDefinition.setDeathDate(validDeathDate);
+        validSurvivalDefinition.setLastFollowupDate(validFollowupDate);
+        validSurvivalDefinition.setName("validName");
+        
+        SurvivalValueDefinition invalidSurvivalDefinition1 = new SurvivalValueDefinition(); // null start
+        invalidSurvivalDefinition1.setDeathDate(validDeathDate);
+        invalidSurvivalDefinition1.setLastFollowupDate(validFollowupDate);
+        
+        SurvivalValueDefinition invalidSurvivalDefinition2 = new SurvivalValueDefinition(); // null death
+        invalidSurvivalDefinition2.setSurvivalStartDate(validStartDate);
+        invalidSurvivalDefinition2.setLastFollowupDate(validFollowupDate);
+        
+        SurvivalValueDefinition invalidSurvivalDefinition3 = new SurvivalValueDefinition(); // null followup
+        invalidSurvivalDefinition3.setSurvivalStartDate(validStartDate);
+        invalidSurvivalDefinition3.setDeathDate(validDeathDate);
+        
+        SurvivalValueDefinition invalidSurvivalDefinition4 = new SurvivalValueDefinition(); // start and followup equal
+        invalidSurvivalDefinition4.setSurvivalStartDate(validStartDate);
+        invalidSurvivalDefinition4.setLastFollowupDate(validStartDate);
+        invalidSurvivalDefinition4.setDeathDate(validDeathDate);
+        
+        SurvivalValueDefinition invalidSurvivalDefinition5 = new SurvivalValueDefinition(); // followup and death are equal
+        invalidSurvivalDefinition5.setSurvivalStartDate(validStartDate);
+        invalidSurvivalDefinition5.setLastFollowupDate(validFollowupDate);
+        invalidSurvivalDefinition5.setDeathDate(validFollowupDate);
+        
+        SurvivalValueDefinition invalidSurvivalDefinition6 = new SurvivalValueDefinition(); // start and death are equal
+        invalidSurvivalDefinition6.setSurvivalStartDate(validStartDate);
+        invalidSurvivalDefinition6.setLastFollowupDate(validFollowupDate);
+        invalidSurvivalDefinition6.setDeathDate(validStartDate);
+        
+        SurvivalValueDefinition invalidSurvivalDefinition7 = new SurvivalValueDefinition(); // start not a date
+        invalidSurvivalDefinition7.setSurvivalStartDate(new AnnotationDefinition());
+        invalidSurvivalDefinition7.setLastFollowupDate(validFollowupDate);
+        invalidSurvivalDefinition7.setDeathDate(validStartDate);
+        
+        SurvivalValueDefinition invalidSurvivalDefinition8 = new SurvivalValueDefinition(); // followup not a date
+        invalidSurvivalDefinition8.setSurvivalStartDate(validStartDate);
+        invalidSurvivalDefinition8.setLastFollowupDate(new AnnotationDefinition());
+        invalidSurvivalDefinition8.setDeathDate(validStartDate);
+        
+        SurvivalValueDefinition invalidSurvivalDefinition9 = new SurvivalValueDefinition(); // death not a date
+        invalidSurvivalDefinition9.setSurvivalStartDate(validStartDate);
+        invalidSurvivalDefinition9.setLastFollowupDate(validFollowupDate);
+        invalidSurvivalDefinition9.setDeathDate(new AnnotationDefinition());
+        
+        survivalValues.add(validSurvivalDefinition);
+        survivalValues.add(invalidSurvivalDefinition1);
+        survivalValues.add(invalidSurvivalDefinition2);
+        survivalValues.add(invalidSurvivalDefinition3);
+        survivalValues.add(invalidSurvivalDefinition4);
+        survivalValues.add(invalidSurvivalDefinition5);
+        survivalValues.add(invalidSurvivalDefinition6);
+        survivalValues.add(invalidSurvivalDefinition7);
+        survivalValues.add(invalidSurvivalDefinition8);
+        survivalValues.add(invalidSurvivalDefinition9);
+        
+        assertEquals(1, Cai2Util.retrieveValidSurvivalValueDefinitions(survivalValues).size());
+        
+        
     }
 }

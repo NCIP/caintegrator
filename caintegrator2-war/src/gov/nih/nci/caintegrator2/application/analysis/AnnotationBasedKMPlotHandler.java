@@ -135,7 +135,8 @@ class AnnotationBasedKMPlotHandler extends AbstractKMPlotHandler {
     /**
      * {@inheritDoc}
      */
-    KMPlot createPlot(KMPlotService kmPlotService) throws InvalidCriterionException {
+    KMPlot createPlot(KMPlotService kmPlotService) throws InvalidCriterionException, 
+    InvalidSurvivalValueDefinitionException {
         validateSurvivalValueDefinition();
         KMPlotConfiguration configuration = new KMPlotConfiguration();
         AnnotationDefinition groupAnnotationField = kmParameters.getSelectedAnnotation(); 

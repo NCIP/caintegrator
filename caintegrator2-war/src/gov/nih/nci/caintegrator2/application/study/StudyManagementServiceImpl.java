@@ -947,17 +947,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public SurvivalValueDefinition createNewSurvivalValueDefinition(Study study) {
-        SurvivalValueDefinition survivalValueDefinition = new SurvivalValueDefinition();
-        study.getSurvivalValueDefinitionCollection().add(survivalValueDefinition);
-        survivalValueDefinition.setName("[New Name]");
-        getDao().save(study);
-        return survivalValueDefinition;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
     public void removeSurvivalValueDefinition(Study study, SurvivalValueDefinition survivalValueDefinition) {
        study.getSurvivalValueDefinitionCollection().remove(survivalValueDefinition);
        Collection <SurvivalValueDefinition> objectsToRemove = new HashSet<SurvivalValueDefinition>();

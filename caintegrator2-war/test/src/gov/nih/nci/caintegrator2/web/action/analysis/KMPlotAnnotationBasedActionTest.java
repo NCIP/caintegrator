@@ -132,6 +132,7 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
     
     private PermissibleValue val1 = new PermissibleValue();
     private PermissibleValue val2 = new PermissibleValue();
+    private SurvivalValueDefinition survivalValue;
     
     @Before
     public void setUp() {
@@ -173,8 +174,19 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
         subjectDef2.setId(Long.valueOf(2));
         study.getSubjectAnnotationCollection().add(subjectDef1);
         study.getSubjectAnnotationCollection().add(subjectDef2);
-        SurvivalValueDefinition survivalValue = new SurvivalValueDefinition();
+        
+        AnnotationDefinition survivalStartDate = new AnnotationDefinition();
+        survivalStartDate.setDataType(AnnotationTypeEnum.DATE);
+        AnnotationDefinition deathDate = new AnnotationDefinition();
+        deathDate.setDataType(AnnotationTypeEnum.DATE);
+        AnnotationDefinition lastFollowupDate = new AnnotationDefinition();
+        lastFollowupDate.setDataType(AnnotationTypeEnum.DATE);
+        
+        survivalValue = new SurvivalValueDefinition();
         survivalValue.setId(Long.valueOf(1));
+        survivalValue.setSurvivalStartDate(survivalStartDate);
+        survivalValue.setDeathDate(deathDate);
+        survivalValue.setLastFollowupDate(lastFollowupDate);
         study.getSurvivalValueDefinitionCollection().add(survivalValue);
 
         DelimitedTextClinicalSourceConfiguration clinicalConf = new DelimitedTextClinicalSourceConfiguration();
@@ -198,13 +210,11 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
     
     @Test
     public void testPrepare() {
-        SurvivalValueDefinition svd = new SurvivalValueDefinition();
-        svd.setId(Long.valueOf(1));
-        action.getKmPlotParameters().setSurvivalValueDefinition(svd);
+        action.getKmPlotParameters().setSurvivalValueDefinition(survivalValue);
         setupActionVariables();
         action.prepare();
         assertTrue(queryManagementServiceStub.getRefreshedEntityCalled);
-        assertTrue(!action.getKmPlotForm().getSurvivalValueDefinitions().isEmpty());
+        assertEquals(1, action.getKmPlotForm().getSurvivalValueDefinitions().size());
     }
     
     @Test

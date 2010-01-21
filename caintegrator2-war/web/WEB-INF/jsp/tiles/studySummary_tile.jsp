@@ -67,7 +67,7 @@
 	         Survival Definitions:
 	        </td>
 	        
-	        <s:if test="%{studySummary.study.survivalValueDefinitionCollection.empty}">
+	        <s:if test="%{studySummary.validSurvivalValueDefinitions.empty}">
 		        <td> Not Configured </td>
 		        <td />
 		        <td />
@@ -78,7 +78,7 @@
 	        <td />
 	        <td />
         </tr>
-        <s:iterator value="%{studySummary.study.survivalValueDefinitionCollection}" status="survivalValueDefinitionStatus">
+        <s:iterator value="%{studySummary.validSurvivalValueDefinitions}" status="survivalValueDefinitionStatus">
         <tr>
             <td />
             <td><b><i><s:property value="name"/></i></b></td>    

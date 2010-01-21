@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 public class DefineSurvivalDefinitionActionForm {
     
     private String survivalValueDefinitionId;
+    private String survivalValueDefinitionName;
     private String survivalStartDateId;
     private String survivalDeathDateId;
     private String lastFollowupDateId;
@@ -109,6 +110,18 @@ public class DefineSurvivalDefinitionActionForm {
      */
     public void setSurvivalValueDefinitionId(String survivalValueDefinitionId) {
         this.survivalValueDefinitionId = survivalValueDefinitionId;
+    }
+    /**
+     * @return the survivalValueDefinitionName
+     */
+    public String getSurvivalValueDefinitionName() {
+        return survivalValueDefinitionName;
+    }
+    /**
+     * @param survivalValueDefinitionName the survivalValueDefinitionName to set
+     */
+    public void setSurvivalValueDefinitionName(String survivalValueDefinitionName) {
+        this.survivalValueDefinitionName = survivalValueDefinitionName;
     }
     /**
      * @return the survivalStartDateId
@@ -164,6 +177,7 @@ public class DefineSurvivalDefinitionActionForm {
     public void load(SurvivalValueDefinition survivalValueDefinition) {
         if (survivalValueDefinition != null) {
             setSurvivalValueDefinitionId(String.valueOf(survivalValueDefinition.getId()));
+            setSurvivalValueDefinitionName(survivalValueDefinition.getName());
             if (survivalValueDefinition.getSurvivalStartDate() != null) {
                 setSurvivalStartDateId(String.valueOf(survivalValueDefinition.getSurvivalStartDate().getId()));
             }

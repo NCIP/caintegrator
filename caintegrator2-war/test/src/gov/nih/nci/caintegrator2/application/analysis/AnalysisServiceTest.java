@@ -339,7 +339,7 @@ public class AnalysisServiceTest {
     }
     
     private void runKMPlotTest(KMPlotStudyCreator studyCreator, StudySubscription subscription, AbstractKMParameters annotationParameters) 
-    throws InvalidCriterionException, GenesNotFoundInStudyException {
+    throws InvalidCriterionException, GenesNotFoundInStudyException, InvalidSurvivalValueDefinitionException {
         KMPlot kmPlot = service.createKMPlot(subscription, annotationParameters);
         
         assertNotNull(kmPlot);
@@ -349,7 +349,7 @@ public class AnalysisServiceTest {
         try { // Try giving no survival value definition.
             annotationParameters.setSurvivalValueDefinition(null);
             kmPlot = service.createKMPlot(subscription, annotationParameters);
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidSurvivalValueDefinitionException e) {
             exceptionCaught = true;
         }
         assertTrue(exceptionCaught);
@@ -359,14 +359,14 @@ public class AnalysisServiceTest {
         try { // Try giving survivalValueDefinition without a followup date
             annotationParameters.setSurvivalValueDefinition(studyCreator.getSurvivalValueDefinition());
             kmPlot = service.createKMPlot(subscription, annotationParameters);
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidSurvivalValueDefinitionException e) {
             exceptionCaught = true;
         }
         assertTrue(exceptionCaught);
     }
     
     @Test
-    public void testCreateAnnotationBasedKMPlot() throws InvalidCriterionException, GenesNotFoundInStudyException {
+    public void testCreateAnnotationBasedKMPlot() throws InvalidCriterionException, GenesNotFoundInStudyException, InvalidSurvivalValueDefinitionException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
@@ -384,7 +384,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateGeneExpressionBasedKMPlot() throws InvalidCriterionException, GenesNotFoundInStudyException {
+    public void testCreateGeneExpressionBasedKMPlot() throws InvalidCriterionException, GenesNotFoundInStudyException, InvalidSurvivalValueDefinitionException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
@@ -402,7 +402,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateQueryBasedKMPlot() throws InvalidCriterionException, GenesNotFoundInStudyException {
+    public void testCreateQueryBasedKMPlot() throws InvalidCriterionException, GenesNotFoundInStudyException, InvalidSurvivalValueDefinitionException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();

@@ -85,10 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 
@@ -199,6 +202,14 @@ public class DisplayableStudySummary {
      */
     public List<DisplayableImageSource> getImageDataSources() {
         return imageDataSources;
+    }
+    
+    /**
+     * Retrieves valid survival value definitions.
+     * @return valid survival value definitions.
+     */
+    public Set<SurvivalValueDefinition> getValidSurvivalValueDefinitions() {
+        return Cai2Util.retrieveValidSurvivalValueDefinitions(study.getSurvivalValueDefinitionCollection());
     }
 
 }
