@@ -340,7 +340,6 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         return executeQuery();
     }
     
-    @SuppressWarnings("unchecked")
     private void loadGeneList() {
         getQueryForm().getCriteriaGroup().setCriterionTypeName(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
         addCriterionRow();

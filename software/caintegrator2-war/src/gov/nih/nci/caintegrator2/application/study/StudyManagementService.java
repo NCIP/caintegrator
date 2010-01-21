@@ -468,13 +468,6 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
     boolean isDuplicateStudyName(Study study, String username);
 
     /**
-     * Creates a new SurvivalValueDefinition for the study and returns.
-     * @param study - Study to create SurvivalValueDefinition for.
-     * @return newly created object.
-     */
-    SurvivalValueDefinition createNewSurvivalValueDefinition(Study study);
-
-    /**
      * Removes a survivalValueDefinition from a study and deletes the object.
      * @param study - Study to remove from.
      * @param survivalValueDefinition - Object to remove from study.

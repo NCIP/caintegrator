@@ -85,7 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.analysis.InvalidSurvivalValueDefinitionException;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 
@@ -112,6 +114,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
                                                 new HashMap<String, SurvivalValueDefinition>();
     private DefineSurvivalDefinitionActionForm survivalDefinitionFormValues = new DefineSurvivalDefinitionActionForm();
     private String actionType = "";
+    private boolean newDefinition = false;
     
     /**
      * {@inheritDoc}
@@ -123,6 +126,19 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
             addActionError("Must select a Survival Value Definition before edit / delete.");
         }
         actionType = "";
+        validateThreeDateFields();
+    }
+
+    private void validateThreeDateFields() {
+        int numDateFields = 0;
+        for (AnnotationDefinition annotationDefinition : getStudy().getSubjectAnnotationCollection()) {
+            if (AnnotationTypeEnum.DATE.equals(annotationDefinition.getDataType())) {
+                numDateFields++;
+            }
+        }
+        if (numDateFields < 3) {
+            addActionError("Study must have at least 3 different date fields for subject annotations.");
+        }
     }
     
     /**
@@ -135,16 +151,17 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
         populateDateAnnotationDefinitions();
         retrieveFormValues();
         refreshObjectInstances();
+        newDefinition = false;
     }
 
     private void populateSurvivalValueDefinitions() {
-        if (getStudyConfiguration() != null 
-            && getStudyConfiguration().getStudy().getSurvivalValueDefinitionCollection() != null
+        if (getStudy() != null 
+            && getStudy().getSurvivalValueDefinitionCollection() != null
             && survivalValueDefinitions.size() 
-                != getStudyConfiguration().getStudy().getSurvivalValueDefinitionCollection().size()) {
+                != getStudy().getSurvivalValueDefinitionCollection().size()) {
             survivalValueDefinitions = new HashMap<String, SurvivalValueDefinition>();
             for (SurvivalValueDefinition def 
-                    : getStudyConfiguration().getStudy().getSurvivalValueDefinitionCollection()) {
+                    : getStudy().getSurvivalValueDefinitionCollection()) {
                 survivalValueDefinitions.put(def.getId().toString(), def);
             }
         }
@@ -154,7 +171,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
         if (dateAnnotationDefinitions.isEmpty()) {
             dateAnnotationDefinitions = new HashMap<String, AnnotationDefinition>();
             for (AnnotationDefinition definition 
-                    : getStudyConfiguration().getStudy().getSubjectAnnotationCollection()) {
+                    : getStudy().getSubjectAnnotationCollection()) {
                 if (AnnotationTypeEnum.DATE.equals(definition.getDataType())) {
                     dateAnnotationDefinitions.put(definition.getId().toString(), definition);
                 }
@@ -182,23 +199,19 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
 
     @SuppressWarnings("PMD.CyclomaticComplexity") // Null and empty checks
     private void retrieveFormValues() {
-        if (survivalDefinitionFormValues.getSurvivalValueDefinitionId() != null 
-             && !StringUtils.isEmpty(survivalDefinitionFormValues.getSurvivalValueDefinitionId())) {
+        if (!StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalValueDefinitionId())) {
             survivalValueDefinition.setId(Long.valueOf(survivalDefinitionFormValues.getSurvivalValueDefinitionId()));
         }
-        
-        if (survivalDefinitionFormValues.getSurvivalStartDateId() != null
-             && !StringUtils.isEmpty(survivalDefinitionFormValues.getSurvivalStartDateId())) {
+        if (!StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalValueDefinitionName())) {
+            survivalValueDefinition.setName(survivalDefinitionFormValues.getSurvivalValueDefinitionName());
+        }
+        if (!StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalStartDateId())) {
             survivalStartDate.setId(Long.valueOf(survivalDefinitionFormValues.getSurvivalStartDateId()));
         }
-        
-        if (survivalDefinitionFormValues.getSurvivalDeathDateId() != null
-             && !StringUtils.isEmpty(survivalDefinitionFormValues.getSurvivalDeathDateId())) {
+        if (!StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalDeathDateId())) {
             survivalDeathDate.setId(Long.valueOf(survivalDefinitionFormValues.getSurvivalDeathDateId()));
         }
-        
-        if (survivalDefinitionFormValues.getLastFollowupDateId() != null
-             && !StringUtils.isEmpty(survivalDefinitionFormValues.getLastFollowupDateId())) {
+        if (!StringUtils.isBlank(survivalDefinitionFormValues.getLastFollowupDateId())) {
             lastFollowupDate.setId(Long.valueOf(survivalDefinitionFormValues.getLastFollowupDateId()));
         }
     }
@@ -241,9 +254,8 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
      * @return the Struts result.
      */
     public String newSurvivalValueDefinition() {
-        setLastModifiedByCurrentUser();
-        survivalValueDefinition = getStudyManagementService().
-                                    createNewSurvivalValueDefinition(getStudyConfiguration().getStudy());
+        newDefinition = true;
+        survivalValueDefinition = new SurvivalValueDefinition();
         survivalDefinitionFormValues.clear();
         populateSurvivalValueDefinitions();
         return SUCCESS;
@@ -257,7 +269,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
     public String deleteSurvivalValueDefinition() {
         setLastModifiedByCurrentUser();
         getStudyManagementService().
-            removeSurvivalValueDefinition(getStudyConfiguration().getStudy(), getSurvivalValueDefinition());
+            removeSurvivalValueDefinition(getStudy(), getSurvivalValueDefinition());
         this.clear();
         populateSurvivalValueDefinitions();
         return SUCCESS;
@@ -269,19 +281,43 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
      * @return the Struts result.
      */
     public String saveSurvivalValueDefinition() {
-        if (survivalStartDate.getId() != null) {
-            survivalValueDefinition.setSurvivalStartDate(survivalStartDate);
+        survivalValueDefinition.setSurvivalStartDate(survivalStartDate);
+        survivalValueDefinition.setDeathDate(survivalDeathDate);
+        survivalValueDefinition.setLastFollowupDate(lastFollowupDate);
+        survivalValueDefinition.setName(survivalDefinitionFormValues.getSurvivalValueDefinitionName());
+        try {
+            validateSurvivalValueDefinition();
+        } catch (InvalidSurvivalValueDefinitionException e) {
+            if (survivalValueDefinition.getId() == null) {
+                newDefinition = true;
+            }
+            addActionError("Unable to save Survival Value Definition: " + e.getMessage());
+            return INPUT;
         }
-        if (survivalDeathDate.getId() != null) {
-            survivalValueDefinition.setDeathDate(survivalDeathDate);
+        if (!getStudy().getSurvivalValueDefinitionCollection().contains(survivalValueDefinition)) {
+            getStudy().getSurvivalValueDefinitionCollection().add(survivalValueDefinition);
         }
-        if (lastFollowupDate.getId() != null) {
-            survivalValueDefinition.setLastFollowupDate(lastFollowupDate);
-        }
-        setLastModifiedByCurrentUser();
         getStudyManagementService().save(getStudyConfiguration());
+        setLastModifiedByCurrentUser();
         survivalDefinitionFormValues.clear();
         return SUCCESS;
+    }
+
+    /**
+     * @throws InvalidSurvivalValueDefinitionException
+     */
+    private void validateSurvivalValueDefinition() throws InvalidSurvivalValueDefinitionException {
+        if (StringUtils.isBlank(survivalValueDefinition.getName())) {
+            throw new InvalidSurvivalValueDefinitionException("Must enter a name for Survival Value Definition.");
+        }
+        for (SurvivalValueDefinition definition : getStudy().getSurvivalValueDefinitionCollection()) {
+            if (definition != survivalValueDefinition
+                && definition.getName().equalsIgnoreCase(survivalValueDefinition.getName())) {
+                throw new InvalidSurvivalValueDefinitionException("That name already exists, must enter a unique " 
+                        + "name for Survival Value Definition.");
+            }
+        }
+        Cai2Util.validateSurvivalValueDefinition(survivalValueDefinition);
     }
 
     /**
@@ -356,6 +392,13 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
      */
     public void setActionType(String actionType) {
         this.actionType = actionType;
+    }
+
+    /**
+     * @return the newSurvivalValueDefinition
+     */
+    public boolean isNewDefinition() {
+        return newDefinition;
     }
 
 }

@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
@@ -122,6 +123,7 @@ public class KMPlotGeneExpressionBasedActionTest extends AbstractSessionBasedTes
     private QueryManagementServiceStub queryManagementServiceStub = new QueryManagementServiceStub();
     private AnalysisServiceStub analysisServiceStub = new AnalysisServiceStub();
     private KMPlotServiceCaIntegratorImpl plotService = new KMPlotServiceCaIntegratorImpl();
+    private SurvivalValueDefinition survivalValue;
     
     @Before
     public void setUp() {
@@ -149,18 +151,26 @@ public class KMPlotGeneExpressionBasedActionTest extends AbstractSessionBasedTes
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
         study.setStudyConfiguration(studyConfiguration);
-        SurvivalValueDefinition survivalValue = new SurvivalValueDefinition();
+        
+        AnnotationDefinition survivalStartDate = new AnnotationDefinition();
+        survivalStartDate.setDataType(AnnotationTypeEnum.DATE);
+        AnnotationDefinition deathDate = new AnnotationDefinition();
+        deathDate.setDataType(AnnotationTypeEnum.DATE);
+        AnnotationDefinition lastFollowupDate = new AnnotationDefinition();
+        lastFollowupDate.setDataType(AnnotationTypeEnum.DATE);
+        survivalValue = new SurvivalValueDefinition();
         survivalValue.setId(Long.valueOf(1));
+        survivalValue.setSurvivalStartDate(survivalStartDate);
+        survivalValue.setDeathDate(deathDate);
+        survivalValue.setLastFollowupDate(lastFollowupDate);
         study.getSurvivalValueDefinitionCollection().add(survivalValue);
         return study;
     }
     
     @Test
     public void testPrepare() {
-        SurvivalValueDefinition svd = new SurvivalValueDefinition();
-        svd.setId(Long.valueOf(1));
+        action.getKmPlotParameters().setSurvivalValueDefinition(survivalValue);
         action.getKmPlotForm().setSurvivalValueDefinitionId("1");
-        action.getKmPlotParameters().setSurvivalValueDefinition(svd);
         setupActionVariables();
         action.prepare();
         assertTrue(queryManagementServiceStub.getRefreshedEntityCalled);

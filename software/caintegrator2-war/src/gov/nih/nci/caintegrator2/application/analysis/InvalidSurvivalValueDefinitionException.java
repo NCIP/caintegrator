@@ -83,92 +83,32 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.study.management;
-
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
-import gov.nih.nci.security.exceptions.CSSecurityException;
-
-import com.opensymphony.xwork2.ModelDriven;
+package gov.nih.nci.caintegrator2.application.analysis;
 
 /**
- * Base class for actions that require retrieval of persistent <code>StudyConfigurations</code>.
+ * Indicates a problem where a SurvivalValueDefinition is not valid.
  */
-public abstract class AbstractStudyAction extends AbstractStudyManagementAction 
-implements ModelDriven<StudyConfiguration> {
-    
-    private StudyConfiguration studyConfiguration = new StudyConfiguration();
-    private StudyManagementService studyManagementService;
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void prepare() {
-        super.prepare();
-        if (studyConfiguration.getId() != null) {
-            try {
-                studyConfiguration = studyManagementService.getRefreshedSecureStudyConfiguration(
-                        SessionHelper.getInstance().getUsername(), studyConfiguration.getId());
-            } catch (CSSecurityException e) {
-                setAuthorizedPage(false);
-            }
-            getDisplayableWorkspace().setCurrentStudyConfiguration(studyConfiguration);
-        }
-    }
+public class InvalidSurvivalValueDefinitionException extends Exception {
+
+    private static final long serialVersionUID = 1L;
 
     /**
-     * {@inheritDoc}
+     * Creates a new instance based on an underlying exception.
+     * 
+     * @param message describes the connection problem
+     * @param cause the source exception
      */
-    public final StudyConfiguration getModel() {
-        return getStudyConfiguration();
-    }
-
-    /**
-     * @return the studyConfiguration
-     */
-    public final StudyConfiguration getStudyConfiguration() {
-        return studyConfiguration;
-    }
-
-    /**
-     * @param studyConfiguration the studyConfiguration to set
-     */
-    public final void setStudyConfiguration(StudyConfiguration studyConfiguration) {
-        this.studyConfiguration = studyConfiguration;
-    }
-
-    /**
-     * @return the studyManagementService
-     */
-    public final StudyManagementService getStudyManagementService() {
-        return studyManagementService;
-    }
-
-    /**
-     * @param studyManagementService the studyManagementService to set
-     */
-    public final void setStudyManagementService(StudyManagementService studyManagementService) {
-        this.studyManagementService = studyManagementService;
+    public InvalidSurvivalValueDefinitionException(String message, Throwable cause) {
+        super(message, cause);
     }
     
     /**
-     * Sets the lastModifiedBy attribute of a StudyConfiguration to the current user's workspace.
+     * Creates a new instance.
+     * 
+     * @param message describes the problem.
      */
-    protected void setLastModifiedByCurrentUser() {
-        getStudyManagementService().setLastModifiedByCurrentUser(getStudyConfiguration(), getWorkspace());
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Study getStudy() {
-        if (getStudyConfiguration() != null) {
-            return getStudyConfiguration().getStudy();
-        }
-        return null;
+    public InvalidSurvivalValueDefinitionException(String message) {
+        super(message);
     }
 
 }

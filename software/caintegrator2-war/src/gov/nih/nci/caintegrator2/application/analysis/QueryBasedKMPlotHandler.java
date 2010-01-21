@@ -125,7 +125,8 @@ class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
      * {@inheritDoc}
      */
     @Override
-    KMPlot createPlot(KMPlotService kmPlotService) throws InvalidCriterionException {
+    KMPlot createPlot(KMPlotService kmPlotService) throws InvalidCriterionException, 
+        InvalidSurvivalValueDefinitionException {
         validateSurvivalValueDefinition();
         KMPlotConfiguration configuration = new KMPlotConfiguration();
         Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();

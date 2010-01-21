@@ -236,6 +236,8 @@
         
         <action name="editSurvivalValueDefinitions" method="editSurvivalValueDefinitions" class="defineSurvivalDefinitionAction">
             <result type="tiles">editSurvivalValueDefinitions</result>
+            <result name="input" type="tiles">genericError</result>
+            <result name="error" type="tiles">genericError</result>
         </action>
         
         <action name="editSurvivalValueDefinition" method="editSurvivalValueDefinition" class="defineSurvivalDefinitionAction">
@@ -245,6 +247,7 @@
         
         <action name="newSurvivalValueDefinition" method="newSurvivalValueDefinition" class="defineSurvivalDefinitionAction">
             <result type="tiles">editSurvivalValueDefinitions</result>
+            <result name="input" type="tiles">editSurvivalValueDefinitions</result>
         </action>
         
         <action name="deleteSurvivalValueDefinition" method="deleteSurvivalValueDefinition" class="defineSurvivalDefinitionAction">
@@ -257,6 +260,7 @@
                 <param name="actionName">editStudy</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
             </result>
+            <result name="input" type="tiles">editSurvivalValueDefinitions</result>
         </action>
         
         <action name="cancelSurvivalValueDefinition" method="cancel" class="defineSurvivalDefinitionAction">

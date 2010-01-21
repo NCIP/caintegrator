@@ -252,7 +252,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
      * {@inheritDoc}
      */
     public KMPlot createKMPlot(StudySubscription subscription, AbstractKMParameters kmParameters) 
-        throws InvalidCriterionException, GenesNotFoundInStudyException {
+        throws InvalidCriterionException, GenesNotFoundInStudyException, InvalidSurvivalValueDefinitionException {
         AbstractKMPlotHandler kmPlotHandler = AbstractKMPlotHandler.createKMPlotHandler(
             subscription, getDao(), kmParameters.getSurvivalValueDefinition(), queryManagementService, kmParameters);
         kmPlotHandler.setupAndValidateParameters(this);

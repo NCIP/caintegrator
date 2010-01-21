@@ -667,17 +667,10 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testCreateNewSurvivalValueDefinition() {
-        Study study = StudyConfigurationFactory.createNewStudyConfiguration().getStudy();
-        SurvivalValueDefinition definition = studyManagementService.createNewSurvivalValueDefinition(study);
-        assertTrue(study.getSurvivalValueDefinitionCollection().contains(definition));
-        assertTrue(daoStub.saveCalled);
-    }
-    
-    @Test
     public void testRemoveSurvivalValueDefinition() {
         Study study = StudyConfigurationFactory.createNewStudyConfiguration().getStudy();
-        SurvivalValueDefinition definition = studyManagementService.createNewSurvivalValueDefinition(study);
+        SurvivalValueDefinition definition = new SurvivalValueDefinition();
+        study.getSurvivalValueDefinitionCollection().add(definition);
         assertTrue(study.getSurvivalValueDefinitionCollection().contains(definition));
         
         studyManagementService.removeSurvivalValueDefinition(study, definition);

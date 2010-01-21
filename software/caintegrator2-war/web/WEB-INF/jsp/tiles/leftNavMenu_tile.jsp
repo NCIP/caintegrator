@@ -5,7 +5,7 @@
 <div id="leftnav">
     
     <!--Study Logo-->
-    <s:if test="currentStudy != null">
+    <s:if test="studySubscription != null">
 	    <div id="study_logo">
 	        <s:set name="logo" id="logo" value="'retrieveStudyLogo.action'"/>
 	        <img src="${logo}" alt="Study Logo" height="72" width="200"/>
@@ -23,7 +23,7 @@
     
     <s:set name="sessionHelper" value="#session['sessionHelper']" />
 
-    <s:if test="currentStudy != null">    
+    <s:if test="studySubscription != null">    
     <ul class="menu">
         <li class="stdnavforinvestigator">
             <div><s:property value="currentStudy.shortTitleText"/></div>

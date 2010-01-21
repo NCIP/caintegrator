@@ -86,11 +86,14 @@
 package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.cagrid.common.ZipUtilities;
+import gov.nih.nci.caintegrator2.application.analysis.InvalidSurvivalValueDefinitionException;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -128,7 +131,7 @@ import org.apache.commons.lang.math.NumberUtils;
 /**
  * This is a static utility class used by different caIntegrator2 objects. 
  */
-@SuppressWarnings({ "PMD.CyclomaticComplexity" }) // See method retrieveValueFromRowColumn
+@SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" }) // See method retrieveValueFromRowColumn
 public final class Cai2Util {
     private static final Integer BUFFER_SIZE = 4096;
     private static final String ZIP_FILE_SUFFIX = ".zip";
@@ -619,5 +622,51 @@ public final class Cai2Util {
             
         }
     }
+   
+   /**
+    * Validates the survival value definition, and throws an exception if it is invalid.
+    * @param survivalValueDefinition to validate.
+    * @throws InvalidSurvivalValueDefinitionException if the definition is invalid.
+    */
+   public static void validateSurvivalValueDefinition(SurvivalValueDefinition survivalValueDefinition) 
+   throws InvalidSurvivalValueDefinitionException {
+       if (survivalValueDefinition.getSurvivalStartDate() == null
+            || survivalValueDefinition.getDeathDate() == null 
+            || survivalValueDefinition.getLastFollowupDate() == null) {
+           throw new InvalidSurvivalValueDefinitionException("Must have a Start Date, Death Date, and Last Followup " 
+                   + " Date defined for definition '" + survivalValueDefinition.getName() + "'.");
+       }
+       if (survivalValueDefinition.getSurvivalStartDate() == survivalValueDefinition.getDeathDate()
+           || survivalValueDefinition.getSurvivalStartDate() == survivalValueDefinition.getLastFollowupDate() 
+           || survivalValueDefinition.getLastFollowupDate() == survivalValueDefinition.getDeathDate()) {
+           throw new InvalidSurvivalValueDefinitionException("Start Date, Death Date, and Last Followup " 
+                   + " Date must be unique for definition '" + survivalValueDefinition.getName() + "'.");
+       }
+       if (!AnnotationTypeEnum.DATE.equals(survivalValueDefinition.getSurvivalStartDate().getDataType())
+           || !AnnotationTypeEnum.DATE.equals(survivalValueDefinition.getDeathDate().getDataType())
+           || !AnnotationTypeEnum.DATE.equals(survivalValueDefinition.getLastFollowupDate().getDataType())) {
+           throw new InvalidSurvivalValueDefinitionException("Start Date, Death Date, and Last Followup "
+                   + " Date must all be a 'DATE' type for definition '" + survivalValueDefinition.getName() + "'.");
+       }
+   }
+   
+   /**
+    * Validates the given SurvivalvalueDefinitions and only returns valid ones.
+    * @param survivalValueDefinitions to validate.
+    * @return valid survival value definitions.
+    */
+   public static Set<SurvivalValueDefinition> retrieveValidSurvivalValueDefinitions(
+           Collection<SurvivalValueDefinition> survivalValueDefinitions) {
+       Set<SurvivalValueDefinition> validDefinitions = new HashSet<SurvivalValueDefinition>();
+       for (SurvivalValueDefinition survivalValueDefinition : survivalValueDefinitions) {
+           try {
+               Cai2Util.validateSurvivalValueDefinition(survivalValueDefinition);
+           } catch (InvalidSurvivalValueDefinitionException e) {
+              continue;
+           }
+           validDefinitions.add(survivalValueDefinition);
+       }
+       return validDefinitions;
+   }
     
 }
