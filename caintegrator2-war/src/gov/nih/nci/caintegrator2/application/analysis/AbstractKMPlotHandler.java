@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -148,7 +149,7 @@ abstract class AbstractKMPlotHandler {
     }
     
     abstract KMPlot createPlot(KMPlotService kmPlotService) 
-        throws InvalidCriterionException; 
+        throws InvalidCriterionException, InvalidSurvivalValueDefinitionException; 
     
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // empty default implementation
     void setupAndValidateParameters(AnalysisService analysisService) throws GenesNotFoundInStudyException {
@@ -213,16 +214,11 @@ abstract class AbstractKMPlotHandler {
         return ((yearsBetween * MONTHS_IN_YEAR) + monthsBetween);
     }
     
-    protected void validateSurvivalValueDefinition() {
+    protected void validateSurvivalValueDefinition() throws InvalidSurvivalValueDefinitionException {
         if (survivalValueDefinition == null) {
-            throw new IllegalArgumentException("SurvivalValueDefinition cannot be null");
+            throw new InvalidSurvivalValueDefinitionException("SurvivalValueDefinition cannot be null");
         }
-        if (survivalValueDefinition.getSurvivalStartDate() == null
-             || survivalValueDefinition.getDeathDate() == null 
-             || survivalValueDefinition.getLastFollowupDate() == null) {
-            throw new IllegalArgumentException("Must have a Start Date, Death Date, and Last Followup Date" 
-                    + " defined for definition '" + survivalValueDefinition.getName() + "'.");
-        }
+        Cai2Util.validateSurvivalValueDefinition(survivalValueDefinition);
     }
 
     /**

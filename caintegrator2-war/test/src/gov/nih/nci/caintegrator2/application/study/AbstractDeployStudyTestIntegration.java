@@ -533,12 +533,13 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     }
     
     private void loadSurvivalValueDefinition() {
-        SurvivalValueDefinition definition = service.createNewSurvivalValueDefinition(studyConfiguration.getStudy());
+        SurvivalValueDefinition definition = new SurvivalValueDefinition();
         definition.setSurvivalStartDate(dao.getAnnotationDefinition(getSurvivalStartDateName()));
         definition.setDeathDate(dao.getAnnotationDefinition(getDeathDateName()));
         definition.setLastFollowupDate(dao.getAnnotationDefinition(getLastFollowupDateName()));
         definition.setName("Survival From Start Date");
-        dao.save(definition);
+        studyConfiguration.getStudy().getSurvivalValueDefinitionCollection().add(definition);
+        service.save(getStudyConfiguration());
     }
     
     abstract protected String getSurvivalStartDateName();

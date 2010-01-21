@@ -231,7 +231,7 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     /**
      * @return the study
      */
-    protected final Study getStudy() {
+    protected Study getStudy() {
         if (getStudySubscription() != null) {
             return getStudySubscription().getStudy();
         } else {

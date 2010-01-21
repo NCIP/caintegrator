@@ -85,10 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.CaIntegrator2EntityRefresher;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
@@ -104,6 +100,10 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Interface to analysis functionality.
@@ -173,9 +173,10 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @return the plot object.
      * @throws InvalidCriterionException if the Criterion is no longer valid for queries.
      * @throws GenesNotFoundInStudyException if the criterion is supposed to have gene input and none found in study. 
+     * @throws InvalidSurvivalValueDefinitionException if the survival value definition is invalid.
      */
     KMPlot createKMPlot(StudySubscription subscription, AbstractKMParameters kmParameters) 
-    throws InvalidCriterionException, GenesNotFoundInStudyException;
+    throws InvalidCriterionException, GenesNotFoundInStudyException, InvalidSurvivalValueDefinitionException;
 
     /**
      * Creates the GeneExpressionPlotGroup which is a group of plots based on the input parameters, the plot
@@ -214,4 +215,5 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @return refreshed studySubscription.
      */
     StudySubscription getRefreshedStudySubscription(StudySubscription studySubscription);
+    
 }

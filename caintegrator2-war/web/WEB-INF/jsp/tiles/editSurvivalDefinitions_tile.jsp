@@ -43,14 +43,18 @@
             	    <s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.survivalDefinitionForm.action = 'editSurvivalValueDefinition.action';document.survivalDefinitionForm.actionType.value = 'modify';document.survivalDefinitionForm.submit();"><span class="btn_img"><span class="edit">Edit</span></span></s:a>
             	    <s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.survivalDefinitionForm.action = 'cancelSurvivalValueDefinition.action';document.survivalDefinitionForm.submit();"><span class="btn_img"><span class="cancel">Cancel</span></span></s:a>
                 </s:form>
-                <s:if test="%{survivalValueDefinition.id != null}">
+                <s:if test="%{survivalValueDefinition.id != null || newDefinition}">
                 <br><br>
+                <s:if test="%{!newDefinition}">
                 <h1>Survival Value Definition Properties for '<s:property value="survivalValueDefinition.name" />'</h1>
-                
+                </s:if>
+                <s:else>
+                <h1>Properties for New Survival Value Definition</h1>
+                </s:else>
                 <s:form>
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="survivalValueDefinition.id" />
-                    <s:textfield label="Name" name="survivalValueDefinition.name" />
+                    <s:textfield label="Name" name="survivalDefinitionFormValues.survivalValueDefinitionName" />
                     <s:select name="survivalDefinitionFormValues.survivalStartDateId" 
                               list="dateAnnotationDefinitions" 
                               listValue="value.displayName" label = "Survival Start Date" />

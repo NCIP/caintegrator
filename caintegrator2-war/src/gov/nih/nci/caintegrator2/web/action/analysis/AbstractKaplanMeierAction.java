@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
@@ -176,12 +177,19 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     
     private void populateSurvivalValueDefinitions() {
         if (getStudy() != null 
-            && getStudy().getSurvivalValueDefinitionCollection() != null
-            && getKmPlotForm().getSurvivalValueDefinitions().size() 
-                != getStudy().getSurvivalValueDefinitionCollection().size()) {
+            && getStudy().getSurvivalValueDefinitionCollection() != null) {
+            Set<SurvivalValueDefinition> validDefinitions = new HashSet<SurvivalValueDefinition>();
+            validDefinitions = Cai2Util.retrieveValidSurvivalValueDefinitions(getStudy()
+                    .getSurvivalValueDefinitionCollection());
+            addValidDefinitionsToForm(validDefinitions);
+        }
+    }
+
+    private void addValidDefinitionsToForm(Set<SurvivalValueDefinition> validDefinitions) {
+        if (getKmPlotForm().getSurvivalValueDefinitions().size() 
+            != validDefinitions.size()) {
             getKmPlotForm().setSurvivalValueDefinitions(new HashMap<String, SurvivalValueDefinition>());
-            for (SurvivalValueDefinition def 
-                    : getStudy().getSurvivalValueDefinitionCollection()) {
+            for (SurvivalValueDefinition def : validDefinitions) {
                 getKmPlotForm().getSurvivalValueDefinitions().put(def.getId().toString(), def);
             }
         }
@@ -194,7 +202,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     public void validate() {
         super.validate();
         if (!hasActionErrors() && getKmPlotForm().getSurvivalValueDefinitions().isEmpty()) {
-            addActionError("There are no survival value definitions defined for this study, "
+            addActionError("There are no valid survival value definitions defined for this study, "
                     + "unable to create Kaplan-Meier plot.");
         }
     }
