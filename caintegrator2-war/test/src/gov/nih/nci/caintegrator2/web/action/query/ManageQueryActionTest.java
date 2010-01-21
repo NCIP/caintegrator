@@ -94,10 +94,12 @@ import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectIdentifier;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
@@ -146,6 +148,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
 
     private StudySubscription createStudySubscription(long id) {
         StudySubscription studySubscription = new StudySubscription();
+        addGeneList(studySubscription);
         addSubjectList(studySubscription);
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -157,6 +160,16 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         return studySubscription;
     }
     
+    private void addGeneList(StudySubscription studySubscription) {
+        GeneList geneList = new GeneList();
+        geneList.setName("GeneList1");
+        geneList.setSubscription(studySubscription);
+        Gene gene = new Gene();
+        gene.setSymbol("egfr");
+        geneList.getGeneCollection().add(gene);
+        studySubscription.getListCollection().add(geneList);
+    }
+    
     private void addSubjectList(StudySubscription studySubscription) {
         SubjectList subjectList = new SubjectList();
         subjectList.setName("SubjectList1");
@@ -165,8 +178,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         subjectList.getSubjectIdentifiers().add(subjectIdentifier);
         studySubscription.getListCollection().add(subjectList);
     }
-
-
+    
     @Test
     @SuppressWarnings({"PMD"})
     public void testExecute() {
@@ -185,6 +197,18 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertTrue(queryManagementService.executeGenomicDataQueryCalled);
         
+        // test load & execute my gene list
+        manageQueryAction.setSelectedAction("loadGeneListExecute");
+        manageQueryAction.setGeneListName("GeneList1");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertTrue(queryManagementService.executeCalled);
+        assertEquals("searchResults", manageQueryAction.getDisplayTab());
+        // Clean up after testing
+        manageQueryAction.setGeneListName("");
+        manageQueryAction.setSelectedAction("remove");
+        manageQueryAction.setRowNumber("0");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
         // test load & execute my subject list
         manageQueryAction.setSelectedAction("loadSubjectListExecute");
         manageQueryAction.setSubjectListName("SubjectList1");
@@ -196,7 +220,6 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.setSelectedAction("remove");
         manageQueryAction.setRowNumber("0");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-
         
         // test save query
         manageQueryAction.setSelectedAction("saveQuery");

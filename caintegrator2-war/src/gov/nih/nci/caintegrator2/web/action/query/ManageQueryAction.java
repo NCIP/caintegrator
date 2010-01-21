@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-
 import gov.nih.nci.caintegrator2.application.query.GenomicDataResultRowComparator;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
@@ -97,14 +96,18 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.DownloadableFile;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 import gov.nih.nci.caintegrator2.web.action.query.form.AbstractCriterionRow;
 import gov.nih.nci.caintegrator2.web.action.query.form.CriterionRowTypeEnum;
+import gov.nih.nci.caintegrator2.web.action.query.form.GeneNameCriterionWrapper;
 import gov.nih.nci.caintegrator2.web.action.query.form.MultiSelectParameter;
 import gov.nih.nci.caintegrator2.web.action.query.form.SubjectListCriterionWrapper;
+import gov.nih.nci.caintegrator2.web.action.query.form.TextFieldParameter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -142,6 +145,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     private int rowNumber;
     private Long queryId = null;
     private boolean export = false;
+    private String geneListName = "";
     private String subjectListName = "";
     private String subjectListDescription = "";
 
@@ -314,6 +318,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             returnValue = saveSubjectList();
         } else if ("loadSubjectListExecute".equals(selectedAction)) {
             returnValue = loadSubjectListExecute();
+        } else if ("loadGeneListExecute".equals(selectedAction)) {
+            returnValue = loadGeneListExecute();
         } else {
             addActionError("Unknown action '" + selectedAction + "'");
             returnValue = ERROR; 
@@ -325,6 +331,39 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         getQueryForm().createQuery(getStudySubscription());
         setQueryResult(null);
         return SUCCESS;
+    }
+    
+    private String loadGeneListExecute() {
+        createNewQuery();
+        loadGeneList();
+        displayTab = RESULTS_TAB;
+        return executeQuery();
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void loadGeneList() {
+        getQueryForm().getCriteriaGroup().setCriterionTypeName(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
+        addCriterionRow();
+        AbstractCriterionRow criterionRow = getQueryForm().getCriteriaGroup().getRows().get(0);
+        criterionRow.setFieldName(GeneNameCriterionWrapper.FIELD_NAME);
+        updateCriteria();
+        ((TextFieldParameter) criterionRow.getParameters().get(0)).setGeneSymbol(true);
+        ((TextFieldParameter) criterionRow.getParameters().get(0)).setValue(getGeneSymbols());
+        getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENOMIC.getValue());
+        getQueryForm().getResultConfiguration().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());
+        setOpenGeneListName(geneListName);
+    }
+    
+    private String getGeneSymbols() {
+        StringBuffer geneSymbols = new StringBuffer();
+        for (Gene gene : getStudySubscription().getGeneList(geneListName).getGeneCollection()) {
+            if (geneSymbols.length() > 0) {
+                geneSymbols.append(',');
+            }
+            geneSymbols.append(gene.getSymbol());
+        }
+        
+        return geneSymbols.toString();
     }
     
     private String loadSubjectListExecute() {
@@ -747,5 +786,21 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      */
     public void setSubjectListDescription(String subjectListDescription) {
         this.subjectListDescription = subjectListDescription.trim();
+    }
+
+
+    /**
+     * @return the geneListName
+     */
+    public String getGeneListName() {
+        return geneListName;
+    }
+
+
+    /**
+     * @param geneListName the geneListName to set
+     */
+    public void setGeneListName(String geneListName) {
+        this.geneListName = geneListName;
     }
 }
