@@ -251,6 +251,11 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     }
 
     @Override
+    protected String getPlatformName() {
+        return "HG-U133A";
+    }
+
+    @Override
     protected String getPlatformVendor() {
         return "Affymetrix";
     }
