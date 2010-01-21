@@ -91,9 +91,12 @@ import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 /**
  * Wraps access to a single <code>GeneNameCriterion</code>.
  */
-class GeneNameCriterionWrapper extends AbstractGenomicCriterionWrapper {
+public class GeneNameCriterionWrapper extends AbstractGenomicCriterionWrapper {
 
-    static final String FIELD_NAME = "Gene Name";
+    /**
+     * The gene name label.
+     */
+    public static final String FIELD_NAME = "Gene Name";
 
     private final GeneNameCriterion criterion;
 
