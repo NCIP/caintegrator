@@ -137,6 +137,7 @@
                                 <th>Vendor</th>
                                 <th>Array Name(s)</th>
                                 <th>Status</th>
+                                <th>Status Description</th>
                                 <th>Action</th>
                             </tr>
                             <tbody id="platformDeploymentJobStatusTable" />
