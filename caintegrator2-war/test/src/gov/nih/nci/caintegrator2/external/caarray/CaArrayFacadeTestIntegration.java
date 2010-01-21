@@ -158,6 +158,7 @@ public class CaArrayFacadeTestIntegration {
         genomicSource.getServerProfile().setHostname("ncias-d227-v.nci.nih.gov");
         genomicSource.getServerProfile().setPort(31099);
         genomicSource.setExperimentIdentifier("jagla-00034");
+        genomicSource.setPlatformName("HG-U133_Plus_2");
         genomicSource.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
         genomicSource.getSamples().addAll(caArrayFacade.getSamples("jagla-00034", genomicSource.getServerProfile()));
         genomicSource.setStudyConfiguration(StudyConfigurationFactory.createNewStudyConfiguration());
@@ -171,8 +172,8 @@ public class CaArrayFacadeTestIntegration {
         @Override
         public Platform getPlatform(String name) {
             Platform platform = new Platform();
-            platform.setName("HG-U133 Plus 2");
-            ReporterList reporterList = platform.addReporterList("HG-U133 Plus 2", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+            platform.setName("HG-U133_Plus_2");
+            ReporterList reporterList = platform.addReporterList("HG-U133_Plus_2", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             try {
                 AffymetrixCdfReader cdfReader = AffymetrixCdfReader.create(TestArrayDesignFiles.HG_U133_PLUS_2_CDF_FILE);
                 FusionCDFData fusionCDFData = cdfReader.getCdfData();
