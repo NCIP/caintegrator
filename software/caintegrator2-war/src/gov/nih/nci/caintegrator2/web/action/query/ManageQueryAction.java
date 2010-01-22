@@ -259,7 +259,6 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             returnValue = addCriterionRow();
         } else if (EXECUTE_QUERY.equals(selectedAction)
                 || "loadExecute".equals(selectedAction)) {
-            displayTab = RESULTS_TAB;
             returnValue = executeQuery();
         } else if ("saveQuery".equals(selectedAction)) {
             clearAnalysisCache();
@@ -311,8 +310,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             displayTab = RESULTS_TAB;
             returnValue = createDicomJob();
         } else if ("loadQuery".equals(selectedAction)) {
-            displayTab = CRITERIA_TAB;
             returnValue = executeQuery();
+            displayTab = CRITERIA_TAB;
         } else if ("saveSubjectList".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
             returnValue = saveSubjectList();
@@ -336,7 +335,6 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     private String loadGeneListExecute() {
         createNewQuery();
         loadGeneList();
-        displayTab = RESULTS_TAB;
         return executeQuery();
     }
     
@@ -369,7 +367,6 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         createNewQuery();
         loadSubjectList();
         getQueryForm().getResultConfiguration().getSubjectColumns().selectAllValues();
-        displayTab = RESULTS_TAB;
         return executeQuery();
     }
     
@@ -525,14 +522,17 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
                 }
                 setGenomicDataQueryResult(genomicResult);
             } else {
+                setQueryResult(null);
                 QueryResult result = queryManagementService.execute(getQueryForm().getQuery());
                 loadAllImages(result);
                 setQueryResult(new DisplayableQueryResult(result));
             }
         } catch (InvalidCriterionException e) {
             addActionError(e.getMessage());
+            displayTab = CRITERIA_TAB;
             return ERROR;
         }
+        displayTab = RESULTS_TAB;
         return SUCCESS;
     }
 
