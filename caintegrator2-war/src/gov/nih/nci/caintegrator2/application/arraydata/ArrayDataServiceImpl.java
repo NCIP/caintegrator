@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -145,6 +146,9 @@ public class ArrayDataServiceImpl implements ArrayDataService {
             platformConfiguration.setPlatform(platform);
             platformConfiguration.setStatus(Status.LOADED);
             platformConfiguration.setDeploymentFinishDate(new Date());
+            platformConfiguration.setStatusDescription("Loaded time: " 
+                    + DateUtil.compareDatesInMinutes(platformConfiguration.getDeploymentStartDate(), 
+                            platformConfiguration.getDeploymentFinishDate()) + " minute(s)");
             saveAndUpdateDeploymentStatus(platformConfiguration, listener);
             LOGGER.info("Platform named " + platformName + " has been loaded.");
         } catch (Exception e) {
