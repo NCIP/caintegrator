@@ -99,8 +99,8 @@ import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.web.ajax.IGenomicDataSourceAjaxUpdater;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -245,11 +245,11 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     /**
      * @return all platform names
      */
-    public Map<String, String> getAllPlatformNames() {
-        Map<String, String> platformNames = new HashMap<String, String>();
+    public SortedMap<String, String> getAllPlatformNames() {
+        SortedMap<String, String> platformNames = new TreeMap<String, String>();
         platformNames.put("", "");
         for (Platform platform : getArrayDataService().getPlatforms()) {
-            platformNames.put(platform.getName(), platform.getVendor().getValue() + " - " + platform.getName());
+            platformNames.put(platform.getVendor().getValue() + " - " + platform.getName(), platform.getName());
         }
         return platformNames;
     }
