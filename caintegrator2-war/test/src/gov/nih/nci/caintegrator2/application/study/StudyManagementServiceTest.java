@@ -383,6 +383,11 @@ public class StudyManagementServiceTest {
         validValue.setSubjectAnnotation(subjectAnnotation);
         originalDefinition.getAnnotationValueCollection().add(validValue);
         validValue.setAnnotationDefinition(originalDefinition);
+        SurvivalValueDefinition survivalDefinition = new SurvivalValueDefinition();
+        survivalDefinition.setSurvivalStartDate(originalDefinition);
+        survivalDefinition.setLastFollowupDate(originalDefinition);
+        survivalDefinition.setDeathDate(originalDefinition);
+        study.getSurvivalValueDefinitionCollection().add(survivalDefinition);
         
         CommonDataElement dataElement = new CommonDataElement();
         dataElement.setLongName("longName");
@@ -407,7 +412,9 @@ public class StudyManagementServiceTest {
         assertTrue(firstDefinition.getPermissibleValueCollection().iterator().next().equals(permissibleValue));
         assertTrue(firstDefinition.getAnnotationValueCollection().size() == 1);
         assertTrue(study.getSubjectAnnotationCollection().contains(firstDefinition));
-        
+        assertTrue(survivalDefinition.getSurvivalStartDate().getDisplayName().equals("longName"));
+        assertFalse(survivalDefinition.getLastFollowupDate().equals(originalDefinition));
+        assertFalse(survivalDefinition.getDeathDate().equals(originalDefinition));
         // Add a value that isn't permissible and catch the exception.
         StringAnnotationValue invalidValue = new StringAnnotationValue();
         SubjectAnnotation subjectAnnotation2 = new SubjectAnnotation();
