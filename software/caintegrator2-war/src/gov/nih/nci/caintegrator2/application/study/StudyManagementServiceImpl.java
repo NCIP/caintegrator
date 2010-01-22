@@ -850,6 +850,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                 study.getSubjectAnnotationCollection().add(annotationDefinition);
                 if (annotationDefinitionToRemove != null) {
                     moveValuesToNewDefinition(study, annotationDefinition, annotationDefinitionToRemove);
+                    moveDefinitionInSurvivalDefinitions(study, annotationDefinitionToRemove, annotationDefinition);
                     study.getSubjectAnnotationCollection().remove(annotationDefinitionToRemove);
                 }
                 break;
@@ -910,6 +911,21 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             return true;
         }
         return false;
+    }
+    
+    private void moveDefinitionInSurvivalDefinitions(Study study, 
+            AnnotationDefinition oldDefinition, AnnotationDefinition newDefinition) {
+        for (SurvivalValueDefinition definition : study.getSurvivalValueDefinitionCollection()) {
+            if (oldDefinition.equals(definition.getSurvivalStartDate())) {
+                definition.setSurvivalStartDate(newDefinition);
+            }
+            if (oldDefinition.equals(definition.getLastFollowupDate())) {
+                definition.setLastFollowupDate(newDefinition);
+            }
+            if (oldDefinition.equals(definition.getDeathDate())) {
+                definition.setDeathDate(newDefinition);
+            }
+        }
     }
     
     /**
