@@ -164,7 +164,7 @@ public class CaBioFacadeImplTestIntegration {
         params.getPathways().add(pathway);
         params.getPathways().add(pathway2);
         List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenesFromPathways(params);
-        assertEquals(22, genes.size());
+        assertEquals(23, genes.size());
     }
     
     @Test
