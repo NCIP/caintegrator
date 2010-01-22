@@ -78,8 +78,13 @@
                     <s:select id="dataType" name="genomicSource.dataTypeString" label="Data Type"
                         list="@gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum@getStringValues()"
                         onchange="CheckPlatformVendor(this.form.platformVendor.value, this.form.dataType.value);"/>
-                    <s:select id="platformName" name="genomicSource.platformName" label="Platform (needed for Agilent and Affy Expression)"
-                        list="allPlatformNames" disabled="platformNameDisable"/>
+                    <s:select id="platformName" 
+                        name="genomicSource.platformName" 
+                        label="Platform (needed for Agilent and Affy Expression)"
+                        list="allPlatformNames" 
+                        disabled="platformNameDisable"
+                        listKey="value"
+                        listValue="key"/>
                     <tr> 
                         <td></td>
                         <td>

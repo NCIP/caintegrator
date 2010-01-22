@@ -145,7 +145,7 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
 
     @Test
     public void testGetAgilentPlatformNames() {
-        assertEquals(2, action.getAllPlatformNames().size());
+        assertEquals(3, action.getAllPlatformNames().size());
     }
 
     @Test
