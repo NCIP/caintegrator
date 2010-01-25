@@ -85,8 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import edu.mit.broad.genepattern.gp.services.GenePatternClient;
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotHandler;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
@@ -129,6 +127,7 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.genepattern.webservice.WebServiceException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -149,20 +148,19 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
      * {@inheritDoc}
      */
     public List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server)
-            throws GenePatternServiceException {
+            throws WebServiceException {
         return new GenePatternHelper(retrieveClient(server)).getMethods();
     }
 
-    private GenePatternClient retrieveClient(ServerConnectionProfile server) {
+    private CaIntegrator2GPClient retrieveClient(ServerConnectionProfile server) throws WebServiceException {
         return genePatternClientFactory.retrieveClient(server);
     }
 
     /**
      * {@inheritDoc}
-     * @throws GenePatternServiceException 
      */
     public JobInfoWrapper executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) 
-    throws GenePatternServiceException {
+    throws WebServiceException {
         JobInfoWrapper jobInfo = new GenePatternHelper(retrieveClient(server)).execute(invocation);
         URL serviceUrl;
         URL resultUrl;
@@ -224,11 +222,22 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         if (job.isGridServiceCall()) {
             return genePatternGridRunner.runGistic(updater, job, segmentFile, markersFile, cnvFile);
         } else {
-            ServerConnectionProfile server = job.getGisticAnalysisForm().getGisticParameters().getServer();
-            GisticWebServiceRunner gisticWebServiceRunner = 
-                new GisticWebServiceRunner(retrieveClient(server), getFileManager());
-            return gisticWebServiceRunner.runGistic(updater, job, segmentFile, markersFile);
+            return runGisticWebService(job, updater, segmentFile, markersFile);
         }
+    }
+    
+    private File runGisticWebService(GisticAnalysisJob job, StatusUpdateListener updater, 
+            File segmentFile, File markersFile) 
+    throws ConnectionException, InvalidCriterionException, IOException {
+        ServerConnectionProfile server = job.getGisticAnalysisForm().getGisticParameters().getServer();
+        GisticWebServiceRunner gisticWebServiceRunner;
+        try {
+            gisticWebServiceRunner = new GisticWebServiceRunner(retrieveClient(server), getFileManager());
+            return gisticWebServiceRunner.runGistic(updater, job, segmentFile, markersFile);
+        } catch (WebServiceException e) {
+            throw new ConnectionException("Unable to connect to GenePattern.", e);
+        }
+        
     }
     
     /**

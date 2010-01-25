@@ -86,10 +86,6 @@
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import static org.junit.Assert.assertEquals;
-import edu.mit.broad.genepattern.gp.services.FileWrapper;
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
-import edu.mit.broad.genepattern.gp.services.JobInfo;
-import edu.mit.broad.genepattern.gp.services.ParameterInfo;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternClientStub;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.CopyNumberData;
@@ -98,6 +94,9 @@ import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -105,6 +104,10 @@ import java.util.List;
 
 import javax.activation.DataHandler;
 
+import org.apache.commons.io.IOUtils;
+import org.genepattern.webservice.JobInfo;
+import org.genepattern.webservice.ParameterInfo;
+import org.genepattern.webservice.WebServiceException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -142,7 +145,7 @@ public class GladSegmentationHandlerTest {
     private static class LocalGenePatternClientStub extends GenePatternClientStub {
         
         @Override
-        public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws GenePatternServiceException {
+        public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws WebServiceException {
             assertEquals("GLAD", taskName);
             assertEquals(2, parameters.size());
             return new JobInfo();
@@ -155,21 +158,30 @@ public class GladSegmentationHandlerTest {
         }
         
         @Override
-        public FileWrapper getResultFile(JobInfo jobInfo, String filename) {
+        public File getResultFile(JobInfo jobInfo, String filename) {
             assertEquals("output.glad", filename);
-            FileWrapper wrapper = new FileWrapper();
-            DataHandler dataHandler = new DataHandler(null, null) {
-                private static final String TEST_OUTPUT = "Sample\tChromosome\tStart.bp\tEnd.bp\tNum.SNPs\tSeg.CN\n"
-                    + "1\t17\t41419603\t36581538\t6427\t2.06\n"
-                    + "2\t18\t56507051\t10075159\t6732\t1.881\n";
-                
-                @Override
-                public InputStream getInputStream() throws IOException {
-                    return new ByteArrayInputStream(TEST_OUTPUT.getBytes());
-                }
-            };
-            wrapper.setDataHandler(dataHandler);
-            return wrapper;
+            try {
+                File outputFile = File.createTempFile("output", ".glad");
+                DataHandler dataHandler = new DataHandler(null, null) {
+                    private static final String TEST_OUTPUT = "Sample\tChromosome\tStart.bp\tEnd.bp\tNum.SNPs\tSeg.CN\n"
+                        + "1\t17\t41419603\t36581538\t6427\t2.06\n"
+                        + "2\t18\t56507051\t10075159\t6732\t1.881\n";
+                    
+                    @Override
+                    public InputStream getInputStream() throws IOException {
+                        return new ByteArrayInputStream(TEST_OUTPUT.getBytes());
+                    }
+                };
+                FileOutputStream fileOutputStream;
+                fileOutputStream = new FileOutputStream(outputFile);
+                IOUtils.copy(dataHandler.getInputStream(), fileOutputStream);
+                fileOutputStream.close();
+                return outputFile;
+            } catch (FileNotFoundException e) {
+                return null;
+            } catch (IOException e) {
+                return null;
+            }
         }
     }
 

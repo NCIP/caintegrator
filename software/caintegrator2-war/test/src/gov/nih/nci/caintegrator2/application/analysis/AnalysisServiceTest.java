@@ -90,11 +90,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import edu.mit.broad.genepattern.gp.services.GenePatternClient;
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
-import edu.mit.broad.genepattern.gp.services.JobInfo;
-import edu.mit.broad.genepattern.gp.services.ParameterInfo;
-import edu.mit.broad.genepattern.gp.services.TaskInfo;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotAnnotationBasedParameters;
@@ -147,6 +142,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.genepattern.webservice.JobInfo;
+import org.genepattern.webservice.ParameterInfo;
+import org.genepattern.webservice.TaskExecutor;
+import org.genepattern.webservice.TaskInfo;
+import org.genepattern.webservice.WebServiceException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -183,7 +183,7 @@ public class AnalysisServiceTest {
     }
 
     @Test
-    public void testGetGenePatternMethods() throws GenePatternServiceException {
+    public void testGetGenePatternMethods() throws WebServiceException {
         ServerConnectionProfile server = new ServerConnectionProfile();
         List<AnalysisMethod> methods = service.getGenePatternMethods(server);
         assertEquals(2, methods.size());
@@ -315,7 +315,7 @@ public class AnalysisServiceTest {
     
     
     @Test
-    public void testExecuteGenePatternJob() throws GenePatternServiceException {
+    public void testExecuteGenePatternJob() throws WebServiceException {
         AnalysisMethodInvocation invocation = new AnalysisMethodInvocation();
         ServerConnectionProfile server = new ServerConnectionProfile();
         AnalysisMethod method = new AnalysisMethod();
@@ -518,7 +518,7 @@ public class AnalysisServiceTest {
     
     private final class GenePatternClientFactoryStub implements GenePatternClientFactory {
 
-        public GenePatternClient retrieveClient(ServerConnectionProfile server) {
+        public CaIntegrator2GPClient retrieveClient(ServerConnectionProfile server) {
             return genePatternClientStub;
         }
         
@@ -536,7 +536,7 @@ public class AnalysisServiceTest {
         }
 
         @SuppressWarnings("unchecked")
-        public TaskInfo[] getTasks() throws GenePatternServiceException {
+        public TaskInfo[] getTasks() throws WebServiceException {
             TaskInfo[] tasks = new TaskInfo[4];
             tasks[0] = new TaskInfo();
             tasks[0].setName("task1");
@@ -548,8 +548,7 @@ public class AnalysisServiceTest {
             tasks[0].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
             tasks[0].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.String");
             tasks[0].getParameterInfoArray()[0].getAttributes().put("optional", "");
-            tasks[0].getParameterInfoArray()[0].setDefaultValue("default");
-            tasks[0].getParameterInfoArray()[0].setChoices(new HashMap());
+            tasks[0].getParameterInfoArray()[0].getAttributes().put(TaskExecutor.PARAM_INFO_DEFAULT_VALUE[0], "default");
             
 
             tasks[0].getParameterInfoArray()[1] = new ParameterInfo();
@@ -561,8 +560,8 @@ public class AnalysisServiceTest {
             
             tasks[0].getParameterInfoArray()[2] = new ParameterInfo();
             tasks[0].getParameterInfoArray()[2].setName("parameter3");
-            tasks[0].getParameterInfoArray()[2].setDefaultValue("2");
             tasks[0].getParameterInfoArray()[2].setAttributes(new HashMap<String, String>());
+            tasks[0].getParameterInfoArray()[2].getAttributes().put(TaskExecutor.PARAM_INFO_DEFAULT_VALUE[0], "2");
             tasks[0].getParameterInfoArray()[2].getAttributes().put("type", "java.lang.Integer");
             tasks[0].getParameterInfoArray()[2].setValue("1=choice1;2=choice2");
             
@@ -575,13 +574,11 @@ public class AnalysisServiceTest {
             tasks[1].getParameterInfoArray()[0].setName("parameter1");
             tasks[1].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
             tasks[1].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.String");
-            tasks[1].getParameterInfoArray()[0].setChoices(new HashMap());
             tasks[1].getParameterInfoArray()[1] = new ParameterInfo();
             tasks[1].getParameterInfoArray()[1].setName("parameter2");
             tasks[1].getParameterInfoArray()[1].setAttributes(new HashMap<String, String>());
             tasks[1].getParameterInfoArray()[1].getAttributes().put("type", "java.io.File");
             tasks[1].getParameterInfoArray()[1].getAttributes().put("fileFormat", "cls");
-            tasks[1].getParameterInfoArray()[1].setChoices(new HashMap());
             
             tasks[2] = new TaskInfo();
             tasks[2].setName("task3");
@@ -592,21 +589,18 @@ public class AnalysisServiceTest {
             tasks[2].getParameterInfoArray()[0].setName("parameter1");
             tasks[2].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
             tasks[2].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.Float");
-            tasks[2].getParameterInfoArray()[0].setChoices(new HashMap());
 
             tasks[2].getParameterInfoArray()[1] = new ParameterInfo();
             tasks[2].getParameterInfoArray()[1].setName("parameter2");
             tasks[2].getParameterInfoArray()[1].setAttributes(new HashMap<String, String>());
             tasks[2].getParameterInfoArray()[1].getAttributes().put("type", "java.io.File");
             tasks[2].getParameterInfoArray()[1].getAttributes().put("fileFormat", "gct;res");
-            tasks[2].getParameterInfoArray()[1].setChoices(new HashMap());
 
             tasks[2].getParameterInfoArray()[2] = new ParameterInfo();
             tasks[2].getParameterInfoArray()[2].setName("parameter3");
             tasks[2].getParameterInfoArray()[2].setAttributes(new HashMap<String, String>());
             tasks[2].getParameterInfoArray()[2].getAttributes().put("type", "java.io.File");
             tasks[2].getParameterInfoArray()[2].getAttributes().put("fileFormat", "cls");
-            tasks[2].getParameterInfoArray()[2].setChoices(new HashMap());
             
             tasks[3] = new TaskInfo();
             tasks[3].setName("task3");
@@ -622,7 +616,7 @@ public class AnalysisServiceTest {
          * {@inheritDoc}
          */
         @Override
-        public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws GenePatternServiceException {
+        public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws WebServiceException {
             this.taskName = taskName;
             this.parameters = parameters;
             return new JobInfo();

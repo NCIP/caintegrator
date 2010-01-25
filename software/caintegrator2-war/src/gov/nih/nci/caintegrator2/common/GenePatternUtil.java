@@ -85,9 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
-import edu.mit.broad.genepattern.gp.services.GenePatternClient;
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
-import edu.mit.broad.genepattern.gp.services.JobInfo;
+import gov.nih.nci.caintegrator2.application.analysis.CaIntegrator2GPClient;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
@@ -117,6 +115,8 @@ import org.cabig.icr.asbp.parameter.IntegerParameter;
 import org.cabig.icr.asbp.parameter.Parameter;
 import org.cabig.icr.asbp.parameter.ParameterList;
 import org.cabig.icr.asbp.parameter.StringParameter;
+import org.genepattern.webservice.JobInfo;
+import org.genepattern.webservice.WebServiceException;
 
 
 /**
@@ -337,9 +337,9 @@ public final class GenePatternUtil {
      * @param jobInfo the job to wait for
      * @param client the GenePattern client.
      * @return the updated job info.
-     * @throws GenePatternServiceException if the status couldn't be updated.
+     * @throws WebServiceException if the status couldn't be updated.
      */
-    public static JobInfo waitToComplete(JobInfo jobInfo, GenePatternClient client) throws GenePatternServiceException {
+    public static JobInfo waitToComplete(JobInfo jobInfo, CaIntegrator2GPClient client) throws WebServiceException {
         JobInfo updatedInfo = jobInfo;
         try {
             while ("Processing".equals(updatedInfo.getStatus()) || "Pending".equals(updatedInfo.getStatus())) {

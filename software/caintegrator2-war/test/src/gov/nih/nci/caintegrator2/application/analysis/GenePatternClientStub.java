@@ -85,81 +85,60 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
-import edu.mit.broad.genepattern.gp.services.FileWrapper;
-import edu.mit.broad.genepattern.gp.services.GenePatternClient;
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
-import edu.mit.broad.genepattern.gp.services.JobInfo;
-import edu.mit.broad.genepattern.gp.services.ParameterInfo;
-import edu.mit.broad.genepattern.gp.services.TaskInfo;
+import org.genepattern.webservice.JobInfo;
+import org.genepattern.webservice.ParameterInfo;
+import org.genepattern.webservice.TaskInfo;
+import org.genepattern.webservice.WebServiceException;
 
 /**
  * 
  */
-public class GenePatternClientStub implements GenePatternClient {
+public class GenePatternClientStub implements CaIntegrator2GPClient {
 
-    /**
-     * {@inheritDoc}
-     */
-    public TaskInfo getTaskInfo(String name) throws GenePatternServiceException {
+    public TaskInfo getTaskInfo(String name) throws WebServiceException {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public TaskInfo[] getTasks() throws GenePatternServiceException {
+    public TaskInfo[] getTasks() throws WebServiceException {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws GenePatternServiceException {
+
+    public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws WebServiceException {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     public void setUrl(String url) {
         // no-op
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     public void setUsername(String username) {
         // no-op
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     public void setPassword(String password) {
         // no-op
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     public JobInfo getStatus(JobInfo jobInfo) {
         return jobInfo;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public FileWrapper[] getResultFiles(JobInfo jobInfo) {
-        return new FileWrapper[0];
+
+    public File getResultFile(JobInfo jobInfo, String filename) {
+        return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public FileWrapper getResultFile(JobInfo jobInfo, String filename) {
-        return new FileWrapper();
+    public File[] getResultFiles(JobInfo jobInfo, File resultsDir) throws WebServiceException, IOException {
+        return null;
     }
 
 }

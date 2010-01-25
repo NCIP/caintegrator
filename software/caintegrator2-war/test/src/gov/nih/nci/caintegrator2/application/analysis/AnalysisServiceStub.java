@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import edu.mit.broad.genepattern.gp.services.JobInfo;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
@@ -105,6 +104,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.genepattern.webservice.JobInfo;
 
 public class AnalysisServiceStub implements AnalysisService {
     

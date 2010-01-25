@@ -85,24 +85,37 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import edu.mit.broad.genepattern.gp.services.GenePatternClient;
-import edu.mit.broad.genepattern.gp.services.GenePatternClientImpl;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.file.FileManager;
+
+import org.genepattern.webservice.WebServiceException;
 
 /**
  * Implementation of the GenePatternClientFactory which returns GenePatternClientImpl objects.
  */
 public class GenePatternClientFactoryImpl implements GenePatternClientFactory {
-
+    private FileManager fileManager;
+    
     /**
      * {@inheritDoc}
      */
-    public GenePatternClient retrieveClient(ServerConnectionProfile server) {
-        GenePatternClient client = new GenePatternClientImpl();
-        client.setUrl(server.getUrl());
-        client.setUsername(server.getUsername());
-        client.setPassword(server.getPassword());
-        return client;
+    public CaIntegrator2GPClient retrieveClient(ServerConnectionProfile server) throws WebServiceException {
+        return new CaIntegrator2GPClientImpl(server.getUrl(), server.getUsername(), 
+                server.getPassword(), fileManager);
+    }
+    
+    /**
+     * @return the fileManager
+     */
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    /**
+     * @param fileManager the fileManager to set
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
 }
