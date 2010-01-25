@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.JobInfoWrapper;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
@@ -93,6 +92,8 @@ import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.web.action.analysis.AbstractAnalysisFormParameter;
 
 import java.util.List;
+
+import org.genepattern.webservice.WebServiceException;
 
 /**
  * Asynchronous thread that runs GenePatternAnalysis jobs and updates the status of those jobs.  Still
@@ -124,7 +125,7 @@ public class GenePatternAjaxRunner implements Runnable {
         }
     }
 
-    private JobInfoWrapper processLocally() throws GenePatternServiceException, InvalidCriterionException {
+    private JobInfoWrapper processLocally() throws WebServiceException, InvalidCriterionException {
         configureInvocationParameters(job.getGenePatternAnalysisForm().getParameters());
         JobInfoWrapper jobInfo = updater.getAnalysisService().executeGenePatternJob(
                 job.getGenePatternAnalysisForm().getServer(), job.getGenePatternAnalysisForm().getInvocation());

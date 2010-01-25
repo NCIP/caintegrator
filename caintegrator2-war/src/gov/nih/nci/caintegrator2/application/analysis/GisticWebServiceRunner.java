@@ -85,19 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.io.IOUtils;
-
-import edu.mit.broad.genepattern.gp.services.FileWrapper;
-import edu.mit.broad.genepattern.gp.services.GenePatternClient;
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
-import edu.mit.broad.genepattern.gp.services.JobInfo;
-import edu.mit.broad.genepattern.gp.services.ParameterInfo;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
@@ -108,15 +95,24 @@ import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.genepattern.webservice.JobInfo;
+import org.genepattern.webservice.ParameterInfo;
+import org.genepattern.webservice.WebServiceException;
+
 /**
  * Helper class that invokes GISTIC via the GenePattern web service interface.
  */
 class GisticWebServiceRunner {
 
-    private final GenePatternClient client;
+    private final CaIntegrator2GPClient client;
     private final FileManager fileManager;
 
-    public GisticWebServiceRunner(GenePatternClient client, FileManager fileManager) {
+    public GisticWebServiceRunner(CaIntegrator2GPClient client, FileManager fileManager) {
         this.client = client;
         this.fileManager = fileManager;
     }
@@ -130,7 +126,7 @@ class GisticWebServiceRunner {
             JobInfo jobInfo = client.runAnalysis("GISTIC", parameters);
             jobInfo = GenePatternUtil.waitToComplete(jobInfo, client);
             return handleResult(updater, job, jobInfo);
-        } catch (GenePatternServiceException e) {
+        } catch (WebServiceException e) {
             updateStatus(updater, job, AnalysisJobStatusEnum.ERROR_CONNECTING);
             throw new ConnectionException("Couldn't connect to GISTIC service: " + e.getMessage(), e);
         } finally {
@@ -146,7 +142,7 @@ class GisticWebServiceRunner {
     }
 
     private File handleResult(StatusUpdateListener updater, GisticAnalysisJob job, JobInfo jobInfo) 
-    throws GenePatternServiceException, IOException {
+    throws IOException, WebServiceException {
         if ("Error".equals(jobInfo.getStatus())) {
             updateStatus(updater, job, AnalysisJobStatusEnum.ERROR_CONNECTING);
         } else {
@@ -154,18 +150,9 @@ class GisticWebServiceRunner {
         }
         File resultsDir = new File(fileManager.getUserDirectory(job.getSubscription()) + File.separator
                 + "GISTIC_RESULTS_" + System.currentTimeMillis());
-        downloadResults(resultsDir, jobInfo);
-        return Cai2Util.zipAndDeleteDirectory(resultsDir.getAbsolutePath());
-    }
-
-    private void downloadResults(File resultsDir, JobInfo jobInfo) throws GenePatternServiceException, IOException {
         resultsDir.mkdirs();
-        FileWrapper[] fileWrappers = client.getResultFiles(jobInfo);
-        for (FileWrapper fileWrapper : fileWrappers) {
-            FileOutputStream fileOutputStream = new FileOutputStream(new File(resultsDir, fileWrapper.getFilename()));
-            IOUtils.copy(fileWrapper.getDataHandler().getInputStream(), fileOutputStream);
-            fileOutputStream.close();
-        }
+        client.getResultFiles(jobInfo, resultsDir);
+        return Cai2Util.zipAndDeleteDirectory(resultsDir.getAbsolutePath());
     }
 
     private List<ParameterInfo> createParameters(GisticAnalysisJob job, File segmentFile, File markersFile) 

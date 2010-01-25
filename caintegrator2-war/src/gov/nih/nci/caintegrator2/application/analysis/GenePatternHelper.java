@@ -94,11 +94,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-
-import edu.mit.broad.genepattern.gp.services.GenePatternClient;
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
-import edu.mit.broad.genepattern.gp.services.ParameterInfo;
-import edu.mit.broad.genepattern.gp.services.TaskInfo;
+import org.genepattern.webservice.ParameterInfo;
+import org.genepattern.webservice.TaskInfo;
+import org.genepattern.webservice.WebServiceException;
 
 /**
  * Provides methods for working with GenePattern.
@@ -120,15 +118,14 @@ class GenePatternHelper {
     private static final String TASK_TYPE_ATTRIBUTE = "taskType";
     private static final String VISUALIZER_TASK_TYPE = "Visualizer";
     
-    private final GenePatternClient client;
+    private final CaIntegrator2GPClient client;
     private static int tempFileCounter = 0;
 
-    GenePatternHelper(GenePatternClient client) {
+    GenePatternHelper(CaIntegrator2GPClient client) {
         this.client = client;
     }
     
-    List<AnalysisMethod> getMethods() 
-    throws GenePatternServiceException {
+    List<AnalysisMethod> getMethods() throws WebServiceException {
         TaskInfo[] allTasks = client.getTasks();
         List<AnalysisMethod> methods = new ArrayList<AnalysisMethod>();
         for (TaskInfo task : allTasks) {
@@ -299,7 +296,7 @@ class GenePatternHelper {
         return (String) parameterInfo.getAttributes().get(attributeName);
     }
 
-    JobInfoWrapper execute(AnalysisMethodInvocation invocation) throws GenePatternServiceException {
+    JobInfoWrapper execute(AnalysisMethodInvocation invocation) throws WebServiceException {
         JobInfoWrapper jobInfo = new JobInfoWrapper();
         List<ParameterInfo> parameters = convert(invocation.getParameterValues());
         jobInfo.setJobInfo(client.runAnalysis(invocation.getMethod().getName(), parameters));

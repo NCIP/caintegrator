@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
@@ -111,6 +110,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.genepattern.webservice.WebServiceException;
 
 /**
  * Action to configure and run GenePattern analysis jobs.
@@ -306,7 +306,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
                 setAnalysisMethodName(getGenePatternAnalysisForm().getAnalysisMethodName());
             }
             return SUCCESS;
-        } catch (GenePatternServiceException e) { 
+        } catch (WebServiceException e) { 
             getGenePatternAnalysisForm().setAnalysisMethods(new ArrayList<AnalysisMethod>());
             addActionError("Couldn't retrieve GenePattern analysis method information: " + e.getMessage());
             return ERROR;

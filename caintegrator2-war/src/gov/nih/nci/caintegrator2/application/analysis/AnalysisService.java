@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.CaIntegrator2EntityRefresher;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
@@ -105,6 +104,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.genepattern.webservice.WebServiceException;
+
 /**
  * Interface to analysis functionality.
  */
@@ -115,9 +116,9 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * 
      * @param server the gene pattern server.
      * @return the list of available tasks
-     * @throws GenePatternServiceException if the service couldn't be reached.
+     * @throws WebServiceException if the service couldn't be reached.
      */
-    List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server) throws GenePatternServiceException;
+    List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server) throws WebServiceException;
 
     /**
      * Executes a job on a GenePattern server.
@@ -125,10 +126,10 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @param server the GenePattern server
      * @param invocation contains the configuration of the job to execute
      * @return the Wrapper for the JobInfo retrieved from GenePattern.
-     * @throws GenePatternServiceException if the service couldn't be reached.
+     * @throws WebServiceException if the service couldn't be reached.
      */
     JobInfoWrapper executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) 
-    throws GenePatternServiceException;
+    throws WebServiceException;
     
     /**
      * Executes preprocessDataset followed by Comparative Marker Selection via grid interface.
