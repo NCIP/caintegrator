@@ -85,42 +85,58 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import java.net.URL;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 import org.genepattern.webservice.JobInfo;
+import org.genepattern.webservice.ParameterInfo;
+import org.genepattern.webservice.TaskInfo;
+import org.genepattern.webservice.WebServiceException;
 
 /**
- * Wraps the <code>JobInfo</code> object.
+ * 
  */
-public class JobInfoWrapper {
+public interface CaIntegrator2GPClient {
+    
+    /**
+     * 
+     * @return all tasks.
+     * @throws WebServiceException if unable to connect.
+     */
+    TaskInfo[] getTasks() throws WebServiceException;
 
-    private JobInfo jobInfo;
-    private URL url;
-    
-    
     /**
-     * @return the jobInfo
+     * @param moduleName name of module to run.
+     * @param parameters list of parameters for the module.
+     * @return JobInfo of the job that is running.
+     * @throws WebServiceException if unable to connect to gene pattern.
      */
-    public JobInfo getJobInfo() {
-        return jobInfo;
-    }
+    JobInfo runAnalysis(String moduleName, List<ParameterInfo> parameters) throws WebServiceException; 
+
     /**
-     * @param jobInfo the jobInfo to set
+     * Retrieves results file to the results directory.
+     * @param jobInfo for the job.
+     * @param resultsDir to download the files for the job.
+     * @return file array.
+     * @throws WebServiceException if unable to connect to gene pattern.
+     * @throws IOException if unable to download files to directory.
      */
-    public void setJobInfo(JobInfo jobInfo) {
-        this.jobInfo = jobInfo;
-    }
+    File[] getResultFiles(JobInfo jobInfo, File resultsDir) throws WebServiceException, IOException;
+
     /**
-     * @return the url
+     * @param jobInfo of the job.
+     * @return new job info for the job.
+     * @throws WebServiceException if unable to connect to gene pattern.
      */
-    public URL getUrl() {
-        return url;
-    }
+    JobInfo getStatus(JobInfo jobInfo) throws WebServiceException;
+
     /**
-     * @param url the url to set
+     * @param jobInfo retrieve file from this job.
+     * @param filename the file to retrieve.
+     * @return the file from GenePattern or null.
+     * @throws WebServiceException if unable to connect.
      */
-    public void setUrl(URL url) {
-        this.url = url;
-    }
+    File getResultFile(JobInfo jobInfo, String filename) throws WebServiceException;
     
 }

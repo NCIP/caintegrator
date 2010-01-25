@@ -910,7 +910,11 @@
     <bean id="bioconductorService" 
         class="gov.nih.nci.caintegrator2.external.bioconductor.BioconductorServiceImpl" />
     
-    <bean id="genePatternClientFactory" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactoryImpl" />
+    <bean id="genePatternClientFactory" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactoryImpl" >
+        <property name="fileManager">
+            <ref local="fileManager" />
+        </property>
+    </bean>
 
     <bean id="genePatternGridRunner"
         class="gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunnerImpl">

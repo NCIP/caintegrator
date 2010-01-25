@@ -85,8 +85,16 @@
  */
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
+import gov.nih.nci.caintegrator2.application.analysis.CaIntegrator2GPClient;
+import gov.nih.nci.caintegrator2.common.GenePatternUtil;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
+import gov.nih.nci.caintegrator2.domain.genomic.CopyNumberData;
+import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -95,21 +103,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
+import org.genepattern.webservice.JobInfo;
+import org.genepattern.webservice.ParameterInfo;
+import org.genepattern.webservice.WebServiceException;
 
 import au.com.bytecode.opencsv.CSVReader;
-import edu.mit.broad.genepattern.gp.services.FileWrapper;
-import edu.mit.broad.genepattern.gp.services.GenePatternClient;
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
-import edu.mit.broad.genepattern.gp.services.JobInfo;
-import edu.mit.broad.genepattern.gp.services.ParameterInfo;
-import gov.nih.nci.caintegrator2.common.GenePatternUtil;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
-import gov.nih.nci.caintegrator2.domain.genomic.CopyNumberData;
-import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
-import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
 /**
  * Adds segmentation data by invoking the GLAD GenePattern service.
@@ -120,9 +118,9 @@ class GladSegmentationHandler {
 
     private static final float DECIMAL_1000 = 1000.0f;
 
-    private final GenePatternClient client;
+    private final CaIntegrator2GPClient client;
 
-    GladSegmentationHandler(GenePatternClient client) {
+    GladSegmentationHandler(CaIntegrator2GPClient client) {
         this.client = client;
     }
 
@@ -144,13 +142,13 @@ class GladSegmentationHandler {
             handleResults(jobInfo, copyNumberData);
         } catch (IOException e) {
             throw new DataRetrievalException("Couldn't run GLAD job: " + e.getMessage(), e);
-        } catch (GenePatternServiceException e) {
+        } catch (WebServiceException e) {
             throw new DataRetrievalException("Couldn't run GLAD job: " + e.getMessage(), e);
         }
     }
 
     private void handleResults(JobInfo jobInfo, CopyNumberData copyNumberData) throws IOException,
-            GenePatternServiceException, DataRetrievalException {
+    WebServiceException, DataRetrievalException {
         File outputFile = getOutputFile(jobInfo);
         addSegmentationData(outputFile, copyNumberData);
         outputFile.delete();
@@ -195,15 +193,11 @@ class GladSegmentationHandler {
     }
 
     private File getOutputFile(JobInfo jobInfo) 
-    throws IOException, GenePatternServiceException, DataRetrievalException {
-        FileWrapper outputFileWrapper = client.getResultFile(jobInfo, OUTPUT_FILENAME);
-        if (outputFileWrapper == null) {
+    throws IOException, WebServiceException, DataRetrievalException {
+        File outputFile = client.getResultFile(jobInfo, OUTPUT_FILENAME);
+        if (outputFile == null) {
             throw new DataRetrievalException("GLAD job did not complete successfully, output was not returned");
         }
-        File outputFile = File.createTempFile("output", ".glad");
-        FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
-        IOUtils.copy(outputFileWrapper.getDataHandler().getInputStream(), fileOutputStream);
-        fileOutputStream.close();
         return outputFile;
     }
 

@@ -85,8 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+
+import org.genepattern.webservice.WebServiceException;
 
 /**
  * Retrieves a GenePatternClient from a server connection.
@@ -97,7 +98,8 @@ public interface GenePatternClientFactory {
      * Turns a server connection into a GenePatternClient.
      * @param server connection to use.
      * @return GP Client.
+     * @throws WebServiceException if unable to connect to gene pattern.
      */
-    GenePatternClient retrieveClient(ServerConnectionProfile server);
+    CaIntegrator2GPClient retrieveClient(ServerConnectionProfile server) throws WebServiceException;
 
 }

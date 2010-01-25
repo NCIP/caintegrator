@@ -333,11 +333,6 @@
     <!-- ** EXTERNAL DEPENDENCY PROPERTIES                                ** -->
     <!-- ******************************************************************* -->
     
-    <property name="genepattern-service.jar.dir" location="${software.dir}/genepattern-service-jar" />
-    <property name="genepattern-service.jar.target.dir" location="${genepattern-service.jar.dir}/target" />
-    <property name="genepattern-service.jar" location="${genepattern-service.jar.target.dir}/genepattern-service.jar" />
-    <property name="genepattern-service.jar.compile.lib.dir" location="${genepattern-service.jar.dir}/lib/compile"/>
-
     <property name="kaplan-meier.jar.dir" location="${software.dir}/kaplan-meier-jar" />
     <property name="kaplan-meier.jar.target.dir" location="${kaplan-meier.jar.dir}/target" />
     <property name="kaplan-meier.jar" location="${kaplan-meier.jar.target.dir}/kaplan-meier.jar" />
@@ -365,16 +360,12 @@
     <target name="path:caintegrator2.war.dependencies" depends="ivy:setup-compile">
         <path id="caintegrator2.war.dependencies.path">
             <pathelement location="${caintegrator2.war.java.classes.dir}" />
-            <pathelement location="${genepattern-service.jar}" />
             <pathelement location="${kaplan-meier.jar}" />
             <fileset dir="${caintegrator2.war.compile.lib.dir}">
                 <include name="*.jar" />
                 <exclude name="log4j*.jar" />
             </fileset>
             <fileset dir="${external.runtime.lib.dir}">
-                <include name="*.jar" />
-            </fileset>
-            <fileset dir="${genepattern-service.jar.compile.lib.dir}">
                 <include name="*.jar" />
             </fileset>
             <fileset dir="${kaplan-meier.jar.compile.lib.dir}">
@@ -420,10 +411,6 @@
                 <exclude name="WEB-INF/**" />
             </fileset>
             <lib dir="${caintegrator2.war.runtime.lib.dir}" includes="*.jar"/> 
-            <lib dir="${genepattern-service.jar.target.dir}" includes="*.jar"/> 
-            <lib dir="${genepattern-service.jar.compile.lib.dir}" includes="*.jar"> 
-                <exclude name="activation-1.0.2.jar"/>
-            </lib>
             <lib dir="${kaplan-meier.jar.target.dir}" includes="*.jar"/> 
             <lib dir="${kaplan-meier.jar.compile.lib.dir}" includes="*.jar"> 
                 <exclude name="log4j*.jar"/>
@@ -513,6 +500,7 @@
                  <!-- Excludes for classes that can only be tested in integration tests -->
                  <exclude name="gov/nih/nci/caintegrator2/data/CaIntegrator2DaoImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/application/geneexpression/BoxAndWhiskerCoinPlotRenderer.class"/>
+                 <exclude name="gov/nih/nci/caintegrator2/application/analysis/CaIntegrator2GPClientImpl.class"/>
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIASearchServiceImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIAServiceFactoryImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIADicomJobRunnerImpl.class" />

@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import static gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType.EXPRESSION_SIGNAL;
-import edu.mit.broad.genepattern.gp.services.GenePatternClient;
+import gov.nih.nci.caintegrator2.application.analysis.CaIntegrator2GPClient;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactory;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
@@ -116,6 +116,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
+import org.genepattern.webservice.WebServiceException;
 
 /**
  * Helper class that retrieves data from caArray and loads it into a study.
@@ -240,10 +241,14 @@ class GenomicDataHelper {
         if (configuration.isCaDNACopyConfiguration()) {
             bioconductorService.addSegmentationData(copyNumberData, configuration);
         } else {
-            GenePatternClient client = 
-                getGenePatternClientFactory().retrieveClient(configuration.getSegmentationService());
-            GladSegmentationHandler gladHandler = new GladSegmentationHandler(client);
-            gladHandler.addSegmentationData(copyNumberData);
+            CaIntegrator2GPClient client;
+            try {
+                client = getGenePatternClientFactory().retrieveClient(configuration.getSegmentationService());
+                GladSegmentationHandler gladHandler = new GladSegmentationHandler(client);
+                gladHandler.addSegmentationData(copyNumberData);
+            } catch (WebServiceException e) {
+                throw new ConnectionException(e.getMessage(), e);
+            }
         }
     }
 
