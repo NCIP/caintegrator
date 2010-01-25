@@ -37,7 +37,7 @@ public class LoadAffymetrixDesignsTestIntegration extends AbstractTransactionalS
         List<File> files = new ArrayList<File>();
         files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
         files.add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
-        AffymetrixDnaPlatformSource source = new AffymetrixDnaPlatformSource(files, "GeneChip Human Mapping 100K Set");
+        AffymetrixSnpPlatformSource source = new AffymetrixSnpPlatformSource(files, "GeneChip Human Mapping 100K Set");
         File[] cdfs = new File[] {TestArrayDesignFiles.MAPPING_50K_HIND_CDF_FILE, TestArrayDesignFiles.MAPPING_50K_XBA_CDF};
         ArrayDesignChecker.checkLoadAffymetrixSnpArrayDesign(cdfs, source, arrayDataService);
     }

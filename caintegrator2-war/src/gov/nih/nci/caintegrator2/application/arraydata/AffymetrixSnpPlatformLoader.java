@@ -112,10 +112,10 @@ import au.com.bytecode.opencsv.CSVReader;
  * Loader for Affymetrix SNP array designs.
  */
 
-class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
+class AffymetrixSnpPlatformLoader extends AbstractPlatformLoader {
 
     static final String DBSNP_RS_ID_HEADER = "dbSNP RS ID";
-    private static final Logger LOGGER = Logger.getLogger(AffymetrixDnaAnalysisPlatformLoader.class);
+    private static final Logger LOGGER = Logger.getLogger(AffymetrixSnpPlatformLoader.class);
     private static final String CHIP_TYPE_HEADER = "chip_type";
     private static final String VERSION_HEADER = "netaffx-annotation-netaffx-build";
     private static final String GENOME_VERSION_HEADER = "genome-version";
@@ -130,7 +130,7 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
     private static final String[] REQUIRED_HEADERS = {PROBE_SET_ID_HEADER, GENE_SYMBOL_HEADER,
         ALLELE_A_HEADER, ALLELE_B_HEADER, CHROMOSOME_HEADER, POSITION_HEADER}; 
 
-    AffymetrixDnaAnalysisPlatformLoader(AffymetrixDnaPlatformSource source) {
+    AffymetrixSnpPlatformLoader(AffymetrixSnpPlatformSource source) {
         super(source);
     }
 

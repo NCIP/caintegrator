@@ -88,9 +88,9 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 import java.io.File;
 
 /**
- * Used to load Agilent array designs.
+ * Used to load Agilent Copy Number array designs.
  */
-public class AgilentDnaPlatformSource extends AbstractPlatformSource {
+public class AgilentCnPlatformSource extends AbstractPlatformSource {
 
     private static final long serialVersionUID = 1L;
     private final String platformName;
@@ -103,7 +103,7 @@ public class AgilentDnaPlatformSource extends AbstractPlatformSource {
      * @param platformName the platform name.
      * @param platformFileName the platform file name.
      */
-    public AgilentDnaPlatformSource(File annotationFile, String platformName,
+    public AgilentCnPlatformSource(File annotationFile, String platformName,
             String platformFileName) {
         super(annotationFile);
         this.platformName = platformName;

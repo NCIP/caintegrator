@@ -61,7 +61,7 @@ public class ArrayDataServiceTest {
         List<File> files = new ArrayList<File>();
         files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
         files.add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
-        AffymetrixDnaPlatformSource source = new AffymetrixDnaPlatformSource(files, "GeneChip Human Mapping 100K Set");
+        AffymetrixSnpPlatformSource source = new AffymetrixSnpPlatformSource(files, "GeneChip Human Mapping 100K Set");
         File[] cdfs = new File[] {TestArrayDesignFiles.MAPPING_50K_HIND_CDF_FILE, TestArrayDesignFiles.MAPPING_50K_XBA_CDF};
         checkLoadAffymetrixSnpArrayDesign(cdfs, source);
 
@@ -73,7 +73,7 @@ public class ArrayDataServiceTest {
         assertTrue(daoStub.saveCalled);
     }
 
-    private void checkLoadAffymetrixSnpArrayDesign(File[] cdfs, AffymetrixDnaPlatformSource source) throws PlatformLoadingException, AffymetrixCdfReadException {
+    private void checkLoadAffymetrixSnpArrayDesign(File[] cdfs, AffymetrixSnpPlatformSource source) throws PlatformLoadingException, AffymetrixCdfReadException {
         ArrayDesignChecker.checkLoadAffymetrixSnpArrayDesign(cdfs, source, service);
         assertTrue(daoStub.saveCalled);
     }

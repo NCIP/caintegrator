@@ -2,7 +2,7 @@ package gov.nih.nci.caintegrator2.external.bioconductor;
 
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixDnaPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixSnpPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
@@ -84,7 +84,7 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
         if (platform == null) {
             List<File> files = new ArrayList<File>();
             files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
-            AffymetrixDnaPlatformSource source = new AffymetrixDnaPlatformSource(files, "Mapping50K_Hind240");
+            AffymetrixSnpPlatformSource source = new AffymetrixSnpPlatformSource(files, "Mapping50K_Hind240");
             PlatformConfiguration configuration = new PlatformConfiguration(source);
             getArrayDataService().savePlatformConfiguration(configuration);
             platform = getArrayDataService().loadArrayDesign(configuration, null).getPlatform();
