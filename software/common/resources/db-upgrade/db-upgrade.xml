@@ -67,4 +67,8 @@
         <comment>Add METHOD to ABSTRACT_PERSISTED_ANALYSIS_JOB table.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.11.sql"/>
     </changeSet>
+    <changeSet id="1.1.12" author="nguyennh">
+        <comment>Rename AFFYMETRIX_DNA_ANALYSIS and AGILENT_DNA_ANALYSIS in the PLATFORM_CONFIGURATION table.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.12.sql"/>
+    </changeSet>
 </databaseChangeLog>

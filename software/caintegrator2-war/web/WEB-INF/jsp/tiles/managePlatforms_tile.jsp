@@ -31,7 +31,7 @@
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "block";
             document.getElementById("commentAdfGemlDiv").style.display = "none";
-        } else if (type == "Affymetrix SNP"){
+        } else if (type == "Affymetrix SNP" || type == "Affymetrix Copy Number"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
             document.getElementById("commentNameDiv").style.display = "none";

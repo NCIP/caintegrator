@@ -85,12 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import static org.junit.Assert.*;
-
-import java.util.SortedSet;
-
-import org.junit.Test;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
@@ -98,41 +94,44 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
-/**
- * 
- */
-public class AgilentTcgaAdfCghPlatformLoaderTest {
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
+
+import org.junit.Test;
+
+public class AffymetrixCnPlatformLoaderTest {
 
     private CaIntegrator2Dao dao = new CaIntegrator2DaoStub();
-
     
     @Test
     public void testLoad() throws PlatformLoadingException {
-        AgilentCnPlatformSource agilentDnaPlatformSource = new AgilentCnPlatformSource (
-                TestArrayDesignFiles.AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_TEST_FILE,
-                "AgilentPlatform",
-                TestArrayDesignFiles.AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_TEST_PATH);
+        List<File> annotationFiles = new ArrayList<File>();
+        annotationFiles.add(TestArrayDesignFiles.GENOME_SNP6_CN_ANNOTATION_TEST_FILE);
+        AffymetrixCnPlatformSource affymetrixCnPlatformSource = new AffymetrixCnPlatformSource (
+                annotationFiles, "AffymetrixCnPlatform");
 
-        AgilentTcgaAdfCghPlatformLoader loader = new AgilentTcgaAdfCghPlatformLoader(
-                agilentDnaPlatformSource);
+        AffymetrixCnPlatformLoader loader = new AffymetrixCnPlatformLoader(
+                affymetrixCnPlatformSource);
         
         Platform platform = loader.load(dao);
-        assertTrue("AgilentPlatform".equals(loader.getPlatformName()));
-        assertTrue("AgilentPlatform".equals(platform.getName()));
+        assertTrue("AffymetrixCnPlatform".equals(loader.getPlatformName()));
+        assertTrue("AffymetrixCnPlatform".equals(platform.getName()));
         SortedSet<ReporterList> reporterLists = platform.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
         assertEquals(1, reporterLists.size());
         ReporterList reporterList = reporterLists.iterator().next();
-        assertTrue("Hg18".equals(reporterList.getGenomeVersion()));
-        assertEquals(5, reporterList.getReporters().size());
+        assertTrue("hg18".equals(reporterList.getGenomeVersion()));
+        assertEquals(4, reporterList.getReporters().size());
         
         // Test wrong header file
-        agilentDnaPlatformSource = new AgilentCnPlatformSource (
-                TestArrayDesignFiles.AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_TEST_BAD_FILE,
-                "AgilentPlatform",
-                TestArrayDesignFiles.AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_TEST_BAD_PATH);
+        annotationFiles.clear();
+        annotationFiles.add(TestArrayDesignFiles.AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_TEST_BAD_FILE);
+        affymetrixCnPlatformSource = new AffymetrixCnPlatformSource (
+                annotationFiles, "AffymetrixCnPlatform");
 
-        loader = new AgilentTcgaAdfCghPlatformLoader(
-                agilentDnaPlatformSource);
+        loader = new AffymetrixCnPlatformLoader(
+                affymetrixCnPlatformSource);
         boolean hasException = false;
         try {
             platform = loader.load(dao);

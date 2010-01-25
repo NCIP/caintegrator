@@ -101,7 +101,7 @@ import java.util.SortedSet;
 
 import org.junit.Test;
 
-public class AffymetrixDnaAnalysisPlatformLoaderTest {
+public class AffymetrixSnpPlatformLoaderTest {
 
     private CaIntegrator2Dao dao = new CaIntegrator2DaoStub();
     
@@ -110,15 +110,15 @@ public class AffymetrixDnaAnalysisPlatformLoaderTest {
         List<File> annotationFiles = new ArrayList<File>();
         annotationFiles.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_TEST_FILE);
         annotationFiles.add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_TEST_FILE);
-        AffymetrixDnaPlatformSource affymetrixDnaPlatformSource = new AffymetrixDnaPlatformSource (
-                annotationFiles, "AffymetrixDnaPlatform");
+        AffymetrixSnpPlatformSource affymetrixSnpPlatformSource = new AffymetrixSnpPlatformSource (
+                annotationFiles, "AffymetrixSnpPlatform");
 
-        AffymetrixDnaAnalysisPlatformLoader loader = new AffymetrixDnaAnalysisPlatformLoader(
-                affymetrixDnaPlatformSource);
+        AffymetrixSnpPlatformLoader loader = new AffymetrixSnpPlatformLoader(
+                affymetrixSnpPlatformSource);
         
         Platform platform = loader.load(dao);
-        assertTrue("AffymetrixDnaPlatform".equals(loader.getPlatformName()));
-        assertTrue("AffymetrixDnaPlatform".equals(platform.getName()));
+        assertTrue("AffymetrixSnpPlatform".equals(loader.getPlatformName()));
+        assertTrue("AffymetrixSnpPlatform".equals(platform.getName()));
         SortedSet<ReporterList> reporterLists = platform.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
         assertEquals(2, reporterLists.size());
         ReporterList reporterList = reporterLists.iterator().next();
@@ -128,11 +128,11 @@ public class AffymetrixDnaAnalysisPlatformLoaderTest {
         // Test wrong header file
         annotationFiles.clear();
         annotationFiles.add(TestArrayDesignFiles.AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_TEST_BAD_FILE);
-        affymetrixDnaPlatformSource = new AffymetrixDnaPlatformSource (
-                annotationFiles, "AffymetrixDnaPlatform");
+        affymetrixSnpPlatformSource = new AffymetrixSnpPlatformSource (
+                annotationFiles, "AffymetrixSnpPlatform");
 
-        loader = new AffymetrixDnaAnalysisPlatformLoader(
-                affymetrixDnaPlatformSource);
+        loader = new AffymetrixSnpPlatformLoader(
+                affymetrixSnpPlatformSource);
         boolean hasException = false;
         try {
             platform = loader.load(dao);

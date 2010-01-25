@@ -160,7 +160,7 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         assertTrue(ajaxUpdater.runJobCalled);
         ajaxUpdater.runJobCalled = false;
         
-        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_SNP.getValue());
         action.getPlatformForm().getAnnotationFiles().add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
         action.getPlatformForm().getAnnotationFiles().add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
         assertEquals(ActionSupport.ERROR, action.createPlatform());
@@ -179,7 +179,7 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         assertTrue(ajaxUpdater.runJobCalled);
         ajaxUpdater.runJobCalled = false;
         
-        action.setPlatformType(PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue());
+        action.setPlatformType(PlatformTypeEnum.AGILENT_COPY_NUMBER.getValue());
         action.setPlatformFile(TestArrayDesignFiles.AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_FILE);
         assertEquals(ActionSupport.SUCCESS, action.createPlatform());
         assertTrue(ajaxUpdater.runJobCalled);
@@ -230,7 +230,7 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         
         action.clearErrorsAndMessages();
         action.setSelectedAction("addAnnotationFile");
-        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_SNP.getValue());
         action.setPlatformFile(TestArrayDesignFiles.HG_U133A_CDF_FILE);
         action.setPlatformFileFileName(TestArrayDesignFiles.HG_U133A_CDF_PATH);
         action.validate();
@@ -250,7 +250,7 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         assertTrue(action.hasFieldErrors());
         
         action.clearErrorsAndMessages();
-        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_SNP.getValue());
         action.setPlatformName("Test");
         action.validate();
         assertFalse(action.hasFieldErrors());
@@ -288,7 +288,7 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         assertTrue(action.hasFieldErrors());
         
         action.clearErrorsAndMessages();
-        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_SNP.getValue());
         action.setPlatformName("");
         action.setPlatformFile(TestArrayDesignFiles.EMPTY_FILE);
         action.setPlatformFileFileName("empt.csv");
@@ -334,7 +334,7 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         assertFalse(action.hasFieldErrors());
         
         action.clearErrorsAndMessages();
-        action.setPlatformType(PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue());
+        action.setPlatformType(PlatformTypeEnum.AGILENT_COPY_NUMBER.getValue());
         action.setPlatformName("Agilent Copy Number Platform");
         action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
         action.setPlatformFileFileName("abc.xml");
@@ -359,15 +359,29 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
 
     @Test
     public void testGetDisabled() {
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue());
         assertEquals(action.getPlatformNameDisplay(), "display: none;");
         assertEquals(action.getAddButtonDisplay(), "display: none;");
-        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_SNP.getValue());
         assertEquals(action.getPlatformNameDisplay(), "display: block;");
         assertEquals(action.getAddButtonDisplay(), "display: block;");
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getValue());
+        assertEquals(action.getPlatformNameDisplay(), "display: block;");
+        assertEquals(action.getAddButtonDisplay(), "display: block;");
+        action.setPlatformType(PlatformTypeEnum.AGILENT_COPY_NUMBER.getValue());
+        assertEquals(action.getPlatformNameDisplay(), "display: block;");
+        assertEquals(action.getAddButtonDisplay(), "display: none;");
 
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue());
         assertEquals(action.getCsvlFileDisplay(), "display: block;");
         assertEquals(action.getAdfGemlFileDisplay(), "display: none;");
-        action.setPlatformType(PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue());
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_SNP.getValue());
+        assertEquals(action.getCsvlFileDisplay(), "display: block;");
+        assertEquals(action.getAdfGemlFileDisplay(), "display: none;");
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getValue());
+        assertEquals(action.getCsvlFileDisplay(), "display: block;");
+        assertEquals(action.getAdfGemlFileDisplay(), "display: none;");
+        action.setPlatformType(PlatformTypeEnum.AGILENT_COPY_NUMBER.getValue());
         assertEquals(action.getCsvlFileDisplay(), "display: none;");
         assertEquals(action.getAdfGemlFileDisplay(), "display: block;");
     }

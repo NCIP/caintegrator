@@ -89,9 +89,9 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Used to load Affymetrix DNA array designs.
+ * Used to load Affymetrix SNP array designs.
  */
-public class AffymetrixDnaPlatformSource extends AbstractPlatformSource {
+public class AffymetrixSnpPlatformSource extends AbstractPlatformSource {
 
     private static final long serialVersionUID = 1L;
     private final String platformName;
@@ -102,7 +102,7 @@ public class AffymetrixDnaPlatformSource extends AbstractPlatformSource {
      * @param annotationFiles the list of CSV annotation files.
      * @param platformName the platform name.
      */
-    public AffymetrixDnaPlatformSource(List<File> annotationFiles, String platformName) {
+    public AffymetrixSnpPlatformSource(List<File> annotationFiles, String platformName) {
         super(annotationFiles);
         this.platformName = platformName;
     }
@@ -112,7 +112,7 @@ public class AffymetrixDnaPlatformSource extends AbstractPlatformSource {
      */
     @Override
     public AbstractPlatformLoader getLoader() throws PlatformLoadingException {
-        return new AffymetrixDnaAnalysisPlatformLoader(this);
+        return new AffymetrixSnpPlatformLoader(this);
     }
 
     /**
@@ -120,7 +120,7 @@ public class AffymetrixDnaPlatformSource extends AbstractPlatformSource {
      */
     @Override
     public String toString() {
-        return "Affymetrix DNA CSV annotation files: " + getAnnotationFileNames();
+        return "Affymetrix SNP CSV annotation files: " + getAnnotationFileNames();
     }
 
     /**

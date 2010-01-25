@@ -117,6 +117,7 @@ public class TestArrayDesignFiles {
     public static final String MAPPING_50K_XBA_CDF_PATH = "/arraydesign/affymetrix/Mapping50K_Xba240.CDF";
     public static final String MAPPING_50K_XBA_ANNOTATION_PATH = "/arraydesign/affymetrix/Mapping50K_Xba240.na27.annot.csv";
     public static final String MAPPING_50K_XBA_ANNOTATION_TEST_PATH = "/arraydesign/affymetrix/Mapping50K_Xba240.na27.annot_Test.csv";
+    public static final String GENOME_SNP6_CN_ANNOTATION_TEST_PATH = "/arraydesign/affymetrix/GenomeWideSNP_6.cn.na30.annot_Small.csv";
     
     public static final File HG_U133A_CDF_FILE = getFile(HG_U133A_CDF_PATH);
     public static final File HG_U133A_ANNOTATION_FILE = getFile(HG_U133A_ANNOTATION_PATH);
@@ -142,6 +143,7 @@ public class TestArrayDesignFiles {
     public static final File MAPPING_50K_XBA_CDF = getFile(MAPPING_50K_XBA_CDF_PATH);
     public static final File MAPPING_50K_XBA_ANNOTATION_FILE = getFile(MAPPING_50K_XBA_ANNOTATION_PATH);
     public static final File MAPPING_50K_XBA_ANNOTATION_TEST_FILE = getFile(MAPPING_50K_XBA_ANNOTATION_TEST_PATH);
+    public static final File GENOME_SNP6_CN_ANNOTATION_TEST_FILE = getFile(GENOME_SNP6_CN_ANNOTATION_TEST_PATH);
 
 
     // Agilent files
