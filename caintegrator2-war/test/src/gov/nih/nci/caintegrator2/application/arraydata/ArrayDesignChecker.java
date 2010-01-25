@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 
 public class ArrayDesignChecker {
 
-    public static Platform checkLoadAffymetrixSnpArrayDesign(File[] cdfs, AffymetrixDnaPlatformSource source, ArrayDataService service) throws PlatformLoadingException, AffymetrixCdfReadException {
+    public static Platform checkLoadAffymetrixSnpArrayDesign(File[] cdfs, AffymetrixSnpPlatformSource source, ArrayDataService service) throws PlatformLoadingException, AffymetrixCdfReadException {
         AffymetrixCdfReader cdfReaders[] = getCdfReaders(cdfs);
         Platform platform = retrievePlatform(source, service);
         if (platform.getId() == null) {
@@ -89,7 +89,7 @@ public class ArrayDesignChecker {
 
     public static Platform checkLoadAgilentCopyNumberArrayDesign(String platformName, File annotationFile, ArrayDataService service) 
     throws PlatformLoadingException {
-        AgilentDnaPlatformSource source = new AgilentDnaPlatformSource(annotationFile, platformName,
+        AgilentCnPlatformSource source = new AgilentCnPlatformSource(annotationFile, platformName,
                 annotationFile.getName());
         Platform platform = retrievePlatform(source, service);
         if (platform.getId() == null) {

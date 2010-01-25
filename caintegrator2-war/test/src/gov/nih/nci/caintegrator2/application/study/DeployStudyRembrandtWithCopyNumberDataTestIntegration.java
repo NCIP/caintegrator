@@ -88,7 +88,7 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
-import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixDnaPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixSnpPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
@@ -223,7 +223,7 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
         files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
         files.add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
         return new AbstractPlatformSource[] {
-                new AffymetrixDnaPlatformSource(files, "GeneChip Human Mapping 100K Set")
+                new AffymetrixSnpPlatformSource(files, "GeneChip Human Mapping 100K Set")
         };
     }
     

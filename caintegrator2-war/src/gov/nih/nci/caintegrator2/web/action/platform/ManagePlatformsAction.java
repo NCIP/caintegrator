@@ -86,9 +86,10 @@
 package gov.nih.nci.caintegrator2.web.action.platform;
 
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
-import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixDnaPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixCnPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
-import gov.nih.nci.caintegrator2.application.arraydata.AgilentDnaPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixSnpPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AgilentCnPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AgilentExpressionPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
@@ -202,7 +203,13 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
             }
             break;
 
-        case AFFYMETRIX_DNA_ANALYSIS:
+        case AFFYMETRIX_SNP:
+            if (!platformFileFileName.endsWith(".csv")) {
+                extensionNotSupported();
+            }
+            break;
+
+        case AFFYMETRIX_COPY_NUMBER:
             if (!platformFileFileName.endsWith(".csv")) {
                 extensionNotSupported();
             }
@@ -216,7 +223,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
             }
             break;
             
-        case AGILENT_DNA_ANALYSIS:
+        case AGILENT_COPY_NUMBER:
             if (!platformFileFileName.endsWith(".adf")
                     && !platformFileFileName.endsWith(".xml")) {
                 extensionNotSupported();
@@ -244,7 +251,8 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     }
 
     private void checkPlatformParameters() {
-        if (PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)) {
+        if (PlatformTypeEnum.AFFYMETRIX_SNP.getValue().equals(platformType)
+                || PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getValue().equals(platformType)) {
             checkAffyDnaPlatformType();
         } else {
             if (checkAddedPlatformFile()) {
@@ -299,8 +307,13 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
                         getPlatformFileCopy());
                 break;
 
-            case AFFYMETRIX_DNA_ANALYSIS:
-                source = new AffymetrixDnaPlatformSource(
+            case AFFYMETRIX_SNP:
+                source = new AffymetrixSnpPlatformSource(
+                        getPlatformForm().getAnnotationFiles(), getPlatformName());
+                break;
+
+            case AFFYMETRIX_COPY_NUMBER:
+                source = new AffymetrixCnPlatformSource(
                         getPlatformForm().getAnnotationFiles(), getPlatformName());
                 break;
                 
@@ -309,8 +322,8 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
                         getPlatformFileCopy(), getPlatformName(), platformFileFileName);
                 break;
                 
-            case AGILENT_DNA_ANALYSIS:
-                source = new AgilentDnaPlatformSource(
+            case AGILENT_COPY_NUMBER:
+                source = new AgilentCnPlatformSource(
                         getPlatformFileCopy(), getPlatformName(), platformFileFileName);
                 break;
 
@@ -501,9 +514,10 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      * @return whether to display the platform name.
      */
     public String getPlatformNameDisplay() {
-        if (PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)
+        if (PlatformTypeEnum.AFFYMETRIX_SNP.getValue().equals(platformType)
+                || PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getValue().equals(platformType)
                 || PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue().equals(platformType)
-                || PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue().equals(platformType)) {
+                || PlatformTypeEnum.AGILENT_COPY_NUMBER.getValue().equals(platformType)) {
             return "display: block;";
         } else {
             return "display: none;";
@@ -515,7 +529,8 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      * @return whether to display the add button.
      */
     public String getAddButtonDisplay() {
-        if (PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)) {
+        if (PlatformTypeEnum.AFFYMETRIX_SNP.getValue().equals(platformType)
+                || PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getValue().equals(platformType)) {
             return "display: block;";
         } else {
             return "display: none;";
@@ -527,7 +542,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      * @return whether to display the adf geml comment.
      */
     public String getAdfGemlFileDisplay() {
-        if (PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue().equals(platformType)) {
+        if (PlatformTypeEnum.AGILENT_COPY_NUMBER.getValue().equals(platformType)) {
             return "display: block;";
         } else {
             return "display: none;";
@@ -539,7 +554,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      * @return whether to display the csv comment.
      */
     public String getCsvlFileDisplay() {
-        if (PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue().equals(platformType)) {
+        if (PlatformTypeEnum.AGILENT_COPY_NUMBER.getValue().equals(platformType)) {
             return "display: none;";
         } else {
             return "display: block;";
