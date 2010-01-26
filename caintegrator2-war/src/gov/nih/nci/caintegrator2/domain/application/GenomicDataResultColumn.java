@@ -46,8 +46,8 @@ public class GenomicDataResultColumn extends AbstractCaIntegrator2Object {
     }
 
     private void loadValues() {
-        values = new ArrayList<GenomicDataResultValue>(getResult().getRowCollection().size());
-        for (GenomicDataResultRow row : getResult().getRowCollection()) {
+        values = new ArrayList<GenomicDataResultValue>(getResult().getFilteredRowCollection().size());
+        for (GenomicDataResultRow row : getResult().getFilteredRowCollection()) {
             values.add(row.getValues().get(getColumnIndex()));
         }
     }

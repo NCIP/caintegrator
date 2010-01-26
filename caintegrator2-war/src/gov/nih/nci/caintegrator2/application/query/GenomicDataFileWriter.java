@@ -155,7 +155,7 @@ public final class GenomicDataFileWriter {
         line.add("");
         line.add("");
         line.add("Reporter ID");
-        for (GenomicDataResultRow row : result.getRowCollection()) {
+        for (GenomicDataResultRow row : result.getFilteredRowCollection()) {
             line.add(row.getReporter().getName());
         }
         return line;
@@ -166,7 +166,7 @@ public final class GenomicDataFileWriter {
         line.add("");
         line.add("");
         line.add("Gene Name");
-        for (GenomicDataResultRow row : result.getRowCollection()) {
+        for (GenomicDataResultRow row : result.getFilteredRowCollection()) {
             line.add(row.getReporter().getGeneSymbols());
         }
         return line;
@@ -221,7 +221,7 @@ public final class GenomicDataFileWriter {
     }
     
     private static void writeRows(GenomicDataQueryResult result, FileWriter writer) throws IOException {
-        for (GenomicDataResultRow row : result.getRowCollection()) {
+        for (GenomicDataResultRow row : result.getFilteredRowCollection()) {
             List<String> resultValuesRow = new ArrayList<String>();
             resultValuesRow.add(row.getReporter().getGeneSymbols().replaceAll(",", "-"));
             if (isProbeSetResultType(result)) {
