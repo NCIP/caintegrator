@@ -108,6 +108,11 @@ import com.opensymphony.xwork2.Result;
  */
 public class StudyLogoResult implements Result {
     
+    /**
+     * Default serialVersionUID.
+     */
+    private static final long serialVersionUID = 1L;
+    
     private static final String DEFAULT_LOGO = File.separator + "images" + File.separator + "logo_sample_study.gif";
     private static final ImageContentTypeEnum DEFAULT_CONTENT_TYPE = ImageContentTypeEnum.GIF; 
 

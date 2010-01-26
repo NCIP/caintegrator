@@ -71,4 +71,8 @@
         <comment>Rename AFFYMETRIX_DNA_ANALYSIS and AGILENT_DNA_ANALYSIS in the PLATFORM_CONFIGURATION table.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.12.sql"/>
     </changeSet>
+    <changeSet id="1.1.13" author="nguyennh">
+        <comment>Change AFFYMETRIX_SNP to AFFYMETRIX_COPY_NUMBER in the PLATFORM_CONFIGURATION table.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.13.sql"/>
+    </changeSet>
 </databaseChangeLog>
