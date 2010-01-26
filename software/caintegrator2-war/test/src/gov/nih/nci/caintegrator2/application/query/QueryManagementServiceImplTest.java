@@ -217,9 +217,9 @@ public class QueryManagementServiceImplTest {
         reporterList2.getArrayDatas().add(arrayData2);
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
-        assertEquals(1, result.getRowCollection().size());
+        assertEquals(1, result.getFilteredRowCollection().size());
         assertEquals(1, result.getColumnCollection().size());
-        assertEquals(1, result.getRowCollection().iterator().next().getValues().size());
+        assertEquals(1, result.getFilteredRowCollection().iterator().next().getValues().size());
         GenomicDataResultColumn column = result.getColumnCollection().iterator().next();
         assertNotNull(column.getSampleAcquisition());
         assertNotNull(column.getSampleAcquisition().getSample());
@@ -241,17 +241,17 @@ public class QueryManagementServiceImplTest {
         sampleSet1.getSamples().add(new Sample());
         study.getStudyConfiguration().getGenomicDataSources().get(0).getControlSampleSetCollection().add(sampleSet1);
         result = queryManagementService.executeGenomicDataQuery(query);
-        assertEquals(1, result.getRowCollection().size());
+        assertEquals(1, result.getFilteredRowCollection().size());
         foldChangeCriterion.setFoldsDown(1.0f);
         foldChangeCriterion.setRegulationType(RegulationTypeEnum.DOWN);
         result = queryManagementService.executeGenomicDataQuery(query);
-        assertEquals(0, result.getRowCollection().size());
+        assertEquals(0, result.getFilteredRowCollection().size());
         foldChangeCriterion.setRegulationType(RegulationTypeEnum.UP_OR_DOWN);
         result = queryManagementService.executeGenomicDataQuery(query);
-        assertEquals(1, result.getRowCollection().size());
+        assertEquals(1, result.getFilteredRowCollection().size());
         foldChangeCriterion.setRegulationType(RegulationTypeEnum.UNCHANGED);
         result = queryManagementService.executeGenomicDataQuery(query);
-        assertEquals(0, result.getRowCollection().size());
+        assertEquals(0, result.getFilteredRowCollection().size());
     }
 
     

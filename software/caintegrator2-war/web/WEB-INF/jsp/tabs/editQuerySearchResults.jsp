@@ -67,7 +67,7 @@
                         <th>Reporter ID</th>
                     </s:if>
                 </tr>
-                <s:iterator value="genomicDataQueryResult.rowCollection" status="status">
+                <s:iterator value="genomicDataQueryResult.filteredRowCollection" status="status">
                     <s:if test="#status.odd == true">
                         <tr class="odd">
                     </s:if>
@@ -94,7 +94,7 @@
                 <tr>
                     <td/><td/>
                     <th>Gene Name</th>
-                    <s:iterator value="genomicDataQueryResult.rowCollection" status="status">
+                    <s:iterator value="genomicDataQueryResult.filteredRowCollection" status="status">
                         <td><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
                             <b><s:property value="reporter.geneSymbols" /></b>
                         </a></td>
@@ -104,7 +104,7 @@
                     <tr>
                         <td/><td/>
                         <th>Reporter ID</th>
-                        <s:iterator value="genomicDataQueryResult.rowCollection" status="status">
+                        <s:iterator value="genomicDataQueryResult.filteredRowCollection" status="status">
                             <td><b><s:property value="reporter.name" /></b></td>
                         </s:iterator>
                     </tr>
@@ -136,7 +136,7 @@
         </table>    
         <br>
             <s:if test="!genomicDataQueryResult.columnCollection.isEmpty() &&
-                    !genomicDataQueryResult.rowCollection.isEmpty()">
+                    !genomicDataQueryResult.filteredRowCollection.isEmpty()">
                 <div class="exportlinks">
                     Export options:
                     <s:a href="#" onclick="submitForm('exportGenomicResults')">
@@ -212,7 +212,7 @@
     <!--Buttons-->
     <s:if test='%{query.resultType.value.equals("genomic")}'>
         <s:if test="!genomicDataQueryResult.columnCollection.isEmpty() &&
-                !genomicDataQueryResult.rowCollection.isEmpty()">
+                !genomicDataQueryResult.filteredRowCollection.isEmpty()">
             <div class="actionsrow">
                 <del class="btnwrapper">
                     <ul class="btnrow">
