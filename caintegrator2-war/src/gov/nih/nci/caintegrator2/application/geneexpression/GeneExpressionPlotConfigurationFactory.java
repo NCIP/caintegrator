@@ -149,8 +149,9 @@ public final class GeneExpressionPlotConfigurationFactory {
     private static void addReporterGroups(Map<String, PlotReporterGroup> reporterNameToGroupMap, 
             GenomicDataQueryResult genomicResult, PlotSampleGroup sampleGroup, 
             GeneExpressionPlotConfiguration configuration) {
-        Collections.sort(genomicResult.getRowCollection(), new GenomicDataResultRowComparator());
-        for (GenomicDataResultRow row : genomicResult.getRowCollection()) {
+        List<GenomicDataResultRow> rows = genomicResult.getFilteredRowCollection();
+        Collections.sort(rows, new GenomicDataResultRowComparator());
+        for (GenomicDataResultRow row : rows) {
             addReporterGroups(reporterNameToGroupMap, sampleGroup, configuration, row);
         }
     }

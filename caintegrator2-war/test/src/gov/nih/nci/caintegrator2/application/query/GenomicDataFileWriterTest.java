@@ -113,6 +113,7 @@ public class GenomicDataFileWriterTest {
     @Test
     public void testWriteAsCsv() throws IOException {
         GenomicDataQueryResult result = createTestResult();
+        result.setHasCriterionSpecifiedReporterValues(true);
         Query query = new Query();
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         result.setQuery(query);
@@ -155,12 +156,13 @@ public class GenomicDataFileWriterTest {
         addColumn(result, "SAMPLE1", "ASSIGNMENT1");
         addColumn(result, "SAMPLE2", "ASSIGNMENT2");
         addColumn(result, "SAMPLE3", "ASSIGNMENT3");
-        addRow(result, "REPORTER1", "GENE1", new float[] {(float) 1.1, (float) 2.2, (float) 3.3});
-        addRow(result, "REPORTER2", null, new float[] {(float) 4.4, (float) 5.5, (float) 6.6});
+        addRow(result, "REPORTER1", "GENE1", new float[] {(float) 1.1, (float) 2.2, (float) 3.3}, true);
+        addRow(result, "REPORTER3", "GENE3", new float[] {(float) 8, (float) 9, (float) 10}, false); // will not show up because doesn't have matching values.
+        addRow(result, "REPORTER2", null, new float[] {(float) 4.4, (float) 5.5, (float) 6.6}, true);
         return result;
     }
 
-    private void addRow(GenomicDataQueryResult result, String reporterName, String geneName, float[] values) {
+    private void addRow(GenomicDataQueryResult result, String reporterName, String geneName, float[] values, boolean hasMatchingValues) {
         GenomicDataResultRow row = new GenomicDataResultRow();
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         reporter.setName(reporterName);
@@ -179,6 +181,7 @@ public class GenomicDataFileWriterTest {
             colNum++;
         }
         result.getRowCollection().add(row);
+        row.setHasMatchingValues(hasMatchingValues);
     }
 
     private void addColumn(GenomicDataQueryResult result, String sampleName, String assignmentName) {

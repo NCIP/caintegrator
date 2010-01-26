@@ -34,6 +34,24 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
     }
     
     /**
+     * Used to return the filtered rows if "hasCriterionSpecifiedReporterValues" is true, otherwise
+     * returns all rows.
+     * @return filtered rows based on having any criterion matches.
+     */
+    public List<GenomicDataResultRow> getFilteredRowCollection() {
+        if (!hasCriterionSpecifiedReporterValues) {
+            return rowCollection;
+        }
+        List<GenomicDataResultRow> filteredRows = new ArrayList<GenomicDataResultRow>();
+        for (GenomicDataResultRow row : rowCollection) {
+            if (row.isHasMatchingValues()) {
+                filteredRows.add(row);
+            }
+        }
+        return filteredRows;
+    }
+    
+    /**
      * @return the query
      */
     public Query getQuery() {
