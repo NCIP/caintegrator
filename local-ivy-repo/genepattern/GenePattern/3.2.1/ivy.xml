@@ -6,7 +6,7 @@
             xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">  
 
   <info organisation="genepattern" 
-        module="genepattern"
+        module="Genepattern"
         revision="3.2.1"/>
         
   <configurations>
