@@ -385,7 +385,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         File file = queryManagementService.createCsvFileFromGenomicResults(getGenomicDataQueryResult());
         DownloadableFile downloadableFile = new DownloadableFile();
         downloadableFile.setPath(file.getAbsolutePath());
-        downloadableFile.setContentType(DownloadableFile.CONTENT_TYPE_TEXT);
+        downloadableFile.setContentType(DownloadableFile.CONTENT_TYPE_CSV);
         downloadableFile.setFilename("genomicResults.csv");
         downloadableFile.setDeleteFile(true);
         getDisplayableWorkspace().setTemporaryDownloadFile(downloadableFile);

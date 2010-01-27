@@ -97,6 +97,10 @@ public class DownloadableFile {
      * For plain text file type.
      */
     public static final String CONTENT_TYPE_TEXT = "text/plain";
+    /**
+     * For plain csv file type.
+     */
+    public static final String CONTENT_TYPE_CSV = "text/csv";
     
     private String path;
     private String filename;
