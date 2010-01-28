@@ -484,6 +484,14 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     public boolean isCopyNumberData() {
         return GenomicDataSourceDataTypeEnum.COPY_NUMBER.equals(dataType);
     }
+    
+    /**
+     * Check for data type is SNP.
+     * @return boolean.
+     */
+    public boolean isSnpData() {
+        return GenomicDataSourceDataTypeEnum.SNP.equals(dataType);
+    }
 
     /**
      * @return the sampleMappingFilePath

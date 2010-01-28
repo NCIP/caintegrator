@@ -145,7 +145,15 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
 
     @Test
     public void testGetAgilentPlatformNames() {
-        assertEquals(3, action.getAllPlatformNames().size());
+        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
+        action.getGenomicSource().setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        assertEquals(1, action.getFilterPlatformNames().size());
+        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
+        action.getGenomicSource().setDataType(GenomicDataSourceDataTypeEnum.SNP);
+        assertEquals(0, action.getFilterPlatformNames().size());
+        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AGILENT.getValue());
+        action.getGenomicSource().setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        assertEquals(0, action.getFilterPlatformNames().size());
     }
 
     @Test
