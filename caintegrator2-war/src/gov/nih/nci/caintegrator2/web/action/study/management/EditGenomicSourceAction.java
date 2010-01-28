@@ -92,15 +92,17 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.web.ajax.IGenomicDataSourceAjaxUpdater;
 
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -145,6 +147,14 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         getGenomicSource().setPlatformName("");
         getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
         getGenomicSource().setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        return SUCCESS;
+    }
+    
+    /**
+     * Refresh the page.
+     * @return struts string.
+     */
+    public String refresh() {
         return SUCCESS;
     }
     
@@ -245,13 +255,31 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     /**
      * @return all platform names
      */
-    public SortedMap<String, String> getAllPlatformNames() {
-        SortedMap<String, String> platformNames = new TreeMap<String, String>();
-        platformNames.put("", "");
-        for (Platform platform : getArrayDataService().getPlatforms()) {
-            platformNames.put(platform.getVendor().getValue() + " - " + platform.getName(), platform.getName());
+    public List<String> getFilterPlatformNames() {
+        SortedSet<String> platformNames = new TreeSet<String>();
+        for (PlatformConfiguration platformConfiguration : getArrayDataService().getPlatformConfigurations()) {
+            if (Status.LOADED.equals(platformConfiguration.getStatus())
+                    && platformConfiguration.getPlatform().getVendor().getValue().equals(
+                        getGenomicSource().getPlatformVendor())
+                    && platformConfiguration.getPlatformType().getDataType().equals(
+                        getGenomicSource().getDataTypeString())) {
+                platformNames.add(platformConfiguration.getPlatform().getName());
+            }
         }
-        return platformNames;
+        return new ArrayList<String>(platformNames);
+    }
+    
+    /**
+     * 
+     * @return a list of data types based on the platform vendor.
+     */
+    public List<String> getDataTypes() {
+        if (PlatformVendorEnum.AFFYMETRIX.getValue().equals(getGenomicSource().getPlatformVendor())) {
+            return GenomicDataSourceDataTypeEnum.getStringValues();
+        }
+        List<String> dataTypes = GenomicDataSourceDataTypeEnum.getStringValues();
+        dataTypes.remove("SNP");
+        return dataTypes;
     }
     
     /**

@@ -19,7 +19,12 @@ public enum GenomicDataSourceDataTypeEnum {
     /**
      * CopyNumber.
      */
-    COPY_NUMBER("Copy Number");
+    COPY_NUMBER("Copy Number"),
+    
+    /**
+     * SNP.
+     */
+    SNP("SNP");
     
     private String value;
     
@@ -59,8 +64,9 @@ public enum GenomicDataSourceDataTypeEnum {
      */
     public static List<String> getStringValues() {
         List<String> values = new ArrayList<String>();
-        values.add(EXPRESSION.getValue());
-        values.add(COPY_NUMBER.getValue());
+        for (GenomicDataSourceDataTypeEnum type : values()) {
+            values.add(type.getValue());
+        }
         return values;
     }
     
