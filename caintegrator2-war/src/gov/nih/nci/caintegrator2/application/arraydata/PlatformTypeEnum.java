@@ -99,34 +99,36 @@ public enum PlatformTypeEnum {
     /**
      * Affymetrix Gene Expression platform.
      */
-    AFFYMETRIX_GENE_EXPRESSION("Affymetrix Gene Expression"),
+    AFFYMETRIX_GENE_EXPRESSION("Affymetrix Gene Expression", "Expression"),
     
     /**
      * Affymetrix SNP platform.
      */
-    AFFYMETRIX_SNP("Affymetrix SNP"),
+    AFFYMETRIX_SNP("Affymetrix SNP", "SNP"),
     
     /**
      * Affymetrix Copy Number platform.
      */
-    AFFYMETRIX_COPY_NUMBER("Affymetrix Copy Number"),
+    AFFYMETRIX_COPY_NUMBER("Affymetrix Copy Number", "Copy Number"),
     
     /**
      * Agilent Gene Expression platform.
      */
-    AGILENT_GENE_EXPRESSION("Agilent Gene Expression"),
+    AGILENT_GENE_EXPRESSION("Agilent Gene Expression", "Expression"),
     
     /**
      * Agilent Copy Number platform.
      */
-    AGILENT_COPY_NUMBER("Agilent Copy Number");
+    AGILENT_COPY_NUMBER("Agilent Copy Number", "Copy Number");
     
     private static Map<String, PlatformTypeEnum> valueToTypeMap = new HashMap<String, PlatformTypeEnum>();
 
     private String value;
+    private String dataType;
     
-    private PlatformTypeEnum(String value) {
+    private PlatformTypeEnum(String value, String dataType) {
         this.value = value;
+        this.dataType = dataType;
     }
 
     /**
@@ -141,6 +143,13 @@ public enum PlatformTypeEnum {
      */
     public void setValue(String value) {
         this.value = value;
+    }
+
+    /**
+     * @return the dataType
+     */
+    public String getDataType() {
+        return dataType;
     }
 
     private static Map<String, PlatformTypeEnum> getValueToTypeMap() {

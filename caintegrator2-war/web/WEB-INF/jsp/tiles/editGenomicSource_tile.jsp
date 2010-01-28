@@ -74,17 +74,17 @@
                     <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" />
                     <s:select id="platformVendor" name="genomicSource.platformVendor" label="Vendor"
                         list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum@getValuesToDisplay()"
-                        onchange="CheckPlatformVendor(this.form.platformVendor.value, this.form.dataType.value);"/>
+                        onchange="document.genomicSourceForm.action = 'refreshGenomicSource.action';
+                                document.genomicSourceForm.submit();"/>
                     <s:select id="dataType" name="genomicSource.dataTypeString" label="Data Type"
-                        list="@gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum@getStringValues()"
-                        onchange="CheckPlatformVendor(this.form.platformVendor.value, this.form.dataType.value);"/>
+                        list="dataTypes"
+                        onchange="document.genomicSourceForm.action = 'refreshGenomicSource.action';
+                                document.genomicSourceForm.submit();"/>
                     <s:select id="platformName" 
                         name="genomicSource.platformName" 
                         label="Platform (needed for Agilent and Affy Expression)"
-                        list="allPlatformNames" 
-                        disabled="platformNameDisable"
-                        listKey="value"
-                        listValue="key"/>
+                        list="filterPlatformNames" 
+                        disabled="platformNameDisable"/>
                     <tr> 
                         <td></td>
                         <td>

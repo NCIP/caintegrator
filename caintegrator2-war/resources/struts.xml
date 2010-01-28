@@ -389,7 +389,12 @@
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
             </result>
         </action>
+        
         <action name="addGenomicSource" method="addNew" class="editGenomicSourceAction">
+            <result type="tiles">editGenomicSource</result>
+        </action>
+        
+        <action name="refreshGenomicSource" method="refresh" class="editGenomicSourceAction">
             <result type="tiles">editGenomicSource</result>
         </action>
         

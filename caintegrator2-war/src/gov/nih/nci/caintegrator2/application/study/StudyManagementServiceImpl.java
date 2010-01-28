@@ -457,10 +457,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     public void loadGenomicSource(GenomicDataSourceConfiguration genomicSource) 
     throws ConnectionException, ExperimentNotFoundException {
-        if (GenomicDataSourceDataTypeEnum.EXPRESSION.equals(genomicSource.getDataType())) {
+        if (genomicSource.isExpressionData()) {
             handleLoadGeneExpression(genomicSource);
-        } else if (GenomicDataSourceDataTypeEnum.COPY_NUMBER.equals(genomicSource.getDataType())) {
-            handleLoadCopyNumber(genomicSource);
+        } else if (genomicSource.isCopyNumberData() || genomicSource.isSnpData()) {
+            handleLoadDnaAnalysis(genomicSource);
         }
         genomicSource.setStatus(Status.LOADED);
         getDao().save(genomicSource);
@@ -480,7 +480,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
     }
     
-    private void handleLoadCopyNumber(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
+    private void handleLoadDnaAnalysis(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
     ExperimentNotFoundException {
         String errorMessage = 
             "No samples found for this caArray experiment (verify that sample data is accessible in caArray)";
