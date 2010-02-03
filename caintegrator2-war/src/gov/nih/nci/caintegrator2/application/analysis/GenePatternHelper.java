@@ -98,6 +98,8 @@ import org.genepattern.webservice.ParameterInfo;
 import org.genepattern.webservice.TaskInfo;
 import org.genepattern.webservice.WebServiceException;
 
+import edu.mit.broad.genepattern.gp.services.CaIntegrator2GPClient;
+
 /**
  * Provides methods for working with GenePattern.
  */

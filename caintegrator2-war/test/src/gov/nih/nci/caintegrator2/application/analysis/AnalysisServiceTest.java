@@ -90,6 +90,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import edu.mit.broad.genepattern.gp.services.CaIntegrator2GPClient;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotAnnotationBasedParameters;
@@ -519,6 +520,10 @@ public class AnalysisServiceTest {
     private final class GenePatternClientFactoryStub implements GenePatternClientFactory {
 
         public CaIntegrator2GPClient retrieveClient(ServerConnectionProfile server) {
+            return genePatternClientStub;
+        }
+
+        public CaIntegrator2GPClient retrieveOldGenePatternClient(ServerConnectionProfile server) {
             return genePatternClientStub;
         }
         

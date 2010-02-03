@@ -1,0 +1,1545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://genepattern.broadinstitute.org/gp/services/Analysis" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://genepattern.broadinstitute.org/gp/services/Analysis" xmlns:intf="http://genepattern.broadinstitute.org/gp/services/Analysis" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns1="http://webservice.genepattern.org" xmlns:tns2="http://lang.java" xmlns:tns3="Analysis" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema targetNamespace="http://genepattern.broadinstitute.org/gp/services/Analysis" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="Analysis"/>
+   <import namespace="http://webservice.genepattern.org"/>
+   <import namespace="http://xml.apache.org/xml-soap"/>
+   <import namespace="http://lang.java"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="ArrayOf_xsd_int">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:int[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns3_JobInfo">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns3:JobInfo[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_xsd_anyType">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:anyType[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_soapenc_string">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="soapenc:string[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns3_FileWrapper">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns3:FileWrapper[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+  </schema>
+  <schema targetNamespace="http://webservice.genepattern.org" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="Analysis"/>
+   <import namespace="http://xml.apache.org/xml-soap"/>
+   <import namespace="http://genepattern.broadinstitute.org/gp/services/Analysis"/>
+   <import namespace="http://lang.java"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="WebServiceException">
+    <sequence>
+     <element name="rootCause" nillable="true" type="xsd:anyType"/>
+    </sequence>
+   </complexType>
+  </schema>
+  <schema targetNamespace="http://xml.apache.org/xml-soap" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="Analysis"/>
+   <import namespace="http://webservice.genepattern.org"/>
+   <import namespace="http://genepattern.broadinstitute.org/gp/services/Analysis"/>
+   <import namespace="http://lang.java"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="mapItem">
+    <sequence>
+     <element name="key" nillable="true" type="xsd:anyType"/>
+     <element name="value" nillable="true" type="xsd:anyType"/>
+    </sequence>
+   </complexType>
+   <complexType name="Map">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="apachesoap:mapItem"/>
+    </sequence>
+   </complexType>
+  </schema>
+  <schema targetNamespace="Analysis" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://webservice.genepattern.org"/>
+   <import namespace="http://xml.apache.org/xml-soap"/>
+   <import namespace="http://genepattern.broadinstitute.org/gp/services/Analysis"/>
+   <import namespace="http://lang.java"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="ParameterInfo">
+    <sequence>
+     <element name="attributes" nillable="true" type="apachesoap:Map"/>
+     <element name="choices" nillable="true" type="apachesoap:Map"/>
+     <element name="defaultValue" nillable="true" type="soapenc:string"/>
+     <element name="description" nillable="true" type="soapenc:string"/>
+     <element name="inputFile" type="xsd:boolean"/>
+     <element name="label" nillable="true" type="soapenc:string"/>
+     <element name="name" nillable="true" type="soapenc:string"/>
+     <element name="optional" type="xsd:boolean"/>
+     <element name="outputFile" type="xsd:boolean"/>
+     <element name="password" type="xsd:boolean"/>
+     <element name="value" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="ParameterInfoArray">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns3:ParameterInfo[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="TaskInfo">
+    <sequence>
+     <element name="ID" type="xsd:int"/>
+     <element name="accessId" type="xsd:int"/>
+     <element name="attributes" nillable="true" type="apachesoap:Map"/>
+     <element name="description" nillable="true" type="soapenc:string"/>
+     <element name="lsid" nillable="true" type="soapenc:string"/>
+     <element name="name" nillable="true" type="soapenc:string"/>
+     <element name="parameterInfo" nillable="true" type="soapenc:string"/>
+     <element name="parameterInfoArray" nillable="true" type="tns3:ParameterInfoArray"/>
+     <element name="pipeline" type="xsd:boolean"/>
+     <element name="shortName" nillable="true" type="soapenc:string"/>
+     <element name="taskInfoAttributes" nillable="true" type="xsd:anyType"/>
+     <element name="userId" nillable="true" type="soapenc:string"/>
+     <element name="visualizer" type="xsd:boolean"/>
+    </sequence>
+   </complexType>
+   <complexType name="TaskInfoArray">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns3:TaskInfo[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="JobInfo">
+    <sequence>
+     <element name="dateCompleted" nillable="true" type="xsd:dateTime"/>
+     <element name="dateSubmitted" nillable="true" type="xsd:dateTime"/>
+     <element name="deleted" type="xsd:boolean"/>
+     <element name="elapsedTimeMillis" type="xsd:long"/>
+     <element name="jobNumber" type="xsd:int"/>
+     <element name="parameterInfo" nillable="true" type="soapenc:string"/>
+     <element name="parameterInfoArray" nillable="true" type="tns3:ParameterInfoArray"/>
+     <element name="status" nillable="true" type="soapenc:string"/>
+     <element name="taskID" type="xsd:int"/>
+     <element name="taskLSID" nillable="true" type="soapenc:string"/>
+     <element name="taskName" nillable="true" type="soapenc:string"/>
+     <element name="userId" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="FileWrapper">
+    <sequence>
+     <element name="dataHandler" nillable="true" type="apachesoap:DataHandler"/>
+     <element name="filename" nillable="true" type="soapenc:string"/>
+     <element name="lastModified" type="xsd:long"/>
+     <element name="length" type="xsd:long"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="setEncodingSchemeVersionRequest">
+
+      <wsdl:part name="version" type="xsd:float"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getResultFilesResponse1">
+
+      <wsdl:part name="getResultFilesReturn" type="impl:ArrayOf_tns3_FileWrapper"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteJobRequest">
+
+      <wsdl:part name="jobId" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="submitJobResponse">
+
+      <wsdl:part name="submitJobReturn" type="tns3:JobInfo"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="submitJobResponse1">
+
+      <wsdl:part name="submitJobReturn" type="tns3:JobInfo"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobsResponse">
+
+      <wsdl:part name="getJobsReturn" type="impl:ArrayOf_tns3_JobInfo"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteJobResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="getChildJobInfosResponse">
+
+      <wsdl:part name="getChildJobInfosReturn" type="impl:ArrayOf_tns3_JobInfo"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getResultFilesRequest1">
+
+      <wsdl:part name="jobId" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="findJobsThatCreatedFileResponse">
+
+      <wsdl:part name="findJobsThatCreatedFileReturn" type="impl:ArrayOf_tns3_JobInfo"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobsResponse1">
+
+      <wsdl:part name="getJobsReturn" type="impl:ArrayOf_tns3_JobInfo"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getEncodingSchemeVersionResponse">
+
+      <wsdl:part name="getEncodingSchemeVersionReturn" type="xsd:float"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getEncodingSchemeResponse">
+
+      <wsdl:part name="getEncodingSchemeReturn" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobsResponse2">
+
+      <wsdl:part name="getJobsReturn" type="impl:ArrayOf_tns3_JobInfo"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="setEncodingSchemeResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="submitJobRequest">
+
+      <wsdl:part name="taskID" type="xsd:int"/>
+
+      <wsdl:part name="parameters" type="tns3:ParameterInfoArray"/>
+
+      <wsdl:part name="files" type="apachesoap:Map"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="pingResponse">
+
+      <wsdl:part name="pingReturn" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="checkStatusResponse">
+
+      <wsdl:part name="checkStatusReturn" type="tns3:JobInfo"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="createProvenancePipelineResponse">
+
+      <wsdl:part name="createProvenancePipelineReturn" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="setEncodingSchemeVersionResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobsRequest2">
+
+      <wsdl:part name="username" type="soapenc:string"/>
+
+      <wsdl:part name="groups" type="impl:ArrayOf_xsd_anyType"/>
+
+      <wsdl:part name="maxJobNumber" type="xsd:int"/>
+
+      <wsdl:part name="maxEntries" type="xsd:int"/>
+
+      <wsdl:part name="includeDeletedJobs" type="xsd:boolean"/>
+
+      <wsdl:part name="jobSortOrder" type="impl:Analysis_JobSortOrder"/>
+
+      <wsdl:part name="asc" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getEncodingSchemeVersionRequest">
+
+   </wsdl:message>
+
+   <wsdl:message name="terminateJobResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobsInGroupResponse">
+
+      <wsdl:part name="getJobsInGroupReturn" type="impl:ArrayOf_tns3_JobInfo"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="terminateJobRequest">
+
+      <wsdl:part name="jobId" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="setJobStatusResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="purgeJobResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="createProvenancePipelineRequest1">
+
+      <wsdl:part name="fileUrlOrJobNumber" type="soapenc:string"/>
+
+      <wsdl:part name="pipelineName" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getTasksResponse">
+
+      <wsdl:part name="getTasksReturn" type="tns3:TaskInfoArray"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteJobResultFileResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="purgeJobRequest">
+
+      <wsdl:part name="jobId" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getChildJobInfosRequest">
+
+      <wsdl:part name="parentJobId" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getWebServiceInfoRequest">
+
+   </wsdl:message>
+
+   <wsdl:message name="getChildrenResponse">
+
+      <wsdl:part name="getChildrenReturn" type="impl:ArrayOf_xsd_int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="setJobStatusRequest">
+
+      <wsdl:part name="jobId" type="xsd:int"/>
+
+      <wsdl:part name="status" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getTasksRequest">
+
+   </wsdl:message>
+
+   <wsdl:message name="pingRequest">
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteJobResultFileRequest">
+
+      <wsdl:part name="jobId" type="xsd:int"/>
+
+      <wsdl:part name="value" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getWebServiceNameResponse">
+
+      <wsdl:part name="getWebServiceNameReturn" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobsInGroupRequest">
+
+      <wsdl:part name="groups" type="impl:ArrayOf_xsd_anyType"/>
+
+      <wsdl:part name="maxJobNumber" type="xsd:int"/>
+
+      <wsdl:part name="maxEntries" type="xsd:int"/>
+
+      <wsdl:part name="includeDeletedJobs" type="xsd:boolean"/>
+
+      <wsdl:part name="jobSortOrder" type="impl:Analysis_JobSortOrder"/>
+
+      <wsdl:part name="asc" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getWebServiceInfoResponse">
+
+      <wsdl:part name="getWebServiceInfoReturn" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="setEncodingSchemeRequest">
+
+      <wsdl:part name="scheme" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getChildrenRequest">
+
+      <wsdl:part name="jobId" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="recordClientJobResponse1">
+
+      <wsdl:part name="recordClientJobReturn" type="tns3:JobInfo"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobsRequest1">
+
+      <wsdl:part name="username" type="soapenc:string"/>
+
+      <wsdl:part name="maxJobNumber" type="xsd:int"/>
+
+      <wsdl:part name="maxEntries" type="xsd:int"/>
+
+      <wsdl:part name="includeDeletedJobs" type="xsd:boolean"/>
+
+      <wsdl:part name="jobSortOrder" type="xsd:anyType"/>
+
+      <wsdl:part name="asc" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="WebServiceException">
+
+      <wsdl:part name="fault" type="tns1:WebServiceException"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobRequest">
+
+      <wsdl:part name="jobId" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="recordClientJobResponse">
+
+      <wsdl:part name="recordClientJobReturn" type="tns3:JobInfo"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobResponse">
+
+      <wsdl:part name="getJobReturn" type="tns3:JobInfo"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getResultFilesRequest">
+
+      <wsdl:part name="jobId" type="xsd:int"/>
+
+      <wsdl:part name="filenames" type="impl:ArrayOf_soapenc_string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="recordClientJobRequest1">
+
+      <wsdl:part name="taskID" type="xsd:int"/>
+
+      <wsdl:part name="parameters" type="tns3:ParameterInfoArray"/>
+
+      <wsdl:part name="parentJobNumber" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getEncodingSchemeRequest">
+
+   </wsdl:message>
+
+   <wsdl:message name="submitJobRequest1">
+
+      <wsdl:part name="taskID" type="xsd:int"/>
+
+      <wsdl:part name="parameters" type="tns3:ParameterInfoArray"/>
+
+      <wsdl:part name="files" type="apachesoap:Map"/>
+
+      <wsdl:part name="parentJobId" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="recordClientJobRequest">
+
+      <wsdl:part name="taskID" type="xsd:int"/>
+
+      <wsdl:part name="parameters" type="tns3:ParameterInfoArray"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="findJobsThatCreatedFileRequest">
+
+      <wsdl:part name="fileURLOrJobNumber" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="createProvenancePipelineResponse1">
+
+      <wsdl:part name="createProvenancePipelineReturn" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getResultFilesResponse">
+
+      <wsdl:part name="getResultFilesReturn" type="impl:ArrayOf_tns3_FileWrapper"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="createProvenancePipelineRequest">
+
+      <wsdl:part name="jobs" type="impl:ArrayOf_tns3_JobInfo"/>
+
+      <wsdl:part name="pipelineName" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobsRequest">
+
+      <wsdl:part name="username" type="soapenc:string"/>
+
+      <wsdl:part name="maxJobNumber" type="xsd:int"/>
+
+      <wsdl:part name="maxEntries" type="xsd:int"/>
+
+      <wsdl:part name="includeDeletedJobs" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="checkStatusRequest">
+
+      <wsdl:part name="jobId" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getWebServiceNameRequest">
+
+   </wsdl:message>
+
+   <wsdl:portType name="Analysis">
+
+      <wsdl:operation name="getChildren" parameterOrder="jobId">
+
+         <wsdl:input message="impl:getChildrenRequest" name="getChildrenRequest"/>
+
+         <wsdl:output message="impl:getChildrenResponse" name="getChildrenResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getTasks">
+
+         <wsdl:input message="impl:getTasksRequest" name="getTasksRequest"/>
+
+         <wsdl:output message="impl:getTasksResponse" name="getTasksResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setJobStatus" parameterOrder="jobId status">
+
+         <wsdl:input message="impl:setJobStatusRequest" name="setJobStatusRequest"/>
+
+         <wsdl:output message="impl:setJobStatusResponse" name="setJobStatusResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJob" parameterOrder="jobId">
+
+         <wsdl:input message="impl:getJobRequest" name="getJobRequest"/>
+
+         <wsdl:output message="impl:getJobResponse" name="getJobResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deleteJob" parameterOrder="jobId">
+
+         <wsdl:input message="impl:deleteJobRequest" name="deleteJobRequest"/>
+
+         <wsdl:output message="impl:deleteJobResponse" name="deleteJobResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deleteJobResultFile" parameterOrder="jobId value">
+
+         <wsdl:input message="impl:deleteJobResultFileRequest" name="deleteJobResultFileRequest"/>
+
+         <wsdl:output message="impl:deleteJobResultFileResponse" name="deleteJobResultFileResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="terminateJob" parameterOrder="jobId">
+
+         <wsdl:input message="impl:terminateJobRequest" name="terminateJobRequest"/>
+
+         <wsdl:output message="impl:terminateJobResponse" name="terminateJobResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJobs" parameterOrder="username maxJobNumber maxEntries includeDeletedJobs">
+
+         <wsdl:input message="impl:getJobsRequest" name="getJobsRequest"/>
+
+         <wsdl:output message="impl:getJobsResponse" name="getJobsResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJobs" parameterOrder="username maxJobNumber maxEntries includeDeletedJobs jobSortOrder asc">
+
+         <wsdl:input message="impl:getJobsRequest1" name="getJobsRequest1"/>
+
+         <wsdl:output message="impl:getJobsResponse1" name="getJobsResponse1"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJobs" parameterOrder="username groups maxJobNumber maxEntries includeDeletedJobs jobSortOrder asc">
+
+         <wsdl:input message="impl:getJobsRequest2" name="getJobsRequest2"/>
+
+         <wsdl:output message="impl:getJobsResponse2" name="getJobsResponse2"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJobsInGroup" parameterOrder="groups maxJobNumber maxEntries includeDeletedJobs jobSortOrder asc">
+
+         <wsdl:input message="impl:getJobsInGroupRequest" name="getJobsInGroupRequest"/>
+
+         <wsdl:output message="impl:getJobsInGroupResponse" name="getJobsInGroupResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createProvenancePipeline" parameterOrder="jobs pipelineName">
+
+         <wsdl:input message="impl:createProvenancePipelineRequest" name="createProvenancePipelineRequest"/>
+
+         <wsdl:output message="impl:createProvenancePipelineResponse" name="createProvenancePipelineResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createProvenancePipeline" parameterOrder="fileUrlOrJobNumber pipelineName">
+
+         <wsdl:input message="impl:createProvenancePipelineRequest1" name="createProvenancePipelineRequest1"/>
+
+         <wsdl:output message="impl:createProvenancePipelineResponse1" name="createProvenancePipelineResponse1"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="submitJob" parameterOrder="taskID parameters files">
+
+         <wsdl:input message="impl:submitJobRequest" name="submitJobRequest"/>
+
+         <wsdl:output message="impl:submitJobResponse" name="submitJobResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="submitJob" parameterOrder="taskID parameters files parentJobId">
+
+         <wsdl:input message="impl:submitJobRequest1" name="submitJobRequest1"/>
+
+         <wsdl:output message="impl:submitJobResponse1" name="submitJobResponse1"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="checkStatus" parameterOrder="jobId">
+
+         <wsdl:input message="impl:checkStatusRequest" name="checkStatusRequest"/>
+
+         <wsdl:output message="impl:checkStatusResponse" name="checkStatusResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="recordClientJob" parameterOrder="taskID parameters">
+
+         <wsdl:input message="impl:recordClientJobRequest" name="recordClientJobRequest"/>
+
+         <wsdl:output message="impl:recordClientJobResponse" name="recordClientJobResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="recordClientJob" parameterOrder="taskID parameters parentJobNumber">
+
+         <wsdl:input message="impl:recordClientJobRequest1" name="recordClientJobRequest1"/>
+
+         <wsdl:output message="impl:recordClientJobResponse1" name="recordClientJobResponse1"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getChildJobInfos" parameterOrder="parentJobId">
+
+         <wsdl:input message="impl:getChildJobInfosRequest" name="getChildJobInfosRequest"/>
+
+         <wsdl:output message="impl:getChildJobInfosResponse" name="getChildJobInfosResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="findJobsThatCreatedFile" parameterOrder="fileURLOrJobNumber">
+
+         <wsdl:input message="impl:findJobsThatCreatedFileRequest" name="findJobsThatCreatedFileRequest"/>
+
+         <wsdl:output message="impl:findJobsThatCreatedFileResponse" name="findJobsThatCreatedFileResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getResultFiles" parameterOrder="jobId filenames">
+
+         <wsdl:input message="impl:getResultFilesRequest" name="getResultFilesRequest"/>
+
+         <wsdl:output message="impl:getResultFilesResponse" name="getResultFilesResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getResultFiles" parameterOrder="jobId">
+
+         <wsdl:input message="impl:getResultFilesRequest1" name="getResultFilesRequest1"/>
+
+         <wsdl:output message="impl:getResultFilesResponse1" name="getResultFilesResponse1"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="purgeJob" parameterOrder="jobId">
+
+         <wsdl:input message="impl:purgeJobRequest" name="purgeJobRequest"/>
+
+         <wsdl:output message="impl:purgeJobResponse" name="purgeJobResponse"/>
+
+         <wsdl:fault message="impl:WebServiceException" name="WebServiceException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getWebServiceName">
+
+         <wsdl:input message="impl:getWebServiceNameRequest" name="getWebServiceNameRequest"/>
+
+         <wsdl:output message="impl:getWebServiceNameResponse" name="getWebServiceNameResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getWebServiceInfo">
+
+         <wsdl:input message="impl:getWebServiceInfoRequest" name="getWebServiceInfoRequest"/>
+
+         <wsdl:output message="impl:getWebServiceInfoResponse" name="getWebServiceInfoResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setEncodingScheme" parameterOrder="scheme">
+
+         <wsdl:input message="impl:setEncodingSchemeRequest" name="setEncodingSchemeRequest"/>
+
+         <wsdl:output message="impl:setEncodingSchemeResponse" name="setEncodingSchemeResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getEncodingScheme">
+
+         <wsdl:input message="impl:getEncodingSchemeRequest" name="getEncodingSchemeRequest"/>
+
+         <wsdl:output message="impl:getEncodingSchemeResponse" name="getEncodingSchemeResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getEncodingSchemeVersion">
+
+         <wsdl:input message="impl:getEncodingSchemeVersionRequest" name="getEncodingSchemeVersionRequest"/>
+
+         <wsdl:output message="impl:getEncodingSchemeVersionResponse" name="getEncodingSchemeVersionResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setEncodingSchemeVersion" parameterOrder="version">
+
+         <wsdl:input message="impl:setEncodingSchemeVersionRequest" name="setEncodingSchemeVersionRequest"/>
+
+         <wsdl:output message="impl:setEncodingSchemeVersionResponse" name="setEncodingSchemeVersionResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="ping">
+
+         <wsdl:input message="impl:pingRequest" name="pingRequest"/>
+
+         <wsdl:output message="impl:pingResponse" name="pingResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="AnalysisSoapBinding" type="impl:Analysis">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getChildren">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getChildrenRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getChildrenResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getTasks">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getTasksRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getTasksResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setJobStatus">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="setJobStatusRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="setJobStatusResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJob">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getJobRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getJobResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deleteJob">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="deleteJobRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="deleteJobResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deleteJobResultFile">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="deleteJobResultFileRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="deleteJobResultFileResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="terminateJob">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="terminateJobRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="terminateJobResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJobs">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getJobsRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getJobsResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJobs">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getJobsRequest1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getJobsResponse1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJobs">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getJobsRequest2">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getJobsResponse2">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJobsInGroup">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getJobsInGroupRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getJobsInGroupResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createProvenancePipeline">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createProvenancePipelineRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createProvenancePipelineResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createProvenancePipeline">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createProvenancePipelineRequest1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createProvenancePipelineResponse1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="submitJob">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="submitJobRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="submitJobResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="submitJob">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="submitJobRequest1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="submitJobResponse1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="checkStatus">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="checkStatusRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="checkStatusResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="recordClientJob">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="recordClientJobRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="recordClientJobResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="recordClientJob">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="recordClientJobRequest1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="recordClientJobResponse1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getChildJobInfos">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getChildJobInfosRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getChildJobInfosResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="findJobsThatCreatedFile">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="findJobsThatCreatedFileRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="findJobsThatCreatedFileResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getResultFiles">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getResultFilesRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getResultFilesResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getResultFiles">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getResultFilesRequest1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getResultFilesResponse1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="purgeJob">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="purgeJobRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="purgeJobResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WebServiceException">
+
+            <wsdlsoap:fault encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" name="WebServiceException" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getWebServiceName">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getWebServiceNameRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getWebServiceNameResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getWebServiceInfo">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getWebServiceInfoRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getWebServiceInfoResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setEncodingScheme">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="setEncodingSchemeRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="setEncodingSchemeResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getEncodingScheme">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getEncodingSchemeRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getEncodingSchemeResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getEncodingSchemeVersion">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getEncodingSchemeVersionRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getEncodingSchemeVersionResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setEncodingSchemeVersion">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="setEncodingSchemeVersionRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="setEncodingSchemeVersionResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="ping">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="pingRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://webservice.server.genepattern.org" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="pingResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://genepattern.broadinstitute.org/gp/services/Analysis" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="AnalysisService">
+
+      <wsdl:port binding="impl:AnalysisSoapBinding" name="Analysis">
+
+         <wsdlsoap:address location="http://genepattern.broadinstitute.org/gp/services/Analysis"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

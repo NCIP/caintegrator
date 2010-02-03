@@ -1,0 +1,23 @@
+<ivy-module version="1.0">
+  <info organisation="ncicb" 
+        module="caintegrator"/>
+        
+  <configurations>
+    <conf name="master" />  
+    <conf name="runtime" />
+    <conf name="compile" extends="runtime" />
+  </configurations>
+  
+  <publications>
+	  <!-- <artifact name="genepattern-service" type="jar" conf="master, compile, runtime" />-->
+  </publications>
+  
+  <dependencies>
+    <dependency org="globus" name="axis" rev="1.2RC2" conf="compile"/>
+    <dependency org="javax.activation" name="activation" rev="1.0.2" conf="compile"/>
+    <dependency org="jcp" name="jaxrpc" rev="1.1" conf="compile"/>
+    <dependency org="genepattern" name="GenePattern" rev="3.2.1" conf="runtime" />
+    <dependency org="jakarta" name="commons-io" rev="1.4" conf="runtime" />
+  </dependencies>
+  
+</ivy-module>
