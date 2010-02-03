@@ -83,64 +83,89 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
+package edu.mit.broad.genepattern.gp.services;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-import org.genepattern.webservice.JobInfo;
-import org.genepattern.webservice.ParameterInfo;
-import org.genepattern.webservice.TaskInfo;
-import org.genepattern.webservice.WebServiceException;
-
-import edu.mit.broad.genepattern.gp.services.CaIntegrator2GPClient;
-
 /**
- * 
+ * Interface to GenePattern web service.
  */
-public class GenePatternClientStub implements CaIntegrator2GPClient {
+public interface GenePatternClient extends CaIntegrator2GPClient {
+    
+    /**
+     * Sets the URL to use to access the service.
+     * 
+     * @param url the URL
+     */
+    void setUrl(String url);
 
-    public TaskInfo getTaskInfo(String name) throws WebServiceException {
-        return null;
-    }
+    /**
+     * Sets the username to use to access the service.
+     * 
+     * @param username the username.
+     */
+    void setUsername(String username);
+    
+    /**
+     * Sets the password to use to access the service.
+     * 
+     * @param password the password.
+     */
+    void setPassword(String password);
+    
+    /**
+     * Returns information for all available tasks
+     * 
+     * @return information on all tasks.
+     * @throws GenePatternServiceException if there's a problem communicating with the service.
+     */
+    TaskInfo[] getTasksOld() throws GenePatternServiceException;
 
-    public TaskInfo[] getTasks() throws WebServiceException {
-        return null;
-    }
+    /**
+     * Returns the task information for the requested task.
+     * 
+     * @param name name of the task to retrieve.
+     * @return the information.
+     * @throws GenePatternServiceException if there's a problem communicating with the service.
+     */
+    TaskInfo getTaskInfo(String name) throws GenePatternServiceException;
+    
+    /**
+     * Runs the given job.
+     * 
+     * @param taskName the name of the analysis method
+     * @param parameters the parameters to submit
+     * @return the job information
+     * @throws GenePatternServiceException if there's a failure communicating with GenePattern
+     */
+    JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws GenePatternServiceException;
 
+    /**
+     * Returns the current updated jobInfo for the given task.
+     * 
+     * @param jobInfo the current job info.
+     * @return the updated job info.
+     * @throws GenePatternServiceException if there's a failure communicating with GenePattern.
+     */
+    JobInfo getStatus(JobInfo jobInfo) throws GenePatternServiceException;
 
-    public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws WebServiceException {
-        return null;
-    }
+    /**
+     * Returns the result files for the job.
+     * 
+     * @param jobInfo get files for this job.
+     * @return the file wrappers.
+     * @throws GenePatternServiceException if there's a failure communicating with GenePattern.
+     */
+    FileWrapper[] getResultFiles(JobInfo jobInfo) throws GenePatternServiceException;
 
-
-    public void setUrl(String url) {
-        // no-op
-    }
-
-
-    public void setUsername(String username) {
-        // no-op
-    }
-
-
-    public void setPassword(String password) {
-        // no-op
-    }
-
-
-    public JobInfo getStatus(JobInfo jobInfo) {
-        return jobInfo;
-    }
-
-
-    public File getResultFile(JobInfo jobInfo, String filename) {
-        return null;
-    }
-
-    public File[] getResultFiles(JobInfo jobInfo, File resultsDir) throws WebServiceException, IOException {
-        return null;
-    }
+    /**
+     * Returns the file wrapper for the requested file.
+     * 
+     * @param jobInfo retrieve file from this job.
+     * @param filename the file to retrieve.
+     * @return the requested file or null.
+     * @throws GenePatternServiceException if there's a failure communicating with GenePattern.
+     */
+    FileWrapper getResultFile(JobInfo jobInfo, String filename) throws GenePatternServiceException;
 
 }

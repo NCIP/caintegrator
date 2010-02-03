@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import edu.mit.broad.genepattern.gp.services.CaIntegrator2GPClient;
 import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotHandler;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
@@ -153,7 +154,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     }
 
     private CaIntegrator2GPClient retrieveClient(ServerConnectionProfile server) throws WebServiceException {
-        return genePatternClientFactory.retrieveClient(server);
+        return genePatternClientFactory.retrieveOldGenePatternClient(server);
     }
 
     /**

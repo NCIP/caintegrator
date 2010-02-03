@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import edu.mit.broad.genepattern.gp.services.CaIntegrator2GPClient;
+import edu.mit.broad.genepattern.gp.services.GenePatternClientImpl;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
@@ -102,6 +104,17 @@ public class GenePatternClientFactoryImpl implements GenePatternClientFactory {
     public CaIntegrator2GPClient retrieveClient(ServerConnectionProfile server) throws WebServiceException {
         return new CaIntegrator2GPClientImpl(server.getUrl(), server.getUsername(), 
                 server.getPassword(), fileManager);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public CaIntegrator2GPClient retrieveOldGenePatternClient(ServerConnectionProfile server) {
+        GenePatternClientImpl client = new GenePatternClientImpl();
+        client.setUrl(server.getUrl());
+        client.setUsername(server.getUsername());
+        client.setPassword(server.getPassword());
+        return client;
     }
     
     /**

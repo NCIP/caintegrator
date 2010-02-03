@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
-import gov.nih.nci.caintegrator2.application.analysis.CaIntegrator2GPClient;
+import edu.mit.broad.genepattern.gp.services.CaIntegrator2GPClient;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
