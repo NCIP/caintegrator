@@ -90,7 +90,6 @@ import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
 import com.opensymphony.xwork2.ValidationAware;
@@ -190,17 +189,6 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
         geneSymbolParameter.setTitle("Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )");
         geneSymbolParameter.setGeneSymbol(true);
         ValueHandler geneSymbolHandler = new ValueHandlerAdapter() {
-            
-            public boolean isValid(String value) {
-                return !StringUtils.isBlank(value);
-            }
-
-            public void validate(String formFieldName, String value, ValidationAware action) {
-                if (StringUtils.isBlank(value)) {
-                    action.addActionError("A value is required for Gene Symbol");
-                }
-            }
-
             public void valueChanged(String value) {
                 criterion.setGeneSymbol(value);
             }

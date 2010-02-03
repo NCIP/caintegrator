@@ -67,29 +67,40 @@
                         <th>Reporter ID</th>
                     </s:if>
                 </tr>
-                <s:iterator value="genomicDataQueryResult.filteredRowCollection" status="status">
-                    <s:if test="#status.odd == true">
-                        <tr class="odd">
-                    </s:if>
-                    <s:else>
-                        <tr class="even">
-                    </s:else>
-                    <td><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
-                        <b><s:property value="reporter.geneSymbols" /></b>
-                    </a></td>
-                    <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
-                        <td><b><s:property value="reporter.name" /></b></td>
-                    </s:if>
-                    <td /><s:iterator value="values">
-                        <s:if test="#genomicDataNeedsHighlighting && meetsCriterion">
-                            <td nowrap="nowrap" bgcolor="<s:property value='highlightColor'/>"><b><font color="white"><s:property value="value" /></font></b></td>
+                <s:if test="genomicDataQueryResult.filteredRowCollection.isEmpty()">
+                    Nothing found to display.
+                </s:if>
+                <s:elseif test="genomicDataQueryResult.filteredRowCollection.size() > 2000">
+                    Found more than 2000 results, please restrict your search or use the export option.
+                </s:elseif>
+                <s:else>
+                    <s:iterator value="genomicDataQueryResult.filteredRowCollection" status="status">
+                        <s:if test="#status.odd == true">
+                            <tr class="odd">
                         </s:if>
                         <s:else>
-                            <td nowrap="nowrap"><s:property value="value" /></td>
+                            <tr class="even">
                         </s:else>
+                        <td><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
+                            <b><s:property value="reporter.geneSymbols" /></b>
+                        </a></td>
+                        <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
+                            <td><b><s:property value="reporter.name" /></b></td>
+                        </s:if>
+                        <td /><s:iterator value="values">
+                            <s:if test="#genomicDataNeedsHighlighting && meetsCriterion">
+                                <td nowrap="nowrap" bgcolor="<s:property value='highlightColor'/>"><b><font color="white"><s:property value="value" /></font></b></td>
+                            </s:if>
+                            <s:else>
+                                <td nowrap="nowrap"><s:property value="value" /></td>
+                            </s:else>
+                        </s:iterator>
                     </s:iterator>
-                </s:iterator>
+                </s:else>
             </s:if>
+            <s:elseif test="genomicDataQueryResult.filteredRowCollection.size() > 2000">
+                    Found more than 2000 results, please restrict your search or use the export option.
+            </s:elseif>
             <s:else>
                 <tr>
                     <td/><td/>
@@ -113,37 +124,49 @@
                     <th>Subject ID</th>
                     <th>Sample ID</th>
                 </tr>
-                <s:iterator value="genomicDataQueryResult.columnCollection" status="status">
-                    <s:if test="#status.odd == true">
-                        <tr class="odd">
-                    </s:if>
-                    <s:else>
-                        <tr class="even">
-                    </s:else>
-                    <td><b><s:property value="sampleAcquisition.assignment.identifier" /></b></td>
-                    <td><b><s:property value="sampleAcquisition.sample.name" /></b></td>
-                    <td/>
-                    <s:iterator value="values">
-                        <s:if test="#genomicDataNeedsHighlighting && meetsCriterion">
-                            <td nowrap="nowrap" bgcolor="<s:property value='highlightColor'/>"><b><font color="white"><s:property value="value" /></font></b></td>
+                <s:if test="genomicDataQueryResult.columnCollection.isEmpty()">
+                    Nothing found to display.
+                </s:if>
+                <s:elseif test="genomicDataQueryResult.columnCollection.size() > 2000">
+                    Found more than 2000 results, please restrict your search or use the export option.
+                </s:elseif>
+                <s:else>
+                    <s:iterator value="genomicDataQueryResult.columnCollection" status="status">
+                        <s:if test="#status.odd == true">
+                            <tr class="odd">
                         </s:if>
                         <s:else>
-                            <td nowrap="nowrap"><s:property value="value" /></td>
+                            <tr class="even">
                         </s:else>
+                        <td><b><s:property value="sampleAcquisition.assignment.identifier" /></b></td>
+                        <td><b><s:property value="sampleAcquisition.sample.name" /></b></td>
+                        <td/>
+                        <s:iterator value="values">
+                            <s:if test="#genomicDataNeedsHighlighting && meetsCriterion">
+                                <td nowrap="nowrap" bgcolor="<s:property value='highlightColor'/>"><b><font color="white">
+                                    <s:property value="value" /></font></b>
+                                </td>
+                            </s:if>
+                            <s:else>
+                                <td nowrap="nowrap">
+                                    <s:property value="value" />
+                                </td>
+                            </s:else>
+                        </s:iterator>
                     </s:iterator>
-                </s:iterator>
+                </s:else>
             </s:else>
         </table>    
         <br>
-            <s:if test="!genomicDataQueryResult.columnCollection.isEmpty() &&
+        <s:if test="!genomicDataQueryResult.columnCollection.isEmpty() &&
                     !genomicDataQueryResult.filteredRowCollection.isEmpty()">
-                <div class="exportlinks">
-                    Export options:
-                    <s:a href="#" onclick="submitForm('exportGenomicResults')">
-                        <span class="export csv">CSV</span>
-                    </s:a>
-                </div>
-            </s:if>
+            <div class="exportlinks">
+                Export options:
+                <s:a href="#" onclick="submitForm('exportGenomicResults')">
+                    <span class="export csv">CSV</span>
+                </s:a>
+            </div>
+        </s:if>
         </s:if>
         <s:else>
             <s:set name="pageSizeVar" id="pageSizeVar" value="%{queryResult.pageSize}" />

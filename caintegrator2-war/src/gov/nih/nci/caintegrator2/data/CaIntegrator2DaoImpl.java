@@ -420,13 +420,10 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public Set<String> retrieveGeneSymbolsInStudy(Collection<String> symbols, Study study) {
         Criteria reporterCriteria = getCurrentSession().createCriteria(AbstractReporter.class);
         reporterCriteria.createCriteria("reporterList").
-                         createCriteria("arrayDatas").
-                         createCriteria("sample").
-                         createCriteria("genomicDataSource").
-                         createCriteria("studyConfiguration").
-                             add(Restrictions.eq(STUDY_ASSOCIATION, study));
+                createCriteria("arrayDatas").
+                    add(Restrictions.eq(STUDY_ASSOCIATION, study));
         reporterCriteria.createCriteria("genes").
-                        add(Restrictions.in("symbol", symbols));
+            add(Restrictions.in("symbol", symbols));
         Set<AbstractReporter> reporterSet = new HashSet<AbstractReporter>();
         reporterSet.addAll(reporterCriteria.list());
         Set<String> geneSymbols = new HashSet<String>();

@@ -137,7 +137,10 @@ public abstract class AbstractCriterionRow {
         return group;
     }
     
-    AbstractCriterion getCriterion() {
+    /**
+     * @return the criterion.
+     */
+    public AbstractCriterion getCriterion() {
         if (getCriterionWrapper() == null) {
             return null;
         } else {
