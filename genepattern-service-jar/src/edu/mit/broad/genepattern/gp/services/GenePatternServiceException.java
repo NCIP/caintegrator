@@ -1,3 +1,4 @@
+package edu.mit.broad.genepattern.gp.services;
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
@@ -83,64 +84,16 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-import org.genepattern.webservice.JobInfo;
-import org.genepattern.webservice.ParameterInfo;
-import org.genepattern.webservice.TaskInfo;
-import org.genepattern.webservice.WebServiceException;
-
-import edu.mit.broad.genepattern.gp.services.CaIntegrator2GPClient;
 
 /**
- * 
+ * Indicates a problem communicating with the GenePattern service.
  */
-public class GenePatternClientStub implements CaIntegrator2GPClient {
+public class GenePatternServiceException extends Exception {
 
-    public TaskInfo getTaskInfo(String name) throws WebServiceException {
-        return null;
-    }
+    private static final long serialVersionUID = 1L;
 
-    public TaskInfo[] getTasks() throws WebServiceException {
-        return null;
-    }
-
-
-    public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws WebServiceException {
-        return null;
-    }
-
-
-    public void setUrl(String url) {
-        // no-op
-    }
-
-
-    public void setUsername(String username) {
-        // no-op
-    }
-
-
-    public void setPassword(String password) {
-        // no-op
-    }
-
-
-    public JobInfo getStatus(JobInfo jobInfo) {
-        return jobInfo;
-    }
-
-
-    public File getResultFile(JobInfo jobInfo, String filename) {
-        return null;
-    }
-
-    public File[] getResultFiles(JobInfo jobInfo, File resultsDir) throws WebServiceException, IOException {
-        return null;
+    GenePatternServiceException(Exception e) {
+        super(e);
     }
 
 }

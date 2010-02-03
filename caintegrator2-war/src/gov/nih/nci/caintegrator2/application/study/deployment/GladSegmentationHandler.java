@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
-import gov.nih.nci.caintegrator2.application.analysis.CaIntegrator2GPClient;
+import edu.mit.broad.genepattern.gp.services.CaIntegrator2GPClient;
 import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;

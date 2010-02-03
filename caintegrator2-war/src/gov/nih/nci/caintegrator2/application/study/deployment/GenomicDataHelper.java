@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import static gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType.EXPRESSION_SIGNAL;
-import gov.nih.nci.caintegrator2.application.analysis.CaIntegrator2GPClient;
+import edu.mit.broad.genepattern.gp.services.CaIntegrator2GPClient;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactory;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;

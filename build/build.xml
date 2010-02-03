@@ -69,14 +69,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- Properties that relate to how to call build targets from sub-projects-->
 	<!-- Working directory passed to Ant tasks -->
     <property name="caintegrator2-war.base.dir" value="${software.dir}/caintegrator2-war" />
+    <property name="genepattern-service-jar.base.dir" value="${software.dir}/genepattern-service-jar" />
     <property name="kaplan-meier-jar.base.dir" value="${software.dir}/kaplan-meier-jar" />
 
 	<!-- Build file names relative working dir above, if the software.dir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
     <property name="caintegrator2-war.build.file" value="build.xml" />
+    <property name="genepattern-service-jar.build.file" value="build.xml" />
     <property name="kaplan-meier-jar.build.file" value="build.xml" />
 
 	<!-- The target name that should be called from the sub-project build file -->
     <property name="caintegrator2-war.build.target" value="build" />
+    <property name="genepattern-service-jar.build.target" value="build" />
     <property name="kaplan-meier-jar.build.target" value="build" />
 
 	<!-- Distribution Structure properties, used to copy files into the distribution area.
@@ -163,6 +166,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<delete dir="${dist.dir}"/>
 		<delete dir="${temp.dir}" />
         <ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="clean" dir="${caintegrator2-war.base.dir}" />
+        <ant inheritAll="false" inheritRefs="false" antfile="${genepattern-service-jar.build.file}" target="clean" dir="${genepattern-service-jar.base.dir}" />
         <ant inheritAll="false" inheritRefs="false" antfile="${kaplan-meier-jar.build.file}" target="clean" dir="${kaplan-meier-jar.base.dir}" />
 	</target>
 
@@ -204,12 +208,19 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		clean,
 		init,
         build:kaplan-meier.jar,
+        build:genepattern-service.jar,
         build:caintegrator2.war
 		" />
 
-    <target name="build:caintegrator2.war" depends="init, build:kaplan-meier.jar">
+    <target name="build:caintegrator2.war" depends="init, build:genepattern-service.jar, build:kaplan-meier.jar">
         <ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="${caintegrator2-war.build.target}" dir="${caintegrator2-war.base.dir}">
             <property name="caintegrator2.war" value="${caintegrator2-war.dist.dir}/caintegrator2.war" />
+        </ant>
+    </target>
+
+    <target name="build:genepattern-service.jar" depends="init">
+        <ant inheritAll="false" inheritRefs="false" antfile="${genepattern-service-jar.build.file}" target="${genepattern-service-jar.build.target}" dir="${genepattern-service-jar.base.dir}">
+            <property name="genepattern-service.jar" value="${genepattern-service-jar.base.dir}/target/genepattern-service.jar" />
         </ant>
     </target>
 
