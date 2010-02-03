@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -104,8 +105,11 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Handler that returns samples matching the given fold change criterion.
@@ -177,15 +181,21 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
     }
     
     boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
-        boolean reporterMatch = false;
-        for (Gene gene : genes) {
-            if (criterion.getGeneSymbol().toUpperCase().contains(gene.getSymbol().toUpperCase())) {
-                reporterMatch = true;
-                break;
-            }
-        }
-        if (reporterMatch && isFoldChangeMatch(value)) {
+        if (isReporterMatch(genes) && isFoldChangeMatch(value)) {
             return true;
+        }
+        return false;
+    }
+
+    private boolean isReporterMatch(Set<Gene> genes) {
+        if (StringUtils.isBlank(criterion.getGeneSymbol())) {
+            return true;
+        } else {
+            for (Gene gene : genes) {
+                if (criterion.getGeneSymbol().toUpperCase().contains(gene.getSymbol().toUpperCase())) {
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -229,10 +239,34 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
     @Override
     Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType) {
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-        Set<String> geneSymbols = new HashSet<String>();
-        geneSymbols.addAll(Arrays.asList(criterion.getGeneSymbol().replaceAll("\\s*", "").split(",")));
-        reporters.addAll(dao.findReportersForGenes(geneSymbols, reporterType, study));
+        if (StringUtils.isBlank(criterion.getGeneSymbol())) {
+            reporters.addAll(findReporters(reporterType, study));
+        } else {
+            Set<String> geneSymbols = new HashSet<String>();
+            geneSymbols.addAll(Arrays.asList(criterion.getGeneSymbol().replaceAll("\\s*", "").split(",")));
+            reporters.addAll(dao.findReportersForGenes(geneSymbols, reporterType, study));
+        }
         return reporters;
+    }
+    
+    private Set<AbstractReporter> findReporters(ReporterTypeEnum reporterType, Study study) {
+        Set<ReporterList> studyReporterLists = getStudyReporterLists(study, reporterType);
+        if (studyReporterLists.isEmpty()) {
+            return Collections.emptySet();
+        }
+        Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
+        for (ReporterList reporterList : studyReporterLists) {
+            reporters.addAll(reporterList.getReporters());
+        }
+        return reporters;
+    }
+
+    private Set<ReporterList> getStudyReporterLists(Study study, ReporterTypeEnum reporterType) {
+        Set<ReporterList> reporterLists = new HashSet<ReporterList>();
+        for (ArrayData arrayData : study.getArrayDatas(reporterType)) {
+            reporterLists.addAll(arrayData.getReporterLists());
+        }
+        return reporterLists;
     }
 
     /**
