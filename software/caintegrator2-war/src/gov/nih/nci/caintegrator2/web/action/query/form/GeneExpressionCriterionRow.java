@@ -127,7 +127,7 @@ public class GeneExpressionCriterionRow extends AbstractCriterionRow {
      * {@inheritDoc}
      */
     @Override
-    AbstractCriterion getCriterion() {
+    public AbstractCriterion getCriterion() {
         if (getGenomicCriterionWrapper() != null) {
             return getGenomicCriterionWrapper().getCriterion();
         } else {

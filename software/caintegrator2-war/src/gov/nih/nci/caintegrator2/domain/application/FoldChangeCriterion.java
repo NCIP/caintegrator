@@ -9,10 +9,15 @@ public class FoldChangeCriterion extends AbstractGenomicCriterion implements Clo
 
     private static final long serialVersionUID = 1L;
     
+    /**
+     * The message to initialize in the gene symbol text field.
+     */
+    public static final String GENE_SYMBOL_MSG = "Enter gene symbols or blank";
+    
     private Float foldsUp;
     private Float foldsDown;
     private RegulationTypeEnum regulationType;
-    private String geneSymbol;
+    private String geneSymbol = GENE_SYMBOL_MSG;
     private String controlSampleSetName;
     private transient SampleSet compareToSampleSet = new SampleSet();
     
