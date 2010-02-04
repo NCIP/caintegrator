@@ -12,7 +12,7 @@
 
 <@s.a theme="simple" href="" 
     cssClass="caBioLogo" 
-    title="Click to search caBio for genes based on keywords, symbols, or pathways." 
+    title="Click to search caBIO for genes based on keywords, symbols, or pathways." 
     onclick="showCaBioInputForm('${parameters.textFieldId}')">
     &nbsp;
 </@s.a>
