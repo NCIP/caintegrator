@@ -146,7 +146,7 @@ public class ArrayDataServiceImpl implements ArrayDataService {
             platformConfiguration.setPlatform(platform);
             platformConfiguration.setStatus(Status.LOADED);
             platformConfiguration.setDeploymentFinishDate(new Date());
-            platformConfiguration.setStatusDescription("Loaded time: " 
+            platformConfiguration.setStatusDescription("Load time: " 
                     + DateUtil.compareDatesInMinutes(platformConfiguration.getDeploymentStartDate(), 
                             platformConfiguration.getDeploymentFinishDate()) + " minute(s)");
             saveAndUpdateDeploymentStatus(platformConfiguration, listener);
