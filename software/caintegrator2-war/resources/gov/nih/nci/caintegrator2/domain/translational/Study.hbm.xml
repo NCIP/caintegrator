@@ -44,5 +44,17 @@
             unique="true" lazy="proxy" cascade="all"/>
         <one-to-one name="studyConfiguration" class="gov.nih.nci.caintegrator2.application.study.StudyConfiguration"
             property-ref="study"/>
+            
+        <set name="subjectAnnotationGroup" lazy="true" cascade="all" >
+            <cache usage="read-write" />
+            <key column="STUDY_ID" />
+            <one-to-many class="gov.nih.nci.caintegrator2.application.study.AnnotationGroup" />
+        </set>
+        <set name="imageSeriesAnnotationGroup" lazy="true" cascade="all" >
+            <cache usage="read-write" />
+            <key column="STUDY_ID" />
+            <one-to-many class="gov.nih.nci.caintegrator2.application.study.AnnotationGroup" />
+        </set>
+        
 	</class>
 </hibernate-mapping>

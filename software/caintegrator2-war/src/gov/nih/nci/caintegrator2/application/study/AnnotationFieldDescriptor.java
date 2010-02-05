@@ -99,6 +99,9 @@ public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
     private AnnotationFieldType type;
     private AnnotationDefinition definition;
     private boolean shownInBrowse = true;
+    private Boolean hasValidationErrors = false;
+    private Boolean usePermissibleValues = false;
+    private AnnotationGroup annotationGroup;
 
     /**
      * @return the name
@@ -154,6 +157,48 @@ public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
      */
     public void setShownInBrowse(boolean shownInBrowse) {
         this.shownInBrowse = shownInBrowse;
+    }
+
+    /**
+     * @return the hasValidationErrors
+     */
+    public Boolean isHasValidationErrors() {
+        return hasValidationErrors;
+    }
+
+    /**
+     * @param hasValidationErrors the hasValidationErrors to set
+     */
+    public void setHasValidationErrors(Boolean hasValidationErrors) {
+        this.hasValidationErrors = hasValidationErrors;
+    }
+
+    /**
+     * @return the annotationGroup
+     */
+    public AnnotationGroup getAnnotationGroup() {
+        return annotationGroup;
+    }
+
+    /**
+     * @param annotationGroup the annotationGroup to set
+     */
+    public void setAnnotationGroup(AnnotationGroup annotationGroup) {
+        this.annotationGroup = annotationGroup;
+    }
+
+    /**
+     * @return the usePermissibleValues
+     */
+    public Boolean isUsePermissibleValues() {
+        return usePermissibleValues;
+    }
+
+    /**
+     * @param usePermissibleValues the usePermissibleValues to set
+     */
+    public void setUsePermissibleValues(Boolean usePermissibleValues) {
+        this.usePermissibleValues = usePermissibleValues;
     }
 
 }

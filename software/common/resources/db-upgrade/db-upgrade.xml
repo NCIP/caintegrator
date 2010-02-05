@@ -75,4 +75,8 @@
         <comment>Change AFFYMETRIX_SNP to AFFYMETRIX_COPY_NUMBER in the PLATFORM_CONFIGURATION table.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.13.sql"/>
     </changeSet>
+    <changeSet id="1.1.14" author="tandrews">
+        <comment>Adding ANNOTATION_GROUP and all the appropriate associations with the new change to annotation definitions.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.14.sql"/>
+    </changeSet>
 </databaseChangeLog>
