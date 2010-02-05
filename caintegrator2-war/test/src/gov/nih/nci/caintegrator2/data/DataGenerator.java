@@ -178,7 +178,7 @@ public class DataGenerator {
         afd.setDefinition(ad);
         ad.setKeywords("congestive heart failure");
         afd.setName("Congestive Heart Failure");
-        afd.setType(AnnotationFieldType.CHOICE);
+        afd.setType(AnnotationFieldType.ANNOTATION);
         dao.save(afd);
     }
     

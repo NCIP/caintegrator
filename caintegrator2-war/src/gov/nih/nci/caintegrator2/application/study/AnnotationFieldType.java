@@ -96,13 +96,13 @@ public enum AnnotationFieldType {
     IDENTIFIER,
     
     /**
-     * A text type field.
+     * An Annotation type.
      */
-    TEXT,
+    ANNOTATION,
     
     /**
-     * A choice type field.
+     * A Timepoint type.
      */
-    CHOICE
+    TIMEPOINT
     
 }

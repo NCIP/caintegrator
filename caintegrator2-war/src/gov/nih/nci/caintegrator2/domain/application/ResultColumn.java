@@ -1,5 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
@@ -14,8 +15,10 @@ public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneab
     private EntityTypeEnum entityType;
     private Integer sortOrder;
     private SortTypeEnum sortType = SortTypeEnum.UNSORTED;
+    // This will be @Deprecated.
     private AnnotationDefinition annotationDefinition;
-
+    private AnnotationFieldDescriptor annotationFieldDescriptor;
+    
     /**
      * @return the columnIndex
      */
@@ -92,5 +95,19 @@ public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneab
     protected ResultColumn clone() throws CloneNotSupportedException {
         return (ResultColumn) super.clone();
         
+    }
+
+    /**
+     * @return the annotationFieldDescriptor
+     */
+    public AnnotationFieldDescriptor getAnnotationFieldDescriptor() {
+        return annotationFieldDescriptor;
+    }
+
+    /**
+     * @param annotationFieldDescriptor the annotationFieldDescriptor to set
+     */
+    public void setAnnotationFieldDescriptor(AnnotationFieldDescriptor annotationFieldDescriptor) {
+        this.annotationFieldDescriptor = annotationFieldDescriptor;
     }
 }
