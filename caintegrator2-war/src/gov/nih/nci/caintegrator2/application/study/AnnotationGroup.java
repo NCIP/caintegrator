@@ -86,119 +86,84 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Contains the information about a particular annotation field prior to association to an 
- * <code>AnnotationDefinition</code>.
+ * Object that logically links a Study to a group of AnnotationFieldDescriptors.
  */
-public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
+public class AnnotationGroup extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
     private String name;
-    private AnnotationFieldType type;
-    private AnnotationDefinition definition;
-    private boolean shownInBrowse = true;
-    private Boolean hasValidationErrors = false;
-    private Boolean usePermissibleValues = false;
-    private AnnotationGroup annotationGroup;
-
+    private String description;
+    private EntityTypeEnum annotationEntityType;
+    private Study study;
+    private List<AnnotationFieldDescriptor> annotationFieldDescriptors = 
+        new ArrayList<AnnotationFieldDescriptor>();
     /**
      * @return the name
      */
     public String getName() {
         return name;
     }
-
     /**
      * @param name the name to set
      */
     public void setName(String name) {
         this.name = name;
     }
-
     /**
-     * @return the type
+     * @return the description
      */
-    public AnnotationFieldType getType() {
-        return type;
+    public String getDescription() {
+        return description;
+    }
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    /**
+     * @return the annotationEntityType
+     */
+    public EntityTypeEnum getAnnotationEntityType() {
+        return annotationEntityType;
+    }
+    /**
+     * @param annotationEntityType the annotationEntityType to set
+     */
+    public void setAnnotationEntityType(EntityTypeEnum annotationEntityType) {
+        this.annotationEntityType = annotationEntityType;
+    }
+    /**
+     * @return the study
+     */
+    public Study getStudy() {
+        return study;
+    }
+    /**
+     * @param study the study to set
+     */
+    public void setStudy(Study study) {
+        this.study = study;
+    }
+    /**
+     * @return the annotationFieldDescriptors
+     */
+    public List<AnnotationFieldDescriptor> getAnnotationFieldDescriptors() {
+        return annotationFieldDescriptors;
+    }
+    /**
+     * @param annotationFieldDescriptors the annotationFieldDescriptors to set
+     */
+    public void setAnnotationFieldDescriptors(List<AnnotationFieldDescriptor> annotationFieldDescriptors) {
+        this.annotationFieldDescriptors = annotationFieldDescriptors;
     }
 
-    /**
-     * @param type the type to set
-     */
-    public void setType(AnnotationFieldType type) {
-        this.type = type;
-    }
-
-    /**
-     * @return the definition
-     */
-    public AnnotationDefinition getDefinition() {
-        return definition;
-    }
-
-    /**
-     * @param definition the definition to set
-     */
-    public void setDefinition(AnnotationDefinition definition) {
-        this.definition = definition;
-    }
-
-    /**
-     * @return the shownInBrowse
-     */
-    public boolean isShownInBrowse() {
-        return shownInBrowse;
-    }
-
-    /**
-     * @param shownInBrowse the shownInBrowse to set
-     */
-    public void setShownInBrowse(boolean shownInBrowse) {
-        this.shownInBrowse = shownInBrowse;
-    }
-
-    /**
-     * @return the hasValidationErrors
-     */
-    public Boolean isHasValidationErrors() {
-        return hasValidationErrors;
-    }
-
-    /**
-     * @param hasValidationErrors the hasValidationErrors to set
-     */
-    public void setHasValidationErrors(Boolean hasValidationErrors) {
-        this.hasValidationErrors = hasValidationErrors;
-    }
-
-    /**
-     * @return the annotationGroup
-     */
-    public AnnotationGroup getAnnotationGroup() {
-        return annotationGroup;
-    }
-
-    /**
-     * @param annotationGroup the annotationGroup to set
-     */
-    public void setAnnotationGroup(AnnotationGroup annotationGroup) {
-        this.annotationGroup = annotationGroup;
-    }
-
-    /**
-     * @return the usePermissibleValues
-     */
-    public Boolean isUsePermissibleValues() {
-        return usePermissibleValues;
-    }
-
-    /**
-     * @param usePermissibleValues the usePermissibleValues to set
-     */
-    public void setUsePermissibleValues(Boolean usePermissibleValues) {
-        this.usePermissibleValues = usePermissibleValues;
-    }
-
+    
 }

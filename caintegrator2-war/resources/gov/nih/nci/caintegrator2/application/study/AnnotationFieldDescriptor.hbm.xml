@@ -18,6 +18,13 @@
         
         <property name="shownInBrowse" type="boolean" column="SHOWN_IN_BROWSE"/>
         
+        <property name="hasValidationErrors" type="boolean" column="HAS_VALIDATION_ERRORS"/>
+        
+        <property name="usePermissibleValues" type="boolean" column="USE_PERMISSIBLE_VALUES"/>
+        
+        <many-to-one name="annotationGroup" class="AnnotationGroup" column="ANNOTATION_GROUP_ID"
+            lazy="proxy" cascade="none" />
+        
 		<many-to-one name="definition" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID"
 		    lazy="proxy" cascade="none" />
             

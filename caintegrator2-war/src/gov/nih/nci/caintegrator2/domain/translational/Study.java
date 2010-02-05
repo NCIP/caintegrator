@@ -1,5 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.translational;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -26,11 +27,16 @@ public class Study extends AbstractCaIntegrator2Object {
     private String shortTitleText;
     private Set<Timepoint> timepointCollection = new HashSet<Timepoint>();
     private Set<SurvivalValueDefinition> survivalValueDefinitionCollection = new HashSet<SurvivalValueDefinition>();
-    private Set<AnnotationDefinition> imageSeriesAnnotationCollection = new HashSet<AnnotationDefinition>();
+    // This will be @Deprecated.
+    private Set<AnnotationDefinition> imageSeriesAnnotationCollection = new HashSet<AnnotationDefinition>(); 
     private Set<StudySubjectAssignment> assignmentCollection = new HashSet<StudySubjectAssignment>();
+    // This will be @Deprecated.
     private Set<AnnotationDefinition> subjectAnnotationCollection = new HashSet<AnnotationDefinition>();
     private Timepoint defaultTimepoint;
+    // This will be @Deprecated.
     private Set<AnnotationDefinition> sampleAnnotationCollection = new HashSet<AnnotationDefinition>();
+    private Set<AnnotationGroup> subjectAnnotationGroup = new HashSet<AnnotationGroup>();
+    private Set<AnnotationGroup> imageSeriesAnnotationGroup = new HashSet<AnnotationGroup>();
     private StudyConfiguration studyConfiguration;
 
     /**
@@ -279,6 +285,36 @@ public class Study extends AbstractCaIntegrator2Object {
     public boolean hasCopyNumberData() {
         return studyConfiguration != null
             && studyConfiguration.hasCopyNumberData();
+    }
+
+    /**
+     * @return the subjectAnnotationGroup
+     */
+    public Set<AnnotationGroup> getSubjectAnnotationGroup() {
+        return subjectAnnotationGroup;
+    }
+
+    /**
+     * @param subjectAnnotationGroup the subjectAnnotationGroup to set
+     */
+    @SuppressWarnings("unused")     // required by Hibernate
+    private void setSubjectAnnotationGroup(Set<AnnotationGroup> subjectAnnotationGroup) {
+        this.subjectAnnotationGroup = subjectAnnotationGroup;
+    }
+
+    /**
+     * @return the imageSeriesAnnotationGroup
+     */
+    public Set<AnnotationGroup> getImageSeriesAnnotationGroup() {
+        return imageSeriesAnnotationGroup;
+    }
+
+    /**
+     * @param imageSeriesAnnotationGroup the imageSeriesAnnotationGroup to set
+     */
+    @SuppressWarnings("unused")     // required by Hibernate
+    private void setImageSeriesAnnotationGroup(Set<AnnotationGroup> imageSeriesAnnotationGroup) {
+        this.imageSeriesAnnotationGroup = imageSeriesAnnotationGroup;
     }
 
 }
