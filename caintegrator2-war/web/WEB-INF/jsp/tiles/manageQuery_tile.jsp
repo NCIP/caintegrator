@@ -6,7 +6,10 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
+<script type="text/javascript" src="/caintegrator2/common/js/jquery-1.3.2.min.js"></script>
 <script language="javascript">
+
+     jQuery.noConflict();
 
     function setClinicalAnnotations(onOff){
         var size='<s:property value="queryForm.resultConfiguration.subjectColumns.options.size"/>';
@@ -55,7 +58,7 @@
 
     function runSearch() {
         var isPotentiallyLargeQuery = '<s:property value="queryForm.isPotentiallyLargeQuery()"/>';
-        if (isPotentiallyLargeQuery == "true") {
+        if (isPotentiallyLargeQuery == "true" || jQuery(':text[value=""][id^=FoldChangeGeneSymbol]').length != 0) {
             if (confirm("This query includes all genes and will potentially take many minutes to complete.\n"
                     + "Please confirm that you want to continue?")) {
                 submitForm("executeQuery");

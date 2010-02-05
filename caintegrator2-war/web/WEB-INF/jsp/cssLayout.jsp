@@ -26,12 +26,11 @@
         <script type="text/javascript" src="/caintegrator2/common/js/prototype.js"></script>
         <script type="text/javascript" src="/caintegrator2/common/js/scriptaculous.js"></script>
         <script type="text/javascript" src="/caintegrator2/common/js/effects.js"></script>
-        <script type="text/javascript" src="/caintegrator2/common/js/prototype.js"></script>
         <script type="text/javascript" src="/caintegrator2/common/js/caintegrator2.js"></script>
         <script type="text/javascript" src="/caintegrator2/common/js/cai2modal.js"></script>
         <script type="text/javascript" src="/caintegrator2/common/js/onlinehelp.js"></script>
         <script type="text/javascript" src="/caintegrator2/common/js/editableSelect.js"></script>
-        <script type="text/javascript" src="/caintegrator2/struts/optiontransferselect.js"></script>      
+        <script type="text/javascript" src="/caintegrator2/struts/optiontransferselect.js"></script>
 	</head>
 	
 	
