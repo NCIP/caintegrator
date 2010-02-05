@@ -4,8 +4,11 @@
 <script type="text/javascript" src="/caintegrator2/common/js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="/caintegrator2/common/js/jquery.editable-select.js"></script>
 <script type="text/javascript">
-    $(function() {
-	  $('.editable-select').editableSelect(
+
+    jQuery.noConflict();
+
+    jQuery(function() {
+	  jQuery('.editable-select').editableSelect(
 	    {
 	      bg_iframe: true,
 	      onSelect: false,

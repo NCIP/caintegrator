@@ -115,6 +115,7 @@ public abstract class AbstractCriterionParameter {
     private String label = "";
     private String title = "";
     private boolean geneSymbol = false;
+    private boolean foldChangeGeneSymbol = false;
     private List<String> availableOperators = new ArrayList<String>();
     private OperatorHandler operatorHandler;
     private final int parameterIndex;
@@ -205,6 +206,16 @@ public abstract class AbstractCriterionParameter {
     abstract void validate(ValidationAware action);
 
     /**
+     * @return the formFieldId
+     */
+    public String getFormFieldId() {
+        if (foldChangeGeneSymbol) {
+            return "FoldChangeGeneSymbol" + rowIndex + "." + parameterIndex;
+        }
+        return "queryForm.criteriaGroup.rows[" + rowIndex + "].parameters[" + parameterIndex + "]";
+    }
+
+    /**
      * @return the formFieldName
      */
     public String getFormFieldName() {
@@ -257,5 +268,19 @@ public abstract class AbstractCriterionParameter {
      */
     public void setGeneSymbol(boolean geneSymbol) {
         this.geneSymbol = geneSymbol;
+    }
+
+    /**
+     * @return the foldChangeGeneSymbol
+     */
+    public boolean isFoldChangeGeneSymbol() {
+        return foldChangeGeneSymbol;
+    }
+
+    /**
+     * @param foldChangeGeneSymbol the foldChangeGeneSymbol to set
+     */
+    public void setFoldChangeGeneSymbol(boolean foldChangeGeneSymbol) {
+        this.foldChangeGeneSymbol = foldChangeGeneSymbol;
     }
 }
