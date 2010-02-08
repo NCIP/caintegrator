@@ -1,4 +1,4 @@
-'updateDefinition_fileColumn_fieldDescriptor_definition_commonDataElement_definition<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://caintegrator2-dev.nci.nih.gov/" />
@@ -589,6 +589,11 @@
 	<td>type</td>
 	<td>genomicSourceForm_genomicSource_serverProfile_password</td>
 	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>platformName</td>
+	<td>label=HG-U133_Plus_2</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
