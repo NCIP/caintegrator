@@ -1152,6 +1152,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>select</td>
+	<td>platformName</td>
+	<td>label=HG-U133_Plus_2</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>saveGenomicSource_0</td>
 	<td></td>
