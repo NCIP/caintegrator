@@ -659,6 +659,21 @@
 	<td></td>
 </tr>
 <tr>
+	<td>select</td>
+	<td>platformVendor</td>
+	<td>label=Affymetrix</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>dataType</td>
+	<td>label=Expression</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>platformName</td>
+	<td>label=HG-U133_Plus_2</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>//button[@type='button' and @onclick='showConfirmMessage()']</td>
 	<td></td>
@@ -751,9 +766,9 @@
 	<td>label=Affymetrix</td>
 </tr>
 <tr>
-	<td>select</td>
+	<td>selectAndWait</td>
 	<td>dataType</td>
-	<td>label=Copy Number</td>
+	<td>label=SNP</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
