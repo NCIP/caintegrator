@@ -185,6 +185,69 @@
         
         <s:if test="%{studyConfiguration.id != null}">
         <s:actionerror/>
+        
+        <table class="form_wrapper_table">
+            <tbody><tr>
+                <th class="title">Annotation Groups</th>
+                <th class="thbutton">
+                    <del class="btnwrapper">                    
+                        <ul class="btnrow">
+                                <s:url id="addAnnotationGroup" action="addAnnotationGroup" includeParams="none">
+                                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                                </s:url>
+                            <li><s:a href="%{addAnnotationGroup}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="add">Add New</span></span></s:a></li>
+                        </ul>   
+                    </del>
+                </th>
+            </tr>
+            <tr>
+                <td class="table_wrapper" colspan="2">              
+                    <s:form>
+                    <s:hidden name="studyConfiguration.id"  />
+                    <table class="data">
+                        <tr>
+                            <th>Group Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Number of Annotations</th>
+                            <th>Action</th>
+                        </tr>
+                        
+                        <s:iterator value="studyConfiguration.study.sortedAnnotationGroups" status="status">
+                            <s:if test="#status.odd == true">
+                              <tr class="odd">
+                            </s:if>
+                            <s:else>
+                              <tr class="even">
+                            </s:else>            
+                            <td><s:property value="name" /></td>
+                            <td><s:property value="annotationEntityType.value" /></td>
+                            <td><s:property value="description" /></td>
+                            <td><s:property value="annotationFieldDescriptors.size()" /></td>
+                            <td style="float: right;">
+                                <s:url id="editAnnotationGroup" action="editAnnotationGroup" includeParams="none">
+                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                                    <s:param name="annotationGroup.id" value="id" />
+                                </s:url>
+                                <s:a href="%{editAnnotationGroup}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Group</span></span></s:a>
+                                <s:if test="annotationFieldDescriptors.isEmpty()">
+                                <s:url id="deleteAnnotationGroup" action="deleteAnnotationGroup" includeParams="none">
+                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                                    <s:param name="annotationGroup.id" value="id" />
+                                </s:url> 
+                                <s:a href="%{deleteAnnotationGroup}" cssClass="btn" cssStyle="margin: 0pt;" onclick="return confirm('This annotation group will be permanently deleted.')"><span class="btn_img"><span class="delete">Delete</span></span></s:a>
+                                </s:if>
+                            </td>
+                        </tr>
+                        </s:iterator>
+                        
+                    </table>
+                    </s:form>
+                    
+                </td>
+            </tr>
+            </tbody>
+        </table>                    
                 
         <table class="form_wrapper_table">
             <tbody><tr>

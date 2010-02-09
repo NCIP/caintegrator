@@ -83,109 +83,79 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import org.apache.commons.lang.xwork.StringUtils;
+import com.opensymphony.xwork2.Action;
 
 /**
- * Object that logically links a Study to a group of AnnotationFieldDescriptors.
+ * 
  */
-public class AnnotationGroup extends AbstractCaIntegrator2Object {
+public class EditAnnotationGroupActionTest extends AbstractSessionBasedTest {
 
-    private static final long serialVersionUID = 1L;
-    private String name;
-    private String description;
-    private EntityTypeEnum annotationEntityType;
-    private Study study;
-    private Set<AnnotationFieldDescriptor> annotationFieldDescriptors = 
-        new HashSet<AnnotationFieldDescriptor>();
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    /**
-     * @return the annotationEntityType
-     */
-    public EntityTypeEnum getAnnotationEntityType() {
-        return annotationEntityType;
-    }
-    /**
-     * @param annotationEntityType the annotationEntityType to set
-     */
-    public void setAnnotationEntityType(EntityTypeEnum annotationEntityType) {
-        this.annotationEntityType = annotationEntityType;
-    }
-    /**
-     * @return the study
-     */
-    public Study getStudy() {
-        return study;
-    }
-    /**
-     * @param study the study to set
-     */
-    public void setStudy(Study study) {
-        this.study = study;
-    }
-    /**
-     * @return the annotationFieldDescriptors
-     */
-    public Set<AnnotationFieldDescriptor> getAnnotationFieldDescriptors() {
-        return annotationFieldDescriptors;
-    }
-    /**
-     * @param annotationFieldDescriptors the annotationFieldDescriptors to set
-     */
-    public void setAnnotationFieldDescriptors(Set<AnnotationFieldDescriptor> annotationFieldDescriptors) {
-        this.annotationFieldDescriptors = annotationFieldDescriptors;
+    private EditAnnotationGroupAction action;
+    private StudyManagementServiceStub studyManagementServiceStub;
+
+    @Before
+    public void setUp() {
+        super.setUp();
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditClinicalSourceActionTest.class); 
+        action = (EditAnnotationGroupAction) context.getBean("editAnnotationGroupAction");
+        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
+        studyManagementServiceStub.clear();
+        action.clearErrorsAndMessages();
     }
     
-    /**
-     * 
-     * @return displayableEntityType.
-     */
-    public String getDisplayableEntityType() {
-        if (annotationEntityType == null) {
-            return EntityTypeEnum.SUBJECT.getValue();
-        }
-        return annotationEntityType.getValue();
-    }
-    
-    /**
-     * 
-     * @param entityType the displayableEntityType to set.
-     */
-    public void setDisplayableEntityType(String entityType) {
-        if (!StringUtils.isBlank(entityType)) {
-            annotationEntityType = EntityTypeEnum.getByValue(entityType);
-        }
+    @Test
+    public void testValidate() {
+        action.setCancelAction(true);
+        action.validate();
+        action.setCancelAction(false);
+        action.validate();
     }
 
+    @Test
+    public void testExecute() {
+        assertEquals(Action.SUCCESS, action.execute());
+    }
+
+    @Test
+    public void testPrepare() {
+        action.prepare();
+        assertFalse(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+        action.getAnnotationGroup().setId(1l);
+        assertTrue(action.isExistingGroup());
+        action.prepare();
+        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+        assertTrue(action.isFileUpload());
+    }
+    
+    @Test
+    public void testSave() {
+        assertEquals(Action.SUCCESS, action.save());
+        assertTrue(studyManagementServiceStub.saveCalled);
+        studyManagementServiceStub.throwValidationException = true;
+        assertEquals(Action.ERROR, action.save());
+        assertEquals(EntityTypeEnum.SUBJECT.getValue(), action.getAnnotationGroup().getDisplayableEntityType());
+        action.getAnnotationGroup().setDisplayableEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        assertEquals(EntityTypeEnum.IMAGESERIES.getValue(), action.getAnnotationGroup().getDisplayableEntityType());
+        assertEquals(EntityTypeEnum.IMAGESERIES, action.getAnnotationGroup().getAnnotationEntityType());
+    }
+    
+    @Test
+    public void testDelete() {
+        assertEquals(Action.SUCCESS, action.delete());
+        assertTrue(studyManagementServiceStub.deleteCalled);
+    }
 }
