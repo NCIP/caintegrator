@@ -99,12 +99,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.orm.hibernate3.HibernateAccessor;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of the array data service (backed by NetCDF).
  */
-@Transactional
+@Transactional (propagation = Propagation.REQUIRED)
 public class ArrayDataServiceImpl implements ArrayDataService {
     
     private static final Logger LOGGER = Logger.getLogger(ArrayDataServiceImpl.class);

@@ -115,12 +115,15 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Reads and retrieves copy number data from a caArray instance.
  */
+@Transactional (propagation = Propagation.REQUIRED)
 class AgilentSampleMappingFileHandler extends AbstractCaArrayFileHandler {
 
     private static final Logger LOGGER = Logger.getLogger(AgilentSampleMappingFileHandler.class);

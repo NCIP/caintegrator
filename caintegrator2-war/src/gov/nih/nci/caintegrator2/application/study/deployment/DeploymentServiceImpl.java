@@ -135,23 +135,24 @@ public class DeploymentServiceImpl implements DeploymentService {
 
     /**
      * {@inheritDoc}
+     * @throws ValidationException 
+     * @throws DataRetrievalException 
+     * @throws ConnectionException 
      */
     @SuppressWarnings("PMD.AvoidReassigningParameters") // preferable in this instance for error handling.
-    public Status performDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener) {
-        try {
+    public Status performDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener)
+    throws ConnectionException, DataRetrievalException, ValidationException {
             studyConfiguration = getDao().get(studyConfiguration.getId(), StudyConfiguration.class);
             if (!Status.PROCESSING.equals(studyConfiguration.getStatus())) {
                 startDeployment(studyConfiguration, listener);
             }
             return doDeployment(studyConfiguration, listener);
-        } catch (Exception e) {
-            return handleDeploymentFailure(studyConfiguration, listener, e);
-        } catch (Error e) {
-            return handleDeploymentFailure(studyConfiguration, listener, e);
-        }
     }
 
-    private Status handleDeploymentFailure(StudyConfiguration studyConfiguration,
+    /**
+     * {@inheritDoc}
+     */
+    public Status handleDeploymentFailure(StudyConfiguration studyConfiguration,
             DeploymentListener listener, Throwable e) {
         LOGGER.error("Deployment of study " + studyConfiguration.getStudy().getShortTitleText()
                 + " failed.", e);
