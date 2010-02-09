@@ -105,4 +105,9 @@ public class DeploymentServiceStub implements DeploymentService {
         return Status.DEPLOYED;
     }
 
+    public Status handleDeploymentFailure(StudyConfiguration studyConfiguration, DeploymentListener listener,
+            Throwable e) {
+        return null;
+    }
+
 }

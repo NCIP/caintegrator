@@ -108,7 +108,13 @@ public class StudyDeploymentAjaxRunner implements Runnable, DeploymentListener {
      */
     public void run() {
         username = job.getLastModifiedBy().getUsername();
-        updater.getDeploymentService().performDeployment(job, this);
+            try {
+                updater.getDeploymentService().performDeployment(job, this);
+            } catch (Exception e) {
+                updater.getDeploymentService().handleDeploymentFailure(job, this, e);
+            } catch (Error e) {
+                updater.getDeploymentService().handleDeploymentFailure(job, this, e);
+            }
     }
 
     /**
