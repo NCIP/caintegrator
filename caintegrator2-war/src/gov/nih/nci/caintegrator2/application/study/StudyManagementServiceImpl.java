@@ -1025,6 +1025,27 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         getDao().save(studyConfiguration);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void saveAnnotationGroup(AnnotationGroup annotationGroup, StudyConfiguration studyConfiguration,
+            File annotationGroupFile) throws ValidationException {
+        if (annotationGroup.getStudy() != studyConfiguration.getStudy()) {
+            annotationGroup.setStudy(studyConfiguration.getStudy());
+            studyConfiguration.getStudy().getAnnotationGroups().add(annotationGroup);
+        }
+        getDao().save(annotationGroup);
+        getDao().save(studyConfiguration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void delete(StudyConfiguration studyConfiguration, AnnotationGroup annotationGroup) {
+        studyConfiguration.getStudy().getAnnotationGroups().remove(annotationGroup);
+        getDao().delete(annotationGroup);
+    }
+
 
 
 }

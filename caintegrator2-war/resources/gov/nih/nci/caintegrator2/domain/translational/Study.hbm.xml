@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.caintegrator2.domain.translational">
-	<class name="Study" table="STUDY" lazy="false" polymorphism="explicit">
+    <class name="Study" table="STUDY" lazy="false" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="ID">
 			<generator class="native" />
@@ -45,16 +45,13 @@
         <one-to-one name="studyConfiguration" class="gov.nih.nci.caintegrator2.application.study.StudyConfiguration"
             property-ref="study"/>
             
-        <set name="subjectAnnotationGroup" lazy="true" cascade="all" >
+        <set name="annotationGroups" lazy="true" cascade="all" >
             <cache usage="read-write" />
             <key column="STUDY_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.AnnotationGroup" />
         </set>
-        <set name="imageSeriesAnnotationGroup" lazy="true" cascade="all" >
-            <cache usage="read-write" />
-            <key column="STUDY_ID" />
-            <one-to-many class="gov.nih.nci.caintegrator2.application.study.AnnotationGroup" />
-        </set>
+
         
 	</class>
+    
 </hibernate-mapping>

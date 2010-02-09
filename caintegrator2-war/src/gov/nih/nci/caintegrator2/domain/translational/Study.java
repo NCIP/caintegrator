@@ -11,8 +11,11 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,8 +38,7 @@ public class Study extends AbstractCaIntegrator2Object {
     private Timepoint defaultTimepoint;
     // This will be @Deprecated.
     private Set<AnnotationDefinition> sampleAnnotationCollection = new HashSet<AnnotationDefinition>();
-    private Set<AnnotationGroup> subjectAnnotationGroup = new HashSet<AnnotationGroup>();
-    private Set<AnnotationGroup> imageSeriesAnnotationGroup = new HashSet<AnnotationGroup>();
+    private Set<AnnotationGroup> annotationGroups = new HashSet<AnnotationGroup>();
     private StudyConfiguration studyConfiguration;
 
     /**
@@ -290,31 +292,32 @@ public class Study extends AbstractCaIntegrator2Object {
     /**
      * @return the subjectAnnotationGroup
      */
-    public Set<AnnotationGroup> getSubjectAnnotationGroup() {
-        return subjectAnnotationGroup;
+    public Set<AnnotationGroup> getAnnotationGroups() {
+        return annotationGroups;
     }
 
     /**
      * @param subjectAnnotationGroup the subjectAnnotationGroup to set
      */
     @SuppressWarnings("unused")     // required by Hibernate
-    private void setSubjectAnnotationGroup(Set<AnnotationGroup> subjectAnnotationGroup) {
-        this.subjectAnnotationGroup = subjectAnnotationGroup;
+    private void setAnnotationGroups(Set<AnnotationGroup> annotationGroups) {
+        this.annotationGroups = annotationGroups;
     }
 
+    
     /**
-     * @return the imageSeriesAnnotationGroup
+     * 
+     * @return all annotation groups, sorted by name.
      */
-    public Set<AnnotationGroup> getImageSeriesAnnotationGroup() {
-        return imageSeriesAnnotationGroup;
-    }
-
-    /**
-     * @param imageSeriesAnnotationGroup the imageSeriesAnnotationGroup to set
-     */
-    @SuppressWarnings("unused")     // required by Hibernate
-    private void setImageSeriesAnnotationGroup(Set<AnnotationGroup> imageSeriesAnnotationGroup) {
-        this.imageSeriesAnnotationGroup = imageSeriesAnnotationGroup;
+    public List<AnnotationGroup> getSortedAnnotationGroups() {
+        List<AnnotationGroup> annotationGroupList = new ArrayList<AnnotationGroup>(annotationGroups);
+        Comparator<AnnotationGroup> groupComparator = new Comparator<AnnotationGroup>() {
+            public int compare(AnnotationGroup value1, AnnotationGroup value2) {
+                return value1.getName().compareTo(value2.getName());
+            }
+        };
+        Collections.sort(annotationGroupList, groupComparator);
+        return annotationGroupList;
     }
 
 }

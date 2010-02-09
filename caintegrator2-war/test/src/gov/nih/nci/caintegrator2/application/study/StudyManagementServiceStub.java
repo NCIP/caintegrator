@@ -516,4 +516,17 @@ public class StudyManagementServiceStub implements StudyManagementService {
         
     }
 
+    public void saveAnnotationGroup(AnnotationGroup annotationGroup, StudyConfiguration studyConfiguration,
+            File annotationGroupFile) throws ValidationException {
+        if (throwValidationException) {
+            throw new ValidationException("");
+        }
+        saveCalled = true;
+
+    }
+
+    public void delete(StudyConfiguration studyConfiguration, AnnotationGroup annotationGroup) {
+        deleteCalled = true;
+    }
+
 }

@@ -520,4 +520,20 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      */
     void addExternalLinksToStudy(StudyConfiguration studyConfiguration, ExternalLinkList externalLinkList) 
     throws ValidationException, IOException;
+
+    /**
+     * @param annotationGroup to create and add to study.
+     * @param studyConfiguration that the group belongs to.
+     * @param annotationGroupFile optional file to use to load into the group.
+     * @throws ValidationException if invalid.
+     */
+    void saveAnnotationGroup(AnnotationGroup annotationGroup, StudyConfiguration studyConfiguration,
+            File annotationGroupFile) throws ValidationException;
+    
+    /**
+     * Deletes AnnotationGroup from study.
+     * @param studyConfiguration to delete annotationGroup from.
+     * @param annotationGroup to delete from study.
+     */
+    void delete(StudyConfiguration studyConfiguration, AnnotationGroup annotationGroup);
 }

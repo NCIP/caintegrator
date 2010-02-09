@@ -66,6 +66,17 @@ public enum EntityTypeEnum {
     }
     
     /**
+     * Used in the JSP's to retrieve the displayable string version of the Enum values.
+     * @return HashMap of EnumeratedValue's String to Displayable String. 
+     */
+    public static Map<String, String> getValueToDisplayableMap() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(EntityTypeEnum.SUBJECT.getValue(), "Subject");
+        map.put(EntityTypeEnum.IMAGESERIES.getValue(), "Image Series");
+        return map;
+    }
+    
+    /**
      * Returns the <code>EntityTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
      * 

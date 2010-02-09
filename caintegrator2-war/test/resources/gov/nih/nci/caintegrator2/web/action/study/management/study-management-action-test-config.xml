@@ -64,6 +64,17 @@
         </property>
     </bean>
     
+    <bean id="editAnnotationGroupAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditAnnotationGroupAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
+    
     <bean id="saveClinicalSourceAction"
         singleton="false"
         class="gov.nih.nci.caintegrator2.web.action.study.management.SaveClinicalSourceAction">

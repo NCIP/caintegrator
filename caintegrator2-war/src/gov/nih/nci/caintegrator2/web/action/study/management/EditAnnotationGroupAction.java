@@ -83,109 +83,119 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.commons.lang.xwork.StringUtils;
+import java.io.File;
 
 /**
- * Object that logically links a Study to a group of AnnotationFieldDescriptors.
+ * 
  */
-public class AnnotationGroup extends AbstractCaIntegrator2Object {
-
+public class EditAnnotationGroupAction extends AbstractStudyAction {
+    
     private static final long serialVersionUID = 1L;
-    private String name;
-    private String description;
-    private EntityTypeEnum annotationEntityType;
-    private Study study;
-    private Set<AnnotationFieldDescriptor> annotationFieldDescriptors = 
-        new HashSet<AnnotationFieldDescriptor>();
+    private AnnotationGroup annotationGroup = new AnnotationGroup();
+    private File annotationGroupFile;
+    private boolean cancelAction = false;
+
     /**
-     * @return the name
+     * {@inheritDoc}
      */
-    public String getName() {
-        return name;
-    }
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    /**
-     * @return the annotationEntityType
-     */
-    public EntityTypeEnum getAnnotationEntityType() {
-        return annotationEntityType;
-    }
-    /**
-     * @param annotationEntityType the annotationEntityType to set
-     */
-    public void setAnnotationEntityType(EntityTypeEnum annotationEntityType) {
-        this.annotationEntityType = annotationEntityType;
-    }
-    /**
-     * @return the study
-     */
-    public Study getStudy() {
-        return study;
-    }
-    /**
-     * @param study the study to set
-     */
-    public void setStudy(Study study) {
-        this.study = study;
-    }
-    /**
-     * @return the annotationFieldDescriptors
-     */
-    public Set<AnnotationFieldDescriptor> getAnnotationFieldDescriptors() {
-        return annotationFieldDescriptors;
-    }
-    /**
-     * @param annotationFieldDescriptors the annotationFieldDescriptors to set
-     */
-    public void setAnnotationFieldDescriptors(Set<AnnotationFieldDescriptor> annotationFieldDescriptors) {
-        this.annotationFieldDescriptors = annotationFieldDescriptors;
+    public void prepare() {
+        super.prepare();
+        if (annotationGroup.getId() != null) {
+            annotationGroup = getStudyManagementService().getRefreshedEntity(annotationGroup);
+        }
     }
     
     /**
-     * 
-     * @return displayableEntityType.
+     * {@inheritDoc}
      */
-    public String getDisplayableEntityType() {
-        if (annotationEntityType == null) {
-            return EntityTypeEnum.SUBJECT.getValue();
+    @Override
+    public void validate() {
+        if (!cancelAction) {
+            prepareValueStack();
         }
-        return annotationEntityType.getValue();
     }
     
     /**
-     * 
-     * @param entityType the displayableEntityType to set.
+     * {@inheritDoc}
      */
-    public void setDisplayableEntityType(String entityType) {
-        if (!StringUtils.isBlank(entityType)) {
-            annotationEntityType = EntityTypeEnum.getByValue(entityType);
+    protected boolean isFileUpload() {
+        return true;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String execute() {
+        return SUCCESS;
+    }
+    
+    /**
+     * @return String.
+     */
+    public String save() {
+        try {
+            getStudyManagementService().saveAnnotationGroup(
+                    annotationGroup, getStudyConfiguration(), annotationGroupFile);
+        } catch (ValidationException e) {
+            addActionError("Unable to save annotation group: " + e.getMessage());
+            return ERROR;
         }
+        return SUCCESS;
+    }
+
+    /**
+     * Delete an annotation grouping.
+     * @return string
+     */
+    public String delete() {
+        getStudyManagementService().delete(getStudyConfiguration(), annotationGroup);
+        return SUCCESS;
+    }
+    
+    
+    /**
+     * @return the cancelAction
+     */
+    public boolean isCancelAction() {
+        return cancelAction;
+    }
+
+    /**
+     * @param cancelAction the cancelAction to set
+     */
+    public void setCancelAction(boolean cancelAction) {
+        this.cancelAction = cancelAction;
+    }
+
+    /**
+     * @return the annotationGroup
+     */
+    public AnnotationGroup getAnnotationGroup() {
+        return annotationGroup;
+    }
+
+    /**
+     * @param annotationGroup the annotationGroup to set
+     */
+    public void setAnnotationGroup(AnnotationGroup annotationGroup) {
+        this.annotationGroup = annotationGroup;
+    }
+    
+    /**
+     * If group already exists.
+     * @return t/f value.
+     */
+    public boolean isExistingGroup() {
+        if (annotationGroup.getId() != null) {
+            return true;
+        }
+        return false;
     }
 
 }
