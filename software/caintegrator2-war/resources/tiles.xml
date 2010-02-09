@@ -67,6 +67,11 @@
         <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyDwrAjax_tile.jsp" />
         <put-attribute name="subTitle" value="Edit Study" />
     </definition>
+    
+    <definition name="editAnnotationGroup" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editAnnotationGroup_tile.jsp" />
+        <put-attribute name="subTitle" value="Edit Annotation Group" />
+    </definition>
 
     <definition name="fileIoError" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/fileIoError_tile.jsp" />
