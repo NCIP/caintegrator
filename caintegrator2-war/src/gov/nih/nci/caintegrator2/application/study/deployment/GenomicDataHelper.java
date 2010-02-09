@@ -117,10 +117,13 @@ import java.util.Set;
 
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.genepattern.webservice.WebServiceException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Helper class that retrieves data from caArray and loads it into a study.
  */
+@Transactional (propagation = Propagation.REQUIRED)
 class GenomicDataHelper {
 
     private static final double FIFTIETH_PERCENTILE = 50;

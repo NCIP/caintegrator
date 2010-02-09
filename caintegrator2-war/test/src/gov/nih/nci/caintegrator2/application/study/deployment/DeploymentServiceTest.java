@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
@@ -97,7 +96,10 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceTest;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -133,7 +135,7 @@ public class DeploymentServiceTest {
         assertTrue(daoStub.saveCalled);
     }
     @Test
-    public void testPerformDeployment() {
+    public void testPerformDeployment() throws ConnectionException, DataRetrievalException, ValidationException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setId(1L);
         daoStub.studyConfiguration = studyConfiguration;
@@ -155,10 +157,13 @@ public class DeploymentServiceTest {
         genomicSource.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
         daoStub.studyConfiguration = studyConfiguration;
         studyConfiguration.getGenomicDataSources().add(genomicSource);
-        deploymentServiceImpl.performDeployment(studyConfiguration, listener);
-        assertEquals(Status.ERROR, listener.configuration.getStatus());
-        assertNotNull(listener.configuration.getStatusDescription());
-        assertTrue(daoStub.saveCalled);
+        boolean cautghException = false;
+        try {
+            deploymentServiceImpl.performDeployment(studyConfiguration, listener);
+        } catch (Exception e) {
+            cautghException = true;
+        }
+        assertTrue(cautghException);
     }
     public static class DeploymentDaoStub extends CaIntegrator2DaoStub {
         private StudyConfiguration studyConfiguration;
