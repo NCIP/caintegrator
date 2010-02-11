@@ -83,116 +83,104 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
+import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.lang.xwork.StringUtils;
 
 /**
- * Object that logically links a Study to a group of AnnotationFieldDescriptors.
+ * 
  */
-public class AnnotationGroup extends AbstractCaIntegrator2Object implements Comparable<AnnotationGroup> {
-
+public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAction {
+    
     private static final long serialVersionUID = 1L;
-    private String name;
-    private String description;
-    private EntityTypeEnum annotationEntityType;
-    private Study study;
-    private Set<AnnotationFieldDescriptor> annotationFieldDescriptors = 
-        new HashSet<AnnotationFieldDescriptor>();
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    /**
-     * @return the annotationEntityType
-     */
-    public EntityTypeEnum getAnnotationEntityType() {
-        return annotationEntityType;
-    }
-    /**
-     * @param annotationEntityType the annotationEntityType to set
-     */
-    public void setAnnotationEntityType(EntityTypeEnum annotationEntityType) {
-        this.annotationEntityType = annotationEntityType;
-    }
-    /**
-     * @return the study
-     */
-    public Study getStudy() {
-        return study;
-    }
-    /**
-     * @param study the study to set
-     */
-    public void setStudy(Study study) {
-        this.study = study;
-    }
-    /**
-     * @return the annotationFieldDescriptors
-     */
-    public Set<AnnotationFieldDescriptor> getAnnotationFieldDescriptors() {
-        return annotationFieldDescriptors;
-    }
-    /**
-     * @param annotationFieldDescriptors the annotationFieldDescriptors to set
-     */
-    public void setAnnotationFieldDescriptors(Set<AnnotationFieldDescriptor> annotationFieldDescriptors) {
-        this.annotationFieldDescriptors = annotationFieldDescriptors;
-    }
+    private List<DisplayableAnnotationFieldDescriptor> displayableFields = 
+        new ArrayList<DisplayableAnnotationFieldDescriptor>();
+    private final List<AnnotationGroup> selectableAnnotationGroups = new ArrayList<AnnotationGroup>();
+    private final Map<String, AnnotationGroup> annotationGroupNameToGroupMap = new HashMap<String, AnnotationGroup>();
     
-    /**
-     * 
-     * @return displayableEntityType.
-     */
-    public String getDisplayableEntityType() {
-        if (annotationEntityType == null) {
-            return EntityTypeEnum.SUBJECT.getValue();
-        }
-        return annotationEntityType.getValue();
-    }
-    
-    /**
-     * 
-     * @param entityType the displayableEntityType to set.
-     */
-    public void setDisplayableEntityType(String entityType) {
-        if (!StringUtils.isBlank(entityType)) {
-            annotationEntityType = EntityTypeEnum.getByValue(entityType);
-        }
-    }
-
     /**
      * {@inheritDoc}
      */
-    public int compareTo(AnnotationGroup o) {
-        return getName().compareTo(o.getName());
+    @Override
+    public void prepare() {
+        super.prepare();
+        if (getImageSourceConfiguration().getImageAnnotationConfiguration() != null) {
+            setupAnnotationGroups();
+            setupDisplayableFields();
+        }
+    }
+
+    private void setupAnnotationGroups() {
+        selectableAnnotationGroups.clear();
+        List<AnnotationGroup> sortedAnnotationGroups = getStudy().
+            getSortedAnnotationGroupsForEntityType(EntityTypeEnum.IMAGESERIES); 
+        for (AnnotationGroup group : sortedAnnotationGroups) {
+            group = getStudyManagementService().getRefreshedEntity(group);
+            selectableAnnotationGroups.add(group);
+            annotationGroupNameToGroupMap.put(group.getName(), group);
+        }
+    }
+
+    private void setupDisplayableFields() {
+        displayableFields.clear();
+        for (FileColumn fileColumn : getImageSourceConfiguration().getImageAnnotationConfiguration().
+                getAnnotationFile().getColumns()) {
+            displayableFields.add(new DisplayableAnnotationFieldDescriptor(fileColumn));
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String execute() {
+        return SUCCESS;
+    }
+    
+    /**
+     * Save action.
+     * @return struts value.
+     */
+    public String save() {
+        for (DisplayableAnnotationFieldDescriptor displayableFieldDescriptor : displayableFields) {
+            if (displayableFieldDescriptor.isGroupChanged()) {
+                displayableFieldDescriptor.getFieldDescriptor().switchAnnotationGroup(
+                        annotationGroupNameToGroupMap.get(displayableFieldDescriptor.getAnnotationGroupName()));
+            }
+        }
+        getStudyManagementService().save(getStudyConfiguration());
+        return SUCCESS;
+    }
+
+    /**
+     * @return the displayableFields
+     */
+    public List<DisplayableAnnotationFieldDescriptor> getDisplayableFields() {
+        return displayableFields;
+    }
+
+
+    /**
+     * @param displayableFields the displayableFields to set
+     */
+    public void setDisplayableFields(List<DisplayableAnnotationFieldDescriptor> displayableFields) {
+        this.displayableFields = displayableFields;
+    }
+
+
+    /**
+     * @return the selectableAnnotationGroups
+     */
+    public List<AnnotationGroup> getSelectableAnnotationGroups() {
+        return selectableAnnotationGroups;
     }
 
 }

@@ -200,7 +200,7 @@
             <result type="tiles">editClinicalFile</result>
         </action>
         
-        <action name="saveClinicalSource" class="saveClinicalSourceAction">
+        <action name="saveClinicalSource" method="save" class="editClinicalSourceAction">
             <result type="tiles">editStudy</result>
         </action>
                       
@@ -492,17 +492,21 @@
             <result name="error" type="tiles">editStudy</result>
         </action>
         
-        <action name="editImagingSourceAnnotations" class="editImagingSourceAction">
+        <action name="editImagingSourceAnnotations" class="editImagingSourceAnnotationsAction">
             <result type="tiles">editImagingFile</result>
         </action>
         
         <action name="addImagingSourceAnnotations" class="editImagingSourceAction" method="addImageAnnotations">
-            <result type="tiles">editImagingFile</result>
+            <result type="redirectAction">
+                <param name="actionName">editImagingSourceAnnotations</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="imageSourceConfiguration.id">${imageSourceConfiguration.id}</param>
+            </result>
             <result name="input" type="tiles">editImagingFile</result>
             <result name="error" type="tiles">editImagingFile</result>
         </action>
         
-        <action name="saveImagingSourceAnnotations" class="editImagingSourceAction">
+        <action name="saveImagingSourceAnnotations" method="save" class="editImagingSourceAnnotationsAction">
             <result type="redirectAction">
                 <param name="actionName">editStudy</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>

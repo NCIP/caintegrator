@@ -197,9 +197,9 @@
         </property>
     </bean>
     
-    <bean id="editClinicalSourceAction"
+    <bean id="editImagingSourceAnnotationsAction"
         scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.EditClinicalSourceAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditImagingSourceAnnotationsAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
@@ -207,10 +207,10 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-
-    <bean id="saveClinicalSourceAction"
+    
+    <bean id="editClinicalSourceAction"
         scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.SaveClinicalSourceAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditClinicalSourceAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
