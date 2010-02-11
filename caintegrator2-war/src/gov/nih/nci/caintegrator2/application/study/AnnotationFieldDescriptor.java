@@ -200,5 +200,19 @@ public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
     public void setUsePermissibleValues(Boolean usePermissibleValues) {
         this.usePermissibleValues = usePermissibleValues;
     }
+    
+    /**
+     * 
+     * @param newAnnotationGroup annotation group to switch to.
+     */
+    public void switchAnnotationGroup(AnnotationGroup newAnnotationGroup) {
+       if (this.annotationGroup != null) {
+           annotationGroup.getAnnotationFieldDescriptors().remove(this);
+       }
+       if (newAnnotationGroup != null) {
+           newAnnotationGroup.getAnnotationFieldDescriptors().add(this);
+       }
+       annotationGroup = newAnnotationGroup;
+    }
 
 }

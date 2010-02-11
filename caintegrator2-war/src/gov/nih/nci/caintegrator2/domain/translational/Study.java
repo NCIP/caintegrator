@@ -5,6 +5,7 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -13,7 +14,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -303,7 +303,6 @@ public class Study extends AbstractCaIntegrator2Object {
     private void setAnnotationGroups(Set<AnnotationGroup> annotationGroups) {
         this.annotationGroups = annotationGroups;
     }
-
     
     /**
      * 
@@ -311,13 +310,23 @@ public class Study extends AbstractCaIntegrator2Object {
      */
     public List<AnnotationGroup> getSortedAnnotationGroups() {
         List<AnnotationGroup> annotationGroupList = new ArrayList<AnnotationGroup>(annotationGroups);
-        Comparator<AnnotationGroup> groupComparator = new Comparator<AnnotationGroup>() {
-            public int compare(AnnotationGroup value1, AnnotationGroup value2) {
-                return value1.getName().compareTo(value2.getName());
-            }
-        };
-        Collections.sort(annotationGroupList, groupComparator);
+        Collections.sort(annotationGroupList);
         return annotationGroupList;
+    }
+    
+    /**
+     * 
+     * @param entityType for the groups to retrieve.
+     * @return sorted annotation groups, of the given entity type.
+     */
+    public List<AnnotationGroup> getSortedAnnotationGroupsForEntityType(EntityTypeEnum entityType) {
+        List<AnnotationGroup> sortedAnnotationGroups = new ArrayList<AnnotationGroup>();
+        for (AnnotationGroup annotationGroup : getSortedAnnotationGroups()) {
+            if (entityType.equals(annotationGroup.getAnnotationEntityType())) {
+                sortedAnnotationGroups.add(annotationGroup);
+            }
+        }
+        return sortedAnnotationGroups;
     }
 
 }
