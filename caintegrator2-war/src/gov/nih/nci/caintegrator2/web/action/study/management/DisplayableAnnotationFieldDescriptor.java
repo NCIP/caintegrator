@@ -83,116 +83,157 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.FileColumn;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang.xwork.StringUtils;
 
 /**
- * Object that logically links a Study to a group of AnnotationFieldDescriptors.
+ * 
  */
-public class AnnotationGroup extends AbstractCaIntegrator2Object implements Comparable<AnnotationGroup> {
-
-    private static final long serialVersionUID = 1L;
-    private String name;
-    private String description;
-    private EntityTypeEnum annotationEntityType;
-    private Study study;
-    private Set<AnnotationFieldDescriptor> annotationFieldDescriptors = 
-        new HashSet<AnnotationFieldDescriptor>();
+public class DisplayableAnnotationFieldDescriptor {
+    
+    private AnnotationFieldDescriptor fieldDescriptor;
+    private String annotationGroupName;
+    private Long fileColumnId;
+    private boolean identifierType = false;
+    private boolean timepointType = false;
+    private List<String> dataValues = new ArrayList<String>();
+    private String originalGroupName;
+    
     /**
-     * @return the name
+     * Default constructor.
      */
-    public String getName() {
-        return name;
-    }
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    /**
-     * @return the annotationEntityType
-     */
-    public EntityTypeEnum getAnnotationEntityType() {
-        return annotationEntityType;
-    }
-    /**
-     * @param annotationEntityType the annotationEntityType to set
-     */
-    public void setAnnotationEntityType(EntityTypeEnum annotationEntityType) {
-        this.annotationEntityType = annotationEntityType;
-    }
-    /**
-     * @return the study
-     */
-    public Study getStudy() {
-        return study;
-    }
-    /**
-     * @param study the study to set
-     */
-    public void setStudy(Study study) {
-        this.study = study;
-    }
-    /**
-     * @return the annotationFieldDescriptors
-     */
-    public Set<AnnotationFieldDescriptor> getAnnotationFieldDescriptors() {
-        return annotationFieldDescriptors;
-    }
-    /**
-     * @param annotationFieldDescriptors the annotationFieldDescriptors to set
-     */
-    public void setAnnotationFieldDescriptors(Set<AnnotationFieldDescriptor> annotationFieldDescriptors) {
-        this.annotationFieldDescriptors = annotationFieldDescriptors;
+    public DisplayableAnnotationFieldDescriptor() { 
+        // Empty Constructor
     }
     
     /**
-     * 
-     * @return displayableEntityType.
+     * Constructor for fileColumn.
+     * @param fileColumn used to construct this object.
      */
-    public String getDisplayableEntityType() {
-        if (annotationEntityType == null) {
-            return EntityTypeEnum.SUBJECT.getValue();
+    public DisplayableAnnotationFieldDescriptor(FileColumn fileColumn) {
+        initialize(fileColumn.getFieldDescriptor());
+        fileColumnId = fileColumn.getId();
+        identifierType = fileColumn.isIdentifierColumn();
+        timepointType = fileColumn.isTimepointColumn();
+        try {
+            dataValues = fileColumn.getDataValues();
+        } catch (ValidationException e) {
+            dataValues.clear();
         }
-        return annotationEntityType.getValue();
     }
     
     /**
-     * 
-     * @param entityType the displayableEntityType to set.
+     * Constructor for annotationFieldDescriptor.
+     * @param annotationFieldDescriptor used to construct this object.
      */
-    public void setDisplayableEntityType(String entityType) {
-        if (!StringUtils.isBlank(entityType)) {
-            annotationEntityType = EntityTypeEnum.getByValue(entityType);
+    public DisplayableAnnotationFieldDescriptor(AnnotationFieldDescriptor annotationFieldDescriptor) {
+        initialize(annotationFieldDescriptor);
+    }
+
+    private void initialize(AnnotationFieldDescriptor newFieldDescriptor) {
+        this.fieldDescriptor = newFieldDescriptor;
+        if (fieldDescriptor != null) { // Currently identifiers don't have field descriptors... that will change.
+            annotationGroupName = fieldDescriptor.getAnnotationGroup() == null ? "" : fieldDescriptor
+                    .getAnnotationGroup().getName();
+            originalGroupName = annotationGroupName;
         }
+    }
+    
+    /**
+     * @return the fieldDescriptor
+     */
+    public AnnotationFieldDescriptor getFieldDescriptor() {
+        return fieldDescriptor;
+    }
+    /**
+     * @param fieldDescriptor the fieldDescriptor to set
+     */
+    public void setFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) {
+        this.fieldDescriptor = fieldDescriptor;
+    }
+    /**
+     * @return the annotationGroupName
+     */
+    public String getAnnotationGroupName() {
+        return annotationGroupName;
+    }
+    /**
+     * @param annotationGroupName the annotationGroupName to set
+     */
+    public void setAnnotationGroupName(String annotationGroupName) {
+        this.annotationGroupName = annotationGroupName;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the identifierType
      */
-    public int compareTo(AnnotationGroup o) {
-        return getName().compareTo(o.getName());
+    public boolean isIdentifierType() {
+        return identifierType;
+    }
+
+    /**
+     * @param identifierType the identifierType to set
+     */
+    public void setIdentifierType(boolean identifierType) {
+        this.identifierType = identifierType;
+    }
+
+    /**
+     * @return the timepointType
+     */
+    public boolean isTimepointType() {
+        return timepointType;
+    }
+
+    /**
+     * @param timepointType the timepointType to set
+     */
+    public void setTimepointType(boolean timepointType) {
+        this.timepointType = timepointType;
+    }
+
+    /**
+     * @return the fileColumnId
+     */
+    public Long getFileColumnId() {
+        return fileColumnId;
+    }
+
+    /**
+     * @param fileColumnId the fileColumnId to set
+     */
+    public void setFileColumnId(Long fileColumnId) {
+        this.fileColumnId = fileColumnId;
+    }
+
+    /**
+     * @return the dataValues
+     */
+    public List<String> getDataValues() {
+        return dataValues;
+    }
+
+    /**
+     * @param dataValues the dataValues to set
+     */
+    public void setDataValues(List<String> dataValues) {
+        this.dataValues = dataValues;
+    }
+    
+    /**
+     * Determines if the group value has changed.
+     * @return T/F value.
+     */
+    public boolean isGroupChanged() {
+        return !StringUtils.equals(originalGroupName, annotationGroupName);
     }
 
 }

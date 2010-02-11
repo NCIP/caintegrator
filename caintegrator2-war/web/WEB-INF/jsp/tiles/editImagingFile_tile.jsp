@@ -49,12 +49,13 @@
                 <s:else>
                 <table class="data">
                     <tr>
+                    	<th>Annotation Group</th>
                         <th>Visible</th>
                         <th>Field Definition</th>
                         <th>Field Header from File</th>
                         <th colspan="3" />Data from File</th>
                     </tr>
-                    <s:iterator value="imageSourceConfiguration.imageAnnotationConfiguration.annotationFile.columns" status="columnIterator">
+                    <s:iterator value="displayableFields" status="columnIterator">
                         <s:if test="#columnIterator.odd == true">
                           <tr class="odd">
                         </s:if>
@@ -62,16 +63,25 @@
                           <tr class="even">
                         </s:else>          
                             <td>
-                                <s:if test="%{fieldDescriptor.definition != null}">
-                                    <s:checkbox name="imageSourceConfiguration.imageAnnotationConfiguration.annotationFile.columns[%{#columnIterator.count - 1}].fieldDescriptor.shownInBrowse"
+                                <s:if test="%{fieldDescriptor != null}">
+                                    <s:select name="displayableFields[%{#columnIterator.count - 1}].annotationGroupName" 
+                                              list="selectableAnnotationGroups"
+                                              listKey="name"
+                                              listValue="name"
+                                              headerKey="" headerValue="-----" theme="simple" />
+                                </s:if>
+                            </td>
+                            <td>
+                                <s:if test="%{fieldDescriptor != null}">
+                                    <s:checkbox name="displayableFields[%{#columnIterator.count - 1}].fieldDescriptor.shownInBrowse"
                                         theme="simple" />
                                 </s:if>
                             </td>
                             <td>
-                                <s:if test="%{identifierColumn}">
+                                <s:if test="%{identifierType}">
                                     Identifier
                                 </s:if>
-                                <s:elseif test="%{timepointColumn}">
+                                <s:elseif test="%{timepointType}">
                                     Timepoint
                                 </s:elseif>
                                 <s:elseif test="%{fieldDescriptor != null && fieldDescriptor.definition != null}">
@@ -80,11 +90,11 @@
                                 <s:url id="editImagingFileColumn" action="editImagingFileColumn">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="sourceId" value="imageSourceConfiguration.id" />
-                                    <s:param name="fileColumn.id" value="id" />
+                                    <s:param name="fileColumn.id" value="fileColumnId" />
                                 </s:url>
                                 <br>
                                 <s:a href="%{editImagingFileColumn}">
-                                    <s:if test="%{identifierColumn || timepointColumn || (fieldDescriptor != null && fieldDescriptor.definition != null) }">
+                                    <s:if test="%{identifierType || timepointType || (fieldDescriptor != null && fieldDescriptor.definition != null) }">
                                         Change Assignment
                                     </s:if>
                                     <s:else>
@@ -92,14 +102,14 @@
                                     </s:else>
                                 </s:a> 
                             </td>
-                            <td><s:property value="name" /></td>
+                            <td><s:property value="fieldDescriptor.name" /></td>
                             <td><s:if test="%{dataValues.size > 0}"><s:property value="dataValues[0]" /></s:if></td>
                             <td><s:if test="%{dataValues.size > 1}"><s:property value="dataValues[1]" /></s:if></td>
                             <td><s:if test="%{dataValues.size > 2}"><s:property value="dataValues[2]" /></s:if></td>
                         </tr>
                     </s:iterator>
                 </table>
-                <s:submit value="Done" />
+                <s:submit value="Save" />
                 </s:else>
                 
                 </s:form>

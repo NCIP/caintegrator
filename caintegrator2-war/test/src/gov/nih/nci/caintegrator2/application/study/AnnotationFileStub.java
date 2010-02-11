@@ -85,114 +85,20 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.commons.lang.xwork.StringUtils;
-
-/**
- * Object that logically links a Study to a group of AnnotationFieldDescriptors.
- */
-public class AnnotationGroup extends AbstractCaIntegrator2Object implements Comparable<AnnotationGroup> {
-
-    private static final long serialVersionUID = 1L;
-    private String name;
-    private String description;
-    private EntityTypeEnum annotationEntityType;
-    private Study study;
-    private Set<AnnotationFieldDescriptor> annotationFieldDescriptors = 
-        new HashSet<AnnotationFieldDescriptor>();
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    /**
-     * @return the annotationEntityType
-     */
-    public EntityTypeEnum getAnnotationEntityType() {
-        return annotationEntityType;
-    }
-    /**
-     * @param annotationEntityType the annotationEntityType to set
-     */
-    public void setAnnotationEntityType(EntityTypeEnum annotationEntityType) {
-        this.annotationEntityType = annotationEntityType;
-    }
-    /**
-     * @return the study
-     */
-    public Study getStudy() {
-        return study;
-    }
-    /**
-     * @param study the study to set
-     */
-    public void setStudy(Study study) {
-        this.study = study;
-    }
-    /**
-     * @return the annotationFieldDescriptors
-     */
-    public Set<AnnotationFieldDescriptor> getAnnotationFieldDescriptors() {
-        return annotationFieldDescriptors;
-    }
-    /**
-     * @param annotationFieldDescriptors the annotationFieldDescriptors to set
-     */
-    public void setAnnotationFieldDescriptors(Set<AnnotationFieldDescriptor> annotationFieldDescriptors) {
-        this.annotationFieldDescriptors = annotationFieldDescriptors;
+public class AnnotationFileStub extends AnnotationFile {
+    
+    @SuppressWarnings("deprecation") // for the stub.
+    public AnnotationFileStub() {
+        
     }
     
-    /**
-     * 
-     * @return displayableEntityType.
-     */
-    public String getDisplayableEntityType() {
-        if (annotationEntityType == null) {
-            return EntityTypeEnum.SUBJECT.getValue();
-        }
-        return annotationEntityType.getValue();
+    @Override
+    void positionAtData() throws ValidationException {
+        
     }
     
-    /**
-     * 
-     * @param entityType the displayableEntityType to set.
-     */
-    public void setDisplayableEntityType(String entityType) {
-        if (!StringUtils.isBlank(entityType)) {
-            annotationEntityType = EntityTypeEnum.getByValue(entityType);
-        }
+    @Override
+    boolean hasNextDataLine() throws ValidationException {
+        return false;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int compareTo(AnnotationGroup o) {
-        return getName().compareTo(o.getName());
-    }
-
 }
