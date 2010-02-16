@@ -178,6 +178,7 @@ public class DefineImagingFileColumnActionTest extends AbstractSessionBasedTest 
     @SuppressWarnings("deprecation")
     public void testSetColumnType() {
         AnnotationFile annotationFile = new AnnotationFile();
+        annotationFile.getColumns().add(action.getFileColumn());
         action.getFileColumn().setAnnotationFile(annotationFile);
         assertEquals("Annotation", action.getColumnType());
         action.setColumnType(null);

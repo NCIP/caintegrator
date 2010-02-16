@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Holds configuration information for annotation stored in a CSV text file.
@@ -111,12 +110,6 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
 
     ValidationResult validate() {
         return getAnnotationFile().validate();
-    }
-
-    void loadDescriptors() {
-        Set<AnnotationFieldDescriptor> existingDescriptors = getStudyConfiguration().getAllExistingDescriptors();
-        getAnnotationFile().loadDescriptors(existingDescriptors);
-        getAnnotationDescriptors().addAll(getAnnotationFile().getDescriptors());
     }
     
     /**

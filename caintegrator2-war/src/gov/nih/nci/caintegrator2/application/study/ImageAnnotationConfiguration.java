@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import java.util.List;
+
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 
@@ -175,5 +177,13 @@ public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
      */
     public void setImageDataSourceConfiguration(ImageDataSourceConfiguration imageDataSourceConfiguration) {
         this.imageDataSourceConfiguration = imageDataSourceConfiguration;
+    }
+    
+    /**
+     * Gets all annotation descriptors for this image annotation configuration.
+     * @return annotation field descriptor list.
+     */
+    public List<AnnotationFieldDescriptor> getAnnotationDescriptors() {
+        return getAnnotationFile().getDescriptors();
     }
 }

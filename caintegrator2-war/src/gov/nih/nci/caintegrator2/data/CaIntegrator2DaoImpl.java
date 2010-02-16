@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
@@ -145,6 +147,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     private static final String STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION = "assignment";
     private static final String IMAGE_SERIES_ACQUISITION_ASSOCIATION = "imageStudy";
     private static final String STUDY_ASSOCIATION = "study";
+    private static final String NAME_ATTRIBUTE = "name";
     private SecurityManager securityManager;
     
     /**
@@ -375,6 +378,38 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
+    public AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name,
+            StudyConfiguration studyConfiguration) {
+        Set<AnnotationFieldDescriptor> allDescriptors = new HashSet<AnnotationFieldDescriptor>();
+        for (AbstractClinicalSourceConfiguration source : studyConfiguration.getClinicalConfigurationCollection()) {
+            allDescriptors.addAll(source.getAnnotationDescriptors());
+        }
+        for (ImageDataSourceConfiguration source : studyConfiguration.getImageDataSources()) {
+            if (source.getImageAnnotationConfiguration() != null) {
+                allDescriptors.addAll(source.getImageAnnotationConfiguration().getAnnotationDescriptors());
+            }
+        }
+        Criteria criteria = getCurrentSession().createCriteria(AnnotationFieldDescriptor.class).
+                    createCriteria("annotationGroup").
+                    add(Restrictions.eq(STUDY_ASSOCIATION, studyConfiguration.getStudy()));
+        allDescriptors.addAll(criteria.list());
+        return getMatchingDescriptor(name, allDescriptors);
+    }
+
+    private AnnotationFieldDescriptor getMatchingDescriptor(String name, 
+            Collection<AnnotationFieldDescriptor> descriptors) {
+        for (AnnotationFieldDescriptor descriptor : descriptors) {
+            if (descriptor.getName().equals(name)) {
+                return descriptor;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public Gene getGene(String symbol) {
         List values = getHibernateTemplate().findByNamedParam("from Gene where symbol = :symbol", 
                 "symbol", symbol);
@@ -391,7 +426,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public Platform getPlatform(String name) {
         List values = getHibernateTemplate().findByNamedParam("from Platform where name = :name", 
-                "name", name);
+                NAME_ATTRIBUTE, name);
         if (values.isEmpty()) {
             return null;
         } else {
@@ -405,7 +440,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public PlatformConfiguration getPlatformConfiguration(String name) {
         List values = getHibernateTemplate().findByNamedParam("from PlatformConfiguration where name = :name", 
-                "name", name);
+                NAME_ATTRIBUTE, name);
         if (values.isEmpty()) {
             return null;
         } else {
@@ -444,7 +479,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public ReporterList getReporterList(String name) {
         List values = getHibernateTemplate().findByNamedParam("from ReporterList where name = :name", 
-                "name", name);
+                NAME_ATTRIBUTE, name);
         if (values.isEmpty()) {
             return null;
         } else {
@@ -687,4 +722,5 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public void setSecurityManager(SecurityManager securityManager) {
         this.securityManager = securityManager;
     }
+
 }

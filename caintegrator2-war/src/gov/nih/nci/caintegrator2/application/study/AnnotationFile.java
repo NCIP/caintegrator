@@ -100,7 +100,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -121,8 +120,6 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
     private static final long serialVersionUID = 1L;
     private String path;
     private List<FileColumn> columns = new ArrayList<FileColumn>();
-    private FileColumn identifierColumn;
-    private FileColumn timepointColumn;
     private String currentlyLoaded;
     private transient File file;
     private transient CSVReader reader;
@@ -157,21 +154,32 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         this.columns = columns;
     }
     
+    static AnnotationFile load(File file, CaIntegrator2Dao dao, StudyConfiguration studyConfiguration) 
+        throws ValidationException {
+        return createAndLoadFile(file, dao, studyConfiguration);
+    }
+    
     static AnnotationFile load(File file, CaIntegrator2Dao dao) throws ValidationException {
+        return createAndLoadFile(file, dao, null);
+    }
+
+    private static AnnotationFile createAndLoadFile(File file, CaIntegrator2Dao dao, 
+            StudyConfiguration studyConfiguration) 
+        throws ValidationException {
         AnnotationFile annotationFile = new AnnotationFile(file);
         annotationFile.validateFileFormat();
-        annotationFile.loadColumns(dao);
+        annotationFile.loadColumns(dao, studyConfiguration);
         return annotationFile;
     }
 
-    private void loadColumns(CaIntegrator2Dao dao) throws ValidationException {
+    private void loadColumns(CaIntegrator2Dao dao, StudyConfiguration studyConfiguration) throws ValidationException {
         resetReader();
         loadNextLine();
         for (int index = 0; index < currentLineValues.length; index++) {
             FileColumn column = new FileColumn(this);
             column.setPosition(index);
             column.setName(currentLineValues[index].trim());
-            column.createFieldDescriptor(dao);
+            column.retrieveOrCreateFieldDescriptor(dao, studyConfiguration);
             columns.add(column);
         }
     }
@@ -248,19 +256,25 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
      * @return the identifierColumn
      */
     public FileColumn getIdentifierColumn() {
-        return identifierColumn;
+        for (FileColumn column : columns) {
+            if (column.isIdentifierColumn()) {
+                return column;
+            }
+        }
+        return null;
     }
 
     /**
      * @param identifierColumn the identifierColumn to set
      */
     public void setIdentifierColumn(FileColumn identifierColumn) {
-        this.identifierColumn = identifierColumn;
+        FileColumn currentIdentifier = getIdentifierColumn();
+        if (currentIdentifier != null && !currentIdentifier.equals(identifierColumn)) {
+            currentIdentifier.getFieldDescriptor().setType(AnnotationFieldType.ANNOTATION);
+        }
         if (identifierColumn != null) {
-            identifierColumn.setFieldDescriptor(null);
-            if (identifierColumn.equals(getTimepointColumn())) {
-                setTimepointColumn(null);
-            }
+            identifierColumn.setupAnnotationFieldDescriptor(AnnotationFieldType.IDENTIFIER);
+            identifierColumn.getFieldDescriptor().setDefinition(null);
         }
     }
     
@@ -269,19 +283,24 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
      * @return the timepointColumn
      */
     public FileColumn getTimepointColumn() {
-        return timepointColumn;
+        for (FileColumn column : columns) {
+            if (column.isTimepointColumn()) {
+                return column;
+            }
+        }
+        return null;
     }
 
     /**
      * @param timepointColumn the timepointColumn to set
      */
     public void setTimepointColumn(FileColumn timepointColumn) {
-        this.timepointColumn = timepointColumn;
+        FileColumn currentTimepoint = getTimepointColumn();
+        if (currentTimepoint != null && !currentTimepoint.equals(timepointColumn)) {
+            currentTimepoint.getFieldDescriptor().setType(AnnotationFieldType.ANNOTATION);
+        }
         if (timepointColumn != null) {
-            timepointColumn.setFieldDescriptor(null);
-            if (timepointColumn.equals(getIdentifierColumn())) {
-                setIdentifierColumn(null);
-            }
+            timepointColumn.setupAnnotationFieldDescriptor(AnnotationFieldType.TIMEPOINT);
         }
     }
     
@@ -327,28 +346,6 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         }
     }
 
-    void loadDescriptors(Collection<AnnotationFieldDescriptor> existingDesciptors) {
-        for (FileColumn column : columns) {
-            loadDescriptor(column, existingDesciptors);
-        }
-    }
-
-    private void loadDescriptor(FileColumn column, Collection<AnnotationFieldDescriptor> existingDesciptors) {
-        if (!isAnnotationColumn(column)) {
-            return;
-        }
-        for (AnnotationFieldDescriptor descriptor : existingDesciptors) {
-            if (descriptor.getName().equals(column.getName())) {
-                column.setFieldDescriptor(descriptor);
-                return;
-            }
-        }
-    }
-
-    private boolean isAnnotationColumn(FileColumn column) {
-        return !(column.equals(getIdentifierColumn()) || column.equals(getTimepointColumn()));
-    }
-
     private Map<AnnotationFieldDescriptor, FileColumn> getDescriptorToColumnMap() {
         if (descriptorToColumnMap == null) {
             loadDescriptorToColumnMap();
@@ -365,6 +362,17 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         }
     }
 
+    List<AnnotationFieldDescriptor> getAnnotationTypeDescriptors() {
+        List<AnnotationFieldDescriptor> descriptors = new ArrayList<AnnotationFieldDescriptor>();
+        for (FileColumn column : columns) {
+            if (column.getFieldDescriptor() != null 
+                && AnnotationFieldType.ANNOTATION.equals(column.getFieldDescriptor().getType())) {
+                descriptors.add(column.getFieldDescriptor());
+            }
+        }
+        return descriptors;
+    }
+    
     List<AnnotationFieldDescriptor> getDescriptors() {
         List<AnnotationFieldDescriptor> descriptors = new ArrayList<AnnotationFieldDescriptor>();
         for (FileColumn column : columns) {
@@ -410,7 +418,7 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
 
     private Set<AnnotationDefinition> getAnnotationDefinitions() {
         Set<AnnotationDefinition> definitions = new HashSet<AnnotationDefinition>();
-        for (AnnotationFieldDescriptor descriptor : getDescriptors()) {
+        for (AnnotationFieldDescriptor descriptor : getAnnotationTypeDescriptors()) {
             if (descriptor.getDefinition() != null) {
                 definitions.add(descriptor.getDefinition());
             }
@@ -419,7 +427,7 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
     }
 
     private void loadAnnotationLine(AbstractAnnotationHandler handler) throws ValidationException {
-        for (AnnotationFieldDescriptor annotationDescriptor : getDescriptors()) {
+        for (AnnotationFieldDescriptor annotationDescriptor : getAnnotationTypeDescriptors()) {
             String value = getDataValue(annotationDescriptor);
             AbstractAnnotationValue annotationValue = createAnnotationValue(annotationDescriptor, value);
             if (getTimepointColumn() != null) {
@@ -543,13 +551,14 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
     public List<AnnotationDefinition> getVisibleAnnotationDefinition() {
         List<AnnotationDefinition> visibleList = new ArrayList<AnnotationDefinition>();
         for (FileColumn fileColumn : columns) {
-            if (fileColumn.getFieldDescriptor() != null
+            if (fileColumn.getFieldDescriptor() != null 
+                    && AnnotationFieldType.ANNOTATION.equals(fileColumn.getFieldDescriptor().getType())
                     && fileColumn.getFieldDescriptor().isShownInBrowse()) {
                 visibleList.add(fileColumn.getFieldDescriptor().getDefinition());
             }
         }
         return visibleList;
     }
-
+    
 
 }
