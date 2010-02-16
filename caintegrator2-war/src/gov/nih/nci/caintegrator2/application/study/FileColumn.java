@@ -250,28 +250,25 @@ public class FileColumn extends AbstractCaIntegrator2Object implements Comparabl
      * @return true if this is the identifier column in the file.
      */
     public boolean isIdentifierColumn() {
-        return getAnnotationFile() != null && this.equals(annotationFile.getIdentifierColumn());
+        return getFieldDescriptor() != null && AnnotationFieldType.IDENTIFIER.equals(fieldDescriptor.getType());
     }
 
     /**
      * @return true if this is the timepoint column in the file.
      */
     public boolean isTimepointColumn() {
-        return getAnnotationFile() != null && this.equals(annotationFile.getTimepointColumn());
+        return getFieldDescriptor() != null && AnnotationFieldType.TIMEPOINT.equals(fieldDescriptor.getType());
     }
 
     /**
-     * Sets this column up as an annotation column.
+     * If field descriptor doesn't exist, creates a new one, and then sets it to the given type.
+     * @param type the field type to set this column as.
      */
-    public void makeAnnotationColumn() {
-        if (isIdentifierColumn()) {
-            getAnnotationFile().setIdentifierColumn(null);
-        } else if (isTimepointColumn()) {
-            getAnnotationFile().setTimepointColumn(null);
-        }
+    public void setupAnnotationFieldDescriptor(AnnotationFieldType type) {
         if (getFieldDescriptor() == null) {
             setFieldDescriptor(new AnnotationFieldDescriptor());
         }
+        fieldDescriptor.setType(type);
     }
 
     boolean isLoadable() {
@@ -294,10 +291,16 @@ public class FileColumn extends AbstractCaIntegrator2Object implements Comparabl
         }
     }
 
-    void createFieldDescriptor(CaIntegrator2Dao dao) {
-        setFieldDescriptor(new AnnotationFieldDescriptor());
-        getFieldDescriptor().setName(getName());
-        getFieldDescriptor().setDefinition(dao.getAnnotationDefinition(getName()));
+    void retrieveOrCreateFieldDescriptor(CaIntegrator2Dao dao, StudyConfiguration studyConfiguration) {
+        if (studyConfiguration != null) {
+            setFieldDescriptor(dao.getExistingFieldDescriptorInStudy(getName(), studyConfiguration));
+        }
+        if (getFieldDescriptor() == null) {
+            setFieldDescriptor(new AnnotationFieldDescriptor());
+            getFieldDescriptor().setName(getName());
+            getFieldDescriptor().setType(AnnotationFieldType.ANNOTATION);
+            getFieldDescriptor().setDefinition(dao.getAnnotationDefinition(getName()));
+        }
     }
 
 }

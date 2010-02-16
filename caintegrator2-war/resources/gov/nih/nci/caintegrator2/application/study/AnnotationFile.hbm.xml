@@ -16,12 +16,5 @@
             <list-index column="LIST_INDEX"/>
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.FileColumn"/>
         </list>
-        
-        <many-to-one name="identifierColumn" class="gov.nih.nci.caintegrator2.application.study.FileColumn" column="IDENTIFIER_COLUMN_ID"
-            lazy="proxy" cascade="all" />
-            
-        <many-to-one name="timepointColumn" class="gov.nih.nci.caintegrator2.application.study.FileColumn" column="TIMEPOINT_COLUMN_ID"
-            lazy="proxy" cascade="all" />
-        
-	</class>
+  	</class>
 </hibernate-mapping>

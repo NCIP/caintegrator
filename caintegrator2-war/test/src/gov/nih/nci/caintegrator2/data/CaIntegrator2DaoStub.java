@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -447,6 +448,11 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         List<StudySubjectAssignment> ssaList = new ArrayList<StudySubjectAssignment>();
         ssaList.add(studySubjectAssignment);
         return ssaList;
+    }
+
+    public AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name,
+            StudyConfiguration studyConfiguration) {
+        return null;
     }
 
 }

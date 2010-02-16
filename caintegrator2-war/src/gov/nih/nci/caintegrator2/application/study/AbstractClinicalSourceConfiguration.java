@@ -108,8 +108,6 @@ public abstract class AbstractClinicalSourceConfiguration extends AbstractCaInte
     
     abstract ValidationResult validate();
 
-    abstract void loadDescriptors();
-
     abstract ClinicalSourceType getType();
 
     abstract void loadAnnontation() throws ValidationException;

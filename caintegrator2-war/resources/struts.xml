@@ -172,7 +172,11 @@
         </action>
         
         <action name="addClinicalFile" class="addClinicalFileAction">
-            <result type="tiles">editClinicalFile</result>
+            <result type="redirectAction">
+                <param name="actionName">editClinicalSource</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="clinicalSource.id">${clinicalSource.id}</param>
+            </result>
             <result name="input" type="tiles">editStudy</result>
         </action>
         

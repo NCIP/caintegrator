@@ -96,7 +96,7 @@ public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
     private String name;
-    private AnnotationFieldType type;
+    private AnnotationFieldType type = AnnotationFieldType.ANNOTATION;
     private AnnotationDefinition definition;
     private boolean shownInBrowse = true;
     private Boolean hasValidationErrors = false;
