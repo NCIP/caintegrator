@@ -241,7 +241,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,
             File inputFile, String filename) throws ValidationException, IOException {
         File permanentFile = getFileManager().storeStudyFile(inputFile, filename, studyConfiguration);
-        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, getDao());
+        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, getDao(), studyConfiguration);
         DelimitedTextClinicalSourceConfiguration clinicalSourceConfig = 
             new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfiguration);
         getDao().save(studyConfiguration);
@@ -712,7 +712,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             File inputFile, String filename) throws ValidationException, IOException {
         File permanentFile = getFileManager().storeStudyFile(inputFile, filename,
                 imageDataSourceConfiguration.getStudyConfiguration());
-        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, getDao());
+        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, getDao(), 
+                imageDataSourceConfiguration.getStudyConfiguration());
         ImageAnnotationConfiguration imageAnnotationConfiguration = 
             new ImageAnnotationConfiguration(annotationFile, imageDataSourceConfiguration);
         imageAnnotationConfiguration.setImageDataSourceConfiguration(imageDataSourceConfiguration);

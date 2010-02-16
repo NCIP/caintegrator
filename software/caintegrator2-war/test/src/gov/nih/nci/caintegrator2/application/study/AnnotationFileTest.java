@@ -85,15 +85,23 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import static gov.nih.nci.caintegrator2.TestDataFiles.*;
-import static org.junit.Assert.*;
+import static gov.nih.nci.caintegrator2.TestDataFiles.INVALID_FILE_DOESNT_EXIST;
+import static gov.nih.nci.caintegrator2.TestDataFiles.INVALID_FILE_EMPTY;
+import static gov.nih.nci.caintegrator2.TestDataFiles.INVALID_FILE_MISSING_VALUE;
+import static gov.nih.nci.caintegrator2.TestDataFiles.INVALID_FILE_NO_DATA;
+import static gov.nih.nci.caintegrator2.TestDataFiles.VALID_FILE;
+import static gov.nih.nci.caintegrator2.TestDataFiles.VALID_FILE_TIMEPOINT;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
@@ -150,9 +158,12 @@ public class AnnotationFileTest {
         AnnotationFile annotationFile = createAnnotationFile(VALID_FILE_TIMEPOINT);
         annotationFile.setIdentifierColumn(annotationFile.getColumns().get(0));
         annotationFile.setTimepointColumn(annotationFile.getColumns().get(1));
-        List<AnnotationFieldDescriptor> emptyList = Collections.emptyList();
-        annotationFile.loadDescriptors(emptyList);
-        validateAnnotationFieldDescriptor(testAnnotationFieldDescriptors, annotationFile.getDescriptors());
+        List<AnnotationFieldDescriptor> descriptors = annotationFile.getDescriptors();
+        assertEquals(AnnotationFieldType.IDENTIFIER, descriptors.get(0).getType());
+        assertEquals(AnnotationFieldType.TIMEPOINT, descriptors.get(1).getType());
+        assertEquals(AnnotationFieldType.ANNOTATION, descriptors.get(2).getType());
+        assertEquals("Col2", descriptors.get(3).getName());
+        assertEquals("Col3", descriptors.get(4).getName());
     }
 
     @Test
@@ -174,22 +185,21 @@ public class AnnotationFileTest {
         AnnotationFile annotationFile = createAnnotationFile(VALID_FILE);
         annotationFile.setIdentifierColumn(annotationFile.getColumns().get(0));
         annotationFile.positionAtData();
-        annotationFile.loadDescriptors(testAnnotationFieldDescriptors);
         
         assertTrue(annotationFile.hasNextDataLine());
         assertEquals("100", annotationFile.getDataValue(annotationFile.getIdentifierColumn()));
-        assertEquals("1", annotationFile.getDataValue(testAnnotationFieldDescriptors.get(0)));
-        assertEquals("g", annotationFile.getDataValue(testAnnotationFieldDescriptors.get(1)));
-        assertEquals("N", annotationFile.getDataValue(testAnnotationFieldDescriptors.get(2)));
+        assertEquals("1", annotationFile.getDataValue(annotationFile.getColumns().get(1).getFieldDescriptor()));
+        assertEquals("g", annotationFile.getDataValue(annotationFile.getColumns().get(2).getFieldDescriptor()));
+        assertEquals("N", annotationFile.getDataValue(annotationFile.getColumns().get(3).getFieldDescriptor()));
         assertEquals("1", annotationFile.getDataValue(annotationFile.getColumns().get(1)));
         assertEquals("g", annotationFile.getDataValue(annotationFile.getColumns().get(2)));
         assertEquals("N", annotationFile.getDataValue(annotationFile.getColumns().get(3)));
         
         assertTrue(annotationFile.hasNextDataLine());
         assertEquals("101", annotationFile.getDataValue(annotationFile.getIdentifierColumn()));
-        assertEquals("3", annotationFile.getDataValue(testAnnotationFieldDescriptors.get(0)));
-        assertEquals("g", annotationFile.getDataValue(testAnnotationFieldDescriptors.get(1)));
-        assertEquals("Y", annotationFile.getDataValue(testAnnotationFieldDescriptors.get(2)));
+        assertEquals("3", annotationFile.getDataValue(annotationFile.getColumns().get(1).getFieldDescriptor()));
+        assertEquals("g", annotationFile.getDataValue(annotationFile.getColumns().get(2).getFieldDescriptor()));
+        assertEquals("Y", annotationFile.getDataValue(annotationFile.getColumns().get(3).getFieldDescriptor()));
         assertEquals("3", annotationFile.getDataValue(annotationFile.getColumns().get(1)));
         assertEquals("g", annotationFile.getDataValue(annotationFile.getColumns().get(2)));
         assertEquals("Y", annotationFile.getDataValue(annotationFile.getColumns().get(3)));
@@ -233,16 +243,4 @@ public class AnnotationFileTest {
         testAnnotationFieldDescriptor.setName("Col3");
         testAnnotationFieldDescriptors.add(testAnnotationFieldDescriptor);
     }
-    
-    
-    private void validateAnnotationFieldDescriptor(
-                List<AnnotationFieldDescriptor> testAnnotations, 
-                List<AnnotationFieldDescriptor> realAnnotations) {
-        for (int x = 0; x < testAnnotations.size(); x++) {
-            AnnotationFieldDescriptor testAnnotationDescriptor = testAnnotations.get(x);
-            AnnotationFieldDescriptor realAnnotationDescriptor = realAnnotations.get(x);
-            assertEquals(testAnnotationDescriptor.getName(), realAnnotationDescriptor.getName());
-        }
-    }
-   
 }

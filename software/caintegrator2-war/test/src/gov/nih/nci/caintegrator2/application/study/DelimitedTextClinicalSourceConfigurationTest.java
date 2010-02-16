@@ -116,11 +116,6 @@ public class DelimitedTextClinicalSourceConfigurationTest {
     }
 
     @Test
-    public void testLoadDescriptors() {
-        clinicalSourceConfiguration.loadDescriptors();
-    }
-
-    @Test
     public void testGetType() {
         clinicalSourceConfiguration.getType();
     }
@@ -139,7 +134,6 @@ public class DelimitedTextClinicalSourceConfigurationTest {
         definition = new AnnotationDefinition();
         definition.getCommonDataElement().getValueDomain().setDataType(AnnotationTypeEnum.DATE);
         clinicalSourceConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
-        clinicalSourceConfiguration.loadDescriptors();
         clinicalSourceConfiguration.loadAnnontation();
     }
 
@@ -147,8 +141,9 @@ public class DelimitedTextClinicalSourceConfigurationTest {
     public void testIsLoadable() {
         assertFalse(clinicalSourceConfiguration.isLoadable());
         for (FileColumn fileColumn : clinicalSourceConfiguration.getAnnotationFile().getColumns()) {
-            fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
-            fileColumn.getFieldDescriptor().setDefinition(new AnnotationDefinition());
+            if (AnnotationFieldType.ANNOTATION.equals(fileColumn.getFieldDescriptor().getType())) {
+                fileColumn.getFieldDescriptor().setDefinition(new AnnotationDefinition());
+            }
         }
         assertTrue(clinicalSourceConfiguration.isLoadable());
         clinicalSourceConfiguration.getAnnotationFile().setIdentifierColumn(null);

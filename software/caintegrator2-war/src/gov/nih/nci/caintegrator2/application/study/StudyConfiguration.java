@@ -662,7 +662,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
             List<AnnotationFieldDescriptor> descriptors) {
         List<AnnotationDefinition> visibleList = new ArrayList<AnnotationDefinition>();
         for (AnnotationFieldDescriptor descriptor : descriptors) {
-            if (descriptor.isShownInBrowse()) {
+            if (descriptor.isShownInBrowse() && AnnotationFieldType.ANNOTATION.equals(descriptor.getType())) {
                 visibleList.add(descriptor.getDefinition());
             }
         }

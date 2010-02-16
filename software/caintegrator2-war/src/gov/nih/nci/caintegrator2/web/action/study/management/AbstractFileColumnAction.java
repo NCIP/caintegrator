@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
@@ -195,10 +195,7 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
             updateColumnType();
         } catch (ValidationException e) {
             addActionError(e.getMessage());
-        }
-        if (isColumnTypeAnnotation() && getFileColumn().getFieldDescriptor() == null) {
-            getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
-            getFileColumn().getFieldDescriptor().setName(getFileColumn().getName());
+            return ERROR;
         }
         getStudyManagementService().save(getStudyConfiguration());
         updateDataSourceStatus();
@@ -373,19 +370,11 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     private void updateColumnType() throws ValidationException {
         if (IDENTIFIER_TYPE.equals(columnType)) {
             getFileColumn().checkValidIdentifierColumn();
-            setAnnotationColumn(getFileColumn().getAnnotationFile().getIdentifierColumn());
             getFileColumn().getAnnotationFile().setIdentifierColumn(getFileColumn());
         } else if (TIMEPOINT_TYPE.equals(columnType)) {
-            setAnnotationColumn(getFileColumn().getAnnotationFile().getTimepointColumn());
             getFileColumn().getAnnotationFile().setTimepointColumn(getFileColumn());
         } else if (ANNOTATION_TYPE.equals(columnType)) {
-            getFileColumn().makeAnnotationColumn();
-        }
-    }
-    
-    private void setAnnotationColumn(FileColumn annotationColumn) {
-        if (annotationColumn != null) {
-            annotationColumn.makeAnnotationColumn();
+            getFileColumn().setupAnnotationFieldDescriptor(AnnotationFieldType.ANNOTATION);
         }
     }
 
