@@ -1,0 +1,684 @@
+BCRSAMPLEBARCODE	SAMPLETYPE	LONGESTDIMENSION	INTERMEDIATEDIMENSION	SHORTESTDIMENSION	INITIALWEIGHT	CURRENTWEIGHT	FREEZINGMETHOD	OCTEMBEDDED	TIMEBETWEENCLAMPINGANDFREEZING	TIMEBETWEENEXCISIONANDFREEZING	PRIMARYORMETASTATICSTATUS	MARGINSINVOLVED	VENOUSINVASION	LYMPHATICINVASION	NUMBERREGIONALLYMPHNODESEXAM	NUMBERREGIONALLYMPHNODESPOS	VERIFICATIONBYBCR	HISTOLOGICTYPE	TUMORSAMPLEANATOMICLOCATION	DAYSTOCOLLECTION	HISTOLOGICNUCLEARGRADE	GEMISTOCYTESPRESENT	OLIGODENDROGLIALCOMPONENT	LEPTOMENINGEALINVOLEMENT	GFAP_POSITIVE	MIB1_POSITIVE	
+TCGA-02-0001-01C	Primary Tumor	2.0 cm 	0.7 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0001-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0003-01A	Primary Tumor	2.1 cm 	0.9 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0003-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0004-01A	Primary Tumor	1.5 cm 	1.0 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0004-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0006-01B	Primary Tumor	1.3 cm 	1.3 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0006-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0007-01A	Primary Tumor	1.5 cm 	0.8 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0007-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0009-01A	Primary Tumor	1.2 cm 	0.8 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0009-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0010-01A	Primary Tumor	1.7 cm 	0.5 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0010-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0011-01B	Primary Tumor	0.7 cm 	0.6 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0011-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0014-01A	Primary Tumor	1.0 cm 	0.4 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0014-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0015-01A	Primary Tumor	2.6 cm 	0.5 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0015-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0016-01A	Primary Tumor	1.2 cm 	1.0 cm 	0.05 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0016-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0021-01A	Primary Tumor	1.8 cm 	1.1 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0021-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0023-01B	Primary Tumor	1.4 cm 	1.2 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0023-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0024-01B	Primary Tumor	1.7 cm 	0.7 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0024-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0025-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0025-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0026-01B	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0026-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0027-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0027-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0028-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0028-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0033-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0033-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0034-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0034-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0037-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0037-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0038-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0038-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0039-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0039-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0043-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0043-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0046-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0046-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0047-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0047-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0048-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0048-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0051-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0051-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0052-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0052-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0054-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0054-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0055-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0055-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0057-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0057-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0058-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0058-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0059-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0059-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0060-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0060-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0064-01A	Primary Tumor	1.3 cm 	0.8 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0064-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0068-01A	Primary Tumor	2.3 cm 	1.1 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0068-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0069-01A	Primary Tumor	1.1 cm 	0.4 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0069-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0070-01A	Primary Tumor	1.4 cm 	0.6 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0070-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0071-01A	Primary Tumor	1.7 cm 	0.6 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0071-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0074-01A	Primary Tumor	1.9 cm 	0.5 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0074-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0075-01A	Primary Tumor	1.1 cm 	0.7 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0075-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0079-01A	Primary Tumor	1.0 cm 	0.7 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0079-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0080-01A	Primary Tumor	1.7 cm 	1.1 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0080-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0083-01A	Primary Tumor	1.7 cm 	1.5 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0083-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0084-01A	Primary Tumor	1.2 cm 	0.7 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0084-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0085-01A	Primary Tumor	1.8 cm 	0.7 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0085-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0086-01A	Primary Tumor	1.0 cm 	1.0 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0086-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0087-01A	Primary Tumor	1.7 cm 	1.0 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0089-01A	Primary Tumor	2.0 cm 	0.9 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0089-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0099-01A	Primary Tumor	1.4 cm 	0.7 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0099-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0102-01A	Primary Tumor	1.2 cm 	1.0 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0102-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0104-01A	Primary Tumor	2.1 cm 	1.0 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0104-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0106-01A	Primary Tumor	1.5 cm 	0.6 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0107-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0107-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0111-01A	Primary Tumor	1.5 cm 	1.4 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0113-01A	Primary Tumor	1.4 cm 	0.5 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0113-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0114-01A	Primary Tumor	1.5 cm 	0.7 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0114-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0115-01A	Primary Tumor	1.5 cm 	0.6 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0115-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0116-01A	Primary Tumor	2.1 cm 	1.1 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0116-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0258-01A	Primary Tumor	0.6 cm 	0.4 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0260-01A	Primary Tumor	1.0 cm 	0.4 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0266-01A	Primary Tumor	1.0 cm 	0.6 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0269-01B	Primary Tumor	1.5 cm 	0.7 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0271-01A	Primary Tumor	1.0 cm 	0.8 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0281-01A	Primary Tumor	1.5 cm 	1.5 cm 	0.05 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0285-01A	Primary Tumor	1.5 cm 	1.0 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0289-01A	Primary Tumor	1.4 cm 	0.6 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0290-01A	Primary Tumor	1.5 cm 	1.0 cm 	0.025 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0317-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0321-01A	Primary Tumor	1.5 cm 	0.8 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0324-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0325-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0326-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0330-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0332-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0333-01A	Primary Tumor	2.0 cm 	1.5 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0337-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0338-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0339-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0422-01A	Primary Tumor	3.0 cm 	0.7 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0430-01A	Primary Tumor	1.5 cm 	1.3 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0432-01A	Primary Tumor	1.3 cm 	0.9 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0439-01A	Primary Tumor	1.5 cm 	1.5 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0440-01A	Primary Tumor	1.6 cm 	1.1 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0446-01A	Primary Tumor	2.6 cm 	1.3 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0451-01A	Primary Tumor	2.2 cm 	1.0 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-02-0456-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0119-01A	Primary Tumor	1.4 cm 	1.0 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0119-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0121-01A	Primary Tumor	2.0 cm 	1.0 cm 	1.0 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0121-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0122-01A	Primary Tumor	1.0 cm 	1.0 cm 	1.0 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0122-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0124-01A	Primary Tumor	1.2 cm 	0.6 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0124-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0125-01A	Primary Tumor	1.1 cm 	0.9 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0125-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0126-01A	Primary Tumor	0.9 cm 	0.8 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0126-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0127-01A	Primary Tumor	1.1 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0127-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0128-01A	Primary Tumor	1.3 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0128-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0129-01A	Primary Tumor	1.2 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0129-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0130-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0130-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0133-01A	Primary Tumor	1.0 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0133-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0137-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0137-01B	Primary Tumor	1.1 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0137-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0138-01A	Primary Tumor	1.7 cm 	0.9 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0138-10C	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0139-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0139-01B	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0139-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0140-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0140-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0141-01A	Primary Tumor	1.1 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0141-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0142-01A	Primary Tumor	1.4 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0142-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0143-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0143-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0145-01A	Primary Tumor	1.2 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0145-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0146-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0147-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0147-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0148-01A	Primary Tumor	1.0 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0148-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0149-01A	Primary Tumor	1.2 cm 	0.8 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0150-01A	Primary Tumor	1.5 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0150-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0151-01A	Primary Tumor	1.0 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0151-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0152-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0152-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0154-01A	Primary Tumor	1.3 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0154-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0155-01B	Primary Tumor	1.4 cm 	0.8 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0155-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0156-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0156-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0157-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0157-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0158-01A	Primary Tumor	1.8 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0158-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0159-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0159-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0160-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0160-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0162-01A	Primary Tumor	1.1 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0164-01A	Primary Tumor	1.0 cm 	0.7 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0165-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0165-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0166-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0166-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0167-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0167-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0168-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0168-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0169-01A	Primary Tumor	1.4 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0169-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0171-01A	Primary Tumor	1.0 cm 	0.9 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0171-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0173-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0173-10B	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0174-01A	Primary Tumor	1.0 cm 	0.6 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0174-10B	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0175-01A	Primary Tumor	2.3 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0176-01A	Primary Tumor	2.6 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0176-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0177-01A	Primary Tumor	0.9 cm 	0.8 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0178-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0178-10B	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0179-01A	Primary Tumor	1.3 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0182-01A	Primary Tumor	1.4 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0184-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0184-10B	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0185-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0185-10B	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0187-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0187-10B	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0188-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0188-10B	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0189-01A	Primary Tumor	2.1 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0189-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0190-01A	Primary Tumor	1.4 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0190-10B	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0192-01B	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0192-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0194-01A	Primary Tumor	0.9 cm 	0.4 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0195-01B	Primary Tumor	1.5 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0195-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0197-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0197-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0201-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0201-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0206-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0206-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0208-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0208-01B	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0208-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0209-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0209-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0210-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0210-01B	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0210-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0211-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0211-01B	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0211-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0213-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0213-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0214-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0214-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0216-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0216-01B	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0216-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0219-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0219-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0221-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0221-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0237-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0237-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0238-01A	Primary Tumor	1.2 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0238-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0240-01A	Primary Tumor	2.0 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0240-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0241-01A	Primary Tumor	1.0 cm 	0.5 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0241-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0394-01A	Primary Tumor	0.5 cm 	0.4 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0397-01A	Primary Tumor	0.4 cm 	0.3 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0402-01A	Primary Tumor	1.0 cm 	0.6 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0409-01A	Primary Tumor	1.0 cm 	0.7 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0410-01A	Primary Tumor	0.6 cm 	0.6 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0412-01A	Primary Tumor	1.0 cm 	0.8 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0413-01A	Primary Tumor	1.0 cm 	0.6 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0414-01A	Primary Tumor	1.2 cm 	0.8 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0644-01A	Primary Tumor	1.0 cm 	0.6 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0644-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0645-01A	Primary Tumor	1.3 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0645-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0646-01A	Primary Tumor	1.2 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0646-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0648-01A	Primary Tumor	0.7 cm 	0.7 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0648-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0649-01B	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0649-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0673-11A	Solid Tissue Normal	0.8 cm 	0.8 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0675-11A	Solid Tissue Normal	1.5 cm 	0.8 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0676-11A	Solid Tissue Normal	0.8 cm 	0.7 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0678-11A	Solid Tissue Normal	1.3 cm 	0.8 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0680-11A	Solid Tissue Normal	0.9 cm 	0.9 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0681-11A	Solid Tissue Normal	1.2 cm 	0.9 cm 	0.9 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0686-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0686-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0743-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0743-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0744-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0744-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0745-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0745-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0747-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0747-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0749-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0749-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0750-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0750-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0875-01A	Primary Tumor	0.7 cm 	0.7 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0875-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0876-01A	Primary Tumor	1.4 cm 	0.7 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0876-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0877-01A	Primary Tumor	1.0 cm 	1.0 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0877-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0878-01A	Primary Tumor	1.2 cm 	0.7 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0878-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0879-01A	Primary Tumor	1.2 cm 	0.8 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0879-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0881-01A	Primary Tumor	2.1 cm 	0.7 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0881-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0882-01A	Primary Tumor	1.4 cm 	0.8 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-0882-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-1084-01A	Primary Tumor	1.3 cm 	0.9 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-1084-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-1086-01A	Primary Tumor	1.2 cm 	0.8 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-1086-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-1087-01A	Primary Tumor	1.0 cm 	0.6 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-1087-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-1800-01A	Primary Tumor	0.7 cm 	0.7 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-1800-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-1801-01A	Primary Tumor	1.0 cm 	0.9 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-1801-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-1802-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-1802-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-1805-01A	Primary Tumor	1.5 cm 	1.0 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-06-1805-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0244-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0244-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0245-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0245-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0246-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0246-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0344-01A	Primary Tumor	0.7 cm 	0.7 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0344-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0345-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0345-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0346-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0346-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0347-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0347-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0348-01A	Primary Tumor	0.6 cm 	0.6 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0348-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0349-01A	Primary Tumor	0.7 cm 	0.7 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0349-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0350-01A	Primary Tumor	0.8 cm 	0.7 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0350-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0351-01A	Primary Tumor	0.7 cm 	0.7 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0351-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0352-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0352-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0353-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0353-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0354-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0354-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0355-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0355-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0356-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0356-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0357-01A	Primary Tumor	0.7 cm 	0.6 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0357-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0358-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0358-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0359-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0359-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0360-01A	Primary Tumor	0.6 cm 	0.6 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0360-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0373-01A	Primary Tumor	0.7 cm 	0.7 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0373-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0375-01A	Primary Tumor	0.4 cm 	0.3 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0375-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0380-01A	Primary Tumor	0.7 cm 	0.7 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0380-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0385-01A	Primary Tumor	1.1 cm 	0.6 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0385-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0386-01A	Primary Tumor	0.7 cm 	0.7 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0386-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0389-01A	Primary Tumor	1.1 cm 	0.6 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0389-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0390-01A	Primary Tumor	1.5 cm 	0.8 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0390-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0392-01A	Primary Tumor	1.5 cm 	0.7 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0392-11A	Solid Tissue Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0509-01A	Primary Tumor	0.9 cm 	0.9 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0510-01A	Primary Tumor	1.6 cm 	1.0 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0511-01A	Primary Tumor	1.0 cm 	0.8 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0512-01A	Primary Tumor	0.8 cm 	0.7 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0514-01A	Primary Tumor	1.5 cm 	0.7 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0516-01A	Primary Tumor	2.0 cm 	0.5 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0517-01A	Primary Tumor	0.6 cm 	0.4 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0518-01A	Primary Tumor	1.0 cm 	0.7 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0520-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0521-01A	Primary Tumor	0.6 cm 	0.4 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0522-01A	Primary Tumor	0.7 cm 	0.7 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0524-01A	Primary Tumor	0.7 cm 	0.6 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0525-01A	Primary Tumor	2.0 cm 	0.7 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0529-01A	Primary Tumor	0.7 cm 	0.6 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0531-01A	Primary Tumor	0.7 cm 	0.7 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0623-11A	Solid Tissue Normal	1.5 cm 	0.9 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0625-11A	Solid Tissue Normal	1.1 cm 	0.9 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0626-11A	Solid Tissue Normal	1.0 cm 	0.4 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-08-0627-11A	Solid Tissue Normal	0.6 cm 	0.6 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0615-01A	Primary Tumor	1.3 cm 	0.8 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0615-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0616-01A	Primary Tumor	0.8 cm 	0.7 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0616-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0618-01A	Primary Tumor	1.2 cm 	0.6 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0618-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0619-01A	Primary Tumor	0.6 cm 	0.4 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0619-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0620-01A	Primary Tumor	0.4 cm 	0.2 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0620-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0653-01A	Primary Tumor	0.5 cm 	0.3 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0653-01B	Primary Tumor	0.7 cm 	0.4 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0653-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0654-01B	Primary Tumor	0.5 cm 	0.3 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0654-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0656-01A	Primary Tumor	0.4 cm 	0.4 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0656-01B	Primary Tumor	0.3 cm 	0.3 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0656-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0657-01A	Primary Tumor	0.6 cm 	0.5 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0657-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0662-01A	Primary Tumor	0.9 cm 	0.8 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0662-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0670-01B	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0670-10B	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0688-01A	Primary Tumor	1.0 cm 	0.8 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0688-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0691-01A	Primary Tumor	1.0 cm 	0.6 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0691-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0692-01A	Primary Tumor	1.1 cm 	0.6 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0692-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0703-01A	Primary Tumor	0.7 cm 	0.3 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0703-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0707-01A	Primary Tumor	1.3 cm 	0.6 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0707-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0769-01A	Primary Tumor	0.9 cm 	0.7 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0769-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0772-01A	Primary Tumor	1.0 cm 	1.0 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0772-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0773-01A	Primary Tumor	1.0 cm 	0.3 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0773-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0775-01A	Primary Tumor	0.6 cm 	0.5 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0775-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0776-01A	Primary Tumor	0.6 cm 	0.5 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0776-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0778-01A	Primary Tumor	1.0 cm 	0.8 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0778-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0780-01A	Primary Tumor	1.4 cm 	0.9 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0780-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0818-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0818-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0819-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0819-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0820-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0820-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0821-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0821-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0822-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0822-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0826-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0826-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0827-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0827-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0828-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0828-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0829-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-0829-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1088-01A	Primary Tumor	0.6 cm 	0.6 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1089-01A	Primary Tumor	0.6 cm 	0.5 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1090-01A	Primary Tumor	1.0 cm 	1.0 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1090-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1091-01A	Primary Tumor	0.9 cm 	0.7 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1091-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1092-01B	Primary Tumor	1.0 cm 	0.8 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1092-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1093-01A	Primary Tumor	1.2 cm 	0.8 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1093-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1094-01A	Primary Tumor	1.1 cm 	1.1 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1094-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1095-01A	Primary Tumor	1.3 cm 	0.8 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1095-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1096-01A	Primary Tumor	1.1 cm 	0.6 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1096-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1097-01B	Primary Tumor	1.0 cm 	0.3 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1097-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1098-01C	Primary Tumor	0.9 cm 	0.6 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1098-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1099-01A	Primary Tumor	1.8 cm 	1.0 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1099-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1598-01A	Primary Tumor	1.4 cm 	1.0 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1598-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1599-01A	Primary Tumor	1.1 cm 	0.6 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1599-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1600-01A	Primary Tumor	0.6 cm 	0.6 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1600-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1602-01A	Primary Tumor	1.2 cm 	0.6 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-12-1602-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0736-01A	Primary Tumor	0.5 cm 	0.4 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0783-01B	Primary Tumor	1.1 cm 	1.0 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0783-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0786-01B	Primary Tumor	1.2 cm 	1.0 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0786-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0787-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0787-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0789-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0789-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0812-01B	Primary Tumor	1.0 cm 	0.7 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0812-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0813-01A	Primary Tumor	1.0 cm 	0.6 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0813-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0817-01A	Primary Tumor	1.0 cm 	1.0 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0817-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0865-01B	Primary Tumor	1.0 cm 	0.5 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0865-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0866-01B	Primary Tumor	1.0 cm 	0.9 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0866-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0867-01A	Primary Tumor	1.0 cm 	0.7 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0867-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0871-01A	Primary Tumor	1.2 cm 	0.7 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-0871-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1034-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1034-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1037-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1037-10B	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1396-01A	Primary Tumor	1.5 cm 	1.0 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1396-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1401-01A	Primary Tumor	1.1 cm 	0.6 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1401-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1402-01A	Primary Tumor	1.4 cm 	1.4 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1402-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1451-01A	Primary Tumor	1.2 cm 	0.7 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1451-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1452-01A	Primary Tumor	1.0 cm 	0.8 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1452-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1453-01A	Primary Tumor	1.2 cm 	0.8 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1453-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1454-01A	Primary Tumor	1.2 cm 	0.6 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1454-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1455-01A	Primary Tumor	1.4 cm 	1.2 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1455-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1458-01A	Primary Tumor	1.2 cm 	1.0 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1458-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1459-01A	Primary Tumor	1.2 cm 	0.8 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1459-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1794-01A	Primary Tumor	0.7 cm 	0.4 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1794-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1795-01A	Primary Tumor	0.6 cm 	0.5 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1795-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1821-01A	Primary Tumor	1.1 cm 	1.0 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1821-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1823-01A	Primary Tumor	1.0 cm 	1.0 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1823-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1825-01A	Primary Tumor	1.2 cm 	0.5 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1825-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1827-01A	Primary Tumor	1.0 cm 	0.4 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1827-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1829-01A	Primary Tumor	1.2 cm 	1.0 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-14-1829-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-15-0742-01A	Primary Tumor	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-15-0742-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-15-1446-01A	Primary Tumor	1.5 cm 	0.8 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-15-1446-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-15-1447-01A	Primary Tumor	1.8 cm 	1.5 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-15-1447-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-15-1449-01A	Primary Tumor	1.8 cm 	1.2 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-15-1449-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-0846-01A	Primary Tumor	2.0 cm 	0.7 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-0846-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-0848-01A	Primary Tumor	0.7 cm 	0.5 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-0848-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-0849-01A	Primary Tumor	0.9 cm 	0.5 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-0849-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-0850-01A	Primary Tumor	1.4 cm 	0.5 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-0850-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-0861-01A	Primary Tumor	1.1 cm 	0.6 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-0861-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1045-01B	Primary Tumor	1.0 cm 	0.8 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1045-10B	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1047-01B	Primary Tumor	0.3 cm 	0.2 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1047-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1055-01B	Primary Tumor	0.3 cm 	0.3 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1055-10B	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1056-01B	Primary Tumor	1.0 cm 	0.4 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1056-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1060-01A	Primary Tumor	1.0 cm 	0.8 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1060-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1062-01A	Primary Tumor	1.0 cm 	0.8 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1062-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1063-01B	Primary Tumor	1.1 cm 	0.7 cm 	0.2 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1063-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1460-01A	Primary Tumor	1.1 cm 	0.7 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-16-1460-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-0955-01A	Primary Tumor	1.8 cm 	1.0 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-0955-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-0957-01C	Primary Tumor	1.2 cm 	0.7 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-0957-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-0960-01A	Primary Tumor	1.0 cm 	0.8 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-0960-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-0962-01B	Primary Tumor	1.1 cm 	0.7 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-0962-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-0963-01B	Primary Tumor	1.1 cm 	0.7 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-0963-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-0964-01A	Primary Tumor	0.9 cm 	0.6 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-0964-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1385-01A	Primary Tumor	1.0 cm 	0.8 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1386-01A	Primary Tumor	1.0 cm 	0.5 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1387-01A	Primary Tumor	1.2 cm 	0.4 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1388-01A	Primary Tumor	0.8 cm 	0.6 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1389-01A	Primary Tumor	0.8 cm 	0.6 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1392-01A	Primary Tumor	0.8 cm 	0.8 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1392-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1786-01A	Primary Tumor	1.1 cm 	0.8 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1786-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1788-01A	Primary Tumor	1.3 cm 	0.7 cm 	0.7 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1788-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1789-01A	Primary Tumor	0.8 cm 	0.6 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1789-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1791-01A	Primary Tumor	1.0 cm 	0.7 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-19-1791-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-26-1438-01A	Primary Tumor	0.6 cm 	0.4 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-26-1438-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-26-1440-01A	Primary Tumor	1.5 cm 	0.7 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-26-1440-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-26-1443-01A	Primary Tumor	0.4 cm 	0.4 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-26-1443-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-26-1799-01A	Primary Tumor	0.8 cm 	0.6 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-26-1799-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-27-1830-01A	Primary Tumor	1.0 cm 	0.5 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-27-1830-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-27-1832-01A	Primary Tumor	1.0 cm 	0.6 cm 	0.6 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-27-1832-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-27-1833-01A	Primary Tumor	1.3 cm 	1.3 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-27-1833-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-27-1834-01A	Primary Tumor	1.5 cm 	0.8 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-27-1834-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1745-01B	Primary Tumor	0.8 cm 	0.7 cm 	0.1 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1745-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1746-01A	Primary Tumor	1.0 cm 	0.7 cm 	0.5 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1746-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1749-01A	Primary Tumor	0.8 cm 	0.4 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1749-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1750-01A	Primary Tumor	1.5 cm 	1.0 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1750-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1751-01A	Primary Tumor	1.0 cm 	0.9 cm 	0.8 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1751-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1752-01A	Primary Tumor	0.9 cm 	0.8 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1752-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1755-01A	Primary Tumor	0.9 cm 	0.7 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1755-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1757-01A	Primary Tumor	1.2 cm 	0.8 cm 	0.4 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1757-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1760-01A	Primary Tumor	1.1 cm 	0.7 cm 	0.3 cm 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	
+TCGA-28-1760-10A	Blood Derived Normal	 	 	 	 	 	null	null	null	null	null	null	null	null	null	null	NO	null	null	null	null	null	null	null	null	null	

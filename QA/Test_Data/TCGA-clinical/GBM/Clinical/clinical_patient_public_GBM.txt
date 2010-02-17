@@ -1,0 +1,379 @@
+BCRPATIENTBARCODE	TUMORTISSUESITE	GENDER	PRETREATMENTHISTORY	HISTOLOGICALTYPE	PRIORGLIOMA	VITALSTATUS	DAYSTOBIRTH	DAYSTODEATH	DAYSTOLASTFOLLOWUP	INFORMEDCONSENTVERIFIED	AGEATINITIALPATHOLOGICDIAGNOSIS	RADIATIONTHERAPY	CHEMOTHERAPY	IMMUNOTHERAPY	HORMONALTHERAPY	TARGETEDMOLECULARTHERAPY	DAYSTOTUMORPROGRESSION	DAYSTOTUMORRECURRENCE	SITEOFTUMORFIRSTRECURRENCE	TUMORSTAGE	TUMORGRADE	RESIDUALTUMOR	TUMORRESIDUALDISEASE	PRIMARYTHERAPYOUTCOMESUCCESS	ADDITIONALRADIATIONTHERAPY	ADDITIONALCHEMOTHERAPY	ADDITIONALIMMUNOTHERAPY	ADDITIONALHORMONETHERAPY	ADDITIONALDRUGTHERAPY	ANATOMICORGANSUBDIVISION	INITIALPATHOLOGICDIAGNOSISMETHOD	PERSONNEOPLASMCANCERSTATUS	
+TCGA-02-0001	BRAIN	FEMALE	Yes	Untreated primary (De Nova) GBM	No	DECEASED	-16179	353	358	Yes	44	Yes	Yes	No	No	No	null	137	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0003	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18340	144	144	Yes	50	Yes	Yes	No	No	No	null	40	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0004	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21617	345	345	Yes	59	Yes	Yes	No	No	No	314	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0006	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20516	558	558	Yes	56	Yes	Yes	No	No	No	null	302	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0007	BRAIN	FEMALE	Yes	Treated primary GBM	No	DECEASED	-14805	705	705	Yes	40	Yes	Yes	No	No	No	518	null	null	null	null	null	null	null	Yes	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0009	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22456	322	322	Yes	61	Yes	null	No	No	No	264	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0010	BRAIN	FEMALE	Yes	Treated primary GBM	No	DECEASED	-7451	1077	1077	Yes	20	Yes	Yes	No	No	No	351	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0011	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-6926	630	630	Yes	18	Yes	Yes	No	No	No	144	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0014	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-9369	2511	2511	Yes	25	Yes	Yes	No	No	No	-1409	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0015	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18404	627	627	Yes	50	Yes	Yes	No	No	No	null	456	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0016	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-18271	null	1699	Yes	50	Yes	Yes	No	No	No	null	1699	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0021	BRAIN	FEMALE	Yes	Untreated primary (De Nova) GBM	No	DECEASED	-16035	2361	2361	Yes	43	Yes	Yes	No	No	No	254	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0023	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-14002	612	612	Yes	38	Yes	Yes	No	No	No	435	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0024	BRAIN	MALE	Yes	Treated primary GBM	No	DECEASED	-13116	1614	1614	Yes	35	Yes	Yes	No	No	No	null	1400	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0025	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17401	1300	1300	Yes	47	Yes	Yes	No	No	No	656	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0026	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-10021	748	748	Yes	27	Yes	Yes	No	No	No	462	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0027	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-12369	370	315	Yes	33	Yes	Yes	No	No	No	257	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0028	BRAIN	MALE	Yes	Treated primary GBM	No	DECEASED	-14303	2755	2755	Yes	39	Yes	Yes	No	No	No	1921	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0033	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20070	86	86	Yes	54	Yes	null	No	No	No	32	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0034	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22166	430	430	Yes	60	Yes	Yes	No	No	No	386	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0037	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27063	109	109	Yes	74	Yes	No	No	No	No	37	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0038	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17749	326	326	Yes	48	Yes	Yes	No	No	No	238	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0039	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20065	320	320	Yes	54	Yes	Yes	No	No	No	102	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0043	BRAIN	FEMALE	Yes	Treated primary GBM	No	DECEASED	-19882	556	556	Yes	54	Yes	Yes	No	No	No	282	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0046	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22417	208	208	Yes	61	Yes	null	No	No	No	194	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0047	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-28759	447	447	Yes	78	Yes	No	No	No	No	57	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0048	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-29299	97	97	Yes	80	Yes	null	No	No	No	23	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-02-0051	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-15983	458	458	Yes	43	Yes	Yes	No	No	No	88	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0052	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18060	383	383	Yes	49	Yes	Yes	No	No	No	204	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0054	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-16223	199	199	Yes	44	Yes	Yes	No	No	No	72	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0055	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22798	76	76	Yes	62	Yes	Yes	No	No	No	6	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0057	BRAIN	FEMALE	Yes	Treated primary GBM	No	DECEASED	-24139	604	604	Yes	66	Yes	Yes	No	No	No	473	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0058	BRAIN	FEMALE	No	Treated primary GBM	Yes	DECEASED	-10517	254	254	Yes	28	Yes	Yes	No	No	No	171	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0059	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25096	291	291	Yes	68	Yes	null	No	No	No	null	21	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0060	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24150	183	183	Yes	66	Yes	Yes	No	No	No	183	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0064	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18280	600	600	Yes	50	Yes	Yes	No	No	No	null	496	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0068	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21160	804	804	Yes	57	Yes	Yes	No	No	No	null	175	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0069	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-11668	null	873	Yes	31	Yes	Yes	No	No	No	873	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0070	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-25916	null	762	Yes	71	Yes	Yes	No	No	No	null	762	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0071	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19425	167	167	Yes	53	Yes	null	No	No	No	8	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0074	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24906	310	310	Yes	68	Yes	Yes	No	No	No	154	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0075	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23205	634	634	Yes	63	Yes	Yes	No	No	No	336	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0079	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21173	828	828	Yes	58	Yes	null	No	No	No	797	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0080	BRAIN	MALE	Yes	Untreated primary (De Nova) GBM	No	DECEASED	-10309	2729	2729	Yes	28	Yes	Yes	No	No	No	2339	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0083	BRAIN	FEMALE	Yes	Treated primary GBM	No	DECEASED	-21626	691	691	Yes	59	Yes	Yes	No	No	No	462	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0084	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-13263	384	7	Yes	36	null	null	null	null	null	null	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-02-0085	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23289	1560	1560	Yes	63	Yes	Yes	No	No	No	976	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0086	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-16763	268	268	Yes	45	Yes	Yes	No	No	No	97	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0087	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-10185	null	1757	Yes	27	Yes	null	No	No	No	null	1757	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-02-0089	BRAIN	MALE	Yes	Treated primary GBM	No	DECEASED	-19233	515	515	Yes	52	Yes	Yes	No	No	No	358	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0099	BRAIN	MALE	Yes	Untreated primary (De Nova) GBM	No	DECEASED	-17080	106	106	Yes	46	Yes	Yes	null	null	null	null	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0102	BRAIN	MALE	Yes	Treated primary GBM	No	DECEASED	-15660	821	821	Yes	42	Yes	Yes	No	No	No	450	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0104	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-10698	1977	1977	Yes	29	Yes	Yes	No	No	No	null	1457	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0106	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19883	355	355	Yes	54	Yes	Yes	No	No	No	null	195	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0107	BRAIN	MALE	Yes	Treated primary GBM	No	DECEASED	-20557	537	537	Yes	56	Yes	Yes	No	No	No	null	146	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0111	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20813	704	704	Yes	57	Yes	Yes	No	No	No	74	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0113	BRAIN	FEMALE	Yes	Treated primary GBM	No	LIVING	-15836	null	2817	Yes	43	Yes	Yes	No	No	No	null	1559	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0114	BRAIN	FEMALE	Yes	Treated primary GBM	No	DECEASED	-13681	3040	3040	Yes	37	Yes	Yes	No	No	No	null	2296	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0115	BRAIN	MALE	No	Treated primary GBM	No	DECEASED	-19257	476	476	Yes	52	Yes	Yes	No	No	No	91	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0116	BRAIN	MALE	Yes	Treated primary GBM	No	DECEASED	-18656	1489	1489	Yes	51	Yes	Yes	No	No	No	1231	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0258	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-13268	503	503	Yes	36	Yes	null	No	No	No	null	503	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0260	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19956	514	514	Yes	54	Yes	null	No	No	No	null	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0266	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-5303	538	538	Yes	14	Yes	null	No	No	No	293	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0269	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25194	327	327	Yes	69	Yes	null	No	No	No	99	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0271	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-9578	440	440	Yes	26	Yes	null	No	No	No	0	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-02-0281	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-28695	121	121	Yes	78	Yes	null	No	No	No	0	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0285	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18353	422	422	Yes	50	Yes	null	No	No	No	0	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0289	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21031	432	432	Yes	57	Yes	Yes	No	No	No	244	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0290	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18066	485	485	Yes	49	Yes	Yes	No	No	No	374	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0317	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-14636	372	372	Yes	40	Yes	Yes	No	No	No	238	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0321	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27125	300	300	Yes	74	Yes	null	No	No	No	73	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0324	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25352	234	234	Yes	69	Yes	null	No	No	No	163	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0325	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22598	323	323	Yes	61	Yes	Yes	No	No	No	284	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0326	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-30159	223	374	Yes	82	Yes	null	No	No	No	5	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0330	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18654	484	484	Yes	51	Yes	Yes	No	No	No	120	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0332	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17021	782	782	Yes	46	Yes	Yes	No	No	No	438	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0333	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-28449	133	133	Yes	77	Yes	null	No	No	No	4	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0337	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17642	764	764	Yes	48	Yes	Yes	No	No	No	691	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0338	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-15231	322	322	Yes	41	Yes	null	No	No	No	167	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0339	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24524	377	377	Yes	67	Yes	null	No	No	No	148	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0422	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18367	441	441	Yes	50	Yes	Yes	No	No	No	125	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0430	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24641	321	321	Yes	67	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0432	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-13260	1433	1433	Yes	36	Yes	Yes	No	No	No	1053	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0439	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25623	20	20	Yes	70	Yes	null	No	No	No	13	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0440	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22955	345	345	Yes	62	Yes	Yes	No	No	No	212	null	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0446	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22541	281	281	Yes	61	Yes	null	No	No	No	null	15	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0451	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22662	492	492	Yes	62	Yes	null	No	No	No	null	427	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-02-0456	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24796	102	102	Yes	67	Yes	null	No	No	No	null	12	null	null	null	null	null	null	No	null	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0119	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0121	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0122	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-30967	187	8	Yes	84	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	Brain	TUMOR RESECTION	null	
+TCGA-06-0124	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24591	619	123	Yes	67	Yes	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0125	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23343	1448	1439	Yes	63	Yes	Yes	No	No	No	797	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0126	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-31627	210	3	Yes	86	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	Brain	TUMOR RESECTION	null	
+TCGA-06-0127	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24502	120	108	Yes	67	Yes	Yes	No	No	No	90	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0128	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24217	691	691	Yes	66	Yes	Yes	No	No	Yes	189	null	null	null	null	null	null	null	Yes	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0129	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-11284	1024	988	Yes	30	Yes	Yes	No	No	No	147	null	null	null	null	null	null	null	No	No	Yes	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0130	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19811	394	320	Yes	54	Yes	Yes	No	No	No	244	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0133	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23402	435	428	Yes	64	Yes	Yes	No	No	Yes	78	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0137	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23273	812	701	Yes	63	Yes	Yes	No	No	No	487	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0138	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-15736	737	674	Yes	43	Yes	Yes	No	No	No	394	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0139	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-14728	362	327	Yes	40	Yes	Yes	No	No	No	152	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0140	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0141	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22925	313	280	Yes	62	Yes	Yes	No	No	Yes	145	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0142	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0143	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21386	357	357	Yes	58	Yes	Yes	No	No	Yes	null	264	null	null	null	null	null	null	No	No	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0145	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19660	71	71	Yes	53	No	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0146	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-12252	611	611	Yes	33	Yes	Yes	No	No	No	530	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0147	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18742	541	508	Yes	51	Yes	Yes	No	Yes	No	null	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0148	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27842	307	298	Yes	76	Yes	No	No	No	No	188	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0149	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27315	261	238	Yes	74	Yes	Yes	No	No	No	203	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0150	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0151	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0152	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24844	375	359	Yes	68	Yes	Yes	No	No	No	299	null	null	null	null	null	null	null	No	Yes	No	Yes	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0154	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20018	423	389	Yes	54	Yes	Yes	No	No	No	207	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0155	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22497	318	263	Yes	61	Yes	No	No	No	Yes	256	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0156	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20931	178	164	Yes	57	Yes	No	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0157	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23127	97	97	Yes	63	Yes	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0158	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-26855	329	166	Yes	73	Yes	No	No	No	No	90	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0159	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0160	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0162	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	Yes	DECEASED	-17272	104	78	Yes	47	Yes	No	No	No	Yes	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0164	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17510	1730	1729	Yes	47	Yes	Yes	No	No	No	1428	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0165	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0166	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18902	178	161	Yes	51	Yes	Yes	No	No	No	66	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0167	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0168	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21776	598	579	Yes	59	Yes	Yes	No	No	No	461	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0169	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25127	100	95	Yes	68	Yes	Yes	No	No	No	92	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0171	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24085	399	396	Yes	65	Yes	Yes	No	No	No	117	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0173	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-26548	136	7	Yes	72	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0174	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19824	98	67	Yes	54	Yes	Yes	No	No	No	47	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0175	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25558	123	83	Yes	70	No	No	No	No	Yes	39	null	null	null	null	null	null	null	Yes	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0176	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-12777	null	1561	Yes	35	Yes	Yes	No	No	No	41	null	null	null	null	null	null	null	Yes	No	No	No	No	Brain	TUMOR RESECTION	TUMOR FREE	
+TCGA-06-0177	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23498	126	60	Yes	64	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0178	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-14235	null	1642	Yes	39	Yes	Yes	No	No	No	192	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	TUMOR FREE	
+TCGA-06-0179	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23449	616	578	Yes	64	Yes	Yes	No	No	No	250	null	null	null	null	null	null	null	Yes	Yes	Yes	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0182	BRAIN	MALE	null	Untreated primary (De Nova) GBM	No	DECEASED	-27963	111	77	Yes	76	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0184	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-23317	null	1228	Yes	63	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	TUMOR FREE	
+TCGA-06-0185	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-19922	null	1126	Yes	54	Yes	Yes	No	No	Yes	711	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0187	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25317	828	801	Yes	69	Yes	Yes	No	No	Yes	null	531	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0188	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-26079	null	866	Yes	71	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0189	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20296	469	454	Yes	55	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0190	BRAIN	MALE	No	Untreated primary (De Nova) GBM	null	DECEASED	-22835	317	313	Yes	62	Yes	Yes	No	No	No	88	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0192	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-21243	null	556	Yes	58	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	TUMOR FREE	
+TCGA-06-0194	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-13852	142	142	Yes	37	Yes	Yes	No	No	No	125	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0195	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23131	225	214	Yes	63	Yes	Yes	No	No	No	147	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0197	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24095	168	79	Yes	66	No	Yes	No	No	No	47	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0201	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18649	12	12	Yes	51	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0206	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-14937	232	196	Yes	40	No	No	No	No	No	null	106	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0208	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19108	255	166	Yes	52	Yes	Yes	No	No	No	148	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0209	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27877	231	118	Yes	76	Yes	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0210	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-26600	225	151	Yes	72	Yes	Yes	No	No	No	67	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0211	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17514	360	360	Yes	47	Yes	Yes	No	No	No	53	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0213	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20134	16	6	Yes	55	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0214	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24187	457	378	Yes	66	Yes	Yes	No	No	No	48	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0216	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22524	735	684	Yes	61	Yes	No	No	No	No	175	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0219	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24488	21	10	Yes	67	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0221	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-11332	603	548	Yes	31	Yes	Yes	No	No	Yes	260	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0237	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27735	415	314	Yes	75	Yes	Yes	No	No	Yes	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0238	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17037	404	359	Yes	46	Yes	Yes	No	No	No	311	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0240	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0241	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-24101	null	455	Yes	66	Yes	Yes	No	No	Yes	null	196	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0394	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18913	329	313	Yes	51	Yes	Yes	No	No	No	87	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0397	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20997	121	15	Yes	57	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0402	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-26059	8	8	Yes	71	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0409	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-16023	2201	2145	Yes	43	Yes	Yes	No	No	No	334	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0410	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-28084	142	142	Yes	76	No	No	No	No	No	null	7	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0412	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20618	291	245	Yes	56	Yes	Yes	No	No	No	130	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0413	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-28433	96	5	Yes	77	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0414	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23215	1068	1065	Yes	63	Yes	Yes	No	No	No	null	1013	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	TUMOR FREE	
+TCGA-06-0644	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-26246	null	375	Yes	71	Yes	Yes	No	No	No	null	85	null	null	null	null	null	null	Yes	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0645	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20448	175	98	Yes	56	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0646	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22272	175	136	Yes	61	Yes	Yes	No	No	No	90	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0648	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-28477	297	293	Yes	78	Yes	Yes	No	No	No	201	null	null	null	null	null	null	null	No	No	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0649	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-26796	64	62	Yes	73	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0673	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0675	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0676	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0678	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0680	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0681	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-06-0686	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-19503	null	285	Yes	53	Yes	Yes	No	No	Yes	159	null	null	null	null	null	null	null	No	No	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0743	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-25434	null	678	Yes	69	Yes	Yes	No	No	Yes	175	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0744	BRAIN	MALE	No	Untreated primary (De Nova) GBM	Yes	LIVING	-24471	null	594	Yes	67	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	TUMOR FREE	
+TCGA-06-0745	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21884	238	163	Yes	59	Yes	Yes	No	No	No	91	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0747	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19657	82	82	Yes	53	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0749	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18571	81	65	Yes	50	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0750	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-16018	28	28	Yes	43	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0875	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-22311	null	279	Yes	61	Yes	Yes	No	No	No	279	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0876	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-26371	null	271	Yes	72	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0877	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-28760	null	204	Yes	78	Yes	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0878	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-27319	null	218	Yes	74	Yes	Yes	No	No	No	null	66	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0879	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-19153	null	195	Yes	52	Yes	Yes	No	No	Yes	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0881	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-18278	null	178	Yes	50	Yes	Yes	No	No	No	null	141	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-0882	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-11111	null	165	Yes	30	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-1084	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-19898	null	226	Yes	54	Yes	Yes	No	No	No	208	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-1086	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-15644	208	193	Yes	42	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-1087	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27657	123	109	Yes	75	Yes	Yes	No	No	No	null	109	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-1800	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22332	815	815	Yes	61	Yes	Yes	No	No	No	null	750	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-1801	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-20538	null	263	Yes	56	Yes	Yes	No	No	No	null	232	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-1802	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-22537	null	239	Yes	61	Yes	Yes	No	No	No	null	81	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-06-1805	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-10542	null	127	Yes	28	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0244	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22684	690	690	Yes	62	Yes	Yes	No	No	Yes	null	483	null	null	null	null	null	null	null	null	null	null	null	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0245	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-11613	1151	1057	Yes	31	Yes	No	No	No	No	463	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0246	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20974	127	119	Yes	57	Yes	Yes	No	No	No	92	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0344	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24253	3524	3310	Yes	66	Yes	No	No	No	No	null	1880	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0345	BRAIN	FEMALE	null	Untreated primary (De Nova) GBM	No	DECEASED	-25960	53	53	Yes	71	Yes	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0346	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25409	256	132	Yes	69	Yes	Yes	No	No	No	75	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0347	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18384	782	419	Yes	50	Yes	Yes	No	No	No	59	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0348	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23373	370	316	Yes	64	Yes	Yes	No	No	No	null	197	null	null	null	null	null	null	Yes	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0349	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-16964	298	231	Yes	46	Yes	Yes	No	No	Yes	92	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0350	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-11905	888	103	Yes	32	Yes	No	No	No	No	null	438	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0351	BRAIN	MALE	No	Untreated primary (De Nova) GBM	Yes	DECEASED	-14838	1986	1636	Yes	40	Yes	Yes	No	No	Yes	null	1542	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	OTHER METHOD, SPECIFY IN NOTES	WITH TUMOR	
+TCGA-08-0352	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-29106	39	39	Yes	79	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0353	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21332	256	195	Yes	58	Yes	Yes	No	No	No	164	null	null	null	null	null	null	null	Yes	null	null	null	null	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0354	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19198	546	458	Yes	52	Yes	Yes	No	No	No	253	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0355	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-11098	747	685	Yes	30	Yes	Yes	No	No	Yes	null	519	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0356	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21900	946	447	Yes	60	Yes	Yes	No	No	No	null	447	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0357	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18143	1143	1084	Yes	49	Yes	Yes	No	No	Yes	null	155	null	null	null	null	null	null	No	Yes	Yes	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0358	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18383	678	593	Yes	50	Yes	Yes	Yes	No	Yes	null	263	null	null	null	null	null	null	No	Yes	Yes	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0359	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21748	102	29	Yes	59	Yes	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0360	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27894	468	352	Yes	76	Yes	Yes	Yes	No	No	null	112	null	null	null	null	null	null	No	No	Yes	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0373	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25273	134	134	Yes	69	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0375	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	Yes	DECEASED	-18941	372	279	Yes	51	Yes	No	No	No	No	null	161	null	null	null	null	null	null	Yes	No	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-08-0380	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27277	454	330	Yes	74	Yes	No	No	No	Yes	151	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0385	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-26233	82	31	Yes	71	null	null	null	null	null	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0386	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27053	548	478	Yes	74	Yes	Yes	No	No	Yes	null	427	null	null	null	null	null	null	No	No	Yes	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0389	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21638	467	97	Yes	59	Yes	Yes	No	No	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0390	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25304	425	322	Yes	69	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0392	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22056	22	9	Yes	60	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-08-0509	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23273	382	17	Yes	63	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0510	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27675	129	106	Yes	75	Yes	Yes	No	No	Yes	null	89	null	null	null	null	null	null	No	No	Yes	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0511	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25299	235	235	Yes	69	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	null	null	null	null	null	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0512	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17821	1282	358	Yes	48	Yes	No	No	No	No	231	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0514	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25457	337	259	Yes	69	Yes	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0516	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-5308	596	561	Yes	14	Yes	No	No	No	No	40	null	null	null	null	null	null	null	Yes	null	null	null	null	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0517	BRAIN	FEMALE	Yes	Untreated primary (De Nova) GBM	No	DECEASED	-12771	1785	1770	Yes	34	Yes	No	No	No	No	null	1024	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0518	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21995	588	39	Yes	60	Yes	No	No	No	No	134	null	null	null	null	null	null	null	null	null	null	null	null	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0520	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25766	326	326	Yes	70	Yes	No	No	No	No	null	105	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0521	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-6376	146	146	Yes	17	Yes	Yes	No	No	No	125	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0522	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22413	635	555	Yes	61	Yes	Yes	No	No	No	266	null	null	null	null	null	null	null	No	Yes	No	Yes	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0524	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-6464	220	198	Yes	17	Yes	Yes	No	No	No	61	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0525	BRAIN	MALE	Yes	Untreated primary (De Nova) GBM	No	DECEASED	-19012	486	486	Yes	52	Yes	Yes	No	No	No	343	null	null	null	null	null	null	null	No	No	null	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0529	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20556	559	526	Yes	56	Yes	Yes	No	No	No	null	328	null	null	null	null	null	null	No	No	Yes	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0531	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23481	230	168	Yes	64	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-08-0623	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-08-0625	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-08-0626	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-08-0627	null	null	null	null	null	null	null	null	null	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	
+TCGA-12-0615	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-28583	466	426	Yes	78	Yes	Yes	No	No	Yes	159	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0616	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-13451	447	438	Yes	36	Yes	Yes	No	No	Yes	397	null	null	null	null	null	null	null	No	Yes	No	Yes	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0618	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18071	394	49	Yes	49	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	EXCISIONAL BIOPSY	null	
+TCGA-12-0619	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21920	1062	316	Yes	60	Yes	Yes	No	No	Yes	203	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0620	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21068	318	181	Yes	57	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0653	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23952	320	301	Yes	65	No	Yes	No	No	Yes	267	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0654	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17624	231	218	Yes	48	Yes	No	No	No	Yes	216	null	null	null	null	null	null	null	Yes	No	No	No	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0656	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17865	2883	2004	Yes	48	Yes	Yes	No	No	Yes	1467	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0657	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25413	3	3	Yes	69	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0662	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18717	1161	1161	Yes	51	Yes	Yes	Yes	Yes	Yes	599	null	null	null	null	null	null	null	No	Yes	Yes	Yes	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0670	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22188	790	790	Yes	60	Yes	Yes	Yes	Yes	Yes	379	null	null	null	null	null	null	null	No	No	No	No	No	Brain	EXCISIONAL BIOPSY	null	
+TCGA-12-0688	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27085	811	734	Yes	74	Yes	Yes	No	Yes	No	228	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0691	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23019	368	185	Yes	63	Yes	Yes	No	No	No	97	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0692	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27519	111	80	Yes	75	No	Yes	No	No	No	35	null	null	null	null	null	null	null	No	No	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0703	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17125	619	550	Yes	46	Yes	Yes	No	No	Yes	207	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0707	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20136	863	0	Yes	55	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	Brain	EXCISIONAL BIOPSY	null	
+TCGA-12-0769	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19170	458	378	Yes	52	Yes	Yes	No	No	No	378	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0772	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17018	1638	1615	Yes	46	Yes	Yes	No	No	Yes	607	null	null	null	null	null	null	null	Yes	Yes	No	No	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0773	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-8849	1315	1311	Yes	24	Yes	Yes	No	Yes	Yes	725	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0775	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27564	232	167	Yes	75	Yes	Yes	No	No	No	94	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0776	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19228	296	277	Yes	52	Yes	Yes	No	No	No	127	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0778	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19460	453	451	Yes	53	Yes	Yes	No	No	Yes	231	null	null	null	null	null	null	null	Yes	Yes	No	No	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0780	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18646	452	434	Yes	51	Yes	Yes	No	No	Yes	91	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0818	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-16666	2790	2790	Yes	45	Yes	Yes	No	No	Yes	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	EXCISIONAL BIOPSY	null	
+TCGA-12-0819	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18160	753	753	Yes	49	Yes	Yes	No	No	Yes	null	427	null	null	null	null	null	null	No	Yes	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0820	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-14877	562	562	Yes	40	Yes	Yes	No	Yes	Yes	null	272	null	null	null	null	null	null	No	Yes	No	Yes	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0821	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22949	323	323	Yes	62	Yes	Yes	No	No	No	null	259	null	null	null	null	null	null	No	Yes	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0822	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-16803	715	715	Yes	46	Yes	Yes	No	No	Yes	null	91	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0826	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-13887	845	845	Yes	38	Yes	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	Brain	EXCISIONAL BIOPSY	null	
+TCGA-12-0827	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-14092	1179	1179	Yes	38	Yes	Yes	No	Yes	Yes	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0828	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20909	271	271	Yes	57	Yes	Yes	No	No	No	13	null	null	null	null	null	null	null	No	No	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-0829	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27470	626	626	Yes	75	Yes	Yes	Yes	No	Yes	null	473	null	null	null	null	null	null	No	Yes	Yes	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-1088	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19667	3880	3880	Yes	53	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-12-1089	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23419	177	177	Yes	64	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-1090	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21377	230	189	Yes	58	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	Yes	Yes	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-1091	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-3981	1010	929	Yes	10	Yes	Yes	No	Yes	No	null	56	null	null	null	null	null	null	Yes	Yes	No	Yes	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-1092	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21410	661	658	Yes	58	Yes	Yes	No	No	Yes	null	637	null	null	null	null	null	null	No	Yes	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-1093	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24296	486	364	Yes	66	Yes	Yes	Yes	No	No	null	322	null	null	null	null	null	null	No	Yes	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-1094	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20586	372	346	Yes	56	Yes	Yes	Yes	No	Yes	null	186	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-1095	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23775	482	482	Yes	65	Yes	Yes	No	No	Yes	96	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-1096	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20321	277	277	Yes	55	No	Yes	Yes	No	Yes	null	270	null	null	null	null	null	null	No	No	No	No	No	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-1097	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22526	442	442	Yes	61	Yes	Yes	No	No	Yes	166	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-1098	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27726	121	121	Yes	75	Yes	Yes	No	No	No	null	93	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-12-1099	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25034	125	103	Yes	68	Yes	Yes	No	No	Yes	null	62	null	null	null	null	null	null	Yes	Yes	No	No	Yes	Brain	EXCISIONAL BIOPSY	WITH TUMOR	
+TCGA-12-1598	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27730	476	287	Yes	75	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-12-1599	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17431	781	769	Yes	47	Yes	Yes	No	No	Yes	89	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-12-1600	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-31419	448	414	Yes	86	Yes	Yes	No	No	No	404	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-12-1602	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21492	205	194	Yes	58	Yes	Yes	No	No	No	139	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-0736	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18219	459	459	Yes	49	Yes	No	No	Yes	No	null	127	null	null	null	null	null	null	No	Yes	No	Yes	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-0783	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-13159	188	188	Yes	36	Yes	Yes	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-0786	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18592	701	701	Yes	50	Yes	No	No	Yes	No	null	127	null	null	null	null	null	null	No	Yes	No	Yes	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-0787	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25325	68	68	Yes	69	No	No	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	INCISION BIOPSY	null	
+TCGA-14-0789	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20050	342	342	Yes	54	Yes	Yes	No	Yes	No	105	null	null	null	null	null	null	null	No	Yes	No	Yes	No	Brain	TUMOR RESECTION	null	
+TCGA-14-0812	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24085	99	99	Yes	65	No	Yes	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-0813	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-28581	41	41	Yes	78	No	No	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-14-0817	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25425	164	164	Yes	69	No	No	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-14-0865	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24797	502	502	Yes	67	Yes	Yes	No	Yes	No	215	null	null	null	null	null	null	null	Yes	No	No	Yes	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-0866	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20179	801	801	Yes	55	Yes	Yes	No	Yes	No	null	97	null	null	null	null	null	null	No	Yes	No	Yes	No	Brain	TUMOR RESECTION	null	
+TCGA-14-0867	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24815	62	62	Yes	67	No	No	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-14-0871	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-27387	879	879	Yes	75	Yes	No	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	Yes	No	Brain	TUMOR RESECTION	null	
+TCGA-14-1034	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22028	485	485	Yes	60	Yes	No	No	Yes	No	274	null	null	null	null	null	null	null	No	Yes	No	Yes	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1037	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24425	587	587	Yes	66	Yes	Yes	No	Yes	Yes	null	326	null	null	null	null	null	null	No	Yes	No	Yes	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1396	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-28752	34	34	Yes	78	No	No	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1401	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19921	114	114	Yes	54	No	No	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1402	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21421	974	974	Yes	58	Yes	Yes	No	Yes	No	333	null	null	null	null	null	null	null	No	Yes	No	Yes	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1451	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-14400	703	703	Yes	39	No	No	No	Yes	No	null	19	null	null	null	null	null	null	Yes	Yes	No	Yes	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1452	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22106	216	216	Yes	60	Yes	Yes	No	Yes	No	null	172	null	null	null	null	null	null	No	Yes	No	Yes	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1453	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25297	35	35	Yes	69	No	No	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1454	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19887	917	917	Yes	54	Yes	Yes	No	Yes	No	null	290	null	null	null	null	null	null	No	Yes	No	Yes	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1455	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-22562	28	28	Yes	61	No	Yes	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1458	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19899	202	186	Yes	54	Yes	Yes	No	Yes	No	null	80	null	null	null	null	null	null	No	Yes	No	Yes	Yes	Brain	TUMOR RESECTION	null	
+TCGA-14-1459	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-23231	378	378	Yes	63	Yes	Yes	No	Yes	No	275	null	null	null	null	null	null	null	No	No	No	Yes	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1794	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21628	30	30	Yes	59	Yes	No	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1795	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24375	59	59	Yes	66	No	Yes	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1821	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-11329	540	540	Yes	31	Yes	Yes	No	Yes	No	null	331	null	null	null	null	null	null	No	No	No	Yes	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1823	BRAIN	FEMALE	No	null	Yes	DECEASED	-21384	542	542	Yes	58	Yes	Yes	No	Yes	No	null	139	null	null	null	null	null	null	No	Yes	No	Yes	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1825	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25684	232	232	Yes	70	Yes	No	No	Yes	No	null	91	null	null	null	null	null	null	No	No	No	Yes	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-14-1827	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18827	179	179	Yes	51	No	Yes	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-14-1829	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-20929	null	217	Yes	57	Yes	Yes	No	Yes	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-15-0742	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24050	418	300	Yes	65	Yes	Yes	No	No	Yes	231	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	null	
+TCGA-15-1446	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-20354	null	581	Yes	55	Yes	Yes	No	No	No	null	443	null	null	null	null	null	null	No	null	null	No	null	Brain	FINE NEEDLE ASPIRATION BIOPSY	WITH TUMOR	
+TCGA-15-1447	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-13326	null	1618	Yes	36	Yes	Yes	No	No	No	null	340	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-15-1449	BRAIN	MALE	No	Untreated primary (De Nova) GBM	Yes	DECEASED	-23828	404	167	Yes	65	Yes	Yes	No	No	No	null	74	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-16-0846	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-31111	119	119	Yes	85	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-16-0848	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20847	535	302	Yes	57	Yes	Yes	No	No	No	null	129	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-16-0849	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-19939	null	793	Yes	54	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-16-0850	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19281	498	496	Yes	52	Yes	Yes	No	No	No	null	83	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-16-0861	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	null	-23778	null	130	Yes	65	Yes	Yes	No	No	No	null	93	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-16-1045	BRAIN	FEMALE	No	null	Yes	null	-18195	null	882	Yes	49	Yes	Yes	No	No	No	null	654	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-16-1047	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	Yes	DECEASED	-24300	139	25	Yes	66	No	No	No	No	No	25	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-16-1055	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17840	313	301	Yes	48	Yes	Yes	No	No	No	null	288	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-16-1056	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20309	426	406	Yes	55	Yes	Yes	No	No	No	null	239	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-16-1060	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25812	278	111	Yes	70	Yes	No	No	No	No	111	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-16-1062	BRAIN	null	No	Untreated primary (De Nova) GBM	No	DECEASED	-21148	646	556	Yes	57	Yes	Yes	No	No	No	518	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-16-1063	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-26313	425	425	Yes	72	Yes	Yes	No	No	No	369	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-16-1460	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	Yes	LIVING	-13207	null	195	Yes	36	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	null	null	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-19-0955	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-25974	null	358	Yes	71	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	FINE NEEDLE ASPIRATION BIOPSY	TUMOR FREE	
+TCGA-19-0957	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-17714	665	665	Yes	48	Yes	Yes	No	No	No	null	50	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-19-0960	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-30364	null	262	Yes	83	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	EXCISIONAL BIOPSY	null	
+TCGA-19-0962	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-28382	20	13	Yes	77	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-19-0963	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-22325	null	310	Yes	61	null	null	null	null	null	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-19-0964	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-25799	null	103	Yes	70	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-19-1385	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25459	327	327	Yes	69	Yes	Yes	No	No	No	null	176	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-19-1386	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18677	276	276	Yes	51	Yes	Yes	No	No	No	null	237	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-19-1387	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-29892	null	181	Yes	81	Yes	Yes	No	No	No	null	79	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-19-1388	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21367	394	394	Yes	58	Yes	Yes	No	No	No	148	null	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-19-1389	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-18659	141	141	Yes	51	Yes	Yes	No	No	No	null	81	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-19-1392	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-26592	111	106	Yes	72	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-19-1786	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-23568	null	217	Yes	64	Yes	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	TUMOR FREE	
+TCGA-19-1788	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-14301	111	111	Yes	39	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-19-1789	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25281	93	99	Yes	69	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-19-1791	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-30070	null	-2	Yes	82	No	No	No	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	null	
+TCGA-26-1438	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-13489	null	305	Yes	36	Yes	Yes	No	No	No	158	null	null	null	null	null	null	null	No	Yes	No	No	Yes	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-26-1440	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-17683	null	296	Yes	48	Yes	Yes	No	No	No	null	233	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-26-1443	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-21990	null	216	Yes	60	Yes	Yes	No	No	No	216	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-26-1799	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-25171	285	285	Yes	68	Yes	Yes	No	No	No	null	213	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-27-1830	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21130	154	146	Yes	57	Yes	Yes	No	Yes	No	null	124	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-27-1832	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-21677	300	0	Yes	59	Yes	Yes	No	Yes	No	null	183	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-27-1833	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-24591	737	555	Yes	67	Yes	Yes	No	Yes	No	null	469	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-27-1834	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-20568	1232	1008	Yes	56	Yes	Yes	No	Yes	No	null	335	null	null	null	null	null	null	No	Yes	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-28-1745	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-27817	null	344	Yes	76	Yes	Yes	No	No	No	316	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-28-1746	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	null	-28302	null	29	Yes	77	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	null	null	null	null	null	Brain	TUMOR RESECTION	null	
+TCGA-28-1749	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-26765	null	279	Yes	73	Yes	Yes	No	No	No	279	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-28-1750	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-14817	null	253	Yes	40	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	Yes	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-28-1751	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-22291	null	231	Yes	61	Yes	Yes	Yes	No	No	218	null	null	null	null	null	null	null	null	null	null	null	null	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-28-1752	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	LIVING	-15565	null	257	Yes	42	Yes	Yes	Yes	No	No	null	null	null	null	null	null	null	null	No	No	No	No	No	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-28-1755	BRAIN	FEMALE	No	Untreated primary (De Nova) GBM	No	DECEASED	-19263	46	46	Yes	52	Yes	Yes	No	No	No	null	null	null	null	null	null	null	null	null	null	null	null	null	Brain	TUMOR RESECTION	WITH TUMOR	
+TCGA-28-1757	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-26189	null	4	Yes	71	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	null	Brain	TUMOR RESECTION	null	
+TCGA-28-1760	BRAIN	MALE	No	Untreated primary (De Nova) GBM	No	LIVING	-17758	null	143	Yes	48	Yes	Yes	No	No	No	105	null	null	null	null	null	null	null	null	null	null	null	null	Brain	TUMOR RESECTION	WITH TUMOR	

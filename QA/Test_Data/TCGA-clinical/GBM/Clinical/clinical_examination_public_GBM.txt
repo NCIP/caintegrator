@@ -1,0 +1,379 @@
+BCRPATIENTBARCODE	KARNOFSKYPERFORMANCESCORE	EASTERNCANCERONCOLOGYGROUP	PROGRESSIONSTATUS	PERFORMANCESTATUSSCALETIMING	PROGRESSIONDETERMINEDBY	
+TCGA-02-0001	80	null	null	null	null	
+TCGA-02-0003	100	null	null	null	null	
+TCGA-02-0004	80	null	null	null	null	
+TCGA-02-0006	80	null	null	null	null	
+TCGA-02-0007	80	null	null	null	null	
+TCGA-02-0009	80	null	null	null	null	
+TCGA-02-0010	80	null	null	null	null	
+TCGA-02-0011	80	null	null	null	null	
+TCGA-02-0014	100	null	null	null	null	
+TCGA-02-0015	80	null	null	null	null	
+TCGA-02-0016	100	null	null	null	null	
+TCGA-02-0021	80	null	null	null	null	
+TCGA-02-0023	80	null	null	null	null	
+TCGA-02-0024	100	null	null	null	null	
+TCGA-02-0025	100	null	null	null	null	
+TCGA-02-0026	80	null	null	null	null	
+TCGA-02-0027	100	null	null	null	null	
+TCGA-02-0028	100	null	null	null	null	
+TCGA-02-0033	100	null	null	null	null	
+TCGA-02-0034	80	null	null	null	null	
+TCGA-02-0037	80	null	null	null	null	
+TCGA-02-0038	80	null	null	null	null	
+TCGA-02-0039	60	null	null	null	null	
+TCGA-02-0043	80	null	null	null	null	
+TCGA-02-0046	60	null	null	null	null	
+TCGA-02-0047	80	null	null	null	null	
+TCGA-02-0048	null	null	null	null	null	
+TCGA-02-0051	100	null	null	null	null	
+TCGA-02-0052	80	null	null	null	null	
+TCGA-02-0054	80	null	null	null	null	
+TCGA-02-0055	80	null	null	null	null	
+TCGA-02-0057	80	null	null	null	null	
+TCGA-02-0058	80	null	null	null	null	
+TCGA-02-0059	80	null	null	null	null	
+TCGA-02-0060	80	null	null	null	null	
+TCGA-02-0064	100	null	null	null	null	
+TCGA-02-0068	80	null	null	null	null	
+TCGA-02-0069	80	null	null	null	null	
+TCGA-02-0070	80	null	null	null	null	
+TCGA-02-0071	80	null	null	null	null	
+TCGA-02-0074	80	null	null	null	null	
+TCGA-02-0075	80	null	null	null	null	
+TCGA-02-0079	80	null	null	null	null	
+TCGA-02-0080	80	null	null	null	null	
+TCGA-02-0083	80	null	null	null	null	
+TCGA-02-0084	80	null	null	null	null	
+TCGA-02-0085	80	null	null	null	null	
+TCGA-02-0086	100	null	null	null	null	
+TCGA-02-0087	80	null	null	null	null	
+TCGA-02-0089	100	null	null	null	null	
+TCGA-02-0099	80	null	null	null	null	
+TCGA-02-0102	100	null	null	null	null	
+TCGA-02-0104	80	null	null	null	null	
+TCGA-02-0106	80	null	null	null	null	
+TCGA-02-0107	80	null	null	null	null	
+TCGA-02-0111	80	null	null	null	null	
+TCGA-02-0113	100	null	null	null	null	
+TCGA-02-0114	80	null	null	null	null	
+TCGA-02-0115	80	null	null	null	null	
+TCGA-02-0116	80	null	null	null	null	
+TCGA-02-0258	null	null	null	null	null	
+TCGA-02-0260	null	null	null	null	null	
+TCGA-02-0266	null	null	null	null	null	
+TCGA-02-0269	null	null	null	null	null	
+TCGA-02-0271	null	null	null	null	null	
+TCGA-02-0281	null	null	null	null	null	
+TCGA-02-0285	null	null	null	null	null	
+TCGA-02-0289	80	null	null	null	null	
+TCGA-02-0290	80	null	null	null	null	
+TCGA-02-0317	80	null	null	null	null	
+TCGA-02-0321	80	null	null	null	null	
+TCGA-02-0324	80	null	null	null	null	
+TCGA-02-0325	80	null	null	null	null	
+TCGA-02-0326	80	null	null	null	null	
+TCGA-02-0330	80	null	null	null	null	
+TCGA-02-0332	80	null	null	null	null	
+TCGA-02-0333	null	null	null	null	null	
+TCGA-02-0337	80	null	null	null	null	
+TCGA-02-0338	80	null	null	null	null	
+TCGA-02-0339	80	null	null	null	null	
+TCGA-02-0422	80	null	null	null	null	
+TCGA-02-0430	100	null	null	null	null	
+TCGA-02-0432	80	null	null	null	null	
+TCGA-02-0439	80	1	null	PREOPERATIVE	null	
+TCGA-02-0440	80	null	null	null	null	
+TCGA-02-0446	80	null	null	null	null	
+TCGA-02-0451	80	null	null	null	null	
+TCGA-02-0456	60	null	null	null	null	
+TCGA-06-0119	null	null	null	null	null	
+TCGA-06-0121	null	null	null	null	null	
+TCGA-06-0122	null	null	null	null	null	
+TCGA-06-0124	null	null	null	null	null	
+TCGA-06-0125	60	null	null	PREOPERATIVE	null	
+TCGA-06-0126	60	null	null	PREOPERATIVE	null	
+TCGA-06-0127	60	null	null	PREOPERATIVE	null	
+TCGA-06-0128	80	null	null	PREOPERATIVE	null	
+TCGA-06-0129	100	null	null	PREOPERATIVE	null	
+TCGA-06-0130	80	null	null	PREOPERATIVE	null	
+TCGA-06-0133	null	null	null	null	null	
+TCGA-06-0137	null	null	null	null	null	
+TCGA-06-0138	80	null	null	PREOPERATIVE	null	
+TCGA-06-0139	60	null	null	PREOPERATIVE	null	
+TCGA-06-0140	null	null	null	null	null	
+TCGA-06-0141	80	null	null	PREOPERATIVE	null	
+TCGA-06-0142	null	null	null	null	null	
+TCGA-06-0143	60	null	null	null	null	
+TCGA-06-0145	null	null	null	null	null	
+TCGA-06-0146	null	null	null	null	null	
+TCGA-06-0147	null	null	null	null	null	
+TCGA-06-0148	null	null	null	null	null	
+TCGA-06-0149	80	null	null	PREOPERATIVE	null	
+TCGA-06-0150	null	null	null	null	null	
+TCGA-06-0151	null	null	null	null	null	
+TCGA-06-0152	null	null	null	null	null	
+TCGA-06-0154	100	null	null	PREOPERATIVE	null	
+TCGA-06-0155	80	null	null	PREOPERATIVE	null	
+TCGA-06-0156	null	null	null	null	null	
+TCGA-06-0157	40	null	null	PREOPERATIVE	null	
+TCGA-06-0158	80	null	null	PREOPERATIVE	null	
+TCGA-06-0159	null	null	null	null	null	
+TCGA-06-0160	null	null	null	null	null	
+TCGA-06-0162	60	null	null	PREOPERATIVE	null	
+TCGA-06-0164	100	null	null	PREOPERATIVE	null	
+TCGA-06-0165	null	null	null	null	null	
+TCGA-06-0166	null	null	null	null	null	
+TCGA-06-0167	null	null	null	null	null	
+TCGA-06-0168	100	null	null	PREOPERATIVE	null	
+TCGA-06-0169	80	null	null	PREOPERATIVE	null	
+TCGA-06-0171	100	null	null	PREOPERATIVE	null	
+TCGA-06-0173	null	null	null	null	null	
+TCGA-06-0174	80	null	null	PREOPERATIVE	null	
+TCGA-06-0175	100	null	null	PREOPERATIVE	null	
+TCGA-06-0176	80	null	null	PREOPERATIVE	null	
+TCGA-06-0177	60	null	null	PREOPERATIVE	null	
+TCGA-06-0178	null	null	null	PREOPERATIVE	null	
+TCGA-06-0179	60	null	null	PREOPERATIVE	null	
+TCGA-06-0182	60	null	null	PREOPERATIVE	null	
+TCGA-06-0184	80	null	null	PREOPERATIVE	null	
+TCGA-06-0185	100	null	null	PREOPERATIVE	null	
+TCGA-06-0187	60	null	null	PREOPERATIVE	null	
+TCGA-06-0188	100	null	null	PREOPERATIVE	null	
+TCGA-06-0189	null	null	null	null	null	
+TCGA-06-0190	80	null	null	null	null	
+TCGA-06-0192	100	null	null	PREOPERATIVE	null	
+TCGA-06-0194	null	null	null	PREOPERATIVE	null	
+TCGA-06-0195	100	null	null	PREOPERATIVE	null	
+TCGA-06-0197	null	null	null	null	null	
+TCGA-06-0201	null	null	null	null	null	
+TCGA-06-0206	null	null	null	null	null	
+TCGA-06-0208	80	null	null	PREOPERATIVE	null	
+TCGA-06-0209	null	null	null	null	null	
+TCGA-06-0210	null	null	null	null	null	
+TCGA-06-0211	100	null	null	PREOPERATIVE	null	
+TCGA-06-0213	null	null	null	null	null	
+TCGA-06-0214	100	null	null	PREOPERATIVE	null	
+TCGA-06-0216	80	null	null	PREOPERATIVE	null	
+TCGA-06-0219	null	null	null	null	null	
+TCGA-06-0221	100	null	null	PREOPERATIVE	null	
+TCGA-06-0237	null	null	null	null	null	
+TCGA-06-0238	80	null	null	PREOPERATIVE	null	
+TCGA-06-0240	null	null	null	null	null	
+TCGA-06-0241	100	null	null	PREOPERATIVE	null	
+TCGA-06-0394	null	null	null	PREOPERATIVE	null	
+TCGA-06-0397	null	null	null	PREOPERATIVE	null	
+TCGA-06-0402	null	null	null	PREOPERATIVE	null	
+TCGA-06-0409	null	null	null	null	null	
+TCGA-06-0410	null	null	null	null	null	
+TCGA-06-0412	null	null	null	null	null	
+TCGA-06-0413	null	null	null	PREOPERATIVE	null	
+TCGA-06-0414	null	null	null	null	null	
+TCGA-06-0644	80	null	null	PREOPERATIVE	null	
+TCGA-06-0645	null	null	null	PREOPERATIVE	null	
+TCGA-06-0646	80	null	null	PREOPERATIVE	null	
+TCGA-06-0648	80	null	null	PREOPERATIVE	null	
+TCGA-06-0649	null	null	null	PREOPERATIVE	null	
+TCGA-06-0673	null	null	null	null	null	
+TCGA-06-0675	null	null	null	null	null	
+TCGA-06-0676	null	null	null	null	null	
+TCGA-06-0678	null	null	null	null	null	
+TCGA-06-0680	null	null	null	null	null	
+TCGA-06-0681	null	null	null	null	null	
+TCGA-06-0686	null	null	null	PREOPERATIVE	null	
+TCGA-06-0743	100	null	null	PREOPERATIVE	null	
+TCGA-06-0744	80	null	null	PREOPERATIVE	null	
+TCGA-06-0745	80	null	null	PREOPERATIVE	null	
+TCGA-06-0747	80	null	null	PREOPERATIVE	null	
+TCGA-06-0749	null	null	null	null	null	
+TCGA-06-0750	80	null	null	PREOPERATIVE	null	
+TCGA-06-0875	80	null	null	PREOPERATIVE	null	
+TCGA-06-0876	80	null	null	PREOPERATIVE	null	
+TCGA-06-0877	null	null	null	null	null	
+TCGA-06-0878	80	null	null	PREOPERATIVE	null	
+TCGA-06-0879	80	null	null	null	null	
+TCGA-06-0881	80	null	null	PREOPERATIVE	null	
+TCGA-06-0882	60	null	null	PREOPERATIVE	null	
+TCGA-06-1084	80	null	null	PREOPERATIVE	null	
+TCGA-06-1086	80	null	null	PREOPERATIVE	null	
+TCGA-06-1087	60	null	null	PREOPERATIVE	null	
+TCGA-06-1800	60	null	null	PREOPERATIVE	null	
+TCGA-06-1801	80	null	null	PREOPERATIVE	null	
+TCGA-06-1802	80	null	null	PREOPERATIVE	null	
+TCGA-06-1805	80	null	null	PREOPERATIVE	null	
+TCGA-08-0244	80	null	null	OTHER	null	
+TCGA-08-0245	80	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-08-0246	80	null	null	OTHER	null	
+TCGA-08-0344	80	null	null	OTHER	null	
+TCGA-08-0345	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-08-0346	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-08-0347	100	null	null	OTHER	null	
+TCGA-08-0348	80	null	null	OTHER	null	
+TCGA-08-0349	null	null	null	null	null	
+TCGA-08-0350	80	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-08-0351	80	null	null	OTHER	null	
+TCGA-08-0352	null	null	null	null	null	
+TCGA-08-0353	80	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-08-0354	60	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-08-0355	100	null	null	OTHER	null	
+TCGA-08-0356	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-08-0357	80	null	null	OTHER	null	
+TCGA-08-0358	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-08-0359	null	null	null	null	null	
+TCGA-08-0360	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-08-0373	null	null	null	null	null	
+TCGA-08-0375	100	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-08-0380	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-08-0385	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-08-0386	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-08-0389	80	null	null	OTHER	null	
+TCGA-08-0390	60	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-08-0392	null	null	null	null	null	
+TCGA-08-0509	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-08-0510	80	null	null	OTHER	null	
+TCGA-08-0511	80	null	null	OTHER	null	
+TCGA-08-0512	100	null	null	PREOPERATIVE	null	
+TCGA-08-0514	40	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-08-0516	null	null	null	null	null	
+TCGA-08-0517	80	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-08-0518	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-08-0520	null	null	null	null	null	
+TCGA-08-0521	60	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-08-0522	80	null	null	OTHER	null	
+TCGA-08-0524	80	null	null	OTHER	null	
+TCGA-08-0525	80	null	null	OTHER	null	
+TCGA-08-0529	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-08-0531	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-08-0623	null	null	null	null	null	
+TCGA-08-0625	null	null	null	null	null	
+TCGA-08-0626	null	null	null	null	null	
+TCGA-08-0627	null	null	null	null	null	
+TCGA-12-0615	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-0616	100	null	null	PREOPERATIVE	null	
+TCGA-12-0618	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-0619	80	null	null	PREOPERATIVE	null	
+TCGA-12-0620	100	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-0653	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-0654	null	null	null	null	null	
+TCGA-12-0656	80	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-12-0657	null	null	null	null	null	
+TCGA-12-0662	80	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-12-0670	100	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-0688	100	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-12-0691	100	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-12-0692	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-0703	80	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-12-0707	null	null	null	null	null	
+TCGA-12-0769	100	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-0772	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-0773	100	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-0775	60	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-12-0776	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-0778	80	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-12-0780	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-0818	null	null	null	null	null	
+TCGA-12-0819	60	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-12-0820	100	null	null	PREOPERATIVE	null	
+TCGA-12-0821	60	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-12-0822	80	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-12-0826	null	null	null	null	null	
+TCGA-12-0827	100	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-12-0828	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-0829	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-1088	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-1089	null	null	null	null	null	
+TCGA-12-1090	60	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-12-1091	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-1092	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-1093	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-1094	100	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-1095	100	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-1096	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-1097	100	null	null	PREOPERATIVE	null	
+TCGA-12-1098	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-1099	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-1598	null	null	null	null	null	
+TCGA-12-1599	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-12-1600	80	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-12-1602	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-0736	100	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-0783	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-0786	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-0787	60	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-14-0789	40	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-14-0812	40	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-14-0813	60	null	null	OTHER	null	
+TCGA-14-0817	60	null	null	OTHER	null	
+TCGA-14-0865	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-0866	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-0867	60	null	null	OTHER	null	
+TCGA-14-0871	60	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-14-1034	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-1037	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-1396	60	null	null	OTHER	null	
+TCGA-14-1401	80	null	null	OTHER	null	
+TCGA-14-1402	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-1451	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-1452	80	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-14-1453	60	null	null	OTHER	null	
+TCGA-14-1454	60	null	null	OTHER	null	
+TCGA-14-1455	null	null	null	null	null	
+TCGA-14-1458	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-1459	100	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-1794	null	null	null	null	null	
+TCGA-14-1795	60	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-14-1821	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-1823	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-1825	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-1827	100	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-14-1829	60	null	null	PREOPERATIVE	null	
+TCGA-15-0742	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-15-1446	80	1	null	PRE-ADJUVANT THERAPY	null	
+TCGA-15-1447	80	1	null	PREOPERATIVE	null	
+TCGA-15-1449	60	2	null	PRE-ADJUVANT THERAPY	null	
+TCGA-16-0846	null	null	null	null	null	
+TCGA-16-0848	null	null	null	null	null	
+TCGA-16-0849	null	null	null	null	null	
+TCGA-16-0850	null	null	null	null	null	
+TCGA-16-0861	null	null	null	null	null	
+TCGA-16-1045	null	null	null	null	null	
+TCGA-16-1047	null	null	null	null	null	
+TCGA-16-1055	null	null	null	null	null	
+TCGA-16-1056	null	null	null	null	null	
+TCGA-16-1060	null	null	null	null	null	
+TCGA-16-1062	null	null	null	null	null	
+TCGA-16-1063	null	null	null	null	null	
+TCGA-16-1460	null	null	null	null	null	
+TCGA-19-0955	null	null	null	null	null	
+TCGA-19-0957	null	1	null	POST-ADJUVANT THERAPY	null	
+TCGA-19-0960	60	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-19-0962	40	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-19-0963	null	null	null	null	null	
+TCGA-19-0964	60	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-19-1385	null	2	null	POST-ADJUVANT THERAPY	null	
+TCGA-19-1386	80	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-19-1387	60	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-19-1388	null	3	null	POST-ADJUVANT THERAPY	null	
+TCGA-19-1389	80	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-19-1392	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-19-1786	40	null	null	null	null	
+TCGA-19-1788	60	null	null	PRE-ADJUVANT THERAPY	null	
+TCGA-19-1789	60	null	null	POST-ADJUVANT THERAPY	null	
+TCGA-19-1791	null	null	null	null	null	
+TCGA-26-1438	100	0	null	PRE-ADJUVANT THERAPY	null	
+TCGA-26-1440	80	1	null	PRE-ADJUVANT THERAPY	null	
+TCGA-26-1443	60	2	null	OTHER	null	
+TCGA-26-1799	60	2	null	PRE-ADJUVANT THERAPY	null	
+TCGA-27-1830	80	1	null	PREOPERATIVE	null	
+TCGA-27-1832	100	0	null	PREOPERATIVE	null	
+TCGA-27-1833	80	1	null	PREOPERATIVE	null	
+TCGA-27-1834	80	1	null	PRE-ADJUVANT THERAPY	null	
+TCGA-28-1745	60	1	null	POST-ADJUVANT THERAPY	null	
+TCGA-28-1746	80	1	null	PRE-ADJUVANT THERAPY	null	
+TCGA-28-1749	80	1	null	POST-ADJUVANT THERAPY	null	
+TCGA-28-1750	60	2	null	POST-ADJUVANT THERAPY	null	
+TCGA-28-1751	80	1	null	POST-ADJUVANT THERAPY	null	
+TCGA-28-1752	80	1	null	POST-ADJUVANT THERAPY	null	
+TCGA-28-1755	60	2	null	POST-ADJUVANT THERAPY	null	
+TCGA-28-1757	80	0	null	PRE-ADJUVANT THERAPY	null	
+TCGA-28-1760	null	null	null	null	null	
