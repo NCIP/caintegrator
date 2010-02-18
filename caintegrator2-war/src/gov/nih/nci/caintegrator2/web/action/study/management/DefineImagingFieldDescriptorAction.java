@@ -86,12 +86,13 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.web.ajax.DataElementSearchAjaxUpdater;
 
 /**
  * Action used to edit the type and annotation of an imaging file column by a Study Manager.
  */
 @SuppressWarnings("PMD.CyclomaticComplexity") // See selectDataElement()
-public class DefineImagingFileColumnAction extends AbstractFileColumnAction {
+public class DefineImagingFieldDescriptorAction extends AbstractFieldDescriptorAction {
 
     private static final long serialVersionUID = 1L;
 
@@ -118,7 +119,7 @@ public class DefineImagingFileColumnAction extends AbstractFileColumnAction {
      */
     @Override
     public String getCancelAction() {
-        return "cancelImagingFileColumn";
+        return "cancelImagingFieldDescriptor";
     }
 
     /**
@@ -126,7 +127,7 @@ public class DefineImagingFileColumnAction extends AbstractFileColumnAction {
      */
     @Override
     public String getEntityTypeForSearch() {
-        return "image";
+        return DataElementSearchAjaxUpdater.ReturnTypeEnum.IMAGING_SOURCE.toString();
     }
 
     /**
@@ -149,8 +150,8 @@ public class DefineImagingFileColumnAction extends AbstractFileColumnAction {
      * {@inheritDoc}
      */
     @Override
-    public String getSaveColumnTypeAction() {
-        return "saveImagingColumnType";
+    public String getSaveFieldDescriptorTypeAction() {
+        return "saveImagingFieldDescriptorType";
     }
 
     /**

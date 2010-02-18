@@ -113,28 +113,28 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.opensymphony.xwork2.Action;
 
 
-public class DefineFileColumnActionTest extends AbstractSessionBasedTest {
+public class DefineFieldDescriptorActionTest extends AbstractSessionBasedTest {
     
-    private DefineFileColumnAction action;
+    private DefineClinicalFieldDescriptorAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
 
     @Before
     public void setUp() {
         super.setUp();
-        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", DefineFileColumnActionTest.class);
-        action = (DefineFileColumnAction) context.getBean("defineFileColumnAction");
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", DefineFieldDescriptorActionTest.class);
+        action = (DefineClinicalFieldDescriptorAction) context.getBean("defineClinicalFieldDescriptorAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
     }
 
     @Test
     public void testEditFileColumn() {
-        assertEquals(Action.SUCCESS, action.editFileColumn());
+        assertEquals(Action.SUCCESS, action.editFieldDescriptor());
     }
     
     @Test
     public void testPrepare() {
-        action.getFileColumn().setId(1L);
+        action.getFieldDescriptor().setId(1L);
         action.prepare();
         assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
     }
@@ -175,45 +175,50 @@ public class DefineFileColumnActionTest extends AbstractSessionBasedTest {
     @SuppressWarnings("deprecation")
     public void testSetColumnType() {
         AnnotationFile annotationFile = new AnnotationFile();
-        annotationFile.getColumns().add(action.getFileColumn());
-        action.getFileColumn().setAnnotationFile(annotationFile);
-        assertEquals("Annotation", action.getColumnType());
-        action.setColumnType(null);
-        annotationFile.setIdentifierColumn(action.getFileColumn());
-        assertEquals(annotationFile.getIdentifierColumn(), action.getFileColumn());
-        assertEquals("Identifier", action.getColumnType());
-        action.setColumnType(null);
-        annotationFile.setTimepointColumn(action.getFileColumn());
-        assertEquals(annotationFile.getTimepointColumn(), action.getFileColumn());
-        assertEquals("Timepoint", action.getColumnType());
-        action.setColumnType("Annotation");
-        assertEquals("Annotation", action.getColumnType());
+        FileColumn fileColumn = new FileColumn();
+        annotationFile.getColumns().add(fileColumn);
+        AnnotationFieldDescriptor fieldDescriptor = new AnnotationFieldDescriptor();
+        fileColumn.setFieldDescriptor(fieldDescriptor);
+        action.setFieldDescriptor(fieldDescriptor);
+        assertEquals("Annotation", action.getFieldDescriptorType());
+        action.setFieldDescriptorType(null);
+        annotationFile.setIdentifierColumn(fileColumn);
+        assertEquals(annotationFile.getIdentifierColumn().getFieldDescriptor(), action.getFieldDescriptor());
+        assertEquals("Identifier", action.getFieldDescriptorType());
+        action.setFieldDescriptorType(null);
+        annotationFile.setTimepointColumn(fileColumn);
+        assertEquals(annotationFile.getTimepointColumn().getFieldDescriptor(), action.getFieldDescriptor());
+        assertEquals("Timepoint", action.getFieldDescriptorType());
+        action.setFieldDescriptorType("Annotation");
+        assertEquals("Annotation", action.getFieldDescriptorType());
     }
     
     @Test
     @SuppressWarnings("deprecation")
     public void testSaveColumnType() {
         AnnotationFile annotationFile = new AnnotationFile();
-        action.getFileColumn().setAnnotationFile(annotationFile);
-        action.setColumnType("Timepoint");
-        assertEquals(Action.SUCCESS, action.saveColumnType());
-        action.setColumnType("Annotation");
-        assertEquals(Action.SUCCESS, action.saveColumnType());
+        FileColumn fileColumn = new FileColumn();
+        annotationFile.getColumns().add(fileColumn);
+        AnnotationFieldDescriptor fieldDescriptor = new AnnotationFieldDescriptor();
+        fileColumn.setFieldDescriptor(fieldDescriptor);
+        action.setFieldDescriptor(fieldDescriptor);
+        action.setFieldDescriptorType("Timepoint");
+        assertEquals(Action.SUCCESS, action.saveFieldDescriptorType());
+        action.setFieldDescriptorType("Annotation");
+        assertEquals(Action.SUCCESS, action.saveFieldDescriptorType());
     }
 
     @Test
     public void testAnnotationDataTypeFunctions() {
-        action.setFileColumn(new FileColumn());
-        action.getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
-        action.getFileColumn().getFieldDescriptor().setDefinition(new AnnotationDefinition());
+        action.setFieldDescriptor(new AnnotationFieldDescriptor());
+        action.getFieldDescriptor().setDefinition(new AnnotationDefinition());
         // Assuming we will always have date, string, numeric, and possibly more later.
         assertTrue(action.getAnnotationDataTypes().length >= 3);
     }
     
     @Test
     public void testCreateNewDefinition() throws ValidationException, ParseException {
-        action.setFileColumn(new FileColumn());
-        action.getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
+        action.setFieldDescriptor(new AnnotationFieldDescriptor());
         assertEquals(Action.SUCCESS, action.createNewDefinition());
         assertTrue(studyManagementServiceStub.createDefinitionCalled);
         assertFalse(action.isReadOnly());
@@ -222,34 +227,32 @@ public class DefineFileColumnActionTest extends AbstractSessionBasedTest {
     
     @Test
     public void testIsColumnTypeAnnotation() {
-        action.setColumnType("Annotation");
+        action.setFieldDescriptorType("Annotation");
         assertTrue(action.isColumnTypeAnnotation());
-        action.setColumnType("Identifier");
+        action.setFieldDescriptorType("Identifier");
         assertFalse(action.isColumnTypeAnnotation());
     }
     
     @Test
     public void testIsPermissibleOn() {
-        action.setColumnType("Identifier");
+        action.setFieldDescriptorType("Identifier");
         assertFalse(action.isPermissibleOn());
-        action.setColumnType("Annotation");
-        action.setFileColumn(new FileColumn());
-        action.getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
+        action.setFieldDescriptorType("Annotation");
+        action.setFieldDescriptor(new AnnotationFieldDescriptor());
         assertFalse(action.isPermissibleOn());
-        action.getFileColumn().getFieldDescriptor().setDefinition(new AnnotationDefinition());
+        action.getFieldDescriptor().setDefinition(new AnnotationDefinition());
         assertTrue(action.isPermissibleOn());
         
     }
     
     @Test
     public void testUpdateAnnotationDefinition() throws ParseException {
-        action.setColumnType("Annotation");
-        action.setFileColumn(new FileColumn());
-        action.getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
+        action.setFieldDescriptorType("Annotation");
+        action.setFieldDescriptor(new AnnotationFieldDescriptor());
         assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
         
         AnnotationDefinition definition = new AnnotationDefinition();
-        action.getFileColumn().getFieldDescriptor().setDefinition(definition);
+        action.getFieldDescriptor().setDefinition(definition);
         definition.setDataType(AnnotationTypeEnum.DATE);
         
         Collection<PermissibleValue> permissibleValueCollection =  new HashSet<PermissibleValue>();
@@ -259,10 +262,10 @@ public class DefineFileColumnActionTest extends AbstractSessionBasedTest {
         stringValues.add("10-05-2004");
         stringValues.add("01/02/1999");
         assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
-        assertEquals(definition.getPermissibleValueCollection().size(), 2);
+        assertEquals(2, definition.getPermissibleValueCollection().size());
         stringValues.add("11-10-2008");
         assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
-        assertEquals(definition.getPermissibleValueCollection().size(), 3);
+        assertEquals(3, definition.getPermissibleValueCollection().size());
         
         stringValues.add("XYZ");
         assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());

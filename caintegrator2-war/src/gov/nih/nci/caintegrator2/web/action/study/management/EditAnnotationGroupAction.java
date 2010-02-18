@@ -85,10 +85,16 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -99,6 +105,10 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
     private AnnotationGroup annotationGroup = new AnnotationGroup();
     private File annotationGroupFile;
     private boolean cancelAction = false;
+    private List<DisplayableAnnotationFieldDescriptor> displayableFields = 
+        new ArrayList<DisplayableAnnotationFieldDescriptor>();
+    private final List<AnnotationGroup> selectableAnnotationGroups = new ArrayList<AnnotationGroup>();
+    private final Map<String, AnnotationGroup> annotationGroupNameToGroupMap = new HashMap<String, AnnotationGroup>();
 
     /**
      * {@inheritDoc}
@@ -108,6 +118,27 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
         if (annotationGroup.getId() != null) {
             annotationGroup = getStudyManagementService().getRefreshedEntity(annotationGroup);
         }
+        setupAnnotationGroups();
+        setupDisplayableFields();
+    }
+    
+    private void setupAnnotationGroups() {
+        selectableAnnotationGroups.clear();
+        List<AnnotationGroup> sortedAnnotationGroups = getStudy().
+            getSortedAnnotationGroupsForEntityType(annotationGroup.getAnnotationEntityType()); 
+        for (AnnotationGroup group : sortedAnnotationGroups) {
+            group = getStudyManagementService().getRefreshedEntity(group);
+            selectableAnnotationGroups.add(group);
+            annotationGroupNameToGroupMap.put(group.getName(), group);
+        }
+    }
+
+    private void setupDisplayableFields() {
+        displayableFields.clear();
+        for (AnnotationFieldDescriptor fieldDescriptor : annotationGroup.getAnnotationFieldDescriptors()) {
+            displayableFields.add(new DisplayableAnnotationFieldDescriptor(fieldDescriptor));
+        }
+        Collections.sort(displayableFields);
     }
     
     /**
@@ -146,6 +177,21 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
             addActionError("Unable to save annotation group: " + e.getMessage());
             return ERROR;
         }
+        return SUCCESS;
+    }
+    
+    /**
+     * Saves field descriptors.
+     * @return struts return value.
+     */
+    public String saveFieldDescriptors() {
+        for (DisplayableAnnotationFieldDescriptor displayableFieldDescriptor : displayableFields) {
+            if (displayableFieldDescriptor.isGroupChanged()) {
+                displayableFieldDescriptor.getFieldDescriptor().switchAnnotationGroup(
+                        annotationGroupNameToGroupMap.get(displayableFieldDescriptor.getAnnotationGroupName()));
+            }
+        }
+        getStudyManagementService().save(getStudyConfiguration());
         return SUCCESS;
     }
 
@@ -196,6 +242,29 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * @return the displayableFields
+     */
+    public List<DisplayableAnnotationFieldDescriptor> getDisplayableFields() {
+        return displayableFields;
+    }
+
+
+    /**
+     * @param displayableFields the displayableFields to set
+     */
+    public void setDisplayableFields(List<DisplayableAnnotationFieldDescriptor> displayableFields) {
+        this.displayableFields = displayableFields;
+    }
+
+
+    /**
+     * @return the selectableAnnotationGroups
+     */
+    public List<AnnotationGroup> getSelectableAnnotationGroups() {
+        return selectableAnnotationGroups;
     }
 
 }

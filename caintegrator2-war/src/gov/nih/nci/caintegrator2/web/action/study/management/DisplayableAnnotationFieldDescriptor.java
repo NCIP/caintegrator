@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 
@@ -97,11 +98,10 @@ import org.apache.commons.lang.xwork.StringUtils;
 /**
  * 
  */
-public class DisplayableAnnotationFieldDescriptor {
+public class DisplayableAnnotationFieldDescriptor implements Comparable<DisplayableAnnotationFieldDescriptor> {
     
     private AnnotationFieldDescriptor fieldDescriptor;
     private String annotationGroupName;
-    private Long fileColumnId;
     private boolean identifierType = false;
     private boolean timepointType = false;
     private List<String> dataValues = new ArrayList<String>();
@@ -120,9 +120,6 @@ public class DisplayableAnnotationFieldDescriptor {
      */
     public DisplayableAnnotationFieldDescriptor(FileColumn fileColumn) {
         initialize(fileColumn.getFieldDescriptor());
-        fileColumnId = fileColumn.getId();
-        identifierType = fileColumn.isIdentifierColumn();
-        timepointType = fileColumn.isTimepointColumn();
         try {
             dataValues = fileColumn.getDataValues();
         } catch (ValidationException e) {
@@ -144,6 +141,8 @@ public class DisplayableAnnotationFieldDescriptor {
             annotationGroupName = fieldDescriptor.getAnnotationGroup() == null ? "" : fieldDescriptor
                     .getAnnotationGroup().getName();
             originalGroupName = annotationGroupName;
+            identifierType = AnnotationFieldType.IDENTIFIER.equals(fieldDescriptor.getType());
+            timepointType = AnnotationFieldType.TIMEPOINT.equals(fieldDescriptor.getType());
         }
     }
     
@@ -200,19 +199,6 @@ public class DisplayableAnnotationFieldDescriptor {
         this.timepointType = timepointType;
     }
 
-    /**
-     * @return the fileColumnId
-     */
-    public Long getFileColumnId() {
-        return fileColumnId;
-    }
-
-    /**
-     * @param fileColumnId the fileColumnId to set
-     */
-    public void setFileColumnId(Long fileColumnId) {
-        this.fileColumnId = fileColumnId;
-    }
 
     /**
      * @return the dataValues
@@ -234,6 +220,18 @@ public class DisplayableAnnotationFieldDescriptor {
      */
     public boolean isGroupChanged() {
         return !StringUtils.equals(originalGroupName, annotationGroupName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(DisplayableAnnotationFieldDescriptor o) {
+        if (isIdentifierType() && !o.identifierType) {
+            return -1;
+        } else if (!isIdentifierType() && o.identifierType) {
+            return 1;
+        }
+        return fieldDescriptor.getName().compareTo(o.getFieldDescriptor().getName());
     }
 
 }

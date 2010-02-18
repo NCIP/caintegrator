@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -383,5 +384,12 @@ public interface CaIntegrator2Dao {
      * @param mode the flush mode.
      */
     void setFlushMode(int mode);
+
+    /**
+     * Retrieves all FileColumns for the given field descriptor.
+     * @param fieldDescriptor to search columns for.
+     * @return list of file columns matching.
+     */
+    List<FileColumn> getFileColumnsUsingAnnotationFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor);
     
 }

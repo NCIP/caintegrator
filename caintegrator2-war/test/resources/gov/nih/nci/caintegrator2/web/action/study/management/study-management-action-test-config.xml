@@ -147,9 +147,9 @@
         </property>
     </bean>
 
-    <bean id="defineFileColumnAction"
+    <bean id="defineClinicalFieldDescriptorAction"
         singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.DefineFileColumnAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.DefineClinicalFieldDescriptorAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
@@ -158,9 +158,20 @@
         </property>
     </bean>
 
-    <bean id="defineImagingFileColumnAction"
+    <bean id="defineImagingFieldDescriptorAction"
         singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.DefineImagingFileColumnAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.DefineImagingFieldDescriptorAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
+    
+    <bean id="defineGroupFieldDescriptorAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.DefineGroupFieldDescriptorAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>

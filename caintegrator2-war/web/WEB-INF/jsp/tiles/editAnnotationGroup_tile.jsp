@@ -63,6 +63,79 @@
                 </table>
                 </td>
             </tr>
+        </table>
+        <table class="form_wrapper_table">
+            <tr>
+                <th class="title" style="height: 2.5em;">Current Annotation Field Descriptors</th>
+                <th class="alignright">&nbsp;</th>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding: 5px;"> 
+	            <s:form action="saveFieldDescriptorsForGroup" method="post" enctype="multipart/form-data">
+	                <s:hidden name="studyConfiguration.id" />
+	                <s:hidden name="annotationGroup.id" />
+	                <table class="data">
+	                    <tr>
+	                        <th>Annotation Group</th>
+	                        <th>Visible</th>
+	                        <th>Annotation Definition</th>
+	                        <th>Annotation Header from File</th>
+	                    </tr>
+	                    <s:iterator value="displayableFields" status="columnIterator">
+	                        <s:if test="#columnIterator.odd == true">
+	                          <tr class="odd">
+	                        </s:if>
+	                        <s:else>
+	                          <tr class="even">
+	                        </s:else>         
+	                            <td>
+	                                <s:if test="%{fieldDescriptor != null}">
+	                                    <s:select name="displayableFields[%{#columnIterator.count - 1}].annotationGroupName" 
+	                                              list="selectableAnnotationGroups"
+	                                              listKey="name"
+	                                              listValue="name"
+	                                              headerKey="" headerValue="-----" theme="simple" />
+	                                </s:if>
+	                            </td>
+	                            <td>
+	                                <s:if test="%{fieldDescriptor != null}">
+	                                    <s:checkbox name="displayableFields[%{#columnIterator.count - 1}].fieldDescriptor.shownInBrowse"
+	                                        theme="simple" disabled="false"/>
+	                                </s:if>
+	                            </td>
+	                            <td>
+	                                <s:if test="%{identifierType}">
+	                                    Identifier
+	                                </s:if>
+	                                <s:elseif test="%{timepointType}">
+	                                    Timepoint
+	                                </s:elseif>
+	                                <s:elseif test="%{fieldDescriptor != null && fieldDescriptor.definition != null}">
+	                                    <s:property value="fieldDescriptor.definition.displayName"/> 
+	                                </s:elseif>
+	                                <s:url id="editGroupFieldDescriptor" action="editGroupFieldDescriptor">
+	                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+	                                    <s:param name="groupId" value="annotationGroup.id" />
+	                                    <s:param name="fieldDescriptor.id" value="fieldDescriptor.id" />
+	                                </s:url>
+	                                <br>
+	                                <s:a href="%{editGroupFieldDescriptor}">
+	                                    <s:if test="%{identifierType || timepointType || (fieldDescriptor != null && fieldDescriptor.definition != null) }">
+	                                        Change Assignment
+	                                    </s:if>
+	                                    <s:else>
+	                                        Assign Annotation Definition
+	                                    </s:else>
+	                                </s:a> 
+	                            </td>
+	                            <td><s:property value="fieldDescriptor.name" /></td>
+	                        </tr>
+	                    </s:iterator>
+	                </table>
+	                <s:submit value="Update Annotations" />
+	                </s:form>
+                </td>
+            </tr>
     </table> 
      
     </div>
