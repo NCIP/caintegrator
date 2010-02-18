@@ -122,7 +122,7 @@ public enum ConfigurationParameter {
      * Default Preprocess Dataset service URL.
      */
     PREPROCESS_DATASET_URL(
-            "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService"),
+            "http://node255.broadinstitute.org:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService"),
     
     /**
      * Default Comparative Marker Selection service URL.
@@ -133,7 +133,7 @@ public enum ConfigurationParameter {
     /**
      * Default PCA service URL.
      */
-    PCA_URL("http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PCA"),
+    PCA_URL("http://node255.broadinstitute.org:6060/wsrf/services/cagrid/PCA"),
             
     /**
      * Default GISTIC service URL.
