@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.web.ajax;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
@@ -111,35 +110,28 @@ import org.directwebremoting.proxy.dwr.Util;
  */
 @SuppressWarnings("PMD.CyclomaticComplexity") // See initializeAndCheckTimeout()
 public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdater {
-    
     private static final Long TIMEOUT = Long.valueOf(60000); // 1 minute timeout
     private static final String AJAX_LOADING_GIF = "<img src=\"images/ajax-loader.gif\"/>";
     private static final String ANNOTATION_DEFINITION_TABLE = "annotationDefinitionTable";
     private static final String CADSR_TABLE = "cadsrTable";
-    private static final String ACTION_PREFIX = "/caintegrator2";
-    private static final String SELECT_CLINICAL_DEFINITION_ACTION = ACTION_PREFIX + "/selectDefinition.action?";
-    private static final String SELECT_IMAGING_DEFINITION_ACTION = ACTION_PREFIX + "/selectImagingDefinition.action?";
-    private static final String SELECT_CLINICAL_DATA_ELEMENT_ACTION = ACTION_PREFIX + "/selectDataElement.action?";
-    private static final String SELECT_IMAGING_DATA_ELEMENT_ACTION = 
-        ACTION_PREFIX + "/selectImagingDataElement.action?";
     private Long lastRunSearch;
     private Util utilThis;
     private StudyManagementService studyManagementService;
     private List<String> keywordsList = new ArrayList<String>();
     private DisplayableUserWorkspace workspace;
     private String studyConfigurationId;
-    private String fileColumnId;
+    private String fieldDescriptorId;
     private Thread annotationDefinitionSearchThread;
     private Thread caDsrSearchThread;
     private int currentlyRunningThreads = 0;
-    private EntityTypeEnum type;
+    private ReturnTypeEnum type;
     
     /**
      * {@inheritDoc}
      * @throws IOException 
      * @throws ServletException 
      */
-    public void runSearch(String entityType, String studyConfId, String fileColId, String keywords,
+    public void runSearch(String returnType, String studyConfId, String fieldDescId, String keywords,
             String searchResultJsp) throws ServletException, IOException {
         inititalizeAndCheckTimeout();
         
@@ -150,8 +142,8 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
         
         if (!isCurrentlyRunning()) {
             this.studyConfigurationId = studyConfId;
-            this.fileColumnId = fileColId;
-            this.type = EntityTypeEnum.getByValue(entityType);
+            this.fieldDescriptorId = fieldDescId;
+            this.type = ReturnTypeEnum.getByValue(returnType);
             if (StringUtils.isNotBlank(keywords)) {
                 lastRunSearch = System.currentTimeMillis();
                 workspace.getDataElementSearchObject().clear();
@@ -264,10 +256,7 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
 
     private void fillAnnotationDefinitionRows(List<AnnotationDefinition> definitions) {
         int counter = 0;
-        String action = SELECT_CLINICAL_DEFINITION_ACTION;
-        if (EntityTypeEnum.IMAGE.equals(type)) {
-            action = SELECT_IMAGING_DEFINITION_ACTION;
-        }
+        String action = type.getDefinitionReturnUrl();
         for (AnnotationDefinition definition : definitions) {
             String[][] rowString = new String[1][5];
             
@@ -275,7 +264,7 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
             
             rowString[0][1] = "<a href=\"" + action 
                                 + "studyConfiguration.id=" + studyConfigurationId
-                                + "&amp;fileColumn.id=" + fileColumnId
+                                + "&amp;fieldDescriptor.id=" + fieldDescriptorId
                                 + "&amp;definitionIndex=" + counter + "\">" + "Select" + "</a>";
             
             if (definition.getCommonDataElement() != null && definition.getCommonDataElement().getPublicID() != null) {
@@ -297,16 +286,13 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
 
     private void fillCaDsrRows(List<CommonDataElement> dataElements) {
         int counter = 0;
-        String action = SELECT_CLINICAL_DATA_ELEMENT_ACTION;
-        if (EntityTypeEnum.IMAGE.equals(type)) {
-            action = SELECT_IMAGING_DATA_ELEMENT_ACTION;
-        }
+        String action = type.getDataElementReturnUrl();
         for (CommonDataElement dataElement : dataElements) {
             String[][] rowString = new String[1][6];
             rowString[0][0] = dataElement.getLongName();
             rowString[0][1] = "<a href=\"" + action 
                                     + "studyConfiguration.id=" + studyConfigurationId
-                                    + "&amp;fileColumn.id=" + fileColumnId
+                                    + "&amp;fieldDescriptor.id=" + fieldDescriptorId
                                     + "&amp;dataElementIndex=" + counter + "\"> Select </a> | " 
                                     + "<a href=\"" + CaDSRFacade.CDE_URL 
                                     + "&amp;cdeId=" + dataElement.getPublicID()
@@ -404,6 +390,72 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
         return keywordsList;
     }
 
-
+    /**
+     * Enum for the return type of the search results.
+     */
+    public static enum ReturnTypeEnum {        
+        /**
+         * Clinical.
+         */
+        CLINICAL_SOURCE,
+        /**
+         * Imaging.
+         */
+        IMAGING_SOURCE,
+        /**
+         * Group.
+         */
+        GROUP_SOURCE;
+        
+        /**
+         * Gets by value the correct enum. 
+         * @param returnType string value.
+         * @return enum value returned.
+         */
+        public static ReturnTypeEnum getByValue(String returnType) {
+            if (CLINICAL_SOURCE.toString().equals(returnType)) {
+                return CLINICAL_SOURCE;
+            } else if (IMAGING_SOURCE.toString().equals(returnType)) {
+                return IMAGING_SOURCE;
+            }
+            return GROUP_SOURCE;
+        }
+        
+        /**
+         * Gets the definition return URL.
+         * @return return URL.
+         */
+        public String getDefinitionReturnUrl() {
+            String actionPrefix = "/caintegrator2";
+            switch (this) {
+            case CLINICAL_SOURCE:
+                return actionPrefix + "/selectClinicalDefinition.action?";
+            case IMAGING_SOURCE:
+                return actionPrefix + "/selectImagingDefinition.action?";
+            case GROUP_SOURCE:
+                return actionPrefix + "/selectGroupDefinition.action?";
+            default:
+                return null;
+            } 
+        }
+        
+        /**
+         * Gets the data element return URL.
+         * @return return URL.
+         */
+        public String getDataElementReturnUrl() {
+            String actionPrefix = "/caintegrator2";
+            switch (this) {
+            case CLINICAL_SOURCE:
+                return actionPrefix + "/selectClinicalDataElement.action?";
+            case IMAGING_SOURCE:
+                return actionPrefix + "/selectImagingDataElement.action?";
+            case GROUP_SOURCE:
+                return actionPrefix + "/selectGroupDataElement.action?";
+            default:
+                return null;
+            } 
+        }
+    }
     
 }

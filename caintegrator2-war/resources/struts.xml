@@ -226,16 +226,22 @@
             <result name="error" type="tiles">editStudy</result>
         </action>
         
-        <action name="createNewDefinition" method="createNewDefinition" class="defineFileColumnAction">
-            <result type="tiles">editFileColumn</result>
-            <result name="input" type="tiles">editFileColumn</result>
-            <result name="error" type="tiles">editFileColumn</result>
+        <action name="createNewClinicalDefinition" method="createNewDefinition" class="defineClinicalFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
         </action>
         
-        <action name="createNewImagingDefinition" method="createNewDefinition" class="defineImagingFileColumnAction">
-            <result type="tiles">editFileColumn</result>
-            <result name="input" type="tiles">editFileColumn</result>
-            <result name="error" type="tiles">editFileColumn</result>
+        <action name="createNewImagingDefinition" method="createNewDefinition" class="defineImagingFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="createNewGroupDefinition" method="createNewDefinition" class="defineGroupFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
         </action>
         
         <action name="editSurvivalValueDefinitions" method="editSurvivalValueDefinitions" class="defineSurvivalDefinitionAction">
@@ -274,13 +280,13 @@
             </result>
         </action>
         
-        <action name="editFileColumn" method="editFileColumn" class="defineFileColumnAction">
-            <result type="tiles">editFileColumn</result>
-            <result name="input" type="tiles">editFileColumn</result>
-            <result name="error" type="tiles">editFileColumn</result>
+        <action name="editClinicalFieldDescriptor" method="editFieldDescriptor" class="defineClinicalFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
         </action>
         
-        <action name="cancelFileColumn" method="cancel" class="defineFileColumnAction">
+        <action name="cancelClinicalFieldDescriptor" method="cancel" class="defineClinicalFieldDescriptorAction">
             <result type="redirectAction">
                 <param name="actionName">editClinicalSource</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
@@ -288,7 +294,7 @@
             </result>
         </action>
         
-        <action name="cancelImagingFileColumn" method="cancel" class="defineImagingFileColumnAction">
+        <action name="cancelImagingFieldDescriptor" method="cancel" class="defineImagingFieldDescriptorAction">
             <result type="redirectAction">
                 <param name="actionName">editImagingSourceAnnotations</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
@@ -296,95 +302,133 @@
             </result>
         </action>
    
-         <action name="editImagingFileColumn" method="editFileColumn" class="defineImagingFileColumnAction">
-            <result type="tiles">editFileColumn</result>
-            <result name="input" type="tiles">editFileColumn</result>
-            <result name="error" type="tiles">editFileColumn</result>
+         <action name="editImagingFieldDescriptor" method="editFieldDescriptor" class="defineImagingFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
         </action>
         
-        <action name="searchDefinitions" method="searchDefinitions" class="defineFileColumnAction">
-            <result type="tiles">editFileColumn</result>
-            <result name="input" type="tiles">editFileColumn</result>
-            <result name="error" type="tiles">editFileColumn</result>
+         <action name="editGroupFieldDescriptor" method="editFieldDescriptor" class="defineGroupFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
         </action>
         
-        <action name="saveColumnType" method="saveColumnType" class="defineFileColumnAction">
-            <result type="tiles">editFileColumn</result>
-            <result name="input" type="tiles">editFileColumn</result>
-            <result name="error" type="tiles">editFileColumn</result>
+        <action name="cancelGroupFieldDescriptor" method="cancel" class="defineGroupFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editAnnotationGroup</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="annotationGroup.id">${groupId}</param>
+            </result>
         </action>
         
-        <action name="saveImagingColumnType" method="saveColumnType" class="defineImagingFileColumnAction">
-            <result type="tiles">editFileColumn</result>
-            <result name="input" type="tiles">editFileColumn</result>
-            <result name="error" type="tiles">editFileColumn</result>
+        <action name="saveClinicalFieldDescriptorType" method="saveFieldDescriptorType" class="defineClinicalFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
         </action>
         
-        <action name="searchImagingDefinitions" method="searchDefinitions" class="defineImagingFileColumnAction">
-            <result type="tiles">editFileColumn</result>
-            <result name="input" type="tiles">editFileColumn</result>
-            <result name="error" type="tiles">editFileColumn</result>
+        <action name="saveImagingFieldDescriptorType" method="saveFieldDescriptorType" class="defineImagingFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+         <action name="saveGroupFieldDescriptorType" method="saveFieldDescriptorType" class="defineGroupFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
         </action>
    
-        <action name="selectDataElement" method="selectDataElement" class="defineFileColumnAction">
+        <action name="selectClinicalDataElement" method="selectDataElement" class="defineClinicalFieldDescriptorAction">
             <result type="redirectAction">
                 <param name="actionName">editClinicalSource</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="clinicalSource.id">${sourceId}</param>
             </result>
-            <result name="input" type="tiles">editFileColumn</result>
-            <result name="error" type="tiles">editFileColumn</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
         </action>
    
-        <action name="selectImagingDataElement" method="selectDataElement" class="defineImagingFileColumnAction">
+        <action name="selectImagingDataElement" method="selectDataElement" class="defineImagingFieldDescriptorAction">
             <result type="redirectAction">
                 <param name="actionName">editImagingSourceAnnotations</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="imageSourceConfiguration.id">${sourceId}</param>
             </result>
-            <result name="input" type="tiles">editFileColumn</result>
-            <result name="error" type="tiles">editFileColumn</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
         </action>
         
-        <action name="selectDefinition" method="selectDefinition" class="defineFileColumnAction">
+        <action name="selectGroupDataElement" method="selectDataElement" class="defineGroupFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editAnnotationGroup</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="annotationGroup.id">${groupId}</param>
+            </result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="selectClinicalDefinition" method="selectDefinition" class="defineClinicalFieldDescriptorAction">
             <result type="redirectAction">
                 <param name="actionName">editClinicalSource</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="clinicalSource.id">${sourceId}</param>
             </result>
-            <result name="input" type="tiles">editFileColumn</result>
-            <result name="error" type="tiles">editFileColumn</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
         </action>
    
-        <action name="selectImagingDefinition" method="selectDefinition" class="defineImagingFileColumnAction">
+        <action name="selectImagingDefinition" method="selectDefinition" class="defineImagingFieldDescriptorAction">
             <result type="redirectAction">
                 <param name="actionName">editImagingSourceAnnotations</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="imageSourceConfiguration.id">${sourceId}</param>
             </result>
-            <result name="input" type="tiles">editFileColumn</result>
-            <result name="error" type="tiles">editFileColumn</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
         </action>
         
-        <action name="updateAnnotationDefinition" method="updateAnnotationDefinition" class="defineFileColumnAction">
+        <action name="selectGroupDefinition" method="selectDefinition" class="defineGroupFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editAnnotationGroup</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="annotationGroup.id">${groupId}</param>
+            </result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="updateClinicalAnnotationDefinition" method="updateAnnotationDefinition" class="defineClinicalFieldDescriptorAction">
             <result type="redirectAction">
                 <param name="actionName">editClinicalSource</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="clinicalSource.id">${sourceId}</param>
             </result>
-            <result name="input" type="tiles">editFileColumn</result>
-            <result name="error" type="tiles">editFileColumn</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
         </action>
 
         
-        <action name="updateImagingAnnotationDefinition" method="updateAnnotationDefinition" class="defineImagingFileColumnAction">
+        <action name="updateImagingAnnotationDefinition" method="updateAnnotationDefinition" class="defineImagingFieldDescriptorAction">
             <result type="redirectAction">
                 <param name="actionName">editImagingSourceAnnotations</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="imageSourceConfiguration.id">${sourceId}</param>
             </result>
-            <result name="input" type="tiles">editFileColumn</result>
-            <result name="error" type="tiles">editFileColumn</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="updateGroupAnnotationDefinition" method="updateAnnotationDefinition" class="defineGroupFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editAnnotationGroup</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="annotationGroup.id">${groupId}</param>
+            </result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
         </action>
         
         <action name="homepage.getStudyDetails" method="getStudyDetails" class="homepageAction">
@@ -546,7 +590,12 @@
             </result>
         </action>
         
-                
+        <action name="saveFieldDescriptorsForGroup" method="saveFieldDescriptors" class="editAnnotationGroupAction">
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
         
         <!-- Subject List Actions -->
         <action name="editSubjectList" class="editSubjectListAction">

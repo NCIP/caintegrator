@@ -12,37 +12,34 @@
     function runSearch(entityType) {
         var searchResultJsp = "";
         var studyConfigurationId = document.getElementById('searchFormStudyConfigurationId').value; 
-        var fileColumnId = document.getElementById('searchFormFileColumnId').value;
+        var fieldDescriptorId = document.getElementById('searchFormFieldDescriptorId').value;
         var keywords = document.getElementById('keywordsForSearch').value;
         if (document.getElementById("annotationDefinitionTable") == null) {
-            searchResultJsp = "/WEB-INF/jsp/tiles/editFileColumn_searchResult.jsp";
+            searchResultJsp = "/WEB-INF/jsp/tiles/editFieldDescriptor_searchResult.jsp";
         }
         
         dwr.engine.setActiveReverseAjax(true);
-        DataElementSearchAjaxUpdater.runSearch(entityType, studyConfigurationId, fileColumnId,
+        DataElementSearchAjaxUpdater.runSearch(entityType, studyConfigurationId, fieldDescriptorId,
             keywords, searchResultJsp);
     }
     
     function initializeJsp() {
         dwr.engine.setActiveReverseAjax(true);
-        DataElementSearchAjaxUpdater.initializeJsp("/WEB-INF/jsp/tiles/editFileColumn_searchResult.jsp");
+        DataElementSearchAjaxUpdater.initializeJsp("/WEB-INF/jsp/tiles/editFieldDescriptor_searchResult.jsp");
     }
     
-    function changeColumnType() {
-        var type = document.getElementById("columnType").value;
-        if (document.getElementById("columnType").value == "Identifier") {
-            var identifier = '<s:property value="identifier"/>';
-            if (identifier != "") {
-                if (confirm("You are about to set this column to be an Identifier \n" +
-                    "and set the '" + identifier + "' column to null.")) {
-                    document.columnTypeForm.submit();
-                } else {
-                    document.getElementById("columnType").value = '<s:property value="columnType"/>';
-                    return;
-                }
+    function changeFieldDescriptorType() {
+        var type = document.getElementById("fieldDescriptorType").value;
+        if (document.getElementById("fieldDescriptorType").value == "Identifier") {
+            if (confirm("You are about to set this field descriptor to be an Identifier \n" +
+                "which will set any other Identifier columns used in the same source to null.")) {
+                document.fieldDescriptorTypeForm.submit();
+            } else {
+                document.getElementById("fieldDescriptorType").value = '<s:property value="fieldDescriptorType"/>';
+                return;
             }
         }
-        document.columnTypeForm.submit();
+        document.fieldDescriptorTypeForm.submit();
     }
     </script>
 
@@ -57,7 +54,7 @@
     <!--/Page Help-->
           
     <s:actionerror />
-    <h1>Assign Annotation Definition for Column: <strong><s:property value="fileColumn.name" /></strong></h1>
+    <h1>Assign Annotation Definition for Field Descriptor: <strong><s:property value="fieldDescriptor.name" /></strong></h1>
     <p>Modify the current annotation definition and click <strong>Save</strong> or search for a new annotation definition and click <strong>Select</strong>.</p>
     <div class="form_wrapper_outer">
     <table class="form_wrapper_table">
@@ -68,13 +65,14 @@
             <tr>
                 <td colspan="2" style="padding: 0 0 1em 1em;"> 
 
-            	<s:form name="columnTypeForm" action="%{saveColumnTypeAction}">
+            	<s:form name="fieldDescriptorTypeForm" action="%{saveFieldDescriptorTypeAction}">
             	    <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="sourceId" />
-                    <s:hidden name="fileColumn.id" />
+                    <s:hidden name="groupId" />
+                    <s:hidden name="fieldDescriptor.id" />
             	
-                    <s:select id="columnType" label="Column Type:" name="columnType"
-                        list="columnTypes" required="true" onchange="changeColumnType()" />
+                    <s:select id="fieldDescriptorType" label="Field Descriptor Type:" name="fieldDescriptorType"
+                        list="fieldDescriptorTypes" required="true" onchange="changeFieldDescriptorType()" />
                 </s:form>
                 
                 <br>
@@ -82,20 +80,21 @@
                 <s:form id="updateDefinition" cssClass="currentAnnotationDefinition">
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="sourceId" />
-                    <s:hidden name="fileColumn.id" />
+                    <s:hidden name="groupId" />
+                    <s:hidden name="fieldDescriptor.id" />
             	    <s:if test="%{columnTypeAnnotation}">
-            	        <s:if test="%{fileColumn.fieldDescriptor.definition != null}">
+            	        <s:if test="%{fieldDescriptor.definition != null}">
 
-            	            <s:textfield label="Name" name="fileColumn.fieldDescriptor.definition.commonDataElement.longName" disabled="%{readOnly}" size="38"/>
-            	            <s:textarea label="Definition" name="fileColumn.fieldDescriptor.definition.commonDataElement.definition" cols="40" rows="4" disabled="%{readOnly}"/>
-            	            <s:textfield label="Keywords" name="fileColumn.fieldDescriptor.definition.keywords" disabled="%{fromCadsr}" size="38" />
+            	            <s:textfield label="Name" name="fieldDescriptor.definition.commonDataElement.longName" disabled="%{readOnly}" size="38"/>
+            	            <s:textarea label="Definition" name="fieldDescriptor.definition.commonDataElement.definition" cols="40" rows="4" disabled="%{readOnly}"/>
+            	            <s:textfield label="Keywords" name="fieldDescriptor.definition.keywords" disabled="%{fromCadsr}" size="38" />
             	            <s:select label="Data Type" 
-            	            name="fileColumn.fieldDescriptor.definition.commonDataElement.valueDomain.dataTypeString" 
+            	            name="fieldDescriptor.definition.commonDataElement.valueDomain.dataTypeString" 
             	            list="annotationDataTypes" 
             	            disabled="%{readOnly}" />
             	        </s:if>
-            	        <s:if test="%{fileColumn.fieldDescriptor.definition.commonDataElement.publicID != null}">
-            	            <s:textfield label="CDE Public ID" value="%{fileColumn.fieldDescriptor.definition.commonDataElement.publicID}" 
+            	        <s:if test="%{fieldDescriptor.definition.commonDataElement.publicID != null}">
+            	            <s:textfield label="CDE Public ID" value="%{fieldDescriptor.definition.commonDataElement.publicID}" 
             	            disabled="%{readOnly}"/> 
             	        </s:if>
                         <s:if test="%{permissibleOn}">
@@ -162,7 +161,8 @@
                         onsubmit="runSearch('%{entityTypeForSearch}'); return false;">
                     <s:hidden id="searchFormStudyConfigurationId" name="studyConfiguration.id" />
                     <s:hidden name="sourceId" />
-                    <s:hidden id="searchFormFileColumnId" name="fileColumn.id" />
+                    <s:hidden name="groupId" />
+                    <s:hidden id="searchFormFieldDescriptorId" name="fieldDescriptor.id" />
                     <table style="padding: 0 0 5px 5px;">
                     <tr>
                         <td>

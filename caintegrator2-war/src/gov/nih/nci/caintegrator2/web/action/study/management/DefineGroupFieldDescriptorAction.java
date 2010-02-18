@@ -85,22 +85,38 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.web.ajax.DataElementSearchAjaxUpdater;
 
 /**
  * Action used to edit the type and annotation of a file column by a Study Manager.
  */
 @SuppressWarnings("PMD.CyclomaticComplexity") // See selectDataElement()
-public class DefineFileColumnAction extends AbstractFileColumnAction {
+public class DefineGroupFieldDescriptorAction extends AbstractFieldDescriptorAction {
     
     private static final long serialVersionUID = 1L;
+    private AnnotationGroup group = new AnnotationGroup();
+    
+    /**
+     * Refreshes the current source configuration.
+     */
+    @Override
+    public void prepare() {
+        super.prepare();
+        group = new AnnotationGroup();
+        if (getGroupId() != null) {
+            group.setId(Long.valueOf(getGroupId()));
+            group = getStudyManagementService().getRefreshedEntity(group);
+        }
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public EntityTypeEnum getEntityType() {
-        return EntityTypeEnum.SUBJECT;
+        return group != null ? group.getAnnotationEntityType() : EntityTypeEnum.SUBJECT;
     }
 
     /**
@@ -108,7 +124,7 @@ public class DefineFileColumnAction extends AbstractFileColumnAction {
      */
     @Override
     public String getCancelAction() {
-        return "cancelFileColumn";
+        return "cancelGroupFieldDescriptor";
     }
 
     /**
@@ -116,7 +132,7 @@ public class DefineFileColumnAction extends AbstractFileColumnAction {
      */
     @Override
     public String getEntityTypeForSearch() {
-        return "subject";
+        return DataElementSearchAjaxUpdater.ReturnTypeEnum.GROUP_SOURCE.toString();
     }
 
     /**
@@ -124,7 +140,7 @@ public class DefineFileColumnAction extends AbstractFileColumnAction {
      */
     @Override
     public String getNewDefinitionAction() {
-        return "createNewDefinition";
+        return "createNewGroupDefinition";
     }
 
     /**
@@ -132,15 +148,15 @@ public class DefineFileColumnAction extends AbstractFileColumnAction {
      */
     @Override
     public String getSaveAnnotationDefinitionAction() {
-        return "updateAnnotationDefinition";
+        return "updateGroupAnnotationDefinition";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getSaveColumnTypeAction() {
-        return "saveColumnType";
+    public String getSaveFieldDescriptorTypeAction() {
+        return "saveGroupFieldDescriptorType";
     }
 
     /**
@@ -148,7 +164,7 @@ public class DefineFileColumnAction extends AbstractFileColumnAction {
      */
     @Override
     public String getSelectDataElementAction() {
-        return "selectDataElement";
+        return "selectGroupDataElement";
     }
 
     /**
@@ -156,6 +172,13 @@ public class DefineFileColumnAction extends AbstractFileColumnAction {
      */
     @Override
     public String getSelectDefinitionAction() {
-        return "selectDefinition";
+        return "selectGroupDefinition";
+    }
+
+    /**
+     * @param group the group to set
+     */
+    public void setGroup(AnnotationGroup group) {
+        this.group = group;
     }
 }

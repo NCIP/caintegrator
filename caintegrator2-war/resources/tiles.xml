@@ -41,9 +41,9 @@
         <put-attribute name="subTitle" value="Define Fields for Imaging Data" />
     </definition>
     
-    <definition name="editFileColumn" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editFileColumn_tile.jsp" />
-        <put-attribute name="subTitle" value="Assign Annotation Definition for Column" />
+    <definition name="editFieldDescriptor" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editFieldDescriptor_tile.jsp" />
+        <put-attribute name="subTitle" value="Assign Annotation Definition for Field Descriptor" />
         <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyDwrAjax_tile.jsp" />
     </definition>
     

@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.common.AnnotationValueUtil;
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
@@ -119,6 +121,7 @@ import gov.nih.nci.security.exceptions.CSSecurityException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -574,7 +577,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     @SuppressWarnings("PMD.ExcessiveMethodLength")
     @Transactional(rollbackFor = {ConnectionException.class, ValidationException.class })
-    public void setDataElement(FileColumn fileColumn, 
+    public void setDataElement(AnnotationFieldDescriptor fieldDescriptor, 
                                 CommonDataElement dataElement, 
                                 Study study, 
                                 EntityTypeEnum entityType,
@@ -585,41 +588,53 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
         annotationDefinition.setCommonDataElement(dataElement);
-        addDefinitionToStudy(fileColumn.getFieldDescriptor(), study, entityType, annotationDefinition);
+        addDefinitionToStudy(fieldDescriptor, study, entityType, annotationDefinition);
         if (dataElement.getDefinition().length() > DEFINITION_LENGTH) {
             dataElement.setDefinition(dataElement.getDefinition().substring(0, DEFINITION_LENGTH - 7) + "...");
         }
         annotationDefinition.setKeywords(dataElement.getLongName());
         getDao().save(annotationDefinition);
-        validateAnnotationDefinition(fileColumn, study, entityType, annotationDefinition);
-        getDao().save(fileColumn);
+        validateAnnotationDefinition(fieldDescriptor, study, entityType, annotationDefinition);
+        getDao().save(fieldDescriptor);
     }
 
-    private void validateAnnotationDefinition(FileColumn fileColumn, Study study, EntityTypeEnum entityType,
+    private void validateAnnotationDefinition(AnnotationFieldDescriptor fieldDescriptor, 
+            Study study, EntityTypeEnum entityType,
             AnnotationDefinition annotationDefinition) throws ValidationException {
         Set<Object> uniqueValues = validateAndRetrieveUniqueValues(study, entityType, 
-                fileColumn, annotationDefinition); 
+                fieldDescriptor, annotationDefinition); 
         if (!annotationDefinition.getPermissibleValueCollection().isEmpty()) {
             validateValuesWithPermissibleValues(uniqueValues, annotationDefinition);
         }
     }
     
-    @SuppressWarnings("unchecked") // For the "class" type.
     private Set<Object> validateAndRetrieveUniqueValues(Study study, EntityTypeEnum entityType, 
-            FileColumn fileColumn, AnnotationDefinition annotationDefinition) throws ValidationException {
+            AnnotationFieldDescriptor fieldDescriptor, 
+            AnnotationDefinition annotationDefinition) throws ValidationException {
         AnnotationTypeEnum annotationType = annotationDefinition.getDataType();
         if (annotationType == null) {
             throw new IllegalArgumentException("Data Type for the Annotation Definition is unknown.");
         }
         Set<Object> valueObjects = new HashSet<Object>();
-        if (Boolean.valueOf(fileColumn.getAnnotationFile().getCurrentlyLoaded())) {
-            annotationDefinition.validateValuesWithType();
-            valueObjects.addAll(getDao().retrieveUniqueValuesForStudyAnnotation(study, annotationDefinition, 
-                    entityType, annotationType.getClassType()));
-        } else {
-            valueObjects.addAll(fileColumn.getUniqueDataValues(annotationType.getClassType()));
+        for (FileColumn fileColumn : getDao().getFileColumnsUsingAnnotationFieldDescriptor(fieldDescriptor)) {
+            valueObjects.addAll(retrieveAndValidateValuesForFileColumn(study, entityType, annotationDefinition, 
+                    annotationType, fileColumn));
         }
         return valueObjects;
+    }
+
+    @SuppressWarnings("unchecked") // For the "class" type.
+    private Set<Object> retrieveAndValidateValuesForFileColumn(Study study, EntityTypeEnum entityType,
+            AnnotationDefinition annotationDefinition, AnnotationTypeEnum annotationType,
+            FileColumn fileColumn)
+            throws ValidationException {
+        if (Boolean.valueOf(fileColumn.getAnnotationFile().getCurrentlyLoaded())) {
+            annotationDefinition.validateValuesWithType();
+            return new HashSet<Object>(getDao().retrieveUniqueValuesForStudyAnnotation(study, annotationDefinition, 
+                    entityType, annotationType.getClassType()));
+        } else {
+            return fileColumn.getUniqueDataValues(annotationType.getClassType());
+        }
     }
     
     private void validateValuesWithPermissibleValues(Set<Object> uniqueValues, 
@@ -656,15 +671,15 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     @Transactional(rollbackFor = ValidationException.class)
-    public void setDefinition(Study study, FileColumn fileColumn, AnnotationDefinition annotationDefinition, 
-                                EntityTypeEnum entityType) throws ValidationException {
-        if (fileColumn.getFieldDescriptor().getDefinition() == null 
-            || !fileColumn.getFieldDescriptor().getDefinition().equals(annotationDefinition)) {
-            addDefinitionToStudy(fileColumn.getFieldDescriptor(), study, entityType, annotationDefinition);
-            validateAnnotationDefinition(fileColumn, study, entityType, annotationDefinition);
+    public void setDefinition(Study study, AnnotationFieldDescriptor fieldDescriptor, 
+            AnnotationDefinition annotationDefinition, EntityTypeEnum entityType) throws ValidationException {
+        if (fieldDescriptor.getDefinition() == null 
+            || !fieldDescriptor.getDefinition().equals(annotationDefinition)) {
+            addDefinitionToStudy(fieldDescriptor, study, entityType, annotationDefinition);
+            validateAnnotationDefinition(fieldDescriptor, study, entityType, annotationDefinition);
             
             getDao().save(annotationDefinition);
-            getDao().save(fileColumn);
+            getDao().save(fieldDescriptor);
             getDao().save(study);
         }
     }
@@ -1047,6 +1062,48 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         getDao().delete(annotationGroup);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(rollbackFor = ValidationException.class)
+    public void updateFieldDescriptorType(AnnotationFieldDescriptor fieldDescriptor, AnnotationFieldType type) 
+        throws ValidationException {
+        for (FileColumn fileColumn : getDao().getFileColumnsUsingAnnotationFieldDescriptor(fieldDescriptor)) {
+            if (AnnotationFieldType.IDENTIFIER.equals(type)) {
+                fileColumn.checkValidIdentifierColumn();
+                fileColumn.getAnnotationFile().setIdentifierColumn(fileColumn);
+                getDao().save(fileColumn);
+            } else if (AnnotationFieldType.TIMEPOINT.equals(type)) {
+                fileColumn.getAnnotationFile().setTimepointColumn(fileColumn);
+                getDao().save(fileColumn);
+            }
+        }
+        fieldDescriptor.setType(type);
+        getDao().save(fieldDescriptor);
+    }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("PMD.EmptyCatchBlock") // See message inside catch block.
+    public Set<String> getAvailableValuesForFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) 
+    throws ValidationException {
+        Set<String> allAvailableValues = new HashSet<String>();
+        for (FileColumn fileColumn : getDao().getFileColumnsUsingAnnotationFieldDescriptor(fieldDescriptor)) {
+            List<String> fileDataValues = fileColumn.getAnnotationFile() != null ? fileColumn.getDataValues()
+                    : new ArrayList<String>();
+            if (AnnotationTypeEnum.DATE.equals(fieldDescriptor.getDefinition().getDataType())) {
+                try {
+                    fileDataValues = DateUtil.toString(fileDataValues);
+                } catch (ParseException e) {
+                    // noop - if it doesn't fit the date format just let it keep going.
+                    // This function is for JSP display so it can't fail.
+                }
+            }
+            allAvailableValues.addAll(AnnotationValueUtil.getAdditionalValue(fieldDescriptor.getDefinition()
+                    .getAnnotationValueCollection(), fileDataValues, PermissibleValueUtil
+                    .getDisplayPermissibleValue(fieldDescriptor.getDefinition().getPermissibleValueCollection())));
+        }
+        return allAvailableValues;
+    }
 }

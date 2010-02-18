@@ -30,8 +30,8 @@
                     <tr>
                         <th>Annotation Group</th>
                         <th>Visible</th>
-                        <th>Field Definition</th>
-                        <th>Field Header from File</th>
+                        <th>Annotation Definition</th>
+                        <th>Annotation Header from File</th>
                         <th colspan="3" />Data from File</th>
                     </tr>
                     <s:iterator value="displayableFields" status="columnIterator">
@@ -66,13 +66,13 @@
                                 <s:elseif test="%{fieldDescriptor != null && fieldDescriptor.definition != null}">
                                     <s:property value="fieldDescriptor.definition.displayName"/> 
                                 </s:elseif>
-                                <s:url id="editFileColumn" action="editFileColumn">
+                                <s:url id="editClinicalFieldDescriptor" action="editClinicalFieldDescriptor">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="sourceId" value="clinicalSource.id" />
-                                    <s:param name="fileColumn.id" value="fileColumnId" />
+                                    <s:param name="fieldDescriptor.id" value="fieldDescriptor.id" />
                                 </s:url>
                                 <br>
-                                <s:a href="%{editFileColumn}">
+                                <s:a href="%{editClinicalFieldDescriptor}">
                                     <s:if test="%{identifierType || timepointType || (fieldDescriptor != null && fieldDescriptor.definition != null) }">
                                         Change Assignment
                                     </s:if>

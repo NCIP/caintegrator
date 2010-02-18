@@ -85,15 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.common.AnnotationValueUtil;
-import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
@@ -107,10 +104,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Action used to edit the type and annotation of an imaging file column by a Study Manager.
+ * Action used to edit the type and annotation of a field descriptor by a Study Manager.
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" }) // See selectDataElement()
-public abstract class AbstractFileColumnAction extends AbstractStudyAction {
+public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;
 
@@ -119,27 +116,24 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     private static final String TIMEPOINT_TYPE = "Timepoint";
     private static final String GRAY_BACKGROUND = "background-color:#e9e9e9;";
     private static final String GRAY_FOREGROUND = "color:#999999;";
-    private static final String[] COLUMN_TYPES = new String[] {ANNOTATION_TYPE, IDENTIFIER_TYPE};
+    private static final String[] FIELD_DESCRIPTOR_TYPES = new String[] {ANNOTATION_TYPE, IDENTIFIER_TYPE};
     
-    private FileColumn fileColumn = new FileColumn();
+    private AnnotationFieldDescriptor fieldDescriptor = new AnnotationFieldDescriptor();
     private boolean readOnly;
     private boolean cancelEnabled;
     private List<String> availableUpdateList = new ArrayList<String>();
     private List<String> permissibleUpdateList = new ArrayList<String>();
     private int dataElementIndex;
     private int definitionIndex;
-    private String columnType;
+    private String fieldDescriptorType;
     private String sourceId;
+    private String groupId;
 
     private void clearCacheMemory() {
-        columnType = null;
+        fieldDescriptorType = null;
         getDisplayableWorkspace().getDataElementSearchObject().clear();
         availableUpdateList.clear();
         permissibleUpdateList.clear();
-    }
-    
-    private Collection<AbstractAnnotationValue> getAnnotationValueCollection() {
-        return fileColumn.getFieldDescriptor().getDefinition().getAnnotationValueCollection();
     }
     
     /**
@@ -148,12 +142,12 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     @Override
     public void prepare() {
         super.prepare();
-        if (getFileColumn().getId() != null) {
-            setFileColumn(getStudyManagementService().getRefreshedEntity(getFileColumn()));
-            if (fileColumn.getFieldDescriptor() != null && fileColumn.getFieldDescriptor().getDefinition() != null) {
-                fileColumn.getFieldDescriptor().setDefinition(getStudyManagementService().getRefreshedEntity(
-                                fileColumn.getFieldDescriptor().getDefinition()));
-                HibernateUtil.loadCollections(fileColumn.getFieldDescriptor().getDefinition());
+        if (fieldDescriptor.getId() != null) {
+            fieldDescriptor = getStudyManagementService().getRefreshedEntity(fieldDescriptor);
+            if (fieldDescriptor.getDefinition() != null) {
+                fieldDescriptor.setDefinition(getStudyManagementService().getRefreshedEntity(
+                        fieldDescriptor.getDefinition()));
+                HibernateUtil.loadCollections(fieldDescriptor.getDefinition());
             }
         }
         setReadOnly(true);
@@ -173,7 +167,7 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
      * 
      * @return the Struts result.
      */
-    public String editFileColumn() {
+    public String editFieldDescriptor() {
         clearCacheMemory();
         return SUCCESS;
     }
@@ -190,7 +184,7 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
      * Saves the column type to the database.
      * @return the Struts result.
      */
-    public String saveColumnType() {
+    public String saveFieldDescriptorType() {
         try {
             updateColumnType();
         } catch (ValidationException e) {
@@ -210,17 +204,17 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
      * @return the Struts result.
      */
     public String selectDefinition() {
-        FileColumn originalFileColumn = getFileColumn();
+        AnnotationFieldDescriptor originalFieldDescriptor = getFieldDescriptor();
         AnnotationDefinition definitionToUse = getStudyManagementService().
                         getRefreshedEntity(getDefinitions().get(getDefinitionIndex()));
         try {
             getStudyManagementService().setDefinition(getStudyConfiguration().getStudy(),
-                                                  getFileColumn(), 
+                                                  fieldDescriptor, 
                                                   definitionToUse,
                                                   getEntityType());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
-            setFileColumn(originalFileColumn);
+            setFieldDescriptor(originalFieldDescriptor);
             prepare();
             return ERROR;
         }
@@ -236,11 +230,11 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
      */
     public String createNewDefinition() throws ValidationException, ParseException {
         AnnotationTypeEnum annotationType = AnnotationTypeEnum.STRING;
-        if (getFileColumn().getFieldDescriptor().getDefinition() != null) {
+        if (fieldDescriptor.getDefinition() != null) {
             annotationType = 
-                    getFileColumn().getFieldDescriptor().getDefinition().getDataType();
+                fieldDescriptor.getDefinition().getDataType();
         }
-        getStudyManagementService().createDefinition(getFileColumn().getFieldDescriptor(), 
+        getStudyManagementService().createDefinition(fieldDescriptor, 
                                                      getStudyConfiguration().getStudy(),
                                                      getEntityType(),
                                                      annotationType);
@@ -261,21 +255,21 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
      */
     @SuppressWarnings("PMD.CyclomaticComplexity") // Null Checks and Try/Catch  
     public String selectDataElement() {
-        FileColumn originalFileColumn = getFileColumn();
+        AnnotationFieldDescriptor originalFieldDescriptor = getFieldDescriptor();
         try {
-            getStudyManagementService().setDataElement(getFileColumn(), 
+            getStudyManagementService().setDataElement(fieldDescriptor, 
                                                        retrieveSelectedDataElement(),
                                                        getStudyConfiguration().getStudy(),
                                                        getEntityType(),
                                                        getKeywordsForSearch());
         } catch (ConnectionException e) {
             addActionError(e.getMessage());
-            setFileColumn(originalFileColumn);
+            setFieldDescriptor(originalFieldDescriptor);
             prepare();
             return ERROR;
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
-            setFileColumn(originalFileColumn);
+            setFieldDescriptor(originalFieldDescriptor);
             prepare();
             return ERROR;
         }
@@ -302,15 +296,15 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
             if (isPermissibleOn() && !isFromCadsr()) {
                 updatePermissible();
             }
-            if (ANNOTATION_TYPE.equals(columnType) 
-                 && getFileColumn().getFieldDescriptor().getDefinition() != null) {
-                getStudyManagementService().save(getFileColumn().getFieldDescriptor().getDefinition());
+            if (ANNOTATION_TYPE.equals(fieldDescriptorType) 
+                 && fieldDescriptor.getDefinition() != null) {
+                getStudyManagementService().save(fieldDescriptor.getDefinition());
             }
         } catch (ValidationException e) {
             addActionError(e.getMessage());
             clearCacheMemory();
-            fileColumn.getFieldDescriptor().setDefinition(getStudyManagementService().getRefreshedEntity(
-                    fileColumn.getFieldDescriptor().getDefinition()));
+            fieldDescriptor.setDefinition(getStudyManagementService().getRefreshedEntity(
+                    fieldDescriptor.getDefinition()));
             setReadOnly(false);
             return ERROR;
         } 
@@ -318,40 +312,26 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     }
 
     /**
-     * @return the fileColumn
+     * @return the fieldDescriptorType
      */
-    public FileColumn getFileColumn() {
-        return fileColumn;
-    }
-
-    /**
-     * @param fileColumn the fileColumn to set
-     */
-    public void setFileColumn(FileColumn fileColumn) {
-        this.fileColumn = fileColumn;
-    }
-
-    /**
-     * @return the columnType
-     */
-    public String getColumnType() {
-        if (this.columnType == null) {
-            if (getFileColumn().isIdentifierColumn()) {
-                columnType = IDENTIFIER_TYPE;
-            } else if (getFileColumn().isTimepointColumn()) {
-                columnType = TIMEPOINT_TYPE;
+    public String getFieldDescriptorType() {
+        if (this.fieldDescriptorType == null) {
+            if (AnnotationFieldType.IDENTIFIER.equals(fieldDescriptor.getType())) {
+                fieldDescriptorType = IDENTIFIER_TYPE;
+            } else if (AnnotationFieldType.TIMEPOINT.equals(fieldDescriptor.getType())) {
+                fieldDescriptorType = TIMEPOINT_TYPE;
             } else {
-                columnType = ANNOTATION_TYPE;
+                fieldDescriptorType = ANNOTATION_TYPE;
             }
         }
-        return columnType;
+        return fieldDescriptorType;
     }
 
     /**
-     * @param columnType the columnType to set
+     * @param fieldDescType the fieldDescriptorType to set
      */
-    public void setColumnType(String columnType) {
-        this.columnType = columnType;
+    public void setFieldDescriptorType(String fieldDescType) {
+        this.fieldDescriptorType = fieldDescType;
     }
 
     /**
@@ -360,7 +340,7 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
      * @return if the ColumnType is ANNOTATION_TYPE.
      */
     public boolean isColumnTypeAnnotation() {
-        if (getColumnType().equals(ANNOTATION_TYPE)) {
+        if (getFieldDescriptorType().equals(ANNOTATION_TYPE)) {
             return true;
         } 
         return false;
@@ -368,22 +348,23 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
 
 
     private void updateColumnType() throws ValidationException {
-        if (IDENTIFIER_TYPE.equals(columnType)) {
-            getFileColumn().checkValidIdentifierColumn();
-            getFileColumn().getAnnotationFile().setIdentifierColumn(getFileColumn());
-        } else if (TIMEPOINT_TYPE.equals(columnType)) {
-            getFileColumn().getAnnotationFile().setTimepointColumn(getFileColumn());
-        } else if (ANNOTATION_TYPE.equals(columnType)) {
-            getFileColumn().setupAnnotationFieldDescriptor(AnnotationFieldType.ANNOTATION);
+        AnnotationFieldType type = AnnotationFieldType.ANNOTATION;
+        if (IDENTIFIER_TYPE.equals(fieldDescriptorType)) {
+            type = AnnotationFieldType.IDENTIFIER;
+        } else if (TIMEPOINT_TYPE.equals(fieldDescriptorType)) {
+            type = AnnotationFieldType.TIMEPOINT;
+        } else if (ANNOTATION_TYPE.equals(fieldDescriptorType)) {
+            type = AnnotationFieldType.ANNOTATION;
         }
+        getStudyManagementService().updateFieldDescriptorType(fieldDescriptor, type);
     }
 
     /**
      * @return the columnTypes
      */
     @SuppressWarnings("PMD")    // Prevent internal array exposure warning
-    public String[] getColumnTypes() {
-        return COLUMN_TYPES;
+    public String[] getFieldDescriptorTypes() {
+        return FIELD_DESCRIPTOR_TYPES;
     }
     
     /**
@@ -469,8 +450,8 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
      */
     public boolean isPermissibleOn() {
         if (isColumnTypeAnnotation()
-                && fileColumn.getFieldDescriptor() != null
-                && fileColumn.getFieldDescriptor().getDefinition() != null) {
+                && fieldDescriptor != null
+                && fieldDescriptor.getDefinition() != null) {
             return true;
         } 
         return false;
@@ -479,23 +460,13 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     /**
      * @return the availableValue
      * @throws ValidationException Invalid data
-    */
-    @SuppressWarnings("PMD.EmptyCatchBlock") // See message inside catch block.
-   public Set<String> getAvailableValues() throws ValidationException {
-       List<String> fileDataValues = fileColumn.getAnnotationFile() != null
-           ? fileColumn.getDataValues() : new ArrayList<String>();
-       if (AnnotationTypeEnum.DATE.getValue().equalsIgnoreCase(getDefinitionType())) {
-           try {
-               fileDataValues = DateUtil.toString(fileDataValues);
-           } catch (ParseException e) {
-               // noop - if it doesn't fit the date format just let it keep going.  
-               // This function is for JSP display so it can't fail.
-           }
-       }
-       return AnnotationValueUtil.getAdditionalValue(getAnnotationValueCollection(),
-           fileDataValues, getPermissibleValues());
-   }
-    
+     */
+    @SuppressWarnings("PMD.EmptyCatchBlock")
+    // See message inside catch block.
+    public Set<String> getAvailableValues() throws ValidationException {
+        return getStudyManagementService().getAvailableValuesForFieldDescriptor(fieldDescriptor);
+    }
+
     /**
      * @return the permissibleValues
      */
@@ -512,7 +483,7 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     }
 
     private Collection<PermissibleValue> getPermissibleCollection() {
-        return fileColumn.getFieldDescriptor().getDefinition().getPermissibleValueCollection();
+        return fieldDescriptor.getDefinition().getPermissibleValueCollection();
     }
 
     /**
@@ -549,10 +520,9 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
      * @return T/F value.
      */
     public boolean isFromCadsr() {
-        if (getFileColumn() != null 
-            && getFileColumn().getFieldDescriptor() != null 
-            && getFileColumn().getFieldDescriptor().getDefinition() != null 
-            && getFileColumn().getFieldDescriptor().getDefinition().getCommonDataElement().getPublicID() != null) {
+        if (fieldDescriptor != null 
+            && fieldDescriptor.getDefinition() != null 
+            && fieldDescriptor.getDefinition().getCommonDataElement().getPublicID() != null) {
             return true;
         }
         return false;
@@ -560,19 +530,10 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     
     /**
      * 
-     * @return the identifier name.
-     */
-    public String getIdentifier() {
-        FileColumn identifier = getFileColumn().getAnnotationFile().getIdentifierColumn();
-        return identifier == null ? "" : identifier.getName();
-    }
-    
-    /**
-     * 
      * @return the column definition type.
      */
     public String getDefinitionType() {
-        return getFileColumn().getFieldDescriptor().getDefinition().getDataType().getValue();
+        return fieldDescriptor.getDefinition().getDataType().getValue();
     }
 
     /**
@@ -596,10 +557,10 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
     public abstract EntityTypeEnum getEntityType();
     
     /**
-     * The string for the SaveColumnType action.
+     * The string for the SaveFieldType action.
      * @return struts action string.
      */
-    public abstract String getSaveColumnTypeAction();
+    public abstract String getSaveFieldDescriptorTypeAction();
     
     /**
      * The string for the NewDefinition action.
@@ -668,5 +629,33 @@ public abstract class AbstractFileColumnAction extends AbstractStudyAction {
         String styleString = "min-width:100px; vertical-align=middle;"; 
         return isFromCadsr() 
              ? styleString + GRAY_BACKGROUND + GRAY_FOREGROUND : styleString; 
+    }
+
+    /**
+     * @return the fieldDescriptor
+     */
+    public AnnotationFieldDescriptor getFieldDescriptor() {
+        return fieldDescriptor;
+    }
+
+    /**
+     * @param fieldDescriptor the fieldDescriptor to set
+     */
+    public void setFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) {
+        this.fieldDescriptor = fieldDescriptor;
+    }
+
+    /**
+     * @return the groupId
+     */
+    public String getGroupId() {
+        return groupId;
+    }
+
+    /**
+     * @param groupId the groupId to set
+     */
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 }
