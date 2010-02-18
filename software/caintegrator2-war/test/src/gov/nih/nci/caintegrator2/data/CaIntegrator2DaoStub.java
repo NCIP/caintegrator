@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -154,7 +155,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean retrievePlatformsForGenomicSourceCalled;
     public boolean retrieveAllSubscribedWorkspacesCalled;
     private Platform platform = new Platform();
-
+    public final List<FileColumn> fileColumns = new ArrayList<FileColumn>();
+    
     public UserWorkspace getWorkspace(String username) {
         getWorkspaceCalled = true;
         UserWorkspace userWorkspace = new UserWorkspace();
@@ -453,6 +455,11 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name,
             StudyConfiguration studyConfiguration) {
         return null;
+    }
+
+    public List<FileColumn> getFileColumnsUsingAnnotationFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) {
+        
+        return fileColumns;
     }
 
 }

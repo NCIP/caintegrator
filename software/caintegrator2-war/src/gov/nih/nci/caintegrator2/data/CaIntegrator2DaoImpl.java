@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.data;
 import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.MatchScoreComparator;
@@ -666,6 +667,15 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                      .add(Restrictions.eq("genomicDataSource", genomicSource));
                      
         return (List<Platform>) arrayCriteria.list();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)
+    public List<FileColumn> getFileColumnsUsingAnnotationFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) {
+        return (List<FileColumn>) getCurrentSession().createCriteria(FileColumn.class).add(
+                Restrictions.eq("fieldDescriptor", fieldDescriptor)).list();
     }
     
     /**

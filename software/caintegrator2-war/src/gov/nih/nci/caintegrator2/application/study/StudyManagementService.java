@@ -100,6 +100,7 @@ import gov.nih.nci.security.exceptions.CSSecurityException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Service used to create, define, deploy and update studies.
@@ -377,7 +378,7 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
     /**
      * Selects an existing CaDSR data element as the definition for a column.
 
-     * @param fileColumn column receiving definition.
+     * @param fieldDescriptor fieldDescriptor receiving definition.
      * @param dataElement the selected data element.
      * @param study the study that the FileColumn belongs to.
      * @param entityType the entityType for the data element.
@@ -385,21 +386,21 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @throws ConnectionException if underlying data sources couldn't be reached.
      * @throws ValidationException if the data element selected is invalid for this definition.
      */
-    void setDataElement(FileColumn fileColumn, CommonDataElement dataElement, Study study, EntityTypeEnum entityType, 
-                        String keywords)
+    void setDataElement(AnnotationFieldDescriptor fieldDescriptor, CommonDataElement dataElement, 
+            Study study, EntityTypeEnum entityType, String keywords)
     throws ConnectionException, ValidationException;
 
     /**
      * Selects an existing annotation definition for a column.
      * 
      * @param study is the study that the definition is getting set for.
-     * @param fileColumn column receiving definition.
+     * @param fieldDescriptor fieldDescriptor receiving definition.
      * @param annotationDefinition the selected definition.
      * @param entityType entity type for the annotation definition.
      * @throws ValidationException if invalid definition for the given values.
      */
-    void setDefinition(Study study, FileColumn fileColumn, AnnotationDefinition annotationDefinition, 
-            EntityTypeEnum entityType) throws ValidationException;
+    void setDefinition(Study study, AnnotationFieldDescriptor fieldDescriptor, 
+            AnnotationDefinition annotationDefinition, EntityTypeEnum entityType) throws ValidationException;
 
     /**
      * Create the associations between subjects in the study and samples.
@@ -536,4 +537,22 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @param annotationGroup to delete from study.
      */
     void delete(StudyConfiguration studyConfiguration, AnnotationGroup annotationGroup);
+    
+    /**
+     * Updates field descriptor type.
+     * @param fieldDescriptor to update the type for.
+     * @param type new type.
+     * @throws ValidationException if invalid type for the existing data.
+     */
+    void updateFieldDescriptorType(AnnotationFieldDescriptor fieldDescriptor, AnnotationFieldType type) 
+    throws ValidationException;
+    
+    /**
+     * Gets all values (from all files as well as currently loaded values) in string format for a fieldDescriptor.
+     * @param fieldDescriptor to get string values for.
+     * @return set of string values.
+     * @throws ValidationException if validation problem.
+     */
+    Set<String> getAvailableValuesForFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) 
+    throws ValidationException;
 }

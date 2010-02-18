@@ -27,7 +27,7 @@
                     <td>
                         <s:url id="selectDefinition" action="%{selectDefinitionAction}">
                             <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                            <s:param name="fileColumn.id" value="fileColumn.id" />
+                            <s:param name="fieldDescriptor.id" value="fieldDescriptor.id" />
                             <s:param name="definitionIndex" value="#status.index" />
                         </s:url> 
                         <s:a href="%{selectDefinition}">Select</s:a>                    
@@ -71,7 +71,7 @@
                     <td nowrap>
                         <s:url id="selectDataElement" action="%{selectDataElementAction}">
                             <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                            <s:param name="fileColumn.id" value="fileColumn.id" />
+                            <s:param name="fieldDescriptor.id" value="fieldDescriptor.id" />
                             <s:param name="dataElementIndex" value="#status.index" />
                         </s:url> 
                         <s:url id="viewDataElement" value="%{@gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade@CDE_URL}" escapeAmp="false">

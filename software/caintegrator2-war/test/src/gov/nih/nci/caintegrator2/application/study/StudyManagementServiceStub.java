@@ -87,9 +87,9 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.cadsr.freestylesearch.util.SearchException;
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
@@ -105,7 +105,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("PMD")
 public class StudyManagementServiceStub implements StudyManagementService {
@@ -273,7 +275,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return Collections.emptyList();
     }
 
-    public void setDataElement(FileColumn fileColumn, CommonDataElement dataElement, Study study, EntityTypeEnum entityType, String keywords) throws ValidationException, ConnectionException {
+    public void setDataElement(AnnotationFieldDescriptor fieldDescriptor, CommonDataElement dataElement, Study study, EntityTypeEnum entityType, String keywords) throws ValidationException, ConnectionException {
         setDataElementCalled = true;
         if (throwConnectionException) {
             throw new ConnectionException("");
@@ -283,7 +285,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         }
     }
 
-    public void setDefinition(Study study, FileColumn fileColumn, AnnotationDefinition annotationDefinition, 
+    public void setDefinition(Study study, AnnotationFieldDescriptor fieldDescriptor, AnnotationDefinition annotationDefinition, 
                                 EntityTypeEnum entityType) throws ValidationException {
         setDefinitionCalled = true;
         if (throwValidationException) {
@@ -527,6 +529,17 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     public void delete(StudyConfiguration studyConfiguration, AnnotationGroup annotationGroup) {
         deleteCalled = true;
+    }
+
+
+    public void updateFieldDescriptorType(AnnotationFieldDescriptor fieldDescriptor, AnnotationFieldType type)
+            throws ValidationException {
+        
+    }
+
+    public Set<String> getAvailableValuesForFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor)
+            throws ValidationException {
+        return new HashSet<String>();
     }
 
 }
