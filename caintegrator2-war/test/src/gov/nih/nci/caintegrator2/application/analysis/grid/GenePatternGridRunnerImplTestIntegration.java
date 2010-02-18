@@ -165,7 +165,7 @@ public class GenePatternGridRunnerImplTestIntegration {
     protected String[] getConfigLocations() {
         return new String[] {"classpath*:/**/genepattern-test-config.xml"};
     }
-    
+
     @Test
     public void testRunPreprocessDataset() throws ConnectionException, InvalidCriterionException, IOException {
         setupContext();
@@ -252,7 +252,7 @@ public class GenePatternGridRunnerImplTestIntegration {
         File gctFile = new File(fileManager.getUserDirectory(subscription) + File.separator 
                 + parameters.getGctFileName());
         FileUtils.copyFile(TestDataFiles.PCA_TRAIN_FILE, gctFile);
-        zipFile = genePatternGridRunner.runPCA(updater, job, TestDataFiles.PCA_TRAIN_FILE);
+        zipFile = genePatternGridRunner.runPCA(updater, job, gctFile);
         assertNotNull(zipFile);
         zipFile.deleteOnExit();
         FileUtils.deleteQuietly(fileManager.getUserDirectory(subscription));
