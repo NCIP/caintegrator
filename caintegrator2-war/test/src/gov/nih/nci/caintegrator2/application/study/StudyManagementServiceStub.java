@@ -154,6 +154,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean getRefreshedGenomicSourceCalled;
     public boolean isThrowCSException = false;
     public boolean addExternalLinksToStudyCalled;
+    public boolean saveAnnotationGroupCalled = false;
     
     public ImageDataSourceConfiguration refreshedImageSource = new ImageDataSourceConfiguration();
     public GenomicDataSourceConfiguration refreshedGenomicSource = new GenomicDataSourceConfiguration();
@@ -239,6 +240,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         getRefreshedGenomicSourceCalled = false;
         isThrowCSException = false;
         addExternalLinksToStudyCalled = false;
+        saveAnnotationGroupCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -531,6 +533,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
         deleteCalled = true;
     }
 
+    public void saveAnnotationGroup(AnnotationGroup annotationGroup, StudyConfiguration studyConfiguration,
+            List<AnnotationGroupUploadContent> uploadContents) throws ValidationException, ConnectionException {
+        saveAnnotationGroupCalled = true;
+    }
 
     public void updateFieldDescriptorType(AnnotationFieldDescriptor fieldDescriptor, AnnotationFieldType type)
             throws ValidationException {

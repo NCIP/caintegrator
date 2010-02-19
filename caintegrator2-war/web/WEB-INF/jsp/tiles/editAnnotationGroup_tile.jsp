@@ -20,50 +20,55 @@
     <div class="form_wrapper_outer">
  
     <table class="form_wrapper_table">
-            <tr>
-                <th class="title" style="height: 2.5em;">Annotation Group</th>
-                <th class="alignright">&nbsp;</th>
-            </tr>
-            <tr>
-                <td colspan="2" style="padding: 5px;">    
+        <tr>
+            <th class="title" style="height: 2.5em;">Annotation Group</th>
+            <th class="alignright">&nbsp;</th>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding: 5px;">    
 
-                <table>
                 <s:form id="annotationGroupForm" name="annotationGroupForm" 
-                    action="saveAnnotationGroup" method="post" enctype="multipart/form-data" > 
-                <tr>
-                    <td>
-                        <s:actionerror />
-                     </td>
-                </tr>
-                <tr>
+                    action="saveAnnotationGroup" method="post" enctype="multipart/form-data" >
                     <s:hidden name="studyConfiguration.id" />
-                    <s:hidden name="cancelAction" />
+                    <s:hidden name="selectedAction" />
                     <s:hidden name="annotationGroup.id" />
-
-                    <s:textfield label="Group Name" name="annotationGroup.name" size="40"/>
-                    <s:radio name="annotationGroup.displayableEntityType" 
+                <table>
+                    <tr><td> <s:actionerror /></td></tr>
+                    <tr><td>
+                        <s:textfield label="Group Name" name="groupName" size="40"
+                            required="true" theme="css_xhtml"/>
+                    </td></tr>
+                    <tr><td>
+                        <s:radio name="annotationGroup.displayableEntityType" theme="css_xhtml"
                             list="@gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum@getValueToDisplayableMap()"
                             required="true" label="Select Annotation Grouping Entity Type:" disabled="%{existingGroup}"/>
-                    
-                    <s:textarea label="Description" name="annotationGroup.description" cols="40" rows="3"/>
-                    
-                </tr>
-                <tr> 
-            	    <td></td>
-            	    <td>
-            	    <button type="button" 
-            	            onclick="document.annotationGroupForm.action = 'cancelAnnotationGroup.action';
-            	            document.annotationGroupForm.cancelAction.value = 'true';
-            	            document.annotationGroupForm.submit();"> Cancel 
-            	    </button>
-            	    <button type="button" onclick="document.annotationGroupForm.submit();">Save</button>
-            	    </td> 
-                </tr>
+                    </td></tr>
+                    <tr><td>
+                        <s:textarea label="Description" name="annotationGroup.description" cols="40" rows="3" theme="css_xhtml"/>
+                    </td></tr>
+                    <s:if test="!existingGroup">
+                        <tr><td>
+                            <s:file id="annotationGroupFile" name="annotationGroupFile" label="Upload File" theme="css_xhtml"/>
+                            <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="%{csvlFileDisplay}">
+                                <span class="wwlbl">(csv file format)</span><span class="wwctrl"></span>
+                            </s:div>
+                        </td></tr>
+                    </s:if>
+                </table>
+                <div><center>
+                    <button type="button" onclick="document.annotationGroupForm.selectedAction.value = 'cancel';
+            	        document.annotationGroupForm.submit();">Cancel</button>
+            	    <button type="button" onclick="document.annotationGroupForm.selectedAction.value = 'save';
+                        document.annotationGroupForm.submit();">Save</button>
+                </center></div>
                 </s:form> 
+            </td>
+        </tr>
                 </table>
                 </td>
             </tr>
         </table>
+        <s:if test="existingGroup">
         <table class="form_wrapper_table">
             <tr>
                 <th class="title" style="height: 2.5em;">Current Annotation Field Descriptors</th>
@@ -136,7 +141,8 @@
 	                </s:form>
                 </td>
             </tr>
-    </table> 
+        </table>
+        </s:if> 
      
     </div>
 </div>

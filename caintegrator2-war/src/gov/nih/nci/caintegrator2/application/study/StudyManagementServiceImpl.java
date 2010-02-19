@@ -1044,16 +1044,94 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public void saveAnnotationGroup(AnnotationGroup annotationGroup, StudyConfiguration studyConfiguration,
-            File annotationGroupFile) throws ValidationException {
+    @Transactional(rollbackFor = {ConnectionException.class, ValidationException.class })
+    public void saveAnnotationGroup(AnnotationGroup annotationGroup,
+            StudyConfiguration studyConfiguration,
+            File annotationGroupFile)
+    throws ValidationException, ConnectionException, IOException {
         if (annotationGroup.getStudy() != studyConfiguration.getStudy()) {
             annotationGroup.setStudy(studyConfiguration.getStudy());
             studyConfiguration.getStudy().getAnnotationGroups().add(annotationGroup);
         }
+        if (annotationGroupFile != null) {
+            uploadAnnotationGroup(studyConfiguration, annotationGroup, annotationGroupFile);
+        }
         getDao().save(annotationGroup);
+        getDao().save(studyConfiguration.getStudy());
         getDao().save(studyConfiguration);
     }
     
+    private void uploadAnnotationGroup(StudyConfiguration studyConfiguration,
+            AnnotationGroup annotationGroup, File uploadFile)
+    throws ConnectionException, ValidationException, IOException {
+        AnnotationGroupUploadFileHandler uploadFileHandler = new AnnotationGroupUploadFileHandler(uploadFile);
+        List<AnnotationGroupUploadContent> uploadContents = uploadFileHandler.extractUploadData();
+        if (uploadContents != null) {
+            StringBuffer validationMsg = new StringBuffer();
+            for (AnnotationGroupUploadContent uploadContent : uploadContents) {
+                try {
+                    createAnnotation(studyConfiguration, annotationGroup, uploadContent);
+                } catch (ValidationException e) {
+                    validationMsg.append(e.getMessage());
+                }
+            }
+            if (validationMsg.length() > 0) {
+                throw new ValidationException(validationMsg.toString());
+            }
+        }
+    }
+        
+    private void createAnnotation(StudyConfiguration studyConfiguration,
+            AnnotationGroup annotationGroup, AnnotationGroupUploadContent uploadContent)
+    throws ConnectionException, ValidationException {
+        AnnotationFieldDescriptor annotationFieldDescriptor = uploadContent.createAnnotationFieldDescriptor(
+                studyConfiguration, getDao());
+        annotationFieldDescriptor.setAnnotationGroup(annotationGroup);
+        if (annotationFieldDescriptor.getDefinition() == null) {
+            AnnotationDefinition annotationDefinition = createAnnotationDefinition(uploadContent);
+            annotationFieldDescriptor.setDefinition(annotationDefinition);
+            getDao().save(annotationDefinition);
+        }
+        getDao().save(annotationFieldDescriptor);
+        annotationGroup.getAnnotationFieldDescriptors().add(annotationFieldDescriptor);
+    }
+
+    private AnnotationDefinition createAnnotationDefinition(AnnotationGroupUploadContent uploadContent)
+    throws ConnectionException, ValidationException {
+        AnnotationDefinition annotationDefinition;
+        if (uploadContent.getCdeId() != null) {
+            annotationDefinition = getCaDsrAnnotationDefinition(uploadContent.getCdeId(),
+                    uploadContent.getVersion());
+            annotationDefinition.setKeywords(uploadContent.getDefinitionName());
+        } else {
+            annotationDefinition = uploadContent.createAnnotationDefinition(getDao());
+        }
+        return annotationDefinition;
+    }
+    
+    private AnnotationDefinition getCaDsrAnnotationDefinition(Long cdeId, Float version)
+    throws ConnectionException, ValidationException {
+        AnnotationDefinition annotationDefinition = getDao().getAnnotationDefinition(
+                cdeId, version);
+        if (annotationDefinition == null) {
+            annotationDefinition = new AnnotationDefinition();
+            annotationDefinition.setCommonDataElement(retrieveDataElement(
+                    cdeId, version));
+            retrieveValueDomain(annotationDefinition.getCommonDataElement());
+            
+        }
+        return annotationDefinition;
+    }
+
+    private CommonDataElement retrieveDataElement(Long dataElementId, Float version)
+    throws ConnectionException, ValidationException {
+        CommonDataElement commonDataElement = caDSRFacade.retrieveDataElement(dataElementId, version);
+        if (commonDataElement == null) {
+            throw new ValidationException("Error cdeId not found: " + dataElementId.toString());
+        }
+        return commonDataElement;
+    }
+
     /**
      * {@inheritDoc}
      */

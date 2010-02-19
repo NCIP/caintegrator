@@ -274,7 +274,14 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public AnnotationDefinition getAnnotationDefinition(String name) {
         return null;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public AnnotationDefinition getAnnotationDefinition(Long cdeId, Float version) {
+        return null;
+    }
+
     /**
      * {@inheritDoc}
      */

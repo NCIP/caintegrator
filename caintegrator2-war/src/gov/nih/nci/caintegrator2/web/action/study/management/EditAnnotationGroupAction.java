@@ -88,13 +88,18 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * 
@@ -102,24 +107,32 @@ import java.util.Map;
 public class EditAnnotationGroupAction extends AbstractStudyAction {
     
     private static final long serialVersionUID = 1L;
-    private AnnotationGroup annotationGroup = new AnnotationGroup();
+    private FileManager fileManager;
     private File annotationGroupFile;
-    private boolean cancelAction = false;
+    private String annotationGroupFileContentType;
+    private String annotationGrouptFileFileName;
+    private AnnotationGroup annotationGroup = new AnnotationGroup();
+    private String selectedAction;
+    private String groupName;
     private List<DisplayableAnnotationFieldDescriptor> displayableFields = 
         new ArrayList<DisplayableAnnotationFieldDescriptor>();
     private final List<AnnotationGroup> selectableAnnotationGroups = new ArrayList<AnnotationGroup>();
     private final Map<String, AnnotationGroup> annotationGroupNameToGroupMap = new HashMap<String, AnnotationGroup>();
+
+    private static final String CANCEL_ACTION = "cancel";
+    private static final String SAVE_ACTION = "save";
+    private static final String ANNOTATION_GROUP_NAME = "groupName";
 
     /**
      * {@inheritDoc}
      */
     public void prepare() {
         super.prepare();
-        if (annotationGroup.getId() != null) {
+        if (isExistingGroup()) {
             annotationGroup = getStudyManagementService().getRefreshedEntity(annotationGroup);
+            setupAnnotationGroups();
+            setupDisplayableFields();
         }
-        setupAnnotationGroups();
-        setupDisplayableFields();
     }
     
     private void setupAnnotationGroups() {
@@ -146,8 +159,35 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
      */
     @Override
     public void validate() {
-        if (!cancelAction) {
+        if (!CANCEL_ACTION.equals(selectedAction)) {
             prepareValueStack();
+        }
+        if (SAVE_ACTION.equals(selectedAction)) {
+            clearErrorsAndMessages();
+            validateAnnotationGroupName();
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String execute() {
+        if (CANCEL_ACTION.equals(selectedAction)) {
+            return SUCCESS;
+        } else if (SAVE_ACTION.equals(selectedAction)) {
+            return save();
+        }
+        setGroupName(getAnnotationGroup().getName());
+        return SUCCESS;
+    }
+    
+    private void validateAnnotationGroupName() {
+        if (StringUtils.isBlank(getGroupName())) {
+            addFieldError(ANNOTATION_GROUP_NAME, "Annotation group name is required");
+        } else if (!getGroupName().equals(getAnnotationGroup().getName())
+                && getStudy().getAnnotationGroup(getGroupName()) != null) {
+            addFieldError(ANNOTATION_GROUP_NAME, "Duplicate Annotation Group name: " + getGroupName());
         }
     }
     
@@ -159,22 +199,21 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
     }
     
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String execute() {
-        return SUCCESS;
-    }
-    
-    /**
      * @return String.
      */
     public String save() {
         try {
+            annotationGroup.setName(getGroupName());
             getStudyManagementService().saveAnnotationGroup(
                     annotationGroup, getStudyConfiguration(), annotationGroupFile);
+        } catch (ConnectionException e) {
+            addActionError("Error connecting to caDSR: " + e.getMessage());
+            return ERROR;
         } catch (ValidationException e) {
             addActionError("Unable to save annotation group: " + e.getMessage());
+            return ERROR;
+        } catch (IOException e) {
+            addActionError("Error reading upload file: " + e.getMessage());
             return ERROR;
         }
         return SUCCESS;
@@ -203,20 +242,19 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
         getStudyManagementService().delete(getStudyConfiguration(), annotationGroup);
         return SUCCESS;
     }
-    
-    
+
     /**
-     * @return the cancelAction
+     * @return the selectedAction
      */
-    public boolean isCancelAction() {
-        return cancelAction;
+    public String getSelectedAction() {
+        return selectedAction;
     }
 
     /**
-     * @param cancelAction the cancelAction to set
+     * @param selectedAction the selectedAction to set
      */
-    public void setCancelAction(boolean cancelAction) {
-        this.cancelAction = cancelAction;
+    public void setSelectedAction(String selectedAction) {
+        this.selectedAction = selectedAction;
     }
 
     /**
@@ -251,6 +289,75 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
         return displayableFields;
     }
 
+    /**
+     * @return the annotationGroupFile
+     */
+    public File getAnnotationGroupFile() {
+        return annotationGroupFile;
+    }
+
+    /**
+     * @param annotationGroupFile the annotationGroupFile to set
+     */
+    public void setAnnotationGroupFile(File annotationGroupFile) {
+        this.annotationGroupFile = annotationGroupFile;
+    }
+
+    /**
+     * @return the annotationGroupFileContentType
+     */
+    public String getAnnotationGroupFileContentType() {
+        return annotationGroupFileContentType;
+    }
+
+    /**
+     * @param annotationGroupFileContentType the annotationGroupFileContentType to set
+     */
+    public void setAnnotationGroupFileContentType(String annotationGroupFileContentType) {
+        this.annotationGroupFileContentType = annotationGroupFileContentType;
+    }
+
+    /**
+     * @return the annotationGrouptFileFileName
+     */
+    public String getAnnotationGrouptFileFileName() {
+        return annotationGrouptFileFileName;
+    }
+
+    /**
+     * @param annotationGrouptFileFileName the annotationGrouptFileFileName to set
+     */
+    public void setAnnotationGrouptFileFileName(String annotationGrouptFileFileName) {
+        this.annotationGrouptFileFileName = annotationGrouptFileFileName;
+    }
+
+    /**
+     * @return the fileManager
+     */
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    /**
+     * @param fileManager the fileManager to set
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }
+
+    /**
+     * @return the groupName
+     */
+    public String getGroupName() {
+        return groupName;
+    }
+
+    /**
+     * @param groupName the groupName to set
+     */
+    public void setGroupName(String groupName) {
+        this.groupName = (groupName != null) ? groupName.trim() : groupName;
+    }
 
     /**
      * @param displayableFields the displayableFields to set
@@ -266,5 +373,4 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
     public List<AnnotationGroup> getSelectableAnnotationGroups() {
         return selectableAnnotationGroups;
     }
-
 }

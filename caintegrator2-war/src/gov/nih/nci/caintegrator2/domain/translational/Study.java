@@ -305,6 +305,20 @@ public class Study extends AbstractCaIntegrator2Object {
     }
     
     /**
+     * Get AnnotationGroup by name.
+     * @param name of the annotation group to retrieve
+     * @return AnnotationGroup
+     */
+    public AnnotationGroup getAnnotationGroup(String name) {
+        for (AnnotationGroup annotationGroup : annotationGroups) {
+            if (annotationGroup.getName().equals(name)) {
+                return annotationGroup;
+            }
+        }
+        return null;
+    }
+    
+    /**
      * 
      * @return all annotation groups, sorted by name.
      */
