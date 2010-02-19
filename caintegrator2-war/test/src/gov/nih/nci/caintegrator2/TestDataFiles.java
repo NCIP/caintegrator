@@ -178,6 +178,10 @@ public class TestDataFiles {
     // Samples of genelist file upload
     public static final File GENE_LIST_SAMPLES_FILE = getFile(GENE_LIST_SAMPLES_FILE_PATH);
     
+    // File for Annotation Group
+    public static final String ANNOTATION_GROUP_FILE_PATH = "/csvtest_annotationGroup.csv";
+    public static final File ANNOTATION_GROUP_FILE = getFile(ANNOTATION_GROUP_FILE_PATH);
+    
     // Samples from caArray Experiment jagla-00034
     public static final File JAGLA_00034_CONTROL_SAMPLES_FILE = getFile(JAGLA_00034_CONTROL_SAMPLES_FILE_PATH);
 

@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 
 import java.util.ArrayList;
@@ -145,6 +146,52 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
     /**
      * {@inheritDoc}
      */
+    public CommonDataElement retrieveDataElement(Long dataElementId, Float dataElementVersion)
+    throws ConnectionException {
+        // Satish Patel informed me that the cadsrApi clears out the SecurityContext after they're done with it,
+        // they are working on a fix but as a workaround I need to store the context and set it again after
+        // I am done with all of the caDSR domain objects.  --TJ
+        SecurityContext originalContext = SecurityContextHolder.getContext();
+        try {
+            List<Object> cadsrDataElements = searchDataElement(dataElementId, dataElementVersion);
+            gov.nih.nci.cadsr.domain.DataElement latestCadsrDataElement = getLatestDataElement(cadsrDataElements);
+            return convertCadsrDataElementToDataElements(latestCadsrDataElement);
+        } catch (Exception e) {
+            throw new ConnectionException("Couldn't connect to the caDSR server", e);
+        } finally {
+            // Restore context as described above.
+            SecurityContextHolder.setContext(originalContext);
+        }
+    }
+
+    private List<Object> searchDataElement(Long dataElementId, Float dataElementVersion)
+            throws ConnectionException, ApplicationException {
+        // Won't have to provide a URL when it goes from stage to production.
+        ApplicationService cadsrApi = caDsrApplicationServiceFactory.retrieveCaDsrApplicationService(caDsrUrl);
+        
+        gov.nih.nci.cadsr.domain.DataElement cadsrDataElement = new gov.nih.nci.cadsr.domain.DataElement();
+        cadsrDataElement.setPublicID(dataElementId);
+        cadsrDataElement.setVersion(dataElementVersion);
+        List<Object> cadsrDataElements = cadsrApi.search(
+                gov.nih.nci.cadsr.domain.DataElement.class, cadsrDataElement);
+        return cadsrDataElements;
+    }
+
+    private gov.nih.nci.cadsr.domain.DataElement getLatestDataElement(List<Object> cadsrDataElements) {
+        gov.nih.nci.cadsr.domain.DataElement latestCadsrDataElement = null;
+        for (Object object : cadsrDataElements) {
+            gov.nih.nci.cadsr.domain.DataElement dataElement = (gov.nih.nci.cadsr.domain.DataElement) object;
+            if (latestCadsrDataElement == null
+                    || dataElement.getVersion() > latestCadsrDataElement.getVersion()) {
+                latestCadsrDataElement = dataElement;
+            }
+        }
+        return latestCadsrDataElement;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings({ "PMD.ExcessiveMethodLength", "PMD.CyclomaticComplexity" }) // Type checking and casting
     public ValueDomain retrieveValueDomainForDataElement(Long dataElementId, Float dataElementVersion) 
     throws ConnectionException {
@@ -154,14 +201,7 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
         // I am done with all of the caDSR domain objects.  --TJ
         SecurityContext originalContext = SecurityContextHolder.getContext();
         try {
-            // Won't have to provide a URL when it goes from stage to production.
-            ApplicationService cadsrApi = caDsrApplicationServiceFactory.retrieveCaDsrApplicationService(caDsrUrl);
-            
-            gov.nih.nci.cadsr.domain.DataElement cadsrDataElement = new gov.nih.nci.cadsr.domain.DataElement();
-            cadsrDataElement.setPublicID(dataElementId);
-            cadsrDataElement.setVersion(dataElementVersion);
-            List<Object> cadsrDataElements = cadsrApi.search(
-                    gov.nih.nci.cadsr.domain.DataElement.class, cadsrDataElement);
+            List<Object> cadsrDataElements = searchDataElement(dataElementId, dataElementVersion);
             
             if (!cadsrDataElements.isEmpty()) {
                 gov.nih.nci.cadsr.domain.ValueDomain cadsrValueDomain = 
@@ -182,12 +222,12 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
                     retrievePermissibleValues(valueDomain, cadsrValueDomain);
                 }
             }
-            // Restore context as described above.
-            SecurityContextHolder.setContext(originalContext);
             return valueDomain;
         } catch (Exception e) {
-            SecurityContextHolder.setContext(originalContext);
             throw new ConnectionException("Couldn't connect to the caDSR server", e);
+        } finally {
+            // Restore context as described above.
+            SecurityContextHolder.setContext(originalContext);
         }
     }
 
@@ -209,6 +249,23 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
             }
             valueDomain.getPermissibleValueCollection().add(permissibleValue);
         }
+    }
+    
+    private CommonDataElement convertCadsrDataElementToDataElements(
+            gov.nih.nci.cadsr.domain.DataElement de) {
+        CommonDataElement cde = null;
+        if (de != null) {
+            cde = new CommonDataElement();
+            cde.setDefinition(de.getPreferredDefinition());
+            cde.setLongName(de.getLongName());
+            cde.setPublicID(Long.valueOf(de.getPublicID()));
+            cde.setContextName(de.getContext().getName());
+            cde.setPreferredName(de.getPreferredName());
+            cde.setRegistrationStatus(de.getRegistrationStatus());
+            cde.setVersion(de.getVersion().toString());
+            cde.setWorkflowStatus(de.getWorkflowStatusName());
+        }
+        return cde;
     }
     
     private List<CommonDataElement> convertSearchResultsToDataElements(List<SearchResults> searchResults) {
@@ -275,8 +332,4 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
     public void setCaDsrApplicationServiceFactory(CaDSRApplicationServiceFactory caDsrApplicationServiceFactory) {
         this.caDsrApplicationServiceFactory = caDsrApplicationServiceFactory;
     }
-    
-    
-
-    
 }

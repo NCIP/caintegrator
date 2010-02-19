@@ -85,139 +85,200 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
- * Contains the information about a particular annotation field prior to association to an 
- * <code>AnnotationDefinition</code>.
+ * Object that hold the upload file context.
  */
-public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
-
-    private static final long serialVersionUID = 1L;
-    private String name;
-    private AnnotationFieldType type = AnnotationFieldType.ANNOTATION;
-    private AnnotationDefinition definition;
-    private boolean shownInBrowse = true;
-    private Boolean hasValidationErrors = false;
-    private Boolean usePermissibleValues = false;
-    private AnnotationGroup annotationGroup;
-
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the type
-     */
-    public AnnotationFieldType getType() {
-        return type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(AnnotationFieldType type) {
-        this.type = type;
-    }
-
-    /**
-     * @return the definition
-     */
-    public AnnotationDefinition getDefinition() {
-        return definition;
-    }
-
-    /**
-     * @param definition the definition to set
-     */
-    public void setDefinition(AnnotationDefinition definition) {
-        this.definition = definition;
-    }
-
-    /**
-     * @return the shownInBrowse
-     */
-    public boolean isShownInBrowse() {
-        return shownInBrowse;
-    }
-
-    /**
-     * @param shownInBrowse the shownInBrowse to set
-     */
-    public void setShownInBrowse(boolean shownInBrowse) {
-        this.shownInBrowse = shownInBrowse;
-    }
-
-    /**
-     * @return the hasValidationErrors
-     */
-    public Boolean isHasValidationErrors() {
-        return hasValidationErrors;
-    }
-
-    /**
-     * @param hasValidationErrors the hasValidationErrors to set
-     */
-    public void setHasValidationErrors(Boolean hasValidationErrors) {
-        this.hasValidationErrors = hasValidationErrors;
-    }
-
-    /**
-     * @return the annotationGroup
-     */
-    public AnnotationGroup getAnnotationGroup() {
-        return annotationGroup;
-    }
-
-    /**
-     * @param annotationGroup the annotationGroup to set
-     */
-    public void setAnnotationGroup(AnnotationGroup annotationGroup) {
-        this.annotationGroup = annotationGroup;
-    }
-
-    /**
-     * @return the usePermissibleValues
-     */
-    public Boolean isUsePermissibleValues() {
-        return usePermissibleValues;
-    }
-
-    /**
-     * @param usePermissibleValues the usePermissibleValues to set
-     */
-    public void setUsePermissibleValues(Boolean usePermissibleValues) {
-        this.usePermissibleValues = usePermissibleValues;
-    }
+public class AnnotationGroupUploadContent {
+    private String columnName = null;
+    private AnnotationFieldType annotationType; 
+    private Long cdeId = null;
+    private Float version = null;
+    private String definitionName;
+    private AnnotationTypeEnum dataType = null;
+    private boolean permissible = false;
+    private boolean visible = false;
     
     /**
-     * 
-     * @param newAnnotationGroup annotation group to switch to.
+     * @return the columnName
      */
-    public void switchAnnotationGroup(AnnotationGroup newAnnotationGroup) {
-        removeFromAnnotationGroup();
-        if (newAnnotationGroup != null) {
-            newAnnotationGroup.getAnnotationFieldDescriptors().add(this);
-        }
-        annotationGroup = newAnnotationGroup;
+    public String getColumnName() {
+        return columnName;
     }
     /**
-     * Remove from existing annotation group.
+     * @param columnName the columnName to set
      */
-    public void removeFromAnnotationGroup() {
-        if (this.annotationGroup != null) {
-            annotationGroup.getAnnotationFieldDescriptors().remove(this);
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
+    }
+    /**
+     * @return the annotationType
+     */
+    public AnnotationFieldType getAnnotationType() {
+        return annotationType;
+    }
+    /**
+     * @param annotationType the annotationType to set
+     */
+    public void setAnnotationType(String annotationType) {
+        this.annotationType = AnnotationFieldType.getByValue(annotationType);
+    }
+    /**
+     * @return the cdeId
+     */
+    public Long getCdeId() {
+        return cdeId;
+    }
+    /**
+     * @param cdeId the cdeId to set
+     */
+    public void setCdeId(String cdeId) {
+        if (!StringUtils.isBlank(cdeId)) {
+            this.cdeId = Long.valueOf(cdeId);
         }
+    }
+    /**
+     * @return the version
+     */
+    public Float getVersion() {
+        return version;
+    }
+    /**
+     * @param version the version to set
+     */
+    public void setVersion(String version) {
+        if (!StringUtils.isBlank(version)) {
+            this.version = Float.valueOf(version);
+        }
+    }
+    /**
+     * @return the definitionName
+     */
+    public String getDefinitionName() {
+        return definitionName;
+    }
+    /**
+     * @param definitionName the definitionName to set
+     */
+    public void setDefinitionName(String definitionName) {
+        this.definitionName = definitionName;
+    }
+    /**
+     * @return the dataType
+     */
+    public AnnotationTypeEnum getDataType() {
+        return dataType;
+    }
+    /**
+     * @param dataType the dataType to set
+     */
+    public void setDataType(String dataType) {
+        this.dataType = AnnotationTypeEnum.getByValue(dataType);
+    }
+    /**
+     * @return the permissible
+     */
+    public boolean isPermissible() {
+        return permissible;
+    }
+    /**
+     * @param permissible the permissible to set
+     */
+    public void setPermissible(String permissible) {
+        this.permissible = "Yes".equalsIgnoreCase(permissible);
+    }
+    /**
+     * @return the visible
+     */
+    public boolean isVisible() {
+        return visible;
+    }
+    /**
+     * @param visible the visible to set
+     */
+    public void setVisible(String visible) {
+        this.visible = "Yes".equalsIgnoreCase(visible);
+    }
+
+    /**
+     * Locate or create a new annotation field descriptor.
+     * @param studyConfiguration the study configuration
+     * @param dao the caintegrator2Dao
+     * @return the annotationFieldDescriptor
+     * @throws ValidationException validation exception
+     */
+    public AnnotationFieldDescriptor createAnnotationFieldDescriptor(
+            StudyConfiguration studyConfiguration, CaIntegrator2Dao dao)
+    throws ValidationException {
+        AnnotationFieldDescriptor annotationFieldDescriptor = findAnnotationFieldDescriptor(
+                studyConfiguration, dao);
+        if (annotationFieldDescriptor != null) {
+            annotationFieldDescriptor.removeFromAnnotationGroup();
+        } else {
+            annotationFieldDescriptor = new AnnotationFieldDescriptor();
+            annotationFieldDescriptor.setName(getColumnName());
+            annotationFieldDescriptor.setType(getAnnotationType());
+            annotationFieldDescriptor.setUsePermissibleValues(isPermissible());
+            annotationFieldDescriptor.setShownInBrowse(isVisible());
+        }
+        return annotationFieldDescriptor;
+    }
+
+    private AnnotationFieldDescriptor findAnnotationFieldDescriptor(
+            StudyConfiguration studyConfiguration, CaIntegrator2Dao dao)
+    throws ValidationException {
+        AnnotationFieldDescriptor annotationFieldDescriptor = dao.getExistingFieldDescriptorInStudy(
+                getColumnName(), studyConfiguration);
+        if (annotationFieldDescriptor != null) {
+            if (validate(annotationFieldDescriptor)) {
+                return annotationFieldDescriptor;
+            } else {
+                throw new ValidationException("File column: " + getColumnName()
+                        + " doesn't match with existing definition.\n");
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Locate or create a new annotation definition.
+     * @param dao the caintegrator2Dao
+     * @return an annotation definition
+     * @throws ValidationException validation exception
+     */
+    public AnnotationDefinition createAnnotationDefinition(CaIntegrator2Dao dao)
+    throws ValidationException {
+        AnnotationDefinition annotationDefinition = dao.getAnnotationDefinition(
+                getDefinitionName());
+        if (annotationDefinition != null) {
+            if (validate(annotationDefinition)) {
+                return annotationDefinition;
+            } else {
+                throw new ValidationException("Definition: " + getDefinitionName()
+                        + " doesn't match with existing definition.\n");
+            }
+        }
+        annotationDefinition = new AnnotationDefinition();
+        annotationDefinition.setKeywords(getDefinitionName());
+        annotationDefinition.getCommonDataElement().setLongName(getDefinitionName());
+        annotationDefinition.getCommonDataElement().getValueDomain().setDataType(getDataType());
+        
+        return annotationDefinition;
+    }
+
+    private boolean validate(AnnotationFieldDescriptor annotationFieldDescriptor) {
+        if (getCdeId() == null) {
+            return annotationFieldDescriptor.getDefinition().getDataType().equals(getDataType());
+        }
+        return annotationFieldDescriptor.getDefinition().getCommonDataElement().getPublicID().floatValue()
+            == getCdeId().floatValue();
+    }
+
+    private boolean validate(AnnotationDefinition definition) {
+        return definition.getDataType().equals(getDataType());
     }
 }

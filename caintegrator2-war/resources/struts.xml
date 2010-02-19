@@ -575,12 +575,14 @@
             <result name="error" type="tiles">editStudy</result>
         </action>
         
-        <action name="saveAnnotationGroup" class="editAnnotationGroupAction" method="save" >
+        <action name="saveAnnotationGroup" class="editAnnotationGroupAction">
+            <result type="tiles">editAnnotationGroup</result>
+            <result name="input" type="tiles">editAnnotationGroup</result>
+            <result name="error" type="tiles">editAnnotationGroup</result>
             <result name="success" type="redirectAction">
                 <param name="actionName">editStudy</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
             </result>
-            <result name="input" type="tiles">editAnnotationGroup</result>
         </action>
         
         <action name="cancelAnnotationGroup" class="editAnnotationGroupAction">
