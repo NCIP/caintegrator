@@ -97,9 +97,10 @@ abstract class AbstractAnnotationHandler {
 
     abstract void handleIdentifier(String identifier) throws ValidationException;
 
-    abstract void handleAnnotationValue(AbstractAnnotationValue annotationValue);
+    abstract void handleAnnotationValue(AbstractAnnotationValue annotationValue) throws ValidationException;
 
-    abstract void handleAnnotationValue(AbstractAnnotationValue annotationValue, String timepointValue);
+    abstract void handleAnnotationValue(AbstractAnnotationValue annotationValue, String timepointValue) 
+        throws ValidationException;
 
     abstract void addDefinitionsToStudy(Set<AnnotationDefinition> annotationDefinitions);
 

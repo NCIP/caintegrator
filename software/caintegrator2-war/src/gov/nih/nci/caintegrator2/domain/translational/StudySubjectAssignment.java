@@ -133,6 +133,20 @@ public class StudySubjectAssignment extends AbstractCaIntegrator2Object {
         }
         return (DateAnnotationValue) getAnnotation(definition);
     }
+    
+    /**
+     * Checks to see if there's a value for the given definition.
+     * @param definition to check value for.
+     * @return T/F if there is a value for the definition.
+     */
+    public boolean hasValueForDefinition(AnnotationDefinition definition) {
+        for (SubjectAnnotation subjectAnnotation : getSubjectAnnotationCollection()) {
+            if (definition.equals(subjectAnnotation.getAnnotationValue().getAnnotationDefinition())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     
     private AbstractAnnotationValue getAnnotation(AnnotationDefinition definition) {

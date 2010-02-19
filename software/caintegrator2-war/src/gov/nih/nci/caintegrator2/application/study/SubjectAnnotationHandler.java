@@ -119,7 +119,11 @@ class SubjectAnnotationHandler extends AbstractAnnotationHandler {
      * {@inheritDoc}
      */
     @Override
-    void handleAnnotationValue(AbstractAnnotationValue annotationValue) {
+    void handleAnnotationValue(AbstractAnnotationValue annotationValue) throws ValidationException {
+        if (currentSubjectAssignment.hasValueForDefinition(annotationValue.getAnnotationDefinition())) {
+            throw new ValidationException("Value already loaded: Subject " + currentSubjectAssignment.getIdentifier()
+                    + " already has a value for " + annotationValue.getAnnotationDefinition().getDisplayName());
+        }
         createAnnotation(annotationValue);
     }
 
