@@ -121,7 +121,16 @@ public interface CaDSRFacade {
      * @return - ValueDomain object associated with data element.
      * @throws ConnectionException - Error connecting to caDSR.
      */
-    ValueDomain retrieveValueDomainForDataElement(Long dataElementId, 
-                                                  Float dataElementVersion) throws ConnectionException; 
+    ValueDomain retrieveValueDomainForDataElement(Long dataElementId, Float dataElementVersion)
+    throws ConnectionException;
     
+    /**
+     * To retrieve a Data Element given publicId.
+     * @param dataElementId the id to search caDSR for.
+     * @param dataElementVersion the version to search caDSR for.
+     * @return - DataElement.
+     * @throws ConnectionException - Error connecting to caDSR.
+     */
+    CommonDataElement retrieveDataElement(Long dataElementId, Float dataElementVersion)
+    throws ConnectionException;
 }

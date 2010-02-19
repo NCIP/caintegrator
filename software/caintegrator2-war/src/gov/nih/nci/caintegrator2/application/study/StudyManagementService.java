@@ -527,9 +527,12 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @param studyConfiguration that the group belongs to.
      * @param annotationGroupFile optional file to use to load into the group.
      * @throws ValidationException if invalid.
+     * @throws ConnectionException caDSR connection problem
+     * @throws IOException I/O exception
      */
     void saveAnnotationGroup(AnnotationGroup annotationGroup, StudyConfiguration studyConfiguration,
-            File annotationGroupFile) throws ValidationException;
+            File annotationGroupFile)
+    throws ValidationException, ConnectionException, IOException;
     
     /**
      * Deletes AnnotationGroup from study.

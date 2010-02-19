@@ -228,7 +228,7 @@ public interface CaIntegrator2Dao {
     Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols, ReporterTypeEnum reporterType, 
             Study study);
 
-    
+
     /**
      * Returns the definitions that matches the name given (if one exists).
      * 
@@ -236,6 +236,15 @@ public interface CaIntegrator2Dao {
      * @return the matching definition or null.
      */
     AnnotationDefinition getAnnotationDefinition(String name);
+    
+    /**
+     * Returns the definitions that matches the publicId given (if one exists).
+     * 
+     * @param cdeId find definitions with this publicId
+     * @param version find definitions with this version
+     * @return the matching definition or null.
+     */
+    AnnotationDefinition getAnnotationDefinition(Long cdeId, Float version);
     
     /**
      * Retrieves any existing field descriptors with the given name for the given study.

@@ -97,10 +97,12 @@ public class CaDSRFacadeStub implements CaDSRFacade {
 
     public boolean retreiveCandidateDataElementsCalled;
     public boolean retrieveValueDomainForDataElementCalled;
+    public boolean retreiveDataElementCalled;
     
     public void clear() {
         retreiveCandidateDataElementsCalled = false;
         retrieveValueDomainForDataElementCalled = false;
+        retreiveDataElementCalled = false;
     }
 
     public List<CommonDataElement> retreiveCandidateDataElements(List<String> keywords) {
@@ -114,6 +116,14 @@ public class CaDSRFacadeStub implements CaDSRFacade {
         ValueDomain valueDomain = new ValueDomain();
         valueDomain.setDataType(AnnotationTypeEnum.STRING);
         return valueDomain;
+    }
+
+    public CommonDataElement retrieveDataElement(Long dataElementId, Float dataElementVersion)
+            throws ConnectionException {
+        retreiveDataElementCalled = true;
+        CommonDataElement commonDataElement = new CommonDataElement();
+        commonDataElement.setId(dataElementId);
+        return commonDataElement;
     }
 
 }

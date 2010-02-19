@@ -371,8 +371,38 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         if (values.isEmpty()) {
             return null;
         } else {
-            return (AnnotationDefinition) values.get(0);
+            return values.get(0);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
+    public AnnotationDefinition getAnnotationDefinition(Long cdeId, Float version) {
+        List<AnnotationDefinition> values = (version == null)
+            ? getCurrentSession().createCriteria(AnnotationDefinition.class)
+                .add(Restrictions.eq("commonDataElement.publicID", cdeId)).list()
+            : getCurrentSession().createCriteria(AnnotationDefinition.class)
+                .add(Restrictions.eq("commonDataElement.publicID", cdeId))
+                .add(Restrictions.eq("commonDataElement.version", version)).list();
+                    
+        if (values.isEmpty()) {
+            return null;
+        } else {
+            return latestVersion(values);
+        }
+    }
+    
+    private AnnotationDefinition latestVersion(List<AnnotationDefinition> values) {
+        AnnotationDefinition result = values.get(0);
+        for (AnnotationDefinition definition : values) {
+            if (Float.valueOf(result.getCommonDataElement().getVersion())
+                    < Float.valueOf(definition.getCommonDataElement().getVersion())) {
+                result = definition;
+            }
+        }
+        return result;
     }
     
     /**
