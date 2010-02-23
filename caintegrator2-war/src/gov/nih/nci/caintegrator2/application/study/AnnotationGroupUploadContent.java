@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
 import org.apache.commons.lang.StringUtils;
@@ -207,15 +206,15 @@ public class AnnotationGroupUploadContent {
     /**
      * Locate or create a new annotation field descriptor.
      * @param studyConfiguration the study configuration
-     * @param dao the caintegrator2Dao
+     * @param studyManagementService the studyManagementService
      * @return the annotationFieldDescriptor
      * @throws ValidationException validation exception
      */
     public AnnotationFieldDescriptor createAnnotationFieldDescriptor(
-            StudyConfiguration studyConfiguration, CaIntegrator2Dao dao)
+            StudyConfiguration studyConfiguration, StudyManagementService studyManagementService)
     throws ValidationException {
         AnnotationFieldDescriptor annotationFieldDescriptor = findAnnotationFieldDescriptor(
-                studyConfiguration, dao);
+                studyConfiguration, studyManagementService);
         if (annotationFieldDescriptor != null) {
             annotationFieldDescriptor.removeFromAnnotationGroup();
         } else {
@@ -229,9 +228,9 @@ public class AnnotationGroupUploadContent {
     }
 
     private AnnotationFieldDescriptor findAnnotationFieldDescriptor(
-            StudyConfiguration studyConfiguration, CaIntegrator2Dao dao)
+            StudyConfiguration studyConfiguration, StudyManagementService studyManagementService)
     throws ValidationException {
-        AnnotationFieldDescriptor annotationFieldDescriptor = dao.getExistingFieldDescriptorInStudy(
+        AnnotationFieldDescriptor annotationFieldDescriptor = studyManagementService.getExistingFieldDescriptorInStudy(
                 getColumnName(), studyConfiguration);
         if (annotationFieldDescriptor != null) {
             if (validate(annotationFieldDescriptor)) {
@@ -246,13 +245,13 @@ public class AnnotationGroupUploadContent {
 
     /**
      * Locate or create a new annotation definition.
-     * @param dao the caintegrator2Dao
+     * @param studyManagementService the studyManagementService
      * @return an annotation definition
      * @throws ValidationException validation exception
      */
-    public AnnotationDefinition createAnnotationDefinition(CaIntegrator2Dao dao)
+    public AnnotationDefinition createAnnotationDefinition(StudyManagementService studyManagementService)
     throws ValidationException {
-        AnnotationDefinition annotationDefinition = dao.getAnnotationDefinition(
+        AnnotationDefinition annotationDefinition = studyManagementService.getAnnotationDefinition(
                 getDefinitionName());
         if (annotationDefinition != null) {
             if (validate(annotationDefinition)) {
@@ -271,10 +270,12 @@ public class AnnotationGroupUploadContent {
     }
 
     private boolean validate(AnnotationFieldDescriptor annotationFieldDescriptor) {
+        AnnotationDefinition definition = annotationFieldDescriptor.getDefinition();
         if (getCdeId() == null) {
-            return annotationFieldDescriptor.getDefinition().getDataType().equals(getDataType());
+            return definition != null && definition.getDataType().equals(getDataType());
         }
-        return annotationFieldDescriptor.getDefinition().getCommonDataElement().getPublicID().floatValue()
+        Long publicId = definition.getCommonDataElement().getPublicID();
+        return definition != null && publicId != null && publicId.floatValue()
             == getCdeId().floatValue();
     }
 
