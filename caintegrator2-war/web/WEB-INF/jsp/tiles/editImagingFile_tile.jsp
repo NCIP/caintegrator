@@ -31,6 +31,8 @@
                 <s:if test="imageSourceConfiguration.imageAnnotationConfiguration == null">
                 <table>
                     <s:file name="imageAnnotationFile" label="Image Series Annotation File" />
+                    <s:checkbox name="createNewAnnotationDefinition" label="Create a new Annotation Definition if one is not found" 
+                        labelposition="left" />
                     <tr> 
                     <td></td>
                     <td>

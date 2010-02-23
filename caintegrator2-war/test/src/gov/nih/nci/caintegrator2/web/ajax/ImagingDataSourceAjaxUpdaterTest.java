@@ -164,14 +164,14 @@ public class ImagingDataSourceAjaxUpdaterTest extends AbstractSessionBasedTest {
         updater.runJob(1l, null, ImageDataSourceMappingTypeEnum.AUTO, false);
         Thread.sleep(500);
         assertEquals(Status.ERROR, imagingDataSource.getStatus());
-        assertTrue(studyManagementServiceStub.saveImagingDataSourceCalled);
+        assertTrue(studyManagementServiceStub.daoSaveCalled);
         
         studyManagementServiceStub.clear();
         studyManagementServiceStub.throwIOException = true;
         updater.runJob(1l, null, ImageDataSourceMappingTypeEnum.AUTO, false);
         Thread.sleep(500);
         assertEquals(Status.ERROR, imagingDataSource.getStatus());
-        assertTrue(studyManagementServiceStub.saveImagingDataSourceCalled);
+        assertTrue(studyManagementServiceStub.daoSaveCalled);
     }
     
     private final class WorkspaceServiceStudyDeploymentJobStub extends WorkspaceServiceStub {

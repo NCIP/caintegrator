@@ -192,7 +192,7 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
      * @param imagingSource to save and update.
      */
     public void saveAndUpdateJobStatus(String username, ImageDataSourceConfiguration imagingSource) {
-        getStudyManagementService().saveImagingDataSource(imagingSource);
+        getStudyManagementService().daoSave(imagingSource);
         updateJobStatus(username, imagingSource);
     }
 

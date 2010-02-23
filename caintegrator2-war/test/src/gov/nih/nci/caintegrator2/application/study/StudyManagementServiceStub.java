@@ -140,12 +140,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean saveCopyNumberMappingFileCalled;
     public boolean saveSampleMappingFileCalled;
     public boolean loadGenomicSourceCalled;
-    public boolean saveGenomicSourceCalled;
     public boolean throwConnectionException = false;
     public boolean throwValidationException = false;
     public boolean throwIOException = false;
     public boolean getRefreshedImageSourceCalled;
-    public boolean saveImagingDataSourceCalled;
     public boolean addImageSourceToStudyCalled;
     public boolean loadImageSourceCalled;
     public boolean saveFileStoStudyDirectoryCalled;
@@ -155,6 +153,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean isThrowCSException = false;
     public boolean addExternalLinksToStudyCalled;
     public boolean saveAnnotationGroupCalled = false;
+    public boolean daoSaveCalled = false;
     
     public ImageDataSourceConfiguration refreshedImageSource = new ImageDataSourceConfiguration();
     public GenomicDataSourceConfiguration refreshedGenomicSource = new GenomicDataSourceConfiguration();
@@ -226,12 +225,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
         saveSampleMappingFileCalled = false;
         retrieveImageDataSourceCalled = false;
         loadGenomicSourceCalled = false;
-        saveGenomicSourceCalled = false;
         throwConnectionException = false;
         throwValidationException = false;
         throwIOException = false;
         getRefreshedImageSourceCalled = false;
-        saveImagingDataSourceCalled = false;
         addImageSourceToStudyCalled = false;
         loadImageSourceCalled = false;
         saveFileStoStudyDirectoryCalled = false;
@@ -241,6 +238,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         isThrowCSException = false;
         addExternalLinksToStudyCalled = false;
         saveAnnotationGroupCalled = false;
+        daoSaveCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -249,7 +247,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
     }
 
     public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,
-            File annotationFile, String filename) throws ValidationException, IOException {
+            File annotationFile, String filename, boolean createNewAnnotationDefinition)
+    throws ValidationException, IOException {
         if (TestDataFiles.INVALID_FILE_MISSING_VALUE.equals(annotationFile)) {
             throw new ValidationException(new ValidationResult());
         } else if (TestDataFiles.INVALID_FILE_DOESNT_EXIST.equals(annotationFile)) {
@@ -306,7 +305,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
     }
     
     public ImageAnnotationConfiguration addImageAnnotationFile(ImageDataSourceConfiguration imageDataSourceConfiguration,
-            File annotationFile, String filename) throws ValidationException, IOException {
+            File annotationFile, String filename, boolean createNewAnnotationDefinition)
+    throws ValidationException, IOException {
         if (TestDataFiles.INVALID_FILE_MISSING_VALUE.equals(annotationFile)) {
             throw new ValidationException(new ValidationResult());
         } else if (TestDataFiles.INVALID_FILE_DOESNT_EXIST.equals(annotationFile)) {
@@ -451,15 +451,6 @@ public class StudyManagementServiceStub implements StudyManagementService {
         loadGenomicSourceCalled = true;
     }
 
-    public void saveGenomicDataSource(GenomicDataSourceConfiguration genomicSource) {
-        saveGenomicSourceCalled = true;
-    }
-
-    
-    public void saveImagingDataSource(ImageDataSourceConfiguration imagingSource) {
-        saveImagingDataSourceCalled = true;
-    }
-
     public void addImageSourceToStudy(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource) {
         addImageSourceToStudyCalled = true;
     }
@@ -550,6 +541,23 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     public void makeFieldDescriptorValid(AnnotationFieldDescriptor descriptor) {
         
+    }
+
+    public void daoSave(Object persistentObject) {
+        daoSaveCalled = true;
+    }
+
+    public AnnotationDefinition getAnnotationDefinition(String name) {
+        return null;
+    }
+
+    public AnnotationGroup getDefaultAnnotationGroup(StudyConfiguration studyConfiguration, EntityTypeEnum type) {
+        return new AnnotationGroup();
+    }
+
+    public AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name,
+            StudyConfiguration studyConfiguration) {
+        return null;
     }
 
 }

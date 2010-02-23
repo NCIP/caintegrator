@@ -121,7 +121,8 @@ public class StudyManagementServiceTestIntegration extends AbstractTransactional
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyManagementService.save(studyConfiguration);
         DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
-            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
+            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
+                    false);
         assertNotNull(sourceConfiguration);
         
         // Clean up the test file
