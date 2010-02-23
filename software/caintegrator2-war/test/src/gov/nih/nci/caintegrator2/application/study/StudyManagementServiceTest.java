@@ -219,7 +219,8 @@ public class StudyManagementServiceTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyManagementService.save(studyConfiguration);
         DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
-            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
+            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
+                    false);
         assertEquals(1, studyConfiguration.getClinicalConfigurationCollection().size());
         assertTrue(studyConfiguration.getClinicalConfigurationCollection().contains(sourceConfiguration));
         assertEquals(5, sourceConfiguration.getAnnotationFile().getColumns().size());
@@ -240,7 +241,8 @@ public class StudyManagementServiceTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyManagementService.save(studyConfiguration);
         DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
-            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
+            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
+                    false);
         sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
         AnnotationDefinition definition = new AnnotationDefinition();
         definition.setDataType(AnnotationTypeEnum.NUMERIC);
@@ -263,13 +265,27 @@ public class StudyManagementServiceTest {
         assertFalse(sourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().isHasValidationErrors());
     }
     
+    @Test
+    public void testLoadClinicalAnnotationCreateNewAD() throws ValidationException, IOException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyManagementService.save(studyConfiguration);
+        DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
+            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
+                    true);
+        AnnotationDefinition ad = sourceConfiguration.getAnnotationFile().getColumns().get(0).getFieldDescriptor().getDefinition();
+        assertNotNull(ad);
+        assertEquals("ID", ad.getKeywords());
+        assertEquals(AnnotationTypeEnum.STRING, ad.getDataType());
+    }
+    
     
     @Test(expected=ValidationException.class)
     public void testLoadInvalidClinicalAnnotation() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyManagementService.save(studyConfiguration);
         DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
-            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
+            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
+                    false);
         sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
         AnnotationDefinition definition = new AnnotationDefinition();
         definition.setDataType(AnnotationTypeEnum.NUMERIC);
@@ -604,7 +620,8 @@ public class StudyManagementServiceTest {
         studyManagementService.addImageSource(studyConfiguration, imageDataSourceConfiguration);
         studyManagementService.save(studyConfiguration);
         ImageAnnotationConfiguration imageAnnotationConfiguration = 
-            studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
+            studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
+                    false);
         assertEquals(5, imageAnnotationConfiguration.getAnnotationFile().getColumns().size());
         assertTrue(daoStub.saveCalled);
     }
@@ -616,7 +633,8 @@ public class StudyManagementServiceTest {
         studyManagementService.addImageSource(studyConfiguration, imageDataSourceConfiguration);
         imageDataSourceConfiguration.setId(Long.valueOf(1));
         ImageAnnotationConfiguration imageAnnotationConfiguration = 
-            studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
+            studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
+                    false);
         imageDataSourceConfiguration.setImageAnnotationConfiguration(imageAnnotationConfiguration);
         assertEquals(5, imageDataSourceConfiguration.getImageAnnotationConfiguration().getAnnotationFile().getColumns().size());
         assertTrue(studyConfiguration.getImageDataSources().contains(imageDataSourceConfiguration));
@@ -641,7 +659,8 @@ public class StudyManagementServiceTest {
         imageDataSourceConfiguration.getImageSeriesAcquisitions().add(acquisition);
         studyConfiguration.getImageDataSources().add(imageDataSourceConfiguration);
         ImageAnnotationConfiguration imageAnnotationConfiguration = 
-            studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
+            studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
+                    false);
         imageAnnotationConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
         AnnotationDefinition definition = new AnnotationDefinition();
         definition.setDataType(AnnotationTypeEnum.NUMERIC);

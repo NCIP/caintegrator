@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.application.study;
 
 public class AnnotationFileStub extends AnnotationFile {
     
+    private static final long serialVersionUID = 1L;
+
     @SuppressWarnings("deprecation") // for the stub.
     public AnnotationFileStub() {
         

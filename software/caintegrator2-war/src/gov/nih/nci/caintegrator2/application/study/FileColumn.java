@@ -86,8 +86,9 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.common.DateUtil;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -291,16 +292,38 @@ public class FileColumn extends AbstractCaIntegrator2Object implements Comparabl
         }
     }
 
-    void retrieveOrCreateFieldDescriptor(CaIntegrator2Dao dao, StudyConfiguration studyConfiguration) {
+    void retrieveOrCreateFieldDescriptor(StudyManagementService studyManagementService,
+            StudyConfiguration studyConfiguration, EntityTypeEnum type, boolean createNewAnnotationDefinition) {
         if (studyConfiguration != null) {
-            setFieldDescriptor(dao.getExistingFieldDescriptorInStudy(getName(), studyConfiguration));
+            fieldDescriptor = studyManagementService.getExistingFieldDescriptorInStudy(getName(), studyConfiguration);
         }
-        if (getFieldDescriptor() == null) {
-            setFieldDescriptor(new AnnotationFieldDescriptor());
-            getFieldDescriptor().setName(getName());
-            getFieldDescriptor().setType(AnnotationFieldType.ANNOTATION);
-            getFieldDescriptor().setDefinition(dao.getAnnotationDefinition(getName()));
+        if (fieldDescriptor == null) {
+            fieldDescriptor = new AnnotationFieldDescriptor();
+            fieldDescriptor.setName(getName());
+            fieldDescriptor.setType(AnnotationFieldType.ANNOTATION);
+            fieldDescriptor.setDefinition(studyManagementService.getAnnotationDefinition(getName()));
+            if (createNewAnnotationDefinition) {
+                createNewAnnotationDefinition(fieldDescriptor, studyManagementService);
+            }
+            AnnotationGroup defaultGroup = studyManagementService.getDefaultAnnotationGroup(
+                    studyConfiguration, type);
+            fieldDescriptor.setAnnotationGroup(defaultGroup);
+            studyManagementService.daoSave(fieldDescriptor);
+            defaultGroup.getAnnotationFieldDescriptors().add(fieldDescriptor);
+            studyManagementService.daoSave(defaultGroup);
         }
+    }
+
+    private void createNewAnnotationDefinition(AnnotationFieldDescriptor fieldDescriptor2,
+            StudyManagementService studyManagementService) {
+        AnnotationDefinition annotationDefinition = studyManagementService.getAnnotationDefinition(
+                fieldDescriptor2.getName());
+        if (annotationDefinition == null) {
+            annotationDefinition = new AnnotationDefinition();
+            annotationDefinition.setDefault(fieldDescriptor2.getName());
+            studyManagementService.daoSave(annotationDefinition);
+        }
+        fieldDescriptor2.setDefinition(annotationDefinition);
     }
 
 }

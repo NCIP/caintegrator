@@ -100,7 +100,8 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
     private File clinicalFile;
     private String clinicalFileContentType;
     private String clinicalFileFileName;
-   
+    private boolean createNewAnnotationDefinition = false;
+
     /**
      * {@inheritDoc}
      */
@@ -117,7 +118,7 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
         try {
             DelimitedTextClinicalSourceConfiguration clinicalSource = 
                 getStudyManagementService().addClinicalAnnotationFile(getStudyConfiguration(), getClinicalFile(), 
-                        getClinicalFileFileName());
+                        getClinicalFileFileName(), createNewAnnotationDefinition);
             setClinicalSource(clinicalSource);
             setLastModifiedByCurrentUser();
             return SUCCESS;
@@ -183,6 +184,20 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
      */
     public void setClinicalFileFileName(String clinicalFileFileName) {
         this.clinicalFileFileName = clinicalFileFileName;
+    }
+   
+    /**
+     * @return the createNewAnnotationDefinition
+     */
+    public boolean isCreateNewAnnotationDefinition() {
+        return createNewAnnotationDefinition;
+    }
+
+    /**
+     * @param createNewAnnotationDefinition the createNewAnnotationDefinition to set
+     */
+    public void setCreateNewAnnotationDefinition(boolean createNewAnnotationDefinition) {
+        this.createNewAnnotationDefinition = createNewAnnotationDefinition;
     }
     
 }

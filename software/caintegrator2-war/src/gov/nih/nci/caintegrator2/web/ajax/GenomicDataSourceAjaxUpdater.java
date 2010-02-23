@@ -194,7 +194,7 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
      * @param genomicSource to save and update.
      */
     public void saveAndUpdateJobStatus(String username, GenomicDataSourceConfiguration genomicSource) {
-        getStudyManagementService().saveGenomicDataSource(genomicSource);
+        getStudyManagementService().daoSave(genomicSource);
         updateJobStatus(username, genomicSource, true);
     }
 
