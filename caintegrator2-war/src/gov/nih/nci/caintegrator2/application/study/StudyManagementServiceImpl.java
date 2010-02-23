@@ -1141,7 +1141,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             AnnotationGroup annotationGroup, AnnotationGroupUploadContent uploadContent)
     throws ConnectionException, ValidationException {
         AnnotationFieldDescriptor annotationFieldDescriptor = uploadContent.createAnnotationFieldDescriptor(
-                studyConfiguration, getDao());
+                studyConfiguration, this);
         annotationFieldDescriptor.setAnnotationGroup(annotationGroup);
         if (annotationFieldDescriptor.getDefinition() == null) {
             AnnotationDefinition annotationDefinition = createAnnotationDefinition(uploadContent);
@@ -1160,7 +1160,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                     uploadContent.getVersion());
             annotationDefinition.setKeywords(uploadContent.getDefinitionName());
         } else {
-            annotationDefinition = uploadContent.createAnnotationDefinition(getDao());
+            annotationDefinition = uploadContent.createAnnotationDefinition(this);
         }
         return annotationDefinition;
     }
