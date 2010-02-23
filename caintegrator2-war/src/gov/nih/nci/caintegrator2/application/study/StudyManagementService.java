@@ -129,18 +129,6 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
     void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException;
     
     /**
-     * Saves a genomic source.
-     * @param genomicSource to save.
-     */
-    void saveGenomicDataSource(GenomicDataSourceConfiguration genomicSource);
-    
-    /**
-     * Saves an imaging source.
-     * @param imagingSource to save.
-     */
-    void saveImagingDataSource(ImageDataSourceConfiguration imagingSource);
-    
-    /**
      * Deletes a study.
      * 
      * @param studyConfiguration study to delete
@@ -190,12 +178,14 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @param annotationFile annotation file to add.
      * @param filename the name with which the annotation file should be stored 
      *        (allows for the use of files with temp names as input)
+     * @param createNewAnnotationDefinition create new annotation definition when one is not found
      * @return the clinical source configuration created.
      * @throws ValidationException if the file was not a valid annotation file.
      * @throws IOException if the annotation file couldn't be copied to permanent storage.
      */
     DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration, 
-            File annotationFile, String filename) throws ValidationException, IOException;
+            File annotationFile, String filename, boolean createNewAnnotationDefinition)
+    throws ValidationException, IOException;
     
     /**
      * Adds a logo to the study.
@@ -329,12 +319,14 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @param annotationFile annotation file to add.
      * @param filename the name with which the annotation file should be stored 
      *        (allows for the use of files with temp names as input)
+     * @param createNewAnnotationDefinition create new annotation definition when one is not found
      * @return the clinical source configuration created.
      * @throws ValidationException if the file was not a valid annotation file.
      * @throws IOException if the annotation file couldn't be copied to permanent storage.
      */
     ImageAnnotationConfiguration addImageAnnotationFile(ImageDataSourceConfiguration imageDataSourceConfiguration, 
-            File annotationFile, String filename) throws ValidationException, IOException;
+            File annotationFile, String filename, boolean createNewAnnotationDefinition)
+    throws ValidationException, IOException;
 
     /**
      * Loads image annotations given an image data source configuration.
@@ -564,4 +556,32 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @param descriptor to save.
      */
     void makeFieldDescriptorValid(AnnotationFieldDescriptor descriptor);
+
+    /**
+     * Retrieve the annotation field descriptor with the input name.
+     * @param name to retrieve
+     * @param studyConfiguration to retrieve from
+     * @return an AnnotationFieldDescriptor or null if not found
+     */
+    AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name, StudyConfiguration studyConfiguration);
+
+    /**
+     * Retrieve the annotation definition with the input name.
+     * @param name to retrieve
+     * @return an AnnotationDefinition or null if not found
+     */
+    AnnotationDefinition getAnnotationDefinition(String name);
+
+    /**
+     * Retrieve the default annotation group, create one if none exist.
+     * @param studyConfiguration to retrieve from
+     * @param type to retrieve
+     * @return the default annotation group
+     */
+    AnnotationGroup getDefaultAnnotationGroup(StudyConfiguration studyConfiguration, EntityTypeEnum type);
+
+    /**
+     * @param persistentObject to save
+     */
+    void daoSave(Object persistentObject);
 }

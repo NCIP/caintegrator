@@ -96,7 +96,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -119,7 +119,7 @@ public class AnnotationFileTest {
     
     private AnnotationFile createAnnotationFile(File file)
         throws ValidationException, IOException {
-        return AnnotationFile.load(file, new CaIntegrator2DaoStub());
+        return AnnotationFile.load(file, new StudyManagementServiceStub(), EntityTypeEnum.SUBJECT);
     }
 
     /**

@@ -41,6 +41,9 @@ public class Study extends AbstractCaIntegrator2Object {
     private Set<AnnotationGroup> annotationGroups = new HashSet<AnnotationGroup>();
     private StudyConfiguration studyConfiguration;
 
+    private static final String DEFAULT_SUBJECT_ANNOTATION_GROUP = "Subject Annotation - Default";
+    private static final String DEFAULT_IMAGING_ANNOTATION_GROUP = "Imaging Annotation - Default";
+
     /**
      * @return the studyConfiguration
      */
@@ -343,4 +346,33 @@ public class Study extends AbstractCaIntegrator2Object {
         return sortedAnnotationGroups;
     }
 
+    /**
+     * @return the default SubjectAnnotationGroup
+     */
+    public AnnotationGroup getDefaultSubjectAnnotationGroup() {
+        return getAnnotationGroup(DEFAULT_SUBJECT_ANNOTATION_GROUP);
+    }
+
+    /**
+     * @return the default ImagingAnnotationGroup
+     */
+    public AnnotationGroup getDefaultImagingAnnotationGroup() {
+        return getAnnotationGroup(DEFAULT_IMAGING_ANNOTATION_GROUP);
+    }
+
+    /**
+     * @param type the type of the group
+     * @return the created annotation group
+     */
+    public AnnotationGroup createDefaultAnnotationGroup(EntityTypeEnum type) {
+        String name = EntityTypeEnum.SUBJECT.equals(type) ? DEFAULT_SUBJECT_ANNOTATION_GROUP
+                : DEFAULT_IMAGING_ANNOTATION_GROUP;
+        AnnotationGroup defaultGroup = new AnnotationGroup();
+        defaultGroup.setName(name);
+        defaultGroup.setStudy(this);
+        defaultGroup.setAnnotationEntityType(type);
+        defaultGroup.setDescription("Default " + type.getValue() + " annotation group");
+        getAnnotationGroups().add(defaultGroup);
+        return defaultGroup;
+    }
 }

@@ -87,11 +87,10 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import static gov.nih.nci.caintegrator2.TestDataFiles.VALID_FILE;
 import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
 import java.util.Set;
-
-import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 /**
  * 
@@ -122,7 +121,7 @@ public final class AnnotationFileGenerator extends AbstractTestDataGenerator<Ann
     @Override
     public AnnotationFile createPersistentObject() {
         try {
-            return AnnotationFile.load(VALID_FILE, new CaIntegrator2DaoStub());
+            return AnnotationFile.load(VALID_FILE, new StudyManagementServiceStub(), EntityTypeEnum.SUBJECT);
         } catch (ValidationException e) {
             return null;
         }

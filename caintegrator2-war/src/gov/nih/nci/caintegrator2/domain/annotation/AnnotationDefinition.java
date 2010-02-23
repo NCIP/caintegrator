@@ -18,8 +18,17 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
     
     private CommonDataElement commonDataElement = new CommonDataElement();
     private Set<AbstractAnnotationValue> annotationValueCollection = new HashSet<AbstractAnnotationValue>();
-    
-    
+
+    /**
+     * Set default data type as string and commonDataElement.longName the same as the keyword.
+     * @param name the keywords to set
+     */
+    public void setDefault(String name) {
+        this.keywords = name;
+        commonDataElement.setLongName(name);
+        commonDataElement.getValueDomain().setDataTypeString("string");
+    }
+
     /**
      * @return the keywords
      */

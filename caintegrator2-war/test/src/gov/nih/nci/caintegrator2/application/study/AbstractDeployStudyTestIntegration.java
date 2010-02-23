@@ -339,7 +339,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             logStart();
             ImageAnnotationConfiguration imageAnnotationConfiguration = 
                 service.addImageAnnotationFile(imageSource, getImageAnnotationFile(), 
-                        getImageAnnotationFile().getName());
+                        getImageAnnotationFile().getName(), false);
             imageSource.setImageAnnotationConfiguration(imageAnnotationConfiguration);
             imageAnnotationConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
             for (ImageDataSourceConfiguration configuration : studyConfiguration.getImageDataSources()) {
@@ -500,7 +500,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         logStart();
         sourceConfiguration = 
             service.addClinicalAnnotationFile(studyConfiguration, getSubjectAnnotationFile(), 
-                    getSubjectAnnotationFile().getName());
+                    getSubjectAnnotationFile().getName(), false);
         sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
         assertTrue(sourceConfiguration.isLoadable());
         service.loadClinicalAnnotation(studyConfiguration, sourceConfiguration);

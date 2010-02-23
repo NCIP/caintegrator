@@ -114,6 +114,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
     private String imageClinicalMappingFileFileName;
     private ImageDataSourceMappingTypeEnum mappingType = ImageDataSourceMappingTypeEnum.AUTO;
     private IImagingDataSourceAjaxUpdater updater;
+    private boolean createNewAnnotationDefinition = false;
     private boolean cancelAction = false;
 
     /**
@@ -205,7 +206,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
         if (!mapOnly) {
             getStudyManagementService().addImageSourceToStudy(getStudyConfiguration(), getImageSourceConfiguration());
         }
-        getStudyManagementService().saveImagingDataSource(getImageSourceConfiguration());
+        getStudyManagementService().daoSave(getImageSourceConfiguration());
         updater.runJob(getImageSourceConfiguration().getId(), newMappingFile, mappingType, mapOnly);
         return SUCCESS;
     }
@@ -258,7 +259,8 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             setLastModifiedByCurrentUser();
             getImageSourceConfiguration().setImageAnnotationConfiguration(
                     getStudyManagementService().addImageAnnotationFile(getImageSourceConfiguration(),
-                            getImageAnnotationFile(), getImageAnnotationFileFileName()));
+                            getImageAnnotationFile(), getImageAnnotationFileFileName(),
+                            createNewAnnotationDefinition));
             getStudyManagementService().save(getStudyConfiguration());
         } catch (ValidationException e) {
             addFieldError("imageAnnotationFile", "Invalid file: " + e.getResult().getInvalidMessage());
@@ -428,6 +430,20 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
      */
     public void setCancelAction(boolean cancelAction) {
         this.cancelAction = cancelAction;
+    }
+
+    /**
+     * @return the createNewAnnotationDefinition
+     */
+    public boolean isCreateNewAnnotationDefinition() {
+        return createNewAnnotationDefinition;
+    }
+
+    /**
+     * @param createNewAnnotationDefinition the createNewAnnotationDefinition to set
+     */
+    public void setCreateNewAnnotationDefinition(boolean createNewAnnotationDefinition) {
+        this.createNewAnnotationDefinition = createNewAnnotationDefinition;
     }
 
 }
