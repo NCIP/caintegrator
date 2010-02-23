@@ -250,8 +250,41 @@ public class StudyManagementServiceTest {
         sourceConfiguration.getAnnotationFile().getColumns().get(2).getFieldDescriptor().setDefinition(definition);
         definition = new AnnotationDefinition();
         definition.setDataType(AnnotationTypeEnum.STRING);
+        PermissibleValue pv = new PermissibleValue();
+        pv.setValue("testValue");
+        definition.getPermissibleValueCollection().add(pv);
+        sourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
+        sourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setHasValidationErrors(true);
+        definition = new AnnotationDefinition();
+        definition.setDataType(AnnotationTypeEnum.DATE);
+        sourceConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
+        studyManagementService.loadClinicalAnnotation(studyConfiguration, sourceConfiguration); 
+        studyManagementService.reLoadClinicalAnnotation(studyConfiguration); 
+        assertFalse(sourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().isHasValidationErrors());
+    }
+    
+    
+    @Test(expected=ValidationException.class)
+    public void testLoadInvalidClinicalAnnotation() throws ValidationException, IOException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyManagementService.save(studyConfiguration);
+        DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
+            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
+        sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
+        AnnotationDefinition definition = new AnnotationDefinition();
+        definition.setDataType(AnnotationTypeEnum.NUMERIC);
+        sourceConfiguration.getAnnotationFile().getColumns().get(1).getFieldDescriptor().setDefinition(definition);
+        definition = new AnnotationDefinition();
+        definition.setDataType(AnnotationTypeEnum.STRING);
+        sourceConfiguration.getAnnotationFile().getColumns().get(2).getFieldDescriptor().setDefinition(definition);
+        definition = new AnnotationDefinition();
+        definition.setDataType(AnnotationTypeEnum.STRING);
+        PermissibleValue pv = new PermissibleValue();
+        pv.setValue("testValue");
+        definition.getPermissibleValueCollection().add(pv);
         sourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
         definition = new AnnotationDefinition();
+        daoStub.fileColumns.add(sourceConfiguration.getAnnotationFile().getColumns().get(3));
         definition.setDataType(AnnotationTypeEnum.DATE);
         sourceConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
         studyManagementService.loadClinicalAnnotation(studyConfiguration, sourceConfiguration); 

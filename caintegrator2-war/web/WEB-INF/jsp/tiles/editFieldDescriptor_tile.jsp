@@ -58,6 +58,12 @@
     <p>Modify the current annotation definition and click <strong>Save</strong> or search for a new annotation definition and click <strong>Select</strong>.</p>
     <div class="form_wrapper_outer">
     <table class="form_wrapper_table">
+            <s:if test="fieldDescriptor.hasValidationErrors">
+            <tr>
+                <td colspan="2"><font class="formErrorMsg">There was an error with the last file data load: <br>
+                <s:property value="fieldDescriptor.validationErrorMessage"/></font></td>
+            </tr>
+            </s:if>
             <tr>
                 <th class="title" style="height: 2.5em;">Current Annotation Definition:</th>
                 <th class="alignright">&nbsp;</th>

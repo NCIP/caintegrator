@@ -109,6 +109,12 @@
 	                                </s:if>
 	                            </td>
 	                            <td>
+                                <s:if test="%{fieldDescriptor.hasValidationErrors}">
+                                    <font class="formErrorMsg">
+                                </s:if>
+                                <s:else>
+                                    <font color="black">
+                                </s:else>
 	                                <s:if test="%{identifierType}">
 	                                    Identifier
 	                                </s:if>
@@ -123,7 +129,8 @@
 	                                    <s:param name="groupId" value="annotationGroup.id" />
 	                                    <s:param name="fieldDescriptor.id" value="fieldDescriptor.id" />
 	                                </s:url>
-	                                <br>
+	                                </font>
+                                	<br>
 	                                <s:a href="%{editGroupFieldDescriptor}">
 	                                    <s:if test="%{identifierType || timepointType || (fieldDescriptor != null && fieldDescriptor.definition != null) }">
 	                                        Change Assignment

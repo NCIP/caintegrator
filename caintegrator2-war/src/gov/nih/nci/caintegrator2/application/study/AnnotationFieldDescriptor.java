@@ -102,6 +102,7 @@ public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
     private Boolean hasValidationErrors = false;
     private Boolean usePermissibleValues = false;
     private AnnotationGroup annotationGroup;
+    private String validationErrorMessage;
 
     /**
      * @return the name
@@ -219,5 +220,19 @@ public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
         if (this.annotationGroup != null) {
             annotationGroup.getAnnotationFieldDescriptors().remove(this);
         }
+    }
+
+    /**
+     * @return the validationErrorMessage
+     */
+    public String getValidationErrorMessage() {
+        return validationErrorMessage;
+    }
+
+    /**
+     * @param validationErrorMessage the validationErrorMessage to set
+     */
+    public void setValidationErrorMessage(String validationErrorMessage) {
+        this.validationErrorMessage = validationErrorMessage;
     }
 }

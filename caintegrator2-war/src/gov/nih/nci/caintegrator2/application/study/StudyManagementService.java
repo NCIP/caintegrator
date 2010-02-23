@@ -558,4 +558,10 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      */
     Set<String> getAvailableValuesForFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) 
     throws ValidationException;
+    
+    /**
+     * Makes a fieldDescriptor valid, and then saves it.
+     * @param descriptor to save.
+     */
+    void makeFieldDescriptorValid(AnnotationFieldDescriptor descriptor);
 }
