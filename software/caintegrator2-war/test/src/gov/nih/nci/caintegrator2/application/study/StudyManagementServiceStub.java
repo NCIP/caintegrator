@@ -548,4 +548,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return new HashSet<String>();
     }
 
+    public void makeFieldDescriptorValid(AnnotationFieldDescriptor descriptor) {
+        
+    }
+
 }

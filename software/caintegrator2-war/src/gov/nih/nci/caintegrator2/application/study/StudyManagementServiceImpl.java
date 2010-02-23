@@ -146,6 +146,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     @SuppressWarnings("unused")
     private static final Logger LOGGER = Logger.getLogger(StudyManagementServiceImpl.class);
     private static final int DEFINITION_LENGTH = 1000;
+    private static final int MAX_ERROR_MESSAGE_LENGTH = 500;
     private FileManager fileManager;
     private CaDSRFacade caDSRFacade;
     private NCIAFacade nciaFacade;
@@ -281,8 +282,48 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
             AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
         throws ValidationException {
-        clinicalSourceConfiguration.loadAnnontation();
-        save(studyConfiguration);
+        if (validateAnnotationFieldDescriptors(studyConfiguration, 
+                clinicalSourceConfiguration.getAnnotationDescriptors(), EntityTypeEnum.SUBJECT)) {
+            clinicalSourceConfiguration.loadAnnontation();
+            save(studyConfiguration);
+        } else {
+            throw new ValidationException("Unable to load clinical source due to invalid values being loaded.  " 
+                + "Check the annotations on the edit screen for more details.");
+        }
+    }
+
+    private boolean validateAnnotationFieldDescriptors(StudyConfiguration studyConfiguration,
+            Collection<AnnotationFieldDescriptor> descriptors, EntityTypeEnum entityType) {
+        boolean isValid = true;
+        for (AnnotationFieldDescriptor descriptor : descriptors) {
+            AnnotationDefinition definition = descriptor.getDefinition();
+            if (definition != null && !definition.getPermissibleValueCollection().isEmpty()) {
+                try {
+                    validateAnnotationDefinition(descriptor, studyConfiguration.getStudy(), 
+                        entityType, definition);
+                    if (descriptor.isHasValidationErrors()) {
+                        makeFieldDescriptorValid(descriptor);
+                    }
+                } catch (ValidationException e) {
+                    isValid = false;
+                    descriptor.setHasValidationErrors(true);
+                    String invalidMessage = e.getResult().getInvalidMessage();
+                    descriptor.setValidationErrorMessage(invalidMessage.length() >= MAX_ERROR_MESSAGE_LENGTH
+                            ? invalidMessage.substring(0, MAX_ERROR_MESSAGE_LENGTH - 1) : invalidMessage);
+                    getDao().save(descriptor);
+                }
+            }
+        }
+        return isValid;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void makeFieldDescriptorValid(AnnotationFieldDescriptor descriptor) {
+        descriptor.setHasValidationErrors(false);
+        descriptor.setValidationErrorMessage(null);
+        getDao().save(descriptor);
     }
 
     /**
@@ -646,11 +687,11 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         if (!invalidValues.isEmpty()) {
             StringBuffer message = new StringBuffer();
             message.append("The following values exist that are NOT permissible for '" 
-                            + annotationDefinition.getDisplayName() + "': <br> {");
+                            + annotationDefinition.getDisplayName() + "': {");
             for (String invalidValue : invalidValues) {
                 message.append(" '" + invalidValue + "' ");
             }
-            message.append("} <br> Please select a different Data Element.");
+            message.append("} Please select a different Data Element.");
             validationResult.setValid(false);
             validationResult.setInvalidMessage(message.toString());
             throw new ValidationException(validationResult);
@@ -777,9 +818,16 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     public void loadImageAnnotation(ImageDataSourceConfiguration imageDataSource) throws ValidationException {
-        imageDataSource.getImageAnnotationConfiguration().loadAnnontation();
-        imageDataSource.setStatus(retrieveImageSourceStatus(imageDataSource.getImageAnnotationConfiguration()));
-        getDao().save(imageDataSource);
+        ImageAnnotationConfiguration imageAnnotationConfiguration = imageDataSource.getImageAnnotationConfiguration();
+        if (validateAnnotationFieldDescriptors(imageDataSource.getStudyConfiguration(), 
+                imageAnnotationConfiguration.getAnnotationDescriptors(), EntityTypeEnum.IMAGESERIES)) {
+            imageAnnotationConfiguration.loadAnnontation();
+            imageDataSource.setStatus(retrieveImageSourceStatus(imageAnnotationConfiguration));
+            getDao().save(imageDataSource);
+        } else {
+            throw new ValidationException("Unable to load clinical source due to invalid values being loaded.  " 
+                + "Check the annotations on the edit screen for more details.");
+        }
     }
 
     /**
