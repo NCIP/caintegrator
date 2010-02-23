@@ -121,4 +121,8 @@
         <comment>Delete the columns IDENTIFIER_COLUMN_ID and TIMEPOINT_COLUMN_ID out of ANNOTATION_FILE</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.15.2.sql"/>
     </changeSet>
+    <changeSet id="1.1.16" author="tandrews">
+        <comment>Adds VALIDATION_ERROR_MESSAGE to ANNOTATION_FIELD_DESCRIPTOR</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.16.sql"/>
+    </changeSet>
 </databaseChangeLog>

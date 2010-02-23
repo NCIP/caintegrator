@@ -20,6 +20,8 @@
         
         <property name="hasValidationErrors" type="boolean" column="HAS_VALIDATION_ERRORS"/>
         
+        <property name="validationErrorMessage" type="string" column="VALIDATION_ERROR_MESSAGE" />
+        
         <property name="usePermissibleValues" type="boolean" column="USE_PERMISSIBLE_VALUES"/>
         
         <many-to-one name="annotationGroup" class="AnnotationGroup" column="ANNOTATION_GROUP_ID"

@@ -191,6 +191,7 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
             addActionError(e.getMessage());
             return ERROR;
         }
+        getStudyManagementService().makeFieldDescriptorValid(fieldDescriptor);
         getStudyManagementService().save(getStudyConfiguration());
         updateDataSourceStatus();
         clearCacheMemory();
@@ -212,6 +213,7 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
                                                   fieldDescriptor, 
                                                   definitionToUse,
                                                   getEntityType());
+            getStudyManagementService().makeFieldDescriptorValid(fieldDescriptor);
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
             setFieldDescriptor(originalFieldDescriptor);
@@ -245,6 +247,7 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
         getPermissibleUpdateList().addAll(getAvailableValues());
         updatePermissible();
         clearCacheMemory();
+        getStudyManagementService().makeFieldDescriptorValid(fieldDescriptor);
         return SUCCESS;
     }
     
@@ -262,6 +265,7 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
                                                        getStudyConfiguration().getStudy(),
                                                        getEntityType(),
                                                        getKeywordsForSearch());
+            getStudyManagementService().makeFieldDescriptorValid(fieldDescriptor);
         } catch (ConnectionException e) {
             addActionError(e.getMessage());
             setFieldDescriptor(originalFieldDescriptor);
@@ -300,6 +304,7 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
                  && fieldDescriptor.getDefinition() != null) {
                 getStudyManagementService().save(fieldDescriptor.getDefinition());
             }
+            getStudyManagementService().makeFieldDescriptorValid(fieldDescriptor);
         } catch (ValidationException e) {
             addActionError(e.getMessage());
             clearCacheMemory();
