@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.application.study;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
@@ -99,7 +98,7 @@ import org.junit.Test;
 public class AnnotationGroupUploadTest {
 
     AnnotationGroupUploadContent uploadContent;
-    private MyDaoStub daoStub = new MyDaoStub();
+    private MyStudyManagementServiceStub studyManagementServiceStub = new MyStudyManagementServiceStub();
 
     
     @Before
@@ -145,14 +144,14 @@ public class AnnotationGroupUploadTest {
         StudyConfiguration studyConfiguration = createStudyConfiguration();
         AnnotationFieldDescriptor afd;
         AnnotationDefinition ad;
-        afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration, daoStub);
+        afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration, studyManagementServiceStub);
         assertNull(afd.getId());
         
         // Test reuse existing Subject 
         uploadContent.setColumnName("Subject");
         uploadContent.setAnnotationType("identifier");
         uploadContent.setDataType("string");
-        afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration, daoStub);
+        afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration, studyManagementServiceStub);
         assertEquals(1L, afd.getId().longValue());
         
         // Test existing Subject not matching data type 
@@ -161,7 +160,7 @@ public class AnnotationGroupUploadTest {
         uploadContent.setDataType("numeric");
         boolean gotException = false;
         try {
-            afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration, daoStub);
+            afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration, studyManagementServiceStub);
         } catch (ValidationException e) {
             gotException = true;
         }
@@ -171,12 +170,12 @@ public class AnnotationGroupUploadTest {
         uploadContent.setColumnName("Gender");
         uploadContent.setDataType("string");
         uploadContent.setAnnotationType("annotation");
-        ad = uploadContent.createAnnotationDefinition(daoStub);
+        ad = uploadContent.createAnnotationDefinition(studyManagementServiceStub);
         assertNull(ad.getId());
         
         // Test existing annotation definition gender
         uploadContent.setDefinitionName("Gender");
-        ad = uploadContent.createAnnotationDefinition(daoStub);
+        ad = uploadContent.createAnnotationDefinition(studyManagementServiceStub);
         assertEquals(1L, ad.getId().longValue());
         
         // Test existing annotation definition gender not matching data type
@@ -184,7 +183,7 @@ public class AnnotationGroupUploadTest {
         uploadContent.setDataType("numeric");
         gotException = false;
         try {
-            ad = uploadContent.createAnnotationDefinition(daoStub);
+            ad = uploadContent.createAnnotationDefinition(studyManagementServiceStub);
         } catch (ValidationException e) {
             gotException = true;
         }
@@ -198,13 +197,7 @@ public class AnnotationGroupUploadTest {
         return studyConfiguration;
     }
     
-    class MyDaoStub extends CaIntegrator2DaoStub {
-
-        @Override
-        public AnnotationDefinition getAnnotationDefinition(Long cdeId, Float version) {
-            // TODO Auto-generated method stub
-            return super.getAnnotationDefinition(cdeId, version);
-        }
+    class MyStudyManagementServiceStub extends StudyManagementServiceStub {
 
         @Override
         public AnnotationDefinition getAnnotationDefinition(String name) {
