@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
-import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
@@ -403,38 +402,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             }
         }
         return result;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
-    public AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name,
-            StudyConfiguration studyConfiguration) {
-        Set<AnnotationFieldDescriptor> allDescriptors = new HashSet<AnnotationFieldDescriptor>();
-        for (AbstractClinicalSourceConfiguration source : studyConfiguration.getClinicalConfigurationCollection()) {
-            allDescriptors.addAll(source.getAnnotationDescriptors());
-        }
-        for (ImageDataSourceConfiguration source : studyConfiguration.getImageDataSources()) {
-            if (source.getImageAnnotationConfiguration() != null) {
-                allDescriptors.addAll(source.getImageAnnotationConfiguration().getAnnotationDescriptors());
-            }
-        }
-        Criteria criteria = getCurrentSession().createCriteria(AnnotationFieldDescriptor.class).
-                    createCriteria("annotationGroup").
-                    add(Restrictions.eq(STUDY_ASSOCIATION, studyConfiguration.getStudy()));
-        allDescriptors.addAll(criteria.list());
-        return getMatchingDescriptor(name, allDescriptors);
-    }
-
-    private AnnotationFieldDescriptor getMatchingDescriptor(String name, 
-            Collection<AnnotationFieldDescriptor> descriptors) {
-        for (AnnotationFieldDescriptor descriptor : descriptors) {
-            if (descriptor.getName().equals(name)) {
-                return descriptor;
-            }
-        }
-        return null;
     }
     
     /**

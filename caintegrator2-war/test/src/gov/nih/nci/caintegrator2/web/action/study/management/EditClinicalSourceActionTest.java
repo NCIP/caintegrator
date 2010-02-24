@@ -96,7 +96,6 @@ import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import org.junit.Before;
@@ -131,7 +130,7 @@ public class EditClinicalSourceActionTest extends AbstractSessionBasedTest {
         action.prepare();
         assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
         assertEquals(2, action.getDisplayableFields().size());
-        assertEquals(1, action.getSelectableAnnotationGroups().size());
+        assertEquals(2, action.getSelectableAnnotationGroups().size());
     }
     
     @Test
@@ -146,11 +145,9 @@ public class EditClinicalSourceActionTest extends AbstractSessionBasedTest {
     private void setupActionVariables() {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         AnnotationGroup annotationGroup = new AnnotationGroup();
-        annotationGroup.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
         annotationGroup.setName("subjectGroup");
         AnnotationGroup annotationGroup2 = new AnnotationGroup();
         annotationGroup2.setName("imageSeriesGroup");
-        annotationGroup2.setAnnotationEntityType(EntityTypeEnum.IMAGESERIES);
         studyConfiguration.getStudy().getAnnotationGroups().add(annotationGroup);
         studyConfiguration.getStudy().getAnnotationGroups().add(annotationGroup2);
         action.setStudyConfiguration(studyConfiguration);

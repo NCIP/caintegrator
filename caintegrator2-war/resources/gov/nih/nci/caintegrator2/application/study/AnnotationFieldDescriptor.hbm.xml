@@ -5,6 +5,9 @@
     <typedef name="AnnotationFieldType" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
        <param name="enumClass">gov.nih.nci.caintegrator2.application.study.AnnotationFieldType</param> 
     </typedef> 
+    <typedef name="EntityTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum</param> 
+    </typedef> 
 	<class name="AnnotationFieldDescriptor" table="ANNOTATION_FIELD_DESCRIPTOR" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
         
@@ -15,6 +18,8 @@
         <property name="name" type="string" column="NAME"/>
                 
         <property name="type" type="AnnotationFieldType" column="TYPE"/>
+        
+        <property name="annotationEntityType" type="EntityTypeEnum" column="ENTITY_TYPE" />
         
         <property name="shownInBrowse" type="boolean" column="SHOWN_IN_BROWSE"/>
         
@@ -28,7 +33,7 @@
             lazy="proxy" cascade="none" />
         
 		<many-to-one name="definition" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID"
-		    lazy="proxy" cascade="none" />
+		    lazy="proxy" cascade="save-update" />
             
 	</class>
 </hibernate-mapping>

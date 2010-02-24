@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.common.DateUtil;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
@@ -292,38 +293,38 @@ public class FileColumn extends AbstractCaIntegrator2Object implements Comparabl
         }
     }
 
-    void retrieveOrCreateFieldDescriptor(StudyManagementService studyManagementService,
-            StudyConfiguration studyConfiguration, EntityTypeEnum type, boolean createNewAnnotationDefinition) {
+    void retrieveOrCreateFieldDescriptor(CaIntegrator2Dao dao,
+            StudyConfiguration studyConfiguration, EntityTypeEnum type, boolean createNewAnnotationDefinition) 
+        throws ValidationException {
         if (studyConfiguration != null) {
-            fieldDescriptor = studyManagementService.getExistingFieldDescriptorInStudy(getName(), studyConfiguration);
+            fieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy(getName());
+            validateFieldDescriptorEntityType(type);
         }
         if (fieldDescriptor == null) {
             fieldDescriptor = new AnnotationFieldDescriptor();
             fieldDescriptor.setName(getName());
             fieldDescriptor.setType(AnnotationFieldType.ANNOTATION);
-            fieldDescriptor.setDefinition(studyManagementService.getAnnotationDefinition(getName()));
-            if (createNewAnnotationDefinition) {
-                createNewAnnotationDefinition(fieldDescriptor, studyManagementService);
+            fieldDescriptor.setAnnotationEntityType(type);
+            fieldDescriptor.setDefinition(dao.getAnnotationDefinition(getName()));
+            if (createNewAnnotationDefinition && fieldDescriptor.getDefinition() == null) {
+                AnnotationDefinition annotationDefinition = new AnnotationDefinition();
+                annotationDefinition.setDefault(fieldDescriptor.getName());
+                fieldDescriptor.setDefinition(annotationDefinition);
             }
-            AnnotationGroup defaultGroup = studyManagementService.getDefaultAnnotationGroup(
-                    studyConfiguration, type);
+            AnnotationGroup defaultGroup = studyConfiguration.getStudy().getOrCreateDefaultAnnotationGroup();
             fieldDescriptor.setAnnotationGroup(defaultGroup);
-            studyManagementService.daoSave(fieldDescriptor);
             defaultGroup.getAnnotationFieldDescriptors().add(fieldDescriptor);
-            studyManagementService.daoSave(defaultGroup);
         }
     }
 
-    private void createNewAnnotationDefinition(AnnotationFieldDescriptor fieldDescriptor2,
-            StudyManagementService studyManagementService) {
-        AnnotationDefinition annotationDefinition = studyManagementService.getAnnotationDefinition(
-                fieldDescriptor2.getName());
-        if (annotationDefinition == null) {
-            annotationDefinition = new AnnotationDefinition();
-            annotationDefinition.setDefault(fieldDescriptor2.getName());
-            studyManagementService.daoSave(annotationDefinition);
+
+    private void validateFieldDescriptorEntityType(EntityTypeEnum entityType) throws ValidationException {
+        if (fieldDescriptor != null && !entityType.equals(fieldDescriptor.getAnnotationEntityType())) {
+            throw new ValidationException(
+                    "Found a currently existing field descriptor with the same name in this study of type '"
+                            + fieldDescriptor.getAnnotationEntityType() + "' which doesn't match type "
+                            + entityType);
         }
-        fieldDescriptor2.setDefinition(annotationDefinition);
     }
 
 }

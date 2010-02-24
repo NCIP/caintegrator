@@ -89,7 +89,6 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
@@ -246,14 +245,6 @@ public interface CaIntegrator2Dao {
      */
     AnnotationDefinition getAnnotationDefinition(Long cdeId, Float version);
     
-    /**
-     * Retrieves any existing field descriptors with the given name for the given study.
-     * @param name to search existing annotation field descriptors for.
-     * @param studyConfiguration study to search for existing annotation field descriptors.
-     * @return any matching AnnotationFieldDescriptor in the study with the given name.
-     */
-    AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name, StudyConfiguration studyConfiguration);
-
     /**
      * Returns the gene that matches the given symbol or null if no match is found.
      * 

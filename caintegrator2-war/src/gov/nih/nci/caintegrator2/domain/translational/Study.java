@@ -5,7 +5,6 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -41,8 +40,7 @@ public class Study extends AbstractCaIntegrator2Object {
     private Set<AnnotationGroup> annotationGroups = new HashSet<AnnotationGroup>();
     private StudyConfiguration studyConfiguration;
 
-    private static final String DEFAULT_SUBJECT_ANNOTATION_GROUP = "Subject Annotation - Default";
-    private static final String DEFAULT_IMAGING_ANNOTATION_GROUP = "Imaging Annotation - Default";
+    private static final String DEFAULT_ANNOTATION_GROUP = "Annotations - Default";
 
     /**
      * @return the studyConfiguration
@@ -330,48 +328,25 @@ public class Study extends AbstractCaIntegrator2Object {
         Collections.sort(annotationGroupList);
         return annotationGroupList;
     }
-    
-    /**
-     * 
-     * @param entityType for the groups to retrieve.
-     * @return sorted annotation groups, of the given entity type.
-     */
-    public List<AnnotationGroup> getSortedAnnotationGroupsForEntityType(EntityTypeEnum entityType) {
-        List<AnnotationGroup> sortedAnnotationGroups = new ArrayList<AnnotationGroup>();
-        for (AnnotationGroup annotationGroup : getSortedAnnotationGroups()) {
-            if (entityType.equals(annotationGroup.getAnnotationEntityType())) {
-                sortedAnnotationGroups.add(annotationGroup);
-            }
-        }
-        return sortedAnnotationGroups;
-    }
 
     /**
      * @return the default SubjectAnnotationGroup
      */
-    public AnnotationGroup getDefaultSubjectAnnotationGroup() {
-        return getAnnotationGroup(DEFAULT_SUBJECT_ANNOTATION_GROUP);
+    public AnnotationGroup getOrCreateDefaultAnnotationGroup() {
+        if (getAnnotationGroup(DEFAULT_ANNOTATION_GROUP) == null) {
+            return createDefaultAnnotationGroup();
+        }
+        return getAnnotationGroup(DEFAULT_ANNOTATION_GROUP);
     }
 
     /**
-     * @return the default ImagingAnnotationGroup
-     */
-    public AnnotationGroup getDefaultImagingAnnotationGroup() {
-        return getAnnotationGroup(DEFAULT_IMAGING_ANNOTATION_GROUP);
-    }
-
-    /**
-     * @param type the type of the group
      * @return the created annotation group
      */
-    public AnnotationGroup createDefaultAnnotationGroup(EntityTypeEnum type) {
-        String name = EntityTypeEnum.SUBJECT.equals(type) ? DEFAULT_SUBJECT_ANNOTATION_GROUP
-                : DEFAULT_IMAGING_ANNOTATION_GROUP;
+    public AnnotationGroup createDefaultAnnotationGroup() {
         AnnotationGroup defaultGroup = new AnnotationGroup();
-        defaultGroup.setName(name);
+        defaultGroup.setName(DEFAULT_ANNOTATION_GROUP);
         defaultGroup.setStudy(this);
-        defaultGroup.setAnnotationEntityType(type);
-        defaultGroup.setDescription("Default " + type.getValue() + " annotation group");
+        defaultGroup.setDescription("Default annotation group");
         getAnnotationGroups().add(defaultGroup);
         return defaultGroup;
     }

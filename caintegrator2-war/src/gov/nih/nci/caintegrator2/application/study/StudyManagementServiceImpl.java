@@ -186,9 +186,9 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
         securityManager.createProtectionElement(studyConfiguration);
     }
-
+    
     /**
-     *  {@inheritDoc}
+     * {@inheritDoc}
      */
     public void delete(StudyConfiguration studyConfiguration) throws CSException {
         securityManager.deleteProtectionElement(studyConfiguration);
@@ -232,30 +232,12 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             File inputFile, String filename, boolean createNewAnnotationDefinition)
     throws ValidationException, IOException {
         File permanentFile = getFileManager().storeStudyFile(inputFile, filename, studyConfiguration);
-        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, this, studyConfiguration,
+        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, getDao(), studyConfiguration,
                 EntityTypeEnum.SUBJECT, createNewAnnotationDefinition);
         DelimitedTextClinicalSourceConfiguration clinicalSourceConfig = 
             new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfiguration);
-        daoSave(studyConfiguration.getStudy());
         daoSave(studyConfiguration);
         return clinicalSourceConfig;
-    }
-
-    /**
-     * Get the default annotation group, if not exist then create it.
-     * @param studyConfiguration use to retrieve or create the default annotation group
-     * @param type the type to retrieve
-     * @return the annotation group
-     */
-    public AnnotationGroup getDefaultAnnotationGroup(StudyConfiguration studyConfiguration, EntityTypeEnum type) {
-        AnnotationGroup defaultAnnotationGroup = EntityTypeEnum.SUBJECT.equals(type)
-            ? studyConfiguration.getStudy().getDefaultSubjectAnnotationGroup()
-                    : studyConfiguration.getStudy().getDefaultImagingAnnotationGroup();
-        if (defaultAnnotationGroup == null) {
-            defaultAnnotationGroup = studyConfiguration.getStudy().createDefaultAnnotationGroup(type);
-            daoSave(studyConfiguration.getStudy());
-        }
-        return defaultAnnotationGroup;
     }
     
     /**
@@ -775,7 +757,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     throws ValidationException, IOException {
         File permanentFile = getFileManager().storeStudyFile(inputFile, filename,
                 imageDataSourceConfiguration.getStudyConfiguration());
-        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, this, 
+        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, getDao(), 
                 imageDataSourceConfiguration.getStudyConfiguration(),
                 EntityTypeEnum.IMAGE, createNewAnnotationDefinition);
         ImageAnnotationConfiguration imageAnnotationConfiguration = 
@@ -784,7 +766,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         imageDataSourceConfiguration.setImageAnnotationConfiguration(imageAnnotationConfiguration);
         imageDataSourceConfiguration.setStatus(retrieveImageSourceStatus(imageDataSourceConfiguration
                 .getImageAnnotationConfiguration()));
-        daoSave(imageAnnotationConfiguration);
+        daoSave(imageDataSourceConfiguration.getStudyConfiguration());
         return imageAnnotationConfiguration;
     }
 
@@ -1141,7 +1123,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             AnnotationGroup annotationGroup, AnnotationGroupUploadContent uploadContent)
     throws ConnectionException, ValidationException {
         AnnotationFieldDescriptor annotationFieldDescriptor = uploadContent.createAnnotationFieldDescriptor(
-                studyConfiguration, this);
+                studyConfiguration);
         annotationFieldDescriptor.setAnnotationGroup(annotationGroup);
         if (annotationFieldDescriptor.getDefinition() == null) {
             AnnotationDefinition annotationDefinition = createAnnotationDefinition(uploadContent);
@@ -1160,7 +1142,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                     uploadContent.getVersion());
             annotationDefinition.setKeywords(uploadContent.getDefinitionName());
         } else {
-            annotationDefinition = uploadContent.createAnnotationDefinition(this);
+            annotationDefinition = uploadContent.createAnnotationDefinition(getDao());
         }
         return annotationDefinition;
     }
@@ -1200,20 +1182,25 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     @Transactional(rollbackFor = ValidationException.class)
-    public void updateFieldDescriptorType(AnnotationFieldDescriptor fieldDescriptor, AnnotationFieldType type) 
-        throws ValidationException {
+    public AnnotationFieldDescriptor updateFieldDescriptorType(AnnotationFieldDescriptor fieldDescriptor, 
+            AnnotationFieldType type) throws ValidationException {
+        AnnotationFieldDescriptor returnFieldDescriptor = fieldDescriptor;
         for (FileColumn fileColumn : getDao().getFileColumnsUsingAnnotationFieldDescriptor(fieldDescriptor)) {
             if (AnnotationFieldType.IDENTIFIER.equals(type)) {
                 fileColumn.checkValidIdentifierColumn();
                 fileColumn.getAnnotationFile().setIdentifierColumn(fileColumn);
+                returnFieldDescriptor = fileColumn.getFieldDescriptor();
                 daoSave(fileColumn);
             } else if (AnnotationFieldType.TIMEPOINT.equals(type)) {
                 fileColumn.getAnnotationFile().setTimepointColumn(fileColumn);
+                returnFieldDescriptor = fileColumn.getFieldDescriptor();
                 daoSave(fileColumn);
             }
         }
-        fieldDescriptor.setType(type);
-        daoSave(fieldDescriptor);
+        
+        returnFieldDescriptor.setType(type);
+        daoSave(returnFieldDescriptor);
+        return returnFieldDescriptor;
     }
 
     /**
@@ -1239,21 +1226,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                     .getDisplayPermissibleValue(fieldDescriptor.getDefinition().getPermissibleValueCollection())));
         }
         return allAvailableValues;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public AnnotationDefinition getAnnotationDefinition(String name) {
-        return getDao().getAnnotationDefinition(name);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name,
-            StudyConfiguration studyConfiguration) {
-        return getDao().getExistingFieldDescriptorInStudy(name, studyConfiguration);
     }
 
     /**

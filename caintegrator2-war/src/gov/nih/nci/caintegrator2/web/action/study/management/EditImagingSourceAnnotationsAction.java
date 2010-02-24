@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -120,8 +119,7 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
 
     private void setupAnnotationGroups() {
         selectableAnnotationGroups.clear();
-        List<AnnotationGroup> sortedAnnotationGroups = getStudy().
-            getSortedAnnotationGroupsForEntityType(EntityTypeEnum.IMAGESERIES); 
+        List<AnnotationGroup> sortedAnnotationGroups = getStudy().getSortedAnnotationGroups(); 
         for (AnnotationGroup group : sortedAnnotationGroups) {
             group = getStudyManagementService().getRefreshedEntity(group);
             selectableAnnotationGroups.add(group);

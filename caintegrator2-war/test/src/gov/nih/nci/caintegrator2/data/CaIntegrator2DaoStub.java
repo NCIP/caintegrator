@@ -459,11 +459,6 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return ssaList;
     }
 
-    public AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name,
-            StudyConfiguration studyConfiguration) {
-        return null;
-    }
-
     public List<FileColumn> getFileColumnsUsingAnnotationFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) {
         
         return fileColumns;

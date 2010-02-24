@@ -125,4 +125,8 @@
         <comment>Adds VALIDATION_ERROR_MESSAGE to ANNOTATION_FIELD_DESCRIPTOR</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.16.sql"/>
     </changeSet>
+    <changeSet id="1.1.17" author="tandrews">
+        <comment>Moving Entity Type from ANNOTATION_GROUP to ANNOTATION_FIELD_DESCRIPTOR</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.17.sql"/>
+    </changeSet>
 </databaseChangeLog>

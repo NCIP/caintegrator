@@ -138,7 +138,7 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
     private void setupAnnotationGroups() {
         selectableAnnotationGroups.clear();
         List<AnnotationGroup> sortedAnnotationGroups = getStudy().
-            getSortedAnnotationGroupsForEntityType(annotationGroup.getAnnotationEntityType()); 
+            getSortedAnnotationGroups(); 
         for (AnnotationGroup group : sortedAnnotationGroups) {
             group = getStudyManagementService().getRefreshedEntity(group);
             selectableAnnotationGroups.add(group);

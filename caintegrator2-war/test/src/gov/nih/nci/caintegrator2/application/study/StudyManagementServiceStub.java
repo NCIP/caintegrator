@@ -529,9 +529,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
         saveAnnotationGroupCalled = true;
     }
 
-    public void updateFieldDescriptorType(AnnotationFieldDescriptor fieldDescriptor, AnnotationFieldType type)
+    public AnnotationFieldDescriptor updateFieldDescriptorType(AnnotationFieldDescriptor fieldDescriptor, AnnotationFieldType type)
             throws ValidationException {
-        
+        fieldDescriptor.setType(type);
+        return fieldDescriptor;
     }
 
     public Set<String> getAvailableValuesForFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor)
@@ -549,10 +550,6 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     public AnnotationDefinition getAnnotationDefinition(String name) {
         return null;
-    }
-
-    public AnnotationGroup getDefaultAnnotationGroup(StudyConfiguration studyConfiguration, EntityTypeEnum type) {
-        return new AnnotationGroup();
     }
 
     public AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name,

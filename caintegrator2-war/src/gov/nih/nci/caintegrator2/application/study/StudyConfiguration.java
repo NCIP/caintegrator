@@ -682,4 +682,35 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
         }
         return visibleSet;
     }
+    
+    /**
+     * Retrieves any existing field descriptors with the given name for the given study.
+     * @param name to search existing annotation field descriptors for.
+     * @return any matching AnnotationFieldDescriptor in the study with the given name.
+     */
+    public AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name) {
+        Set<AnnotationFieldDescriptor> allDescriptors = new HashSet<AnnotationFieldDescriptor>();
+        for (AbstractClinicalSourceConfiguration source : getClinicalConfigurationCollection()) {
+            allDescriptors.addAll(source.getAnnotationDescriptors());
+        }
+        for (ImageDataSourceConfiguration source : getImageDataSources()) {
+            if (source.getImageAnnotationConfiguration() != null) {
+                allDescriptors.addAll(source.getImageAnnotationConfiguration().getAnnotationDescriptors());
+            }
+        }
+        for (AnnotationGroup group : study.getAnnotationGroups()) {
+            allDescriptors.addAll(group.getAnnotationFieldDescriptors());
+        }
+        return getMatchingDescriptor(name, allDescriptors);
+    }
+    
+    private AnnotationFieldDescriptor getMatchingDescriptor(String name, 
+            Collection<AnnotationFieldDescriptor> descriptors) {
+        for (AnnotationFieldDescriptor descriptor : descriptors) {
+            if (descriptor.getName().equals(name)) {
+                return descriptor;
+            }
+        }
+        return null;
+    }
 }

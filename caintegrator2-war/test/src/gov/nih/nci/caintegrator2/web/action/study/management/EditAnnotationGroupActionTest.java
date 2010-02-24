@@ -92,7 +92,6 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.util.ArrayList;
@@ -185,10 +184,6 @@ public class EditAnnotationGroupActionTest extends AbstractSessionBasedTest {
         assertTrue(studyManagementServiceStub.saveCalled);
         studyManagementServiceStub.throwValidationException = true;
         assertEquals(Action.ERROR, action.save());
-        assertEquals(EntityTypeEnum.SUBJECT.getValue(), action.getAnnotationGroup().getDisplayableEntityType());
-        action.getAnnotationGroup().setDisplayableEntityType(EntityTypeEnum.IMAGESERIES.getValue());
-        assertEquals(EntityTypeEnum.IMAGESERIES.getValue(), action.getAnnotationGroup().getDisplayableEntityType());
-        assertEquals(EntityTypeEnum.IMAGESERIES, action.getAnnotationGroup().getAnnotationEntityType());
     }
     
     @Test
