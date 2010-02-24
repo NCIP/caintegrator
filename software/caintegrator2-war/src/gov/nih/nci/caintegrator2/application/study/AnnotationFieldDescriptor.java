@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
 /**
  * Contains the information about a particular annotation field prior to association to an 
@@ -103,6 +104,7 @@ public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
     private Boolean usePermissibleValues = false;
     private AnnotationGroup annotationGroup;
     private String validationErrorMessage;
+    private EntityTypeEnum annotationEntityType;
 
     /**
      * @return the name
@@ -234,5 +236,19 @@ public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
      */
     public void setValidationErrorMessage(String validationErrorMessage) {
         this.validationErrorMessage = validationErrorMessage;
+    }
+
+    /**
+     * @return the annotationEntityType
+     */
+    public EntityTypeEnum getAnnotationEntityType() {
+        return annotationEntityType;
+    }
+
+    /**
+     * @param annotationEntityType the annotationEntityType to set
+     */
+    public void setAnnotationEntityType(EntityTypeEnum annotationEntityType) {
+        this.annotationEntityType = annotationEntityType;
     }
 }

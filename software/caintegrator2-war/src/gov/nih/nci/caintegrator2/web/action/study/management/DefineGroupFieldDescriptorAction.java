@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.web.ajax.DataElementSearchAjaxUpdater;
 
 /**
@@ -109,14 +108,6 @@ public class DefineGroupFieldDescriptorAction extends AbstractFieldDescriptorAct
             group.setId(Long.valueOf(getGroupId()));
             group = getStudyManagementService().getRefreshedEntity(group);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityTypeEnum getEntityType() {
-        return group != null ? group.getAnnotationEntityType() : EntityTypeEnum.SUBJECT;
     }
 
     /**

@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.study;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
@@ -98,7 +99,7 @@ import org.junit.Test;
 public class AnnotationGroupUploadTest {
 
     AnnotationGroupUploadContent uploadContent;
-    private MyStudyManagementServiceStub studyManagementServiceStub = new MyStudyManagementServiceStub();
+    private MyCaIntegrator2DaoStub daoStub = new MyCaIntegrator2DaoStub();
 
     
     @Before
@@ -144,14 +145,14 @@ public class AnnotationGroupUploadTest {
         StudyConfiguration studyConfiguration = createStudyConfiguration();
         AnnotationFieldDescriptor afd;
         AnnotationDefinition ad;
-        afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration, studyManagementServiceStub);
+        afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration);
         assertNull(afd.getId());
         
         // Test reuse existing Subject 
         uploadContent.setColumnName("Subject");
         uploadContent.setAnnotationType("identifier");
         uploadContent.setDataType("string");
-        afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration, studyManagementServiceStub);
+        afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration);
         assertEquals(1L, afd.getId().longValue());
         
         // Test existing Subject not matching data type 
@@ -160,7 +161,7 @@ public class AnnotationGroupUploadTest {
         uploadContent.setDataType("numeric");
         boolean gotException = false;
         try {
-            afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration, studyManagementServiceStub);
+            afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration);
         } catch (ValidationException e) {
             gotException = true;
         }
@@ -170,12 +171,12 @@ public class AnnotationGroupUploadTest {
         uploadContent.setColumnName("Gender");
         uploadContent.setDataType("string");
         uploadContent.setAnnotationType("annotation");
-        ad = uploadContent.createAnnotationDefinition(studyManagementServiceStub);
+        ad = uploadContent.createAnnotationDefinition(daoStub);
         assertNull(ad.getId());
         
         // Test existing annotation definition gender
         uploadContent.setDefinitionName("Gender");
-        ad = uploadContent.createAnnotationDefinition(studyManagementServiceStub);
+        ad = uploadContent.createAnnotationDefinition(daoStub);
         assertEquals(1L, ad.getId().longValue());
         
         // Test existing annotation definition gender not matching data type
@@ -183,7 +184,7 @@ public class AnnotationGroupUploadTest {
         uploadContent.setDataType("numeric");
         gotException = false;
         try {
-            ad = uploadContent.createAnnotationDefinition(studyManagementServiceStub);
+            ad = uploadContent.createAnnotationDefinition(daoStub);
         } catch (ValidationException e) {
             gotException = true;
         }
@@ -191,13 +192,38 @@ public class AnnotationGroupUploadTest {
         
     }
     
+    @SuppressWarnings("deprecation")
     private StudyConfiguration createStudyConfiguration() {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        
+        DelimitedTextClinicalSourceConfiguration configuration = new DelimitedTextClinicalSourceConfiguration();
+        studyConfiguration.addClinicalConfiguration(configuration);
+        AnnotationFile file = new AnnotationFile();
+        FileColumn fileColumn = new FileColumn();
+        fileColumn.setFieldDescriptor(createAFD());
+        file.getColumns().add(fileColumn);
+        configuration.setAnnotationFile(file);
         return studyConfiguration;
     }
     
-    class MyStudyManagementServiceStub extends StudyManagementServiceStub {
+    private AnnotationFieldDescriptor createAFD() {
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        afd.setId(1L);
+        afd.setName("Subject");
+        afd.setType(AnnotationFieldType.IDENTIFIER);
+        AnnotationGroup ag = new AnnotationGroup();
+        ag.getAnnotationFieldDescriptors().add(afd);
+        afd.setAnnotationGroup(ag);
+        AnnotationDefinition ad = new AnnotationDefinition();
+        CommonDataElement cde = new CommonDataElement();
+        ValueDomain vd = new ValueDomain();
+        vd.setDataTypeString("string");
+        cde.setValueDomain(vd);
+        ad.setCommonDataElement(cde);
+        afd.setDefinition(ad);
+        return afd;
+    }
+    
+    class MyCaIntegrator2DaoStub extends CaIntegrator2DaoStub {
 
         @Override
         public AnnotationDefinition getAnnotationDefinition(String name) {
@@ -216,30 +242,6 @@ public class AnnotationGroupUploadTest {
 
             return super.getAnnotationDefinition(name);
         }
-
-        @Override
-        public AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name,
-                StudyConfiguration studyConfiguration) {
-            if ("Subject".equals(name)) {
-                AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
-                afd.setId(1L);
-                afd.setName("Subject");
-                afd.setType(AnnotationFieldType.IDENTIFIER);
-                AnnotationGroup ag = new AnnotationGroup();
-                ag.getAnnotationFieldDescriptors().add(afd);
-                afd.setAnnotationGroup(ag);
-                AnnotationDefinition ad = new AnnotationDefinition();
-                CommonDataElement cde = new CommonDataElement();
-                ValueDomain vd = new ValueDomain();
-                vd.setDataTypeString("string");
-                cde.setValueDomain(vd);
-                ad.setCommonDataElement(cde);
-                afd.setDefinition(ad);
-                return afd;
-            }
-            return super.getExistingFieldDescriptorInStudy(name, studyConfiguration);
-        }
-        
     }
 
 }

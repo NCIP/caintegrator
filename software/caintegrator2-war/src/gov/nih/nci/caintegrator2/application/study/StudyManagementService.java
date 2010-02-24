@@ -537,9 +537,11 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * Updates field descriptor type.
      * @param fieldDescriptor to update the type for.
      * @param type new type.
+     * @return the newly saved AFD.
      * @throws ValidationException if invalid type for the existing data.
      */
-    void updateFieldDescriptorType(AnnotationFieldDescriptor fieldDescriptor, AnnotationFieldType type) 
+    AnnotationFieldDescriptor updateFieldDescriptorType(AnnotationFieldDescriptor fieldDescriptor, 
+            AnnotationFieldType type) 
     throws ValidationException;
     
     /**
@@ -556,29 +558,6 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @param descriptor to save.
      */
     void makeFieldDescriptorValid(AnnotationFieldDescriptor descriptor);
-
-    /**
-     * Retrieve the annotation field descriptor with the input name.
-     * @param name to retrieve
-     * @param studyConfiguration to retrieve from
-     * @return an AnnotationFieldDescriptor or null if not found
-     */
-    AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name, StudyConfiguration studyConfiguration);
-
-    /**
-     * Retrieve the annotation definition with the input name.
-     * @param name to retrieve
-     * @return an AnnotationDefinition or null if not found
-     */
-    AnnotationDefinition getAnnotationDefinition(String name);
-
-    /**
-     * Retrieve the default annotation group, create one if none exist.
-     * @param studyConfiguration to retrieve from
-     * @param type to retrieve
-     * @return the default annotation group
-     */
-    AnnotationGroup getDefaultAnnotationGroup(StudyConfiguration studyConfiguration, EntityTypeEnum type);
 
     /**
      * @param persistentObject to save

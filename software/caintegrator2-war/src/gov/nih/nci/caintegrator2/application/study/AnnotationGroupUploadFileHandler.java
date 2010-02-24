@@ -100,7 +100,7 @@ public class AnnotationGroupUploadFileHandler {
     
     private final File uploadFile;
 
-    private static final int FILE_NUMBER_COLUMNS = 8;
+    private static final int FILE_NUMBER_COLUMNS = 9;
     private static final String HEADER_LINE =  "File Column Name";
     
     /**
@@ -137,20 +137,26 @@ public class AnnotationGroupUploadFileHandler {
         return annotationGroupUploads;
     }
 
-    private void readDataLine(List<AnnotationGroupUploadContent> annotationGroupUploads, String[] fields) {
+    private void readDataLine(List<AnnotationGroupUploadContent> annotationGroupUploads, String[] fields) 
+    throws ValidationException {
         if (!HEADER_LINE.equals(fields[0])) {
-            AnnotationGroupUploadContent uploadContent = new AnnotationGroupUploadContent();
-            uploadContent.setColumnName(fields[0]);
-            uploadContent.setAnnotationType(fields[1]);
-            uploadContent.setCdeId(fields[2]);
-            uploadContent.setVersion(fields[3]);
-            uploadContent.setDefinitionName(fields[4]);
-            if (uploadContent.getCdeId() == null) {
-                uploadContent.setDataType(fields[5]);
-                uploadContent.setPermissible(fields[6]);
+            try {
+                AnnotationGroupUploadContent uploadContent = new AnnotationGroupUploadContent();
+                uploadContent.setColumnName(fields[0]);
+                uploadContent.setAnnotationType(fields[1]);
+                uploadContent.setEntityType(fields[2]);
+                uploadContent.setCdeId(fields[3]);
+                uploadContent.setVersion(fields[4]);
+                uploadContent.setDefinitionName(fields[5]);
+                if (uploadContent.getCdeId() == null) {
+                    uploadContent.setDataType(fields[6]);
+                    uploadContent.setPermissible(fields[7]);
+                }
+                uploadContent.setVisible(fields[8]);
+                annotationGroupUploads.add(uploadContent);
+            } catch (Exception e) {
+                throw new ValidationException(e.getMessage(), e);
             }
-            uploadContent.setVisible(fields[7]);
-            annotationGroupUploads.add(uploadContent);
         }
     }
 }

@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.web.ajax.DataElementSearchAjaxUpdater;
 
 /**
@@ -103,15 +102,6 @@ public class DefineImagingFieldDescriptorAction extends AbstractFieldDescriptorA
     @Override
     protected void updateDataSourceStatus() {
         getStudyManagementService().updateImageDataSourceStatus(getStudyConfiguration()); // If it changes state
-    }
-
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityTypeEnum getEntityType() {
-        return EntityTypeEnum.IMAGESERIES;
     }
     
     /**
