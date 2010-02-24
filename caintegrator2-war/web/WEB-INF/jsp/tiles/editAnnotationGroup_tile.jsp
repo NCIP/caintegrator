@@ -39,11 +39,6 @@
                             required="true" theme="css_xhtml"/>
                     </td></tr>
                     <tr><td>
-                        <s:radio name="annotationGroup.displayableEntityType" theme="css_xhtml"
-                            list="@gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum@getValueToDisplayableMap()"
-                            required="true" label="Select Annotation Grouping Entity Type:" disabled="%{existingGroup}"/>
-                    </td></tr>
-                    <tr><td>
                         <s:textarea label="Description" name="annotationGroup.description" cols="40" rows="3" theme="css_xhtml"/>
                     </td></tr>
                     <s:if test="!existingGroup">
@@ -83,6 +78,7 @@
 	                    <tr>
 	                        <th>Annotation Group</th>
 	                        <th>Visible</th>
+	                        <th>Entity Type</th>
 	                        <th>Annotation Definition</th>
 	                        <th>Annotation Header from File</th>
 	                    </tr>
@@ -94,20 +90,19 @@
 	                          <tr class="even">
 	                        </s:else>         
 	                            <td>
-	                                <s:if test="%{fieldDescriptor != null}">
-	                                    <s:select name="displayableFields[%{#columnIterator.count - 1}].annotationGroupName" 
+	                                <s:select name="displayableFields[%{#columnIterator.count - 1}].annotationGroupName" 
 	                                              list="selectableAnnotationGroups"
 	                                              listKey="name"
 	                                              listValue="name"
 	                                              headerKey="" headerValue="-----" theme="simple" />
-	                                </s:if>
 	                            </td>
 	                            <td>
-	                                <s:if test="%{fieldDescriptor != null}">
-	                                    <s:checkbox name="displayableFields[%{#columnIterator.count - 1}].fieldDescriptor.shownInBrowse"
+	                                <s:checkbox name="displayableFields[%{#columnIterator.count - 1}].fieldDescriptor.shownInBrowse"
 	                                        theme="simple" disabled="false"/>
-	                                </s:if>
 	                            </td>
+	                            <td>
+                                    <s:property value="fieldDescriptor.annotationEntityType"/>
+                                </td>
 	                            <td>
                                 <s:if test="%{fieldDescriptor.hasValidationErrors}">
                                     <font class="formErrorMsg">
@@ -121,7 +116,7 @@
 	                                <s:elseif test="%{timepointType}">
 	                                    Timepoint
 	                                </s:elseif>
-	                                <s:elseif test="%{fieldDescriptor != null && fieldDescriptor.definition != null}">
+	                                <s:elseif test="%{fieldDescriptor.definition != null}">
 	                                    <s:property value="fieldDescriptor.definition.displayName"/> 
 	                                </s:elseif>
 	                                <s:url id="editGroupFieldDescriptor" action="editGroupFieldDescriptor">

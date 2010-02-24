@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.caintegrator2.application.study">
-    <!-- Create typedef's for the enums -->
-    <typedef name="EntityTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
-       <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum</param> 
-    </typedef> 
 	<class name="AnnotationGroup" table="ANNOTATION_GROUP" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
         
@@ -14,7 +10,6 @@
         
         <property name="name" type="string" column="NAME"/>
         <property name="description" type="string" column="DESCRIPTION"/>
-        <property name="annotationEntityType" type="EntityTypeEnum" column="ANNOTATION_ENTITY_TYPE"/>
         
         <set name="annotationFieldDescriptors" lazy="true" cascade="all" >
             <cache usage="read-write" />

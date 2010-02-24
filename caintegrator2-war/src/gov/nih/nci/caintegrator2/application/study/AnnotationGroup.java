@@ -86,13 +86,10 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.commons.lang.xwork.StringUtils;
 
 /**
  * Object that logically links a Study to a group of AnnotationFieldDescriptors.
@@ -102,7 +99,6 @@ public class AnnotationGroup extends AbstractCaIntegrator2Object implements Comp
     private static final long serialVersionUID = 1L;
     private String name;
     private String description;
-    private EntityTypeEnum annotationEntityType;
     private Study study;
     private Set<AnnotationFieldDescriptor> annotationFieldDescriptors = 
         new HashSet<AnnotationFieldDescriptor>();
@@ -131,18 +127,6 @@ public class AnnotationGroup extends AbstractCaIntegrator2Object implements Comp
         this.description = description;
     }
     /**
-     * @return the annotationEntityType
-     */
-    public EntityTypeEnum getAnnotationEntityType() {
-        return annotationEntityType;
-    }
-    /**
-     * @param annotationEntityType the annotationEntityType to set
-     */
-    public void setAnnotationEntityType(EntityTypeEnum annotationEntityType) {
-        this.annotationEntityType = annotationEntityType;
-    }
-    /**
      * @return the study
      */
     public Study getStudy() {
@@ -167,27 +151,6 @@ public class AnnotationGroup extends AbstractCaIntegrator2Object implements Comp
         this.annotationFieldDescriptors = annotationFieldDescriptors;
     }
     
-    /**
-     * 
-     * @return displayableEntityType.
-     */
-    public String getDisplayableEntityType() {
-        if (annotationEntityType == null) {
-            return EntityTypeEnum.SUBJECT.getValue();
-        }
-        return annotationEntityType.getValue();
-    }
-    
-    /**
-     * 
-     * @param entityType the displayableEntityType to set.
-     */
-    public void setDisplayableEntityType(String entityType) {
-        if (!StringUtils.isBlank(entityType)) {
-            annotationEntityType = EntityTypeEnum.getByValue(entityType);
-        }
-    }
-
     /**
      * {@inheritDoc}
      */

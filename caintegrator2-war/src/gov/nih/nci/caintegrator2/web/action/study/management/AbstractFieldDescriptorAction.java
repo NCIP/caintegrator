@@ -192,7 +192,6 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
             return ERROR;
         }
         getStudyManagementService().makeFieldDescriptorValid(fieldDescriptor);
-        getStudyManagementService().save(getStudyConfiguration());
         updateDataSourceStatus();
         clearCacheMemory();
         cancelEnabled = false;
@@ -361,7 +360,7 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
         } else if (ANNOTATION_TYPE.equals(fieldDescriptorType)) {
             type = AnnotationFieldType.ANNOTATION;
         }
-        getStudyManagementService().updateFieldDescriptorType(fieldDescriptor, type);
+        setFieldDescriptor(getStudyManagementService().updateFieldDescriptorType(fieldDescriptor, type));
     }
 
     /**
@@ -555,11 +554,9 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
         this.cancelEnabled = cancelEnabled;
     }
     
-    /**
-     * Entity type for the action.
-     * @return the entity type for the action. 
-     */
-    public abstract EntityTypeEnum getEntityType();
+    private EntityTypeEnum getEntityType() {
+        return fieldDescriptor.getAnnotationEntityType();
+    }
     
     /**
      * The string for the SaveFieldType action.

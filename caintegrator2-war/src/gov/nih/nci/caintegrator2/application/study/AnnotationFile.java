@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.common.DateUtil;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -154,29 +155,24 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         this.columns = columns;
     }
     
-    static AnnotationFile load(File file, StudyManagementService studyManagementService,
+    static AnnotationFile load(File file, CaIntegrator2Dao dao,
             StudyConfiguration studyConfiguration, EntityTypeEnum type,
             boolean createNewAnnotationDefinition)
     throws ValidationException {
-        return createAndLoadFile(file, studyManagementService, studyConfiguration,
+        return createAndLoadFile(file, dao, studyConfiguration,
                 type, createNewAnnotationDefinition);
     }
-    
-    static AnnotationFile load(File file, StudyManagementService studyManagementService,
-            EntityTypeEnum type) throws ValidationException {
-        return createAndLoadFile(file, studyManagementService, null, type, false);
-    }
 
-    private static AnnotationFile createAndLoadFile(File file, StudyManagementService studyManagementService, 
+    private static AnnotationFile createAndLoadFile(File file, CaIntegrator2Dao dao, 
             StudyConfiguration studyConfiguration, EntityTypeEnum type, boolean createNewAnnotationDefinition) 
     throws ValidationException {
         AnnotationFile annotationFile = new AnnotationFile(file);
         annotationFile.validateFileFormat();
-        annotationFile.loadColumns(studyManagementService, studyConfiguration, type, createNewAnnotationDefinition);
+        annotationFile.loadColumns(dao, studyConfiguration, type, createNewAnnotationDefinition);
         return annotationFile;
     }
 
-    private void loadColumns(StudyManagementService studyManagementService, StudyConfiguration studyConfiguration,
+    private void loadColumns(CaIntegrator2Dao dao, StudyConfiguration studyConfiguration,
             EntityTypeEnum type, boolean createNewAnnotationDefinition)
     throws ValidationException {
         resetReader();
@@ -185,7 +181,7 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
             FileColumn column = new FileColumn(this);
             column.setPosition(index);
             column.setName(currentLineValues[index].trim());
-            column.retrieveOrCreateFieldDescriptor(studyManagementService, studyConfiguration, type,
+            column.retrieveOrCreateFieldDescriptor(dao, studyConfiguration, type,
                     createNewAnnotationDefinition);
             columns.add(column);
         }

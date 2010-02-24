@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.web.ajax.DataElementSearchAjaxUpdater;
 
 /**
@@ -95,14 +94,6 @@ import gov.nih.nci.caintegrator2.web.ajax.DataElementSearchAjaxUpdater;
 public class DefineClinicalFieldDescriptorAction extends AbstractFieldDescriptorAction {
     
     private static final long serialVersionUID = 1L;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityTypeEnum getEntityType() {
-        return EntityTypeEnum.SUBJECT;
-    }
 
     /**
      * {@inheritDoc}
