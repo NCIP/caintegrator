@@ -207,7 +207,6 @@
                     <table class="data">
                         <tr>
                             <th>Group Name</th>
-                            <th>Type</th>
                             <th>Description</th>
                             <th>Number of Annotations</th>
                             <th>Action</th>
@@ -221,7 +220,6 @@
                               <tr class="even">
                             </s:else>            
                             <td><s:property value="name" /></td>
-                            <td><s:property value="annotationEntityType.value" /></td>
                             <td><s:property value="description" /></td>
                             <td><s:property value="annotationFieldDescriptors.size()" /></td>
                             <td style="float: right;">
