@@ -281,9 +281,11 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     }
 
     private boolean validateAnnotationFieldDescriptors(StudyConfiguration studyConfiguration,
-            Collection<AnnotationFieldDescriptor> descriptors, EntityTypeEnum entityType) {
+            Collection<AnnotationFieldDescriptor> descriptors, EntityTypeEnum entityType)
+    throws ValidationException {
         boolean isValid = true;
         for (AnnotationFieldDescriptor descriptor : descriptors) {
+            populatePermissibleValues(studyConfiguration.getStudy(), entityType, descriptor);
             AnnotationDefinition definition = descriptor.getDefinition();
             if (definition != null && !definition.getPermissibleValueCollection().isEmpty()) {
                 try {
@@ -303,6 +305,16 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
         }
         return isValid;
+    }
+
+    private void populatePermissibleValues(Study study, EntityTypeEnum entityType,
+            AnnotationFieldDescriptor descriptor) throws ValidationException {
+        if (descriptor.isUsePermissibleValues()
+                && descriptor.getDefinition().getPermissibleValueCollection().isEmpty()) {
+            Set<Object> uniqueValues = validateAndRetrieveUniqueValues(study, entityType, 
+                    descriptor, descriptor.getDefinition());
+            descriptor.getDefinition().addPermissibleValues(uniqueValues);
+        }
     }
 
     /**
@@ -1084,8 +1096,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     @Transactional(rollbackFor = {ConnectionException.class, ValidationException.class })
     public void saveAnnotationGroup(AnnotationGroup annotationGroup,
-            StudyConfiguration studyConfiguration,
-            File annotationGroupFile)
+            StudyConfiguration studyConfiguration, File annotationGroupFile)
     throws ValidationException, ConnectionException, IOException {
         if (annotationGroup.getStudy() != studyConfiguration.getStudy()) {
             annotationGroup.setStudy(studyConfiguration.getStudy());
@@ -1095,7 +1106,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             uploadAnnotationGroup(studyConfiguration, annotationGroup, annotationGroupFile);
         }
         daoSave(annotationGroup);
-        daoSave(studyConfiguration.getStudy());
         daoSave(studyConfiguration);
     }
     
@@ -1122,27 +1132,38 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     private void createAnnotation(StudyConfiguration studyConfiguration,
             AnnotationGroup annotationGroup, AnnotationGroupUploadContent uploadContent)
     throws ConnectionException, ValidationException {
-        AnnotationFieldDescriptor annotationFieldDescriptor = uploadContent.createAnnotationFieldDescriptor(
-                studyConfiguration);
+        checkForExistingAnnotationFieldDescriptor(studyConfiguration, uploadContent.getColumnName());
+        AnnotationFieldDescriptor annotationFieldDescriptor = uploadContent.createAnnotationFieldDescriptor();
         annotationFieldDescriptor.setAnnotationGroup(annotationGroup);
-        if (annotationFieldDescriptor.getDefinition() == null) {
-            AnnotationDefinition annotationDefinition = createAnnotationDefinition(uploadContent);
-            annotationFieldDescriptor.setDefinition(annotationDefinition);
-            daoSave(annotationDefinition);
-        }
-        daoSave(annotationFieldDescriptor);
+        AnnotationDefinition annotationDefinition = createAnnotationDefinition(uploadContent);
+        annotationFieldDescriptor.setDefinition(annotationDefinition);
         annotationGroup.getAnnotationFieldDescriptors().add(annotationFieldDescriptor);
+    }
+
+    private void checkForExistingAnnotationFieldDescriptor(StudyConfiguration studyConfiguration, String name)
+    throws ValidationException {
+        if (studyConfiguration.getExistingFieldDescriptorInStudy(name) != null) {
+            throw new ValidationException("Definition: " + name + " already exist.\n");
+        }
     }
 
     private AnnotationDefinition createAnnotationDefinition(AnnotationGroupUploadContent uploadContent)
     throws ConnectionException, ValidationException {
-        AnnotationDefinition annotationDefinition;
+        AnnotationDefinition annotationDefinition = getDao().getAnnotationDefinition(
+                uploadContent.getDefinitionName());
+        if (annotationDefinition != null) {
+            if (uploadContent.matching(annotationDefinition)) {
+                return annotationDefinition;
+            }
+            throw new ValidationException("Annotation Definition: " + uploadContent.getDefinitionName()
+                    + " doesn't match with existing definition.\n");
+        }
         if (uploadContent.getCdeId() != null) {
             annotationDefinition = getCaDsrAnnotationDefinition(uploadContent.getCdeId(),
                     uploadContent.getVersion());
             annotationDefinition.setKeywords(uploadContent.getDefinitionName());
         } else {
-            annotationDefinition = uploadContent.createAnnotationDefinition(getDao());
+            annotationDefinition = uploadContent.createAnnotationDefinition();
         }
         return annotationDefinition;
     }

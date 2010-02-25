@@ -805,6 +805,29 @@ public class StudyManagementServiceTest {
         assertTrue(studyConfiguration.getExternalLinkLists().contains(externalLinkList));
     }
     
+    @Test
+    public void testSaveAnnotationGroup() throws ValidationException, ConnectionException, IOException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        AnnotationGroup annotationGroup = new AnnotationGroup();
+        annotationGroup.setName("Test");
+        studyManagementService.saveAnnotationGroup(annotationGroup, studyConfiguration,
+                TestDataFiles.ANNOTATION_GROUP_FILE);
+        assertFalse(studyConfiguration.getStudy().getAnnotationGroups().isEmpty());
+        assertEquals(5, annotationGroup.getAnnotationFieldDescriptors().size());
+        
+        // Test invalid because AFD already exist
+        annotationGroup = new AnnotationGroup();
+        annotationGroup.setName("Test_2");
+        boolean catchException = false;
+        try {
+            studyManagementService.saveAnnotationGroup(annotationGroup, studyConfiguration,
+                    TestDataFiles.ANNOTATION_GROUP_FILE);
+        } catch (ValidationException e) {
+            catchException = true;
+        }
+        assertTrue(catchException);
+    }
+    
     private static class SecureDaoStub extends CaIntegrator2DaoStub {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         

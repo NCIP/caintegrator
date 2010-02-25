@@ -1,0 +1,6 @@
+File Column Name,Field Type,Entity Type,CDE ID,Version,Annotation Def Name,Data Type,Permissible,Visible
+ID,identifier,subject,,,ID,string,No,Yes
+Col1,annotation,subject,,,Col1,numeric,Yes,Yes
+Col2,annotation,subject,,,Col2,string,Yes,Yes
+Col3,annotation,subject,,,Col3,string,Yes,Yes
+Col4,annotation,subject,,,Col4,date,Yes,Yes
