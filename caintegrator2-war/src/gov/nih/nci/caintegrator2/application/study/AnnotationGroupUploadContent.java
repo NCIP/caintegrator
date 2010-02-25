@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
@@ -219,81 +218,52 @@ public class AnnotationGroupUploadContent {
     }
 
     /**
-     * Locate or create a new annotation field descriptor.
-     * @param studyConfiguration the study configuration
+     * Create a new annotation field descriptor.
      * @return the annotationFieldDescriptor
-     * @throws ValidationException validation exception
      */
-    public AnnotationFieldDescriptor createAnnotationFieldDescriptor(
-            StudyConfiguration studyConfiguration)
-    throws ValidationException {
-        AnnotationFieldDescriptor annotationFieldDescriptor = findAnnotationFieldDescriptor(
-                studyConfiguration);
-        if (annotationFieldDescriptor != null) {
-            annotationFieldDescriptor.removeFromAnnotationGroup();
-        } else {
-            annotationFieldDescriptor = new AnnotationFieldDescriptor();
-            annotationFieldDescriptor.setName(getColumnName());
-            annotationFieldDescriptor.setType(getAnnotationType());
-            annotationFieldDescriptor.setUsePermissibleValues(isPermissible());
-            annotationFieldDescriptor.setShownInBrowse(isVisible());
-        }
+    public AnnotationFieldDescriptor createAnnotationFieldDescriptor() {
+        AnnotationFieldDescriptor annotationFieldDescriptor = new AnnotationFieldDescriptor();
+        annotationFieldDescriptor.setName(getColumnName());
+        annotationFieldDescriptor.setAnnotationEntityType(getEntityType());
+        annotationFieldDescriptor.setType(getAnnotationType());
+        annotationFieldDescriptor.setUsePermissibleValues(isPermissible());
+        annotationFieldDescriptor.setShownInBrowse(isVisible());
         return annotationFieldDescriptor;
-    }
-
-    private AnnotationFieldDescriptor findAnnotationFieldDescriptor(
-            StudyConfiguration studyConfiguration)
-    throws ValidationException {
-        AnnotationFieldDescriptor annotationFieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy(
-                getColumnName());
-        if (annotationFieldDescriptor != null) {
-            if (validate(annotationFieldDescriptor)) {
-                return annotationFieldDescriptor;
-            } else {
-                throw new ValidationException("File column: " + getColumnName()
-                        + " doesn't match with existing definition.\n");
-            }
-        }
-        return null;
     }
 
     /**
      * Locate or create a new annotation definition.
-     * @param dao the dao
      * @return an annotation definition
-     * @throws ValidationException validation exception
+     * @throws ValidationException when cdeId is not null
      */
-    public AnnotationDefinition createAnnotationDefinition(CaIntegrator2Dao dao)
-    throws ValidationException {
-        AnnotationDefinition annotationDefinition = dao.getAnnotationDefinition(
-                getDefinitionName());
-        if (annotationDefinition != null) {
-            if (validate(annotationDefinition)) {
-                return annotationDefinition;
-            } else {
-                throw new ValidationException("Definition: " + getDefinitionName()
-                        + " doesn't match with existing definition.\n");
-            }
+    public AnnotationDefinition createAnnotationDefinition() throws ValidationException {
+        if (cdeId != null) {
+            throw new ValidationException("Don't know how to create CaDSR annotation definition.");
         }
-        annotationDefinition = new AnnotationDefinition();
+        AnnotationDefinition annotationDefinition = new AnnotationDefinition();
         annotationDefinition.setKeywords(getDefinitionName());
         annotationDefinition.getCommonDataElement().setLongName(getDefinitionName());
         annotationDefinition.getCommonDataElement().getValueDomain().setDataType(getDataType());
-        
         return annotationDefinition;
     }
 
-    private boolean validate(AnnotationFieldDescriptor annotationFieldDescriptor) {
-        AnnotationDefinition definition = annotationFieldDescriptor.getDefinition();
-        if (getCdeId() == null) {
-            return definition != null && definition.getDataType().equals(getDataType());
+    /**
+     * Validate that the input annotation definition is matching with this content.
+     * @param definition to validate
+     * @return boolean for matching
+     */
+    public boolean matching(AnnotationDefinition definition) {
+        if (cdeId != null) {
+            return matchingCdeId(definition);
         }
-        Long publicId = definition.getCommonDataElement().getPublicID();
-        return definition != null && publicId != null && publicId.floatValue()
-            == getCdeId().floatValue();
+        return definition.getKeywords().equals(getDefinitionName())
+            && definition.getDataType().equals(getDataType())
+            && definition.getCommonDataElement().getLongName().equalsIgnoreCase(getDefinitionName());
     }
 
-    private boolean validate(AnnotationDefinition definition) {
-        return definition.getDataType().equals(getDataType());
+    private boolean matchingCdeId(AnnotationDefinition definition) {
+        return (cdeId.equals(definition.getCommonDataElement().getPublicID())
+                    && (version == null
+                            || version.equals(Float.valueOf(definition.getCommonDataElement().getVersion()))));
     }
 }

@@ -2,8 +2,10 @@ package gov.nih.nci.caintegrator2.domain.annotation;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -127,6 +129,19 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
         return "Values for '" + commonDataElement.getLongName() + "' must be of the " + getDataType() + " type.";
     }
 
-
-       
+    /**
+     * Add permissible values.
+     * @param uniqueValues the values to use
+     */
+    public void addPermissibleValues(Set<Object> uniqueValues) {
+        for (Object uniqueValue : uniqueValues) {
+            PermissibleValue permissibleValue = new PermissibleValue();
+            if (AnnotationTypeEnum.DATE.equals(commonDataElement.getValueDomain().getDataType())) {
+                permissibleValue.setValue(DateUtil.toString((Date) uniqueValue));
+            } else {
+                permissibleValue.setValue(uniqueValue.toString());
+            }
+            commonDataElement.getValueDomain().getPermissibleValueCollection().add(permissibleValue);
+        }
+    }
 }

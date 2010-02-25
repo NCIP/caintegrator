@@ -86,12 +86,11 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
-import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -99,8 +98,6 @@ import org.junit.Test;
 public class AnnotationGroupUploadTest {
 
     AnnotationGroupUploadContent uploadContent;
-    private MyCaIntegrator2DaoStub daoStub = new MyCaIntegrator2DaoStub();
-
     
     @Before
     public void setUp() throws Exception {
@@ -142,106 +139,82 @@ public class AnnotationGroupUploadTest {
     
     @Test
     public void testCreateAnnotationFieldDescriptor() throws ValidationException {
-        StudyConfiguration studyConfiguration = createStudyConfiguration();
         AnnotationFieldDescriptor afd;
+        uploadContent.setColumnName("ID");
+        uploadContent.setEntityType("subject");
+        uploadContent.setAnnotationType("identifier");
+        uploadContent.setPermissible("no");
+        uploadContent.setVisible("yes");
+        afd = uploadContent.createAnnotationFieldDescriptor();
+        assertEquals("ID", afd.getName());
+        assertEquals(EntityTypeEnum.SUBJECT, afd.getAnnotationEntityType());
+        assertEquals(AnnotationFieldType.IDENTIFIER, afd.getType());
+        assertEquals("ID", afd.getName());
+        assertFalse(afd.isUsePermissibleValues());
+        assertTrue(afd.isShownInBrowse());
+    }
+    
+    @Test
+    public void testCreateAnnotationDefinition() throws ValidationException {
         AnnotationDefinition ad;
-        afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration);
-        assertNull(afd.getId());
-        
-        // Test reuse existing Subject 
-        uploadContent.setColumnName("Subject");
-        uploadContent.setAnnotationType("identifier");
+        uploadContent.setDefinitionName("ID");
         uploadContent.setDataType("string");
-        afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration);
-        assertEquals(1L, afd.getId().longValue());
-        
-        // Test existing Subject not matching data type 
-        uploadContent.setColumnName("Subject");
-        uploadContent.setAnnotationType("identifier");
-        uploadContent.setDataType("numeric");
-        boolean gotException = false;
+        ad = uploadContent.createAnnotationDefinition();
+        assertEquals("ID", ad.getKeywords());
+        assertEquals("ID", ad.getCommonDataElement().getLongName());
+        assertEquals(AnnotationTypeEnum.STRING, ad.getCommonDataElement().getValueDomain().getDataType());
+
+        // Test invalid
+        uploadContent.setCdeId("123");
+        boolean catchException = false;
         try {
-            afd = uploadContent.createAnnotationFieldDescriptor(studyConfiguration);
+            ad = uploadContent.createAnnotationDefinition();
         } catch (ValidationException e) {
-            gotException = true;
+            catchException = true;
         }
-        assertTrue(gotException);
-        
-        // Test new Gender
-        uploadContent.setColumnName("Gender");
-        uploadContent.setDataType("string");
-        uploadContent.setAnnotationType("annotation");
-        ad = uploadContent.createAnnotationDefinition(daoStub);
-        assertNull(ad.getId());
-        
-        // Test existing annotation definition gender
-        uploadContent.setDefinitionName("Gender");
-        ad = uploadContent.createAnnotationDefinition(daoStub);
-        assertEquals(1L, ad.getId().longValue());
-        
-        // Test existing annotation definition gender not matching data type
-        uploadContent.setDefinitionName("Gender");
-        uploadContent.setDataType("numeric");
-        gotException = false;
-        try {
-            ad = uploadContent.createAnnotationDefinition(daoStub);
-        } catch (ValidationException e) {
-            gotException = true;
-        }
-        assertTrue(gotException);
-        
+        assertTrue(catchException);
     }
     
-    @SuppressWarnings("deprecation")
-    private StudyConfiguration createStudyConfiguration() {
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        DelimitedTextClinicalSourceConfiguration configuration = new DelimitedTextClinicalSourceConfiguration();
-        studyConfiguration.addClinicalConfiguration(configuration);
-        AnnotationFile file = new AnnotationFile();
-        FileColumn fileColumn = new FileColumn();
-        fileColumn.setFieldDescriptor(createAFD());
-        file.getColumns().add(fileColumn);
-        configuration.setAnnotationFile(file);
-        return studyConfiguration;
-    }
-    
-    private AnnotationFieldDescriptor createAFD() {
-        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
-        afd.setId(1L);
-        afd.setName("Subject");
-        afd.setType(AnnotationFieldType.IDENTIFIER);
-        AnnotationGroup ag = new AnnotationGroup();
-        ag.getAnnotationFieldDescriptors().add(afd);
-        afd.setAnnotationGroup(ag);
+    @Test
+    public void testValidate() {
+        uploadContent.setDefinitionName("ID");
+        uploadContent.setDataType("string");
         AnnotationDefinition ad = new AnnotationDefinition();
-        CommonDataElement cde = new CommonDataElement();
-        ValueDomain vd = new ValueDomain();
-        vd.setDataTypeString("string");
-        cde.setValueDomain(vd);
-        ad.setCommonDataElement(cde);
-        afd.setDefinition(ad);
-        return afd;
-    }
-    
-    class MyCaIntegrator2DaoStub extends CaIntegrator2DaoStub {
+        
+        // Test matching local ad
+        ad.setDefault("ID");
+        assertTrue(uploadContent.matching(ad));
+        
+        // Test not matching name local ad
+        uploadContent.setDefinitionName("ID_2");
+        assertFalse(uploadContent.matching(ad));
+        
+        // Test not matching data type in local ad
+        uploadContent.setDefinitionName("ID");
+        uploadContent.setDataType("numeric");
+        assertFalse(uploadContent.matching(ad));
+        
+        // Test not matching long name with local ad
+        uploadContent.setDataType("string");
+        ad.getCommonDataElement().setLongName("ID_2");
+        assertFalse(uploadContent.matching(ad));
+        
+        // Test matching cdeId
+        uploadContent.setCdeId("123");
+        ad.getCommonDataElement().setPublicID(123L);
+        ad.getCommonDataElement().setVersion("1.0");
+        assertTrue(uploadContent.matching(ad));
+        uploadContent.setVersion("1.0");
+        assertTrue(uploadContent.matching(ad));
 
-        @Override
-        public AnnotationDefinition getAnnotationDefinition(String name) {
-            if ("Gender".equals(name)) {
-                AnnotationDefinition ad = new AnnotationDefinition();
-                ad.setKeywords(name);
-                ad.setId(1L);
-                CommonDataElement cde = new CommonDataElement();
-                ValueDomain vd = new ValueDomain();
-                vd.setDataTypeString("string");
-                cde.setValueDomain(vd);
-                cde.setLongName(name);
-                ad.setCommonDataElement(cde);
-                return ad;
-            }
-
-            return super.getAnnotationDefinition(name);
-        }
+        //Test not matching version
+        uploadContent.setVersion("1.1");
+        assertFalse(uploadContent.matching(ad));
+        
+        //Test not matching cdeId
+        uploadContent.setCdeId("124");
+        uploadContent.setVersion("1.0");
+        assertFalse(uploadContent.matching(ad));
     }
 
 }
