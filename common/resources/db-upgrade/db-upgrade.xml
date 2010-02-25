@@ -129,4 +129,164 @@
         <comment>Moving Entity Type from ANNOTATION_GROUP to ANNOTATION_FIELD_DESCRIPTOR</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.17.sql"/>
     </changeSet>
+    <changeSet id="1.1.18" author="tandrews">
+        <sql>DROP PROCEDURE IF EXISTS create_and_fill_default_annotation_groups;</sql>
+        <sql splitStatements="false" stripComments="false">
+            <![CDATA[
+        CREATE PROCEDURE create_and_fill_default_annotation_groups()
+        BEGIN
+        DECLARE cur_end INT;
+        DECLARE s_id LONG;
+        DECLARE group_id LONG;
+        DECLARE afd_id LONG;
+        DECLARE cur_study CURSOR FOR select distinct s.id
+                                     from Study s, Study_configuration sc
+                                     where sc.study_id = s.id
+                                     and s.id not in (SELECT study_id FROM annotation_group a where name like 'Annotations - Default')
+                                     and (
+                                           sc.id in (select i.study_configuration_id from
+                                                    image_data_source_configuration i)
+                                           or sc.id in (select a.study_configuration_id from abstract_clinical_source_configuration a));
+
+        DECLARE cur_group CURSOR FOR select id, study_id from annotation_group where name like 'Annotations - Default';
+
+        DECLARE cur_afd CURSOR FOR
+                      SELECT a.id
+                      FROM annotation_field_descriptor a, file_column fc, annotation_file af
+                      where
+                        a.id = fc.annotation_field_descriptor_id
+                        and fc.annotation_file_id = af.id
+                        and a.annotation_group_id is null
+                        and af.id in (SELECT distinct a.id
+                          FROM annotation_file a, delimited_text_clinical_source_configuration d, abstract_clinical_source_configuration acs, image_annotation_configuration iac, image_data_source_configuration isc, study_configuration sc
+                          where
+                          (
+                            (a.id = d.annotation_file_id
+                            and d.id = acs.id
+                            and acs.study_configuration_id = sc.id)
+                          or
+                            (a.id = iac.annotation_file_id
+                            and iac.image_data_source_configuration_id = isc.id
+                            and isc.study_configuration_id = sc.id )
+                          )
+                          and sc.study_id = s_id);
+
+        DECLARE CONTINUE HANDLER FOR NOT FOUND
+          SET cur_end = 1;
+
+        open cur_study;
+        study_loop : LOOP
+          FETCH cur_study INTO s_id;
+
+          IF cur_end = 1 THEN
+            LEAVE study_loop;
+          END IF;
+
+          INSERT into ANNOTATION_GROUP (STUDY_ID,NAME,DESCRIPTION) VALUES (s_id, 'Annotations - Default', 'Default annotation group');
+
+        END LOOP study_loop;
+        CLOSE cur_study;
+
+        SET cur_end = 0;
+
+        open cur_group;
+        group_loop : LOOP
+          FETCH cur_group INTO group_id, s_id;
+
+          IF cur_end = 1 THEN
+            LEAVE group_loop;
+          END IF;
+
+            open cur_afd;
+            afd_loop : LOOP
+            IF cur_end = 1 THEN
+              set cur_end = 0;
+              close cur_afd;
+              LEAVE afd_loop;
+            END IF;
+
+            FETCH cur_afd INTO afd_id;
+            UPDATE ANNOTATION_FIELD_DESCRIPTOR SET ANNOTATION_GROUP_ID = (group_id) where ID = afd_id;
+            END LOOP afd_loop;
+        END LOOP group_loop;
+        CLOSE cur_group;
+
+
+        END;
+
+        ]]>
+        </sql>
+        <sql>CALL create_and_fill_default_annotation_groups();</sql>
+        <comment>Creates default groups for studies that don't have a default group, and then sets the ungrouped AFDs to the default groups</comment>
+    </changeSet>
+    
+    <changeSet id="1.1.19" author="tandrews">
+        <sql>DROP PROCEDURE IF EXISTS update_queries_to_use_afd;</sql>
+        <sql splitStatements="false" stripComments="false">
+            <![CDATA[
+        CREATE PROCEDURE update_queries_to_use_afd()
+        BEGIN
+        DECLARE cur_end INT;
+        DECLARE afd_id LONG;
+        DECLARE aac_id LONG;
+        DECLARE rc_id LONG;
+        DECLARE cur_annotation_criterion CURSOR FOR SELECT aac.id, afd.id
+                                                    FROM abstract_annotation_criterion aac, abstract_criterion ac, compound_criterion cc, query q, study_subscription ss, annotation_field_descriptor afd, annotation_group ag
+                                                    where
+                                                    aac.id = ac.id
+                                                    and ac.compound_criterion_id = cc.id
+                                                    and cc.id = q.compound_criterion_id
+                                                    and q.study_subscription_id = ss.id
+                                                    and afd.annotation_definition_id = aac.annotation_definition_id
+                                                    and afd.annotation_group_id = ag.id
+                                                    and ag.study_id = ss.study_id;
+        DECLARE cur_result_column CURSOR FOR SELECT rc.id, afd.id
+                                              FROM result_column rc, query q, study_subscription ss, annotation_field_descriptor afd, annotation_group ag
+                                              where
+                                              rc.query_id = q.id
+                                              and q.study_subscription_id = ss.id
+                                              and afd.annotation_definition_id = rc.annotation_definition_id
+                                              and afd.annotation_group_id = ag.id
+                                              and ag.study_id = ss.study_id;
+
+        DECLARE CONTINUE HANDLER FOR NOT FOUND
+          SET cur_end = 1;
+
+        open cur_annotation_criterion;
+        annotation_criterion_loop : LOOP
+          FETCH cur_annotation_criterion INTO aac_id, afd_id;
+
+          IF cur_end = 1 THEN
+            LEAVE annotation_criterion_loop;
+          END IF;
+
+          UPDATE abstract_annotation_criterion SET annotation_field_descriptor_id = afd_id where ID = aac_id;
+
+        END LOOP annotation_criterion_loop;
+        CLOSE cur_annotation_criterion;
+
+        SET cur_end = 0;
+
+        open cur_result_column;
+        result_column_loop : LOOP
+          FETCH cur_result_column INTO rc_id, afd_id;
+
+          IF cur_end = 1 THEN
+            LEAVE result_column_loop;
+          END IF;
+
+          UPDATE result_column SET annotation_field_descriptor_id = afd_id where ID = rc_id;
+
+        END LOOP result_column_loop;
+        CLOSE cur_result_column;
+
+
+        END;
+
+        ]]>
+        </sql>
+        <sql>CALL update_queries_to_use_afd();</sql>
+        <comment>Updates RESULT_COLUMN and ABSTRACT_ANNOTATION_CRITERION to use AFD's instead of ADs</comment>
+    </changeSet>
+    
 </databaseChangeLog>
