@@ -1,4 +1,4 @@
-Image Series ID,Exam Number,Radiologist,Comments,Tumor Location,Side of Tumor Epicenter,Eloquent Cortex
+Image Series ID,Image Exam Number,Image Radiologist,Image Comments,Image Tumor Location,Image Side of Tumor Epicenter,Image Eloquent Cortex
 1.2.840.113619.2.25.1.1762525322.19309.674.1039106996.3,2,dxf113,,Temporal,Left,Language
 1.2.840.113619.2.5.1762525322.1690.1038396261.116,1,dxf113,,Insular,Right,None
 1.2.840.113619.2.25.1.1762897327.3028.559.1038992236.1,3,dxf113,,Temporal,Right,None

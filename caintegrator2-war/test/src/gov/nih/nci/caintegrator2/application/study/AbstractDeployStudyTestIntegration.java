@@ -87,8 +87,8 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
-import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixSnpPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixSnpPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AgilentExpressionPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
@@ -102,8 +102,6 @@ import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
@@ -128,19 +126,14 @@ import gov.nih.nci.caintegrator2.file.FileManager;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
-
-import au.com.bytecode.opencsv.CSVReader;
 
 public abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalSpringContextTests {
     
@@ -187,7 +180,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         workspaceService.saveUserWorkspace(userWorkspace);
         service.createProtectionElement(studyConfiguration);
         clearStudyDirectory(studyConfiguration.getStudy());
-        loadAnnotationDefinitions();
+        loadAnnotationGroup();
         loadClinicalData();
         loadSurvivalValueDefinition();
         loadSamples();
@@ -305,13 +298,17 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         }
     }
 
-    protected abstract AbstractPlatformSource getPlatformSource();
-
-    protected boolean getLoadDesign() {
-        return true;
+    protected AbstractPlatformSource getPlatformSource() {
+        return null;
     }
 
-    abstract protected String getNCIAServerUrl();
+    protected boolean getLoadDesign() {
+        return false;
+    }
+
+    protected String getNCIAServerUrl() {
+        return null;
+    }
     
     private ImageDataSourceConfiguration loadImages() throws ConnectionException {
         if (getLoadImages()) {
@@ -329,17 +326,19 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     }
 
     protected boolean getLoadImages() {
-        return true;
+        return false;
     }
 
-    abstract protected String getNCIATrialId();
+    protected String getNCIATrialId() {
+        return null;
+    }
 
     private void loadImageAnnotation(ImageDataSourceConfiguration imageSource) throws ValidationException, IOException {
         if (getLoadImageAnnotation()) {
             logStart();
             ImageAnnotationConfiguration imageAnnotationConfiguration = 
                 service.addImageAnnotationFile(imageSource, getImageAnnotationFile(), 
-                        getImageAnnotationFile().getName(), false);
+                        getImageAnnotationFile().getName(), true);
             imageSource.setImageAnnotationConfiguration(imageAnnotationConfiguration);
             imageAnnotationConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
             for (ImageDataSourceConfiguration configuration : studyConfiguration.getImageDataSources()) {
@@ -350,10 +349,12 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     }
 
     protected boolean getLoadImageAnnotation() {
-        return true;
+        return false;
     }
 
-    protected abstract File getImageAnnotationFile();
+    protected File getImageAnnotationFile() {
+        return null;
+    }
 
     private void mapImages(ImageDataSourceConfiguration imageSource) throws ValidationException, IOException {
         if (getMapImages()) {
@@ -365,10 +366,12 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     }
 
     protected boolean getMapImages() {
-        return true;
+        return false;
     }
 
-    abstract protected File getImageMappingFile();
+    protected File getImageMappingFile() {
+        return null;
+    }
 
     private void checkArrayData() {
         if (getLoadSamples()) {
@@ -408,19 +411,29 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         return studyArrayDatas;
     }
 
-    protected abstract int getExpectedNumberOfGeneReporters();
-
-    protected abstract int getExpectedNumberProbeSets();
-    
-    protected boolean getLoadSamples() {
-        return true;
+    protected int getExpectedNumberOfGeneReporters() {
+        return 0;
     }
 
-    protected abstract int getExpectedSampleCount();
+    protected int getExpectedNumberProbeSets() {
+        return 0;
+    }
+    
+    protected boolean getLoadSamples() {
+        return false;
+    }
 
-    protected abstract int getExpectedMappedSampleCount();
+    protected int getExpectedSampleCount() {
+        return 0;
+    }
 
-    protected abstract int getExpectedControlSampleCount();
+    protected int getExpectedMappedSampleCount() {
+        return 0;
+    }
+
+    protected int getExpectedControlSampleCount() {
+        return 0;
+    }
 
     private void loadSamples() throws ConnectionException, ExperimentNotFoundException {
         if (getLoadSamples()) {
@@ -455,7 +468,10 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         return "ncias-d227-v.nci.nih.gov";
     }
 
-    abstract protected String getCaArrayId();
+    protected String getCaArrayId() {
+        return null;
+    }
+    
     private void mapSamples() throws ValidationException, IOException {
         if (getLoadSamples()) {
             logStart();
@@ -476,13 +492,21 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         }
     }
 
-    abstract protected File getSampleMappingFile();
+    protected File getSampleMappingFile() {
+        return null;
+    }
 
-    abstract protected String getControlSampleSetName();
+    protected String getControlSampleSetName() {
+        return null;
+    }
 
-    abstract protected File getControlSamplesFile();
+    protected File getControlSamplesFile() {
+        return null;
+    }
 
-    abstract protected String getControlSamplesFileName();
+    protected String getControlSamplesFileName() {
+        return null;
+    }
     
     private void deploy(UserWorkspace userWorkspace)
     throws ConnectionException, DataRetrievalException, ValidationException {
@@ -496,12 +520,15 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         }
     }
 
-    private void loadClinicalData() throws IOException, ValidationException {
+    private void loadClinicalData()
+    throws IOException, ValidationException, ConnectionException {
         logStart();
         sourceConfiguration = 
             service.addClinicalAnnotationFile(studyConfiguration, getSubjectAnnotationFile(), 
-                    getSubjectAnnotationFile().getName(), false);
-        sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
+                    getSubjectAnnotationFile().getName(), true);
+        if (getAnnotationGroupFile() == null) {
+            sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
+        }
         assertTrue(sourceConfiguration.isLoadable());
         service.loadClinicalAnnotation(studyConfiguration, sourceConfiguration);
         assertTrue(sourceConfiguration.isCurrentlyLoaded());
@@ -510,44 +537,38 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
 
     abstract protected File getSubjectAnnotationFile();
 
-    private void loadAnnotationDefinitions() throws IOException {
-        CSVReader reader = new CSVReader(new FileReader(getAnnotationDefinitionsFile()));
-        String[] fields;
-        while ((fields = reader.readNext()) != null) {
-            AnnotationDefinition definition = new AnnotationDefinition();
-            definition.getCommonDataElement().setLongName(fields[0]);
-            definition.setKeywords(definition.getDisplayName());
-            definition.getCommonDataElement().getValueDomain().setDataType(AnnotationTypeEnum.getByValue(fields[1]));
-            if (!StringUtils.isBlank(fields[2])) {
-                Collection<PermissibleValue> permissibleValues = new HashSet<PermissibleValue>();
-                String[] values = fields[2].split(";");
-                for (String value : values) {
-                    PermissibleValue permissibleValue = new PermissibleValue();
-                    permissibleValue.setValue(value);
-                    permissibleValues.add(permissibleValue);
-                    dao.save(permissibleValue);
-                }
-                definition.getPermissibleValueCollection().addAll(permissibleValues);
-            }
-            dao.save(definition);
-        }
+    private void loadAnnotationGroup()
+    throws IOException, ValidationException, ConnectionException {
+        AnnotationGroup annotationGroup = new AnnotationGroup();
+        annotationGroup.setName(Study.DEFAULT_ANNOTATION_GROUP);
+        annotationGroup.setDescription("Created by integration test");
+        getService().saveAnnotationGroup(
+                annotationGroup, studyConfiguration, getAnnotationGroupFile());
     }
     
     private void loadSurvivalValueDefinition() {
         SurvivalValueDefinition definition = new SurvivalValueDefinition();
-        definition.setSurvivalStartDate(dao.getAnnotationDefinition(getSurvivalStartDateName()));
-        definition.setDeathDate(dao.getAnnotationDefinition(getDeathDateName()));
-        definition.setLastFollowupDate(dao.getAnnotationDefinition(getLastFollowupDateName()));
+        definition.setSurvivalStartDate(dao.getAnnotationDefinition(getSurvivalStartDateName(), AnnotationTypeEnum.DATE));
+        definition.setDeathDate(dao.getAnnotationDefinition(getDeathDateName(), AnnotationTypeEnum.DATE));
+        definition.setLastFollowupDate(dao.getAnnotationDefinition(getLastFollowupDateName(), AnnotationTypeEnum.DATE));
         definition.setName("Survival From Start Date");
         studyConfiguration.getStudy().getSurvivalValueDefinitionCollection().add(definition);
         service.save(getStudyConfiguration());
     }
     
-    abstract protected String getSurvivalStartDateName();
-    abstract protected String getDeathDateName();
-    abstract protected String getLastFollowupDateName();
+    protected String getSurvivalStartDateName() {
+        return null;
+    }
+    
+    protected String getDeathDateName() {
+        return null;
+    }
+    
+    protected String getLastFollowupDateName() {
+        return null;
+    }
 
-    abstract protected File getAnnotationDefinitionsFile();
+    abstract protected File getAnnotationGroupFile();
     
     public CaIntegrator2Dao getCaIntegrator2Dao() {
         return dao;
@@ -613,9 +634,13 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         return query;
     }
 
-    abstract protected String getPlatformName();
+    protected String getPlatformName() {
+        return null;
+    }
 
-    abstract protected String getPlatformVendor();
+    protected String getPlatformVendor() {
+        return null;
+    }
 
     /**
      * @return the queryManagementService

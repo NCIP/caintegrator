@@ -183,8 +183,8 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     }
 
     @Override
-    protected File getAnnotationDefinitionsFile() {
-        return TestDataFiles.DC_LUNG_PUBLIC_ANNOTATION_DEFINITIONS_FILE;
+    protected File getAnnotationGroupFile() {
+        return TestDataFiles.DC_LUNG_PUBLIC_ANNOTATION_GROUP_FILE;
     }
 
     protected File getImageAnnotationFile() {

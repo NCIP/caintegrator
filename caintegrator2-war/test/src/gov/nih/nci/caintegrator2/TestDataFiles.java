@@ -93,13 +93,14 @@ public class TestDataFiles {
     private static final String AGILENT_DATA_FILE_DIRECTORY_PATH = "/arraydata/agilent";
 
     public static final String VALID_FILE_RESOURCE_PATH = "/csvtestclinical.csv";
+    public static final String VALID_ANNOTATION_GROUP_FILE_PATH = "/csvtestclinical_annotationGroup.csv";
     public static final String VALID_FILE_TIMEPOINT_RESOURCE_PATH = "/csvtestclinical-timepoint.csv";
     public static final String INVALID_FILE_MISSING_VALUE_RESOURCE_PATH = "/csvtestclinical-missing-value.csv";
     public static final String INVALID_FILE_EMPTY_RESOURCE_PATH = "/emptyfile.txt";
     public static final String INVALID_FILE_NO_DATA_RESOURCE_PATH = "/csvtestclinical-no-data.csv";
     public static final String INVALID_FILE_DOESNT_EXIST_PATH = "nofile.txt";
     public static final String REMBRANDT_CLINICAL_FILE_PATH = "/rembrandt_clinical_Aug08_subset.csv";
-    public static final String REMBRANDT_ANNOTATION_DEFINITIONS_FILE_PATH = "/rembrandt_annotation_definitions.csv";
+    public static final String REMBRANDT_ANNOTATION_GROUP_FILE_PATH = "/rembrandt_annotation_group.csv";
     public static final String REMBRANDT_SAMPLE_MAPPING_FILE_PATH = "/rembrandt_caarray_sample_mapping.csv";
     public static final String REMBRANDT_CONTROL_SAMPLE_SET_NAME = "Rembrandt Control Sample Set";
     public static final String REMBRANDT_CONTROL_SAMPLES_FILE_PATH = "/rembrandt_control_samples.csv";
@@ -125,13 +126,14 @@ public class TestDataFiles {
     public static final String NCRI_LOGO_FILE_PATH = "/ncri_logo.jpg";
     
     public static final File VALID_FILE = getFile(VALID_FILE_RESOURCE_PATH);
+    public static final File VALID_ANNOTATION_GROUP_FILE = getFile(VALID_ANNOTATION_GROUP_FILE_PATH);
     public static final File VALID_FILE_TIMEPOINT = getFile(VALID_FILE_TIMEPOINT_RESOURCE_PATH);
     public static final File INVALID_FILE_MISSING_VALUE = getFile(INVALID_FILE_MISSING_VALUE_RESOURCE_PATH);
     public static final File INVALID_FILE_EMPTY = getFile(INVALID_FILE_EMPTY_RESOURCE_PATH);
     public static final File INVALID_FILE_NO_DATA = getFile(INVALID_FILE_NO_DATA_RESOURCE_PATH);
     public static final File INVALID_FILE_DOESNT_EXIST= new File(INVALID_FILE_DOESNT_EXIST_PATH);
     public static final File REMBRANDT_CLINICAL_FILE = getFile(REMBRANDT_CLINICAL_FILE_PATH);
-    public static final File REMBRANDT_ANNOTATION_DEFINITIONS_FILE = getFile(REMBRANDT_ANNOTATION_DEFINITIONS_FILE_PATH);
+    public static final File REMBRANDT_ANNOTATION_GROUP_FILE = getFile(REMBRANDT_ANNOTATION_GROUP_FILE_PATH);
     public static final File REMBRANDT_SAMPLE_MAPPING_FILE = getFile(REMBRANDT_SAMPLE_MAPPING_FILE_PATH);
     public static final File REMBRANDT_CONTROL_SAMPLES_FILE = getFile(REMBRANDT_CONTROL_SAMPLES_FILE_PATH);
     public static final File SHORT_REMBRANDT_SAMPLE_MAPPING_FILE = getFile(SHORT_REMBRANDT_SAMPLE_MAPPING_FILE_PATH);
@@ -167,12 +169,12 @@ public class TestDataFiles {
     public static final String DC_LUNG_PUBLIC_SAMPLE_MAPPING_FILE_PATH = "/dc_lung_sample_mapping_full.csv";
     public static final String DC_LUNG_PUBLIC_CONTROL_SAMPLE_SET_NAME = "/DC Lung Control_Sample Set";
     public static final String DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE_PATH = "/dc_lung_control_samples.csv";
-    public static final String DC_LUNG_PUBLIC_ANNOTATION_DEFINITIONS_FILE_PATH = "/dc_lung_public_annotation_definitions.csv";
+    public static final String DC_LUNG_PUBLIC_ANNOTATION_GROUP_FILE_PATH = "/dc_lung_public_annotation_group.csv";
 
     public static final File DC_LUNG_PUBLIC_CLINICAL_FILE = getFile(DC_LUNG_PUBLIC_CLINICAL_FILE_PATH);
     public static final File DC_LUNG_PUBLIC_SAMPLE_MAPPING_FILE = getFile(DC_LUNG_PUBLIC_SAMPLE_MAPPING_FILE_PATH);
     public static final File DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE = getFile(DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE_PATH);
-    public static final File DC_LUNG_PUBLIC_ANNOTATION_DEFINITIONS_FILE = getFile(DC_LUNG_PUBLIC_ANNOTATION_DEFINITIONS_FILE_PATH);
+    public static final File DC_LUNG_PUBLIC_ANNOTATION_GROUP_FILE = getFile(DC_LUNG_PUBLIC_ANNOTATION_GROUP_FILE_PATH);
 
     
     // Samples of genelist file upload

@@ -1,0 +1,27 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+DC_STUDY_ID,identifier,subject,,,DC_STUDY_ID,string,No,Yes
+SITE,annotation,subject,,,SITE,string,yes,yes
+GENDER,annotation,subject,,,GENDER,string,yes,yes
+AGE_AT_DIAGNOSIS,annotation,subject,,,AGE_AT_DIAGNOSIS,numeric,No,Yes
+RACE,annotation,subject,,,RACE,string,yes,yes
+ADJUVANT_CHEMO,annotation,subject,,,ADJUVANT_CHEMO,string,yes,yes
+ADJUVANT_RT,annotation,subject,,,ADJUVANT_RT,string,yes,yes
+VITAL_STATUS,annotation,subject,,,VITAL_STATUS,string,yes,yes
+FIRST_PROGRESSION_OR_RELAPSE,annotation,subject,,,FIRST_PROGRESSION_OR_RELAPSE,string,yes,yes
+ENROLLMENT_DATE,annotation,subject,,,ENROLLMENT_DATE,date,No,Yes
+MONTHS_TO_FIRST_PROGRESSION,annotation,subject,,,MONTHS_TO_FIRST_PROGRESSION,numeric,No,Yes
+MTHS_TO_LAST_CLINICAL_ASSESSMENT,annotation,subject,,,MTHS_TO_LAST_CLINICAL_ASSESSMENT,numeric,No,Yes
+LAST_CLINICAL_ASSESSMENT_DATE,annotation,subject,,,LAST_CLINICAL_ASSESSMENT_DATE,date,No,Yes
+MONTHS_TO_LAST_CONTACT_OR_DEATH,annotation,subject,,,MONTHS_TO_LAST_CONTACT_OR_DEATH,numeric,No,Yes
+LAST_CONTACT_DATE,annotation,subject,,,LAST_CONTACT_DATE,date,No,Yes
+DEATH_DATE,annotation,subject,,,DEATH_DATE,date,No,Yes
+SMOKING_HISTORY,annotation,subject,,,SMOKING_HISTORY,string,yes,yes
+SURGICAL_MARGINS,annotation,subject,,,SURGICAL_MARGINS,string,yes,yes
+PATHOLOGIC_N_STAGE,annotation,subject,,,PATHOLOGIC_N_STAGE,string,yes,yes
+PATHOLOGIC_T_STAGE,annotation,subject,,,PATHOLOGIC_T_STAGE,string,yes,yes
+MEDIAN_INTENSITY_UNNORMALIZED,annotation,subject,,,MEDIAN_INTENSITY_UNNORMALIZED,numeric,No,Yes
+PCT_ARRAY_OUTLIER,annotation,subject,,,PCT_ARRAY_OUTLIER,numeric,No,Yes
+PCT_SINGLE_OUTLIER,annotation,subject,,,PCT_SINGLE_OUTLIER,numeric,No,Yes
+LABORATORY_BATCH,annotation,subject,,,LABORATORY_BATCH,numeric,No,Yes
+Histologic grade,annotation,subject,,,Histologic grade,string,yes,yes
+IN_DC_STUDY,annotation,subject,,,IN_DC_STUDY,string,yes,yes
