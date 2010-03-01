@@ -70,7 +70,7 @@
                                               list="selectableAnnotationGroups"
                                               listKey="name"
                                               listValue="name"
-                                              headerKey="" headerValue="-----" theme="simple" />
+                                              theme="simple" />
                                 </s:if>
                             </td>
                             <td>
