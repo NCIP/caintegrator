@@ -94,7 +94,7 @@
 	                                              list="selectableAnnotationGroups"
 	                                              listKey="name"
 	                                              listValue="name"
-	                                              headerKey="" headerValue="-----" theme="simple" />
+	                                              theme="simple" />
 	                            </td>
 	                            <td>
 	                                <s:checkbox name="displayableFields[%{#columnIterator.count - 1}].fieldDescriptor.shownInBrowse"
