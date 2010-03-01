@@ -1135,8 +1135,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         checkForExistingAnnotationFieldDescriptor(studyConfiguration, uploadContent.getColumnName());
         AnnotationFieldDescriptor annotationFieldDescriptor = uploadContent.createAnnotationFieldDescriptor();
         annotationFieldDescriptor.setAnnotationGroup(annotationGroup);
-        AnnotationDefinition annotationDefinition = createAnnotationDefinition(uploadContent);
-        annotationFieldDescriptor.setDefinition(annotationDefinition);
+        if (!AnnotationFieldType.IDENTIFIER.equals(uploadContent.getAnnotationType())) {
+            AnnotationDefinition annotationDefinition = createAnnotationDefinition(uploadContent);
+            annotationFieldDescriptor.setDefinition(annotationDefinition);
+        }
         annotationGroup.getAnnotationFieldDescriptors().add(annotationFieldDescriptor);
     }
 
@@ -1150,20 +1152,15 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     private AnnotationDefinition createAnnotationDefinition(AnnotationGroupUploadContent uploadContent)
     throws ConnectionException, ValidationException {
         AnnotationDefinition annotationDefinition = getDao().getAnnotationDefinition(
-                uploadContent.getDefinitionName());
-        if (annotationDefinition != null) {
-            if (uploadContent.matching(annotationDefinition)) {
-                return annotationDefinition;
-            }
-            throw new ValidationException("Annotation Definition: " + uploadContent.getDefinitionName()
-                    + " doesn't match with existing definition.\n");
-        }
-        if (uploadContent.getCdeId() != null) {
-            annotationDefinition = getCaDsrAnnotationDefinition(uploadContent.getCdeId(),
+                uploadContent.getDefinitionName(), uploadContent.getDataType());
+        if (annotationDefinition == null) {
+            if (uploadContent.getCdeId() != null) {
+                annotationDefinition = getCaDsrAnnotationDefinition(uploadContent.getCdeId(),
                     uploadContent.getVersion());
-            annotationDefinition.setKeywords(uploadContent.getDefinitionName());
-        } else {
-            annotationDefinition = uploadContent.createAnnotationDefinition();
+                annotationDefinition.setKeywords(uploadContent.getDefinitionName());
+            } else {
+                annotationDefinition = uploadContent.createAnnotationDefinition();
+            }
         }
         return annotationDefinition;
     }

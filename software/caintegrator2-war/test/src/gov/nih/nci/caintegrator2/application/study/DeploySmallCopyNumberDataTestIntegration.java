@@ -161,16 +161,6 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     protected boolean getMapImages() {
         return false;
     }
-    
-    @Override
-    protected boolean getLoadImages() {
-        return false;
-    }
-    
-    @Override
-    protected boolean getLoadImageAnnotation() {
-        return false;
-    }
 
     @Override
     protected boolean getLoadDesign() {
@@ -233,8 +223,8 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     }
 
     @Override
-    protected File getAnnotationDefinitionsFile() {
-        return TestDataFiles.REMBRANDT_ANNOTATION_DEFINITIONS_FILE;
+    protected File getAnnotationGroupFile() {
+        return TestDataFiles.REMBRANDT_ANNOTATION_GROUP_FILE;
     }
 
 
@@ -301,26 +291,6 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     @Override
     protected String getPlatformVendor() {
         return "Affymetrix";
-    }
-
-    @Override
-    protected File getImageAnnotationFile() {
-        return null;
-    }
-
-    @Override
-    protected File getImageMappingFile() {
-        return null;
-    }
-
-    @Override
-    protected String getNCIAServerUrl() {
-        return null;
-    }
-
-    @Override
-    protected String getNCIATrialId() {
-        return null;
     }
 
 }

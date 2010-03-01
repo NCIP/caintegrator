@@ -40,7 +40,10 @@ public class Study extends AbstractCaIntegrator2Object {
     private Set<AnnotationGroup> annotationGroups = new HashSet<AnnotationGroup>();
     private StudyConfiguration studyConfiguration;
 
-    private static final String DEFAULT_ANNOTATION_GROUP = "Annotations - Default";
+    /**
+     * The default annotation group name.
+     */
+    public static final String DEFAULT_ANNOTATION_GROUP = "Annotations - Default";
 
     /**
      * @return the studyConfiguration

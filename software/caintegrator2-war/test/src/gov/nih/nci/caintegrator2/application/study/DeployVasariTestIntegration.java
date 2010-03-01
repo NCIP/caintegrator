@@ -108,21 +108,6 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     public void testDeployStudy() throws ValidationException ,java.io.IOException ,gov.nih.nci.caintegrator2.external.ConnectionException ,gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException ,gov.nih.nci.caintegrator2.external.DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException, CSException {
         deployStudy();
     }
-    
-    @Override
-    protected boolean getMapImages() {
-        return false;
-    }
-    
-    @Override
-    protected boolean getLoadImages() {
-        return false;
-    }
-    
-    @Override
-    protected boolean getLoadImageAnnotation() {
-        return false;
-    }
 
     @Override
     protected boolean getLoadDesign() {
@@ -175,8 +160,8 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     }
 
     @Override
-    protected File getAnnotationDefinitionsFile() {
-        return TestDataFiles.REMBRANDT_ANNOTATION_DEFINITIONS_FILE;
+    protected File getAnnotationGroupFile() {
+        return TestDataFiles.REMBRANDT_ANNOTATION_GROUP_FILE;
     }
 
     protected File getImageAnnotationFile() {
