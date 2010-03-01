@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
@@ -232,9 +233,10 @@ public interface CaIntegrator2Dao {
      * Returns the definitions that matches the name given (if one exists).
      * 
      * @param name find definitions for this name
+     * @param dataType find definitions for this dataType
      * @return the matching definition or null.
      */
-    AnnotationDefinition getAnnotationDefinition(String name);
+    AnnotationDefinition getAnnotationDefinition(String name, AnnotationTypeEnum dataType);
     
     /**
      * Returns the definitions that matches the publicId given (if one exists).

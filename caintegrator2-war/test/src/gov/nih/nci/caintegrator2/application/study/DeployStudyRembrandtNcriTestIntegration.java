@@ -193,8 +193,8 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     }
 
     @Override
-    protected File getAnnotationDefinitionsFile() {
-        return TestDataFiles.REMBRANDT_ANNOTATION_DEFINITIONS_FILE;
+    protected File getAnnotationGroupFile() {
+        return TestDataFiles.REMBRANDT_ANNOTATION_GROUP_FILE;
     }
 
     protected File getImageAnnotationFile() {

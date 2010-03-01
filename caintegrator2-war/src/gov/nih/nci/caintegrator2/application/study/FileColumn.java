@@ -305,10 +305,13 @@ public class FileColumn extends AbstractCaIntegrator2Object implements Comparabl
             fieldDescriptor.setName(getName());
             fieldDescriptor.setType(AnnotationFieldType.ANNOTATION);
             fieldDescriptor.setAnnotationEntityType(type);
-            fieldDescriptor.setDefinition(dao.getAnnotationDefinition(getName()));
-            if (createNewAnnotationDefinition && fieldDescriptor.getDefinition() == null) {
-                AnnotationDefinition annotationDefinition = new AnnotationDefinition();
-                annotationDefinition.setDefault(fieldDescriptor.getName());
+            if (createNewAnnotationDefinition) {
+                AnnotationDefinition annotationDefinition = dao.getAnnotationDefinition(getName(),
+                        AnnotationTypeEnum.STRING);
+                if (annotationDefinition == null) {
+                    annotationDefinition = new AnnotationDefinition();
+                    annotationDefinition.setDefault(fieldDescriptor.getName());
+                }
                 fieldDescriptor.setDefinition(annotationDefinition);
             }
             AnnotationGroup defaultGroup = studyConfiguration.getStudy().getOrCreateDefaultAnnotationGroup();
@@ -321,9 +324,10 @@ public class FileColumn extends AbstractCaIntegrator2Object implements Comparabl
     private void validateFieldDescriptorEntityType(EntityTypeEnum entityType) throws ValidationException {
         if (fieldDescriptor != null && !entityType.equals(fieldDescriptor.getAnnotationEntityType())) {
             throw new ValidationException(
-                    "Found a currently existing field descriptor with the same name in this study of type '"
-                            + fieldDescriptor.getAnnotationEntityType() + "' which doesn't match type "
-                            + entityType);
+                    "Found a currently existing field descriptor with the same name '"
+                        + fieldDescriptor.getName() + "' in this study of type '"
+                        + fieldDescriptor.getAnnotationEntityType() + "' which doesn't match type "
+                        + entityType);
         }
     }
 

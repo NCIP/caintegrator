@@ -364,9 +364,10 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
-    public AnnotationDefinition getAnnotationDefinition(String name) {
+    public AnnotationDefinition getAnnotationDefinition(String name, AnnotationTypeEnum dataType) {
         List<AnnotationDefinition> values = getCurrentSession().createCriteria(AnnotationDefinition.class)
-                .add(Restrictions.eq("commonDataElement.longName", name)).list();
+                .add(Restrictions.eq("commonDataElement.longName", name))
+                .add(Restrictions.eq("commonDataElement.valueDomain.dataType", dataType)).list();
         if (values.isEmpty()) {
             return null;
         } else {
