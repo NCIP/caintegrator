@@ -1,11 +1,11 @@
 File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
 Subject,identifier,subject,,,Subject,string,No,Yes
 Age,annotation,subject,,,Age,string,yes,yes
-Gender,annotation,subject,,,Gender,string,yes,yes
+Gender,annotation,subject,,,Gender rembrandt,string,yes,yes
 Survival,annotation,subject,,,Survival,string,yes,yes
 Disease,annotation,subject,,,Disease,string,yes,yes
 Grade,annotation,subject,,,Grade,string,yes,yes
-Race,annotation,subject,,,Race,string,yes,yes
+Race,annotation,subject,,,Race rembrandt,string,yes,yes
 Institution,annotation,subject,,,Institution,string,yes,yes
 Karnofsky,annotation,subject,,,Numeric,numeric,no,yes
 Lesion Size (cm),annotation,subject,,,Lesion Size (cm),numeric,no,yes

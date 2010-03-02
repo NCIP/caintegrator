@@ -1,9 +1,9 @@
 File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
-DC_STUDY_ID,identifier,subject,,,DC_STUDY_ID,string,No,Yes
+PATIENT_ID,identifier,subject,,,PATIENT_ID,string,No,Yes
 SITE,annotation,subject,,,SITE,string,yes,yes
-GENDER,annotation,subject,,,GENDER,string,yes,yes
+GENDER,annotation,subject,,,GENDER_DC_LUNG,string,yes,yes
 AGE_AT_DIAGNOSIS,annotation,subject,,,AGE_AT_DIAGNOSIS,numeric,No,Yes
-RACE,annotation,subject,,,RACE,string,yes,yes
+RACE,annotation,subject,,,RACE_DC_LUNG,string,yes,yes
 ADJUVANT_CHEMO,annotation,subject,,,ADJUVANT_CHEMO,string,yes,yes
 ADJUVANT_RT,annotation,subject,,,ADJUVANT_RT,string,yes,yes
 VITAL_STATUS,annotation,subject,,,VITAL_STATUS,string,yes,yes
