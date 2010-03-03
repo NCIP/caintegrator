@@ -242,8 +242,8 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
 
     Set<AnnotationFieldDescriptor> getAllExistingDescriptors() {
         Set<AnnotationFieldDescriptor> existingDescriptors = new HashSet<AnnotationFieldDescriptor>();
-        for (AbstractClinicalSourceConfiguration clinicalSourceConfiguration : clinicalConfigurationCollection) {
-            existingDescriptors.addAll(clinicalSourceConfiguration.getAnnotationDescriptors());
+        for (AnnotationGroup group : study.getAnnotationGroups()) {
+            existingDescriptors.addAll(group.getAnnotationFieldDescriptors());
         }
         return existingDescriptors;
     }
@@ -652,19 +652,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
      * @return any matching AnnotationFieldDescriptor in the study with the given name.
      */
     public AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name) {
-        Set<AnnotationFieldDescriptor> allDescriptors = new HashSet<AnnotationFieldDescriptor>();
-        for (AbstractClinicalSourceConfiguration source : getClinicalConfigurationCollection()) {
-            allDescriptors.addAll(source.getAnnotationDescriptors());
-        }
-        for (ImageDataSourceConfiguration source : getImageDataSources()) {
-            if (source.getImageAnnotationConfiguration() != null) {
-                allDescriptors.addAll(source.getImageAnnotationConfiguration().getAnnotationDescriptors());
-            }
-        }
-        for (AnnotationGroup group : study.getAnnotationGroups()) {
-            allDescriptors.addAll(group.getAnnotationFieldDescriptors());
-        }
-        return getMatchingDescriptor(name, allDescriptors);
+        return getMatchingDescriptor(name, getAllExistingDescriptors());
     }
     
     private AnnotationFieldDescriptor getMatchingDescriptor(String name, 
