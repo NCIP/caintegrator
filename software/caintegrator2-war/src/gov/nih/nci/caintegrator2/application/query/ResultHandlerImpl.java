@@ -132,7 +132,7 @@ public class ResultHandlerImpl implements ResultHandler {
     @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength" }) 
     private void addColumns(QueryResult queryResult) {
         Query query = queryResult.getQuery();
-        Collection<ResultColumn> columns = query.getColumnCollection();
+        Collection<ResultColumn> columns = query.retrieveVisibleColumns();
         Collection<ResultRow> resultRows = queryResult.getRowCollection();
         for (ResultRow row : resultRows) {
             List<ResultValue> valueList = new ArrayList<ResultValue>();
@@ -164,6 +164,7 @@ public class ResultHandlerImpl implements ResultHandler {
             row.setValueCollection(valueList);
         }
     }
+
 
     @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Have to iterate over many collections to get values.
     private AbstractAnnotationValue handleImageSeriesRow(ResultRow row, ResultColumn column) {

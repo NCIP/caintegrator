@@ -352,7 +352,8 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                                               Criteria mainAnnotationCriteria, 
                                               String annotationValueRelationship) {
         Criteria valuesCrit = mainAnnotationCriteria.createCriteria(annotationValueRelationship);
-        valuesCrit.add(Restrictions.eq(ANNOTATION_DEFINITION_ASSOCIATION, criterion.getAnnotationDefinition()));
+        valuesCrit.add(Restrictions.eq(ANNOTATION_DEFINITION_ASSOCIATION, criterion.getAnnotationFieldDescriptor()
+                .getDefinition()));
         valuesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
     }
     

@@ -92,10 +92,8 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
@@ -145,12 +143,20 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
         SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceService, true);
     }
 
-    @SuppressWarnings("deprecation") // Use dummy AnnotationFile for testing
     private Study createFakeStudy() {
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
         study.setStudyConfiguration(studyConfiguration);
+        AnnotationGroup group = new AnnotationGroup();
+        group.setName("subjectAnnotations");
+        study.getAnnotationGroups().add(group);
+        AnnotationFieldDescriptor afd1 = new AnnotationFieldDescriptor();
+        afd1.setId(1l);
+        AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
+        afd2.setId(2l);
+        group.getAnnotationFieldDescriptors().add(afd1);
+        group.getAnnotationFieldDescriptors().add(afd2);
         AnnotationDefinition subjectDef1 = new AnnotationDefinition();
         subjectDef1.setId(Long.valueOf(1));
         val1.setId(Long.valueOf(1));
@@ -160,29 +166,11 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
         subjectDef1.getPermissibleValueCollection().add(val1);
         subjectDef1.getPermissibleValueCollection().add(val2);
         subjectDef1.getCommonDataElement().getValueDomain().getPermissibleValueCollection().add(new PermissibleValue());
+        afd1.setDefinition(subjectDef1);
         AnnotationDefinition subjectDef2 = new AnnotationDefinition();
         subjectDef2.setId(Long.valueOf(2));
-        study.getSubjectAnnotationCollection().add(subjectDef1);
-        study.getSubjectAnnotationCollection().add(subjectDef2);
-        
-        DelimitedTextClinicalSourceConfiguration clinicalConf = new DelimitedTextClinicalSourceConfiguration();
-        studyConfiguration.getClinicalConfigurationCollection().add(clinicalConf);
-        AnnotationFile annotationFile = new AnnotationFile();
-        clinicalConf.setAnnotationFile(annotationFile);
-
-        addColumn(annotationFile, subjectDef1);
-        addColumn(annotationFile, subjectDef2);
-        
+        afd2.setDefinition(subjectDef2);
         return study;
-    }
-    
-    private void addColumn(AnnotationFile annotationFile, AnnotationDefinition subjectDef) {
-        FileColumn column = new FileColumn();
-        AnnotationFieldDescriptor fieldDescriptor = new AnnotationFieldDescriptor();
-        fieldDescriptor.setShownInBrowse(true);
-        fieldDescriptor.setDefinition(subjectDef);
-        column.setFieldDescriptor(fieldDescriptor);
-        annotationFile.getColumns().add(column);
     }
     
     @Test
@@ -220,10 +208,10 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
     public void testUpdateAnnotationDefinitions() {
         // Invalid because thre's not an Annotation EntityType selected.
         assertEquals(ActionSupport.INPUT, action.updateAnnotationDefinitions());
-        action.getGePlotForm().getAnnotationBasedForm().setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
+        action.getGePlotForm().getAnnotationBasedForm().setAnnotationGroupSelection("subjectAnnotations");;
         assertEquals(ActionSupport.SUCCESS, action.updateAnnotationDefinitions());
-        assertEquals(1, action.getGePlotForm().getAnnotationBasedForm().getAnnotationDefinitions().size());
-        assertTrue(action.getGePlotForm().getAnnotationBasedForm().getAnnotationDefinitions().containsKey("1"));
+        assertEquals(1, action.getGePlotForm().getAnnotationBasedForm().getAnnotationFieldDescriptors().size());
+        assertTrue(action.getGePlotForm().getAnnotationBasedForm().getAnnotationFieldDescriptors().containsKey("1"));
     }
     
     @Test
@@ -237,7 +225,13 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
     @Test
     public void testGetAnnotationTypes() {
         assertEquals(1, action.getAnnotationTypes().size());
-        action.getCurrentStudy().getImageSeriesAnnotationCollection().add(new AnnotationDefinition());
+        AnnotationGroup imagingGroup = new AnnotationGroup();
+        imagingGroup.setName("imaging");
+        action.getCurrentStudy().getAnnotationGroups().add(imagingGroup);
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        afd.setAnnotationEntityType(EntityTypeEnum.IMAGESERIES);
+        imagingGroup.getAnnotationFieldDescriptors().add(afd);
+        afd.setDefinition(new AnnotationDefinition());
         assertEquals(2, action.getAnnotationTypes().size());
     }
     
@@ -263,7 +257,7 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
         assertFalse(action.isCreatable());
         
         action.getGePlotForm().getAnnotationBasedForm().setSelectedAnnotationId("1");
-        action.getGePlotForm().getAnnotationBasedForm().setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
+        action.getGePlotForm().getAnnotationBasedForm().setAnnotationGroupSelection("subjectAnnotations");
         assertTrue(action.isCreatable());
     }
     
@@ -289,14 +283,16 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
 
 
     private void setupActionVariables() {
-        action.getGePlotForm().getAnnotationBasedForm().setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
         action.getGePlotForm().getAnnotationBasedForm().getSelectedValuesIds().add("1");
         action.getGePlotForm().getAnnotationBasedForm().getSelectedValuesIds().add("2");
+        AnnotationFieldDescriptor selectedAnnotationFieldDescriptor = new AnnotationFieldDescriptor();
         AnnotationDefinition selectedAnnotation = new AnnotationDefinition();
         selectedAnnotation.getPermissibleValueCollection().add(val1);
         selectedAnnotation.getPermissibleValueCollection().add(val2);
         selectedAnnotation.setDataType(AnnotationTypeEnum.STRING);
-        action.getPlotParameters().setSelectedAnnotation(selectedAnnotation);
+        selectedAnnotationFieldDescriptor.setDefinition(selectedAnnotation);
+        selectedAnnotationFieldDescriptor.setId(1l);
+        action.getPlotParameters().setSelectedAnnotation(selectedAnnotationFieldDescriptor);
         action.getPlotParameters().setAddPatientsNotInQueriesGroup(true);
     }
 }

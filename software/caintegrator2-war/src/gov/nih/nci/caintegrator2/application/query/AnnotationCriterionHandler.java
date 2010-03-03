@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
@@ -145,22 +146,28 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
 
     private void handleImageSeriesRow(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes,
             Set<ResultRow> rows) throws InvalidCriterionException {
-        checkImageSeriesVisibility(study);
+        checkVisibility();
         ResultRowFactory rowFactory = new ResultRowFactory(entityTypes);
         rows.addAll(rowFactory.getImageSeriesRows(dao.findMatchingImageSeries(abstractAnnotationCriterion, study)));
     }
     
-    private void checkImageSeriesVisibility(Study study) throws InvalidCriterionException {
-        if (!study.getStudyConfiguration().getVisibleImageSeriesAnnotationCollection().
-                contains(abstractAnnotationCriterion.getAnnotationDefinition())) {
-            throw new InvalidCriterionException(errorNotVisible());
+    private void checkVisibility() throws InvalidCriterionException {
+        if (!(abstractAnnotationCriterion instanceof IdentifierCriterion)) {
+            if (abstractAnnotationCriterion.getAnnotationFieldDescriptor() == null) {
+                throw new InvalidCriterionException("Study Manager deleted an annotation definition belonging to a "
+                        + "criterion below.  Please delete this criterion and/or select another.");
+            }
+            if (abstractAnnotationCriterion.getAnnotationFieldDescriptor().getDefinition() == null) {
+                throw new InvalidCriterionException("The AnnotationFieldDescriptor '" 
+                        + abstractAnnotationCriterion.getAnnotationFieldDescriptor().getName() 
+                        + "' is not associated to an AnnotationDefinition.");
+            }
+            if (!abstractAnnotationCriterion.getAnnotationFieldDescriptor().isShownInBrowse()) {
+                throw new InvalidCriterionException("Invalid criterion exist due to '"
+                        + abstractAnnotationCriterion.getAnnotationFieldDescriptor().getDefinition().getDisplayName()
+                        + "' is not visible.");
+            }
         }
-    }
-    
-    private String errorNotVisible() {
-        return "Invalid criterion exist due to '"
-            + abstractAnnotationCriterion.getAnnotationDefinition().getDisplayName()
-            + "' is not visible.";
     }
 
     private void handleSampleRow(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes,
@@ -172,17 +179,9 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
     @SuppressWarnings({"PMD.CyclomaticComplexity" }) // Lots of type checking and row adding.
     private void handleSubjectRow(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes,
             Set<ResultRow> rows) throws InvalidCriterionException {
-        checkSubjectVisibility(study);
+        checkVisibility();
         ResultRowFactory rowFactory = new ResultRowFactory(entityTypes);
         rows.addAll(rowFactory.getSubjectRows(dao.findMatchingSubjects(abstractAnnotationCriterion, study)));
-    }
-    
-    private void checkSubjectVisibility(Study study) throws InvalidCriterionException {
-        if (abstractAnnotationCriterion.getAnnotationDefinition() != null
-                && !study.getStudyConfiguration().getVisibleSubjectAnnotationCollection().
-                contains(abstractAnnotationCriterion.getAnnotationDefinition())) {
-            throw new InvalidCriterionException(errorNotVisible());
-        }
     }
 
     @Override

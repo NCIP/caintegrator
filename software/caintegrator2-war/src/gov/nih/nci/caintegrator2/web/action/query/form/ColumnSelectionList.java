@@ -85,8 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 
 import java.util.ArrayList;
@@ -101,47 +101,50 @@ import java.util.Set;
 /**
  * Allows a user to select columns to be shown in query results.
  */
-public class ColumnSelectionList {
+public class ColumnSelectionList implements Comparable<ColumnSelectionList> {
     
-    private final OptionList<AnnotationDefinition> columnList;
-    private final EntityTypeEnum entityType;
+    private final AnnotationGroup annotationGroup;
+    private final OptionList<AnnotationFieldDescriptor> columnList;
     private final ResultConfiguration resultConfiguration;
     
     ColumnSelectionList(ResultConfiguration resultConfiguration,
-            Collection<AnnotationDefinition> annotationDefinitions, EntityTypeEnum entityType) {
+            Collection<AnnotationFieldDescriptor> annotationFieldDescriptors,
+            AnnotationGroup annotationGroup) {
         this.resultConfiguration = resultConfiguration;
-        this.entityType = entityType;
-        columnList = createColumnList(annotationDefinitions);
+        columnList = createColumnList(annotationFieldDescriptors);
+        this.annotationGroup = annotationGroup;
     }
 
-    private OptionList<AnnotationDefinition> createColumnList(Collection<AnnotationDefinition> annotationDefinitions) {
-        OptionList<AnnotationDefinition> options = new OptionList<AnnotationDefinition>();
-        for (AnnotationDefinition annotationDefinition : sortDefinitions(annotationDefinitions)) {
-            options.addOption(annotationDefinition.getDisplayName(), annotationDefinition);
+    private OptionList<AnnotationFieldDescriptor> createColumnList(
+            Collection<AnnotationFieldDescriptor> annotationFieldDescriptors) {
+        OptionList<AnnotationFieldDescriptor> options = new OptionList<AnnotationFieldDescriptor>();
+        for (AnnotationFieldDescriptor annotationFieldDescriptor : sortFieldDescriptors(annotationFieldDescriptors)) {
+            options.addOption(annotationFieldDescriptor.getDefinition().getDisplayName(), annotationFieldDescriptor);
         }
         return options;
     }
 
-    private List<AnnotationDefinition> sortDefinitions(Collection<AnnotationDefinition> definitions) {
-        List<AnnotationDefinition> sortedDefinitions = new ArrayList<AnnotationDefinition>();
+    private List<AnnotationFieldDescriptor> sortFieldDescriptors(Collection<AnnotationFieldDescriptor> definitions) {
+        List<AnnotationFieldDescriptor> sortedDefinitions = new ArrayList<AnnotationFieldDescriptor>();
         sortedDefinitions.addAll(definitions);
-        Comparator<AnnotationDefinition> comparator = new Comparator<AnnotationDefinition>() {
-            public int compare(AnnotationDefinition definition1, AnnotationDefinition definition2) {
-                return definition1.getDisplayName().compareTo(definition2.getDisplayName());
+        Comparator<AnnotationFieldDescriptor> comparator = new Comparator<AnnotationFieldDescriptor>() {
+            public int compare(AnnotationFieldDescriptor definition1, AnnotationFieldDescriptor definition2) {
+                return definition1.getDefinition().getDisplayName().compareTo(
+                        definition2.getDefinition().getDisplayName());
             }
         };
         Collections.sort(sortedDefinitions, comparator);
         return sortedDefinitions;
     }
 
-    OptionList<AnnotationDefinition> getColumnList() {
+    OptionList<AnnotationFieldDescriptor> getColumnList() {
         return columnList;
     }
     
     /**
      * @return the column options.
      */
-    public List<Option<AnnotationDefinition>> getOptions() {
+    public List<Option<AnnotationFieldDescriptor>> getOptions() {
         return getColumnList().getOptions();
     }
     
@@ -152,9 +155,9 @@ public class ColumnSelectionList {
      */
     public String[] getValues() {
         List<String> columnNames = new ArrayList<String>();
-        for (ResultColumn column : resultConfiguration.getQuery().getColumnCollection()) {
-            if (entityType.equals(column.getEntityType())) {
-                columnNames.add(column.getAnnotationDefinition().getDisplayName());
+        for (ResultColumn column : resultConfiguration.getQuery().retrieveVisibleColumns()) {
+            if (annotationGroup.equals(column.getAnnotationFieldDescriptor().getAnnotationGroup())) {
+                columnNames.add(column.getAnnotationFieldDescriptor().getDefinition().getDisplayName());
             }
         }
         return columnNames.toArray(new String[columnNames.size()]);
@@ -166,9 +169,9 @@ public class ColumnSelectionList {
      * @param values the array of selected column names.
      */
     public void setValues(String[] values) {
-        Set<AnnotationDefinition> selectedColumns = new HashSet<AnnotationDefinition>();
+        Set<AnnotationFieldDescriptor> selectedColumns = new HashSet<AnnotationFieldDescriptor>();
         selectedColumns.addAll(getColumnList().getActualValues(values));
-        handleExistingAndRemovedColumns(resultConfiguration.getQuery().getColumnCollection(), selectedColumns);
+        handleExistingAndRemovedColumns(resultConfiguration.getQuery().retrieveVisibleColumns(), selectedColumns);
         addNewSelectedColumns(resultConfiguration.getQuery().getColumnCollection(), selectedColumns);
     }
     
@@ -176,7 +179,7 @@ public class ColumnSelectionList {
      * Seelect all columns.
      */
     public void selectAllValues() {
-        Set<AnnotationDefinition> selectedColumns = new HashSet<AnnotationDefinition>();
+        Set<AnnotationFieldDescriptor> selectedColumns = new HashSet<AnnotationFieldDescriptor>();
         selectedColumns.addAll(getColumnList().getAllActualValues());
         handleExistingAndRemovedColumns(resultConfiguration.getQuery().getColumnCollection(), selectedColumns);
         addNewSelectedColumns(resultConfiguration.getQuery().getColumnCollection(), selectedColumns);
@@ -184,24 +187,23 @@ public class ColumnSelectionList {
     }
 
     private void addNewSelectedColumns(Collection<ResultColumn> columnCollection,
-            Set<AnnotationDefinition> selectedColumns) {
-        for (AnnotationDefinition annotationDefinition : selectedColumns) {
+            Set<AnnotationFieldDescriptor> selectedColumns) {
+        for (AnnotationFieldDescriptor annotationFieldDescriptor : selectedColumns) {
             ResultColumn column = new ResultColumn();
-            column.setEntityType(entityType);
-            column.setAnnotationDefinition(annotationDefinition);
+            column.setAnnotationFieldDescriptor(annotationFieldDescriptor);
             column.setColumnIndex(columnCollection.size());
             columnCollection.add(column);
         }
     }
 
     private void handleExistingAndRemovedColumns(Collection<ResultColumn> columnCollection,
-            Set<AnnotationDefinition> selectedColumns) {
+            Set<AnnotationFieldDescriptor> selectedColumns) {
         Iterator<ResultColumn> columnIterator = columnCollection.iterator();
         while (columnIterator.hasNext()) {
             ResultColumn nextColumn = columnIterator.next();
-            if (entityType.equals(nextColumn.getEntityType())) {
-                if (selectedColumns.contains(nextColumn.getAnnotationDefinition())) {
-                    selectedColumns.remove(nextColumn.getAnnotationDefinition());
+            if (annotationGroup.equals(nextColumn.getAnnotationFieldDescriptor().getAnnotationGroup())) {
+                if (selectedColumns.contains(nextColumn.getAnnotationFieldDescriptor())) {
+                    selectedColumns.remove(nextColumn.getAnnotationFieldDescriptor());
                 } else {
                     columnIterator.remove();
                 }
@@ -215,6 +217,24 @@ public class ColumnSelectionList {
     public boolean isEmpty() {
         return getColumnList().getOptions().isEmpty();
     }
+
+    /**
+     * @return the annotationGroup
+     */
+    public AnnotationGroup getAnnotationGroup() {
+        return annotationGroup;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(ColumnSelectionList o) {
+        if (annotationGroup != null) {
+            return annotationGroup.getName().compareTo(o.getAnnotationGroup().getName());
+        }
+        return 0;
+    }
+    
     
 
 }

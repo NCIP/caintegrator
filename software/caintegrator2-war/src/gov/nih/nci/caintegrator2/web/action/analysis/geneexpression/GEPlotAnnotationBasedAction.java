@@ -92,9 +92,9 @@ import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFou
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
@@ -191,6 +191,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
         clearAnnotationBasedGePlot();
         getForm().clear();
         plotParameters.clear();
+        setCreatePlotRunning(false);
         return SUCCESS;
     }
 
@@ -213,7 +214,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
      * @return Struts return value.
      */
     public String updateAnnotationDefinitions() {
-        if (!validateAnnotationType()) {
+        if (!validateAnnotationGroup()) {
             return INPUT;
         }
         clearAnnotationBasedGePlot();
@@ -224,15 +225,13 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
         return SUCCESS;
     }
 
-    private boolean validateAnnotationType() {
-        try {
-            if (getForm().getAnnotationTypeSelection() == null) {
-                addActionError("Annotation Type unknown for selected annotation.");
-                return false;
-            }
-            EntityTypeEnum.checkType(getForm().getAnnotationTypeSelection());
-        } catch (IllegalArgumentException e) {
-            addActionError("Annotation Type unknown for selected annotation.");
+    private boolean validateAnnotationGroup() {
+        if (getForm().getAnnotationGroupSelection() == null) {
+            addActionError("Please select a valid Annotation Group.");
+            return false;
+        }
+        if (getStudy().getAnnotationGroup(getForm().getAnnotationGroupSelection()) == null) {
+            addActionError("Please select a valid Annotation Group.");
             return false;
         }
         return true;
@@ -240,40 +239,24 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
 
 
     private boolean loadAnnotationDefinitions() {
-        if (getForm().getAnnotationTypeSelection() == null 
-                || getForm().getAnnotationTypeSelection().equals("invalidSelection")) {
-            addActionError("Must select Annotation Type first");
+        if (getForm().getAnnotationGroupSelection() == null 
+                || getForm().getAnnotationGroupSelection().equals("invalidSelection")) {
+            addActionError("Must select Annotation Group first");
             return false;
         }
-        EntityTypeEnum annotationEntityType = 
-            EntityTypeEnum.getByValue(getForm().getAnnotationTypeSelection());
-        getForm().setAnnotationDefinitions(new HashMap<String, AnnotationDefinition>());
-        Collection<AnnotationDefinition> studyDefinitionCollection = new HashSet<AnnotationDefinition>();
-        switch (annotationEntityType) {
-        case SUBJECT:
-            studyDefinitionCollection = getStudy().getStudyConfiguration()
-                .getVisibleSubjectAnnotationCollection();
-            break;
-        case IMAGESERIES:
-            studyDefinitionCollection = getStudy().getStudyConfiguration()
-                .getVisibleImageSeriesAnnotationCollection();
-            break;
-        case SAMPLE:
-            studyDefinitionCollection = getStudy().getSampleAnnotationCollection();
-            break;
-        default:
-            addActionError("Unknown Annotation Type");
-            return false;
-        }
-        loadValidAnnotationDefinitions(studyDefinitionCollection);
+        AnnotationGroup annotationGroup = 
+            getStudy().getAnnotationGroup(getForm().getAnnotationGroupSelection());
+        getForm().setAnnotationFieldDescriptors(new HashMap<String, AnnotationFieldDescriptor>());
+        loadValidAnnotationFieldDescriptors(annotationGroup.getVisibleAnnotationFieldDescriptors());
         return true;
     }
     
-    private void loadValidAnnotationDefinitions(Collection<AnnotationDefinition> definitions) {
-        for (AnnotationDefinition definition : definitions) {
-            if (definition.getPermissibleValueCollection() != null 
-                && !definition.getPermissibleValueCollection().isEmpty()) {
-                getForm().getAnnotationDefinitions().put(definition.getId().toString(), definition);
+    private void loadValidAnnotationFieldDescriptors(
+            Collection<AnnotationFieldDescriptor> annotationFieldDescriptors) {
+        for (AnnotationFieldDescriptor annotationFieldDescriptor : annotationFieldDescriptors) {
+            if (!annotationFieldDescriptor.getDefinition().getPermissibleValueCollection().isEmpty()) {
+                getForm().getAnnotationFieldDescriptors().put(annotationFieldDescriptor.getId().toString(), 
+                        annotationFieldDescriptor);
             }
         }
     }
@@ -299,7 +282,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
 
     private void loadPermissibleValues() {
         for (PermissibleValue value 
-              : plotParameters.getSelectedAnnotation().getPermissibleValueCollection()) {
+              : plotParameters.getSelectedAnnotation().getDefinition().getPermissibleValueCollection()) {
             getForm().getPermissibleValues().put(value.getId().toString(), 
                     value.toString());
         }
@@ -318,7 +301,6 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
                 loadAnnotationDefinitions();
                 loadPermissibleValues();
                 try {
-                    plotParameters.setEntityType(EntityTypeEnum.getByValue(getForm().getAnnotationTypeSelection()));
                     GeneExpressionPlotGroup plots = getAnalysisService().
                                     createGeneExpressionPlot(getStudySubscription(), plotParameters);
                     SessionHelper.setGePlots(PlotTypeEnum.ANNOTATION_BASED, plots);
@@ -358,7 +340,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     public boolean isCreatable() {
         if (getForm().getSelectedAnnotationId() != null 
             && !"-1".equals(getForm().getSelectedAnnotationId())
-            && getForm().getAnnotationTypeSelection() != null) {
+            && getForm().getAnnotationGroupSelection() != null) {
             return true;
         }
         return false;

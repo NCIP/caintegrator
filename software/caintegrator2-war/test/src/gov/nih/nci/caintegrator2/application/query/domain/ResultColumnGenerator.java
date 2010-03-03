@@ -108,7 +108,7 @@ public final class ResultColumnGenerator extends AbstractTestDataGenerator<Resul
     @Override
     public void compareFields(ResultColumn original, ResultColumn retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getAnnotationDefinition(), retrieved.getAnnotationDefinition());
+        assertEquals(original.getAnnotationFieldDescriptor(), retrieved.getAnnotationFieldDescriptor());
         assertEquals(original.getColumnIndex(), retrieved.getColumnIndex());
         assertEquals(original.getEntityType(), retrieved.getEntityType());
         assertEquals(original.getSortOrder(), retrieved.getSortOrder());

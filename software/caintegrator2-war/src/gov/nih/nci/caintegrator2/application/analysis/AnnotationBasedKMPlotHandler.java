@@ -92,16 +92,15 @@ import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
@@ -139,18 +138,18 @@ class AnnotationBasedKMPlotHandler extends AbstractKMPlotHandler {
     InvalidSurvivalValueDefinitionException {
         validateSurvivalValueDefinition();
         KMPlotConfiguration configuration = new KMPlotConfiguration();
-        AnnotationDefinition groupAnnotationField = kmParameters.getSelectedAnnotation(); 
+        AnnotationFieldDescriptor groupAnnotationField = kmParameters.getSelectedAnnotation(); 
         Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
         retrieveSubjectGroups(kmParameters.getSelectedValues(), subjectGroupCollection);
         Collection <ResultRow> subjectRows = 
-                retrieveSubjectRowsFromDatabase(kmParameters.getEntityType(), groupAnnotationField, 
+                retrieveSubjectRowsFromDatabase(groupAnnotationField, 
                         getStudySubscription());
         retrieveSubjectSurvivalData(groupAnnotationField, subjectRows, subjectGroupCollection);
         filterGroupsWithoutSurvivalData(configuration, subjectGroupCollection);
         return kmPlotService.generatePlot(configuration);
     }
 
-    private void retrieveSubjectSurvivalData(AnnotationDefinition groupAnnotationField,
+    private void retrieveSubjectSurvivalData(AnnotationFieldDescriptor groupAnnotationField,
                                             Collection <ResultRow> rows, 
                                             Collection<SubjectGroup> subjectGroupCollection) {
         for (ResultRow row : rows) {
@@ -159,7 +158,7 @@ class AnnotationBasedKMPlotHandler extends AbstractKMPlotHandler {
             if (subjectSurvivalData != null) {
                 AbstractAnnotationValue subjectPlotGroupValue = null;
                 for (ResultValue value : row.getValueCollection()) {
-                    if (value.getColumn().getAnnotationDefinition().equals(groupAnnotationField)) {
+                    if (value.getColumn().getAnnotationFieldDescriptor().equals(groupAnnotationField)) {
                         subjectPlotGroupValue = value.getValue();
                         break;
                     }
@@ -193,13 +192,11 @@ class AnnotationBasedKMPlotHandler extends AbstractKMPlotHandler {
     }
 
     
-    private Collection<ResultRow> retrieveSubjectRowsFromDatabase(EntityTypeEnum groupFieldType, 
-                                                 AnnotationDefinition groupAnnotationField,
+    private Collection<ResultRow> retrieveSubjectRowsFromDatabase(AnnotationFieldDescriptor groupAnnotationField,
                                                  StudySubscription subscription) throws InvalidCriterionException {
         Query query = new Query();
         ResultColumn column = new ResultColumn();
-        column.setAnnotationDefinition(groupAnnotationField);
-        column.setEntityType(groupFieldType);
+        column.setAnnotationFieldDescriptor(groupAnnotationField);
         column.setColumnIndex(0);
         query.setColumnCollection(new HashSet<ResultColumn>());
         query.getColumnCollection().add(column);

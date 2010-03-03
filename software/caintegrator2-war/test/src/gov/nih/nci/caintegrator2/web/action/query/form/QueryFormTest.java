@@ -90,12 +90,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -107,6 +104,7 @@ import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -139,6 +137,8 @@ import com.opensymphony.xwork2.ValidationAwareSupport;
 public class QueryFormTest {
     
     private long nextId = 0;
+    private AnnotationGroup subjectGroup;
+    private AnnotationGroup imagingGroup;
     private QueryForm queryForm = new QueryForm();
     private StudySubscription subscription;
     private AnnotationDefinition stringClinicalAnnotation1;
@@ -151,12 +151,18 @@ public class QueryFormTest {
     private PermissibleValue value2 = new PermissibleValue();
     private PermissibleValue value3 = new PermissibleValue();
 
-    @SuppressWarnings("deprecation") // Use dummy AnnotationFile for testing
     @Before
     public void setUp() {
         subscription = new StudySubscription();
         subscription.setId(1L);
         Study study = new Study();
+        subjectGroup = new AnnotationGroup();
+        imagingGroup = new AnnotationGroup();
+        subjectGroup.setName("subjects");
+        imagingGroup.setName("images");
+        study.getAnnotationGroups().add(subjectGroup);
+        study.getAnnotationGroups().add(imagingGroup);
+        
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
         study.setStudyConfiguration(studyConfiguration);
@@ -188,25 +194,13 @@ public class QueryFormTest {
         testImageSeriesAnnotation = createDefinition("testImageSeriesAnnotation", AnnotationTypeEnum.STRING);
         study.getImageSeriesAnnotationCollection().add(testImageSeriesAnnotation);
         
-        DelimitedTextClinicalSourceConfiguration clinicalConf = new DelimitedTextClinicalSourceConfiguration();
-        studyConfiguration.getClinicalConfigurationCollection().add(clinicalConf);
-        AnnotationFile annotationFile = new AnnotationFile();
-        clinicalConf.setAnnotationFile(annotationFile);
+        createAfd(stringClinicalAnnotation1, subjectGroup);
+        createAfd(stringClinicalAnnotation2, subjectGroup);
+        createAfd(numericClinicalAnnotation, subjectGroup);
+        createAfd(selectClinicalAnnotation1, subjectGroup);
+        createAfd(selectClinicalAnnotation2, subjectGroup);
 
-        addColumn(annotationFile, stringClinicalAnnotation1);
-        addColumn(annotationFile, stringClinicalAnnotation2);
-        addColumn(annotationFile, numericClinicalAnnotation);
-        addColumn(annotationFile, selectClinicalAnnotation1);
-        addColumn(annotationFile, selectClinicalAnnotation2);
-
-        ImageDataSourceConfiguration imagingSourceConf = new ImageDataSourceConfiguration();
-        studyConfiguration.getImageDataSources().add(imagingSourceConf);
-        ImageAnnotationConfiguration imageConf = new ImageAnnotationConfiguration();
-        imagingSourceConf.setImageAnnotationConfiguration(imageConf);
-        AnnotationFile imageAnnotationFile = new AnnotationFile();
-        imageConf.setAnnotationFile(imageAnnotationFile);
-
-        addColumn(imageAnnotationFile, testImageSeriesAnnotation);
+        createAfd(testImageSeriesAnnotation, imagingGroup);
         
         SubjectList subjectList = new SubjectList();
         SubjectIdentifier identifier1 = new SubjectIdentifier();
@@ -222,13 +216,12 @@ public class QueryFormTest {
         subscription.getListCollection().add(subjectList);
     }
     
-    private void addColumn(AnnotationFile annotationFile, AnnotationDefinition subjectDef) {
-        FileColumn column = new FileColumn();
+    private void createAfd(AnnotationDefinition subjectDef, AnnotationGroup group) {
         AnnotationFieldDescriptor fieldDescriptor = new AnnotationFieldDescriptor();
         fieldDescriptor.setShownInBrowse(true);
         fieldDescriptor.setDefinition(subjectDef);
-        column.setFieldDescriptor(fieldDescriptor);
-        annotationFile.getColumns().add(column);
+        fieldDescriptor.setAnnotationGroup(group);
+        group.getAnnotationFieldDescriptors().add(fieldDescriptor);
     }
 
     private AnnotationDefinition createDefinition(String name, AnnotationTypeEnum type) {
@@ -245,16 +238,14 @@ public class QueryFormTest {
         assertNotNull(queryForm.getQuery());
         assertNotNull(queryForm.getCriteriaGroup());
         assertEquals(subscription, queryForm.getQuery().getSubscription());
-        assertEquals(5, queryForm.getClinicalAnnotations().getNames().size());
-        assertEquals("selectClinicalAnnotation1", queryForm.getClinicalAnnotations().getNames().get(1));
-        assertEquals(stringClinicalAnnotation1, queryForm.getClinicalAnnotations().getDefinition("stringClinicalAnnotation1"));
+        assertEquals(5, queryForm.getAnnotations("subjects").getNames().size());
+        assertEquals("selectClinicalAnnotation1", queryForm.getAnnotations("subjects").getNames().get(1));
+        assertEquals(stringClinicalAnnotation1, queryForm.getAnnotations("subjects").getDefinition("stringClinicalAnnotation1").getDefinition());
 
+        assertEquals(5, queryForm.getCriteriaTypeOptions().size());
         queryForm.getQuery().getSubscription().getStudy().getStudyConfiguration().getGenomicDataSources().clear();
-        assertEquals(2, queryForm.getCriteriaTypeOptions().size());
-        queryForm.getQuery().getSubscription().getStudy().getStudyConfiguration().getGenomicDataSources().add(new GenomicDataSourceConfiguration());
-        assertEquals(3, queryForm.getCriteriaTypeOptions().size());
-        queryForm.getQuery().getSubscription().getStudy().getImageSeriesAnnotationCollection().clear();
-        assertEquals(2, queryForm.getCriteriaTypeOptions().size());
+        assertEquals(4, queryForm.getCriteriaTypeOptions().size());
+        
         testImageSeriesAnnotation = createDefinition("testImageSeriesAnnotation", AnnotationTypeEnum.STRING);
         queryForm.getQuery().getSubscription().getStudy().getImageSeriesAnnotationCollection().add(testImageSeriesAnnotation);
 
@@ -275,9 +266,9 @@ public class QueryFormTest {
     public void testValidation() {
         queryForm.createQuery(subscription);
         CriteriaGroup group = queryForm.getCriteriaGroup();
-        group.setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
+        group.setCriterionTypeName("subjects");
         group.addCriterion(subscription.getStudy());
-        ClinicalCriterionRow criterionRow = (ClinicalCriterionRow) group.getRows().get(0);
+        AnnotationCriterionRow criterionRow = (AnnotationCriterionRow) group.getRows().get(0);
         setFieldName(criterionRow, "numericClinicalAnnotation");
         TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
         parameter.setValue("2.0");
@@ -299,8 +290,8 @@ public class QueryFormTest {
         assertEquals(BooleanOperatorEnum.OR.getValue(), group.getBooleanOperator());
         group.setCriterionTypeName("");
         assertEquals("", group.getCriterionTypeName());
-        group.setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
-        assertEquals(CriterionRowTypeEnum.CLINICAL.getValue(), group.getCriterionTypeName());
+        group.setCriterionTypeName("subjects");
+        assertEquals("subjects", group.getCriterionTypeName());
         assertEquals(0, group.getRows().size());
         group.addCriterion(subscription.getStudy());
         assertEquals(1, group.getRows().size());
@@ -314,9 +305,9 @@ public class QueryFormTest {
         getFirstGenomicSource(subscription).getControlSampleSetCollection().add(sampleSet1);
         queryForm.createQuery(subscription);
         CriteriaGroup group = queryForm.getCriteriaGroup();
-        group.setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
+        group.setCriterionTypeName("subjects");
         group.addCriterion(subscription.getStudy());
-        ClinicalCriterionRow criterionRow = (ClinicalCriterionRow) group.getRows().get(0);
+        AnnotationCriterionRow criterionRow = (AnnotationCriterionRow) group.getRows().get(0);
         checkNewCriterionRow(group, criterionRow);
 
         checkSetNewRowToStringField(criterionRow);
@@ -327,10 +318,44 @@ public class QueryFormTest {
         checkChangeToSelectField(criterionRow);
         checkChangeToNumericField(criterionRow);
         checkChangeNumericOperator(criterionRow);
-        checkChangeToSubjectListField(criterionRow);
         checkAddImageSeriesCriterion(group);
         checkAddGeneExpressionCriterion(group);
         checkRemoveRow(group);
+        
+    }
+    
+    @Test
+    public void testSubjectListRow() {
+        queryForm.createQuery(subscription);
+        CriteriaGroup group = queryForm.getCriteriaGroup();
+        group.setCriterionTypeName(CriterionRowTypeEnum.SAVED_LIST.getValue());
+        group.addCriterion(subscription.getStudy());
+        SavedListCriterionRow criterionRow = (SavedListCriterionRow) group.getRows().get(0);
+        checkChangeToSubjectListField(criterionRow);
+    }
+    
+    
+    @Test
+    public void testIdentifierRow() {
+        queryForm.createQuery(subscription);
+        CriteriaGroup group = queryForm.getCriteriaGroup();
+        group.setCriterionTypeName(CriterionRowTypeEnum.UNIQUE_IDENTIIFER.getValue());
+        group.addCriterion(subscription.getStudy());
+        IdentifierCriterionRow criterionRow = (IdentifierCriterionRow) group.getRows().get(0);
+        assertEquals(1, criterionRow.getAvailableFieldNames().size());
+        subscription.getStudy().getStudyConfiguration().getImageDataSources().add(new ImageDataSourceConfiguration());
+        assertEquals(2, criterionRow.getAvailableFieldNames().size());
+        setFieldName(criterionRow, IdentifierCriterionWrapper.SUBJECT_IDENTIFIER_FIELD_NAME);
+        IdentifierCriterion criterion = (IdentifierCriterion) criterionRow.getCriterion();
+        TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
+        setOperator(parameter, CriterionOperatorEnum.BEGINS_WITH.getValue());
+        assertEquals(WildCardTypeEnum.WILDCARD_AFTER_STRING, criterion.getWildCardType());
+        setOperator(parameter, CriterionOperatorEnum.ENDS_WITH.getValue());
+        assertEquals(WildCardTypeEnum.WILDCARD_BEFORE_STRING, criterion.getWildCardType());
+        setOperator(parameter, CriterionOperatorEnum.EQUALS.getValue());
+        assertEquals(WildCardTypeEnum.WILDCARD_OFF, criterion.getWildCardType());
+        setOperator(parameter, CriterionOperatorEnum.CONTAINS.getValue());
+        assertEquals(WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING, criterion.getWildCardType());
         
     }
     
@@ -339,9 +364,9 @@ public class QueryFormTest {
         subscription.getListCollection().clear();
         queryForm.createQuery(subscription);
         CriteriaGroup group = queryForm.getCriteriaGroup();
-        group.setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
+        group.setCriterionTypeName("subjects");
         group.addCriterion(subscription.getStudy());
-        ClinicalCriterionRow criterionRow = (ClinicalCriterionRow) group.getRows().get(0);
+        AnnotationCriterionRow criterionRow = (AnnotationCriterionRow) group.getRows().get(0);
         checkNewCriterionNoSubjectLists(group, criterionRow);
     }
     
@@ -380,11 +405,10 @@ public class QueryFormTest {
     }
 
     @SuppressWarnings("unchecked")
-    private void checkChangeToSelectField(ClinicalCriterionRow criterionRow) {
+    private void checkChangeToSelectField(AnnotationCriterionRow criterionRow) {
         setFieldName(criterionRow, "selectClinicalAnnotation1");
         SelectedValueCriterion criterion = (SelectedValueCriterion) criterionRow.getCriterion();
-        assertEquals(selectClinicalAnnotation1, criterion.getAnnotationDefinition());
-        assertEquals(EntityTypeEnum.SUBJECT, criterion.getEntityType());
+        assertEquals(selectClinicalAnnotation1, criterion.getAnnotationFieldDescriptor().getDefinition());
         assertTrue(criterion.getValueCollection().isEmpty());
         assertEquals(1, criterionRow.getParameters().size());
         SelectListParameter<PermissibleValue> select = (SelectListParameter<PermissibleValue>) criterionRow.getParameters().get(0);
@@ -430,7 +454,7 @@ public class QueryFormTest {
     }
     
     @SuppressWarnings("unchecked")
-    private void checkChangeToSubjectListField(ClinicalCriterionRow criterionRow) {
+    private void checkChangeToSubjectListField(SavedListCriterionRow criterionRow) {
         setFieldName(criterionRow, SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME);
         SubjectListCriterion criterion = (SubjectListCriterion) criterionRow.getCriterion();
         MultiSelectParameter<PermissibleValue> multiSelect = (MultiSelectParameter<PermissibleValue>) criterionRow.getParameters().get(0);
@@ -439,7 +463,7 @@ public class QueryFormTest {
         assertEquals(3, criterion.getSubjectIdentifiers().size());
     }
 
-    private void checkChangeNumericOperator(ClinicalCriterionRow criterionRow) {
+    private void checkChangeNumericOperator(AnnotationCriterionRow criterionRow) {
         NumericComparisonCriterion criterion = (NumericComparisonCriterion) criterionRow.getCriterion();
         TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
         setOperator(parameter, CriterionOperatorEnum.GREATER_THAN.getValue());
@@ -520,10 +544,10 @@ public class QueryFormTest {
 
     
     private void checkAddImageSeriesCriterion(CriteriaGroup group) {
-        group.setCriterionTypeName(CriterionRowTypeEnum.IMAGE_SERIES.getValue());
+        group.setCriterionTypeName("images");
         group.addCriterion(subscription.getStudy());
-        ImageSeriesCriterionRow imageSeriesCriterionRow = (ImageSeriesCriterionRow) group.getRows().get(1);
-        assertEquals(2, imageSeriesCriterionRow.getAvailableFieldNames().size());
+        AnnotationCriterionRow imageSeriesCriterionRow = (AnnotationCriterionRow) group.getRows().get(1);
+        assertEquals(1, imageSeriesCriterionRow.getAvailableFieldNames().size());
         assertTrue(imageSeriesCriterionRow.getAvailableFieldNames().contains("testImageSeriesAnnotation"));
         setFieldName(imageSeriesCriterionRow, "testImageSeriesAnnotation");
         assertEquals(group, imageSeriesCriterionRow.getGroup());
@@ -534,7 +558,7 @@ public class QueryFormTest {
         assertEquals(2, group.getCompoundCriterion().getCriterionCollection().size());
     }
 
-    private void checkChangeToNumericField(ClinicalCriterionRow criterionRow) {
+    private void checkChangeToNumericField(AnnotationCriterionRow criterionRow) {
         setFieldName(criterionRow, "numericClinicalAnnotation");
         TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
         assertEquals(5 , parameter.getAvailableOperators().size());
@@ -546,17 +570,17 @@ public class QueryFormTest {
     }
 
 
-    private void checkChangeToDifferentStringField(ClinicalCriterionRow criterionRow) {
+    private void checkChangeToDifferentStringField(AnnotationCriterionRow criterionRow) {
         setFieldName(criterionRow, "stringClinicalAnnotation2");
         assertEquals("stringClinicalAnnotation2", criterionRow.getFieldName());
         StringComparisonCriterion criterion = (StringComparisonCriterion) criterionRow.getCriterion();
         assertEquals(WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING, criterion.getWildCardType());
         assertEquals("value", ((TextFieldParameter) criterionRow.getParameters().get(0)).getValue());
         assertEquals("value", criterion.getStringValue());
-        assertEquals(stringClinicalAnnotation2, criterion.getAnnotationDefinition());
+        assertEquals(stringClinicalAnnotation2, criterion.getAnnotationFieldDescriptor().getDefinition());
     }
 
-    private void checkChangeStringFieldOperator(ClinicalCriterionRow criterionRow) {
+    private void checkChangeStringFieldOperator(AnnotationCriterionRow criterionRow) {
         StringComparisonCriterion criterion = (StringComparisonCriterion) criterionRow.getCriterion();
         TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
         setOperator(parameter, CriterionOperatorEnum.BEGINS_WITH.getValue());
@@ -581,7 +605,7 @@ public class QueryFormTest {
         queryForm.processCriteriaChanges();
     }
 
-    private void checkSetStringOperandValue(ClinicalCriterionRow criterionRow) {
+    private void checkSetStringOperandValue(AnnotationCriterionRow criterionRow) {
         TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
         parameter.setValue("value");
         assertEquals("value", parameter.getValue());
@@ -589,16 +613,16 @@ public class QueryFormTest {
         assertEquals("value", criterion.getStringValue());
     }
 
-    private void checkNewCriterionRow(CriteriaGroup group, ClinicalCriterionRow criterionRow) {
-        assertEquals(7, criterionRow.getAvailableFieldNames().size());
+    private void checkNewCriterionRow(CriteriaGroup group, AnnotationCriterionRow criterionRow) {
+        assertEquals(5, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("stringClinicalAnnotation1"));
         assertEquals(group, criterionRow.getGroup());
         assertEquals(0 , criterionRow.getParameters().size());
         assertEquals("", criterionRow.getFieldName());
     }
     
-    private void checkNewCriterionNoSubjectLists(CriteriaGroup group, ClinicalCriterionRow criterionRow) {
-        assertEquals(6, criterionRow.getAvailableFieldNames().size());
+    private void checkNewCriterionNoSubjectLists(CriteriaGroup group, AnnotationCriterionRow criterionRow) {
+        assertEquals(5, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("stringClinicalAnnotation1"));
         assertFalse(criterionRow.getAvailableFieldNames().contains(SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME));
         assertEquals(group, criterionRow.getGroup());
@@ -606,7 +630,7 @@ public class QueryFormTest {
         assertEquals("", criterionRow.getFieldName());
     }
 
-    private void checkSetToEqualsOperator(ClinicalCriterionRow criterionRow) {
+    private void checkSetToEqualsOperator(AnnotationCriterionRow criterionRow) {
         assertEquals(1, criterionRow.getParameters().size());
         assertTrue(criterionRow.getParameters().get(0) instanceof TextFieldParameter);
         TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
@@ -615,11 +639,10 @@ public class QueryFormTest {
         StringComparisonCriterion criterion = (StringComparisonCriterion) criterionRow.getCriterion();
         assertNotNull(criterion);
         assertEquals(WildCardTypeEnum.WILDCARD_OFF, criterion.getWildCardType());
-        assertEquals(stringClinicalAnnotation1, criterion.getAnnotationDefinition());
-        assertEquals(EntityTypeEnum.SUBJECT, criterion.getEntityType());
+        assertEquals(stringClinicalAnnotation1, criterion.getAnnotationFieldDescriptor().getDefinition());
     }
 
-    private void checkSetNewRowToStringField(ClinicalCriterionRow criterionRow) {
+    private void checkSetNewRowToStringField(AnnotationCriterionRow criterionRow) {
         setFieldName(criterionRow, "stringClinicalAnnotation1");
         assertEquals("stringClinicalAnnotation1", criterionRow.getFieldName());
         assertEquals(5 , criterionRow.getParameters().get(0).getAvailableOperators().size());
@@ -639,7 +662,7 @@ public class QueryFormTest {
         
         StringComparisonCriterion stringCriterion = new StringComparisonCriterion();
         stringCriterion.setId(1L);
-        stringCriterion.setAnnotationDefinition(stringClinicalAnnotation1);
+        stringCriterion.setAnnotationFieldDescriptor(createAFDForDefinition(stringClinicalAnnotation1, subjectGroup));
         stringCriterion.setEntityType(EntityTypeEnum.SUBJECT);
         stringCriterion.setStringValue("value");
         stringCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING);
@@ -660,19 +683,19 @@ public class QueryFormTest {
 
         ResultColumn subjectColumn1 = new ResultColumn();
         subjectColumn1.setEntityType(EntityTypeEnum.SUBJECT);
-        subjectColumn1.setAnnotationDefinition(stringClinicalAnnotation1);
+        subjectColumn1.setAnnotationFieldDescriptor(createAFDForDefinition(stringClinicalAnnotation1, subjectGroup));
         subjectColumn1.setColumnIndex(2);
         query.getColumnCollection().add(subjectColumn1);
 
         ResultColumn subjectColumn2 = new ResultColumn();
         subjectColumn2.setEntityType(EntityTypeEnum.SUBJECT);
-        subjectColumn2.setAnnotationDefinition(numericClinicalAnnotation);
+        subjectColumn2.setAnnotationFieldDescriptor(createAFDForDefinition(numericClinicalAnnotation, subjectGroup));
         subjectColumn2.setColumnIndex(1);
         query.getColumnCollection().add(subjectColumn2);
 
         ResultColumn imageSeriesColumn = new ResultColumn();
         imageSeriesColumn.setEntityType(EntityTypeEnum.IMAGESERIES);
-        imageSeriesColumn.setAnnotationDefinition(testImageSeriesAnnotation);
+        imageSeriesColumn.setAnnotationFieldDescriptor(createAFDForDefinition(testImageSeriesAnnotation, imagingGroup));
         imageSeriesColumn.setColumnIndex(0);
         query.getColumnCollection().add(imageSeriesColumn);
         
@@ -684,7 +707,7 @@ public class QueryFormTest {
         assertEquals(BooleanOperatorEnum.OR.getValue(), group.getBooleanOperator());
         assertEquals(3, group.getRows().size());
         
-        ClinicalCriterionRow criterionRow = (ClinicalCriterionRow) group.getRows().get(0);
+        AnnotationCriterionRow criterionRow = (AnnotationCriterionRow) group.getRows().get(0);
         assertEquals(stringCriterion, criterionRow.getCriterion());
         assertEquals(stringClinicalAnnotation1.getDisplayName(), criterionRow.getFieldName());
         TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
@@ -715,31 +738,28 @@ public class QueryFormTest {
         assertEquals(numericClinicalAnnotation, queryForm.getResultConfiguration().getSelectedColumns().get(1).getAnnotationDefinition());
         assertEquals(stringClinicalAnnotation1, queryForm.getResultConfiguration().getSelectedColumns().get(2).getAnnotationDefinition());
         
-        assertEquals(5, queryForm.getResultConfiguration().getSubjectColumns().getColumnList().getOptions().size());
-        List<String> columnNames = Arrays.asList(queryForm.getResultConfiguration().getSubjectColumns().getValues());
+        assertEquals(8, queryForm.getResultConfiguration().getColumnSelectionLists().get(1).getColumnList().getOptions().size());
+        List<String> columnNames = Arrays.asList(queryForm.getResultConfiguration().getColumnSelectionLists().get(1).getValues());
         assertEquals(2, columnNames.size());
         assertTrue(columnNames.contains("stringClinicalAnnotation1"));
         assertTrue(columnNames.contains("numericClinicalAnnotation"));
-        assertEquals(1, queryForm.getResultConfiguration().getImageSeriesColumns().getColumnList().getOptions().size());
-        assertEquals(1, queryForm.getResultConfiguration().getImageSeriesColumns().getValues().length);
+        assertEquals(2, queryForm.getResultConfiguration().getColumnSelectionLists().get(0).getColumnList().getOptions().size());
+        assertEquals(1, queryForm.getResultConfiguration().getColumnSelectionLists().get(0).getValues().length);
 
-        queryForm.getResultConfiguration().getImageSeriesColumns().setValues(new String[0]);
-        queryForm.getResultConfiguration().getSubjectColumns().setValues(new String[] {"stringClinicalAnnotation2"});
-        assertEquals(1, queryForm.getResultConfiguration().getSubjectColumns().getValues().length);
-        assertEquals(1, query.getColumnCollection().size());
-        ResultColumn column = query.getColumnCollection().iterator().next();
-        assertEquals(EntityTypeEnum.SUBJECT, column.getEntityType());
-        assertEquals(stringClinicalAnnotation2, column.getAnnotationDefinition());
+        queryForm.getResultConfiguration().getColumnSelectionLists().get(0).setValues(new String[0]);
+        queryForm.getResultConfiguration().getColumnSelectionLists().get(1).setValues(new String[] {"stringClinicalAnnotation2"});
+        assertEquals(3, queryForm.getResultConfiguration().getColumnSelectionLists().get(1).getValues().length);
+        assertEquals(4, queryForm.getResultConfiguration().getSelectedColumns().size());
+        ResultColumn column = queryForm.getResultConfiguration().getSelectedColumns().iterator().next();
+        assertEquals(testImageSeriesAnnotation, column.getAnnotationDefinition());
         assertEquals(0, (int) column.getColumnIndex());
-        assertEquals(1, queryForm.getResultConfiguration().getColumnIndex("stringClinicalAnnotation2"));
-        assertEquals(1, queryForm.getResultConfiguration().getSelectedColumns().size());
-        assertEquals(stringClinicalAnnotation2, queryForm.getResultConfiguration().getSelectedColumns().get(0).getAnnotationDefinition());
+        assertEquals(4, queryForm.getResultConfiguration().getColumnIndex("stringClinicalAnnotation2"));
+        assertEquals(4, queryForm.getResultConfiguration().getSelectedColumns().size());
+        assertEquals(testImageSeriesAnnotation, queryForm.getResultConfiguration().getSelectedColumns().get(0).getAnnotationDefinition());
 
         ValidationAwareSupport validationAware = new ValidationAwareSupport();
         queryForm.validate(validationAware);
         assertFalse(validationAware.hasFieldErrors());
-        
-        assertTrue(queryForm.hasImageDataSources());
         
         queryForm.getResultConfiguration().setSortType("invalidColumn", SortTypeEnum.ASCENDING.getValue());
         assertEquals("", queryForm.getResultConfiguration().getSortType("invalidColumn"));
@@ -748,6 +768,14 @@ public class QueryFormTest {
         queryForm.getResultConfiguration().setSortType("stringClinicalAnnotation2", "");
         assertEquals("", queryForm.getResultConfiguration().getSortType("stringClinicalAnnotation2"));
         
+    }
+    
+    private AnnotationFieldDescriptor createAFDForDefinition(AnnotationDefinition ad, AnnotationGroup ag) {
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        afd.setDefinition(ad);
+        afd.setAnnotationGroup(ag);
+        ag.getAnnotationFieldDescriptors().add(afd);
+        return afd;
     }
 
     @Test

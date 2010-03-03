@@ -13,7 +13,7 @@
         <table class="data">
             <tr>
                 <th/>
-                <th> Annotation Type</th>
+                <th> Annotation Group</th>
                 <th> Annotation </th>
                 <th> Values </th>
             </tr>
@@ -22,17 +22,19 @@
                     1.) Patient Groups:
                 </td>
                 <td class="value_inline">
-                    <s:select name="kmPlotForm.annotationBasedForm.annotationTypeSelection" 
-                              list="annotationTypes"
+                    <s:select name="kmPlotForm.annotationBasedForm.annotationGroupSelection" 
+                              list="currentStudy.annotationGroups"
+                              listValue="name" 
+                              listKey="name"
                               headerKey="invalidSelection"
-                              headerValue="Select Annotation Type"
+                              headerValue="Select Annotation Group"
                               onchange="document.kaplanMeierAnnotationInputForm.action = 'kmPlotUpdateAnnotationDefinitions.action';document.kaplanMeierAnnotationInputForm.submit();"
                               theme="simple"/>
                 </td>
                 <td class="value_inline">
                 <s:select name="kmPlotForm.annotationBasedForm.selectedAnnotationId" 
-                              list="kmPlotForm.annotationBasedForm.annotationDefinitions"
-                              listValue="value.displayName"
+                              list="kmPlotForm.annotationBasedForm.annotationFieldDescriptors"
+                              listValue="value.definition.displayName"
                               headerKey="-1"
                               headerValue="Select Annotation"
                               onchange="document.kaplanMeierAnnotationInputForm.action = 'kmPlotUpdatePermissibleValues.action';document.kaplanMeierAnnotationInputForm.permissibleValuesNeedUpdate.value = 'true';document.kaplanMeierAnnotationInputForm.submit();"

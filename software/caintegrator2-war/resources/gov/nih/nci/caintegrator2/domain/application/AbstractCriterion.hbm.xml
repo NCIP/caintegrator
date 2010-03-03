@@ -31,7 +31,6 @@
             <!-- Attributes mapping for the AbstractAnnotationCriterion class -->
             <property name="entityType" type="EntityTypeEnum" column="ENTITY_TYPE"/>
             <!-- Associations mapping for the AbstractAnnotationCriterion class -->
-            <many-to-one name="annotationDefinition" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID" lazy="proxy" cascade="none" />
             <many-to-one name="annotationFieldDescriptor" class="gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor" column="ANNOTATION_FIELD_DESCRIPTOR_ID" lazy="proxy" cascade="none" />
             
             <joined-subclass name="NumericComparisonCriterion" table="NUMERIC_COMPARISON_CRITERION" lazy="false">

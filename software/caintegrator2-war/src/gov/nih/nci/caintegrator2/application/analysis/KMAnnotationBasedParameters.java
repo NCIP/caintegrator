@@ -85,9 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -97,10 +96,8 @@ import java.util.HashSet;
  */
 public class KMAnnotationBasedParameters extends AbstractKMParameters {
 
-    private AnnotationDefinition selectedAnnotation = new AnnotationDefinition();
+    private AnnotationFieldDescriptor selectedAnnotation = new AnnotationFieldDescriptor();
     private final Collection <PermissibleValue> selectedValues = new HashSet<PermissibleValue>();    
-    private EntityTypeEnum entityType;
-    
     
     /**
      * {@inheritDoc}
@@ -127,21 +124,21 @@ public class KMAnnotationBasedParameters extends AbstractKMParameters {
      */
     @Override
     public void clear() {
-        setSelectedAnnotation(new AnnotationDefinition());
+        setSelectedAnnotation(new AnnotationFieldDescriptor());
         getSelectedValues().clear();
     }
     
     /**
      * @return the selectedAnnotation
      */
-    public AnnotationDefinition getSelectedAnnotation() {
+    public AnnotationFieldDescriptor getSelectedAnnotation() {
         return selectedAnnotation;
     }
 
     /**
      * @param selectedAnnotation the selectedAnnotation to set
      */
-    public void setSelectedAnnotation(AnnotationDefinition selectedAnnotation) {
+    public void setSelectedAnnotation(AnnotationFieldDescriptor selectedAnnotation) {
         this.selectedAnnotation = selectedAnnotation;
     }
 
@@ -150,20 +147,6 @@ public class KMAnnotationBasedParameters extends AbstractKMParameters {
      */
     public Collection<PermissibleValue> getSelectedValues() {
         return selectedValues;
-    }
-
-    /**
-     * @return the entityType
-     */
-    public EntityTypeEnum getEntityType() {
-        return entityType;
-    }
-
-    /**
-     * @param entityType the entityType to set
-     */
-    public void setEntityType(EntityTypeEnum entityType) {
-        this.entityType = entityType;
     }
 
 }

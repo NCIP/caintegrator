@@ -97,8 +97,8 @@ import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParame
 import gov.nih.nci.caintegrator2.application.analysis.StringParameterValue;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
@@ -184,11 +184,13 @@ public class AnalysisFormTest {
         formParameter3.getForm().setGenomicQueries(queries);
         studySubscription.getQueryCollection().add(query);
         
-        Collection<AnnotationDefinition> annotations = new ArrayList<AnnotationDefinition>();
+        Collection<AnnotationFieldDescriptor> annotations = new ArrayList<AnnotationFieldDescriptor>();
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
         AnnotationDefinition definition = new AnnotationDefinition();
+        afd.setDefinition(definition);
         definition.setDisplayName("Test");
-        annotations.add(definition);
-        form.addClassificationAnnotations(annotations, EntityTypeEnum.SUBJECT);
+        annotations.add(afd);
+        form.addClassificationAnnotations(annotations);
     }
 
     @Test

@@ -11,17 +11,9 @@
 
      jQuery.noConflict();
 
-    function setClinicalAnnotations(onOff){
-        var size='<s:property value="queryForm.resultConfiguration.subjectColumns.options.size"/>';
+    function setGroupAnnotations(onOff, size, checkboxListNum){
         for(i=1;i<=size;i++){
-            var item = 'queryForm.resultConfiguration.subjectColumns.values-' + i;
-            document.manageQueryForm[item].checked = onOff;
-        }
-    }
-    function setImageAnnotations(onOff){
-        var size='<s:property value="queryForm.resultConfiguration.imageSeriesColumns.options.size"/>';
-        for(i=1;i<=size;i++){
-            var item = 'queryForm.resultConfiguration.imageSeriesColumns.values-' + i;
+            var item = 'queryForm.resultConfiguration.columnSelectionLists[' + checkboxListNum +'].values-' + i;
             document.manageQueryForm[item].checked = onOff;
         }
     }
