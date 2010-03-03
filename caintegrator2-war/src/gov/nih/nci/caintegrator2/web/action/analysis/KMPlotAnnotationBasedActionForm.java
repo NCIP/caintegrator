@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -97,14 +97,15 @@ import java.util.Map;
  */
 public class KMPlotAnnotationBasedActionForm {
     
-    private String annotationTypeSelection;
+    private String annotationGroupSelection;
     private String selectedAnnotationId;
     private Collection <String> selectedValuesIds = new HashSet<String>();
     private boolean permissibleValuesNeedUpdate = false;
     
     
     // JSP Select List Options
-    private Map<String, AnnotationDefinition> annotationDefinitions = new HashMap<String, AnnotationDefinition>();
+    private Map<String, AnnotationFieldDescriptor> annotationFieldDescriptors = 
+        new HashMap<String, AnnotationFieldDescriptor>();
     private Map<String, String> permissibleValues = new HashMap<String, String>();
     
 
@@ -113,7 +114,7 @@ public class KMPlotAnnotationBasedActionForm {
      * Clears all the variables to null.
      */
     public void clear() {
-        annotationTypeSelection = null;
+        annotationGroupSelection = null;
         selectedAnnotationId = null;
         selectedValuesIds = new HashSet<String>();
         clearAnnotationDefinitions();
@@ -123,7 +124,7 @@ public class KMPlotAnnotationBasedActionForm {
      * Clears the annotation definitions.
      */
     public void clearAnnotationDefinitions() {
-        annotationDefinitions = new HashMap<String, AnnotationDefinition>();
+        annotationFieldDescriptors = new HashMap<String, AnnotationFieldDescriptor>();
         setSelectedAnnotationId(null);
         clearPermissibleValues();
     }
@@ -139,15 +140,15 @@ public class KMPlotAnnotationBasedActionForm {
     /**
      * @return the annotationTypeSelection
      */
-    public String getAnnotationTypeSelection() {
-        return annotationTypeSelection;
+    public String getAnnotationGroupSelection() {
+        return annotationGroupSelection;
     }
 
     /**
-     * @param annotationTypeSelection the annotationTypeSelection to set
+     * @param annotationGroupSelection the annotationGroupSelection to set
      */
-    public void setAnnotationTypeSelection(String annotationTypeSelection) {
-        this.annotationTypeSelection = annotationTypeSelection;
+    public void setAnnotationGroupSelection(String annotationGroupSelection) {
+        this.annotationGroupSelection = annotationGroupSelection;
     }
 
     /**
@@ -180,17 +181,17 @@ public class KMPlotAnnotationBasedActionForm {
     }
 
     /**
-     * @return the annotationDefinitions
+     * @return the annotationFieldDescriptors
      */
-    public Map<String, AnnotationDefinition> getAnnotationDefinitions() {
-        return annotationDefinitions;
+    public Map<String, AnnotationFieldDescriptor> getAnnotationFieldDescriptors() {
+        return annotationFieldDescriptors;
     }
 
     /**
-     * @param annotationDefinitions the annotationDefinitions to set
+     * @param annotationFieldDescriptors the annotationFieldDescriptors to set
      */
-    public void setAnnotationDefinitions(Map<String, AnnotationDefinition> annotationDefinitions) {
-        this.annotationDefinitions = annotationDefinitions;
+    public void setAnnotationFieldDescriptors(Map<String, AnnotationFieldDescriptor> annotationFieldDescriptors) {
+        this.annotationFieldDescriptors = annotationFieldDescriptors;
     }
 
     /**

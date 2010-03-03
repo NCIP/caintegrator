@@ -85,9 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.util.Collection;
@@ -100,9 +99,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
 
-    private AnnotationDefinition selectedAnnotation = new AnnotationDefinition();
+    private AnnotationFieldDescriptor selectedAnnotation = new AnnotationFieldDescriptor();
     private final Collection <PermissibleValue> selectedValues = new HashSet<PermissibleValue>();    
-    private EntityTypeEnum entityType;
     private boolean addPatientsNotInQueriesGroup = false;
     private ReporterTypeEnum reporterType;
     
@@ -133,7 +131,7 @@ public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
      */
     @Override
     public void clear() {
-        setSelectedAnnotation(new AnnotationDefinition());
+        setSelectedAnnotation(new AnnotationFieldDescriptor());
         getSelectedValues().clear();
         addPatientsNotInQueriesGroup = false;
     }
@@ -141,14 +139,14 @@ public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
     /**
      * @return the selectedAnnotation
      */
-    public AnnotationDefinition getSelectedAnnotation() {
+    public AnnotationFieldDescriptor getSelectedAnnotation() {
         return selectedAnnotation;
     }
 
     /**
      * @param selectedAnnotation the selectedAnnotation to set
      */
-    public void setSelectedAnnotation(AnnotationDefinition selectedAnnotation) {
+    public void setSelectedAnnotation(AnnotationFieldDescriptor selectedAnnotation) {
         this.selectedAnnotation = selectedAnnotation;
     }
 
@@ -157,20 +155,6 @@ public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
      */
     public Collection<PermissibleValue> getSelectedValues() {
         return selectedValues;
-    }
-
-    /**
-     * @return the entityType
-     */
-    public EntityTypeEnum getEntityType() {
-        return entityType;
-    }
-
-    /**
-     * @param entityType the entityType to set
-     */
-    public void setEntityType(EntityTypeEnum entityType) {
-        this.entityType = entityType;
     }
 
     /**

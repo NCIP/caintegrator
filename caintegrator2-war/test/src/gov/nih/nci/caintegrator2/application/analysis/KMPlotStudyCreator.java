@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -94,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
@@ -114,6 +116,7 @@ import java.util.Set;
 public class KMPlotStudyCreator {
     
     private AnnotationDefinition groupAnnotationField;
+    private AnnotationFieldDescriptor groupAnnotationFieldDescriptor;
     private Collection <PermissibleValue> plotGroupValues;
     private SurvivalValueDefinition survivalValueDefinition;
     private Set<StudySubjectAssignment> usedSubjects = new HashSet<StudySubjectAssignment>();
@@ -181,8 +184,12 @@ public class KMPlotStudyCreator {
         female1.getSubjectAnnotationCollection().add(female1DeathDateAnnotation);
         female1.getSubjectAnnotationCollection().add(female1LastFollowupDateAnnotation);
         
+        groupAnnotationFieldDescriptor = new AnnotationFieldDescriptor();
+        groupAnnotationFieldDescriptor.setId(Long.valueOf(1));
+        groupAnnotationFieldDescriptor.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
         // Add annotation values
         groupAnnotationField = new AnnotationDefinition();
+        groupAnnotationFieldDescriptor.setDefinition(groupAnnotationField);
         groupAnnotationField.setDisplayName("Gender");
         groupAnnotationField.setId(Long.valueOf(1));
                 
@@ -367,7 +374,11 @@ public class KMPlotStudyCreator {
                     ResultValue value = new ResultValue();
                     value.setValue(annotation.getAnnotationValue());
                     ResultColumn column = new ResultColumn();
-                    column.setAnnotationDefinition(currentAnnotationDefinition);
+                    AnnotationFieldDescriptor annotationFieldDescriptor = new AnnotationFieldDescriptor();
+                    annotationFieldDescriptor.setId(1l);
+                    annotationFieldDescriptor.setDefinition(currentAnnotationDefinition);
+                    annotationFieldDescriptor.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
+                    column.setAnnotationFieldDescriptor(annotationFieldDescriptor);
                     value.setColumn(column);
                     row.getValueCollection().add(value);
                 }
@@ -411,6 +422,10 @@ public class KMPlotStudyCreator {
      */
     public void setGroupAnnotationField(AnnotationDefinition groupAnnotationField) {
         this.groupAnnotationField = groupAnnotationField;
+    }
+    
+    public AnnotationFieldDescriptor getGroupAnnotationFieldDescriptor() {
+        return groupAnnotationFieldDescriptor;
     }
 
     /**

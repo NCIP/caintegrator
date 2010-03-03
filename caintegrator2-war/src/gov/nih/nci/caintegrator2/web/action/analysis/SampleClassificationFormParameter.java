@@ -90,7 +90,7 @@ import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -119,8 +119,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public class SampleClassificationFormParameter extends AbstractAnalysisFormParameter {
     
-    private AnnotationDefinition classificationAnnotation;
-    private EntityTypeEnum entityType;
+    private AnnotationFieldDescriptor classificationAnnotation;
 
     SampleClassificationFormParameter(GenePatternAnalysisForm form, AbstractParameterValue parameterValue) {
         super(form, parameterValue);
@@ -142,7 +141,7 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
         if (classificationAnnotation == null) {
             return "";
         } else {
-            return classificationAnnotation.getDisplayName();
+            return classificationAnnotation.getDefinition().getDisplayName();
         }
     }
 
@@ -153,10 +152,8 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
     public void setValue(String value) {
         if (StringUtils.isBlank(value)) {
             classificationAnnotation = null;
-            entityType = null;
         } else {
             classificationAnnotation = getForm().getClassificationAnnotation(value);
-            entityType = getForm().getEntityType(value);
         }
     }
 
@@ -238,9 +235,8 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
         query.setColumnCollection(new HashSet<ResultColumn>());
         ResultColumn column = new ResultColumn();
-        column.setAnnotationDefinition(classificationAnnotation);
+        column.setAnnotationFieldDescriptor(classificationAnnotation);
         column.setColumnIndex(0);
-        column.setEntityType(entityType);
         query.getColumnCollection().add(column);
         ResultColumn sampleColumn = new ResultColumn();
         sampleColumn.setEntityType(EntityTypeEnum.SAMPLE);

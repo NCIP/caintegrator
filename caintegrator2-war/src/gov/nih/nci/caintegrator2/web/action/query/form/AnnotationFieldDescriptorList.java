@@ -85,63 +85,47 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.common.HibernateUtil;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Holds information for a single clinical criterion.
+ * Contains an ordered list of definition names and allows retrieval of the associated definition by name.
  */
-public class ClinicalCriterionRow extends AbstractAnnotationCriterionRow {
+class AnnotationFieldDescriptorList {
     
-    private final List<String> nonAnnotationFieldNames = new ArrayList<String>();
-
-    ClinicalCriterionRow(CriteriaGroup group) {
-        super(group);
-        nonAnnotationFieldNames.add(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME);
-        if (!getGroup().getSubscription().getSubjectLists().isEmpty()) {
-            nonAnnotationFieldNames.add(SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME);
+    private final List<String> names = new ArrayList<String>();
+    private final Map<String, AnnotationFieldDescriptor> nameToDefinitionMap = 
+        new HashMap<String, AnnotationFieldDescriptor>();
+    
+    AnnotationFieldDescriptorList(Collection<AnnotationFieldDescriptor> annotations) {
+        if (annotations == null) {
+            throw new IllegalArgumentException("Argument definitions was null.");
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    AnnotationDefinitionList getAnnotationDefinitionList() {
-        return getGroup().getForm().getClinicalAnnotations();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    EntityTypeEnum getEntityType() {
-        return EntityTypeEnum.SUBJECT;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getRowType() {
-        return CriterionRowTypeEnum.CLINICAL.getValue();
-    }
-
-    @Override
-    List<String> getNonAnnotationFieldNames() {
-        return nonAnnotationFieldNames;
-    }
-
-    @Override
-    CriterionTypeEnum getCriterionTypeForNonAnnotationField(String fieldName) {
-        if (IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME.equals(fieldName)) {
-            return CriterionTypeEnum.IDENTIFIER;
-        } else if (SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME.equals(fieldName)) {
-            return CriterionTypeEnum.SUBJECT_LIST;
+        for (AnnotationFieldDescriptor annotation : annotations) {
+            AnnotationDefinition definition = annotation.getDefinition();
+            if (definition != null) { 
+                names.add(definition.getDisplayName());
+                nameToDefinitionMap.put(definition.getDisplayName(), annotation);
+                HibernateUtil.loadCollection(definition.getPermissibleValueCollection());
+            }
         }
-        throw new IllegalArgumentException("Field name doesn't exist in the non annotation field names: " + fieldName);
+        Collections.sort(names);
+    }
+
+    List<String> getNames() {
+        return names;
+    }
+    
+    AnnotationFieldDescriptor getDefinition(String name) {
+        return nameToDefinitionMap.get(name);
     }
 
 }

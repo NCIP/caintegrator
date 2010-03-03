@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -95,8 +96,10 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -108,12 +111,15 @@ import com.opensymphony.xwork2.ValidationAware;
 public class QueryForm {
     
     private Query query;
-    private AnnotationDefinitionList clinicalAnnotations;
-    private AnnotationDefinitionList imageSeriesAnnotations;
+    private final List<AnnotationGroup> sortedAnnotationGroups = new ArrayList<AnnotationGroup>();
+    private final List<String> annotationGroupNames = new ArrayList<String>();
+    private final Map<String, AnnotationFieldDescriptorList> annotationGroupMap = 
+        new HashMap<String, AnnotationFieldDescriptorList>();
     private CriteriaGroup criteriaGroup;
     private ResultConfiguration resultConfiguration;
     private String orgQueryName = "";
     private boolean controlSamplesInStudy = false;
+    private boolean studyHasSavedLists = false;
     
     /**
      * Configures a new query.
@@ -135,20 +141,32 @@ public class QueryForm {
     private void initialize() {
         if (query != null) {
             Study study = getQuery().getSubscription().getStudy();
-            clinicalAnnotations = new AnnotationDefinitionList(
-                    study.getStudyConfiguration().getVisibleSubjectAnnotationCollection());
-            imageSeriesAnnotations = new AnnotationDefinitionList(
-                    study.getStudyConfiguration().getVisibleImageSeriesAnnotationCollection());
+            initializeAnnotationGroups(study);
             criteriaGroup = new CriteriaGroup(this);
             resultConfiguration = new ResultConfiguration(this);
             controlSamplesInStudy = study.getStudyConfiguration().hasControlSamples();
+            studyHasSavedLists = !getQuery().getSubscription().getSubjectLists().isEmpty();
         } else {
             criteriaGroup = null;
             resultConfiguration = null;
-            clinicalAnnotations = null;
-            imageSeriesAnnotations = null;
+            annotationGroupNames.clear();
+            annotationGroupMap.clear();
+            sortedAnnotationGroups.clear();
         }
         orgQueryName = "";
+    }
+    
+    private void initializeAnnotationGroups(Study study) {
+        annotationGroupNames.clear();
+        for (AnnotationGroup group : study.getAnnotationGroups()) {
+            if (!group.getVisibleAnnotationFieldDescriptors().isEmpty()) {
+                annotationGroupMap.put(group.getName(), new AnnotationFieldDescriptorList(group
+                        .getVisibleAnnotationFieldDescriptors()));
+                annotationGroupNames.add(group.getName());
+            }
+        }
+        sortedAnnotationGroups.clear();
+        sortedAnnotationGroups.addAll(study.getSortedAnnotationGroups());
     }
 
     /**
@@ -169,15 +187,11 @@ public class QueryForm {
         this.query = query;
         initialize();
     }
-
-    AnnotationDefinitionList getClinicalAnnotations() {
-        return clinicalAnnotations;
+    
+    AnnotationFieldDescriptorList getAnnotations(String groupName) {
+        return annotationGroupMap.get(groupName);
     }
-
-    AnnotationDefinitionList getImageSeriesAnnotations() {
-        return imageSeriesAnnotations;
-    }
-
+    
     /**
      * @return the criteriaGroup
      */
@@ -252,12 +266,15 @@ public class QueryForm {
     public List<String> getCriteriaTypeOptions() {
         Study study = query.getSubscription().getStudy();
         List<String> options = new ArrayList<String>();
-        options.add(CriterionRowTypeEnum.CLINICAL.getValue());
+        for (AnnotationGroup group : sortedAnnotationGroups) {
+            options.add(group.getName());
+        }
         if (study.hasGenomicDataSources()) {
             options.add(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
         }
-        if (study.hasImageSeriesData()) {
-            options.add(CriterionRowTypeEnum.IMAGE_SERIES.getValue());
+        options.add(CriterionRowTypeEnum.UNIQUE_IDENTIIFER.getValue());
+        if (studyHasSavedLists) {
+            options.add(CriterionRowTypeEnum.SAVED_LIST.getValue());
         }
         return options;
     }
@@ -286,18 +303,18 @@ public class QueryForm {
     public void setOrgQueryName(String orgQueryName) {
         this.orgQueryName = orgQueryName;
     }
-    
-    /**
-     * @return boolean of has image mapping data
-     */
-    public boolean hasImageDataSources() {
-        return query.getSubscription().getStudy().hasImageDataSources();
-    }
 
     /**
      * @return the controlSamplesInStudy
      */
     public boolean isControlSamplesInStudy() {
         return controlSamplesInStudy;
+    }
+
+    /**
+     * @return the annotationGroupNames
+     */
+    public List<String> getAnnotationGroupNames() {
+        return annotationGroupNames;
     }
 }

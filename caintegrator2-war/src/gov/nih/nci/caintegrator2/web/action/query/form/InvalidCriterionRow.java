@@ -85,18 +85,20 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-
-
 /**
- * Holds information for a single clinical criterion.
+ * A placeholder for an invalid criterion row.
  */
-public class ImageSeriesCriterionRow extends AbstractAnnotationCriterionRow {
-
-    ImageSeriesCriterionRow(CriteriaGroup group) {
+@SuppressWarnings("PMD.CyclomaticComplexity") // see createNewCriterion
+public class InvalidCriterionRow extends AbstractCriterionRow {
+    
+    private InvalidCriterionWrapper criterionWrapper;
+    
+    InvalidCriterionRow(CriteriaGroup group) {
         super(group);
     }
 
@@ -104,16 +106,34 @@ public class ImageSeriesCriterionRow extends AbstractAnnotationCriterionRow {
      * {@inheritDoc}
      */
     @Override
-    AnnotationDefinitionList getAnnotationDefinitionList() {
-        return getGroup().getForm().getImageSeriesAnnotations();
+    public String getFieldName() {
+        return "";
+    }
+
+    void handleFieldNameChange(String fieldName) {
+        // NOOP
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    EntityTypeEnum getEntityType() {
-        return EntityTypeEnum.IMAGESERIES;
+    AbstractCriterionWrapper getCriterionWrapper() {
+        return criterionWrapper;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getAvailableFieldNames() {
+        return new ArrayList<String>();
+    }
+
+    @Override
+    void setCriterion(AbstractCriterion criterion) {
+        criterionWrapper = new InvalidCriterionWrapper();
+        criterionWrapper.setCriterion(criterion);
     }
 
     /**
@@ -121,21 +141,7 @@ public class ImageSeriesCriterionRow extends AbstractAnnotationCriterionRow {
      */
     @Override
     public String getRowType() {
-        return CriterionRowTypeEnum.IMAGE_SERIES.getValue();
+        return "Invalid Criterion, Please Delete";
     }
 
-    @Override
-    List<String> getNonAnnotationFieldNames() {
-        List<String> nonAnnotationFieldNames = new ArrayList<String>();
-        nonAnnotationFieldNames.add(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME);
-        return nonAnnotationFieldNames;
-    }
-
-    @Override
-    CriterionTypeEnum getCriterionTypeForNonAnnotationField(String fieldName) {
-        if (IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME.equals(fieldName)) {
-            return CriterionTypeEnum.IDENTIFIER;
-        } 
-        throw new IllegalArgumentException("Field name doesn't exist in the non annotation field names: " + fieldName);
-    }
 }

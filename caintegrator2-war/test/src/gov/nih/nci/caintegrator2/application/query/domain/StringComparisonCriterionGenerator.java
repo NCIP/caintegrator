@@ -106,7 +106,7 @@ public final class StringComparisonCriterionGenerator extends AbstractTestDataGe
     public void compareFields(StringComparisonCriterion original, StringComparisonCriterion retrieved) {
         assertEquals(original.getId(), retrieved.getId());
         assertEquals(original.getStringValue(), retrieved.getStringValue());
-        assertEquals(original.getAnnotationDefinition(), retrieved.getAnnotationDefinition());
+        assertEquals(original.getAnnotationFieldDescriptor(), retrieved.getAnnotationFieldDescriptor());
 
     }
 

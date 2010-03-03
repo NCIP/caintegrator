@@ -3,8 +3,11 @@ package gov.nih.nci.caintegrator2.domain.application;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * 
@@ -188,6 +191,29 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
      */
     public void setSubjectListQuery(boolean subjectListQuery) {
         this.subjectListQuery = subjectListQuery;
+    }
+    
+    /**
+     * Retrieves all visible columns in the query.
+     * @return visible columns in the query.
+     */
+    public Collection<ResultColumn> retrieveVisibleColumns() {
+        List<ResultColumn> columns = new ArrayList<ResultColumn>();
+        for (ResultColumn column : getColumnCollection()) {
+            if (column.getAnnotationFieldDescriptor() != null 
+                 && column.getAnnotationFieldDescriptor().isShownInBrowse()) {
+                columns.add(column);
+            }
+        }
+        reindexColumns(columns);
+        return columns;
+    }
+    
+    private void reindexColumns(List<ResultColumn> columns) {
+        Collections.sort(columns);
+        for (int i = 0; i < columns.size(); i++) {
+            columns.get(i).setColumnIndex(i);
+        }
     }
 
 }

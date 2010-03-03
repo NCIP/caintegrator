@@ -8,21 +8,21 @@ import java.util.Map;
  * Query criteria types.
  */
 public enum CriterionRowTypeEnum {
-
-    /**
-     * Clinical.
-     */
-    CLINICAL("Clinical"),
-
-    /**
-     * Clinical.
-     */
-    IMAGE_SERIES("Image Series"),
-
+    
     /**
      * Gene Expression.
      */
-    GENE_EXPRESSION("Gene Expression");
+    GENE_EXPRESSION("Gene Expression"),
+
+    /**
+     * Saved List.
+     */
+    SAVED_LIST("Saved List"),
+
+    /**
+     * Unique Identifier.
+     */
+    UNIQUE_IDENTIIFER("Unique Identifier");
     
     private static Map<String, CriterionRowTypeEnum> valueToTypeMap = new HashMap<String, CriterionRowTypeEnum>();
 

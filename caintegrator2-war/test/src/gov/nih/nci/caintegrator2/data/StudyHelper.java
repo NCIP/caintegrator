@@ -606,21 +606,21 @@ public class StudyHelper {
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
         criterion.setNumericValue(12.0);
         criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESSOREQUAL);
-        criterion.setAnnotationDefinition(getSampleAnnotationDefinition());
+        criterion.setAnnotationFieldDescriptor(getSampleAnnotationFieldDescriptor());
         criterion.setEntityType(EntityTypeEnum.SAMPLE);
         
         // Image Series criterion (Will return 1 subject: #3)
         StringComparisonCriterion criterion1 = new StringComparisonCriterion();
         criterion1.setStringValue("string3");
         criterion1.setEntityType(EntityTypeEnum.IMAGESERIES);
-        criterion1.setAnnotationDefinition(getImageSeriesAnnotationDefinition());
+        criterion1.setAnnotationFieldDescriptor(getImageSeriesAnnotationFieldDescriptor());
         
         // Clinical criterion (Will return 4 subjects: #2, #3, #4, #5)
         NumericComparisonCriterion criterion2 = new NumericComparisonCriterion();
         criterion2.setNumericValue(2.0);
         criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL);
         criterion2.setEntityType(EntityTypeEnum.SUBJECT);
-        criterion2.setAnnotationDefinition(getSubjectAnnotationDefinition());
+        criterion2.setAnnotationFieldDescriptor(getSubjectAnnotationFieldDescriptor());
 
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
@@ -637,21 +637,21 @@ public class StudyHelper {
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
         criterion.setNumericValue(13.0);
         criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER);
-        criterion.setAnnotationDefinition(getSampleAnnotationDefinition());
+        criterion.setAnnotationFieldDescriptor(getSampleAnnotationFieldDescriptor());
         criterion.setEntityType(EntityTypeEnum.SAMPLE);
         
         // Image Series criterion (Will return 1 subject: #3)
         StringComparisonCriterion criterion1 = new StringComparisonCriterion();
         criterion1.setStringValue("string3");
         criterion1.setEntityType(EntityTypeEnum.IMAGESERIES);
-        criterion1.setAnnotationDefinition(getImageSeriesAnnotationDefinition());
+        criterion1.setAnnotationFieldDescriptor(getImageSeriesAnnotationFieldDescriptor());
         
         // Clinical criterion (Will return 3 subjects: #1, #2, #3)
         NumericComparisonCriterion criterion2 = new NumericComparisonCriterion();
         criterion2.setNumericValue(4.0);
         criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESS);
         criterion2.setEntityType(EntityTypeEnum.SUBJECT);
-        criterion2.setAnnotationDefinition(getSubjectAnnotationDefinition());
+        criterion2.setAnnotationFieldDescriptor(getSubjectAnnotationFieldDescriptor());
         
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
@@ -667,9 +667,7 @@ public class StudyHelper {
         SelectedValueCriterion criterion = new SelectedValueCriterion();
         criterion.setValueCollection(new HashSet<PermissibleValue>());
         criterion.getValueCollection().add(permval1);
-        criterion.setAnnotationDefinition(sampleAnnotationDefinition);
-        
-        criterion.setAnnotationDefinition(getSampleAnnotationDefinition());
+        criterion.setAnnotationFieldDescriptor(getSampleAnnotationFieldDescriptor());
         criterion.setEntityType(EntityTypeEnum.SAMPLE);
         
         
@@ -686,7 +684,7 @@ public class StudyHelper {
         criterion.setNumericValue(4.0);
         criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESS);
         criterion.setEntityType(EntityTypeEnum.SUBJECT);
-        criterion.setAnnotationDefinition(getSubjectAnnotationDefinition());
+        criterion.setAnnotationFieldDescriptor(getSubjectAnnotationFieldDescriptor());
         
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
@@ -700,12 +698,12 @@ public class StudyHelper {
         StringComparisonCriterion criterion = new StringComparisonCriterion();
         criterion.setStringValue("string4");
         criterion.setEntityType(EntityTypeEnum.IMAGESERIES);
-        criterion.setAnnotationDefinition(getImageSeriesAnnotationDefinition());
+        criterion.setAnnotationFieldDescriptor(getImageSeriesAnnotationFieldDescriptor());
         
         StringComparisonCriterion criterion2 = new StringComparisonCriterion();
         criterion2.setStringValue("string3");
         criterion2.setEntityType(EntityTypeEnum.IMAGESERIES);
-        criterion2.setAnnotationDefinition(getImageSeriesAnnotationDefinition());
+        criterion2.setAnnotationFieldDescriptor(getImageSeriesAnnotationFieldDescriptor());
         
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         compoundCriterion.setBooleanOperator(BooleanOperatorEnum.OR);
@@ -729,20 +727,32 @@ public class StudyHelper {
     public AnnotationDefinition getSampleAnnotationDefinition() {
         return sampleAnnotationDefinition;
     }
-    public void setSampleAnnotationDefinition(AnnotationDefinition sampleAnnotationDefinition) {
-        this.sampleAnnotationDefinition = sampleAnnotationDefinition;
-    }
     public AnnotationDefinition getImageSeriesAnnotationDefinition() {
         return imageSeriesAnnotationDefinition;
-    }
-    public void setImageSeriesAnnotationDefinition(AnnotationDefinition imageSeriesAnnotationDefinition) {
-        this.imageSeriesAnnotationDefinition = imageSeriesAnnotationDefinition;
     }
     public AnnotationDefinition getSubjectAnnotationDefinition() {
         return subjectAnnotationDefinition;
     }
-    public void setSubjectAnnotationDefinition(AnnotationDefinition subjectAnnotationDefinition) {
-        this.subjectAnnotationDefinition = subjectAnnotationDefinition;
+    
+    public AnnotationFieldDescriptor getSampleAnnotationFieldDescriptor() {
+        AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
+        descriptor.setDefinition(getSampleAnnotationDefinition());
+        descriptor.setAnnotationEntityType(EntityTypeEnum.SAMPLE);
+        return descriptor;
+    }
+    
+    public AnnotationFieldDescriptor getSubjectAnnotationFieldDescriptor() {
+        AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
+        descriptor.setDefinition(getSubjectAnnotationDefinition());
+        descriptor.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
+        return descriptor;
+    }
+    
+    public AnnotationFieldDescriptor getImageSeriesAnnotationFieldDescriptor() {
+        AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
+        descriptor.setDefinition(getImageSeriesAnnotationDefinition());
+        descriptor.setAnnotationEntityType(EntityTypeEnum.IMAGESERIES);
+        return descriptor;
     }
     public PermissibleValue getPermval1() {
         return permval1;

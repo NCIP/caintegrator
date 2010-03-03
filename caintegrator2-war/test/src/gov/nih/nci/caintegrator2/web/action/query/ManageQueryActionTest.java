@@ -90,6 +90,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
@@ -104,7 +105,6 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator2.web.action.query.form.CriterionRowTypeEnum;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -121,6 +121,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
     // Study objects
     private final QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
     private final StudyManagementServiceStub studyManagementService = new StudyManagementServiceStub();
+    private final WorkspaceServiceStub workspaceSerivce = new WorkspaceServiceStub();
     
     @Before
     @SuppressWarnings({"PMD"})
@@ -129,7 +130,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction = (ManageQueryAction) context.getBean("manageQueryAction");
         manageQueryAction.setQueryManagementService(queryManagementService);
         manageQueryAction.setStudyManagementService(studyManagementService);
-        manageQueryAction.setWorkspaceService(new WorkspaceServiceStub());
+        manageQueryAction.setWorkspaceService(workspaceSerivce);
         setupSession();
     }
 
@@ -141,9 +142,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertEquals("criteria", manageQueryAction.getDisplayTab());
         
         sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().clear();
-        StudySubscription studySubscription = createStudySubscription(1L);
-        createStudySubscription(2L);
-        sessionHelper.getDisplayableUserWorkspace().setCurrentStudySubscription(studySubscription);
+        sessionHelper.getDisplayableUserWorkspace().setCurrentStudySubscription(createStudySubscription(1L));
     }
 
     private StudySubscription createStudySubscription(long id) {
@@ -151,12 +150,17 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         addGeneList(studySubscription);
         addSubjectList(studySubscription);
         Study study = new Study();
+        study.setId(1l);
+        AnnotationGroup group = new AnnotationGroup();
+        group.setName("group");
+        study.getAnnotationGroups().add(group);
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
         study.setStudyConfiguration(studyConfiguration);
         studySubscription.setStudy(study);
         studySubscription.setId(id);
         sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription);
+        workspaceSerivce.setSubscription(studySubscription);
         return studySubscription;
     }
     
@@ -227,9 +231,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.validate();
         assertTrue(manageQueryAction.hasErrors());
         manageQueryAction.clearErrorsAndMessages();
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyConfiguration.setStatus(Status.DEPLOYED);
-        manageQueryAction.getCurrentStudy().setStudyConfiguration(studyConfiguration);
+        manageQueryAction.getCurrentStudy().getStudyConfiguration().setStatus(Status.DEPLOYED);
         manageQueryAction.getQueryForm().getQuery().setName("query name");
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
@@ -252,9 +254,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.validate();
         assertTrue(manageQueryAction.hasErrors());
         manageQueryAction.clearErrorsAndMessages();
-        studyConfiguration = new StudyConfiguration();
-        studyConfiguration.setStatus(Status.DEPLOYED);
-        manageQueryAction.getCurrentStudy().setStudyConfiguration(studyConfiguration);
+        manageQueryAction.getCurrentStudy().getStudyConfiguration().setStatus(Status.DEPLOYED);
         manageQueryAction.getQueryForm().getQuery().setName("query name");
         manageQueryAction.validate();
         assertTrue(manageQueryAction.hasErrors());
@@ -290,7 +290,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         
         // test - addition of criteria rows
         manageQueryAction.setSelectedAction("addCriterionRow");
-        manageQueryAction.getQueryForm().getCriteriaGroup().setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
+        manageQueryAction.getQueryForm().getCriteriaGroup().setCriterionTypeName("group");
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());

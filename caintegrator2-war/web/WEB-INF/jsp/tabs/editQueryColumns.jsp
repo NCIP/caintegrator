@@ -46,50 +46,31 @@
         <div style="margin-top: 10px;">
         <h2>Select Columns for Results</h2>
         
+        <s:iterator value="queryForm.resultConfiguration.columnSelectionLists" status="iterator">
             <div class="checklistwrapper">
-            
-            <h3>Subject Annotations</h3>
+            <h3><s:property value="annotationGroup.name"/></h3>
             <ul class="checklist">
                 <s:checkboxlist 
-                    id="subjectColumnsId"
                     cssClass="checklist" 
-                    name="queryForm.resultConfiguration.subjectColumns.values"
-                    list="queryForm.resultConfiguration.subjectColumns.options" 
+                    name="queryForm.resultConfiguration.columnSelectionLists[%{#iterator.count - 1}].values"
+                    list="%{queryForm.resultConfiguration.columnSelectionLists[#iterator.count - 1].options}" 
                     listKey="key" 
                     listValue="displayValue"
                     theme="cai2simple" 
-                    value="queryForm.resultConfiguration.subjectColumns.values" />
+                    value="queryForm.resultConfiguration.columnSelectionLists[#iterator.count - 1].values" />
             </ul>
             <ul>
-                <s:if test="!queryForm.resultConfiguration.subjectColumns.isEmpty()">
-                    <input type="button" value="Select All" onclick="setClinicalAnnotations(1)" />
-                    <input type="button" value="Unselect All" onclick="setClinicalAnnotations()" />
+                <s:if test="!options.isEmpty()">
+                    <s:set name="ckboxSize" value="%{queryForm.resultConfiguration.columnSelectionLists[#iterator.count - 1].options.size}" />
+                    <s:set name="iteratorCount" value="%{#iterator.count - 1}"/>
+                    <input type="button" value="Select All" onclick="setGroupAnnotations(1,${ckboxSize}, ${iteratorCount})" />
+                    <input type="button" value="Unselect All" onclick="setGroupAnnotations(0,${ckboxSize}, ${iteratorCount})" />
                 </s:if>
             </ul>
             </div>
+        </s:iterator>
+            
         </div>    
-        
-        <div class="checklistwrapper">
-        <h3>Image Annotations</h3>
-        <ul class="checklist">
-            <s:checkboxlist 
-                id="imageSeriesColumnsId"
-                cssClass="checklist" 
-                name="queryForm.resultConfiguration.imageSeriesColumns.values"
-                list="queryForm.resultConfiguration.imageSeriesColumns.options" 
-                listKey="key" 
-                listValue="displayValue"
-                theme="cai2simple" 
-                value="queryForm.resultConfiguration.imageSeriesColumns.values" />
-        </ul>
-        
-        <ul>
-            <s:if test="!queryForm.resultConfiguration.imageSeriesColumns.isEmpty()">
-                <input type="button" value="Select All" onclick="setImageAnnotations(1)" />
-                <input type="button" value="Unselect All" onclick="setImageAnnotations()" />
-            </s:if>
-        </ul>
-        </div>
     
     </s:if>
     

@@ -112,6 +112,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImp
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceForKMPlotStub;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
@@ -281,8 +282,10 @@ public class AnalysisServiceTest {
         ComparativeMarkerSelectionParameters cmsParams = new ComparativeMarkerSelectionParameters();
         Query query = new Query();
         ResultColumn column = new ResultColumn();
-        column.setAnnotationDefinition(new AnnotationDefinition());
-        column.setEntityType(EntityTypeEnum.SUBJECT);
+        AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
+        descriptor.setDefinition(new AnnotationDefinition());
+        descriptor.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
+        column.setAnnotationFieldDescriptor(descriptor);
         column.setColumnIndex(0);
         query.setColumnCollection(new HashSet<ResultColumn>());
         query.getColumnCollection().add(column);
@@ -375,8 +378,7 @@ public class AnalysisServiceTest {
         queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.ANNOTATION_BASED;
         KMAnnotationBasedParameters annotationParameters = new KMAnnotationBasedParameters();
         assertFalse(annotationParameters.validate());
-        annotationParameters.setEntityType(EntityTypeEnum.SUBJECT);
-        annotationParameters.setSelectedAnnotation(studyCreator.getGroupAnnotationField());
+        annotationParameters.setSelectedAnnotation(studyCreator.getGroupAnnotationFieldDescriptor());
         annotationParameters.getSelectedValues().addAll(studyCreator.getPlotGroupValues());
         annotationParameters.setSurvivalValueDefinition(studyCreator.getSurvivalValueDefinition());
         assertTrue(annotationParameters.validate());
@@ -455,8 +457,7 @@ public class AnalysisServiceTest {
         subscription.setStudy(study);
         queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.ANNOTATION_BASED;
         GEPlotAnnotationBasedParameters annotationParameters = new GEPlotAnnotationBasedParameters();
-        annotationParameters.setEntityType(EntityTypeEnum.SUBJECT);
-        annotationParameters.setSelectedAnnotation(studyCreator.getGroupAnnotationField());
+        annotationParameters.setSelectedAnnotation(studyCreator.getGroupAnnotationFieldDescriptor());
         annotationParameters.getSelectedValues().addAll(studyCreator.getPlotGroupValues());
         annotationParameters.setGeneSymbol("egfr");
         annotationParameters.setAddControlSamplesGroup(true);

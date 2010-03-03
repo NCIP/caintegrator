@@ -248,7 +248,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
         criterion.setNumericValue(12.0);
         criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL);
-        criterion.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
+        criterion.setAnnotationFieldDescriptor(studyHelper.getSampleAnnotationFieldDescriptor());
         criterion.setEntityType(EntityTypeEnum.SAMPLE);
         List<SampleAcquisition> matchingSamples = dao.findMatchingSamples(criterion, study);
         
@@ -258,7 +258,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         NumericComparisonCriterion criterion2 = new NumericComparisonCriterion();
         criterion2.setNumericValue(11.0);
         criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESSOREQUAL);
-        criterion2.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
+        criterion2.setAnnotationFieldDescriptor(studyHelper.getSampleAnnotationFieldDescriptor());
         criterion2.setEntityType(EntityTypeEnum.SAMPLE);
         List<SampleAcquisition> matchingSamples2 = dao.findMatchingSamples(criterion2, study);
         
@@ -270,7 +270,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         permissibleValues1.add(studyHelper.getPermval1());
         criterion3.setValueCollection(permissibleValues1);
         criterion3.setEntityType(EntityTypeEnum.SAMPLE);
-        criterion3.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
+        criterion3.setAnnotationFieldDescriptor(studyHelper.getSampleAnnotationFieldDescriptor());
         List<SampleAcquisition> matchingSamples3 = dao.findMatchingSamples(criterion3, study);
         
         assertEquals(1, matchingSamples3.size());
@@ -281,7 +281,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         permissibleValues2.add(studyHelper.getPermval2());
         criterion4.setValueCollection(permissibleValues2);
         criterion4.setEntityType(EntityTypeEnum.SAMPLE);
-        criterion4.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
+        criterion4.setAnnotationFieldDescriptor(studyHelper.getSampleAnnotationFieldDescriptor());
         List<SampleAcquisition> matchingSamples4 = dao.findMatchingSamples(criterion4, study);
         
         assertEquals(0, matchingSamples4.size());
@@ -291,7 +291,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         NumericComparisonCriterion criterion5 = new NumericComparisonCriterion();
         criterion5.setNumericValue(13.0);
         criterion5.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL);
-        criterion5.setAnnotationDefinition(studyHelper.getImageSeriesAnnotationDefinition());
+        criterion5.setAnnotationFieldDescriptor(studyHelper.getImageSeriesAnnotationFieldDescriptor());
         criterion5.setEntityType(EntityTypeEnum.SAMPLE);
         List<SampleAcquisition> matchingSamples5 = dao.findMatchingSamples(criterion5, study);
         
@@ -308,7 +308,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         StringComparisonCriterion criterion1 = new StringComparisonCriterion();
         criterion1.setStringValue("string1");
         criterion1.setEntityType(EntityTypeEnum.IMAGESERIES);
-        criterion1.setAnnotationDefinition(studyHelper.getImageSeriesAnnotationDefinition());
+        criterion1.setAnnotationFieldDescriptor(studyHelper.getImageSeriesAnnotationFieldDescriptor());
         List<ImageSeries> matchingImageSeries = dao.findMatchingImageSeries(criterion1, study);
         
         assertEquals(1, matchingImageSeries.size());
@@ -318,7 +318,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         criterion2.setStringValue("string");
         criterion2.setEntityType(EntityTypeEnum.IMAGESERIES);
         criterion2.setWildCardType(WildCardTypeEnum.WILDCARD_AFTER_STRING);
-        criterion2.setAnnotationDefinition(studyHelper.getImageSeriesAnnotationDefinition());
+        criterion2.setAnnotationFieldDescriptor(studyHelper.getImageSeriesAnnotationFieldDescriptor());
         List<ImageSeries> matchingImageSeries2 = dao.findMatchingImageSeries(criterion2, study);
         
         assertEquals(5, matchingImageSeries2.size());
@@ -327,7 +327,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         StringComparisonCriterion criterion3 = new StringComparisonCriterion();
         criterion3.setStringValue("string1");
         criterion3.setEntityType(EntityTypeEnum.IMAGESERIES);
-        criterion3.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
+        criterion3.setAnnotationFieldDescriptor(studyHelper.getSampleAnnotationFieldDescriptor());
         List<ImageSeries> matchingImageSeries3 = dao.findMatchingImageSeries(criterion3, study);
         assertEquals(0, matchingImageSeries3.size());
     }
@@ -342,7 +342,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         criterion1.setNumericValue(2.0);
         criterion1.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER);
         criterion1.setEntityType(EntityTypeEnum.SUBJECT);
-        criterion1.setAnnotationDefinition(studyHelper.getSubjectAnnotationDefinition());
+        criterion1.setAnnotationFieldDescriptor(studyHelper.getSubjectAnnotationFieldDescriptor());
         List<StudySubjectAssignment> matchingStudySubjectAssignments = dao.findMatchingSubjects(criterion1, study);
         
         assertEquals(3, matchingStudySubjectAssignments.size());
@@ -352,7 +352,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         criterion2.setNumericValue(2.0);
         criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER);
         criterion2.setEntityType(EntityTypeEnum.SUBJECT);
-        criterion2.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
+        criterion2.setAnnotationFieldDescriptor(studyHelper.getSampleAnnotationFieldDescriptor());
         List<StudySubjectAssignment> matchingStudySubjectAssignments2 = dao.findMatchingSubjects(criterion2, study);
         
         assertEquals(0, matchingStudySubjectAssignments2.size());

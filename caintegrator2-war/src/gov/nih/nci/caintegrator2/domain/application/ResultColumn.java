@@ -7,7 +7,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 /**
  * 
  */
-public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneable {
+public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneable, Comparable<ResultColumn> {
 
     private static final long serialVersionUID = 1L;
     
@@ -15,8 +15,6 @@ public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneab
     private EntityTypeEnum entityType;
     private Integer sortOrder;
     private SortTypeEnum sortType = SortTypeEnum.UNSORTED;
-    // This will be @Deprecated.
-    private AnnotationDefinition annotationDefinition;
     private AnnotationFieldDescriptor annotationFieldDescriptor;
     
     /**
@@ -51,14 +49,7 @@ public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneab
      * @return the annotationDefinition
      */
     public AnnotationDefinition getAnnotationDefinition() {
-        return annotationDefinition;
-    }
-    
-    /**
-     * @param annotationDefinition the annotationDefinition to set
-     */
-    public void setAnnotationDefinition(AnnotationDefinition annotationDefinition) {
-        this.annotationDefinition = annotationDefinition;
+        return annotationFieldDescriptor != null ? annotationFieldDescriptor.getDefinition() : null;
     }
 
     /**
@@ -94,7 +85,6 @@ public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneab
      */
     protected ResultColumn clone() throws CloneNotSupportedException {
         return (ResultColumn) super.clone();
-        
     }
 
     /**
@@ -109,5 +99,15 @@ public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneab
      */
     public void setAnnotationFieldDescriptor(AnnotationFieldDescriptor annotationFieldDescriptor) {
         this.annotationFieldDescriptor = annotationFieldDescriptor;
+        if (entityType == null && annotationFieldDescriptor != null) {
+            setEntityType(annotationFieldDescriptor.getAnnotationEntityType());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(ResultColumn o) {
+        return getColumnIndex() - o.getColumnIndex();
     }
 }

@@ -133,7 +133,7 @@ final class DateComparisonCriterionWrapper extends AbstractAnnotationCriterionWr
     private final DateComparisonCriterion criterion;
 
     DateComparisonCriterionWrapper(final DateComparisonCriterion criterion,
-            AbstractAnnotationCriterionRow row) {
+            AnnotationCriterionRow row) {
         super(row);
         this.criterion = criterion;
         if (criterion.getDateValue() == null) {

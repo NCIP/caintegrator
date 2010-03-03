@@ -152,6 +152,20 @@ public class AnnotationGroup extends AbstractCaIntegrator2Object implements Comp
     }
     
     /**
+     * Gets all visible AnnotationFieldDescriptors that have AnnotationDefinitions and belong to this group.
+     * @return visible AFDs in the group.
+     */
+    public Set<AnnotationFieldDescriptor> getVisibleAnnotationFieldDescriptors() {
+        Set<AnnotationFieldDescriptor> visibleSet = new HashSet<AnnotationFieldDescriptor>();
+        for (AnnotationFieldDescriptor descriptor : getAnnotationFieldDescriptors()) {
+            if (descriptor.isShownInBrowse() && descriptor.getDefinition() != null) {
+                visibleSet.add(descriptor);
+            }
+        }   
+        return visibleSet;
+    }
+    
+    /**
      * {@inheritDoc}
      */
     public int compareTo(AnnotationGroup o) {

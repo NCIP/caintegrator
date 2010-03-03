@@ -1,7 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
 /**
  * 
@@ -11,24 +10,8 @@ public class AbstractAnnotationCriterion extends AbstractCriterion implements Cl
     private static final long serialVersionUID = 1L;
     
     private EntityTypeEnum entityType;
-    // This will be @Deprecated.
-    private AnnotationDefinition annotationDefinition;
     private AnnotationFieldDescriptor annotationFieldDescriptor;
 
-    
-    /**
-     * @return the annotationDefinition
-     */
-    public AnnotationDefinition getAnnotationDefinition() {
-        return annotationDefinition;
-    }
-    
-    /**
-     * @param annotationDefinition the annotationDefinition to set
-     */
-    public void setAnnotationDefinition(AnnotationDefinition annotationDefinition) {
-        this.annotationDefinition = annotationDefinition;
-    }
 
     /**
      * @return the entityType
@@ -64,6 +47,9 @@ public class AbstractAnnotationCriterion extends AbstractCriterion implements Cl
      */
     public void setAnnotationFieldDescriptor(AnnotationFieldDescriptor annotationFieldDescriptor) {
         this.annotationFieldDescriptor = annotationFieldDescriptor;
+        if (annotationFieldDescriptor != null) {
+            this.entityType = annotationFieldDescriptor.getAnnotationEntityType();
+        }
     }
 
 }

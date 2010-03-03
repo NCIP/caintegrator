@@ -88,8 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethodInvocation;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
@@ -119,10 +118,8 @@ public class GenePatternAnalysisForm {
     private final Map<String, Query> nameToGenomicQueryMap = new HashMap<String, Query>();
     private final ServerConnectionProfile server = new ServerConnectionProfile();
     private final List<String> classificationAnnotationNames = new ArrayList<String>();
-    private final Map<String, AnnotationDefinition> nameToClassificationAnnotationMap = 
-        new HashMap<String, AnnotationDefinition>();
-    private final Map<String, EntityTypeEnum> nameToEntityTypeMap = 
-        new HashMap<String, EntityTypeEnum>();
+    private final Map<String, AnnotationFieldDescriptor> nameToClassificationAnnotationMap = 
+        new HashMap<String, AnnotationFieldDescriptor>();
     
     /**
      * Returns the list of all analysis method names.
@@ -310,15 +307,12 @@ public class GenePatternAnalysisForm {
     void clearClassificationAnnotations() {
         classificationAnnotationNames.clear();
         nameToClassificationAnnotationMap.clear();
-        nameToEntityTypeMap.clear();
     }
 
-    void addClassificationAnnotations(Collection<AnnotationDefinition> classificationAnnotations, 
-            EntityTypeEnum entityType) {
-        for (AnnotationDefinition definition : classificationAnnotations) {
-            classificationAnnotationNames.add(definition.getDisplayName());
-            nameToClassificationAnnotationMap.put(definition.getDisplayName(), definition);
-            nameToEntityTypeMap.put(definition.getDisplayName(), entityType);
+    void addClassificationAnnotations(Collection<AnnotationFieldDescriptor> classificationAnnotations) {
+        for (AnnotationFieldDescriptor descriptor : classificationAnnotations) {
+            classificationAnnotationNames.add(descriptor.getDefinition().getDisplayName());
+            nameToClassificationAnnotationMap.put(descriptor.getDefinition().getDisplayName(), descriptor);
         }
         Collections.sort(classificationAnnotationNames);
     }
@@ -330,12 +324,8 @@ public class GenePatternAnalysisForm {
         return classificationAnnotationNames;
     }
 
-    AnnotationDefinition getClassificationAnnotation(String name) {
+    AnnotationFieldDescriptor getClassificationAnnotation(String name) {
         return nameToClassificationAnnotationMap.get(name);
-    }
-
-    EntityTypeEnum getEntityType(String name) {
-        return nameToEntityTypeMap.get(name);
     }
     
     /**

@@ -98,10 +98,8 @@ import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -109,7 +107,6 @@ import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
@@ -155,12 +152,20 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
         SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceService, true);
     }
     
-    @SuppressWarnings("deprecation") // Use dummy AnnotationFile for testing
     private Study createFakeStudy() {
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
         study.setStudyConfiguration(studyConfiguration);
+        AnnotationGroup group = new AnnotationGroup();
+        group.setName("subjectAnnotations");
+        study.getAnnotationGroups().add(group);
+        AnnotationFieldDescriptor afd1 = new AnnotationFieldDescriptor();
+        afd1.setId(1l);
+        AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
+        afd2.setId(2l);
+        group.getAnnotationFieldDescriptors().add(afd1);
+        group.getAnnotationFieldDescriptors().add(afd2);
         AnnotationDefinition subjectDef1 = new AnnotationDefinition();
         subjectDef1.setId(Long.valueOf(1));
         val1.setId(Long.valueOf(1));
@@ -170,11 +175,10 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
         subjectDef1.getPermissibleValueCollection().add(val1);
         subjectDef1.getPermissibleValueCollection().add(val2);
         subjectDef1.getPermissibleValueCollection().add(new PermissibleValue());
+        afd1.setDefinition(subjectDef1);
         AnnotationDefinition subjectDef2 = new AnnotationDefinition();
         subjectDef2.setId(Long.valueOf(2));
-        study.getSubjectAnnotationCollection().add(subjectDef1);
-        study.getSubjectAnnotationCollection().add(subjectDef2);
-        
+        afd2.setDefinition(subjectDef2);
         AnnotationDefinition survivalStartDate = new AnnotationDefinition();
         survivalStartDate.setDataType(AnnotationTypeEnum.DATE);
         AnnotationDefinition deathDate = new AnnotationDefinition();
@@ -189,23 +193,7 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
         survivalValue.setLastFollowupDate(lastFollowupDate);
         study.getSurvivalValueDefinitionCollection().add(survivalValue);
 
-        DelimitedTextClinicalSourceConfiguration clinicalConf = new DelimitedTextClinicalSourceConfiguration();
-        studyConfiguration.getClinicalConfigurationCollection().add(clinicalConf);
-        AnnotationFile annotationFile = new AnnotationFile();
-        clinicalConf.setAnnotationFile(annotationFile);
-
-        addColumn(annotationFile, subjectDef1);
-        addColumn(annotationFile, subjectDef2);
         return study;
-    }
-    
-    private void addColumn(AnnotationFile annotationFile, AnnotationDefinition subjectDef) {
-        FileColumn column = new FileColumn();
-        AnnotationFieldDescriptor fieldDescriptor = new AnnotationFieldDescriptor();
-        fieldDescriptor.setShownInBrowse(true);
-        fieldDescriptor.setDefinition(subjectDef);
-        column.setFieldDescriptor(fieldDescriptor);
-        annotationFile.getColumns().add(column);
     }
     
     @Test
@@ -242,11 +230,11 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
         // Invalid because thre's not an Annotation EntityType selected.
         assertEquals(ActionSupport.INPUT, action.updateAnnotationDefinitions());
         KMPlotAnnotationBasedActionForm form = new KMPlotAnnotationBasedActionForm();
-        form.setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
+        form.setAnnotationGroupSelection("subjectAnnotations");
         action.getKmPlotForm().setAnnotationBasedForm(form);
         assertEquals(ActionSupport.SUCCESS, action.updateAnnotationDefinitions());
-        assertEquals(1, action.getKmPlotForm().getAnnotationBasedForm().getAnnotationDefinitions().size());
-        assertTrue(action.getKmPlotForm().getAnnotationBasedForm().getAnnotationDefinitions().containsKey("1"));
+        assertEquals(1, action.getKmPlotForm().getAnnotationBasedForm().getAnnotationFieldDescriptors().size());
+        assertTrue(action.getKmPlotForm().getAnnotationBasedForm().getAnnotationFieldDescriptors().containsKey("1"));
     }
     
     @Test
@@ -283,7 +271,7 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
         assertFalse(action.isCreatable());
         
         action.getKmPlotForm().getAnnotationBasedForm().setSelectedAnnotationId("1");
-        action.getKmPlotForm().getAnnotationBasedForm().setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
+        action.getKmPlotForm().getAnnotationBasedForm().setAnnotationGroupSelection("subjectAnnotations");
         action.getKmPlotForm().setSurvivalValueDefinitionId("1");
         assertTrue(action.isCreatable());
     }
@@ -328,16 +316,19 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
 
     private void setupActionVariables() {
         KMPlotAnnotationBasedActionForm form = new KMPlotAnnotationBasedActionForm();
-        form.setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
+        form.setAnnotationGroupSelection("subjectAnnotations");
         form.getSelectedValuesIds().add("1");
         form.getSelectedValuesIds().add("2");
         action.getKmPlotForm().setAnnotationBasedForm(form);
+        AnnotationFieldDescriptor selectedAnnotationFieldDescriptor = new AnnotationFieldDescriptor();
         AnnotationDefinition selectedAnnotation = new AnnotationDefinition();
         selectedAnnotation.getPermissibleValueCollection().add(val1);
         selectedAnnotation.getPermissibleValueCollection().add(val2);
         selectedAnnotation.setDataType(AnnotationTypeEnum.STRING);
         selectedAnnotation.setId(Long.valueOf(1));
-        action.getKmPlotParameters().setSelectedAnnotation(selectedAnnotation);
+        selectedAnnotationFieldDescriptor.setDefinition(selectedAnnotation);
+        selectedAnnotationFieldDescriptor.setId(1l);
+        action.getKmPlotParameters().setSelectedAnnotation(selectedAnnotationFieldDescriptor);
     }
     
 

@@ -134,17 +134,17 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
         ResultColumn column2 = new ResultColumn();
         ResultColumn column3 = new ResultColumn();
         
-        column1.setAnnotationDefinition(studyHelper.getImageSeriesAnnotationDefinition());
+        column1.setAnnotationFieldDescriptor(studyHelper.getImageSeriesAnnotationFieldDescriptor());
         column1.setColumnIndex(0);
         column1.setEntityType(EntityTypeEnum.IMAGESERIES);
         
-        column2.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
+        column2.setAnnotationFieldDescriptor(studyHelper.getSampleAnnotationFieldDescriptor());
         column2.setColumnIndex(1);
         column2.setEntityType(EntityTypeEnum.SAMPLE);
         column2.setSortOrder(2);
         column2.setSortType(SortTypeEnum.ASCENDING);
         
-        column3.setAnnotationDefinition(studyHelper.getSubjectAnnotationDefinition());
+        column3.setAnnotationFieldDescriptor(studyHelper.getSubjectAnnotationFieldDescriptor());
         column3.setColumnIndex(2);
         column3.setEntityType(EntityTypeEnum.SUBJECT);
         column3.setSortOrder(1);

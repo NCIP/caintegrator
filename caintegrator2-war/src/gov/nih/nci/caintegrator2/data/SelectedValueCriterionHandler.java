@@ -117,7 +117,7 @@ public class SelectedValueCriterionHandler extends AbstractAnnotationCriterionHa
      */
     @Override
     Criterion translate() {
-        switch (selectedValueCriterion.getAnnotationDefinition().getDataType()) {
+        switch (selectedValueCriterion.getAnnotationFieldDescriptor().getDefinition().getDataType()) {
         case STRING:
             return Restrictions.in(STRING_VALUE_COLUMN, getSelectedValues());
         case NUMERIC:
@@ -126,7 +126,7 @@ public class SelectedValueCriterionHandler extends AbstractAnnotationCriterionHa
             return Restrictions.in(DATE_VALUE_COLUMN, getSelectedDateValues());
         default:
             throw new IllegalArgumentException("Unsupported type " 
-                    + selectedValueCriterion.getAnnotationDefinition().getDataType());
+                    + selectedValueCriterion.getAnnotationFieldDescriptor().getDefinition().getDataType());
         }
     }
 

@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -99,8 +100,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.opensymphony.xwork2.ValidationAware;
 
 /**
@@ -109,10 +108,12 @@ import com.opensymphony.xwork2.ValidationAware;
  */
 public class CriteriaGroup {
     
+    private static final String NULL_ANNOTATION_AFD_TYPE = "~NULL_AFD_TYPE~";
     private final CompoundCriterion compoundCriterion;
     private final QueryForm form;
-    private CriterionRowTypeEnum criterionType;
+    private String criterionType = "";
     private final List<AbstractCriterionRow> rows = new ArrayList<AbstractCriterionRow>();
+    
 
     CriteriaGroup(QueryForm form) {
         if (form.getQuery() == null || form.getQuery().getCompoundCriterion() == null) {
@@ -130,35 +131,33 @@ public class CriteriaGroup {
         }
     }
 
-    private AbstractCriterionRow addCriterionRow(Study study, AbstractCriterion criterion) {
+    private void addCriterionRow(Study study, AbstractCriterion criterion) {
         AbstractCriterionRow row = createRow(study, getCriterionRowType(criterion));
         rows.add(row);
         row.setCriterion(criterion);
-        return row;
     }
 
-    private CriterionRowTypeEnum getCriterionRowType(AbstractCriterion criterion) {
+    private String getCriterionRowType(AbstractCriterion criterion) {
         if (criterion instanceof AbstractGenomicCriterion) {
-            return CriterionRowTypeEnum.GENE_EXPRESSION;
+            return CriterionRowTypeEnum.GENE_EXPRESSION.getValue();
         } else if (criterion instanceof SubjectListCriterion) {
-            return CriterionRowTypeEnum.CLINICAL;
+            return CriterionRowTypeEnum.SAVED_LIST.getValue();
+        } else if (criterion instanceof IdentifierCriterion) {
+            return CriterionRowTypeEnum.UNIQUE_IDENTIIFER.getValue();
         } else if (criterion instanceof AbstractAnnotationCriterion) {
-            return getCriterionRowTypeForAnnotationCriterion(criterion);
+            return getAnnotationCriterionRowName(criterion);
         } else {
             throw new IllegalArgumentException("Unsupported criterion: " + criterion.getClass());
         }
     }
 
-    private CriterionRowTypeEnum getCriterionRowTypeForAnnotationCriterion(AbstractCriterion criterion) {
-        AbstractAnnotationCriterion annotationCriterion = (AbstractAnnotationCriterion) criterion;
-        switch (annotationCriterion.getEntityType()) {
-        case IMAGESERIES:
-            return CriterionRowTypeEnum.IMAGE_SERIES;
-        case SUBJECT:
-            return CriterionRowTypeEnum.CLINICAL;
-        default:
-            throw new IllegalArgumentException("Unsupported entity type: " + annotationCriterion.getEntityType());
+    private String getAnnotationCriterionRowName(AbstractCriterion criterion) {
+        AbstractAnnotationCriterion annotationCriterion = (AbstractAnnotationCriterion) criterion; 
+        if (annotationCriterion.getAnnotationFieldDescriptor() == null 
+                || annotationCriterion.getAnnotationFieldDescriptor().getAnnotationGroup() == null) {
+            return NULL_ANNOTATION_AFD_TYPE;
         }
+        return annotationCriterion.getAnnotationFieldDescriptor().getAnnotationGroup().getName();
     }
 
     /**
@@ -198,58 +197,47 @@ public class CriteriaGroup {
         rows.add(createRow(study, criterionType));
     }
 
-    private AbstractCriterionRow createRow(Study study, CriterionRowTypeEnum rowType) {
+    private AbstractCriterionRow createRow(Study study, String rowType) {
         AbstractCriterionRow criterionRow;
         if (rowType == null) {
             throw new IllegalStateException("Invalid CriterionRowTypeEnum " + rowType);
         }
-        switch (rowType) {
-        case CLINICAL:
-            criterionRow = new ClinicalCriterionRow(this);
-            break;
-        case IMAGE_SERIES:
-            criterionRow = new ImageSeriesCriterionRow(this);
-            break;
+        if (NULL_ANNOTATION_AFD_TYPE.equals(rowType)) {
+            return new InvalidCriterionRow(this);
+        }
+        if (study.getAnnotationGroup(rowType) != null) {
+            criterionRow = new AnnotationCriterionRow(this, rowType);
+        } else {
+            criterionRow = retrieveCriterionRowByType(study, rowType);
+        }
+        return criterionRow;
+    }
+
+    private AbstractCriterionRow retrieveCriterionRowByType(Study study, String rowType) {
+        switch (CriterionRowTypeEnum.getByValue(rowType)) {
         case GENE_EXPRESSION:
-            criterionRow = new GeneExpressionCriterionRow(study, this);
-            break;
+            return new GeneExpressionCriterionRow(study, this);
+        case SAVED_LIST:
+            return new SavedListCriterionRow(this);
+        case UNIQUE_IDENTIIFER:
+            return new IdentifierCriterionRow(this);
         default:
             throw new IllegalStateException("Invalid CriterionRowTypeEnum " + rowType);
         }
-        return criterionRow;
     }
 
     /**
      * @return the criterionTypeName
      */
     public String getCriterionTypeName() {
-        if (criterionType == null) {
-            return "";
-        } else {
-            return criterionType.getValue();
-        }
-    }
-
-    /**
-     * @return the valid criterionTypeNames
-     */
-    public List<String> getCriterionTypeNames() {
-        List<String> names = new ArrayList<String>();
-        for (CriterionRowTypeEnum rowType : CriterionRowTypeEnum.values()) {
-            names.add(rowType.getValue());
-        }
-        return names;
+        return criterionType;
     }
 
     /**
      * @param criterionTypeName the criterionTypeName to set
      */
     public void setCriterionTypeName(String criterionTypeName) {
-        if (StringUtils.isBlank(criterionTypeName)) {
-            criterionType = null;
-        } else {
-            criterionType = CriterionRowTypeEnum.getByValue(criterionTypeName);
-        }
+        criterionType = criterionTypeName;
     }
     
     StudySubscription getSubscription() {

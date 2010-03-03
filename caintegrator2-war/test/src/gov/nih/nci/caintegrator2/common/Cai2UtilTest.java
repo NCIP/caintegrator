@@ -104,9 +104,7 @@ import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -152,41 +150,7 @@ public class Cai2UtilTest {
         assertTrue(Cai2Util.resultRowSetContainsResultRow(rowSet, rowToTest));
         
     }
-    
-    @Test
-    public void testRetrieveValueFromRowColumn() {
-        ResultRow row = new ResultRow();
-        ResultColumn column = new ResultColumn();
-        AnnotationDefinition testDef = new AnnotationDefinition();
-        testDef.setId(Long.valueOf(1));
-        column.setAnnotationDefinition(testDef);
-        ResultValue nullValue = Cai2Util.retrieveValueFromRowColumn(row, column);
-        
-        assertNull(nullValue);
-        
-        ResultValue realValue = new ResultValue();
-        realValue.setColumn(column);
-        realValue.setId(Long.valueOf(2));
-        Collection<ResultValue> valueCollection = new HashSet<ResultValue>();
-        valueCollection.add(realValue);
-        row.setValueCollection(valueCollection);
-        
-        ResultValue retrievedRealValue = Cai2Util.retrieveValueFromRowColumn(row, column);
-        assertEquals(realValue, retrievedRealValue);
-    }
 
-    @Test
-    public void testColumnCollectionContainsColumn() {
-        Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
-        ResultColumn column = new ResultColumn();
-        AnnotationDefinition ad = new AnnotationDefinition();
-        column.setAnnotationDefinition(ad);
-        ad.setId(Long.valueOf(1));
-        assertFalse(Cai2Util.columnCollectionContainsColumn(columnCollection, column));
-        columnCollection.add(column);
-        assertTrue(Cai2Util.columnCollectionContainsColumn(columnCollection, column));
-    }
-    
     @Test
     public void testAnnotationValueBelongToPermissibleValue() {
         StringAnnotationValue stringValue = new StringAnnotationValue();

@@ -109,7 +109,7 @@ public final class SelectedValueCriterionGenerator extends AbstractTestDataGener
     @Override
     public void compareFields(SelectedValueCriterion original, SelectedValueCriterion retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getAnnotationDefinition(), retrieved.getAnnotationDefinition());
+        assertEquals(original.getAnnotationFieldDescriptor(), retrieved.getAnnotationFieldDescriptor());
         assertEquals(original.getValueCollection().size(), retrieved.getValueCollection().size());
     }
 
