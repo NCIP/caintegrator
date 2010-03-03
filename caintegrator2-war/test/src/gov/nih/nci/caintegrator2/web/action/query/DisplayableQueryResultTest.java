@@ -76,18 +76,22 @@ public class DisplayableQueryResultTest {
         createStudy(query);
         
         ResultColumn column1 = new ResultColumn();
+        AnnotationFieldDescriptor afd1 = new AnnotationFieldDescriptor();
         AnnotationDefinition annotationDefinition1 = new AnnotationDefinition();
         annotationDefinition1.setDisplayName("Column1");
-        column1.setAnnotationDefinition(annotationDefinition1 );
+        afd1.setDefinition(annotationDefinition1);
+        column1.setAnnotationFieldDescriptor(afd1);
         column1.setColumnIndex(0);
         query.getColumnCollection().add(column1);
         
         loadAnnotation(query, annotationDefinition1);
         
         ResultColumn column2 = new ResultColumn();
+        AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
         AnnotationDefinition annotationDefinition2 = new AnnotationDefinition();
         annotationDefinition2.setDisplayName("Column2");
-        column2.setAnnotationDefinition(annotationDefinition2 );
+        afd2.setDefinition(annotationDefinition2);
+        column2.setAnnotationFieldDescriptor(afd2);
         column2.setColumnIndex(1);
         query.getColumnCollection().add(column2);
         
@@ -96,7 +100,9 @@ public class DisplayableQueryResultTest {
         ResultColumn column3 = new ResultColumn();
         AnnotationDefinition annotationDefinition3 = new AnnotationDefinition();
         annotationDefinition3.setDisplayName("Column3");
-        column3.setAnnotationDefinition(annotationDefinition3);
+        AnnotationFieldDescriptor afd3 = new AnnotationFieldDescriptor();
+        afd3.setDefinition(annotationDefinition3);
+        column3.setAnnotationFieldDescriptor(afd3);
         column3.setColumnIndex(2);
         query.getColumnCollection().add(column3);
         

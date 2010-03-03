@@ -136,7 +136,7 @@ public final class DisplayableQueryResult {
 
     private void loadHeaders() {
         List<ResultColumn> sortedColumns = new ArrayList<ResultColumn>();
-        sortedColumns.addAll(getQuery().getColumnCollection());
+        sortedColumns.addAll(getQuery().retrieveVisibleColumns());
         Collections.sort(sortedColumns, COLUMN_COMPARATOR);
         int columnLocation = 0;
         for (ResultColumn column : sortedColumns) {

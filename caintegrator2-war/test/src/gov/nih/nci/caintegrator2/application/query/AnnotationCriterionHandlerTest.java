@@ -89,11 +89,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
-import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.FileColumn;
-import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
-import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -112,8 +108,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class AnnotationCriterionHandlerTest {
 
-    
-    @SuppressWarnings("deprecation")
     @Test
     public void testGetMatches() throws InvalidCriterionException {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", AnnotationCriterionHandlerTest.class); 
@@ -126,25 +120,18 @@ public class AnnotationCriterionHandlerTest {
         study.setStudyConfiguration(studyConfiguration);
         
         
-        DelimitedTextClinicalSourceConfiguration clinicalConf = new DelimitedTextClinicalSourceConfiguration();
-        studyConfiguration.getClinicalConfigurationCollection().add(clinicalConf);
-        AnnotationFile annotationFile = new AnnotationFile();
-        clinicalConf.setAnnotationFile(annotationFile);
+        AnnotationGroup group = new AnnotationGroup();
+        group.setName("Group");
+        study.getAnnotationGroups().add(group);
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
         annotationDefinition.setId(1L);
         annotationDefinition.setDisplayName("Testing");
-        addColumn(annotationFile, annotationDefinition);
-
-
-        ImageDataSourceConfiguration imagingSourceConf = new ImageDataSourceConfiguration();
-        studyConfiguration.getImageDataSources().add(imagingSourceConf);
-        ImageAnnotationConfiguration imageConf = new ImageAnnotationConfiguration();
-        imagingSourceConf.setImageAnnotationConfiguration(imageConf);
-        AnnotationFile imageAnnotationFile = new AnnotationFile();
-        imageConf.setAnnotationFile(imageAnnotationFile);
-
-        addColumn(imageAnnotationFile, annotationDefinition);
         
+        AnnotationFieldDescriptor afd1 = new AnnotationFieldDescriptor();
+        afd1.setDefinition(annotationDefinition);
+        afd1.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
+        group.getAnnotationFieldDescriptors().add(afd1);
+
         Query query = new Query();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
@@ -157,14 +144,17 @@ public class AnnotationCriterionHandlerTest {
         assertTrue(daoStub.findMatchingSamplesCalled);
         
         daoStub.clear();
+        abstractAnnotationCriterion.setAnnotationFieldDescriptor(afd1);
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.IMAGESERIES);
-        abstractAnnotationCriterion.setAnnotationDefinition(annotationDefinition);
         try {
             annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
             fail("Expecting invalid criterion becuase the study has no imageSeries data.");
         } catch (InvalidCriterionException e) { }
-        study.getImageSeriesAnnotationCollection().add(new AnnotationDefinition());
-        
+        AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
+        afd2.setDefinition(annotationDefinition);
+        afd2.setAnnotationEntityType(EntityTypeEnum.IMAGESERIES);
+        group.getAnnotationFieldDescriptors().add(afd2);
+        abstractAnnotationCriterion.setAnnotationFieldDescriptor(afd2);
         annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingImageSeriesCalled);
         
@@ -173,15 +163,5 @@ public class AnnotationCriterionHandlerTest {
         annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingSubjectsCalled);
     }
-    
-    private void addColumn(AnnotationFile annotationFile, AnnotationDefinition subjectDef) {
-        FileColumn column = new FileColumn();
-        AnnotationFieldDescriptor fieldDescriptor = new AnnotationFieldDescriptor();
-        fieldDescriptor.setShownInBrowse(true);
-        fieldDescriptor.setDefinition(subjectDef);
-        column.setFieldDescriptor(fieldDescriptor);
-        annotationFile.getColumns().add(column);
-    }
-
 
 }

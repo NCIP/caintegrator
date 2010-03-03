@@ -56,7 +56,7 @@
             <tr>
                 <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;" />
                 <td class="value_inline" style="min-width: 5px; width: 190px; white-space: nowrap;" />
-                <th> Annotation Type</th>
+                <th> Annotation Group</th>
                 <th> Annotation </th>
                 <th> Values </th>
             </tr>
@@ -68,17 +68,19 @@
                     Sample Groups:
                 </td>
                 <td class="value_inline">
-                    <s:select name="gePlotForm.annotationBasedForm.annotationTypeSelection" 
-                              list="annotationTypes"
+                    <s:select name="gePlotForm.annotationBasedForm.annotationGroupSelection" 
+                              list="currentStudy.annotationGroups"
+                              listValue="name" 
+                              listKey="name"
                               headerKey="invalidSelection"
-                              headerValue="Select Annotation Type"
+                              headerValue="Select Annotation Group"
                               onchange="document.geneExpressionAnnotationInputForm.action = 'gePlotUpdateAnnotationDefinitions.action';document.geneExpressionAnnotationInputForm.submit();"
                               theme="simple"/>
                 </td>
                 <td class="value_inline">
                 <s:select name="gePlotForm.annotationBasedForm.selectedAnnotationId" 
-                              list="gePlotForm.annotationBasedForm.annotationDefinitions"
-                              listValue="value.displayName"
+                              list="gePlotForm.annotationBasedForm.annotationFieldDescriptors"
+                              listValue="value.definition.displayName"
                               headerKey="-1"
                               headerValue="Select Annotation"
                               onchange="document.geneExpressionAnnotationInputForm.action = 'gePlotUpdatePermissibleValues.action';document.geneExpressionAnnotationInputForm.permissibleValuesNeedUpdate.value = 'true';document.geneExpressionAnnotationInputForm.submit();"

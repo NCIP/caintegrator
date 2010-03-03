@@ -118,7 +118,7 @@ class StringComparisonCriterionWrapper extends AbstractAnnotationCriterionWrappe
     
     private final StringComparisonCriterion criterion;
 
-    StringComparisonCriterionWrapper(final StringComparisonCriterion criterion, AbstractAnnotationCriterionRow row) {
+    StringComparisonCriterionWrapper(final StringComparisonCriterion criterion, AnnotationCriterionRow row) {
         super(row);
         this.criterion = criterion;
         getParameters().add(createValueParameter());

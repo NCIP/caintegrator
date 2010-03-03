@@ -156,8 +156,6 @@ public final class HibernateUtil {
         loadImagingSources(studyConfiguration.getImageDataSources());
         loadClinicalSources(studyConfiguration.getClinicalConfigurationCollection());
         HibernateUtil.loadCollection(studyConfiguration.getStudy().getAssignmentCollection());
-        HibernateUtil.loadCollection(studyConfiguration.getVisibleSubjectAnnotationCollection());
-        HibernateUtil.loadCollection(studyConfiguration.getVisibleImageSeriesAnnotationCollection());
         for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
             loadCollection(assignment.getSampleAcquisitionCollection());
             loadCollection(assignment.getImageStudyCollection());

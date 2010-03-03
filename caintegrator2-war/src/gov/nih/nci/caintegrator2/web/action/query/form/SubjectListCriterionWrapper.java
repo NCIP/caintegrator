@@ -103,11 +103,11 @@ public final class SubjectListCriterionWrapper extends AbstractCriterionWrapper 
      */
     public static final String SUBJECT_LIST_FIELD_NAME = "*My Subject List";
     private final SubjectListCriterion criterion;
-    private final AbstractCriterionRow row;
+    private final SavedListCriterionRow row;
     private final StudySubscription studySubscription;
 
     SubjectListCriterionWrapper(SubjectListCriterion criterion, StudySubscription studySubscription, 
-            AbstractCriterionRow row) {
+            SavedListCriterionRow row) {
         this.criterion = criterion;
         this.row = row;
         this.studySubscription = studySubscription;

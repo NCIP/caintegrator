@@ -1,10 +1,12 @@
 package gov.nih.nci.caintegrator2.domain.translational;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -265,8 +267,12 @@ public class Study extends AbstractCaIntegrator2Object {
      * @return the boolean of whether the study has ImageSeries data 
      */
     public boolean hasImageSeriesData() {
-        return imageSeriesAnnotationCollection != null 
-            && !imageSeriesAnnotationCollection.isEmpty();
+        for (AnnotationFieldDescriptor afd : getAllVisibleAnnotationFieldDescriptors()) {
+            if (EntityTypeEnum.IMAGESERIES.equals(afd.getAnnotationEntityType())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -352,5 +358,31 @@ public class Study extends AbstractCaIntegrator2Object {
         defaultGroup.setDescription("Default annotation group");
         getAnnotationGroups().add(defaultGroup);
         return defaultGroup;
+    }
+    
+    /**
+     * Gets all visible AnnotationFieldDescriptors that have AnnotationDefinitions that aren't null.
+     * @return visible AFDs.
+     */
+    public Set<AnnotationFieldDescriptor> getAllVisibleAnnotationFieldDescriptors() {
+        Set<AnnotationFieldDescriptor> visibleSet = new HashSet<AnnotationFieldDescriptor>();
+        for (AnnotationGroup group : getAnnotationGroups()) {
+            visibleSet.addAll(getVisibleAnnotationCollection(group.getName()));
+        }
+        return visibleSet;
+    }
+    
+    /**
+     * Gets all visible AnnotationFieldDescriptors that have AnnotationDefinitions and belong to the given group.
+     * @param groupName containing the AFDs.
+     * @return visible AFDs in the group.
+     */
+    public Set<AnnotationFieldDescriptor> getVisibleAnnotationCollection(String groupName) {
+        Set<AnnotationFieldDescriptor> visibleSet = new HashSet<AnnotationFieldDescriptor>();
+        AnnotationGroup group = getAnnotationGroup(groupName);
+        if (group != null) {
+            visibleSet.addAll(group.getVisibleAnnotationFieldDescriptors());
+        }
+        return visibleSet;
     }
 }

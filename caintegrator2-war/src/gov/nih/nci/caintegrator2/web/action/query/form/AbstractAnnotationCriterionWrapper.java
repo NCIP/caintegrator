@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 
@@ -94,9 +94,9 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
  */
 abstract class AbstractAnnotationCriterionWrapper extends AbstractCriterionWrapper implements OperatorHandler {
 
-    private final AbstractAnnotationCriterionRow row;
+    private final AnnotationCriterionRow row;
 
-    AbstractAnnotationCriterionWrapper(AbstractAnnotationCriterionRow row) {
+    AbstractAnnotationCriterionWrapper(AnnotationCriterionRow row) {
         this.row = row;
     }
 
@@ -109,19 +109,20 @@ abstract class AbstractAnnotationCriterionWrapper extends AbstractCriterionWrapp
 
     @Override
     String getFieldName() {
-        if (getAbstractAnnotationCriterion().getAnnotationDefinition() == null) {
+        AnnotationFieldDescriptor descriptor = getAbstractAnnotationCriterion().getAnnotationFieldDescriptor();
+        if (descriptor == null || descriptor.getDefinition() == null) {
             return "";
         } else {
-            return getAbstractAnnotationCriterion().getAnnotationDefinition().getDisplayName();
+            return descriptor.getDefinition().getDisplayName();
         }
     }
     
     @Override
-    void setField(AnnotationDefinition field) {
-        getAbstractAnnotationCriterion().setAnnotationDefinition(field);
+    void setField(AnnotationFieldDescriptor field) {
+        getAbstractAnnotationCriterion().setAnnotationFieldDescriptor(field);
     }
 
-    AbstractAnnotationCriterionRow getRow() {
+    AnnotationCriterionRow getRow() {
         return row;
     }
 

@@ -85,11 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 
 /**
  * Manages access to a single concrete <code>AbstractCriterion</code> subclass instance.
@@ -109,7 +109,7 @@ abstract class AbstractCriterionWrapper {
     }
 
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // empty default implementation
-    void setField(AnnotationDefinition field) {
+    void setField(AnnotationFieldDescriptor field) {
         // default is no-op, override if necessary.
     }
 }

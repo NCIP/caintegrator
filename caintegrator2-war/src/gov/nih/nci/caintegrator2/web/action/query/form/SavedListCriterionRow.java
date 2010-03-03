@@ -83,96 +83,115 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.apache.commons.lang.StringUtils;
 
-@SuppressWarnings("PMD")
-public class CompoundCriterionHandlerTest {
+/**
+ * 
+ */
+public class SavedListCriterionRow extends AbstractCriterionRow {
     
-    @Test
-    public void testGetMatches() throws InvalidCriterionException {
-        ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", CompoundCriterionHandlerTest.class); 
-        CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
-        ArrayDataServiceStub arrayDataServiceStub = (ArrayDataServiceStub) context.getBean("arrayDataServiceStub");
-        daoStub.clear();       
+    private AbstractCriterionWrapper subjectListCriterionWrapper;
+    
+
+    /**
+     * @param group
+     */
+    SavedListCriterionRow(CriteriaGroup group) {
+        super(group);
         
-        Study study = new Study();
-        AnnotationGroup group = new AnnotationGroup();
-        group.setName("name");
-        study.getAnnotationGroups().add(group);
-        Query query = new Query();
-        StudySubscription subscription = new StudySubscription();
-        subscription.setStudy(study);
-        query.setSubscription(subscription);
-        study.setDefaultTimepoint(new Timepoint());
-        
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        study.setStudyConfiguration(studyConfiguration);
-        
-        AnnotationDefinition annotationDefinition = new AnnotationDefinition();
-        annotationDefinition.setId(1L);
-        annotationDefinition.setDisplayName("Testing");
-        AnnotationFieldDescriptor afd1 = new AnnotationFieldDescriptor();
-        afd1.setDefinition(annotationDefinition);
-        afd1.setAnnotationEntityType(EntityTypeEnum.IMAGESERIES);
-        
-        AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
-        afd2.setDefinition(annotationDefinition);
-        afd2.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
-        group.getAnnotationFieldDescriptors().add(afd1);
-        group.getAnnotationFieldDescriptors().add(afd2);
-        CompoundCriterion compoundCriterion = new CompoundCriterion();
-        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
-        AbstractAnnotationCriterion abstractAnnotationCriterion = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SAMPLE);
-        AbstractAnnotationCriterion abstractAnnotationCriterion2 = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion2.setEntityType(EntityTypeEnum.IMAGESERIES);
-        abstractAnnotationCriterion2.setAnnotationFieldDescriptor(afd1);
-        AbstractAnnotationCriterion abstractAnnotationCriterion3 = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion3.setEntityType(EntityTypeEnum.SUBJECT);
-        abstractAnnotationCriterion3.setAnnotationFieldDescriptor(afd2);
-        compoundCriterion.getCriterionCollection().add(abstractAnnotationCriterion);
-        
-        CompoundCriterion compoundCriterion2 = new CompoundCriterion();
-        compoundCriterion2.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion2.getCriterionCollection().add(abstractAnnotationCriterion2);
-        compoundCriterion2.getCriterionCollection().add(abstractAnnotationCriterion3);
-        compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.AND);
-        
-        CompoundCriterion compoundCriterion3 = new CompoundCriterion();
-        compoundCriterion3.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion3.getCriterionCollection().add(compoundCriterion);
-        compoundCriterion3.getCriterionCollection().add(compoundCriterion2);
-        CompoundCriterionHandler compoundCriterionHandler=CompoundCriterionHandler.create(compoundCriterion3);
-        compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.OR);
-        
-        compoundCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
-        assertTrue(daoStub.findMatchingSamplesCalled);
-        assertTrue(daoStub.findMatchingImageSeriesCalled);
-        assertTrue(daoStub.findMatchingSubjectsCalled);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getAvailableFieldNames() {
+        List<String> names = new ArrayList<String>();
+        names.add(SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME);
+        return names;
+    }
+    
+    SubjectListCriterionWrapper createSubjectListWrapper(String fieldName) {
+        if (SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME.equals(fieldName)) {
+            return new SubjectListCriterionWrapper(new SubjectListCriterion(), getSubscription(), this);
+        } 
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    AbstractCriterionWrapper getCriterionWrapper() {
+        return getSubjectListCriterionWrapper();
+    }
+
+    private AbstractCriterionWrapper getSubjectListCriterionWrapper() {
+        return subjectListCriterionWrapper;
+    }
+
+    private void setIdentifierCriterionWrapper(AbstractCriterionWrapper criterionWrapper) {
+        if (this.subjectListCriterionWrapper != null) {
+            removeCriterionFromQuery();
+        }
+        this.subjectListCriterionWrapper = criterionWrapper;
+        if (subjectListCriterionWrapper != null) {
+            addCriterionToQuery();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getFieldName() {
+        if (getCriterionWrapper() == null) {
+            return "";
+        } else {
+            return getCriterionWrapper().getFieldName();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getRowType() {
+        return CriterionRowTypeEnum.SAVED_LIST.getValue();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void handleFieldNameChange(String fieldName) {
+        if (StringUtils.isEmpty(fieldName)) {
+            setIdentifierCriterionWrapper(null);
+        } 
+        setIdentifierCriterionWrapper(createSubjectListWrapper(fieldName));
+        
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void setCriterion(AbstractCriterion criterion) {
+        this.subjectListCriterionWrapper = CriterionWrapperBuilder.createSavedListCriterionWrapper(criterion, 
+                this, getSubscription());
+    }
+    
+    private StudySubscription getSubscription() {
+        return getGroup().getSubscription();
+    }
 
 }

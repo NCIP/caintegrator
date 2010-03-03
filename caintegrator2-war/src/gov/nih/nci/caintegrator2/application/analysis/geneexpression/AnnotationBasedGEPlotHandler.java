@@ -197,8 +197,7 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
             StudySubscription subscription) throws InvalidCriterionException {
         Query query = new Query();
         SelectedValueCriterion selectedValueCriterion = new SelectedValueCriterion();
-        selectedValueCriterion.setAnnotationDefinition(parameters.getSelectedAnnotation());
-        selectedValueCriterion.setEntityType(parameters.getEntityType());
+        selectedValueCriterion.setAnnotationFieldDescriptor(parameters.getSelectedAnnotation());
         selectedValueCriterion.setValueCollection(new HashSet<PermissibleValue>());
         selectedValueCriterion.getValueCollection().add(permissibleValue);
         query.setName(permissibleValue.toString());

@@ -123,7 +123,7 @@ public class AnnotationCriterionHandlerTestIntegration extends AbstractTransacti
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
         criterion.setNumericValue(12.0);
         criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL);
-        criterion.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
+        criterion.setAnnotationFieldDescriptor(studyHelper.getSampleAnnotationFieldDescriptor());
         criterion.setEntityType(EntityTypeEnum.SAMPLE);
         
         AnnotationCriterionHandler annotationCriterionHandler = new AnnotationCriterionHandler(criterion);

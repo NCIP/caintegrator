@@ -127,7 +127,7 @@ final class NumericComparisonCriterionWrapper extends AbstractAnnotationCriterio
 
     private final NumericComparisonCriterion criterion;
 
-    NumericComparisonCriterionWrapper(final NumericComparisonCriterion criterion, AbstractAnnotationCriterionRow row) {
+    NumericComparisonCriterionWrapper(final NumericComparisonCriterion criterion, AnnotationCriterionRow row) {
         super(row);
         this.criterion = criterion;
         if (criterion.getNumericValue() == null) {

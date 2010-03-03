@@ -85,14 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
@@ -101,23 +94,28 @@ import gov.nih.nci.caintegrator2.domain.application.SortTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Contains query form configuration for the result rows to be displayed.
  */
 public class ResultConfiguration {
 
     private final QueryForm form;
-    private final ColumnSelectionList subjectColumns;
-    private final ColumnSelectionList imageSeriesColumns;
+    private final List<ColumnSelectionList> columnSelectionLists;
 
     ResultConfiguration(QueryForm form) {
         this.form = form;
-        subjectColumns = new ColumnSelectionList(this,
-                getStudy().getStudyConfiguration()
-                    .getVisibleSubjectAnnotationCollection(), EntityTypeEnum.SUBJECT);
-        imageSeriesColumns = new ColumnSelectionList(this,
-                getStudy().getStudyConfiguration()
-                    .getVisibleImageSeriesAnnotationCollection(), EntityTypeEnum.IMAGESERIES);
+        columnSelectionLists = new ArrayList<ColumnSelectionList>();
+        for (AnnotationGroup group : getStudy().getAnnotationGroups()) {
+            columnSelectionLists.add(new ColumnSelectionList(this, 
+                    getStudy().getVisibleAnnotationCollection(group.getName()), group));
+        }
+        Collections.sort(columnSelectionLists);
     }
 
     Study getStudy() {
@@ -211,34 +209,12 @@ public class ResultConfiguration {
     }
 
     /**
-     * @return the subjectColumns
-     */
-    public ColumnSelectionList getSubjectColumns() {
-        return subjectColumns;
-    }
-
-    /**
-     * @return the imageSeriesColumns
-     */
-    public ColumnSelectionList getImageSeriesColumns() {
-        return imageSeriesColumns;
-    }
-    
-    /**
      * @return the list of columns in order by columnIndex
      */
     public List<ResultColumn> getSelectedColumns() {
         List<ResultColumn> selectedColumns = new ArrayList<ResultColumn>();
-        selectedColumns.addAll(getQuery().getColumnCollection());
-        final Comparator<ResultColumn> columnIndexComparator = new Comparator<ResultColumn>() {
-            /**
-             * {@inheritDoc}
-             */
-            public int compare(ResultColumn column1, ResultColumn column2) {
-                return column1.getColumnIndex() - column2.getColumnIndex();
-            }
-        };
-        Collections.sort(selectedColumns, columnIndexComparator);
+        selectedColumns.addAll(getQuery().retrieveVisibleColumns());
+        Collections.sort(selectedColumns);
         return selectedColumns;
     }
 
@@ -254,7 +230,7 @@ public class ResultConfiguration {
      * @return the allowable indexes
      */
     public int[] getColumnIndexOptions() {
-        int[] indexes = new int[getQuery().getColumnCollection().size()];
+        int[] indexes = new int[getQuery().retrieveVisibleColumns().size()];
         for (int i = 0; i < indexes.length; i++) {
             indexes[i] = i + 1;
         }
@@ -270,8 +246,8 @@ public class ResultConfiguration {
     }
 
     private ResultColumn getColumn(String columnName) {
-        for (ResultColumn column : getQuery().getColumnCollection()) {
-            if (column.getAnnotationDefinition().getDisplayName().equals(columnName)) {
+        for (ResultColumn column : getQuery().retrieveVisibleColumns()) {
+            if (column.getAnnotationFieldDescriptor().getDefinition().getDisplayName().equals(columnName)) {
                 return column;
             }
         }
@@ -315,6 +291,22 @@ public class ResultConfiguration {
         List<ResultColumn> selectedColumns = getSelectedColumns();
         for (int i = 0; i < selectedColumns.size(); i++) {
             selectedColumns.get(i).setColumnIndex(i);
+        }
+    }
+
+    /**
+     * @return the columnSelectionLists
+     */
+    public List<ColumnSelectionList> getColumnSelectionLists() {
+        return columnSelectionLists;
+    }
+    
+    /**
+     * Selects all column values.
+     */
+    public void selectAllValues() {
+        for (ColumnSelectionList columnSelectionList : columnSelectionLists) {
+            columnSelectionList.selectAllValues();
         }
     }
 

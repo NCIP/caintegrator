@@ -18,7 +18,6 @@
 		<property name="sortOrder" type="integer" column="SORT_ORDER"/>
 		<property name="sortType" type="SortTypeEnum" column="SORT_TYPE"/>
 		<!-- Associations mapping for the ResultColumn class -->
-		<many-to-one name="annotationDefinition" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID" lazy="proxy" cascade="none" />
 		<many-to-one name="annotationFieldDescriptor" class="gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor" column="ANNOTATION_FIELD_DESCRIPTOR_ID" lazy="proxy" cascade="none" />
 		
 	</class>

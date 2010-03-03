@@ -85,20 +85,18 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.DateComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.DateComparisonOperatorEnum;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -110,12 +108,14 @@ import org.apache.commons.lang.StringUtils;
  * Holds information for a single clinical criterion.
  */
 @SuppressWarnings("PMD.CyclomaticComplexity") // see createNewCriterion
-public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRow {
+public class AnnotationCriterionRow extends AbstractCriterionRow {
     
     private AbstractCriterionWrapper annotationCriterionWrapper;
+    private final String annotationGroupName;
 
-    AbstractAnnotationCriterionRow(CriteriaGroup group) {
+    AnnotationCriterionRow(CriteriaGroup group, String annotationGroupName) {
         super(group);
+        this.annotationGroupName = annotationGroupName;
     }
 
     /**
@@ -136,8 +136,8 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
         } else if (getAnnotationCriterionWrapper() == null) {
             createAnnotationCriterionWrapper(fieldName);
         } else {
-            AnnotationDefinition field = getAnnotationDefinitionList().getDefinition(fieldName);
-            CriterionTypeEnum criterionType = getCriterionType(fieldName, field);
+            AnnotationFieldDescriptor field = getDescriptor(fieldName);
+            CriterionTypeEnum criterionType = getCriterionType(field.getDefinition());
             if (criterionType.equals(getAnnotationCriterionWrapper().getCriterionType())) {
                 getAnnotationCriterionWrapper().setField(field);
             } else {
@@ -145,11 +145,12 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
             }
         }
     }
+    
+    private AnnotationFieldDescriptor getDescriptor(String fieldName) {
+        return getAnnotationFieldDescriptorList().getDefinition(fieldName);
+    }
 
-    private CriterionTypeEnum getCriterionType(String fieldName, AnnotationDefinition field) {
-        if (getNonAnnotationFieldNames().contains(fieldName)) { 
-            return getCriterionTypeForNonAnnotationField(fieldName);
-        }
+    private CriterionTypeEnum getCriterionType(AnnotationDefinition field) {
         if (!field.getPermissibleValueCollection().isEmpty()) {
             return CriterionTypeEnum.SELECTED_VALUE;
         } else if (AnnotationTypeEnum.STRING.equals(field.getDataType())) {
@@ -164,8 +165,8 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
     }
 
     void createAnnotationCriterionWrapper(String fieldName) {
-        AnnotationDefinition field = getAnnotationDefinitionList().getDefinition(fieldName);
-        CriterionTypeEnum type = getCriterionType(fieldName, field);
+        AnnotationFieldDescriptor field = getDescriptor(fieldName);
+        CriterionTypeEnum type = getCriterionType(field.getDefinition());
         switch (type) {
         case NUMERIC_COMPARISON:
             setAnnotationCriterionWrapper(createNumericCriterionWrapper(field));
@@ -179,61 +180,45 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
         case SELECTED_VALUE:
             setAnnotationCriterionWrapper(createSelectedValueCriterionWrapper(field));
             break;
-        case IDENTIFIER:
-            setAnnotationCriterionWrapper(createIdentifierCriterionWrapper());
-            break;
-        case SUBJECT_LIST:
-            setAnnotationCriterionWrapper(createSubjectListCriterionWrapper(
-                    getSubscription()));
-            break;
         default:
             throw new IllegalStateException("Unsupported AnnotationType " + type);
         }
     }
-    
-    private IdentifierCriterionWrapper createIdentifierCriterionWrapper() {
-        IdentifierCriterion criterion = new IdentifierCriterion();
-        criterion.setEntityType(getEntityType());
-        return new IdentifierCriterionWrapper(criterion, this);
-    }
-    
-    private SubjectListCriterionWrapper createSubjectListCriterionWrapper(StudySubscription studySubscription) {
-        SubjectListCriterion criterion = new SubjectListCriterion();
-        return new SubjectListCriterionWrapper(criterion, studySubscription, this);
-    }
 
-    private SelectedValueCriterionWrapper createSelectedValueCriterionWrapper(AnnotationDefinition field) {
+    private SelectedValueCriterionWrapper createSelectedValueCriterionWrapper(AnnotationFieldDescriptor field) {
         SelectedValueCriterion criterion = new SelectedValueCriterion();
-        criterion.setAnnotationDefinition(field);
-        criterion.setEntityType(getEntityType());
+        criterion.setAnnotationFieldDescriptor(field);
+        criterion.setEntityType(field.getAnnotationEntityType());
         criterion.setValueCollection(new HashSet<PermissibleValue>());
         return new SelectedValueCriterionWrapper(criterion, this);
     }
 
-    private StringComparisonCriterionWrapper createStringComparisonCriterionWrapper(AnnotationDefinition field) {
+    private StringComparisonCriterionWrapper createStringComparisonCriterionWrapper(AnnotationFieldDescriptor field) {
         StringComparisonCriterion criterion = new StringComparisonCriterion();
-        criterion.setAnnotationDefinition(field);
-        criterion.setEntityType(getEntityType());
+        criterion.setAnnotationFieldDescriptor(field);
+        criterion.setEntityType(field.getAnnotationEntityType());
         return new StringComparisonCriterionWrapper(criterion, this);
     }
 
-    private NumericComparisonCriterionWrapper createNumericCriterionWrapper(AnnotationDefinition field) {
+    private NumericComparisonCriterionWrapper createNumericCriterionWrapper(AnnotationFieldDescriptor field) {
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
-        criterion.setAnnotationDefinition(field);
-        criterion.setEntityType(getEntityType());
+        criterion.setAnnotationFieldDescriptor(field);
+        criterion.setEntityType(field.getAnnotationEntityType());
         criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.EQUAL);
         return new NumericComparisonCriterionWrapper(criterion, this);
     }
 
-    private DateComparisonCriterionWrapper createDateCriterionWrapper(AnnotationDefinition field) {
+    private DateComparisonCriterionWrapper createDateCriterionWrapper(AnnotationFieldDescriptor field) {
         DateComparisonCriterion criterion = new DateComparisonCriterion();
-        criterion.setAnnotationDefinition(field);
-        criterion.setEntityType(getEntityType());
+        criterion.setAnnotationFieldDescriptor(field);
+        criterion.setEntityType(field.getAnnotationEntityType());
         criterion.setDateComparisonOperator(DateComparisonOperatorEnum.EQUAL);
         return new DateComparisonCriterionWrapper(criterion, this);
     }
 
-    abstract AnnotationDefinitionList getAnnotationDefinitionList();
+    AnnotationFieldDescriptorList getAnnotationFieldDescriptorList() {
+        return getGroup().getForm().getAnnotations(annotationGroupName);
+    }
 
     /**
      * {@inheritDoc}
@@ -258,18 +243,12 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
     }
 
     /**
-     * @return
-     */
-    abstract EntityTypeEnum getEntityType();
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public List<String> getAvailableFieldNames() {
         List<String> availableFieldNames = new ArrayList<String>();
-        availableFieldNames.addAll(getNonAnnotationFieldNames());
-        availableFieldNames.addAll(getAnnotationDefinitionList().getNames());
+        availableFieldNames.addAll(getAnnotationFieldDescriptorList().getNames());
         return availableFieldNames;
     }
 
@@ -282,9 +261,13 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
     private StudySubscription getSubscription() {
         return getGroup().getSubscription();
     }
-    
-    abstract List<String> getNonAnnotationFieldNames();
-    
-    abstract CriterionTypeEnum getCriterionTypeForNonAnnotationField(String fieldName);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getRowType() {
+        return annotationGroupName;
+    }
 
 }

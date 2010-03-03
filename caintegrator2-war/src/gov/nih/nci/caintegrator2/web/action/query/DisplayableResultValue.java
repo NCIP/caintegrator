@@ -121,7 +121,7 @@ public class DisplayableResultValue {
     public DisplayableResultValue(ResultValue resultValue) {
         if (resultValue != null) {
             if (AnnotationTypeEnum.DATE.equals(
-                resultValue.getColumn().getAnnotationDefinition().getDataType())) {
+                resultValue.getColumn().getAnnotationFieldDescriptor().getDefinition().getDataType())) {
                 dateType = true;
                 dateValue = getDateValue(resultValue);
             }

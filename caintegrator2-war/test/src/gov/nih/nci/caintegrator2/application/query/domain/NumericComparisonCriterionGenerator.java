@@ -106,7 +106,7 @@ public final class NumericComparisonCriterionGenerator extends AbstractTestDataG
     public void compareFields(NumericComparisonCriterion original, NumericComparisonCriterion retrieved) {
         assertEquals(original.getId(), retrieved.getId());
         assertEquals(original.getNumericValue(), retrieved.getNumericValue());
-        assertEquals(original.getAnnotationDefinition(), retrieved.getAnnotationDefinition());
+        assertEquals(original.getAnnotationFieldDescriptor(), retrieved.getAnnotationFieldDescriptor());
 
     }
 

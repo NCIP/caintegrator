@@ -366,13 +366,13 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     private String loadSubjectListExecute() {
         createNewQuery();
         loadSubjectList();
-        getQueryForm().getResultConfiguration().getSubjectColumns().selectAllValues();
+        getQueryForm().getResultConfiguration().selectAllValues();
         return executeQuery();
     }
     
     @SuppressWarnings("unchecked")
     private void loadSubjectList() {
-        getQueryForm().getCriteriaGroup().setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
+        getQueryForm().getCriteriaGroup().setCriterionTypeName(CriterionRowTypeEnum.SAVED_LIST.getValue());
         addCriterionRow();
         AbstractCriterionRow criterionRow = getQueryForm().getCriteriaGroup().getRows().get(0);
         criterionRow.setFieldName(SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME);

@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.DateComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
@@ -105,7 +106,7 @@ public final class CriterionWrapperBuilder {
     private CriterionWrapperBuilder() { }
     
     static AbstractCriterionWrapper createAnnotationCriterionWrapper(AbstractCriterion criterion, 
-            AbstractAnnotationCriterionRow row, StudySubscription subscription) {
+            AnnotationCriterionRow row, StudySubscription subscription) {
         if (criterion instanceof StringComparisonCriterion) {
             StringComparisonCriterion stringComparisonCriterion = (StringComparisonCriterion) criterion;
             return new StringComparisonCriterionWrapper(stringComparisonCriterion, row);
@@ -118,9 +119,6 @@ public final class CriterionWrapperBuilder {
         } else if (criterion instanceof SelectedValueCriterion) {
             SelectedValueCriterion selectedValueCriterion = (SelectedValueCriterion) criterion;
             return new SelectedValueCriterionWrapper(selectedValueCriterion, row);
-        } else if (criterion instanceof SubjectListCriterion) {
-            SubjectListCriterion subjectListCriterion = (SubjectListCriterion) criterion;
-            return new SubjectListCriterionWrapper(subjectListCriterion, subscription, row);
         } else {
             throw new IllegalArgumentException("Illegal criterion type " + criterion.getClass());
         }
@@ -137,6 +135,16 @@ public final class CriterionWrapperBuilder {
         } else {
             throw new IllegalArgumentException("Illegal criterion type " + criterion.getClass());
         }
+    }
+    
+    static AbstractCriterionWrapper createIdentifierCriterionWrapper(AbstractCriterion criterion, 
+            IdentifierCriterionRow row) {
+        return new IdentifierCriterionWrapper((IdentifierCriterion) criterion, row);
+    }
+    
+    static AbstractCriterionWrapper createSavedListCriterionWrapper(AbstractCriterion criterion, 
+            SavedListCriterionRow row, StudySubscription subscription) {
+        return new SubjectListCriterionWrapper((SubjectListCriterion) criterion, subscription, row);
     }
 
 }

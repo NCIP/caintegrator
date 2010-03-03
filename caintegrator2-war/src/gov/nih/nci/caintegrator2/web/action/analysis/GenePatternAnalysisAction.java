@@ -88,11 +88,10 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
@@ -204,31 +203,20 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
         resetCurrentGenePatternAnalysisJob();
         getGenePatternAnalysisForm().setUrl(configurationHelper.getString(ConfigurationParameter.GENE_PATTERN_URL));
         getGenePatternAnalysisForm().setGenomicQueries(getGenomicQueries());
-        Collection<AnnotationDefinition> subjectClassifications = 
-            getClassificationAnnotations(getStudy().getStudyConfiguration()
-                    .getVisibleSubjectAnnotationCollection());
-        Collection<AnnotationDefinition> imageSeriesClassifications = 
-            getClassificationAnnotations(getStudy().getStudyConfiguration()
-                    .getVisibleImageSeriesAnnotationCollection());
-        Collection<AnnotationDefinition> sampleClassifications = 
-            getClassificationAnnotations(getStudy().getSampleAnnotationCollection());
+        Collection<AnnotationFieldDescriptor> fieldDescriptors = 
+            getClassificationAnnotations(getStudy().getAllVisibleAnnotationFieldDescriptors());
         getGenePatternAnalysisForm().clearClassificationAnnotations();
-        getGenePatternAnalysisForm().addClassificationAnnotations(subjectClassifications,
-                EntityTypeEnum.SUBJECT);
-        getGenePatternAnalysisForm().addClassificationAnnotations(imageSeriesClassifications,
-                EntityTypeEnum.IMAGESERIES);
-        getGenePatternAnalysisForm().addClassificationAnnotations(sampleClassifications,
-                EntityTypeEnum.SAMPLE);
+        getGenePatternAnalysisForm().addClassificationAnnotations(fieldDescriptors);
         setAnalysisMethodName(getGenePatternAnalysisForm().getAnalysisMethodName());
         return SUCCESS;
     }
 
-    private Collection<AnnotationDefinition> getClassificationAnnotations(
-            Collection<AnnotationDefinition> annotationCollection) {
-        Set<AnnotationDefinition> classificationAnnotations = new HashSet<AnnotationDefinition>();
-        for (AnnotationDefinition annotation : annotationCollection) {
-            if (annotation.getAnnotationValueCollection() != null 
-                    && !annotation.getAnnotationValueCollection().isEmpty()) {
+    private Collection<AnnotationFieldDescriptor> getClassificationAnnotations(
+            Collection<AnnotationFieldDescriptor> annotationCollection) {
+        Set<AnnotationFieldDescriptor> classificationAnnotations = new HashSet<AnnotationFieldDescriptor>();
+        for (AnnotationFieldDescriptor annotation : annotationCollection) {
+            if (annotation.getDefinition() != null 
+                && !annotation.getDefinition().getAnnotationValueCollection().isEmpty()) {
                 classificationAnnotations.add(annotation);
             }
         }

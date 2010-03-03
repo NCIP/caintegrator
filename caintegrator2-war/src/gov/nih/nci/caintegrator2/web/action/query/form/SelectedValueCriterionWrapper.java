@@ -85,8 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 
@@ -103,7 +103,7 @@ final class SelectedValueCriterionWrapper extends AbstractAnnotationCriterionWra
     private final SelectedValueCriterion criterion;
     private CriterionOperatorEnum selectOperator;
 
-    SelectedValueCriterionWrapper(SelectedValueCriterion criterion, AbstractAnnotationCriterionRow row) {
+    SelectedValueCriterionWrapper(SelectedValueCriterion criterion, AnnotationCriterionRow row) {
         super(row);
         this.criterion = criterion;
         if (criterion.getValueCollection().size() <= 1) {
@@ -168,7 +168,7 @@ final class SelectedValueCriterionWrapper extends AbstractAnnotationCriterionWra
     
     private OptionList<PermissibleValue> getOptions() {
         List<PermissibleValue> orderedValues = new ArrayList<PermissibleValue>();
-        orderedValues.addAll(criterion.getAnnotationDefinition().getPermissibleValueCollection());
+        orderedValues.addAll(criterion.getAnnotationFieldDescriptor().getDefinition().getPermissibleValueCollection());
         Comparator<PermissibleValue> valueComparator = new Comparator<PermissibleValue>() {
             public int compare(PermissibleValue value1, PermissibleValue value2) {
                 return value1.toString().compareTo(value2.toString());
@@ -226,7 +226,7 @@ final class SelectedValueCriterionWrapper extends AbstractAnnotationCriterionWra
     }
 
     @Override
-    void setField(AnnotationDefinition field) {
+    void setField(AnnotationFieldDescriptor field) {
         super.setField(field);
         criterion.getValueCollection().clear();
         refreshParameters();
