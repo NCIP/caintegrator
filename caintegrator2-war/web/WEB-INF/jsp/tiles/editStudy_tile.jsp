@@ -228,7 +228,7 @@
                                     <s:param name="annotationGroup.id" value="id" />
                                 </s:url>
                                 <s:a href="%{editAnnotationGroup}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Group</span></span></s:a>
-                                <s:if test="annotationFieldDescriptors.isEmpty()">
+                                <s:if test="deletable">
                                 <s:url id="deleteAnnotationGroup" action="deleteAnnotationGroup" includeParams="none">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="annotationGroup.id" value="id" />

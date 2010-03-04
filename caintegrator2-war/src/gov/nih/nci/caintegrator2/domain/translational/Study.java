@@ -189,16 +189,21 @@ public class Study extends AbstractCaIntegrator2Object {
      * @return the boolean of whether the study has Genomic data 
      */
     public boolean hasGenomicDataSources() {
-        return studyConfiguration != null
-            && studyConfiguration.hasGenomicDataSources();
+        return studyConfiguration.hasGenomicDataSources();
     }
 
     /**
      * @return the boolean of whether the study has Image data 
      */
     public boolean hasImageDataSources() {
-        return studyConfiguration != null
-            && studyConfiguration.hasImageDataSources();
+        return studyConfiguration.hasImageDataSources();
+    }
+    
+    /**
+     * @return the boolean of whether the study has clinical data.
+     */
+    public boolean hasClinicalDataSources() {
+        return studyConfiguration.hasClinicalDataSources();
     }
 
     /**

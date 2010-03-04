@@ -166,6 +166,18 @@ public class AnnotationGroup extends AbstractCaIntegrator2Object implements Comp
     }
     
     /**
+     * 
+     * @return boolean value of whether this group is deletable.
+     */
+    public boolean isDeletable() {
+        if (annotationFieldDescriptors.isEmpty() 
+            || (!study.hasImageDataSources() && !study.hasClinicalDataSources())) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
      * {@inheritDoc}
      */
     public int compareTo(AnnotationGroup o) {
