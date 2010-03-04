@@ -185,14 +185,7 @@ public class QueryFormTest {
         PermissibleValue value2_1 = new PermissibleValue();
         value2_1.setValue("value2_1");
         selectClinicalAnnotation2.getPermissibleValueCollection().add(value2_1);
-
-        study.getSubjectAnnotationCollection().add(stringClinicalAnnotation1);
-        study.getSubjectAnnotationCollection().add(stringClinicalAnnotation2);
-        study.getSubjectAnnotationCollection().add(numericClinicalAnnotation);
-        study.getSubjectAnnotationCollection().add(selectClinicalAnnotation1);
-        study.getSubjectAnnotationCollection().add(selectClinicalAnnotation2);
         testImageSeriesAnnotation = createDefinition("testImageSeriesAnnotation", AnnotationTypeEnum.STRING);
-        study.getImageSeriesAnnotationCollection().add(testImageSeriesAnnotation);
         
         createAfd(stringClinicalAnnotation1, subjectGroup);
         createAfd(stringClinicalAnnotation2, subjectGroup);
@@ -247,7 +240,6 @@ public class QueryFormTest {
         assertEquals(4, queryForm.getCriteriaTypeOptions().size());
         
         testImageSeriesAnnotation = createDefinition("testImageSeriesAnnotation", AnnotationTypeEnum.STRING);
-        queryForm.getQuery().getSubscription().getStudy().getImageSeriesAnnotationCollection().add(testImageSeriesAnnotation);
 
         queryForm.getQuery().setId(1L);
         assertTrue(queryForm.isSavedQuery());

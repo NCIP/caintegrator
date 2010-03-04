@@ -405,7 +405,6 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
 
     void loadAnnontation(AbstractAnnotationHandler handler) throws ValidationException {
         currentlyLoadedIdentifier.clear();
-        handler.addDefinitionsToStudy(getAnnotationDefinitions());
         positionAtData();
         while (hasNextDataLine()) {
             String identifier = getDataValue(getIdentifierColumn());
@@ -417,16 +416,6 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
             loadAnnotationLine(handler);
         }
         setCurrentlyLoaded(String.valueOf(true));
-    }
-
-    private Set<AnnotationDefinition> getAnnotationDefinitions() {
-        Set<AnnotationDefinition> definitions = new HashSet<AnnotationDefinition>();
-        for (AnnotationFieldDescriptor descriptor : getAnnotationTypeDescriptors()) {
-            if (descriptor.getDefinition() != null) {
-                definitions.add(descriptor.getDefinition());
-            }
-        }
-        return definitions;
     }
 
     private void loadAnnotationLine(AbstractAnnotationHandler handler) throws ValidationException {

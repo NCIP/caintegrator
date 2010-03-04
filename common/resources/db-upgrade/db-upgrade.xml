@@ -288,5 +288,8 @@
         <sql>CALL update_queries_to_use_afd();</sql>
         <comment>Updates RESULT_COLUMN and ABSTRACT_ANNOTATION_CRITERION to use AFD's instead of ADs</comment>
     </changeSet>
-    
+    <changeSet id="1.1.20" author="tandrews">
+        <comment>Deletes the tables linking Study to Annotation Definitions, and deletes unused column on RESULT_COLUMN and ABSTRACT_ANNOTATION_CRITERION</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.20.sql"/>
+    </changeSet>
 </databaseChangeLog>

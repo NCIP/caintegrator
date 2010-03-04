@@ -394,7 +394,6 @@ public class StudyManagementServiceTest {
         studyManagementService.setDefinition(study, fileColumn.getFieldDescriptor(), firstDefinition, EntityTypeEnum.IMAGESERIES);
         assertTrue(daoStub.saveCalled);
         assertEquals(firstDefinition, fileColumn.getFieldDescriptor().getDefinition());
-        assertTrue(study.getImageSeriesAnnotationCollection().contains(firstDefinition));
         assertTrue(firstDefinition.getAnnotationValueCollection().contains(value1));
         
         // Now create a new Definition and set it and verify the first definition is removed.
@@ -404,8 +403,6 @@ public class StudyManagementServiceTest {
         daoStub.fileColumns.clear();
         daoStub.fileColumns.add(fileColumn);
         studyManagementService.setDefinition(study, fileColumn.getFieldDescriptor(), newDefinition, EntityTypeEnum.IMAGESERIES);
-        assertFalse(study.getImageSeriesAnnotationCollection().contains(firstDefinition));
-        assertTrue(study.getImageSeriesAnnotationCollection().contains(newDefinition));
         assertEquals(3, newDefinition.getAnnotationValueCollection().size());
         assertTrue(firstDefinition.getAnnotationValueCollection().isEmpty());
         
@@ -465,7 +462,6 @@ public class StudyManagementServiceTest {
         AnnotationDefinition firstDefinition = fileColumn.getFieldDescriptor().getDefinition();
         assertTrue(firstDefinition.getPermissibleValueCollection().iterator().next().equals(permissibleValue));
         assertTrue(firstDefinition.getAnnotationValueCollection().size() == 1);
-        assertTrue(study.getSubjectAnnotationCollection().contains(firstDefinition));
         assertTrue(survivalDefinition.getSurvivalStartDate().getDisplayName().equals("longName"));
         assertFalse(survivalDefinition.getLastFollowupDate().equals(originalDefinition));
         assertFalse(survivalDefinition.getDeathDate().equals(originalDefinition));
@@ -497,10 +493,6 @@ public class StudyManagementServiceTest {
         daoStub.fileColumns.clear();
         daoStub.fileColumns.add(fileColumn);
         studyManagementService.setDataElement(fileColumn.getFieldDescriptor(), dataElement2, study, EntityTypeEnum.SUBJECT, "");
-        AnnotationDefinition newDefinition = fileColumn.getFieldDescriptor().getDefinition();
-        assertFalse(study.getSubjectAnnotationCollection().contains(firstDefinition));
-        assertTrue(study.getSubjectAnnotationCollection().contains(newDefinition));
-        
     }
     
     @Test
@@ -715,15 +707,19 @@ public class StudyManagementServiceTest {
     public void testCreateDefinition() throws ValidationException {
         AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
         Study study = new Study();
+        AnnotationGroup group = new AnnotationGroup();
+        group.setName("group");
+        study.getAnnotationGroups().add(group);
+        group.getAnnotationFieldDescriptors().add(descriptor);
         descriptor.setName("testName");
         AnnotationDefinition definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SUBJECT, AnnotationTypeEnum.STRING);
         assertEquals(descriptor.getName(), definition.getDisplayName());
         assertEquals(descriptor.getName(), definition.getKeywords());
-        assertEquals(1, study.getSubjectAnnotationCollection().size());
+        assertEquals(1, study.getAllVisibleAnnotationFieldDescriptors(EntityTypeEnum.SUBJECT, null).size());
         definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.IMAGESERIES, AnnotationTypeEnum.STRING);
-        assertEquals(1, study.getImageSeriesAnnotationCollection().size());
+        assertEquals(1, study.getAllVisibleAnnotationFieldDescriptors(EntityTypeEnum.IMAGESERIES, null).size());
         definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SAMPLE, AnnotationTypeEnum.STRING);
-        assertEquals(1, study.getSampleAnnotationCollection().size());
+        assertEquals(1, study.getAllVisibleAnnotationFieldDescriptors(EntityTypeEnum.SAMPLE, null).size());
     }
     
     @Test
