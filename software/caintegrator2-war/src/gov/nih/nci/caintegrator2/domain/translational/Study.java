@@ -2,9 +2,9 @@ package gov.nih.nci.caintegrator2.domain.translational;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -31,14 +31,8 @@ public class Study extends AbstractCaIntegrator2Object {
     private String shortTitleText;
     private Set<Timepoint> timepointCollection = new HashSet<Timepoint>();
     private Set<SurvivalValueDefinition> survivalValueDefinitionCollection = new HashSet<SurvivalValueDefinition>();
-    // This will be @Deprecated.
-    private Set<AnnotationDefinition> imageSeriesAnnotationCollection = new HashSet<AnnotationDefinition>(); 
     private Set<StudySubjectAssignment> assignmentCollection = new HashSet<StudySubjectAssignment>();
-    // This will be @Deprecated.
-    private Set<AnnotationDefinition> subjectAnnotationCollection = new HashSet<AnnotationDefinition>();
     private Timepoint defaultTimepoint;
-    // This will be @Deprecated.
-    private Set<AnnotationDefinition> sampleAnnotationCollection = new HashSet<AnnotationDefinition>();
     private Set<AnnotationGroup> annotationGroups = new HashSet<AnnotationGroup>();
     private StudyConfiguration studyConfiguration;
 
@@ -125,38 +119,6 @@ public class Study extends AbstractCaIntegrator2Object {
     }
 
     /**
-     * @return the imageSeriesAnnotationCollection
-     */
-    public Set<AnnotationDefinition> getImageSeriesAnnotationCollection() {
-        return imageSeriesAnnotationCollection;
-    }
-
-    /**
-     * @param imageSeriesAnnotationCollection
-     *            the imageSeriesAnnotationCollection to set
-     */
-    @SuppressWarnings("unused")     // required by Hibernate
-    private void setImageSeriesAnnotationCollection(Set<AnnotationDefinition> imageSeriesAnnotationCollection) {
-        this.imageSeriesAnnotationCollection = imageSeriesAnnotationCollection;
-    }
-
-    /**
-     * @return the subjectAnnotationCollection
-     */
-    public Set<AnnotationDefinition> getSubjectAnnotationCollection() {
-        return subjectAnnotationCollection;
-    }
-
-    /**
-     * @param subjectAnnotationCollection
-     *            the subjectAnnotationCollection to set
-     */
-    @SuppressWarnings("unused")     // required by Hibernate
-    private void setSubjectAnnotationCollection(Set<AnnotationDefinition> subjectAnnotationCollection) {
-        this.subjectAnnotationCollection = subjectAnnotationCollection;
-    }
-
-    /**
      * @return the defaultTimepoint
      */
     public Timepoint getDefaultTimepoint() {
@@ -169,22 +131,6 @@ public class Study extends AbstractCaIntegrator2Object {
      */
     public void setDefaultTimepoint(Timepoint defaultTimepoint) {
         this.defaultTimepoint = defaultTimepoint;
-    }
-
-    /**
-     * @return the sampleAnnotationCollection
-     */
-    public Set<AnnotationDefinition> getSampleAnnotationCollection() {
-        return sampleAnnotationCollection;
-    }
-
-    /**
-     * @param sampleAnnotationCollection
-     *            the sampleAnnotationCollection to set
-     */
-    @SuppressWarnings("unused")     // required by Hibernate
-    private void setSampleAnnotationCollection(Set<AnnotationDefinition> sampleAnnotationCollection) {
-        this.sampleAnnotationCollection = sampleAnnotationCollection;
     }
 
     /**
@@ -238,14 +184,6 @@ public class Study extends AbstractCaIntegrator2Object {
     public SampleSet getControlSampleSet(String name) {
         return studyConfiguration.getControlSampleSet(name);
     }
-    
-    /**
-     * @return the boolean of whether the study has clinical data 
-     */
-    public boolean hasClinicalData() {
-        return subjectAnnotationCollection != null
-            && !subjectAnnotationCollection.isEmpty();
-    }
 
     /**
      * @return the boolean of whether the study has Genomic data 
@@ -266,7 +204,7 @@ public class Study extends AbstractCaIntegrator2Object {
     /**
      * @return the boolean of whether the study has ImageSeries data 
      */
-    public boolean hasImageSeriesData() {
+    public boolean hasVisibleImageSeriesData() {
         for (AnnotationFieldDescriptor afd : getAllVisibleAnnotationFieldDescriptors()) {
             if (EntityTypeEnum.IMAGESERIES.equals(afd.getAnnotationEntityType())) {
                 return true;
@@ -384,5 +322,28 @@ public class Study extends AbstractCaIntegrator2Object {
             visibleSet.addAll(group.getVisibleAnnotationFieldDescriptors());
         }
         return visibleSet;
+    }
+    
+    /**
+     * Gets all visible AnnotationFieldDescriptors that have AnnotationDefinitions that aren't null, and belong
+     * to the given entityType and annotationType.  If entityType or annotationType is null, it will ignore them.
+     * @param entityType of the annotations.
+     * @param annotationType of the annotations.
+     * @return visible AFDs.
+     */
+    public Set<AnnotationFieldDescriptor> getAllVisibleAnnotationFieldDescriptors(EntityTypeEnum entityType, 
+            AnnotationTypeEnum annotationType) {
+        Set<AnnotationFieldDescriptor> validSet = new HashSet<AnnotationFieldDescriptor>();
+        
+        for (AnnotationFieldDescriptor fieldDescriptor : getAllVisibleAnnotationFieldDescriptors()) {
+            boolean matchesAnnotationType = (annotationType == null || annotationType.equals(fieldDescriptor
+                    .getDefinition().getDataType()));
+            boolean matchesEntityType = (entityType == null || entityType.equals(fieldDescriptor
+                    .getAnnotationEntityType()));
+            if (matchesAnnotationType && matchesEntityType) {
+                validSet.add(fieldDescriptor);
+            }
+        }
+        return validSet;
     }
 }

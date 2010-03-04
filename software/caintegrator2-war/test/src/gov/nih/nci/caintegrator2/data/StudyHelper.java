@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
@@ -187,9 +188,12 @@ public class StudyHelper {
         subjectDefinitions.add(subjectAnnotationDefinition);
         
         // Setup everything to use the same definition collection for simplicity.
-        myStudy.getSampleAnnotationCollection().addAll(sampleDefinitions);
-        myStudy.getImageSeriesAnnotationCollection().addAll(imageSeriesDefinitions);
-        myStudy.getSubjectAnnotationCollection().addAll(subjectDefinitions);
+        AnnotationGroup defaultAnnotationGroup = new AnnotationGroup();
+        defaultAnnotationGroup.setName("default");
+        defaultAnnotationGroup.getAnnotationFieldDescriptors().add(getSubjectAnnotationFieldDescriptor());
+        defaultAnnotationGroup.getAnnotationFieldDescriptors().add(getImageSeriesAnnotationFieldDescriptor());
+        defaultAnnotationGroup.getAnnotationFieldDescriptors().add(getSampleAnnotationFieldDescriptor());
+        myStudy.getAnnotationGroups().add(defaultAnnotationGroup);
 
         DelimitedTextClinicalSourceConfiguration clinicalConf = new DelimitedTextClinicalSourceConfiguration();
         myStudy.getStudyConfiguration().getClinicalConfigurationCollection().add(clinicalConf);

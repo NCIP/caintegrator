@@ -336,14 +336,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             configuration.reLoadAnnontation();
         }
         getDao().removeObjects(studyConfiguration.removeObsoleteSubjectAssignment());
-        refreshAnnotationDefinitions(studyConfiguration.getStudy());
         save(studyConfiguration);
-    }
-    
-    private void refreshAnnotationDefinitions(Study study) {
-        for (AnnotationDefinition annotationDefinition : study.getSubjectAnnotationCollection()) {
-            getDao().refresh(annotationDefinition);
-        }
     }
     
     private void deleteClinicalAnnotation(StudyConfiguration studyConfiguration) {
@@ -354,7 +347,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
             studySubjectAssignment.getSubjectAnnotationCollection().clear();
         }
-        study.getSubjectAnnotationCollection().clear();
     }
 
     /**
@@ -413,7 +405,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
             studySubjectAssignment.getImageStudyCollection().clear();
         }
-        studyConfiguration.getStudy().getImageSeriesAnnotationCollection().clear();
     }
     
     private void reLoadImageAnnotation(StudyConfiguration studyConfiguration) throws ValidationException {
@@ -425,7 +416,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
         }
         getDao().removeObjects(studyConfiguration.removeObsoleteSubjectAssignment());
-        refreshAnnotationDefinitions(studyConfiguration.getStudy());
         save(studyConfiguration);
     }
     
@@ -909,34 +899,13 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         AnnotationDefinition annotationDefinitionToRemove = null;
         if (descriptor.getDefinition() != null) {
             annotationDefinitionToRemove = descriptor.getDefinition();
+            moveValuesToNewDefinition(study, annotationDefinition, annotationDefinitionToRemove);
+            if (EntityTypeEnum.SUBJECT.equals(entityType)) {
+                moveDefinitionInSurvivalDefinitions(study, annotationDefinitionToRemove, annotationDefinition);
+            }
         }
         descriptor.setDefinition(annotationDefinition);
-        switch(entityType) {
-            case SUBJECT:
-                study.getSubjectAnnotationCollection().add(annotationDefinition);
-                if (annotationDefinitionToRemove != null) {
-                    moveValuesToNewDefinition(study, annotationDefinition, annotationDefinitionToRemove);
-                    moveDefinitionInSurvivalDefinitions(study, annotationDefinitionToRemove, annotationDefinition);
-                    study.getSubjectAnnotationCollection().remove(annotationDefinitionToRemove);
-                }
-                break;
-            case IMAGESERIES:
-                study.getImageSeriesAnnotationCollection().add(annotationDefinition);
-                if (annotationDefinitionToRemove != null) {
-                    moveValuesToNewDefinition(study, annotationDefinition, annotationDefinitionToRemove);
-                    study.getImageSeriesAnnotationCollection().remove(annotationDefinitionToRemove);
-                }
-                break;
-            case SAMPLE:
-                study.getSampleAnnotationCollection().add(annotationDefinition);
-                if (annotationDefinitionToRemove != null) {
-                    moveValuesToNewDefinition(study, annotationDefinition, annotationDefinitionToRemove);
-                    study.getSampleAnnotationCollection().remove(annotationDefinitionToRemove);
-                }
-                break;
-            default:
-                throw new IllegalStateException("Unknown EntityTypeEnum");
-        }
+        descriptor.setAnnotationEntityType(entityType);
     }
 
     /**

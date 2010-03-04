@@ -127,7 +127,7 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
         Set<ResultRow> resultRows = new HashSet<ResultRow>();
         switch(entityType) {
         case IMAGESERIES:
-            if (!study.hasImageSeriesData()) {
+            if (!study.hasVisibleImageSeriesData()) {
                 throw new InvalidCriterionException("Invalid criterion exist due to no Imaging data in Study.");
             }
             handleImageSeriesRow(dao, study, entityTypes, resultRows);

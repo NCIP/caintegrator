@@ -15,26 +15,11 @@
 			<key column="STUDY_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.translational.Timepoint"/>
 		</set>
-		<set name="sampleAnnotationCollection" table="STUDY_SAMPLE_ANNOTATIONS" lazy="true" cascade="save-update,merge" >
-			<cache usage="read-write" />
-			<key column="STUDY_ID" />
-			<many-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID" />
-		</set>
-		<set name="imageSeriesAnnotationCollection" table="STUDY_IMAGE_ANNOTATIONS" lazy="false" cascade="none" >
-			<cache usage="read-write" />
-			<key column="STUDY_ID" />
-			<many-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID" />
-		</set>
         <set name="assignmentCollection" lazy="true" cascade="all" >
             <cache usage="read-write" />
             <key column="STUDY_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment"/>
         </set>
-		<set name="subjectAnnotationCollection" table="STUDY_SUBJECT_ANNOTATIONS" lazy="true" cascade="save-update,merge" >
-			<cache usage="read-write" />
-			<key column="STUDY_ID" />
-			<many-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID" />
-		</set>
 		<set name="survivalValueDefinitionCollection" lazy="true" cascade="all" >
             <cache usage="read-write" />
             <key column="STUDY_ID" />
