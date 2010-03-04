@@ -90,8 +90,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
+import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.util.ArrayList;
@@ -197,5 +202,25 @@ public class EditAnnotationGroupActionTest extends AbstractSessionBasedTest {
         List<DisplayableAnnotationFieldDescriptor> displayableFields = new ArrayList<DisplayableAnnotationFieldDescriptor>();
         action.setDisplayableFields(displayableFields);
         assertEquals(Action.SUCCESS, action.saveFieldDescriptors());
+    }
+    
+    @Test
+    public void testIsDeletable() {
+        AnnotationGroup annotationGroup = new AnnotationGroup();
+        annotationGroup.setStudy(new Study());
+        annotationGroup.getStudy().setStudyConfiguration(new StudyConfiguration());
+        annotationGroup.setName("test");
+        
+        assertTrue(annotationGroup.isDeletable());
+        annotationGroup.getAnnotationFieldDescriptors().add(new AnnotationFieldDescriptor());
+        assertTrue(annotationGroup.isDeletable());
+        
+        annotationGroup.getStudy().getStudyConfiguration().addClinicalConfiguration(new DelimitedTextClinicalSourceConfiguration());
+        assertFalse(annotationGroup.isDeletable());
+        annotationGroup.getStudy().getStudyConfiguration().getClinicalConfigurationCollection().clear();
+        assertTrue(annotationGroup.isDeletable());
+        
+        annotationGroup.getStudy().getStudyConfiguration().getImageDataSources().add(new ImageDataSourceConfiguration());
+        assertFalse(annotationGroup.isDeletable());
     }
 }
