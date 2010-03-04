@@ -86,10 +86,12 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.analysis.InvalidSurvivalValueDefinitionException;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -130,13 +132,8 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
     }
 
     private void validateThreeDateFields() {
-        int numDateFields = 0;
-        for (AnnotationDefinition annotationDefinition : getStudy().getSubjectAnnotationCollection()) {
-            if (AnnotationTypeEnum.DATE.equals(annotationDefinition.getDataType())) {
-                numDateFields++;
-            }
-        }
-        if (numDateFields < 3) {
+        if (getStudy().getAllVisibleAnnotationFieldDescriptors(EntityTypeEnum.SUBJECT, AnnotationTypeEnum.DATE)
+                .size() < 3) {
             addActionError("Study must have at least 3 different date fields for subject annotations.");
         }
     }
@@ -170,11 +167,10 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
     private void populateDateAnnotationDefinitions() {
         if (dateAnnotationDefinitions.isEmpty()) {
             dateAnnotationDefinitions = new HashMap<String, AnnotationDefinition>();
-            for (AnnotationDefinition definition 
-                    : getStudy().getSubjectAnnotationCollection()) {
-                if (AnnotationTypeEnum.DATE.equals(definition.getDataType())) {
-                    dateAnnotationDefinitions.put(definition.getId().toString(), definition);
-                }
+            for (AnnotationFieldDescriptor descriptor : getStudy().getAllVisibleAnnotationFieldDescriptors(
+                    EntityTypeEnum.SUBJECT, AnnotationTypeEnum.DATE)) {
+                dateAnnotationDefinitions
+                        .put(descriptor.getDefinition().getId().toString(), descriptor.getDefinition());
             }
         }
     }

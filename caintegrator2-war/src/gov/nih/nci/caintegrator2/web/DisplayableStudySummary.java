@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web;
 
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
@@ -148,7 +149,7 @@ public class DisplayableStudySummary {
      * @return number annotation columns.
      */
     public int getNumberSubjectAnnotationColumns() {
-        return study.getSubjectAnnotationCollection().size();
+        return study.getAllVisibleAnnotationFieldDescriptors(EntityTypeEnum.SUBJECT, null).size();
     }
     
     /**
@@ -156,7 +157,7 @@ public class DisplayableStudySummary {
      * @return number annotation columns.
      */
     public int getNumberImageSeriesAnnotationColumns() {
-        return study.getImageSeriesAnnotationCollection().size();
+        return study.getAllVisibleAnnotationFieldDescriptors(EntityTypeEnum.IMAGESERIES, null).size();
     }
     
     /**

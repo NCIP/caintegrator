@@ -483,7 +483,7 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     public Map<String, String> getAnnotationTypes() {
         Map<String, String> annotationTypes = new HashMap<String, String>();
         annotationTypes.put(EntityTypeEnum.SUBJECT.getValue(), "Subject");
-        if (getStudy().hasImageSeriesData()) {
+        if (getStudy().hasVisibleImageSeriesData()) {
             annotationTypes.put(EntityTypeEnum.IMAGESERIES.getValue(), "Image Series");
         }
         return annotationTypes;
