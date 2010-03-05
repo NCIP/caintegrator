@@ -85,185 +85,28 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
-/**
- * Contains the information about a particular annotation field prior to association to an 
- * <code>AnnotationDefinition</code>.
- */
-public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object
-implements Comparable<AnnotationFieldDescriptor> {
+import java.util.HashSet;
+import java.util.Set;
 
-    private static final long serialVersionUID = 1L;
-    private String name;
-    private AnnotationFieldType type = AnnotationFieldType.ANNOTATION;
-    private AnnotationDefinition definition;
-    private boolean shownInBrowse = true;
-    private Boolean hasValidationErrors = false;
-    private Boolean usePermissibleValues = false;
-    private AnnotationGroup annotationGroup;
-    private String validationErrorMessage;
-    private EntityTypeEnum annotationEntityType;
+import org.junit.Test;
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
+public class AnnotationFieldDescriptorTest {
+    @Test
+    public void testGet() {
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        AnnotationDefinition ad = new AnnotationDefinition();
+        afd.setDefinition(ad);
+        
+        // Test getHasPermissible
+        assertEquals("No", afd.getHasPermissibleValues());
+        ad.setDataType(AnnotationTypeEnum.STRING);
+        Set<Object> genders = new HashSet<Object>();
+        genders.add("Male");
+        ad.addPermissibleValues(genders);
+        assertEquals("Yes", afd.getHasPermissibleValues());
     }
 
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the type
-     */
-    public AnnotationFieldType getType() {
-        return type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(AnnotationFieldType type) {
-        this.type = type;
-    }
-
-    /**
-     * @return the definition
-     */
-    public AnnotationDefinition getDefinition() {
-        return definition;
-    }
-
-    /**
-     * @param definition the definition to set
-     */
-    public void setDefinition(AnnotationDefinition definition) {
-        this.definition = definition;
-    }
-
-    /**
-     * @return the shownInBrowse
-     */
-    public boolean isShownInBrowse() {
-        return shownInBrowse;
-    }
-
-    /**
-     * @param shownInBrowse the shownInBrowse to set
-     */
-    public void setShownInBrowse(boolean shownInBrowse) {
-        this.shownInBrowse = shownInBrowse;
-    }
-
-    /**
-     * @return the hasValidationErrors
-     */
-    public Boolean isHasValidationErrors() {
-        return hasValidationErrors;
-    }
-
-    /**
-     * @param hasValidationErrors the hasValidationErrors to set
-     */
-    public void setHasValidationErrors(Boolean hasValidationErrors) {
-        this.hasValidationErrors = hasValidationErrors;
-    }
-
-    /**
-     * @return the annotationGroup
-     */
-    public AnnotationGroup getAnnotationGroup() {
-        return annotationGroup;
-    }
-
-    /**
-     * @param annotationGroup the annotationGroup to set
-     */
-    public void setAnnotationGroup(AnnotationGroup annotationGroup) {
-        this.annotationGroup = annotationGroup;
-    }
-
-    /**
-     * @return the usePermissibleValues
-     */
-    public Boolean isUsePermissibleValues() {
-        return usePermissibleValues;
-    }
-
-    /**
-     * @param usePermissibleValues the usePermissibleValues to set
-     */
-    public void setUsePermissibleValues(Boolean usePermissibleValues) {
-        this.usePermissibleValues = usePermissibleValues;
-    }
-    
-    /**
-     * 
-     * @param newAnnotationGroup annotation group to switch to.
-     */
-    public void switchAnnotationGroup(AnnotationGroup newAnnotationGroup) {
-        removeFromAnnotationGroup();
-        if (newAnnotationGroup != null) {
-            newAnnotationGroup.getAnnotationFieldDescriptors().add(this);
-        }
-        annotationGroup = newAnnotationGroup;
-    }
-    /**
-     * Remove from existing annotation group.
-     */
-    public void removeFromAnnotationGroup() {
-        if (this.annotationGroup != null) {
-            annotationGroup.getAnnotationFieldDescriptors().remove(this);
-        }
-    }
-
-    /**
-     * @return the validationErrorMessage
-     */
-    public String getValidationErrorMessage() {
-        return validationErrorMessage;
-    }
-
-    /**
-     * @param validationErrorMessage the validationErrorMessage to set
-     */
-    public void setValidationErrorMessage(String validationErrorMessage) {
-        this.validationErrorMessage = validationErrorMessage;
-    }
-
-    /**
-     * @return the annotationEntityType
-     */
-    public EntityTypeEnum getAnnotationEntityType() {
-        return annotationEntityType;
-    }
-
-    /**
-     * @param annotationEntityType the annotationEntityType to set
-     */
-    public void setAnnotationEntityType(EntityTypeEnum annotationEntityType) {
-        this.annotationEntityType = annotationEntityType;
-    }
-    
-    /**
-     * @return has permissible values Yes/No
-     */
-    public String getHasPermissibleValues() {
-        return (definition.getPermissibleValueCollection().isEmpty()) ? "No" : "Yes";
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public int compareTo(AnnotationFieldDescriptor o) {
-        return getName().compareTo(o.getName());
-    }
 }

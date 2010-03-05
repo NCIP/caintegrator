@@ -144,6 +144,12 @@
     <definition name="studySummary" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/studySummary_tile.jsp" />
     </definition>
+    
+    <!-- View Data Dictionary -->
+    <definition name="viewDataDictionary" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/viewDataDictionary_tile.jsp" />
+        <put-attribute name="subTitle" value="View Data Dictionary" />
+    </definition>
 
     <definition name="editSampleMapping" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editSampleMapping_tile.jsp" />

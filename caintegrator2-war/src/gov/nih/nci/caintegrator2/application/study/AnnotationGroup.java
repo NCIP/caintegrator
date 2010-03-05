@@ -88,7 +88,10 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -163,6 +166,18 @@ public class AnnotationGroup extends AbstractCaIntegrator2Object implements Comp
             }
         }   
         return visibleSet;
+    }
+    
+    /**
+     * Gets all visible AnnotationFieldDescriptors that have AnnotationDefinitions
+     *   and belong to this group order by name.
+     * @return visible AFDs in the group, sorted by name.
+     */
+    public List<AnnotationFieldDescriptor> getSortedVisibleAnnotationFieldDescriptors() {
+        List<AnnotationFieldDescriptor> annotationFieldDescriptorList = new ArrayList<AnnotationFieldDescriptor>();
+        annotationFieldDescriptorList.addAll(getVisibleAnnotationFieldDescriptors());
+        Collections.sort(annotationFieldDescriptorList);
+        return annotationFieldDescriptorList;
     }
     
     /**
