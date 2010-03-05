@@ -36,7 +36,6 @@
                     Search <s:property value="currentStudy.shortTitleText"/></a>
                 </li>
                 <li><s:url id="createGeneListUrl" includeParams="none" action="manageGeneList" />
-                                <s:param name="selectedAction" value="%{'newGeneList'}" />
                     <a href="${createGeneListUrl}">Create New Gene List</a>
                 </li>
             </ul>

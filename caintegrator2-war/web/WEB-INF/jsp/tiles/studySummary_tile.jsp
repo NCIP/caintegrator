@@ -42,7 +42,10 @@
                 </b>           
             </td>
             <td />  
-            <td />
+            <td>
+                <s:url id="dataDictionaryUrl" includeParams="none" action="viewDataDictionary" />
+                <a href="${dataDictionaryUrl}">View Data Dictionary Summary</a>
+            </td>
         </tr>
     
         <tr>

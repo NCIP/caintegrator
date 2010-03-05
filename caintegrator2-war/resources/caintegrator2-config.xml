@@ -161,6 +161,14 @@
         </property>
     </bean>
     
+    <bean id="viewDataDictionaryAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.ViewDataDictionaryAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
+    
     <bean id="addStudyLogoAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.AddStudyLogoAction">
