@@ -199,6 +199,10 @@
         <action name="viewExternalLinks" class="viewExternalLinksAction">
             <result type="tiles">viewExternalLinks</result>
         </action>
+        
+        <action name="viewDataDictionary" class="viewDataDictionaryAction">
+            <result type="tiles">viewDataDictionary</result>
+        </action>
        
         <action name="editClinicalSource" class="editClinicalSourceAction">
             <result type="tiles">editClinicalFile</result>
