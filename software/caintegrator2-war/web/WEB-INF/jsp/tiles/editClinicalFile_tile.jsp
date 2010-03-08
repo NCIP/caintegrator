@@ -72,7 +72,7 @@
                                 <s:elseif test="%{fieldDescriptor != null && fieldDescriptor.definition != null}">
                                     <s:property value="fieldDescriptor.definition.displayName"/> 
                                 </s:elseif>
-                                <s:url id="editClinicalFieldDescriptor" action="editClinicalFieldDescriptor">
+                                <s:url id="editClinicalFieldDescriptor" action="editClinicalFieldDescriptor" includeParams="none">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="sourceId" value="clinicalSource.id" />
                                     <s:param name="fieldDescriptor.id" value="fieldDescriptor.id" />
