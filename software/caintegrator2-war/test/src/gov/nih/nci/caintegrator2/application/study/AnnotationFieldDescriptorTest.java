@@ -107,6 +107,11 @@ public class AnnotationFieldDescriptorTest {
         genders.add("Male");
         ad.addPermissibleValues(genders);
         assertEquals("Yes", afd.getHasPermissibleValues());
+        
+        // Test Display Name
+        assertEquals("", afd.getDisplayName());
+        ad.setDisplayName("Gender");
+        assertEquals("Gender", afd.getDisplayName());
     }
 
 }
