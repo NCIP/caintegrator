@@ -119,7 +119,7 @@
 	                                <s:elseif test="%{fieldDescriptor.definition != null}">
 	                                    <s:property value="fieldDescriptor.definition.displayName"/> 
 	                                </s:elseif>
-	                                <s:url id="editGroupFieldDescriptor" action="editGroupFieldDescriptor">
+	                                <s:url id="editGroupFieldDescriptor" action="editGroupFieldDescriptor" includeParams="none">
 	                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
 	                                    <s:param name="groupId" value="annotationGroup.id" />
 	                                    <s:param name="fieldDescriptor.id" value="fieldDescriptor.id" />
