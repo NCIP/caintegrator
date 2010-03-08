@@ -167,7 +167,7 @@ public class TestDataFiles {
     // Files for public DC Lung Study
     public static final String DC_LUNG_PUBLIC_CLINICAL_FILE_PATH = "/dc_lung_clinical_data_public.csv";
     public static final String DC_LUNG_PUBLIC_SAMPLE_MAPPING_FILE_PATH = "/dc_lung_sample_mapping_full.csv";
-    public static final String DC_LUNG_PUBLIC_CONTROL_SAMPLE_SET_NAME = "/DC Lung Control_Sample Set";
+    public static final String DC_LUNG_PUBLIC_CONTROL_SAMPLE_SET_NAME = "DC Lung Control_Sample Set";
     public static final String DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE_PATH = "/dc_lung_control_samples.csv";
     public static final String DC_LUNG_PUBLIC_ANNOTATION_GROUP_FILE_PATH = "/dc_lung_public_annotation_group.csv";
 
