@@ -56,5 +56,14 @@ public class SubjectAnnotation extends AbstractCaIntegrator2Object {
     public void setTimepoint(Timepoint timepoint) {
         this.timepoint = timepoint;
     }
+    
+    /**
+     * Removes annotation value from definition.
+     */
+    public void removeValueFromDefinition() {
+        if (annotationValue != null) {
+            annotationValue.removeValueFromDefinition();
+        }
+    }
 
 }

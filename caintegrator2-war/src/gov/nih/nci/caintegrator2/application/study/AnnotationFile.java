@@ -457,6 +457,7 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         StringAnnotationValue annotationValue = new StringAnnotationValue();
         annotationValue.setStringValue(value);
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+        annotationDescriptor.getDefinition().getAnnotationValueCollection().add(annotationValue);
         return annotationValue;
     }
 
@@ -470,6 +471,7 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
                     "The two formats allowed are MM-dd-yyyy and MM/dd/yyyy"));
         }
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+        annotationDescriptor.getDefinition().getAnnotationValueCollection().add(annotationValue);
         return annotationValue;
     }
     
@@ -490,6 +492,7 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
             throwValidationException(createFormatErrorMsg(annotationDescriptor, value, null));
         }
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+        annotationDescriptor.getDefinition().getAnnotationValueCollection().add(annotationValue);
         return annotationValue;
     }
 
