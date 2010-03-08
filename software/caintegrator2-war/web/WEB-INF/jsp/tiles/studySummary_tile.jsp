@@ -49,7 +49,7 @@
         </tr>
     
         <tr>
-            <th colspan="4">Clinical Data</th>
+            <th colspan="4">Subject Annotation Data</th>
         </tr>
         <tr>
             <td align="right">Number of Subjects:</td>
