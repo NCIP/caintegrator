@@ -66,6 +66,16 @@ public abstract class AbstractAnnotationValue extends AbstractCaIntegrator2Objec
             image.getAnnotationCollection().add(this);
         }
     }
+    
+    /**
+     * Removes value from definition.
+     */
+    public void removeValueFromDefinition() {
+        if (annotationDefinition != null) {
+            annotationDefinition.getAnnotationValueCollection().remove(this);
+        }
+    }
+    
     /**
      * @return the subjectAnnotation
      */
