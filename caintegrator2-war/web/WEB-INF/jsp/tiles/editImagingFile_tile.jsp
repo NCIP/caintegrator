@@ -95,7 +95,7 @@
                                 <s:elseif test="%{fieldDescriptor != null && fieldDescriptor.definition != null}">
                                     <s:property value="fieldDescriptor.definition.displayName"/> 
                                 </s:elseif>
-                                <s:url id="editImagingFieldDescriptor" action="editImagingFieldDescriptor">
+                                <s:url id="editImagingFieldDescriptor" action="editImagingFieldDescriptor" includeParams="none">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="sourceId" value="imageSourceConfiguration.id" />
                                     <s:param name="fieldDescriptor.id" value="fieldDescriptor.id" />

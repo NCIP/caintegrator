@@ -242,7 +242,10 @@ public class ResultConfiguration {
      * @param index the index
      */
     public void setColumnIndex(String columnName, int index) {
-        getColumn(columnName).setColumnIndex(index - 1);
+        ResultColumn column = getColumn(columnName);
+        if (column != null) {
+            column.setColumnIndex(index - 1);
+        }
     }
 
     private ResultColumn getColumn(String columnName) {
