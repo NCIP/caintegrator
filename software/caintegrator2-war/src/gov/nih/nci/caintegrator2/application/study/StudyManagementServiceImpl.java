@@ -334,15 +334,16 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         for (AbstractClinicalSourceConfiguration configuration 
                 : studyConfiguration.getClinicalConfigurationCollection()) {
             configuration.reLoadAnnontation();
-        }
+        }        
         getDao().removeObjects(studyConfiguration.removeObsoleteSubjectAssignment());
         save(studyConfiguration);
     }
-    
+
     private void deleteClinicalAnnotation(StudyConfiguration studyConfiguration) {
         Study study = studyConfiguration.getStudy();
         for (StudySubjectAssignment studySubjectAssignment : study.getAssignmentCollection()) {
             for (SubjectAnnotation subjectAnnotation : studySubjectAssignment.getSubjectAnnotationCollection()) {
+                subjectAnnotation.removeValueFromDefinition();
                 getDao().delete(subjectAnnotation);
             }
             studySubjectAssignment.getSubjectAnnotationCollection().clear();
