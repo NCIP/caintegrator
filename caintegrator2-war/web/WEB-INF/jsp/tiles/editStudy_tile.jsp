@@ -249,7 +249,7 @@
                 
         <table class="form_wrapper_table">
             <tbody><tr>
-                <th class="title">Clinical Data Sources</th>
+                <th class="title">Subject Annotation Data Sources</th>
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
@@ -322,21 +322,21 @@
                                           <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                           <s:param name="clinicalSource.id" value="id" />
                                        </s:url> 
-                                       <s:a href="%{reLoadClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="reload">Reload All Clinical Sources</span></span></s:a>
+                                       <s:a href="%{reLoadClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="reload">Reload All Subject Annotation Sources</span></span></s:a>
                                     </s:if>
                                     <s:else>
                                        <s:url id="loadClinicalSource" action="loadClinicalSource" includeParams="none">
                                           <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                           <s:param name="clinicalSource.id" value="id" />
                                        </s:url> 
-                                       <s:a href="%{loadClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="load">Load Clinical Source</span></span></s:a>
+                                       <s:a href="%{loadClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="load">Load Subject Annotation Source</span></span></s:a>
                                     </s:else>
                                 </s:if>
                                 <s:url id="deleteClinicalSource" action="deleteClinicalSource" includeParams="none">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="clinicalSource.id" value="id" />
                                 </s:url> 
-                                <s:a href="%{deleteClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;" onclick="return confirm('This clinical source file will be permanently deleted.')"><span class="btn_img"><span class="delete">Delete</span></span></s:a>                                
+                                <s:a href="%{deleteClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;" onclick="return confirm('This subject annotation source file will be permanently deleted.')"><span class="btn_img"><span class="delete">Delete</span></span></s:a>                                
                             </td>
                         </tr>
                         </s:iterator>
