@@ -261,9 +261,17 @@ implements Comparable<AnnotationFieldDescriptor> {
     }
     
     /**
+     * @return the display name from Annotation Definition
+     */
+    public String getDisplayName() {
+        return (definition.getDisplayName() == null) ? "" : definition.getDisplayName();
+    }
+    
+    /**
+     * Compare based on the Display Name.
      * {@inheritDoc}
      */
     public int compareTo(AnnotationFieldDescriptor o) {
-        return getName().compareTo(o.getName());
+        return getDisplayName().compareTo(o.getDisplayName());
     }
 }
