@@ -1,0 +1,557 @@
+BCRPATIENTBARCODE	DAYSTOPROCEDURE	PROCEDURETYPE	
+TCGA-01-0628	null	Surgical Resection	
+TCGA-01-0630	null	Surgical Resection	
+TCGA-01-0631	null	Surgical Resection	
+TCGA-01-0633	null	Surgical Resection	
+TCGA-01-0636	null	Surgical Resection	
+TCGA-01-0637	null	Surgical Resection	
+TCGA-01-0639	null	Surgical Resection	
+TCGA-01-0642	null	Surgical Resection	
+TCGA-04-1331	0	Surgical Resection	
+TCGA-04-1332	0	Surgical Resection	
+TCGA-04-1335	0	Surgical Resection	
+TCGA-04-1336	0	Surgical Resection	
+TCGA-04-1337	-1	Surgical Resection	
+TCGA-04-1338	0	Surgical Resection	
+TCGA-04-1341	0	Surgical Resection	
+TCGA-04-1342	0	Surgical Resection	
+TCGA-04-1343	0	Surgical Resection	
+TCGA-04-1346	0	Surgical Resection	
+TCGA-04-1347	0	Surgical Resection	
+TCGA-04-1348	0	Surgical Resection	
+TCGA-04-1348	1461	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-04-1349	-4	Surgical Resection	
+TCGA-04-1350	0	Surgical Resection	
+TCGA-04-1351	0	Surgical Resection	
+TCGA-04-1356	0	Surgical Resection	
+TCGA-04-1357	0	Surgical Resection	
+TCGA-04-1360	0	Surgical Resection	
+TCGA-04-1361	0	Surgical Resection	
+TCGA-04-1362	0	Surgical Resection	
+TCGA-04-1364	-1	Surgical Resection	
+TCGA-04-1365	0	Surgical Resection	
+TCGA-04-1367	0	Surgical Resection	
+TCGA-04-1371	0	Surgical Resection	
+TCGA-04-1514	0	Surgical Resection	
+TCGA-04-1514	1284	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-04-1517	0	Surgical Resection	
+TCGA-04-1519	-7	Surgical Resection	
+TCGA-04-1525	0	Surgical Resection	
+TCGA-04-1530	0	Surgical Resection	
+TCGA-04-1530	350	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-04-1536	0	Surgical Resection	
+TCGA-04-1542	0	Surgical Resection	
+TCGA-04-1638	0	Surgical Resection	
+TCGA-04-1646	0	Surgical Resection	
+TCGA-04-1648	0	Surgical Resection	
+TCGA-04-1649	0	Surgical Resection	
+TCGA-04-1651	2	Surgical Resection	
+TCGA-04-1652	-3	Surgical Resection	
+TCGA-04-1654	22	Surgical Resection	
+TCGA-04-1655	0	Surgical Resection	
+TCGA-09-0364	0	Surgical Resection	
+TCGA-09-0365	10	Surgical Resection	
+TCGA-09-0366	0	Surgical Resection	
+TCGA-09-0366	189	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-09-0367	0	Surgical Resection	
+TCGA-09-0367	116	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-09-0369	0	Surgical Resection	
+TCGA-09-0369	325	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-09-1659	0	Surgical Resection	
+TCGA-09-1661	28	Surgical Resection	
+TCGA-09-1661	199	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-09-1662	0	Surgical Resection	
+TCGA-09-1662	1081	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-09-1662	1081	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-09-1664	0	Surgical Resection	
+TCGA-09-1665	0	Surgical Resection	
+TCGA-09-1666	0	Surgical Resection	
+TCGA-09-1666	567	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-09-1667	0	Surgical Resection	
+TCGA-09-1667	511	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-09-1668	0	Surgical Resection	
+TCGA-09-1669	0	Surgical Resection	
+TCGA-09-1670	38	Surgical Resection	
+TCGA-09-1672	0	Surgical Resection	
+TCGA-09-1673	0	Surgical Resection	
+TCGA-09-1674	0	Surgical Resection	
+TCGA-09-1675	0	Surgical Resection	
+TCGA-09-2053	0	Surgical Resection	
+TCGA-09-2054	0	Surgical Resection	
+TCGA-09-2056	0	Surgical Resection	
+TCGA-10-0925	null	Surgical Resection	
+TCGA-10-0926	0	Surgical Resection	
+TCGA-10-0927	0	Surgical Resection	
+TCGA-10-0928	0	Surgical Resection	
+TCGA-10-0930	0	Surgical Resection	
+TCGA-10-0931	0	Surgical Resection	
+TCGA-10-0933	0	Surgical Resection	
+TCGA-10-0934	0	Surgical Resection	
+TCGA-10-0934	74	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-10-0935	0	Surgical Resection	
+TCGA-10-0936	0	Surgical Resection	
+TCGA-10-0937	0	Surgical Resection	
+TCGA-10-0938	0	Surgical Resection	
+TCGA-10-0938	362	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-13-0714	3	Surgical Resection	
+TCGA-13-0717	0	Surgical Resection	
+TCGA-13-0720	0	Surgical Resection	
+TCGA-13-0723	0	Surgical Resection	
+TCGA-13-0724	35	Surgical Resection	
+TCGA-13-0725	8	Surgical Resection	
+TCGA-13-0726	0	Surgical Resection	
+TCGA-13-0727	0	Surgical Resection	
+TCGA-13-0730	28	Surgical Resection	
+TCGA-13-0751	0	Surgical Resection	
+TCGA-13-0755	0	Surgical Resection	
+TCGA-13-0757	0	Surgical Resection	
+TCGA-13-0758	0	Surgical Resection	
+TCGA-13-0760	43	Surgical Resection	
+TCGA-13-0761	0	Surgical Resection	
+TCGA-13-0762	0	Surgical Resection	
+TCGA-13-0764	34	Surgical Resection	
+TCGA-13-0765	0	Surgical Resection	
+TCGA-13-0766	0	Surgical Resection	
+TCGA-13-0768	0	Surgical Resection	
+TCGA-13-0791	0	Surgical Resection	
+TCGA-13-0792	0	Surgical Resection	
+TCGA-13-0793	0	Surgical Resection	
+TCGA-13-0794	0	Surgical Resection	
+TCGA-13-0795	29	Surgical Resection	
+TCGA-13-0797	0	Surgical Resection	
+TCGA-13-0799	0	Surgical Resection	
+TCGA-13-0800	0	Surgical Resection	
+TCGA-13-0801	0	Surgical Resection	
+TCGA-13-0802	0	Surgical Resection	
+TCGA-13-0803	0	Surgical Resection	
+TCGA-13-0804	0	Surgical Resection	
+TCGA-13-0805	0	Surgical Resection	
+TCGA-13-0807	0	Surgical Resection	
+TCGA-13-0883	0	Surgical Resection	
+TCGA-13-0884	48	Surgical Resection	
+TCGA-13-0885	0	Surgical Resection	
+TCGA-13-0886	0	Surgical Resection	
+TCGA-13-0887	0	Surgical Resection	
+TCGA-13-0888	0	Surgical Resection	
+TCGA-13-0889	0	Surgical Resection	
+TCGA-13-0890	0	Surgical Resection	
+TCGA-13-0891	30	Surgical Resection	
+TCGA-13-0893	59	Surgical Resection	
+TCGA-13-0894	0	Surgical Resection	
+TCGA-13-0897	0	Surgical Resection	
+TCGA-13-0897	567	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-13-0899	0	Surgical Resection	
+TCGA-13-0900	10	Surgical Resection	
+TCGA-13-0901	0	Surgical Resection	
+TCGA-13-0903	0	Surgical Resection	
+TCGA-13-0904	31	Surgical Resection	
+TCGA-13-0905	0	Surgical Resection	
+TCGA-13-0906	0	Surgical Resection	
+TCGA-13-0908	0	Surgical Resection	
+TCGA-13-0910	29	Surgical Resection	
+TCGA-13-0911	6	Surgical Resection	
+TCGA-13-0912	0	Surgical Resection	
+TCGA-13-0913	0	Surgical Resection	
+TCGA-13-0913	912	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-13-0916	0	Surgical Resection	
+TCGA-13-0919	0	Surgical Resection	
+TCGA-13-0920	0	Surgical Resection	
+TCGA-13-0921	0	Surgical Resection	
+TCGA-13-0923	0	Surgical Resection	
+TCGA-13-0924	12	Surgical Resection	
+TCGA-13-1403	0	Surgical Resection	
+TCGA-13-1404	0	Surgical Resection	
+TCGA-13-1405	0	Surgical Resection	
+TCGA-13-1407	0	Surgical Resection	
+TCGA-13-1408	0	Surgical Resection	
+TCGA-13-1409	39	Surgical Resection	
+TCGA-13-1410	0	Surgical Resection	
+TCGA-13-1411	0	Surgical Resection	
+TCGA-13-1412	0	Surgical Resection	
+TCGA-13-1477	24	Surgical Resection	
+TCGA-13-1481	0	Surgical Resection	
+TCGA-13-1482	26	Surgical Resection	
+TCGA-13-1483	25	Surgical Resection	
+TCGA-13-1484	57	Surgical Resection	
+TCGA-13-1485	10	Surgical Resection	
+TCGA-13-1487	0	Surgical Resection	
+TCGA-13-1488	0	Surgical Resection	
+TCGA-13-1489	0	Surgical Resection	
+TCGA-13-1489	833	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-13-1491	3	Surgical Resection	
+TCGA-13-1491	1298	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-13-1492	14	Surgical Resection	
+TCGA-13-1494	45	Surgical Resection	
+TCGA-13-1494	767	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-13-1495	0	Surgical Resection	
+TCGA-13-1495	984	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-13-1495	984	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-13-1496	25	Surgical Resection	
+TCGA-13-1497	0	Surgical Resection	
+TCGA-13-1497	861	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-13-1498	0	Surgical Resection	
+TCGA-13-1499	30	Surgical Resection	
+TCGA-13-1499	594	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-13-1500	0	Surgical Resection	
+TCGA-13-1501	36	Surgical Resection	
+TCGA-13-1504	0	Surgical Resection	
+TCGA-13-1505	0	Surgical Resection	
+TCGA-13-1506	0	Surgical Resection	
+TCGA-13-1507	0	Surgical Resection	
+TCGA-13-1509	2	Surgical Resection	
+TCGA-13-1510	0	Surgical Resection	
+TCGA-13-1511	4	Surgical Resection	
+TCGA-13-1512	23	Surgical Resection	
+TCGA-20-0987	51	Surgical Resection	
+TCGA-20-0990	55	Surgical Resection	
+TCGA-20-0991	27	Surgical Resection	
+TCGA-20-0996	145	Surgical Resection	
+TCGA-20-1682	0	Surgical Resection	
+TCGA-20-1683	0	Surgical Resection	
+TCGA-20-1684	0	Surgical Resection	
+TCGA-20-1685	0	Surgical Resection	
+TCGA-20-1686	0	Surgical Resection	
+TCGA-20-1687	1	Surgical Resection	
+TCGA-23-1021	0	Surgical Resection	
+TCGA-23-1021	1181	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-23-1022	0	Surgical Resection	
+TCGA-23-1023	0	Surgical Resection	
+TCGA-23-1023	1209	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-23-1024	0	Surgical Resection	
+TCGA-23-1026	0	Surgical Resection	
+TCGA-23-1026	816	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-23-1027	0	Surgical Resection	
+TCGA-23-1028	0	Surgical Resection	
+TCGA-23-1028	133	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-23-1029	0	Surgical Resection	
+TCGA-23-1030	0	Surgical Resection	
+TCGA-23-1030	543	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-23-1031	0	Surgical Resection	
+TCGA-23-1032	0	Surgical Resection	
+TCGA-23-1107	3653	Surgical Resection	
+TCGA-23-1109	0	Surgical Resection	
+TCGA-23-1109	987	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-23-1110	0	Surgical Resection	
+TCGA-23-1111	0	Surgical Resection	
+TCGA-23-1113	0	Surgical Resection	
+TCGA-23-1114	0	Surgical Resection	
+TCGA-23-1114	634	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-23-1116	0	Surgical Resection	
+TCGA-23-1117	0	Surgical Resection	
+TCGA-23-1117	438	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-23-1118	0	Surgical Resection	
+TCGA-23-1119	0	Surgical Resection	
+TCGA-23-1119	3378	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-23-1120	0	Surgical Resection	
+TCGA-23-1121	0	Surgical Resection	
+TCGA-23-1122	0	Surgical Resection	
+TCGA-23-1122	470	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-23-1123	0	Surgical Resection	
+TCGA-23-1124	0	Surgical Resection	
+TCGA-23-1124	644	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-23-1809	0	Surgical Resection	
+TCGA-23-2072	0	Surgical Resection	
+TCGA-23-2077	0	Surgical Resection	
+TCGA-23-2077	1345	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-23-2078	0	Surgical Resection	
+TCGA-23-2079	0	Surgical Resection	
+TCGA-23-2079	2488	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-23-2081	0	Surgical Resection	
+TCGA-23-2081	250	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-23-2084	0	Surgical Resection	
+TCGA-23-2084	627	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-24-0966	-6	Surgical Resection	
+TCGA-24-0968	-6	Surgical Resection	
+TCGA-24-0970	0	Surgical Resection	
+TCGA-24-0975	0	Surgical Resection	
+TCGA-24-0979	0	Surgical Resection	
+TCGA-24-0980	0	Surgical Resection	
+TCGA-24-0981	0	Surgical Resection	
+TCGA-24-0982	0	Surgical Resection	
+TCGA-24-1103	0	Surgical Resection	
+TCGA-24-1104	-6	Surgical Resection	
+TCGA-24-1105	0	Surgical Resection	
+TCGA-24-1413	0	Surgical Resection	
+TCGA-24-1416	0	Surgical Resection	
+TCGA-24-1417	0	Surgical Resection	
+TCGA-24-1418	1	Surgical Resection	
+TCGA-24-1419	0	Surgical Resection	
+TCGA-24-1422	0	Surgical Resection	
+TCGA-24-1423	0	Surgical Resection	
+TCGA-24-1424	0	Surgical Resection	
+TCGA-24-1425	0	Surgical Resection	
+TCGA-24-1426	0	Surgical Resection	
+TCGA-24-1427	0	Surgical Resection	
+TCGA-24-1428	0	Surgical Resection	
+TCGA-24-1430	0	Surgical Resection	
+TCGA-24-1431	0	Surgical Resection	
+TCGA-24-1434	0	Surgical Resection	
+TCGA-24-1435	0	Surgical Resection	
+TCGA-24-1436	0	Surgical Resection	
+TCGA-24-1463	0	Surgical Resection	
+TCGA-24-1464	0	Surgical Resection	
+TCGA-24-1466	0	Surgical Resection	
+TCGA-24-1467	0	Surgical Resection	
+TCGA-24-1467	1252	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-24-1469	0	Surgical Resection	
+TCGA-24-1470	0	Surgical Resection	
+TCGA-24-1471	0	Surgical Resection	
+TCGA-24-1474	0	Surgical Resection	
+TCGA-24-1544	0	Surgical Resection	
+TCGA-24-1545	0	Surgical Resection	
+TCGA-24-1546	0	Surgical Resection	
+TCGA-24-1548	0	Surgical Resection	
+TCGA-24-1549	0	Surgical Resection	
+TCGA-24-1549	1154	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-24-1550	0	Surgical Resection	
+TCGA-24-1550	1121	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-24-1551	0	Surgical Resection	
+TCGA-24-1552	0	Surgical Resection	
+TCGA-24-1553	0	Surgical Resection	
+TCGA-24-1555	0	Surgical Resection	
+TCGA-24-1556	0	Surgical Resection	
+TCGA-24-1556	762	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-24-1557	0	Surgical Resection	
+TCGA-24-1558	0	Surgical Resection	
+TCGA-24-1560	0	Surgical Resection	
+TCGA-24-1562	0	Surgical Resection	
+TCGA-24-1563	0	Surgical Resection	
+TCGA-24-1564	0	Surgical Resection	
+TCGA-24-1565	0	Surgical Resection	
+TCGA-24-1567	0	Surgical Resection	
+TCGA-24-1603	0	Surgical Resection	
+TCGA-24-1604	0	Surgical Resection	
+TCGA-24-1614	0	Surgical Resection	
+TCGA-24-1616	0	Surgical Resection	
+TCGA-24-1842	0	Surgical Resection	
+TCGA-24-1843	0	Surgical Resection	
+TCGA-24-1844	0	Surgical Resection	
+TCGA-24-1845	0	Surgical Resection	
+TCGA-24-1846	0	Surgical Resection	
+TCGA-24-1847	15	Surgical Resection	
+TCGA-24-1849	0	Surgical Resection	
+TCGA-24-1850	0	Surgical Resection	
+TCGA-24-1920	null	Surgical Resection	
+TCGA-24-1923	null	Surgical Resection	
+TCGA-24-1924	null	Surgical Resection	
+TCGA-24-1927	null	Surgical Resection	
+TCGA-24-1928	null	Surgical Resection	
+TCGA-24-1930	null	Surgical Resection	
+TCGA-24-2019	null	Surgical Resection	
+TCGA-24-2020	null	Surgical Resection	
+TCGA-24-2023	null	Surgical Resection	
+TCGA-24-2024	null	Surgical Resection	
+TCGA-24-2026	null	Surgical Resection	
+TCGA-24-2027	null	Surgical Resection	
+TCGA-24-2029	null	Surgical Resection	
+TCGA-24-2030	null	Surgical Resection	
+TCGA-24-2033	null	Surgical Resection	
+TCGA-24-2035	null	Surgical Resection	
+TCGA-24-2036	null	Surgical Resection	
+TCGA-24-2038	null	Surgical Resection	
+TCGA-24-2254	null	Surgical Resection	
+TCGA-24-2260	null	Surgical Resection	
+TCGA-24-2261	null	Surgical Resection	
+TCGA-25-1312	0	Surgical Resection	
+TCGA-25-1313	0	Surgical Resection	
+TCGA-25-1314	0	Surgical Resection	
+TCGA-25-1314	273	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-25-1315	0	Surgical Resection	
+TCGA-25-1315	153	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-25-1316	0	Surgical Resection	
+TCGA-25-1317	0	Surgical Resection	
+TCGA-25-1318	0	Surgical Resection	
+TCGA-25-1318	181	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-25-1319	0	Surgical Resection	
+TCGA-25-1320	0	Surgical Resection	
+TCGA-25-1321	0	Surgical Resection	
+TCGA-25-1322	0	Surgical Resection	
+TCGA-25-1323	0	Surgical Resection	
+TCGA-25-1324	0	Surgical Resection	
+TCGA-25-1325	0	Surgical Resection	
+TCGA-25-1326	0	Surgical Resection	
+TCGA-25-1328	0	Surgical Resection	
+TCGA-25-1328	244	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-25-1329	0	Surgical Resection	
+TCGA-25-1623	0	Surgical Resection	
+TCGA-25-1625	0	Surgical Resection	
+TCGA-25-1625	545	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-25-1626	0	Surgical Resection	
+TCGA-25-1627	0	Surgical Resection	
+TCGA-25-1628	0	Surgical Resection	
+TCGA-25-1628	482	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-25-1630	0	Surgical Resection	
+TCGA-25-1631	0	Surgical Resection	
+TCGA-25-1632	0	Surgical Resection	
+TCGA-25-1633	0	Surgical Resection	
+TCGA-25-1634	0	Surgical Resection	
+TCGA-25-1635	0	Surgical Resection	
+TCGA-25-1870	0	Surgical Resection	
+TCGA-25-1870	242	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-25-1871	0	Surgical Resection	
+TCGA-25-1871	230	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-25-1877	0	Surgical Resection	
+TCGA-25-1878	0	Surgical Resection	
+TCGA-29-1688	0	Surgical Resection	
+TCGA-29-1690	0	Surgical Resection	
+TCGA-29-1691	0	Surgical Resection	
+TCGA-29-1693	0	Surgical Resection	
+TCGA-29-1694	0	Surgical Resection	
+TCGA-29-1695	0	Surgical Resection	
+TCGA-29-1696	0	Surgical Resection	
+TCGA-29-1697	0	Surgical Resection	
+TCGA-29-1698	0	Surgical Resection	
+TCGA-29-1699	0	Surgical Resection	
+TCGA-29-1701	0	Surgical Resection	
+TCGA-29-1702	0	Surgical Resection	
+TCGA-29-1703	0	Surgical Resection	
+TCGA-29-1705	0	Surgical Resection	
+TCGA-29-1707	0	Surgical Resection	
+TCGA-29-1710	0	Surgical Resection	
+TCGA-29-1711	0	Surgical Resection	
+TCGA-29-1761	0	Surgical Resection	
+TCGA-29-1762	0	Surgical Resection	
+TCGA-29-1763	0	Surgical Resection	
+TCGA-29-1764	0	Surgical Resection	
+TCGA-29-1766	0	Surgical Resection	
+TCGA-29-1768	0	Surgical Resection	
+TCGA-29-1769	0	Surgical Resection	
+TCGA-29-1770	0	Surgical Resection	
+TCGA-29-1770	432	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-29-1771	0	Surgical Resection	
+TCGA-29-1774	0	Surgical Resection	
+TCGA-29-1775	0	Surgical Resection	
+TCGA-29-1776	0	Surgical Resection	
+TCGA-29-1777	0	Surgical Resection	
+TCGA-29-1778	0	Surgical Resection	
+TCGA-29-1781	0	Surgical Resection	
+TCGA-29-1783	0	Surgical Resection	
+TCGA-29-1784	0	Surgical Resection	
+TCGA-29-1785	0	Surgical Resection	
+TCGA-30-1714	0	Surgical Resection	
+TCGA-30-1718	0	Surgical Resection	
+TCGA-30-1853	0	Surgical Resection	
+TCGA-30-1853	654	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-30-1855	0	Surgical Resection	
+TCGA-30-1856	0	Surgical Resection	
+TCGA-30-1856	223	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-30-1857	4	Surgical Resection	
+TCGA-30-1859	0	Surgical Resection	
+TCGA-30-1859	210	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-30-1860	0	Surgical Resection	
+TCGA-30-1860	974	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-30-1861	0	Surgical Resection	
+TCGA-30-1862	0	Surgical Resection	
+TCGA-30-1866	0	Surgical Resection	
+TCGA-30-1866	284	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-30-1867	0	Surgical Resection	
+TCGA-30-1880	0	Surgical Resection	
+TCGA-30-1887	0	Surgical Resection	
+TCGA-30-1887	223	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-30-1891	0	Surgical Resection	
+TCGA-30-1891	536	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-30-1892	0	Surgical Resection	
+TCGA-31-1944	-13	Surgical Resection	
+TCGA-31-1944	701	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-31-1946	-12	Surgical Resection	
+TCGA-31-1946	null	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-31-1950	-9	Surgical Resection	
+TCGA-31-1951	null	Surgical Resection	
+TCGA-31-1953	-11	Surgical Resection	
+TCGA-31-1955	0	Surgical Resection	
+TCGA-31-1956	0	Surgical Resection	
+TCGA-31-1956	118	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-31-1959	-10	Surgical Resection	
+TCGA-36-1568	0	Surgical Resection	
+TCGA-36-1569	13	Surgical Resection	
+TCGA-36-1570	0	Surgical Resection	
+TCGA-36-1571	0	Surgical Resection	
+TCGA-36-1574	0	Surgical Resection	
+TCGA-36-1575	0	Surgical Resection	
+TCGA-36-1576	0	Surgical Resection	
+TCGA-36-1577	0	Surgical Resection	
+TCGA-36-1578	0	Surgical Resection	
+TCGA-36-1580	0	Surgical Resection	
+TCGA-36-1581	0	Surgical Resection	
+TCGA-57-1582	0	Surgical Resection	
+TCGA-57-1583	0	Surgical Resection	
+TCGA-57-1584	0	Surgical Resection	
+TCGA-57-1584	532	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-57-1585	20	Surgical Resection	
+TCGA-57-1586	21	Surgical Resection	
+TCGA-57-1992	0	Surgical Resection	
+TCGA-57-1993	null	Surgical Resection	
+TCGA-57-1994	null	Surgical Resection	
+TCGA-61-1722	-2	Surgical Resection	
+TCGA-61-1724	-2	Surgical Resection	
+TCGA-61-1724	186	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-61-1725	-4	Surgical Resection	
+TCGA-61-1727	-3	Surgical Resection	
+TCGA-61-1728	-3	Surgical Resection	
+TCGA-61-1728	533	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-61-1730	-6	Surgical Resection	
+TCGA-61-1733	-4	Surgical Resection	
+TCGA-61-1733	174	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-61-1734	-4	Surgical Resection	
+TCGA-61-1736	-4	Surgical Resection	
+TCGA-61-1736	812	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-61-1737	null	Surgical Resection	
+TCGA-61-1738	-7	Surgical Resection	
+TCGA-61-1738	907	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-61-1740	-6	Surgical Resection	
+TCGA-61-1741	-3	Surgical Resection	
+TCGA-61-1743	-2	Surgical Resection	
+TCGA-61-1743	829	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-61-1895	-4	Surgical Resection	
+TCGA-61-1899	-9	Surgical Resection	
+TCGA-61-1900	-1	Surgical Resection	
+TCGA-61-1901	0	Surgical Resection	
+TCGA-61-1903	-6	Surgical Resection	
+TCGA-61-1904	-4	Surgical Resection	
+TCGA-61-1906	-6	Surgical Resection	
+TCGA-61-1907	-5	Surgical Resection	
+TCGA-61-1910	-4	Surgical Resection	
+TCGA-61-1911	-8	Surgical Resection	
+TCGA-61-1911	854	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-61-1913	-9	Surgical Resection	
+TCGA-61-1914	-3	Surgical Resection	
+TCGA-61-1914	1701	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-61-1915	-5	Surgical Resection	
+TCGA-61-1917	-3	Surgical Resection	
+TCGA-61-1918	-41	Surgical Resection	
+TCGA-61-1919	-3	Surgical Resection	
+TCGA-61-1919	438	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-61-1995	-6	Surgical Resection	
+TCGA-61-1998	-3	Surgical Resection	
+TCGA-61-2000	-6	Surgical Resection	
+TCGA-61-2000	381	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-61-2002	-5	Surgical Resection	
+TCGA-61-2003	5	Surgical Resection	
+TCGA-61-2008	-5	Surgical Resection	
+TCGA-61-2008	827	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-61-2009	-4	Surgical Resection	
+TCGA-61-2009	819	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-61-2012	-2	Surgical Resection	
+TCGA-61-2016	-2	Surgical Resection	
+TCGA-61-2017	-4	Surgical Resection	
+TCGA-61-2017	1033	Secondary Surgery for tumor recurrence/progression: Locoregional procedure	
+TCGA-61-2018	-3	Surgical Resection	
+TCGA-61-2087	-6	Surgical Resection	
+TCGA-61-2088	-2	Surgical Resection	
+TCGA-61-2092	-3	Surgical Resection	
+TCGA-61-2094	-4	Surgical Resection	
+TCGA-61-2095	-2	Surgical Resection	
+TCGA-61-2095	452	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-61-2096	-6	Surgical Resection	
+TCGA-61-2097	-7	Surgical Resection	
+TCGA-61-2098	-7	Surgical Resection	
+TCGA-61-2101	-3	Surgical Resection	
+TCGA-61-2102	-3	Surgical Resection	
+TCGA-61-2104	-4	Surgical Resection	
+TCGA-61-2104	1680	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-61-2109	-6	Surgical Resection	
+TCGA-61-2110	-4	Surgical Resection	
+TCGA-61-2110	213	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-61-2111	null	Surgical Resection	
+TCGA-61-2111	null	Secondary Surgery for tumor recurrence/progression: Metastasis procedure	
+TCGA-61-2113	-7	Surgical Resection	
