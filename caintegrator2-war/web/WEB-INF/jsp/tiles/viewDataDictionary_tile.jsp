@@ -18,14 +18,12 @@
                             <tr>
                                 <th>Annotation Field Descriptor</th>
                                 <th>Source</th>
-                                <th>Type</th>
                                 <th>Permissible</th>
                             </tr>
                             <s:iterator value="sortedVisibleAnnotationFieldDescriptors">
                                 <tr>
-                                    <td><s:property value="name"/></td>
+                                    <td><s:property value="displayName"/></td>
                                     <td><s:property value="annotationEntityType.value"/></td>
-                                    <td><s:property value="type.value"/></td>
                                     <td><s:property value="hasPermissibleValues"/></td>
                                 </tr>
                             </s:iterator>
@@ -35,17 +33,6 @@
             </s:iterator>
         </table>
     </div>
-    
-    <!--Buttons-->
-
-    <s:div theme="xhtml">
-        <ul class="btnrow">
-            <li><s:a href="/caintegrator2/index.jsp" cssClass="btn">
-                <span class="btn_img">Cancel</span>
-            </s:a></li>
-        </ul>
-    </s:div>
-    <!--/Buttons-->
 </div>
 
 <div class="clear"><br /></div>
