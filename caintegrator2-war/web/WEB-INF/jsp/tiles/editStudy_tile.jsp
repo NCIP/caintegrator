@@ -271,7 +271,7 @@
                         
                         <s:form action="addClinicalFile" method="post" enctype="multipart/form-data" cssClass="form" >
                                     <s:hidden name="studyConfiguration.id" />
-                                    <s:file name="clinicalFile" label="Add New Clinical Data Source" />
+                                    <s:file name="clinicalFile" label="Add New Subject Annotation Data Source" />
                                     <s:checkbox name="createNewAnnotationDefinition" label="Create a new Annotation Definition if one is not found" 
                                         labelposition="left" />
                                     <s:submit value="Upload Now" action="addClinicalFile" type="image" src="images/btn_upload.gif" cssClass="editStudyFile" align="center" />
