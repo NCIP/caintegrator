@@ -762,7 +762,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                 imageDataSourceConfiguration.getStudyConfiguration());
         AnnotationFile annotationFile = AnnotationFile.load(permanentFile, getDao(), 
                 imageDataSourceConfiguration.getStudyConfiguration(),
-                EntityTypeEnum.IMAGE, createNewAnnotationDefinition);
+                EntityTypeEnum.IMAGESERIES, createNewAnnotationDefinition);
         ImageAnnotationConfiguration imageAnnotationConfiguration = 
             new ImageAnnotationConfiguration(annotationFile, imageDataSourceConfiguration);
         imageAnnotationConfiguration.setImageDataSourceConfiguration(imageDataSourceConfiguration);
