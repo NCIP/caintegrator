@@ -136,3 +136,14 @@
          document.getElementById('TB_overlay').style.display = 'none';
          document.getElementById('subjectlistdiv').style.visibility = 'hidden';
      }
+     
+ //**************************//
+ // busyDialog Modal Dialog //
+ //**************************//
+       function showBusyDialog() {
+           document.getElementById('TB_overlay').style.display = 'block';
+           ProgressImg = document.getElementById('busyDialogProcessingImage');
+           document.getElementById('busyDialogDiv').style.display = 'block';
+           document.getElementById('busyDialogDiv').style.visibility = 'visible';
+           setTimeout("ProgressImg.src = ProgressImg.src",100);
+       }

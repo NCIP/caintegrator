@@ -59,9 +59,15 @@
         document.managePlatformForm.selectedAction.value = selectAction;
         if (selectAction == "createPlatform" && type == "Affymetrix SNP" 
             && document.getElementById("platformFile").value != "") {
-            return confirm ("The annotation file must be added to the list of file(s) selected\n"
-                + "or it will not be included in the platform creation.");
+        	if (confirm("The annotation file must be added to the list of file(s) selected\n"
+                + "or it will not be included in the platform creation.")) {
+        		showBusyDialog();
+        		return true;
+        	} else {
+        	    return false;
+        	}
         }
+        showBusyDialog();
         return true;
     }
 </script>

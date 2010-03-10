@@ -53,10 +53,12 @@
         if (isPotentiallyLargeQuery == "true" || jQuery(':text[value=""][id^=FoldChangeGeneSymbol]').length != 0) {
             if (confirm("This query includes all genes and will potentially take many minutes to complete.\n"
                     + "Please confirm that you want to continue?")) {
+            	showBusyDialog();
                 submitForm("executeQuery");
             }
         }
         else {
+        	showBusyDialog();
             submitForm("executeQuery");
         }
     }
