@@ -166,10 +166,10 @@
                                 </s:div>
                                 <s:div cssClass="wwctrl">
                                     <s:if test="studyConfiguration.studyLogo != null">
-                                        <s:submit type="image" src="images/btn_upload.gif" value="Change Study Logo" action="addStudyLogo" />    
+                                        <s:submit type="image" src="images/btn_upload.gif" value="Change Study Logo" action="addStudyLogo" onclick="showBusyDialog();"/>    
                                     </s:if>
                                     <s:else>
-                                        <s:submit type="image" src="images/btn_upload.gif" value="Add Study Logo" action="addStudyLogo" />
+                                        <s:submit type="image" src="images/btn_upload.gif" value="Add Study Logo" action="addStudyLogo" onclick="showBusyDialog();" />
                                     </s:else>
                                 </s:div>
                             </s:div>
@@ -274,7 +274,7 @@
                                     <s:file name="clinicalFile" label="Add New Subject Annotation Data Source" />
                                     <s:checkbox name="createNewAnnotationDefinition" label="Create a new Annotation Definition if one is not found" 
                                         labelposition="left" />
-                                    <s:submit value="Upload Now" action="addClinicalFile" type="image" src="images/btn_upload.gif" cssClass="editStudyFile" align="center" />
+                                    <s:submit value="Upload Now" onclick="showBusyDialog(); document.addClinicalFile.submit();" type="image" src="images/btn_upload.gif" cssClass="editStudyFile" align="center" />
                         </s:form>
                         
                     </div>
@@ -322,14 +322,14 @@
                                           <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                           <s:param name="clinicalSource.id" value="id" />
                                        </s:url> 
-                                       <s:a href="%{reLoadClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="reload">Reload All Subject Annotation Sources</span></span></s:a>
+                                       <s:a href="%{reLoadClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;" onclick="showBusyDialog();"><span class="btn_img"><span class="reload">Reload All Subject Annotation Sources</span></span></s:a>
                                     </s:if>
                                     <s:else>
                                        <s:url id="loadClinicalSource" action="loadClinicalSource" includeParams="none">
                                           <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                           <s:param name="clinicalSource.id" value="id" />
                                        </s:url> 
-                                       <s:a href="%{loadClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="load">Load Subject Annotation Source</span></span></s:a>
+                                       <s:a href="%{loadClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;" onclick="showBusyDialog();"><span class="btn_img"><span class="load">Load Subject Annotation Source</span></span></s:a>
                                     </s:else>
                                 </s:if>
                                 <s:url id="deleteClinicalSource" action="deleteClinicalSource" includeParams="none">

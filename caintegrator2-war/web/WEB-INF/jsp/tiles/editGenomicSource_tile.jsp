@@ -29,9 +29,11 @@
                 if (confirm("You are about to update the configuration information for this data source.  "
                         + "Doing so will require you to remap your samples. "
                         + "Please click OK to update the data source or click Cancel to go back.")) {
+                	showBusyDialog();
                     document.genomicSourceForm.submit();                
                 }
             } else {
+            	showBusyDialog();
                 document.genomicSourceForm.submit();
             }
         }

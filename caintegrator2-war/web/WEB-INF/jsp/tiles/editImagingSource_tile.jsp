@@ -28,13 +28,16 @@
                 || (origUsername != document.getElementById("nbiaUsername").value)
                 || (origPassword != document.getElementById("nbiaPassword").value)) {
                 if (confirm('Your Datasource connection parameters have changed.  All mappings will be deleted and the datasource reloaded.  Please click OK or Cancel.')) {
+                	showBusyDialog();
                     document.imagingSourceForm.submit();                
                 }
             } else {
+            	showBusyDialog();
                 document.imagingSourceForm.action = 'mapImagingSource.action';
                 document.imagingSourceForm.submit();
             }
         } else {
+        	showBusyDialog();
             document.imagingSourceForm.submit();
         }
     

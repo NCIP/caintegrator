@@ -56,6 +56,19 @@
     left:50%;
 }
 
+#busyDialogDiv {
+    position: fixed;
+    background: #ffffff;
+    z-index: 102;
+    color:#000000;
+    display:block;
+    visibility:hidden;
+    border: 4px solid #525252;
+    text-align:left;
+    top:40%;
+    left:50%;
+}
+
 /* ----------------------------------------------------------------------------------------------------------------*/
 /* ---------->>> thickbox settings <<<-----------------------------------------------------------------------------*/
 /* ----------------------------------------------------------------------------------------------------------------*/
@@ -72,9 +85,9 @@
 .TB_overlayMacFFBGHack {background: url(macFFBgHack.png) repeat;}
 .TB_overlayBG {
     background-color:#000;
-    filter:alpha(opacity=75);
-    -moz-opacity: 0.75;
-    opacity: 0.75;
+    filter:alpha(opacity=50);
+    -moz-opacity: 0.50;
+    opacity: 0.50;
 }
 * html #TB_overlay { /* ie6 hack */
      position: absolute;
