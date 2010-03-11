@@ -740,14 +740,14 @@ public class QueryFormTest {
 
         queryForm.getResultConfiguration().getColumnSelectionLists().get(0).setValues(new String[0]);
         queryForm.getResultConfiguration().getColumnSelectionLists().get(1).setValues(new String[] {"stringClinicalAnnotation2"});
-        assertEquals(3, queryForm.getResultConfiguration().getColumnSelectionLists().get(1).getValues().length);
-        assertEquals(4, queryForm.getResultConfiguration().getSelectedColumns().size());
+        assertEquals(1, queryForm.getResultConfiguration().getColumnSelectionLists().get(1).getValues().length);
+        assertEquals(1, queryForm.getResultConfiguration().getSelectedColumns().size());
         ResultColumn column = queryForm.getResultConfiguration().getSelectedColumns().iterator().next();
-        assertEquals(testImageSeriesAnnotation, column.getAnnotationDefinition());
+        assertEquals(stringClinicalAnnotation2, column.getAnnotationDefinition());
         assertEquals(0, (int) column.getColumnIndex());
-        assertEquals(4, queryForm.getResultConfiguration().getColumnIndex("stringClinicalAnnotation2"));
-        assertEquals(4, queryForm.getResultConfiguration().getSelectedColumns().size());
-        assertEquals(testImageSeriesAnnotation, queryForm.getResultConfiguration().getSelectedColumns().get(0).getAnnotationDefinition());
+        assertEquals(1, queryForm.getResultConfiguration().getColumnIndex("stringClinicalAnnotation2"));
+        assertEquals(1, queryForm.getResultConfiguration().getSelectedColumns().size());
+        assertEquals(stringClinicalAnnotation2, queryForm.getResultConfiguration().getSelectedColumns().get(0).getAnnotationDefinition());
 
         ValidationAwareSupport validationAware = new ValidationAwareSupport();
         queryForm.validate(validationAware);
