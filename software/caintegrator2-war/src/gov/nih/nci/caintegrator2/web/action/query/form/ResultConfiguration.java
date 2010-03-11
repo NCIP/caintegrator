@@ -112,8 +112,7 @@ public class ResultConfiguration {
         this.form = form;
         columnSelectionLists = new ArrayList<ColumnSelectionList>();
         for (AnnotationGroup group : getStudy().getAnnotationGroups()) {
-            columnSelectionLists.add(new ColumnSelectionList(this, 
-                    getStudy().getVisibleAnnotationCollection(group.getName()), group));
+            columnSelectionLists.add(new ColumnSelectionList(this, group));
         }
         Collections.sort(columnSelectionLists);
     }
