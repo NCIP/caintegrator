@@ -99,6 +99,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang.xwork.StringUtils;
 
 /**
  * Represents a column in a <code>DelimitedTextFile</code>.
@@ -223,20 +224,32 @@ public class FileColumn extends AbstractCaIntegrator2Object implements Comparabl
 
     private <T> Object retrieveValueAsClassType(Class<T> classType, String stringValue)
             throws ValidationException {
+        if (StringUtils.isBlank(stringValue)) {
+            return null;
+        }
         if (classType.equals(Double.class)) {
-            if (!NumberUtils.isNumber(stringValue)) {
-                throw new ValidationException("Cannot cast column as a number, because of value: " + stringValue);
-            }
-            return Double.valueOf(stringValue);
+            return handleNumericType(stringValue);
         } else if (classType.equals(Date.class)) {
-            try {
-                return DateUtil.createDate(stringValue);
-            } catch (ParseException e) {
-                throw new ValidationException("Unable to parse date from the column, because of value: " 
-                        + stringValue, e);
-            }
+            return handleDateType(stringValue);
         } else {
             throw new IllegalArgumentException("classType is not valid.");
+        }
+    }
+
+    private Object handleNumericType(String stringValue) throws ValidationException {
+        if (!NumberUtils.isNumber(stringValue)) {
+            throw new ValidationException("Cannot cast column '" + name + "' as a number, because of value: "
+                    + stringValue);
+        }
+        return Double.valueOf(stringValue);
+    }
+    
+    private Object handleDateType(String stringValue) throws ValidationException {
+        try {
+            return DateUtil.createDate(stringValue);
+        } catch (ParseException e) {
+            throw new ValidationException("Unable to parse date from the column'" + name 
+                    + "', because of value: " + stringValue, e);
         }
     }
 
