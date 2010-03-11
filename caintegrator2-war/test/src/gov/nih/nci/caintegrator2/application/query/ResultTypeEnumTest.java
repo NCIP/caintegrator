@@ -105,7 +105,7 @@ public class ResultTypeEnumTest {
     
     @Test
     public void testGetValueToDisplayableMap() {
-        assertEquals("Clinical", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.CLINICAL.getValue()));
+        assertEquals("Annotation", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.CLINICAL.getValue()));
         assertEquals("Genomic", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.GENOMIC.getValue()));
     }
 

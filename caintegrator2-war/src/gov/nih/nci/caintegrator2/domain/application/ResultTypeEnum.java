@@ -55,7 +55,7 @@ public enum ResultTypeEnum {
      */
     public static Map<String, String> getValueToDisplayableMap() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(ResultTypeEnum.CLINICAL.getValue(), "Clinical");
+        map.put(ResultTypeEnum.CLINICAL.getValue(), "Annotation");
         map.put(ResultTypeEnum.GENOMIC.getValue(), "Genomic");
         return map;
     }

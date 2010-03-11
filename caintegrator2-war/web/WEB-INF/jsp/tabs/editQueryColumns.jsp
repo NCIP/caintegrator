@@ -17,7 +17,7 @@
             listValue="value"/><br>
         
         <div class="selectorNote">Genomic result type - will display a gene expression data matrix.<br>
-                Clinical result type - will display tabular data, including column selection.</div>
+                Annotation result type - will display tabular data, including column selection.</div>
     <s:if test="queryForm.resultConfiguration.resultType == 'genomic'">
         <br>
         <div class="reporterTypeSelector">
