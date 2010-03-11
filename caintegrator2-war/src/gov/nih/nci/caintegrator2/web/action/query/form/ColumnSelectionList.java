@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 
 import java.util.ArrayList;
@@ -94,7 +95,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -108,11 +108,10 @@ public class ColumnSelectionList implements Comparable<ColumnSelectionList> {
     private final ResultConfiguration resultConfiguration;
     
     ColumnSelectionList(ResultConfiguration resultConfiguration,
-            Collection<AnnotationFieldDescriptor> annotationFieldDescriptors,
             AnnotationGroup annotationGroup) {
         this.resultConfiguration = resultConfiguration;
-        columnList = createColumnList(annotationFieldDescriptors);
         this.annotationGroup = annotationGroup;
+        columnList = createColumnList(this.annotationGroup.getVisibleAnnotationFieldDescriptors());
     }
 
     private OptionList<AnnotationFieldDescriptor> createColumnList(
@@ -171,7 +170,7 @@ public class ColumnSelectionList implements Comparable<ColumnSelectionList> {
     public void setValues(String[] values) {
         Set<AnnotationFieldDescriptor> selectedColumns = new HashSet<AnnotationFieldDescriptor>();
         selectedColumns.addAll(getColumnList().getActualValues(values));
-        handleExistingAndRemovedColumns(resultConfiguration.getQuery().retrieveVisibleColumns(), selectedColumns);
+        handleExistingAndRemovedColumns(resultConfiguration.getQuery(), selectedColumns);
         addNewSelectedColumns(resultConfiguration.getQuery().getColumnCollection(), selectedColumns);
     }
     
@@ -181,7 +180,7 @@ public class ColumnSelectionList implements Comparable<ColumnSelectionList> {
     public void selectAllValues() {
         Set<AnnotationFieldDescriptor> selectedColumns = new HashSet<AnnotationFieldDescriptor>();
         selectedColumns.addAll(getColumnList().getAllActualValues());
-        handleExistingAndRemovedColumns(resultConfiguration.getQuery().getColumnCollection(), selectedColumns);
+        handleExistingAndRemovedColumns(resultConfiguration.getQuery(), selectedColumns);
         addNewSelectedColumns(resultConfiguration.getQuery().getColumnCollection(), selectedColumns);
         
     }
@@ -196,16 +195,14 @@ public class ColumnSelectionList implements Comparable<ColumnSelectionList> {
         }
     }
 
-    private void handleExistingAndRemovedColumns(Collection<ResultColumn> columnCollection,
+    private void handleExistingAndRemovedColumns(Query query,
             Set<AnnotationFieldDescriptor> selectedColumns) {
-        Iterator<ResultColumn> columnIterator = columnCollection.iterator();
-        while (columnIterator.hasNext()) {
-            ResultColumn nextColumn = columnIterator.next();
-            if (annotationGroup.equals(nextColumn.getAnnotationFieldDescriptor().getAnnotationGroup())) {
-                if (selectedColumns.contains(nextColumn.getAnnotationFieldDescriptor())) {
-                    selectedColumns.remove(nextColumn.getAnnotationFieldDescriptor());
+        for (ResultColumn column : query.retrieveVisibleColumns()) {
+            if (annotationGroup.equals(column.getAnnotationFieldDescriptor().getAnnotationGroup())) {
+                if (selectedColumns.contains(column.getAnnotationFieldDescriptor())) {
+                    selectedColumns.remove(column.getAnnotationFieldDescriptor());
                 } else {
-                    columnIterator.remove();
+                    query.getColumnCollection().remove(column);
                 }
             }
         }

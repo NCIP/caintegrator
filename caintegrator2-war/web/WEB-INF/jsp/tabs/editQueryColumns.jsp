@@ -53,7 +53,7 @@
                 <s:checkboxlist 
                     cssClass="checklist" 
                     name="queryForm.resultConfiguration.columnSelectionLists[%{#iterator.count - 1}].values"
-                    list="%{queryForm.resultConfiguration.columnSelectionLists[#iterator.count - 1].options}" 
+                    list="queryForm.resultConfiguration.columnSelectionLists[#iterator.count - 1].options" 
                     listKey="key" 
                     listValue="displayValue"
                     theme="cai2simple" 
