@@ -96,7 +96,6 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
@@ -138,7 +137,6 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     @Transactional(readOnly = true)
     public QueryResult execute(Query query) throws InvalidCriterionException {
-        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
         QueryTranslator queryTranslator = new QueryTranslator(query, getDao(), arrayDataService, resultHandler);
         return queryTranslator.execute();
     }
