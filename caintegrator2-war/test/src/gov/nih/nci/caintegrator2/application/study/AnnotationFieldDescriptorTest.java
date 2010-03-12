@@ -101,15 +101,15 @@ public class AnnotationFieldDescriptorTest {
         afd.setDefinition(ad);
         
         // Test getHasPermissible
-        assertEquals("No", afd.getHasPermissibleValues());
+        assertEquals(0, afd.getPermissibleValues().size());
         ad.setDataType(AnnotationTypeEnum.STRING);
         Set<Object> genders = new HashSet<Object>();
         genders.add("Male");
         ad.addPermissibleValues(genders);
-        assertEquals("Yes", afd.getHasPermissibleValues());
+        assertEquals(1, afd.getPermissibleValues().size());
         
         // Test Display Name
-        assertEquals("", afd.getDisplayName());
+        assertEquals("--Undefine--", afd.getDisplayName());
         ad.setDisplayName("Gender");
         assertEquals("Gender", afd.getDisplayName());
     }
