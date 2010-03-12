@@ -5,7 +5,7 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 /**
  * 
  */
-public class PermissibleValue extends AbstractCaIntegrator2Object {
+public class PermissibleValue extends AbstractCaIntegrator2Object implements Comparable<PermissibleValue> {
 
     private static final long serialVersionUID = 1L;
     
@@ -77,5 +77,13 @@ public class PermissibleValue extends AbstractCaIntegrator2Object {
     @Override
     public String toString() {
         return value;
+    }
+    
+    /**
+     * Compare based on the Value.
+     * {@inheritDoc}
+     */
+    public int compareTo(PermissibleValue o) {
+        return getValue().compareTo(o.getValue());
     }
 }

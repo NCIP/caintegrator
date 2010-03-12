@@ -87,7 +87,12 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Contains the information about a particular annotation field prior to association to an 
@@ -254,17 +259,23 @@ implements Comparable<AnnotationFieldDescriptor> {
     }
     
     /**
-     * @return has permissible values Yes/No
+     * @return permissible values order by value
      */
-    public String getHasPermissibleValues() {
-        return (definition.getPermissibleValueCollection().isEmpty()) ? "No" : "Yes";
+    public List<PermissibleValue> getPermissibleValues() {
+        List<PermissibleValue> results = new ArrayList<PermissibleValue>();
+        if (definition != null) {
+            results.addAll(definition.getPermissibleValueCollection());
+            Collections.sort(results);
+        }
+        return results;
     }
-    
+
     /**
      * @return the display name from Annotation Definition
      */
     public String getDisplayName() {
-        return (definition.getDisplayName() == null) ? "" : definition.getDisplayName();
+        return (definition == null || definition.getDisplayName() == null)
+            ? "--Undefine--" : definition.getDisplayName();
     }
     
     /**
