@@ -94,11 +94,10 @@ import gov.nih.nci.caintegrator2.web.Cai2WebUtil;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
@@ -248,11 +247,11 @@ public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Map<String, String>> getAllStringPValues() {
+    public SortedMap<String, SortedMap<String, String>> getAllStringPValues() {
         if (SessionHelper.getQueryBasedKmPlot() != null) {
             return retrieveAllStringPValues(SessionHelper.getQueryBasedKmPlot());
         }
-        return new HashMap<String, Map<String, String>>();
+        return new TreeMap<String, SortedMap<String, String>>();
     }
     
     /**
