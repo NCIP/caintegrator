@@ -43,8 +43,10 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
             return rowCollection;
         }
         List<GenomicDataResultRow> filteredRows = new ArrayList<GenomicDataResultRow>();
-        for (GenomicDataResultRow row : rowCollection) {
+        for (int i = 0; i < rowCollection.size(); i++) {
+            GenomicDataResultRow row = rowCollection.get(i);
             if (row.isHasMatchingValues()) {
+                row.setNonFilterIndex(i);
                 filteredRows.add(row);
             }
         }
