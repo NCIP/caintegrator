@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnu
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 
 import java.io.File;
 import java.io.IOException;
@@ -136,6 +137,8 @@ public class ImagingDataSourceAjaxRunner implements Runnable {
             mapSource();
         } catch (ConnectionException e) {
             addError("The configured server couldn't reached. Please check the configuration settings.", e);
+        } catch (InvalidImagingCollectionException e) {
+            addError(e.getMessage(), e);
         }
         updater.updateJobStatus(username, imagingSource);
     }
@@ -145,7 +148,7 @@ public class ImagingDataSourceAjaxRunner implements Runnable {
         username = imagingSource.getStudyConfiguration().getLastModifiedBy().getUsername();
     }
 
-    private void addSource() throws ConnectionException {
+    private void addSource() throws ConnectionException, InvalidImagingCollectionException {
         updater.getStudyManagementService().loadImageSource(imagingSource);
     }
 

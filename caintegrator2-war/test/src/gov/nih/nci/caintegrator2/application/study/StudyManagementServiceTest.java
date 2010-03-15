@@ -606,7 +606,7 @@ public class StudyManagementServiceTest {
     }
 
     @Test
-    public void testAddImageAnnotationFile() throws ValidationException, IOException, ConnectionException {
+    public void testAddImageAnnotationFile() throws Exception {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
         studyManagementService.addImageSource(studyConfiguration, imageDataSourceConfiguration);
@@ -619,7 +619,7 @@ public class StudyManagementServiceTest {
     }
 
     @Test
-    public void testAddImageSource() throws ConnectionException, ValidationException, IOException {
+    public void testAddImageSource() throws Exception {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
         studyManagementService.addImageSource(studyConfiguration, imageDataSourceConfiguration);

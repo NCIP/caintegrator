@@ -107,6 +107,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.CopyNumberFilesNotFoundException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
@@ -777,7 +778,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     public void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource) 
-        throws ConnectionException {
+        throws ConnectionException, InvalidImagingCollectionException {
         addImageSourceToStudy(studyConfiguration, imageSource);
         loadImageSource(imageSource);
     }
@@ -794,9 +795,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     }
     
     /**
-     * {@inheritDoc}
+     * {@inheritDoc} 
      */
-    public void loadImageSource(ImageDataSourceConfiguration imageSource) throws ConnectionException {
+    public void loadImageSource(ImageDataSourceConfiguration imageSource) 
+        throws ConnectionException, InvalidImagingCollectionException {
         List<ImageSeriesAcquisition> acquisitions = getNciaFacade().getImageSeriesAcquisitions(
                 imageSource.getCollectionName(), imageSource.getServerProfile());
         imageSource.getImageSeriesAcquisitions().addAll(acquisitions);

@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.external.ncia;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.file.FileManager;
 import gov.nih.nci.ncia.domain.Image;
@@ -125,7 +126,7 @@ public class NCIAFacadeImpl implements NCIAFacade {
      * {@inheritDoc}
      */
     public List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String collectionNameProject, 
-            ServerConnectionProfile profile) throws ConnectionException {
+            ServerConnectionProfile profile) throws ConnectionException, InvalidImagingCollectionException {
         LOGGER.info(new String("Retrieving ImageSeriesAcquisitions for " + collectionNameProject));
         NCIASearchService client = nciaServiceFactory.createNCIASearchService(profile);
         List<ImageSeriesAcquisition> imageSeriesAcquisitions = new ArrayList<ImageSeriesAcquisition>();
@@ -133,6 +134,10 @@ public class NCIAFacadeImpl implements NCIAFacade {
             client.retrievePatientCollectionFromCollectionNameProject(collectionNameProject);
         for (Patient patient : patientCollection) {
             imageSeriesAcquisitions.addAll(createImageSeriesAcquisitions(patient, client));
+        }
+        if (imageSeriesAcquisitions.isEmpty()) {
+            throw new InvalidImagingCollectionException(
+                    "There are no image series available for this collection");
         }
         LOGGER.info(new String("Completed retrieving ImageSeriesAcquisitions for " + collectionNameProject));
         return imageSeriesAcquisitions;
