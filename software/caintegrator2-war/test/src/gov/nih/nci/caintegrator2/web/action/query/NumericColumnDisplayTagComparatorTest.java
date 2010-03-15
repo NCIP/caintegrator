@@ -85,80 +85,41 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import static org.junit.Assert.assertEquals;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.Test;
 
 /**
- * Represents a value associated to a Row / Column.  (Wraps the <code>ResultValue</code> class).
+ * Test sorting numeric / non-numeric displaytag values.
  */
-public class DisplayableResultValue {
-    
-    private String displayString = "";
-    private Date dateValue = null;
-    private boolean dateType = false;
-    private boolean numericType = false;
+public class NumericColumnDisplayTagComparatorTest {
 
-    /**
-     * Empty Constructor.
-     */
-    @SuppressWarnings("PMD.UncommentedEmptyConstructor")
-    public DisplayableResultValue() { }
-    
-    /**
-     * Constructor which wraps the given ResultValue object.
-     * @param resultValue - ResultValue associated with this object.
-     */
-    public DisplayableResultValue(ResultValue resultValue) {
-        if (resultValue != null) {
-            if (AnnotationTypeEnum.DATE.equals(
-                resultValue.getColumn().getAnnotationFieldDescriptor().getDefinition().getDataType())) {
-                dateType = true;
-                dateValue = getDateValue(resultValue);
-            } else if (AnnotationTypeEnum.NUMERIC.equals(
-                resultValue.getColumn().getAnnotationFieldDescriptor().getDefinition().getDataType())) {
-                numericType = true;
-            }
-            displayString = resultValue.toString();
-        }
+    @Test
+    public void testCompare() {
+        Object object1 = (Object) "100";
+        Object object2 = (Object) "String-101";
+        Object object3 = (Object) "1";
+        Object object4 = (Object) "3";
+        Object object5 = (Object) "Cell[staticValue=\r\n 0.2 \r\n]";
+        Object object6 = (Object) "Cell[staticValue=\r\n \r\n]";
+        List<Object> objects = new ArrayList<Object>();
+        objects.add(object1);
+        objects.add(object2);
+        objects.add(object3);
+        objects.add(object4);
+        objects.add(object5);
+        objects.add(object6);
+        Collections.sort(objects, new NumericColumnDisplayTagComparator());
+        assertEquals(object6, objects.get(0));
+        assertEquals(object5, objects.get(1));
+        assertEquals(object3, objects.get(2));
+        assertEquals(object4, objects.get(3));
+        assertEquals(object1, objects.get(4));
+        assertEquals(object2, objects.get(5));
     }
-    
-    private Date getDateValue(ResultValue resultValue) {
-        DateAnnotationValue dateAnnotationValue = (DateAnnotationValue) resultValue.getValue();
-        return (dateAnnotationValue != null) ? dateAnnotationValue.getDateValue() : null;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public String toString() {
-        return displayString;
-    }
-    
-    /**
-     * Gets the date value.
-     * @return - date value.
-     */
-    public Date getDateValue() {
-        return dateValue;
-    }
-    
-    /**
-     * Determines if this is a date type.
-     * @return - T/F value.
-     */
-    public boolean isDateType() {
-        return dateType;
-    }
-
-    /**
-     * @return the numericType
-     */
-    public boolean isNumericType() {
-        return numericType;
-    }
-
 
 }
