@@ -17,11 +17,26 @@
     <h1><s:property value="#subTitleText" /></h1>
     
     <div class="form_wrapper_outer">
+    <s:iterator value="study.sortedAnnotationGroups" status="iterator">
         <table class="form_wrapper_table">
-            <s:iterator value="study.sortedAnnotationGroups" status="iterator">
                 <tr>
-                    <th class="title" style="height: 2.5em;">Group: <font size="-1"><s:property value="name" /></font></th>
-                    <th>Description: <font size="-1"><s:property value="description" /></font></th>
+                <td>
+					<div class="wwgrp">
+					<div class="wwlbl" style="width: 7em; text-align: left;padding: 0 5px 0 5px;"><label class="label" for="annotationGroupForm_groupName" style="font-weight: normal;">Group Name:</label></div>
+					<div class="wwctrl" style="font-weight: bold;"><s:property value="name" /></div>
+					</div>
+				</td>
+                </tr>
+                <tr>
+                <td>
+                    <div class="wwgrp">
+                    <div class="wwlbl" style="width: 7em; text-align: left;padding: 0 5px 0 5px;"><label class="label" for="annotationGroupForm_groupName" style="font-weight: normal;">Description:</label></div>
+                    <div class="wwctrl" style="font-weight: bold;"><s:property value="description" /></div>
+                    </div>
+                </td>
+                </tr>
+                <tr>
+                <td style="padding: 0 0 5px 0;"></td>
                 </tr>
                 <tr>
                     <td colspan="2" style="padding: 5px;">                         
@@ -64,8 +79,8 @@
                         </table>
                     </td>
                 </tr>
-            </s:iterator>
         </table>
+    </s:iterator>
     </div>
 </div>
 

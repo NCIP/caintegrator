@@ -42,12 +42,17 @@
                 </b>           
             </td>
             <td />  
+            <td />
+        </tr>
+        <tr>
+            <td align="right">Data Dictionary: </td>
             <td>
                 <s:url id="dataDictionaryUrl" includeParams="none" action="viewDataDictionary" />
-                <a href="${dataDictionaryUrl}">View Data Dictionary Summary</a>
+                <a href="${dataDictionaryUrl}">View</a>
             </td>
-        </tr>
-    
+            <td />  
+            <td />
+        </tr>    
         <tr>
             <th colspan="4">Subject Annotation Data</th>
         </tr>
