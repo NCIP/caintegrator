@@ -62,7 +62,7 @@
                 </tr>
                 <tr />
                 <tr>
-                    <th>Gene Name</th>
+                    <th>Gene</th>
                     <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
                         <th>Reporter ID</th>
                     </s:if>
@@ -104,7 +104,7 @@
             <s:else>
                 <tr>
                     <td/><td/>
-                    <th>Gene Name</th>
+                    <th>Gene</th>
                     <s:iterator value="genomicDataQueryResult.filteredRowCollection" status="status">
                         <td><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
                             <b><s:property value="reporter.geneSymbols" /></b>
