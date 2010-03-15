@@ -97,7 +97,8 @@ import gov.nih.nci.caintegrator2.web.SessionHelper;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -318,11 +319,11 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Map<String, String>> getAllStringPValues() {
+    public SortedMap<String, SortedMap<String, String>> getAllStringPValues() {
         if (SessionHelper.getAnnotationBasedKmPlot() != null) {
             return retrieveAllStringPValues(SessionHelper.getAnnotationBasedKmPlot());
         }
-        return new HashMap<String, Map<String, String>>();
+        return new TreeMap<String, SortedMap<String, String>>();
     }
     
     /**
