@@ -101,8 +101,9 @@ import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -233,16 +234,16 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
      * Gets all the string pvalues from the KMPlot on the session.
      * @return map of all string PValues.
      */
-    public abstract Map<String, Map<String, String>> getAllStringPValues();
+    public abstract SortedMap<String, SortedMap<String, String>> getAllStringPValues();
 
     /**
      * Retrieves all string PValues.
      * @param kmPlot Plot to use.
      * @return Map of Strings for PValues, for output on the JSP.
      */
-    protected Map<String, Map<String, String>> retrieveAllStringPValues(KMPlot kmPlot) {
+    protected SortedMap<String, SortedMap<String, String>> retrieveAllStringPValues(KMPlot kmPlot) {
         
-        Map<String, Map<String, String>> allPValues = new HashMap<String, Map<String, String>>();
+        SortedMap<String, SortedMap<String, String>> allPValues = new TreeMap<String, SortedMap<String, String>>();
         Set<SubjectGroup> currentlyCalculatedGroups = new HashSet<SubjectGroup>();
 
         for (SubjectGroup group1 : kmPlot.getConfiguration().getGroups()) {
@@ -252,11 +253,11 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     }
 
     private void addStringPValuesToGroup(KMPlot kmPlot,
-            Map<String, Map<String, String>> allPValues,
+            SortedMap<String, SortedMap<String, String>> allPValues,
             Set<SubjectGroup> currentlyCalculatedGroups, SubjectGroup group1) {
         String group1Name = group1.getName();
         if (!allPValues.containsKey(group1Name)) {
-            allPValues.put(group1Name, new HashMap<String, String>());
+            allPValues.put(group1Name, new TreeMap<String, String>());
         }
         for (SubjectGroup group2 : kmPlot.getConfiguration().getGroups()) {
             if (group1 != group2 && !currentlyCalculatedGroups.contains(group2)) {

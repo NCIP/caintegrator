@@ -91,9 +91,9 @@ import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.math.NumberUtils;
 
@@ -206,11 +206,11 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Map<String, String>> getAllStringPValues() {
+    public SortedMap<String, SortedMap<String, String>> getAllStringPValues() {
         if (SessionHelper.getGeneExpressionBasedKmPlot() != null) {
             return retrieveAllStringPValues(SessionHelper.getGeneExpressionBasedKmPlot());
         }
-        return new HashMap<String, Map<String, String>>();
+        return new TreeMap<String, SortedMap<String, String>>();
     }
     
     /**
