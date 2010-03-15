@@ -121,6 +121,9 @@ public class QueryForm {
     private boolean controlSamplesInStudy = false;
     private boolean studyHasSavedLists = false;
     
+    private String genomicPreviousSorting;
+    private int genomicSortingOrder = 1;
+    
     /**
      * Configures a new query.
      * 
@@ -316,5 +319,40 @@ public class QueryForm {
      */
     public List<String> getAnnotationGroupNames() {
         return annotationGroupNames;
+    }
+
+    /**
+     * @return the genomicPreviousSorting
+     */
+    public String getGenomicPreviousSorting() {
+        return genomicPreviousSorting;
+    }
+
+    /**
+     * @param genomicPreviousSorting the genomicPreviousSorting to set
+     */
+    public void setGenomicPreviousSorting(String genomicPreviousSorting) {
+        this.genomicPreviousSorting = genomicPreviousSorting;
+    }
+
+    /**
+     * @return the genomicSortingOrder
+     */
+    public int getGenomicSortingOrder() {
+        return genomicSortingOrder;
+    }
+
+    /**
+     * @param genomicSortingOrder the genomicSortingOrder to set
+     */
+    public void setGenomicSortingOrder(int genomicSortingOrder) {
+        this.genomicSortingOrder = genomicSortingOrder;
+    }
+
+    /**
+     * Reverse the sorting order of the genomic results.
+     */
+    public void reverseGenomicSortingOrder() {
+        this.genomicSortingOrder *= -1;
     }
 }

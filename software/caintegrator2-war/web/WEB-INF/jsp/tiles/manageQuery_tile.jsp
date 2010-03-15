@@ -111,8 +111,14 @@
     	}
     }
     
+    function sortGenomicResult(type, index) {
+    alert(type + " - " + index);
+        document.manageQueryForm.genomicSortingType.value = type;
+        document.manageQueryForm.genomicSortingIndex.value = index;
+        submitForm("sortGenomicResult");
+    }
+    
 </script>
-
 
 <div id="content">
         <h1>Search <s:property value="study.shortTitleText"/></h1>
@@ -138,6 +144,7 @@
         
         <s:form action="manageQuery" name="manageQueryForm" id="manageQueryForm" theme="simple">
             <link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/TabContainer.css" />
+
             <sx:tabbedpanel id="mainTabPanel" selectedTab="%{displayTab}"
                 templateCssPath="/common/css/TabContainer.css">
 

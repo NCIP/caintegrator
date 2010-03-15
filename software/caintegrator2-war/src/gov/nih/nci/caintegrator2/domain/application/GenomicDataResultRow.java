@@ -10,13 +10,29 @@ import java.util.List;
 /**
  * 
  */
-public class GenomicDataResultRow extends AbstractCaIntegrator2Object {
+public class GenomicDataResultRow extends AbstractCaIntegrator2Object implements GenomicDataResultComparable {
 
     private static final long serialVersionUID = 1L;
     
     private AbstractReporter reporter;
     private final List<GenomicDataResultValue> values = new ArrayList<GenomicDataResultValue>();
     private boolean hasMatchingValues = false;
+    private int nonFilterIndex;
+    private Float sortedValue;
+
+    /**
+     * {@inheritDoc}
+     */
+    public Float getSortedValue() {
+        return sortedValue;
+    }
+
+    /**
+     * @param sortedValue the sortedValue to set
+     */
+    public void setSortedValue(Float sortedValue) {
+        this.sortedValue = sortedValue;
+    }
 
     /**
      * @return the reporter
@@ -63,6 +79,20 @@ public class GenomicDataResultRow extends AbstractCaIntegrator2Object {
      */
     public void setHasMatchingValues(boolean hasMatchingValues) {
         this.hasMatchingValues = hasMatchingValues;
+    }
+
+    /**
+     * @return the nonFilterIndex
+     */
+    public int getNonFilterIndex() {
+        return nonFilterIndex;
+    }
+
+    /**
+     * @param nonFilterIndex the nonFilterIndex to set
+     */
+    public void setNonFilterIndex(int nonFilterIndex) {
+        this.nonFilterIndex = nonFilterIndex;
     }
 
 }

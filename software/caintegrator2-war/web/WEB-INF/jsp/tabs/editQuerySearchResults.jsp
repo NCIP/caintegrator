@@ -6,6 +6,10 @@
 </style>
 
 <!--Search Results-->
+
+<s:hidden name="genomicSortingType" />
+<s:hidden name="genomicSortingIndex" />
+            
 <s:div theme="xhtml">
     <h2>Query Results for: 
         <s:if test="query != null && query.name != null && query.name.length() > 0">
@@ -46,8 +50,14 @@
                         <td />
                     </s:if>
                     <th>Subject ID</th>
-                    <s:iterator value="genomicDataQueryResult.columnCollection">
-                        <td><b><s:property value="sampleAcquisition.assignment.identifier" /></b></td>
+                    <s:iterator value="genomicDataQueryResult.columnCollection" status="columnIterator">
+                        <td>
+                            <s:set name="columnIteratorIndex" value="%{#columnIterator.index}"/>
+                            <a href="javascript:sortGenomicResult('row', ${columnIteratorIndex})"
+                                 style="border-bottom: 1px ridge #000000; color: #333333">
+                                <b><s:property value="sampleAcquisition.assignment.identifier" /></b>
+                            </a>
+                        </td>
                     </s:iterator>
                 </tr>
                 <tr>
@@ -106,9 +116,24 @@
                     <td/><td/>
                     <th>Gene</th>
                     <s:iterator value="genomicDataQueryResult.filteredRowCollection" status="status">
-                        <td><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
-                            <b><s:property value="reporter.geneSymbols" /></b>
-                        </a></td>
+                        <td>
+                            <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
+                                <b><s:property value="reporter.geneSymbols" /></b>&nbsp;
+                                <a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
+                                    <img src="/caintegrator2/images/ico_info.gif" border="none"/>
+                                </a>
+                            </s:if>
+                            <s:else>
+                                <s:set name="nonFilterIndex" value="%{nonFilterIndex}"/>
+                                <a href="javascript:sortGenomicResult('column', ${nonFilterIndex})"
+                                    style="border-bottom: 1px ridge #000000; color: #333333">
+                                    <b><s:property value="reporter.geneSymbols" /></b>&nbsp;
+                                </a>
+                                <a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
+                                    <b>Info</b>
+                                </a>
+                            </s:else>
+                        </td>
                     </s:iterator>
                 </tr>
                 <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
@@ -116,7 +141,12 @@
                         <td/><td/>
                         <th>Reporter ID</th>
                         <s:iterator value="genomicDataQueryResult.filteredRowCollection" status="status">
-                            <td><b><s:property value="reporter.name" /></b></td>
+                            <th>
+                                <s:set name="nonFilterIndex" value="%{nonFilterIndex}"/>
+                                <a href="javascript:sortGenomicResult('column', ${nonFilterIndex})">
+                                    <b><s:property value="reporter.name" /></b>
+                                </a>
+                            </th>
                         </s:iterator>
                     </tr>
                 </s:if>
