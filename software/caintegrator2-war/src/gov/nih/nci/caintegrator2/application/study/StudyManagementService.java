@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSSecurityException;
@@ -292,9 +293,10 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @param studyConfiguration study configuration to add image data source to
      * @param imageSource image source to add
      * @throws ConnectionException if the configured server couldn't be reached.
+     * @throws InvalidImagingCollectionException if there are no images associated with collection.
      */
     void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource) 
-    throws ConnectionException;
+    throws ConnectionException, InvalidImagingCollectionException;
     
     /**
      * Adds a new image source to study.
@@ -307,8 +309,10 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * Loads the image source.
      * @param imageSource to load.
      * @throws ConnectionException if can't connect to imaging server.
+     * @throws InvalidImagingCollectionException if there are no images associated with collection.
      */
-    void loadImageSource(ImageDataSourceConfiguration imageSource) throws ConnectionException;
+    void loadImageSource(ImageDataSourceConfiguration imageSource) 
+    throws ConnectionException, InvalidImagingCollectionException;
     
     
     /**
