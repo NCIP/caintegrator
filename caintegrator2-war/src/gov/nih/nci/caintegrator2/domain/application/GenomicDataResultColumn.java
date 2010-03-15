@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 
  */
-public class GenomicDataResultColumn extends AbstractCaIntegrator2Object {
+public class GenomicDataResultColumn extends AbstractCaIntegrator2Object implements GenomicDataResultComparable {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,8 +17,22 @@ public class GenomicDataResultColumn extends AbstractCaIntegrator2Object {
     private List<GenomicDataResultValue> values;
     private GenomicDataQueryResult result;
     private int columnIndex;
+    private Float sortedValue;
+
+    /**
+     * {@inheritDoc}
+     */
+    public Float getSortedValue() {
+        return sortedValue;
+    }
     
-    
+    /**
+     * @param sortedValue the sortedValue to set
+     */
+    public void setSortedValue(Float sortedValue) {
+        this.sortedValue = sortedValue;
+    }
+
     /**
      * @return the sampleAcquisition
      */

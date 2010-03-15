@@ -91,6 +91,9 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultComparator;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
@@ -123,7 +126,8 @@ import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 /**
  * Handles the form in which the user constructs, edits and runs a query.
  */
-@SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" }) // see execute method
+@SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength",
+    "PMD.TooManyFields" }) // see execute method
 
 public class ManageQueryAction extends AbstractCaIntegrator2Action implements ParameterNameAware {
 
@@ -148,6 +152,40 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     private String geneListName = "";
     private String subjectListName = "";
     private String subjectListDescription = "";
+    private String genomicSortingType;
+    private int genomicSortingIndex;
+
+    /**
+     * @return the genomicSortingType
+     */
+    public String getGenomicSortingType() {
+        return genomicSortingType;
+    }
+
+
+    /**
+     * @param genomicSortingType the genomicSortingType to set
+     */
+    public void setGenomicSortingType(String genomicSortingType) {
+        this.genomicSortingType = genomicSortingType;
+    }
+
+
+    /**
+     * @return the genomicSortingIndex
+     */
+    public int getGenomicSortingIndex() {
+        return genomicSortingIndex;
+    }
+
+
+    /**
+     * @param genomicSortingIndex the genomicSortingIndex to set
+     */
+    public void setGenomicSortingIndex(int genomicSortingIndex) {
+        this.genomicSortingIndex = genomicSortingIndex;
+    }
+
 
     /**
      * {@inheritDoc}
@@ -241,7 +279,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength" }) // Checking action type.
+    @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength",
+        "PMD.NcssMethodCount" }) // Checking action type.
     public String execute() {
         
         String returnValue = ERROR;
@@ -319,6 +358,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             returnValue = loadSubjectListExecute();
         } else if ("loadGeneListExecute".equals(selectedAction)) {
             returnValue = loadGeneListExecute();
+        } else if ("sortGenomicResult".equals(selectedAction)) {
+            returnValue = sortGenomicResult();
         } else {
             addActionError("Unknown action '" + selectedAction + "'");
             returnValue = ERROR; 
@@ -511,6 +552,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      * @return the Struts result.
      */
     public String executeQuery() {
+        getQueryForm().setGenomicPreviousSorting("None");
+        getQueryForm().setGenomicSortingOrder(1);
         ensureQueryIsLoaded();
         updateSorting();
         try {
@@ -801,5 +844,36 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      */
     public void setGeneListName(String geneListName) {
         this.geneListName = geneListName;
+    }
+
+    private String sortGenomicResult() {
+        displayTab = RESULTS_TAB;
+        if (getQueryForm().getGenomicPreviousSorting().equals(genomicSortingType + genomicSortingIndex)) {
+            getQueryForm().reverseGenomicSortingOrder();
+        } else {
+            getQueryForm().setGenomicSortingOrder(1);
+        }
+        getQueryForm().setGenomicPreviousSorting(genomicSortingType + genomicSortingIndex);
+        return ("column".equals(genomicSortingType)) ? sortGenomicColumn() : sortGenomicRow();
+    }
+    
+    private String sortGenomicColumn() {
+        for (GenomicDataResultColumn genomicDataResultColumn : getGenomicDataQueryResult().getColumnCollection()) {
+            genomicDataResultColumn.setSortedValue(
+                    genomicDataResultColumn.getValues().get(genomicSortingIndex).getValue());
+        }
+        Collections.sort(getGenomicDataQueryResult().getColumnCollection(),
+                new GenomicDataResultComparator(getQueryForm().getGenomicSortingOrder()));
+        return SUCCESS;
+    }
+    
+    private String sortGenomicRow() {
+        for (GenomicDataResultRow genomicDataResultRow : getGenomicDataQueryResult().getRowCollection()) {
+            genomicDataResultRow.setSortedValue(
+                    genomicDataResultRow.getValues().get(genomicSortingIndex).getValue());
+        }
+        Collections.sort(getGenomicDataQueryResult().getRowCollection(),
+                new GenomicDataResultComparator(getQueryForm().getGenomicSortingOrder()));
+        return SUCCESS;
     }
 }
