@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.external.ncia;
 
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.io.File;
@@ -113,9 +114,10 @@ public interface NCIAFacade {
      * @param profile contains connection information for the NCIA server
      * @return ImageStudy will be ImageSeriesAcquisition after it gets mapped.
      * @throws ConnectionException if there's a problem connecting to the NCIA server.
+     * @throws InvalidImagingCollectionException if there are no images associated with collection.
      */
     List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String collectionNameProject, 
-            ServerConnectionProfile profile) throws ConnectionException;
+            ServerConnectionProfile profile) throws ConnectionException, InvalidImagingCollectionException;
     
     /**
      * Retrieves the Dicom files for the given job (currently only supports 1 imageSeries UID).

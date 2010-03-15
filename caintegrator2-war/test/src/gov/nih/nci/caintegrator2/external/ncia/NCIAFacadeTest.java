@@ -92,6 +92,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.List;
@@ -138,7 +139,7 @@ public class NCIAFacadeTest {
 
 
     @Test
-    public void testGetImageSeriesAcquisition() throws ConnectionException {
+    public void testGetImageSeriesAcquisition() throws ConnectionException, InvalidImagingCollectionException {
         String collectionNameProject = "RIDER";
         List<ImageSeriesAcquisition> imageStudies;
         
