@@ -85,80 +85,34 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import java.util.Date;
+import javax.servlet.jsp.PageContext;
+
+import org.displaytag.decorator.DisplaytagColumnDecorator;
+import org.displaytag.exception.DecoratorException;
+import org.displaytag.properties.MediaTypeEnum;
 
 /**
- * Represents a value associated to a Row / Column.  (Wraps the <code>ResultValue</code> class).
+ * This is a Displaytag Decorator for the Date columns, which will come in in the format "yyyy-mm-dd", and the 
+ * purpose is for it to be displayed in the format MM/dd/yyyy which is what will get returned after it is "decorated".
+ * This was the most practical way to allow for sorting dates properly, as our design of using Struts2 + displaytag +
+ * dynamic columns was not a well documented approach.
  */
-public class DisplayableResultValue {
+public class DateFormatColumnDecorator implements DisplaytagColumnDecorator {
     
-    private String displayString = "";
-    private Date dateValue = null;
-    private boolean dateType = false;
-    private boolean numericType = false;
-
-    /**
-     * Empty Constructor.
-     */
-    @SuppressWarnings("PMD.UncommentedEmptyConstructor")
-    public DisplayableResultValue() { }
-    
-    /**
-     * Constructor which wraps the given ResultValue object.
-     * @param resultValue - ResultValue associated with this object.
-     */
-    public DisplayableResultValue(ResultValue resultValue) {
-        if (resultValue != null) {
-            if (AnnotationTypeEnum.DATE.equals(
-                resultValue.getColumn().getAnnotationFieldDescriptor().getDefinition().getDataType())) {
-                dateType = true;
-                dateValue = getDateValue(resultValue);
-            } else if (AnnotationTypeEnum.NUMERIC.equals(
-                resultValue.getColumn().getAnnotationFieldDescriptor().getDefinition().getDataType())) {
-                numericType = true;
-            }
-            displayString = resultValue.toString();
-        }
-    }
-    
-    private Date getDateValue(ResultValue resultValue) {
-        DateAnnotationValue dateAnnotationValue = (DateAnnotationValue) resultValue.getValue();
-        return (dateAnnotationValue != null) ? dateAnnotationValue.getDateValue() : null;
-    }
-    
+    private static final Pattern DATE_PATTERN = Pattern.compile("(\\d{4})[\\/-](\\d{2})[\\/-](\\d{2})");
+    private static final String DATE_DELIMITER = "/";
     /**
      * {@inheritDoc}
      */
-    public String toString() {
-        return displayString;
+    public Object decorate(Object columnValue, PageContext pageContext, MediaTypeEnum media) throws DecoratorException {
+        Matcher matcher = DATE_PATTERN.matcher(columnValue.toString());
+        if (matcher.find()) {
+            return matcher.group(2) + DATE_DELIMITER + matcher.group(3) + DATE_DELIMITER + matcher.group(1);
+        }
+        return columnValue;
     }
-    
-    /**
-     * Gets the date value.
-     * @return - date value.
-     */
-    public Date getDateValue() {
-        return dateValue;
-    }
-    
-    /**
-     * Determines if this is a date type.
-     * @return - T/F value.
-     */
-    public boolean isDateType() {
-        return dateType;
-    }
-
-    /**
-     * @return the numericType
-     */
-    public boolean isNumericType() {
-        return numericType;
-    }
-
 
 }

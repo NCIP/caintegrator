@@ -194,7 +194,7 @@
                         media="html" sortable="false">
                         <s:checkbox theme="simple" name="queryResult.rows[%{#attr.queryResultRows_rowNum - 1}].selectedSubject"/>
                     </display:column>
-                    <display:column title="Subject Identifier" sortable="true">
+                    <display:column title="Subject Identifier" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
                         <s:property
                             value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).subjectAssignment.identifier}" />
                     </display:column>
@@ -218,10 +218,15 @@
                     <s:set id="curValue" name="curValue" value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).values.get(#status.count - 1)}" />
                         <s:if test="#curValue.dateType">
                             <s:set id="dateValue" name="dateValue" value="#curValue.dateValue" />
-                            <display:column title="${column}" sortable="true" decorator="gov.nih.nci.caintegrator2.application.query.DateFormatColumnDecorator" >
+                            <display:column title="${column}" sortable="true" decorator="gov.nih.nci.caintegrator2.web.action.query.DateFormatColumnDecorator" >
                                 ${dateValue}
                             </display:column>
                         </s:if>
+                        <s:elseif test="#curValue.numericType">
+                            <display:column title="${column}" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" >
+                                ${curValue}
+                            </display:column>
+                        </s:elseif>
                         <s:else>
                             <display:column title="${column}" sortable="true" >
                                 ${curValue}

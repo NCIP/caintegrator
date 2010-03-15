@@ -83,36 +83,38 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.web.action.query;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.jsp.PageContext;
-
-import org.displaytag.decorator.DisplaytagColumnDecorator;
-import org.displaytag.exception.DecoratorException;
-import org.displaytag.properties.MediaTypeEnum;
+import java.util.Comparator;
 
 /**
- * This is a Displaytag Decorator for the Date columns, which will come in in the format "yyyy-mm-dd", and the 
- * purpose is for it to be displayed in the format MM/dd/yyyy which is what will get returned after it is "decorated".
- * This was the most practical way to allow for sorting dates properly, as our design of using Struts2 + displaytag +
- * dynamic columns was not a well documented approach.
+ * Comparator used for DisplayTag columns that are more than likely numeric.  First tries to do
+ * a comparison casting both values to Double, if an exception is thrown it falls back to doing a
+ * basic String comparison on the two values.  The Objects are both expected to be non-null.
  */
-public class DateFormatColumnDecorator implements DisplaytagColumnDecorator {
-    
-    private static final Pattern DATE_PATTERN = Pattern.compile("(\\d{4})[\\/-](\\d{2})[\\/-](\\d{2})");
-    private static final String DATE_DELIMITER = "/";
+public class NumericColumnDisplayTagComparator implements Comparator<Object> {
+
     /**
      * {@inheritDoc}
      */
-    public Object decorate(Object columnValue, PageContext pageContext, MediaTypeEnum media) throws DecoratorException {
-        Matcher matcher = DATE_PATTERN.matcher(columnValue.toString());
-        if (matcher.find()) {
-            return matcher.group(2) + DATE_DELIMITER + matcher.group(3) + DATE_DELIMITER + matcher.group(1);
-        }
-        return columnValue;
+    public int compare(Object o1, Object o2) {
+        String string1 = createStringFromObject(o1);
+        String string2 = createStringFromObject(o2);
+        try {
+            return Double.valueOf(string1).compareTo(Double.valueOf(string2)); 
+        } catch (Exception e) {
+            return string1.compareTo(string2);
+        }      
+    }
+
+    private String createStringFromObject(Object o) {
+        String string = o.toString();
+        string = string.replace("Cell[staticValue=", "");
+        string = string.replaceAll("\r", "");
+        string = string.replaceAll("\n", "");
+        string = string.replace("]", "");
+        string = string.trim();
+        return string;
     }
 
 }

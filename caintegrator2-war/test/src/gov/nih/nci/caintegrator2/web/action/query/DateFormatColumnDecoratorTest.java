@@ -83,7 +83,7 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.web.action.query;
 
 import static org.junit.Assert.assertEquals;
 
@@ -97,7 +97,7 @@ import org.junit.Test;
 public class DateFormatColumnDecoratorTest {
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.query.DateFormatColumnDecorator#decorate(java.lang.Object, javax.servlet.jsp.PageContext, org.displaytag.properties.MediaTypeEnum)}.
+     * Test method for {@link gov.nih.nci.caintegrator2.web.action.query.DateFormatColumnDecorator#decorate(java.lang.Object, javax.servlet.jsp.PageContext, org.displaytag.properties.MediaTypeEnum)}.
      * @throws DecoratorException 
      */
     @Test
