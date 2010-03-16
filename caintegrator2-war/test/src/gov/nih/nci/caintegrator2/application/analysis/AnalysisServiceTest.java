@@ -433,14 +433,14 @@ public class AnalysisServiceTest {
     private void runGEPlotTest(StudySubscription subscription, AbstractGEPlotParameters parameters) 
     throws ControlSamplesNotMappedException, InvalidCriterionException, GenesNotFoundInStudyException {
         try {
-            daoStub.returnNoGeneSymbols = true;
+            queryManagementServiceForKmPlotStub.throwGenesNotFoundException = true;
             service.createGeneExpressionPlot(subscription, parameters);
             if (!(parameters instanceof GEPlotGenomicQueryBasedParameters)) { // Genomic Query doesn't have gene input.
                 fail();
             }
         } catch (GenesNotFoundInStudyException e) {
             // expected result.
-            daoStub.clear();
+            queryManagementServiceForKmPlotStub.clear();
         }
         
         GeneExpressionPlotGroup gePlot = service.createGeneExpressionPlot(subscription, parameters);

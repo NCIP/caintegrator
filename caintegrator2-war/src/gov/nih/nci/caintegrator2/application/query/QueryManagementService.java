@@ -87,9 +87,11 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.CaIntegrator2EntityRefresher;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
@@ -170,5 +172,15 @@ public interface QueryManagementService extends CaIntegrator2EntityRefresher {
      * @return csv file.
      */
     File createCsvFileFromGenomicResults(GenomicDataQueryResult result);
+    
+    /**
+     * Validates the gene symbols and returns all symbols that exist in the study.
+     * @param studySubscription to check gene symbols against.
+     * @param geneSymbols to validate existance in the study.
+     * @return all valid gene symbols.
+     * @throws GenesNotFoundInStudyException if no genes are found.
+     */
+    List<String> validateGeneSymbols(StudySubscription studySubscription, List<String> geneSymbols)
+        throws GenesNotFoundInStudyException;
 
 }

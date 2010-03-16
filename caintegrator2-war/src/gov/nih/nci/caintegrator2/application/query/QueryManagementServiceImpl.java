@@ -86,7 +86,9 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
@@ -94,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
@@ -108,8 +111,10 @@ import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -137,6 +142,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     @Transactional(readOnly = true)
     public QueryResult execute(Query query) throws InvalidCriterionException {
+        addGenesNotFoundToQuery(query);
         QueryTranslator queryTranslator = new QueryTranslator(query, getDao(), arrayDataService, resultHandler);
         return queryTranslator.execute();
     }
@@ -146,8 +152,21 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     @Transactional(readOnly = true)
     public GenomicDataQueryResult executeGenomicDataQuery(Query query) throws InvalidCriterionException {
+        addGenesNotFoundToQuery(query);
         GenomicQueryHandler handler = new GenomicQueryHandler(query, getDao(), arrayDataService);
         return handler.execute();
+    }
+    
+    private void addGenesNotFoundToQuery(Query query) throws InvalidCriterionException {
+        List<String> allGeneSymbols = query.getCompoundCriterion().getAllGeneSymbols();
+        if (!allGeneSymbols.isEmpty()) {
+            query.getGeneSymbolsNotFound().clear();
+            try {
+                query.getGeneSymbolsNotFound().addAll(validateGeneSymbols(query.getSubscription(), allGeneSymbols));
+            } catch (GenesNotFoundInStudyException e) {
+                throw new InvalidCriterionException(e.getMessage(), e);
+            }
+        }
     }
     
     /**
@@ -278,6 +297,27 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     public void delete(Query query) {
         getDao().delete(query);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<String> validateGeneSymbols(StudySubscription studySubscription, List<String> geneSymbols)
+            throws GenesNotFoundInStudyException {
+        List<String> genesNotFound = new ArrayList<String>();
+        Set<String> genesInStudy = getDao().retrieveGeneSymbolsInStudy(geneSymbols, studySubscription.getStudy());
+        if (genesInStudy.isEmpty()) {
+            throw new GenesNotFoundInStudyException("None of the specified genes were found in study.");
+        }
+        for (String geneSymbol : geneSymbols) {
+            if (!Cai2Util.containsIgnoreCase(genesInStudy, geneSymbol)) {
+                genesNotFound.add(geneSymbol);
+            }
+        }
+        if (!genesNotFound.isEmpty()) {
+            Collections.sort(genesNotFound);
+        }
+        return genesNotFound;
     }
 
     /**

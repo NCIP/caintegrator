@@ -1,8 +1,10 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * 
@@ -58,5 +60,25 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
             clones.add((AbstractCriterion) abstractCriterion.clone());
         }
         return clones;
+    }
+    
+    /**
+     * @return Returns all gene symbols for all criterion under this compound criterion.
+     */
+    public List<String> getAllGeneSymbols() {
+        List<String> geneSymbolsInQuery = new ArrayList<String>();
+        for (AbstractCriterion criterion : getCriterionCollection()) {
+            geneSymbolsInQuery.addAll(criterion.getGeneSymbolsInCriterion());
+        }
+        
+        return geneSymbolsInQuery;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected List<String> getGeneSymbolsInCriterion() {
+        return getAllGeneSymbols();
     }
 }

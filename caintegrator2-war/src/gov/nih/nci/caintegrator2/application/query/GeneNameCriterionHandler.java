@@ -99,7 +99,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -145,9 +144,7 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
             throw new IllegalArgumentException("ReporterType is not set.");
         }
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-        Set<String> geneSymbols = new HashSet<String>();
-        geneSymbols.addAll(Arrays.asList(criterion.getGeneSymbol().replaceAll("\\s*", "").split(",")));
-        reporters.addAll(dao.findReportersForGenes(geneSymbols, reporterType, study));
+        reporters.addAll(dao.findReportersForGenes(criterion.getGeneSymbols(), reporterType, study));
         return reporters;
     }
 
