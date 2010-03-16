@@ -252,6 +252,12 @@ public class QueryManagementServiceImplTest {
         foldChangeCriterion.setRegulationType(RegulationTypeEnum.UNCHANGED);
         result = queryManagementService.executeGenomicDataQuery(query);
         assertEquals(0, result.getFilteredRowCollection().size());
+        try {
+            foldChangeCriterion.setGeneSymbol("EGFR");
+            result = queryManagementService.executeGenomicDataQuery(query);
+            fail("Should have caught invalid criterion exception because genes are not found.");
+        } catch (InvalidCriterionException e) {
+        }
     }
 
     

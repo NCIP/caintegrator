@@ -1,9 +1,11 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
+import java.util.List;
+
 /**
  * 
  */
-public class AbstractGenomicCriterion extends AbstractCriterion implements Cloneable {
+public abstract class AbstractGenomicCriterion extends AbstractCriterion implements Cloneable {
 
     private static final long serialVersionUID = 1L;
 
@@ -13,5 +15,11 @@ public class AbstractGenomicCriterion extends AbstractCriterion implements Clone
     protected AbstractGenomicCriterion clone() throws CloneNotSupportedException {
         return (AbstractGenomicCriterion) super.clone();
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected abstract List<String> getGeneSymbolsInCriterion();
 
 }

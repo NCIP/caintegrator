@@ -38,7 +38,15 @@
    &nbsp;</a>
         </div>
     </div>
-
+    <s:if test="%{!query.geneSymbolsNotFound.isEmpty()}" >
+        <div style="color: red;"> Warning: The following gene(s) were in the criterion but not found: 
+        <s:iterator value="query.geneSymbolsNotFound" status="geneSymbolStatus">
+            <b>
+            <s:property /><s:if test="!#geneSymbolStatus.last">,</s:if>
+            </b>
+        </s:iterator>
+        </div>
+    </s:if>
     <div id="queryResultsDiv" >
         <s:if test='%{query.resultType.value.equals("genomic")}'>
         <s:set name="genomicDataNeedsHighlighting" value="genomicDataQueryResult.hasCriterionSpecifiedReporterValues" />
