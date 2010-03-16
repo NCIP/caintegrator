@@ -112,7 +112,6 @@
     }
     
     function sortGenomicResult(type, index) {
-    alert(type + " - " + index);
         document.manageQueryForm.genomicSortingType.value = type;
         document.manageQueryForm.genomicSortingIndex.value = index;
         submitForm("sortGenomicResult");
