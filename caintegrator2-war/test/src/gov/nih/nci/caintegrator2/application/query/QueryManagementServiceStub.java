@@ -85,9 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
@@ -110,6 +112,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public boolean createCsvFileFromGenomicResultCalled;
     private GenomicDataQueryResult expectedGenomicResult = new GenomicDataQueryResult();
     public boolean getRefreshedEntityCalled;
+    public boolean throwGenesNotFoundException = false;
 
     public void save(Query query) {
         query.setId(1L);
@@ -144,6 +147,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
         executeGenomicDataQueryCalled = false;
         createCsvFileFromGenomicResultCalled = false;
         getRefreshedEntityCalled = false;
+        throwGenesNotFoundException = false;
     }
 
 
@@ -195,6 +199,14 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public <T> T getRefreshedEntity(T entity) {
         getRefreshedEntityCalled = true;
         return entity;
+    }
+
+    public List<String> validateGeneSymbols(StudySubscription studySubscription, List<String> geneSymbols)
+            throws GenesNotFoundInStudyException {
+        if (throwGenesNotFoundException) {
+            throw new GenesNotFoundInStudyException("");
+        }
+        return new ArrayList<String>();
     }
     
 }

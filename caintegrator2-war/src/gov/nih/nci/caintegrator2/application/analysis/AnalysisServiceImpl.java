@@ -122,9 +122,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -292,20 +290,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
      */
     public List<String> validateGeneSymbols(StudySubscription studySubscription, List<String> geneSymbols)
             throws GenesNotFoundInStudyException {
-        List<String> genesNotFound = new ArrayList<String>();
-        Set<String> genesInStudy = getDao().retrieveGeneSymbolsInStudy(geneSymbols, studySubscription.getStudy());
-        if (genesInStudy.isEmpty()) {
-            throw new GenesNotFoundInStudyException("None of the specified genes were found in study.");
-        }
-        for (String geneSymbol : geneSymbols) {
-            if (!Cai2Util.containsIgnoreCase(genesInStudy, geneSymbol)) {
-                genesNotFound.add(geneSymbol);
-            }
-        }
-        if (!genesNotFound.isEmpty()) {
-            Collections.sort(genesNotFound);
-        }
-        return genesNotFound;
+        return queryManagementService.validateGeneSymbols(studySubscription, geneSymbols);
     }
     
     private File createClassificationFile(StudySubscription studySubscription, List<Query> clinicalQueries,

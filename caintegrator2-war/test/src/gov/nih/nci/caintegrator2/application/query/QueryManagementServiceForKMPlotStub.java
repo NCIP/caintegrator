@@ -176,6 +176,7 @@ public class QueryManagementServiceForKMPlotStub extends QueryManagementServiceS
     }
 
     public void clear() {
+        super.clear();
         saveCalled = false;
         executeCalled = false;
         executeGenomicDataQueryCalled = false;

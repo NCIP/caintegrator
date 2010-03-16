@@ -27,6 +27,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
     private CompoundCriterion compoundCriterion = new CompoundCriterion();
     private Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
     private transient boolean subjectListQuery = false;
+    private transient List<String> geneSymbolsNotFound = new ArrayList<String>();
     
     /**
      * @return the description
@@ -214,6 +215,20 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
         for (int i = 0; i < columns.size(); i++) {
             columns.get(i).setColumnIndex(i);
         }
+    }
+
+    /**
+     * @return the geneSymbolsNotFound
+     */
+    public List<String> getGeneSymbolsNotFound() {
+        return geneSymbolsNotFound;
+    }
+
+    /**
+     * @param geneSymbolsNotFound the geneSymbolsNotFound to set
+     */
+    public void setGeneSymbolsNotFound(List<String> geneSymbolsNotFound) {
+        this.geneSymbolsNotFound = geneSymbolsNotFound;
     }
 
 }
