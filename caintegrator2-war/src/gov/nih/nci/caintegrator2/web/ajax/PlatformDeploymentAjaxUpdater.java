@@ -241,7 +241,8 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
             utilThis.setValue(JOB_DELETE_PLATFORM_URL + platformConfigurationId, 
                     "<a href=\"deletePlatform.action?platformConfigurationId=" 
                     + platformConfiguration.getId() 
-                    + "\" onclick=\"return confirm('This platform will be permanently deleted.')\">Delete</a>",
+                    + "\" onclick=\"if (confirm('This platform will be permanently deleted.'))"
+                    + "{showBusyDialog();return true;}return false;\">Delete</a>",
                     false);
         } else {
             utilThis.setValue(JOB_DELETE_PLATFORM_URL, "None");
