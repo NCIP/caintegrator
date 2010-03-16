@@ -122,7 +122,7 @@ public class QueryForm {
     private boolean studyHasSavedLists = false;
     
     private String genomicPreviousSorting;
-    private int genomicSortingOrder = 1;
+    private int genomicSortingOrder = -1;
     
     /**
      * Configures a new query.

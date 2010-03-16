@@ -153,7 +153,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     private String subjectListName = "";
     private String subjectListDescription = "";
     private String genomicSortingType;
-    private int genomicSortingIndex;
+    private String genomicSortingIndex;
 
     /**
      * @return the genomicSortingType
@@ -162,7 +162,6 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         return genomicSortingType;
     }
 
-
     /**
      * @param genomicSortingType the genomicSortingType to set
      */
@@ -170,11 +169,10 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         this.genomicSortingType = genomicSortingType;
     }
 
-
     /**
      * @return the genomicSortingIndex
      */
-    public int getGenomicSortingIndex() {
+    public String getGenomicSortingIndex() {
         return genomicSortingIndex;
     }
 
@@ -182,7 +180,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     /**
      * @param genomicSortingIndex the genomicSortingIndex to set
      */
-    public void setGenomicSortingIndex(int genomicSortingIndex) {
+    public void setGenomicSortingIndex(String genomicSortingIndex) {
         this.genomicSortingIndex = genomicSortingIndex;
     }
 
@@ -553,7 +551,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      */
     public String executeQuery() {
         getQueryForm().setGenomicPreviousSorting("None");
-        getQueryForm().setGenomicSortingOrder(1);
+        getQueryForm().setGenomicSortingOrder(-1);
         ensureQueryIsLoaded();
         updateSorting();
         try {
@@ -851,7 +849,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         if (getQueryForm().getGenomicPreviousSorting().equals(genomicSortingType + genomicSortingIndex)) {
             getQueryForm().reverseGenomicSortingOrder();
         } else {
-            getQueryForm().setGenomicSortingOrder(1);
+            getQueryForm().setGenomicSortingOrder(-1);
         }
         getQueryForm().setGenomicPreviousSorting(genomicSortingType + genomicSortingIndex);
         return ("column".equals(genomicSortingType)) ? sortGenomicColumn() : sortGenomicRow();
@@ -860,7 +858,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     private String sortGenomicColumn() {
         for (GenomicDataResultColumn genomicDataResultColumn : getGenomicDataQueryResult().getColumnCollection()) {
             genomicDataResultColumn.setSortedValue(
-                    genomicDataResultColumn.getValues().get(genomicSortingIndex).getValue());
+                    genomicDataResultColumn.getValues().get(Integer.valueOf(genomicSortingIndex)).getValue());
         }
         Collections.sort(getGenomicDataQueryResult().getColumnCollection(),
                 new GenomicDataResultComparator(getQueryForm().getGenomicSortingOrder()));
@@ -870,7 +868,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     private String sortGenomicRow() {
         for (GenomicDataResultRow genomicDataResultRow : getGenomicDataQueryResult().getRowCollection()) {
             genomicDataResultRow.setSortedValue(
-                    genomicDataResultRow.getValues().get(genomicSortingIndex).getValue());
+                    genomicDataResultRow.getValues().get(Integer.valueOf(genomicSortingIndex)).getValue());
         }
         Collections.sort(getGenomicDataQueryResult().getRowCollection(),
                 new GenomicDataResultComparator(getQueryForm().getGenomicSortingOrder()));
