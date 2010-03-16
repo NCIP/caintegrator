@@ -76,7 +76,8 @@ Guide to this file:
 	</panel>
 	<!-- Upgrade container.all -->
 	<panel order="3">
-		<field type="title" txt="Reading property values from installations specified in previous screen.  Please click Next to continue." bold="true" size="1" />
+		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
+		<field type="staticText" txt="Please click Next to continue." bold="true" size="1" />
 		<panelreader classname="pre-install/install.xml" methodname="upgrade:common:init" language="ant">
 			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="application.base.path"/>
 			<inpropertymap inpropertyname="jboss.home" inpropertyvalue="jboss.home"/>
@@ -174,7 +175,8 @@ Guide to this file:
 	</panel>
 	<!-- Upgrade container.jboss -->
 	<panel order="4">
-		<field type="title" txt="Reading property values from installations specified in previous screen.  Please click Next to continue." bold="true" size="1" />
+		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
+		<field type="staticText" txt="Please click Next to continue." bold="true" size="1" />
 		<panelreader classname="pre-install/install.xml" methodname="upgrade:jboss:init" language="ant">
 			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="application.base.path"/>
 			<inpropertymap inpropertyname="jboss.home" inpropertyvalue="jboss.home"/>
@@ -271,7 +273,8 @@ Guide to this file:
 	</panel>
 	<!-- Upgrade container.tomcat -->
 	<panel order="5">
-		<field type="title" txt="Reading property values from installations specified in previous screen.  Please click Next to continue." bold="true" size="1" />
+		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
+		<field type="staticText" txt="Please click Next to continue." bold="true" size="1" />
 		<panelreader classname="pre-install/install.xml" methodname="upgrade:tomcat:init" language="ant">
 			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="application.base.path"/>
 			<inpropertymap inpropertyname="tomcat.home" inpropertyvalue="tomcat.home"/>
@@ -334,7 +337,8 @@ Guide to this file:
 	</panel>
 	<!-- Upgrade container.database -->
 	<panel order="6">
-		<field type="title" txt="Reading property values from installations specified in previous screen.  Please click Next to continue." bold="true" size="1" />
+		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
+		<field type="staticText" txt="Please click Next to continue." bold="true" size="1" />
 		<panelreader classname="pre-install/install.xml" methodname="upgrade:database:init" language="ant">
 			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="application.base.path"/>
 			<inpropertymap inpropertyname="jboss.home" inpropertyvalue="jboss.home"/>
