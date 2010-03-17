@@ -138,7 +138,7 @@
                                     <b><s:property value="reporter.geneSymbols" /></b>&nbsp;
                                 </a>
                                 <a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
-                                    <b>Info</b>
+                                    <img src="/caintegrator2/images/ico_info.gif" border="none"/>
                                 </a>
                             </s:else>
                         </td>
