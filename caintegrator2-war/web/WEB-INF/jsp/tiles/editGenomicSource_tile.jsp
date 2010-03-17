@@ -68,6 +68,11 @@
             	        </tr>
                     </s:if>
                     <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" />
+                    <tr>
+                    <td class="tdLabel">
+                    (Note:  caArray v 2.3 or newer is required)
+                    </td>
+                    </tr>
                     <s:textfield label="caArray Server JNDI Port" name="genomicSource.serverProfile.port" />
                     <!-- NOTE - using custom struts theme to turn off autocomplete -->
                     <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" theme="cai2xhtml" />
