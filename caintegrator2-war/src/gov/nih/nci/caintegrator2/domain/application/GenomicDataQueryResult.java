@@ -39,13 +39,10 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
      * @return filtered rows based on having any criterion matches.
      */
     public List<GenomicDataResultRow> getFilteredRowCollection() {
-        if (!hasCriterionSpecifiedReporterValues) {
-            return rowCollection;
-        }
         List<GenomicDataResultRow> filteredRows = new ArrayList<GenomicDataResultRow>();
         for (int i = 0; i < rowCollection.size(); i++) {
             GenomicDataResultRow row = rowCollection.get(i);
-            if (row.isHasMatchingValues()) {
+            if (!hasCriterionSpecifiedReporterValues || row.isHasMatchingValues()) {
                 row.setNonFilterIndex(i);
                 filteredRows.add(row);
             }
