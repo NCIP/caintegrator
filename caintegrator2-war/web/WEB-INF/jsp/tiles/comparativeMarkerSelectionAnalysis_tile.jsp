@@ -27,7 +27,7 @@
             
             <s:optiontransferselect
                 id="allQueries"
-                label="Clincal Queries and Lists"
+                label="Annotation Queries and Lists"
                 doubleId="querySelections"
                 name="comparativeMarkerSelectionAnalysisForm.unselectedQueryNames"
                 list="comparativeMarkerSelectionAnalysisForm.unselectedQueries"
@@ -52,7 +52,7 @@
                 doubleCssStyle="min-width:200px; vertical-align=middle; font-weight:bold; color: #475B82; background-color: #E9E9E9;"
                 buttonCssStyle="min-width:100px; vertical-align=middle;"
                 required="true" 
-                title="Must select two clinical queries and/or subject lists, which are used to group the samples into two separate classifications to run against ComparativeMarkerSelection. The queries and lists selected here have been previously saved by the user.  Selected queries and lists will result in the processing of only those samples which are mapped to patients in the saved query or list result."/>
+                title="Must select two annotation queries and/or subject lists, which are used to group the samples into two separate classifications to run against ComparativeMarkerSelection. The queries and lists selected here have been previously saved by the user.  Selected queries and lists will result in the processing of only those samples which are mapped to patients in the saved query or list result."/>
             
             <s:checkbox name="preprocessDatasetParameterSet.filterFlag" label="Filter flag" labelposition="left" />
             <s:select name="preprocessDatasetParameters.preprocessingFlag" label="Preprocessing Flag"

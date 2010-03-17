@@ -159,7 +159,7 @@
                             list="@gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnum@getStringValues()"
                             required="true" label="Select Mapping File Type:"
                             onclick="disableFormElement(this, 'Auto (No File Required)', document.imagingSourceForm, imageClinicalMappingFile)"/>
-                		<s:file name="imageClinicalMappingFile" label="Clinical to Imaging Mapping File" size="40" disabled="true"/>
+                		<s:file name="imageClinicalMappingFile" label="Subject to Imaging Mapping File" size="40" disabled="true"/>
                 </tr>
                 <tr> 
             	    <td></td>

@@ -43,7 +43,7 @@
     <sx:tabbedpanel id="mainTabPanel" selectedTab="%{displayTab}" templateCssPath="/common/css/TabContainer.css">
         <sx:div href="%{annotationBasedUrl}" id="annotationTab" label="For Annotation" showLoadingText="true" />
         <sx:div href="%{genomicQueryBasedUrl}" id="genomicQueryTab" label="For Genomic Queries" showLoadingText="true"/>
-        <sx:div href="%{clinicalQueryBasedUrl}" id="clinicalQueryTab" label="For Clinical Queries and Saved Lists" showLoadingText="true"/>
+        <sx:div href="%{clinicalQueryBasedUrl}" id="clinicalQueryTab" label="For Annotation Queries and Saved Lists" showLoadingText="true"/>
     </sx:tabbedpanel>
 
 	<!--/Tab Box-->
