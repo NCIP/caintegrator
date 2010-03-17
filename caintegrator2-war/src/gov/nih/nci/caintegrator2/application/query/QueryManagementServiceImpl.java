@@ -159,7 +159,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     
     private void addGenesNotFoundToQuery(Query query) throws InvalidCriterionException {
         List<String> allGeneSymbols = query.getCompoundCriterion().getAllGeneSymbols();
-        if (!allGeneSymbols.isEmpty()) {
+        if (!allGeneSymbols.isEmpty() && !isQueryOnAllGenes(allGeneSymbols)) {
             query.getGeneSymbolsNotFound().clear();
             try {
                 query.getGeneSymbolsNotFound().addAll(validateGeneSymbols(query.getSubscription(), allGeneSymbols));
@@ -169,6 +169,13 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
     }
     
+    private boolean isQueryOnAllGenes(Collection<String> allGeneSymbols) {
+        if (allGeneSymbols.contains("")) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * {@inheritDoc}
      */
