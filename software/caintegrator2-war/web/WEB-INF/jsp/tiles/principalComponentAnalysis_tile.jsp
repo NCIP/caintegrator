@@ -23,8 +23,8 @@
                 <s:div cssStyle="text-align:left; width: 550px; margin-left: auto; margin-right: auto;">
                 <span style="font-weight:bold;">Job Name</span> - Please enter a job name.<br>
                 <span style="font-weight:bold;">Principal Component Analysis Server</span> -  Select a PCA grid service from the dropdown.<br>
-                <span style="font-weight:bold;">Clinical Queries and Lists</span> - (Optional) Select a saved Clinical query or list to specify which samples will be processed.<br>
-                <span style="font-weight:bold;">Exclude Sample Control Set</span> - (Optional) Select a Control Sample Set to exclude from the Clinical Query.<br>
+                <span style="font-weight:bold;">Annotation Queries and Lists</span> - (Optional) Select a saved annotation query or list to specify which samples will be processed.<br>
+                <span style="font-weight:bold;">Exclude Sample Control Set</span> - (Optional) Select a Control Sample Set to exclude from the Annotation Query.<br>
                 <span style="font-weight:bold;">Enable Preprocess Dataset</span> - (Optional) Check this to display and configure preprocessing parameters.
                 </s:div>
 
@@ -43,14 +43,14 @@
             <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin-left: 0px;height:110px;width:100%">
                 <div class="wwlbl">&nbsp;</div >
                 <div class="wwctrl" style="width: 300px; white-space:normal; text-align: left; padding-top: 1em; padding-bottom: 1em;">For the
-                    Clinical query / list parameter below, choose either "All Samples" or a clinical query or list.  If "All Samples" is selected, then all samples will be used.  If a clinical query or list is selected, only those samples which map to the subjects in the clinical query/list results will be used.  The clinical queries and lists in this list have been previously saved by the user.  Control samples can be excluded from this processing by selecting a control set name in the Exclude Sample Control Set dropdown.
+                    Annotation query / list parameter below, choose either "All Samples" or a annotation query or list.  If "All Samples" is selected, then all samples will be used.  If a annotation query or list is selected, only those samples which map to the subjects in the annotation query/list results will be used.  The annotation queries and lists in this list have been previously saved by the user.  Control samples can be excluded from this processing by selecting a control set name in the Exclude Sample Control Set dropdown.
                 </div>
             </s:div>
             <s:select name="principalComponentAnalysisForm.selectedQueryName"
                 headerKey="" headerValue="All Samples"
-                list="principalComponentAnalysisForm.queries" listValue="value.displayName" label="Clincal Queries and Lists"
+                list="principalComponentAnalysisForm.queries" listValue="value.displayName" label="Annotation Queries and Lists"
                 required="false" theme="css_xhtml"
-                title="Clinical Queries and Lists enable the user to specify which samples will be processed using PCA.  The queries and lists selected here have been previously saved by the user.  Selected queries and lists will result in the processing of only those samples which are mapped to subjects in the saved query or list result."/>
+                title="Annotation Queries and Lists enable the user to specify which samples will be processed using PCA.  The queries and lists selected here have been previously saved by the user.  Selected queries and lists will result in the processing of only those samples which are mapped to subjects in the saved query or list result."/>
             <s:select name="principalComponentAnalysisForm.excludeControlSampleSetName"
                 headerKey="" headerValue="None"
                 list="controlSampleSets" label="Exclude Sample Control Set"

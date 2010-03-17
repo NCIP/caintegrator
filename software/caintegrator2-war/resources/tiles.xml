@@ -33,7 +33,7 @@
     
     <definition name="editClinicalFile" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editClinicalFile_tile.jsp" />
-        <put-attribute name="subTitle" value="Define Fields for Clinical Data" />
+        <put-attribute name="subTitle" value="Define Fields for Subject Data" />
     </definition>
     
 	<definition name="editImagingFile" extends="cssBaseDef">
