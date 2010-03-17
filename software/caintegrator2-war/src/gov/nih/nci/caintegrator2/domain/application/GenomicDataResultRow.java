@@ -17,7 +17,6 @@ public class GenomicDataResultRow extends AbstractCaIntegrator2Object implements
     private AbstractReporter reporter;
     private final List<GenomicDataResultValue> values = new ArrayList<GenomicDataResultValue>();
     private boolean hasMatchingValues = false;
-    private int nonFilterIndex;
     private Float sortedValue;
 
     /**
@@ -79,20 +78,6 @@ public class GenomicDataResultRow extends AbstractCaIntegrator2Object implements
      */
     public void setHasMatchingValues(boolean hasMatchingValues) {
         this.hasMatchingValues = hasMatchingValues;
-    }
-
-    /**
-     * @return the nonFilterIndex
-     */
-    public int getNonFilterIndex() {
-        return nonFilterIndex;
-    }
-
-    /**
-     * @param nonFilterIndex the nonFilterIndex to set
-     */
-    public void setNonFilterIndex(int nonFilterIndex) {
-        this.nonFilterIndex = nonFilterIndex;
     }
 
 }
