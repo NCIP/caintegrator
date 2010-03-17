@@ -132,8 +132,8 @@
                                 </a>
                             </s:if>
                             <s:else>
-                                <s:set name="nonFilterIndex" value="%{nonFilterIndex}"/>
-                                <a href="javascript:sortGenomicResult('column', ${nonFilterIndex})"
+                                <s:set name="rowIteratorIndex" value="%{#status.index}"/>
+                                <a href="javascript:sortGenomicResult('column', ${rowIteratorIndex})"
                                     style="border-bottom: 1px ridge #000000; color: #333333">
                                     <b><s:property value="reporter.geneSymbols" /></b>&nbsp;
                                 </a>
@@ -150,8 +150,8 @@
                         <th>Reporter ID</th>
                         <s:iterator value="genomicDataQueryResult.filteredRowCollection" status="status">
                             <th>
-                                <s:set name="nonFilterIndex" value="%{nonFilterIndex}"/>
-                                <a href="javascript:sortGenomicResult('column', ${nonFilterIndex})">
+                                <s:set name="rowIteratorIndex" value="%{#status.index}"/>
+                                <a href="javascript:sortGenomicResult('column', ${rowIteratorIndex})">
                                     <b><s:property value="reporter.name" /></b>
                                 </a>
                             </th>
