@@ -314,23 +314,34 @@ public class FileColumn extends AbstractCaIntegrator2Object implements Comparabl
             validateFieldDescriptorEntityType(type);
         }
         if (fieldDescriptor == null) {
-            fieldDescriptor = new AnnotationFieldDescriptor();
-            fieldDescriptor.setName(getName());
-            fieldDescriptor.setType(AnnotationFieldType.ANNOTATION);
-            fieldDescriptor.setAnnotationEntityType(type);
-            if (createNewAnnotationDefinition) {
-                AnnotationDefinition annotationDefinition = dao.getAnnotationDefinition(getName(),
-                        AnnotationTypeEnum.STRING);
-                if (annotationDefinition == null) {
-                    annotationDefinition = new AnnotationDefinition();
-                    annotationDefinition.setDefault(fieldDescriptor.getName());
-                }
-                fieldDescriptor.setDefinition(annotationDefinition);
-            }
-            AnnotationGroup defaultGroup = studyConfiguration.getStudy().getOrCreateDefaultAnnotationGroup();
-            fieldDescriptor.setAnnotationGroup(defaultGroup);
-            defaultGroup.getAnnotationFieldDescriptors().add(fieldDescriptor);
+            createNewAnnotationFieldDescriptor(dao, studyConfiguration, type, createNewAnnotationDefinition);
+        } else if (createNewAnnotationDefinition && fieldDescriptor.getDefinition() == null) {
+            createNewAnnotationDefinition(dao);
         }
+    }
+
+    private void createNewAnnotationFieldDescriptor(CaIntegrator2Dao dao, StudyConfiguration studyConfiguration,
+            EntityTypeEnum type, boolean createNewAnnotationDefinition) {
+        fieldDescriptor = new AnnotationFieldDescriptor();
+        fieldDescriptor.setName(getName());
+        fieldDescriptor.setType(AnnotationFieldType.ANNOTATION);
+        fieldDescriptor.setAnnotationEntityType(type);
+        if (createNewAnnotationDefinition) {
+            createNewAnnotationDefinition(dao);
+        }
+        AnnotationGroup defaultGroup = studyConfiguration.getStudy().getOrCreateDefaultAnnotationGroup();
+        fieldDescriptor.setAnnotationGroup(defaultGroup);
+        defaultGroup.getAnnotationFieldDescriptors().add(fieldDescriptor);
+    }
+
+    private void createNewAnnotationDefinition(CaIntegrator2Dao dao) {
+        AnnotationDefinition annotationDefinition = dao.getAnnotationDefinition(getName(),
+                AnnotationTypeEnum.STRING);
+        if (annotationDefinition == null) {
+            annotationDefinition = new AnnotationDefinition();
+            annotationDefinition.setDefault(fieldDescriptor.getName());
+        }
+        fieldDescriptor.setDefinition(annotationDefinition);
     }
 
 
