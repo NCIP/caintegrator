@@ -813,6 +813,10 @@ TABLE.form_wrapper_table FORM#addClinicalFile TABLE.form TD.tdLabel LABEL
 { font-size:92%; font-style:normal;}
 TABLE.form_wrapper_table FORM#addStudyLogo DIV DIV label
 { font-size:92%; font-style:normal;}
+TABLE.form_wrapper_table FORM#imagingSourceForm TABLE TD
+{ line-height: 2em;}
+TABLE.form_wrapper_table FORM#genomicSourceForm TABLE TD
+{ line-height: 2em;}
 TABLE.form_wrapper_table TABLE.form TD
 { width:280px; }
 .table_wrapper

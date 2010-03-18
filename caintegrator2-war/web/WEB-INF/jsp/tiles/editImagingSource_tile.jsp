@@ -103,9 +103,9 @@
             <tr>
                 <td colspan="2" style="padding: 5px;">    
 
-                <table>
                 <s:form id="imagingSourceForm" name="imagingSourceForm" 
                     action="saveImagingSource" method="post" enctype="multipart/form-data" >  <!-- action="saveImagingSource" -->
+                <table>
                 <tr>
                     <td>
                         <s:actionerror />
@@ -174,7 +174,8 @@
                 </tr>
                             </td>
                         </tr>
-                </table>
+                </table>                        
+                </s:form>                        
                 </td>
             </tr>
     </table>
@@ -240,7 +241,6 @@
     </table>
                 </s:if>
                     
-    </s:form>      
                 </td>
             </tr>
     </table>
