@@ -23,14 +23,27 @@
             }
         }
         
-        function showConfirmMessage() {
+        function saveGenomicSource() {
             if (document.genomicSourceForm.genomicSourceId.value != null
                     && document.genomicSourceForm.genomicSourceId.value != "") {
-                if (confirm("You are about to update the configuration information for this data source.  "
+                if ((origHostname != document.getElementById("caArrayHost").value)
+                    || (origPort != document.getElementById("caArrayPort").value)
+                    || (origUsername != document.getElementById("caArrayUsername").value)
+                    || (origPassword != document.getElementById("caArrayPassword").value)
+                    || (origExperimentId != document.getElementById("experimentId").value)
+                    || (origPlatformVendor != document.getElementById("platformVendor").value)
+                    || (origDataType != document.getElementById("dataType").value)
+                    || (origPlatformName != document.getElementById("platformName").value)) {
+                    if (confirm("You are about to update the configuration information for this data source.  "
                         + "Doing so will require you to remap your samples. "
                         + "Please click OK to update the data source or click Cancel to go back.")) {
-                	showBusyDialog();
-                    document.genomicSourceForm.submit();                
+                	    showBusyDialog();
+                        document.genomicSourceForm.submit();
+                    }
+                } else {
+                    document.genomicSourceForm.mappingData.value = "false";
+                    showBusyDialog();
+                    document.genomicSourceForm.submit();          
                 }
             } else {
             	showBusyDialog();
@@ -57,6 +70,7 @@
                 <s:form id="genomicSourceForm" name="genomicSourceForm" action="saveGenomicSource">
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="genomicSource.id" id="genomicSourceId"/>
+                    <s:hidden name="mappingData" value="true"/>
                     <s:if test="genomicSource.statusDescription != null && genomicSource.statusDescription.length() > 0">
             	        <tr>
             	            <td class="tdLabel" align="right">
@@ -67,18 +81,19 @@
             	            </td>
             	        </tr>
                     </s:if>
-                    <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" />
+                    <s:textfield label="caArray Web URL" name="genomicSource.serverProfile.url" id="caArrayUrl" />
+                    <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" id="caArrayHost" />
                     <tr>
-                    <td class="tdLabel">
-                    (Note:  caArray v 2.3 or newer is required)
-                    </td>
+                        <td class="tdLabel">
+                            (Note:  caArray v 2.3 or newer is required)
+                        </td>
                     </tr>
-                    <s:textfield label="caArray Server JNDI Port" name="genomicSource.serverProfile.port" />
+                    <s:textfield label="caArray Server JNDI Port" name="genomicSource.serverProfile.port" id="caArrayPort" />
                     <!-- NOTE - using custom struts theme to turn off autocomplete -->
-                    <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" theme="cai2xhtml" />
-                    <s:password label="caArray Password" name="genomicSource.serverProfile.password" theme="cai2xhtml"/>
+                    <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" id="caArrayUsername" theme="cai2xhtml" />
+                    <s:password label="caArray Password" name="genomicSource.serverProfile.password" id="caArrayPassword" theme="cai2xhtml"/>
                     <!--/NOTE --> 
-                    <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" />
+                    <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" id="experimentId" />
                     <s:select id="platformVendor" name="genomicSource.platformVendor" label="Vendor"
                         list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum@getValuesToDisplay()"
                         onchange="document.genomicSourceForm.action = 'refreshGenomicSource.action';
@@ -99,9 +114,19 @@
                                 onclick="document.genomicSourceForm.action = 'cancelGenomicSource.action';
                                 document.genomicSourceForm.submit();"> Cancel 
                             </button>
-                            <button type="button" onclick="showConfirmMessage()"> Save </button>
+                            <button type="button" onclick="saveGenomicSource()"> Save </button>
                         </td> 
                     </tr>
+                    <script type="text/javascript">
+                        var origHostname = document.genomicSourceForm.caArrayHost.value;
+                        var origPort = document.genomicSourceForm.caArrayPort.value;
+                        var origUsername = document.genomicSourceForm.caArrayUsername.value;
+                        var origPassword = document.genomicSourceForm.caArrayPassword.value;
+                        var origExperimentId = document.genomicSourceForm.experimentId.value;
+                        var origPlatformVendor = document.genomicSourceForm.platformVendor.value;
+                        var origDataType = document.genomicSourceForm.dataType.value;
+                        var origPlatformName = document.genomicSourceForm.platformName.value;
+                    </script>
                 </s:form>
                 </td>
             </tr>

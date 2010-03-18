@@ -123,6 +123,11 @@
                 <td align="right">Experiment:</td>
                 <td> 
                     Name: <b><s:property value="experimentName"/></b>
+                        <s:if test="hasCaArrayUrl()">
+                            <a href="${caArrayUrl}" target="cai2_CaArray" title="Click to go to caArray">
+                                <img src="/caintegrator2/images/caArray.gif" border="none"/>
+                            </a>
+                        </s:if>
                     <br>
                     Array Platforms: 
                         <s:iterator value="%{platforms}" status="platformStatus">
