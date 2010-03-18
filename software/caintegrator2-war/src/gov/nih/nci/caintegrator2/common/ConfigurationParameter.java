@@ -154,6 +154,11 @@ public enum ConfigurationParameter {
      * Default CaArray service URL.
      */
     CAARRAY_PORT("8080"),
+            
+    /**
+     * Default CaArray Web URL.
+     */
+    CAARRAY_URL("https://array.nci.nih.gov/caarray"),
     
     /**
      * Default CaDNACopy service URL.

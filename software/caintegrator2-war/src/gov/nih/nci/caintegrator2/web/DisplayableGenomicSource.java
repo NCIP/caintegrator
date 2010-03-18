@@ -91,6 +91,8 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.xwork.StringUtils;
+
 /**
  * 
  */
@@ -140,6 +142,21 @@ public class DisplayableGenomicSource {
      */
     public boolean isControlSamplesSet() {
         return getNumberControlSamples() > 0 ? true : false;
+    }
+    
+    /**
+     * @return T/F depending if there is caArray URL.
+     */
+    public boolean hasCaArrayUrl() {
+        return !StringUtils.isBlank(genomicDataSourceConfiguration.getServerProfile().getUrl());
+    }
+    
+    /**
+     * @return the CaArray URL for this experiment.
+     */
+    public String getCaArrayUrl() {
+        return genomicDataSourceConfiguration.getServerProfile().getUrl()
+            + "/project/" + genomicDataSourceConfiguration.getExperimentIdentifier();
     }
     
     /**
