@@ -292,4 +292,8 @@
         <comment>Deletes the tables linking Study to Annotation Definitions, and deletes unused column on RESULT_COLUMN and ABSTRACT_ANNOTATION_CRITERION</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.20.sql"/>
     </changeSet>
+    <changeSet id="1.1.21" author="nguyennh">
+        <comment>Add caArray default URL</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.21.sql"/>
+    </changeSet>
 </databaseChangeLog>

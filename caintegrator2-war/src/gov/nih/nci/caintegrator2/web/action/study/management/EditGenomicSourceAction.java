@@ -117,6 +117,22 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     private ArrayDataService arrayDataService;
     private CaArrayFacade caArrayFacade;
     private ConfigurationHelper configurationHelper;
+    
+    private boolean mappingData = true;
+
+    /**
+     * @return the mappingData
+     */
+    public boolean isMappingData() {
+        return mappingData;
+    }
+
+    /**
+     * @param mappingData the mappingData to set
+     */
+    public void setMappingData(boolean mappingData) {
+        this.mappingData = mappingData;
+    }
 
     /**
      * {@inheritDoc}
@@ -128,6 +144,8 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
                     getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_HOST));
             getGenomicSource().getServerProfile().setPort(
                 Integer.valueOf(getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_PORT)));
+            getGenomicSource().getServerProfile().setUrl(
+                    getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_URL));
         }
     }
 
@@ -187,13 +205,18 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         if (!validateSave()) {
             return INPUT;
         }
-        getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
-        if (getGenomicSource().getId() == null) {
-            runAsynchronousGenomicDataRetrieval(getGenomicSource());
-        } else { // Need to create a new source, delete the old one, and load the new one
-            GenomicDataSourceConfiguration newGenomicSource = createNewGenomicSource();
-            delete();
-            runAsynchronousGenomicDataRetrieval(newGenomicSource);
+        if (isMappingData()) {
+            getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
+            if (getGenomicSource().getId() == null) {
+                runAsynchronousGenomicDataRetrieval(getGenomicSource());
+            } else { // Need to create a new source, delete the old one, and load the new one
+                GenomicDataSourceConfiguration newGenomicSource = createNewGenomicSource();
+                delete();
+                runAsynchronousGenomicDataRetrieval(newGenomicSource);
+            }
+        } else {
+            setLastModifiedByCurrentUser();
+            getStudyManagementService().save(getStudyConfiguration());
         }
         return SUCCESS;
     }
