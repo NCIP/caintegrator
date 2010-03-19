@@ -74,6 +74,11 @@
         <filter-name>sessionFixation</filter-name>
         <filter-class>com.fiveamsolutions.nci.commons.web.filter.SessionFixationProtectionFilter</filter-class>
     </filter>
+    
+    <filter>
+      <filter-name>neverExpireFilter</filter-name>
+      <filter-class>gov.nih.nci.caintegrator2.web.filter.NeverExpireFilter</filter-class>
+    </filter>    
 
     <filter-mapping>
         <filter-name>sessionFixation</filter-name>
@@ -100,7 +105,22 @@
         <filter-name>struts2</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>neverExpireFilter</filter-name>
+        <url-pattern>/common/js/*</url-pattern>
+    </filter-mapping>
 
+    <filter-mapping>
+        <filter-name>neverExpireFilter</filter-name>
+        <url-pattern>/common/css/*</url-pattern>
+    </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>neverExpireFilter</filter-name>
+        <url-pattern>/images/*</url-pattern>
+    </filter-mapping>
+    
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
