@@ -824,7 +824,7 @@ TABLE.form_wrapper_table TABLE.form TD
 TABLE.form_wrapper_table TABLE.data
 { border:1px solid #999; }
 TABLE.form_wrapper_table TABLE.data TH
-{ padding:5px; border-top:0; border-bottom:1px solid #a8b8ce; border-right:1px solid #a8b8ce; background:#d6dce6 url("../images/bg_th.gif") repeat-x top; color:#333; font-size:100%; }
+{ padding:5px; border-top:0; border-bottom:1px solid #a8b8ce; border-right:1px solid #a8b8ce; background:#d6dce6 repeat-x top; color:#333; font-size:100%; }
 TABLE.form_wrapper_table TD.label
 { padding:5px }
 .formbox
