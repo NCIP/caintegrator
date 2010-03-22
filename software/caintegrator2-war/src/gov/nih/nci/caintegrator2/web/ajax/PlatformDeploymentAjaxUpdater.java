@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
 import java.util.ArrayList;
@@ -112,7 +113,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String JOB_PLATFORM_STATUS = "platformStatus_";
     private static final String JOB_PLATFORM_STATUS_DESCRIPTION = "platformStatusDescription_";
     private static final String JOB_ARRAY_NAME = "platformArrayName_";
-    private static final String JOB_DELETE_PLATFORM_URL = "platformJobDeleteUrl_";
+    private static final String JOB_ACTION_PLATFORM_URL = "platformJobActionUrl_";
     private static final String PLATFORM_LOADER = "platformLoader";
     private ArrayDataService arrayDataService;
 
@@ -172,7 +173,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
         rowString[0][3] = startSpan + JOB_ARRAY_NAME + id + endSpan;
         rowString[0][4] = startSpan + JOB_PLATFORM_STATUS + id + endSpan;
         rowString[0][5] = startSpan + JOB_PLATFORM_STATUS_DESCRIPTION + id + endSpan;
-        rowString[0][6] = startSpan + JOB_DELETE_PLATFORM_URL + id + endSpan;
+        rowString[0][6] = startSpan + JOB_ACTION_PLATFORM_URL + id + endSpan;
         return rowString;
     }
 
@@ -202,8 +203,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
         String platformConfigurationId = platformConfiguration.getId().toString();
         utilThis.setValue(JOB_PLATFORM_NAME + platformConfigurationId, 
                           retrievePlatformName(platformConfiguration));
-        utilThis.setValue(JOB_PLATFORM_TYPE + platformConfigurationId, 
-                            retrievePlatformType(platformConfiguration));
+        updateRowPlatformType(platformConfiguration, utilThis, platformConfigurationId);
         utilThis.setValue(JOB_PLATFORM_VENDOR + platformConfigurationId, 
                           retrievePlatformVendor(platformConfiguration));
         utilThis.setValue(JOB_ARRAY_NAME + platformConfigurationId, 
@@ -235,17 +235,39 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
                                        : platformConfiguration.getPlatform().getDisplayableArrayNames();
     }
 
+    private void updateRowPlatformType(PlatformConfiguration platformConfiguration, Util utilThis, 
+            String platformConfigurationId) {
+        if (UNAVAILABLE_STRING.equals(retrievePlatformType(platformConfiguration))) {
+            utilThis.setValue(JOB_PLATFORM_TYPE + platformConfigurationId,
+                    "<select id=\"platformType" + platformConfigurationId + "\">"
+                    + getPlatformTypeOptions() + "</select><br>");
+        } else {
+            utilThis.setValue(JOB_PLATFORM_TYPE + platformConfigurationId, 
+                            retrievePlatformType(platformConfiguration));
+        }
+    }
+    
+    private String getPlatformTypeOptions() {
+        StringBuffer options = new StringBuffer();
+        for (String type : PlatformTypeEnum.getValuesToDisplay()) {
+            options.append("<option value=\"" + type + "\">" + type + "</option>");
+        }
+        return options.toString();
+    }
+    
     private void updateRowActions(PlatformConfiguration platformConfiguration, Util utilThis, 
             String platformConfigurationId) {
-        if (!Status.PROCESSING.equals(platformConfiguration.getStatus()) && !platformConfiguration.isInUse()) {
-            utilThis.setValue(JOB_DELETE_PLATFORM_URL + platformConfigurationId, 
-                    "<a href=\"deletePlatform.action?platformConfigurationId=" 
-                    + platformConfiguration.getId() 
-                    + "\" onclick=\"if (confirm('This platform will be permanently deleted.'))"
-                    + "{showBusyDialog();return true;}return false;\">Delete</a>",
+        if (UNAVAILABLE_STRING.equals(retrievePlatformType(platformConfiguration))) {
+            utilThis.setValue(JOB_ACTION_PLATFORM_URL + platformConfigurationId,
+                    "<a href=\"javascript:submitAction('updatePlatformType'," + platformConfigurationId
+                    + ",'platformType" + platformConfigurationId + "');\">save</a>",
+                    false);
+        } else if (!Status.PROCESSING.equals(platformConfiguration.getStatus()) && !platformConfiguration.isInUse()) {
+            utilThis.setValue(JOB_ACTION_PLATFORM_URL + platformConfigurationId, 
+                    "<a href=\"javascript:submitAction('delete'," + platformConfigurationId + ",'');\">Delete</a>",
                     false);
         } else {
-            utilThis.setValue(JOB_DELETE_PLATFORM_URL, "None");
+            utilThis.setValue(JOB_ACTION_PLATFORM_URL, "None");
         }
     }
     

@@ -154,6 +154,18 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      */
     @Override
     public String execute() {
+        return checkEmptyPlatformType();
+    }
+    
+    private String checkEmptyPlatformType() {
+        for (PlatformConfiguration platformConfiguration : getArrayDataService().getPlatformConfigurations()) {
+            if (Status.LOADED.equals(platformConfiguration.getStatus())
+                    && platformConfiguration.getPlatformType() == null) {
+                addActionError("Some Platforms are missing 'Platform Type',"
+                    + " please go to the Manage Platforms page to select one.");
+                return ERROR;
+            }
+        }
         return SUCCESS;
     }
     
