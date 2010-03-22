@@ -214,6 +214,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
         config2.setId(1l);
         config2.setName("name2");
         config2.setStatus(Status.LOADED);
+        config2.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
         config2.setDeploymentStartDate(new Date());
         Platform platform = new Platform();
         platform.setName("name2");

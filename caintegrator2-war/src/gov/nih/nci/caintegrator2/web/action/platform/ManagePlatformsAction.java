@@ -126,6 +126,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     private String selectedAction;
     private IPlatformDeploymentAjaxUpdater ajaxUpdater;
     private String platformConfigurationId;
+    private String selectedPlatformType;
 
     private static final String CREATE_PLATFORM_ACTION = "createPlatform";
     private static final String ADD_FILE_ACTION = "addAnnotationFile";
@@ -180,18 +181,25 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     }
     
     /**
-     * @return SUCCESS
+     * @return the Struts result.
      */
-    public String deletePlatform() {
+    public String updatePlatform() {
         if (platformConfigurationId == null) {
-            addActionError("Cannot delete platform because the id is not given.");
+            addActionError("Cannot update platform because the id is not given.");
             return ERROR;
         }
         if (!SessionHelper.getInstance().isAuthenticated()) {
             addActionError("User is unauthenticated");
             return ERROR;
-        } 
-        getArrayDataService().deletePlatform(Long.valueOf(platformConfigurationId));
+        }
+        if ("delete".equalsIgnoreCase(selectedAction)) {
+            getArrayDataService().deletePlatform(Long.valueOf(platformConfigurationId));
+        } else {
+            PlatformConfiguration platformConfiguration = getArrayDataService().
+                getRefreshedPlatformConfiguration(Long.valueOf(platformConfigurationId));
+            platformConfiguration.setPlatformType(PlatformTypeEnum.getByValue(getSelectedPlatformType()));
+            getArrayDataService().savePlatformConfiguration(platformConfiguration);
+        }
         return SUCCESS;
     }
     
@@ -587,5 +595,19 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      */
     public void setPlatformConfigurationId(String platformConfigurationId) {
         this.platformConfigurationId = platformConfigurationId;
+    }
+
+    /**
+     * @return the selectedPlatformType
+     */
+    public String getSelectedPlatformType() {
+        return selectedPlatformType;
+    }
+
+    /**
+     * @param selectedPlatformType the selectedPlatformType to set
+     */
+    public void setSelectedPlatformType(String selectedPlatformType) {
+        this.selectedPlatformType = selectedPlatformType;
     }
 }

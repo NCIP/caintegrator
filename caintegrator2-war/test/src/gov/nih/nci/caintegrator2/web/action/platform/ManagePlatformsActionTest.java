@@ -387,10 +387,14 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
     }
 
     @Test
-    public void testDeletePlatform() {
-        assertEquals(ActionSupport.ERROR, action.deletePlatform());
+    public void testUpdatePlatform() {
+        action.setSelectedAction("delete");
+        assertEquals(ActionSupport.ERROR, action.updatePlatform());
         action.setPlatformConfigurationId("1");
-        assertEquals(ActionSupport.SUCCESS, action.deletePlatform());
+        assertEquals(ActionSupport.SUCCESS, action.updatePlatform());
+        action.setSelectedAction("updatePlatformType");
+        action.setSelectedPlatformType("Affymetrix SNP");
+        assertEquals(ActionSupport.SUCCESS, action.updatePlatform());
     }
 
     private static class PlatformDeploymentAjaxUpdaterStub implements IPlatformDeploymentAjaxUpdater {
