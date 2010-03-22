@@ -452,6 +452,7 @@
         
         <action name="editGenomicSource" class="editGenomicSourceAction">
             <result type="tiles">editGenomicSource</result>
+            <result name="error" type="tiles">genericError</result>
         </action>
         
         <action name="deleteGenomicSource" method="delete" class="editGenomicSourceAction">
@@ -1060,7 +1061,7 @@
             <result name="input" type="tiles">managePlatforms</result>
         </action>
       
-        <action name="deletePlatform" method="deletePlatform" class="managePlatformsAction">
+        <action name="updatePlatform" method="updatePlatform" class="managePlatformsAction">
             <result type="tiles">managePlatforms</result>
             <result name="error" type="tiles">managePlatforms</result>
         </action>

@@ -70,6 +70,21 @@
         showBusyDialog();
         return true;
     }
+    
+    function submitAction(selectAction, id, platformType) {
+        document.statusTableForm.selectedAction.value = selectAction;
+        document.statusTableForm.platformConfigurationId.value = id;
+        if (selectAction == 'delete') {
+            if (confirm('This platform will be permanently deleted.')) {
+                showBusyDialog();
+                document.statusTableForm.submit();
+            }
+        } else {
+            document.statusTableForm.selectedPlatformType.value = document.getElementById(platformType).value;
+            document.statusTableForm.submit();
+        }
+    }
+    
 </script>
 
     <h1><s:property value="#subTitleText" /></h1>
@@ -146,7 +161,12 @@
                                 <th>Status Description</th>
                                 <th>Action</th>
                             </tr>
-                            <tbody id="platformDeploymentJobStatusTable" />
+                            <s:form id="statusTableForm" action="updatePlatform" theme="simple">
+                                <s:hidden name="selectedAction" />
+                                <s:hidden name="platformConfigurationId" />
+                                <s:hidden name="selectedPlatformType" />
+                                <tbody id="platformDeploymentJobStatusTable" />
+                            </s:form>
                         </table>
 
                 </td>
