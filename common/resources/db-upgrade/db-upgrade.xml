@@ -296,4 +296,8 @@
         <comment>Add caArray default URL</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.21.sql"/>
     </changeSet>
+    <changeSet id="1.1.22" author="nguyennh">
+        <comment>Populate caArray-stage and caarray-qa URL</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.22.sql"/>
+    </changeSet>
 </databaseChangeLog>
