@@ -31,6 +31,11 @@
 			</bean>
 		</property>
 	</bean>
+	
+	<bean id="anonymousAuthenticationProvider" class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
+        <property name="key"><value>anonProviderKey</value></property>
+    </bean>
+	
 
 	<bean id="loggerListener" class="org.acegisecurity.event.authentication.LoggerListener"/>
  

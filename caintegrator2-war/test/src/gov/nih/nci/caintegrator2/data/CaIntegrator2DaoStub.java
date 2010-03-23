@@ -99,7 +99,6 @@ import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
@@ -162,7 +161,6 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         getWorkspaceCalled = true;
         UserWorkspace userWorkspace = new UserWorkspace();
         userWorkspace.setUsername(username);
-        userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
         return userWorkspace;
     }
 
@@ -463,6 +461,14 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public List<FileColumn> getFileColumnsUsingAnnotationFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) {
         
         return fileColumns;
+    }
+
+    public List<Study> getPublicStudies() {
+        getStudiesCalled = true;
+        Study study = new Study();
+        List<Study> studies = new ArrayList<Study>();
+        studies.add(study);
+        return studies;
     }
 
 }

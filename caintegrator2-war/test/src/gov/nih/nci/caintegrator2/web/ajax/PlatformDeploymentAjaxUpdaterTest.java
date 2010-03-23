@@ -89,13 +89,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.io.IOException;
-import java.util.HashSet;
 
 import javax.servlet.ServletException;
 
@@ -146,7 +144,6 @@ public class PlatformDeploymentAjaxUpdaterTest extends AbstractSessionBasedTest 
         public UserWorkspace getWorkspace() {
             UserWorkspace workspace = new UserWorkspace();
             workspace.setUsername("Test");
-            workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
             workspace.getSubscriptionCollection().add(getSubscription());
             
             return workspace;

@@ -110,7 +110,7 @@ implements ModelDriven<StudyConfiguration> {
         if (studyConfiguration.getId() != null) {
             try {
                 studyConfiguration = studyManagementService.getRefreshedSecureStudyConfiguration(
-                        SessionHelper.getInstance().getUsername(), studyConfiguration.getId());
+                        SessionHelper.getUsername(), studyConfiguration.getId());
             } catch (CSSecurityException e) {
                 setAuthorizedPage(false);
             }

@@ -2,17 +2,23 @@ package gov.nih.nci.caintegrator2.domain.application;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
  */
 public class UserWorkspace extends AbstractCaIntegrator2Object {
-
+    
+    /**
+     * Anonymous username.
+     */
+    public static final String ANONYMOUS_USER_NAME = "anonymousUser";
+    
     private static final long serialVersionUID = 1L;
     
     private String username;
-    private Collection<StudySubscription> subscriptionCollection;
+    private Set<StudySubscription> subscriptionCollection = new HashSet<StudySubscription>();
     private StudySubscription defaultSubscription;
     
     /**
@@ -32,14 +38,15 @@ public class UserWorkspace extends AbstractCaIntegrator2Object {
     /**
      * @return the subscriptionCollection
      */
-    public Collection<StudySubscription> getSubscriptionCollection() {
+    public Set<StudySubscription> getSubscriptionCollection() {
         return subscriptionCollection;
     }
     
     /**
      * @param subscriptionCollection the subscriptionCollection to set
      */
-    public void setSubscriptionCollection(Collection<StudySubscription> subscriptionCollection) {
+    @SuppressWarnings("unused") // For hibernate.
+    private void setSubscriptionCollection(Set<StudySubscription> subscriptionCollection) {
         this.subscriptionCollection = subscriptionCollection;
     }
     
@@ -55,6 +62,13 @@ public class UserWorkspace extends AbstractCaIntegrator2Object {
      */
     public void setDefaultSubscription(StudySubscription defaultSubscription) {
         this.defaultSubscription = defaultSubscription;
+    }
+    
+    /**
+     * @return if this is an anonymous user or not.
+     */
+    public boolean isAnonymousUser() {
+        return ANONYMOUS_USER_NAME.equals(username);
     }
 
 }

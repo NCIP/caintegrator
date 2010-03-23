@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.DateUtil;
+import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.application.AbstractList;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
@@ -113,7 +114,6 @@ import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -127,25 +127,48 @@ import org.springframework.transaction.annotation.Transactional;
 public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements WorkspaceService  {
     
     private SecurityManager securityManager;
-
+    
     /**
      * {@inheritDoc}
      */
     public UserWorkspace getWorkspace() {
         String username = SecurityHelper.getCurrentUsername();
-        UserWorkspace userWorkspace = getDao().getWorkspace(username);
+        UserWorkspace userWorkspace = retrieveExistingUserWorkspace(username);
         if (userWorkspace == null) {
             userWorkspace = createUserWorkspace(username);
             saveUserWorkspace(userWorkspace);
         }
         return userWorkspace;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly = true)
+    public UserWorkspace getWorkspaceReadOnly() {
+        return getWorkspace();
+    }
+
+    private UserWorkspace retrieveExistingUserWorkspace(String username) {
+        return UserWorkspace.ANONYMOUS_USER_NAME.equals(username) ? null : getDao().getWorkspace(username);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void refreshWorkspaceStudies(UserWorkspace workspace) {
+        for (StudySubscription subscription : workspace.getSubscriptionCollection()) {
+            subscription.setStudy(getRefreshedEntity(subscription.getStudy()));
+            HibernateUtil.loadCollection(subscription.getStudy());
+            subscription.getStudy().setStudyConfiguration(
+                    getRefreshedEntity(subscription.getStudy().getStudyConfiguration()));
+        }
+    }
 
     private UserWorkspace createUserWorkspace(String username) {
         UserWorkspace userWorkspace;
         userWorkspace = new UserWorkspace();
         userWorkspace.setUsername(username);
-        userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
         return userWorkspace;
     }
     
@@ -153,7 +176,18 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
      * @param workspace saves workspace.
      */
     public void saveUserWorkspace(UserWorkspace workspace) {
-        getDao().save(workspace);
+        if (!workspace.isAnonymousUser()) {
+            getDao().save(workspace);
+        } else {
+            fillStudySubscriptionIds(workspace);
+        }
+    }
+
+    private void fillStudySubscriptionIds(UserWorkspace workspace) {
+        int number = 1;
+        for (StudySubscription subscription : workspace.getSubscriptionCollection()) {
+            subscription.setId(Long.valueOf(number++));
+        }
     }
 
     /**
@@ -174,12 +208,25 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
             getDao().merge(job);
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly = true)
+    public void subscribeAllReadOnly(UserWorkspace userWorkspace) {
+        subscribeAll(userWorkspace);
+    }
 
     /**
      * {@inheritDoc}
      */
     public void subscribeAll(UserWorkspace userWorkspace) {
-        List<Study> myStudies = getDao().getStudies(userWorkspace.getUsername());
+        List<Study> myStudies = new ArrayList<Study>();
+        if (userWorkspace.isAnonymousUser()) {
+            myStudies.addAll(getDao().getPublicStudies());
+        } else {
+            myStudies.addAll(getDao().getStudies(userWorkspace.getUsername()));
+        }
         removeOldSubscriptions(userWorkspace, myStudies);
         subscribeAll(userWorkspace, myStudies);
     }
@@ -243,15 +290,21 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
     public void unsubscribe(UserWorkspace workspace, Study study) {
         for (StudySubscription subscription : workspace.getSubscriptionCollection()) {
             if (subscription.getStudy().equals(study)) {
-                workspace.getSubscriptionCollection().remove(subscription);
-                if (workspace.getDefaultSubscription() != null
-                        && workspace.getDefaultSubscription().equals(subscription)) {
-                    workspace.setDefaultSubscription(null);
-                }
-                saveUserWorkspace(workspace);
-                getDao().delete(subscription);
+                unsubscribe(workspace, subscription);
                 return;
             }
+        }
+    }
+
+    private void unsubscribe(UserWorkspace workspace, StudySubscription subscription) {
+        workspace.getSubscriptionCollection().remove(subscription);
+        if (workspace.getDefaultSubscription() != null
+                && workspace.getDefaultSubscription().equals(subscription)) {
+            workspace.setDefaultSubscription(null);
+        }
+        saveUserWorkspace(workspace);
+        if (!workspace.isAnonymousUser()) {
+            getDao().delete(subscription);
         }
     }
     

@@ -118,6 +118,11 @@
         <put-attribute name="subTitle" value="Error" />
     </definition>
     
+    <definition name="genericErrorWithMenu" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/genericError_tile.jsp" />
+        <put-attribute name="subTitle" value="Error" />
+    </definition>
+    
     <definition name="unauthorized" extends="cssBaseDef">
         <put-attribute name="leftNavMenu" value=""/>
         <put-attribute name="globalHeader" value="/WEB-INF/jsp/tiles/loginHeader_tile.jsp" />

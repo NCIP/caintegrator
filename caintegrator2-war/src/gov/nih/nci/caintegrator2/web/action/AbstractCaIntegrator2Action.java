@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action;
 
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
@@ -236,6 +237,16 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
             return getStudySubscription().getStudy();
         } else {
             return null;
+        }
+    }
+    
+    /**
+     * Refreshes genomic sources for any page that needs it.
+     */
+    protected final void refreshGenomicSources() {
+        if (getCurrentStudy() != null) {
+            HibernateUtil.loadGenomicSources(getWorkspaceService().getRefreshedEntity(
+                    getCurrentStudy().getStudyConfiguration()).getGenomicDataSources());
         }
     }
     
@@ -515,6 +526,15 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
      */
     public void setOpenSubjectListName(String openSubjectListName) {
         this.openSubjectListName = openSubjectListName;
+    }
+    
+    /**
+     * 
+     * @return if user is anonymous or not.
+     */
+    public boolean isAnonymousUser() {
+        return (getWorkspace() != null && UserWorkspace.ANONYMOUS_USER_NAME.equals(getWorkspace().getUsername())) 
+            ? true : false;
     }
     
 }

@@ -102,7 +102,6 @@ import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashSet;
 
 import javax.servlet.ServletException;
 
@@ -207,7 +206,6 @@ public class PersistedAnalysisJobAjaxUpdaterTest extends AbstractSessionBasedTes
             StudySubscription subscription = new StudySubscription();
             subscription.setId(Long.valueOf(1));
             subscription.setUserWorkspace(workspace);
-            workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
             workspace.getSubscriptionCollection().add(subscription);
             cmsJob.setSubscription(subscription);
             gpJob.setSubscription(subscription);

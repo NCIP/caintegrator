@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
@@ -102,6 +103,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.Collection;
@@ -165,8 +167,19 @@ public final class HibernateUtil {
                 loadSampleCollections(sampleAcquisition.getSample());
             }
         }
+        loadCollection(studyConfiguration.getStudy());
     }
-
+    
+    /**
+     * Loads study annotation groups.
+     * @param study to load.
+     */
+    public static void loadCollection(Study study) {
+        loadCollection(study.getAnnotationGroups());
+        for (AnnotationGroup group : study.getAnnotationGroups()) {
+            loadCollection(group.getAnnotationFieldDescriptors());
+        }
+    }
 
     /**
      * Make sure all persistent collections are loaded.

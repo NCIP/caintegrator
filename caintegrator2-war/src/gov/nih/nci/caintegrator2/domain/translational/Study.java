@@ -35,7 +35,8 @@ public class Study extends AbstractCaIntegrator2Object {
     private Timepoint defaultTimepoint;
     private Set<AnnotationGroup> annotationGroups = new HashSet<AnnotationGroup>();
     private StudyConfiguration studyConfiguration;
-
+    private Boolean publiclyAccessible = false;
+    
     /**
      * The default annotation group name.
      */
@@ -350,5 +351,19 @@ public class Study extends AbstractCaIntegrator2Object {
             }
         }
         return validSet;
+    }
+
+    /**
+     * @return the publiclyAccessible
+     */
+    public Boolean isPubliclyAccessible() {
+        return publiclyAccessible;
+    }
+
+    /**
+     * @param publiclyAccessible the publiclyAccessible to set
+     */
+    public void setPubliclyAccessible(Boolean publiclyAccessible) {
+        this.publiclyAccessible = publiclyAccessible;
     }
 }

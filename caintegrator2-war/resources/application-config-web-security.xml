@@ -18,7 +18,7 @@
 				/http/applicationservice/**=sessionContextIntegrationFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
 				/gethtml/**=sessionContextIntegrationFilter,logoutFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
 				/getxml/**=sessionContextIntegrationFilter,logoutFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
-				/**/*.action/**=sessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
+				/**/*.action/**=sessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
 				/j_acegi_security_check/**=sessionContextIntegrationFilter,authenticationProcessingFilter
 				/**=sessionContextIntegrationFilter,logoutFilter
 			</value>
@@ -30,8 +30,8 @@
  -->
 
 	<bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
-		<property name="key" value="changeThis"/>
-		<property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS"/>
+		<property name="key" value="anonProviderKey"/>
+		<property name="userAttribute" value="anonymousUser,IS_AUTHENTICATED_ANONYMOUSLY"/>
 	</bean>
 
  	<bean id="securityContextHolderAwareRequestFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter" lazy-init="default" autowire="default" dependency-check="default" /> 
@@ -88,7 +88,7 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
-				/**=IS_AUTHENTICATED_FULLY
+				/**=IS_AUTHENTICATED_ANONYMOUSLY,IS_AUTHENTICATED_FULLY
 			</value>
 		</property>
 	</bean>

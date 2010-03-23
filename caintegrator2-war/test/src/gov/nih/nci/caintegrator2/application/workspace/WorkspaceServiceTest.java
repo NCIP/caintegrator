@@ -90,6 +90,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.ExternalLinkList;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
@@ -110,6 +111,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -119,19 +121,25 @@ public class WorkspaceServiceTest {
     
     private WorkspaceService workspaceService;
     private CaIntegrator2DaoStub daoStub;
-
+    AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
+    
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("workspaceservice-test-config.xml", WorkspaceServiceTest.class); 
         workspaceService = (WorkspaceService) context.getBean("WorkspaceService"); 
         daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
         daoStub.clear();
+        authentication.setUsername("validUserName");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     @Test
     public void testGetWorkspace() {
         UserWorkspace workspace = workspaceService.getWorkspace();
         assertNotNull(workspace);
+        authentication.setUsername(UserWorkspace.ANONYMOUS_USER_NAME);
+        UserWorkspace workspaceAnonymous = workspaceService.getWorkspaceReadOnly();
+        assertTrue(workspaceAnonymous.isAnonymousUser());
         
         WorkspaceServiceImpl workspaceService2 = (WorkspaceServiceImpl) workspaceService;
         workspaceService2.setDao(new DaoStubNoWorkspace());
@@ -142,12 +150,24 @@ public class WorkspaceServiceTest {
     @Test
     public void testSubscribeAllStudies() {
         UserWorkspace workspace = workspaceService.getWorkspace();
-        workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(new Study());
         workspace.getSubscriptionCollection().add(studySubscription);
         assertEquals(1, workspace.getSubscriptionCollection().size());
         workspaceService.subscribeAll(workspace);
+        assertEquals(1, workspace.getSubscriptionCollection().size());
+        assertFalse(workspace.getSubscriptionCollection().contains(studySubscription));
+    }
+    
+    @Test
+    public void testSubscribeAllReadOnly() {
+        authentication.setUsername(UserWorkspace.ANONYMOUS_USER_NAME);
+        UserWorkspace workspace = workspaceService.getWorkspace();
+        StudySubscription studySubscription = new StudySubscription();
+        studySubscription.setStudy(new Study());
+        workspace.getSubscriptionCollection().add(studySubscription);
+        assertEquals(1, workspace.getSubscriptionCollection().size());
+        workspaceService.subscribeAllReadOnly(workspace);
         assertEquals(1, workspace.getSubscriptionCollection().size());
         assertFalse(workspace.getSubscriptionCollection().contains(studySubscription));
     }
@@ -262,9 +282,9 @@ public class WorkspaceServiceTest {
     @Test
     public void testCreateList() {
         UserWorkspace workspace = workspaceService.getWorkspace();
-        workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(new Study());
+        studySubscription.setUserWorkspace(workspace);
         workspace.getSubscriptionCollection().add(studySubscription);
         
         // Test Gene List

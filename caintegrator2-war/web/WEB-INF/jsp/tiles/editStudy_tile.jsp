@@ -73,6 +73,14 @@
                         <s:textarea label="Study Description" name="studyConfiguration.study.longTitleText" cols="40" rows="4" cssStyle="width: 280px;"/>
                         <tr>
                             <td class="tdLabel" align="right">
+                                <label class="label">Allow anonymous access to this study:</label>
+                            </td>
+                            <td>
+                                <s:checkbox name="studyConfiguration.study.publiclyAccessible" theme="simple"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdLabel" align="right">
                                 <label class="label">Status:</label>
                             </td>
                             <td>
