@@ -22,6 +22,10 @@
 
     <h1><s:property value="#subTitleText" /></h1>
     
+    <s:if test="%{anonymousUser}">
+    <font color="red"><strong>Must be registered to use this feature.</strong></font>
+    </s:if>
+    <s:else>
     <p>Click <strong>Create Gene List</strong> to create a new Gene List.</p>
     <div class="form_wrapper_outer">
  
@@ -84,6 +88,7 @@
             </tr>
         </table>   
     </div>
+    </s:else>
 </div>
 
 <div class="clear"><br />

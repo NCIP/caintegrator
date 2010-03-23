@@ -112,6 +112,18 @@ public interface WorkspaceService extends CaIntegrator2EntityRefresher {
     UserWorkspace getWorkspace();
     
     /**
+     * Returns the users workspace (read only, for anonymous user which won't be saved).
+     * @return the anonymous user's workspace.
+     */
+    UserWorkspace getWorkspaceReadOnly();
+    
+    /**
+     * Refreshes studies for hibernate.
+     * @param workspace to refresh studies for.
+     */
+    void refreshWorkspaceStudies(UserWorkspace workspace);
+    
+    /**
      * Retrieves the studyConfigurationJobs for the user workspace.
      * 
      * @param userWorkspace workspace of the user.
@@ -135,6 +147,12 @@ public interface WorkspaceService extends CaIntegrator2EntityRefresher {
      */
     void subscribeAll(UserWorkspace userWorkspace);
 
+    /**
+     * Subscribe to all studies for anonymous user.
+     * @param userWorkspace - object to use.
+     */
+    void subscribeAllReadOnly(UserWorkspace userWorkspace);
+    
     /**
      * Unsubscribes a user to a study.
      * 

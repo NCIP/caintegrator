@@ -374,6 +374,12 @@ public interface CaIntegrator2Dao {
     boolean isPlatformInUsed(Platform platform);
     
     /**
+     * Returns all studies ordered by name that are publicly accessible.
+     * @return publicly accessible studies.
+     */
+    List<Study> getPublicStudies();
+    
+    /**
      * Returns all studies ordered by name.
      * @param username for adding instance level security.
      * @return the studies.

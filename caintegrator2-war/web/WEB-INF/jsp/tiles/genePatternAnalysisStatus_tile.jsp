@@ -22,6 +22,10 @@
 
     <!--/Page Help-->        
     <h1><s:property value="#subTitleText" /></h1>
+    <s:if test="%{anonymousUser}">
+    <font color="red"><strong>Must be registered to use this feature.</strong></font>
+    </s:if>
+    <s:else>
     <s:set name="displayableWorkspace" value="#session['displayableWorkspace']" />
     <div id="errors" style="color: red;"> </div>
     <br><br>
@@ -48,6 +52,7 @@
         </tr>
         <tbody id="analysisJobStatusTable" />
     </table>
+    </s:else>
 </div>
 
 <div class="clear"><br /></div>

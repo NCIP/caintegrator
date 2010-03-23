@@ -306,6 +306,13 @@ public class QueryForm {
     public void setOrgQueryName(String orgQueryName) {
         this.orgQueryName = orgQueryName;
     }
+    
+    /**
+     * @return boolean of has image mapping data
+     */
+    public boolean hasImageDataSources() {
+        return query.getSubscription().getStudy().hasImageDataSources();
+    }
 
     /**
      * @return the controlSamplesInStudy

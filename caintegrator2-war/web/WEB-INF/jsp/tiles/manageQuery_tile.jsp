@@ -151,8 +151,9 @@
                 <sx:div href="%{columnsUrl}" id="columns" label="Results Type" formId="manageQueryForm" formFilter="filterParam" showLoadingText="true"/>
                 <sx:div href="%{sortingUrl}" id="sorting" label="Sorting" formId="manageQueryForm" refreshOnShow="true" showLoadingText="true"/>
                 <sx:div href="%{searchResultsUrl}" id="searchResults" label="Query Results" formId="manageQueryForm" formFilter="filterParam" showLoadingText="true"/>
-                <sx:div href="%{saveAsUrl}" id="saveAs" label="Save query as..." formId="manageQueryForm" formFilter="filterParam" showLoadingText="true"/>
-
+                <s:if test="%{!anonymousUser}">
+                    <sx:div href="%{saveAsUrl}" id="saveAs" label="Save query as..." formId="manageQueryForm" formFilter="filterParam" showLoadingText="true"/>
+                </s:if>
             </sx:tabbedpanel>
 	    </s:form>
         
@@ -167,13 +168,25 @@
     </s:div>
     <h2>Save Subject List</h2>
     <s:form id="myform">
-        <tr><td colspan="2"><strong>Please enter the name and description</strong></td></tr>
-        <s:textfield id="slName" label="Name" name="T1" size="30" />
-        <s:textfield id="slDescription" label="Description" name="T2" size="50" />
+        <tr><td colspan="2">
+            <s:if test="%{anonymousUser}">
+                <font color="red"><strong>Must be registered to use this feature.</strong></font>
+            </s:if>
+            <s:else>
+                <strong>Please enter the name and description</strong>
+            </s:else>
+        </td></tr>
+        <s:textfield id="slName" label="Name" name="T1" size="30" disabled="%{anonymousUser}"/>
+        <s:textfield id="slDescription" label="Description" name="T2" size="50" disabled="%{anonymousUser}"/>
         <tr>
             <td></td>
             <td><br>
+                <s:if test="%{anonymousUser}">
+                <button type="button" onClick="submitSubjectListForm()" disabled="true">Save</button>
+                </s:if>
+                <s:else>
                 <button type="button" onClick="submitSubjectListForm()">Save</button>
+                </s:else>
                 <button type="button" onClick="hideSubjectListForm()">Cancel</button>
             </td>
         </tr>

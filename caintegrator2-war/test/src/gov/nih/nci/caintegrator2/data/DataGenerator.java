@@ -158,7 +158,6 @@ public class DataGenerator {
         workspace.setDefaultSubscription(studySubscription);
         Collection <StudySubscription> studies = new TreeSet<StudySubscription>();
         studies.add(studySubscription);
-        workspace.setSubscriptionCollection(studies);
         dao.save(workspace);
         
     }

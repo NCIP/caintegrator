@@ -120,6 +120,14 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     private AnalysisService analysisService;
     private String displayTab;
     
+    /**
+     * {@inheritDoc}
+     */
+    public void prepare() {
+        super.prepare();
+        refreshGenomicSources();
+    }
+    
     /** 
      * {@inheritDoc}
      */

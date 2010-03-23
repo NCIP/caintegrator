@@ -138,6 +138,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
      */
     public void prepare() {
         super.prepare();
+        refreshGenomicSources();
         retrieveAndRefreshSurvivalValueDefinition();
         populateSurvivalValueDefinitions();
     }

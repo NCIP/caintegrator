@@ -152,19 +152,16 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         UserWorkspace workspace1 = new UserWorkspace();
         StudySubscription subscription1 = new StudySubscription();
         subscription1.setStudy(study);
-        workspace1.setSubscriptionCollection(new HashSet<StudySubscription>());
         workspace1.getSubscriptionCollection().add(subscription1);
         
         UserWorkspace workspace2 = new UserWorkspace();
         StudySubscription subscription2 = new StudySubscription();
         subscription2.setStudy(study);
-        workspace2.setSubscriptionCollection(new HashSet<StudySubscription>());
         workspace2.getSubscriptionCollection().add(subscription2);
         
         UserWorkspace workspace3 = new UserWorkspace();
         StudySubscription subscription3 = new StudySubscription();
         subscription3.setStudy(study2);
-        workspace3.setSubscriptionCollection(new HashSet<StudySubscription>());
         workspace3.getSubscriptionCollection().add(subscription3);
         dao.save(study);
         dao.save(study2);

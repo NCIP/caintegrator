@@ -130,6 +130,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -531,6 +532,16 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                     "from Array where platform = ?", new Object[] {platform});
         }
         return !result.isEmpty();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
+    public List<Study> getPublicStudies() {
+        return getCurrentSession().createCriteria(Study.class)
+                                  .add(Restrictions.eq("publiclyAccessible", true))
+                                  .addOrder(Order.asc("shortTitleText")).list();
     }
 
     /**

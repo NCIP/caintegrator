@@ -91,12 +91,10 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.io.IOException;
-import java.util.HashSet;
 
 import javax.servlet.ServletException;
 
@@ -151,7 +149,6 @@ public class StudyDeploymentAjaxUpdaterTest extends AbstractSessionBasedTest {
         public UserWorkspace getWorkspace() {
             UserWorkspace workspace = new UserWorkspace();
             workspace.setUsername("Test");
-            workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
             workspace.getSubscriptionCollection().add(getSubscription());
             studyConfiguration.setUserWorkspace(workspace);
             
