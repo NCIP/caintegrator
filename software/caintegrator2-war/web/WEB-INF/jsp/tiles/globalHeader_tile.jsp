@@ -41,7 +41,14 @@
         <s:if test="!#sessionHelper.authenticated">
             <s:action name="workspace"/>
         </s:if>
-        <div id="user">Welcome, <s:property value="#sessionHelper.username"/> | <a href="logout.jsp">Logout</a></div>
+        <div id="user">
+	        <s:if test="anonymousUser"> 
+	        Currently not logged in | <a href="logout.jsp">Login</a>
+	        </s:if>
+	        <s:else>
+	        Welcome, <s:property value="#sessionHelper.username"/> | <a href="logout.jsp">Logout</a>
+	        </s:else>
+        </div>
         <div id="mystudies">
                <s:form action="workspace" theme="simple">
 

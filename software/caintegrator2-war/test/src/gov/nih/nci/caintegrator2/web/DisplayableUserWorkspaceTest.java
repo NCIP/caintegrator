@@ -97,7 +97,6 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
@@ -124,7 +123,7 @@ public class DisplayableUserWorkspaceTest extends AbstractSessionBasedTest {
 
     @Test
     public void testGetOrderedSubscriptionList() {
-        userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
+        userWorkspace.getSubscriptionCollection().clear();
         userWorkspace.getSubscriptionCollection().add(createStudySubscription("Deployed2", Status.DEPLOYED));
         userWorkspace.getSubscriptionCollection().add(createStudySubscription("Deployed1", Status.DEPLOYED));
         userWorkspace.getSubscriptionCollection().add(createStudySubscription("Processing", Status.PROCESSING));

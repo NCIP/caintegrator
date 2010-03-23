@@ -211,6 +211,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      */
     public void prepare() {
         super.prepare();
+        refreshGenomicSources();
         if ("selectedTabSearchResults".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
         } else {

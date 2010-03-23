@@ -123,6 +123,8 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public boolean createSubjectListCalled;
     public boolean getRefreshedEntityCalled;
     public boolean deleteAbstractListCalled;
+    public boolean refreshWorkspaceStudiesCalled;
+    public boolean getWorkspaceReadOnlyCalled;
     
     public void clear() {
         subscribeCalled = false;
@@ -138,12 +140,16 @@ public class WorkspaceServiceStub implements WorkspaceService {
         createSubjectListCalled = false;
         getRefreshedEntityCalled = false;
         deleteAbstractListCalled = false;
+        refreshWorkspaceStudiesCalled = false;
+        getWorkspaceReadOnlyCalled = false;
     }
     public UserWorkspace getWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
         workspace.setDefaultSubscription(getSubscription());
-        workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
         workspace.getSubscriptionCollection().add(workspace.getDefaultSubscription());
+        if (subscription != null) {
+            workspace.getSubscriptionCollection().add(subscription);
+        }
         workspace.setUsername("username");
         return workspace;
     }
@@ -251,6 +257,24 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     public void deleteAbstractList(AbstractList abstractList) {
         deleteAbstractListCalled = true;
+    }
+
+    public UserWorkspace getWorkspaceReadOnly() {
+        getWorkspaceReadOnlyCalled = true;
+        UserWorkspace workspace = new UserWorkspace();
+        workspace.setDefaultSubscription(getSubscription());
+        workspace.getSubscriptionCollection().add(workspace.getDefaultSubscription());
+        workspace.setUsername(UserWorkspace.ANONYMOUS_USER_NAME);
+        return workspace;
+    }
+
+    public void refreshWorkspaceStudies(UserWorkspace workspace) {
+        refreshWorkspaceStudiesCalled = true;
+        
+    }
+    
+    public void subscribeAllReadOnly(UserWorkspace userWorkspace) {
+        subscribeAll(userWorkspace);
     }
 
 }

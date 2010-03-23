@@ -125,16 +125,18 @@ public class SecurityManagerImpl implements SecurityManager {
      * {@inheritDoc}
      */
     public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
-        User user = retrieveCsmUser(studyConfiguration.getUserWorkspace().getUsername());
-        String userId = String.valueOf(user.getUserId());
-        ProtectionElement element = createProtectionElementInstance(studyConfiguration);
-        element.setProtectionElementName(studyConfiguration.getStudy().getShortTitleText());
-        Set<User> owners = new HashSet<User>();
-        owners.add(user);
-        element.setOwners(owners);
-        element.setProtectionGroups(retrieveStudyManagerProtectionGroups(userId));
-        
-        getAuthorizationManager().createProtectionElement(element);
+        if (doesUserExist(studyConfiguration.getUserWorkspace().getUsername())) {
+            User user = retrieveCsmUser(studyConfiguration.getUserWorkspace().getUsername());
+            String userId = String.valueOf(user.getUserId());
+            ProtectionElement element = createProtectionElementInstance(studyConfiguration);
+            element.setProtectionElementName(studyConfiguration.getStudy().getShortTitleText());
+            Set<User> owners = new HashSet<User>();
+            owners.add(user);
+            element.setOwners(owners);
+            element.setProtectionGroups(retrieveStudyManagerProtectionGroups(userId));
+            
+            getAuthorizationManager().createProtectionElement(element);
+        }
     }
 
     /**
@@ -155,13 +157,15 @@ public class SecurityManagerImpl implements SecurityManager {
      */
     @SuppressWarnings(UNCHECKED) // CSM API is untyped
     public void initializeFiltersForUserGroups(String username, Session session) throws CSException {
-        List<String> groupNames = new ArrayList<String>();
-        String userId = String.valueOf(retrieveCsmUser(username).getUserId());
-        for (Group group : (Set<Group>) getAuthorizationManager().getGroups(userId)) {
-            groupNames.add(group.getGroupName());
+        if (doesUserExist(username)) {
+            List<String> groupNames = new ArrayList<String>();
+            String userId = String.valueOf(retrieveCsmUser(username).getUserId());
+            for (Group group : (Set<Group>) getAuthorizationManager().getGroups(userId)) {
+                groupNames.add(group.getGroupName());
+            }
+            InstanceLevelSecurityHelper.initializeFiltersForGroups(groupNames.toArray(new String[groupNames.size()]), 
+                                                                   session, getAuthorizationManager());
         }
-        InstanceLevelSecurityHelper.initializeFiltersForGroups(groupNames.toArray(new String[groupNames.size()]), 
-                                                               session, getAuthorizationManager());
     }
     
     /**
@@ -169,6 +173,9 @@ public class SecurityManagerImpl implements SecurityManager {
      */
     public Set<StudyConfiguration> retrieveManagedStudyConfigurations(String username, Collection<Study> studies) 
         throws CSException {
+        if (!doesUserExist(username)) {
+            return new HashSet<StudyConfiguration>();
+        }
         Set<StudyConfiguration> managedStudies = new HashSet<StudyConfiguration>();
         Set<ProtectionGroup> studyManagerProtectionGroups = 
             retrieveStudyManagerProtectionGroups(String.valueOf(retrieveCsmUser(username).getUserId()));

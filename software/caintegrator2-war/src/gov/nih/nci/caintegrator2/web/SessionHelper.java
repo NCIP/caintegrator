@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGr
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.security.SecurityHelper;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotMapper;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotMapper;
@@ -108,6 +109,7 @@ public final class SessionHelper {
     private static final String DISPLAYABLE_USER_WORKSPACE_VALUE_STACK_KEY = "displayableWorkspace";
     private static final String KM_PLOT_SESSION_KEY = "kmPlot";
     private static final String GE_PLOT_SESSION_KEY = "gePlot";
+    private static final String ANONYMOUS_USER_WORKSPACE_SESSION_KEY = "anonymousUserWorkspace";
     private static final String IS_AUTHORIZED_PAGE = "isAuthorizedPage";
     private Boolean studyManager = null;
     private Boolean platformManager = null;
@@ -158,7 +160,7 @@ public final class SessionHelper {
     /**
      * @return the username
      */
-    public String getUsername() {
+    public static String getUsername() {
         return SecurityHelper.getCurrentUsername();
     }
 
@@ -167,6 +169,14 @@ public final class SessionHelper {
      */
     public boolean isAuthenticated() {
         return getUsername() != null;
+    }
+    
+    /**
+     * 
+     * @return if user is anonymously logged in.
+     */
+    public static boolean isAnonymousUser() {
+        return UserWorkspace.ANONYMOUS_USER_NAME.equals(getUsername());
     }
 
     /**
@@ -219,6 +229,22 @@ public final class SessionHelper {
      */
     public void setPlatformManager(Boolean platformManager) {
         this.platformManager = platformManager;
+    }
+    
+    /**
+     * 
+     *  @param anonymousUserWorkspace anonymous user workspace to put on the session.
+     */
+    public static void setAnonymousUserWorkspace(UserWorkspace anonymousUserWorkspace) {
+        getSession().put(ANONYMOUS_USER_WORKSPACE_SESSION_KEY, anonymousUserWorkspace);
+    }
+    
+    /**
+     * 
+     * @return anonymous user workspace on the session.
+     */
+    public static UserWorkspace getAnonymousUserWorkspace() {
+        return (UserWorkspace) getSession().get(ANONYMOUS_USER_WORKSPACE_SESSION_KEY);
     }
     
     

@@ -90,7 +90,6 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
-import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
@@ -168,11 +167,30 @@ public class DisplayableUserWorkspace {
      * @param isStudyNeedRefresh determines if we need to refresh study on the stack or not. 
      */
     public void refresh(WorkspaceService workspaceService, boolean isStudyNeedRefresh) {
-        setUserWorkspace(workspaceService.getWorkspace());
-        workspaceService.subscribeAll(getUserWorkspace());
-        if (isStudyNeedRefresh) {
-            refreshStudyObjects();    
+            setUserWorkspace(retrieveUserWorkspace(workspaceService));
+            subscribeAllStudies(workspaceService);
+            if (isStudyNeedRefresh) {
+                refreshStudyObjects();    
+            }
+    }
+    
+    private void subscribeAllStudies(WorkspaceService workspaceService) {
+        if (SessionHelper.isAnonymousUser()) {
+            workspaceService.subscribeAllReadOnly(getUserWorkspace());
+        } else {
+            workspaceService.subscribeAll(getUserWorkspace());
         }
+    }
+
+    private UserWorkspace retrieveUserWorkspace(WorkspaceService workspaceService) {
+        if (SessionHelper.isAnonymousUser()) {
+            if (SessionHelper.getAnonymousUserWorkspace() == null) {
+                SessionHelper.setAnonymousUserWorkspace(workspaceService.getWorkspaceReadOnly());
+            }
+            workspaceService.refreshWorkspaceStudies(SessionHelper.getAnonymousUserWorkspace());
+            return SessionHelper.getAnonymousUserWorkspace();
+        }
+        return workspaceService.getWorkspace();
     }
     
     private void refreshStudyObjects() {
@@ -268,8 +286,6 @@ public class DisplayableUserWorkspace {
             if (subscription.getId().equals(getCurrentStudySubscriptionId())) {
                 currentStudySubscription = subscription;
                 currentStudy = subscription.getStudy();
-                HibernateUtil.loadGenomicSources(subscription.getStudy().getStudyConfiguration()
-                        .getGenomicDataSources());
             }
         }
         getValueStack().set(CURRENT_STUDY_SUBSCRIPTION_VALUE_STACK_KEY, currentStudySubscription);
@@ -566,5 +582,6 @@ public class DisplayableUserWorkspace {
         gePlotForm.clear();
         kmPlotForm.clear();
     }
+
 
 }

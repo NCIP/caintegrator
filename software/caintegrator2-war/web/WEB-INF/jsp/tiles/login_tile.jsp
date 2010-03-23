@@ -33,6 +33,7 @@
 	   <s:password label="Password" name="j_password" />
 	   <s:submit value="Login" />
 	   <tr><td><s:a href="registration/input.action">Register Now</s:a></td></tr>
+       
     </s:form>
     
 </div>

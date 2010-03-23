@@ -664,7 +664,7 @@
                 <param name="actionName">manageQuery</param>
                 <param name="selectedAction">createNewQuery</param>
             </result>
-            <result name="input" type="tiles">homepage</result>
+            <result name="input" type="tiles">genericErrorWithMenu</result>
         </action>
         
         <action name="manageQuery" class="manageQueryAction">
@@ -747,7 +747,7 @@
         
         <action name="genePatternAnalysisStatus" class="genePatternAnalysisAction" method="showStatusPage">
             <result name="status" type="tiles">genePatternAnalysisStatus</result>
-            <result name="input" type="tiles">homepage</result>
+            <result name="input" type="tiles">genericErrorWithMenu</result>
         </action>
         
         <action name="principalComponentAnalysis" class="principalComponentAnalysisAction">
@@ -784,7 +784,7 @@
         
         <action name="initializeKmPlot" method="initializeKmPlot" class="kmPlotAnnotationBasedAction">
             <result type="tiles">kmPlot</result>
-            <result name="input" type="tiles">homepage</result>
+            <result name="input" type="tiles">genericErrorWithMenu</result>
         </action>
 
         <!-- Annotation Based Kaplan-Meier Actions -->
@@ -880,7 +880,7 @@
         
         <action name="initializeGePlot" method="initializeGePlot" class="gePlotAnnotationBasedAction">
             <result type="tiles">gePlot</result>
-            <result name="input" type="tiles">homepage</result>
+            <result name="input" type="tiles">genericErrorWithMenu</result>
         </action>
 
         <!-- Annotation Based GeneExpression Plot Actions -->

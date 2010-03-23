@@ -44,6 +44,10 @@
         <!--Tree Control-->
         
         <li class="treenav"><div>Study Data</div>
+            <s:if test="%{anonymousUser}">
+                <ul class="pde" style="padding: 3px 0px 10px 10px;"><font color="black"><i>Must be registered to use this feature.</i></font></ul>
+            </s:if>
+            <s:else>
             <ul class="pde">
                 <li><a href="#">Saved Queries</a>
                     <ul style="padding: 3px 0px 10px 10px;">
@@ -167,6 +171,7 @@
                     </ul>
                 </li>
             </ul>
+            </s:else>
         </li>
         
         <li class="stdnavforinvestigator"><div>Analysis Tools</div>
@@ -227,9 +232,13 @@
     <ul class="menu">
         <li class="stdnavforinvestigator" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
             <ul>
-                <s:if test="!#sessionHelper.authenticated">
-                    <li><a href="/caintegrator2/index.jsp">Login</a></li>
+                <s:if test="#sessionHelper.anonymousUser">
+                    <li><a href="/caintegrator2/logout.jsp">Login</a></li>
                     <li><a href="registration/input.action">Register</a></li>
+                </s:if>
+                <s:if test="!#sessionHelper.authenticated">
+                    <li><a href="registration/input.action">Register</a></li>
+                    <li><a href="workspace.action">Browse Public Studies</a></li>
                 </s:if>
                 <li><a href="javascript:openHelpWindowWithNavigation('app_support_help')">Support</a></li>
                 <li><a href="${tutorialsUrl}">Tutorials</a></li>

@@ -230,7 +230,7 @@
                         <s:a href='#' cssStyle='text-decoration: underline;' onclick='selectAllSubject()'>
                         All</s:a>&nbsp;|&nbsp;<s:a href='#' onclick='selectNoneSubject()'>None</s:a> </font>" 
                         media="html" sortable="false">
-                        <s:checkbox theme="simple" name="queryResult.rows[%{#attr.queryResultRows_rowNum - 1}].selectedSubject"/>
+                        <s:checkbox theme="simple" name="queryResult.rows[%{#attr.queryResultRows_rowNum - 1}].selectedSubject" disabled="%{anonymousUser}"/>
                     </display:column>
                     <display:column title="Subject Identifier" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
                         <s:property
@@ -308,10 +308,12 @@
                                 onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
                                 <span class="btn_img"><span class="externalsite">Forward To NBIA</span></span>
                             </s:a></li>
+                            <s:if test="%{!anonymousUser}">
                             <li><s:a href="#" cssClass="btn" 
                                 onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='retrieveDicomImages';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
                                 <span class="btn_img"><span class="download">Retrieve Dicom Images</span></span>
                             </s:a></li>
+                            </s:if>
                         </s:if>
                     </ul>
                 </del>

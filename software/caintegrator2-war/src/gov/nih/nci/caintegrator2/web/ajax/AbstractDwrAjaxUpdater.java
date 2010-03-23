@@ -87,11 +87,13 @@ package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.commons.lang.xwork.StringUtils;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.directwebremoting.proxy.dwr.Util;
@@ -115,10 +117,12 @@ public abstract class AbstractDwrAjaxUpdater {
         WebContext wctx = WebContextFactory.get();
         DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) 
                         wctx.getSession().getAttribute("displayableWorkspace");
-        workspace.refresh(workspaceService, true);
-        associateJobWithSession(dwrUtilFactory, workspace.getUserWorkspace().getUsername(), 
-                                new Util(wctx.getScriptSession()));
-        initializeDynamicTable(workspace);
+        if (StringUtils.isNotBlank(SessionHelper.getUsername()) && !SessionHelper.isAnonymousUser()) {
+            workspace.refresh(workspaceService, true);
+            associateJobWithSession(dwrUtilFactory, workspace.getUserWorkspace().getUsername(), 
+                                    new Util(wctx.getScriptSession()));
+            initializeDynamicTable(workspace);
+        }
     }
     
     /**

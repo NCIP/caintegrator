@@ -300,4 +300,8 @@
         <comment>Populate caArray-stage and caarray-qa URL</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.22.sql"/>
     </changeSet>
+    <changeSet id="1.1.23" author="tandrews">
+        <comment>Adds column "IS_PUBLICLY_ACCESSIBLE" to the STUDY table.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.23.sql"/>
+    </changeSet>
 </databaseChangeLog>
