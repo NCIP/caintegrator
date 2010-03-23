@@ -1,0 +1,1467 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+		<title>
+		caIntegrator2 
+		
+		    - Survival Value Definitions
+		
+		</title>
+		<meta http-equiv="Content-Type" content="text/html; 
+charset=ISO-8859-1">
+		<link rel="address bar icon" 
+href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/favicon.ico">
+		<link rel="icon" 
+href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/favicon.ico" 
+type="image/x-icon">
+		<link rel="shortcut icon" 
+href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/favicon.ico" 
+type="image/x-icon">
+		<link rel="stylesheet" type="text/css" 
+href="editSurvivalValueDefinition.action.9_files/caintegrator2.css">
+		<link rel="stylesheet" type="text/css" 
+href="editSurvivalValueDefinition.action.9_files/cai2modal.css">
+        <script language="JavaScript" type="text/javascript">
+    // Dojo configuration
+    djConfig = {
+        isDebug: false,
+        bindEncoding: "UTF-8"
+          ,baseRelativePath: "/caintegrator2/struts/dojo/"
+          ,baseScriptUri: "/caintegrator2/struts/dojo/"
+         ,parseWidgets : true
+        
+    };
+</script>
+
+
+
+  <script language="JavaScript" type="text/javascript" src="editSurvivalValueDefinition.action.9_files/struts_dojo.js"></script><style type="text/css">.dojoLayoutContainer{ position: relative; display: block; overflow: hidden; }
+body .dojoAlignTop, body .dojoAlignBottom, body .dojoAlignLeft, body .dojoAlignRight { position: absolute; overflow: hidden; }
+body .dojoAlignClient { position: absolute }
+.dojoAlignClient { overflow: auto; }
+</style><style type="text/css" charset="utf-8">/* See license.txt for terms of usage */
+.firebugCanvas {
+    position:fixed;
+    top: 0;
+    left: 0;
+    display:none;
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+.firebugCanvas:before, .firebugCanvas:after {
+    content: "";
+}
+
+.firebugHighlight {
+    z-index: 2147483646;
+    position: fixed;
+    background-color: #3875d7;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugHighlight:before, .firebugHighlight:after {
+    content: "";
+}
+
+.firebugLayoutBoxParent {
+    z-index: 2147483646;
+    position: fixed;
+    background-color: transparent;
+    border-top: 0 none;
+    border-right: 1px dashed #E00 !important;
+    border-bottom: 1px dashed #E00 !important;
+    border-left: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+.firebugRuler {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugRuler:before, .firebugRuler:after {
+    content: "";
+}
+
+.firebugRulerH {
+    top: -15px;
+    left: 0;
+    width: 100%;
+    height: 14px;
+    background: url("data:image/png,%89PNG%0D%0A%1A%0A%00%00%00%0DIHDR%00%00%13%88%00%00%00%0E%08%02%00%00%00L%25a%0A%00%00%00%04gAMA%00%00%D6%D8%D4OX2%00%00%00%19tEXtSoftware%00Adobe%20ImageReadyq%C9e%3C%00%00%04%F8IDATx%DA%EC%DD%D1n%E2%3A%00E%D1%80%F8%FF%EF%E2%AF2%95%D0D4%0E%C1%14%B0%8Fa-%E9%3E%CC%9C%87n%B9%81%A6W0%1C%A6i%9A%E7y%0As8%1CT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AATE9%FE%FCw%3E%9F%AF%2B%2F%BA%97%FDT%1D~K(%5C%9D%D5%EA%1B%5C%86%B5%A9%BDU%B5y%80%ED%AB*%03%FAV9%AB%E1%CEj%E7%82%EF%FB%18%BC%AEJ8%AB%FA'%D2%BEU9%D7U%ECc0%E1%A2r%5DynwVi%CFW%7F%BB%17%7Dy%EACU%CD%0E%F0%FA%3BX%FEbV%FEM%9B%2B%AD%BE%AA%E5%95v%AB%AA%E3E5%DCu%15rV9%07%B5%7F%B5w%FCm%BA%BE%AA%FBY%3D%14%F0%EE%C7%60%0EU%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5JU%88%D3%F5%1F%AE%DF%3B%1B%F2%3E%DAUCNa%F92%D02%AC%7Dm%F9%3A%D4%F2%8B6%AE*%BF%5C%C2Ym~9g5%D0Y%95%17%7C%C8c%B0%7C%18%26%9CU%CD%13i%F7%AA%90%B3Z%7D%95%B4%C7%60%E6E%B5%BC%05%B4%FBY%95U%9E%DB%FD%1C%FC%E0%9F%83%7F%BE%17%7DkjMU%E3%03%AC%7CWj%DF%83%9An%BCG%AE%F1%95%96yQ%0Dq%5Dy%00%3Et%B5'%FC6%5DS%95pV%95%01%81%FF'%07%00%00%00%00%00%00%00%00%00%F8x%C7%F0%BE%9COp%5D%C9%7C%AD%E7%E6%EBV%FB%1E%E0(%07%E5%AC%C6%3A%ABi%9C%8F%C6%0E9%AB%C0'%D2%8E%9F%F99%D0E%B5%99%14%F5%0D%CD%7F%24%C6%DEH%B8%E9rV%DFs%DB%D0%F7%00k%FE%1D%84%84%83J%B8%E3%BA%FB%EF%20%84%1C%D7%AD%B0%8E%D7U%C8Y%05%1E%D4t%EF%AD%95Q%BF8w%BF%E9%0A%BF%EB%03%00%00%00%00%00%00%00%00%00%B8vJ%8E%BB%F5%B1u%8Cx%80%E1o%5E%CA9%AB%CB%CB%8E%03%DF%1D%B7T%25%9C%D5(%EFJM8%AB%CC'%D2%B2*%A4s%E7c6%FB%3E%FA%A2%1E%80~%0E%3E%DA%10x%5D%95Uig%15u%15%ED%7C%14%B6%87%A1%3B%FCo8%A8%D8o%D3%ADO%01%EDx%83%1A~%1B%9FpP%A3%DC%C6'%9C%95gK%00%00%00%00%00%00%00%00%00%20%D9%C9%11%D0%C0%40%AF%3F%EE%EE%92%94%D6%16X%B5%BCMH%15%2F%BF%D4%A7%C87%F1%8E%F2%81%AE%AAvzr%DA2%ABV%17%7C%E63%83%E7I%DC%C6%0Bs%1B%EF6%1E%00%00%00%00%00%00%00%00%00%80cr%9CW%FF%7F%C6%01%0E%F1%CE%A5%84%B3%CA%BC%E0%CB%AA%84%CE%F9%BF)%EC%13%08WU%AE%AB%B1%AE%2BO%EC%8E%CBYe%FE%8CN%ABr%5Dy%60~%CFA%0D%F4%AE%D4%BE%C75%CA%EDVB%EA(%B7%F1%09g%E5%D9%12%00%00%00%00%00%00%00%00%00H%F6%EB%13S%E7y%5E%5E%FB%98%F0%22%D1%B2'%A7%F0%92%B1%BC%24z3%AC%7Dm%60%D5%92%B4%7CEUO%5E%F0%AA*%3BU%B9%AE%3E%A0j%94%07%A0%C7%A0%AB%FD%B5%3F%A0%F7%03T%3Dy%D7%F7%D6%D4%C0%AAU%D2%E6%DFt%3F%A8%CC%AA%F2%86%B9%D7%F5%1F%18%E6%01%F8%CC%D5%9E%F0%F3z%88%AA%90%EF%20%00%00%00%00%00%00%00%00%00%C0%A6%D3%EA%CFi%AFb%2C%7BB%0A%2B%C3%1A%D7%06V%D5%07%A8r%5D%3D%D9%A6%CAu%F5%25%CF%A2%99%97zNX%60%95%AB%5DUZ%D5%FBR%03%AB%1C%D4k%9F%3F%BB%5C%FF%81a%AE%AB'%7F%F3%EA%FE%F3z%94%AA%D8%DF%5B%01%00%00%00%00%00%00%00%00%00%8E%FB%F3%F2%B1%1B%8DWU%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*UiU%C7%BBe%E7%F3%B9%CB%AAJ%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5*%AAj%FD%C6%D4%5Eo%90%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5%86%AF%1B%9F%98%DA%EBm%BBV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%AD%D6%E4%F58%01%00%00%00%00%00%00%00%00%00%00%00%00%00%40%85%7F%02%0C%008%C2%D0H%16j%8FX%00%00%00%00IEND%AEB%60%82") repeat-x;
+    border-top: 1px solid #BBBBBB;
+    border-right: 1px dashed #BBBBBB;
+    border-bottom: 1px solid #000000;
+}
+
+.firebugRulerV {
+    top: 0;
+    left: -15px;
+    width: 14px;
+    height: 100%;
+    background: url("data:image/png,%89PNG%0D%0A%1A%0A%00%00%00%0DIHDR%00%00%00%0E%00%00%13%88%08%02%00%00%00%0E%F5%CB%10%00%00%00%04gAMA%00%00%D6%D8%D4OX2%00%00%00%19tEXtSoftware%00Adobe%20ImageReadyq%C9e%3C%00%00%06~IDATx%DA%EC%DD%D1v%A20%14%40Qt%F1%FF%FF%E4%97%D9%07%3BT%19%92%DC%40(%90%EEy%9A5%CB%B6%E8%F6%9Ac%A4%CC0%84%FF%DC%9E%CF%E7%E3%F1%88%DE4%F8%5D%C7%9F%2F%BA%DD%5E%7FI%7D%F18%DDn%BA%C5%FB%DF%97%BFk%F2%10%FF%FD%B4%F2M%A7%FB%FD%FD%B3%22%07p%8F%3F%AE%E3%F4S%8A%8F%40%EEq%9D%BE8D%F0%0EY%A1Uq%B7%EA%1F%81%88V%E8X%3F%B4%CEy%B7h%D1%A2E%EBohU%FC%D9%AF2fO%8BBeD%BE%F7X%0C%97%A4%D6b7%2Ck%A5%12%E3%9B%60v%B7r%C7%1AI%8C%BD%2B%23r%00c0%B2v%9B%AD%CA%26%0C%1Ek%05A%FD%93%D0%2B%A1u%8B%16-%95q%5Ce%DCSO%8E%E4M%23%8B%F7%C2%FE%40%BB%BD%8C%FC%8A%B5V%EBu%40%F9%3B%A72%FA%AE%8C%D4%01%CC%B5%DA%13%9CB%AB%E2I%18%24%B0n%A9%0CZ*Ce%9C%A22%8E%D8NJ%1E%EB%FF%8F%AE%CAP%19*%C3%BAEKe%AC%D1%AAX%8C*%DEH%8F%C5W%A1e%AD%D4%B7%5C%5B%19%C5%DB%0D%EF%9F%19%1D%7B%5E%86%BD%0C%95%A12%AC%5B*%83%96%CAP%19%F62T%86%CAP%19*%83%96%CA%B8Xe%BC%FE)T%19%A1%17xg%7F%DA%CBP%19*%C3%BA%A52T%86%CAP%19%F62T%86%CA%B0n%A9%0CZ%1DV%C6%3D%F3%FCH%DE%B4%B8~%7F%5CZc%F1%D6%1F%AF%84%F9%0F6%E6%EBVt9%0E~%BEr%AF%23%B0%97%A12T%86%CAP%19%B4T%86%CA%B8Re%D8%CBP%19*%C3%BA%A52huX%19%AE%CA%E5%BC%0C%7B%19*CeX%B7h%A9%0C%95%E1%BC%0C%7B%19*CeX%B7T%06%AD%CB%5E%95%2B%BF.%8F%C5%97%D5%E4%7B%EE%82%D6%FB%CF-%9C%FD%B9%CF%3By%7B%19%F62T%86%CA%B0n%D1R%19*%A3%D3%CA%B0%97%A12T%86uKe%D0%EA%B02*%3F1%99%5DB%2B%A4%B5%F8%3A%7C%BA%2B%8Co%7D%5C%EDe%A8%0C%95a%DDR%19%B4T%C66%82fA%B2%ED%DA%9FC%FC%17GZ%06%C9%E1%B3%E5%2C%1A%9FoiB%EB%96%CA%A0%D5qe4%7B%7D%FD%85%F7%5B%ED_%E0s%07%F0k%951%ECr%0D%B5C%D7-g%D1%A8%0C%EB%96%CA%A0%A52T%C6)*%C3%5E%86%CAP%19%D6-%95A%EB*%95q%F8%BB%E3%F9%AB%F6%E21%ACZ%B7%22%B7%9B%3F%02%85%CB%A2%5B%B7%BA%5E%B7%9C%97%E1%BC%0C%EB%16-%95%A12z%AC%0C%BFc%A22T%86uKe%D0%EA%B02V%DD%AD%8A%2B%8CWhe%5E%AF%CF%F5%3B%26%CE%CBh%5C%19%CE%CB%B0%F3%A4%095%A1%CAP%19*Ce%A8%0C%3BO*Ce%A8%0C%95%A12%3A%AD%8C%0A%82%7B%F0v%1F%2FD%A9%5B%9F%EE%EA%26%AF%03%CA%DF9%7B%19*Ce%A8%0C%95%A12T%86%CA%B8Ze%D8%CBP%19*Ce%A8%0C%95%D1ae%EC%F7%89I%E1%B4%D7M%D7P%8BjU%5C%BB%3E%F2%20%D8%CBP%19*Ce%A8%0C%95%A12T%C6%D5*%C3%5E%86%CAP%19*Ce%B4O%07%7B%F0W%7Bw%1C%7C%1A%8C%B3%3B%D1%EE%AA%5C%D6-%EBV%83%80%5E%D0%CA%10%5CU%2BD%E07YU%86%CAP%19*%E3%9A%95%91%D9%A0%C8%AD%5B%EDv%9E%82%FFKOee%E4%8FUe%A8%0C%95%A12T%C6%1F%A9%8C%C8%3D%5B%A5%15%FD%14%22r%E7B%9F%17l%F8%BF%ED%EAf%2B%7F%CF%ECe%D8%CBP%19*Ce%A8%0C%95%E1%93~%7B%19%F62T%86%CAP%19*Ce%A8%0C%E7%13%DA%CBP%19*Ce%A8%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4h%A9%0C%B3E%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4h%A9%0C%B3E%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4%AE%A4%F5%25%C0%00%DE%BF%5C'%0F%DA%B8q%00%00%00%00IEND%AEB%60%82") repeat-y;
+    border-left: 1px solid #BBBBBB;
+    border-right: 1px solid #000000;
+    border-bottom: 1px dashed #BBBBBB;
+}
+
+.overflowRulerX > .firebugRulerV {
+    left: 0;
+}
+
+.overflowRulerY > .firebugRulerH {
+    top: 0;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.firebugLayoutBox {
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    outline: 0;
+}
+
+.firebugLayoutBox:before, .firebugLayoutBox:after {
+    content: "";
+}
+
+.firebugLayoutBoxOffset {
+    z-index: 2147483646;
+    position: fixed;
+    opacity: 0.8;
+}
+
+.firebugLayoutBoxMargin {
+    background-color: #EDFF64;
+}
+
+.firebugLayoutBoxBorder {
+    background-color: #666666;
+}
+
+.firebugLayoutBoxPadding {
+    background-color: SlateBlue;
+}
+
+.firebugLayoutBoxContent {
+    background-color: SkyBlue;
+}
+
+.firebugLayoutLine {
+    z-index: 2147483646;
+    background-color: #000000;
+    opacity: 0.4;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugLayoutLine:before, .firebugLayoutLine:after {
+    content: "";
+}
+
+.firebugLayoutLineLeft, .firebugLayoutLineRight {
+    position: fixed;
+    width: 1px;
+    height: 100%;
+}
+
+.firebugLayoutLineTop, .firebugLayoutLineBottom {
+    position: fixed;
+    width: 100%;
+    height: 1px;
+}
+
+.firebugLayoutLineTop {
+    margin-top: -1px;
+    border-top: 1px solid #999999;
+}
+
+.firebugLayoutLineRight {
+    border-right: 1px solid #999999;
+}
+
+.firebugLayoutLineBottom {
+    border-bottom: 1px solid #999999;
+}
+
+.firebugLayoutLineLeft {
+    margin-left: -1px;
+    border-left: 1px solid #999999;
+}
+
+.fbProxyElement {
+    position: absolute;
+    background-color: transparent;
+    z-index: 2147483646;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+</style></head><body><textarea id="dojo.widget.RichText.savedContent" 
+style="display: none; position: absolute; top: -100px; left: -100px; 
+height: 3px; width: 3px; overflow: hidden;"></textarea><style type="text/css">.dojoLayoutContainer{ position: relative; display: block; overflow: hidden; }
+body .dojoAlignTop, body .dojoAlignBottom, body .dojoAlignLeft, body .dojoAlignRight { position: absolute; overflow: hidden; }
+body .dojoAlignClient { position: absolute }
+.dojoAlignClient { overflow: auto; }
+</style><style type="text/css" charset="utf-8">/* See license.txt for terms of usage */
+.firebugCanvas {
+    position:fixed;
+    top: 0;
+    left: 0;
+    display:none;
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+.firebugCanvas:before, .firebugCanvas:after {
+    content: "";
+}
+
+.firebugHighlight {
+    z-index: 2147483646;
+    position: fixed;
+    background-color: #3875d7;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugHighlight:before, .firebugHighlight:after {
+    content: "";
+}
+
+.firebugLayoutBoxParent {
+    z-index: 2147483646;
+    position: fixed;
+    background-color: transparent;
+    border-top: 0 none;
+    border-right: 1px dashed #E00 !important;
+    border-bottom: 1px dashed #E00 !important;
+    border-left: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+.firebugRuler {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugRuler:before, .firebugRuler:after {
+    content: "";
+}
+
+.firebugRulerH {
+    top: -15px;
+    left: 0;
+    width: 100%;
+    height: 14px;
+    background: url("data:image/png,%89PNG%0D%0A%1A%0A%00%00%00%0DIHDR%00%00%13%88%00%00%00%0E%08%02%00%00%00L%25a%0A%00%00%00%04gAMA%00%00%D6%D8%D4OX2%00%00%00%19tEXtSoftware%00Adobe%20ImageReadyq%C9e%3C%00%00%04%F8IDATx%DA%EC%DD%D1n%E2%3A%00E%D1%80%F8%FF%EF%E2%AF2%95%D0D4%0E%C1%14%B0%8Fa-%E9%3E%CC%9C%87n%B9%81%A6W0%1C%A6i%9A%E7y%0As8%1CT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AATE9%FE%FCw%3E%9F%AF%2B%2F%BA%97%FDT%1D~K(%5C%9D%D5%EA%1B%5C%86%B5%A9%BDU%B5y%80%ED%AB*%03%FAV9%AB%E1%CEj%E7%82%EF%FB%18%BC%AEJ8%AB%FA'%D2%BEU9%D7U%ECc0%E1%A2r%5DynwVi%CFW%7F%BB%17%7Dy%EACU%CD%0E%F0%FA%3BX%FEbV%FEM%9B%2B%AD%BE%AA%E5%95v%AB%AA%E3E5%DCu%15rV9%07%B5%7F%B5w%FCm%BA%BE%AA%FBY%3D%14%F0%EE%C7%60%0EU%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5JU%88%D3%F5%1F%AE%DF%3B%1B%F2%3E%DAUCNa%F92%D02%AC%7Dm%F9%3A%D4%F2%8B6%AE*%BF%5C%C2Ym~9g5%D0Y%95%17%7C%C8c%B0%7C%18%26%9CU%CD%13i%F7%AA%90%B3Z%7D%95%B4%C7%60%E6E%B5%BC%05%B4%FBY%95U%9E%DB%FD%1C%FC%E0%9F%83%7F%BE%17%7DkjMU%E3%03%AC%7CWj%DF%83%9An%BCG%AE%F1%95%96yQ%0Dq%5Dy%00%3Et%B5'%FC6%5DS%95pV%95%01%81%FF'%07%00%00%00%00%00%00%00%00%00%F8x%C7%F0%BE%9COp%5D%C9%7C%AD%E7%E6%EBV%FB%1E%E0(%07%E5%AC%C6%3A%ABi%9C%8F%C6%0E9%AB%C0'%D2%8E%9F%F99%D0E%B5%99%14%F5%0D%CD%7F%24%C6%DEH%B8%E9rV%DFs%DB%D0%F7%00k%FE%1D%84%84%83J%B8%E3%BA%FB%EF%20%84%1C%D7%AD%B0%8E%D7U%C8Y%05%1E%D4t%EF%AD%95Q%BF8w%BF%E9%0A%BF%EB%03%00%00%00%00%00%00%00%00%00%B8vJ%8E%BB%F5%B1u%8Cx%80%E1o%5E%CA9%AB%CB%CB%8E%03%DF%1D%B7T%25%9C%D5(%EFJM8%AB%CC'%D2%B2*%A4s%E7c6%FB%3E%FA%A2%1E%80~%0E%3E%DA%10x%5D%95Uig%15u%15%ED%7C%14%B6%87%A1%3B%FCo8%A8%D8o%D3%ADO%01%EDx%83%1A~%1B%9FpP%A3%DC%C6'%9C%95gK%00%00%00%00%00%00%00%00%00%20%D9%C9%11%D0%C0%40%AF%3F%EE%EE%92%94%D6%16X%B5%BCMH%15%2F%BF%D4%A7%C87%F1%8E%F2%81%AE%AAvzr%DA2%ABV%17%7C%E63%83%E7I%DC%C6%0Bs%1B%EF6%1E%00%00%00%00%00%00%00%00%00%80cr%9CW%FF%7F%C6%01%0E%F1%CE%A5%84%B3%CA%BC%E0%CB%AA%84%CE%F9%BF)%EC%13%08WU%AE%AB%B1%AE%2BO%EC%8E%CBYe%FE%8CN%ABr%5Dy%60~%CFA%0D%F4%AE%D4%BE%C75%CA%EDVB%EA(%B7%F1%09g%E5%D9%12%00%00%00%00%00%00%00%00%00H%F6%EB%13S%E7y%5E%5E%FB%98%F0%22%D1%B2'%A7%F0%92%B1%BC%24z3%AC%7Dm%60%D5%92%B4%7CEUO%5E%F0%AA*%3BU%B9%AE%3E%A0j%94%07%A0%C7%A0%AB%FD%B5%3F%A0%F7%03T%3Dy%D7%F7%D6%D4%C0%AAU%D2%E6%DFt%3F%A8%CC%AA%F2%86%B9%D7%F5%1F%18%E6%01%F8%CC%D5%9E%F0%F3z%88%AA%90%EF%20%00%00%00%00%00%00%00%00%00%C0%A6%D3%EA%CFi%AFb%2C%7BB%0A%2B%C3%1A%D7%06V%D5%07%A8r%5D%3D%D9%A6%CAu%F5%25%CF%A2%99%97zNX%60%95%AB%5DUZ%D5%FBR%03%AB%1C%D4k%9F%3F%BB%5C%FF%81a%AE%AB'%7F%F3%EA%FE%F3z%94%AA%D8%DF%5B%01%00%00%00%00%00%00%00%00%00%8E%FB%F3%F2%B1%1B%8DWU%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*UiU%C7%BBe%E7%F3%B9%CB%AAJ%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5*%AAj%FD%C6%D4%5Eo%90%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5%86%AF%1B%9F%98%DA%EBm%BBV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%AD%D6%E4%F58%01%00%00%00%00%00%00%00%00%00%00%00%00%00%40%85%7F%02%0C%008%C2%D0H%16j%8FX%00%00%00%00IEND%AEB%60%82") repeat-x;
+    border-top: 1px solid #BBBBBB;
+    border-right: 1px dashed #BBBBBB;
+    border-bottom: 1px solid #000000;
+}
+
+.firebugRulerV {
+    top: 0;
+    left: -15px;
+    width: 14px;
+    height: 100%;
+    background: url("data:image/png,%89PNG%0D%0A%1A%0A%00%00%00%0DIHDR%00%00%00%0E%00%00%13%88%08%02%00%00%00%0E%F5%CB%10%00%00%00%04gAMA%00%00%D6%D8%D4OX2%00%00%00%19tEXtSoftware%00Adobe%20ImageReadyq%C9e%3C%00%00%06~IDATx%DA%EC%DD%D1v%A20%14%40Qt%F1%FF%FF%E4%97%D9%07%3BT%19%92%DC%40(%90%EEy%9A5%CB%B6%E8%F6%9Ac%A4%CC0%84%FF%DC%9E%CF%E7%E3%F1%88%DE4%F8%5D%C7%9F%2F%BA%DD%5E%7FI%7D%F18%DDn%BA%C5%FB%DF%97%BFk%F2%10%FF%FD%B4%F2M%A7%FB%FD%FD%B3%22%07p%8F%3F%AE%E3%F4S%8A%8F%40%EEq%9D%BE8D%F0%0EY%A1Uq%B7%EA%1F%81%88V%E8X%3F%B4%CEy%B7h%D1%A2E%EBohU%FC%D9%AF2fO%8BBeD%BE%F7X%0C%97%A4%D6b7%2Ck%A5%12%E3%9B%60v%B7r%C7%1AI%8C%BD%2B%23r%00c0%B2v%9B%AD%CA%26%0C%1Ek%05A%FD%93%D0%2B%A1u%8B%16-%95q%5Ce%DCSO%8E%E4M%23%8B%F7%C2%FE%40%BB%BD%8C%FC%8A%B5V%EBu%40%F9%3B%A72%FA%AE%8C%D4%01%CC%B5%DA%13%9CB%AB%E2I%18%24%B0n%A9%0CZ*Ce%9C%A22%8E%D8NJ%1E%EB%FF%8F%AE%CAP%19*%C3%BAEKe%AC%D1%AAX%8C*%DEH%8F%C5W%A1e%AD%D4%B7%5C%5B%19%C5%DB%0D%EF%9F%19%1D%7B%5E%86%BD%0C%95%A12%AC%5B*%83%96%CAP%19%F62T%86%CAP%19*%83%96%CA%B8Xe%BC%FE)T%19%A1%17xg%7F%DA%CBP%19*%C3%BA%A52T%86%CAP%19%F62T%86%CA%B0n%A9%0CZ%1DV%C6%3D%F3%FCH%DE%B4%B8~%7F%5CZc%F1%D6%1F%AF%84%F9%0F6%E6%EBVt9%0E~%BEr%AF%23%B0%97%A12T%86%CAP%19%B4T%86%CA%B8Re%D8%CBP%19*%C3%BA%A52huX%19%AE%CA%E5%BC%0C%7B%19*CeX%B7h%A9%0C%95%E1%BC%0C%7B%19*CeX%B7T%06%AD%CB%5E%95%2B%BF.%8F%C5%97%D5%E4%7B%EE%82%D6%FB%CF-%9C%FD%B9%CF%3By%7B%19%F62T%86%CA%B0n%D1R%19*%A3%D3%CA%B0%97%A12T%86uKe%D0%EA%B02*%3F1%99%5DB%2B%A4%B5%F8%3A%7C%BA%2B%8Co%7D%5C%EDe%A8%0C%95a%DDR%19%B4T%C66%82fA%B2%ED%DA%9FC%FC%17GZ%06%C9%E1%B3%E5%2C%1A%9FoiB%EB%96%CA%A0%D5qe4%7B%7D%FD%85%F7%5B%ED_%E0s%07%F0k%951%ECr%0D%B5C%D7-g%D1%A8%0C%EB%96%CA%A0%A52T%C6)*%C3%5E%86%CAP%19%D6-%95A%EB*%95q%F8%BB%E3%F9%AB%F6%E21%ACZ%B7%22%B7%9B%3F%02%85%CB%A2%5B%B7%BA%5E%B7%9C%97%E1%BC%0C%EB%16-%95%A12z%AC%0C%BFc%A22T%86uKe%D0%EA%B02V%DD%AD%8A%2B%8CWhe%5E%AF%CF%F5%3B%26%CE%CBh%5C%19%CE%CB%B0%F3%A4%095%A1%CAP%19*Ce%A8%0C%3BO*Ce%A8%0C%95%A12%3A%AD%8C%0A%82%7B%F0v%1F%2FD%A9%5B%9F%EE%EA%26%AF%03%CA%DF9%7B%19*Ce%A8%0C%95%A12T%86%CA%B8Ze%D8%CBP%19*Ce%A8%0C%95%D1ae%EC%F7%89I%E1%B4%D7M%D7P%8BjU%5C%BB%3E%F2%20%D8%CBP%19*Ce%A8%0C%95%A12T%C6%D5*%C3%5E%86%CAP%19*Ce%B4O%07%7B%F0W%7Bw%1C%7C%1A%8C%B3%3B%D1%EE%AA%5C%D6-%EBV%83%80%5E%D0%CA%10%5CU%2BD%E07YU%86%CAP%19*%E3%9A%95%91%D9%A0%C8%AD%5B%EDv%9E%82%FFKOee%E4%8FUe%A8%0C%95%A12T%C6%1F%A9%8C%C8%3D%5B%A5%15%FD%14%22r%E7B%9F%17l%F8%BF%ED%EAf%2B%7F%CF%ECe%D8%CBP%19*Ce%A8%0C%95%E1%93~%7B%19%F62T%86%CAP%19*Ce%A8%0C%E7%13%DA%CBP%19*Ce%A8%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4h%A9%0C%B3E%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4h%A9%0C%B3E%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4%AE%A4%F5%25%C0%00%DE%BF%5C'%0F%DA%B8q%00%00%00%00IEND%AEB%60%82") repeat-y;
+    border-left: 1px solid #BBBBBB;
+    border-right: 1px solid #000000;
+    border-bottom: 1px dashed #BBBBBB;
+}
+
+.overflowRulerX > .firebugRulerV {
+    left: 0;
+}
+
+.overflowRulerY > .firebugRulerH {
+    top: 0;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.firebugLayoutBox {
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    outline: 0;
+}
+
+.firebugLayoutBox:before, .firebugLayoutBox:after {
+    content: "";
+}
+
+.firebugLayoutBoxOffset {
+    z-index: 2147483646;
+    position: fixed;
+    opacity: 0.8;
+}
+
+.firebugLayoutBoxMargin {
+    background-color: #EDFF64;
+}
+
+.firebugLayoutBoxBorder {
+    background-color: #666666;
+}
+
+.firebugLayoutBoxPadding {
+    background-color: SlateBlue;
+}
+
+.firebugLayoutBoxContent {
+    background-color: SkyBlue;
+}
+
+.firebugLayoutLine {
+    z-index: 2147483646;
+    background-color: #000000;
+    opacity: 0.4;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugLayoutLine:before, .firebugLayoutLine:after {
+    content: "";
+}
+
+.firebugLayoutLineLeft, .firebugLayoutLineRight {
+    position: fixed;
+    width: 1px;
+    height: 100%;
+}
+
+.firebugLayoutLineTop, .firebugLayoutLineBottom {
+    position: fixed;
+    width: 100%;
+    height: 1px;
+}
+
+.firebugLayoutLineTop {
+    margin-top: -1px;
+    border-top: 1px solid #999999;
+}
+
+.firebugLayoutLineRight {
+    border-right: 1px solid #999999;
+}
+
+.firebugLayoutLineBottom {
+    border-bottom: 1px solid #999999;
+}
+
+.firebugLayoutLineLeft {
+    margin-left: -1px;
+    border-left: 1px solid #999999;
+}
+
+.fbProxyElement {
+    position: absolute;
+    background-color: transparent;
+    z-index: 2147483646;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+</style><textarea id="dojo.widget.RichText.savedContent" style="display:
+ none; position: absolute; top: -100px; left: -100px; height: 3px; 
+width: 3px; overflow: hidden;"></textarea><style type="text/css">.dojoLayoutContainer{ position: relative; display: block; overflow: hidden; }
+body .dojoAlignTop, body .dojoAlignBottom, body .dojoAlignLeft, body .dojoAlignRight { position: absolute; overflow: hidden; }
+body .dojoAlignClient { position: absolute }
+.dojoAlignClient { overflow: auto; }
+</style><style type="text/css" charset="utf-8">/* See license.txt for terms of usage */
+.firebugCanvas {
+    position:fixed;
+    top: 0;
+    left: 0;
+    display:none;
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+.firebugCanvas:before, .firebugCanvas:after {
+    content: "";
+}
+
+.firebugHighlight {
+    z-index: 2147483646;
+    position: fixed;
+    background-color: #3875d7;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugHighlight:before, .firebugHighlight:after {
+    content: "";
+}
+
+.firebugLayoutBoxParent {
+    z-index: 2147483646;
+    position: fixed;
+    background-color: transparent;
+    border-top: 0 none;
+    border-right: 1px dashed #E00 !important;
+    border-bottom: 1px dashed #E00 !important;
+    border-left: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+.firebugRuler {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugRuler:before, .firebugRuler:after {
+    content: "";
+}
+
+.firebugRulerH {
+    top: -15px;
+    left: 0;
+    width: 100%;
+    height: 14px;
+    background: url("data:image/png,%89PNG%0D%0A%1A%0A%00%00%00%0DIHDR%00%00%13%88%00%00%00%0E%08%02%00%00%00L%25a%0A%00%00%00%04gAMA%00%00%D6%D8%D4OX2%00%00%00%19tEXtSoftware%00Adobe%20ImageReadyq%C9e%3C%00%00%04%F8IDATx%DA%EC%DD%D1n%E2%3A%00E%D1%80%F8%FF%EF%E2%AF2%95%D0D4%0E%C1%14%B0%8Fa-%E9%3E%CC%9C%87n%B9%81%A6W0%1C%A6i%9A%E7y%0As8%1CT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AATE9%FE%FCw%3E%9F%AF%2B%2F%BA%97%FDT%1D~K(%5C%9D%D5%EA%1B%5C%86%B5%A9%BDU%B5y%80%ED%AB*%03%FAV9%AB%E1%CEj%E7%82%EF%FB%18%BC%AEJ8%AB%FA'%D2%BEU9%D7U%ECc0%E1%A2r%5DynwVi%CFW%7F%BB%17%7Dy%EACU%CD%0E%F0%FA%3BX%FEbV%FEM%9B%2B%AD%BE%AA%E5%95v%AB%AA%E3E5%DCu%15rV9%07%B5%7F%B5w%FCm%BA%BE%AA%FBY%3D%14%F0%EE%C7%60%0EU%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5JU%88%D3%F5%1F%AE%DF%3B%1B%F2%3E%DAUCNa%F92%D02%AC%7Dm%F9%3A%D4%F2%8B6%AE*%BF%5C%C2Ym~9g5%D0Y%95%17%7C%C8c%B0%7C%18%26%9CU%CD%13i%F7%AA%90%B3Z%7D%95%B4%C7%60%E6E%B5%BC%05%B4%FBY%95U%9E%DB%FD%1C%FC%E0%9F%83%7F%BE%17%7DkjMU%E3%03%AC%7CWj%DF%83%9An%BCG%AE%F1%95%96yQ%0Dq%5Dy%00%3Et%B5'%FC6%5DS%95pV%95%01%81%FF'%07%00%00%00%00%00%00%00%00%00%F8x%C7%F0%BE%9COp%5D%C9%7C%AD%E7%E6%EBV%FB%1E%E0(%07%E5%AC%C6%3A%ABi%9C%8F%C6%0E9%AB%C0'%D2%8E%9F%F99%D0E%B5%99%14%F5%0D%CD%7F%24%C6%DEH%B8%E9rV%DFs%DB%D0%F7%00k%FE%1D%84%84%83J%B8%E3%BA%FB%EF%20%84%1C%D7%AD%B0%8E%D7U%C8Y%05%1E%D4t%EF%AD%95Q%BF8w%BF%E9%0A%BF%EB%03%00%00%00%00%00%00%00%00%00%B8vJ%8E%BB%F5%B1u%8Cx%80%E1o%5E%CA9%AB%CB%CB%8E%03%DF%1D%B7T%25%9C%D5(%EFJM8%AB%CC'%D2%B2*%A4s%E7c6%FB%3E%FA%A2%1E%80~%0E%3E%DA%10x%5D%95Uig%15u%15%ED%7C%14%B6%87%A1%3B%FCo8%A8%D8o%D3%ADO%01%EDx%83%1A~%1B%9FpP%A3%DC%C6'%9C%95gK%00%00%00%00%00%00%00%00%00%20%D9%C9%11%D0%C0%40%AF%3F%EE%EE%92%94%D6%16X%B5%BCMH%15%2F%BF%D4%A7%C87%F1%8E%F2%81%AE%AAvzr%DA2%ABV%17%7C%E63%83%E7I%DC%C6%0Bs%1B%EF6%1E%00%00%00%00%00%00%00%00%00%80cr%9CW%FF%7F%C6%01%0E%F1%CE%A5%84%B3%CA%BC%E0%CB%AA%84%CE%F9%BF)%EC%13%08WU%AE%AB%B1%AE%2BO%EC%8E%CBYe%FE%8CN%ABr%5Dy%60~%CFA%0D%F4%AE%D4%BE%C75%CA%EDVB%EA(%B7%F1%09g%E5%D9%12%00%00%00%00%00%00%00%00%00H%F6%EB%13S%E7y%5E%5E%FB%98%F0%22%D1%B2'%A7%F0%92%B1%BC%24z3%AC%7Dm%60%D5%92%B4%7CEUO%5E%F0%AA*%3BU%B9%AE%3E%A0j%94%07%A0%C7%A0%AB%FD%B5%3F%A0%F7%03T%3Dy%D7%F7%D6%D4%C0%AAU%D2%E6%DFt%3F%A8%CC%AA%F2%86%B9%D7%F5%1F%18%E6%01%F8%CC%D5%9E%F0%F3z%88%AA%90%EF%20%00%00%00%00%00%00%00%00%00%C0%A6%D3%EA%CFi%AFb%2C%7BB%0A%2B%C3%1A%D7%06V%D5%07%A8r%5D%3D%D9%A6%CAu%F5%25%CF%A2%99%97zNX%60%95%AB%5DUZ%D5%FBR%03%AB%1C%D4k%9F%3F%BB%5C%FF%81a%AE%AB'%7F%F3%EA%FE%F3z%94%AA%D8%DF%5B%01%00%00%00%00%00%00%00%00%00%8E%FB%F3%F2%B1%1B%8DWU%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*UiU%C7%BBe%E7%F3%B9%CB%AAJ%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5*%AAj%FD%C6%D4%5Eo%90%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5%86%AF%1B%9F%98%DA%EBm%BBV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%AD%D6%E4%F58%01%00%00%00%00%00%00%00%00%00%00%00%00%00%40%85%7F%02%0C%008%C2%D0H%16j%8FX%00%00%00%00IEND%AEB%60%82") repeat-x;
+    border-top: 1px solid #BBBBBB;
+    border-right: 1px dashed #BBBBBB;
+    border-bottom: 1px solid #000000;
+}
+
+.firebugRulerV {
+    top: 0;
+    left: -15px;
+    width: 14px;
+    height: 100%;
+    background: url("data:image/png,%89PNG%0D%0A%1A%0A%00%00%00%0DIHDR%00%00%00%0E%00%00%13%88%08%02%00%00%00%0E%F5%CB%10%00%00%00%04gAMA%00%00%D6%D8%D4OX2%00%00%00%19tEXtSoftware%00Adobe%20ImageReadyq%C9e%3C%00%00%06~IDATx%DA%EC%DD%D1v%A20%14%40Qt%F1%FF%FF%E4%97%D9%07%3BT%19%92%DC%40(%90%EEy%9A5%CB%B6%E8%F6%9Ac%A4%CC0%84%FF%DC%9E%CF%E7%E3%F1%88%DE4%F8%5D%C7%9F%2F%BA%DD%5E%7FI%7D%F18%DDn%BA%C5%FB%DF%97%BFk%F2%10%FF%FD%B4%F2M%A7%FB%FD%FD%B3%22%07p%8F%3F%AE%E3%F4S%8A%8F%40%EEq%9D%BE8D%F0%0EY%A1Uq%B7%EA%1F%81%88V%E8X%3F%B4%CEy%B7h%D1%A2E%EBohU%FC%D9%AF2fO%8BBeD%BE%F7X%0C%97%A4%D6b7%2Ck%A5%12%E3%9B%60v%B7r%C7%1AI%8C%BD%2B%23r%00c0%B2v%9B%AD%CA%26%0C%1Ek%05A%FD%93%D0%2B%A1u%8B%16-%95q%5Ce%DCSO%8E%E4M%23%8B%F7%C2%FE%40%BB%BD%8C%FC%8A%B5V%EBu%40%F9%3B%A72%FA%AE%8C%D4%01%CC%B5%DA%13%9CB%AB%E2I%18%24%B0n%A9%0CZ*Ce%9C%A22%8E%D8NJ%1E%EB%FF%8F%AE%CAP%19*%C3%BAEKe%AC%D1%AAX%8C*%DEH%8F%C5W%A1e%AD%D4%B7%5C%5B%19%C5%DB%0D%EF%9F%19%1D%7B%5E%86%BD%0C%95%A12%AC%5B*%83%96%CAP%19%F62T%86%CAP%19*%83%96%CA%B8Xe%BC%FE)T%19%A1%17xg%7F%DA%CBP%19*%C3%BA%A52T%86%CAP%19%F62T%86%CA%B0n%A9%0CZ%1DV%C6%3D%F3%FCH%DE%B4%B8~%7F%5CZc%F1%D6%1F%AF%84%F9%0F6%E6%EBVt9%0E~%BEr%AF%23%B0%97%A12T%86%CAP%19%B4T%86%CA%B8Re%D8%CBP%19*%C3%BA%A52huX%19%AE%CA%E5%BC%0C%7B%19*CeX%B7h%A9%0C%95%E1%BC%0C%7B%19*CeX%B7T%06%AD%CB%5E%95%2B%BF.%8F%C5%97%D5%E4%7B%EE%82%D6%FB%CF-%9C%FD%B9%CF%3By%7B%19%F62T%86%CA%B0n%D1R%19*%A3%D3%CA%B0%97%A12T%86uKe%D0%EA%B02*%3F1%99%5DB%2B%A4%B5%F8%3A%7C%BA%2B%8Co%7D%5C%EDe%A8%0C%95a%DDR%19%B4T%C66%82fA%B2%ED%DA%9FC%FC%17GZ%06%C9%E1%B3%E5%2C%1A%9FoiB%EB%96%CA%A0%D5qe4%7B%7D%FD%85%F7%5B%ED_%E0s%07%F0k%951%ECr%0D%B5C%D7-g%D1%A8%0C%EB%96%CA%A0%A52T%C6)*%C3%5E%86%CAP%19%D6-%95A%EB*%95q%F8%BB%E3%F9%AB%F6%E21%ACZ%B7%22%B7%9B%3F%02%85%CB%A2%5B%B7%BA%5E%B7%9C%97%E1%BC%0C%EB%16-%95%A12z%AC%0C%BFc%A22T%86uKe%D0%EA%B02V%DD%AD%8A%2B%8CWhe%5E%AF%CF%F5%3B%26%CE%CBh%5C%19%CE%CB%B0%F3%A4%095%A1%CAP%19*Ce%A8%0C%3BO*Ce%A8%0C%95%A12%3A%AD%8C%0A%82%7B%F0v%1F%2FD%A9%5B%9F%EE%EA%26%AF%03%CA%DF9%7B%19*Ce%A8%0C%95%A12T%86%CA%B8Ze%D8%CBP%19*Ce%A8%0C%95%D1ae%EC%F7%89I%E1%B4%D7M%D7P%8BjU%5C%BB%3E%F2%20%D8%CBP%19*Ce%A8%0C%95%A12T%C6%D5*%C3%5E%86%CAP%19*Ce%B4O%07%7B%F0W%7Bw%1C%7C%1A%8C%B3%3B%D1%EE%AA%5C%D6-%EBV%83%80%5E%D0%CA%10%5CU%2BD%E07YU%86%CAP%19*%E3%9A%95%91%D9%A0%C8%AD%5B%EDv%9E%82%FFKOee%E4%8FUe%A8%0C%95%A12T%C6%1F%A9%8C%C8%3D%5B%A5%15%FD%14%22r%E7B%9F%17l%F8%BF%ED%EAf%2B%7F%CF%ECe%D8%CBP%19*Ce%A8%0C%95%E1%93~%7B%19%F62T%86%CAP%19*Ce%A8%0C%E7%13%DA%CBP%19*Ce%A8%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4h%A9%0C%B3E%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4h%A9%0C%B3E%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4%AE%A4%F5%25%C0%00%DE%BF%5C'%0F%DA%B8q%00%00%00%00IEND%AEB%60%82") repeat-y;
+    border-left: 1px solid #BBBBBB;
+    border-right: 1px solid #000000;
+    border-bottom: 1px dashed #BBBBBB;
+}
+
+.overflowRulerX > .firebugRulerV {
+    left: 0;
+}
+
+.overflowRulerY > .firebugRulerH {
+    top: 0;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.firebugLayoutBox {
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    outline: 0;
+}
+
+.firebugLayoutBox:before, .firebugLayoutBox:after {
+    content: "";
+}
+
+.firebugLayoutBoxOffset {
+    z-index: 2147483646;
+    position: fixed;
+    opacity: 0.8;
+}
+
+.firebugLayoutBoxMargin {
+    background-color: #EDFF64;
+}
+
+.firebugLayoutBoxBorder {
+    background-color: #666666;
+}
+
+.firebugLayoutBoxPadding {
+    background-color: SlateBlue;
+}
+
+.firebugLayoutBoxContent {
+    background-color: SkyBlue;
+}
+
+.firebugLayoutLine {
+    z-index: 2147483646;
+    background-color: #000000;
+    opacity: 0.4;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugLayoutLine:before, .firebugLayoutLine:after {
+    content: "";
+}
+
+.firebugLayoutLineLeft, .firebugLayoutLineRight {
+    position: fixed;
+    width: 1px;
+    height: 100%;
+}
+
+.firebugLayoutLineTop, .firebugLayoutLineBottom {
+    position: fixed;
+    width: 100%;
+    height: 1px;
+}
+
+.firebugLayoutLineTop {
+    margin-top: -1px;
+    border-top: 1px solid #999999;
+}
+
+.firebugLayoutLineRight {
+    border-right: 1px solid #999999;
+}
+
+.firebugLayoutLineBottom {
+    border-bottom: 1px solid #999999;
+}
+
+.firebugLayoutLineLeft {
+    margin-left: -1px;
+    border-left: 1px solid #999999;
+}
+
+.fbProxyElement {
+    position: absolute;
+    background-color: transparent;
+    z-index: 2147483646;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+</style><style type="text/css" charset="utf-8">/* See license.txt for terms of usage */
+.firebugCanvas {
+    position:fixed;
+    top: 0;
+    left: 0;
+    display:none;
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+.firebugCanvas:before, .firebugCanvas:after {
+    content: "";
+}
+
+.firebugHighlight {
+    z-index: 2147483646;
+    position: fixed;
+    background-color: #3875d7;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugHighlight:before, .firebugHighlight:after {
+    content: "";
+}
+
+.firebugLayoutBoxParent {
+    z-index: 2147483646;
+    position: fixed;
+    background-color: transparent;
+    border-top: 0 none;
+    border-right: 1px dashed #E00 !important;
+    border-bottom: 1px dashed #E00 !important;
+    border-left: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+.firebugRuler {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugRuler:before, .firebugRuler:after {
+    content: "";
+}
+
+.firebugRulerH {
+    top: -15px;
+    left: 0;
+    width: 100%;
+    height: 14px;
+    background: url("data:image/png,%89PNG%0D%0A%1A%0A%00%00%00%0DIHDR%00%00%13%88%00%00%00%0E%08%02%00%00%00L%25a%0A%00%00%00%04gAMA%00%00%D6%D8%D4OX2%00%00%00%19tEXtSoftware%00Adobe%20ImageReadyq%C9e%3C%00%00%04%F8IDATx%DA%EC%DD%D1n%E2%3A%00E%D1%80%F8%FF%EF%E2%AF2%95%D0D4%0E%C1%14%B0%8Fa-%E9%3E%CC%9C%87n%B9%81%A6W0%1C%A6i%9A%E7y%0As8%1CT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AATE9%FE%FCw%3E%9F%AF%2B%2F%BA%97%FDT%1D~K(%5C%9D%D5%EA%1B%5C%86%B5%A9%BDU%B5y%80%ED%AB*%03%FAV9%AB%E1%CEj%E7%82%EF%FB%18%BC%AEJ8%AB%FA'%D2%BEU9%D7U%ECc0%E1%A2r%5DynwVi%CFW%7F%BB%17%7Dy%EACU%CD%0E%F0%FA%3BX%FEbV%FEM%9B%2B%AD%BE%AA%E5%95v%AB%AA%E3E5%DCu%15rV9%07%B5%7F%B5w%FCm%BA%BE%AA%FBY%3D%14%F0%EE%C7%60%0EU%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5JU%88%D3%F5%1F%AE%DF%3B%1B%F2%3E%DAUCNa%F92%D02%AC%7Dm%F9%3A%D4%F2%8B6%AE*%BF%5C%C2Ym~9g5%D0Y%95%17%7C%C8c%B0%7C%18%26%9CU%CD%13i%F7%AA%90%B3Z%7D%95%B4%C7%60%E6E%B5%BC%05%B4%FBY%95U%9E%DB%FD%1C%FC%E0%9F%83%7F%BE%17%7DkjMU%E3%03%AC%7CWj%DF%83%9An%BCG%AE%F1%95%96yQ%0Dq%5Dy%00%3Et%B5'%FC6%5DS%95pV%95%01%81%FF'%07%00%00%00%00%00%00%00%00%00%F8x%C7%F0%BE%9COp%5D%C9%7C%AD%E7%E6%EBV%FB%1E%E0(%07%E5%AC%C6%3A%ABi%9C%8F%C6%0E9%AB%C0'%D2%8E%9F%F99%D0E%B5%99%14%F5%0D%CD%7F%24%C6%DEH%B8%E9rV%DFs%DB%D0%F7%00k%FE%1D%84%84%83J%B8%E3%BA%FB%EF%20%84%1C%D7%AD%B0%8E%D7U%C8Y%05%1E%D4t%EF%AD%95Q%BF8w%BF%E9%0A%BF%EB%03%00%00%00%00%00%00%00%00%00%B8vJ%8E%BB%F5%B1u%8Cx%80%E1o%5E%CA9%AB%CB%CB%8E%03%DF%1D%B7T%25%9C%D5(%EFJM8%AB%CC'%D2%B2*%A4s%E7c6%FB%3E%FA%A2%1E%80~%0E%3E%DA%10x%5D%95Uig%15u%15%ED%7C%14%B6%87%A1%3B%FCo8%A8%D8o%D3%ADO%01%EDx%83%1A~%1B%9FpP%A3%DC%C6'%9C%95gK%00%00%00%00%00%00%00%00%00%20%D9%C9%11%D0%C0%40%AF%3F%EE%EE%92%94%D6%16X%B5%BCMH%15%2F%BF%D4%A7%C87%F1%8E%F2%81%AE%AAvzr%DA2%ABV%17%7C%E63%83%E7I%DC%C6%0Bs%1B%EF6%1E%00%00%00%00%00%00%00%00%00%80cr%9CW%FF%7F%C6%01%0E%F1%CE%A5%84%B3%CA%BC%E0%CB%AA%84%CE%F9%BF)%EC%13%08WU%AE%AB%B1%AE%2BO%EC%8E%CBYe%FE%8CN%ABr%5Dy%60~%CFA%0D%F4%AE%D4%BE%C75%CA%EDVB%EA(%B7%F1%09g%E5%D9%12%00%00%00%00%00%00%00%00%00H%F6%EB%13S%E7y%5E%5E%FB%98%F0%22%D1%B2'%A7%F0%92%B1%BC%24z3%AC%7Dm%60%D5%92%B4%7CEUO%5E%F0%AA*%3BU%B9%AE%3E%A0j%94%07%A0%C7%A0%AB%FD%B5%3F%A0%F7%03T%3Dy%D7%F7%D6%D4%C0%AAU%D2%E6%DFt%3F%A8%CC%AA%F2%86%B9%D7%F5%1F%18%E6%01%F8%CC%D5%9E%F0%F3z%88%AA%90%EF%20%00%00%00%00%00%00%00%00%00%C0%A6%D3%EA%CFi%AFb%2C%7BB%0A%2B%C3%1A%D7%06V%D5%07%A8r%5D%3D%D9%A6%CAu%F5%25%CF%A2%99%97zNX%60%95%AB%5DUZ%D5%FBR%03%AB%1C%D4k%9F%3F%BB%5C%FF%81a%AE%AB'%7F%F3%EA%FE%F3z%94%AA%D8%DF%5B%01%00%00%00%00%00%00%00%00%00%8E%FB%F3%F2%B1%1B%8DWU%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*UiU%C7%BBe%E7%F3%B9%CB%AAJ%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5J%95*U%AAT%A9R%A5*%AAj%FD%C6%D4%5Eo%90%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5%86%AF%1B%9F%98%DA%EBm%BBV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%ADV%AB%D5j%B5Z%AD%D6%E4%F58%01%00%00%00%00%00%00%00%00%00%00%00%00%00%40%85%7F%02%0C%008%C2%D0H%16j%8FX%00%00%00%00IEND%AEB%60%82") repeat-x;
+    border-top: 1px solid #BBBBBB;
+    border-right: 1px dashed #BBBBBB;
+    border-bottom: 1px solid #000000;
+}
+
+.firebugRulerV {
+    top: 0;
+    left: -15px;
+    width: 14px;
+    height: 100%;
+    background: url("data:image/png,%89PNG%0D%0A%1A%0A%00%00%00%0DIHDR%00%00%00%0E%00%00%13%88%08%02%00%00%00%0E%F5%CB%10%00%00%00%04gAMA%00%00%D6%D8%D4OX2%00%00%00%19tEXtSoftware%00Adobe%20ImageReadyq%C9e%3C%00%00%06~IDATx%DA%EC%DD%D1v%A20%14%40Qt%F1%FF%FF%E4%97%D9%07%3BT%19%92%DC%40(%90%EEy%9A5%CB%B6%E8%F6%9Ac%A4%CC0%84%FF%DC%9E%CF%E7%E3%F1%88%DE4%F8%5D%C7%9F%2F%BA%DD%5E%7FI%7D%F18%DDn%BA%C5%FB%DF%97%BFk%F2%10%FF%FD%B4%F2M%A7%FB%FD%FD%B3%22%07p%8F%3F%AE%E3%F4S%8A%8F%40%EEq%9D%BE8D%F0%0EY%A1Uq%B7%EA%1F%81%88V%E8X%3F%B4%CEy%B7h%D1%A2E%EBohU%FC%D9%AF2fO%8BBeD%BE%F7X%0C%97%A4%D6b7%2Ck%A5%12%E3%9B%60v%B7r%C7%1AI%8C%BD%2B%23r%00c0%B2v%9B%AD%CA%26%0C%1Ek%05A%FD%93%D0%2B%A1u%8B%16-%95q%5Ce%DCSO%8E%E4M%23%8B%F7%C2%FE%40%BB%BD%8C%FC%8A%B5V%EBu%40%F9%3B%A72%FA%AE%8C%D4%01%CC%B5%DA%13%9CB%AB%E2I%18%24%B0n%A9%0CZ*Ce%9C%A22%8E%D8NJ%1E%EB%FF%8F%AE%CAP%19*%C3%BAEKe%AC%D1%AAX%8C*%DEH%8F%C5W%A1e%AD%D4%B7%5C%5B%19%C5%DB%0D%EF%9F%19%1D%7B%5E%86%BD%0C%95%A12%AC%5B*%83%96%CAP%19%F62T%86%CAP%19*%83%96%CA%B8Xe%BC%FE)T%19%A1%17xg%7F%DA%CBP%19*%C3%BA%A52T%86%CAP%19%F62T%86%CA%B0n%A9%0CZ%1DV%C6%3D%F3%FCH%DE%B4%B8~%7F%5CZc%F1%D6%1F%AF%84%F9%0F6%E6%EBVt9%0E~%BEr%AF%23%B0%97%A12T%86%CAP%19%B4T%86%CA%B8Re%D8%CBP%19*%C3%BA%A52huX%19%AE%CA%E5%BC%0C%7B%19*CeX%B7h%A9%0C%95%E1%BC%0C%7B%19*CeX%B7T%06%AD%CB%5E%95%2B%BF.%8F%C5%97%D5%E4%7B%EE%82%D6%FB%CF-%9C%FD%B9%CF%3By%7B%19%F62T%86%CA%B0n%D1R%19*%A3%D3%CA%B0%97%A12T%86uKe%D0%EA%B02*%3F1%99%5DB%2B%A4%B5%F8%3A%7C%BA%2B%8Co%7D%5C%EDe%A8%0C%95a%DDR%19%B4T%C66%82fA%B2%ED%DA%9FC%FC%17GZ%06%C9%E1%B3%E5%2C%1A%9FoiB%EB%96%CA%A0%D5qe4%7B%7D%FD%85%F7%5B%ED_%E0s%07%F0k%951%ECr%0D%B5C%D7-g%D1%A8%0C%EB%96%CA%A0%A52T%C6)*%C3%5E%86%CAP%19%D6-%95A%EB*%95q%F8%BB%E3%F9%AB%F6%E21%ACZ%B7%22%B7%9B%3F%02%85%CB%A2%5B%B7%BA%5E%B7%9C%97%E1%BC%0C%EB%16-%95%A12z%AC%0C%BFc%A22T%86uKe%D0%EA%B02V%DD%AD%8A%2B%8CWhe%5E%AF%CF%F5%3B%26%CE%CBh%5C%19%CE%CB%B0%F3%A4%095%A1%CAP%19*Ce%A8%0C%3BO*Ce%A8%0C%95%A12%3A%AD%8C%0A%82%7B%F0v%1F%2FD%A9%5B%9F%EE%EA%26%AF%03%CA%DF9%7B%19*Ce%A8%0C%95%A12T%86%CA%B8Ze%D8%CBP%19*Ce%A8%0C%95%D1ae%EC%F7%89I%E1%B4%D7M%D7P%8BjU%5C%BB%3E%F2%20%D8%CBP%19*Ce%A8%0C%95%A12T%C6%D5*%C3%5E%86%CAP%19*Ce%B4O%07%7B%F0W%7Bw%1C%7C%1A%8C%B3%3B%D1%EE%AA%5C%D6-%EBV%83%80%5E%D0%CA%10%5CU%2BD%E07YU%86%CAP%19*%E3%9A%95%91%D9%A0%C8%AD%5B%EDv%9E%82%FFKOee%E4%8FUe%A8%0C%95%A12T%C6%1F%A9%8C%C8%3D%5B%A5%15%FD%14%22r%E7B%9F%17l%F8%BF%ED%EAf%2B%7F%CF%ECe%D8%CBP%19*Ce%A8%0C%95%E1%93~%7B%19%F62T%86%CAP%19*Ce%A8%0C%E7%13%DA%CBP%19*Ce%A8%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4h%A9%0C%B3E%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4h%A9%0C%B3E%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%A9%0CZf%8B%16-Z%B4h%D1R%19f%8B%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1R%19%B4%CC%16-Z%B4h%D1%A2%A52%CC%16-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2%A52h%99-Z%B4h%D1%A2EKe%98-Z%B4h%D1%A2EKe%D02%5B%B4h%D1%A2EKe%D02%5B%B4h%D1%A2E%8B%96%CA0%5B%B4h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%96%CA%A0e%B6h%D1%A2E%8B%16-%95a%B6h%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-%95A%CBl%D1%A2E%8B%16-Z*%C3l%D1%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z*%83%96%D9%A2E%8B%16-Z%B4T%86%D9%A2E%8B%16-Z%B4T%06-%B3E%8B%16-Z%B4%AE%A4%F5%25%C0%00%DE%BF%5C'%0F%DA%B8q%00%00%00%00IEND%AEB%60%82") repeat-y;
+    border-left: 1px solid #BBBBBB;
+    border-right: 1px solid #000000;
+    border-bottom: 1px dashed #BBBBBB;
+}
+
+.overflowRulerX > .firebugRulerV {
+    left: 0;
+}
+
+.overflowRulerY > .firebugRulerH {
+    top: 0;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.firebugLayoutBox {
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    outline: 0;
+}
+
+.firebugLayoutBox:before, .firebugLayoutBox:after {
+    content: "";
+}
+
+.firebugLayoutBoxOffset {
+    z-index: 2147483646;
+    position: fixed;
+    opacity: 0.8;
+}
+
+.firebugLayoutBoxMargin {
+    background-color: #EDFF64;
+}
+
+.firebugLayoutBoxBorder {
+    background-color: #666666;
+}
+
+.firebugLayoutBoxPadding {
+    background-color: SlateBlue;
+}
+
+.firebugLayoutBoxContent {
+    background-color: SkyBlue;
+}
+
+.firebugLayoutLine {
+    z-index: 2147483646;
+    background-color: #000000;
+    opacity: 0.4;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+
+.firebugLayoutLine:before, .firebugLayoutLine:after {
+    content: "";
+}
+
+.firebugLayoutLineLeft, .firebugLayoutLineRight {
+    position: fixed;
+    width: 1px;
+    height: 100%;
+}
+
+.firebugLayoutLineTop, .firebugLayoutLineBottom {
+    position: fixed;
+    width: 100%;
+    height: 1px;
+}
+
+.firebugLayoutLineTop {
+    margin-top: -1px;
+    border-top: 1px solid #999999;
+}
+
+.firebugLayoutLineRight {
+    border-right: 1px solid #999999;
+}
+
+.firebugLayoutLineBottom {
+    border-bottom: 1px solid #999999;
+}
+
+.firebugLayoutLineLeft {
+    margin-left: -1px;
+    border-left: 1px solid #999999;
+}
+
+.fbProxyElement {
+    position: absolute;
+    background-color: transparent;
+    z-index: 2147483646;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0 none;
+}
+</style><textarea id="dojo.widget.RichText.savedContent" style="display:
+ none; position: absolute; top: -100px; left: -100px; height: 3px; 
+width: 3px; overflow: hidden;"></textarea><style type="text/css">.dojoLayoutContainer{ position: relative; display: block; overflow: hidden; }
+body .dojoAlignTop, body .dojoAlignBottom, body .dojoAlignLeft, body .dojoAlignRight { position: absolute; overflow: hidden; }
+body .dojoAlignClient { position: absolute }
+.dojoAlignClient { overflow: auto; }
+</style><textarea id="dojo.widget.RichText.savedContent" style="display:
+ none; position: absolute; top: -100px; left: -100px; height: 3px; 
+width: 3px; overflow: hidden;"></textarea>
+
+<script language="JavaScript" type="text/javascript" src="editSurvivalValueDefinition.action.9_files/dojoRequire.js"></script>
+<link rel="stylesheet" 
+href="editSurvivalValueDefinition.action.9_files/styles.css" 
+type="text/css">
+
+<script language="JavaScript" src="editSurvivalValueDefinition.action.9_files/utils.js" type="text/javascript"></script>
+<script language="JavaScript" src="editSurvivalValueDefinition.action.9_files/validation.js" type="text/javascript"></script>
+<script language="JavaScript" src="editSurvivalValueDefinition.action.9_files/validation_002.js" type="text/javascript"></script>
+        <script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/pde.js"></script>
+        <script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/prototype.js"></script>
+        <script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/scriptaculous.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action.7_files/builder.js"></script><script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/effects.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action.7_files/dragdrop.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action.7_files/controls.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action.7_files/slider.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action.7_files/sound.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action_6_files/builder.js"></script><script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/effects.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action_6_files/dragdrop.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action_6_files/controls.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action_6_files/slider.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action_6_files/sound.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action_files/builder.js"></script><script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/effects.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action_files/dragdrop.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action_files/controls.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action_files/slider.js"></script><script type="text/javascript" src="file:///Users/jmarple/My%20Projects/caintegrator2/prototypes/new%20survival%20value/editSurvivalValueDefinition.action_files/sound.js"></script><script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/builder.html"></script><script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/effects.js"></script><script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/dragdrop.html"></script><script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/controls.html"></script><script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/slider.html"></script><script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/sound.html"></script>
+        <script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/effects.js"></script>
+        <script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/caintegrator2.js"></script>
+        <script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/cai2modal.js"></script>
+        <script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/onlinehelp.js"></script>
+        <script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/editableSelect.js"></script>
+        <script type="text/javascript" src="editSurvivalValueDefinition.action.9_files/optiontransferselect.js"></script>
+	
+		<a href="#content" id="navskip">Skip to Page Content</a>
+		
+		<div id="wrapper" class="curate">
+
+			<!-- Global Header -->	
+            
+            
+
+
+
+<!--NCI/NIH Header-->
+            
+<div id="nciheader">        
+    <div id="ncilogo"><a href="http://www.cancer.gov/"><img 
+src="editSurvivalValueDefinition.action.9_files/logotype.gif" alt="Logo:
+ 
+National Cancer Institute" height="37" width="283"></a>
+    </div>
+    <div id="nihtag"><a href="http://www.cancer.gov/"><img 
+src="editSurvivalValueDefinition.action.9_files/tagline.gif" alt="Logo: 
+U.S. National Institutes of Health | www.cancer.gov" height="37" 
+width="295"></a>
+    </div>
+
+</div>
+        
+<!--/NCI/NIH Header-->
+
+<!--PO-Curate Header-->
+
+<div id="appheader">
+
+    <div id="mainlogo">
+        <div>
+            <a 
+href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/index.jsp"><img
+ src="editSurvivalValueDefinition.action.9_files/logo_caintegrator2.gif"
+ alt="Logo: caIntegrator2"></a>
+        </div>
+        
+        
+        
+        
+        <div id="versioninfo" title="caINTEGRATOR2, BUILD DATE: 
+'03/23/2010 01:05 AM', SVNTAG: software, SVNURL: 
+svn://cbioapp520.nci.nih.gov/svnroot/caintegrator2/trunk/software, 
+SVNREV: 3128">
+            build: software | 
+            date: '03/23/2010 01:05 AM'           
+        </div>
+    </div> 
+
+    <div id="userarea_wrapper">
+        
+        
+        <div id="user">Welcome, manager | <a 
+href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/logout.jsp">Logout</a></div>
+        <div id="mystudies">
+               <form id="workspace" name="workspace" 
+action="/caintegrator2/workspace.action" method="post">
+
+                    <label for="currentStudySubscriptionId">My Studies:</label>
+                    <select name="currentStudySubscriptionId" 
+id="workspace_currentStudySubscriptionId" onchange="this.form.submit();">
+    <option selected="selected" value="-1">-- Please Select --</option>
+    <option value="39">Demo Study based on becic-00235 data.</option>
+    <option value="29">Demo Study based on DC Lung Full data.</option>
+    <option value="24">Demo Study based on Netherlands data</option>
+    <option value="60">Demo Study based on Rembrandt with NCRI data.</option>
+    <option value="9">Demo Study based on Rembrandt with no images data.</option>
+    <option value="11">Demo Study based on Small Copy Number data.</option>
+    <option value="79">DS demo</option>
+    <option value="101">ISPY clinical data test</option>
+    <option value="96">JP - testing new NBIA</option>
+    <option value="78">kak mouse test 022510</option>
+    <option value="34">QA_small_demo</option>
+    <option value="77">Rembrandt from Prod</option>
+    <option value="61">TCGA_GBM_public_Agilent</option>
+    <option value="25">Test of Mouse 430_2 chip platform file</option>
+    <option value="117">Test small Agilent Copy Number</option>
+    <option value="31">test3 Mouse430_2 chip</option>
+    <option value="116">testing 24071</option>
+    <option value="121">testing 27322</option>
+    <option value="14">testing external links</option>
+
+
+</select>
+
+
+               </form>
+
+
+
+
+        </div>    
+   
+         
+        
+    </div>
+
+</div>
+
+<!--/PO-Curate Header-->
+
+            
+			<!-- /Global Header -->	
+
+			<!--Work Area-->
+				
+			<div id="main">	
+                <div dojotype="struts:BindDiv" id="TB_overlay" 
+class="TB_overlayBG" showerror="true" parsecontent="true">
+</div>
+
+                <!-- Begin hidden busyDialogDiv -->
+                <div id="busyDialogDiv" style="display: none; 
+visibility: hidden; margin-left: -140px; margin-top: -62px; width: 
+390px; max-height: 130px; overflow: auto;">
+                <img id="busyDialogProcessingImage" 
+src="editSurvivalValueDefinition.action.9_files/ajax-loader.gif"> Please
+ 
+wait for action to complete ...
+                </div>
+                <!-- End busyDialogDiv -->
+                
+                <!-- Begin hidden geneListSearchForm -->
+                        
+<form id="geneListSearchForm" name="geneListSearchForm" 
+onsubmit="runGeneListSearch(); return false;" 
+action="/caintegrator2/editSurvivalValueDefinition.action" method="post">
+<div dojotype="struts:BindDiv" refreshonshow="false" 
+id="geneListSearchInputDiv" style="display: none; visibility: hidden; 
+margin-left: -140px; margin-top: -62px; width: 458px; max-height: 300px;
+ overflow: auto;" href="geneListSearchInput.action" loadingtext="&lt;img
+ src='images/ajax-loader.gif'/&gt;" listentopics="geneListSearchTopic" 
+showerror="true" showloading="true" parsecontent="true">
+</div>
+
+                <table class="wwFormTable">
+                    <!-- For gene list to know which form element to publish gene symbols to. -->
+                    <input name="geneSymbolElementId" value="" 
+id="geneListSearchForm_geneSymbolElementId" type="hidden">
+                    <input name="geneListSearchTopicPublished" 
+value="false" id="geneListSearchForm_geneListSearchTopicPublished" 
+type="hidden">
+                    </table></form>
+
+
+
+
+                <!-- End geneListSearchForm -->
+                
+                <!-- Begin hidden caBioGeneSearchForm -->
+                        
+<form id="caBioGeneSearchForm" name="caBioGeneSearchForm" 
+onsubmit="runCaBioSearch(); return false;" 
+action="/caintegrator2/editSurvivalValueDefinition.action" method="post">
+<div dojotype="struts:BindDiv" refreshonshow="false" 
+id="caBioGeneSearchInputDiv" style="display: none; visibility: hidden; 
+margin-left: -140px; margin-top: -62px; width: 608px; max-height: 300px;
+ overflow: auto;" href="caBioSearchInput.action" loadingtext="&lt;img 
+src='images/ajax-loader.gif'/&gt;" listentopics="caBioGeneSearchTopic" 
+showerror="true" showloading="true" parsecontent="true">
+</div>
+
+                <table class="wwFormTable">
+                    <!-- For caBio to know which form element to publish gene symbols to. -->
+                    <input name="geneSymbolElementId" value="" 
+id="caBioGeneSearchForm_geneSymbolElementId" type="hidden">
+                    <input name="caBioGeneSearchTopicPublished" 
+value="false" id="caBioGeneSearchForm_caBioGeneSearchTopicPublished" 
+type="hidden">
+                    </table></form>
+
+
+
+
+                <!-- End caBioGeneSearchForm -->
+				<div id="contentwrapper">
+				    
+				    <!--Content-->
+						
+	                
+
+            
+<div id="content">                      
+
+    <h1 style="color: rgb(255, 255, 255); background: none repeat scroll
+ 0% 0% rgb(38, 61, 107); padding: 5px;">editing: <strong>Demo Study 
+based on DC Lung Full data.</strong></h1>    
+    
+    <!--Page Help-->
+
+    <div class="pagehelp"><a 
+href="javascript:openHelpWindowWithNavigation('survival_values_help')" 
+class="help">
+   </a>
+    </div>
+
+    <!--/Page Help-->         
+    
+    <h1>Edit Survival Values</h1>
+    <p>Select an existing definition and click <strong>Edit</strong> or 
+click <strong>New</strong>.</p>
+
+    <div class="box2">
+   <div class="whitebg">
+    <table class="">
+
+            <tbody><tr>
+                <td style="padding: 5px;" colspan="2">
+    
+                
+            
+                <form method="post" 
+action="/caintegrator2/editSurvivalValueDefinition.action" 
+name="survivalDefinitionForm" id="editSurvivalValueDefinition">
+                    <input 
+id="editSurvivalValueDefinition_studyConfiguration_id" value="21" 
+name="studyConfiguration.id" type="hidden">
+                    <input id="editSurvivalValueDefinition_actionType" 
+value="modify" name="actionType" type="hidden">
+                    
+            	    <select 
+id="editSurvivalValueDefinition_survivalDefinitionFormValues_survivalValueDefinitionId"
+ size="5" name="survivalDefinitionFormValues.survivalValueDefinitionId">
+    <option selected="selected" value="3">death is last contact date</option>
+
+
+</select>
+
+            	    <br> <br>
+            	    
+                        
+                    
+            	    <a style="margin: 0pt 5px;" class="btn" 
+href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/newSurvivalValueDefinition.action?studyConfiguration.id=21"
+ id="editSurvivalValueDefinition_"><span class="btn_img"><span 
+class="add">New</span></span></a>
+            	    <a onclick="document.survivalDefinitionForm.action = 
+'deleteSurvivalValueDefinition.action';document.survivalDefinitionForm.actionType.value
+
+
+
+ = 'modify';document.survivalDefinitionForm.submit();" style="margin: 
+0pt 5px;" class="btn" href="#" id="editSurvivalValueDefinition_"><span 
+class="btn_img"><span class="cancel">Remove</span></span></a>
+            	    <a onclick="document.survivalDefinitionForm.action = 
+'editSurvivalValueDefinition.action';document.survivalDefinitionForm.actionType.value
+
+
+
+ = 'modify';document.survivalDefinitionForm.submit();" style="margin: 
+0pt 5px;" class="btn" href="#" id="editSurvivalValueDefinition_"><span 
+class="btn_img"><span class="edit">Edit</span></span></a>
+            	    <a onclick="document.survivalDefinitionForm.action = 
+'cancelSurvivalValueDefinition.action';document.survivalDefinitionForm.submit();"
+ style="margin: 0pt 5px;" class="btn" href="#" 
+id="editSurvivalValueDefinition_"><span class="btn_img"><span 
+class="cancel">Cancel</span></span></a>
+                </form>
+
+
+
+
+                
+                <br><br>
+                
+                <h1>Survival Value Definition Properties for 'death is 
+last contact date'</h1>
+                
+                
+                <form method="post" 
+action="/caintegrator2/editSurvivalValueDefinition.action" 
+name="editSurvivalValueDefinition" id="editSurvivalValueDefinition">
+<table class="">
+                    <input name="studyConfiguration.id" value="21" 
+id="editSurvivalValueDefinition_studyConfiguration_id" type="hidden">
+                    <input name="survivalValueDefinition.id" value="3" 
+id="editSurvivalValueDefinition_survivalValueDefinition_id" 
+type="hidden">
+                    <tbody> 
+
+                     
+
+                              
+                    
+
+                              
+                    
+
+                              
+                    <tr>
+    <td colspan="2"></td>
+</tr>
+
+                </tbody></table>
+<div id="gisticAnalysisForm_" style="padding: 0em 0pt 0pt;">
+                <div id="gisticAnalysisForm_" class="wwlbl"><label 
+class="label">Survival Definition Type:</label></div>
+                <div class="wwgrp" id="gisticAnalysisForm_">
+                    <div class="wwgrp" 
+id="wwgrp_gisticAnalysisForm_useWebService">
+<div class="wwctrl" id="wwctrl_gisticAnalysisForm_useWebService">
+<input 
+onclick="document.getElementById('gridServiceInputParams').style.display
+ = 'none'; 
+document.getElementById('webServiceInputParams').style.display = 
+'block'; webServiceUrl.disabled = false; username.disabled = false; 
+password.disabled = false; gridServiceUrl.disabled = true; " 
+value="true" checked="checked" id="gisticAnalysisForm_useWebServicetrue"
+ name="useWebService" type="radio"><label 
+for="gisticAnalysisForm_useWebServicetrue">By Date</label>
+</div> </div>
+
+
+                    <div id="wwgrp_gisticAnalysisForm_useWebService" 
+class="wwgrp">
+<div id="wwctrl_gisticAnalysisForm_useWebService" class="wwctrl">
+<input name="useWebService" id="gisticAnalysisForm_useWebServicefalse" 
+value="false" 
+onclick="document.getElementById('webServiceInputParams').style.display =
+ 'none'; document.getElementById('gridServiceInputParams').style.display
+ = 'block'; webServiceUrl.disabled = true; webServiceUrl.value = ''; 
+username.disabled = true; username.value = ''; password.disabled = true;
+ password.value = ''; gridServiceUrl.disabled = false; " type="radio"><label
+ for="gisticAnalysisForm_useWebServicefalse">By Length of time in study</label>
+</div> </div>
+
+
+                </div><br>
+            </div>
+<div style="display: none;" id="gridServiceInputParams">
+            <div class="wwgrp" id="wwgrp_gridServiceUrl">
+<div id="wwlbl_gridServiceUrl" class="wwlbl">
+<label class="label" 
+for="editSurvivalValueDefinition_survivalDefinitionFormValues_survivalValueDefinitionName">Name:</label></div>
+ <div id="wwctrl_gridServiceUrl" class="wwctrl">
+<input 
+id="editSurvivalValueDefinition_survivalDefinitionFormValues_survivalValueDefinitionName"
+ value="death is last contact date" 
+name="survivalDefinitionFormValues.survivalValueDefinitionName" 
+type="text">
+</div> </div>
+<div class="wwgrp" id="gridServiceInputParams">
+
+    <div class="wwlbl" id="wwlbl_webServiceUrl"><label 
+for="editSurvivalValueDefinition_survivalDefinitionFormValues_survivalStartDateId"
+ class="label">Survival
+ Length:</label></div>
+    <div class="wwctrl" id="wwctrl_webServiceUrl"><select 
+name="survivalDefinitionFormValues.survivalStartDateId" 
+id="editSurvivalValueDefinition_survivalDefinitionFormValues_survivalStartDateId">
+    <option value="192" selected="selected">SURV_LENGTH</option>
+    <option value="197">LAST_CONTACT_DATE</option>
+    <option value="195">LAST_CLINICAL_ASSESSMENT_DATE</option>
+
+
+</select>
+</div>
+</div>
+<div id="gridServiceInputParams" class="wwgrp">
+    <div id="wwlbl_webServiceUrl" class="wwlbl"><label class="label" 
+for="editSurvivalValueDefinition_survivalDefinitionFormValues_survivalDeathDateId">Survival
+
+ Length Units:</label></div>
+    <div class="wwctrl" id="wwctrl_webServiceUrl"><select 
+name="survivalDefinitionFormValues.survivalDeathDateId" 
+id="editSurvivalValueDefinition_survivalDefinitionFormValues_survivalDeathDateId">
+    <option value="192">Days</option>
+    <option value="197" selected="selected">Weeks</option>
+    <option value="195">Months</option>
+
+
+</select>
+</div>
+</div>
+<div class="wwgrp" id="wwgrp_gisticAnalysisForm_useWebService">
+    <div class="wwlbl" id="wwlbl_webServiceUrl"><label class="label" 
+for="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId">Censored
+
+
+ Status:</label></div>
+    <div class="wwctrl" id="wwlbl_webServiceUrl"><select 
+id="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId"
+ name="survivalDefinitionFormValues.lastFollowupDateId">
+    <option value="192">SOME_OTHER</option>
+    <option value="197">LAST_CONTACT_DATE</option>
+    <option selected="selected" value="195">CENSORED_STATUS</option>
+
+
+</select>
+</div>
+</div>
+<div id="wwgrp_gisticAnalysisForm_useWebService" class="wwgrp">
+    <div id="wwlbl_webServiceUrl" class="wwlbl"><label 
+for="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId"
+ class="label">Value  for Death:</label></div>
+    <div id="wwlbl_webServiceUrl" class="wwctrl"><select 
+name="survivalDefinitionFormValues.lastFollowupDateId" 
+id="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId">
+    <option value="192">SOME_OTHER</option>
+    <option value="197">LAST_CONTACT_DATE</option>
+    <option value="195" selected="selected">DEAD</option>
+
+
+</select>
+</div>
+</div>
+<div id="wwgrp_gisticAnalysisForm_useWebService" class="wwgrp">
+    <div id="wwlbl_webServiceUrl" class="wwlbl"><label 
+for="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId"
+ class="label">Value for Censored:</label></div>
+    <div id="wwlbl_webServiceUrl" class="wwctrl"><select 
+name="survivalDefinitionFormValues.lastFollowupDateId" 
+id="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId">
+    <option value="192">SOME_OTHER</option>
+    <option value="197">LAST_CONTACT_DATE</option>
+    <option value="195" selected="selected">CENSORED</option>
+
+
+</select>
+</div>
+</div>
+<div class="wwgrp" id="wwgrp_gisticAnalysisForm_useWebService">
+    <div class="wwlbl" id="wwlbl_webServiceUrl"><label class="label" 
+for="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId">Value
+
+ for Alive:</label></div>
+    <div class="wwctrl" id="wwlbl_webServiceUrl"><select 
+id="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId"
+ name="survivalDefinitionFormValues.lastFollowupDateId">
+    <option value="192">SOME_OTHER</option>
+    <option value="197">LAST_CONTACT_DATE</option>
+    <option selected="selected" value="195">ALIVE</option>
+
+
+</select>
+</div>
+</div>
+
+            </div>
+<div style="display: block;" id="webServiceInputParams">
+<div id="wwgrp_gridServiceUrl" class="wwgrp">
+<div class="wwlbl" id="wwlbl_gridServiceUrl">
+<label 
+for="editSurvivalValueDefinition_survivalDefinitionFormValues_survivalValueDefinitionName"
+ class="label">Name:</label></div>
+ <div class="wwctrl" id="wwctrl_gridServiceUrl">
+<input name="survivalDefinitionFormValues.survivalValueDefinitionName" 
+value="death is last contact date" 
+id="editSurvivalValueDefinition_survivalDefinitionFormValues_survivalValueDefinitionName"
+ type="text">
+</div> </div>  
+
+<div id="wwgrp_gridServiceUrl" class="wwgrp">
+    <div class="wwlbl" id="wwlbl_gridServiceUrl"><label class="label" 
+for="editSurvivalValueDefinition_survivalDefinitionFormValues_survivalStartDateId">Survival
+ Start Date:</label></div>
+    <div class="wwctrl" id="wwctrl_gridServiceUrl"><select 
+id="editSurvivalValueDefinition_survivalDefinitionFormValues_survivalStartDateId"
+ name="survivalDefinitionFormValues.survivalStartDateId">
+    <option selected="selected" value="192">ENROLLMENT_DATE</option>
+    <option value="197">LAST_CONTACT_DATE</option>
+    <option value="195">LAST_CLINICAL_ASSESSMENT_DATE</option>
+
+
+</select>
+</div>
+</div>
+
+<div id="wwgrp_gridServiceUrl" class="wwgrp">
+    <div class="wwlbl" id="wwlbl_gridServiceUrl"><label class="label" 
+for="editSurvivalValueDefinition_survivalDefinitionFormValues_survivalDeathDateId">Death
+ Date:</label></div>
+    <div class="wwctrl" id="wwctrl_gridServiceUrl"><select 
+id="editSurvivalValueDefinition_survivalDefinitionFormValues_survivalDeathDateId"
+ name="survivalDefinitionFormValues.survivalDeathDateId">
+    <option value="192">ENROLLMENT_DATE</option>
+    <option selected="selected" value="197">LAST_CONTACT_DATE</option>
+    <option value="195">LAST_CLINICAL_ASSESSMENT_DATE</option>
+</select>
+</div>
+</div>
+<div id="wwgrp_gridServiceUrl" class="wwgrp">
+    <div class="wwlbl" id="wwlbl_gridServiceUrl"><label class="label" 
+for="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId">Last
+ Followup Date:</label></div>
+    <div class="wwctrl" id="wwctrl_gridServiceUrl"><select 
+id="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId"
+ name="survivalDefinitionFormValues.lastFollowupDateId">
+    <option value="192">ENROLLMENT_DATE</option>
+    <option value="197">LAST_CONTACT_DATE</option>
+    <option selected="selected" value="195">LAST_CLINICAL_ASSESSMENT_DATE</option>
+</select>
+</div>
+</div>
+            </div>
+
+
+                              
+                    
+
+
+                              
+                    
+
+
+
+<div style="position: relative; white-space: nowrap;">
+<div id="wwlbl_webServiceUrl" class="wwlbl"><label 
+for="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId"
+ class="label"></label></div><div id="wwlbl_webServiceUrl" 
+class="wwctrl"><input value="Save" 
+name="action:saveSurvivalValueDefinition" 
+id="editSurvivalValueDefinition_saveSurvivalValueDefinition" 
+type="submit">
+</div>
+</div></form>
+
+
+
+
+                
+    
+                </td>
+            </tr>
+        </tbody></table>
+    </div>
+</div>    
+    
+</div>
+
+<div class="clear"><br></div>
+
+					
+					<!--/Content-->
+    
+                </div>
+                
+				<!--Left Navigation Column-->
+				
+				
+
+
+            
+<div id="leftnav">
+    
+    <!--Study Logo-->
+    
+    
+    <!--/Study Logo-->
+    
+    <!--Menu-->
+    
+    
+    
+    
+    
+    
+    
+
+    
+         
+    
+        <ul class="menu">   
+            <li class="stdnav"><div>Study Management</div>
+                <ul>
+                    <li>
+                    <a 
+href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/manageStudies.action">Manage
+
+
+
+ Studies</a></li>
+                    <li>
+                    <a 
+href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/createStudy.action">Create
+
+
+
+ New Study</a></li>
+                </ul>
+            </li>
+        </ul>
+    
+    
+        <ul class="menu">   
+            <li class="stdnav"><div>Application Management</div>
+                <ul>
+                    <li>
+                    <a 
+href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/managePlatforms.action">Manage
+
+
+
+ Platforms</a></li>
+                </ul>
+            </li>
+        </ul>
+    
+    
+    <ul class="menu">
+        <li class="stdnavforinvestigator" style="padding-bottom: 0pt;"><div><span
+ class="lowercase">ca</span>Integrator2 Menu</div>
+            <ul>
+                
+                <li><a 
+href="javascript:openHelpWindowWithNavigation('app_support_help')">Support</a></li>
+                <li><a 
+href="http://caintegrator2-dev.nci.nih.gov/caintegrator2/tutorials.action">Tutorials</a></li>
+                <li><a href="javascript:openUsersGuideWindow('top')">User
+
+
+
+ Guide</a></li>
+            </ul>
+        </li>
+    </ul>
+    
+    <!--/Menu-->
+                
+</div>
+
+								
+				<!--/Left Navigation Column-->
+				
+			</div>			
+			
+			<!--/Work Area-->		
+		
+			<!--Footer-->
+			
+			
+
+            
+<div id="footerwrapper">
+    
+    <div id="footernav">
+    
+        <div id="footer">
+        
+            <a href="mailto:ncicb@pop.nci.nih.gov?subject=caIntegrator2">CONTACT
+
+
+
+ US</a>
+            <a href="http://www.nih.gov/about/privacy.htm">PRIVACY 
+NOTICE</a>
+            <a href="http://www.nih.gov/about/disclaim.htm">DISCLAIMER</a>
+            <a href="http://www3.cancer.gov/accessibility/nci508.htm">ACCESSIBILITY</a>
+            <a 
+href="javascript:openWin('/caintegrator2//help/wwhelp/wwhimpl/js/html/wwhelp.htm?href=Getting_Started.2.9.html#1136640')"
+ class="last">SUPPORT</a> 
+        
+        </div>
+        
+    </div>
+
+    <div id="partnerlogos">             
+        <a href="http://www.cancer.gov/"><img 
+src="editSurvivalValueDefinition.action.9_files/footer_nci.gif" 
+alt="Logo:
+ National Cancer Institute" height="31" width="63"></a>
+        <a href="http://www.dhhs.gov/"><img 
+src="editSurvivalValueDefinition.action.9_files/footer_hhs.gif" 
+alt="Logo:
+ Department of Health and Human Services" height="31" width="39"></a>
+        <a href="http://www.nih.gov/"><img 
+src="editSurvivalValueDefinition.action.9_files/footer_nih.gif" 
+alt="Logo:
+ National Institutes of Health" height="31" width="46"></a>
+        <a href="http://www.usa.gov/"><img 
+src="editSurvivalValueDefinition.action.9_files/footer_usagov.gif" 
+alt="Logo: USA.gov" height="31" width="91"></a>
+    </div>
+
+</div>
+
+			
+			<!--/Footer-->
+		
+		</div>
+        
+			
+	</body></html>

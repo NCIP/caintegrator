@@ -1,0 +1,196 @@
+/* ----------------------------------------------------------------------------------------------------------------*/
+/* ---------->>> BEGIN thickbox specific link and font settings <<<------------------------------------------------*/
+/* ----------------------------------------------------------------------------------------------------------------*/
+#caBioGeneSearchInputDiv {
+    font: 12px Arial, Helvetica, sans-serif;
+    color: #333333;
+}
+
+#TB_secondLine {
+    font: 10px Arial, Helvetica, sans-serif;
+    color:#666666;
+}
+
+#caBioGeneSearchInputDiv a:link {color: #666666;}
+#caBioGeneSearchInputDiv a:visited {color: #666666;}
+#caBioGeneSearchInputDiv a:hover {color: #000;}
+#caBioGeneSearchInputDiv a:active {color: #666666;}
+#caBioGeneSearchInputDiv a:focus{color: #666666;}
+
+#caBioGeneSearchInputDiv {
+    position: fixed;
+    background: #ffffff;
+    z-index: 102;
+    color:#000000;
+    display:block;
+    visibility:hidden;
+    border: 4px solid #525252;
+    text-align:left;
+    top:25%;
+    left:50%;
+}
+
+#geneListSearchInputDiv {
+    position: fixed;
+    background: #ffffff;
+    z-index: 102;
+    color:#000000;
+    display:block;
+    visibility:hidden;
+    border: 4px solid #525252;
+    text-align:left;
+    top:25%;
+    left:50%;
+}
+
+#subjectlistdiv {
+    position: fixed;
+    background: #ffffff;
+    z-index: 102;
+    color:#000000;
+    display:block;
+    visibility:hidden;
+    border: 4px solid #525252;
+    text-align:left;
+    top:25%;
+    left:50%;
+}
+
+#busyDialogDiv {
+    position: fixed;
+    background: #ffffff;
+    z-index: 102;
+    color:#000000;
+    display:block;
+    visibility:hidden;
+    border: 4px solid #525252;
+    text-align:left;
+    top:40%;
+    left:50%;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------*/
+/* ---------->>> thickbox settings <<<-----------------------------------------------------------------------------*/
+/* ----------------------------------------------------------------------------------------------------------------*/
+#TB_overlay {
+    position: fixed;
+    z-index:100;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    display:none;
+}
+
+.TB_overlayMacFFBGHack {background: url(macFFBgHack.png) repeat;}
+.TB_overlayBG {
+    background-color:#000;
+    filter:alpha(opacity=50);
+    -moz-opacity: 0.50;
+    opacity: 0.50;
+}
+* html #TB_overlay { /* ie6 hack */
+     position: absolute;
+     height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');
+}
+
+* html #caBioGeneSearchInputDiv { /* ie6 hack */
+position: absolute;
+margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');
+}
+
+#caBioGeneSearchInputDiv img#TB_Image {
+    display:block;
+    margin: 15px 0 0 15px;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #666;
+    border-left: 1px solid #666;
+}
+
+.TB_closeAjaxWindow{
+    padding:7px 10px 5px 0;
+    margin-bottom:1px;
+    text-align:right;
+    float:right;
+}
+
+.TB_ajaxWindowTitle{
+    float:left;
+    padding:7px 0 5px 10px;
+    margin-bottom:1px;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------*/
+/* ---------->>> END thickbox specific link and font settings <<<------------------------------------------------*/
+/* ----------------------------------------------------------------------------------------------------------------*/
+
+
+.columnWrapper{
+   position: relative;
+   float: left;
+   left: 0px;
+   width: %100;
+   background-color: #ffffff;
+   border-top:1px solid #DCDCDC;
+   border-bottom:1px solid #A8B8CE;
+   border-left:1px solid #A8B8CE;   
+}
+
+.columnHeader{
+    position: relative;
+    float: left;
+    left: 0px;
+    background:#D6DCE6 url(../../images/bg_th.gif) repeat-x scroll center top;
+    border-bottom:1px solid #A8B8CE;
+    border-right:1px solid #A8B8CE;
+    border-top:1px solid #DCDCDC;
+    color:#333333;
+    padding-bottom:5px;
+}
+
+.left1{
+   position: relative;
+   float: left;
+   left: 0px;
+   width: 20px;
+   border-right:1px solid #A8B8CE;
+   padding-bottom: 0px;
+}
+.left2{
+   position: relative;
+   float: left;
+   left: 0px;
+   width: 100px;
+   border-right:1px solid #A8B8CE;
+   padding-bottom: 5px;
+   padding-left: 0px;
+}
+.left3{
+   position: relative;
+   float: left;
+   left: 0px;
+   width: 100px;
+   border-right:1px solid #A8B8CE;
+   padding-bottom: 5px;
+   padding-left: 0px;
+}
+.left4{
+   position: relative;
+   float: left;
+   left: 0px;
+   width: 50px;
+   border-right:1px solid #A8B8CE;
+   padding-bottom: 5px;
+   padding-left: 0px;
+}
+.right{
+   position: relative;
+   float: right;
+   right: 0px;
+   width: 299px;
+   min-width: 299px;
+   border-right:1px solid #A8B8CE;
+   padding-bottom: 5px;
+   padding-left: 2px;
+}
