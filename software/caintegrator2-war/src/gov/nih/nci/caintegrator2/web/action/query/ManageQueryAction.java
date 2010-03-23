@@ -104,7 +104,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.DownloadableFile;
-import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator2.web.action.query.form.AbstractCriterionRow;
 import gov.nih.nci.caintegrator2.web.action.query.form.CriterionRowTypeEnum;
 import gov.nih.nci.caintegrator2.web.action.query.form.GeneNameCriterionWrapper;
@@ -129,7 +129,7 @@ import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength",
     "PMD.TooManyFields" }) // see execute method
 
-public class ManageQueryAction extends AbstractCaIntegrator2Action implements ParameterNameAware {
+public class ManageQueryAction extends AbstractDeployedStudyAction implements ParameterNameAware {
 
     private static final long serialVersionUID = 1L;
 

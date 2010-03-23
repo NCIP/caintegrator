@@ -19,7 +19,7 @@
     
     <s:url id="notYetImplementedUrl" includeParams="none" action="notYetImplemented" />
     
-    <s:url id="tutorialsUrl" includeParams="none" action="tutorials" />
+    <s:url id="tutorialsUrl" includeParams="none" action="/caintegrator2/tutorials" />
     
     <s:set name="sessionHelper" value="#session['sessionHelper']" />
 
@@ -234,11 +234,11 @@
             <ul>
                 <s:if test="#sessionHelper.anonymousUser">
                     <li><a href="/caintegrator2/logout.jsp">Login</a></li>
-                    <li><a href="registration/input.action">Register</a></li>
+                    <li><a href="/caintegrator2/registration/input.action">Register</a></li>
                 </s:if>
                 <s:if test="!#sessionHelper.authenticated">
-                    <li><a href="registration/input.action">Register</a></li>
-                    <li><a href="workspace.action">Browse Public Studies</a></li>
+                    <li><a href="/caintegrator2/registration/input.action">Register</a></li>
+                    <li><a href="/caintegrator2/workspace.action">Browse Public Studies</a></li>
                 </s:if>
                 <li><a href="javascript:openHelpWindowWithNavigation('app_support_help')">Support</a></li>
                 <li><a href="${tutorialsUrl}">Tutorials</a></li>
