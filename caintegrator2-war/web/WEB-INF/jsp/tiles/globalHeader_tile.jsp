@@ -43,10 +43,10 @@
         </s:if>
         <div id="user">
 	        <s:if test="anonymousUser"> 
-	        Currently not logged in | <a href="logout.jsp">Login</a>
+	        Currently not logged in | <a href="/caintegrator2/logout.jsp">Login</a>
 	        </s:if>
 	        <s:else>
-	        Welcome, <s:property value="#sessionHelper.username"/> | <a href="logout.jsp">Logout</a>
+	        Welcome, <s:property value="#sessionHelper.username"/> | <a href="/caintegrator2/logout.jsp">Logout</a>
 	        </s:else>
         </div>
         <div id="mystudies">
