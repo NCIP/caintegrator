@@ -100,6 +100,17 @@ public abstract class AbstractDeployedStudyAction extends AbstractCaIntegrator2A
      * {@inheritDoc}
      */
     @Override
+    public void prepare() {
+        super.prepare();
+        if (getCurrentStudy() == null) {
+            setInvalidStudyBeingAccessed(true);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void validate() {
         super.validate();
         if (getStudySubscription() == null) {

@@ -88,10 +88,8 @@ package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotAnnotationBasedParameters;
-import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
@@ -298,9 +296,9 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
             setCreatePlotRunning(true);
             clearAnnotationBasedGePlot();
             if (plotParameters.validate()) {
-                loadAnnotationDefinitions();
-                loadPermissibleValues();
                 try {
+                    loadAnnotationDefinitions();
+                    loadPermissibleValues();
                     GeneExpressionPlotGroup plots = getAnalysisService().
                                     createGeneExpressionPlot(getStudySubscription(), plotParameters);
                     SessionHelper.setGePlots(PlotTypeEnum.ANNOTATION_BASED, plots);
@@ -308,13 +306,10 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
                     SessionHelper.setGePlots(PlotTypeEnum.ANNOTATION_BASED, null);
                     addActionError("Group selected in step 5 invalid, control samples must all be mapped to patients: "
                             + e.getMessage());
-                } catch (InvalidCriterionException e) {
+                } catch (Exception e) {
                     SessionHelper.setGePlots(PlotTypeEnum.ANNOTATION_BASED, null);
                     addActionError(e.getMessage());
-                } catch (GenesNotFoundInStudyException e) {
-                    SessionHelper.setGePlots(PlotTypeEnum.ANNOTATION_BASED, null);
-                    addActionError(e.getMessage());
-                }
+                } 
             }
             setCreatePlotRunning(false);
         }

@@ -130,6 +130,7 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
      */
     public void prepare() {
         setAuthorizedPage(true);
+        setInvalidStudyBeingAccessed(false);
         openGeneListName = "";
         openSubjectListName = "";
         if (!isFileUpload()) {
@@ -144,6 +145,15 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
      */
     protected void setAuthorizedPage(Boolean isAuthorized) {
         SessionHelper.getInstance().setAuthorizedPage(isAuthorized);
+    }
+    
+    /**
+     * Call this method in the prepare statement if a study is being accessed that is invalid on a 
+     * study type action.
+     * @param isInvalidStudy T/F value if user is accessing an invalid study.
+     */
+    protected void setInvalidStudyBeingAccessed(Boolean isInvalidStudy) {
+        SessionHelper.getInstance().setInvalidStudyBeingAccessed(isInvalidStudy);
     }
 
     /**

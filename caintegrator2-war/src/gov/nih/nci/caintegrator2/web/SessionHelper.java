@@ -113,6 +113,7 @@ public final class SessionHelper {
     private static final String IS_AUTHORIZED_PAGE = "isAuthorizedPage";
     private Boolean studyManager = null;
     private Boolean platformManager = null;
+    private Boolean invalidStudyBeingAccessed = false;
     
     private SessionHelper() {
         
@@ -386,5 +387,19 @@ public final class SessionHelper {
      */
     public void setAuthorizedPage(Boolean isAuthorized) {
         getSession().put(IS_AUTHORIZED_PAGE, isAuthorized);
+    }
+
+    /**
+     * @return the invalidStudyBeingAccessed
+     */
+    public Boolean getInvalidStudyBeingAccessed() {
+        return invalidStudyBeingAccessed;
+    }
+
+    /**
+     * @param invalidStudyBeingAccessed the invalidStudyBeingAccessed to set
+     */
+    public void setInvalidStudyBeingAccessed(Boolean invalidStudyBeingAccessed) {
+        this.invalidStudyBeingAccessed = invalidStudyBeingAccessed;
     }
 }
