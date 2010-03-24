@@ -60,7 +60,7 @@
         <s:textfield name="registrationRequest.fax" label="Fax" size="50" />
         <td colspan="2" align="right">
         <s:submit value="Cancel" action="cancel" theme="simple"/>
-	    <s:submit value="Submit Registration Request" action="save" theme="simple"/>
+	    <s:submit value="Submit Registration Request" action="save" theme="simple" onclick="showBusyDialog();"/>
 	    </td>
 	    </tbody>
 	    </table>

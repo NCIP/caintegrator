@@ -51,7 +51,7 @@
                 <sx:div id="TB_overlay" cssClass="TB_overlayBG"/>
                 <!-- Begin hidden busyDialogDiv -->
                 <s:div id="busyDialogDiv" cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:390px;max-height: 130px; overflow:auto;">
-                <img id="busyDialogProcessingImage" src="images/ajax-loader.gif" /> Please wait for action to complete ...
+                <img id="busyDialogProcessingImage" src="/caintegrator2/images/ajax-loader.gif" /> Please wait for action to complete ...
                 </s:div>
                 <!-- End busyDialogDiv -->
                 

@@ -94,6 +94,7 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
 
     private static final String WORKSPACE_STUDY = "workspaceStudy";
     private static final String WORKSPACE_NO_STUDY = "workspaceNoStudy";
+    private boolean registrationSuccess = false;
     
     /**
      * Opens the current user's workspace.
@@ -102,6 +103,7 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
      */
     public String openWorkspace() {
         clearForms();
+        addRegistrationMessage();
         if (getStudySubscription() != null) {
             if (getWorkspace().getDefaultSubscription() == null) {
                 getWorkspace().setDefaultSubscription(getStudySubscription());
@@ -110,6 +112,12 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
             return WORKSPACE_STUDY;
         } else {
             return WORKSPACE_NO_STUDY;
+        }
+    }
+    
+    private void addRegistrationMessage() {
+        if (registrationSuccess) {
+            addActionMessage("Registration request sent successfully!");
         }
     }
 
@@ -139,6 +147,20 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
     public String retrieveStudyLogo() {
         getDisplayableWorkspace().setStudyLogo(getStudy().getStudyConfiguration().getStudyLogo());
         return SUCCESS;
+    }
+
+    /**
+     * @return the registrationSuccess
+     */
+    public boolean isRegistrationSuccess() {
+        return registrationSuccess;
+    }
+
+    /**
+     * @param registrationSuccess the registrationSuccess to set
+     */
+    public void setRegistrationSuccess(boolean registrationSuccess) {
+        this.registrationSuccess = registrationSuccess;
     }
 
 }
