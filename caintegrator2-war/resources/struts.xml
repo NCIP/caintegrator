@@ -109,8 +109,7 @@
         </action>
         
         <action name="login" method="openLogin" class="loginAction">
-            <result name="login" type="tiles">login</result>
-            
+            <result name="login" type="redirectAction">workspace</result>
         </action>
         
         <action name="workspace" method="openWorkspace" class="workspaceAction">
@@ -1086,7 +1085,10 @@
     <package name="registration" namespace="/registration" extends="caintegrator2">
         <action name="*" class="registrationAction" method="{1}" >
             <result name="input" type="tiles">registration</result>
-            <result name="success" type="tiles">login</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">workspace</param>
+                <param name="registrationSuccess">true</param>
+            </result>
             <result name="cancel" type="redirectAction">
                 <param name="actionName">../login</param>
             </result>

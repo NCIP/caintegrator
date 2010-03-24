@@ -167,7 +167,6 @@ public class RegistrationActionTest {
         registrationService.throwMessagingException = false;
         action.save();
         assertFalse(action.hasActionErrors());
-        assertTrue(action.hasActionMessages());
     }
 
     private static class RegistrationServiceStub implements RegistrationService {

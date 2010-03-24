@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -109,6 +110,10 @@ public class WorkspaceActionTest extends AbstractSessionBasedTest {
         assertEquals("workspaceStudy", workspaceAction.openWorkspace());
         assertNotNull(workspaceAction.getWorkspace());
         assertNotNull(workspaceAction.getCurrentStudySubscriptionId());
+        
+        workspaceAction.setRegistrationSuccess(true);
+        workspaceAction.openWorkspace();
+        assertTrue(workspaceAction.hasActionMessages());
     }
 
 }

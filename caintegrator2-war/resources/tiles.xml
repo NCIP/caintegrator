@@ -98,12 +98,6 @@
         <put-attribute name="subTitle" value="Browse Study" />
     </definition>
     
-    <definition name="login" extends="cssBaseDef">
-        <put-attribute name="globalHeader" value="/WEB-INF/jsp/tiles/loginHeader_tile.jsp" />
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/login_tile.jsp" />
-        <put-attribute name="subTitle" value="Login" />
-    </definition>
-    
     <definition name="registration" extends="cssBaseDef">
         <put-attribute name="globalHeader" value="/WEB-INF/jsp/tiles/loginHeader_tile.jsp" />
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/registration_tile.jsp" />
@@ -140,10 +134,6 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageStudies_tile.jsp" />
         <put-attribute name="subTitle" value="Manage Studies" />
         <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyDwrAjax_tile.jsp" />
-    </definition>
-
-    <definition name="workspaceStudy" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/workspaceHome_tile.jsp" />
     </definition>
     
     <definition name="studySummary" extends="cssBaseDef">
