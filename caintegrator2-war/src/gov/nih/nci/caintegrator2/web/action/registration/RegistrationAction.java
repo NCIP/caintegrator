@@ -182,7 +182,6 @@ public class RegistrationAction extends ActionSupport implements Preparable {
         try {
             registrationRequest.setUptUrl(configurationHelper.getString(ConfigurationParameter.UPT_URL));
             registrationService.registerUser(registrationRequest);
-            addActionMessage("Registration request sent successfully!");
             return SUCCESS;
         } catch (MessagingException e) {
             addActionError("Failed to send email due to the following: " + e.getMessage());
