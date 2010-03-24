@@ -177,7 +177,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         getGenomicSource().setPlatformName("");
         getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
         getGenomicSource().setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
-        return SUCCESS;
+        return checkEmptyPlatformType();
     }
     
     /**
