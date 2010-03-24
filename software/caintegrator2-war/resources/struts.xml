@@ -448,6 +448,7 @@
         
         <action name="addGenomicSource" method="addNew" class="editGenomicSourceAction">
             <result type="tiles">editGenomicSource</result>
+            <result name="error" type="tiles">genericErrorWithMenu</result>
         </action>
         
         <action name="refreshGenomicSource" method="refresh" class="editGenomicSourceAction">
@@ -456,7 +457,7 @@
         
         <action name="editGenomicSource" class="editGenomicSourceAction">
             <result type="tiles">editGenomicSource</result>
-            <result name="error" type="tiles">genericError</result>
+            <result name="error" type="tiles">genericErrorWithMenu</result>
         </action>
         
         <action name="deleteGenomicSource" method="delete" class="editGenomicSourceAction">
