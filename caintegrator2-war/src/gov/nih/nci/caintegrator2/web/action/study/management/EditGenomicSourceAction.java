@@ -137,21 +137,6 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     /**
      * {@inheritDoc}
      */
-    public void prepare() {
-        super.prepare();
-        if (getGenomicSource().getId() == null) {
-            getGenomicSource().getServerProfile().setHostname(
-                    getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_HOST));
-            getGenomicSource().getServerProfile().setPort(
-                Integer.valueOf(getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_PORT)));
-            getGenomicSource().getServerProfile().setUrl(
-                    getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_URL));
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String execute() {
         return checkEmptyPlatformType();
@@ -177,6 +162,12 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         getGenomicSource().setPlatformName("");
         getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
         getGenomicSource().setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        getGenomicSource().getServerProfile().setHostname(
+                getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_HOST));
+        getGenomicSource().getServerProfile().setPort(
+            Integer.valueOf(getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_PORT)));
+        getGenomicSource().getServerProfile().setUrl(
+                getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_URL));
         return checkEmptyPlatformType();
     }
     
@@ -237,6 +228,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         GenomicDataSourceConfiguration configuration = new GenomicDataSourceConfiguration();
         ServerConnectionProfile newProfile = configuration.getServerProfile();
         ServerConnectionProfile oldProfile = getGenomicSource().getServerProfile();
+        newProfile.setUrl(oldProfile.getUrl());
         newProfile.setHostname(oldProfile.getHostname());
         newProfile.setPort(oldProfile.getPort());
         newProfile.setUsername(oldProfile.getUsername());

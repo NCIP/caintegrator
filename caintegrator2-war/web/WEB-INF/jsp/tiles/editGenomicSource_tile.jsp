@@ -91,7 +91,7 @@
                     <s:textfield label="caArray Server JNDI Port" name="genomicSource.serverProfile.port" id="caArrayPort" />
                     <!-- NOTE - using custom struts theme to turn off autocomplete -->
                     <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" id="caArrayUsername" theme="cai2xhtml" />
-                    <s:password label="caArray Password" name="genomicSource.serverProfile.password" id="caArrayPassword" theme="cai2xhtml"/>
+                    <s:password showPassword="true" label="caArray Password" name="genomicSource.serverProfile.password" id="caArrayPassword" theme="cai2xhtml"/>
                     <!--/NOTE --> 
                     <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" id="experimentId" />
                     <s:select id="platformVendor" name="genomicSource.platformVendor" label="Vendor"
