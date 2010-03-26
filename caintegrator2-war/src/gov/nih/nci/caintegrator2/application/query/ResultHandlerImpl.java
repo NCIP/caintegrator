@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
@@ -172,7 +173,7 @@ public class ResultHandlerImpl implements ResultHandler {
         if (imageSeries != null) {
             for (AbstractAnnotationValue annotationValue : imageSeries.getAnnotationCollection()) {
                 if (annotationValue.getAnnotationDefinition().equals(column.getAnnotationDefinition())) {
-                    return annotationValue;
+                    return retrieveValue(column.getAnnotationFieldDescriptor(), annotationValue);
                 }
             }
         }
@@ -185,7 +186,7 @@ public class ResultHandlerImpl implements ResultHandler {
                 && sampleAcquisition.getAnnotationCollection() != null) {
             for (AbstractAnnotationValue annotationValue : sampleAcquisition.getAnnotationCollection()) {
                 if (annotationValue.getAnnotationDefinition().equals(column.getAnnotationDefinition())) {
-                    return annotationValue;
+                    return retrieveValue(column.getAnnotationFieldDescriptor(), annotationValue);
                 }
             }
         }
@@ -200,7 +201,8 @@ public class ResultHandlerImpl implements ResultHandler {
                 if (subjectAnnotation.getAnnotationValue().
                                       getAnnotationDefinition().
                                       equals(column.getAnnotationDefinition())) {
-                    return subjectAnnotation.getAnnotationValue();
+                    return retrieveValue(column.getAnnotationFieldDescriptor(), 
+                            subjectAnnotation.getAnnotationValue());
                 }
             }
         }
@@ -228,5 +230,11 @@ public class ResultHandlerImpl implements ResultHandler {
                 queryResult.setRowCollection(ResultRowComparator.sort(rowsCollection, sortColumns));
             }
         }
+    }
+    
+    private AbstractAnnotationValue retrieveValue(AnnotationFieldDescriptor fieldDescriptor, 
+            AbstractAnnotationValue value) {
+        return fieldDescriptor.getAnnotationMasks().isEmpty() ? value 
+            : AbstractAnnotationMaskHandler.retrieveMaskedValue(fieldDescriptor.getAnnotationMasks(), value);
     }
 }
