@@ -90,7 +90,7 @@ LEGEND INPUT, LEGEND SELECT
 #nihtag
 { float:right; width:295px; height:37px; }
 #appheader
-{ background:#475b82 url("../../images/bg_appheader.gif") repeat-x bottom; border-top:1px solid #6f86b0; height:5em; min-width:770px; padding:0 0 5px 0;  }
+{ background:#475b82 url("../../images/bg_appheader.gif") repeat-x bottom; border-top:1px solid #6f86b0; height:55px; min-width:770px; padding:0 0 5px 0;  }
 #mainlogo
 { padding:10px 0 0 10px; float:left; width:260px; }
 #versioninfo
@@ -101,17 +101,17 @@ LEGEND INPUT, LEGEND SELECT
     float:left;
     padding:4px 0 0 10px; }
 #userarea_wrapper
-{ background:#475b82 url("../../images/bg_user.jpg") no-repeat left 0; height:30px; width:46em; margin-top:10px; padding:8px 0 0 12px; float:right; color:#bfd5d5; font-size:92%; font-weight:bold; }
+{ background:#475b82 url("../../images/bg_user.jpg") no-repeat left 0; height:30px; width:48em; margin-top:10px; padding:8px 0 0 12px; float:right; color:#bfd5d5; font-size:92%; font-weight:bold; }
 #user
 { float:left; width:20em; margin-top:-5px; padding:8px 0 0 12px; float:right; color:#bfd5d5; font-weight:bold; }
 #user A
 { text-decoration:underline; color:#fff; font-weight:normal; padding:0 3px }
 #mystudies
-{ float:left; width:22em }
+{ float:left; width:26em }
 #mystudies LABEL
 { color:#bfd5d5 }
 #mystudies SELECT
-{ width:12em }
+{ width:20em }
 #main
 { float:left; width:100%; min-height:400px; min-width:770px;  }
 #leftnav
