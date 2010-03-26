@@ -88,11 +88,14 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.mask.AbstractAnnotationMask;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Contains the information about a particular annotation field prior to association to an 
@@ -111,6 +114,7 @@ implements Comparable<AnnotationFieldDescriptor> {
     private AnnotationGroup annotationGroup;
     private String validationErrorMessage;
     private EntityTypeEnum annotationEntityType;
+    private Set<AbstractAnnotationMask> annotationMasks = new HashSet<AbstractAnnotationMask>();
 
     /**
      * @return the name
@@ -278,6 +282,21 @@ implements Comparable<AnnotationFieldDescriptor> {
             ? "--Undefine--" : definition.getDisplayName();
     }
     
+    /**
+     * @return the annotationMasks
+     */
+    public Set<AbstractAnnotationMask> getAnnotationMasks() {
+        return annotationMasks;
+    }
+
+    /**
+     * @param annotationMasks the annotationMasks to set
+     */
+    @SuppressWarnings("unused") // For Hibernate.
+    private void setAnnotationMasks(Set<AbstractAnnotationMask> annotationMasks) {
+        this.annotationMasks = annotationMasks;
+    }
+
     /**
      * Compare based on the Display Name.
      * {@inheritDoc}

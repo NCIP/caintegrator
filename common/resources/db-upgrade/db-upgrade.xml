@@ -304,4 +304,8 @@
         <comment>Adds column "IS_PUBLICLY_ACCESSIBLE" to the STUDY table.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.23.sql"/>
     </changeSet>
+    <changeSet id="1.1.24" author="tandrews">
+        <comment>Adds Annotation Masks to database.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.24.sql"/>
+    </changeSet>
 </databaseChangeLog>
