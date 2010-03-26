@@ -108,6 +108,16 @@ public class AnnotationFieldDescriptorTest {
         ad.addPermissibleValues(genders);
         assertEquals(1, afd.getPermissibleValues().size());
         
+        // Test invalid numeric format
+        ad = new AnnotationDefinition();
+        afd.setDefinition(ad);
+        ad.setDataType(AnnotationTypeEnum.NUMERIC);
+        Set<Object> age = new HashSet<Object>();
+        age.add(Double.valueOf(12));
+        age.add(null);
+        ad.addPermissibleValues(age);
+        assertEquals(1, ad.getPermissibleValueCollection().size());
+        
         // Test Display Name
         assertEquals("--Undefine--", afd.getDisplayName());
         ad.setDisplayName("Gender");
