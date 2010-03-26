@@ -150,6 +150,7 @@ public class StudyHelper {
     private PermissibleValue permval2;
     private Timepoint defaultTimepoint;
     private ArrayDataType arrayDataType = ArrayDataType.GENE_EXPRESSION;
+    private List<StudySubjectAssignment> studySubjects = new ArrayList<StudySubjectAssignment>();
     
     @SuppressWarnings({"PMD", "deprecation"}) // This is a long method for setting up test data
     public StudySubscription populateAndRetrieveStudy() {
@@ -230,6 +231,11 @@ public class StudyHelper {
         StudySubjectAssignment studySubjectAssignment3 = new StudySubjectAssignment();
         StudySubjectAssignment studySubjectAssignment4 = new StudySubjectAssignment();
         StudySubjectAssignment studySubjectAssignment5 = new StudySubjectAssignment();
+        studySubjects.add(studySubjectAssignment1);
+        studySubjects.add(studySubjectAssignment2);
+        studySubjects.add(studySubjectAssignment3);
+        studySubjects.add(studySubjectAssignment4);
+        studySubjects.add(studySubjectAssignment5);
         
         NumericAnnotationValue numval1 = new NumericAnnotationValue();
         NumericAnnotationValue numval1_2 = new NumericAnnotationValue();
@@ -792,6 +798,12 @@ public class StudyHelper {
     public void setArrayDataType(ArrayDataType arrayDataType) {
         this.arrayDataType = arrayDataType;
     }
-    
-    
+
+    /**
+     * @return the studySubjects
+     */
+    public List<StudySubjectAssignment> getStudySubjects() {
+        return studySubjects;
+    }
+
 }
