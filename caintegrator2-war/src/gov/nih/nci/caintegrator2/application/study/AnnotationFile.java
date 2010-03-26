@@ -101,7 +101,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -465,7 +464,7 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
             String value) throws ValidationException {
         DateAnnotationValue annotationValue = new DateAnnotationValue();
         try {
-            annotationValue.setDateValue(getDateValue(value));
+            annotationValue.setDateValue(DateUtil.createDate(value));
         } catch (ParseException e) {
             throwValidationException(createFormatErrorMsg(annotationDescriptor, value, 
                     "The two formats allowed are MM-dd-yyyy and MM/dd/yyyy"));
@@ -473,14 +472,6 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
         annotationDescriptor.getDefinition().getAnnotationValueCollection().add(annotationValue);
         return annotationValue;
-    }
-    
-    private Date getDateValue(String value) throws ParseException {
-        if (StringUtils.isBlank(value)) {
-            return null;
-        } else {
-            return DateUtil.createDate(value);
-        }
     }
 
     private NumericAnnotationValue createNumericAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
