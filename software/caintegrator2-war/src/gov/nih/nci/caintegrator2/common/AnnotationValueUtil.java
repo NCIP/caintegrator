@@ -94,6 +94,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
 
@@ -117,7 +118,7 @@ public final class AnnotationValueUtil {
             List<String>dataValues, Set<String> filterList) {
         Set<String> results = new HashSet<String>();
         for (String dataValue : dataValues) {
-            if (dataValue != null && !filterList.contains(dataValue)) {
+            if (!StringUtils.isBlank(dataValue) && !filterList.contains(dataValue)) {
                 if (NumberUtils.isNumber(dataValue)) {
                     dataValue = new DecimalFormat(NumericAnnotationValue.DECIMAL_FORMAT).format(
                             Double.valueOf(dataValue));
@@ -127,7 +128,7 @@ public final class AnnotationValueUtil {
         }
         for (AbstractAnnotationValue abstractAnnotationValue : abstractAnnotationValues) {
             String displayString = abstractAnnotationValue.toString();
-            if (displayString != null && !filterList.contains(displayString)) {
+            if (!StringUtils.isBlank(displayString) && !filterList.contains(displayString)) {
                 results.add(displayString);
             }
         }
