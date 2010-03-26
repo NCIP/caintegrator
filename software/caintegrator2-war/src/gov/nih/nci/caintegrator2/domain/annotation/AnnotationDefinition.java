@@ -135,9 +135,14 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
      */
     public void addPermissibleValues(Set<Object> uniqueValues) {
         for (Object uniqueValue : uniqueValues) {
+            if (uniqueValue == null) {
+                continue;
+            }
             PermissibleValue permissibleValue = new PermissibleValue();
             if (AnnotationTypeEnum.DATE.equals(commonDataElement.getValueDomain().getDataType())) {
                 permissibleValue.setValue(DateUtil.toString((Date) uniqueValue));
+            } else if (AnnotationTypeEnum.NUMERIC.equals(commonDataElement.getValueDomain().getDataType())) {
+                permissibleValue.setValue(((Double) uniqueValue).toString());
             } else {
                 permissibleValue.setValue(uniqueValue.toString());
             }
