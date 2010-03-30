@@ -89,6 +89,8 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.mask.AbstractAnnotationMask;
+import gov.nih.nci.caintegrator2.domain.annotation.mask.MaxNumberMask;
+import gov.nih.nci.caintegrator2.domain.annotation.mask.NumericRangeMask;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
 import java.util.ArrayList;
@@ -303,5 +305,54 @@ implements Comparable<AnnotationFieldDescriptor> {
      */
     public int compareTo(AnnotationFieldDescriptor o) {
         return getDisplayName().compareTo(o.getDisplayName());
+    }
+
+    /**
+     * Sets a max number mask equal to the given number.
+     * @param maxNumber to set the maxNumber mask for.
+     */
+    public void setMaxNumber(Double maxNumber) {
+        MaxNumberMask maxNumberMask = new MaxNumberMask();
+        for (AbstractAnnotationMask mask : annotationMasks) {
+            if (mask instanceof MaxNumberMask) {
+                maxNumberMask = (MaxNumberMask) mask;
+                break;
+            }
+        }
+        maxNumberMask.setMaxNumber(maxNumber);
+        annotationMasks.add(maxNumberMask);
+    }
+    
+    /**
+     * Removes the mask of the given type.
+     * @param maskType to remove from this AFD.
+     */
+    public void clearMask(Class<? extends AbstractAnnotationMask> maskType) {
+        AbstractAnnotationMask maskToRemove = null;
+        for (AbstractAnnotationMask mask : annotationMasks) {
+            if (maskType.equals(mask.getClass())) {
+                maskToRemove = mask;
+                break;
+            }
+        }
+        if (maskToRemove != null) {
+            annotationMasks.remove(maskToRemove);
+        }
+    }
+
+    /**
+     * Sets a numeric range mask equal to the given number.
+     * @param numericRange to set the numericRange mask for.
+     */
+    public void setNumericRange(int numericRange) {
+        NumericRangeMask numericRangeMask = new NumericRangeMask();
+        for (AbstractAnnotationMask mask : annotationMasks) {
+            if (mask instanceof NumericRangeMask) {
+                numericRangeMask = (NumericRangeMask) mask;
+                break;
+            }
+        }
+        numericRangeMask.setNumericRange(numericRange);
+        annotationMasks.add(numericRangeMask);
     }
 }

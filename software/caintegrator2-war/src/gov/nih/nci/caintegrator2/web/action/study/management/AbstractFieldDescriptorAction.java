@@ -94,6 +94,9 @@ import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.mask.AbstractAnnotationMask;
+import gov.nih.nci.caintegrator2.domain.annotation.mask.MaxNumberMask;
+import gov.nih.nci.caintegrator2.domain.annotation.mask.NumericRangeMask;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
@@ -128,7 +131,8 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
     private String fieldDescriptorType;
     private String sourceId;
     private String groupId;
-
+    private AnnotationMaskForm maskForm = new AnnotationMaskForm();
+    
     private void clearCacheMemory() {
         fieldDescriptorType = null;
         getDisplayableWorkspace().getDataElementSearchObject().clear();
@@ -152,6 +156,20 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
         }
         setReadOnly(true);
         cancelEnabled = true;
+        loadExistingMasks();
+    }
+    
+    private void loadExistingMasks() {
+        maskForm.clear();
+        for (AbstractAnnotationMask mask : fieldDescriptor.getAnnotationMasks()) {
+            if (mask instanceof NumericRangeMask) {
+                maskForm.setNumericRangeMask((NumericRangeMask) mask);
+                maskForm.setHasNumericRangeMask(true);
+            } else if (mask instanceof MaxNumberMask) {
+                maskForm.setMaxNumberMask((MaxNumberMask) mask);
+                maskForm.setHasMaxNumberMask(true);
+            }
+        }
     }
     
     /**
@@ -161,7 +179,7 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
     public void validate() {
         clearErrorsAndMessages();
     }
-
+    
     /**
      * Edit a data source file column.
      * 
@@ -295,9 +313,14 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
      */
     public String updateAnnotationDefinition() {
         try {
-            updateColumnType();
             if (isPermissibleOn() && !isFromCadsr()) {
                 updatePermissible();
+            }
+            if (!validateAndSetMasks()) {
+                clearCacheMemory();
+                fieldDescriptor.setDefinition(getStudyManagementService().getRefreshedEntity(
+                        fieldDescriptor.getDefinition()));
+                return ERROR;
             }
             if (ANNOTATION_TYPE.equals(fieldDescriptorType) 
                  && fieldDescriptor.getDefinition() != null) {
@@ -314,7 +337,51 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
         } 
         return SUCCESS;
     }
+    
+    private boolean validateAndSetMasks() {
+        if (fieldDescriptor.getDefinition() != null) {
+            validateAndSetMaxNumberMask();
+            validateAndSetNumericRangeMask();
+        }
+        return getActionErrors().isEmpty();
+    }
 
+    private void validateAndSetNumericRangeMask() {
+        if (!AnnotationTypeEnum.NUMERIC.equals(fieldDescriptor.getDefinition().getDataType()) 
+                || !maskForm.isHasNumericRangeMask()) {
+            fieldDescriptor.clearMask(NumericRangeMask.class);
+        } else {
+            validateNoPermissibleValues();
+            if (maskForm.getNumericRangeMask().getNumericRange() == null) {
+                addActionError("Must enter a valid number to use the numeric range mask.");
+            } 
+            if (getActionErrors().isEmpty()) {
+                fieldDescriptor.setNumericRange(maskForm.getNumericRangeMask().getNumericRange());
+            }
+        }
+    }
+
+    private void validateAndSetMaxNumberMask() {
+        if (!AnnotationTypeEnum.NUMERIC.equals(fieldDescriptor.getDefinition().getDataType()) 
+                || !maskForm.isHasMaxNumberMask()) {
+            fieldDescriptor.clearMask(MaxNumberMask.class);
+        } else {
+            validateNoPermissibleValues();
+            if (maskForm.getMaxNumberMask().getMaxNumber() == null) {
+                addActionError("Must enter a valid number to use the max number mask.");
+            } 
+            if (getActionErrors().isEmpty()) {
+                fieldDescriptor.setMaxNumber(maskForm.getMaxNumberMask().getMaxNumber());
+            }
+        }
+    }
+    
+    private void validateNoPermissibleValues() {
+        if (!permissibleUpdateList.isEmpty()) {
+            addActionError("To apply a mask, cannot have any permissible values.");
+        }
+    }
+    
     /**
      * @return the fieldDescriptorType
      */
@@ -437,6 +504,15 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
      */
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
+    }
+    
+    /**
+     * Determines if we want to disable the numeric mask form.
+     * @return T/F value.
+     */
+    public boolean isNumericMaskDisabled() {
+        return !isReadOnly() ? false 
+                : !AnnotationTypeEnum.NUMERIC.equals(fieldDescriptor.getDefinition().getDataType());
     }
 
     /**
@@ -660,4 +736,20 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
+
+    /**
+     * @return the maskForm
+     */
+    public AnnotationMaskForm getMaskForm() {
+        return maskForm;
+    }
+
+    /**
+     * @param maskForm the maskForm to set
+     */
+    public void setMaskForm(AnnotationMaskForm maskForm) {
+        this.maskForm = maskForm;
+    }
+
+
 }

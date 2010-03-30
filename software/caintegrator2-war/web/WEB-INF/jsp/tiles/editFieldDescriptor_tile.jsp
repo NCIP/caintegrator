@@ -88,7 +88,7 @@
                     <s:hidden name="sourceId" />
                     <s:hidden name="groupId" />
                     <s:hidden name="fieldDescriptor.id" />
-            	    <s:if test="%{columnTypeAnnotation}">
+                    <s:if test="%{columnTypeAnnotation}">
             	        <s:if test="%{fieldDescriptor.definition != null}">
 
             	            <s:textfield label="Name" name="fieldDescriptor.definition.commonDataElement.longName" disabled="%{readOnly}" size="38"/>
@@ -98,6 +98,29 @@
             	            name="fieldDescriptor.definition.commonDataElement.valueDomain.dataTypeString" 
             	            list="annotationDataTypes" 
             	            disabled="%{readOnly}" />
+
+            	            <tr>
+	                            <td class="tdLabel" align="right">
+	                                <label class="label">Apply Max Number Mask:</label>
+	                            </td>
+	                            <td>
+	                                <s:checkbox name="maskForm.hasMaxNumberMask" theme="simple" disabled="%{numericMaskDisabled}"/>
+	                                <s:textfield name="maskForm.maxNumberMask.maxNumber" theme = "simple" disabled="%{numericMaskDisabled}"/>
+	                                <label class="label">(Max Number)</label>
+	                            </td>
+                            </tr>
+            	            
+            	            <tr>
+                                <td class="tdLabel" align="right">
+                                    <label class="label">Apply Numeric Range Mask:</label>
+                                </td>
+                                <td>
+                                    <s:checkbox name="maskForm.hasNumericRangeMask" theme="simple" disabled="%{numericMaskDisabled}"/>
+                                    <s:textfield name="maskForm.numericRangeMask.numericRange" theme = "simple" disabled="%{numericMaskDisabled}"/>
+                                    <label class="label">(Numeric Range)</label>
+                                </td>
+                            </tr>
+            	            
             	        </s:if>
             	        <s:if test="%{fieldDescriptor.definition.commonDataElement.publicID != null}">
             	            <s:textfield label="CDE Public ID" value="%{fieldDescriptor.definition.commonDataElement.publicID}" 

@@ -83,41 +83,85 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.MaskedNumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.mask.MaxNumberMask;
+import gov.nih.nci.caintegrator2.domain.annotation.mask.NumericRangeMask;
 
 /**
  * 
  */
-public class MaxNumberMaskHandler extends AbstractAnnotationMaskHandler {
-    private static final String PLUS_SYMBOL = "+";
-    private final MaxNumberMask mask;
+public class AnnotationMaskForm {
+    
+    private boolean hasMaxNumberMask = false;
+    private boolean hasNumericRangeMask = false;
+    private MaxNumberMask maxNumberMask = new MaxNumberMask();
+    private NumericRangeMask numericRangeMask = new NumericRangeMask();
     
     /**
-     * Constructor.
-     * @param mask to handle.
+     * Clears the existing data.
      */
-    public MaxNumberMaskHandler(MaxNumberMask mask) {
-        this.mask = mask;
+    public void clear() {
+        hasMaxNumberMask = false;
+        hasNumericRangeMask = false;
+        maxNumberMask = new MaxNumberMask();
+        numericRangeMask = new NumericRangeMask();
     }
     
     /**
-     * {@inheritDoc}
+     * @return the hasMaxNumberMask
      */
-    protected AbstractAnnotationValue retrieveMaskedValue(AbstractAnnotationValue originalValue) {
-        MaskedNumericAnnotationValue maskedValue = createMaskedNumericValue(originalValue);
-        if (maskedValue.isFinalMaskApplied() || maskedValue.getNumericValue() == null) {
-            return maskedValue;
-        }
-        if (maskedValue.getNumericValue() >= mask.getMaxNumber()) {
-            maskedValue.setMaskedValue(mask.getMaxNumber() + PLUS_SYMBOL);
-            maskedValue.setNumericValue(mask.getMaxNumber());
-            maskedValue.setFinalMaskApplied(true);
-        }
-        return maskedValue;
+    public boolean isHasMaxNumberMask() {
+        return hasMaxNumberMask;
+    }
+
+    /**
+     * @param hasMaxNumberMask the hasMaxNumberMask to set
+     */
+    public void setHasMaxNumberMask(boolean hasMaxNumberMask) {
+        this.hasMaxNumberMask = hasMaxNumberMask;
+    }
+
+    /**
+     * @return the hasNumericRangeMask
+     */
+    public boolean isHasNumericRangeMask() {
+        return hasNumericRangeMask;
+    }
+
+    /**
+     * @param hasNumericRangeMask the hasNumericRangeMask to set
+     */
+    public void setHasNumericRangeMask(boolean hasNumericRangeMask) {
+        this.hasNumericRangeMask = hasNumericRangeMask;
+    }
+
+    /**
+     * @return the maxNumberMask
+     */
+    public MaxNumberMask getMaxNumberMask() {
+        return maxNumberMask;
+    }
+
+    /**
+     * @param maxNumberMask the maxNumberMask to set
+     */
+    public void setMaxNumberMask(MaxNumberMask maxNumberMask) {
+        this.maxNumberMask = maxNumberMask;
+    }
+
+    /**
+     * @return the numericRangeMask
+     */
+    public NumericRangeMask getNumericRangeMask() {
+        return numericRangeMask;
+    }
+
+    /**
+     * @param numericRangeMask the numericRangeMask to set
+     */
+    public void setNumericRangeMask(NumericRangeMask numericRangeMask) {
+        this.numericRangeMask = numericRangeMask;
     }
 
 }

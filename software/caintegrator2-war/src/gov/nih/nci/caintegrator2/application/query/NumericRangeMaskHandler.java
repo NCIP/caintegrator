@@ -112,11 +112,13 @@ public class NumericRangeMaskHandler extends AbstractAnnotationMaskHandler {
         if (maskedValue.isFinalMaskApplied() || maskedValue.getNumericValue() == null) {
             return maskedValue;
         }
+        int numericRange = mask.getNumericRange();
         Long roundedNumericValue = Math.round(maskedValue.getNumericValue());
-        Long rangeDifference = roundedNumericValue % mask.getNumericRange();
+        Long rangeDifference = roundedNumericValue % numericRange;
         Long lowNumber = roundedNumericValue - rangeDifference;
-        Long highNumber = (lowNumber + mask.getNumericRange()) - 1;
+        Long highNumber = (lowNumber + numericRange) - 1;
         maskedValue.setMaskedValue(lowNumber + RANGE_SYMBOL + highNumber);
+        maskedValue.setNumericValue(Double.valueOf(lowNumber));
         maskedValue.setFinalMaskApplied(true);
         return maskedValue;
     }
