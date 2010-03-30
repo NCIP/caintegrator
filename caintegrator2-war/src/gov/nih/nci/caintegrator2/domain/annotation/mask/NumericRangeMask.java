@@ -92,19 +92,19 @@ package gov.nih.nci.caintegrator2.domain.annotation.mask;
 public class NumericRangeMask extends AbstractAnnotationMask {
     private static final Integer SORT_ORDER = 2;
 
-    private int numericRange;
+    private Integer numericRange;
 
     /**
      * @return the numericRange
      */
-    public int getNumericRange() {
+    public Integer getNumericRange() {
         return numericRange;
     }
 
     /**
      * @param numericRange the numericRange to set
      */
-    public void setNumericRange(int numericRange) {
+    public void setNumericRange(Integer numericRange) {
         this.numericRange = numericRange;
     }
 

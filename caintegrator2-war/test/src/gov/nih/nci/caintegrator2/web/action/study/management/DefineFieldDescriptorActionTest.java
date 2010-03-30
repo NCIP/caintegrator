@@ -94,9 +94,11 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.mask.MaxNumberMask;
+import gov.nih.nci.caintegrator2.domain.annotation.mask.NumericRangeMask;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.text.ParseException;
@@ -270,5 +272,41 @@ public class DefineFieldDescriptorActionTest extends AbstractSessionBasedTest {
         stringValues.add("XYZ");
         assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
         assertEquals(definition.getPermissibleValueCollection().size(), 0);
+    }
+    
+    @Test
+    public void testUpdateAnnotationDefinitionWithNumericMasks() throws ParseException {
+        action.setFieldDescriptorType("Annotation");
+        action.setFieldDescriptor(new AnnotationFieldDescriptor());
+        assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
+        
+        AnnotationDefinition definition = new AnnotationDefinition();
+        action.getFieldDescriptor().setDefinition(definition);
+        definition.setDataType(AnnotationTypeEnum.STRING);
+        MaxNumberMask maxNumberMask = new MaxNumberMask();
+        NumericRangeMask numericRangeMask = new NumericRangeMask();
+        action.getMaskForm().clear();
+        action.getMaskForm().setMaxNumberMask(maxNumberMask);
+        action.getMaskForm().setNumericRangeMask(numericRangeMask);
+        action.getMaskForm().setHasMaxNumberMask(true);
+        action.getMaskForm().setHasNumericRangeMask(true);
+        assertEquals(false, action.isNumericMaskDisabled());
+        action.setReadOnly(true);
+        assertEquals(true, action.isNumericMaskDisabled());
+        
+        assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
+        assertTrue(action.getFieldDescriptor().getAnnotationMasks().isEmpty());
+        
+        definition.setDataType(AnnotationTypeEnum.NUMERIC);
+        action.getPermissibleUpdateList().add("PERMVALUE");
+        assertEquals(Action.ERROR, action.updateAnnotationDefinition());
+        assertEquals(4, action.getActionErrors().size());
+        action.clearActionErrors();
+        action.setReadOnly(true);
+        assertEquals(false, action.isNumericMaskDisabled());
+        maxNumberMask.setMaxNumber(10d);
+        numericRangeMask.setNumericRange(1);
+        assertEquals(Action.SUCCESS, action.updateAnnotationDefinition());
+        assertEquals(2, action.getFieldDescriptor().getAnnotationMasks().size());
     }
 }
