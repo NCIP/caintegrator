@@ -29,7 +29,7 @@
         
         <property name="usePermissibleValues" type="boolean" column="USE_PERMISSIBLE_VALUES"/>
         
-        <set name="annotationMasks" lazy="false" cascade="all" >
+        <set name="annotationMasks" lazy="false" cascade="all-delete-orphan" >
             <cache usage="read-write" />
             <key column="ANNOTATION_FIELD_DESCRIPTOR_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.mask.AbstractAnnotationMask" />

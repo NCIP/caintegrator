@@ -103,6 +103,7 @@ public class MaskedNumericAnnotationValue extends NumericAnnotationValue {
         setNumericValue(numericValue.getNumericValue());
         setSampleAcquisition(numericValue.getSampleAcquisition());
         setSubjectAnnotation(numericValue.getSubjectAnnotation());
+        maskedValue = numericValue.getNumericValue() == null ? "" : String.valueOf(numericValue.getNumericValue());
     }
     
     /**
@@ -131,16 +132,6 @@ public class MaskedNumericAnnotationValue extends NumericAnnotationValue {
      */
     public void setFinalMaskApplied(boolean finalMaskApplied) {
         this.finalMaskApplied = finalMaskApplied;
-        if (finalMaskApplied) {
-            removeUnmaskedValue();
-        }
-    }
-
-    /**
-     * Removes the unmasked value so it cannot be retrieved again at a later time.
-     */
-    public void removeUnmaskedValue() {
-        setNumericValue(null);
     }
     
     /**

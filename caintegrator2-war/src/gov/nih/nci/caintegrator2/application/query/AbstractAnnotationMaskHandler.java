@@ -137,6 +137,6 @@ public abstract class AbstractAnnotationMaskHandler {
         } else if (originalValue instanceof NumericAnnotationValue) {
             return new MaskedNumericAnnotationValue((NumericAnnotationValue) originalValue);
         } 
-        throw new IllegalArgumentException("Datatype incompatible, MaxNumberMask requires a Numeric typed value.");
+        throw new IllegalArgumentException("Datatype incompatible, must be a Numeric typed value.");
     }
 }
