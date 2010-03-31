@@ -41,8 +41,8 @@ public class PermissibleValue extends AbstractCaIntegrator2Object implements Com
      * @param valueMeaning the valueMeaning to set
      */
     public void setValueMeaning(String valueMeaning) {
-        this.valueMeaning = (valueMeaning.length() > MAX_LENGTH)
-            ? valueMeaning.substring(0, MAX_LENGTH - 3) + "..." : valueMeaning;
+        this.valueMeaning = (valueMeaning == null || valueMeaning.length() < MAX_LENGTH)
+            ? valueMeaning : valueMeaning.substring(0, MAX_LENGTH - 3) + "...";
     }
     
     /**
