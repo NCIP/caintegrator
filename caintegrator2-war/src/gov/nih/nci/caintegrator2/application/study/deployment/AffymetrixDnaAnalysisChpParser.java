@@ -87,61 +87,146 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataMultiFileParser;
-import gov.nih.nci.caintegrator2.external.caarray.Level2DataFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import affymetrix.calvin.data.GenericData;
+import affymetrix.calvin.data.ProbeSetMultiDataBase;
+import affymetrix.calvin.data.ProbeSetMultiDataCopyNumberData;
+import affymetrix.calvin.data.ProbeSetMultiDataGenotypeData;
+import affymetrix.calvin.data.CHPMultiDataData.MultiDataType;
+import affymetrix.calvin.exception.UnsignedOutOfLimitsException;
+import affymetrix.calvin.parameter.ParameterNameValue;
+import affymetrix.calvin.parsers.GenericFileReader;
+import affymetrix.calvin.parsers.InvalidFileTypeException;
+import affymetrix.calvin.parsers.InvalidVersionException;
+import affymetrix.fusion.chp.FusionCHPData;
+import affymetrix.fusion.chp.FusionCHPDataReg;
+import affymetrix.fusion.chp.FusionCHPMultiDataData;
 
 /**
- * Reads data in Agilent raw data file.
+ * Reads data in Affymetrix CHP (CNCHP) files.
  */
-public final class AgilentCopyNumberDataRetrieval {
+class AffymetrixDnaAnalysisChpParser {
+    
+    private static final String LO2_RATIO = "Log2Ratio";
 
-    /**
-     * The INSTANCE of the AgilentRawDataFileParser.
-     */
-    public static final AgilentCopyNumberDataRetrieval INSTANCE = new AgilentCopyNumberDataRetrieval();
-    
-    private static final Logger LOGGER = Logger.getLogger(AgilentCopyNumberDataRetrieval.class);
-    
-    /**
-     * Parsing the level 2 data file.
-     * @param level2DataFile the level 2 data file detail.
-     * @param values ArrayDataValues to be populated.
-     * @param arrayData ArrayData mapping.
-     * @param platformHelper the platformHelper.
-     * @throws DataRetrievalException when unable to parse.
-     */
-    public void parseDataFile(Level2DataFile level2DataFile, ArrayDataValues values, ArrayData arrayData,
-            PlatformHelper platformHelper) throws DataRetrievalException {
-        Map<String, Float> agilentDataMap = AgilentLevelTwoDataMultiFileParser.INSTANCE.extractData(level2DataFile);
-        loadArrayDataValues(agilentDataMap, values, arrayData, platformHelper);
+    private final File chpFile;
+    private FusionCHPMultiDataData chpData;
+    private FusionCHPData fusionChpData;
+
+    private Map<String, AbstractReporter> reporterMap;
+
+    static {
+        FusionCHPMultiDataData.registerReader();
     }
     
-    private void loadArrayDataValues(Map<String, Float> agilentDataMap, ArrayDataValues values,
-            ArrayData arrayData, PlatformHelper platformHelper) {
-        for (String probeName : agilentDataMap.keySet()) {
-            AbstractReporter reporter = getReporter(platformHelper, probeName);
-            if (reporter == null) {
-                LOGGER.warn("Reporter with name " + probeName + " was not found in platform " 
-                        + platformHelper.getPlatform().getName());
-            } else {
-                values.setFloatValue(arrayData, reporter, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO,
-                        agilentDataMap.get(probeName).floatValue());
+    /**
+     * Creates a new parser for the provided CHP file.
+     * 
+     * @param chpFile the CNCHP file.
+     */
+    AffymetrixDnaAnalysisChpParser(File chpFile) {
+        this.chpFile = chpFile;
+    }
+
+    void parse(ArrayDataValues values, ArrayData arrayData, MultiDataType multiDataType) throws DataRetrievalException {
+        loadReporterMap(values);
+        try {
+            int numProbeSets = getChpData().getEntryCount(multiDataType);
+            for (int i = 0; i < numProbeSets; i++) {
+                if (MultiDataType.CopyNumberMultiDataType.equals(multiDataType)) {
+                    ProbeSetMultiDataCopyNumberData probeSetData = 
+                        getChpData().getCopyNumberEntry(multiDataType, i);
+                    loadData(probeSetData, values, arrayData);
+                } else {
+                    ProbeSetMultiDataGenotypeData probeSetData =
+                        getChpData().getGenotypeEntry(multiDataType, i);
+                    loadData(probeSetData, values, arrayData);
+                    
+                }
             }
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't retrieve data from " + chpFile.getAbsolutePath(), e);
+        } catch (UnsignedOutOfLimitsException e) {
+            throw new DataRetrievalException("Couldn't retrieve data from " + chpFile.getAbsolutePath(), e);
         }
     }
 
-    private AbstractReporter getReporter(PlatformHelper platformHelper, String probeSetName) {
-        AbstractReporter reporter = platformHelper.getReporter(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, 
-                probeSetName); 
-        return reporter;
+    private void loadReporterMap(ArrayDataValues values) {
+        reporterMap = new HashMap<String, AbstractReporter>();
+        for (AbstractReporter reporter : values.getReporters()) {
+            reporterMap.put(reporter.getName(), reporter);
+        }
     }
+
+    private void loadData(ProbeSetMultiDataCopyNumberData probeSetData, ArrayDataValues values, ArrayData arrayData) {
+        values.setFloatValue(arrayData, 
+                getReporter(probeSetData.getName()), 
+                ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 
+                getLog2Value(probeSetData));
+    }
+
+    private void loadData(ProbeSetMultiDataGenotypeData probeSetData, ArrayDataValues values, ArrayData arrayData) {
+        values.setFloatValue(arrayData, 
+                getReporter(probeSetData.getName()), 
+                ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 
+                getLog2Value(probeSetData));
+    }
+
+    private AbstractReporter getReporter(String name) {
+        return reporterMap.get(name);
+    }
+
+    private float getLog2Value(ProbeSetMultiDataBase probeSetData) {
+        for (ParameterNameValue nameValue : probeSetData.getMetrics()) {
+            if (LO2_RATIO.equals(nameValue.getName())) {
+                return nameValue.getValueFloat();
+            }
+        }
+        return 0.0f;
+    }
+
+    private FusionCHPMultiDataData getChpData() {
+        if (chpData == null) {
+            chpData = FusionCHPMultiDataData.fromBase(getFusionChpData());            
+        }
+        return chpData;
+    }
+    
+    private FusionCHPData getFusionChpData() {
+        if (fusionChpData == null) {
+            fusionChpData = FusionCHPDataReg.read(chpFile.getAbsolutePath());
+        }
+        return fusionChpData;
+    }
+
+    String getArrayDesignName() throws DataRetrievalException {
+        GenericFileReader reader = new GenericFileReader();
+        reader.setFilename(chpFile.getAbsolutePath());
+        GenericData data = new GenericData();
+        try {
+            reader.readHeader(data, GenericFileReader.ReadHeaderOption.ReadNoDataGroupHeader);
+            String name =  data
+                .getHeader()
+                .getGenericDataHdr()
+                .findNameValParam("affymetrix-algorithm-param-ChipType1")
+                .getValueAscii();
+            reader.close();
+            return name;
+        } catch (InvalidVersionException e) {
+            throw new DataRetrievalException("Invalid version from " + chpFile.getAbsolutePath(), e);
+        } catch (InvalidFileTypeException e) {
+            throw new DataRetrievalException("Invalid file type from " + chpFile.getAbsolutePath(), e);
+        } catch (Exception e) {
+            throw new DataRetrievalException("Couldn't retrieve data from " + chpFile.getAbsolutePath(), e);
+        }
+    }
+   
 }

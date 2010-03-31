@@ -121,7 +121,7 @@ import au.com.bytecode.opencsv.CSVReader;
  * Reads and retrieves copy number data from a caArray instance.
  */
 @Transactional (propagation = Propagation.REQUIRED)
-class AgilentCopyNumberMappingSingleFileHandler extends AbstractCopyNumberMappingFileHandler {
+class AgilentCopyNumberMappingSingleFileHandler extends AbstractDnaAnalysisMappingFileHandler {
     
     static final String FILE_TYPE = "data";
     private String dataFileName;
@@ -213,7 +213,7 @@ class AgilentCopyNumberMappingSingleFileHandler extends AbstractCopyNumberMappin
                     LOGGER.warn("Reporter with name " + probeName + " was not found in platform "
                             + platformHelper.getPlatform().getName());
                 } else {
-                    values.setFloatValue(arrayData, reporter, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, reporterMap
+                    values.setFloatValue(arrayData, reporter, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, reporterMap
                             .get(probeName).floatValue());
                 }
             }

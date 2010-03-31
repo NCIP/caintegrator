@@ -116,7 +116,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     private CaIntegrator2Dao dao;
     private ArrayDataService arrayDataService;
     private BioconductorService bioconductorService;
-    private CopyNumberHandlerFactory copyNumberHandlerFactory = new CopyNumberHandlerFactoryImpl();
+    private DnaAnalysisHandlerFactory dnaAnalysisHandlerFactory = new DnaAnalysisHandlerFactoryImpl();
     private ExpressionHandlerFactory expressionHandlerFactory = new ExpressionHandlerFactoryImpl();
     private GenePatternClientFactory genePatternClientFactory;
 
@@ -173,7 +173,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     throws ConnectionException, DataRetrievalException, ValidationException {
         if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
             GenomicDataHelper genomicDataHelper = new GenomicDataHelper(getCaArrayFacade(), 
-                    getArrayDataService(), getDao(), getBioconductorService(), getCopyNumberHandlerFactory());
+                    getArrayDataService(), getDao(), getBioconductorService(), getDnaAnalysisHandlerFactory());
             genomicDataHelper.setExpressionHandlerFactory(getExpressionHandlerFactory());
             genomicDataHelper.setGenePatternClientFactory(getGenePatternClientFactory());
             genomicDataHelper.loadData(studyConfiguration);
@@ -253,17 +253,17 @@ public class DeploymentServiceImpl implements DeploymentService {
     }
 
     /**
-     * @return the copyNumberHandlerFactory
+     * @return the dnaAnalysisHandlerFactory
      */
-    public CopyNumberHandlerFactory getCopyNumberHandlerFactory() {
-        return copyNumberHandlerFactory;
+    public DnaAnalysisHandlerFactory getDnaAnalysisHandlerFactory() {
+        return dnaAnalysisHandlerFactory;
     }
 
     /**
-     * @param copyNumberHandlerFactory the copyNumberHandlerFactory to set
+     * @param dnaAnalysisHandlerFactory the dnaAnalysisHandlerFactory to set
      */
-    public void setCopyNumberHandlerFactory(CopyNumberHandlerFactory copyNumberHandlerFactory) {
-        this.copyNumberHandlerFactory = copyNumberHandlerFactory;
+    public void setDnaAnalysisHandlerFactory(DnaAnalysisHandlerFactory dnaAnalysisHandlerFactory) {
+        this.dnaAnalysisHandlerFactory = dnaAnalysisHandlerFactory;
     }
 
     /**

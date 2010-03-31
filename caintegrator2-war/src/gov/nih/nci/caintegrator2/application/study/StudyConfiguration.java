@@ -652,6 +652,18 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
         }
         return false;
     }
+
+    /**
+     * @return the boolean of whether the study has SNP Data
+     */
+    public boolean hasSnpData() {
+        for (GenomicDataSourceConfiguration genomicDataSourceConfiguration : genomicDataSources) {
+            if (genomicDataSourceConfiguration.isSnpData()) {
+                return true;
+            }
+        }
+        return false;
+    }
     
     /**
      * Retrieves any existing field descriptors with the given name for the given study.

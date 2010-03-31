@@ -109,7 +109,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
-import gov.nih.nci.caintegrator2.external.caarray.CopyNumberFilesNotFoundException;
+import gov.nih.nci.caintegrator2.external.caarray.DnaAnalysisFilesNotFoundException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.external.caarray.SamplesNotFoundException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
@@ -522,10 +522,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             "No samples found for this caArray experiment (verify that sample data is accessible in caArray)";
         try {
             if (getCaArrayFacade().retrieveFilesForGenomicSource(genomicSource).isEmpty()) {
-                throw new CopyNumberFilesNotFoundException(errorMessage);
+                throw new DnaAnalysisFilesNotFoundException(errorMessage);
             }
         } catch (FileNotFoundException e) {
-            throw new CopyNumberFilesNotFoundException(errorMessage, e);
+            throw new DnaAnalysisFilesNotFoundException(errorMessage, e);
         }
     }
     
@@ -1025,13 +1025,13 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * 
      * @throws IOException 
      */
-    public void saveCopyNumberMappingFile(GenomicDataSourceConfiguration source,
+    public void saveDnaAnalysisMappingFile(GenomicDataSourceConfiguration source,
             File mappingFile, String filename) throws IOException {
         File savedFile = getFileManager().storeStudyFile(mappingFile, filename, source.getStudyConfiguration());
-        if (source.getCopyNumberDataConfiguration() == null) {
-            source.setCopyNumberDataConfiguration(new CopyNumberDataConfiguration());
+        if (source.getDnaAnalysisDataConfiguration() == null) {
+            source.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
         }
-        source.getCopyNumberDataConfiguration().setMappingFilePath(savedFile.getAbsolutePath());
+        source.getDnaAnalysisDataConfiguration().setMappingFilePath(savedFile.getAbsolutePath());
         daoSave(source);
     }
 

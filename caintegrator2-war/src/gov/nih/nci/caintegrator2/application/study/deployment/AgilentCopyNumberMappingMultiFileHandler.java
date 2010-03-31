@@ -118,7 +118,7 @@ import au.com.bytecode.opencsv.CSVReader;
  * Reads and retrieves copy number data from a caArray instance.
  */
 @Transactional (propagation = Propagation.REQUIRED)
-class AgilentCopyNumberMappingMultiFileHandler extends AbstractCopyNumberMappingFileHandler {
+class AgilentCopyNumberMappingMultiFileHandler extends AbstractDnaAnalysisMappingFileHandler {
     
     static final String FILE_TYPE = "data";
     private final Map<Sample, List<Level2DataFile>> sampleToDataFileMap = new HashMap<Sample, List<Level2DataFile>>();

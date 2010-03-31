@@ -85,8 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.external.bioconductor;
 
-import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
-import gov.nih.nci.caintegrator2.domain.genomic.CopyNumberData;
+import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
+import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisData;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
@@ -100,13 +100,13 @@ public interface BioconductorService {
      * Retrieves segementation data from Bioconductor's caDNAcopy service and associates it 
      * (via <code>SegmentData</code> objects) to the array datas passed in.
      * 
-     * @param copyNumberData retrieve segmentation data 
+     * @param dnaAnalysisData retrieve segmentation data 
      * @param configuration include service to connect to.
      * @throws ConnectionException if the service couldn't be reached.
      * @throws DataRetrievalException if the job didn't complete.
      */
-    void addSegmentationData(CopyNumberData copyNumberData,
-            CopyNumberDataConfiguration configuration)
+    void addSegmentationData(DnaAnalysisData dnaAnalysisData,
+            DnaAnalysisDataConfiguration configuration)
     throws ConnectionException, DataRetrievalException;
 
 }

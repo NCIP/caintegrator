@@ -87,20 +87,20 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.deployment.AbstractCopyNumberMappingFileHandler;
-import gov.nih.nci.caintegrator2.application.study.deployment.CopyNumberHandlerFactory;
+import gov.nih.nci.caintegrator2.application.study.deployment.AbstractDnaAnalysisMappingFileHandler;
+import gov.nih.nci.caintegrator2.application.study.deployment.DnaAnalysisHandlerFactory;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 /**
  * Returns a local copy number handler for expedited testing.
  */
-public class LocalCopyNumberHandlerFactoryImpl implements CopyNumberHandlerFactory {
+public class LocalDnaAnalysisHandlerFactoryImpl implements DnaAnalysisHandlerFactory {
 
     /**
      * {@inheritDoc}
      */
-    public AbstractCopyNumberMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
+    public AbstractDnaAnalysisMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         return new LocalCopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
     }

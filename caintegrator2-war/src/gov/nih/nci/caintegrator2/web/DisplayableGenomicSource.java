@@ -211,4 +211,12 @@ public class DisplayableGenomicSource {
         return genomicDataSourceConfiguration.isCopyNumberData();
     }
 
+    /**
+     * Check for dataType is SNP.
+     * @return boolean.
+     */
+    public boolean isSnpData() {
+        return genomicDataSourceConfiguration.isSnpData();
+    }
+
 }

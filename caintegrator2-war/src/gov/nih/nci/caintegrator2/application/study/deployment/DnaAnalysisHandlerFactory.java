@@ -83,32 +83,32 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.caarray;
+package gov.nih.nci.caintegrator2.application.study.deployment;
+
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 /**
- * Indicates a problem finding copy number files in a caArray experiment.
+ * Creates instances of dna analysis handlers.
  */
-public class CopyNumberFilesNotFoundException extends ExperimentNotFoundException {
-
-    private static final long serialVersionUID = 1L;
+public interface DnaAnalysisHandlerFactory {
 
     /**
-     * Creates a new instance based on an underlying exception.
+     * Creates a handler instance.
      * 
-     * @param message describes the connection problem
-     * @param cause the source exception
+     * @param genomicSource the genomic data source
+     * @param caArrayFacade the interface to caArray
+     * @param arrayDataService the array data storage service
+     * @param dao the data access interface
+     * @return the handler.
+     * @exception DataRetrievalException for invalid platform vendor.
      */
-    public CopyNumberFilesNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-    
-    /**
-     * Creates a new instance.
-     * 
-     * @param message describes the problem.
-     */
-    public CopyNumberFilesNotFoundException(String message) {
-        super(message);
-    }
+    AbstractDnaAnalysisMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource, 
+            CaArrayFacade caArrayFacade,
+            ArrayDataService arrayDataService, 
+            CaIntegrator2Dao dao) throws DataRetrievalException;
 
 }

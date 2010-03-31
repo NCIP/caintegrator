@@ -1,9 +1,9 @@
 package gov.nih.nci.caintegrator2.external.bioconductor;
 
 import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
+import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.CopyNumberData;
+import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -46,21 +46,21 @@ public class BioconductorServiceTest {
         reporters.add(createReporter("1", 0));
         reporters.add(createReporter("1", 5));
         reporters.add(createReporter("2", 0));
-        CopyNumberData copyNumberData = new CopyNumberData(reporters);
+        DnaAnalysisData dnaAnalysisData = new DnaAnalysisData(reporters);
         ArrayData arrayData1 = new ArrayData();
         arrayData1.setId(0L);
-        copyNumberData.addCopyNumberData(arrayData1, new float[] {(float) 1.1, (float) 2.2, (float) 3.3});
+        dnaAnalysisData.addDnaAnalysisData(arrayData1, new float[] {(float) 1.1, (float) 2.2, (float) 3.3});
         ArrayData arrayData2 = new ArrayData();
         arrayData2.setId(1L);
-        copyNumberData.addCopyNumberData(arrayData2, new float[] {(float) 4.4, (float) 5.5, (float) 6.6});
-        CopyNumberDataConfiguration configuration = new CopyNumberDataConfiguration();
+        dnaAnalysisData.addDnaAnalysisData(arrayData2, new float[] {(float) 4.4, (float) 5.5, (float) 6.6});
+        DnaAnalysisDataConfiguration configuration = new DnaAnalysisDataConfiguration();
         configuration.setSegmentationService(new ServerConnectionProfile());
         configuration.setChangePointSignificanceLevel(0.0);
         configuration.setEarlyStoppingCriterion(0.0);
         configuration.setPermutationReplicates(0);
         configuration.setRandomNumberSeed(0);
-        service.addSegmentationData(copyNumberData, configuration);
-        checkArrayDatas(copyNumberData);
+        service.addSegmentationData(dnaAnalysisData, configuration);
+        checkArrayDatas(dnaAnalysisData);
     }
 
     private DnaAnalysisReporter createReporter(String chromosome, int start) {
@@ -70,13 +70,13 @@ public class BioconductorServiceTest {
         return reporter;
     }
 
-    private void checkArrayDatas(CopyNumberData copyNumberData) {
-        ArrayData arrayData1 = getArrayData(copyNumberData, 0);
+    private void checkArrayDatas(DnaAnalysisData dnaAnalysisData) {
+        ArrayData arrayData1 = getArrayData(dnaAnalysisData, 0);
         assertEquals(2, arrayData1.getSegmentDatas().size());
         Iterator<SegmentData> iterator = arrayData1.getSegmentDatas().iterator();
         checkSegmentData(arrayData1, iterator.next(), 5, 1.1F, "1", 0, 9);
         checkSegmentData(arrayData1, iterator.next(), 10, 2.2F, "1", 10, 19);
-        ArrayData arrayData2 = getArrayData(copyNumberData, 1);
+        ArrayData arrayData2 = getArrayData(dnaAnalysisData, 1);
         assertEquals(1, arrayData2.getSegmentDatas().size());
         iterator = arrayData2.getSegmentDatas().iterator();
         checkSegmentData(arrayData2, iterator.next(), 15, 3.3F, "2", 20, 29);
@@ -91,8 +91,8 @@ public class BioconductorServiceTest {
         assertEquals(end, (int) segmentData1.getLocation().getEndPosition());
     }
 
-    private ArrayData getArrayData(CopyNumberData copyNumberData, long id) {
-        for (ArrayData arrayData : copyNumberData.getArrayDatas()) {
+    private ArrayData getArrayData(DnaAnalysisData dnaAnalysisData, long id) {
+        for (ArrayData arrayData : dnaAnalysisData.getArrayDatas()) {
             if (arrayData.getId() == id) {
                 return arrayData;
             }

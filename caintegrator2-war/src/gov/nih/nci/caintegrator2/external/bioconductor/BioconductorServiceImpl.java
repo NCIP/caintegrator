@@ -85,10 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.external.bioconductor;
 
-import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
+import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
-import gov.nih.nci.caintegrator2.domain.genomic.CopyNumberData;
+import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -119,20 +119,20 @@ public class BioconductorServiceImpl implements BioconductorService {
      * {@inheritDoc}
      * @throws DataRetrievalException 
      */
-    public void addSegmentationData(CopyNumberData copyNumberData,
-            CopyNumberDataConfiguration configuration) 
+    public void addSegmentationData(DnaAnalysisData dnaAnalysisData,
+            DnaAnalysisDataConfiguration configuration) 
     throws ConnectionException, DataRetrievalException {
         String url = configuration.getSegmentationService().getUrl();
         try {
             CaDNAcopyI client = getClient(url);
-            DNAcopyAssays assays = buildAssays(copyNumberData);
+            DNAcopyAssays assays = buildAssays(dnaAnalysisData);
             DNAcopyParameter parameter = new DNAcopyParameter();
             parameter.setChangePointSignificanceLevel(configuration.getChangePointSignificanceLevel());
             parameter.setEarlyStoppingCriterion(configuration.getEarlyStoppingCriterion());
             parameter.setPermutationReplicates(configuration.getPermutationReplicates());
             parameter.setRandomNumberSeed(configuration.getRandomNumberSeed());
             DerivedDNAcopySegment segment = client.getDerivedDNAcopySegment(assays, parameter);
-            addSegmentationData(segment, copyNumberData);
+            addSegmentationData(segment, dnaAnalysisData);
         } catch (RemoteException e) {
             LOGGER.error("Couldn't complete CaDNACopy job", e);
             throw new DataRetrievalException("Couldn't complete CaDNACopy job: " + e.getMessage(), e);
@@ -150,8 +150,8 @@ public class BioconductorServiceImpl implements BioconductorService {
         }
     }
 
-    private void addSegmentationData(DerivedDNAcopySegment segment, CopyNumberData copyNumberData) {
-        Map<String, ArrayData> arrayDataMap = getArrayDataMap(copyNumberData);
+    private void addSegmentationData(DerivedDNAcopySegment segment, DnaAnalysisData dnaAnalysisData) {
+        Map<String, ArrayData> arrayDataMap = getArrayDataMap(dnaAnalysisData);
         for (int segmentIndex = 0;  segmentIndex < segment.getSampleId().length; segmentIndex++) {
             ArrayData arrayData = arrayDataMap.get(arrayDataKey(segment, segmentIndex));
             SegmentData segmentData = createSegmentData(segment, segmentIndex);
@@ -180,47 +180,48 @@ public class BioconductorServiceImpl implements BioconductorService {
         return segmentData;
     }
 
-    private Map<String, ArrayData> getArrayDataMap(CopyNumberData copyNumberData) {
+    private Map<String, ArrayData> getArrayDataMap(DnaAnalysisData dnaAnalysisData) {
         Map<String, ArrayData> arrayDataMap = new HashMap<String, ArrayData>();
-        for (ArrayData arrayData : copyNumberData.getArrayDatas()) {
+        for (ArrayData arrayData : dnaAnalysisData.getArrayDatas()) {
             arrayDataMap.put(String.valueOf(arrayData.getId()), arrayData);
         }
         return arrayDataMap;
     }
 
-    private DNAcopyAssays buildAssays(CopyNumberData copyNumberData) {
+    private DNAcopyAssays buildAssays(DnaAnalysisData dnaAnalysisData) {
         DNAcopyAssays assays = new DNAcopyAssays();
-        int reporterCount = getReporterCount(copyNumberData.getReporters());
-        configureMapInformation(copyNumberData, assays, reporterCount);
-        assays.setExpressionDataCollection(new ExpressionData[copyNumberData.getArrayDatas().size()]);
+        int reporterCount = getReporterCount(dnaAnalysisData.getReporters());
+        configureMapInformation(dnaAnalysisData, assays, reporterCount);
+        assays.setExpressionDataCollection(new ExpressionData[dnaAnalysisData.getArrayDatas().size()]);
         int index = 0;
-        for (ArrayData arrayData : copyNumberData.getArrayDatas()) {
-            assays.setExpressionDataCollection(index, buildExpressionData(copyNumberData, arrayData, reporterCount));
+        for (ArrayData arrayData : dnaAnalysisData.getArrayDatas()) {
+            assays.setExpressionDataCollection(index, buildExpressionData(dnaAnalysisData, arrayData, reporterCount));
             index++;
         }
         return assays;
     }
 
-    private ExpressionData buildExpressionData(CopyNumberData copyNumberData, ArrayData arrayData, int reporterCount) {
+    private ExpressionData buildExpressionData(DnaAnalysisData dnaAnalysisData,
+            ArrayData arrayData, int reporterCount) {
         ExpressionData data = new ExpressionData();
         data.setSampleId(String.valueOf(arrayData.getId()));
         double[] values = new double[reporterCount];
         int index = 0;
-        for (int i = 0; i < copyNumberData.getReporters().size(); i++) {
-            DnaAnalysisReporter reporter = copyNumberData.getReporters().get(i);
+        for (int i = 0; i < dnaAnalysisData.getReporters().size(); i++) {
+            DnaAnalysisReporter reporter = dnaAnalysisData.getReporters().get(i);
             if (reporter.hasValidLocation()) {
-                values[index++] = copyNumberData.getValues(arrayData)[i];
+                values[index++] = dnaAnalysisData.getValues(arrayData)[i];
             }
         }
         data.setLogRatioValues(values);
         return data;
     }
 
-    private void configureMapInformation(CopyNumberData copyNumberData, DNAcopyAssays assays, int reporterCount) {
+    private void configureMapInformation(DnaAnalysisData dnaAnalysisData, DNAcopyAssays assays, int reporterCount) {
         assays.setChromsomeId(new int[reporterCount]);
         assays.setMapLocation(new long[reporterCount]);
         int index = 0;
-        for (DnaAnalysisReporter reporter : copyNumberData.getReporters()) {
+        for (DnaAnalysisReporter reporter : dnaAnalysisData.getReporters()) {
             if (reporter.hasValidLocation()) {
                 assays.setChromsomeId(index, reporter.getChromosomeAsInt());
                 assays.setMapLocation(index++, reporter.getPosition());
