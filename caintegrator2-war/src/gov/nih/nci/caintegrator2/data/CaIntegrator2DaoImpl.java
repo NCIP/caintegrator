@@ -387,7 +387,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                 .add(Restrictions.eq("commonDataElement.publicID", cdeId)).list()
             : getCurrentSession().createCriteria(AnnotationDefinition.class)
                 .add(Restrictions.eq("commonDataElement.publicID", cdeId))
-                .add(Restrictions.eq("commonDataElement.version", version)).list();
+                .add(Restrictions.eq("commonDataElement.version", version.toString())).list();
                     
         if (values.isEmpty()) {
             return null;
