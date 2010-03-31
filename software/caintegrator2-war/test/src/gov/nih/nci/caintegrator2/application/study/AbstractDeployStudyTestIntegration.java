@@ -206,8 +206,8 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.setPlatformVendor(getPlatformVendor());
             genomicSource.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
             service.addGenomicSource(studyConfiguration, genomicSource);
-            getService().saveCopyNumberMappingFile(genomicSource, getCopyNumberFile(), getCopyNumberFile().getName());
-            configureSegmentationDataCalcuation(genomicSource.getCopyNumberDataConfiguration());
+            getService().saveDnaAnalysisMappingFile(genomicSource, getCopyNumberFile(), getCopyNumberFile().getName());
+            configureSegmentationDataCalcuation(genomicSource.getDnaAnalysisDataConfiguration());
         }
     }
 
@@ -215,7 +215,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         return 31099;
     }
 
-    protected void configureSegmentationDataCalcuation(CopyNumberDataConfiguration copyNumberDataConfiguration) {
+    protected void configureSegmentationDataCalcuation(DnaAnalysisDataConfiguration dnaAnalysisDataConfiguration) {
         // no-op
     }
 

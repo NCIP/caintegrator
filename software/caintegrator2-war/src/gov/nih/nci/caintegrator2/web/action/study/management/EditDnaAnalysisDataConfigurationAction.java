@@ -87,7 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
-import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
+import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 
@@ -104,7 +104,7 @@ import au.com.bytecode.opencsv.CSVReader;
 /**
  * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
  */
-public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSourceAction {
+public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourceAction {
 
     private static final long serialVersionUID = 1L;
 
@@ -119,14 +119,14 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
     public static final String SAVE_ACTION = "save";
     
     private String formAction;
-    private File copyNumberMappingFile;
-    private String copyNumberMappingFileContentType;
-    private String copyNumberMappingFileFileName;
+    private File mappingFile;
+    private String mappingFileContentType;
+    private String mappingFileFileName;
     private String gladUrl;
     private String caDnaCopyUrl;
     private boolean useGlad = false;
     private ConfigurationHelper configurationHelper;
-    private static final String COPY_NUMBER_MAPPING_FILE = "copyNumberMappingFile";
+    private static final String MAPPING_FILE = "mappingFile";
     
     /**
      * {@inheritDoc}
@@ -135,44 +135,36 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
     public void prepare() {
         super.prepare();
         updateServiceUrl();
-        if (getCopyNumberDataConfiguration().isCaDNACopyConfiguration()) {
-            setCaDnaCopyUrl(getCopyNumberDataConfiguration().getSegmentationService().getUrl());
+        if (getDnaAnalysisDataConfiguration().isCaDNACopyConfiguration()) {
+            setCaDnaCopyUrl(getDnaAnalysisDataConfiguration().getSegmentationService().getUrl());
             setUseGlad(false);
         } else {
-            setGladUrl(getCopyNumberDataConfiguration().getSegmentationService().getUrl());
+            setGladUrl(getDnaAnalysisDataConfiguration().getSegmentationService().getUrl());
             setUseGlad(true);
         }
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected boolean isFileUpload() {
-        return true;
-    }
-
-    /**
-     * Called to open the copy number data configuration page.
+     * Called to open the dna analysis data configuration page.
      * 
      * @return the struts results
      */
     public String edit() {
-        getCopyNumberDataConfiguration();
+        getDnaAnalysisDataConfiguration();
         setFormAction(SAVE_ACTION);
         return SUCCESS;
     }
 
     /**
-     * Returns the copy number data configuration.
+     * Returns the dna analysis data configuration.
      * 
      * @return the configuration.
      */
-    public CopyNumberDataConfiguration getCopyNumberDataConfiguration() {
+    public DnaAnalysisDataConfiguration getDnaAnalysisDataConfiguration() {
         
-        if (getGenomicSource().getCopyNumberDataConfiguration() == null) {
-            CopyNumberDataConfiguration configuration = new CopyNumberDataConfiguration();
-            getGenomicSource().setCopyNumberDataConfiguration(configuration);
+        if (getGenomicSource().getDnaAnalysisDataConfiguration() == null) {
+            DnaAnalysisDataConfiguration configuration = new DnaAnalysisDataConfiguration();
+            getGenomicSource().setDnaAnalysisDataConfiguration(configuration);
             
             if (getUseGlad()) {
                 configuration.getSegmentationService().setUrl(
@@ -184,19 +176,19 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
             
         }
         
-        return getGenomicSource().getCopyNumberDataConfiguration();
+        return getGenomicSource().getDnaAnalysisDataConfiguration();
     }
     
     /**
-     * Called to save the copy number mapping data configuration.
+     * Called to save the dna analysis mapping data configuration.
      * 
      * @return the struts results
      */
     public String save() {
         try {
             updateServiceUrl();
-            getStudyManagementService().saveCopyNumberMappingFile(getGenomicSource(), getCopyNumberMappingFile(), 
-                    getCopyNumberMappingFileFileName());
+            getStudyManagementService().saveDnaAnalysisMappingFile(getGenomicSource(), getMappingFile(), 
+                    getMappingFileFileName());
             getStudyManagementService().save(getStudyConfiguration());
             setLastModifiedByCurrentUser();
             return SUCCESS;
@@ -208,9 +200,9 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
 
     private void updateServiceUrl() {
         if (getUseGlad()) {
-            getCopyNumberDataConfiguration().getSegmentationService().setUrl(getGladUrl());
+            getDnaAnalysisDataConfiguration().getSegmentationService().setUrl(getGladUrl());
         } else {
-            getCopyNumberDataConfiguration().getSegmentationService().setUrl(getCaDnaCopyUrl());
+            getDnaAnalysisDataConfiguration().getSegmentationService().setUrl(getCaDnaCopyUrl());
         }
     }
     
@@ -226,10 +218,10 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
     }
 
     private void validateSave() {
-        if (copyNumberMappingFile == null) {
-            addFieldError(COPY_NUMBER_MAPPING_FILE, " File is required");
-        } else if (copyNumberMappingFile.length() == 0) {
-            addFieldError(COPY_NUMBER_MAPPING_FILE, " File is empty");
+        if (mappingFile == null) {
+            addFieldError(MAPPING_FILE, " File is required");
+        } else if (mappingFile.length() == 0) {
+            addFieldError(MAPPING_FILE, " File is empty");
         } else {
             validateFileFormat();
         }
@@ -239,22 +231,22 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
     private void validateFileFormat() {
         CSVReader reader;
         try {
-            reader = new CSVReader(new FileReader(copyNumberMappingFile));
+            reader = new CSVReader(new FileReader(mappingFile));
             String[] fields;
             int lineNum = 0;
             int columnNumber = PlatformVendorEnum.getByValue(
-                    getGenomicSource().getPlatformVendor()).getCopyNumberMappingColumns();
+                    getGenomicSource().getPlatformVendor()).getDnaAnalysisMappingColumns();
             while ((fields = reader.readNext()) != null) {
                 lineNum++;
                 if (fields.length != columnNumber) {
-                    addFieldError(COPY_NUMBER_MAPPING_FILE,
+                    addFieldError(MAPPING_FILE,
                             " File must have " + columnNumber + " columns instead of " + fields.length
                             + " on line number " + lineNum);
                     return;
                 }
             }
         } catch (IOException e) {
-            addFieldError(COPY_NUMBER_MAPPING_FILE, " Error reading mapping file");
+            addFieldError(MAPPING_FILE, " Error reading mapping file");
         }
     }
 
@@ -267,45 +259,53 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
     }
 
     /**
-     * @return the copyNumberMappingFile
+     * {@inheritDoc}
      */
-    public File getCopyNumberMappingFile() {
-        return copyNumberMappingFile;
+    @Override
+    protected boolean isFileUpload() {
+        return true;
     }
 
     /**
-     * @param copyNumberMappingFile the copyNumberMappingFile to set
+     * @return the mappingFile
      */
-    public void setCopyNumberMappingFile(File copyNumberMappingFile) {
-        this.copyNumberMappingFile = copyNumberMappingFile;
+    public File getMappingFile() {
+        return mappingFile;
     }
 
     /**
-     * @return the copyNumberMappingFileContentType
+     * @param mappingFile the mappingFile to set
      */
-    public String getCopyNumberMappingFileContentType() {
-        return copyNumberMappingFileContentType;
+    public void setMappingFile(File mappingFile) {
+        this.mappingFile = mappingFile;
     }
 
     /**
-     * @param copyNumberMappingFileContentType the copyNumberMappingFileContentType to set
+     * @return the mappingFileContentType
      */
-    public void setCopyNumberMappingFileContentType(String copyNumberMappingFileContentType) {
-        this.copyNumberMappingFileContentType = copyNumberMappingFileContentType;
+    public String getMappingFileContentType() {
+        return mappingFileContentType;
     }
 
     /**
-     * @return the copyNumberMappingFileFileName
+     * @param mappingFileContentType the mappingFileContentType to set
      */
-    public String getCopyNumberMappingFileFileName() {
-        return copyNumberMappingFileFileName;
+    public void setMappingFileContentType(String mappingFileContentType) {
+        this.mappingFileContentType = mappingFileContentType;
     }
 
     /**
-     * @param copyNumberMappingFileFileName the copyNumberMappingFileFileName to set
+     * @return the mappingFileFileName
      */
-    public void setCopyNumberMappingFileFileName(String copyNumberMappingFileFileName) {
-        this.copyNumberMappingFileFileName = copyNumberMappingFileFileName;
+    public String getMappingFileFileName() {
+        return mappingFileFileName;
+    }
+
+    /**
+     * @param mappingFileFileName the mappingFileFileName to set
+     */
+    public void setMappingFileFileName(String mappingFileFileName) {
+        this.mappingFileFileName = mappingFileFileName;
     }
 
     /**
@@ -383,5 +383,12 @@ public class EditCopyNumberDataConfigurationAction extends AbstractGenomicSource
      */
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
+    }
+    
+    /**
+     * @return boolean allow single data file
+     */
+    public boolean isPossibleSingleDataFile() {
+        return PlatformVendorEnum.AGILENT.getValue().equalsIgnoreCase(getGenomicSource().getPlatformVendor());
     }
 }

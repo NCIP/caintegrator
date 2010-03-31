@@ -8,7 +8,7 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.application.study.deployment.CopyNumberHandlerFactory;
+import gov.nih.nci.caintegrator2.application.study.deployment.DnaAnalysisHandlerFactory;
 import gov.nih.nci.caintegrator2.application.study.deployment.GenomicDataHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
@@ -28,14 +28,14 @@ public class GenomicDataHelperTest {
     private ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub();
     private CaIntegrator2Dao dao = new CaIntegrator2DaoStub();
     private BioconductorService biocondutor;
-    private CopyNumberHandlerFactory copyNumberHandlerFactory = new LocalCopyNumberHandlerFactoryImpl();
+    private DnaAnalysisHandlerFactory dnaAnalysisHandlerFactory = new LocalDnaAnalysisHandlerFactoryImpl();
     private ExpressionHandlerFactory expressionHandlerFactory = new LocalExpressionHandlerFactoryImpl();
     
     @Before
     public void setUp() {
         caArrayFacade.reset();
         arrayDataService.reset();
-        helper = new GenomicDataHelper(caArrayFacade, arrayDataService, dao, biocondutor, copyNumberHandlerFactory );
+        helper = new GenomicDataHelper(caArrayFacade, arrayDataService, dao, biocondutor, dnaAnalysisHandlerFactory );
         helper.setExpressionHandlerFactory(expressionHandlerFactory);
     }
 

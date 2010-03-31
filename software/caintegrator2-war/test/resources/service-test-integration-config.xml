@@ -47,8 +47,8 @@
         <property name="bioconductorService">
             <ref local="bioconductorService"/>
         </property>
-        <property name="copyNumberHandlerFactory">
-            <ref local="copyNumberHandlerFactory" />
+        <property name="dnaAnalysisHandlerFactory">
+            <ref local="dnaAnalysisHandlerFactory" />
         </property>
         <property name="genePatternClientFactory">
             <ref local="genePatternClientFactory" />
@@ -57,8 +57,8 @@
 
     <bean id="genePatternClientFactory" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactoryImpl" />
 
-    <bean id="copyNumberHandlerFactory" 
-        class="gov.nih.nci.caintegrator2.application.study.deployment.CopyNumberHandlerFactoryImpl" />
+    <bean id="dnaAnalysisHandlerFactory" 
+        class="gov.nih.nci.caintegrator2.application.study.deployment.DnaAnalysisHandlerFactoryImpl" />
 
     <bean id="queryManagementService" 
         class="gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl">

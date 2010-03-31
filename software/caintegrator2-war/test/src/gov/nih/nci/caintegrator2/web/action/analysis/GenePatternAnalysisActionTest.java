@@ -95,7 +95,7 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
-import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
+import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
@@ -259,7 +259,7 @@ public class GenePatternAnalysisActionTest extends AbstractSessionBasedTest {
         gdsc.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
         assertEquals(3, action.getAnalysisTypes().size());
         gdsc.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
-        gdsc.setCopyNumberDataConfiguration(new CopyNumberDataConfiguration());
+        gdsc.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
         assertEquals(3, action.getAnalysisTypes().size());gdsc = new GenomicDataSourceConfiguration();
         action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(gdsc);
         gdsc.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);

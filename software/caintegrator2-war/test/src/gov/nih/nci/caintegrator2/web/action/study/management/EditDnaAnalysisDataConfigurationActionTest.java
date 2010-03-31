@@ -83,34 +83,100 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.arraydata;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-/**
- * Represents a quantitation type of microarray data.
- */
-public enum ArrayDataValueType {
-    
-    /**
-     * Expression signal.
-     */
-    EXPRESSION_SIGNAL(Float.class),
-    
-    /**
-     * DNA analysis log2ratio.
-     */
-    DNA_ANALYSIS_LOG2_RATIO(Float.class);
-    
-    private final Class<?> typeClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-    ArrayDataValueType(Class<?> typeClass) {
-        this.typeClass = typeClass;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+@SuppressWarnings("PMD")
+public class EditDnaAnalysisDataConfigurationActionTest extends AbstractSessionBasedTest {
+
+    private EditDnaAnalysisDataConfigurationAction action;
+    private StudyManagementServiceStub studyManagementServiceStub;
+
+    @Before
+    public void setUp() {
+        super.setUp();
+
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditDnaAnalysisDataConfigurationActionTest.class); 
+        action = (EditDnaAnalysisDataConfigurationAction) context.getBean("editDnaAnalysisDataConfigurationAction");
+        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
+        studyManagementServiceStub.clear();
     }
-
-    /**
-     * @return the typeClass
-     */
-    public Class<?> getTypeClass() {
-        return typeClass;
+    
+    @Test
+    public void testEdit() {
+        action.setUseGlad(true);
+        action.setGladUrl(ConfigurationParameter.GENE_PATTERN_URL.getDefaultValue());
+        action.getGenomicSource().setDnaAnalysisDataConfiguration(null);
+        action.prepare();
+        action.edit();
+        assertNotNull(action.getGenomicSource().getDnaAnalysisDataConfiguration());
+        assertEquals(ConfigurationParameter.GENE_PATTERN_URL.getDefaultValue(), action.getGladUrl());
     }
-
+    
+    @Test
+    public void testSave() {
+        action.prepare();
+        action.setUseGlad(true);
+        action.setGladUrl("gladUrl");
+        action.setCaDnaCopyUrl("caDnaCopyUrl");
+        action.save();
+        assertEquals("gladUrl", action.getDnaAnalysisDataConfiguration().getSegmentationService().getUrl());
+        assertTrue(studyManagementServiceStub.saveDnaAnalysisMappingFileCalled);
+        assertTrue(studyManagementServiceStub.saveCalled);
+        action.setUseGlad(false);
+        action.save();
+        assertEquals("caDnaCopyUrl", action.getDnaAnalysisDataConfiguration().getSegmentationService().getUrl());
+    }
+    
+    @Test
+    public void testValidate() {
+        action.prepare();
+        action.setFormAction(EditDnaAnalysisDataConfigurationAction.EDIT_ACTION);
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.setFormAction(EditDnaAnalysisDataConfigurationAction.SAVE_ACTION);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setMappingFile(TestDataFiles.XBA_COPY_NUMBER_CHP_FILE);
+        action.getDnaAnalysisDataConfiguration().getSegmentationService().setUrl("");
+        action.getGenomicSource().setPlatformVendor("Affymetrix");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setUseGlad(false);
+        action.setCaDnaCopyUrl("url");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+        genomicSource.setPlatformVendor("Affymetrix");
+        action.setGenomicSource(genomicSource);
+        action.setMappingFile(TestDataFiles.REMBRANDT_COPY_NUMBER_FILE);
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        genomicSource.setPlatformVendor("Agilent");
+        action.setMappingFile(TestDataFiles.REMBRANDT_COPY_NUMBER_FILE);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setMappingFile(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE);
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+    }
+    
 }

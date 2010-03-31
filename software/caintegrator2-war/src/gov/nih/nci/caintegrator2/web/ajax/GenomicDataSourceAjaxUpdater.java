@@ -106,6 +106,7 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String JOB_DEPLOYMENT_STATUS = "genomicSourceStatus_";
     private static final String JOB_EDIT_URL = "genomicSourceEditUrl_";
     private static final String JOB_MAP_SAMPLES_URL = "genomicSourceMapSamplesUrl_";
+    private static final String JOB_CONFIGURE_SNP_URL = "genomicSourceConfigureSnpUrl_";
     private static final String JOB_CONFIGURE_COPY_NUMBER_URL = "genomicSourceConfigureCopyNumberUrl_";
     private static final String JOB_DELETE_URL = "genomicSourceDeleteUrl_";
     private static final String JOB_FILE_DESCRIPTION = "genomicSourceFileDescription_";
@@ -166,6 +167,8 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
     private String getMappingActionUrl(GenomicDataSourceConfiguration genomicSource) {
         if (genomicSource.isExpressionData()) {
             return JOB_MAP_SAMPLES_URL;
+        } else if (genomicSource.isSnpData()) {
+            return JOB_CONFIGURE_SNP_URL;
         } else {
             return JOB_CONFIGURE_COPY_NUMBER_URL;
         }
@@ -239,10 +242,12 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
                 fileDescriptionString.append(fileName);
                 fileDescriptionString.append(brString);
             }
-        }
-        if (genomicSource.isCopyNumberData()) {
+        } else if (genomicSource.isCopyNumberData()) {
             fileDescriptionString.append("<i>Copy Number Mapping File: </i>");
-            fileDescriptionString.append(genomicSource.getCopyNumberMappingFileName());
+            fileDescriptionString.append(genomicSource.getDnaAnalysisMappingFileName());
+        } else if (genomicSource.isSnpData()) {
+            fileDescriptionString.append("<i>SNP Mapping File: </i>");
+            fileDescriptionString.append(genomicSource.getDnaAnalysisMappingFileName());
         }
         utilThis.setValue(JOB_FILE_DESCRIPTION + genomicSourceId, fileDescriptionString.toString());
     }
@@ -280,9 +285,14 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
             utilThis.setValue(JOB_MAP_SAMPLES_URL + genomicSourceId, 
                 retrieveUrl(genomicSource, "editSampleMapping", "Map Samples", "map", false),
                 false);
+        } else if (genomicSource.isSnpData()) {
+            utilThis.setValue(JOB_CONFIGURE_SNP_URL + genomicSourceId, 
+                    retrieveUrl(genomicSource, "editDnaAnalysisDataConfiguration", "ConfigureSnpData",
+                            "configure", false),
+                            false);
         } else {
             utilThis.setValue(JOB_CONFIGURE_COPY_NUMBER_URL + genomicSourceId, 
-                    retrieveUrl(genomicSource, "editCopyNumberDataConfiguration", "ConfigureCopyNumberData",
+                    retrieveUrl(genomicSource, "editDnaAnalysisDataConfiguration", "ConfigureCopyNumberData",
                             "configure", false),
                             false);
         }

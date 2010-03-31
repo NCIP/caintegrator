@@ -85,30 +85,27 @@
  */
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.study.deployment.AffymetrixDnaAnalysisChpParser;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+
+import java.io.File;
+
+import affymetrix.calvin.data.CHPMultiDataData.MultiDataType;
 
 /**
- * Creates instances of copy number handlers.
+ * Extends parser to make functionality available to tests outside of the study package.
  */
-public interface CopyNumberHandlerFactory {
+public class PublicAffymetrixDnaAnalysisChpParser extends AffymetrixDnaAnalysisChpParser {
 
-    /**
-     * Creates a handler instance.
-     * 
-     * @param genomicSource the genomic data source
-     * @param caArrayFacade the interface to caArray
-     * @param arrayDataService the array data storage service
-     * @param dao the data access interface
-     * @return the handler.
-     * @exception DataRetrievalException for invalid platform vendor.
-     */
-    AbstractCopyNumberMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource, 
-            CaArrayFacade caArrayFacade,
-            ArrayDataService arrayDataService, 
-            CaIntegrator2Dao dao) throws DataRetrievalException;
+    public PublicAffymetrixDnaAnalysisChpParser(File dnaAnalysisChpFile) {
+        super(dnaAnalysisChpFile);
+    }
+    
+    @Override
+    public void parse(ArrayDataValues values, ArrayData arrayData, MultiDataType multiDataType) throws DataRetrievalException {
+        super.parse(values, arrayData, multiDataType);
+    }
 
 }

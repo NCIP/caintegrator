@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
-import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
+import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -47,7 +47,7 @@ public class AgilentCopyNumberMappingFileHandlerTest {
         studyConfiguration.getOrCreateSubjectAssignment("E09176");
         source.setStudyConfiguration(studyConfiguration);
         source.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
-        source.setCopyNumberDataConfiguration(new CopyNumberDataConfiguration());
+        source.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
         AgilentCopyNumberMappingSingleFileHandler handler = new AgilentCopyNumberMappingSingleFileHandler(source, caArrayFacade, arrayDataService, dao);
         boolean exceptionCaught = false;
         try {
@@ -57,7 +57,7 @@ public class AgilentCopyNumberMappingFileHandlerTest {
         }
         assertTrue(exceptionCaught);
         exceptionCaught = false;
-        source.getCopyNumberDataConfiguration().setMappingFilePath(TestDataFiles.TCGA_AGILENT_COPY_NUMBER_MAPPING_FILE.getAbsolutePath());
+        source.getDnaAnalysisDataConfiguration().setMappingFilePath(TestDataFiles.TCGA_AGILENT_COPY_NUMBER_MAPPING_FILE.getAbsolutePath());
         try {
             handler.loadArrayData();
         } catch (DataRetrievalException e) {

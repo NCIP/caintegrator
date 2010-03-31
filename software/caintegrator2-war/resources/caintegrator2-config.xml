@@ -327,9 +327,9 @@
         </property>
     </bean>
 
-    <bean id="editCopyNumberDataConfigurationAction"
+    <bean id="editDnaAnalysisDataConfigurationAction"
         scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.EditCopyNumberDataConfigurationAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditDnaAnalysisDataConfigurationAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
@@ -770,16 +770,16 @@
         <property name="bioconductorService">
             <ref local="bioconductorService"/>
         </property>
-        <property name="copyNumberHandlerFactory">
-            <ref local="copyNumberHandlerFactory" />
+        <property name="dnaAnalysisHandlerFactory">
+            <ref local="dnaAnalysisHandlerFactory" />
         </property>
         <property name="genePatternClientFactory">
             <ref local="genePatternClientFactory" />
         </property>
     </bean>
 
-    <bean id="copyNumberHandlerFactory" 
-        class="gov.nih.nci.caintegrator2.application.study.deployment.CopyNumberHandlerFactoryImpl" />
+    <bean id="dnaAnalysisHandlerFactory" 
+        class="gov.nih.nci.caintegrator2.application.study.deployment.DnaAnalysisHandlerFactoryImpl" />
 
     <bean id="workspaceService" 
         class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceImpl">

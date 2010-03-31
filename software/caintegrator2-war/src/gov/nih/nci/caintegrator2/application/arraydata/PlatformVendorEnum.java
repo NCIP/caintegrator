@@ -25,12 +25,12 @@ public enum PlatformVendorEnum {
 
     private String value;
     private int sampleMappingColumns;
-    private int copyNumberMappingColumns;
+    private int dnaAnalysisMappingColumns;
     
-    private PlatformVendorEnum(String value, int sampleMappingColumns, int copyNumberMappingColumns) {
+    private PlatformVendorEnum(String value, int sampleMappingColumns, int dnaAnalysisMappingColumns) {
         this.value = value;
         this.sampleMappingColumns = sampleMappingColumns;
-        this.copyNumberMappingColumns = copyNumberMappingColumns;
+        this.dnaAnalysisMappingColumns = dnaAnalysisMappingColumns;
     }
 
     /**
@@ -108,16 +108,16 @@ public enum PlatformVendorEnum {
     }
 
     /**
-     * @return the copyNumberMappingColumns
+     * @return the dnaAnalysisMappingColumns
      */
-    public int getCopyNumberMappingColumns() {
-        return copyNumberMappingColumns;
+    public int getDnaAnalysisMappingColumns() {
+        return dnaAnalysisMappingColumns;
     }
 
     /**
-     * @param copyNumberMappingColumns the copyNumberMappingColumns to set
+     * @param dnaAnalysisMappingColumns the dnaAnalysisMappingColumns to set
      */
-    public void setCopyNumberMappingColumns(int copyNumberMappingColumns) {
-        this.copyNumberMappingColumns = copyNumberMappingColumns;
+    public void setDnaAnalysisMappingColumns(int dnaAnalysisMappingColumns) {
+        this.dnaAnalysisMappingColumns = dnaAnalysisMappingColumns;
     }
 }

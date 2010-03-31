@@ -38,13 +38,13 @@
         <property name="arrayDataService">
             <ref local="arrayDataServiceStub"/>
         </property>
-        <property name="copyNumberHandlerFactory">
-            <ref local="copyNumberHandlerFactory" />
+        <property name="dnaAnalysisHandlerFactory">
+            <ref local="dnaAnalysisHandlerFactory" />
         </property>
     </bean>
 
-    <bean id="copyNumberHandlerFactory" 
-        class="gov.nih.nci.caintegrator2.application.study.deployment.CopyNumberHandlerFactoryImpl" />
+    <bean id="dnaAnalysisHandlerFactory" 
+        class="gov.nih.nci.caintegrator2.application.study.deployment.DnaAnalysisHandlerFactoryImpl" />
 
     
     <bean id="dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub" />

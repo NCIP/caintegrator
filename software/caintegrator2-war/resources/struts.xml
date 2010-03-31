@@ -491,18 +491,18 @@
             <result name="input" type="tiles">editSampleMapping</result>
         </action>
         
-        <action name="editCopyNumberDataConfiguration" method="edit" class="editCopyNumberDataConfigurationAction">
-            <result type="tiles">editCopyNumberDataConfiguration</result>
+        <action name="editDnaAnalysisDataConfiguration" method="edit" class="editDnaAnalysisDataConfigurationAction">
+            <result type="tiles">editDnaAnalysisDataConfiguration</result>
         </action>
         
-        <action name="uploadCopyNumberDataMapping" method="uploadMapping" class="editCopyNumberDataConfigurationAction">
-            <result type="tiles">editCopyNumberDataConfiguration</result>
-            <result name="input" type="tiles">editCopyNumberDataConfiguration</result>
+        <action name="uploadDnaAnalysisDataMapping" method="uploadMapping" class="editDnaAnalysisDataConfigurationAction">
+            <result type="tiles">editDnaAnalysisDataConfiguration</result>
+            <result name="input" type="tiles">editDnaAnalysisDataConfiguration</result>
         </action>
         
-        <action name="saveCopyNumberDataConfiguration" method="save" class="editCopyNumberDataConfigurationAction">
+        <action name="saveDnaAnalysisDataConfiguration" method="save" class="editDnaAnalysisDataConfigurationAction">
             <result type="tiles">editStudy</result>
-            <result name="input" type="tiles">editCopyNumberDataConfiguration</result>
+            <result name="input" type="tiles">editDnaAnalysisDataConfiguration</result>
         </action>
                 
         <action name="addImagingSource" class="editImagingSourceAction">

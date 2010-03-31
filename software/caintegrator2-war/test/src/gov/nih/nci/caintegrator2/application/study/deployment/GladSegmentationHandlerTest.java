@@ -88,7 +88,7 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternClientStub;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.CopyNumberData;
+import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
@@ -124,14 +124,14 @@ public class GladSegmentationHandlerTest {
     @Test
     public void testAddSegmentationData() throws DataRetrievalException {
         List<DnaAnalysisReporter> reporters = new ArrayList<DnaAnalysisReporter>();
-        CopyNumberData copyNumberData = new CopyNumberData(reporters);
+        DnaAnalysisData dnaAnalysisData = new DnaAnalysisData(reporters);
         ArrayData arrayData1 = new ArrayData();
         arrayData1.setId(1L);
-        copyNumberData.addCopyNumberData(arrayData1, new float[0]);
+        dnaAnalysisData.addDnaAnalysisData(arrayData1, new float[0]);
         ArrayData arrayData2 = new ArrayData();
         arrayData2.setId(2L);
-        copyNumberData.addCopyNumberData(arrayData2, new float[0]);
-        handler.addSegmentationData(copyNumberData);
+        dnaAnalysisData.addDnaAnalysisData(arrayData2, new float[0]);
+        handler.addSegmentationData(dnaAnalysisData);
         assertEquals(1, arrayData1.getSegmentDatas().size());
         assertEquals(1, arrayData2.getSegmentDatas().size());
         SegmentData segmentData = arrayData1.getSegmentDatas().first();

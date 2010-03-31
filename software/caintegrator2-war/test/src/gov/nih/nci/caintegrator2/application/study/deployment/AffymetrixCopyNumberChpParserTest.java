@@ -90,7 +90,7 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.study.deployment.AffymetrixCopyNumberChpParser;
+import gov.nih.nci.caintegrator2.application.study.deployment.AffymetrixDnaAnalysisChpParser;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
@@ -113,7 +113,7 @@ public class AffymetrixCopyNumberChpParserTest {
     
     @Test
     public void testGetArrayDesignName() throws DataRetrievalException {
-        AffymetrixCopyNumberChpParser parser = new AffymetrixCopyNumberChpParser(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE);
+        AffymetrixDnaAnalysisChpParser parser = new AffymetrixDnaAnalysisChpParser(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE);
         assertEquals("Mapping50K_Hind240", parser.getArrayDesignName());
     }
 
@@ -122,24 +122,24 @@ public class AffymetrixCopyNumberChpParserTest {
         List<AbstractReporter> reporters = getReporters(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE);
         ArrayDataValues values = new ArrayDataValues(reporters);
         ArrayData arrayData = new ArrayData();
-        AffymetrixCopyNumberChpParser parser = new AffymetrixCopyNumberChpParser(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE);
-        parser.parse(values, arrayData);
+        AffymetrixDnaAnalysisChpParser parser = new AffymetrixDnaAnalysisChpParser(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE);
+        parser.parse(values, arrayData, MultiDataType.CopyNumberMultiDataType);
         checkValues(reporters, values, arrayData);
         reporters = getReporters(TestDataFiles.XBA_COPY_NUMBER_CHP_FILE);
         values = new ArrayDataValues(reporters);
-        parser = new AffymetrixCopyNumberChpParser(TestDataFiles.XBA_COPY_NUMBER_CHP_FILE);
-        parser.parse(values, arrayData);
+        parser = new AffymetrixDnaAnalysisChpParser(TestDataFiles.XBA_COPY_NUMBER_CHP_FILE);
+        parser.parse(values, arrayData, MultiDataType.CopyNumberMultiDataType);
         checkValues(reporters, values, arrayData);
     }
 
     private void checkValues(List<AbstractReporter> reporters, ArrayDataValues values, ArrayData arrayData) {
         assertEquals(1, values.getTypes().size());
-        assertTrue(values.getTypes().contains(ArrayDataValueType.COPY_NUMBER_LOG2_RATIO));
+        assertTrue(values.getTypes().contains(ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO));
         assertEquals(1, values.getArrayDatas().size());
         assertTrue(values.getArrayDatas().contains(arrayData));
         for (AbstractReporter reporter : reporters) {
             assertTrue(reporter.getName().startsWith("SNP_"));
-            assertTrue(values.getFloatValue(arrayData, reporter, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO) != 0.0f);
+            assertTrue(values.getFloatValue(arrayData, reporter, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO) != 0.0f);
         }
     }
 

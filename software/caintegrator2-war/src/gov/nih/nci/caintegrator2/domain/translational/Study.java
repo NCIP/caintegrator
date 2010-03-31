@@ -244,6 +244,14 @@ public class Study extends AbstractCaIntegrator2Object {
     }
 
     /**
+     * @return the boolean of whether the study has SNP data
+     */
+    public boolean hasSnpData() {
+        return studyConfiguration != null
+            && studyConfiguration.hasSnpData();
+    }
+
+    /**
      * @return the subjectAnnotationGroup
      */
     public Set<AnnotationGroup> getAnnotationGroups() {

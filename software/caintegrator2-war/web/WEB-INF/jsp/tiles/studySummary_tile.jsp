@@ -169,6 +169,14 @@
                         <td />
                     </tr>
                 </s:elseif>
+                <s:elseif test="snpData">
+                    <tr>
+                        <td align="right">SNP Samples: </td>
+                        <td><b><s:property value="numberSamples" /> </b></td>
+                        <td />
+                        <td />
+                    </tr>
+                </s:elseif>
                 <s:if test="!#genomicDataSourceStatus.last">
                     <tr>
                     <td colspan="4">
