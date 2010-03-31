@@ -308,4 +308,8 @@
         <comment>Adds Annotation Masks to database.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.24.sql"/>
     </changeSet>
+    <changeSet id="1.1.25" author="tandrews">
+        <comment>Configure Affymetrix SNP study.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.25.sql"/>
+    </changeSet>
 </databaseChangeLog>
