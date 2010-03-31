@@ -14,7 +14,8 @@ public class PermissibleValue extends AbstractCaIntegrator2Object implements Com
     private String valueMeaningId;
     private String valueMeaningVersion;
     
-
+    private static final int MAX_LENGTH = 255;
+    
     /**
      * @return the value
      */
@@ -40,7 +41,8 @@ public class PermissibleValue extends AbstractCaIntegrator2Object implements Com
      * @param valueMeaning the valueMeaning to set
      */
     public void setValueMeaning(String valueMeaning) {
-        this.valueMeaning = valueMeaning;
+        this.valueMeaning = (valueMeaning.length() > MAX_LENGTH)
+            ? valueMeaning.substring(0, MAX_LENGTH - 3) + "..." : valueMeaning;
     }
     
     /**
