@@ -95,17 +95,20 @@ import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 /**
  * Default factory implementation.
  */
-public class CopyNumberHandlerFactoryImpl implements CopyNumberHandlerFactory {
+public class DnaAnalysisHandlerFactoryImpl implements DnaAnalysisHandlerFactory {
 
     /**
      * {@inheritDoc}
      */
-    public AbstractCopyNumberMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
+    public AbstractDnaAnalysisMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao)
     throws DataRetrievalException {
         switch (PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor())) {
         case AFFYMETRIX:
-            return new AffymetrixCopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
+            if (genomicSource.isCopyNumberData()) {
+                return new AffymetrixCopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
+            }
+            return new AffymetrixSnpMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
         case AGILENT:
             return singleOrMultiFileHandler(genomicSource, caArrayFacade,
                         arrayDataService, dao);
@@ -115,9 +118,9 @@ public class CopyNumberHandlerFactoryImpl implements CopyNumberHandlerFactory {
 
     }
     
-    private AbstractCopyNumberMappingFileHandler singleOrMultiFileHandler(GenomicDataSourceConfiguration genomicSource,
+    private AbstractDnaAnalysisMappingFileHandler singleOrMultiFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
-        if (genomicSource.getCopyNumberDataConfiguration().isSingleDataFile()) {
+        if (genomicSource.getDnaAnalysisDataConfiguration().isSingleDataFile()) {
             return new AgilentCopyNumberMappingSingleFileHandler(genomicSource, caArrayFacade,
                     arrayDataService, dao);
         } else {

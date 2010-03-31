@@ -55,13 +55,13 @@
             <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.SampleSet" />
         </set>
         
-        <component name="CopyNumberDataConfiguration">
-            <property name="mappingFilePath" type="string" column="COPY_NUMBER_MAPPING_FILE_PATH" />
-            <property name="changePointSignificanceLevel" type="double" column="COPY_NUMBER_CHANGE_POINT_SIGNIFICANCE_LEVEL" />
-            <property name="earlyStoppingCriterion" type="double" column="COPY_NUMBER_EARLY_STOPPING_CRITERION" />
-            <property name="permutationReplicates" type="integer" column="COPY_NUMBER_PERMUTATION_REPLICATES" />
-            <property name="randomNumberSeed" type="integer" column="COPY_NUMBER_RANDOM_NUMBER_SEED" />
-            <property name="singleDataFile" type="boolean" column="COPY_NUMBER_SINGLE_DATA_FILE" />
+        <component name="DnaAnalysisDataConfiguration">
+            <property name="mappingFilePath" type="string" column="DNA_ANALYSIS_MAPPING_FILE_PATH" />
+            <property name="changePointSignificanceLevel" type="double" column="DNA_ANALYSIS_CHANGE_POINT_SIGNIFICANCE_LEVEL" />
+            <property name="earlyStoppingCriterion" type="double" column="DNA_ANALYSIS_EARLY_STOPPING_CRITERION" />
+            <property name="permutationReplicates" type="integer" column="DNA_ANALYSIS_PERMUTATION_REPLICATES" />
+            <property name="randomNumberSeed" type="integer" column="DNA_ANALYSIS_RANDOM_NUMBER_SEED" />
+            <property name="singleDataFile" type="boolean" column="DNA_ANALYSIS_SINGLE_DATA_FILE" />
             <many-to-one name="segmentationService" cascade="all" column="SEGMENTATION_SERVICE_ID" />
         </component>
         

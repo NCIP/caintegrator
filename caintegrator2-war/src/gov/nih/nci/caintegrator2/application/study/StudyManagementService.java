@@ -487,7 +487,7 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @param filename the filename to save the file as. 
      * @throws IOException if the file couldn't be saved.
      */
-    void saveCopyNumberMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration, 
+    void saveDnaAnalysisMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration, 
             File mappingFile, String filename) throws IOException;
 
     /**

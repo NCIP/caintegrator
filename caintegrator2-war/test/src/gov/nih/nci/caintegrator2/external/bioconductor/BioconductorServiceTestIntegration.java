@@ -8,11 +8,11 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
-import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
-import gov.nih.nci.caintegrator2.application.study.deployment.PublicAffymetrixCopyNumberChpParser;
+import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
+import gov.nih.nci.caintegrator2.application.study.deployment.PublicAffymetrixDnaAnalysisChpParser;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.CopyNumberData;
+import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
@@ -27,6 +27,8 @@ import java.util.List;
 
 import org.junit.Test;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
+
+import affymetrix.calvin.data.CHPMultiDataData.MultiDataType;
 
 public class BioconductorServiceTestIntegration extends AbstractTransactionalSpringContextTests {
 
@@ -46,11 +48,11 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
     public void testAddSegmentationData() throws ConnectionException, PlatformLoadingException, DataRetrievalException {
         Platform platform = getOrCreatePlatform();
         List<DnaAnalysisReporter> reporters = getReporters(platform);
-        CopyNumberData copyNumberData = new CopyNumberData(reporters);
+        DnaAnalysisData dnaAnalysisData = new DnaAnalysisData(reporters);
         ArrayData arrayData = new ArrayData();
         arrayData.setId(0L);
-        copyNumberData.addCopyNumberData(arrayData, getValues(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE, reporters));
-        CopyNumberDataConfiguration configuration = new CopyNumberDataConfiguration();
+        dnaAnalysisData.addDnaAnalysisData(arrayData, getValues(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE, reporters));
+        DnaAnalysisDataConfiguration configuration = new DnaAnalysisDataConfiguration();
         ServerConnectionProfile server = new ServerConnectionProfile();
         server.setUrl("http://ncias-d227-v.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
         configuration.setSegmentationService(server);
@@ -58,18 +60,18 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
         configuration.setEarlyStoppingCriterion(0.0);
         configuration.setPermutationReplicates(0);
         configuration.setRandomNumberSeed(0);
-        service.addSegmentationData(copyNumberData, configuration);
+        service.addSegmentationData(dnaAnalysisData, configuration);
         assertEquals(23, arrayData.getSegmentDatas().size());
     }
 
     @SuppressWarnings("unchecked")
     private float[] getValues(File chpFile, List<DnaAnalysisReporter> reporters) throws DataRetrievalException {
-        PublicAffymetrixCopyNumberChpParser parser = new PublicAffymetrixCopyNumberChpParser(chpFile);
+        PublicAffymetrixDnaAnalysisChpParser parser = new PublicAffymetrixDnaAnalysisChpParser(chpFile);
         ArrayData arrayData = new ArrayData();
         List untypedReporters = reporters;
         ArrayDataValues values = new ArrayDataValues(untypedReporters);
-        parser.parse(values, arrayData);
-        return values.getFloatValues(arrayData, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO);
+        parser.parse(values, arrayData, MultiDataType.CopyNumberMultiDataType);
+        return values.getFloatValues(arrayData, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO);
     }
 
     @SuppressWarnings("unchecked")

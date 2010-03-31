@@ -86,9 +86,9 @@
         </property>
     </bean>
 
-    <bean id="editCopyNumberDataConfigurationAction"
+    <bean id="editDnaAnalysisDataConfigurationAction"
         singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.EditCopyNumberDataConfigurationAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditDnaAnalysisDataConfigurationAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>

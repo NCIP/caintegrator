@@ -127,9 +127,9 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     }
 
     @Override
-    protected void configureSegmentationDataCalcuation(CopyNumberDataConfiguration copyNumberDataConfiguration) {
-        copyNumberDataConfiguration.getSegmentationService().setUrl("http://ncias-d227-v.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
-        copyNumberDataConfiguration.setRandomNumberSeed(1234567);
+    protected void configureSegmentationDataCalcuation(DnaAnalysisDataConfiguration dnaAnalysisDataConfiguration) {
+        dnaAnalysisDataConfiguration.getSegmentationService().setUrl("http://ncias-d227-v.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
+        dnaAnalysisDataConfiguration.setRandomNumberSeed(1234567);
     }
 
     private void checkCopyNumberData() {
@@ -143,13 +143,13 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     private void checkCopyNumberData(ArrayData arrayData) {
         PlatformHelper platformHelper = new PlatformHelper(arrayData.getArray().getPlatform());
         DataRetrievalRequest request = new DataRetrievalRequest();
-        request.addType(ArrayDataValueType.COPY_NUMBER_LOG2_RATIO);
+        request.addType(ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO);
         request.addArrayData(arrayData);
         request.addReporters(platformHelper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
         ArrayDataValues values = getArrayDataService().getData(request);
         int nonZeroValueCount = 0;
         for (AbstractReporter reporter : values.getReporters()) {
-            if (values.getFloatValue(arrayData, reporter, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO) != 0) {
+            if (values.getFloatValue(arrayData, reporter, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO) != 0) {
                 nonZeroValueCount++;
             }
         }

@@ -93,7 +93,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
-import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
+import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
@@ -101,7 +101,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
-import gov.nih.nci.caintegrator2.domain.genomic.CopyNumberData;
+import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -131,34 +131,34 @@ class GenomicDataHelper {
     private final ArrayDataService arrayDataService;
     private final CaIntegrator2Dao dao;
     private final BioconductorService bioconductorService;
-    private final CopyNumberHandlerFactory copyNumberHandlerFactory;
+    private final DnaAnalysisHandlerFactory dnaAnalysisHandlerFactory;
     private ExpressionHandlerFactory expressionHandlerFactory;
     private GenePatternClientFactory genePatternClientFactory;
 
     GenomicDataHelper(CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao,
-            BioconductorService bioconductorService, CopyNumberHandlerFactory copyNumberHandlerFactory) {
+            BioconductorService bioconductorService, DnaAnalysisHandlerFactory dnaAnalysisHandlerFactory) {
         this.caArrayFacade = caArrayFacade;
         this.arrayDataService = arrayDataService;
         this.dao = dao;
         this.bioconductorService = bioconductorService;
-        this.copyNumberHandlerFactory = copyNumberHandlerFactory;
+        this.dnaAnalysisHandlerFactory = dnaAnalysisHandlerFactory;
     }
 
     void loadData(StudyConfiguration studyConfiguration) 
     throws ConnectionException, DataRetrievalException, ValidationException {
         for (GenomicDataSourceConfiguration genomicSource : studyConfiguration.getGenomicDataSources()) {
-            if (genomicSource.isCopyNumberData()) {
-                loadCopyNumberData(genomicSource);
-            } else if (genomicSource.isExpressionData()) {
+            if (genomicSource.isExpressionData()) {
                 loadExpressionData(genomicSource);
+            } else {
+                loadDnaAnalysisData(genomicSource);
             }
         }
     }
     
-    private void loadCopyNumberData(GenomicDataSourceConfiguration genomicSource)
+    private void loadDnaAnalysisData(GenomicDataSourceConfiguration genomicSource)
     throws DataRetrievalException, ConnectionException, ValidationException {
-        if (genomicSource.getCopyNumberDataConfiguration() != null) {
-                handleCopyNumberData(genomicSource);
+        if (genomicSource.getDnaAnalysisDataConfiguration() != null) {
+                handleDnaAnalysisData(genomicSource);
         }
     }
     
@@ -196,59 +196,59 @@ class GenomicDataHelper {
         arrayDataService.save(geneValues);
     }
 
-    private void handleCopyNumberData(GenomicDataSourceConfiguration genomicSource) 
+    private void handleDnaAnalysisData(GenomicDataSourceConfiguration genomicSource) 
     throws DataRetrievalException, ConnectionException, ValidationException {
-        AbstractCopyNumberMappingFileHandler handler = 
-            copyNumberHandlerFactory.getHandler(genomicSource, caArrayFacade, arrayDataService, dao);
+        AbstractDnaAnalysisMappingFileHandler handler = 
+            dnaAnalysisHandlerFactory.getHandler(genomicSource, caArrayFacade, arrayDataService, dao);
         List<ArrayDataValues> valuesList = handler.loadArrayData();
-        if (genomicSource.getCopyNumberDataConfiguration().isCaDNACopyConfiguration()) {
+        if (genomicSource.getDnaAnalysisDataConfiguration().isCaDNACopyConfiguration()) {
             for (ArrayDataValues values : valuesList) {
-                CopyNumberData copyNumberData = createCopyNumberData(values);
-                retrieveSegmentationData(copyNumberData, genomicSource.getCopyNumberDataConfiguration());
+                DnaAnalysisData dnaAnalysisData = createDnaAnalysisData(values);
+                retrieveSegmentationData(dnaAnalysisData, genomicSource.getDnaAnalysisDataConfiguration());
             }            
         } else {
-            CopyNumberData copyNumberData = createCopyNumberData(valuesList);
-            retrieveSegmentationData(copyNumberData, genomicSource.getCopyNumberDataConfiguration());
+            DnaAnalysisData dnaAnalysisData = createDnaAnalysisData(valuesList);
+            retrieveSegmentationData(dnaAnalysisData, genomicSource.getDnaAnalysisDataConfiguration());
         }
     }
 
-    private CopyNumberData createCopyNumberData(List<ArrayDataValues> valuesList) {
+    private DnaAnalysisData createDnaAnalysisData(List<ArrayDataValues> valuesList) {
         List<DnaAnalysisReporter> reporters;
         if (valuesList.isEmpty()) {
             reporters = Collections.emptyList();
         } else {
             reporters = convertToDnaAnalysisReporters(valuesList.get(0).getReporterList());
         }
-        CopyNumberData copyNumberData = new CopyNumberData(reporters);
+        DnaAnalysisData dnaAnalysisData = new DnaAnalysisData(reporters);
         for (ArrayDataValues values : valuesList) {
-            addValues(values, copyNumberData);
+            addValues(values, dnaAnalysisData);
         }
-        return copyNumberData;
+        return dnaAnalysisData;
     }
 
-    private CopyNumberData createCopyNumberData(ArrayDataValues values) {
-        CopyNumberData copyNumberData = new CopyNumberData(convertToDnaAnalysisReporters(values.getReporterList()));
-        addValues(values, copyNumberData);
-        return copyNumberData;
+    private DnaAnalysisData createDnaAnalysisData(ArrayDataValues values) {
+        DnaAnalysisData dnaAnalysisData = new DnaAnalysisData(convertToDnaAnalysisReporters(values.getReporterList()));
+        addValues(values, dnaAnalysisData);
+        return dnaAnalysisData;
     }
 
-    private void addValues(ArrayDataValues values, CopyNumberData copyNumberData) {
+    private void addValues(ArrayDataValues values, DnaAnalysisData dnaAnalysisData) {
         for (ArrayData arrayData : values.getArrayDatas()) {
-            copyNumberData.addCopyNumberData(arrayData, 
-                    values.getFloatValues(arrayData, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO));
+            dnaAnalysisData.addDnaAnalysisData(arrayData, 
+                    values.getFloatValues(arrayData, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO));
         }
     }
 
-    private void retrieveSegmentationData(CopyNumberData copyNumberData,
-            CopyNumberDataConfiguration configuration) throws ConnectionException, DataRetrievalException {
+    private void retrieveSegmentationData(DnaAnalysisData dnaAnalysisData,
+            DnaAnalysisDataConfiguration configuration) throws ConnectionException, DataRetrievalException {
         if (configuration.isCaDNACopyConfiguration()) {
-            bioconductorService.addSegmentationData(copyNumberData, configuration);
+            bioconductorService.addSegmentationData(dnaAnalysisData, configuration);
         } else {
             CaIntegrator2GPClient client;
             try {
                 client = getGenePatternClientFactory().retrieveClient(configuration.getSegmentationService());
                 GladSegmentationHandler gladHandler = new GladSegmentationHandler(client);
-                gladHandler.addSegmentationData(copyNumberData);
+                gladHandler.addSegmentationData(dnaAnalysisData);
             } catch (WebServiceException e) {
                 throw new ConnectionException(e.getMessage(), e);
             }

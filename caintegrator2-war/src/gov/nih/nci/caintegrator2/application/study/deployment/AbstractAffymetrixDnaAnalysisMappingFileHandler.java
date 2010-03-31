@@ -87,150 +87,149 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import affymetrix.calvin.data.CHPMultiDataData.MultiDataType;
+import au.com.bytecode.opencsv.CSVReader;
+
 /**
- * Provides base handling to retrieve copy number data based on a copy number mapping file.
+ * Reads and retrieves copy number data from a caArray instance.
  */
-public abstract class AbstractCopyNumberMappingFileHandler extends AbstractCaArrayFileHandler {
+@Transactional (propagation = Propagation.REQUIRED)
+public abstract class AbstractAffymetrixDnaAnalysisMappingFileHandler extends AbstractDnaAnalysisMappingFileHandler {
 
-    private final CaIntegrator2Dao dao;
+    private final Map<Sample, List<String>> sampleToFilenamesMap = new HashMap<Sample, List<String>>();
     
-    AbstractCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
+    AbstractAffymetrixDnaAnalysisMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
-        super(genomicSource, caArrayFacade, arrayDataService);
-                this.dao = dao;
-    }
-
-    /**
-     * 
-     * @param sampleName the sample name to retirieve
-     * @param subjectIdentifier the study assigment id
-     * @return the sample object
-     * @throws ValidationException Validation exception
-     * @throws FileNotFoundException IO exception
-     */
-    protected Sample getSample(String sampleName, String subjectIdentifier)
-    throws FileNotFoundException, ValidationException {
-        Sample sample = getGenomicSource().getSample(sampleName);
-        if (sample == null) {
-            StudySubjectAssignment assignment = getSubjectAssignment(subjectIdentifier);
-            sample = new Sample();
-            sample.setName(sampleName);
-            SampleAcquisition acquisition = new SampleAcquisition();
-            acquisition.setAssignment(assignment);
-            acquisition.setSample(sample);
-            sample.setSampleAcquisition(acquisition);
-            assignment.getSampleAcquisitionCollection().add(acquisition);
-            getGenomicSource().getSamples().add(sample);
-            dao.save(sample);
-        }
-        return sample;
-    }
-
-    /**
-     * 
-     * @return the mapping file.
-     * @throws FileNotFoundException IO exception.
-     */
-    protected File getMappingFile() throws FileNotFoundException {
-        return getGenomicSource().getCopyNumberDataConfiguration().getMappingFile();
-    }
-
-    abstract List<ArrayDataValues> loadArrayData()
-    throws ConnectionException, DataRetrievalException, ValidationException;
-    
-    /**
-     * Get the platform.
-     * @param reporterListNames the set of report lists.
-     * @return Platform
-     * @throws ValidationException when platform not found or not unique.
-     */
-    protected Platform getPlatform(Set<String> reporterListNames) throws ValidationException {
-        Set<Platform> platforms = new HashSet<Platform>();
-        for (String reporterListName : reporterListNames) {
-            ReporterList reporterList = dao.getReporterList(reporterListName);
-            if (reporterList == null) {
-                throw new ValidationException("There is no platform that supports chip type " + reporterListName);
-            }
-            platforms.add(reporterList.getPlatform());
-        }
-        if (platforms.size() > 1) {
-            throw new ValidationException(
-                    "Copy Number data files for a single sample are mapped to multiple platforms.");
-        }
-        return platforms.iterator().next();
-    }
-
-    /**
-     * Clean up.
-     * @param dataFile the data file to delete.
-     */
-    protected void doneWithFile(File dataFile) {
-        dataFile.delete();
+        super(genomicSource, caArrayFacade, arrayDataService, dao);
     }
     
-    abstract String getFileType();
-
-    /**
-     * Create the ArrayData for the sample.
-     * @param sample the sample to get arrayData for.
-     * @param reporterLists the set of report lists.
-     * @return ArrayData
-     */
-    protected ArrayData createArrayData(Sample sample, Set<ReporterList> reporterLists) {
-        ArrayData arrayData = new ArrayData();
-        arrayData.setType(ArrayDataType.COPY_NUMBER);
-        arrayData.setSample(sample);
-        sample.getArrayDataCollection().add(arrayData);
-        arrayData.setStudy(getGenomicSource().getStudyConfiguration().getStudy());
-        Array array = new Array();
-        array.getArrayDataCollection().add(arrayData);
-        arrayData.setArray(array);
-        array.getSampleCollection().add(sample);
-        sample.getArrayCollection().add(array);
-        if (!reporterLists.isEmpty()) {
-            arrayData.getReporterLists().addAll(reporterLists);
-            for (ReporterList reporterList : reporterLists) {
-                reporterList.getArrayDatas().add(arrayData);    
+    @Override
+    List<ArrayDataValues> loadArrayData() throws DataRetrievalException, ConnectionException, ValidationException {
+        try {
+            CSVReader reader = new CSVReader(new FileReader(getMappingFile()));
+            String[] fields;
+            while ((fields = reader.readNext()) != null) {
+                String subjectId = fields[0].trim();
+                String sampleName = fields[1].trim();
+                String dnaAnalysisFilename = fields[2].trim();
+                mappingSample(subjectId, sampleName, dnaAnalysisFilename);
             }
-            array.setPlatform(reporterLists.iterator().next().getPlatform());
+            List<ArrayDataValues> arrayDataValues = loadArrayDataValues();
+            getDao().save(getGenomicSource().getStudyConfiguration());
+            reader.close();
+            return arrayDataValues;
+        } catch (FileNotFoundException e) {
+            throw new DataRetrievalException("DNA analysis mapping file not found: ", e);
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't read DNA analysis mapping file: ", e);
         }
-        return arrayData;
     }
 
-    private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier)
+    private void mappingSample(String subjectIdentifier, String sampleName, String dnaAnalysisFilename) 
     throws ValidationException, FileNotFoundException {
-        StudySubjectAssignment assignment = 
-            getGenomicSource().getStudyConfiguration().getSubjectAssignment(subjectIdentifier);
-        if (assignment == null) {
-            throw new ValidationException("Subject identifier " + subjectIdentifier + " in copy number mapping file " 
-                    + getMappingFile().getAbsolutePath() + " doesn't map to a known subject in the study.");
-        }
-        return assignment;
+        Sample sample = getSample(sampleName, subjectIdentifier);
+        addMappingFile(sample, dnaAnalysisFilename);
     }
 
-    CaIntegrator2Dao getDao() {
-        return dao;
+    private void addMappingFile(Sample sample, String dnaAnalysisFilename) {
+        List<String> filenames = sampleToFilenamesMap.get(sample);
+        if (filenames == null) {
+            filenames = new ArrayList<String>();
+            sampleToFilenamesMap.put(sample, filenames);
+        }
+        filenames.add(dnaAnalysisFilename);
     }
+
+    List<ArrayDataValues> loadArrayDataValues() 
+    throws ConnectionException, DataRetrievalException, ValidationException {
+        List<ArrayDataValues> values = new ArrayList<ArrayDataValues>();
+        for (Sample sample : sampleToFilenamesMap.keySet()) {
+            values.add(loadArrayDataValues(sample));
+        }
+        return values;
+    }
+
+    private ArrayDataValues loadArrayDataValues(Sample sample) 
+    throws ConnectionException, DataRetrievalException, ValidationException {
+        List<File> dataFiles = new ArrayList<File>();
+        try {
+            for (String filename : sampleToFilenamesMap.get(sample)) {
+                validateDataFileExtension(filename);
+                dataFiles.add(getDataFile(filename));
+            }
+            return loadArrayDataValues(sample, dataFiles);
+        } finally {
+            for (File file : dataFiles) {
+                doneWithFile(file);
+            }
+        }
+    }
+
+    private void validateDataFileExtension(String filename) throws ValidationException {
+        String extension = filename.substring(filename.lastIndexOf('.') + 1);
+        if (!getFileType().equalsIgnoreCase(extension)) {
+            throw new ValidationException("Data file must be '." + getFileType() + "' type instead of: " + filename);
+        }
+    }
+
+    private ArrayDataValues loadArrayDataValues(Sample sample, List<File> chpFiles) 
+    throws DataRetrievalException, ValidationException {
+        List<AffymetrixDnaAnalysisChpParser> parsers = new ArrayList<AffymetrixDnaAnalysisChpParser>();
+        Set<String> reporterListNames = new HashSet<String>();
+        for (File chpFile : chpFiles) {
+            AffymetrixDnaAnalysisChpParser parser = new AffymetrixDnaAnalysisChpParser(chpFile);
+            parsers.add(parser);
+            reporterListNames.add(parser.getArrayDesignName());
+        }
+        Platform platform = getPlatform(reporterListNames);
+        return loadArrayDataValues(sample, platform, parsers);
+    }
+
+    private ArrayDataValues loadArrayDataValues(Sample sample, Platform platform, 
+            List<AffymetrixDnaAnalysisChpParser> parsers) throws DataRetrievalException {
+        PlatformHelper helper = new PlatformHelper(platform);
+        Set<ReporterList> reporterLists = helper.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        ArrayData arrayData = createArrayData(sample, reporterLists);
+        getDao().save(arrayData);
+        ArrayDataValues values = 
+            new ArrayDataValues(helper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
+        for (AffymetrixDnaAnalysisChpParser parser : parsers) {
+            parser.parse(values, arrayData, getDataType());
+        }
+        getArrayDataService().save(values);
+        return values;
+    }
+
+    /**
+     * @return the datatype
+     */
+    abstract MultiDataType getDataType();
 
 }

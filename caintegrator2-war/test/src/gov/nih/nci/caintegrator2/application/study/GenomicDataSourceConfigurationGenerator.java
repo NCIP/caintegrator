@@ -107,11 +107,11 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
         for (int i = 0; i < original.getSamples().size(); i++) {
             SampleGenerator.INSTANCE.compare(original.getSamples().get(i), retrieved.getSamples().get(i));
         }
-        if (original.getCopyNumberDataConfiguration() == null) {
-            assertNull(retrieved.getCopyNumberDataConfiguration());
+        if (original.getDnaAnalysisDataConfiguration() == null) {
+            assertNull(retrieved.getDnaAnalysisDataConfiguration());
         } else {
-            CopyNumberDataConfiguration originalConfig = original.getCopyNumberDataConfiguration();
-            CopyNumberDataConfiguration retrievedConfig = retrieved.getCopyNumberDataConfiguration();
+            DnaAnalysisDataConfiguration originalConfig = original.getDnaAnalysisDataConfiguration();
+            DnaAnalysisDataConfiguration retrievedConfig = retrieved.getDnaAnalysisDataConfiguration();
             assertEquals(originalConfig.getMappingFilePath(), retrievedConfig.getMappingFilePath());
             assertEquals(originalConfig.getChangePointSignificanceLevel(), retrievedConfig.getChangePointSignificanceLevel());
             assertEquals(originalConfig.getEarlyStoppingCriterion(), retrievedConfig.getEarlyStoppingCriterion());
@@ -138,11 +138,11 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
     public void setValues(GenomicDataSourceConfiguration config, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         config.setExperimentIdentifier(getUniqueString());
         ServerConnectionProfileGenerator.INSTANCE.setValues(config.getServerProfile(), nonCascadedObjects);
-        config.setCopyNumberDataConfiguration(null);
+        config.setDnaAnalysisDataConfiguration(null);
         config.getSamples().clear();
         if (config.getDataType().equals(GenomicDataSourceDataTypeEnum.COPY_NUMBER)) {
-            CopyNumberDataConfiguration cnDataConfig = new CopyNumberDataConfiguration();
-            config.setCopyNumberDataConfiguration(cnDataConfig);
+            DnaAnalysisDataConfiguration cnDataConfig = new DnaAnalysisDataConfiguration();
+            config.setDnaAnalysisDataConfiguration(cnDataConfig);
             cnDataConfig.setMappingFilePath(getUniqueString());
             cnDataConfig.setChangePointSignificanceLevel(getUniqueDouble());
             cnDataConfig.setEarlyStoppingCriterion(getUniqueDouble());

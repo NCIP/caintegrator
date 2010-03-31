@@ -96,7 +96,7 @@ import java.io.Serializable;
  * 
  * <p>The format of the file should be subject_id,sample_name,cnchp_filename on each line.
  */
-public class CopyNumberDataConfiguration implements Serializable {
+public class DnaAnalysisDataConfiguration implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final Double DEFAULT_CHANGE_POINT_SIGNIFICANCE_LEVEL = 0.01;

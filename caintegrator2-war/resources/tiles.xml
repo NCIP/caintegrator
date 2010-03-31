@@ -52,9 +52,9 @@
         <put-attribute name="subTitle" value="Edit Genomic Data Source" />
     </definition>
     
-    <definition name="editCopyNumberDataConfiguration" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editCopyNumberDataConfiguration_tile.jsp" />
-        <put-attribute name="subTitle" value="Edit Copy Number Data Configuration" />
+    <definition name="editDnaAnalysisDataConfiguration" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editDnaAnalysisDataConfiguration_tile.jsp" />
+        <put-attribute name="subTitle" value="Edit DNA Analysis Data Configuration" />
     </definition>
 
 	<definition name="editImagingSource" extends="cssBaseDef">

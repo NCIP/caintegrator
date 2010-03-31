@@ -95,7 +95,7 @@ import java.util.Set;
 /**
  * Used as input for retrieving segmentation data from Bioconductor.
  */
-public class CopyNumberData implements Serializable {
+public class DnaAnalysisData implements Serializable {
  
     private static final long serialVersionUID = 1L;
     
@@ -103,23 +103,23 @@ public class CopyNumberData implements Serializable {
     private final Map<ArrayData, float[]> dataToValuesMap = new HashMap<ArrayData, float[]>();
     
     /**
-     * Instantiates a new <code>CopyNumberData</code> object.
+     * Instantiates a new <code>DnaAnalysisData</code> object.
      * 
      * @param reporters data will be associated with these reporters.
      */
-    public CopyNumberData(List<DnaAnalysisReporter> reporters) {
+    public DnaAnalysisData(List<DnaAnalysisReporter> reporters) {
         this.reporters = reporters;
     }
     
     /**
      * Add log2 values for the given array data. Values are in the same order as
-     * the reporters used to initialize the <code>CopyNumberData</code> object.
+     * the reporters used to initialize the <code>DnaAnalysisData</code> object.
      * 
      * @param arrayData values are for this data.
-     * @param copyNumberValues the data values.
+     * @param dnaAnalysisValues the data values.
      */
-    public void addCopyNumberData(ArrayData arrayData, float[] copyNumberValues) {
-        dataToValuesMap.put(arrayData, copyNumberValues);
+    public void addDnaAnalysisData(ArrayData arrayData, float[] dnaAnalysisValues) {
+        dataToValuesMap.put(arrayData, dnaAnalysisValues);
     }
 
     /**

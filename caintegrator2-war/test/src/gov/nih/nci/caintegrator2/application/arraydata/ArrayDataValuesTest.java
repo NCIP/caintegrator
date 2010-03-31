@@ -125,20 +125,20 @@ public class ArrayDataValuesTest {
 
         ArrayData arrayData1 = new ArrayData();
         ArrayData arrayData2 = new ArrayData();
-        values.setFloatValue(arrayData1, reporter1, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 1.1f);
-        values.setFloatValue(arrayData1, reporter2, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 2.2f);
-        values.setFloatValue(arrayData2, reporter1, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 3.3f);
-        values.setFloatValue(arrayData2, reporter2, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 4.4f);
+        values.setFloatValue(arrayData1, reporter1, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 1.1f);
+        values.setFloatValue(arrayData1, reporter2, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 2.2f);
+        values.setFloatValue(arrayData2, reporter1, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 3.3f);
+        values.setFloatValue(arrayData2, reporter2, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 4.4f);
         values.setFloatValue(arrayData1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 5.5f);
         values.setFloatValue(arrayData1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 6.6f);
         values.setFloatValue(arrayData2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 7.7f);
         values.setFloatValue(arrayData2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 8.8f);
         
         assertEquals(2, values.getArrayDatas().size());
-        assertEquals(1.1f, values.getFloatValue(arrayData1, reporter1, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(2.2f, values.getFloatValue(arrayData1, reporter2, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(3.3f, values.getFloatValue(arrayData2, reporter1, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(4.4f, values.getFloatValue(arrayData2, reporter2, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(1.1f, values.getFloatValue(arrayData1, reporter1, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        assertEquals(2.2f, values.getFloatValue(arrayData1, reporter2, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        assertEquals(3.3f, values.getFloatValue(arrayData2, reporter1, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        assertEquals(4.4f, values.getFloatValue(arrayData2, reporter2, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
         assertEquals(5.5f, values.getFloatValue(arrayData1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
         assertEquals(6.6f, values.getFloatValue(arrayData1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
         assertEquals(7.7f, values.getFloatValue(arrayData2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);

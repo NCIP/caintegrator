@@ -137,7 +137,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean removeSurvivalValueDefinitionCalled;
     public boolean throwSearchError;
     public boolean retrieveImageDataSourceCalled;
-    public boolean saveCopyNumberMappingFileCalled;
+    public boolean saveDnaAnalysisMappingFileCalled;
     public boolean saveSampleMappingFileCalled;
     public boolean loadGenomicSourceCalled;
     public boolean throwConnectionException = false;
@@ -221,7 +221,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         createNewSurvivalValueDefinitionCalled = false;
         removeSurvivalValueDefinitionCalled = false;
         throwSearchError = false;
-        saveCopyNumberMappingFileCalled = false;
+        saveDnaAnalysisMappingFileCalled = false;
         saveSampleMappingFileCalled = false;
         retrieveImageDataSourceCalled = false;
         loadGenomicSourceCalled = false;
@@ -413,9 +413,9 @@ public class StudyManagementServiceStub implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void saveCopyNumberMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration,
+    public void saveDnaAnalysisMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration,
             File mappingFile, String filename) {
-        saveCopyNumberMappingFileCalled = true;
+        saveDnaAnalysisMappingFileCalled = true;
     }
 
     /**

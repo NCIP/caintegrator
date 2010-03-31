@@ -131,9 +131,9 @@ public class PlatformVendorEnumTest {
     @Test
     public void testGetNumberColumns() {
         assertEquals(2, PlatformVendorEnum.AFFYMETRIX.getSampleMappingColumns());
-        assertEquals(3, PlatformVendorEnum.AFFYMETRIX.getCopyNumberMappingColumns());
+        assertEquals(3, PlatformVendorEnum.AFFYMETRIX.getDnaAnalysisMappingColumns());
         assertEquals(5, PlatformVendorEnum.AGILENT.getSampleMappingColumns());
-        assertEquals(5, PlatformVendorEnum.AGILENT.getCopyNumberMappingColumns());
+        assertEquals(5, PlatformVendorEnum.AGILENT.getDnaAnalysisMappingColumns());
     }
 
 }

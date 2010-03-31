@@ -119,7 +119,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
     private List<Sample> samples = new ArrayList<Sample>();
     private Set<SampleSet> controlSampleSetCollection = new HashSet<SampleSet>();
-    private CopyNumberDataConfiguration copyNumberDataConfiguration;
+    private DnaAnalysisDataConfiguration dnaAnalysisDataConfiguration;
     private Status status = Status.NOT_LOADED;
     private String statusDescription;
     
@@ -291,21 +291,21 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     public void setPlatformName(String platformName) {
         this.platformName = platformName;
     }
-
-    /**
-     * @return the copyNumberDataConfiguration
-     */
-    public CopyNumberDataConfiguration getCopyNumberDataConfiguration() {
-        return copyNumberDataConfiguration;
-    }
-
-    /**
-     * @param copyNumberDataConfiguration the copyNumberDataConfiguration to set
-     */
-    public void setCopyNumberDataConfiguration(CopyNumberDataConfiguration copyNumberDataConfiguration) {
-        this.copyNumberDataConfiguration = copyNumberDataConfiguration;
-    }
     
+    /**
+     * @return the dnaAnalysisDataConfiguration
+     */
+    public DnaAnalysisDataConfiguration getDnaAnalysisDataConfiguration() {
+        return dnaAnalysisDataConfiguration;
+    }
+
+    /**
+     * @param dnaAnalysisDataConfiguration the dnaAnalysisDataConfiguration to set
+     */
+    public void setDnaAnalysisDataConfiguration(DnaAnalysisDataConfiguration dnaAnalysisDataConfiguration) {
+        this.dnaAnalysisDataConfiguration = dnaAnalysisDataConfiguration;
+    }
+
     /**
      * @return the sampleMappingFileName
      */
@@ -349,14 +349,14 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     }
     
     /**
-     * Used for the visual display of the copy number mapping file name.
+     * Used for the visual display of the dna analysis mapping file name.
      * @return file name.
      */
-    public String getCopyNumberMappingFileName() {
+    public String getDnaAnalysisMappingFileName() {
         try {
-            if (getCopyNumberDataConfiguration() != null 
-                && getCopyNumberDataConfiguration().getMappingFile() != null) {
-                return getCopyNumberDataConfiguration().getMappingFile().getName();
+            if (getDnaAnalysisDataConfiguration() != null 
+                && getDnaAnalysisDataConfiguration().getMappingFile() != null) {
+                return getDnaAnalysisDataConfiguration().getMappingFile().getName();
             }
         } catch (FileNotFoundException e) {
             return NONE_CONFIGURED;
