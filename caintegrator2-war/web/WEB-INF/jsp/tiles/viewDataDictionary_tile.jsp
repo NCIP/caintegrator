@@ -49,6 +49,7 @@
                                 <th>caDSR&nbsp;ID</th>
                                 <th>caDSR&nbsp;Name</th>
                                 <th>Permissible</th>
+                                <th>Restrictions</th>
                             </tr>
                             <s:iterator value="sortedVisibleAnnotationFieldDescriptors">
                                 <s:url id="viewDataElement" value="%{@gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade@CDE_URL}" escapeAmp="false">
@@ -73,6 +74,11 @@
                                                 </s:iterator>
                                             </div>
                                         </s:if>
+                                    </td>
+                                    <td>
+                                        <s:iterator value="displayableRestrictions">
+                                            <div style="white-space:nowrap;"><s:property /> </div>
+                                        </s:iterator>
                                     </td>
                                 </tr>
                             </s:iterator>

@@ -115,6 +115,14 @@ public class MaxNumberMask extends AbstractAnnotationMask {
     public Integer getMaskOrder() {
         return SORT_ORDER;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getDisplayableRestriction() {
+        return "Maximum Number = " + maxNumber;
+    }
     
     
 }

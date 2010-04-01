@@ -116,5 +116,13 @@ public class NumericRangeMask extends AbstractAnnotationMask {
         return SORT_ORDER;
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getDisplayableRestriction() {
+        return "Numeric Range = " + numericRange;
+    }
+    
     
 }
