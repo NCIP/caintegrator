@@ -89,6 +89,8 @@ import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
@@ -142,8 +144,9 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     @Transactional(readOnly = true)
     public QueryResult execute(Query query) throws InvalidCriterionException {
-        addGenesNotFoundToQuery(query);
-        QueryTranslator queryTranslator = new QueryTranslator(query, getDao(), arrayDataService, resultHandler);
+        Query queryToExecute = retrieveQueryToExecute(query);
+        QueryTranslator queryTranslator = new QueryTranslator(queryToExecute, getDao(), 
+                arrayDataService, resultHandler);
         return queryTranslator.execute();
     }
     
@@ -152,15 +155,66 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     @Transactional(readOnly = true)
     public GenomicDataQueryResult executeGenomicDataQuery(Query query) throws InvalidCriterionException {
-        addGenesNotFoundToQuery(query);
-        GenomicQueryHandler handler = new GenomicQueryHandler(query, getDao(), arrayDataService);
+        GenomicQueryHandler handler = new GenomicQueryHandler(retrieveQueryToExecute(query), 
+                getDao(), arrayDataService);
         return handler.execute();
+    }
+    
+    private Query retrieveQueryToExecute(Query query) throws InvalidCriterionException {
+        try {
+            Query queryToExecute = query.clone();
+            addGenesNotFoundToQuery(query);
+            checkCriterionForMasks(query);
+            maskCompoundCriterion(queryToExecute.getCompoundCriterion());
+            return queryToExecute;
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalStateException("Unable to clone query.");
+        }
+    }
+
+    private void checkCriterionForMasks(Query query) {
+        query.setHasMaskedValues(false);
+        for (ResultColumn column : query.getColumnCollection()) {
+            if (!column.getAnnotationFieldDescriptor().getAnnotationMasks().isEmpty()) {
+                query.setHasMaskedValues(true);
+                break;
+            }
+        }
+    }
+    
+    private void maskCompoundCriterion(CompoundCriterion compoundCriterion) {
+        Set<AbstractCriterion> criterionToRemove = new HashSet<AbstractCriterion>();
+        Set<AbstractCriterion> criterionToAdd = new HashSet<AbstractCriterion>();
+        for (AbstractCriterion criterion : compoundCriterion.getCriterionCollection()) {
+            if (!(criterion instanceof CompoundCriterion)) {
+                AbstractCriterion newCriterion = retrieveMaskedCriterion(criterion);
+                if (!criterion.equals(newCriterion)) {
+                    criterionToAdd.add(newCriterion);
+                    criterionToRemove.add(criterion);
+                }
+            } else {
+                maskCompoundCriterion((CompoundCriterion) criterion);
+            }
+        }
+        compoundCriterion.getCriterionCollection().addAll(criterionToAdd);
+        compoundCriterion.getCriterionCollection().removeAll(criterionToRemove);
+    }
+    
+    private AbstractCriterion retrieveMaskedCriterion(AbstractCriterion abstractCriterion) {
+        if (abstractCriterion instanceof AbstractAnnotationCriterion
+                && !((AbstractAnnotationCriterion) abstractCriterion).getAnnotationFieldDescriptor()
+                    .getAnnotationMasks().isEmpty()) {
+                return AbstractAnnotationMaskHandler.createMaskedCriterion(
+                        ((AbstractAnnotationCriterion) abstractCriterion).getAnnotationFieldDescriptor()
+                                .getAnnotationMasks(), abstractCriterion);
+            }
+        return abstractCriterion;
     }
     
     private void addGenesNotFoundToQuery(Query query) throws InvalidCriterionException {
         List<String> allGeneSymbols = query.getCompoundCriterion().getAllGeneSymbols();
+        query.getGeneSymbolsNotFound().clear();
         if (!allGeneSymbols.isEmpty() && !isQueryOnAllGenes(allGeneSymbols)) {
-            query.getGeneSymbolsNotFound().clear();
             try {
                 query.getGeneSymbolsNotFound().addAll(validateGeneSymbols(query.getSubscription(), allGeneSymbols));
             } catch (GenesNotFoundInStudyException e) {

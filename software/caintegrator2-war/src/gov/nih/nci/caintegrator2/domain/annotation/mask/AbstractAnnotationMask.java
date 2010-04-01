@@ -101,6 +101,12 @@ public abstract class AbstractAnnotationMask extends AbstractCaIntegrator2Object
     public abstract Integer getMaskOrder();
     
     /**
+     * 
+     * @return displayable restriction for this mask.
+     */
+    public abstract String getDisplayableRestriction();
+    
+    /**
      * {@inheritDoc}
      */
     public int compareTo(AbstractAnnotationMask o) {

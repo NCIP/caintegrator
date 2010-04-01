@@ -47,6 +47,10 @@
         </s:iterator>
         </div>
     </s:if>
+    <s:if test='%{query.hasMaskedValues && query.resultType.value.equals("clinical")}' >
+        <div style="color: red;">*Search results might include values that have been restricted to a range by the study manager. 
+        </div>
+    </s:if>
     <div id="queryResultsDiv" >
         <s:if test='%{query.resultType.value.equals("genomic")}'>
         <s:set name="genomicDataNeedsHighlighting" value="genomicDataQueryResult.hasCriterionSpecifiedReporterValues" />
