@@ -47,7 +47,7 @@
                                 <th>Data&nbsp;Type</th>
                                 <th>Description</th>
                                 <th>caDSR&nbsp;ID</th>
-                                <th>caDSR&nbsp;Name</th>
+                                <th>caDSR&nbsp;Value Domain</th>
                                 <th>Permissible</th>
                                 <th>Restrictions</th>
                             </tr>
