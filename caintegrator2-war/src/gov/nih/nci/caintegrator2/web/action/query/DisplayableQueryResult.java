@@ -101,6 +101,7 @@ import java.util.Map;
  * Wraps access to a <code>QueryResult</code> object for easy use in display JSPs.
  */
 public final class DisplayableQueryResult {
+    private static final String ASTERISK_FOR_ANNOTATION_MASKS = "*";
     private static final int DEFAULT_PAGE_SIZE = 20;
     private static final Comparator<ResultColumn> COLUMN_COMPARATOR = new ColumnComparator();
     private final QueryResult result;
@@ -141,7 +142,9 @@ public final class DisplayableQueryResult {
         int columnLocation = 0;
         for (ResultColumn column : sortedColumns) {
             String columnName = column.getAnnotationDefinition().getDisplayName();
-            headers.add(columnLocation, columnName);
+            String headerName = !column.getAnnotationFieldDescriptor().getAnnotationMasks().isEmpty()
+                    ? columnName + ASTERISK_FOR_ANNOTATION_MASKS : columnName;
+            headers.add(columnLocation, headerName);
             newColumnLocations.put(columnName, columnLocation++);
         }
     }

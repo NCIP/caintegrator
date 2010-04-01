@@ -355,4 +355,19 @@ implements Comparable<AnnotationFieldDescriptor> {
         numericRangeMask.setNumericRange(numericRange);
         annotationMasks.add(numericRangeMask);
     }
+    
+    /**
+     * 
+     * @return the displayable restrictions (via the masks applied).
+     */
+    public Set<String> getDisplayableRestrictions() {
+        Set<String> restrictions = new HashSet<String>();
+        for (AbstractAnnotationMask mask : getAnnotationMasks()) {
+            restrictions.add(mask.getDisplayableRestriction());
+        }
+        if (restrictions.isEmpty()) {
+            restrictions.add("None");
+        }
+        return restrictions;
+    }
 }

@@ -12,6 +12,7 @@ import java.util.List;
 public abstract class AbstractCriterion extends AbstractCaIntegrator2Object implements Cloneable {
 
     private static final long serialVersionUID = 1L;
+    private transient boolean finalMaskApplied = false;
 
     /**
      * {@inheritDoc}
@@ -26,4 +27,20 @@ public abstract class AbstractCriterion extends AbstractCaIntegrator2Object impl
     protected List<String> getGeneSymbolsInCriterion() {
         return new ArrayList<String>();
     }
+
+    /**
+     * @return the finalMaskApplied
+     */
+    public boolean isFinalMaskApplied() {
+        return finalMaskApplied;
+    }
+
+    /**
+     * @param finalMaskApplied the finalMaskApplied to set
+     */
+    public void setFinalMaskApplied(boolean finalMaskApplied) {
+        this.finalMaskApplied = finalMaskApplied;
+    }
+    
+    
 }

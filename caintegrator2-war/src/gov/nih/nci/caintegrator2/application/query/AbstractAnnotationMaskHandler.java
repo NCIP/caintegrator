@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.mask.AbstractAnnotationMask;
 import gov.nih.nci.caintegrator2.domain.annotation.mask.MaxNumberMask;
 import gov.nih.nci.caintegrator2.domain.annotation.mask.NumericRangeMask;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,6 +119,26 @@ public abstract class AbstractAnnotationMaskHandler {
         }
         return maskedValue;
     }
+    
+    static AbstractCriterion createMaskedCriterion(Set<AbstractAnnotationMask> masks,
+            AbstractCriterion originalValue) {
+        List<AbstractAnnotationMask> sortedMasks = new ArrayList<AbstractAnnotationMask>(masks);
+        Collections.sort(sortedMasks);
+        AbstractCriterion abstractCriterion = originalValue;
+        for (AbstractAnnotationMask mask : sortedMasks) {
+            if (mask instanceof MaxNumberMask) {
+                abstractCriterion = new MaxNumberMaskHandler((MaxNumberMask) mask)
+                        .createMaskedCriterion(abstractCriterion);
+            } else if (mask instanceof NumericRangeMask) {
+                abstractCriterion = new NumericRangeMaskHandler((NumericRangeMask) mask)
+                        .createMaskedCriterion(abstractCriterion);
+            } else {
+                throw new IllegalStateException("Undefined mask used.");
+            }
+        }
+        abstractCriterion.setFinalMaskApplied(false);
+        return abstractCriterion;
+    }
 
     /**
      * Retrieves the masked value from the original value.
@@ -125,6 +146,13 @@ public abstract class AbstractAnnotationMaskHandler {
      * @return masked value.
      */
     protected abstract AbstractAnnotationValue retrieveMaskedValue(AbstractAnnotationValue originalValue);
+    
+    /**
+     * Retrieves the criterion after the masks have been applied.
+     * @param originalCriterion to mask.
+     * @return the new criterion to use.
+     */
+    protected abstract AbstractCriterion createMaskedCriterion(AbstractCriterion originalCriterion);
     
     /**
      * Creates a masked numeric annotation value from an abstract value.

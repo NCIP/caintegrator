@@ -86,20 +86,26 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
@@ -167,6 +173,24 @@ public class QueryManagementServiceImplTest {
     public void testExecute() throws InvalidCriterionException {
         QueryResult queryResult = queryManagementService.execute(query);
         assertNotNull(queryResult.getRowCollection());
+        assertFalse(query.isHasMaskedValues());
+        NumericComparisonCriterion numericCrit = new NumericComparisonCriterion();
+        numericCrit.setEntityType(EntityTypeEnum.SUBJECT);
+        numericCrit.setNumericValue(12d);
+        numericCrit.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESSOREQUAL);
+        
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        afd.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
+        afd.setMaxNumber(10d);
+        afd.setNumericRange(4);
+        afd.setDefinition(new AnnotationDefinition());
+        numericCrit.setAnnotationFieldDescriptor(afd);
+        ResultColumn column = new ResultColumn();
+        column.setAnnotationFieldDescriptor(afd);
+        query.getColumnCollection().add(column);
+        query.getCompoundCriterion().getCriterionCollection().add(numericCrit);
+        queryManagementService.execute(query);
+        assertTrue(query.isHasMaskedValues());
     }
     
     @Test
