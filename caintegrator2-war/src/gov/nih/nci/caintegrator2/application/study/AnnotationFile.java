@@ -104,6 +104,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -191,6 +192,7 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         validateFileNotEmpty();
         validateFileHasData();
         validateDataLinesConsistent();
+        validateUniqueNonNullHeaders();
     }
 
     private void validateFileNotEmpty() throws ValidationException {
@@ -205,6 +207,23 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         positionAtData();
         if (readNext() == null) {
             throwValidationException("The data file contained no data (header line only).");
+        }
+    }
+    
+    private void validateUniqueNonNullHeaders() throws ValidationException {
+        resetReader();
+        loadNextLine();
+        Set<String> headerValues = new HashSet<String>();
+        for (int index = 0; index < currentLineValues.length; index++) {
+            String currentHeaderValue = currentLineValues[index];
+            if (StringUtils.isBlank(currentHeaderValue)) {
+                throwValidationException("The column header at index " + Integer.valueOf(index + 1) + " is blank.");
+            }
+            if (headerValues.contains(currentHeaderValue.toUpperCase(Locale.ENGLISH))) {
+                throwValidationException("The column header '" + currentHeaderValue + "' is used more than once in "
+                        + "this file, please make sure all header names are unique and re-upload the file.");
+            }
+            headerValues.add(currentHeaderValue.toUpperCase(Locale.ENGLISH));
         }
     }
 
