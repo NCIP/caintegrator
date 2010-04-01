@@ -677,7 +677,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
     private AnnotationFieldDescriptor getMatchingDescriptor(String name, 
             Collection<AnnotationFieldDescriptor> descriptors) {
         for (AnnotationFieldDescriptor descriptor : descriptors) {
-            if (descriptor.getName().equals(name)) {
+            if (descriptor.getName().toUpperCase(Locale.ENGLISH).equals(name.toUpperCase(Locale.ENGLISH))) {
                 return descriptor;
             }
         }
