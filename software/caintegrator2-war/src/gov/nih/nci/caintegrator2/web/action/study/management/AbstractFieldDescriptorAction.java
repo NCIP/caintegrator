@@ -705,7 +705,7 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
      */
     public String getPermissibleCssStyle() {
         String styleString = "min-width:100px; vertical-align=middle;"; 
-        return isFromCadsr() 
+        return isReadOnly() 
              ? styleString + GRAY_BACKGROUND + GRAY_FOREGROUND : styleString; 
     }
 

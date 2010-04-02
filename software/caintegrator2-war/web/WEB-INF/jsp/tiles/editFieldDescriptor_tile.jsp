@@ -151,8 +151,8 @@
                                 doubleCssStyle="%{permissibleCssStyle}"
                                 buttonCssStyle="min-width:100px;" 
                                 label="Permissible Values"
-                                allowAddToLeft="%{!fromCadsr}"
-                                allowAddToRight="%{!fromCadsr}"
+                                allowAddToLeft="%{!readOnly}"
+                                allowAddToRight="%{!readOnly}"
                                 />
                     	</s:if>
                    	</s:if>
