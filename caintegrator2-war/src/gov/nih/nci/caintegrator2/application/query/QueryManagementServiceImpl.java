@@ -338,7 +338,8 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     public File createCsvFileFromGenomicResults(GenomicDataQueryResult result) {
-        File csvFile = new File(fileManager.getUserDirectory(result.getQuery().getSubscription()), "genomicData.csv");
+        File csvFile = new File(fileManager.getNewTemporaryDirectory("tempGenomicResultsDownload"), 
+                "genomicData-" + System.currentTimeMillis() + ".csv");
         return GenomicDataFileWriter.writeAsCsv(result, csvFile);
     }
 
