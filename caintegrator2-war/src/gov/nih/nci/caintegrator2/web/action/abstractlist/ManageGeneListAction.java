@@ -126,9 +126,17 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
     /**
      * {@inheritDoc}
      */
+    public void prepare() {
+        super.prepare();
+        setInvalidStudyBeingAccessed(false);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected boolean isFileUpload() {
-        return CREATE_GENE_LIST_ACTION.equalsIgnoreCase(selectedAction);
+        return true;
     }
     
     /**
@@ -147,8 +155,11 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
     @Override
     public void validate() {
         clearErrorsAndMessages();
+        prepareValueStack();
+        if (getCurrentStudy() == null) {
+            setInvalidStudyBeingAccessed(true);
+        }
         if (CREATE_GENE_LIST_ACTION.equalsIgnoreCase(selectedAction)) {
-            prepareValueStack();
             validateGeneListName();
             validateGeneListData();
         } else {
