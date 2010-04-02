@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.external.ncia;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.io.File;
@@ -126,6 +127,12 @@ public class NCIAFacadeStub implements NCIAFacade {
         dicomJob.setJobId("fakeJob");
         retrieveDicomFilesCalled = true;
         return TestDataFiles.VALID_FILE;
+    }
+
+    public void validateImagingSourceConnection(ServerConnectionProfile profile, String collectionNameProject)
+            throws ConnectionException, InvalidImagingCollectionException {
+        
+        
     }
 
 
