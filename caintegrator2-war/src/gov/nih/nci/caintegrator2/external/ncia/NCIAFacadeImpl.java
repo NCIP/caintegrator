@@ -101,6 +101,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -120,6 +121,19 @@ public class NCIAFacadeImpl implements NCIAFacade {
     throws ConnectionException {
         NCIASearchService client = nciaServiceFactory.createNCIASearchService(profile);
         return client.retrieveAllCollectionNameProjects();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void validateImagingSourceConnection(ServerConnectionProfile profile, String collectionNameProject) 
+    throws ConnectionException, InvalidImagingCollectionException {
+        List<String> validCollectionNames = getAllCollectionNameProjects(profile);
+        if (!validCollectionNames.contains(collectionNameProject)) {
+            throw new InvalidImagingCollectionException("No collection exists with the name '" 
+                + collectionNameProject + "'.  The valid names are:  " 
+                + StringUtils.join(validCollectionNames, " // "));
+        }
     }
     
     /**

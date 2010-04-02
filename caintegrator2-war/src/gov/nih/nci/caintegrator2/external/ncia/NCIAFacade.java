@@ -108,6 +108,16 @@ public interface NCIAFacade {
         throws ConnectionException;
     
     /**
+     * Validates that a connection can be made, and that the project name exists on the server.
+     * @param profile contains connection information for the NBIA server.
+     * @param collectionNameProject proejct for the collection name.
+     * @throws ConnectionException if unable to connect to server.
+     * @throws InvalidImagingCollectionException if there is no collection with the given name.
+     */
+    void validateImagingSourceConnection(ServerConnectionProfile profile, String collectionNameProject) 
+        throws ConnectionException, InvalidImagingCollectionException;
+    
+    /**
      * Retrieves the list of ImageStudys from NCIAGridService and converts them to our 
      * ImageSeriesAcquisition object.
      * @param collectionNameProject - Project for the CollectionName

@@ -91,7 +91,10 @@ import gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnu
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.external.ncia.NCIAFacade;
 import gov.nih.nci.caintegrator2.web.ajax.IImagingDataSourceAjaxUpdater;
 
 import java.io.File;
@@ -116,6 +119,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
     private IImagingDataSourceAjaxUpdater updater;
     private boolean createNewAnnotationDefinition = false;
     private boolean cancelAction = false;
+    private NCIAFacade nciaFacade;
 
     /**
      * {@inheritDoc}
@@ -136,7 +140,23 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
         if (StringUtils.isBlank(getImageSourceConfiguration().getServerProfile().getUrl())) {
             addFieldError("imageSourceConfiguration.serverProfile.url", "URL is required.");
         }
+        if (!checkErrors()) {
+            return false;
+        }
+        checkConnection();
         return checkErrors();
+    }
+
+    private void checkConnection() {
+        ImageDataSourceConfiguration imageSourceToTest = createNewImagingSource();
+        try {
+            nciaFacade.validateImagingSourceConnection(imageSourceToTest.getServerProfile(), imageSourceToTest
+                    .getCollectionName());
+        } catch (ConnectionException e) {
+            addFieldError("imageSourceConfiguration.serverProfile.url", "Unable to connect to the server.");
+        } catch (InvalidImagingCollectionException e) {
+            addActionError(e.getMessage());
+        }
     }
 
     private boolean validateMappingFile() {
@@ -154,7 +174,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
     }
 
     private boolean checkErrors() {
-        if (!getFieldErrors().isEmpty()) {
+        if (!getFieldErrors().isEmpty() || !getActionErrors().isEmpty()) {
             return false;
         }
         return true;
@@ -444,6 +464,20 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
      */
     public void setCreateNewAnnotationDefinition(boolean createNewAnnotationDefinition) {
         this.createNewAnnotationDefinition = createNewAnnotationDefinition;
+    }
+
+    /**
+     * @return the nciaFacade
+     */
+    public NCIAFacade getNciaFacade() {
+        return nciaFacade;
+    }
+
+    /**
+     * @param nciaFacade the nciaFacade to set
+     */
+    public void setNciaFacade(NCIAFacade nciaFacade) {
+        this.nciaFacade = nciaFacade;
     }
 
 }

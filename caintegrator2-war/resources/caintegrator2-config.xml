@@ -203,6 +203,9 @@
         <property name="updater">
             <ref local="imagingDataSourceAjaxUpdater"/>
         </property>
+        <property name="nciaFacade">
+            <ref local="nciaFacade" />
+        </property>
     </bean>
     
     <bean id="editImagingSourceAnnotationsAction"
