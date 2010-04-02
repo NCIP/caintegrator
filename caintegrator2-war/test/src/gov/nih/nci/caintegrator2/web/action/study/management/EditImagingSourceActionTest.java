@@ -92,6 +92,10 @@ import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeStub;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator2.web.ajax.IImagingDataSourceAjaxUpdater;
 
@@ -112,6 +116,7 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
     private EditImagingSourceAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
     private ImagingDataSourceAjaxUpdaterStub updaterStub;
+    private NCIAFacadeStubForAction nciaFacadeStub;
 
     @Before
     public void setUp() {
@@ -120,10 +125,13 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
         action = (EditImagingSourceAction) context.getBean("editImagingSourceAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
+        nciaFacadeStub = new NCIAFacadeStubForAction();
+        nciaFacadeStub.clear();
         action.clearErrorsAndMessages();
         updaterStub = new ImagingDataSourceAjaxUpdaterStub();
         updaterStub.clear();
         action.setUpdater(updaterStub);
+        action.setNciaFacade(nciaFacadeStub);
     }
     
     @Test
@@ -201,10 +209,25 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
         assertEquals(Action.SUCCESS, action.saveImagingSource());
         assertTrue(updaterStub.runJobCalled);
         updaterStub.clear();
+        action.clearErrorsAndMessages();
+        
+        nciaFacadeStub.throwConnectionException = true;
+        assertEquals(Action.INPUT, action.saveImagingSource());
+        nciaFacadeStub.clear();
+        updaterStub.clear();
+        action.clearErrorsAndMessages();
+        nciaFacadeStub.throwInvalidImagingCollectionException = true;
+        assertEquals(Action.INPUT, action.saveImagingSource());
+        nciaFacadeStub.clear();
+        updaterStub.clear();
+        action.clearErrorsAndMessages();
+        
         action.getImageSourceConfiguration().setId(1l);
         assertEquals(Action.SUCCESS, action.saveImagingSource());
         assertTrue(studyManagementServiceStub.deleteCalled);
-        assertTrue(updaterStub.runJobCalled);        
+        assertTrue(updaterStub.runJobCalled);
+        
+        
     }
     
     @Test
@@ -283,5 +306,26 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
             runJobCalled = true;
         }
         
+    }
+    
+    private static class NCIAFacadeStubForAction extends NCIAFacadeStub {
+        public boolean throwConnectionException = false;
+        public boolean throwInvalidImagingCollectionException = false;
+        
+        public void clear() {
+            throwConnectionException = false;
+            throwInvalidImagingCollectionException = false;
+        }
+        
+        @Override
+        public void validateImagingSourceConnection(ServerConnectionProfile profile, String collectionNameProject) 
+        throws ConnectionException ,InvalidImagingCollectionException {
+            if (throwConnectionException) {
+                throw new ConnectionException("Exception Thrown");
+            }
+            if (throwInvalidImagingCollectionException) {
+                throw new InvalidImagingCollectionException("Exception Thrown");
+            }
+        }
     }
 }

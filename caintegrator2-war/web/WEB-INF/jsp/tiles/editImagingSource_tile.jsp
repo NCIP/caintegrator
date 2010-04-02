@@ -107,7 +107,7 @@
                     action="saveImagingSource" method="post" enctype="multipart/form-data" >  <!-- action="saveImagingSource" -->
                 <table>
                 <tr>
-                    <td>
+                    <td colspan="2">
                         <s:actionerror />
                      </td>
                 </tr>
