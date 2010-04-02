@@ -14,7 +14,7 @@
     
 <script type="text/javascript">
     
-    function setSelectedAction(selectAction, geneSymbol) {
+    function setSelectedAction(selectAction) {
         document.manageGeneList.selectedAction.value = selectAction;
         return true;
     }
@@ -77,7 +77,7 @@
                                     <div class="wwgrp">
                                         <div class="wwlbl"><label class="label">&nbsp</label></div>
                                         <div class="wwctrl"><s:submit value="Create Gene List" align="center" action="manageGeneList"
-                                            onclick="return setSelectedAction('createGeneList', this.form.geneSymbols.value);" theme="css_xhtml" /></div>
+                                            onclick="return setSelectedAction('createGeneList');" theme="css_xhtml" /></div>
                                     </div>
                                 </td>
                             </tr>
