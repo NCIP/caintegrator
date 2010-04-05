@@ -139,24 +139,28 @@ public class AnnotationGroupUploadFileHandler {
 
     private void readDataLine(List<AnnotationGroupUploadContent> annotationGroupUploads, String[] fields) 
     throws ValidationException {
-        if (!HEADER_LINE.equals(fields[0])) {
+        if (!HEADER_LINE.equals(trimBlank(fields[0]))) {
             try {
                 AnnotationGroupUploadContent uploadContent = new AnnotationGroupUploadContent();
-                uploadContent.setColumnName(fields[0]);
-                uploadContent.setAnnotationType(fields[1]);
-                uploadContent.setEntityType(fields[2]);
-                uploadContent.setCdeId(fields[3]);
-                uploadContent.setVersion(fields[4]);
-                uploadContent.setDefinitionName(fields[5]);
+                uploadContent.setColumnName(trimBlank(fields[0]));
+                uploadContent.setAnnotationType(trimBlank(fields[1]));
+                uploadContent.setEntityType(trimBlank(fields[2]));
+                uploadContent.setCdeId(trimBlank(fields[3]));
+                uploadContent.setVersion(trimBlank(fields[4]));
+                uploadContent.setDefinitionName(trimBlank(fields[5]));
                 if (uploadContent.getCdeId() == null) {
-                    uploadContent.setDataType(fields[6]);
-                    uploadContent.setPermissible(fields[7]);
+                    uploadContent.setDataType(trimBlank(fields[6]));
+                    uploadContent.setPermissible(trimBlank(fields[7]));
                 }
-                uploadContent.setVisible(fields[8]);
+                uploadContent.setVisible(trimBlank(fields[8]));
                 annotationGroupUploads.add(uploadContent);
             } catch (Exception e) {
                 throw new ValidationException(e.getMessage(), e);
             }
         }
+    }
+    
+    private String trimBlank(String value) {
+        return value == null ? null : value.trim();
     }
 }
