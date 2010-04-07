@@ -146,29 +146,30 @@
 	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
 	<td></td>
 </tr>
+<!--// provide genomic source configuration parameters-->
 <tr>
 	<td>type</td>
-	<td>genomicSourceForm_genomicSource_serverProfile_hostname</td>
+	<td>caArrayHost</td>
 	<td>array.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>genomicSourceForm_genomicSource_serverProfile_port</td>
+	<td>caArrayPort</td>
 	<td>8080</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>genomicSourceForm_genomicSource_experimentIdentifier</td>
+	<td>experimentId</td>
 	<td>jagla-00034</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>genomicSourceForm_genomicSource_serverProfile_username</td>
+	<td>caArrayUsername</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>genomicSourceForm_genomicSource_serverProfile_password</td>
+	<td>caArrayPassword</td>
 	<td></td>
 </tr>
 <tr>
@@ -178,7 +179,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//button[@type='button' and @onclick='showConfirmMessage()']</td>
+	<td>//button[@type='button' and @onclick='saveGenomicSource()']</td>
 	<td></td>
 </tr>
 <tr>
