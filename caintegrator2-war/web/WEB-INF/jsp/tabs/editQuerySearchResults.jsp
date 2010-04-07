@@ -103,8 +103,8 @@
                         <s:else>
                             <tr class="even">
                         </s:else>
-                        <td><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
-                            <b><s:property value="reporter.geneSymbols" /></b>
+                        <td><b><s:property value="reporter.geneSymbols" /></b><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
+                            <img src="/caintegrator2/images/ico_info.gif" border="none"/>
                         </a></td>
                         <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
                             <td><b><s:property value="reporter.name" /></b></td>
