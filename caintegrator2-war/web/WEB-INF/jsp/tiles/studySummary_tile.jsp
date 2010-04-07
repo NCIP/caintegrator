@@ -120,14 +120,21 @@
                 <td />
             </tr>
             <tr>
+                <td align="right">Host type:</td>
+                <td> <img src="/caintegrator2/images/caArray.gif" border="none"/></td>
+                <td />
+                <td />
+            </tr>            
+            <tr>
                 <td align="right">Experiment:</td>
                 <td> 
-                    Name: <b><s:property value="experimentName"/></b>
+                    Name: <b>
                         <s:if test="hasCaArrayUrl()">
-                            <a href="${caArrayUrl}" target="cai2_CaArray" title="Click to go to caArray">
-                                <img src="/caintegrator2/images/caArray.gif" border="none"/>
+                            <a href="${caArrayUrl}" target="cai2_CaArray" title="Click to go to caArray" style="text-decoration: underline; color: black;">
+                                <s:property value="experimentName"/>
                             </a>
                         </s:if>
+                        </b>
                     <br>
                     Array Platforms: 
                         <s:iterator value="%{platforms}" status="platformStatus">
