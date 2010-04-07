@@ -199,7 +199,7 @@ public class GenePatternClientImpl implements GenePatternClient {
      * @return the job information
      * @throws GenePatternServiceException if there's a failure communicating with GenePattern
      */
-    public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws GenePatternServiceException {
+    public JobInfo runAnalysisCai2(String taskName, List<ParameterInfo> parameters) throws GenePatternServiceException {
         TaskInfo taskInfo = getTaskInfo(taskName);
         ParameterInfo[] fullJobParameters = getFullJobParameters(parameters, taskInfo);
         HashMap<String, DataHandler> fileDataHandlers = getFileDataHandlers(fullJobParameters);
@@ -454,7 +454,7 @@ public class GenePatternClientImpl implements GenePatternClient {
             List<org.genepattern.webservice.ParameterInfo> parameters)
             throws org.genepattern.webservice.WebServiceException {
         try {
-            return convertJobInfoToNewVersion(runAnalysis(moduleName, convertParametersToOldVersion(parameters)));
+            return convertJobInfoToNewVersion(runAnalysisCai2(moduleName, convertParametersToOldVersion(parameters)));
         } catch (GenePatternServiceException e) {
             throw new org.genepattern.webservice.WebServiceException(e);
         }
