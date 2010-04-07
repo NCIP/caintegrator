@@ -108,7 +108,6 @@ import org.apache.commons.io.IOUtils;
 public class GenePatternClientImpl implements GenePatternClient {
     
     private static final String CLIENT_FILENAME_ATTRIBUTE = "client_filename";
-    private static final String GP_TEMP_DIRECTORY = "genePatternFiles";
     private static final String MODE_ATTRIBUTE = "MODE";
     private static final String TYPE_ATTRIBUTE = "TYPE";
     private static final String INPUT_MODE = "IN";
@@ -411,7 +410,7 @@ public class GenePatternClientImpl implements GenePatternClient {
             throws org.genepattern.webservice.WebServiceException {
         
         try {
-            return createFileFromFileWrapper(getResultFileFromJobNumber(jobInfo.getJobNumber(), filename));
+            return createFileFromFileWrapper(getResultFileFromJobNumber(jobInfo.getJobNumber(), filename), null);
         } catch (Exception e) {
             throw new org.genepattern.webservice.WebServiceException(e);
         }
@@ -427,7 +426,7 @@ public class GenePatternClientImpl implements GenePatternClient {
             File[] newFiles = new File[files.length];
             int ctr = 0;
             for (FileWrapper fileWrapper : files) {
-                newFiles[ctr] = createFileFromFileWrapper(fileWrapper);
+                newFiles[ctr] = createFileFromFileWrapper(fileWrapper, resultsDir);
                 ctr++;
             }
             return newFiles;
@@ -538,9 +537,10 @@ public class GenePatternClientImpl implements GenePatternClient {
         return parameterInfoList;
     }
     
-    private File createFileFromFileWrapper(FileWrapper fileWrapper) throws IOException {
-        File outputFile = File.createTempFile(fileWrapper.getFilename(), 
-                "", new File(GP_TEMP_DIRECTORY));
+    private File createFileFromFileWrapper(FileWrapper fileWrapper, File directory) throws IOException {
+        File outputFile = directory == null ? 
+                File.createTempFile(fileWrapper.getFilename(), "") 
+                : File.createTempFile(fileWrapper.getFilename(), "", directory); 
         FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
         IOUtils.copy(fileWrapper.getDataHandler().getInputStream(), fileOutputStream);
         fileOutputStream.close();
