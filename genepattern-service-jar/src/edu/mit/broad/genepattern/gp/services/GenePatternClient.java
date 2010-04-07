@@ -138,7 +138,7 @@ public interface GenePatternClient extends CaIntegrator2GPClient {
      * @return the job information
      * @throws GenePatternServiceException if there's a failure communicating with GenePattern
      */
-    JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws GenePatternServiceException;
+    JobInfo runAnalysisCai2(String taskName, List<ParameterInfo> parameters) throws GenePatternServiceException;
 
     /**
      * Returns the current updated jobInfo for the given task.
