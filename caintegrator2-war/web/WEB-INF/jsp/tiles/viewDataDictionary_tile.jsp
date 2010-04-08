@@ -47,7 +47,6 @@
                                 <th>Data&nbsp;Type</th>
                                 <th>Description</th>
                                 <th>caDSR&nbsp;ID</th>
-                                <th>caDSR&nbsp;Value Domain</th>
                                 <th>Permissible</th>
                                 <th>Restrictions</th>
                             </tr>
@@ -63,7 +62,6 @@
                                     <td><s:property value="definition.commonDataElement.definition"/></td>
                                     <td><a href="<s:property value='%{viewDataElement}'/>" target="_blank">
                                         <s:property value="definition.commonDataElement.publicID"/></a></td>
-                                    <td><s:property value="definition.commonDataElement.valueDomain.longName"/></td>
                                     <td>
                                         <s:if test="!definition.permissibleValueCollection.empty">
                                             <s:set name="divId" value="%{displayName}"/>
