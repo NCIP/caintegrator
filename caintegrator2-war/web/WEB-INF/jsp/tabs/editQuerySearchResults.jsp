@@ -48,7 +48,8 @@
         </div>
     </s:if>
     <s:if test='%{query.hasMaskedValues && query.resultType.value.equals("clinical")}' >
-        <div style="color: red;">*Search results might include values that have been restricted to a range by the study manager. 
+        <s:url id="dataDictionaryUrl" includeParams="none" action="viewDataDictionary" />
+        <div style="color: red;">*Search results might include values that have been restricted to a range by the study manager.  (<a href="${dataDictionaryUrl}">View restrictions</a>)
         </div>
     </s:if>
     <div id="queryResultsDiv" >
