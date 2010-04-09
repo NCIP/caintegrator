@@ -5,113 +5,124 @@
     <i t="About caIntegrator2" l="2" />
     <i t="Registering as a New caIntegrator2 User" l="3" />
     <i t="Logging In" l="4" />
-    <i t="Using the caIntegrator2 Workspace" l="5">
+    <i t="Welcome to caIntegrator2 Workspace" l="5">
       <i t="caIntegrator2 Functions" l="6" />
     </i>
-    <i t="Using Online Help" l="7" />
-    <i t="Logging Out" l="8" />
-    <i t="Application Support" l="9" />
-  </i>
-  <i t="Creating a New Study" l="10">
-    <i t="Creating a Study – Overview" l="11" />
-    <i t="Configuring and Deploying a Study" l="12">
-      <i t="Creating/Editing a Study" l="13" />
-      <i t="Adding Clinical Data" l="14">
-        <i t="Assigning An Identifier or Annotation" l="15" />
-        <i t="Searching for Annotation Definitions" l="16" />
-        <i t="Defining Survival Values" l="17" />
-      </i>
-      <i t="Adding/Editing Genomic Data" l="18">
-        <i t="Mapping Genomic Data to Clinical Data" l="19" />
-        <i t="Uploading Control Samples" l="20" />
-        <i t="Configuring Copy Number Data" l="21" />
-      </i>
-      <i t="Adding Imaging Data" l="22" />
-      <i t="Deploying the Study" l="23" />
+    <i t="Viewing Existing Studies" l="7">
+      <i t="Data Dictionary" l="8" />
     </i>
-    <i t="Managing a Study" l="24">
-      <i t="Managing Platforms" l="25" />
+    <i t="Using Online Help" l="9" />
+    <i t="Logging Out" l="10" />
+    <i t="Application Support" l="11" />
+  </i>
+  <i t="Creating a New Study" l="12">
+    <i t="Creating a Study – Overview" l="13" />
+    <i t="Configuring and Deploying a Study" l="14">
+      <i t="Creating/Editing a Study" l="15" />
+    </i>
+    <i t="Working with Annotations – An Overview" l="16">
+      <i t="Adding An Annotation Group" l="17" />
+      <i t="Editing an Annotation Group" l="18" />
+      <i t="Adding Subject Annotation Data" l="19">
+        <i t="Assigning An Identifier or Annotation" l="20" />
+        <i t="Searching for Annotation Definitions" l="21" />
+        <i t="Defining Survival Values" l="22" />
+      </i>
+      <i t="Adding/Editing Genomic Data" l="23">
+        <i t="Mapping Genomic Data to Clinical Data" l="24" />
+        <i t="Uploading Control Samples" l="25" />
+        <i t="Configuring Copy Number Data" l="26" />
+      </i>
+      <i t="Adding Imaging Data" l="27" />
+      <i t="Adding External Links" l="28" />
+      <i t="Deploying the Study" l="29" />
+    </i>
+    <i t="Managing a Study" l="30">
+      <i t="Managing Platforms" l="31" />
     </i>
   </i>
-  <i t="Searching a caIntegrator2 Study" l="26">
-    <i t="Search Overview" l="27" />
-    <i t="Searching a Study" l="28">
+  <i t="Searching a caIntegrator2 Study" l="32">
+    <i t="Search Overview" l="33" />
+    <i t="Searching a Study" l="34">
       <i t="Clinical and Image Series">
-        <i t="Clinical and Image Series" l="29" />
-        <i t="Gene Expression" l="30" />
+        <i t="Clinical and Image Series" l="35" />
+        <i t="Gene Expression" l="36" />
       </i>
-      <i t="Results Type Tab" l="31" />
-      <i t="Sorting Tab" l="32" />
+      <i t="Results Type Tab" l="37" />
+      <i t="Sorting Tab" l="38" />
     </i>
-    <i t="Managing Queries" l="33">
-      <i t="Saving a Query" l="34" />
-      <i t="Editing a Query" l="35" />
-      <i t="Exporting Query Results" l="36" />
-    </i>
-  </i>
-  <i t="Viewing Query Results" l="37">
-    <i t="Query Results Overview" l="38" />
-    <i t="Browsing Query Results" l="39">
-      <i t="Clinical and Imaging Data" l="40" />
-      <i t="Genomic Data" l="41">
-        <i t="Creating a Gene List" l="42" />
-        <i t="Editing a Gene List" l="43" />
-      </i>
-      <i t="Expanding Imaging Data Results" l="44">
-        <i t="caIntegrator2 and NBIA" l="45" />
-        <i t="Retrieving Dicom Images" l="46" />
-        <i t="Example of Retrieving Images:" l="47" />
-      </i>
-      <i t="Relationship of Patient to Study to Series to Images" l="48" />
-      <i t="Exporting Data" l="49" />
+    <i t="Managing Queries" l="39">
+      <i t="Saving a Query" l="40" />
+      <i t="Editing a Query" l="41" />
+      <i t="Exporting Query Results" l="42" />
     </i>
   </i>
-  <i t="Analyzing Studies" l="50">
-    <i t="Data Analysis Overview" l="51" />
-    <i t="Creating Kaplan-Meier Plots" l="52">
-      <i t="K-M Plot for Annotations" l="53" />
-      <i t="K-M Plot for Gene Expression" l="54">
-        <i t="KM Plot from Gene Expression Data Display" l="55" />
+  <i t="Viewing Query Results" l="43">
+    <i t="Query Results Overview" l="44" />
+    <i t="Browsing Query Results" l="45">
+      <i t="Clinical and Imaging Data" l="46" />
+      <i t="Genomic Data" l="47">
+        <i t="Creating a Gene List" l="48" />
+        <i t="Editing a Gene List" l="49" />
       </i>
-      <i t="K-M Plot for Queries" l="56">
-        <i t="K-M Plot for Queries Display" l="57" />
+      <i t="Expanding Imaging Data Results" l="50">
+        <i t="caIntegrator2 and NBIA" l="51" />
+        <i t="Retrieving Dicom Images" l="52" />
+        <i t="Example of Retrieving Images:" l="53" />
       </i>
-    </i>
-    <i t="Creating Gene Expression Plots" l="58">
-      <i t="Gene Expression Value Plot for Annotation" l="59">
-        <i t="Gene Expression Plot for Annotation Display" l="60" />
-      </i>
-      <i t="Gene Expression Value Plot for Genomic Queries" l="61" />
-      <i t="Gene Expression Value Plot for Clinical Queries" l="62">
-        <i t="Gene Expression Plot for Clinical Queries Display" l="63" />
-      </i>
-      <i t="Understanding a Gene Expression Plot" l="64" />
-    </i>
-    <i t="Analyzing Data with GenePattern" l="65">
-      <i t="GenePattern Modules" l="66" />
-      <i t="Comparative Marker Selection (CMS) Analysis" l="67" />
-      <i t="Principal Component Analysis (PCA)" l="68" />
-      <i t="GISTIC-Supported Analysis" l="69" />
+      <i t="Relationship of Patient to Study to Series to Images" l="54" />
+      <i t="Exporting Data" l="55" />
     </i>
   </i>
-  <i t="Administering User Accounts" l="70">
-    <i t="Administering caIntegrator2 User Accounts Using UPT" l="71">
-      <i t="Steps for Creating User Access to caIntegrator2" l="72" />
-      <i t="Creating a New caIntegrator2 User" l="73" />
-      <i t="Creating a New User Group" l="74" />
-      <i t="Creating a New Protection Group" l="75" />
-      <i t="Assigning a User Group to a Protection Group" l="76" />
-      <i t="Adding a User to a User Group" l="77" />
-      <i t="Changing a User Password" l="78" />
+  <i t="Analyzing Studies" l="56">
+    <i t="Data Analysis Overview" l="57" />
+    <i t="Creating Kaplan-Meier Plots" l="58">
+      <i t="K-M Plot for Annotations" l="59" />
+      <i t="K-M Plot for Gene Expression" l="60">
+        <i t="KM Plot from Gene Expression Data Display" l="61" />
+      </i>
+      <i t="K-M Plot for Queries" l="62">
+        <i t="K-M Plot for Queries Display" l="63" />
+      </i>
+    </i>
+    <i t="Creating Gene Expression Plots" l="64">
+      <i t="Gene Expression Value Plot for Annotation" l="65">
+        <i t="Gene Expression Plot for Annotation Display" l="66" />
+      </i>
+      <i t="Gene Expression Value Plot for Genomic Queries" l="67" />
+      <i t="Gene Expression Value Plot for Clinical Queries" l="68">
+        <i t="Gene Expression Plot for Clinical Queries Display" l="69" />
+      </i>
+      <i t="Understanding a Gene Expression Plot" l="70" />
+    </i>
+    <i t="Analyzing Data with GenePattern" l="71">
+      <i t="GenePattern Modules" l="72" />
+      <i t="Comparative Marker Selection (CMS) Analysis" l="73" />
+      <i t="Principal Component Analysis (PCA)" l="74" />
+      <i t="GISTIC-Supported Analysis" l="75" />
     </i>
   </i>
-  <i t="Data Import Configurations" l="79">
-    <i t="Subject Clinical Data Configuration" l="80" />
-    <i t="Delimited-Text Annotation Import" l="81" />
-    <i t="Annotation Field Configuration" l="82" />
-    <i t="Sample Data Configuration" l="83" />
-    <i t="Genomic Data Configuration" l="84" />
-    <i t="Imaging Data Configuration" l="85" />
+  <i t="Administering User Accounts" l="76">
+    <i t="Administering caIntegrator2 User Accounts Using UPT" l="77">
+      <i t="Steps for Creating User Access to caIntegrator2" l="78" />
+      <i t="Creating a New caIntegrator2 User" l="79" />
+      <i t="Creating a New User Group" l="80" />
+      <i t="Creating a New Protection Group" l="81" />
+      <i t="Assigning a User Group to a Protection Group" l="82" />
+      <i t="Adding a User to a User Group" l="83" />
+      <i t="Changing a User Password" l="84" />
+      <i t="Finding Gene Names" l="85" />
+    </i>
   </i>
-  <i t="NCICB Application Support" l="86" />
+  <i t="Data Import Configurations" l="86">
+    <i t="Subject Clinical Data Configuration" l="87" />
+    <i t="Delimited-Text Annotation Import" l="88" />
+    <i t="Annotation Field Configuration" l="89" />
+    <i t="Sample Data Configuration" l="90" />
+    <i t="Genomic Data Configuration" l="91" />
+    <i t="Imaging Data Configuration" l="92" />
+  </i>
+  <i t="Glossary" l="93" />
+  <i t="Online Help Tips" l="94" />
+  <i t="NCICB Application Support" l="95" />
 </WebWorksHelpTOC>

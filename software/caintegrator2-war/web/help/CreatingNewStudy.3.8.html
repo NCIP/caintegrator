@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Defining Survival Values</title>
+    <title>Adding Subject Annotation Data</title>
     <link rel="StyleSheet" href="css/CreatingNewStudy.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,158 +28,175 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1077698">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.3.html#1077698">Configuring and Deploying a Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.5.html#1077698">Adding Clinical Data</a> &gt; Defining Survival Values</div>
+      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1075197">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.5.html#1075197">Working with Annotations – An Overview</a> &gt;  Adding Subject Annotation Data</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading3"><a name="1077698">Defining Survival Values</a></div>
-      <div class="Body_Text"><a name="1077702">Survival value is the length of time a patient lived. If you plan to analyze your data in </a>caIntegrator2 to create a Kaplan-Meier (K-M) Plot, then during the Annotation Definition process described  in <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.6.html#1125074', '');">Assigning An Identifier or Annotation</a></span>, you must make sure that you have defined at least three fields set to the “date” Data Type. These will be matched to the following three properties during Survival Value definition. </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1085103">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1085103">Survival Start Date</a></span> </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1085104">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1085104">Death Date</a></span> </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1085100">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1085100">Last Followup Date</a></span> </div>
-            </td>
-          </tr>
-        </table>
-      </div>
+      <div class="Heading2"><a name="1075197"> A</a>dding Subject Annotation Data</div>
+      <div class="Body_Text"><a name="1075152">The Edit Study page opens after you save a new study or click to edit an existing study.</a></div>
       <div class="Note_Main_Body_outer" style="margin-left: 13px;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080422">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083677">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Note_Main_Body_inner" style="width: 15px; white-space: nowrap;">
                 <span style="left: -20px; position: relative; top: 15px;">
-                  <img src="note_NCI.gif" alt="*" id="bullet1080422" border="0" width="30" height="30" />
+                  <img src="note_NCI.gif" alt="*" id="bullet1083677" border="0" width="30" height="30" />
                 </span>
               </div>
             </td>
             <td width="100%">
-              <div class="Note_Main_Body_inner"><a name="1080422">Setting survival values is optional if you do not plan to use the K-M plot analysis </a>feature or if you do not have this kind of data (survival values) in the file. </div>
+              <div class="Note_Main_Body_inner"><a name="1083677">To edit information for an existing study, follow the same basic directions in this </a>topic. Instead of entering new information, you will modify existing information.</div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text"><a name="1085129">For some applications, such as REMBRANDT and I-SPY, survival values are pre-</a>defined in the databases when you load the data. In caIntegrator2, however, you can review and define survival value ranges in a data set you are uploading to a study. To be able to do so, you need to understand the kind of data that can comprise the survival values.  </div>
-      <div class="Body_Text"><a name="1077727">To set up survival values, follow these steps:</a></div>
+      <div class="Body_Text"><a name="1076533">To add or edit </a>subject annotation metadata in this page, follow these steps:</div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1078368">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1076529">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1078368">On the Edit Study page, click </a><span style="font-weight: bold;">Edit Survival Values</span>. This opens the Survival Value Definitions dialog box.</div>
+              <div class="Numbered_List_1_inner"><a name="1076529">On the Edit Study page, click the </a><span style="font-weight: bold;">Add New</span> button in the Subject Annotation Data Sources section. Navigate to locate a subject annotation data file. Files must be in CSV file format.</div>
             </td>
           </tr>
         </table>
       </div>
+      <div class="Body_Text_Indent_2"><a name="1126591">The first column of the table displays the annotation groups that have been </a>created for this study. For more information, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.6.html#1126596', '');">Adding An Annotation Group</a></span>.</div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1091124">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1126640">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1091124">Click </a><span style="font-weight: bold;">New</span> to enter new survival value definitions.</div>
+              <div class="Numbered_List_inner"><a name="1126640">You can specify visibility of specified annotation data in the </a><span style="font-weight: bold;">Visible</span> column. </div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text_Indent_2"><a name="1079453">- OR -</a></div>
-      <div class="Body_Text_Indent_2"><a name="1079457">Click </a><span style="font-weight: bold;">Edit</span> to edit existing survival value definitions.</div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1078404">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1078404">The dialog box extends, now displaying three drop-down lists that show column </a>headers for date metadata in the spreadsheet you have uploaded. </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text_Indent_2"><a name="1091132">In the drop-down lists, select the appropriate survival value definitions for each </a>field listed. You might want to refer to the column headers in the data file itself. Dates covered by the definitions are already in the data set. You cannot enter specific dates.</div>
       <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1078851">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1126698">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1078851">Name</a></span> – Enter a unique name that adequately describes the survival values you are defining here. <span style="font-style: italic;">Example</span>: Survival from Enrollment Date or Survival from Treatment Start. The name you enter displays later when you are selecting survivals to create the K-M plot. </div>
+              <div class="Bullet_Indent_inner"><a name="1126698">Select a checkbox for a row to make the corresponding data visible to all </a>subscribers of the study. </div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;vertical-align: baseline;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080893">
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1126595">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;">•</div>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_Indent_inner" style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;"><span style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1080893">Survival Start Date </a></span><span style="font-weight: normal;">–</span><span style="font-weight: normal;"> Select the column header for this data.</span></div>
+              <div class="Bullet_Indent_inner"><a name="1126595">Clear a checkbox to hide the corresponding annotation from any subscriber </a>of the study. Data continues to exist but does not show up in query fields nor query results.</div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;vertical-align: baseline;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080894">
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1126590">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;">•</div>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3.	</div>
             </td>
             <td width="100%">
-              <div class="Bullet_Indent_inner" style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;"><span style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1080894">Death Date </a></span><span style="font-weight: normal;">–</span><span style="font-weight: normal;"> Select the column header for this data.</span></div>
+              <div class="Numbered_List_inner"><a name="1126590">The </a>Annotation Header from File column on the Define Fields... page displays column headers taken from the source CSV file. The page also displays data values in the file you have designated. You must map each column name to an existing column name in the caIntegrator2 database or in caDSR. If it doesn’t yet exist, you can create a custom column name.</div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;vertical-align: baseline;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080895">
+      <div class="Body_Text_Indent_2"><a name="1091048">The MOST important steps in creating a new study in caIntegrator2:</a></div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083006">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;">•</div>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_Indent_inner" style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;"><span style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1080895">Last Followup Date </a></span><span style="font-weight: normal;">–</span><span style="font-weight: normal;"> Select the column header for this data.</span></div>
+              <div class="Bullet_Indent_inner"><a name="1083006">You MUST designate one column in the file as a unique “identifier” column </a>type. </div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text"><a name="1092141">See also </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.6.3.html#1084273', '');">Creating Kaplan-Meier Plots</a></span>.</div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083017">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><a name="1083017">You MUST review and define column annotation definitions for each column </a>header in the file.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text_Indent_2"><a name="1127693">Note the following regarding the list of annotations on this page: </a></div>
+      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081956">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_2_inner"><a name="1081956">If caIntegrator2 “recognizes” the same column</a> header in other files already in the system, a term, for example “age” or “survival”, which is the current definition appears in the <span style="font-weight: bold;">Annotation D</span><span style="font-weight: bold;">efinition</span> column above the blue <span style="font-weight: bold;">Change Assignment</span> link. </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1127726">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_2_inner"><a name="1127726">I</a>f the area above the blue <span style="font-weight: bold;">Change Assignment</span> link is blank, no correlating term exists in the database; you must specify the field type, and then the term will populate the space. See <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.9.html#1125074', '');">Assigning An Identifier or Annotation</a></span> for more information.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1127709">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_2_inner"><a name="1127709">A fi</a>eld name that displays in red indicates an error in the annotation. Click the <span style="font-weight: bold;">Change Assignment</span> button for more information about the error. </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1125069">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">4.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1125069">To indicate the unique identifier of choice, on the row showing the column </a>header (PatientID in the figure, but other examples are subject identifier, sample identifier, etc), click <span style="font-weight: bold;">Change Assignment</span> in the <span style="font-weight: bold;">Field Definition</span> column.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
           //
           WWHClearRelatedTopics();
+
+          // Add related topics
+          //
+          WWHAddRelatedTopic("Assigning An Identifier or Annotation", "caIntegrator2", "CreatingNewStudy.3.9.html#1125074");
+          WWHAddRelatedTopic("Searching for Annotation Definitions", "caIntegrator2", "CreatingNewStudy.3.10.html#1082197");
+          WWHAddRelatedTopic("Defining Survival Values", "caIntegrator2", "CreatingNewStudy.3.11.html#1077698");
+          WWHAddRelatedTopic("Deploying the Study", "caIntegrator2", "CreatingNewStudy.3.18.html#1126457");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

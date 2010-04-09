@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Adding Clinical Data</title>
+    <title>Working with Annotations – An Overview</title>
     <link rel="StyleSheet" href="css/CreatingNewStudy.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,128 +28,16 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1075197">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.3.html#1075197">Configuring and Deploying a Study</a> &gt; Adding Clinical Data</div>
+      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1127623">Creating a New Study</a> &gt; Working with Annotations – An Overview</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading2"><a name="1075197">Adding Clinical Data</a></div>
-      <div class="Body_Text"><a name="1075152">The Edit Study page opens after you save a new study or click to edit an existing study.</a></div>
-      <div class="Note_Main_Body_outer" style="margin-left: 13px;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083677">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Note_Main_Body_inner" style="width: 15px; white-space: nowrap;">
-                <span style="left: -20px; position: relative; top: 15px;">
-                  <img src="note_NCI.gif" alt="*" id="bullet1083677" border="0" width="30" height="30" />
-                </span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Note_Main_Body_inner"><a name="1083677">To edit information for an existing study, follow the same basic directions in this </a>topic. Instead of entering new information, you will modify existing information.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text"><a name="1076533">To add or edit clinical metadata in this page, follow these steps:</a></div>
-      <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1076529">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1076529">On the Edit Study page, click the </a><span style="font-weight: bold;">Add New</span> button in the Clinical Data Sources section. Navigate to locate a clinical data file. Files must be in CSV file format.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text_Indent_2"><a name="1076514">In the Clinical Data Sources section of the page, if a file has already been </a>selected, its information displays in the varying fields. </div>
-      <div class="Body_Text_Indent_2"><a name="1091041">The Field Header from File column on the Define Fields... page displays column </a>headers taken from the source *CSV file. The page also displays data values in the file you have designated. You must map each column name to an existing column name in the caIntegrator2 database or in caDSR. If it doesn’t yet exist, you can create a custom column name.</div>
-      <div class="Body_Text_Indent_2"><a name="1091048">The MOST important steps in creating a new study in caIntegrator2:</a></div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083006">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><a name="1083006">You MUST designate one column in the file as a unique “identifier” column </a>type. </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083017">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><a name="1083017">You MUST review and define column annotation definitions for each column </a>header in the file. </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text_Indent_2"><a name="1081956">If caIntegrator2 “recognizes” the same column  header in other files already in </a>the system, a term, for example “age” or “survival”, which is the current definition appears in the <span style="font-weight: bold;">Field Definition</span> column above the blue <span style="font-weight: bold;">Change </span><span style="font-weight: bold;">Assignment</span> link. If the area above the blue <span style="font-weight: bold;">Change Assignment</span> link is blank, no correlating term exists in the database; you must specify the field type, and then the term will populate the space. </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1125069">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1125069">To indicate the unique identifier of choice, on the row showing the column </a>header (PatientID in the figure, but other examples are subject identifier, sample identifier, etc), click <span style="font-weight: bold;">Change Assignment</span> in the <span style="font-weight: bold;">Field Definition</span> column.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1125093">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1125093">To manage the visibility of specified annotation data, note the following:</a></div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1125094">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><a name="1125094">A selected checkbox for a row makes the corresponding data visible to all </a>subscribers of the study. </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1125095">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><a name="1125095">Clear the checkbox to hide the corresponding clinical annotation from any </a>subscriber of the study.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
+      <div class="Heading1"><a name="1127623">Working with Annotations </a>– An Overview</div>
+      <div class="Body_Text"><a name="1127643">&nbsp;</a></div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
           //
           WWHClearRelatedTopics();
-
-          // Add related topics
-          //
-          WWHAddRelatedTopic("Assigning An Identifier or Annotation", "caIntegrator2", "CreatingNewStudy.3.6.html#1125074");
-          WWHAddRelatedTopic("Searching for Annotation Definitions", "caIntegrator2", "CreatingNewStudy.3.7.html#1082197");
-          WWHAddRelatedTopic("Defining Survival Values", "caIntegrator2", "CreatingNewStudy.3.8.html#1077698");
-          WWHAddRelatedTopic("Deploying the Study", "caIntegrator2", "CreatingNewStudy.3.14.html#1075829");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->
