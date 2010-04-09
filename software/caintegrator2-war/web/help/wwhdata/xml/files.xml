@@ -140,7 +140,7 @@
     <Topic name="login_help" href="Getting_Started.2.4.html#1146398" />
     <Topic name="welcome_help" href="Getting_Started.2.5.html#1127723" />
     <Topic name="study_summary_help" href="Getting_Started.2.7.html#1151722" />
-    <Topic name="data_dictionary_help" href="Getting_Started.2.8.html#1155129" />
+    <Topic name="data_dictionary_help" href="Getting_Started.2.8.html#1155418" />
     <Topic name="logging_out" href="Getting_Started.2.10.html#1128246" />
     <Topic name="edit_study_help" href="CreatingNewStudy.3.4.html#1073921" />
     <Topic name="edit_annotation_group_help" href="CreatingNewStudy.3.7.html#1127752" />
@@ -160,7 +160,7 @@
     <Topic name="save_query_help" href="SearchingWithinAStudy.4.9.html#1075754" />
     <Topic name="query_results_help" href="View%20Search%20Results.5.2.html#1167812" />
     <Topic name="create_gene_list_help" href="View%20Search%20Results.5.6.html#1182721" />
-    <Topic name="edit_genes_list_help" href="View%20Search%20Results.5.7.html#1183103" />
+    <Topic name="edit_gene_list_help" href="View%20Search%20Results.5.7.html#1183103" />
     <Topic name="DICOM_retrieval_help" href="View%20Search%20Results.5.10.html#1170682" />
     <Topic name="K-M_plot_help" href="PerformingAnalysis.6.3.html#1084273" />
     <Topic name="KM_annotation_help" href="PerformingAnalysis.6.4.html#1073490" />
