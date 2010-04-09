@@ -738,52 +738,6 @@ div.Body_Text_KWN
   padding-bottom: 0pt;
 }
 
-div.Body_Text_Newpage
-{
-  color: #000000;
-  font-family: Arial;
-  font-size: 11.0pt;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: normal;
-  margin-bottom: 8.0pt;
-  margin-left: 0pt;
-  margin-right: 0pt;
-  margin-top: 0.0pt;
-  text-align: Left;
-  text-indent: 0pt;
-  text-transform: none;
-  vertical-align: baseline;
-}
-
-.Body_Text_Newpage_outer
-{
-  margin-bottom: 8.0pt;
-  margin-right: 0pt;
-  margin-top: 0.0pt;
-}
-
-.Body_Text_Newpage_inner
-{
-  color: #000000;
-  font-family: Arial;
-  font-size: 11.0pt;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: normal;
-  text-align: Left;
-  text-transform: none;
-  vertical-align: baseline;
-  margin-left: 0pt;
-  margin-right: 0pt;
-  margin-top: 0pt;
-  margin-bottom: 0pt;
-  padding-left: 0pt;
-  padding-right: 0pt;
-  padding-top: 0pt;
-  padding-bottom: 0pt;
-}
-
 div.Body_Text_No_Space
 {
   color: #000000;
@@ -1139,52 +1093,6 @@ div.Callout
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: Left;
-  text-transform: none;
-  vertical-align: baseline;
-  margin-left: 0pt;
-  margin-right: 0pt;
-  margin-top: 0pt;
-  margin-bottom: 0pt;
-  padding-left: 0pt;
-  padding-right: 0pt;
-  padding-top: 0pt;
-  padding-bottom: 0pt;
-}
-
-div.Callout_Large
-{
-  color: #000000;
-  font-family: Arial;
-  font-size: 11.0pt;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: bold;
-  margin-bottom: 0.0pt;
-  margin-left: 0pt;
-  margin-right: 0pt;
-  margin-top: 0.0pt;
-  text-align: Left;
-  text-indent: 0pt;
-  text-transform: none;
-  vertical-align: baseline;
-}
-
-.Callout_Large_outer
-{
-  margin-bottom: 0.0pt;
-  margin-right: 0pt;
-  margin-top: 0.0pt;
-}
-
-.Callout_Large_inner
-{
-  color: #000000;
-  font-family: Arial;
-  font-size: 11.0pt;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: bold;
   text-align: Left;
   text-transform: none;
   vertical-align: baseline;
@@ -2772,52 +2680,6 @@ div.Line_Number
   padding-bottom: 0pt;
 }
 
-div.List_Table_Caption
-{
-  color: #000000;
-  font-family: "Palatino Linotype";
-  font-size: 11.0pt;
-  font-style: italic;
-  font-variant: normal;
-  font-weight: normal;
-  margin-bottom: 13.0pt;
-  margin-left: 0pt;
-  margin-right: 0pt;
-  margin-top: 4.0pt;
-  text-align: Left;
-  text-indent: 54pt;
-  text-transform: none;
-  vertical-align: baseline;
-}
-
-.List_Table_Caption_outer
-{
-  margin-bottom: 13.0pt;
-  margin-right: 0pt;
-  margin-top: 4.0pt;
-}
-
-.List_Table_Caption_inner
-{
-  color: #000000;
-  font-family: "Palatino Linotype";
-  font-size: 11.0pt;
-  font-style: italic;
-  font-variant: normal;
-  font-weight: normal;
-  text-align: Left;
-  text-transform: none;
-  vertical-align: baseline;
-  margin-left: 0pt;
-  margin-right: 0pt;
-  margin-top: 0pt;
-  margin-bottom: 0pt;
-  padding-left: 0pt;
-  padding-right: 0pt;
-  padding-top: 0pt;
-  padding-bottom: 0pt;
-}
-
 div.Mapping_Table_Cell
 {
   color: #000000;
@@ -3376,52 +3238,6 @@ div.Related_Topic
   padding-bottom: 0pt;
 }
 
-div.Roadmap
-{
-  color: #000000;
-  font-family: "Palatino Linotype";
-  font-size: 14.0pt;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: bold;
-  margin-bottom: 3.0pt;
-  margin-left: 0pt;
-  margin-right: 0pt;
-  margin-top: 0.0pt;
-  text-align: Left;
-  text-indent: 0pt;
-  text-transform: none;
-  vertical-align: baseline;
-}
-
-.Roadmap_outer
-{
-  margin-bottom: 3.0pt;
-  margin-right: 0pt;
-  margin-top: 0.0pt;
-}
-
-.Roadmap_inner
-{
-  color: #000000;
-  font-family: "Palatino Linotype";
-  font-size: 14.0pt;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: bold;
-  text-align: Left;
-  text-transform: none;
-  vertical-align: baseline;
-  margin-left: 0pt;
-  margin-right: 0pt;
-  margin-top: 0pt;
-  margin-bottom: 0pt;
-  padding-left: 0pt;
-  padding-right: 0pt;
-  padding-top: 0pt;
-  padding-bottom: 0pt;
-}
-
 div.Run-In
 {
   color: #000000;
@@ -3687,52 +3503,6 @@ div.Table_Caption_Indent_Drop_Down
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: Left;
-  text-transform: none;
-  vertical-align: baseline;
-  margin-left: 0pt;
-  margin-right: 0pt;
-  margin-top: 0pt;
-  margin-bottom: 0pt;
-  padding-left: 0pt;
-  padding-right: 0pt;
-  padding-top: 0pt;
-  padding-bottom: 0pt;
-}
-
-div.Table_Column_Header
-{
-  color: #000000;
-  font-family: Arial;
-  font-size: 9.0pt;
-  font-style: italic;
-  font-variant: normal;
-  font-weight: bold;
-  margin-bottom: 0.0pt;
-  margin-left: 0pt;
-  margin-right: 0pt;
-  margin-top: 0.0pt;
-  text-align: Left;
-  text-indent: 0pt;
-  text-transform: none;
-  vertical-align: baseline;
-}
-
-.Table_Column_Header_outer
-{
-  margin-bottom: 0.0pt;
-  margin-right: 0pt;
-  margin-top: 0.0pt;
-}
-
-.Table_Column_Header_inner
-{
-  color: #000000;
-  font-family: Arial;
-  font-size: 9.0pt;
-  font-style: italic;
-  font-variant: normal;
-  font-weight: bold;
   text-align: Left;
   text-transform: none;
   vertical-align: baseline;
@@ -4365,21 +4135,6 @@ span.Popup
   vertical-align: baseline;
 }
 
-span.PopupTable
-{
-  border-bottom-color: Maroon;
-  border-bottom-style: dotted;
-  border-bottom-width: thin;
-  color: Maroon;
-  font-family: Arial;
-  font-size: 10.0pt;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: normal;
-  text-transform: none;
-  vertical-align: baseline;
-}
-
 span.Red
 {
   color: #ff0000;
@@ -4394,11 +4149,6 @@ span.small_bullet
   font-variant: normal;
   font-weight: normal;
   text-transform: none;
-  vertical-align: super;
-}
-
-span.Superscript
-{
   vertical-align: super;
 }
 
@@ -4418,16 +4168,6 @@ span.TopicJump
 {
   color: #515186;
   font-style: italic;
-}
-
-span.URL
-{
-  color: #0000ff;
-  font-family: Arial;
-  font-variant: normal;
-  text-decoration: underline;
-  text-transform: none;
-  vertical-align: baseline;
 }
 
 table.Table_-_Code_Sample
