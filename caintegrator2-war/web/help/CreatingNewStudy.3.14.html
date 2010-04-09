@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Deploying the Study</title>
+    <title>Uploading Control Samples</title>
     <link rel="StyleSheet" href="css/CreatingNewStudy.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,17 +28,60 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1075829">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.3.html#1075829">Configuring and Deploying a Study</a> &gt; Deploying the Study</div>
+      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1080249">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.5.html#1080249">Working with Annotations – An Overview</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.12.html#1080249">Adding/Editing Genomic Data</a> &gt; Uploading Control Samples </div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading2"><a name="1075829">Deploying the Study</a></div>
-      <div class="Body_Text"><a name="1081471">When you are ready to deploy the study, click the </a><span style="font-weight: bold;">Deploy Study</span> button on the Edit Study page. caIntegrator2 retrieves the selected data from the data service(s) you defined and makes the study available to a study manager or to anyone else who may want to analyze the study’s data. Using the Manage Studies feature, you can then configure and share data queries and data lists with all investigators who access the study. </div>
-      <div class="Body_Text"><a name="1089848">Note that you can continue to work in caIntegrator2 while study is being deployed.</a> See also <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.15.html#1076280', '');">Managing a Study</a></span>.</div>
+      <div class="Heading3"><a name="1080249">Uploading Control Samples </a></div>
+      <div class="Body_Text"><a name="1081202">A Control Samples file is used to calculate fold change data, which compares “tumor” </a>sample gene expression in the caArray experiment to the control samples to identify those that exhibit up or down gene regulation. Control samples can be the “normal” samples, but that is not necessarily the case.</div>
+      <div class="Body_Text"><a name="1081271">To upload the control samples, follow these steps:</a></div>
+      <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081324">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_1_inner"><a name="1081324">On the Edit Sample Mappings page, click the </a><span style="font-weight: bold;">Map Samples</span> link.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1091190">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1091190">Click </a><span style="font-weight: bold;">Browse</span> to navigate for the control samples file, and click the <span style="font-weight: bold;">Upload </span><span style="font-weight: bold;">Control Samples</span> File button. The control sets display at the top of the page once they have been uploaded . </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text_Indent_2"><a name="1091182">The control samples now display toward the bottom of the page.</a></div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1079626">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1079626">This information will be used when performing other tasks in caIntegrator2, to </a>be described in other sections.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
           //
           WWHClearRelatedTopics();
+
+          // Add related topics
+          //
+          WWHAddRelatedTopic("Adding Subject Annotation Data", "caIntegrator2", "CreatingNewStudy.3.8.html#1075197");
+          WWHAddRelatedTopic("Adding Imaging Data", "caIntegrator2", "CreatingNewStudy.3.16.html#1075831");
+          WWHAddRelatedTopic("Managing Platforms", "caIntegrator2", "CreatingNewStudy.3.20.html#1078043");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

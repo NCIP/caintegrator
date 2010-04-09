@@ -1,12 +1,13 @@
 function FileData_Pairs(x)
 {
-x.t("user","using");
+x.t("user","welcome");
 x.t("getting","started");
 x.t("new","caintegrator2");
 x.t("registering","new");
 x.t("obtain","help");
 x.t("logging","application");
 x.t("introduces","general");
+x.t("welcome","caintegrator2");
 x.t("started","caintegrator2");
 x.t("procedures","obtain");
 x.t("workspace","using");
@@ -20,7 +21,6 @@ x.t("application","support");
 x.t("topics","section");
 x.t("general","caintegrator2");
 x.t("using","online");
-x.t("using","caintegrator2");
 x.t("caintegrator2","user");
 x.t("caintegrator2","getting");
 x.t("caintegrator2","registering");

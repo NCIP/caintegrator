@@ -2,8 +2,8 @@ function FileData_Pairs(x)
 {
 x.t("searching","caintegrator2");
 x.t("introduce","caintegrator2");
+x.t("study","welcome");
 x.t("study","viewing");
-x.t("study","using");
 x.t("user","accounts");
 x.t("getting","started");
 x.t("new","study");
@@ -25,7 +25,6 @@ x.t("topics","introduce");
 x.t("administering","user");
 x.t("following","topics");
 x.t("using","online");
-x.t("using","caintegrator2");
 x.t("accounts","using");
 x.t("caintegrator2","study");
 x.t("caintegrator2","getting");

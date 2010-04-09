@@ -43,27 +43,33 @@
     <Document title="About caIntegrator2" href="Getting_Started.2.2.html" />
     <Document title="Registering as a New caIntegrator2 User" href="Getting_Started.2.3.html" />
     <Document title="Logging In" href="Getting_Started.2.4.html" />
-    <Document title="Using the caIntegrator2 Workspace" href="Getting_Started.2.5.html" />
+    <Document title="Welcome to caIntegrator2 Workspace" href="Getting_Started.2.5.html" />
     <Document title="caIntegrator2 Functions" href="Getting_Started.2.6.html" />
-    <Document title="Using Online Help" href="Getting_Started.2.7.html" />
-    <Document title="Logging Out" href="Getting_Started.2.8.html" />
-    <Document title="Application Support" href="Getting_Started.2.9.html" />
+    <Document title="Viewing Existing Studies" href="Getting_Started.2.7.html" />
+    <Document title="Data Dictionary" href="Getting_Started.2.8.html" />
+    <Document title="Using Online Help" href="Getting_Started.2.9.html" />
+    <Document title="Logging Out" href="Getting_Started.2.10.html" />
+    <Document title="Application Support" href="Getting_Started.2.11.html" />
     <Document title="Creating a New Study" href="CreatingNewStudy.3.1.html" />
     <Document title="Creating a Study – Overview" href="CreatingNewStudy.3.2.html" />
     <Document title="Configuring and Deploying a Study" href="CreatingNewStudy.3.3.html" />
     <Document title="Creating/Editing a Study" href="CreatingNewStudy.3.4.html" />
-    <Document title="Adding Clinical Data" href="CreatingNewStudy.3.5.html" />
-    <Document title="Assigning An Identifier or Annotation" href="CreatingNewStudy.3.6.html" />
-    <Document title="Searching for Annotation Definitions" href="CreatingNewStudy.3.7.html" />
-    <Document title="Defining Survival Values" href="CreatingNewStudy.3.8.html" />
-    <Document title="Adding/Editing Genomic Data" href="CreatingNewStudy.3.9.html" />
-    <Document title="Mapping Genomic Data to Clinical Data" href="CreatingNewStudy.3.10.html" />
-    <Document title="Uploading Control Samples" href="CreatingNewStudy.3.11.html" />
-    <Document title="Configuring Copy Number Data" href="CreatingNewStudy.3.12.html" />
-    <Document title="Adding Imaging Data" href="CreatingNewStudy.3.13.html" />
-    <Document title="Deploying the Study" href="CreatingNewStudy.3.14.html" />
-    <Document title="Managing a Study" href="CreatingNewStudy.3.15.html" />
-    <Document title="Managing Platforms" href="CreatingNewStudy.3.16.html" />
+    <Document title="Working with Annotations – An Overview" href="CreatingNewStudy.3.5.html" />
+    <Document title="Adding An Annotation Group" href="CreatingNewStudy.3.6.html" />
+    <Document title="Editing an Annotation Group" href="CreatingNewStudy.3.7.html" />
+    <Document title="Adding Subject Annotation Data" href="CreatingNewStudy.3.8.html" />
+    <Document title="Assigning An Identifier or Annotation" href="CreatingNewStudy.3.9.html" />
+    <Document title="Searching for Annotation Definitions" href="CreatingNewStudy.3.10.html" />
+    <Document title="Defining Survival Values" href="CreatingNewStudy.3.11.html" />
+    <Document title="Adding/Editing Genomic Data" href="CreatingNewStudy.3.12.html" />
+    <Document title="Mapping Genomic Data to Clinical Data" href="CreatingNewStudy.3.13.html" />
+    <Document title="Uploading Control Samples" href="CreatingNewStudy.3.14.html" />
+    <Document title="Configuring Copy Number Data" href="CreatingNewStudy.3.15.html" />
+    <Document title="Adding Imaging Data" href="CreatingNewStudy.3.16.html" />
+    <Document title="Adding External Links" href="CreatingNewStudy.3.17.html" />
+    <Document title="Deploying the Study" href="CreatingNewStudy.3.18.html" />
+    <Document title="Managing a Study" href="CreatingNewStudy.3.19.html" />
+    <Document title="Managing Platforms" href="CreatingNewStudy.3.20.html" />
     <Document title="Searching a caIntegrator2 Study" href="SearchingWithinAStudy.4.1.html" />
     <Document title="Search Overview" href="SearchingWithinAStudy.4.2.html" />
     <Document title="Searching a Study" href="SearchingWithinAStudy.4.3.html" />
@@ -117,31 +123,37 @@
     <Document title="Assigning a User Group to a Protection Group" href="User%20Admin.7.7.html" />
     <Document title="Adding a User to a User Group" href="User%20Admin.7.8.html" />
     <Document title="Changing a User Password" href="User%20Admin.7.9.html" />
-    <Document title="Data Import Configurations" href="appdx%20data%20import.8.1.html" />
-    <Document title="Subject Clinical Data Configuration" href="appdx%20data%20import.8.2.html" />
-    <Document title="Delimited-Text Annotation Import" href="appdx%20data%20import.8.3.html" />
-    <Document title="Annotation Field Configuration" href="appdx%20data%20import.8.4.html" />
-    <Document title="Sample Data Configuration" href="appdx%20data%20import.8.5.html" />
-    <Document title="Genomic Data Configuration" href="appdx%20data%20import.8.6.html" />
-    <Document title="Imaging Data Configuration" href="appdx%20data%20import.8.7.html" />
-    <Document title="NCICB Application Support" href="Application%20Support.9.1.html" />
+    <Document title="Finding Gene Names" href="hidden%20topics.8.1.html" />
+    <Document title="Data Import Configurations" href="appdx%20data%20import.9.1.html" />
+    <Document title="Subject Clinical Data Configuration" href="appdx%20data%20import.9.2.html" />
+    <Document title="Delimited-Text Annotation Import" href="appdx%20data%20import.9.3.html" />
+    <Document title="Annotation Field Configuration" href="appdx%20data%20import.9.4.html" />
+    <Document title="Sample Data Configuration" href="appdx%20data%20import.9.5.html" />
+    <Document title="Genomic Data Configuration" href="appdx%20data%20import.9.6.html" />
+    <Document title="Imaging Data Configuration" href="appdx%20data%20import.9.7.html" />
+    <Document title="Glossary" href="Glossary.10.1.html" />
+    <Document title="Online Help Tips" href="OnlineHelpBoilerplate.11.1.html" />
+    <Document title="NCICB Application Support" href="Application%20Support.12.1.html" />
   </DocumentInfo>
   <TopicMap>
     <Topic name="register_user_help" href="Getting_Started.2.3.html#1141097" />
     <Topic name="login_help" href="Getting_Started.2.4.html#1146398" />
     <Topic name="welcome_help" href="Getting_Started.2.5.html#1127723" />
-    <Topic name="logging_out" href="Getting_Started.2.8.html#1128246" />
+    <Topic name="study_summary_help" href="Getting_Started.2.7.html#1151722" />
+    <Topic name="data_dictionary_help" href="Getting_Started.2.8.html#1155129" />
+    <Topic name="logging_out" href="Getting_Started.2.10.html#1128246" />
     <Topic name="edit_study_help" href="CreatingNewStudy.3.4.html#1073921" />
-    <Topic name="define_fields_help" href="CreatingNewStudy.3.5.html#1075197" />
-    <Topic name="assign_annotations_help" href="CreatingNewStudy.3.6.html#1125074" />
-    <Topic name="search_annotation_definitions_help" href="CreatingNewStudy.3.7.html#1082197" />
-    <Topic name="survival_values_help" href="CreatingNewStudy.3.8.html#1077698" />
-    <Topic name="edit_genomic_data_help" href="CreatingNewStudy.3.9.html#1076975" />
-    <Topic name="edit_sample_mappings_help" href="CreatingNewStudy.3.10.html#1081247" />
-    <Topic name="configure_copy_number_help" href="CreatingNewStudy.3.12.html#1089873" />
-    <Topic name="edit_imaging_data_help" href="CreatingNewStudy.3.13.html#1075831" />
-    <Topic name="manage_study_help" href="CreatingNewStudy.3.15.html#1076280" />
-    <Topic name="manage_platforms_help" href="CreatingNewStudy.3.16.html#1078043" />
+    <Topic name="edit_annotation_group_help" href="CreatingNewStudy.3.7.html#1127752" />
+    <Topic name="define_fields_help" href="CreatingNewStudy.3.8.html#1075197" />
+    <Topic name="assign_annotations_help" href="CreatingNewStudy.3.9.html#1125074" />
+    <Topic name="search_annotation_definitions_help" href="CreatingNewStudy.3.10.html#1082197" />
+    <Topic name="survival_values_help" href="CreatingNewStudy.3.11.html#1077698" />
+    <Topic name="edit_genomic_data_help" href="CreatingNewStudy.3.12.html#1076975" />
+    <Topic name="edit_sample_mappings_help" href="CreatingNewStudy.3.13.html#1081247" />
+    <Topic name="configure_copy_number_help" href="CreatingNewStudy.3.15.html#1089873" />
+    <Topic name="edit_imaging_data_help" href="CreatingNewStudy.3.16.html#1075831" />
+    <Topic name="manage_study_help" href="CreatingNewStudy.3.19.html#1076280" />
+    <Topic name="manage_platforms_help" href="CreatingNewStudy.3.20.html#1078043" />
     <Topic name="search_criteria_help" href="SearchingWithinAStudy.4.3.html#1074305" />
     <Topic name="results_type_tab_help" href="SearchingWithinAStudy.4.6.html#1089375" />
     <Topic name="sorting_tab_help" href="SearchingWithinAStudy.4.7.html#1089355" />
@@ -158,6 +170,6 @@
     <Topic name="GE_plot_clin_queries_help" href="PerformingAnalysis.6.13.html#1077378" />
     <Topic name="KM_gene-expression_help" href="PerformingAnalysis.6.13.html#1114584" />
     <Topic name="gene_pattern_help" href="PerformingAnalysis.6.16.html#1077363" />
-    <Topic name="app_support_help" href="Application%20Support.9.1.html#1069426" />
+    <Topic name="app_support_help" href="Application%20Support.12.1.html#1069426" />
   </TopicMap>
 </WebWorksHelpBook>
