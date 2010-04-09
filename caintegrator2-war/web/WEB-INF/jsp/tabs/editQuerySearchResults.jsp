@@ -103,7 +103,7 @@
                         <s:else>
                             <tr class="even">
                         </s:else>
-                        <td><b><s:property value="reporter.geneSymbols" /></b><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
+                        <td style="white-space:nowrap;"><b><s:property value="reporter.geneSymbols" /></b><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
                             <img src="/caintegrator2/images/ico_info.gif" border="none"/>
                         </a></td>
                         <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
@@ -128,7 +128,7 @@
                     <td/><td/>
                     <th>Gene</th>
                     <s:iterator value="genomicDataQueryResult.filteredRowCollection" status="status">
-                        <td>
+                        <td style="white-space:nowrap;">
                             <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
                                 <b><s:property value="reporter.geneSymbols" /></b>&nbsp;
                                 <a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
