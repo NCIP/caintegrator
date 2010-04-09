@@ -6,7 +6,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('welcome_help')" class="help">
+    <div class="tabhelp" style="margin-right: 0.5em;margin-top: 1.75em;"><a href="javascript:openHelpWindowWithNavigation('welcome_help')" class="help">
    &nbsp;</a>
     </div>
 
@@ -15,6 +15,7 @@
     <!--ADD CONTENT HERE-->
     
     <s:actionerror/>
+    <br></br>
     <div class="box">
     <h2 class="darker" style="padding: 6px 10px;">Welcome to caIntegrator2 </h2>
     
