@@ -6,7 +6,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('welcome_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('study_summary_help')" class="help">
    &nbsp;</a>
     </div>
 
