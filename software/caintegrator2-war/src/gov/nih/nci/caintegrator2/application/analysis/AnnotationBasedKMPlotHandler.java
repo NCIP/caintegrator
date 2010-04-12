@@ -146,6 +146,7 @@ class AnnotationBasedKMPlotHandler extends AbstractKMPlotHandler {
                         getStudySubscription());
         retrieveSubjectSurvivalData(groupAnnotationField, subjectRows, subjectGroupCollection);
         filterGroupsWithoutSurvivalData(configuration, subjectGroupCollection);
+        configuration.setDurationLabel(getDurationLabel());
         return kmPlotService.generatePlot(configuration);
     }
 

@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -589,25 +590,47 @@ public final class Cai2Util {
     */
    public static void validateSurvivalValueDefinition(SurvivalValueDefinition survivalValueDefinition) 
    throws InvalidSurvivalValueDefinitionException {
-       if (survivalValueDefinition.getSurvivalStartDate() == null
-            || survivalValueDefinition.getDeathDate() == null 
-            || survivalValueDefinition.getLastFollowupDate() == null) {
-           throw new InvalidSurvivalValueDefinitionException("Must have a Start Date, Death Date, and Last Followup " 
-                   + " Date defined for definition '" + survivalValueDefinition.getName() + "'.");
-       }
-       if (survivalValueDefinition.getSurvivalStartDate() == survivalValueDefinition.getDeathDate()
-           || survivalValueDefinition.getSurvivalStartDate() == survivalValueDefinition.getLastFollowupDate() 
-           || survivalValueDefinition.getLastFollowupDate() == survivalValueDefinition.getDeathDate()) {
-           throw new InvalidSurvivalValueDefinitionException("Start Date, Death Date, and Last Followup " 
-                   + " Date must be unique for definition '" + survivalValueDefinition.getName() + "'.");
-       }
-       if (!AnnotationTypeEnum.DATE.equals(survivalValueDefinition.getSurvivalStartDate().getDataType())
-           || !AnnotationTypeEnum.DATE.equals(survivalValueDefinition.getDeathDate().getDataType())
-           || !AnnotationTypeEnum.DATE.equals(survivalValueDefinition.getLastFollowupDate().getDataType())) {
-           throw new InvalidSurvivalValueDefinitionException("Start Date, Death Date, and Last Followup "
-                   + " Date must all be a 'DATE' type for definition '" + survivalValueDefinition.getName() + "'.");
+       if (SurvivalValueTypeEnum.DATE.equals(survivalValueDefinition.getSurvivalValueType())) {
+           validateDateTypeSurvivalValueDefinition(survivalValueDefinition);
+       } else if (SurvivalValueTypeEnum.LENGTH_OF_TIME.equals(survivalValueDefinition.getSurvivalValueType())) {
+           validateLengthTypeSurvivalValueDefinition(survivalValueDefinition);
        }
    }
+
+   private static void validateLengthTypeSurvivalValueDefinition(SurvivalValueDefinition survivalValueDefinition)
+       throws InvalidSurvivalValueDefinitionException {
+       if (survivalValueDefinition.getSurvivalLength() == null) {
+           throw new InvalidSurvivalValueDefinitionException(
+                "Must have a Survival Length defined for definition.");
+       }
+       if (survivalValueDefinition.getSurvivalStatus() != null
+               && StringUtils.isBlank(survivalValueDefinition.getValueForCensored())) {
+           throw new InvalidSurvivalValueDefinitionException("'Value for Censored' cannot be blank.");
+       }
+   }
+   
+   private static void validateDateTypeSurvivalValueDefinition(SurvivalValueDefinition survivalValueDefinition)
+        throws InvalidSurvivalValueDefinitionException {
+        if (survivalValueDefinition.getSurvivalStartDate() == null
+                || survivalValueDefinition.getDeathDate() == null 
+                || survivalValueDefinition.getLastFollowupDate() == null) {
+               throw new InvalidSurvivalValueDefinitionException(
+                       "Must have a Start Date, Death Date, and Last Followup " 
+                       + " Date defined for definition '" + survivalValueDefinition.getName() + "'.");
+           }
+           if (survivalValueDefinition.getSurvivalStartDate() == survivalValueDefinition.getDeathDate()
+               || survivalValueDefinition.getSurvivalStartDate() == survivalValueDefinition.getLastFollowupDate() 
+               || survivalValueDefinition.getLastFollowupDate() == survivalValueDefinition.getDeathDate()) {
+               throw new InvalidSurvivalValueDefinitionException("Start Date, Death Date, and Last Followup " 
+                       + " Date must be unique for definition '" + survivalValueDefinition.getName() + "'.");
+           }
+           if (!AnnotationTypeEnum.DATE.equals(survivalValueDefinition.getSurvivalStartDate().getDataType())
+               || !AnnotationTypeEnum.DATE.equals(survivalValueDefinition.getDeathDate().getDataType())
+               || !AnnotationTypeEnum.DATE.equals(survivalValueDefinition.getLastFollowupDate().getDataType())) {
+               throw new InvalidSurvivalValueDefinitionException("Start Date, Death Date, and Last Followup "
+                       + " Date must all be a 'DATE' type for definition '" + survivalValueDefinition.getName() + "'.");
+           }
+    }
    
    /**
     * Validates the given SurvivalvalueDefinitions and only returns valid ones.

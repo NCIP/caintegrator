@@ -90,6 +90,13 @@
         <tr>
             <td />
             <td><b><i><s:property value="name"/></i></b></td>    
+            <td> Type: </td>
+            <td> <b><s:property value="survivalValueType.value"/> </b></td>
+        </tr>
+        <s:if test="%{'By Date'.equals(survivalValueType.value)}">
+        <tr>
+            <td />
+            <td />
             <td> Start: </td>
             <td> <b><s:property value="survivalStartDate.displayName"/> </b></td>
         </tr>
@@ -105,6 +112,35 @@
             <td> Last Followup: </td>
             <td> <b><s:property value="lastFollowupDate.displayName"/> </b></td>
         </tr>
+        </s:if>
+        <s:else>
+        <tr>
+            <td />
+            <td />
+            <td> Survival Length: </td>
+            <td> <b><s:property value="survivalLength.displayName"/> </b></td>
+        </tr>
+        <tr>
+            <td />
+            <td />
+            <td> Survival Length Units: </td>
+            <td> <b><s:property value="survivalLengthUnits.value"/> </b></td>
+        </tr>
+        <s:if test="%{survivalStatus != null}">
+        <tr>
+            <td />
+            <td />
+            <td> Survival Status: </td>
+            <td> <b><s:property value="survivalStatus.displayName"/> </b></td>
+        </tr>
+        <tr>
+            <td />
+            <td />
+            <td> Value For Censored: </td>
+            <td> <b><s:property value="valueForCensored"/> </b></td>
+        </tr>
+        </s:if>
+        </s:else>
         </s:iterator>
         </s:else>
         <s:if test="studySummary.genomicStudy" >
