@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.analysis;
 import java.util.ArrayList;
 import java.util.List;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 
 /**
@@ -120,12 +121,10 @@ public abstract class AbstractKMParameters {
             getErrorMessages().add("Must select a valid Survival Value Definition.");
             isValid = false;
         } else {
-            if (getSurvivalValueDefinition().getSurvivalStartDate() == null 
-                 || getSurvivalValueDefinition().getDeathDate() == null
-                 || getSurvivalValueDefinition().getLastFollowupDate() == null
-                 ) {
-                getErrorMessages().add("Survival Value Definition '" + getSurvivalValueDefinition().getName() 
-                               + "' must have a " + "Start Date, Death Date, and Last Followup Date definied.");
+            try {
+                Cai2Util.validateSurvivalValueDefinition(getSurvivalValueDefinition());
+            } catch (InvalidSurvivalValueDefinitionException e) {
+                getErrorMessages().add(e.getMessage());
                 isValid = false;
             }
         }

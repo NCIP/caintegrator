@@ -86,10 +86,12 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueTypeEnum;
 
 /**
  * Since s:select items have to link back to a String, these are placeholders for that on the form.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // See load()
 public class DefineSurvivalDefinitionActionForm {
     
     private String survivalValueDefinitionId;
@@ -97,6 +99,11 @@ public class DefineSurvivalDefinitionActionForm {
     private String survivalStartDateId;
     private String survivalDeathDateId;
     private String lastFollowupDateId;
+    private String survivalValueType;
+    private String survivalLengthId;
+    private String survivalLengthUnits;
+    private String survivalStatusId;
+    private String valueForCensored;
     
     
     /**
@@ -161,13 +168,78 @@ public class DefineSurvivalDefinitionActionForm {
     }
     
     /**
+     * @return the survivalValueType
+     */
+    public String getSurvivalValueType() {
+        return survivalValueType;
+    }
+    /**
+     * @param survivalValueType the survivalValueType to set
+     */
+    public void setSurvivalValueType(String survivalValueType) {
+        this.survivalValueType = survivalValueType;
+    }
+    /**
+     * @return the survivalLengthId
+     */
+    public String getSurvivalLengthId() {
+        return survivalLengthId;
+    }
+    /**
+     * @param survivalLengthId the survivalLengthId to set
+     */
+    public void setSurvivalLengthId(String survivalLengthId) {
+        this.survivalLengthId = survivalLengthId;
+    }
+    /**
+     * @return the survivalLengthUnits
+     */
+    public String getSurvivalLengthUnits() {
+        return survivalLengthUnits;
+    }
+    /**
+     * @param survivalLengthUnits the survivalLengthUnits to set
+     */
+    public void setSurvivalLengthUnits(String survivalLengthUnits) {
+        this.survivalLengthUnits = survivalLengthUnits;
+    }
+    /**
+     * @return the survivalStatusId
+     */
+    public String getSurvivalStatusId() {
+        return survivalStatusId;
+    }
+    /**
+     * @param survivalStatusId the survivalStatusId to set
+     */
+    public void setSurvivalStatusId(String survivalStatusId) {
+        this.survivalStatusId = survivalStatusId;
+    }
+    /**
+     * @return the valueForCensored
+     */
+    public String getValueForCensored() {
+        return valueForCensored;
+    }
+    /**
+     * @param valueForCensored the valueForCensored to set
+     */
+    public void setValueForCensored(String valueForCensored) {
+        this.valueForCensored = valueForCensored;
+    }
+    /**
      * Clears all the variables to null.
      */
     public void clear() {
+        setSurvivalValueType(SurvivalValueTypeEnum.DATE.getValue());
         survivalValueDefinitionId = null;
         survivalStartDateId = null;
         survivalDeathDateId = null;
         lastFollowupDateId = null;
+        survivalLengthId = null;
+        survivalLengthUnits = null;
+        survivalStatusId = null;
+        valueForCensored = null;
     }
     
     /**
@@ -178,6 +250,7 @@ public class DefineSurvivalDefinitionActionForm {
         if (survivalValueDefinition != null) {
             setSurvivalValueDefinitionId(String.valueOf(survivalValueDefinition.getId()));
             setSurvivalValueDefinitionName(survivalValueDefinition.getName());
+            setSurvivalValueType(survivalValueDefinition.getSurvivalValueType().getValue());
             if (survivalValueDefinition.getSurvivalStartDate() != null) {
                 setSurvivalStartDateId(String.valueOf(survivalValueDefinition.getSurvivalStartDate().getId()));
             }
@@ -187,6 +260,16 @@ public class DefineSurvivalDefinitionActionForm {
             if (survivalValueDefinition.getLastFollowupDate() != null) {
                 setLastFollowupDateId(String.valueOf(survivalValueDefinition.getLastFollowupDate().getId()));
             }
+            if (survivalValueDefinition.getSurvivalLength() != null) {
+                setSurvivalLengthId(String.valueOf(survivalValueDefinition.getSurvivalLength().getId()));
+            }
+            if (survivalValueDefinition.getSurvivalStatus() != null) {
+                setSurvivalStatusId(String.valueOf(survivalValueDefinition.getSurvivalStatus().getId()));
+            }
+            if (survivalValueDefinition.getSurvivalLengthUnits() != null) {
+                setSurvivalLengthUnits(survivalValueDefinition.getSurvivalLengthUnits().getValue());
+            }
+            setValueForCensored(survivalValueDefinition.getValueForCensored());
         }
     }
     

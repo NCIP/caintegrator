@@ -51,23 +51,57 @@
                 <s:else>
                 <h1>Properties for New Survival Value Definition</h1>
                 </s:else>
-                <s:form>
+                <s:form name="editSurvivalDefinitionForm" theme="css_xhtml">
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="survivalValueDefinition.id" />
-                    <s:textfield label="Name" name="survivalDefinitionFormValues.survivalValueDefinitionName" />
-                    <s:select name="survivalDefinitionFormValues.survivalStartDateId" 
-                              list="dateAnnotationDefinitions" 
-                              listValue="value.displayName" label = "Survival Start Date" />
-                              
-                    <s:select name="survivalDefinitionFormValues.survivalDeathDateId" 
-                              list="dateAnnotationDefinitions" 
-                              listValue="value.displayName" label = "Death Date" />
-                              
-                    <s:select name="survivalDefinitionFormValues.lastFollowupDateId" 
-                              list="dateAnnotationDefinitions" 
-                              listValue="value.displayName" label = "Last Followup Date" />
-                              
-                    <s:submit value="Save" action="saveSurvivalValueDefinition" />
+                    <br />
+		            <s:div cssStyle="padding: 1em 0 0 0;">
+		                <s:div cssClass="wwlbl"><label class="label">Survival Definition Type: </label></s:div>
+		                <s:div>
+		                    <s:radio theme="css_xhtml" name="survivalDefinitionFormValues.survivalValueType" list="#{'By Date':'By Date'}" onclick="document.getElementById('lengthOfTimeInputParams').style.display = 'none'; document.getElementById('dateInputParams').style.display = 'block';" />
+		                    <s:radio theme="css_xhtml" name="survivalDefinitionFormValues.survivalValueType" list="#{'By Length of time in study':'By Length of time in study'}" onclick="document.getElementById('dateInputParams').style.display = 'none'; document.getElementById('lengthOfTimeInputParams').style.display = 'block';" />
+		                </s:div>
+		            </s:div>
+		            <br />
+                    <s:textfield label="Name" name="survivalDefinitionFormValues.survivalValueDefinitionName" required="true"/>
+                    
+                    <s:div id="dateInputParams" cssStyle="%{dateInputCssStyle}">
+	                    <s:select name="survivalDefinitionFormValues.survivalStartDateId" 
+	                              list="dateAnnotationDefinitions" 
+	                              listValue="value.displayName" label = "Survival Start Date" required="true"/>
+	                              
+	                    <s:select name="survivalDefinitionFormValues.survivalDeathDateId" 
+	                              list="dateAnnotationDefinitions" 
+	                              listValue="value.displayName" label = "Death Date" required="true"/>
+	                              
+	                    <s:select name="survivalDefinitionFormValues.lastFollowupDateId" 
+	                              list="dateAnnotationDefinitions" 
+	                              listValue="value.displayName" label = "Last Followup Date" required="true"/>
+                    </s:div>
+                    <s:div id="lengthOfTimeInputParams" cssStyle="%{lengthOfTimeInputCssStyle}">
+                        <s:select name="survivalDefinitionFormValues.survivalLengthId"
+                                  list="numericAnnotationDefinitions"
+                                  listValue="value.displayName" label = "Survival Length" 
+                                  headerKey="" headerValue="" required="true"/>
+                        <s:select name="survivalDefinitionFormValues.survivalLengthUnits"
+                                  list="@gov.nih.nci.caintegrator2.domain.annotation.SurvivalLengthUnitsEnum@getDisplayableValues()" 
+                                  label="Survival Length Units" required="true"/>
+                        <s:select name="survivalDefinitionFormValues.survivalStatusId" 
+                                  list="survivalStatusAnnotationDefinitions"
+                                  listValue="value.displayName" label="Censored Status" onchange="document.editSurvivalDefinitionForm.action='updateSurvivalStatusValues.action'; document.editSurvivalDefinitionForm.submit();"
+                                  headerKey="" headerValue=""/>
+                          <s:select name="survivalDefinitionFormValues.valueForCensored"
+                                  list="survivalStatusValues" label="Value for Censored"
+                                  headerKey="" headerValue=""/>
+                    </s:div>
+                    
+                    <div style="position: relative; white-space: nowrap;">
+					<div class="wwlbl" id="wwlbl_webServiceUrl"><label class="label" for="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId"></label>
+					</div>
+					<div class="wwctrl" id="wwlbl_webServiceUrl">
+					   <s:submit value="Save" action="saveSurvivalValueDefinition" />
+					</div>
+					</div>
                 </s:form>
                 </s:if>
     

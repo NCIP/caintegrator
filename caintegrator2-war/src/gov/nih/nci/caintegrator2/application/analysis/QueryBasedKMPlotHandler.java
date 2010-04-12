@@ -132,6 +132,7 @@ class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
         Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
         retrieveSubjectGroups(getStudySubscription(), subjectGroupCollection);
         filterGroupsWithoutSurvivalData(configuration, subjectGroupCollection);
+        configuration.setDurationLabel(getDurationLabel());
         return kmPlotService.generatePlot(configuration);
     }
 
