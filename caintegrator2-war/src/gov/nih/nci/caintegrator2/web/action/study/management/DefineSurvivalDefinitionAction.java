@@ -90,10 +90,16 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalLengthUnitsEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -107,13 +113,16 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
     
     private static final long serialVersionUID = 1L;
     private SurvivalValueDefinition survivalValueDefinition = new SurvivalValueDefinition();
-    private AnnotationDefinition survivalStartDate = new AnnotationDefinition();
-    private AnnotationDefinition survivalDeathDate = new AnnotationDefinition();
-    private AnnotationDefinition lastFollowupDate = new AnnotationDefinition();
+    
     private Map<String, AnnotationDefinition> dateAnnotationDefinitions = 
+                                                new HashMap<String, AnnotationDefinition>();
+    private Map<String, AnnotationDefinition> numericAnnotationDefinitions = 
+                                                new HashMap<String, AnnotationDefinition>();
+    private Map<String, AnnotationDefinition> survivalStatusAnnotationDefinitions = 
                                                 new HashMap<String, AnnotationDefinition>();
     private Map<String, SurvivalValueDefinition> survivalValueDefinitions = 
                                                 new HashMap<String, SurvivalValueDefinition>();
+    private List<String> survivalStatusValues = new ArrayList<String>();
     private DefineSurvivalDefinitionActionForm survivalDefinitionFormValues = new DefineSurvivalDefinitionActionForm();
     private String actionType = "";
     private boolean newDefinition = false;
@@ -128,13 +137,16 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
             addActionError("Must select a Survival Value Definition before edit / delete.");
         }
         actionType = "";
-        validateThreeDateFields();
+        validateStudyHasValidAnnotations();
     }
 
-    private void validateThreeDateFields() {
-        if (getStudy().getAllVisibleAnnotationFieldDescriptors(EntityTypeEnum.SUBJECT, AnnotationTypeEnum.DATE)
-                .size() < 3) {
-            addActionError("Study must have at least 3 different date fields for subject annotations.");
+    private void validateStudyHasValidAnnotations() {
+        if (getStudy().getAllVisibleAnnotationFieldDescriptors(
+                EntityTypeEnum.SUBJECT, AnnotationTypeEnum.DATE).size() < 3
+                && getStudy().getAllVisibleAnnotationFieldDescriptors(EntityTypeEnum.SUBJECT,
+                        AnnotationTypeEnum.NUMERIC).isEmpty()) {
+            addActionError("Study must have at least 3 different date fields OR 1 numeric "
+                    + "field for subject annotations.");
         }
     }
     
@@ -146,9 +158,22 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
         super.prepare();
         populateSurvivalValueDefinitions();
         populateDateAnnotationDefinitions();
+        populateNumericAnnotationDefinitions();
+        populateSurvivalStatusAnnotationDefinitions();
+        refreshExistingSurvivalDefinition();
         retrieveFormValues();
         refreshObjectInstances();
+        updateSurvivalStatus();
         newDefinition = false;
+    }
+
+    private void refreshExistingSurvivalDefinition() {
+        if (!StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalValueDefinitionId())) {
+            survivalValueDefinition.setId(Long.valueOf(survivalDefinitionFormValues.getSurvivalValueDefinitionId()));
+        }
+        if (survivalValueDefinition.getId() != null) {
+            survivalValueDefinition = getStudyManagementService().getRefreshedEntity(survivalValueDefinition);
+        }
     }
 
     private void populateSurvivalValueDefinitions() {
@@ -175,40 +200,124 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
         }
     }
     
+    private void populateNumericAnnotationDefinitions() {
+        if (numericAnnotationDefinitions.isEmpty()) {
+            numericAnnotationDefinitions = new HashMap<String, AnnotationDefinition>();
+            for (AnnotationFieldDescriptor descriptor : getStudy().getAllVisibleAnnotationFieldDescriptors(
+                    EntityTypeEnum.SUBJECT, AnnotationTypeEnum.NUMERIC)) {
+                numericAnnotationDefinitions
+                        .put(descriptor.getDefinition().getId().toString(), descriptor.getDefinition());
+            }
+        }
+    }
+    
+    private void populateSurvivalStatusAnnotationDefinitions() {
+        if (survivalStatusAnnotationDefinitions.isEmpty()) {
+            survivalStatusAnnotationDefinitions = new HashMap<String, AnnotationDefinition>();
+            for (AnnotationFieldDescriptor descriptor : getStudy().getAllVisibleAnnotationFieldDescriptors(
+                    EntityTypeEnum.SUBJECT, null)) {
+                if (!descriptor.getDefinition().getPermissibleValueCollection().isEmpty()) {
+                    survivalStatusAnnotationDefinitions
+                        .put(descriptor.getDefinition().getId().toString(), descriptor.getDefinition());
+                }
+            }
+        }
+    }
+    
+    @SuppressWarnings("PMD.NPathComplexity") // Null checks.
     private void refreshObjectInstances() {
-        if (survivalValueDefinition.getId() != null) {
-            survivalValueDefinition = getStudyManagementService().getRefreshedEntity(survivalValueDefinition);
+        if (survivalValueDefinition.getSurvivalStartDate() != null
+            && survivalValueDefinition.getSurvivalStartDate().getId() != null) {
+            survivalValueDefinition.setSurvivalStartDate(getStudyManagementService().
+                    getRefreshedEntity(survivalValueDefinition.getSurvivalStartDate()));
         }
         
-        if (survivalStartDate.getId() != null) {
-            survivalStartDate = getStudyManagementService().getRefreshedEntity(survivalStartDate);
+        if (survivalValueDefinition.getDeathDate() != null
+            && survivalValueDefinition.getDeathDate().getId() != null) {
+            survivalValueDefinition.setDeathDate(getStudyManagementService().
+                    getRefreshedEntity(survivalValueDefinition.getDeathDate()));
         }
         
-        if (survivalDeathDate.getId() != null) {
-            survivalDeathDate = getStudyManagementService().getRefreshedEntity(survivalDeathDate);
+        if (survivalValueDefinition.getLastFollowupDate() != null
+            && survivalValueDefinition.getLastFollowupDate().getId() != null) {
+            survivalValueDefinition.setLastFollowupDate(getStudyManagementService().
+                    getRefreshedEntity(survivalValueDefinition.getLastFollowupDate()));
         }
-        
-        if (lastFollowupDate.getId() != null) {
-            lastFollowupDate = getStudyManagementService().getRefreshedEntity(lastFollowupDate);
+        if (survivalValueDefinition.getSurvivalLength() != null
+            && survivalValueDefinition.getSurvivalLength().getId() != null) {
+            survivalValueDefinition.setSurvivalLength(getStudyManagementService().
+                    getRefreshedEntity(survivalValueDefinition.getSurvivalLength()));
+        }
+        if (survivalValueDefinition.getSurvivalStatus() != null
+            && survivalValueDefinition.getSurvivalStatus().getId() != null) {
+            survivalValueDefinition.setSurvivalStatus(getStudyManagementService().
+                    getRefreshedEntity(survivalValueDefinition.getSurvivalStatus()));
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Null and empty checks
+    /**
+     * Updates values to show user for survival status.
+     * @return struts result.
+     */
+    public String updateSurvivalStatusValues() {
+        checkNullFormValues();
+        updateSurvivalStatus();
+        if (survivalValueDefinition.getId() == null) {
+            newDefinition = true;
+        }
+        return SUCCESS;
+    }
+
+    private void checkNullFormValues() {
+        if (StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalStatusId())) {
+            survivalValueDefinition.setSurvivalStatus(null);
+        }
+        if (StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalLengthId())) {
+            survivalValueDefinition.setSurvivalLength(null);
+        }
+    }
+
+    private void updateSurvivalStatus() {
+        survivalStatusValues.clear();
+        if (survivalValueDefinition.getSurvivalStatus() != null) {
+            for (PermissibleValue pv : survivalValueDefinition.getSurvivalStatus().getPermissibleValueCollection()) {
+                survivalStatusValues.add(pv.getValue());
+            }
+            Collections.sort(survivalStatusValues);
+        }
+    }
+
+    // Null and empty checks
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.ExcessiveMethodLength" }) 
     private void retrieveFormValues() {
-        if (!StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalValueDefinitionId())) {
-            survivalValueDefinition.setId(Long.valueOf(survivalDefinitionFormValues.getSurvivalValueDefinitionId()));
-        }
-        if (!StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalValueDefinitionName())) {
-            survivalValueDefinition.setName(survivalDefinitionFormValues.getSurvivalValueDefinitionName());
-        }
         if (!StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalStartDateId())) {
-            survivalStartDate.setId(Long.valueOf(survivalDefinitionFormValues.getSurvivalStartDateId()));
-        }
+            survivalValueDefinition.setSurvivalStartDate(new AnnotationDefinition());
+            survivalValueDefinition.getSurvivalStartDate().setId(
+                    Long.valueOf(survivalDefinitionFormValues.getSurvivalStartDateId()));
+        } 
         if (!StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalDeathDateId())) {
-            survivalDeathDate.setId(Long.valueOf(survivalDefinitionFormValues.getSurvivalDeathDateId()));
-        }
+            survivalValueDefinition.setDeathDate(new AnnotationDefinition());
+            survivalValueDefinition.getDeathDate().setId(
+                    Long.valueOf(survivalDefinitionFormValues.getSurvivalDeathDateId()));
+        } 
         if (!StringUtils.isBlank(survivalDefinitionFormValues.getLastFollowupDateId())) {
-            lastFollowupDate.setId(Long.valueOf(survivalDefinitionFormValues.getLastFollowupDateId()));
+            survivalValueDefinition.setLastFollowupDate(new AnnotationDefinition());
+            survivalValueDefinition.getLastFollowupDate().setId(
+                    Long.valueOf(survivalDefinitionFormValues.getLastFollowupDateId()));
+        } 
+        if (!StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalLengthId())) {
+            survivalValueDefinition.setSurvivalLength(new AnnotationDefinition());
+            survivalValueDefinition.getSurvivalLength().setId(
+                    Long.valueOf(survivalDefinitionFormValues.getSurvivalLengthId()));
+        } 
+        if (!StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalStatusId())) {
+            survivalValueDefinition.setSurvivalStatus(new AnnotationDefinition());
+            survivalValueDefinition.getSurvivalStatus().setId(
+                    Long.valueOf(survivalDefinitionFormValues.getSurvivalStatusId()));
+        } 
+        if (!StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalLengthUnits())) {
+            survivalValueDefinition.setSurvivalLengthUnits(SurvivalLengthUnitsEnum
+                    .getByValue(survivalDefinitionFormValues.getSurvivalLengthUnits()));
         }
     }
 
@@ -241,6 +350,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
      */
     public String editSurvivalValueDefinition() {
         survivalDefinitionFormValues.load(survivalValueDefinition);
+        updateSurvivalStatus();
         return SUCCESS;
     }
     
@@ -277,10 +387,8 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
      * @return the Struts result.
      */
     public String saveSurvivalValueDefinition() {
-        survivalValueDefinition.setSurvivalStartDate(survivalStartDate);
-        survivalValueDefinition.setDeathDate(survivalDeathDate);
-        survivalValueDefinition.setLastFollowupDate(lastFollowupDate);
-        survivalValueDefinition.setName(survivalDefinitionFormValues.getSurvivalValueDefinitionName());
+        setSurvivalValueDefinitionValues();
+        
         try {
             validateSurvivalValueDefinition();
         } catch (InvalidSurvivalValueDefinitionException e) {
@@ -297,6 +405,31 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
         setLastModifiedByCurrentUser();
         survivalDefinitionFormValues.clear();
         return SUCCESS;
+    }
+
+    /**
+     * 
+     */
+    private void setSurvivalValueDefinitionValues() {
+        survivalValueDefinition.setName(survivalDefinitionFormValues.getSurvivalValueDefinitionName());
+        survivalValueDefinition.setSurvivalValueType(SurvivalValueTypeEnum.getByValue(survivalDefinitionFormValues
+                .getSurvivalValueType()));
+        if (SurvivalValueTypeEnum.DATE.equals(survivalValueDefinition.getSurvivalValueType())) {
+            survivalValueDefinition.setSurvivalLength(null);
+            survivalValueDefinition.setSurvivalLengthUnits(null);
+            survivalValueDefinition.setSurvivalStatus(null);
+            survivalValueDefinition.setValueForCensored(null);
+        }
+        if (SurvivalValueTypeEnum.LENGTH_OF_TIME.equals(survivalValueDefinition.getSurvivalValueType())) {
+            survivalValueDefinition.setSurvivalStartDate(null);
+            survivalValueDefinition.setDeathDate(null);
+            survivalValueDefinition.setLastFollowupDate(null);
+            survivalValueDefinition.setValueForCensored(survivalDefinitionFormValues.getValueForCensored());
+            survivalValueDefinition.setSurvivalLengthUnits(SurvivalLengthUnitsEnum.getByValue(
+                    survivalDefinitionFormValues.getSurvivalLengthUnits()));
+            checkNullFormValues();
+        }
+        
     }
 
     /**
@@ -391,10 +524,71 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
     }
 
     /**
+     * @return the numericAnnotationDefinitions
+     */
+    public Map<String, AnnotationDefinition> getNumericAnnotationDefinitions() {
+        return numericAnnotationDefinitions;
+    }
+
+    /**
+     * @param numericAnnotationDefinitions the numericAnnotationDefinitions to set
+     */
+    public void setNumericAnnotationDefinitions(Map<String, AnnotationDefinition> numericAnnotationDefinitions) {
+        this.numericAnnotationDefinitions = numericAnnotationDefinitions;
+    }
+
+    /**
+     * @return the survivalStatusAnnotationDefinitions
+     */
+    public Map<String, AnnotationDefinition> getSurvivalStatusAnnotationDefinitions() {
+        return survivalStatusAnnotationDefinitions;
+    }
+
+    /**
+     * @param survivalStatusAnnotationDefinitions the survivalStatusAnnotationDefinitions to set
+     */
+    public void setSurvivalStatusAnnotationDefinitions(
+            Map<String, AnnotationDefinition> survivalStatusAnnotationDefinitions) {
+        this.survivalStatusAnnotationDefinitions = survivalStatusAnnotationDefinitions;
+    }
+
+    /**
+     * @return the survivalStatusValues
+     */
+    public List<String> getSurvivalStatusValues() {
+        return survivalStatusValues;
+    }
+
+    /**
+     * @param survivalStatusValues the survivalStatusValues to set
+     */
+    public void setSurvivalStatusValues(List<String> survivalStatusValues) {
+        this.survivalStatusValues = survivalStatusValues;
+    }
+
+    /**
      * @return the newSurvivalValueDefinition
      */
     public boolean isNewDefinition() {
         return newDefinition;
+    }
+    
+    /**
+     * 
+     * @return css style value.
+     */
+    public String getDateInputCssStyle() {
+        return SurvivalValueTypeEnum.DATE.getValue().equals(survivalDefinitionFormValues.getSurvivalValueType()) 
+            ? "display: block;" : "display: none;";
+    }
+    
+    /**
+     * 
+     * @return css style value.
+     */
+    public String getLengthOfTimeInputCssStyle() {
+        return SurvivalValueTypeEnum.LENGTH_OF_TIME.getValue().equals(
+                survivalDefinitionFormValues.getSurvivalValueType()) ? "display: block;" : "display: none;";
     }
 
 }

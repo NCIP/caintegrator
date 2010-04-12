@@ -312,4 +312,8 @@
         <comment>Configure Affymetrix SNP study.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.25.sql"/>
     </changeSet>
+    <changeSet id="1.1.26" author="tandrews">
+    <comment>Update survival value definitions to have survival lengths as well as dates.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.26.sql"/>
+    </changeSet>
 </databaseChangeLog>

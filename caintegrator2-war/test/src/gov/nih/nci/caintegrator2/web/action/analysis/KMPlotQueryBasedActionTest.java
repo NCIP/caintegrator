@@ -207,8 +207,11 @@ public class KMPlotQueryBasedActionTest extends AbstractSessionBasedTest {
         action.getKmPlotParameters().setSurvivalValueDefinition(new SurvivalValueDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().setId(Long.valueOf(1));
         action.getKmPlotParameters().getSurvivalValueDefinition().setSurvivalStartDate(new AnnotationDefinition());
+        action.getKmPlotParameters().getSurvivalValueDefinition().getSurvivalStartDate().setDataType(AnnotationTypeEnum.DATE);
         action.getKmPlotParameters().getSurvivalValueDefinition().setDeathDate(new AnnotationDefinition());
+        action.getKmPlotParameters().getSurvivalValueDefinition().getDeathDate().setDataType(AnnotationTypeEnum.DATE);
         action.getKmPlotParameters().getSurvivalValueDefinition().setLastFollowupDate(new AnnotationDefinition());
+        action.getKmPlotParameters().getSurvivalValueDefinition().getLastFollowupDate().setDataType(AnnotationTypeEnum.DATE);
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
         assertTrue(analysisServiceStub.createKMPlotCalled);
         

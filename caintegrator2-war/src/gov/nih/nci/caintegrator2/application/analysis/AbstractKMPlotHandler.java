@@ -96,12 +96,17 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalLengthUnitsEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.Calendar;
 import java.util.Collection;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Abstract class representing a Handler for KM Plot creation.
@@ -166,8 +171,29 @@ abstract class AbstractKMPlotHandler {
             }
         }
     }
+    
+    protected String getDurationLabel() {
+        if (SurvivalValueTypeEnum.LENGTH_OF_TIME.equals(survivalValueDefinition.getSurvivalValueType())) {
+            if (SurvivalLengthUnitsEnum.DAYS.equals(survivalValueDefinition.getSurvivalLengthUnits())) {
+                return KMPlotConfiguration.DAYS_DURATION_LABEL;
+            } else if (SurvivalLengthUnitsEnum.WEEKS.equals(survivalValueDefinition.getSurvivalLengthUnits())) {
+                return KMPlotConfiguration.WEEKS_DURATION_LABEL;
+            }
+        }
+        return KMPlotConfiguration.MONTHS_DURATION_LABEL;
+    }
 
     protected SubjectSurvivalData createSubjectSurvivalData(StudySubjectAssignment subjectAssignment) {
+        if (SurvivalValueTypeEnum.DATE.equals(survivalValueDefinition.getSurvivalValueType())) {
+            return createDateBasedSurvivalData(subjectAssignment);
+        }
+        if (SurvivalValueTypeEnum.LENGTH_OF_TIME.equals(survivalValueDefinition.getSurvivalValueType())) {
+            return createDurationBasedSurvivalData(subjectAssignment);
+        }
+        throw new IllegalStateException("Unknown survival value type.");
+    }
+
+    private SubjectSurvivalData createDateBasedSurvivalData(StudySubjectAssignment subjectAssignment) {
         Integer survivalLength = Integer.valueOf(0);
         DateAnnotationValue subjectSurvivalStartDate = null;
         DateAnnotationValue subjectDeathDate = null;
@@ -188,6 +214,32 @@ abstract class AbstractKMPlotHandler {
         }
         survivalLength = monthsBetween(calSubjectStartDate, calSubjectEndDate);
         return new SubjectSurvivalData(survivalLength, censor);
+    }
+    
+    private SubjectSurvivalData createDurationBasedSurvivalData(StudySubjectAssignment subjectAssignment) {
+        NumericAnnotationValue survivalLength = subjectAssignment.getNumericAnnotation(
+                survivalValueDefinition.getSurvivalLength());
+        if (survivalLength == null || survivalLength.getNumericValue() == null) {
+            return null;
+        }
+        return new SubjectSurvivalData((int) Math.round(survivalLength.getNumericValue()), 
+                getCensorStatusForDurationBasedSurvival(subjectAssignment));
+    }
+
+    private Boolean getCensorStatusForDurationBasedSurvival(StudySubjectAssignment subjectAssignment) {
+        Boolean censor = false;
+        if (survivalValueDefinition.getSurvivalStatus() != null 
+            && !StringUtils.isBlank(survivalValueDefinition.getValueForCensored())) {
+            String survivalStatus = subjectAssignment.getAnnotationValueAsString(
+                    survivalValueDefinition.getSurvivalStatus());
+            try {
+                censor = Double.valueOf(survivalValueDefinition.getValueForCensored()).
+                    equals(Double.valueOf(survivalStatus));
+            } catch (Exception e) {
+                censor = survivalValueDefinition.getValueForCensored().equals(survivalStatus); 
+            }
+        }
+        return censor;
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity") // Null checks are necessary

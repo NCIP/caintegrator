@@ -10,10 +10,22 @@ public class SurvivalValueDefinition extends AbstractCaIntegrator2Object {
     private static final long serialVersionUID = 1L;
     
     private String name;
-    private String survivalValueType;
-    private AnnotationDefinition survivalStartDate;
-    private AnnotationDefinition lastFollowupDate;
-    private AnnotationDefinition deathDate;
+    private SurvivalValueTypeEnum survivalValueType = SurvivalValueTypeEnum.DATE;
+    
+    //////////
+    // For "DATE" type.
+    //////////
+    private AnnotationDefinition survivalStartDate = new AnnotationDefinition();
+    private AnnotationDefinition lastFollowupDate = new AnnotationDefinition();
+    private AnnotationDefinition deathDate = new AnnotationDefinition();
+    
+    //////////
+    // For "LENGTH_OF_TIME" type.
+    //////////
+    private AnnotationDefinition survivalLength = new AnnotationDefinition();
+    private AnnotationDefinition survivalStatus = new AnnotationDefinition();
+    private SurvivalLengthUnitsEnum survivalLengthUnits = SurvivalLengthUnitsEnum.DAYS;
+    private String valueForCensored;
     
     /**
      * @return the name
@@ -32,14 +44,14 @@ public class SurvivalValueDefinition extends AbstractCaIntegrator2Object {
     /**
      * @return the survivalValueType
      */
-    public String getSurvivalValueType() {
+    public SurvivalValueTypeEnum getSurvivalValueType() {
         return survivalValueType;
     }
     
     /**
      * @param survivalValueType the survivalValueType to set
      */
-    public void setSurvivalValueType(String survivalValueType) {
+    public void setSurvivalValueType(SurvivalValueTypeEnum survivalValueType) {
         this.survivalValueType = survivalValueType;
     }
     
@@ -83,6 +95,62 @@ public class SurvivalValueDefinition extends AbstractCaIntegrator2Object {
      */
     public void setDeathDate(AnnotationDefinition deathDate) {
         this.deathDate = deathDate;
+    }
+
+    /**
+     * @return the survivalLength
+     */
+    public AnnotationDefinition getSurvivalLength() {
+        return survivalLength;
+    }
+
+    /**
+     * @param survivalLength the survivalLength to set
+     */
+    public void setSurvivalLength(AnnotationDefinition survivalLength) {
+        this.survivalLength = survivalLength;
+    }
+
+    /**
+     * @return the survivalStatus
+     */
+    public AnnotationDefinition getSurvivalStatus() {
+        return survivalStatus;
+    }
+
+    /**
+     * @param survivalStatus the survivalStatus to set
+     */
+    public void setSurvivalStatus(AnnotationDefinition survivalStatus) {
+        this.survivalStatus = survivalStatus;
+    }
+
+    /**
+     * @return the survivalLengthUnits
+     */
+    public SurvivalLengthUnitsEnum getSurvivalLengthUnits() {
+        return survivalLengthUnits;
+    }
+
+    /**
+     * @param survivalLengthUnits the survivalLengthUnits to set
+     */
+    public void setSurvivalLengthUnits(SurvivalLengthUnitsEnum survivalLengthUnits) {
+        this.survivalLengthUnits = survivalLengthUnits;
+    }
+
+    /**
+     * @return the valueForCensored
+     */
+    public String getValueForCensored() {
+        return valueForCensored;
+    }
+
+    /**
+     * @param valueForCensored the valueForCensored to set
+     */
+    public void setValueForCensored(String valueForCensored) {
+        this.valueForCensored = valueForCensored;
     }
 
 }

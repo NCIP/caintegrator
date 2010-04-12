@@ -93,12 +93,23 @@ import java.util.List;
  */
 public class KMPlotConfiguration {
     
-    private static final String DEFAULT_DURATION_LABEL = "Months in Study";
+    /**
+     * Months.
+     */
+    public static final String MONTHS_DURATION_LABEL = "Months in Study";
+    /**
+     * Weeks.
+     */
+    public static final String WEEKS_DURATION_LABEL = "Weeks in Study";
+    /**
+     * Days.
+     */
+    public static final String DAYS_DURATION_LABEL = "Days in Study";
     private static final String DEFAULT_PROBABILITY_LABEL = "Probability of Survival";
     private static final String DEFAULT_TITLE = "Kaplan-Meier Plot";
     
     private String probabilityLabel = DEFAULT_PROBABILITY_LABEL;
-    private String durationLabel = DEFAULT_DURATION_LABEL;
+    private String durationLabel = MONTHS_DURATION_LABEL;
     private String title = DEFAULT_TITLE;
     
     private final List<SubjectGroup> groups = new ArrayList<SubjectGroup>();

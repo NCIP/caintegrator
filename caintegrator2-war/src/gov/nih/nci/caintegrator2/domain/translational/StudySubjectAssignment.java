@@ -5,6 +5,7 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
@@ -135,6 +136,18 @@ public class StudySubjectAssignment extends AbstractCaIntegrator2Object {
     }
     
     /**
+     * For a given definition (for a datatype of Numeric), will return the NumericAnnotationValue.
+     * @param definition to retrieve value for.
+     * @return date annotation value corresponding to this subject and definition.
+     */
+    public NumericAnnotationValue getNumericAnnotation(AnnotationDefinition definition) {
+        if (!AnnotationTypeEnum.NUMERIC.equals(definition.getDataType())) {
+            throw new IllegalArgumentException("Definition must be of Numeric type.");
+        }
+        return (NumericAnnotationValue) getAnnotation(definition);
+    }
+    
+    /**
      * Checks to see if there's a value for the given definition.
      * @param definition to check value for.
      * @return T/F if there is a value for the definition.
@@ -147,7 +160,15 @@ public class StudySubjectAssignment extends AbstractCaIntegrator2Object {
         }
         return false;
     }
-
+    
+    /**
+     * Value as a string for the given definition.
+     * @param definition to get value for.
+     * @return string for the value.
+     */
+    public String getAnnotationValueAsString(AnnotationDefinition definition) {
+        return getAnnotation(definition).toString();
+    }
     
     private AbstractAnnotationValue getAnnotation(AnnotationDefinition definition) {
         for (SubjectAnnotation subjectAnnotation : getSubjectAnnotationCollection()) {

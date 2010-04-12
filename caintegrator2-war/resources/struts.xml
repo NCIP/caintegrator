@@ -289,6 +289,11 @@
             </result>
         </action>
         
+        <action name="updateSurvivalStatusValues" method="updateSurvivalStatusValues" class="defineSurvivalDefinitionAction">
+            <result type="tiles">editSurvivalValueDefinitions</result>
+            <result name="input" type="tiles">editSurvivalValueDefinitions</result>
+        </action>
+        
         <action name="editClinicalFieldDescriptor" method="editFieldDescriptor" class="defineClinicalFieldDescriptorAction">
             <result type="tiles">editFieldDescriptor</result>
             <result name="input" type="tiles">editFieldDescriptor</result>
