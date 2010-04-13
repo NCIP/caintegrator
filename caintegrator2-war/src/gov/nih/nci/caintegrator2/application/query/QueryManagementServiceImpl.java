@@ -162,6 +162,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     
     private Query retrieveQueryToExecute(Query query) throws InvalidCriterionException {
         try {
+            removeInvalidResultColumns(query);
             Query queryToExecute = query.clone();
             addGenesNotFoundToQuery(query);
             checkCriterionForMasks(query);
@@ -170,6 +171,17 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         } catch (CloneNotSupportedException e) {
             throw new IllegalStateException("Unable to clone query.");
         }
+    }
+
+    
+    private void removeInvalidResultColumns(Query queryToExecute) {
+        Set <ResultColumn> columnsToRemove = new HashSet<ResultColumn>();
+        for (ResultColumn column : queryToExecute.getColumnCollection()) {
+            if (column.getAnnotationFieldDescriptor() == null) {
+                columnsToRemove.add(column);
+            }
+        }
+        queryToExecute.getColumnCollection().removeAll(columnsToRemove);
     }
 
     private void checkCriterionForMasks(Query query) {
@@ -202,6 +214,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     
     private AbstractCriterion retrieveMaskedCriterion(AbstractCriterion abstractCriterion) {
         if (abstractCriterion instanceof AbstractAnnotationCriterion
+                && ((AbstractAnnotationCriterion) abstractCriterion).getAnnotationFieldDescriptor() != null
                 && !((AbstractAnnotationCriterion) abstractCriterion).getAnnotationFieldDescriptor()
                     .getAnnotationMasks().isEmpty()) {
                 return AbstractAnnotationMaskHandler.createMaskedCriterion(
