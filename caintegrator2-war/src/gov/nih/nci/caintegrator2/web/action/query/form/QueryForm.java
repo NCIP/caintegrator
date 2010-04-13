@@ -100,6 +100,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -161,15 +162,19 @@ public class QueryForm {
     
     private void initializeAnnotationGroups(Study study) {
         annotationGroupNames.clear();
+        Set<AnnotationGroup> groupsWithNoVisibleFieldDescriptors = new HashSet<AnnotationGroup>();
         for (AnnotationGroup group : study.getAnnotationGroups()) {
             if (!group.getVisibleAnnotationFieldDescriptors().isEmpty()) {
                 annotationGroupMap.put(group.getName(), new AnnotationFieldDescriptorList(group
                         .getVisibleAnnotationFieldDescriptors()));
                 annotationGroupNames.add(group.getName());
+            } else {
+                groupsWithNoVisibleFieldDescriptors.add(group);
             }
         }
         sortedAnnotationGroups.clear();
         sortedAnnotationGroups.addAll(study.getSortedAnnotationGroups());
+        sortedAnnotationGroups.removeAll(groupsWithNoVisibleFieldDescriptors);
     }
 
     /**
