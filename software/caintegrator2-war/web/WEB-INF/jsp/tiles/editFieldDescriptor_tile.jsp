@@ -160,7 +160,7 @@
 	                    <td> </td>
 	                    <td>
 	                    <br>
-	                    <s:if test="%{columnTypeAnnotation}">
+	                    <s:if test="%{columnTypeAnnotation && readOnly}">
                             <s:submit value="New" action="%{newDefinitionAction}" theme="simple"/>
 	                    </s:if>
 	                    <s:submit value="Save" action="%{saveAnnotationDefinitionAction}" theme="simple"/>
