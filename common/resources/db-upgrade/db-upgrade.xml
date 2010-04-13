@@ -316,4 +316,8 @@
     <comment>Update survival value definitions to have survival lengths as well as dates.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.26.sql"/>
     </changeSet>
+    <changeSet id="1.1.27" author="tandrews">
+    <comment>Remove invalid ResultColumns.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.27.sql"/>
+    </changeSet>
 </databaseChangeLog>
