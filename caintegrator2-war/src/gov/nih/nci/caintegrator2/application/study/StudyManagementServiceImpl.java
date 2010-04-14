@@ -97,7 +97,9 @@ import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
+import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -199,7 +201,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         studyConfiguration.setUserWorkspace(null);
         getDao().delete(studyConfiguration);
     }
-
+    
     private boolean isNew(StudyConfiguration studyConfiguration) {
         return studyConfiguration.getId() == null;
     }
@@ -1165,6 +1167,18 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     public void delete(StudyConfiguration studyConfiguration, AnnotationGroup annotationGroup) {
         studyConfiguration.getStudy().getAnnotationGroups().remove(annotationGroup);
+        for (AnnotationFieldDescriptor afd : annotationGroup.getAnnotationFieldDescriptors()) {
+            List<ResultColumn> columnsUsingFieldDescriptor = getDao().getResultColumnsUsingAnnotation(afd);
+            List<AbstractAnnotationCriterion> criterionUsingFieldDescriptor = getDao().getCriteriaUsingAnnotation(afd);
+            for (ResultColumn column : columnsUsingFieldDescriptor) {
+                column.getQuery().getColumnCollection().remove(column);
+                getDao().delete(column);
+            }
+            for (AbstractAnnotationCriterion criterion : criterionUsingFieldDescriptor) {
+                criterion.setAnnotationFieldDescriptor(null);
+                getDao().save(criterion);
+            }
+        }
         getDao().delete(annotationGroup);
     }
 

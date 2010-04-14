@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
@@ -399,5 +400,19 @@ public interface CaIntegrator2Dao {
      * @return list of file columns matching.
      */
     List<FileColumn> getFileColumnsUsingAnnotationFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor);
+    
+    /**
+     * Retrieves all ResultColumns for the given field descriptor.
+     * @param fieldDescriptor to search columns for.
+     * @return list of result columns matching.
+     */
+    List<ResultColumn> getResultColumnsUsingAnnotation(AnnotationFieldDescriptor fieldDescriptor);
+    
+    /**
+     * Retrieves all AbstractAnnotationCriterion for the given field descriptor.
+     * @param fieldDescriptor to search criterion for.
+     * @return list of criterion matching.
+     */
+    List<AbstractAnnotationCriterion> getCriteriaUsingAnnotation(AnnotationFieldDescriptor fieldDescriptor);
     
 }
