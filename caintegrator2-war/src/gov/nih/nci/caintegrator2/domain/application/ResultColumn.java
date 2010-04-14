@@ -16,6 +16,7 @@ public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneab
     private Integer sortOrder;
     private SortTypeEnum sortType = SortTypeEnum.UNSORTED;
     private AnnotationFieldDescriptor annotationFieldDescriptor;
+    private Query query;
     
     /**
      * @return the columnIndex
@@ -102,6 +103,20 @@ public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneab
         if (entityType == null && annotationFieldDescriptor != null) {
             setEntityType(annotationFieldDescriptor.getAnnotationEntityType());
         }
+    }
+
+    /**
+     * @return the query
+     */
+    public Query getQuery() {
+        return query;
+    }
+
+    /**
+     * @param query the query to set
+     */
+    public void setQuery(Query query) {
+        this.query = query;
     }
 
     /**
