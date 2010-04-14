@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.abstractlist;
 
+import gov.nih.nci.caintegrator2.application.study.Visibility;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.file.FileManager;
@@ -113,6 +114,7 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
     private String geneListFileFileName;
     private String geneListName;
     private String description;
+    private boolean visibleToOther = false;
     private String geneSymbols;
     private String selectedAction;
     private String geneListId;
@@ -122,13 +124,14 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
     private static final String GENE_LIST_NAME = "geneListName";
     private static final String GENE_LIST_FILE = "geneListFile";
     private static final String EDIT_PAGE = "editPage";
+    private static final String EDIT_GLOBAL_PAGE = "editGlobalPage";
 
     /**
      * {@inheritDoc}
      */
     public void prepare() {
         super.prepare();
-        setInvalidStudyBeingAccessed(false);
+        setInvalidDataBeingAccessed(false);
     }
     
     /**
@@ -157,7 +160,7 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
         clearErrorsAndMessages();
         prepareValueStack();
         if (getCurrentStudy() == null) {
-            setInvalidStudyBeingAccessed(true);
+            setInvalidDataBeingAccessed(true);
         }
         if (CREATE_GENE_LIST_ACTION.equalsIgnoreCase(selectedAction)) {
             validateGeneListName();
@@ -170,7 +173,8 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
     private void validateGeneListName() {
         if (StringUtils.isEmpty(getGeneListName())) {
             addFieldError(GENE_LIST_NAME, "Gene List name is required");
-        } else if (getStudySubscription().getGeneList(getGeneListName()) != null) {
+        } else if ((!isVisibleToOther() && getStudySubscription().getGeneList(getGeneListName()) != null)
+                || (isVisibleToOther() && getStudy().getStudyConfiguration().getGeneList(getGeneListName()) != null)) {
             addFieldError(GENE_LIST_NAME, "Gene List name is duplicate: " + getGeneListName());
         }
     }
@@ -219,9 +223,15 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
         GeneList geneList = new GeneList();
         geneList.setName(getGeneListName());
         geneList.setDescription(getDescription());
-        geneList.setSubscription(getStudySubscription());
+        if (isVisibleToOther()) {
+            geneList.setVisibility(Visibility.GLOBAL);
+            geneList.setStudyConfiguration(getSubscription().getStudy().getStudyConfiguration());
+        } else {
+            geneList.setVisibility(Visibility.PRIVATE);
+            geneList.setSubscription(getSubscription());
+        }
         getWorkspaceService().createGeneList(geneList, geneSymbolList);
-        return EDIT_PAGE;
+        return (isVisibleToOther()) ? EDIT_GLOBAL_PAGE : EDIT_PAGE;
     }
 
     /**
@@ -362,5 +372,19 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
      */
     public StudySubscription getSubscription() {
         return getStudySubscription();
+    }
+
+    /**
+     * @return the visibleToOther
+     */
+    public boolean isVisibleToOther() {
+        return visibleToOther;
+    }
+
+    /**
+     * @param visibleToOther the visibleToOther to set
+     */
+    public void setVisibleToOther(boolean visibleToOther) {
+        this.visibleToOther = visibleToOther;
     }
 }

@@ -179,15 +179,15 @@ public class QueryManagementServiceStub implements QueryManagementService {
         return new File(System.getProperty("java.io.tmpdir"));
     }
 
-    public List<Query> createQueriesFromSubjectLists(Collection<SubjectList> subjectLists) {
+    public List<Query> createQueriesFromSubjectLists(StudySubscription subscription, Collection<SubjectList> subjectLists) {
         List<Query> queryList = new ArrayList<Query>();
         for (SubjectList subjectList : subjectLists) {
-            queryList.add(createQueryFromSubjectList(subjectList));
+            queryList.add(createQueryFromSubjectList(subscription, subjectList));
         }
         return queryList;
     }
 
-    public Query createQueryFromSubjectList(SubjectList subjectList) {
+    public Query createQueryFromSubjectList(StudySubscription subscription, SubjectList subjectList) {
         Query query = new Query();
         query.setName(subjectList.getName());
         query.setSubjectListQuery(true);

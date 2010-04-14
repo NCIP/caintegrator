@@ -396,6 +396,22 @@ public class DisplayableUserWorkspace {
         return (getCurrentStudySubscription() == null)
             ? null : getCurrentStudySubscription().getSubjectLists();
     }
+    
+    /**
+     * @return the saved gene lists.
+     */
+    public List<GeneList> getGlobalGeneLists() {
+        return (getCurrentStudySubscription() == null)
+            ? null : getCurrentStudySubscription().getStudy().getStudyConfiguration().getGeneLists();
+    }
+    
+    /**
+     * @return the saved subject lists.
+     */
+    public List<SubjectList> getGlobalSubjectLists() {
+        return (getCurrentStudySubscription() == null)
+            ? null : getCurrentStudySubscription().getStudy().getStudyConfiguration().getSubjectLists();
+    }
 
     /**
      * @return the dicomJob

@@ -167,7 +167,6 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
     private void addGeneList(StudySubscription studySubscription) {
         GeneList geneList = new GeneList();
         geneList.setName("GeneList1");
-        geneList.setSubscription(studySubscription);
         Gene gene = new Gene();
         gene.setSymbol("egfr");
         geneList.getGeneCollection().add(gene);
@@ -177,7 +176,6 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
     private void addSubjectList(StudySubscription studySubscription) {
         SubjectList subjectList = new SubjectList();
         subjectList.setName("SubjectList1");
-        subjectList.setSubscription(studySubscription);
         SubjectIdentifier subjectIdentifier = new SubjectIdentifier("100");
         subjectList.getSubjectIdentifiers().add(subjectIdentifier);
         studySubscription.getListCollection().add(subjectList);

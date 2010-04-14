@@ -103,7 +103,7 @@ public abstract class AbstractDeployedStudyAction extends AbstractCaIntegrator2A
     public void prepare() {
         super.prepare();
         if (getCurrentStudy() == null) {
-            setInvalidStudyBeingAccessed(true);
+            setInvalidDataBeingAccessed(true);
         }
     }
     

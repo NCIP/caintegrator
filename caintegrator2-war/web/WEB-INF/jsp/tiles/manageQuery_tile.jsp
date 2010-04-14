@@ -161,7 +161,7 @@
            
 </div>
 
-<s:div id="subjectlistdiv" cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:390px;max-height: 130px; overflow:auto;">
+<s:div id="subjectlistdiv" cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:465px;max-height: 150px; overflow:auto;">
     <s:div cssClass="TB_ajaxWindowTitle"/>
     <s:div cssClass="TB_closeAjaxWindow">
         <s:a href="" title="Click to close." onclick="hideSubjectListForm()" cssStyle="cursor: pointer;"><img src="/caintegrator2/images/close.gif" border="none" align="center"/>&nbsp;</s:a>
@@ -178,14 +178,17 @@
         </td></tr>
         <s:textfield id="slName" label="Name" name="T1" size="30" disabled="%{anonymousUser}"/>
         <s:textfield id="slDescription" label="Description" name="T2" size="50" disabled="%{anonymousUser}"/>
+        <s:if test="%{studyManager}">
+            <s:checkbox id="slVisibleToOthers" name="T3" label="Make Visible to Others" labelposition="left" disabled="%{anonymousUser}"/>
+        </s:if>
         <tr>
             <td></td>
             <td><br>
                 <s:if test="%{anonymousUser}">
-                <button type="button" onClick="submitSubjectListForm()" disabled="true">Save</button>
+                    <button type="button" onClick="submitSubjectListForm()" disabled="true">Save</button>
                 </s:if>
                 <s:else>
-                <button type="button" onClick="submitSubjectListForm()">Save</button>
+                    <button type="button" onClick="submitSubjectListForm()">Save</button>
                 </s:else>
                 <button type="button" onClick="hideSubjectListForm()">Cancel</button>
             </td>

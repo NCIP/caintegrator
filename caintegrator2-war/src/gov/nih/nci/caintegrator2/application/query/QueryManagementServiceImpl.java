@@ -234,10 +234,11 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public List<Query> createQueriesFromSubjectLists(Collection<SubjectList> subjectLists) {
+    public List<Query> createQueriesFromSubjectLists(StudySubscription subscription,
+            Collection<SubjectList> subjectLists) {
         List<Query> queries = new ArrayList<Query>();
         for (SubjectList subjectList : subjectLists) {
-            Query query = createQueryFromSubjectList(subjectList);
+            Query query = createQueryFromSubjectList(subscription, subjectList);
             queries.add(query);
         }
         return queries;
@@ -246,7 +247,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public Query createQueryFromSubjectList(SubjectList subjectList) {
+    public Query createQueryFromSubjectList(StudySubscription subscription, SubjectList subjectList) {
         Query query = new Query();
         SubjectListCriterion criterion = new SubjectListCriterion();
         criterion.getSubjectListCollection().add(subjectList);
@@ -255,7 +256,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
         query.setColumnCollection(new HashSet<ResultColumn>());
-        query.setSubscription(subjectList.getSubscription());
+        query.setSubscription(subscription);
         query.setResultType(ResultTypeEnum.CLINICAL);
         query.getCompoundCriterion().getCriterionCollection().add(criterion);
         query.setSubjectListQuery(true);

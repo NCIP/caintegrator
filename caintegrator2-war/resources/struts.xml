@@ -18,9 +18,9 @@
             <!-- This interceptor is used by cai2 after the prepare method to forward to an unauthorized page if
             a flag is set based on the user not having proper authorization privileges on the action. -->
             <interceptor name="cai2AuthorizationInterceptor" class="gov.nih.nci.caintegrator2.web.interceptor.AuthorizationInterceptor" />
-            <!-- This interceptor is used by cai2 after the prepare method to forward to the homepage for a user
-            to select a valid study.  A flag set in the prepare method tells it if an invalid study is being accessed. -->
-            <interceptor name="cai2ValidStudyInterceptor" class="gov.nih.nci.caintegrator2.web.interceptor.ValidStudyInterceptor" />
+            <!-- This interceptor is used by cai2 after the prepare and validation methods to forward to the homepage for a user
+            to select a valid access.  A flag set in the prepare or validation method tells it if it is an invalid accessed. -->
+            <interceptor name="validAccessInterceptor" class="gov.nih.nci.caintegrator2.web.interceptor.ValidAccessInterceptor" />
         
         <!-- This is the same as the paramsPrepareParams with the addition of excludeParams on the 
             ParametersInterceptor for special cases, this is done because Struts 2 is parsing the
@@ -47,7 +47,7 @@
                 <interceptor-ref name="servletConfig"/>
                 <interceptor-ref name="prepare"/>
                 <interceptor-ref name="cai2AuthorizationInterceptor"/>
-                <interceptor-ref name="cai2ValidStudyInterceptor"/>
+                <interceptor-ref name="validAccessInterceptor"/>
                 <interceptor-ref name="chain"/>
                 <interceptor-ref name="modelDriven"/>
                 <interceptor-ref name="fileUpload"/>
@@ -71,7 +71,7 @@
                 <interceptor-ref name="validation">
                     <param name="excludeMethods">input,back,cancel,browse</param>
                 </interceptor-ref>
-                <interceptor-ref name="cai2ValidStudyInterceptor"/>
+                <interceptor-ref name="validAccessInterceptor"/>
                 <interceptor-ref name="workflow">
                     <param name="excludeMethods">input,back,cancel,browse</param>
                 </interceptor-ref>
@@ -82,7 +82,7 @@
         
         <global-results>
             <result name="unauthorized" type="tiles">unauthorized</result>
-            <result name="invalidStudy" type="redirectAction">workspace</result>
+            <result name="invalidDataBeingAccessed" type="redirectAction">workspace</result>
         </global-results>
         
         <!--  Navigation Actions -->
@@ -625,6 +625,11 @@
                 <param name="selectedAction">editList</param>
                 <param name="listName">${listName}</param>
             </result>
+            <result name="editGlobalPage" type="redirectAction">
+                <param name="actionName">editSubjectList</param>
+                <param name="selectedAction">editGlobalList</param>
+                <param name="listName">${listName}</param>
+            </result>
             <result name="homePage" type="redirectAction">
                 <param name="actionName">workspace</param>
             </result>
@@ -640,6 +645,11 @@
                 <param name="selectedAction">editList</param>
                 <param name="listName">${geneListName}</param>
             </result>
+            <result name="editGlobalPage" type="redirectAction">
+                <param name="actionName">editGeneList</param>
+                <param name="selectedAction">editGlobalList</param>
+                <param name="listName">${geneListName}</param>
+            </result>
         </action>
         
         <action name="editGeneList" class="editGeneListAction">
@@ -649,6 +659,11 @@
             <result name="editPage" type="redirectAction">
                 <param name="actionName">editGeneList</param>
                 <param name="selectedAction">editList</param>
+                <param name="listName">${listName}</param>
+            </result>
+            <result name="editGlobalPage" type="redirectAction">
+                <param name="actionName">editGeneList</param>
+                <param name="selectedAction">editGlobalList</param>
                 <param name="listName">${listName}</param>
             </result>
             <result name="homePage" type="redirectAction">

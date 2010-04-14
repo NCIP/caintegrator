@@ -308,7 +308,7 @@
         <comment>Adds Annotation Masks to database.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.24.sql"/>
     </changeSet>
-    <changeSet id="1.1.25" author="tandrews">
+    <changeSet id="1.1.25" author="nguyennh">
         <comment>Configure Affymetrix SNP study.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.25.sql"/>
     </changeSet>
@@ -319,5 +319,9 @@
     <changeSet id="1.1.27" author="tandrews">
     <comment>Remove invalid ResultColumns.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.27.sql"/>
+    </changeSet>
+    <changeSet id="1.1.28" author="nguyennh">
+        <comment>Create global lists.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.28.sql"/>
     </changeSet>
 </databaseChangeLog>

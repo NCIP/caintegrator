@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.abstractlist;
 
 import gov.nih.nci.caintegrator2.domain.application.AbstractList;
+import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 
 /**
@@ -97,13 +98,22 @@ public class EditGeneListAction extends EditAbstractListAction {
     private static final long serialVersionUID = 1L;
 
     @Override
-    AbstractList getAbstractList(String name) {
-        return getStudySubscription().getGeneList(name);
+    AbstractList getAbstractList(String name, boolean globalList) {
+        return (globalList)
+            ? getStudySubscription().getStudy().getStudyConfiguration().getGeneList(name)
+            : getStudySubscription().getGeneList(name);
     }
 
     @Override
     void setOpenList(String name) {
         setOpenGeneListName(name);
+        setOpenGlobalGeneListName(null);
+    }
+
+    @Override
+    void setOpenGlobalList(String name) {
+        setOpenGlobalGeneListName(name);
+        setOpenGeneListName(null);
     }
     
     /**
@@ -111,7 +121,7 @@ public class EditGeneListAction extends EditAbstractListAction {
      */
     public String getGeneSymbolListing() {
         StringBuffer listing = new StringBuffer();
-        for (Gene gene : getStudySubscription().getGeneList(getListName()).getGeneCollection()) {
+        for (Gene gene : ((GeneList) getAbstractList()).getGeneCollection()) {
             if (listing.length() > 0) {
                 listing.append('\n');
             }

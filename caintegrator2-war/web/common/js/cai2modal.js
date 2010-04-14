@@ -129,6 +129,9 @@
      function submitSubjectListForm() {
     	 document.manageQueryForm.subjectListName.value = document.getElementById("slName").value;
          document.manageQueryForm.subjectListDescription.value = document.getElementById("slDescription").value;
+         if (document.getElementById("slVisibleToOthers") != null) {
+             document.manageQueryForm.subjectListVisibleToOthers.value = document.getElementById("slVisibleToOthers").checked;
+         }
          submitForm("saveSubjectList");
      }
      
