@@ -143,8 +143,8 @@ public final class CriterionWrapperBuilder {
     }
     
     static AbstractCriterionWrapper createSavedListCriterionWrapper(AbstractCriterion criterion, 
-            SavedListCriterionRow row, StudySubscription subscription) {
-        return new SubjectListCriterionWrapper((SubjectListCriterion) criterion, subscription, row);
+            SavedListCriterionRow row, StudySubscription subscription, String fieldName) {
+        return new SubjectListCriterionWrapper((SubjectListCriterion) criterion, subscription, fieldName, row);
     }
 
 }

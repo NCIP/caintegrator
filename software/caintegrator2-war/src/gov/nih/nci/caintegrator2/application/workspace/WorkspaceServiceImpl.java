@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.Visibility;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
@@ -394,8 +395,7 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
         for (String symbol : geneSymbols) {
             geneList.getGeneCollection().add(lookupOrCreateGene(symbol));
         }
-        geneList.getSubscription().getListCollection().add(geneList);
-        saveUserWorkspace(geneList.getSubscription().getUserWorkspace());
+        saveAbstractList(geneList);
     }
     
     private Gene lookupOrCreateGene(String symbol) {
@@ -414,8 +414,39 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
         for (String subject : subjects) {
             subjectList.getSubjectIdentifiers().add(new SubjectIdentifier(subject));
         }
-        subjectList.getSubscription().getListCollection().add(subjectList);
-        saveUserWorkspace(subjectList.getSubscription().getUserWorkspace());
+        saveAbstractList(subjectList);
+    }
+
+    private void saveAbstractList(AbstractList abstractList) {
+        if (Visibility.GLOBAL.equals(abstractList.getVisibility())) {
+            abstractList.getStudyConfiguration().getListCollection().add(abstractList);
+        } else {
+            abstractList.getSubscription().getListCollection().add(abstractList);
+        }
+        saveUserWorkspace(getWorkspace());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void makeListGlobal(AbstractList abstractList) {
+        abstractList.setVisibility(Visibility.GLOBAL);
+        abstractList.getSubscription().getListCollection().remove(abstractList);
+        abstractList.getStudyConfiguration().getListCollection().add(abstractList);
+        UserWorkspace userWorkspace = abstractList.getSubscription().getUserWorkspace();
+        abstractList.setSubscription(null);
+        saveUserWorkspace(userWorkspace);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void makeListPrivate(AbstractList abstractList) {
+        abstractList.setVisibility(Visibility.PRIVATE);
+        abstractList.getStudyConfiguration().getListCollection().remove(abstractList);
+        abstractList.getSubscription().getListCollection().add(abstractList);
+        abstractList.setStudyConfiguration(null);
+        saveUserWorkspace(abstractList.getSubscription().getUserWorkspace());
     }
 
     /**
@@ -431,7 +462,12 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
                 }
             }
         }
-        abstractList.getSubscription().getListCollection().remove(abstractList);
+        if (Visibility.GLOBAL.equals(abstractList.getVisibility())) {
+            abstractList.getStudyConfiguration().getListCollection().remove(abstractList);
+        } else {
+            abstractList.getSubscription().getListCollection().remove(abstractList);
+        }
+        getDao().delete(abstractList);
         saveUserWorkspace(getWorkspace());
     }
 

@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -102,15 +103,21 @@ public final class SubjectListCriterionWrapper extends AbstractCriterionWrapper 
      * My Subject List label.
      */
     public static final String SUBJECT_LIST_FIELD_NAME = "*My Subject List";
+    /**
+     * Global Subject List label.
+     */
+    public static final String SUBJECT_GLOBAL_LIST_FIELD_NAME = "*Global Subject List";
     private final SubjectListCriterion criterion;
     private final SavedListCriterionRow row;
     private final StudySubscription studySubscription;
+    private final String fieldName;
 
     SubjectListCriterionWrapper(SubjectListCriterion criterion, StudySubscription studySubscription, 
-            SavedListCriterionRow row) {
+            String fieldName, SavedListCriterionRow row) {
         this.criterion = criterion;
         this.row = row;
         this.studySubscription = studySubscription;
+        this.fieldName = fieldName;
         getParameters().add(createMultiSelectParameter());
     }
     
@@ -134,7 +141,7 @@ public final class SubjectListCriterionWrapper extends AbstractCriterionWrapper 
     
     private OptionList<SubjectList> getOptions() {
         List<SubjectList> orderedValues = new ArrayList<SubjectList>();
-        orderedValues.addAll(studySubscription.getSubjectLists());
+        orderedValues.addAll(getSubjectLists());
         OptionList<SubjectList> options = new OptionList<SubjectList>();
         for (SubjectList value : orderedValues) {
             options.addOption(value.getName(), value);
@@ -142,9 +149,15 @@ public final class SubjectListCriterionWrapper extends AbstractCriterionWrapper 
         return options;
     }
 
+    private Collection<? extends SubjectList> getSubjectLists() {
+        return SUBJECT_LIST_FIELD_NAME.equalsIgnoreCase(fieldName)
+            ? studySubscription.getSubjectLists()
+            : studySubscription.getStudy().getStudyConfiguration().getSubjectLists();
+    }
+
     @Override
     String getFieldName() {
-        return SUBJECT_LIST_FIELD_NAME;
+        return fieldName;
     }
 
 

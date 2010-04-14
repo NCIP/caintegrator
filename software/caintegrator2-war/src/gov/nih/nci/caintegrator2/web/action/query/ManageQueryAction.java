@@ -90,6 +90,8 @@ import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.application.study.Visibility;
+import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultComparator;
@@ -152,6 +154,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     private String geneListName = "";
     private String subjectListName = "";
     private String subjectListDescription = "";
+    private boolean subjectListVisibleToOthers = false;
     private String genomicSortingType;
     private String genomicSortingIndex;
 
@@ -354,9 +357,13 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             displayTab = RESULTS_TAB;
             returnValue = saveSubjectList();
         } else if ("loadSubjectListExecute".equals(selectedAction)) {
-            returnValue = loadSubjectListExecute();
+            returnValue = loadSubjectListExecute(false);
         } else if ("loadGeneListExecute".equals(selectedAction)) {
-            returnValue = loadGeneListExecute();
+            returnValue = loadGeneListExecute(false);
+        } else if ("loadGlobalSubjectListExecute".equals(selectedAction)) {
+            returnValue = loadSubjectListExecute(true);
+        } else if ("loadGlobalGeneListExecute".equals(selectedAction)) {
+            returnValue = loadGeneListExecute(true);
         } else if ("sortGenomicResult".equals(selectedAction)) {
             returnValue = sortGenomicResult();
         } else {
@@ -372,53 +379,69 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         return SUCCESS;
     }
     
-    private String loadGeneListExecute() {
+    private String loadGeneListExecute(boolean isGlobal) {
         createNewQuery();
-        loadGeneList();
+        loadGeneList(isGlobal);
         return executeQuery();
     }
     
-    private void loadGeneList() {
+    private void loadGeneList(boolean isGlobal) {
         getQueryForm().getCriteriaGroup().setCriterionTypeName(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
         addCriterionRow();
         AbstractCriterionRow criterionRow = getQueryForm().getCriteriaGroup().getRows().get(0);
         criterionRow.setFieldName(GeneNameCriterionWrapper.FIELD_NAME);
         updateCriteria();
         ((TextFieldParameter) criterionRow.getParameters().get(0)).setGeneSymbol(true);
-        ((TextFieldParameter) criterionRow.getParameters().get(0)).setValue(getGeneSymbols());
+        ((TextFieldParameter) criterionRow.getParameters().get(0)).setValue(getGeneSymbols(isGlobal));
         getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENOMIC.getValue());
         getQueryForm().getResultConfiguration().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());
-        setOpenGeneListName(geneListName);
+        if (isGlobal) {
+            setOpenGlobalGeneListName(geneListName);
+            setOpenGeneListName(null);
+        } else {
+            setOpenGeneListName(geneListName);
+            setOpenGlobalGeneListName(null);
+        }
     }
     
-    private String getGeneSymbols() {
+    private String getGeneSymbols(boolean isGlobal) {
         StringBuffer geneSymbols = new StringBuffer();
-        for (Gene gene : getStudySubscription().getGeneList(geneListName).getGeneCollection()) {
+        GeneList geneList = (isGlobal)
+            ? getStudySubscription().getStudy().getStudyConfiguration().getGeneList(geneListName)
+            : getStudySubscription().getGeneList(geneListName);
+        for (Gene gene : geneList.getGeneCollection()) {
             if (geneSymbols.length() > 0) {
                 geneSymbols.append(',');
             }
             geneSymbols.append(gene.getSymbol());
         }
-        
         return geneSymbols.toString();
     }
     
-    private String loadSubjectListExecute() {
+    private String loadSubjectListExecute(boolean isGlobal) {
         createNewQuery();
-        loadSubjectList();
+        loadSubjectList(isGlobal);
         getQueryForm().getResultConfiguration().selectAllValues();
         return executeQuery();
     }
     
     @SuppressWarnings("unchecked")
-    private void loadSubjectList() {
+    private void loadSubjectList(boolean isGlobal) {
         getQueryForm().getCriteriaGroup().setCriterionTypeName(CriterionRowTypeEnum.SAVED_LIST.getValue());
         addCriterionRow();
         AbstractCriterionRow criterionRow = getQueryForm().getCriteriaGroup().getRows().get(0);
-        criterionRow.setFieldName(SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME);
+        criterionRow.setFieldName((isGlobal)
+                ? SubjectListCriterionWrapper.SUBJECT_GLOBAL_LIST_FIELD_NAME
+                : SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME);
         updateCriteria();
         ((MultiSelectParameter) criterionRow.getParameters().get(0)).setValues(new String[]{subjectListName});
-        setOpenSubjectListName(subjectListName);
+        if (isGlobal) {
+            setOpenGlobalSubjectListName(subjectListName);
+            setOpenSubjectListName(null);
+        } else {
+            setOpenSubjectListName(subjectListName);
+            setOpenGlobalSubjectListName(null);
+        }
     }
 
     private String exportGenomicResults() {
@@ -662,7 +685,13 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         SubjectList subjectList = new SubjectList();
         subjectList.setName(getSubjectListName());
         subjectList.setDescription(getSubjectListDescription());
-        subjectList.setSubscription(getStudySubscription());
+        if (isSubjectListVisibleToOthers()) {
+            subjectList.setVisibility(Visibility.GLOBAL);
+            subjectList.setStudyConfiguration(getStudySubscription().getStudy().getStudyConfiguration());
+        } else {
+            subjectList.setVisibility(Visibility.PRIVATE);
+            subjectList.setSubscription(getStudySubscription());
+        }
         getWorkspaceService().createSubjectList(subjectList, retrieveSelectedSubjects());
         return SUCCESS;
     }
@@ -829,6 +858,20 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         this.subjectListDescription = subjectListDescription.trim();
     }
 
+
+    /**
+     * @return the subjectListVisibleToOthers
+     */
+    public boolean isSubjectListVisibleToOthers() {
+        return subjectListVisibleToOthers;
+    }
+
+    /**
+     * @param subjectListVisibleToOthers the subjectListVisibleToOthers to set
+     */
+    public void setSubjectListVisibleToOthers(boolean subjectListVisibleToOthers) {
+        this.subjectListVisibleToOthers = subjectListVisibleToOthers;
+    }
 
     /**
      * @return the geneListName

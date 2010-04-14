@@ -49,6 +49,16 @@
                                 <td><s:textarea label="Gene List Description" name="description"
                                     cols="40" rows="4" cssStyle="width: 280px;" theme="css_xhtml" /></td>
                             </tr>
+                            <s:if test="%{studyManager}">
+                                <tr><td>
+                                    <div class="wwgrp">
+                                        <div class="wwlbl"><label class="label">Make Visible to Others</label></div>
+                                        <div class="wwctrl">
+                                            <s:checkbox name="visibleToOther"/>
+                                        </div>
+                                    </div>
+                                </td></tr>
+                            </s:if>
                             <tr>
                                 <td>
                                     <div class="wwgrp">

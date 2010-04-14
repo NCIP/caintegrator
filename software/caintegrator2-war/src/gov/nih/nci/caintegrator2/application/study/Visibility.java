@@ -94,6 +94,10 @@ public enum Visibility {
      */
     PUBLIC,
     /**
+     * Global visibility.
+     */
+    GLOBAL,
+    /**
      * Restricted visibility.
      */
     RESTRICTED,

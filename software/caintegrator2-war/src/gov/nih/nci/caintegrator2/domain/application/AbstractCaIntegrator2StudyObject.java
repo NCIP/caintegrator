@@ -83,141 +83,81 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
+package gov.nih.nci.caintegrator2.domain.application;
 
-import gov.nih.nci.caintegrator2.application.CaIntegrator2EntityRefresher;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.application.AbstractList;
-import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.GeneList;
-import gov.nih.nci.caintegrator2.domain.application.SubjectList;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
-import gov.nih.nci.security.exceptions.CSException;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 /**
- * Provides <code>UserWorkspace</code> access and management functionality.
+ * Extend AbstractCaIntegrator2Object with a listCollection.
  */
-public interface WorkspaceService extends CaIntegrator2EntityRefresher {
+public abstract class AbstractCaIntegrator2StudyObject extends AbstractCaIntegrator2Object {
+    
+    private Set<AbstractList> listCollection = new HashSet<AbstractList>();
     
     /**
-     * Returns the workspace belonging to the current user.
-     * 
-     * @return the current user's workspace.
+     * @return the listCollection
      */
-    UserWorkspace getWorkspace();
+    public Set<AbstractList> getListCollection() {
+        return listCollection;
+    }
     
     /**
-     * Returns the users workspace (read only, for anonymous user which won't be saved).
-     * @return the anonymous user's workspace.
+     * @param listCollection the listCollection to set
      */
-    UserWorkspace getWorkspaceReadOnly();
+    public void setListCollection(Set<AbstractList> listCollection) {
+        this.listCollection = listCollection;
+    }
     
     /**
-     * Refreshes studies for hibernate.
-     * @param workspace to refresh studies for.
+     * @return a list of gene lists, ordered by name.
      */
-    void refreshWorkspaceStudies(UserWorkspace workspace);
+    public List<GeneList> getGeneLists() {
+        List<GeneList> resultLists = AbstractList.getListByType(listCollection, GeneList.class);
+        Collections.sort(resultLists, AbstractList.ABSTRACT_LIST_NAME_COMPARATOR);
+        return resultLists;
+    }
     
     /**
-     * Retrieves the studyConfigurationJobs for the user workspace.
-     * 
-     * @param userWorkspace workspace of the user.
-     * @return all study configuraiton jobs for this users workspace.
-     * @throws CSException if there's a problem accessing CSM.
-    */
-    Set<StudyConfiguration> retrieveStudyConfigurationJobs(UserWorkspace userWorkspace) 
-        throws CSException;
-   
-   /**
-    * Subscribes a user to a study.
-     * 
-     * @param workspace workspace of the user.
-     * @param study - study to subscribe to.
+     * @return a list of gene list names
      */
-    void subscribe(UserWorkspace workspace, Study study);
-        
-    /**
-     * Subscribe to all studies that the user has read access.
-     * @param userWorkspace - object to use.
-     */
-    void subscribeAll(UserWorkspace userWorkspace);
-
-    /**
-     * Subscribe to all studies for anonymous user.
-     * @param userWorkspace - object to use.
-     */
-    void subscribeAllReadOnly(UserWorkspace userWorkspace);
+    public List<String> getGeneListNames() {
+        return AbstractList.getListNamesByType(listCollection, GeneList.class);
+    }
     
     /**
-     * Unsubscribes a user to a study.
-     * 
-     * @param workspace workspace of the user.
-     * @param study - study to subscribe to.
+     * @param name then gene list name to get
+     * @return The gene list
      */
-    void unsubscribe(UserWorkspace workspace, Study study);
+    public GeneList getGeneList(String name) {
+        return (GeneList) AbstractList.getListByType(listCollection, name, GeneList.class);
+    }
     
     /**
-     * Un-subscribes all users from the given study.
-     * @param study to un-subscribe from.
+     * @return a list of subject lists, ordered by name.
      */
-    void unsubscribeAll(Study study);
-
-    /**
-     * Saves the current changes.
-     * @param workspace - object that needs to be updated.
-     */
-    void saveUserWorkspace(UserWorkspace workspace);
+    public List<SubjectList> getSubjectLists() {
+        List<SubjectList> resultLists = AbstractList.getListByType(listCollection, SubjectList.class);
+        Collections.sort(resultLists, AbstractList.ABSTRACT_LIST_NAME_COMPARATOR);
+        return resultLists;
+    }
     
     /**
-     * Get the Analysis Job.
-     * @param id - id to be retrieved.
-     * @return Analysis Job
+     * @return a list of subject list names
      */
-    AbstractPersistedAnalysisJob getPersistedAnalysisJob(Long id);
+    public List<String> getSubjectListNames() {
+        return AbstractList.getListNamesByType(listCollection, SubjectList.class);
+    }
     
     /**
-     * Saves the current changes.
-     * @param job - object to be updated.
+     * @param name then subject list name to get
+     * @return The subject list
      */
-    void savePersistedAnalysisJob(AbstractPersistedAnalysisJob job);
-    
-    /**
-     * Creates a <code> DisplayableStudySummary </code> from the given Study. 
-     * @param study - object to use.
-     * @return - DisplayableStudySummary object created from the study.
-     */
-    DisplayableStudySummary createDisplayableStudySummary(Study study);
-    
-    /**
-     * @param geneList the gene list to create
-     * @param geneSymbols the list of gene symbols
-     */
-    void createGeneList(GeneList geneList, List<String> geneSymbols);
-    
-    /**
-     * @param subjectList the subject list to create
-     * @param subjects the set of subject identifier
-     */
-    void createSubjectList(SubjectList subjectList, Set<String>subjects);
-
-    /**
-     * @param abstractList the list to make global
-     */
-    void makeListGlobal(AbstractList abstractList);
-
-    /**
-     * @param abstractList the list to make private
-     */
-    void makeListPrivate(AbstractList abstractList);
-
-    /**
-     * @param abstractList to delete from the workspace.
-     */
-    void deleteAbstractList(AbstractList abstractList);
-
+    public SubjectList getSubjectList(String name) {
+        return (SubjectList) AbstractList.getListByType(listCollection, name, SubjectList.class);
+    }
 }

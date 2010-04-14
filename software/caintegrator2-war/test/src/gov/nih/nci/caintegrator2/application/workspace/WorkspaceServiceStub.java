@@ -121,6 +121,8 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public boolean savePersistedAnalysisJobCalled;
     public boolean createGeneListCalled;
     public boolean createSubjectListCalled;
+    public boolean makeListGlobalCalled;
+    public boolean makeListPrivateCalled;
     public boolean getRefreshedEntityCalled;
     public boolean deleteAbstractListCalled;
     public boolean refreshWorkspaceStudiesCalled;
@@ -138,6 +140,8 @@ public class WorkspaceServiceStub implements WorkspaceService {
         unSubscribeAllCalled = false;
         createGeneListCalled = false;
         createSubjectListCalled = false;
+        makeListGlobalCalled = false;
+        makeListPrivateCalled = false;
         getRefreshedEntityCalled = false;
         deleteAbstractListCalled = false;
         refreshWorkspaceStudiesCalled = false;
@@ -248,6 +252,14 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     public void createSubjectList(SubjectList subjectList, Set<String> subjects) {
         createSubjectListCalled = true;
+    }
+
+    public void makeListGlobal(AbstractList abstractList) {
+        makeListGlobalCalled = true;
+    }
+
+    public void makeListPrivate(AbstractList abstractList) {
+        makeListPrivateCalled = true;
     }
 
     public <T> T getRefreshedEntity(T entity) {

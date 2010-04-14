@@ -115,6 +115,7 @@ public class ManageGeneListActionTest extends AbstractSessionBasedTest {
     
     @Test
     public void testAll() {
+        action.setVisibleToOther(false);
         // Test Validate
         action.validate();
         assertFalse(action.hasFieldErrors());
@@ -151,6 +152,48 @@ public class ManageGeneListActionTest extends AbstractSessionBasedTest {
         action.setDescription("Test description");
         action.setSelectedAction("createGeneList");
         assertEquals("editPage", action.execute());
+        assertTrue(workspaceServiceStub.createGeneListCalled);
+    }
+    
+    @Test
+    public void testAllGlobal() {
+        action.setVisibleToOther(true);
+        // Test Validate
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.setSelectedAction("createGeneList");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.setGeneListName("Test");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        assertTrue(action.hasActionErrors());
+        action.setGeneSymbols("egfr");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        assertFalse(action.hasActionErrors());
+        assertEquals(1, action.getGeneSymbolList().size());
+        action.setGeneSymbols("egfr cox412");
+        action.validate();
+        assertEquals(1, action.getGeneSymbolList().size());
+        action.setGeneSymbols("egfr,cox412");
+        action.validate();
+        assertEquals(2, action.getGeneSymbolList().size());
+        action.setGeneSymbols(null);
+        action.setGeneListFile(TestArrayDesignFiles.EMPTY_FILE);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.setGeneListFile(TestDataFiles.GENE_LIST_SAMPLES_FILE);
+        action.validate();
+        assertEquals(4, action.getGeneSymbolList().size());
+        action.setGeneSymbols("egfr,cox412");
+        action.validate();
+        assertEquals(6, action.getGeneSymbolList().size());
+        
+        // Test execute
+        action.setDescription("Test description");
+        action.setSelectedAction("createGeneList");
+        assertEquals("editGlobalPage", action.execute());
         assertTrue(workspaceServiceStub.createGeneListCalled);
     }
 }

@@ -106,9 +106,21 @@ import com.opensymphony.xwork2.ActionContext;
 
 public class EditGeneListActionTest extends AbstractSessionBasedTest {
 
-    EditGeneListAction action = new EditGeneListAction();
+    EditGeneListAction action = new MyEditGeneListAction();
     StudySubscription subscription = new StudySubscription();
     WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
+
+    class MyEditGeneListAction extends EditGeneListAction {
+        
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * @return is the current user a study manager
+         */
+        public boolean isStudyManager() {
+            return true;
+        }
+    }
 
     @Before
     public void setUp() {
@@ -135,20 +147,35 @@ public class EditGeneListActionTest extends AbstractSessionBasedTest {
         geneList = new GeneList();
         geneList.setName("List2");
         subscription.getListCollection().add(geneList);
+        
+        StudyConfiguration studyConfiguration = subscription.getStudy().getStudyConfiguration();
+        studyConfiguration.setListCollection(subscription.getListCollection());
+        
     }
     
     @Test
     public void testAll() {
-        action.setSelectedAction("editList");
+        action.setVisibleToOther(false);
+        action.setSelectedAction(EditGeneListAction.EDIT_ACTION);
         action.validate();
-        assertFalse(action.hasFieldErrors());
+        assertTrue(action.hasActionErrors());
 
         action.setListName("List1");
-        assertEquals(15, action.getGeneSymbolListing().length());
+        action.validate();
+        assertFalse(action.hasActionErrors());
         
-        action.setSelectedAction("renameList");
+        assertEquals(15, action.getGeneSymbolListing().length());
+
+        assertEquals(EditGeneListAction.SUCCESS, action.execute());
+        
+        action.setSelectedAction(EditGeneListAction.SAVE_ACTION);
+        action.setListOldName("Oldname");
+        action.setListName("");
         action.validate();
         assertTrue(action.hasFieldErrors());
+        action.setListName("List1");
+        action.validate();
+        assertFalse(action.hasActionErrors());
         action.clearErrorsAndMessages();
         assertEquals("success", action.execute());
         
@@ -162,12 +189,68 @@ public class EditGeneListActionTest extends AbstractSessionBasedTest {
         action.clearErrorsAndMessages();
         assertEquals("success", action.execute());
         
-        action.setSelectedAction("deleteList");
+        action.setListName("List1");
+        action.setVisibleToOther(true);
+        action.execute();
+        assertFalse(action.hasFieldErrors());
+        
+        action.setSelectedAction(EditGeneListAction.DELETE_ACTION);
         action.setListName("Test");
         action.execute();
         assertFalse(action.hasFieldErrors());
         
         action.setListName("List1");
+        action.execute();
+        assertFalse(action.hasFieldErrors());
+    }
+    
+    @Test
+    public void testAllGlobal() {
+        action.setVisibleToOther(true);
+        action.setSelectedAction(EditGeneListAction.EDIT_GLOBAL_ACTION);
+        action.validate();
+        assertTrue(action.hasActionErrors());
+
+        action.setListName("List1");
+        action.validate();
+        assertFalse(action.hasActionErrors());
+        
+        assertEquals(15, action.getGeneSymbolListing().length());
+
+        assertEquals(EditGeneListAction.SUCCESS, action.execute());
+        
+        action.setSelectedAction(EditGeneListAction.SAVE_ACTION);
+        action.setListOldName("Oldname");
+        action.setListName("");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.setListName("List1");
+        action.validate();
+        assertFalse(action.hasActionErrors());
+        action.clearErrorsAndMessages();
+        assertEquals("success", action.execute());
+        
+        action.setListName("List1");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        
+        action.setListName("Test");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        assertEquals("success", action.execute());
+        
+        action.setSelectedAction(EditGeneListAction.DELETE_ACTION);
+        action.setListName("Test");
+        action.execute();
+        assertFalse(action.hasFieldErrors());
+        
+        action.setListName("List1");
+        action.execute();
+        assertFalse(action.hasFieldErrors());
+        
+        action.setListName("Test");
+        action.setVisibleToOther(false);
         action.execute();
         assertFalse(action.hasFieldErrors());
     }

@@ -117,12 +117,14 @@ public class SavedListCriterionRow extends AbstractCriterionRow {
     public List<String> getAvailableFieldNames() {
         List<String> names = new ArrayList<String>();
         names.add(SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME);
+        names.add(SubjectListCriterionWrapper.SUBJECT_GLOBAL_LIST_FIELD_NAME);
         return names;
     }
     
     SubjectListCriterionWrapper createSubjectListWrapper(String fieldName) {
-        if (SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME.equals(fieldName)) {
-            return new SubjectListCriterionWrapper(new SubjectListCriterion(), getSubscription(), this);
+        if (SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME.equals(fieldName)
+                || SubjectListCriterionWrapper.SUBJECT_GLOBAL_LIST_FIELD_NAME.equals(fieldName)) {
+            return new SubjectListCriterionWrapper(new SubjectListCriterion(), getSubscription(), fieldName, this);
         } 
         return null;
     }
@@ -187,7 +189,7 @@ public class SavedListCriterionRow extends AbstractCriterionRow {
     @Override
     void setCriterion(AbstractCriterion criterion) {
         this.subjectListCriterionWrapper = CriterionWrapperBuilder.createSavedListCriterionWrapper(criterion, 
-                this, getSubscription());
+                this, getSubscription(), getFieldName());
     }
     
     private StudySubscription getSubscription() {

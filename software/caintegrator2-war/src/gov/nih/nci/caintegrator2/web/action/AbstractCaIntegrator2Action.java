@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.security.SecurityHelper;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisForm;
@@ -124,15 +125,19 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     private WorkspaceService workspaceService;
     private String openGeneListName = "";
     private String openSubjectListName = "";
+    private String openGlobalGeneListName = "";
+    private String openGlobalSubjectListName = "";
 
     /**
      * {@inheritDoc}
      */
     public void prepare() {
         setAuthorizedPage(true);
-        setInvalidStudyBeingAccessed(false);
+        setInvalidDataBeingAccessed(false);
         openGeneListName = "";
         openSubjectListName = "";
+        openGlobalGeneListName = "";
+        openGlobalSubjectListName = "";
         if (!isFileUpload()) {
             prepareValueStack();
         }
@@ -150,10 +155,10 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     /**
      * Call this method in the prepare statement if a study is being accessed that is invalid on a 
      * study type action.
-     * @param isInvalidStudy T/F value if user is accessing an invalid study.
+     * @param isInvalidAccess T/F value if user is accessing an invalid data.
      */
-    protected void setInvalidStudyBeingAccessed(Boolean isInvalidStudy) {
-        SessionHelper.getInstance().setInvalidStudyBeingAccessed(isInvalidStudy);
+    protected void setInvalidDataBeingAccessed(Boolean isInvalidAccess) {
+        SessionHelper.getInstance().setInvalidDataBeingAccessed(isInvalidAccess);
     }
 
     /**
@@ -537,6 +542,34 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     public void setOpenSubjectListName(String openSubjectListName) {
         this.openSubjectListName = openSubjectListName;
     }
+
+    /**
+     * @return the openGlobalGeneListName
+     */
+    public String getOpenGlobalGeneListName() {
+        return openGlobalGeneListName;
+    }
+
+    /**
+     * @param openGlobalGeneListName the openGlobalGeneListName to set
+     */
+    public void setOpenGlobalGeneListName(String openGlobalGeneListName) {
+        this.openGlobalGeneListName = openGlobalGeneListName;
+    }
+
+    /**
+     * @return the openGlobalSubjectListName
+     */
+    public String getOpenGlobalSubjectListName() {
+        return openGlobalSubjectListName;
+    }
+
+    /**
+     * @param openGlobalSubjectListName the openGlobalSubjectListName to set
+     */
+    public void setOpenGlobalSubjectListName(String openGlobalSubjectListName) {
+        this.openGlobalSubjectListName = openGlobalSubjectListName;
+    }
     
     /**
      * 
@@ -545,6 +578,13 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     public boolean isAnonymousUser() {
         return (getWorkspace() != null && UserWorkspace.ANONYMOUS_USER_NAME.equals(getWorkspace().getUsername())) 
             ? true : false;
+    }
+    
+    /**
+     * @return is the current user a study manager
+     */
+    public boolean isStudyManager() {
+        return SecurityHelper.isStudyManager(SecurityHelper.getCurrentUsername());
     }
     
 }

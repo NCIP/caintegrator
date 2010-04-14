@@ -113,7 +113,7 @@ public final class SessionHelper {
     private static final String IS_AUTHORIZED_PAGE = "isAuthorizedPage";
     private Boolean studyManager = null;
     private Boolean platformManager = null;
-    private Boolean invalidStudyBeingAccessed = false;
+    private Boolean invalidDataBeingAccessed = false;
     
     private SessionHelper() {
         
@@ -390,16 +390,16 @@ public final class SessionHelper {
     }
 
     /**
-     * @return the invalidStudyBeingAccessed
+     * @return the invalidDataBeingAccessed
      */
-    public Boolean getInvalidStudyBeingAccessed() {
-        return invalidStudyBeingAccessed;
+    public Boolean getInvalidDataBeingAccessed() {
+        return invalidDataBeingAccessed;
     }
 
     /**
-     * @param invalidStudyBeingAccessed the invalidStudyBeingAccessed to set
+     * @param invalidDataBeingAccessed the invalidDataBeingAccessed to set
      */
-    public void setInvalidStudyBeingAccessed(Boolean invalidStudyBeingAccessed) {
-        this.invalidStudyBeingAccessed = invalidStudyBeingAccessed;
+    public void setInvalidDataBeingAccessed(Boolean invalidDataBeingAccessed) {
+        this.invalidDataBeingAccessed = invalidDataBeingAccessed;
     }
 }
