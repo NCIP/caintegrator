@@ -91,14 +91,15 @@ import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
- * This interceptor will be fired after the "prepare" method, if study data is trying to be accessed on a study that
- * is null or invalid for the user's session it will redirect the user back to the homepage.
+ * This interceptor will be fired after the "prepare" or "validate" method, if study data is trying to be accessed
+ *  on a study that is null, invalid or not authorized for the user's session it will redirect the user back to
+ *  the homepage.
  */
-public class ValidStudyInterceptor implements Interceptor {
+public class ValidAccessInterceptor implements Interceptor {
     
     private static final long serialVersionUID = 1L;
     
-    private static final String INVALID_STUDY_BEING_ACCESSED = "invalidStudy";
+    private static final String INVALID_DATA_BEING_ACCESSED = "invalidDataBeingAccessed";
     
     /**
      * {@inheritDoc}
@@ -119,9 +120,9 @@ public class ValidStudyInterceptor implements Interceptor {
      */
     @SuppressWarnings("PMD") // It doesn't like the "throws Exception".
     public String intercept(ActionInvocation invocation) throws Exception {
-        if (SessionHelper.getInstance().getInvalidStudyBeingAccessed()) {
-            SessionHelper.getInstance().setInvalidStudyBeingAccessed(false);
-            return INVALID_STUDY_BEING_ACCESSED;
+        if (SessionHelper.getInstance().getInvalidDataBeingAccessed()) {
+            SessionHelper.getInstance().setInvalidDataBeingAccessed(false);
+            return INVALID_DATA_BEING_ACCESSED;
         }
         return invocation.invoke();
     }

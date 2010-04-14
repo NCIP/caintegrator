@@ -126,17 +126,19 @@ public interface QueryManagementService extends CaIntegrator2EntityRefresher {
     
     /**
      * Creates a list of queries given a group of subject lists.
+     * @param subscription to study subscription.
      * @param subjectLists to create queries from.
      * @return list of queries.
      */
-    List<Query> createQueriesFromSubjectLists(Collection<SubjectList> subjectLists);
+    List<Query> createQueriesFromSubjectLists(StudySubscription subscription, Collection<SubjectList> subjectLists);
     
     /**
      * Creates a query from a subject list.
+     * @param subscription to study subscription.
      * @param subjectList to create query from.
      * @return query created from SubjectList.
      */
-    Query createQueryFromSubjectList(SubjectList subjectList);
+    Query createQueryFromSubjectList(StudySubscription subscription, SubjectList subjectList);
     
     /**
      * Creates a Dicom Job object based on the checked rows.

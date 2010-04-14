@@ -99,6 +99,8 @@ import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.GeneList;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
@@ -128,6 +130,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean getCalled;
     public boolean saveCalled;
     public boolean deleteCalled;
+    public boolean deleteGeneListCalled;
+    public boolean deleteSubjectListCalled;
     public boolean getManagedStudiesCalled;
     public boolean findMatchesCalled;
     public boolean findMatchingImageSeriesCalled;
@@ -171,10 +175,21 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public void delete(Object persistentObject) {
         deleteCalled = true;
     }
+
+    public void deleteGeneLists(List<GeneList> geneLists) {
+        deleteGeneListCalled = true;
+    }
+
+    public void deleteSubjectLists(List<SubjectList> subjectLists) {
+        deleteSubjectListCalled = true;
+    }
     
     public void clear() {
         getCalled = false;
         saveCalled = false;
+        deleteCalled = false;
+        deleteGeneListCalled = false;
+        deleteSubjectListCalled = false;
         findMatchesCalled = false;
         getManagedStudiesCalled = false;
         findMatchingImageSeriesCalled = false;

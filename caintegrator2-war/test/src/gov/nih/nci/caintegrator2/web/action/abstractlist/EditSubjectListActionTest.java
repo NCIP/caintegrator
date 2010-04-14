@@ -106,9 +106,21 @@ import com.opensymphony.xwork2.ActionContext;
 
 public class EditSubjectListActionTest extends AbstractSessionBasedTest {
 
-    EditSubjectListAction action = new EditSubjectListAction();
+    EditSubjectListAction action = new MyEditSubjectListAction();
     StudySubscription subscription = new StudySubscription();
     WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
+
+    class MyEditSubjectListAction extends EditSubjectListAction {
+        
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * @return is the current user a study manager
+         */
+        public boolean isStudyManager() {
+            return true;
+        }
+    }
 
     @Before
     public void setUp() {
@@ -135,20 +147,34 @@ public class EditSubjectListActionTest extends AbstractSessionBasedTest {
         list = new SubjectList();
         list.setName("List2");
         subscription.getListCollection().add(list);
+        
+        StudyConfiguration studyConfiguration = subscription.getStudy().getStudyConfiguration();
+        studyConfiguration.setListCollection(subscription.getListCollection());
     }
     
     @Test
     public void testAll() {
-        action.setSelectedAction("editList");
+        action.setVisibleToOther(false);
+        action.setSelectedAction(EditSubjectListAction.EDIT_ACTION);
         action.validate();
         assertFalse(action.hasFieldErrors());
-        
+
         action.setListName("List1");
-        assertEquals(13, action.getSubjectIdentifierListing().length());
+        action.validate();
+        assertFalse(action.hasActionErrors());
         
-        action.setSelectedAction("renameList");
+        assertEquals(13, action.getSubjectIdentifierListing().length());
+
+        assertEquals(EditSubjectListAction.SUCCESS, action.execute());
+        
+        action.setSelectedAction(EditSubjectListAction.SAVE_ACTION);
+        action.setListOldName("Oldname");
+        action.setListName("");
         action.validate();
         assertTrue(action.hasFieldErrors());
+        action.setListName("List1");
+        action.validate();
+        assertFalse(action.hasActionErrors());
         action.clearErrorsAndMessages();
         assertEquals("success", action.execute());
         
@@ -162,12 +188,73 @@ public class EditSubjectListActionTest extends AbstractSessionBasedTest {
         action.clearErrorsAndMessages();
         assertEquals("success", action.execute());
         
-        action.setSelectedAction("deleteList");
+        action.setListName("List1");
+        action.setVisibleToOther(true);
+        action.execute();
+        assertFalse(action.hasFieldErrors());
+        
+        action.setSelectedAction(EditSubjectListAction.DELETE_ACTION);
         action.setListName("Test");
         action.execute();
         assertFalse(action.hasFieldErrors());
         
-        action.setSelectedAction("deleteList");
+        action.setListName("List1");
+        action.execute();
+        assertTrue(workspaceService.deleteAbstractListCalled);
+        assertFalse(action.hasFieldErrors());
+        
+        
+        action.setListName("List1");
+        action.execute();
+        assertFalse(action.hasFieldErrors());
+    }
+    
+    @Test
+    public void testAllGlobal() {
+        action.setVisibleToOther(false);
+        action.setSelectedAction(EditSubjectListAction.EDIT_GLOBAL_ACTION);
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+
+        action.setListName("List1");
+        action.validate();
+        assertFalse(action.hasActionErrors());
+        
+        assertEquals(13, action.getSubjectIdentifierListing().length());
+
+        assertEquals(EditSubjectListAction.SUCCESS, action.execute());
+        
+        action.setSelectedAction(EditSubjectListAction.SAVE_ACTION);
+        action.setListOldName("Oldname");
+        action.setListName("");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.setListName("List1");
+        action.validate();
+        assertFalse(action.hasActionErrors());
+        action.clearErrorsAndMessages();
+        assertEquals("success", action.execute());
+        
+        action.setListName("List1");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        
+        action.setListName("Test");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        assertEquals("success", action.execute());
+        
+        action.setListName("List1");
+        action.setVisibleToOther(true);
+        action.execute();
+        assertFalse(action.hasFieldErrors());
+        
+        action.setSelectedAction(EditSubjectListAction.DELETE_ACTION);
+        action.setListName("Test");
+        action.execute();
+        assertFalse(action.hasFieldErrors());
+        
         action.setListName("List1");
         action.execute();
         assertTrue(workspaceService.deleteAbstractListCalled);

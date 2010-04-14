@@ -199,7 +199,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         studyConfiguration.setUserWorkspace(null);
         getDao().delete(studyConfiguration);
     }
-    
+
     private boolean isNew(StudyConfiguration studyConfiguration) {
         return studyConfiguration.getId() == null;
     }

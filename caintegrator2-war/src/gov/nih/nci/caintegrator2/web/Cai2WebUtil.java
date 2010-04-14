@@ -138,7 +138,7 @@ public final class Cai2WebUtil {
             QueryManagementService queryManagementService) {
         List<DisplayableQuery> displayableQueries = new ArrayList<DisplayableQuery>();
         List<Query> subjectListQueries = queryManagementService.createQueriesFromSubjectLists(
-                studySubscription.getSubjectLists());
+                studySubscription, studySubscription.getSubjectLists());
         for (Query subjectListQuery : subjectListQueries) {
             displayableQueries.add(new DisplayableQuery(subjectListQuery));
         }

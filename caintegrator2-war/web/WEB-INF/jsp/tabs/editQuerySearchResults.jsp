@@ -22,6 +22,7 @@
 
     <s:hidden name="subjectListName" value="" />
     <s:hidden name="subjectListDescription" value="" />
+    <s:hidden name="subjectListVisibleToOthers" />
     
     <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
         <div style="float: left; position: relative; width: 100px; margin-top: 0.3em;">

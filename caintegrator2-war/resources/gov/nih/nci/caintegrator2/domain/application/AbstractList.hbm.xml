@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.caintegrator2.domain.application">
+    <typedef name="Visibility" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator2.application.study.Visibility</param> 
+    </typedef> 
 	<class name="AbstractList" table="ABSTRACT_LIST" lazy="false" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="ID">
@@ -9,9 +12,12 @@
 		<!-- Attributes mapping for the AbstractList class -->
 		<property name="description" type="string" column="DESCRIPTION"/>
 		<property name="name" type="string" column="NAME"/>
-		<property name="visibility" type="string" column="VISIBILITY"/>
+		<property name="visibility" type="Visibility" column="VISIBILITY"/>
 		<!-- Associations mapping for the AbstractList class -->
-		<many-to-one name="subscription" class="gov.nih.nci.caintegrator2.domain.application.StudySubscription" column="STUDY_SUBSCRIPTION_ID" lazy="proxy" cascade="save-update,merge" />
+        <many-to-one name="subscription" class="gov.nih.nci.caintegrator2.domain.application.StudySubscription"
+            column="STUDY_SUBSCRIPTION_ID" lazy="proxy" cascade="save-update,merge" />
+        <many-to-one name="studyConfiguration" class="gov.nih.nci.caintegrator2.application.study.StudyConfiguration"
+            column="STUDY_CONFIGURATION_ID" lazy="proxy" cascade="save-update,merge" />
 		<joined-subclass name="GeneList" table="GENE_LIST" lazy="false">
 			<key column="ID" />
 			<!-- Attributes mapping for the GeneList class -->

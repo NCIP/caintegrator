@@ -43,16 +43,20 @@
                             method="post" enctype="multipart/form-data" theme="css_xhtml">
                             <s:hidden name="selectedAction" />
                             <s:hidden name="listOldName" />
+                            <s:hidden name="globalList" />
                             <s:textfield id="listName" name="listName" label="Gene List Name"
                                 theme="css_xhtml" /><br>
+                            <s:if test="%{studyManager}">
+                                <s:checkbox name="visibleToOther" label="Make Visible to Others" labelposition="left" />
+                            </s:if>
                             <s:textarea label="Gene Symbols" name="geneSymbolListing"
                                 disabled="true" rows="5" cols="20" theme="css_xhtml" /><br>
 
                             <!--Buttons-->
 
                             <div class="actionsrow"><del class="btnwrapper"><ul class="btnrow">
-                                <li><s:a href="#" cssClass="btn" onclick="submitForm('renameList');">
-                                    <span class="btn_img"><span class="save">Rename</span></span>
+                                <li><s:a href="#" cssClass="btn" onclick="submitForm('saveList');">
+                                    <span class="btn_img"><span class="save">Save</span></span>
                                 </s:a></li>
                                 <li><s:a href="#" cssClass="btn" onclick="deleteList();">
                                     <span class="btn_img"><span class="delete">Delete</span></span>
