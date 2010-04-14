@@ -102,7 +102,11 @@ import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
+import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -824,8 +828,32 @@ public class StudyManagementServiceTest {
         assertTrue(catchException);
     }
     
+    @Test
+    public void testDeleteAnnotationGroup() {
+        SecureDaoStub secureDaoStub = new SecureDaoStub();
+        studyManagementService.setDao(secureDaoStub);
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setStudy(new Study());
+        AnnotationGroup group = new AnnotationGroup();
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        studyConfiguration.getStudy().getAnnotationGroups().add(group);
+        group.getAnnotationFieldDescriptors().add(afd);
+        secureDaoStub.stringCriterion.setAnnotationFieldDescriptor(afd);
+        Query query = new Query();
+        query.getCompoundCriterion().getCriterionCollection().add(secureDaoStub.stringCriterion);
+        secureDaoStub.resultColumn.setQuery(query);
+        query.getColumnCollection().add(secureDaoStub.resultColumn);
+        studyManagementService.delete(studyConfiguration, group);
+        assertFalse(studyConfiguration.getStudy().getAnnotationGroups().contains(group));
+        assertEquals(null, secureDaoStub.stringCriterion.getAnnotationFieldDescriptor());
+        assertTrue(query.getColumnCollection().isEmpty());
+        
+    }
+    
     private static class SecureDaoStub extends CaIntegrator2DaoStub {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
+        StringComparisonCriterion stringCriterion = new StringComparisonCriterion();
+        ResultColumn resultColumn = new ResultColumn();
         
         @Override
         @SuppressWarnings("unchecked")
@@ -843,6 +871,20 @@ public class StudyManagementServiceTest {
                 studies.add(studyConfiguration.getStudy());
             }
             return studies;
+        }
+        
+        @Override
+        public List<AbstractAnnotationCriterion> getCriteriaUsingAnnotation(AnnotationFieldDescriptor fieldDescriptor) {
+            List<AbstractAnnotationCriterion> criteria = new ArrayList<AbstractAnnotationCriterion>();
+            criteria.add(stringCriterion);
+            return criteria;
+        }
+        
+        @Override
+        public List<ResultColumn> getResultColumnsUsingAnnotation(AnnotationFieldDescriptor fieldDescriptor) {
+            List<ResultColumn> columns = new ArrayList<ResultColumn>();
+            columns.add(resultColumn);
+            return columns;
         }
     }
 }
