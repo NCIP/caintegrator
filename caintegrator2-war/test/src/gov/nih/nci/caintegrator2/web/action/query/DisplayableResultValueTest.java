@@ -85,96 +85,49 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 
-import java.util.Date;
-import java.util.regex.Pattern;
+import org.junit.Test;
 
-/**
- * Represents a value associated to a Row / Column.  (Wraps the <code>ResultValue</code> class).
- */
-public class DisplayableResultValue {
-    private static final Pattern URL_PATTERN = Pattern.compile("(?i)^(https?|ftp)://");
-    private String displayString = "";
-    private Date dateValue = null;
-    private boolean dateType = false;
-    private boolean numericType = false;
-    private boolean urlType = false;
+public class DisplayableResultValueTest {
     
-    /**
-     * Empty Constructor.
-     */
-    @SuppressWarnings("PMD.UncommentedEmptyConstructor")
-    public DisplayableResultValue() { }
     
-    /**
-     * Constructor which wraps the given ResultValue object.
-     * @param resultValue - ResultValue associated with this object.
-     */
-    public DisplayableResultValue(ResultValue resultValue) {
-        if (resultValue != null) {
-            checkForSpecialValues(resultValue);
-            displayString = resultValue.toString();
-        }
+    @Test
+    public void testDisplayableResultValueResultValue() {
+        ResultValue resultValue = new ResultValue();
+        ResultColumn column = new ResultColumn();
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        column.setAnnotationFieldDescriptor(afd);
+        resultValue.setColumn(column);
+        
+        
+        AnnotationDefinition stringDefinition = new AnnotationDefinition();
+        stringDefinition.setDataType(AnnotationTypeEnum.STRING);
+        afd.setDefinition(stringDefinition);
+        StringAnnotationValue urlStringValue = new StringAnnotationValue();
+        urlStringValue.setStringValue("htTp://someURL.com");
+        resultValue.setValue(urlStringValue);
+        
+        DisplayableResultValue value = new DisplayableResultValue(resultValue);
+        assertTrue(value.isUrlType());
+        
+        urlStringValue.setStringValue("htTpsomeInvalidURL.com");
+        value = new DisplayableResultValue(resultValue);
+        assertFalse(value.isUrlType());
+        
+        urlStringValue.setStringValue("ftp://someInvalidURL.com");
+        value = new DisplayableResultValue(resultValue);
+        assertTrue(value.isUrlType());
+        
+        
+        
     }
-
-    private void checkForSpecialValues(ResultValue resultValue) {
-        AnnotationTypeEnum dataType = 
-            resultValue.getColumn().getAnnotationFieldDescriptor().getDefinition().getDataType();
-        if (AnnotationTypeEnum.DATE.equals(dataType)) {
-            dateType = true;
-            dateValue = getDateValue(resultValue);
-        } else if (AnnotationTypeEnum.NUMERIC.equals(dataType)) {
-            numericType = true;
-        } else if (AnnotationTypeEnum.STRING.equals(dataType) 
-                && URL_PATTERN.matcher(resultValue.toString()).find()) {
-            urlType = true;
-        }
-    }
-    
-    private Date getDateValue(ResultValue resultValue) {
-        DateAnnotationValue dateAnnotationValue = (DateAnnotationValue) resultValue.getValue();
-        return (dateAnnotationValue != null) ? dateAnnotationValue.getDateValue() : null;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public String toString() {
-        return displayString;
-    }
-    
-    /**
-     * Gets the date value.
-     * @return - date value.
-     */
-    public Date getDateValue() {
-        return dateValue;
-    }
-    
-    /**
-     * Determines if this is a date type.
-     * @return - T/F value.
-     */
-    public boolean isDateType() {
-        return dateType;
-    }
-
-    /**
-     * @return the numericType
-     */
-    public boolean isNumericType() {
-        return numericType;
-    }
-
-    /**
-     * @return the urlType
-     */
-    public boolean isUrlType() {
-        return urlType;
-    }
-
 
 }
