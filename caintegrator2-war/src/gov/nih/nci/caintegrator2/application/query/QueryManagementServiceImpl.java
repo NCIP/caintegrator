@@ -234,12 +234,13 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public List<Query> createQueriesFromSubjectLists(StudySubscription subscription,
-            Collection<SubjectList> subjectLists) {
+    public List<Query> createQueriesFromSubjectLists(StudySubscription subscription) {
         List<Query> queries = new ArrayList<Query>();
-        for (SubjectList subjectList : subjectLists) {
-            Query query = createQueryFromSubjectList(subscription, subjectList);
-            queries.add(query);
+        for (SubjectList subjectList : subscription.getStudy().getStudyConfiguration().getSubjectLists()) {
+            queries.add(createQueryFromSubjectList(subscription, subjectList));
+        }
+        for (SubjectList subjectList : subscription.getSubjectLists()) {
+            queries.add(createQueryFromSubjectList(subscription, subjectList));
         }
         return queries;
     }
@@ -260,6 +261,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         query.setResultType(ResultTypeEnum.CLINICAL);
         query.getCompoundCriterion().getCriterionCollection().add(criterion);
         query.setSubjectListQuery(true);
+        query.setSubjectListVisibility(subjectList.getVisibility());
         return query;
     }
     
