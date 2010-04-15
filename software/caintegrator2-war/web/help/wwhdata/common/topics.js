@@ -2,11 +2,10 @@ function  WWHBookData_MatchTopic(P)
 {
 var C=null;
 if(P=="register_user_help")C="Getting_Started.2.3.html#1141097";
-if(P=="login_help")C="Getting_Started.2.4.html#1146398";
-if(P=="welcome_help")C="Getting_Started.2.5.html#1127723";
-if(P=="study_summary_help")C="Getting_Started.2.7.html#1151722";
-if(P=="data_dictionary_help")C="Getting_Started.2.8.html#1155418";
-if(P=="logging_out")C="Getting_Started.2.10.html#1128246";
+if(P=="welcome_help")C="Getting_Started.2.4.html#1127723";
+if(P=="study_summary_help")C="Getting_Started.2.6.html#1151722";
+if(P=="data_dictionary_help")C="Getting_Started.2.7.html#1152306";
+if(P=="logging_out")C="Getting_Started.2.9.html#1128246";
 if(P=="edit_study_help")C="CreatingNewStudy.3.4.html#1073921";
 if(P=="edit_annotation_group_help")C="CreatingNewStudy.3.7.html#1127752";
 if(P=="define_fields_help")C="CreatingNewStudy.3.8.html#1075197";
