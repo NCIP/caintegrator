@@ -271,6 +271,13 @@
                                 ${curValue}
                             </display:column>
                         </s:elseif>
+                        <s:elseif test="#curValue.urlType">
+                            <display:column title="${column}" sortable="true" >
+                                <a href="${curValue}" target="_">
+                                    View                                
+                                </a>
+                            </display:column>
+                        </s:elseif>
                         <s:else>
                             <display:column title="${column}" sortable="true" >
                                 ${curValue}
