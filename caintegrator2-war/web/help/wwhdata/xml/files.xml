@@ -42,14 +42,13 @@
     <Document title="Getting Started with caIntegrator2" href="Getting_Started.2.1.html" />
     <Document title="About caIntegrator2" href="Getting_Started.2.2.html" />
     <Document title="Registering as a New caIntegrator2 User" href="Getting_Started.2.3.html" />
-    <Document title="Logging In" href="Getting_Started.2.4.html" />
-    <Document title="Welcome to caIntegrator2 Workspace" href="Getting_Started.2.5.html" />
-    <Document title="caIntegrator2 Functions" href="Getting_Started.2.6.html" />
-    <Document title="Viewing Existing Studies" href="Getting_Started.2.7.html" />
-    <Document title="Data Dictionary" href="Getting_Started.2.8.html" />
-    <Document title="Using Online Help" href="Getting_Started.2.9.html" />
-    <Document title="Logging Out" href="Getting_Started.2.10.html" />
-    <Document title="Application Support" href="Getting_Started.2.11.html" />
+    <Document title="Welcome to caIntegrator2 Workspace" href="Getting_Started.2.4.html" />
+    <Document title="caIntegrator2 Functions" href="Getting_Started.2.5.html" />
+    <Document title="Viewing Existing Studies" href="Getting_Started.2.6.html" />
+    <Document title="Data Dictionary" href="Getting_Started.2.7.html" />
+    <Document title="Using Online Help" href="Getting_Started.2.8.html" />
+    <Document title="Logging Out" href="Getting_Started.2.9.html" />
+    <Document title="Application Support" href="Getting_Started.2.10.html" />
     <Document title="Creating a New Study" href="CreatingNewStudy.3.1.html" />
     <Document title="Creating a Study – Overview" href="CreatingNewStudy.3.2.html" />
     <Document title="Configuring and Deploying a Study" href="CreatingNewStudy.3.3.html" />
@@ -62,7 +61,7 @@
     <Document title="Searching for Annotation Definitions" href="CreatingNewStudy.3.10.html" />
     <Document title="Defining Survival Values" href="CreatingNewStudy.3.11.html" />
     <Document title="Adding/Editing Genomic Data" href="CreatingNewStudy.3.12.html" />
-    <Document title="Mapping Genomic Data to Clinical Data" href="CreatingNewStudy.3.13.html" />
+    <Document title="Mapping Genomic Data to Subject Annotation Data" href="CreatingNewStudy.3.13.html" />
     <Document title="Uploading Control Samples" href="CreatingNewStudy.3.14.html" />
     <Document title="Configuring Copy Number Data" href="CreatingNewStudy.3.15.html" />
     <Document title="Adding Imaging Data" href="CreatingNewStudy.3.16.html" />
@@ -73,7 +72,7 @@
     <Document title="Searching a caIntegrator2 Study" href="SearchingWithinAStudy.4.1.html" />
     <Document title="Search Overview" href="SearchingWithinAStudy.4.2.html" />
     <Document title="Searching a Study" href="SearchingWithinAStudy.4.3.html" />
-    <Document title="Clinical and Image Series" href="SearchingWithinAStudy.4.4.html" />
+    <Document title="Annotation and Image Series" href="SearchingWithinAStudy.4.4.html" />
     <Document title="Gene Expression" href="SearchingWithinAStudy.4.5.html" />
     <Document title="Results Type Tab" href="SearchingWithinAStudy.4.6.html" />
     <Document title="Sorting Tab" href="SearchingWithinAStudy.4.7.html" />
@@ -84,7 +83,7 @@
     <Document title="Viewing Query Results" href="View%20Search%20Results.5.1.html" />
     <Document title="Query Results Overview" href="View%20Search%20Results.5.2.html" />
     <Document title="Browsing Query Results" href="View%20Search%20Results.5.3.html" />
-    <Document title="Clinical and Imaging Data" href="View%20Search%20Results.5.4.html" />
+    <Document title="subject Annotation and Imaging Data" href="View%20Search%20Results.5.4.html" />
     <Document title="Genomic Data" href="View%20Search%20Results.5.5.html" />
     <Document title="Creating a Gene List" href="View%20Search%20Results.5.6.html" />
     <Document title="Editing a Gene List" href="View%20Search%20Results.5.7.html" />
@@ -106,8 +105,8 @@
     <Document title="Gene Expression Value Plot for Annotation" href="PerformingAnalysis.6.10.html" />
     <Document title="Gene Expression Plot for Annotation Display" href="PerformingAnalysis.6.11.html" />
     <Document title="Gene Expression Value Plot for Genomic Queries" href="PerformingAnalysis.6.12.html" />
-    <Document title="Gene Expression Value Plot for Clinical Queries" href="PerformingAnalysis.6.13.html" />
-    <Document title="Gene Expression Plot for Clinical Queries Display" href="PerformingAnalysis.6.14.html" />
+    <Document title="Gene Expression Value Plot for Annotation and Saved List Queries" href="PerformingAnalysis.6.13.html" />
+    <Document title="Gene Expression Plot for Saved Queries Display" href="PerformingAnalysis.6.14.html" />
     <Document title="Understanding a Gene Expression Plot" href="PerformingAnalysis.6.15.html" />
     <Document title="Analyzing Data with GenePattern" href="PerformingAnalysis.6.16.html" />
     <Document title="GenePattern Modules" href="PerformingAnalysis.6.17.html" />
@@ -125,7 +124,7 @@
     <Document title="Changing a User Password" href="User%20Admin.7.9.html" />
     <Document title="Finding Gene Names" href="hidden%20topics.8.1.html" />
     <Document title="Data Import Configurations" href="appdx%20data%20import.9.1.html" />
-    <Document title="Subject Clinical Data Configuration" href="appdx%20data%20import.9.2.html" />
+    <Document title="Subject subject annotation Data Configuration" href="appdx%20data%20import.9.2.html" />
     <Document title="Delimited-Text Annotation Import" href="appdx%20data%20import.9.3.html" />
     <Document title="Annotation Field Configuration" href="appdx%20data%20import.9.4.html" />
     <Document title="Sample Data Configuration" href="appdx%20data%20import.9.5.html" />
@@ -137,11 +136,10 @@
   </DocumentInfo>
   <TopicMap>
     <Topic name="register_user_help" href="Getting_Started.2.3.html#1141097" />
-    <Topic name="login_help" href="Getting_Started.2.4.html#1146398" />
-    <Topic name="welcome_help" href="Getting_Started.2.5.html#1127723" />
-    <Topic name="study_summary_help" href="Getting_Started.2.7.html#1151722" />
-    <Topic name="data_dictionary_help" href="Getting_Started.2.8.html#1155418" />
-    <Topic name="logging_out" href="Getting_Started.2.10.html#1128246" />
+    <Topic name="welcome_help" href="Getting_Started.2.4.html#1127723" />
+    <Topic name="study_summary_help" href="Getting_Started.2.6.html#1151722" />
+    <Topic name="data_dictionary_help" href="Getting_Started.2.7.html#1152306" />
+    <Topic name="logging_out" href="Getting_Started.2.9.html#1128246" />
     <Topic name="edit_study_help" href="CreatingNewStudy.3.4.html#1073921" />
     <Topic name="edit_annotation_group_help" href="CreatingNewStudy.3.7.html#1127752" />
     <Topic name="define_fields_help" href="CreatingNewStudy.3.8.html#1075197" />
