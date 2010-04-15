@@ -97,7 +97,6 @@ import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -179,9 +178,12 @@ public class QueryManagementServiceStub implements QueryManagementService {
         return new File(System.getProperty("java.io.tmpdir"));
     }
 
-    public List<Query> createQueriesFromSubjectLists(StudySubscription subscription, Collection<SubjectList> subjectLists) {
+    public List<Query> createQueriesFromSubjectLists(StudySubscription subscription) {
         List<Query> queryList = new ArrayList<Query>();
-        for (SubjectList subjectList : subjectLists) {
+        for (SubjectList subjectList : subscription.getStudy().getStudyConfiguration().getSubjectLists()) {
+            queryList.add(createQueryFromSubjectList(subscription, subjectList));
+        }
+        for (SubjectList subjectList : subscription.getSubjectLists()) {
             queryList.add(createQueryFromSubjectList(subscription, subjectList));
         }
         return queryList;
@@ -191,7 +193,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
         Query query = new Query();
         query.setName(subjectList.getName());
         query.setSubjectListQuery(true);
-        
+        query.setSubjectListVisibility(subjectList.getVisibility());
         return query;
     }
 
