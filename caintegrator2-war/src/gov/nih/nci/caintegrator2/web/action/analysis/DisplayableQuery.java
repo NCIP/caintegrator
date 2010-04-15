@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
+import gov.nih.nci.caintegrator2.application.study.Visibility;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 
 /**
@@ -93,6 +94,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 public class DisplayableQuery implements Comparable<DisplayableQuery> {
     private static final String QUERY_PREFIX = "[Q]-";
     private static final String SUBJECT_LIST_PREFIX = "[SL]-";
+    private static final String GLOBAL_SUBJECT_LIST_PREFIX = "[SL-G]-";
     
     private Query query;
     
@@ -138,7 +140,11 @@ public class DisplayableQuery implements Comparable<DisplayableQuery> {
      * @return displayable name.
      */
     public static String getDisplayableQueryName(Query inputQuery) {
-        return inputQuery.isSubjectListQuery() ? SUBJECT_LIST_PREFIX + inputQuery.getName() : QUERY_PREFIX
-                + inputQuery.getName();
+        if (inputQuery.isSubjectListQuery()) {
+            return (Visibility.GLOBAL.equals(inputQuery.getSubjectListVisibility()))
+                ? GLOBAL_SUBJECT_LIST_PREFIX + inputQuery.getName()
+                : SUBJECT_LIST_PREFIX + inputQuery.getName();
+        }
+        return QUERY_PREFIX + inputQuery.getName();
     }
 }

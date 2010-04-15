@@ -98,7 +98,6 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -127,10 +126,9 @@ public interface QueryManagementService extends CaIntegrator2EntityRefresher {
     /**
      * Creates a list of queries given a group of subject lists.
      * @param subscription to study subscription.
-     * @param subjectLists to create queries from.
      * @return list of queries.
      */
-    List<Query> createQueriesFromSubjectLists(StudySubscription subscription, Collection<SubjectList> subjectLists);
+    List<Query> createQueriesFromSubjectLists(StudySubscription subscription);
     
     /**
      * Creates a query from a subject list.

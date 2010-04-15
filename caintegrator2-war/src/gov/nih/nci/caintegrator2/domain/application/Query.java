@@ -1,5 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
+import gov.nih.nci.caintegrator2.application.study.Visibility;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
@@ -27,6 +28,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
     private CompoundCriterion compoundCriterion = new CompoundCriterion();
     private Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
     private transient boolean subjectListQuery = false;
+    private transient Visibility subjectListVisibility = null;
     private transient List<String> geneSymbolsNotFound = new ArrayList<String>();
     private transient boolean hasMaskedValues = false;
     
@@ -194,7 +196,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
     public void setSubjectListQuery(boolean subjectListQuery) {
         this.subjectListQuery = subjectListQuery;
     }
-    
+
     /**
      * Retrieves all visible columns in the query.
      * @return visible columns in the query.
@@ -244,6 +246,20 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
      */
     public void setHasMaskedValues(boolean hasMaskedValues) {
         this.hasMaskedValues = hasMaskedValues;
+    }
+
+    /**
+     * @return the subjectListVisibility
+     */
+    public Visibility getSubjectListVisibility() {
+        return subjectListVisibility;
+    }
+
+    /**
+     * @param subjectListVisibility the subjectListVisibility to set
+     */
+    public void setSubjectListVisibility(Visibility subjectListVisibility) {
+        this.subjectListVisibility = subjectListVisibility;
     }
 
 }
