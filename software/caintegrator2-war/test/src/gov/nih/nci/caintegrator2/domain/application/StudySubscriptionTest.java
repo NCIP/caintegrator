@@ -83,60 +83,31 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.abstractlist;
+package gov.nih.nci.caintegrator2.domain.application;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.application.GeneList;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
-import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import java.util.HashMap;
-
-import org.junit.Before;
 import org.junit.Test;
 
-import com.opensymphony.xwork2.ActionContext;
+public class StudySubscriptionTest {
 
-public class SearchGeneListActionTest extends AbstractSessionBasedTest {
-
-    SearchGeneListAction action = new SearchGeneListAction();
-    StudySubscription subscription = new StudySubscription();
-    WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
-
-    @Before
-    public void setUp() {
-        super.setUp();
-        SessionHelper.getInstance().getDisplayableUserWorkspace().
-            setCurrentStudySubscription(subscription);
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-        ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
-        workspaceService.setSubscription(subscription);
-        subscription.setStudy(new Study());
-        subscription.getStudy().setStudyConfiguration(new StudyConfiguration());
-        action.setWorkspaceService(workspaceService);
-    }
-    
     @Test
     public void testAll() {
-        // Test Execute
-        assertEquals(ManageGeneListAction.SUCCESS, action.execute());
-        assertEquals(null, action.getGeneListName());
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(new Study());
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        subscription.getStudy().setStudyConfiguration(studyConfiguration);
+        GeneList geneList1 = new GeneList();
+        geneList1.setName("myGeneList");
+        GeneList geneList2 = new GeneList();
+        geneList2.setName("globalGeneList");
+        subscription.getListCollection().add(geneList1);
+        studyConfiguration.getListCollection().add(geneList2);
         
-        GeneList geneList = new GeneList();
-        geneList.setName("List1");
-        subscription.getListCollection().add(geneList);
-        assertEquals(ManageGeneListAction.SUCCESS, action.execute());
-        assertEquals("List1", action.getGeneListName());
-        assertEquals(0, action.getGenes().size());
-        
-        geneList.getGeneCollection().add(new Gene());
-        assertEquals(ManageGeneListAction.SUCCESS, action.execute());
-        assertEquals("List1", action.getGeneListName());
-        assertEquals(1, action.getGenes().size());
+        assertEquals(2, subscription.getAllGeneListNames().size());
+        assertEquals("myGeneList", subscription.getSelectedGeneList("myGeneList").getName());
+        assertEquals("globalGeneList", subscription.getSelectedGeneList("[Global]-globalGeneList").getName());
     }
 }

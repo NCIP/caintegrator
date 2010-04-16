@@ -20,7 +20,7 @@
             No Gene List available.
         </s:if>
         <s:else>
-            <s:select name="geneListName" list="studySubscription.geneListNames" label="Gene List"
+            <s:select name="geneListName" list="studySubscription.allGeneListNames" label="Gene List"
                 onchange="runGeneListSearch();"/>
         </s:else>
     </tr>
