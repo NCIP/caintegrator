@@ -165,11 +165,11 @@ public class ResultHandlerImplTest {
         
         validateRowColumnValue("string4", rows.get(3), imageSeriesColumn);
         validateRowColumnValue("12-14", rows.get(3), sampleColumn);
-        validateRowColumnValue("4.0+", rows.get(3), subjectColumn);
+        validateRowColumnValue("4+", rows.get(3), subjectColumn);
         
         validateRowColumnValue("string5", rows.get(4), imageSeriesColumn);
         validateRowColumnValue("12-14", rows.get(4), sampleColumn);
-        validateRowColumnValue("4.0+", rows.get(4), subjectColumn);
+        validateRowColumnValue("4+", rows.get(4), subjectColumn);
 
     }
     

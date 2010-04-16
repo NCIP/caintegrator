@@ -89,6 +89,9 @@ package gov.nih.nci.caintegrator2.domain.annotation;
  * 
  */
 public class MaskedNumericAnnotationValue extends NumericAnnotationValue {
+
+    private static final long serialVersionUID = 1L;
+
     private String maskedValue;
     private boolean finalMaskApplied = false;
     
@@ -103,7 +106,7 @@ public class MaskedNumericAnnotationValue extends NumericAnnotationValue {
         setNumericValue(numericValue.getNumericValue());
         setSampleAcquisition(numericValue.getSampleAcquisition());
         setSubjectAnnotation(numericValue.getSubjectAnnotation());
-        maskedValue = numericValue.getNumericValue() == null ? "" : String.valueOf(numericValue.getNumericValue());
+        maskedValue = numericValue.getNumericValue() == null ? "" : numericValue.toString();
     }
     
     /**
