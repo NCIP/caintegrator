@@ -115,7 +115,7 @@ public class SearchGeneListAction extends AbstractCaIntegrator2Action {
     
     private void setDefaultGeneList() {
         if (!getStudySubscription().getGeneLists().isEmpty()) {
-            geneListName = getStudySubscription().getGeneLists().get(0).getName();
+            geneListName = getStudySubscription().getAllGeneListNames().get(0);
             retrieveGenes();
         }
     }
@@ -131,7 +131,7 @@ public class SearchGeneListAction extends AbstractCaIntegrator2Action {
     
     private void retrieveGenes() {
         genes = new ArrayList<Gene>();
-        GeneList list = getStudySubscription().getGeneList(getGeneListName());
+        GeneList list = getStudySubscription().getSelectedGeneList(getGeneListName());
         if (list != null) {
             genes.addAll(list.getGeneCollection());
         }
