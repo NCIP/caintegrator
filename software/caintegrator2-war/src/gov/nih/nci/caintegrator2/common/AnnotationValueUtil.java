@@ -86,9 +86,7 @@
 package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 
-import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -120,8 +118,7 @@ public final class AnnotationValueUtil {
         for (String dataValue : dataValues) {
             if (!StringUtils.isBlank(dataValue) && !filterList.contains(dataValue)) {
                 if (NumberUtils.isNumber(dataValue)) {
-                    dataValue = new DecimalFormat(NumericAnnotationValue.DECIMAL_FORMAT).format(
-                            Double.valueOf(dataValue));
+                    dataValue = NumericUtil.formatDisplay(dataValue);
                 }
                 results.add(dataValue);
             }

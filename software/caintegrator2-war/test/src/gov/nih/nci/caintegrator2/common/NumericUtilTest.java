@@ -83,98 +83,25 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.query;
+package gov.nih.nci.caintegrator2.common;
 
-import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import static org.junit.Assert.assertTrue;
 
-import java.util.Date;
-import java.util.regex.Pattern;
+import java.text.ParseException;
 
-/**
- * Represents a value associated to a Row / Column.  (Wraps the <code>ResultValue</code> class).
- */
-public class DisplayableResultValue {
-    private static final Pattern URL_PATTERN = Pattern.compile("(?i)^(https?|ftp)://");
-    private String displayString = "";
-    private Date dateValue = null;
-    private boolean dateType = false;
-    private boolean numericType = false;
-    private boolean urlType = false;
-    
-    /**
-     * Empty Constructor.
-     */
-    @SuppressWarnings("PMD.UncommentedEmptyConstructor")
-    public DisplayableResultValue() { }
-    
-    /**
-     * Constructor which wraps the given ResultValue object.
-     * @param resultValue - ResultValue associated with this object.
-     */
-    public DisplayableResultValue(ResultValue resultValue) {
-        if (resultValue != null) {
-            displayString = resultValue.toString();
-            checkForSpecialValues(resultValue);
-        }
-    }
+import org.junit.Test;
 
-    private void checkForSpecialValues(ResultValue resultValue) {
-        AnnotationTypeEnum dataType = 
-            resultValue.getColumn().getAnnotationFieldDescriptor().getDefinition().getDataType();
-        if (AnnotationTypeEnum.DATE.equals(dataType)) {
-            dateType = true;
-            dateValue = getDateValue(resultValue);
-        } else if (AnnotationTypeEnum.NUMERIC.equals(dataType)) {
-            numericType = true;
-        } else if (AnnotationTypeEnum.STRING.equals(dataType) 
-                && URL_PATTERN.matcher(resultValue.toString()).find()) {
-            urlType = true;
-        }
-    }
-    
-    private Date getDateValue(ResultValue resultValue) {
-        DateAnnotationValue dateAnnotationValue = (DateAnnotationValue) resultValue.getValue();
-        return (dateAnnotationValue != null) ? dateAnnotationValue.getDateValue() : null;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public String toString() {
-        return displayString;
-    }
-    
-    /**
-     * Gets the date value.
-     * @return - date value.
-     */
-    public Date getDateValue() {
-        return dateValue;
-    }
-    
-    /**
-     * Determines if this is a date type.
-     * @return - T/F value.
-     */
-    public boolean isDateType() {
-        return dateType;
-    }
+public class NumericUtilTest {
 
-    /**
-     * @return the numericType
-     */
-    public boolean isNumericType() {
-        return numericType;
+    @Test
+    public void testAll() throws ParseException {
+        Double value = Double.valueOf("5.1200");
+        assertTrue("5.12".equalsIgnoreCase(NumericUtil.formatDisplay(value)));
+        value = Double.valueOf("15.0000");
+        assertTrue("15".equalsIgnoreCase(NumericUtil.formatDisplay(value)));
+
+        assertTrue("5.12".equalsIgnoreCase(NumericUtil.formatDisplay("05.1200")));
+        assertTrue("0".equalsIgnoreCase(NumericUtil.formatDisplay("0.0")));
+        assertTrue("5".equalsIgnoreCase(NumericUtil.formatDisplay("05.00")));
     }
-
-    /**
-     * @return the urlType
-     */
-    public boolean isUrlType() {
-        return urlType;
-    }
-
-
 }

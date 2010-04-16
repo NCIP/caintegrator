@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.common.NumericUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.MaskedNumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.mask.MaxNumberMask;
@@ -118,7 +119,7 @@ public class MaxNumberMaskHandler extends AbstractAnnotationMaskHandler {
             return maskedValue;
         }
         if (maskedValue.getNumericValue() >= mask.getMaxNumber()) {
-            maskedValue.setMaskedValue(mask.getMaxNumber() + PLUS_SYMBOL);
+            maskedValue.setMaskedValue(NumericUtil.formatDisplay(mask.getMaxNumber()) + PLUS_SYMBOL);
             maskedValue.setNumericValue(mask.getMaxNumber());
             maskedValue.setFinalMaskApplied(true);
         }

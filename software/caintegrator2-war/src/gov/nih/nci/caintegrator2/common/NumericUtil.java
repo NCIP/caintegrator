@@ -83,98 +83,38 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.query;
+package gov.nih.nci.caintegrator2.common;
 
-import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import java.text.DecimalFormat;
 
-import java.util.Date;
-import java.util.regex.Pattern;
 
 /**
- * Represents a value associated to a Row / Column.  (Wraps the <code>ResultValue</code> class).
+ * This is a static utility class to handle the display of Numeric.
  */
-public class DisplayableResultValue {
-    private static final Pattern URL_PATTERN = Pattern.compile("(?i)^(https?|ftp)://");
-    private String displayString = "";
-    private Date dateValue = null;
-    private boolean dateType = false;
-    private boolean numericType = false;
-    private boolean urlType = false;
-    
-    /**
-     * Empty Constructor.
-     */
-    @SuppressWarnings("PMD.UncommentedEmptyConstructor")
-    public DisplayableResultValue() { }
-    
-    /**
-     * Constructor which wraps the given ResultValue object.
-     * @param resultValue - ResultValue associated with this object.
-     */
-    public DisplayableResultValue(ResultValue resultValue) {
-        if (resultValue != null) {
-            displayString = resultValue.toString();
-            checkForSpecialValues(resultValue);
-        }
-    }
+public final class NumericUtil {
 
-    private void checkForSpecialValues(ResultValue resultValue) {
-        AnnotationTypeEnum dataType = 
-            resultValue.getColumn().getAnnotationFieldDescriptor().getDefinition().getDataType();
-        if (AnnotationTypeEnum.DATE.equals(dataType)) {
-            dateType = true;
-            dateValue = getDateValue(resultValue);
-        } else if (AnnotationTypeEnum.NUMERIC.equals(dataType)) {
-            numericType = true;
-        } else if (AnnotationTypeEnum.STRING.equals(dataType) 
-                && URL_PATTERN.matcher(resultValue.toString()).find()) {
-            urlType = true;
-        }
-    }
+    private static final DecimalFormat DECIMAL_FORMAT =
+        new DecimalFormat("0.####################"); // Up to 20 dec places.
     
-    private Date getDateValue(ResultValue resultValue) {
-        DateAnnotationValue dateAnnotationValue = (DateAnnotationValue) resultValue.getValue();
-        return (dateAnnotationValue != null) ? dateAnnotationValue.getDateValue() : null;
+    private NumericUtil() {
+        
     }
     
     /**
-     * {@inheritDoc}
+     * 
+     * @param displayString to display in our format
+     * @return the double display format string
      */
-    public String toString() {
-        return displayString;
+    public static String formatDisplay(String displayString) {
+        return DECIMAL_FORMAT.format(Double.valueOf(displayString));
     }
     
     /**
-     * Gets the date value.
-     * @return - date value.
+     * 
+     * @param value to display in our format
+     * @return the double display format string
      */
-    public Date getDateValue() {
-        return dateValue;
+    public static String formatDisplay(Double value) {
+        return DECIMAL_FORMAT.format(value);
     }
-    
-    /**
-     * Determines if this is a date type.
-     * @return - T/F value.
-     */
-    public boolean isDateType() {
-        return dateType;
-    }
-
-    /**
-     * @return the numericType
-     */
-    public boolean isNumericType() {
-        return numericType;
-    }
-
-    /**
-     * @return the urlType
-     */
-    public boolean isUrlType() {
-        return urlType;
-    }
-
-
 }

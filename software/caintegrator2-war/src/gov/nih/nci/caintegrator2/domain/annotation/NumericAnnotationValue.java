@@ -2,8 +2,7 @@ package gov.nih.nci.caintegrator2.domain.annotation;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-
-import java.text.DecimalFormat;
+import gov.nih.nci.caintegrator2.common.NumericUtil;
 
 /**
  * 
@@ -11,10 +10,7 @@ import java.text.DecimalFormat;
 public class NumericAnnotationValue extends AbstractAnnotationValue {
 
     private static final long serialVersionUID = 1L;
-    /**
-     * The global decimal format that will be used by Cai2 application.
-     */
-    public static final String DECIMAL_FORMAT = "0.####################"; // Up to 20 dec places.
+
     private Double numericValue;
     
     /**
@@ -53,7 +49,7 @@ public class NumericAnnotationValue extends AbstractAnnotationValue {
      */
     @Override
     public String toString() {
-        return numericValue != null ? new DecimalFormat(DECIMAL_FORMAT).format(numericValue) : "";
+        return numericValue != null ? NumericUtil.formatDisplay(numericValue) : "";
     }
     
     /**

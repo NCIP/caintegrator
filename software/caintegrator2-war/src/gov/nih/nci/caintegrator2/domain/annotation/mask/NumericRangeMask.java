@@ -90,6 +90,9 @@ package gov.nih.nci.caintegrator2.domain.annotation.mask;
  * 0-4, 5-9, 10-14, etc.... and the actual number would fall in between a range.
  */
 public class NumericRangeMask extends AbstractAnnotationMask {
+
+    private static final long serialVersionUID = 1L;
+
     private static final Integer SORT_ORDER = 2;
 
     private Integer numericRange;
