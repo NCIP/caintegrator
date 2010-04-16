@@ -90,6 +90,9 @@ package gov.nih.nci.caintegrator2.domain.annotation.mask;
  * and a value was 95, it would be converted to "90+" for the user to see.  See <code>MaxNumberMaskHandler</code>
  */
 public class MaxNumberMask extends AbstractAnnotationMask {
+
+    private static final long serialVersionUID = 1L;
+
     private static final Integer SORT_ORDER = 1;
         
     private Double maxNumber;

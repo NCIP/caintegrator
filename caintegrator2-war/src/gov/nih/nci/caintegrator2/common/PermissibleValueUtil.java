@@ -87,10 +87,8 @@ package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -252,8 +250,7 @@ public final class PermissibleValueUtil {
     private static void addNumericValue(Collection<PermissibleValue> abstractPermissibleValues,
             String displayString) {
         PermissibleValue newPermissibleValue = new PermissibleValue();
-        newPermissibleValue.setValue(new DecimalFormat(NumericAnnotationValue.DECIMAL_FORMAT).format(
-                Double.valueOf(displayString)));
+        newPermissibleValue.setValue(NumericUtil.formatDisplay(displayString));
         abstractPermissibleValues.add(newPermissibleValue);
     }
     
