@@ -145,13 +145,14 @@ public class QueryManagementServiceImplTest {
     private CaIntegrator2DaoStub dao;
     private Query query;
     private GeneExpressionReporter reporter;
+    private ArrayDataServiceStub arrayDataService;
     
     @Before
     public void setup() {
         dao = new CaIntegrator2DaoStub();
         ResultHandler resultHandler = new ResultHandlerImpl();
         dao.clear();
-        ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub();
+        arrayDataService = new ArrayDataServiceStub();
         queryManagementService = new QueryManagementServiceImpl();
         queryManagementService.setDao(dao);
         queryManagementService.setArrayDataService(arrayDataService);
@@ -225,6 +226,7 @@ public class QueryManagementServiceImplTest {
         gene.setSymbol("GENE");
         reporter = new GeneExpressionReporter();
         Platform platform = new Platform();
+        platform.setName("platformName");
         ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporter.setReporterList(reporterList);
         reporter.getGenes().add(gene);
@@ -240,7 +242,19 @@ public class QueryManagementServiceImplTest {
         arrayData2.getReporterLists().add(reporterList2);
         reporterList2.getArrayDatas().add(arrayData2);
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        try {
+            arrayDataService.numberPlatformsInStudy = 2;
+            queryManagementService.executeGenomicDataQuery(query);
+            fail("Should have caught invalid criterion exception because no platforms selected.");
+        } catch (InvalidCriterionException e) {
+        }
+        geneNameCriterion.setPlatformName("platformName");
         GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
+        
+        arrayDataService.numberPlatformsInStudy = 1;
+        result = queryManagementService.executeGenomicDataQuery(query);
+        
+        
         assertEquals(1, result.getFilteredRowCollection().size());
         assertEquals(1, result.getColumnCollection().size());
         assertEquals(1, result.getFilteredRowCollection().iterator().next().getValues().size());
@@ -341,7 +355,7 @@ public class QueryManagementServiceImplTest {
 
         @Override
         public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols,
-                ReporterTypeEnum reporterType, Study study) {
+                ReporterTypeEnum reporterType, Study study, Platform platform) {
             Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
             reporters.add(reporter );
             return reporters;

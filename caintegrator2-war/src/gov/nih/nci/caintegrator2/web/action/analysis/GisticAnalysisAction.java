@@ -317,7 +317,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     private Set<String> getGenomeVersions(Set<Sample> samples) {
         Set<String> genomeVersions = new HashSet<String>();
         for (Sample sample : samples) {
-            for (ArrayData arrayData : sample.getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER)) {
+            for (ArrayData arrayData : sample.getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, null)) {
                 for (ReporterList reporterList : arrayData.getReporterLists()) {
                     genomeVersions.add(reporterList.getGenomeVersion());
                 }

@@ -64,7 +64,7 @@ public class AgilentCopyNumberMappingFileHandlerTest {
             exceptionCaught = true;
         }
         assertFalse(exceptionCaught);
-        Set<ArrayData> arrayDatas = studyConfiguration.getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        Set<ArrayData> arrayDatas = studyConfiguration.getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, null);
         assertEquals(1, arrayDatas.size());
         for (ArrayData arrayData : arrayDatas) {
             checkArrayData(arrayData);

@@ -53,12 +53,14 @@ public class Sample extends AbstractCaIntegrator2Object {
      * Returns all array datas of the given type for this sample.
      * 
      * @param reporterType return array data of this type.
+     * @param platform to retrieve Array Datas for (null if you want to use all platforms).
      * @return the array datas.
      */
-    public Set<ArrayData> getArrayDatas(ReporterTypeEnum reporterType) {
+    public Set<ArrayData> getArrayDatas(ReporterTypeEnum reporterType, Platform platform) {
         Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
         for (ArrayData arrayData : getArrayDataCollection()) {
-            if (reporterType.equals(arrayData.getReporterType())) {
+            if (reporterType.equals(arrayData.getReporterType()) 
+                && (platform == null || platform.equals(arrayData.getArray().getPlatform()))) {
                 arrayDatas.add(arrayData);
             }
         }

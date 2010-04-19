@@ -17,6 +17,12 @@ public abstract class AbstractGenomicCriterion extends AbstractCriterion impleme
     }
     
     /**
+     * 
+     * @return the platformName.
+     */
+    public abstract String getPlatformName();
+    
+    /**
      * {@inheritDoc}
      */
     @Override

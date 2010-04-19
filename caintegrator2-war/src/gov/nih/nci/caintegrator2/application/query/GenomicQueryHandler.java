@@ -89,8 +89,8 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
+import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
@@ -101,6 +101,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -117,6 +118,7 @@ import java.util.Set;
 /**
  * Runs queries that return <code>GenomicDataQueryResults</code>.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // See addMatchesFromArrayDatas
 class GenomicQueryHandler {
     
     private static final float DECIMAL_100 = 100.0f;
@@ -197,7 +199,7 @@ class GenomicQueryHandler {
         request.addReporters(reporters);
         request.addArrayDatas(arrayDatas);
         request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
-        if (Cai2Util.isFoldChangeQuery(query)) {
+        if (QueryUtil.isFoldChangeQuery(query)) {
             return arrayDataService.getFoldChangeValues(request, getControlArrayDatas());
         } else {
             return arrayDataService.getData(request);
@@ -206,8 +208,8 @@ class GenomicQueryHandler {
 
     private Collection<ArrayData> getControlArrayDatas() {
         Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
-        for (Sample sample : Cai2Util.getFoldChangeCriterion(query).getCompareToSampleSet().getSamples()) {
-            arrayDatas.addAll(sample.getArrayDatas(query.getReporterType()));
+        for (Sample sample : QueryUtil.getFoldChangeCriterion(query).getCompareToSampleSet().getSamples()) {
+            arrayDatas.addAll(sample.getArrayDatas(query.getReporterType(), query.getPlatform()));
         }
         return arrayDatas;
     }
@@ -237,12 +239,15 @@ class GenomicQueryHandler {
         return arrayDatas;
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private void addMatchesFromArrayDatas(Set<ArrayData> matchingArrayDatas, 
             Collection<ArrayData> candidateArrayDatas,
             ReporterTypeEnum reporterType) {
+        Platform platform = query.getPlatform();
         for (ArrayData arrayData : candidateArrayDatas) {
             for (ReporterList reporterList : arrayData.getReporterLists()) {
-                if (reporterType.equals(reporterList.getReporterType())) {
+                if (reporterType.equals(reporterList.getReporterType())
+                    && (platform == null || platform.equals(arrayData.getArray().getPlatform()))) {
                     matchingArrayDatas.add(arrayData);
                 }
             }
@@ -267,7 +272,7 @@ class GenomicQueryHandler {
             return Collections.emptySet();
         } else if (criterionHandler.hasReporterCriterion()) {
             return criterionHandler.getReporterMatches(dao, query.getSubscription().getStudy(), 
-                    query.getReporterType());
+                    query.getReporterType(), query.getPlatform());
         } else {
             return getAllReporters(arrayDatas);
         }

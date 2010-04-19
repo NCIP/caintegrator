@@ -86,9 +86,8 @@
 package gov.nih.nci.caintegrator2.web;
 
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableQuery;
 
@@ -126,8 +125,7 @@ public final class Cai2WebUtil {
         for (Query query 
                 : studySubscription.getQueryCollection()) {
             if (includeGenomic 
-                || (!ResultTypeEnum.GENOMIC.equals(query.getResultType()) 
-                    && !Cai2Util.isCompoundCriterionGenomic(query.getCompoundCriterion()))) {
+                || !QueryUtil.isQueryGenomic(query)) {
                 displayableQueries.add(new DisplayableQuery(query));
             }
         }

@@ -88,7 +88,9 @@ package gov.nih.nci.caintegrator2.application.query;
 import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
@@ -101,7 +103,9 @@ import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
@@ -162,6 +166,9 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     
     private Query retrieveQueryToExecute(Query query) throws InvalidCriterionException {
         try {
+            if (QueryUtil.isQueryGenomic(query)) {
+                addPlatformToQuery(query);
+            }
             Query queryToExecute = query.clone();
             addGenesNotFoundToQuery(query);
             checkCriterionForMasks(query);
@@ -169,6 +176,19 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
             return queryToExecute;
         } catch (CloneNotSupportedException e) {
             throw new IllegalStateException("Unable to clone query.");
+        }
+    }
+
+    private void addPlatformToQuery(Query query) throws InvalidCriterionException {
+        if (retrieveGeneExpressionPlatformsForStudy(query.getSubscription().getStudy()).size() == 1) {
+            query.setPlatform(null);
+        } else {
+            Set<String> allPlatformNames = query.getCompoundCriterion().getAllPlatformNames();
+            if (allPlatformNames.size() != 1) {
+               throw new InvalidCriterionException("A query must contain exactly 1 platform.  This one contains " 
+                       + allPlatformNames.size() + " platforms.");
+            }
+            query.setPlatform(getDao().getPlatform(allPlatformNames.iterator().next()));
         }
     }
 
@@ -229,6 +249,13 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
             return true;
         }
         return false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<Platform> retrieveGeneExpressionPlatformsForStudy(Study study) {
+        return arrayDataService.getPlatformsInStudy(study, GenomicDataSourceDataTypeEnum.EXPRESSION);
     }
 
     /**

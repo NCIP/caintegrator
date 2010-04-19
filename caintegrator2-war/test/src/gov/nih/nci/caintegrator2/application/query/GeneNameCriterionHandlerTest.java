@@ -176,7 +176,7 @@ public class GeneNameCriterionHandlerTest {
         criterion.setGeneSymbol(GENE_NAME);
         GeneNameCriterionHandler handler = GeneNameCriterionHandler.create(criterion);
         Set<AbstractReporter> reporters = 
-                handler.getReporterMatches(daoStub, null, ReporterTypeEnum.GENE_EXPRESSION_GENE);
+                handler.getReporterMatches(daoStub, null, ReporterTypeEnum.GENE_EXPRESSION_GENE, null);
         GeneExpressionReporter reporter = (GeneExpressionReporter) reporters.iterator().next();
         assertEquals(1, reporter.getGenes().size());
         Gene gene = reporter.getGenes().iterator().next();
@@ -187,7 +187,7 @@ public class GeneNameCriterionHandlerTest {
     @Test(expected=IllegalArgumentException.class)
     public void testGetReporterMatchesNoReporterType() {
         GeneNameCriterionHandler handler = GeneNameCriterionHandler.create(new GeneNameCriterion());
-        handler.getReporterMatches(null, null, null);
+        handler.getReporterMatches(null, null, null, null);
     }
 
     @Test
@@ -209,7 +209,7 @@ public class GeneNameCriterionHandlerTest {
 
         @Override
         public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols,
-                ReporterTypeEnum reporterType, Study study) {
+                ReporterTypeEnum reporterType, Study study, Platform platform) {
             Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
             reporters.add(reporter);
             findGeneExpressionReportersCalled = true;

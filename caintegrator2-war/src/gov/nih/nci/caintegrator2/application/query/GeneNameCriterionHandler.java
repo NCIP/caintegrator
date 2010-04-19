@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -121,7 +122,7 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
             Set<EntityTypeEnum> entityTypes) {
         Study study = query.getSubscription().getStudy();
         ReporterTypeEnum reporterType = query.getReporterType();
-        Set<AbstractReporter> reporters = getReporterMatches(dao, study, reporterType);
+        Set<AbstractReporter> reporters = getReporterMatches(dao, study, reporterType, query.getPlatform());
         Set<SampleAcquisition> sampleAcquisitions = new HashSet<SampleAcquisition>();
         for (AbstractReporter reporter : reporters) {
             for (ArrayData arrayData : reporter.getReporterList().getArrayDatas()) {
@@ -139,12 +140,13 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
      * {@inheritDoc}
      */
     @Override
-    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType) {
+    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType, 
+            Platform platform) {
         if (reporterType == null) {
             throw new IllegalArgumentException("ReporterType is not set.");
         }
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-        reporters.addAll(dao.findReportersForGenes(criterion.getGeneSymbols(), reporterType, study));
+        reporters.addAll(dao.findReportersForGenes(criterion.getGeneSymbols(), reporterType, study, platform));
         return reporters;
     }
 

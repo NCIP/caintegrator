@@ -2,6 +2,7 @@ package gov.nih.nci.caintegrator2.domain.application;
 
 import gov.nih.nci.caintegrator2.application.study.Visibility;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.util.ArrayList;
@@ -23,7 +24,6 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
     private ResultTypeEnum resultType = ResultTypeEnum.CLINICAL;
     private ResultsOrientationEnum orientation = ResultsOrientationEnum.SUBJECTS_AS_COLUMNS;
     private String visibility;
-    
     private StudySubscription subscription;
     private CompoundCriterion compoundCriterion = new CompoundCriterion();
     private Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
@@ -31,6 +31,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
     private transient Visibility subjectListVisibility = null;
     private transient List<String> geneSymbolsNotFound = new ArrayList<String>();
     private transient boolean hasMaskedValues = false;
+    private transient Platform platform;
     
     /**
      * @return the description
@@ -260,6 +261,20 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
      */
     public void setSubjectListVisibility(Visibility subjectListVisibility) {
         this.subjectListVisibility = subjectListVisibility;
+    }
+
+    /**
+     * @return the platform
+     */
+    public Platform getPlatform() {
+        return platform;
+    }
+
+    /**
+     * @param platform the platform to set
+     */
+    public void setPlatform(Platform platform) {
+        this.platform = platform;
     }
 
 }

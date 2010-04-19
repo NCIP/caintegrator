@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.lang.xwork.StringUtils;
 
 /**
  * 
@@ -72,6 +75,24 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
         }
         
         return geneSymbolsInQuery;
+    }
+    
+    /**
+     * 
+     * @return returns all platform names for all criterion under this compound criterion.
+     */
+    public Set<String> getAllPlatformNames() {
+        Set<String> platformNames = new HashSet<String>();
+        for (AbstractCriterion criterion : getCriterionCollection()) {
+            if (criterion instanceof CompoundCriterion) {
+                platformNames.addAll(((CompoundCriterion) criterion).getAllPlatformNames());
+            } else {
+                if (StringUtils.isNotBlank(criterion.getPlatformName())) {
+                    platformNames.add(criterion.getPlatformName());
+                }
+            }
+        }
+        return platformNames;
     }
 
     /**

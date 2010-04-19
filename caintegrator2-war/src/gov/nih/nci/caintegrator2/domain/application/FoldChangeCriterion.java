@@ -21,6 +21,7 @@ public class FoldChangeCriterion extends AbstractGenomicCriterion implements Clo
     private String geneSymbol;
     private String controlSampleSetName;
     private transient SampleSet compareToSampleSet = new SampleSet();
+    private String platformName;
     
 
     /**
@@ -131,6 +132,21 @@ public class FoldChangeCriterion extends AbstractGenomicCriterion implements Clo
     @Override
     protected List<String> getGeneSymbolsInCriterion() {
         return new ArrayList<String>(getGeneSymbols());
+    }
+
+    /**
+     * @param platformName the platformName to set
+     */
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPlatformName() {
+        return platformName;
     }
 
 }

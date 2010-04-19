@@ -244,7 +244,7 @@ public final class GenePatternUtil {
             SampleSet excludedControlSampleSet, QueryManagementService queryManagementService)
     throws InvalidCriterionException {
         Set<Query> clinicalQuerySet = new HashSet<Query>(clinicalQueries);
-        Query allGenomicDataQuery = Cai2Util.createAllGenomicDataQuery(studySubscription, clinicalQuerySet);
+        Query allGenomicDataQuery = QueryUtil.createAllGenomicDataQuery(studySubscription, clinicalQuerySet);
         GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
         genomicData.excludeSampleSet(excludedControlSampleSet);
         if (genomicData.getRowCollection().isEmpty()) {

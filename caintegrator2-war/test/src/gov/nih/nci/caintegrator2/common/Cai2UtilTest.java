@@ -94,20 +94,7 @@ import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
-import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.file.FileManagerImpl;
 
 import java.io.File;
@@ -115,7 +102,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -132,49 +118,6 @@ public class Cai2UtilTest {
         stringsCollection.add("HELLO");
         assertTrue(Cai2Util.containsIgnoreCase(stringsCollection, "hello"));
         assertFalse(Cai2Util.containsIgnoreCase(stringsCollection, "helo"));
-    }
-
-
-    @Test
-    public void testResultRowSetContainsResultRow() {
-        
-        Set<ResultRow> rowSet = new HashSet<ResultRow>();
-        ResultRow row1 = new ResultRow();
-        StudySubjectAssignment subjectAssignment = new StudySubjectAssignment();
-        subjectAssignment.setId(Long.valueOf(1));
-        row1.setSubjectAssignment(subjectAssignment);
-        rowSet.add(row1);
-        ResultRow rowToTest = new ResultRow();
-        rowToTest.setSubjectAssignment(subjectAssignment);
-        
-        assertTrue(Cai2Util.resultRowSetContainsResultRow(rowSet, rowToTest));
-        
-    }
-
-    @Test
-    public void testAnnotationValueBelongToPermissibleValue() {
-        StringAnnotationValue stringValue = new StringAnnotationValue();
-        stringValue.setStringValue("TeSt");
-        PermissibleValue stringPermissibleValue = new PermissibleValue();
-        stringPermissibleValue.setValue("tEsT");
-        assertTrue(Cai2Util.annotationValueBelongToPermissibleValue(stringValue, stringPermissibleValue));
-        stringPermissibleValue.setValue("Not Equals");
-        assertFalse(Cai2Util.annotationValueBelongToPermissibleValue(stringValue, stringPermissibleValue));
-        
-        NumericAnnotationValue numericValue = new NumericAnnotationValue();
-        numericValue.setNumericValue(50.0);
-        PermissibleValue numericPermissibleValue = new PermissibleValue();
-        numericPermissibleValue.setValue("50.0");
-        assertTrue(Cai2Util.annotationValueBelongToPermissibleValue(numericValue, numericPermissibleValue));
-        DateAnnotationValue dateValue = new DateAnnotationValue();
-        long currentTime = System.currentTimeMillis();
-        dateValue.setDateValue(new Date(currentTime));
-        
-        PermissibleValue datePermissibleValue = new PermissibleValue();
-        datePermissibleValue.setValue(DateUtil.toString(new Date(currentTime)));
-        
-        assertTrue(Cai2Util.annotationValueBelongToPermissibleValue(dateValue, datePermissibleValue));
-        
     }
     
     @Test
@@ -240,49 +183,13 @@ public class Cai2UtilTest {
         assertNull(Cai2Util.getHostNameFromUrl(""));
         assertNull(Cai2Util.getHostNameFromUrl("abc"));
     }
-    
-    @Test
-    public void testIsCompoundCriterionGenomic() {
-        CompoundCriterion compoundCriterion1 = new CompoundCriterion();
-        compoundCriterion1.setCriterionCollection(new HashSet<AbstractCriterion>());
-        CompoundCriterion compoundCriterion2 = new CompoundCriterion();
-        compoundCriterion2.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion2.getCriterionCollection().add(new StringComparisonCriterion());
-        compoundCriterion2.getCriterionCollection().add(new StringComparisonCriterion());
-        compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
-        assertFalse(Cai2Util.isCompoundCriterionGenomic(compoundCriterion1));
-        compoundCriterion1.getCriterionCollection().add(new GeneNameCriterion());
-        assertTrue(Cai2Util.isCompoundCriterionGenomic(compoundCriterion1));
         
-        compoundCriterion1.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
-        compoundCriterion1.getCriterionCollection().add(new StringComparisonCriterion());
-        assertFalse(Cai2Util.isCompoundCriterionGenomic(compoundCriterion1));
-        compoundCriterion2.getCriterionCollection().add(new FoldChangeCriterion());
-        assertTrue(Cai2Util.isCompoundCriterionGenomic(compoundCriterion1));
-    }
-    
     @Test
     public void testCreateGeneListFromString() {
         assertTrue(Cai2Util.createListFromCommaDelimitedString(null).isEmpty());
         assertEquals(2, Cai2Util.createListFromCommaDelimitedString("egfr, brca1").size());
     }
-    
-    @Test
-    public void testGetCriterionTypeFromQuery() {
-        Query query = new Query();
-        CompoundCriterion compoundCriterion1 = new CompoundCriterion();
-        CompoundCriterion compoundCriterion2 = new CompoundCriterion();
-        compoundCriterion1.getCriterionCollection().add(new GeneNameCriterion());
-        compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
-        compoundCriterion2.getCriterionCollection().add(new SubjectListCriterion());
-        compoundCriterion2.getCriterionCollection().add(new SubjectListCriterion());
-        query.setCompoundCriterion(compoundCriterion1);
-        assertEquals(1, Cai2Util.getCriterionTypeFromQuery(query, GeneNameCriterion.class).size());
-        assertEquals(2, Cai2Util.getCriterionTypeFromQuery(query, SubjectListCriterion.class).size());
-        assertEquals(0, Cai2Util.getCriterionTypeFromQuery(query, StringComparisonCriterion.class).size());
-    }
-    
+
     @Test
     public void testRetrieveValidSurvivalValueDefinitions() {
         

@@ -128,7 +128,7 @@ public class GisticSamplesMarkersTest {
     }
 
     private ArrayData getArrayData() {
-        return study.getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER).iterator().next();
+        return study.getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, null).iterator().next();
     }
 
     @Test
