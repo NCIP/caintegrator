@@ -194,7 +194,9 @@ public enum PlatformTypeEnum {
     public static List<String> getValuesToDisplay() {
         List<String> list = new ArrayList<String>();
         for (PlatformTypeEnum type : values()) {
-            list.add(type.getValue());
+            if (!PlatformTypeEnum.AFFYMETRIX_SNP.equals(type)) { // TODO - For now disable the SNP type.
+                list.add(type.getValue());
+            }
         }
         return list;
     }
