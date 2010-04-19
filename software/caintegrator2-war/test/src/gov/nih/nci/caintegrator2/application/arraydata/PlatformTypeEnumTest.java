@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -110,6 +111,8 @@ public class PlatformTypeEnumTest {
         assertEquals(PlatformTypeEnum.AFFYMETRIX_SNP, PlatformTypeEnum.getByValue(PlatformTypeEnum.AFFYMETRIX_SNP.getValue()));
         assertEquals(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION, PlatformTypeEnum.getByValue(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue()));
         assertEquals(PlatformTypeEnum.AGILENT_GENE_EXPRESSION, PlatformTypeEnum.getByValue(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue()));
+        assertEquals(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION, PlatformTypeEnum.getByValue(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue()));
+        assertEquals(PlatformTypeEnum.AGILENT_GENE_EXPRESSION, PlatformTypeEnum.getByValue(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue()));
     }
 
     /**
@@ -125,9 +128,11 @@ public class PlatformTypeEnumTest {
      */
     @Test
     public void testGetValueToDisplay() {
-        assertTrue(PlatformTypeEnum.getValuesToDisplay().contains(PlatformTypeEnum.AFFYMETRIX_SNP.getValue()));
+        assertFalse(PlatformTypeEnum.getValuesToDisplay().contains(PlatformTypeEnum.AFFYMETRIX_SNP.getValue()));
         assertTrue(PlatformTypeEnum.getValuesToDisplay().contains(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue()));
         assertTrue(PlatformTypeEnum.getValuesToDisplay().contains(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue()));
+        assertTrue(PlatformTypeEnum.getValuesToDisplay().contains(PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getValue()));
+        assertTrue(PlatformTypeEnum.getValuesToDisplay().contains(PlatformTypeEnum.AGILENT_COPY_NUMBER.getValue()));
     }
 
 }

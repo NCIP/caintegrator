@@ -65,7 +65,9 @@ public enum GenomicDataSourceDataTypeEnum {
     public static List<String> getStringValues() {
         List<String> values = new ArrayList<String>();
         for (GenomicDataSourceDataTypeEnum type : values()) {
-            values.add(type.getValue());
+            if (!GenomicDataSourceDataTypeEnum.SNP.equals(type)) { // TODO - For now disable the SNP data type.
+                values.add(type.getValue());
+            }
         }
         return values;
     }
