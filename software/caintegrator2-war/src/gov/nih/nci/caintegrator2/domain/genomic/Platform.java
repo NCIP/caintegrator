@@ -14,7 +14,7 @@ import java.util.TreeSet;
 /**
  * 
  */
-public class Platform extends AbstractCaIntegrator2Object {
+public class Platform extends AbstractCaIntegrator2Object implements Comparable<Platform> {
     
     private static final long serialVersionUID = 1L;
     
@@ -173,6 +173,13 @@ public class Platform extends AbstractCaIntegrator2Object {
      */
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(Platform o) {
+        return this.getName().compareTo(o.getName());
     }
 
 }

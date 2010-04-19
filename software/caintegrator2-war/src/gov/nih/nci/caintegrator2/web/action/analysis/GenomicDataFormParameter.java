@@ -89,8 +89,8 @@ import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
+import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -169,7 +169,7 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
     public void configureForInvocation(StudySubscription studySubscription, 
                                        QueryManagementService queryManagementService) throws InvalidCriterionException {
         if (getSelectedQuery() == null) {
-            setSelectedQuery(Cai2Util.createAllGenomicDataQuery(studySubscription, null));
+            setSelectedQuery(QueryUtil.createAllGenomicDataQuery(studySubscription, null));
         } else {
             refreshSelectedQuery(studySubscription);
         }

@@ -382,7 +382,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         dao.save(gene);
         Set<String> geneSymbols = new HashSet<String>();
         geneSymbols.add("TEST");
-        assertEquals(1, dao.findReportersForGenes(geneSymbols, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, study).size());
+        assertEquals(1, dao.findReportersForGenes(geneSymbols, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, study, platform).size());
     }
     
     @Test

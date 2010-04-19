@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
@@ -255,7 +256,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
                                    Set<ResultRow> newRows) {
         Set<ResultRow> combinedResults = new HashSet<ResultRow>();
            for (ResultRow row : newRows) {
-               if (Cai2Util.resultRowSetContainsResultRow(currentValidRows, row)) {
+               if (QueryUtil.resultRowSetContainsResultRow(currentValidRows, row)) {
                    combinedResults.add(row);
                }
            }
@@ -267,7 +268,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         Set<ResultRow> combinedResults = new HashSet<ResultRow>();
         combinedResults.addAll(currentValidRows);
         for (ResultRow row : newRows) {
-            if (!Cai2Util.resultRowSetContainsResultRow(combinedResults, row)) {
+            if (!QueryUtil.resultRowSetContainsResultRow(combinedResults, row)) {
                 combinedResults.add(row);
             }
             
@@ -276,11 +277,12 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
     }
 
     @Override
-    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType) {
+    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType, 
+            Platform platform) {
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
         for (AbstractCriterionHandler handler : handlers) {
             if (handler.isReporterMatchHandler()) {
-                reporters.addAll(handler.getReporterMatches(dao, study, reporterType));
+                reporters.addAll(handler.getReporterMatches(dao, study, reporterType, platform));
             }
         }
         return reporters;

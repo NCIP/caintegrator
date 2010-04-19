@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
@@ -172,7 +173,7 @@ class AnnotationBasedKMPlotHandler extends AbstractKMPlotHandler {
     private void assignSubjectToGroup(Collection<SubjectGroup> subjectGroupCollection,
             SubjectSurvivalData subjectSurvivalData, AbstractAnnotationValue subjectPlotGroupValue) {
         for (SubjectGroup subjectGroup : subjectGroupCollection) {
-            if (Cai2Util.annotationValueBelongToPermissibleValue(
+            if (QueryUtil.annotationValueBelongToPermissibleValue(
                         subjectPlotGroupValue, subjectGroupPermissibleValue.get(subjectGroup))) {
                 subjectGroup.getSurvivalData().add(subjectSurvivalData);
                 break;

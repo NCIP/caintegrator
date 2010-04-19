@@ -201,14 +201,14 @@ public class FoldChangeCriterionHandlerTest {
         FoldChangeCriterion criterion = new FoldChangeCriterion();
         criterion.setGeneSymbol("tester");
         FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
-        assertEquals(1, handler.getReporterMatches(daoStub, study, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET).size());
+        assertEquals(1, handler.getReporterMatches(daoStub, study, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, null).size());
     }
     
     private class DaoStub extends CaIntegrator2DaoStub {
 
         @Override
         public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols,
-                ReporterTypeEnum reporterType, Study study) {
+                ReporterTypeEnum reporterType, Study study, Platform platform) {
             Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
             reporters.add(reporter);
             return reporters;
