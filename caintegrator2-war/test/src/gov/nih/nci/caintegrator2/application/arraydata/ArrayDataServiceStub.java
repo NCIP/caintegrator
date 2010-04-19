@@ -85,11 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -98,6 +100,7 @@ import java.util.List;
 
 public class ArrayDataServiceStub implements ArrayDataService {
 
+    public int numberPlatformsInStudy = 1;
     public boolean loadArrayDesignCalled;
     public boolean getFoldChangeValuesCalled;
     public boolean deleteCalled;
@@ -107,6 +110,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
     
     
     public void reset() {
+        numberPlatformsInStudy = 1;
         loadArrayDesignCalled = false;
         getFoldChangeValuesCalled = false;
         deleteCalled = false;
@@ -240,6 +244,14 @@ public class ArrayDataServiceStub implements ArrayDataService {
 
     public void savePlatformConfiguration(PlatformConfiguration platformConfiguration) {
         
+    }
+
+    public List<Platform> getPlatformsInStudy(Study study, GenomicDataSourceDataTypeEnum sourceType) {
+        List<Platform> platforms = new ArrayList<Platform>();
+        for (int x = 0; x < numberPlatformsInStudy; x++) {
+            platforms.add(new Platform());
+        }
+        return platforms;
     }
 
 }

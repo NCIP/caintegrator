@@ -8,6 +8,7 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -153,12 +154,13 @@ public class Study extends AbstractCaIntegrator2Object {
      * Returns all array datas of the given type in the project.
      * 
      * @param reporterType get array datas of this type.
+     * @param platform to retrieve Array Datas for (null if you want to use all platforms). 
      * @return an immutable set of the matching array datas.
      */
-    public Set<ArrayData> getArrayDatas(ReporterTypeEnum reporterType) {
+    public Set<ArrayData> getArrayDatas(ReporterTypeEnum reporterType, Platform platform) {
         Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
         for (Sample sample : getSamples()) {
-            arrayDatas.addAll(sample.getArrayDatas(reporterType));
+            arrayDatas.addAll(sample.getArrayDatas(reporterType, platform));
         }
         return Collections.unmodifiableSet(arrayDatas);
     }

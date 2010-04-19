@@ -27,6 +27,15 @@ public abstract class AbstractCriterion extends AbstractCaIntegrator2Object impl
     protected List<String> getGeneSymbolsInCriterion() {
         return new ArrayList<String>();
     }
+    
+    /**
+     * 
+     * @return default value for platformName is null;
+     */
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // Default implementation is null
+    public String getPlatformName() {
+        return null;
+    }
 
     /**
      * @return the finalMaskApplied

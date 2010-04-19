@@ -323,8 +323,8 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
     public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols, 
-            ReporterTypeEnum reporterType, Study study) {
-        Set<ReporterList> studyReporterLists = getStudyReporterLists(study, reporterType);
+            ReporterTypeEnum reporterType, Study study, Platform platform) {
+        Set<ReporterList> studyReporterLists = getStudyReporterLists(study, reporterType, platform);
         if (studyReporterLists.isEmpty()) {
             return Collections.emptySet();
         }
@@ -336,9 +336,9 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         return reporters;
     }
 
-    private Set<ReporterList> getStudyReporterLists(Study study, ReporterTypeEnum reporterType) {
+    private Set<ReporterList> getStudyReporterLists(Study study, ReporterTypeEnum reporterType, Platform platform) {
         Set<ReporterList> reporterLists = new HashSet<ReporterList>();
-        for (ArrayData arrayData : study.getArrayDatas(reporterType)) {
+        for (ArrayData arrayData : study.getArrayDatas(reporterType, platform)) {
             reporterLists.addAll(arrayData.getReporterLists());
         }
         return reporterLists;

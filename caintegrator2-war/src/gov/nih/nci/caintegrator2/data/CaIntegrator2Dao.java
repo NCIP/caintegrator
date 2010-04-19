@@ -224,10 +224,11 @@ public interface CaIntegrator2Dao {
      * @param geneSymbols finds expression reporters for genes that match the symbol.
      * @param reporterType return only reporters of this type
      * @param study restrict the search to the given study.
+     * @param platform restricts the search to the given platform.
      * @return the list of matches.
      */
     Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols, ReporterTypeEnum reporterType, 
-            Study study);
+            Study study, Platform platform);
 
 
     /**

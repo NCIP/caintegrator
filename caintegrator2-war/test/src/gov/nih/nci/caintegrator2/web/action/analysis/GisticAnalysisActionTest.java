@@ -250,6 +250,7 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
             
         }
         
+        @SuppressWarnings("unused")
         public void setupInvalidQueryResult() {
             queryResult = new QueryResult();
             queryResult.setRowCollection(new HashSet<ResultRow>());

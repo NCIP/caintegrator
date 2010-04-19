@@ -85,15 +85,20 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -199,6 +204,22 @@ public class ArrayDataServiceImpl implements ArrayDataService {
         return dao.getPlatforms();
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public List<Platform> getPlatformsInStudy(Study study, GenomicDataSourceDataTypeEnum sourceType) {
+        List<Platform> allPlatforms = new ArrayList<Platform>();
+        for (GenomicDataSourceConfiguration genomicSource : study.getStudyConfiguration().getGenomicDataSources()) {
+            if (sourceType.equals(genomicSource.getDataType())) {
+                allPlatforms.addAll(dao.retrievePlatformsForGenomicSource(genomicSource));    
+            }
+        }
+        if (allPlatforms.size() > 1) {
+            Collections.sort(allPlatforms);
+        }
+        return allPlatforms;
+    }
+     
     /**
      * {@inheritDoc}
      */

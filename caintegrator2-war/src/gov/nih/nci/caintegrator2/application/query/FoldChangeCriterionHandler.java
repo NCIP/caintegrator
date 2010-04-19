@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -133,13 +134,15 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
             Set<EntityTypeEnum> entityTypes) throws InvalidCriterionException {
         Study study = query.getSubscription().getStudy();
         ReporterTypeEnum reporterType = query.getReporterType();
+        Platform platform = query.getPlatform();
         configureCompareToSamples(study, criterion.getControlSampleSetName());
-        Set<AbstractReporter> reporters = getReporterMatches(dao, study, reporterType);
+        Set<AbstractReporter> reporters = getReporterMatches(dao, study, reporterType, platform);
         DataRetrievalRequest request = new DataRetrievalRequest();
         request.addReporters(reporters);
-        request.addArrayDatas(getCandidateArrayDatas(study, reporterType));
+        request.addArrayDatas(getCandidateArrayDatas(study, reporterType, platform));
         request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
-        ArrayDataValues values = arrayDataService.getFoldChangeValues(request, getCompareToArrayDatas(reporterType));
+        ArrayDataValues values = arrayDataService.getFoldChangeValues(request, 
+                getCompareToArrayDatas(reporterType, platform));
         return getRows(values, entityTypes);
     }
 
@@ -207,17 +210,18 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
         return foldChangeValue >= criterion.getFoldsUp();
     }
 
-    private Collection<ArrayData> getCandidateArrayDatas(Study study, ReporterTypeEnum reporterType) {
+    private Collection<ArrayData> getCandidateArrayDatas(Study study, ReporterTypeEnum reporterType
+            , Platform platform) {
         Set<ArrayData> candidateDatas = new HashSet<ArrayData>();
-        candidateDatas.addAll(study.getArrayDatas(reporterType));
-        candidateDatas.removeAll(getCompareToArrayDatas(reporterType));
+        candidateDatas.addAll(study.getArrayDatas(reporterType, platform));
+        candidateDatas.removeAll(getCompareToArrayDatas(reporterType, platform));
         return candidateDatas;
     }
 
-    private Collection<ArrayData> getCompareToArrayDatas(ReporterTypeEnum reporterType) {
+    private Collection<ArrayData> getCompareToArrayDatas(ReporterTypeEnum reporterType, Platform platform) {
         Set<ArrayData> compareToDatas = new HashSet<ArrayData>();
         for (Sample sample : criterion.getCompareToSampleSet().getSamples()) {
-            compareToDatas.addAll(sample.getArrayDatas(reporterType));
+            compareToDatas.addAll(sample.getArrayDatas(reporterType, platform));
         }
         return compareToDatas;
     }
@@ -236,18 +240,19 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
      * {@inheritDoc}
      */
     @Override
-    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType) {
+    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType, 
+            Platform platform) {
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
         if (StringUtils.isBlank(criterion.getGeneSymbol())) {
-            reporters.addAll(findReporters(reporterType, study));
+            reporters.addAll(findReporters(reporterType, study, platform));
         } else {
-            reporters.addAll(dao.findReportersForGenes(criterion.getGeneSymbols(), reporterType, study));
+            reporters.addAll(dao.findReportersForGenes(criterion.getGeneSymbols(), reporterType, study, platform));
         }
         return reporters;
     }
     
-    private Set<AbstractReporter> findReporters(ReporterTypeEnum reporterType, Study study) {
-        Set<ReporterList> studyReporterLists = getStudyReporterLists(study, reporterType);
+    private Set<AbstractReporter> findReporters(ReporterTypeEnum reporterType, Study study, Platform platform) {
+        Set<ReporterList> studyReporterLists = getStudyReporterLists(study, reporterType, platform);
         if (studyReporterLists.isEmpty()) {
             return Collections.emptySet();
         }
@@ -258,9 +263,9 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
         return reporters;
     }
 
-    private Set<ReporterList> getStudyReporterLists(Study study, ReporterTypeEnum reporterType) {
+    private Set<ReporterList> getStudyReporterLists(Study study, ReporterTypeEnum reporterType, Platform platform) {
         Set<ReporterList> reporterLists = new HashSet<ReporterList>();
-        for (ArrayData arrayData : study.getArrayDatas(reporterType)) {
+        for (ArrayData arrayData : study.getArrayDatas(reporterType, platform)) {
             reporterLists.addAll(arrayData.getReporterLists());
         }
         return reporterLists;

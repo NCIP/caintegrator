@@ -85,9 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Collection;
 import java.util.List;
@@ -145,6 +147,14 @@ public interface ArrayDataService {
       * @return the platforms.
       */
      List<Platform> getPlatforms();
+     
+     /**
+      * 
+      * @param study that the platforms exist in.
+      * @param sourceType to narrow down the platform type based on GeneExpression or CopyNumber.
+      * @return Platforms in the study matching the given source.
+      */
+     List<Platform> getPlatformsInStudy(Study study, GenomicDataSourceDataTypeEnum sourceType);
 
      /**
       * Returns the PlatformConfiguration of name.

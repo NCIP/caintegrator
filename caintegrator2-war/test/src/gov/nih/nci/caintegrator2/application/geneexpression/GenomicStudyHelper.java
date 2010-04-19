@@ -190,7 +190,7 @@ public class GenomicStudyHelper {
         
         @Override
         public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols,
-                ReporterTypeEnum reporterType, Study study) {
+                ReporterTypeEnum reporterType, Study study, Platform platform) {
             Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
             reporters.add(reporter );
             return reporters;

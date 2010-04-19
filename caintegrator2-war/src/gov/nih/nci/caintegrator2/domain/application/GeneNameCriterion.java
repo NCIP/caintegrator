@@ -14,6 +14,7 @@ public class GeneNameCriterion extends AbstractGenomicCriterion {
     private static final long serialVersionUID = 1L;
     
     private String geneSymbol;
+    private String platformName;
 
     /**
      * @return the geneSymbol
@@ -36,6 +37,21 @@ public class GeneNameCriterion extends AbstractGenomicCriterion {
         Set<String> geneSymbols = new HashSet<String>();
         geneSymbols.addAll(Arrays.asList(getGeneSymbol().replaceAll("\\s*", "").split(",")));
         return geneSymbols;
+    }
+    
+    /**
+     * @param platformName the platformName to set
+     */
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPlatformName() {
+        return platformName;
     }
 
     /**

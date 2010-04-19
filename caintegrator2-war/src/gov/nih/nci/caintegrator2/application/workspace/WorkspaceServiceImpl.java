@@ -91,9 +91,9 @@ import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Visibility;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
+import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.domain.application.AbstractList;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
@@ -456,7 +456,7 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
         if (abstractList instanceof SubjectList) {
             for (Query query : subscription.getQueryCollection()) {
                 Set<SubjectListCriterion> subjectListCriteria = 
-                    Cai2Util.getCriterionTypeFromQuery(query, SubjectListCriterion.class);
+                    QueryUtil.getCriterionTypeFromQuery(query, SubjectListCriterion.class);
                 for (SubjectListCriterion subjectListCriterion : subjectListCriteria) {
                     subjectListCriterion.getSubjectListCollection().remove(abstractList);
                 }

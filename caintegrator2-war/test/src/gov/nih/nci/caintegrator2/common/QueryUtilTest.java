@@ -83,113 +83,111 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package gov.nih.nci.caintegrator2.common;
 
-package gov.nih.nci.caintegrator2.application.query;
-
-import gov.nih.nci.caintegrator2.application.CaIntegrator2EntityRefresher;
-import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.SubjectList;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
-import java.io.File;
-import java.util.List;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.junit.Test;
 
 
-/**
- * Interface to the service which manages query data for a user's workspace.
- */
-public interface QueryManagementService extends CaIntegrator2EntityRefresher {
+public class QueryUtilTest {
 
-    /**
-     * Executes a clinical query and returns back the result.
-     * @param query item to execute.
-     * @return - Result of the query being executed
-     * @throws InvalidCriterionException if criterion is invalid.
-     */
-    QueryResult execute(Query query) throws InvalidCriterionException;
-    
-    /**
-     * Executes a query that returns a genomic data set.
-     * 
-     * @param query the query to execute.
-     * @return the resulting data.
-     * @throws InvalidCriterionException if criterion is invalid. 
-     */
-    GenomicDataQueryResult executeGenomicDataQuery(Query query) throws InvalidCriterionException;
-    
-    /**
-     * Retrieves the geneExpression platforms that exist in a study.
-     * @param study to find platforms for.
-     * @return gene expression platforms.
-     */
-    List<Platform> retrieveGeneExpressionPlatformsForStudy(Study study);
-    
-    /**
-     * Creates a list of queries given a group of subject lists.
-     * @param subscription to study subscription.
-     * @return list of queries.
-     */
-    List<Query> createQueriesFromSubjectLists(StudySubscription subscription);
-    
-    /**
-     * Creates a query from a subject list.
-     * @param subscription to study subscription.
-     * @param subjectList to create query from.
-     * @return query created from SubjectList.
-     */
-    Query createQueryFromSubjectList(StudySubscription subscription, SubjectList subjectList);
-    
-    /**
-     * Creates a Dicom Job object based on the checked rows.
-     * @param checkedRows - rows the user selected.
-     * @return Dicom Job.
-     */
-    NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows);
-    
-    /**
-     * Creates an NCIA Basket object based on the checked rows.
-     * @param checkedRows - rows the user selected.
-     * @return NCIA Basket.
-     */
-    NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows);
 
-    /**
-     * Persists a query.
-     * 
-     * @param query item to update
-     */
-    void save(Query query);
-    
-    /**
-     * Deletes a query.
-     * 
-     * @param query item to update
-     */
-    void delete(Query query);
-    
-    /**
-     * Creates a CSV file from the genomic results.
-     * @param result to create csv file for.
-     * @return csv file.
-     */
-    File createCsvFileFromGenomicResults(GenomicDataQueryResult result);
-    
-    /**
-     * Validates the gene symbols and returns all symbols that exist in the study.
-     * @param studySubscription to check gene symbols against.
-     * @param geneSymbols to validate existance in the study.
-     * @return all valid gene symbols.
-     * @throws GenesNotFoundInStudyException if no genes are found.
-     */
-    List<String> validateGeneSymbols(StudySubscription studySubscription, List<String> geneSymbols)
-        throws GenesNotFoundInStudyException;
+    @Test
+    public void testResultRowSetContainsResultRow() {
+        
+        Set<ResultRow> rowSet = new HashSet<ResultRow>();
+        ResultRow row1 = new ResultRow();
+        StudySubjectAssignment subjectAssignment = new StudySubjectAssignment();
+        subjectAssignment.setId(Long.valueOf(1));
+        row1.setSubjectAssignment(subjectAssignment);
+        rowSet.add(row1);
+        ResultRow rowToTest = new ResultRow();
+        rowToTest.setSubjectAssignment(subjectAssignment);
+        
+        assertTrue(QueryUtil.resultRowSetContainsResultRow(rowSet, rowToTest));
+        
+    }
 
+    @Test
+    public void testAnnotationValueBelongToPermissibleValue() {
+        StringAnnotationValue stringValue = new StringAnnotationValue();
+        stringValue.setStringValue("TeSt");
+        PermissibleValue stringPermissibleValue = new PermissibleValue();
+        stringPermissibleValue.setValue("tEsT");
+        assertTrue(QueryUtil.annotationValueBelongToPermissibleValue(stringValue, stringPermissibleValue));
+        stringPermissibleValue.setValue("Not Equals");
+        assertFalse(QueryUtil.annotationValueBelongToPermissibleValue(stringValue, stringPermissibleValue));
+        
+        NumericAnnotationValue numericValue = new NumericAnnotationValue();
+        numericValue.setNumericValue(50.0);
+        PermissibleValue numericPermissibleValue = new PermissibleValue();
+        numericPermissibleValue.setValue("50.0");
+        assertTrue(QueryUtil.annotationValueBelongToPermissibleValue(numericValue, numericPermissibleValue));
+        DateAnnotationValue dateValue = new DateAnnotationValue();
+        long currentTime = System.currentTimeMillis();
+        dateValue.setDateValue(new Date(currentTime));
+        
+        PermissibleValue datePermissibleValue = new PermissibleValue();
+        datePermissibleValue.setValue(DateUtil.toString(new Date(currentTime)));
+        
+        assertTrue(QueryUtil.annotationValueBelongToPermissibleValue(dateValue, datePermissibleValue));
+        
+    }
+    
+    
+    @Test
+    public void testIsCompoundCriterionGenomic() {
+        CompoundCriterion compoundCriterion1 = new CompoundCriterion();
+        compoundCriterion1.setCriterionCollection(new HashSet<AbstractCriterion>());
+        CompoundCriterion compoundCriterion2 = new CompoundCriterion();
+        compoundCriterion2.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion2.getCriterionCollection().add(new StringComparisonCriterion());
+        compoundCriterion2.getCriterionCollection().add(new StringComparisonCriterion());
+        compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
+        assertFalse(QueryUtil.isCompoundCriterionGenomic(compoundCriterion1));
+        compoundCriterion1.getCriterionCollection().add(new GeneNameCriterion());
+        assertTrue(QueryUtil.isCompoundCriterionGenomic(compoundCriterion1));
+        
+        compoundCriterion1.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
+        compoundCriterion1.getCriterionCollection().add(new StringComparisonCriterion());
+        assertFalse(QueryUtil.isCompoundCriterionGenomic(compoundCriterion1));
+        compoundCriterion2.getCriterionCollection().add(new FoldChangeCriterion());
+        assertTrue(QueryUtil.isCompoundCriterionGenomic(compoundCriterion1));
+    }
+    
+    @Test
+    public void testGetCriterionTypeFromQuery() {
+        Query query = new Query();
+        CompoundCriterion compoundCriterion1 = new CompoundCriterion();
+        CompoundCriterion compoundCriterion2 = new CompoundCriterion();
+        compoundCriterion1.getCriterionCollection().add(new GeneNameCriterion());
+        compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
+        compoundCriterion2.getCriterionCollection().add(new SubjectListCriterion());
+        compoundCriterion2.getCriterionCollection().add(new SubjectListCriterion());
+        query.setCompoundCriterion(compoundCriterion1);
+        assertEquals(1, QueryUtil.getCriterionTypeFromQuery(query, GeneNameCriterion.class).size());
+        assertEquals(2, QueryUtil.getCriterionTypeFromQuery(query, SubjectListCriterion.class).size());
+        assertEquals(0, QueryUtil.getCriterionTypeFromQuery(query, StringComparisonCriterion.class).size());
+    }
 }
