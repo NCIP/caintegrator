@@ -80,6 +80,16 @@ public class StudySubscription extends AbstractCaIntegrator2StudyObject {
     }
     
     /**
+     * @return a list of all gene lists including global lists
+     */
+    public List<GeneList> getAllGeneLists() {
+        List<GeneList> resultList = new ArrayList<GeneList>();
+        resultList.addAll(getGeneLists());
+        resultList.addAll(getStudy().getStudyConfiguration().getGeneLists());
+        return resultList;
+    }
+    
+    /**
      * @return a list of all gene list names including global lists
      */
     public List<String> getAllGeneListNames() {
@@ -97,10 +107,13 @@ public class StudySubscription extends AbstractCaIntegrator2StudyObject {
      * @return The gene list
      */
     public GeneList getSelectedGeneList(String name) {
-        String[] nameDetails = name.split("-");
-        if (GLOBAL_GENE_LIST_PREFIX.equals(nameDetails[0] + "-")) {
-            return getStudy().getStudyConfiguration().getGeneList(nameDetails[1]);
+        if (name != null) {
+            String[] nameDetails = name.split("-");
+            if (GLOBAL_GENE_LIST_PREFIX.equals(nameDetails[0] + "-")) {
+                return getStudy().getStudyConfiguration().getGeneList(nameDetails[1]);
+            }
+            return getGeneList(name);
         }
-        return getGeneList(name);
+        return null;
     }
 }

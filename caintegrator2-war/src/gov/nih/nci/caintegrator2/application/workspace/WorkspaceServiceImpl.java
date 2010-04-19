@@ -452,9 +452,9 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
     /**
      * {@inheritDoc}
      */
-    public void deleteAbstractList(AbstractList abstractList) {
+    public void deleteAbstractList(StudySubscription subscription, AbstractList abstractList) {
         if (abstractList instanceof SubjectList) {
-            for (Query query : abstractList.getSubscription().getQueryCollection()) {
+            for (Query query : subscription.getQueryCollection()) {
                 Set<SubjectListCriterion> subjectListCriteria = 
                     Cai2Util.getCriterionTypeFromQuery(query, SubjectListCriterion.class);
                 for (SubjectListCriterion subjectListCriterion : subjectListCriteria) {

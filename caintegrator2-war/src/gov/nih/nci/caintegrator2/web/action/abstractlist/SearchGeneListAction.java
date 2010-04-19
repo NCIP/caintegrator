@@ -114,7 +114,7 @@ public class SearchGeneListAction extends AbstractCaIntegrator2Action {
     }
     
     private void setDefaultGeneList() {
-        if (!getStudySubscription().getGeneLists().isEmpty()) {
+        if (!getStudySubscription().getAllGeneLists().isEmpty()) {
             geneListName = getStudySubscription().getAllGeneListNames().get(0);
             retrieveGenes();
         }
