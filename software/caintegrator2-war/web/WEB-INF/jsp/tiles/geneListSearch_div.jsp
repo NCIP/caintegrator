@@ -16,7 +16,7 @@
 
 <s:div cssStyle="padding-left: 5px;">
     <tr>
-        <s:if test="studySubscription.geneListNames.isEmpty()">
+        <s:if test="studySubscription.allGeneListNames.isEmpty()">
             No Gene List available.
         </s:if>
         <s:else>

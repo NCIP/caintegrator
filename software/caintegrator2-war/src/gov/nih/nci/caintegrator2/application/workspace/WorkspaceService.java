@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractList;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -216,8 +217,9 @@ public interface WorkspaceService extends CaIntegrator2EntityRefresher {
     void makeListPrivate(AbstractList abstractList);
 
     /**
+     * @param subscription the study subscription that request this action.
      * @param abstractList to delete from the workspace.
      */
-    void deleteAbstractList(AbstractList abstractList);
+    void deleteAbstractList(StudySubscription subscription, AbstractList abstractList);
 
 }
