@@ -267,7 +267,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
         return entity;
     }
 
-    public void deleteAbstractList(AbstractList abstractList) {
+    public void deleteAbstractList(StudySubscription subscription, AbstractList abstractList) {
         deleteAbstractListCalled = true;
     }
 

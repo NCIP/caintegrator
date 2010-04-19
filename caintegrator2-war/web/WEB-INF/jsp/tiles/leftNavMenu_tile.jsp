@@ -45,7 +45,103 @@
         
         <li class="treenav"><div>Study Data</div>
             <s:if test="%{anonymousUser}">
-                <ul class="pde" style="padding: 3px 0px 10px 10px;"><font color="black"><i>Must be registered to use this feature.</i></font></ul>
+                <s:if test="!displayableWorkspace.globalGeneLists.isEmpty() || !displayableWorkspace.globalSubjectLists.isEmpty()">
+                    <ul class="pde">
+                    <li><a href="#">Global Lists</a>
+                        <ul style="padding: 3px 0px 10px 10px;">
+                        <s:if test="!displayableWorkspace.globalGeneLists.isEmpty()">
+                            <li><a href="#">Gene Lists</a>
+                            <ul>
+                                <s:iterator value="displayableWorkspace.globalGeneLists">
+                                    <s:url id="editGeneListUrl" action="editGeneList" includeParams="none">
+                                        <s:param name="selectedAction" value="%{'editGlobalList'}" />
+                                        <s:param name="listName" value="name" />
+                                    </s:url>
+                                    <s:url id="runGeneListQueryUrl" action="manageQuery" includeParams="none">
+                                        <s:param name="selectedAction" value="%{'loadGlobalGeneListExecute'}" />
+                                        <s:param name="geneListName" value="name" />
+                                    </s:url>
+
+                                    <li style="padding: 0px 0px 2px 0px">
+                                        <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
+                                            <div style="float: left; white-space: nowrap; width: 38px;">
+                                                <s:a href="%{runGeneListQueryUrl}" cssClass="searches"
+                                                    cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    title="Run query: %{name}">&nbsp;</s:a>
+                                                <s:if test="%{studyManager}">
+                                                    <s:a href="%{editGeneListUrl}" cssClass="queryAction"
+                                                        cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                        title="Rename List: %{name}">&nbsp;</s:a>
+                                                </s:if>
+                                            </div>
+                                            <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
+                                                <s:a href="%{runGeneListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
+                                                    title="Description: %{description}">
+                                                    <s:if test="name == openGlobalGeneListName">
+                                                        <strong><s:property value="name"/></strong>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:property value="name"/>
+                                                    </s:else>
+                                                </s:a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </s:iterator>
+                            </ul>
+                            </li>
+                        </s:if>
+                        <s:if test="!displayableWorkspace.globalSubjectLists.isEmpty()">
+                            <li><a href="#">Subject Lists</a>
+                            <ul>
+                                <s:iterator value="displayableWorkspace.globalSubjectLists">
+                                    <s:url id="editSubjectListUrl" action="editSubjectList" includeParams="none">
+                                        <s:param name="selectedAction" value="%{'editGlobalList'}" />
+                                        <s:param name="listName" value="name" />
+                                    </s:url>
+                                    <s:url id="runSubjectListQueryUrl" action="manageQuery" includeParams="none">
+                                        <s:param name="selectedAction" value="%{'loadGlobalSubjectListExecute'}" />
+                                        <s:param name="subjectListName" value="name" />
+                                    </s:url>
+
+                                    <li style="padding: 0px 0px 2px 0px">
+                                        <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
+                                            <div style="float: left; white-space: nowrap; width: 38px;">
+                                                <s:a href="%{runSubjectListQueryUrl}" cssClass="searches"
+                                                    cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    title="Run query: %{name}">&nbsp;</s:a>
+                                                <s:if test="%{studyManager}">
+                                                    <s:a href="%{editSubjectListUrl}" cssClass="queryAction"
+                                                        cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                        title="Rename List: %{name}">&nbsp;</s:a>
+                                                </s:if>
+                                            </div>
+                                            <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
+                                                <s:a href="%{runSubjectListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
+                                                    title="Description: %{description}">
+                                                    <s:if test="name == openGlobalSubjectListName">
+                                                        <strong><s:property value="name"/></strong>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:property value="name"/>
+                                                    </s:else>
+                                                </s:a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </s:iterator>
+                            </ul>
+                            </li>
+                        </s:if>
+                        </ul>
+                    </li>
+                    </ul>
+                </s:if>
+                <s:else>
+                    <ul class="pde" style="padding: 3px 0px 10px 10px;">
+                        <font color="black"><i>Must be registered to use this feature.</i></font>
+                    </ul>
+                </s:else>
             </s:if>
             <s:else>
             <ul class="pde">

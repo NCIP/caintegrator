@@ -313,7 +313,7 @@ public class WorkspaceServiceTest {
         assertNotNull(studySubscription.getGeneList("Gene List 1"));
         assertNotNull(studySubscription.getGeneList("Gene List 2"));
         
-        workspaceService.deleteAbstractList(geneList);
+        workspaceService.deleteAbstractList(studySubscription, geneList);
         assertEquals(1, studySubscription.getGeneLists().size());
         assertNotNull(studySubscription.getGeneList("Gene List 1"));
         assertNull(studySubscription.getGeneList("Gene List 2"));
@@ -341,7 +341,7 @@ public class WorkspaceServiceTest {
         assertNotNull(studySubscription.getSubjectList("Subject List 1"));
         assertNotNull(studySubscription.getSubjectList("Subject List 2"));
         
-        workspaceService.deleteAbstractList(subjectList);
+        workspaceService.deleteAbstractList(studySubscription, subjectList);
         assertEquals(1, studySubscription.getSubjectLists().size());
         assertNotNull(studySubscription.getSubjectList("Subject List 1"));
         assertNull(studySubscription.getSubjectList("Subject List 2"));
@@ -371,7 +371,7 @@ public class WorkspaceServiceTest {
         assertNotNull(studySubscription.getStudy().getStudyConfiguration().getGeneList("Gene List 1"));
         assertNotNull(studySubscription.getStudy().getStudyConfiguration().getGeneList("Gene List 2"));
         
-        workspaceService.deleteAbstractList(geneList);
+        workspaceService.deleteAbstractList(studySubscription, geneList);
         assertEquals(1, studySubscription.getStudy().getStudyConfiguration().getGeneLists().size());
         assertNotNull(studySubscription.getStudy().getStudyConfiguration().getGeneList("Gene List 1"));
         assertNull(studySubscription.getStudy().getStudyConfiguration().getGeneList("Gene List 2"));
@@ -401,7 +401,7 @@ public class WorkspaceServiceTest {
         assertNotNull(studySubscription.getStudy().getStudyConfiguration().getSubjectList("Subject List 1"));
         assertNotNull(studySubscription.getStudy().getStudyConfiguration().getSubjectList("Subject List 2"));
         
-        workspaceService.deleteAbstractList(subjectList);
+        workspaceService.deleteAbstractList(studySubscription, subjectList);
         assertEquals(1, studySubscription.getStudy().getStudyConfiguration().getSubjectLists().size());
         assertNotNull(studySubscription.getStudy().getStudyConfiguration().getSubjectList("Subject List 1"));
         assertNull(studySubscription.getStudy().getStudyConfiguration().getSubjectList("Subject List 2"));

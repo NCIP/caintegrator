@@ -42,8 +42,10 @@
     
     <sx:tabbedpanel id="mainTabPanel" selectedTab="%{displayTab}" templateCssPath="/common/css/TabContainer.css">
         <sx:div href="%{annotationBasedUrl}" id="annotationTab" label="For Annotation" showLoadingText="true" />
-        <s:if test="%{!anonymousUser}">
+        <s:if test="!anonymousUser">
             <sx:div href="%{genomicQueryBasedUrl}" id="genomicQueryTab" label="For Genomic Queries" showLoadingText="true"/>
+        </s:if>
+        <s:if test="!anonymousUser || !displayableWorkspace.globalSubjectLists.isEmpty()">
             <sx:div href="%{clinicalQueryBasedUrl}" id="clinicalQueryTab" label="For Annotation Queries and Saved Lists" showLoadingText="true"/>
         </s:if>
     </sx:tabbedpanel>
