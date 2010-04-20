@@ -176,6 +176,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         studyConfiguration.getStudy().setShortTitleText(getStudyName());
         studyConfiguration.getStudy().setLongTitleText(getDescription());
         studyConfiguration.setUserWorkspace(userWorkspace);
+        studyConfiguration.getStudy().setStudyConfiguration(studyConfiguration);
         service.save(studyConfiguration);
         workspaceService.saveUserWorkspace(userWorkspace);
         service.createProtectionElement(studyConfiguration);
