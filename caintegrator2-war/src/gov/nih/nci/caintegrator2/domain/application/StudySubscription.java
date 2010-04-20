@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 
@@ -15,6 +17,7 @@ public class StudySubscription extends AbstractCaIntegrator2StudyObject {
     private static final long serialVersionUID = 1L;
 
     private static final String GLOBAL_GENE_LIST_PREFIX = "[Global]-";
+    private static final Pattern GLOBAL_PATTERN = Pattern.compile("^\\[Global\\]-(.+)");
     
     private Study study;
     private Set<Query> queryCollection = new HashSet<Query>();
@@ -108,9 +111,9 @@ public class StudySubscription extends AbstractCaIntegrator2StudyObject {
      */
     public GeneList getSelectedGeneList(String name) {
         if (name != null) {
-            String[] nameDetails = name.split("-");
-            if (GLOBAL_GENE_LIST_PREFIX.equals(nameDetails[0] + "-")) {
-                return getStudy().getStudyConfiguration().getGeneList(nameDetails[1]);
+            Matcher nameMatcher = GLOBAL_PATTERN.matcher(name);
+            if (nameMatcher.find()) {
+                return getStudy().getStudyConfiguration().getGeneList(nameMatcher.group(1));
             }
             return getGeneList(name);
         }

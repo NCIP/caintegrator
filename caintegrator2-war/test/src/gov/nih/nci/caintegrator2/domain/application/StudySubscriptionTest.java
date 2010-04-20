@@ -102,12 +102,12 @@ public class StudySubscriptionTest {
         GeneList geneList1 = new GeneList();
         geneList1.setName("myGeneList");
         GeneList geneList2 = new GeneList();
-        geneList2.setName("globalGeneList");
+        geneList2.setName("global-GeneList");
         subscription.getListCollection().add(geneList1);
         studyConfiguration.getListCollection().add(geneList2);
         
         assertEquals(2, subscription.getAllGeneListNames().size());
-        assertEquals("myGeneList", subscription.getSelectedGeneList("myGeneList").getName());
-        assertEquals("globalGeneList", subscription.getSelectedGeneList("[Global]-globalGeneList").getName());
+        assertEquals(geneList1.getName(), subscription.getSelectedGeneList("myGeneList").getName());
+        assertEquals(geneList2.getName(), subscription.getSelectedGeneList("[Global]-global-GeneList").getName());
     }
 }
