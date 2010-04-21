@@ -148,7 +148,7 @@ class OptionList<E> {
     }
 
     E getActualValue(String key) {
-       return keyToOptionMap.get(key).getActualValue();
+       return keyToOptionMap.get(key) == null ? null : keyToOptionMap.get(key).getActualValue();
     }
 
     List<Option<E>> getOptions() {

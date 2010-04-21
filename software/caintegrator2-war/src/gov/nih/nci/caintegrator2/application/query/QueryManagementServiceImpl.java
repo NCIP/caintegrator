@@ -185,8 +185,9 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         } else {
             Set<String> allPlatformNames = query.getCompoundCriterion().getAllPlatformNames();
             if (allPlatformNames.size() != 1) {
-               throw new InvalidCriterionException("A query must contain exactly 1 platform.  This one contains " 
-                       + allPlatformNames.size() + " platforms.");
+               throw new InvalidCriterionException("A genomic query must contain exactly 1 platform.  " 
+                       + "This one contains " + allPlatformNames.size() + " platforms.  If there are no genomic " 
+                       + "criterion for this query, please add a 'Gene Name' criterion, and select a platform.");
             }
             query.setPlatform(getDao().getPlatform(allPlatformNames.iterator().next()));
         }
@@ -254,8 +255,9 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public List<Platform> retrieveGeneExpressionPlatformsForStudy(Study study) {
-        return arrayDataService.getPlatformsInStudy(study, GenomicDataSourceDataTypeEnum.EXPRESSION);
+    public Set<Platform> retrieveGeneExpressionPlatformsForStudy(Study study) {
+        return new HashSet<Platform>(arrayDataService.getPlatformsInStudy(
+                study, GenomicDataSourceDataTypeEnum.EXPRESSION));
     }
 
     /**

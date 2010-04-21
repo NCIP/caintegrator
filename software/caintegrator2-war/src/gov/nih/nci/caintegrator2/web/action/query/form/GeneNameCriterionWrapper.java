@@ -107,26 +107,9 @@ public class GeneNameCriterionWrapper extends AbstractGenomicCriterionWrapper {
     GeneNameCriterionWrapper(GeneNameCriterion criterion, GeneExpressionCriterionRow row) {
         super(row);
         this.criterion = criterion;
-        getParameters().add(createGeneNameParameter());
+        setupDefaultGenomicParameters();
     }
 
-    private TextFieldParameter createGeneNameParameter() {
-        TextFieldParameter valueParameter = new TextFieldParameter(0, getRow().getRowIndex(), 
-                                                                   criterion.getGeneSymbol());
-        valueParameter.setLabel("in list (comma separated: EGFR, BRCA1, etc. )");
-        valueParameter.setTitle("Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )");
-        valueParameter.setGeneSymbol(true);
-        ValueHandler valueHandler = new ValueHandlerAdapter() {
-            /**
-             * {@inheritDoc}
-             */
-            public void valueChanged(String value) {
-                criterion.setGeneSymbol(value);
-            }
-        };
-        valueParameter.setValueHandler(valueHandler);
-        return valueParameter;
-    }
 
     /**
      * {@inheritDoc}
@@ -150,6 +133,22 @@ public class GeneNameCriterionWrapper extends AbstractGenomicCriterionWrapper {
     @Override
     CriterionTypeEnum getCriterionType() {
         return CriterionTypeEnum.GENE_NAME;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void updateControlParameters() {
+        // no-op, no control parameters for gene name criterion.
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean platformParameterUpdateOnChange() {
+        return false;
     }
 
 }

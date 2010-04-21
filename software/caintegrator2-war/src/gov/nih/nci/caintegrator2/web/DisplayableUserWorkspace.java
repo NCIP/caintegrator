@@ -270,7 +270,7 @@ public class DisplayableUserWorkspace {
         if (currentStudySubscriptionId == null || currentStudySubscriptionId.equals(NO_STUDY_SELECTED_ID)) {
             setQueryResult(null);
             setGenomicDataQueryResult(null);
-            getQueryForm().setQuery(null);
+            getQueryForm().setQuery(null, null);
         }
         this.currentStudySubscriptionId = currentStudySubscriptionId;
         putCurrentStudyOnValueStack();
