@@ -21,6 +21,7 @@ public class Platform extends AbstractCaIntegrator2Object implements Comparable<
     private String name;
     private String version = "";
     private PlatformVendorEnum vendor;
+    private PlatformConfiguration platformConfiguration;
     private SortedSet<ReporterList> reporterListsInternal = new TreeSet<ReporterList>();
     private Map<ReporterTypeEnum, SortedSet<ReporterList>> typeToReporterListMap;
     
@@ -173,6 +174,20 @@ public class Platform extends AbstractCaIntegrator2Object implements Comparable<
      */
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    /**
+     * @return the platformConfiguration
+     */
+    public PlatformConfiguration getPlatformConfiguration() {
+        return platformConfiguration;
+    }
+
+    /**
+     * @param platformConfiguration the platformConfiguration to set
+     */
+    public void setPlatformConfiguration(PlatformConfiguration platformConfiguration) {
+        this.platformConfiguration = platformConfiguration;
     }
 
     /**

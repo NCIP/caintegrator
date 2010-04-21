@@ -139,15 +139,16 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      */
     @Override
     public String execute() {
-        return checkEmptyPlatformType();
+        return checkEmptyPlatformTypes();
     }
     
-    private String checkEmptyPlatformType() {
+    private String checkEmptyPlatformTypes() {
         for (PlatformConfiguration platformConfiguration : getArrayDataService().getPlatformConfigurations()) {
             if (Status.LOADED.equals(platformConfiguration.getStatus())
-                    && platformConfiguration.getPlatformType() == null) {
-                addActionError("Some Platforms are missing 'Platform Type',"
-                    + " please go to the Manage Platforms page to select one.");
+                    && (platformConfiguration.getPlatformType() == null
+                            || platformConfiguration.getPlatformChannelType() == null)) {
+                addActionError("Some Platforms are missing 'Platform Type/Platform Channel Type',"
+                    + " please go to the Manage Platforms page to set them.");
                 return ERROR;
             }
         }
@@ -168,7 +169,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
             Integer.valueOf(getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_PORT)));
         getGenomicSource().getServerProfile().setUrl(
                 getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_URL));
-        return checkEmptyPlatformType();
+        return checkEmptyPlatformTypes();
     }
     
     /**

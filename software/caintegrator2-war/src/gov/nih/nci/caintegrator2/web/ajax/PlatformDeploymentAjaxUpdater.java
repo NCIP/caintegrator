@@ -86,10 +86,11 @@
 package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
 import java.util.ArrayList;
@@ -109,12 +110,14 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String STATUS_TABLE = "platformDeploymentJobStatusTable";
     private static final String JOB_PLATFORM_NAME = "platformName_";
     private static final String JOB_PLATFORM_TYPE = "platformType_";
+    private static final String JOB_PLATFORM_CHANNEL_TYPE = "platformChannelType_";
     private static final String JOB_PLATFORM_VENDOR = "platformVendor_";
     private static final String JOB_PLATFORM_STATUS = "platformStatus_";
     private static final String JOB_PLATFORM_STATUS_DESCRIPTION = "platformStatusDescription_";
     private static final String JOB_ARRAY_NAME = "platformArrayName_";
     private static final String JOB_ACTION_PLATFORM_URL = "platformJobActionUrl_";
     private static final String PLATFORM_LOADER = "platformLoader";
+    private static final String CLOSE_TAG = "\">";
     private ArrayDataService arrayDataService;
 
     /**
@@ -163,17 +166,18 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     }
 
     private String[][] createRow(PlatformConfiguration platformConfiguration) {
-        String[][] rowString = new String[1][7];
+        String[][] rowString = new String[1][8];
         String id = platformConfiguration.getId().toString();
         String startSpan = "<span id=\"";
         String endSpan = "\"> </span>";
         rowString[0][0] = startSpan + JOB_PLATFORM_NAME + id + endSpan;
         rowString[0][1] = startSpan + JOB_PLATFORM_TYPE + id + endSpan;
-        rowString[0][2] = startSpan + JOB_PLATFORM_VENDOR + id + endSpan;
-        rowString[0][3] = startSpan + JOB_ARRAY_NAME + id + endSpan;
-        rowString[0][4] = startSpan + JOB_PLATFORM_STATUS + id + endSpan;
-        rowString[0][5] = startSpan + JOB_PLATFORM_STATUS_DESCRIPTION + id + endSpan;
-        rowString[0][6] = startSpan + JOB_ACTION_PLATFORM_URL + id + endSpan;
+        rowString[0][2] = startSpan + JOB_PLATFORM_CHANNEL_TYPE + id + endSpan;
+        rowString[0][3] = startSpan + JOB_PLATFORM_VENDOR + id + endSpan;
+        rowString[0][4] = startSpan + JOB_ARRAY_NAME + id + endSpan;
+        rowString[0][5] = startSpan + JOB_PLATFORM_STATUS + id + endSpan;
+        rowString[0][6] = startSpan + JOB_PLATFORM_STATUS_DESCRIPTION + id + endSpan;
+        rowString[0][7] = startSpan + JOB_ACTION_PLATFORM_URL + id + endSpan;
         return rowString;
     }
 
@@ -204,8 +208,9 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
         utilThis.setValue(JOB_PLATFORM_NAME + platformConfigurationId, 
                           retrievePlatformName(platformConfiguration));
         updateRowPlatformType(platformConfiguration, utilThis, platformConfigurationId);
+        updateRowPlatformChannelType(platformConfiguration, utilThis, platformConfigurationId);
         utilThis.setValue(JOB_PLATFORM_VENDOR + platformConfigurationId, 
-                          retrievePlatformVendor(platformConfiguration));
+                retrievePlatformVendor(platformConfiguration));
         utilThis.setValue(JOB_ARRAY_NAME + platformConfigurationId, 
                           retrievePlatformArrayNames(platformConfiguration));
         utilThis.setValue(JOB_PLATFORM_STATUS + platformConfigurationId, 
@@ -223,7 +228,12 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     private String retrievePlatformType(PlatformConfiguration platformConfiguration) {
         return platformConfiguration.getPlatformType() == null ? UNAVAILABLE_STRING
                                        : platformConfiguration.getPlatformType().getValue();
-    }    
+    }
+    
+    private String retrievePlatformChannelType(PlatformConfiguration platformConfiguration) {
+        return platformConfiguration.getPlatformChannelType() == null ? UNAVAILABLE_STRING
+                                       : platformConfiguration.getPlatformChannelType().getValue();
+    }
 
     private String retrievePlatformVendor(PlatformConfiguration platformConfiguration) {
         return platformConfiguration.getPlatform() == null ? UNAVAILABLE_STRING 
@@ -239,7 +249,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
             String platformConfigurationId) {
         if (UNAVAILABLE_STRING.equals(retrievePlatformType(platformConfiguration))) {
             utilThis.setValue(JOB_PLATFORM_TYPE + platformConfigurationId,
-                    "<select id=\"platformType" + platformConfigurationId + "\">"
+                    "<select id=\"platformType" + platformConfigurationId + CLOSE_TAG
                     + getPlatformTypeOptions() + "</select><br>");
         } else {
             utilThis.setValue(JOB_PLATFORM_TYPE + platformConfigurationId, 
@@ -250,17 +260,37 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     private String getPlatformTypeOptions() {
         StringBuffer options = new StringBuffer();
         for (String type : PlatformTypeEnum.getValuesToDisplay()) {
-            options.append("<option value=\"" + type + "\">" + type + "</option>");
+            options.append("<option value=\"" + type + CLOSE_TAG + type + "</option>");
+        }
+        return options.toString();
+    }
+
+    private void updateRowPlatformChannelType(PlatformConfiguration platformConfiguration, Util utilThis, 
+            String platformConfigurationId) {
+        if (UNAVAILABLE_STRING.equals(retrievePlatformChannelType(platformConfiguration))) {
+            utilThis.setValue(JOB_PLATFORM_CHANNEL_TYPE + platformConfigurationId,
+                    "<select id=\"platformChannelType" + platformConfigurationId + CLOSE_TAG
+                    + getPlatformChannelTypeOptions() + "</select><br>");
+        } else {
+            utilThis.setValue(JOB_PLATFORM_CHANNEL_TYPE + platformConfigurationId, 
+                            retrievePlatformChannelType(platformConfiguration));
+        }
+    }
+    
+    private String getPlatformChannelTypeOptions() {
+        StringBuffer options = new StringBuffer();
+        for (String type : PlatformChannelTypeEnum.getValuesToDisplay()) {
+            options.append("<option value=\"" + type + CLOSE_TAG + type + "</option>");
         }
         return options.toString();
     }
     
     private void updateRowActions(PlatformConfiguration platformConfiguration, Util utilThis, 
             String platformConfigurationId) {
-        if (UNAVAILABLE_STRING.equals(retrievePlatformType(platformConfiguration))) {
+        if (UNAVAILABLE_STRING.equals(retrievePlatformType(platformConfiguration))
+                || UNAVAILABLE_STRING.equals(retrievePlatformChannelType(platformConfiguration))) {
             utilThis.setValue(JOB_ACTION_PLATFORM_URL + platformConfigurationId,
-                    "<a href=\"javascript:submitAction('updatePlatformType'," + platformConfigurationId
-                    + ",'platformType" + platformConfigurationId + "');\">save</a>",
+                    "<a href=\"javascript:submitAction('updatePlatform'," + platformConfigurationId + ");\">save</a>",
                     false);
         } else if (!Status.PROCESSING.equals(platformConfiguration.getStatus()) && !platformConfiguration.isInUse()) {
             utilThis.setValue(JOB_ACTION_PLATFORM_URL + platformConfigurationId, 
