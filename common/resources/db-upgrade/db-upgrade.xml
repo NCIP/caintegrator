@@ -328,4 +328,8 @@
         <comment>Updates the GENE_NAME_CRITERION and FOLD_CHANGE_CRITERION to have PLATFORM_NAME column.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.29.sql"/>
     </changeSet>
+    <changeSet id="1.1.30" author="nguyennh">
+        <comment>Handle two color channel platform.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.30.sql"/>
+    </changeSet>
 </databaseChangeLog>

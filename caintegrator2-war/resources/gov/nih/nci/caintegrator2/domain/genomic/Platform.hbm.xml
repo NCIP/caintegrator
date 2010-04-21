@@ -22,5 +22,7 @@
 			<key column="PLATFORM_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ReporterList"/>
 		</set>
+        <one-to-one name="platformConfiguration" class="PlatformConfiguration"
+            property-ref="platform"/>
 	</class>
 </hibernate-mapping>

@@ -1,6 +1,7 @@
 package gov.nih.nci.caintegrator2.domain.genomic;
 
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
@@ -17,6 +18,7 @@ public class PlatformConfiguration extends AbstractCaIntegrator2Object {
     private transient boolean inUse = false;
     private Platform platform;
     private PlatformTypeEnum platformType;
+    private PlatformChannelTypeEnum platformChannelType = PlatformChannelTypeEnum.ONE_COLOR;
     private String name;
     private Date deploymentStartDate;
     private Date deploymentFinishDate;
@@ -164,5 +166,19 @@ public class PlatformConfiguration extends AbstractCaIntegrator2Object {
      */
     public void setPlatformType(PlatformTypeEnum platformType) {
         this.platformType = platformType;
+    }
+
+    /**
+     * @return the platformChannelType
+     */
+    public PlatformChannelTypeEnum getPlatformChannelType() {
+        return platformChannelType;
+    }
+
+    /**
+     * @param platformChannelType the platformChannelType to set
+     */
+    public void setPlatformChannelType(PlatformChannelTypeEnum platformChannelType) {
+        this.platformChannelType = platformChannelType;
     }     
 }

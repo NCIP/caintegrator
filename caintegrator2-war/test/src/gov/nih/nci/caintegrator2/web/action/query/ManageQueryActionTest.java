@@ -189,6 +189,10 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.setSelectedAction("createNewQuery");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         
+        // test selectedTabSearchResults
+        manageQueryAction.setSelectedAction("selectedTabSearchResults");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
         // test execute query
         manageQueryAction.setSelectedAction("executeQuery");
         manageQueryAction.validate();
@@ -217,6 +221,19 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertTrue(queryManagementService.executeCalled);
         assertEquals("searchResults", manageQueryAction.getDisplayTab());
+
+        // test selectAll
+        manageQueryAction.setSelectedAction("selectAll");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+
+        // test selectAll
+        manageQueryAction.setSelectedAction("selectAllSubject");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+
+        // test selectAll
+        manageQueryAction.setSelectedAction("selectNoneSubject");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
         // Clean up after testing
         manageQueryAction.setSubjectListName("");
         manageQueryAction.setSelectedAction("remove");
@@ -260,7 +277,9 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.setSubjectListName("Subject list 1");
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());      
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        manageQueryAction.setSubjectListVisibleToOthers(true);
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
         
         // test load query
         manageQueryAction.setSelectedAction("loadQuery");

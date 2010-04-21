@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixSnpPlatformSour
 import gov.nih.nci.caintegrator2.application.arraydata.AgilentCnPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AgilentExpressionPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
@@ -123,10 +124,12 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     private String platformFileFileName;
     private String platformName;
     private String platformType = PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue();
+    private String platformChannelType = PlatformChannelTypeEnum.ONE_COLOR.getValue();
     private String selectedAction;
     private IPlatformDeploymentAjaxUpdater ajaxUpdater;
     private String platformConfigurationId;
     private String selectedPlatformType;
+    private String selectedPlatformChannelType;
 
     private static final String CREATE_PLATFORM_ACTION = "createPlatform";
     private static final String ADD_FILE_ACTION = "addAnnotationFile";
@@ -197,7 +200,13 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         } else {
             PlatformConfiguration platformConfiguration = getArrayDataService().
                 getRefreshedPlatformConfiguration(Long.valueOf(platformConfigurationId));
-            platformConfiguration.setPlatformType(PlatformTypeEnum.getByValue(getSelectedPlatformType()));
+            if (platformConfiguration.getPlatformType() == null) {
+                platformConfiguration.setPlatformType(PlatformTypeEnum.getByValue(getSelectedPlatformType()));
+            }
+            if (platformConfiguration.getPlatformChannelType() == null) {
+                platformConfiguration.setPlatformChannelType(
+                        PlatformChannelTypeEnum.getByValue(getSelectedPlatformChannelType()));
+            }
             getArrayDataService().savePlatformConfiguration(platformConfiguration);
         }
         return SUCCESS;
@@ -377,6 +386,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         configuration.setName(name);
         configuration.setStatus(Status.PROCESSING);
         configuration.setPlatformType(PlatformTypeEnum.getByValue(platformType));
+        configuration.setPlatformChannelType(PlatformChannelTypeEnum.getByValue(platformChannelType));
         arrayDataService.savePlatformConfiguration(configuration);
         ajaxUpdater.runJob(configuration, getWorkspace().getUsername());
         getPlatformForm().clear();
@@ -533,6 +543,20 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     }
     
     /**
+     * Display status for the platform channel type.
+     * @return whether to display the platform channel type.
+     */
+    public String getPlatformChannelTypeDisplay() {
+        if (PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue().equals(platformType)
+                || PlatformTypeEnum.AFFYMETRIX_SNP.getValue().equals(platformType)
+                || PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getValue().equals(platformType)) {
+            return "display: none;";
+        } else {
+            return "display: block;";
+        }
+    }
+    
+    /**
      * Display status for the add annotation file button.
      * @return whether to display the add button.
      */
@@ -609,5 +633,33 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      */
     public void setSelectedPlatformType(String selectedPlatformType) {
         this.selectedPlatformType = selectedPlatformType;
+    }
+
+    /**
+     * @return the platformChannelType
+     */
+    public String getPlatformChannelType() {
+        return platformChannelType;
+    }
+
+    /**
+     * @param platformChannelType the platformChannelType to set
+     */
+    public void setPlatformChannelType(String platformChannelType) {
+        this.platformChannelType = platformChannelType;
+    }
+
+    /**
+     * @return the selectedPlatformChannelType
+     */
+    public String getSelectedPlatformChannelType() {
+        return selectedPlatformChannelType;
+    }
+
+    /**
+     * @param selectedPlatformChannelType the selectedPlatformChannelType to set
+     */
+    public void setSelectedPlatformChannelType(String selectedPlatformChannelType) {
+        this.selectedPlatformChannelType = selectedPlatformChannelType;
     }
 }

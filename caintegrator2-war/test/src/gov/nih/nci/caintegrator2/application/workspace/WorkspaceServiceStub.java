@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 
@@ -287,6 +288,10 @@ public class WorkspaceServiceStub implements WorkspaceService {
     
     public void subscribeAllReadOnly(UserWorkspace userWorkspace) {
         subscribeAll(userWorkspace);
+    }
+
+    public Set<Platform> retrievePlatformsInStudy(Study study) {
+        return new HashSet<Platform>();
     }
 
 }

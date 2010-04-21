@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 import gov.nih.nci.security.exceptions.CSException;
@@ -186,6 +187,13 @@ public interface WorkspaceService extends CaIntegrator2EntityRefresher {
      * @param job - object to be updated.
      */
     void savePersistedAnalysisJob(AbstractPersistedAnalysisJob job);
+    
+    /**
+     * Retrieve all platforms from a study.
+     * @param study - object to use.
+     * @return a set of platform from the study.
+     */
+    Set<Platform> retrievePlatformsInStudy(Study study);
     
     /**
      * Creates a <code> DisplayableStudySummary </code> from the given Study. 

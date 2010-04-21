@@ -584,7 +584,7 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
      * @return is the current user a study manager
      */
     public boolean isStudyManager() {
-        return SecurityHelper.isStudyManager(SecurityHelper.getCurrentUsername());
+        return (isAnonymousUser()) ? false : SecurityHelper.isStudyManager(SecurityHelper.getCurrentUsername());
     }
     
 }
