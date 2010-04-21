@@ -133,7 +133,7 @@ public class QueryForm {
      * Configures a new query.
      * 
      * @param subscription query belongs to this subscription
-     * @param geneExpressionPlatformsInStudythe platforms for the study (null if unknown)
+     * @param geneExpressionPlatformsInStudy the platforms for the study (null if unknown)
      */
     public void createQuery(StudySubscription subscription, Set<Platform> geneExpressionPlatformsInStudy) {
         query = new Query();
@@ -153,7 +153,7 @@ public class QueryForm {
         if (query != null) {
             Study study = getQuery().getSubscription().getStudy();
             initializeAnnotationGroups(study);
-            if (geneExpressionPlatformsInStudy!= null && geneExpressionPlatformsInStudy.size() > 1) {
+            if (geneExpressionPlatformsInStudy != null && geneExpressionPlatformsInStudy.size() > 1) {
                 setupPlatforms(geneExpressionPlatformsInStudy);
             } 
             criteriaGroup = new CriteriaGroup(this);
