@@ -93,9 +93,11 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -114,6 +116,7 @@ public class QueryForm {
     private Query query;
     private final List<AnnotationGroup> sortedAnnotationGroups = new ArrayList<AnnotationGroup>();
     private final List<String> annotationGroupNames = new ArrayList<String>();
+    private final List<String> platformNames = new ArrayList<String>();
     private final Map<String, AnnotationFieldDescriptorList> annotationGroupMap = 
         new HashMap<String, AnnotationFieldDescriptorList>();
     private CriteriaGroup criteriaGroup;
@@ -121,6 +124,7 @@ public class QueryForm {
     private String orgQueryName = "";
     private boolean controlSamplesInStudy = false;
     private boolean studyHasSavedLists = false;
+    private boolean studyHasMultiplePlatforms = false;
     
     private String genomicPreviousSorting;
     private int genomicSortingOrder = -1;
@@ -129,8 +133,9 @@ public class QueryForm {
      * Configures a new query.
      * 
      * @param subscription query belongs to this subscription
+     * @param geneExpressionPlatformsInStudythe platforms for the study (null if unknown)
      */
-    public void createQuery(StudySubscription subscription) {
+    public void createQuery(StudySubscription subscription, Set<Platform> geneExpressionPlatformsInStudy) {
         query = new Query();
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
@@ -138,14 +143,19 @@ public class QueryForm {
         query.setColumnCollection(new HashSet<ResultColumn>());
         query.setSubscription(subscription);
         query.setResultType(ResultTypeEnum.CLINICAL);
-        setQuery(query);
+        setQuery(query, geneExpressionPlatformsInStudy);
         setResultConfiguration(new ResultConfiguration(this));
     }
 
-    private void initialize() {
+    private void initialize(Set<Platform> geneExpressionPlatformsInStudy) {
+        studyHasMultiplePlatforms = false;
+        platformNames.clear();
         if (query != null) {
             Study study = getQuery().getSubscription().getStudy();
             initializeAnnotationGroups(study);
+            if (geneExpressionPlatformsInStudy!= null && geneExpressionPlatformsInStudy.size() > 1) {
+                setupPlatforms(geneExpressionPlatformsInStudy);
+            } 
             criteriaGroup = new CriteriaGroup(this);
             resultConfiguration = new ResultConfiguration(this);
             controlSamplesInStudy = study.getStudyConfiguration().hasControlSamples();
@@ -156,8 +166,18 @@ public class QueryForm {
             annotationGroupNames.clear();
             annotationGroupMap.clear();
             sortedAnnotationGroups.clear();
+            platformNames.clear();
         }
         orgQueryName = "";
+    }
+
+    private void setupPlatforms(Set<Platform> geneExpressionPlatformsInStudy) {
+        studyHasMultiplePlatforms = true;
+        platformNames.clear();
+        for (Platform platform : geneExpressionPlatformsInStudy) {
+            platformNames.add(platform.getName());
+        }
+        Collections.sort(platformNames);
     }
     
     private void initializeAnnotationGroups(Study study) {
@@ -189,11 +209,12 @@ public class QueryForm {
     /**
      * Sets the query for the form.
      * 
-     * @param query the query for the form
+     * @param q the query for the form
+     * @param geneExpressionPlatformsInStudy the platforms for the study (null if unknown)
      */
-    public void setQuery(Query query) {
-        this.query = query;
-        initialize();
+    public void setQuery(Query q, Set<Platform> geneExpressionPlatformsInStudy) {
+        this.query = q;
+        initialize(geneExpressionPlatformsInStudy);
     }
     
     AnnotationFieldDescriptorList getAnnotations(String groupName) {
@@ -366,5 +387,19 @@ public class QueryForm {
      */
     public void reverseGenomicSortingOrder() {
         this.genomicSortingOrder *= -1;
+    }
+
+    /**
+     * @return the studyHasMultiplePlatforms
+     */
+    public boolean isStudyHasMultiplePlatforms() {
+        return studyHasMultiplePlatforms;
+    }
+
+    /**
+     * @return the platformNames
+     */
+    public List<String> getPlatformNames() {
+        return platformNames;
     }
 }

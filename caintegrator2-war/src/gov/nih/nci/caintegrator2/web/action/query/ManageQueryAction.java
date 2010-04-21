@@ -102,6 +102,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
@@ -142,7 +143,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     private static final String SAVE_AS_TAB = "saveAs";
 
     private static final String EXECUTE_QUERY = "executeQuery";
-    
+    private Set<Platform> platformsInStudy = new HashSet<Platform>();
     private QueryManagementService queryManagementService;
     private StudyManagementService studyManagementService;
     private NCIABasket nciaBasket;
@@ -215,6 +216,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     public void prepare() {
         super.prepare();
         refreshGenomicSources();
+        platformsInStudy = getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy());
         if ("selectedTabSearchResults".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
         } else {
@@ -234,7 +236,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             return;
         } else if ("loadQuery".equals(selectedAction)
                 || "loadExecute".equals(selectedAction)) {
-            getQueryForm().setQuery(null);
+            getQueryForm().setQuery(null, platformsInStudy);
             validateExecuteQuery(); 
         } else if (EXECUTE_QUERY.equals(selectedAction)) {
             validateExecuteQuery(); 
@@ -374,7 +376,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     }
 
     private String createNewQuery() {
-        getQueryForm().createQuery(getStudySubscription());
+        getQueryForm().createQuery(getStudySubscription(), platformsInStudy);
         setQueryResult(null);
         return SUCCESS;
     }
@@ -603,7 +605,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
 
     private void ensureQueryIsLoaded() {
         if (getQueryForm().getQuery() == null) {
-            getQueryForm().setQuery(getQueryById());
+            getQueryForm().setQuery(getQueryById(), platformsInStudy);
             getQueryForm().setOrgQueryName(getQueryForm().getQuery().getName());
         }
     }
@@ -656,7 +658,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         setQueryId(query.getId());
         getStudySubscription().getQueryCollection().add(query);
         getWorkspaceService().saveUserWorkspace(getWorkspace());
-        getQueryForm().setQuery(getQueryById());
+        getQueryForm().setQuery(getQueryById(), platformsInStudy);
         getQueryForm().setOrgQueryName(getQueryForm().getQuery().getName());
         return SUCCESS;
     }
@@ -671,7 +673,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         getStudySubscription().getQueryCollection().remove(query);
         queryManagementService.delete(query);
         getWorkspaceService().saveUserWorkspace(getWorkspace());
-        getQueryForm().createQuery(getStudySubscription());
+        getQueryForm().createQuery(getStudySubscription(), platformsInStudy);
         setQueryResult(null);
         return SUCCESS;
     }

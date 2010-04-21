@@ -139,6 +139,6 @@ public abstract class AbstractDeployedStudyAction extends AbstractCaIntegrator2A
      * @return all control sample set names.
      */
     public List<String> getControlSampleSets() {
-        return getStudy().getStudyConfiguration().getControlSampleSetNames();
+        return getStudy().getStudyConfiguration().getControlSampleSetNames(null);
     }
 }

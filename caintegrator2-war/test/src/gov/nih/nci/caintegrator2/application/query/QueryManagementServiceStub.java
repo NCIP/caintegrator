@@ -100,7 +100,9 @@ import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("PMD")
 public class QueryManagementServiceStub implements QueryManagementService {
@@ -213,8 +215,8 @@ public class QueryManagementServiceStub implements QueryManagementService {
         return new ArrayList<String>();
     }
 
-    public List<Platform> retrieveGeneExpressionPlatformsForStudy(Study study) {
-        return new ArrayList<Platform>();
+    public Set<Platform> retrieveGeneExpressionPlatformsForStudy(Study study) {
+        return new HashSet<Platform>();
     }
     
 }

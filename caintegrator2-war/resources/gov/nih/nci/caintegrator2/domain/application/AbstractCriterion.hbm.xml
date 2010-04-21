@@ -85,10 +85,12 @@
                 <property name="foldsUp" type="float" column="FOLDS_UP"/>
                 <property name="foldsDown" type="float" column="FOLDS_DOWN"/>
                 <property name="regulationType" type="RegulationTypeEnum" column="REGULATION_TYPE"/>
+                <property name="platformName" type="string" column="PLATFORM_NAME"/>
             </joined-subclass>
             <joined-subclass name="GeneNameCriterion" table="GENE_NAME_CRITERION" lazy="false">
                 <key column="ID" />
                 <property name="geneSymbol" type="string" column="GENE_SYMBOL"/>
+                <property name="platformName" type="string" column="PLATFORM_NAME"/>
             </joined-subclass>
         </joined-subclass>
         <joined-subclass name="SubjectListCriterion" table="SUBJECT_LIST_CRITERION" lazy="false">

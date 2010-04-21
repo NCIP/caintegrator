@@ -168,7 +168,8 @@ public class RegistrationActionTest {
         action.save();
         assertFalse(action.hasActionErrors());
     }
-
+    
+    @SuppressWarnings("unused")
     private static class RegistrationServiceStub implements RegistrationService {
         public boolean registerUserCalled = false;
         public boolean throwMessagingException = false;
