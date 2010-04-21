@@ -115,6 +115,7 @@ import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -328,6 +329,17 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
             }
         }
         return false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Set<Platform> retrievePlatformsInStudy(Study study) {
+        Set<Platform> allPlatforms = new HashSet<Platform>();
+        for (GenomicDataSourceConfiguration genomicSource : study.getStudyConfiguration().getGenomicDataSources()) {
+            allPlatforms.addAll(getDao().retrievePlatformsForGenomicSource(genomicSource));  
+        }
+        return allPlatforms;
     }
     
     /**

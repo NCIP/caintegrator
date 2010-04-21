@@ -702,6 +702,7 @@
             <result name="dicomJobAjax" type="tiles">dicomJobAjax</result>
             <result name="dicomJobCurrentlyRunning" type="tiles">genericError</result>
             <result name="exportGenomicResults" type="temporaryDownloadFileResult"/>
+            <result name="missingPlatformChannelType" type="tiles">genericErrorWithMenu</result>
         </action>
         
         <action name="downloadDicomFile" method="downloadDicomFile" class="nciaDicomRetrievalAction">

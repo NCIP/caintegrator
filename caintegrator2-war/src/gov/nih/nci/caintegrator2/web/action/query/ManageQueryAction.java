@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.query.GenomicDataResultRowComparato
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.application.study.Visibility;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
@@ -278,7 +279,6 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         }
     }
     
-    
     /**
      * {@inheritDoc}
      */
@@ -286,6 +286,10 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength",
         "PMD.NcssMethodCount" }) // Checking action type.
     public String execute() {
+        
+        if (studyHasEmptyPlatformTypes()) {
+            return "missingPlatformChannelType";
+        }
         
         String returnValue = ERROR;
 
@@ -373,6 +377,26 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             returnValue = ERROR; 
         }
         return returnValue;
+    }
+    
+    private boolean studyHasEmptyPlatformTypes() {
+        for (Platform platform : getWorkspaceService().retrievePlatformsInStudy(getStudy())) {
+            if (Status.LOADED.equals(platform.getPlatformConfiguration().getStatus())
+                    && (platform.getPlatformConfiguration().getPlatformType() == null
+                            || platform.getPlatformConfiguration().getPlatformChannelType() == null)) {
+                setActionError();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void setActionError() {
+        addActionError((isStudyManager())
+                ? "Some Platforms are missing 'Platform Type/Platform Channel Type',"
+                    + " please go to the Manage Platforms page to set them."
+                : "Some Platforms are missing 'Platform Type/Platform Channel Type',"
+                    + " please ask the study manager to fix them.");
     }
 
     private String createNewQuery() {

@@ -361,15 +361,19 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
     public void testGetDisabled() {
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue());
         assertEquals(action.getPlatformNameDisplay(), "display: none;");
+        assertEquals(action.getPlatformChannelTypeDisplay(), "display: none;");
         assertEquals(action.getAddButtonDisplay(), "display: none;");
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_SNP.getValue());
         assertEquals(action.getPlatformNameDisplay(), "display: block;");
+        assertEquals(action.getPlatformChannelTypeDisplay(), "display: none;");
         assertEquals(action.getAddButtonDisplay(), "display: block;");
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getValue());
         assertEquals(action.getPlatformNameDisplay(), "display: block;");
+        assertEquals(action.getPlatformChannelTypeDisplay(), "display: none;");
         assertEquals(action.getAddButtonDisplay(), "display: block;");
         action.setPlatformType(PlatformTypeEnum.AGILENT_COPY_NUMBER.getValue());
         assertEquals(action.getPlatformNameDisplay(), "display: block;");
+        assertEquals(action.getPlatformChannelTypeDisplay(), "display: block;");
         assertEquals(action.getAddButtonDisplay(), "display: none;");
 
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue());

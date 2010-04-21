@@ -27,6 +27,8 @@
         if (type == "Affymetrix Gene Expression") {
             document.getElementById("platformNameDiv").style.display = "none";
             document.getElementById("platformName").value = "N/A";
+            document.getElementById("platformChannelTypeDiv").style.display = "none";
+            document.getElementById("platformChannelType").value = "One-Color";
             document.getElementById("commentNameDiv").style.display = "none";
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "block";
@@ -34,6 +36,8 @@
         } else if (type == "Affymetrix SNP" || type == "Affymetrix Copy Number"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
+            document.getElementById("platformChannelTypeDiv").style.display = "none";
+            document.getElementById("platformChannelType").value = "One-Color";
             document.getElementById("commentNameDiv").style.display = "none";
             document.getElementById("addFileButtonDiv").style.display = "block";
             document.getElementById("commentCsvDiv").style.display = "block";
@@ -41,6 +45,8 @@
         } else if (type == "Agilent Gene Expression"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
+            document.getElementById("platformChannelTypeDiv").style.display = "block";
+            document.getElementById("platformChannelType").value = "Two-Color";
             document.getElementById("commentNameDiv").style.display = "none";
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "block";
@@ -48,6 +54,8 @@
         } else if (type == "Agilent Copy Number"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
+            document.getElementById("platformChannelTypeDiv").style.display = "block";
+            document.getElementById("platformChannelType").value = "Two-Color";
             document.getElementById("commentNameDiv").style.display = "block";
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "none";
@@ -71,7 +79,7 @@
         return true;
     }
     
-    function submitAction(selectAction, id, platformType) {
+    function submitAction(selectAction, id) {
         document.statusTableForm.selectedAction.value = selectAction;
         document.statusTableForm.platformConfigurationId.value = id;
         if (selectAction == 'delete') {
@@ -80,7 +88,12 @@
                 document.statusTableForm.submit();
             }
         } else {
-            document.statusTableForm.selectedPlatformType.value = document.getElementById(platformType).value;
+            if (document.getElementById("platformType" + id) != null) {
+                document.statusTableForm.selectedPlatformType.value = document.getElementById("platformType" + id).value;
+            }
+            if (document.getElementById("platformChannelType" + id) != null) {
+                document.statusTableForm.selectedPlatformChannelType.value = document.getElementById("platformChannelType" + id).value;
+            }
             document.statusTableForm.submit();
         }
     }
@@ -106,6 +119,11 @@
                         <s:select name="platformType" label="Platform Type"
                             list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum@getValuesToDisplay()"
                             onchange="CheckPlatformType(this.form.platformType.value);" theme="css_xhtml" /><br>
+                        <s:div id="platformChannelTypeDiv" cssStyle="%{platformChannelTypeDisplay}">
+                            <s:select id="platformChannelType" name="platformChannelType" label="Platform Channel Type"
+                                list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum@getValuesToDisplay()"
+                                theme="css_xhtml" /><br>
+                        </s:div>
                         <s:div id="platformNameDiv" cssStyle="%{platformNameDisplay}">
                             <s:textfield id="platformName" name="platformName" label="Platform Name"
                                 theme="css_xhtml" /><br>
@@ -155,6 +173,7 @@
                             <tr>
                                 <th>Platform Name</th>
                                 <th>Platform Type</th>
+                                <th>Platform Channel Type</th>
                                 <th>Vendor</th>
                                 <th>Array Name(s)</th>
                                 <th>Status</th>
@@ -165,6 +184,7 @@
                                 <s:hidden name="selectedAction" />
                                 <s:hidden name="platformConfigurationId" />
                                 <s:hidden name="selectedPlatformType" />
+                                <s:hidden name="selectedPlatformChannelType" />
                                 <tbody id="platformDeploymentJobStatusTable" />
                             </s:form>
                         </table>
