@@ -101,6 +101,7 @@ import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -130,7 +131,7 @@ public interface QueryManagementService extends CaIntegrator2EntityRefresher {
      * @param study to find platforms for.
      * @return gene expression platforms.
      */
-    List<Platform> retrieveGeneExpressionPlatformsForStudy(Study study);
+    Set<Platform> retrieveGeneExpressionPlatformsForStudy(Study study);
     
     /**
      * Creates a list of queries given a group of subject lists.

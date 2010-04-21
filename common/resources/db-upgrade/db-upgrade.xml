@@ -324,4 +324,8 @@
         <comment>Create global lists.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.28.sql"/>
     </changeSet>
+    <changeSet id="1.1.29" author="tandrews">
+        <comment>Updates the GENE_NAME_CRITERION and FOLD_CHANGE_CRITERION to have PLATFORM_NAME column.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.29.sql"/>
+    </changeSet>
 </databaseChangeLog>

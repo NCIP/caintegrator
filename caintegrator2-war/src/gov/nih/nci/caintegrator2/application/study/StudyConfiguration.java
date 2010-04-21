@@ -108,6 +108,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.xwork.StringUtils;
+
 /**
  * Holds data about the sources of study data and authorization for access to data.
  */
@@ -619,12 +621,15 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject {
 
     /**
      * Get all control sample set names.
+     * @param platformName to narrow the samples based on platform name (make it null if to get all control samples).
      * @return list of control sample set names.
      */
-    public List<String> getControlSampleSetNames() {
+    public List<String> getControlSampleSetNames(String platformName) {
         List<String> controlSampleSetNames = new ArrayList<String>();
             for (GenomicDataSourceConfiguration genomicSource : genomicDataSources) {
-                controlSampleSetNames.addAll(genomicSource.getControlSampleSetNames());
+                if (StringUtils.isBlank(platformName) || (platformName.equals(genomicSource.getPlatformName()))) {
+                    controlSampleSetNames.addAll(genomicSource.getControlSampleSetNames());
+                }
             }
         return controlSampleSetNames;
     }
