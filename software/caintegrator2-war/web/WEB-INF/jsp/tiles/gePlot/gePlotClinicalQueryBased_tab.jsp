@@ -50,6 +50,23 @@
                     listValue="value" />                
                 </td>
             </tr>
+            
+            <s:if test="%{studyHasMultiplePlatforms}">
+            <tr>
+                <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
+                2a.)
+                </td>
+                <td class="value_inline" colspan="4">
+                    Select Platform:  
+                    <s:select name="gePlotForm.clinicalQueryBasedForm.platformName" 
+                        list="platformsInStudy"
+                        headerKey="" headerValue=""
+                         onchange="document.geneExpressionClinicalQueryInputForm.action = 'updateControlSamplesClinicalQueryBasedGEPlot.action';document.geneExpressionClinicalQueryInputForm.submit();"/>
+                </td>
+            </tr>
+            </s:if>
+            
+            
             <tr>
                 <td class="value_inline_index" >
                     3.) 

@@ -93,7 +93,10 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Abstract Action dealing with GeneExpression plotting.
@@ -119,6 +122,7 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
 
     private AnalysisService analysisService;
     private String displayTab;
+    private List<String> platformsInStudy = new ArrayList<String>();
     
     /**
      * {@inheritDoc}
@@ -126,6 +130,9 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     public void prepare() {
         super.prepare();
         refreshGenomicSources();
+        platformsInStudy = new ArrayList<String>(
+                getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy()));
+        Collections.sort(platformsInStudy);
     }
     
     /** 
@@ -356,4 +363,19 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
         return getStudy().getStudyConfiguration().hasControlSamples();
     }
     
+    /**
+     * @return the platformsInStudy
+     */
+    public List<String> getPlatformsInStudy() {
+        return platformsInStudy;
+    }
+
+    /**
+     * Determines if study has multiple platforms.
+     * @return T/F value if study has multiple platforms.
+     */
+    public boolean isStudyHasMultiplePlatforms() {
+        return platformsInStudy.size() > 1;
+    }
+
 }

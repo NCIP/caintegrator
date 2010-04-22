@@ -93,7 +93,6 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
@@ -129,9 +128,9 @@ public interface QueryManagementService extends CaIntegrator2EntityRefresher {
     /**
      * Retrieves the geneExpression platforms that exist in a study.
      * @param study to find platforms for.
-     * @return gene expression platforms.
+     * @return gene expression platform names.
      */
-    Set<Platform> retrieveGeneExpressionPlatformsForStudy(Study study);
+    Set<String> retrieveGeneExpressionPlatformsForStudy(Study study);
     
     /**
      * Creates a list of queries given a group of subject lists.

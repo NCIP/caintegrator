@@ -88,9 +88,11 @@ package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -105,8 +107,10 @@ public class GEPlotAnnotationBasedActionForm {
     private boolean addPatientsNotInQueriesGroup = false;
     private boolean addControlSamplesGroup = false;
     private String controlSampleSetName;
+    private String platformName;
     private String geneSymbol;
     private String reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue();
+    private List<String> controlSampleSets = new ArrayList<String>();
     
     
     // JSP Select List Options
@@ -127,6 +131,8 @@ public class GEPlotAnnotationBasedActionForm {
         addControlSamplesGroup = false;
         geneSymbol = null;
         reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue();
+        platformName = null;
+        controlSampleSets = new ArrayList<String>();
         clearAnnotationDefinitions();
     }
     
@@ -247,6 +253,20 @@ public class GEPlotAnnotationBasedActionForm {
     }
 
     /**
+     * @return the platformName
+     */
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    /**
+     * @param platformName the platformName to set
+     */
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
+    /**
      * @return the geneSymbol
      */
     public String getGeneSymbol() {
@@ -300,6 +320,20 @@ public class GEPlotAnnotationBasedActionForm {
      */
     public void setControlSampleSetName(String controlSampleSetName) {
         this.controlSampleSetName = controlSampleSetName;
+    }
+
+    /**
+     * @return the controlSampleSets
+     */
+    public List<String> getControlSampleSets() {
+        return controlSampleSets;
+    }
+
+    /**
+     * @param controlSampleSets the controlSampleSets to set
+     */
+    public void setControlSampleSets(List<String> controlSampleSets) {
+        this.controlSampleSets = controlSampleSets;
     }
 
 }

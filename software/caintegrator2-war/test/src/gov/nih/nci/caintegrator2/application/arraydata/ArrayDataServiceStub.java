@@ -249,7 +249,10 @@ public class ArrayDataServiceStub implements ArrayDataService {
     public List<Platform> getPlatformsInStudy(Study study, GenomicDataSourceDataTypeEnum sourceType) {
         List<Platform> platforms = new ArrayList<Platform>();
         for (int x = 0; x < numberPlatformsInStudy; x++) {
-            platforms.add(new Platform());
+            Platform platform = new Platform();
+            platform.setName(String.valueOf(x));
+            platforms.add(platform);
+            
         }
         return platforms;
     }

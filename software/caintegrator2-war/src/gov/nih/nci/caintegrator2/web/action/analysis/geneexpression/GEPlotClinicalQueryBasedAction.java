@@ -104,6 +104,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Action dealing with Gene Expression Clinical Query Based plotting.
  */
@@ -133,6 +135,9 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
         retrieveFormValues();
         refreshObjectInstances();
         populateQueries();
+        if (isStudyHasMultiplePlatforms()) {
+            plotParameters.setMultiplePlatformsInStudy(true);
+        }
     }
     
     
@@ -143,6 +148,7 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
         plotParameters.setAddPatientsNotInQueriesGroup(getForm().isAddPatientsNotInQueriesGroup());
         plotParameters.setAddControlSamplesGroup(getForm().isAddControlSamplesGroup());
         plotParameters.setControlSampleSetName(getForm().getControlSampleSetName());
+        plotParameters.setPlatformName(getForm().getPlatformName());
         if (!getForm().getSelectedQueryNames().isEmpty()) {
             plotParameters.getQueries().clear();
             for (String name : getForm().getSelectedQueryNames()) {
@@ -210,6 +216,23 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
         }
     }
 
+    /**
+     * Updates the control sample sets based on the platform selected.
+     * @return struts return value.
+     */
+    public String updateControlSampleSets() {
+        getForm().getControlSampleSets().clear();
+        if (StringUtils.isBlank(plotParameters.getPlatformName())) {
+            addActionError("Please select a valid platform");
+            return INPUT;
+        }
+        getForm().setControlSampleSets(getStudy().getStudyConfiguration().getControlSampleSetNames(
+                plotParameters.getPlatformName()));
+        clearClinicalQueryBasedGePlot();
+        return SUCCESS;
+    }
+
+    /**
 
     /**
      * Clears all input values and ge plots on the session.
@@ -335,5 +358,15 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
     private boolean isResetSelected() {
         return getForm().isResetSelected();
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getControlSampleSets() {
+        return isStudyHasMultiplePlatforms() ? getForm().getControlSampleSets() 
+                : super.getControlSampleSets();
+    }
+
 
 }

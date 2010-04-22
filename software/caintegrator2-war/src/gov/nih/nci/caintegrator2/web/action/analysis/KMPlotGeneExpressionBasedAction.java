@@ -114,6 +114,9 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
         super.prepare();
         setDisplayTab(GENE_EXPRESSION_TAB);
         retrieveFormValues();
+        if (getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy()).size() > 1) {
+            getKmPlotParameters().setMultiplePlatformsInStudy(true);
+        }
     }
     
     private void retrieveFormValues() {

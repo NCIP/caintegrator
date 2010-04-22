@@ -144,7 +144,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     private static final String SAVE_AS_TAB = "saveAs";
 
     private static final String EXECUTE_QUERY = "executeQuery";
-    private Set<Platform> platformsInStudy = new HashSet<Platform>();
+    private Set<String> platformsInStudy = new HashSet<String>();
     private QueryManagementService queryManagementService;
     private StudyManagementService studyManagementService;
     private NCIABasket nciaBasket;
@@ -217,7 +217,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     public void prepare() {
         super.prepare();
         refreshGenomicSources();
-        platformsInStudy = getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy());
+        platformsInStudy = getQueryManagementService().
+                retrieveGeneExpressionPlatformsForStudy(getStudy());
         if ("selectedTabSearchResults".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
         } else {
@@ -278,6 +279,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             displayTab = RESULTS_TAB;
         }
     }
+    
     
     /**
      * {@inheritDoc}
@@ -378,7 +380,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         }
         return returnValue;
     }
-    
+
     private boolean studyHasEmptyPlatformTypes() {
         for (Platform platform : getWorkspaceService().retrievePlatformsInStudy(getStudy())) {
             if (Status.LOADED.equals(platform.getPlatformConfiguration().getStatus())

@@ -929,6 +929,11 @@
             <result name="input" type="tiles">gePlot</result>        
          </action>
          
+         <action name="updateControlSamplesAnnotationBasedGEPlot" method="updateControlSampleSets" class="gePlotAnnotationBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">gePlot</result>        
+        </action>
+         
         <action name="resetAnnotationBasedGEPlot" method="reset" class="gePlotAnnotationBasedAction">
             <result type="tiles">gePlot</result>
             <result name="input" type="tiles">gePlot</result>
@@ -1023,6 +1028,11 @@
         <action name="gePlotClinicalQueryBasedInput" method="input" class="gePlotClinicalQueryBasedAction">
             <result>/WEB-INF/jsp/tiles/gePlot/gePlotClinicalQueryBased_tab.jsp</result>
             <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotClinicalQueryBased_tab.jsp</result>
+        </action>
+        
+        <action name="updateControlSamplesClinicalQueryBasedGEPlot" method="updateControlSampleSets" class="gePlotClinicalQueryBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">gePlot</result>        
         </action>
          
         <action name="resetClinicalQueryBasedGEPlot" method="reset" class="gePlotClinicalQueryBasedAction">
