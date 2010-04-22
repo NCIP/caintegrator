@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.web.SessionHelper;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -125,6 +126,9 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
         setDisplayTab(ANNOTATION_TAB);
         retrieveFormValues();
         refreshObjectInstances();
+        if (isStudyHasMultiplePlatforms()) {
+            plotParameters.setMultiplePlatformsInStudy(true);
+        }
     }
     
     
@@ -133,6 +137,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
         plotParameters.setAddPatientsNotInQueriesGroup(getForm().isAddPatientsNotInQueriesGroup());
         plotParameters.setAddControlSamplesGroup(getForm().isAddControlSamplesGroup());
         plotParameters.setControlSampleSetName(getForm().getControlSampleSetName());
+        plotParameters.setPlatformName(getForm().getPlatformName());
         plotParameters.setReporterType(ReporterTypeEnum.
                         getByValue(getGePlotForm().getAnnotationBasedForm().getReporterType()));
         if (getForm().getSelectedAnnotationId() != null 
@@ -285,6 +290,22 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
                     value.toString());
         }
     }
+    
+    /**
+     * Updates the control sample sets based on the platform selected.
+     * @return struts return value.
+     */
+    public String updateControlSampleSets() {
+        getForm().getControlSampleSets().clear();
+        if (StringUtils.isBlank(plotParameters.getPlatformName())) {
+            addActionError("Please select a valid platform");
+            return INPUT;
+        }
+        getForm().setControlSampleSets(getStudy().getStudyConfiguration().getControlSampleSetNames(
+                plotParameters.getPlatformName()));
+        clearAnnotationBasedGePlot();
+        return SUCCESS;
+    }
 
     /**
      * {@inheritDoc}
@@ -396,6 +417,15 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
      */
     public void setPlotParameters(GEPlotAnnotationBasedParameters plotParameters) {
         this.plotParameters = plotParameters;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getControlSampleSets() {
+        return isStudyHasMultiplePlatforms() ? getForm().getControlSampleSets() 
+                : super.getControlSampleSets();
     }
 
 }

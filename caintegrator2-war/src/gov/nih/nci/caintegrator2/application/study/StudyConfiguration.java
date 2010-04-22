@@ -100,6 +100,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -631,6 +632,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject {
                     controlSampleSetNames.addAll(genomicSource.getControlSampleSetNames());
                 }
             }
+        Collections.sort(controlSampleSetNames);
         return controlSampleSetNames;
     }
 

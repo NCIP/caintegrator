@@ -83,117 +83,95 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.AnalysisJobTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedStudyTest;
+import gov.nih.nci.caintegrator2.web.ajax.PersistedAnalysisJobAjaxUpdater;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.opensymphony.xwork2.Action;
 
 /**
- * Abstract class that represents input parameters for a GeneExpression plot.
+ * 
  */
-public abstract class AbstractGEPlotParameters {
-    private String geneSymbol;
-    private boolean addControlSamplesGroup;
-    private boolean multiplePlatformsInStudy = false;
-    private String controlSampleSetName;
-    private String platformName;
-    private final List<String> errorMessages = new ArrayList<String>();
-    private final List<String> genesNotFound = new ArrayList<String>();
+public class DownloadAnalysisResultsActionTest extends AbstractSessionBasedStudyTest {
+    private DownloadAnalysisResultsAction action;
+    private WorkspaceServiceStub workspaceService;
+    private StudyManagementServiceStub studyManagementService;
     
-    /**
-     * Validates that all parameters are set.
-     * @return T/F value.
-     */
-    public abstract boolean validate();
-    
-    /**
-     * Clears all values.
-     */
-    public abstract void clear();
-    
-
-    /**
-     * @return the errorMessages
-     */
-    public List<String> getErrorMessages() {
-        return errorMessages;
+    @Before
+    public void setUp() {
+        super.setUp();
+        action = new DownloadAnalysisResultsAction();
+        workspaceService = new WorkspaceServiceStub();
+        studyManagementService = new StudyManagementServiceStub();
+        action.setWorkspaceService(workspaceService);
+        action.setStudyManagementService(studyManagementService);
     }
 
-    /**
-     * @return the geneSymbol
-     */
-    public String getGeneSymbol() {
-        return geneSymbol;
+    @Test
+    public void testValidate() {
+        action.validate();
+        assertTrue(action.hasActionErrors());
+        action.clearActionErrors();
+        action.setJobId(1l);
+        action.validate();
+        assertFalse(action.hasActionErrors());
+        
     }
 
-    /**
-     * @param geneSymbol the geneSymbol to set
-     */
-    public void setGeneSymbol(String geneSymbol) {
-        this.geneSymbol = geneSymbol;
+    @Test
+    public void testPrepare() {
+        action.prepare();
     }
 
-    /**
-     * @return the addControlSamplesGroup
-     */
-    public boolean isAddControlSamplesGroup() {
-        return addControlSamplesGroup;
-    }
-
-    /**
-     * @param addControlSamplesGroup the addControlSamplesGroup to set
-     */
-    public void setAddControlSamplesGroup(boolean addControlSamplesGroup) {
-        this.addControlSamplesGroup = addControlSamplesGroup;
-    }
-
-    /**
-     * @return the controlSampleSetName
-     */
-    public String getControlSampleSetName() {
-        return controlSampleSetName;
-    }
-
-    /**
-     * @param controlSampleSetName the controlSampleSetName to set
-     */
-    public void setControlSampleSetName(String controlSampleSetName) {
-        this.controlSampleSetName = controlSampleSetName;
-    }
-
-    /**
-     * @return the genesNotFound
-     */
-    public List<String> getGenesNotFound() {
-        return genesNotFound;
-    }
-
-    /**
-     * @return the platformName
-     */
-    public String getPlatformName() {
-        return platformName;
-    }
-
-    /**
-     * @param platformName the platformName to set
-     */
-    public void setPlatformName(String platformName) {
-        this.platformName = platformName;
-    }
-
-    /**
-     * @return the multiplePlatformsInStudy
-     */
-    public boolean isMultiplePlatformsInStudy() {
-        return multiplePlatformsInStudy;
-    }
-
-    /**
-     * @param multiplePlatformsInStudy the multiplePlatformsInStudy to set
-     */
-    public void setMultiplePlatformsInStudy(boolean multiplePlatformsInStudy) {
-        this.multiplePlatformsInStudy = multiplePlatformsInStudy;
+    @Test
+    public void testExecute() {
+        ComparativeMarkerSelectionAnalysisJob job = new ComparativeMarkerSelectionAnalysisJob();
+        job.setJobType(AnalysisJobTypeEnum.CMS);
+        action.setJob(job);
+        // Invalid type
+        action.setType("INVALID TYPE");
+        assertEquals(Action.INPUT, action.execute());
+        // no results zip file.
+        action.setType(PersistedAnalysisJobAjaxUpdater.DownloadType.RESULTS.getType());
+        assertEquals(Action.INPUT, action.execute());
+        
+        // no input zip file.
+        action.setType(PersistedAnalysisJobAjaxUpdater.DownloadType.INPUT.getType());
+        assertEquals(Action.INPUT, action.execute());
+        
+        job.setResultsZipFile(new ResultsZipFile());
+        job.setInputZipFile(new ResultsZipFile());
+        
+        // Valid
+        action.setType(PersistedAnalysisJobAjaxUpdater.DownloadType.RESULTS.getType());
+        assertEquals("downloadResultFile", action.execute());
+        action.setType(PersistedAnalysisJobAjaxUpdater.DownloadType.INPUT.getType());
+        assertEquals("downloadResultFile", action.execute());
+        
+        assertTrue(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile().getFilename().contains("cms"));
+        job.setJobType(AnalysisJobTypeEnum.GENE_PATTERN);
+        action.execute();
+        assertTrue(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile().getFilename().contains("genePattern"));
+        job.setJobType(AnalysisJobTypeEnum.GISTIC);
+        action.execute();
+        assertTrue(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile().getFilename().contains("gistic"));
+        job.setJobType(AnalysisJobTypeEnum.PCA);
+        action.execute();
+        assertTrue(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile().getFilename().contains("pca"));
+        
     }
 
 }

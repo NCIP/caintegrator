@@ -111,19 +111,43 @@ public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
     public boolean validate() {
         getErrorMessages().clear();
         boolean isValid = true;
-        if (StringUtils.isBlank(getGeneSymbol())) {
-            getErrorMessages().add("Must enter a gene symbol");
-            isValid = false;
-        }
-        if (getSelectedAnnotation() == null) {
-            getErrorMessages().add("Selected Annotation is null, please select a valid annotation.");
-            isValid = false;
-        }
+        isValid &= validateMultiplePlatforms();
+        isValid &= validateGeneName();
+        isValid &= validateSelectedAnnotation();
+        isValid &= validateSelectedValues();
+        return isValid;
+    }
+
+    private boolean validateSelectedValues() {
         if (getSelectedValues().size() < 1) {
             getErrorMessages().add("Must select at least 1 sample group.");
-            isValid = false;
+            return false;
         }
-        return isValid;
+        return true;
+    }
+
+    private boolean validateSelectedAnnotation() {
+        if (getSelectedAnnotation() == null) {
+            getErrorMessages().add("Selected Annotation is null, please select a valid annotation.");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateGeneName() {
+        if (StringUtils.isBlank(getGeneSymbol())) {
+            getErrorMessages().add("Must enter a gene symbol");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateMultiplePlatforms() {
+        if (isMultiplePlatformsInStudy() && StringUtils.isBlank(getPlatformName())) {
+            getErrorMessages().add("Must select a platform");
+            return false;
+        }
+        return true;
     }
 
     /**

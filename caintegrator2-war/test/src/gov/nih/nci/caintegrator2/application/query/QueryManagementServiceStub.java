@@ -91,7 +91,6 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
@@ -215,8 +214,8 @@ public class QueryManagementServiceStub implements QueryManagementService {
         return new ArrayList<String>();
     }
 
-    public Set<Platform> retrieveGeneExpressionPlatformsForStudy(Study study) {
-        return new HashSet<Platform>();
+    public Set<String> retrieveGeneExpressionPlatformsForStudy(Study study) {
+        return new HashSet<String>();
     }
     
 }
