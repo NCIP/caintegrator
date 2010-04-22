@@ -101,6 +101,7 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
     private String geneSymbol;
     private final List<String> genesNotFound = new ArrayList<String>();
     private final List<String> genesFoundInStudy = new ArrayList<String>();
+    private boolean multiplePlatformsInStudy = false;
 
     /**
      * {@inheritDoc}
@@ -212,5 +213,21 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
      */
     public List<String> getGenesFoundInStudy() {
         return genesFoundInStudy;
+    }
+
+
+    /**
+     * @return the multiplePlatformsInStudy
+     */
+    public boolean isMultiplePlatformsInStudy() {
+        return multiplePlatformsInStudy;
+    }
+
+
+    /**
+     * @param multiplePlatformsInStudy the multiplePlatformsInStudy to set
+     */
+    public void setMultiplePlatformsInStudy(boolean multiplePlatformsInStudy) {
+        this.multiplePlatformsInStudy = multiplePlatformsInStudy;
     }
 }

@@ -110,6 +110,10 @@ public class GEPlotClinicalQueryBasedParameters extends AbstractGEPlotParameters
     public boolean validate() {
         getErrorMessages().clear();
         boolean isValid = true;
+        if (isMultiplePlatformsInStudy() && StringUtils.isBlank(getPlatformName())) {
+            getErrorMessages().add("Must select a platform");
+            isValid = false;
+        }
         if (StringUtils.isBlank(getGeneSymbol())) {
             getErrorMessages().add("Must enter a gene symbol");
             isValid = false;

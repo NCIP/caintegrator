@@ -244,6 +244,7 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
 
     private GeneNameCriterion retrieveGeneNameCriterion() {
         GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
+        geneNameCriterion.setPlatformName(parameters.getPlatformName());
         geneNameCriterion.setGeneSymbol(parameters.getGeneSymbol());
         return geneNameCriterion;
     }

@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -206,8 +207,21 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
         criterion.setFoldsUp(kmParameters.getOverexpressedFoldChangeNumber().floatValue());
         criterion.setFoldsDown(kmParameters.getUnderexpressedFoldChangeNumber().floatValue());
         criterion.setControlSampleSetName(kmParameters.getControlSampleSetName());
+        if (kmParameters.isMultiplePlatformsInStudy()) {
+            criterion.setPlatformName(retrievePlatformName());
+        }
         criterion.setGeneSymbol(geneSymbol);
         return criterion;
+    }
+    
+    private String retrievePlatformName() {
+        for (GenomicDataSourceConfiguration genomicSource 
+                : getStudySubscription().getStudy().getStudyConfiguration().getGenomicDataSources()) {
+            if (genomicSource.getControlSampleSet(kmParameters.getControlSampleSetName()) != null) {
+                return genomicSource.getPlatformName();
+            }
+        }
+        return null;
     }
     
     private Collection<ResultRow> retrieveFoldChangeRows(StudySubscription subscription, 

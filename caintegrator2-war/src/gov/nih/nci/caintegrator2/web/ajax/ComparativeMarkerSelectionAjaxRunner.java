@@ -134,6 +134,7 @@ public class ComparativeMarkerSelectionAjaxRunner implements Runnable {
         updater.addError(errorMessage, job);
         LOGGER.error(errorMessage);
         job.setStatus(errorState);
+        job.setStatusDescription(errorMessage);
         updater.saveAndUpdateJobStatus(job);
     }
 

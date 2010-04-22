@@ -204,6 +204,7 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
                                                                 SampleGroupType groupType) 
     throws ControlSamplesNotMappedException {
         GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
+        geneNameCriterion.setPlatformName(parameters.getPlatformName());
         geneNameCriterion.setGeneSymbol(parameters.getGeneSymbol());
         CompoundCriterion geneNameCompoundCriterion = new CompoundCriterion();
         geneNameCompoundCriterion.getCriterionCollection().add(geneNameCriterion);

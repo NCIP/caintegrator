@@ -93,7 +93,6 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
@@ -135,7 +134,7 @@ public class QueryForm {
      * @param subscription query belongs to this subscription
      * @param geneExpressionPlatformsInStudy the platforms for the study (null if unknown)
      */
-    public void createQuery(StudySubscription subscription, Set<Platform> geneExpressionPlatformsInStudy) {
+    public void createQuery(StudySubscription subscription, Set<String> geneExpressionPlatformsInStudy) {
         query = new Query();
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
@@ -147,7 +146,7 @@ public class QueryForm {
         setResultConfiguration(new ResultConfiguration(this));
     }
 
-    private void initialize(Set<Platform> geneExpressionPlatformsInStudy) {
+    private void initialize(Set<String> geneExpressionPlatformsInStudy) {
         studyHasMultiplePlatforms = false;
         platformNames.clear();
         if (query != null) {
@@ -171,12 +170,10 @@ public class QueryForm {
         orgQueryName = "";
     }
 
-    private void setupPlatforms(Set<Platform> geneExpressionPlatformsInStudy) {
+    private void setupPlatforms(Set<String> geneExpressionPlatformsInStudy) {
         studyHasMultiplePlatforms = true;
         platformNames.clear();
-        for (Platform platform : geneExpressionPlatformsInStudy) {
-            platformNames.add(platform.getName());
-        }
+        platformNames.addAll(geneExpressionPlatformsInStudy);
         Collections.sort(platformNames);
     }
     
@@ -212,7 +209,7 @@ public class QueryForm {
      * @param q the query for the form
      * @param geneExpressionPlatformsInStudy the platforms for the study (null if unknown)
      */
-    public void setQuery(Query q, Set<Platform> geneExpressionPlatformsInStudy) {
+    public void setQuery(Query q, Set<String> geneExpressionPlatformsInStudy) {
         this.query = q;
         initialize(geneExpressionPlatformsInStudy);
     }

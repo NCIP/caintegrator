@@ -101,6 +101,7 @@ import java.util.TreeMap;
 public class GEPlotClinicalQueryBasedActionForm {
     
     private String geneSymbol;
+    private String platformName;
     private String reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue();
     private List<DisplayableQuery> displayableQueries = new ArrayList<DisplayableQuery>();
     private Map<String, DisplayableQuery> displayableQueryMap = new HashMap<String, DisplayableQuery>();
@@ -111,6 +112,8 @@ public class GEPlotClinicalQueryBasedActionForm {
     private boolean addControlSamplesGroup = false;
     private String controlSampleSetName;
     private boolean resetSelected = false;
+    private List<String> controlSampleSets = new ArrayList<String>();
+
     
     // JSP Select List Options
     private Map<String, DisplayableQuery> selectedQueries = new HashMap<String, DisplayableQuery>();
@@ -130,6 +133,8 @@ public class GEPlotClinicalQueryBasedActionForm {
         addControlSamplesGroup = false;
         selectedQueries.clear();
         unselectedQueries.clear();
+        platformName = null;
+        controlSampleSets = new ArrayList<String>();
     }
 
     /**
@@ -311,5 +316,33 @@ public class GEPlotClinicalQueryBasedActionForm {
      */
     public void setDisplayableQueryMap(Map<String, DisplayableQuery> displayableQueryMap) {
         this.displayableQueryMap = displayableQueryMap;
+    }
+
+    /**
+     * @return the platformName
+     */
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    /**
+     * @param platformName the platformName to set
+     */
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
+    /**
+     * @return the controlSampleSets
+     */
+    public List<String> getControlSampleSets() {
+        return controlSampleSets;
+    }
+
+    /**
+     * @param controlSampleSets the controlSampleSets to set
+     */
+    public void setControlSampleSets(List<String> controlSampleSets) {
+        this.controlSampleSets = controlSampleSets;
     }
 }
