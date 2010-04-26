@@ -216,6 +216,14 @@
         <action name="saveClinicalSource" method="save" class="editClinicalSourceAction">
             <result type="tiles">editStudy</result>
         </action>
+        
+        <action name="cancelClinicalSource" class="editClinicalSourceAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
+        
                       
         <action name="loadClinicalSource" class="loadClinicalSourceAction">
             <result type="tiles">editStudy</result>

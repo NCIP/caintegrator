@@ -222,11 +222,11 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             return INPUT;
         }
         getImageSourceConfiguration().setStatus(Status.PROCESSING);
-        setLastModifiedByCurrentUser();
         if (!mapOnly) {
             getStudyManagementService().addImageSourceToStudy(getStudyConfiguration(), getImageSourceConfiguration());
         }
         getStudyManagementService().daoSave(getImageSourceConfiguration());
+        setStudyLastModifiedByCurrentUser(getImageSourceConfiguration());
         updater.runJob(getImageSourceConfiguration().getId(), newMappingFile, mappingType, mapOnly);
         return SUCCESS;
     }
@@ -245,7 +245,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
      */
     public String delete() {
         try {
-            setLastModifiedByCurrentUser();
+            setStudyLastModifiedByCurrentUser(getImageSourceConfiguration());
             getStudyManagementService().delete(getStudyConfiguration(), getImageSourceConfiguration());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
@@ -276,7 +276,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             return INPUT;
         }
         try {
-            setLastModifiedByCurrentUser();
+            setStudyLastModifiedByCurrentUser(getImageSourceConfiguration());
             getImageSourceConfiguration().setImageAnnotationConfiguration(
                     getStudyManagementService().addImageAnnotationFile(getImageSourceConfiguration(),
                             getImageAnnotationFile(), getImageAnnotationFileFileName(),
@@ -297,7 +297,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
      */
     public String loadImageAnnotations() {
         try {
-            setLastModifiedByCurrentUser();
+            setStudyLastModifiedByCurrentUser(getImageSourceConfiguration());
             getStudyManagementService().loadImageAnnotation(getImageSourceConfiguration());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());

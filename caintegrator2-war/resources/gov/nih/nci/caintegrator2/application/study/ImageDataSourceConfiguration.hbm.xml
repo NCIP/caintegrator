@@ -35,6 +35,7 @@
         <property name="mappingFileName" type="string" column="MAPPING_FILE_NAME"/>
         <property name="status" type="Status" column="STATUS"/>
         <property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
+        <property name="lastModifiedDate" type="java.util.Date" column="LAST_MODIFIED_DATE"/>
         
 	</class>
 </hibernate-mapping>

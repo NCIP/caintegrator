@@ -85,17 +85,20 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Contains configuration information for retrieving images, etc. from NCIA.
  */
-public class ImageDataSourceConfiguration extends AbstractCaIntegrator2Object {
+public class ImageDataSourceConfiguration extends AbstractCaIntegrator2Object implements TimeStampable {
     /**
      * For the "Automatic" mapping.
      */
@@ -109,6 +112,7 @@ public class ImageDataSourceConfiguration extends AbstractCaIntegrator2Object {
     private String mappingFileName;
     private Status status;
     private String statusDescription;
+    private Date lastModifiedDate;
     
     /**
      * @return the studyConfiguration
@@ -250,6 +254,27 @@ public class ImageDataSourceConfiguration extends AbstractCaIntegrator2Object {
      */
     public void setStatusDescription(String statusDescription) {
         this.statusDescription = statusDescription;
+    }
+
+    /**
+     * @return the lastModifiedDate
+     */
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    /**
+     * @param lastModifiedDate the lastModifiedDate to set
+     */
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getDisplayableLastModifiedDate() {
+        return DateUtil.getDisplayableTimeStamp(lastModifiedDate); 
     }
 
 }

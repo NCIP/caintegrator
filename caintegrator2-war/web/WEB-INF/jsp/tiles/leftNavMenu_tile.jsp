@@ -76,7 +76,7 @@
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
                                                 <s:a href="%{runGeneListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
-                                                    title="Description: %{description}">
+                                                    title="Description: %{description} / Last Modified: %{displayableLastModifiedDate}">
                                                     <s:if test="name == openGlobalGeneListName">
                                                         <strong><s:property value="name"/></strong>
                                                     </s:if>
@@ -118,7 +118,7 @@
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
                                                 <s:a href="%{runSubjectListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
-                                                    title="Description: %{description}">
+                                                    title="Description: %{description} / Last Modified: %{displayableLastModifiedDate}">
                                                     <s:if test="name == openGlobalSubjectListName">
                                                         <strong><s:property value="name"/></strong>
                                                     </s:if>
@@ -168,7 +168,7 @@
                                                     title="Edit query: %{name}">&nbsp;</s:a>
                                             </div>
                                             <div style="float: right; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
-                                                <s:a href="%{runQueryUrl}" onclick="showBusyDialog();" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;" title="Description: %{description}">
+                                                <s:a href="%{runQueryUrl}" onclick="showBusyDialog();" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;" title="Description: %{description} / Last Modified: %{displayableLastModifiedDate}">
                                                     <s:if test="id == openQueryId">
                                                         <strong><s:property value="name"/></strong>
                                                     </s:if>
@@ -216,7 +216,7 @@
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
                                                 <s:a href="%{runGeneListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
-                                                    title="Description: %{description}">
+                                                    title="Description: %{description} / Last Modified: %{displayableLastModifiedDate}">
                                                     <s:if test="name == openGlobalGeneListName">
                                                         <strong><s:property value="name"/></strong>
                                                     </s:if>
@@ -256,7 +256,7 @@
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
                                                 <s:a href="%{runSubjectListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
-                                                    title="Description: %{description}">
+                                                    title="Description: %{description} / Last Modified: %{displayableLastModifiedDate}">
                                                     <s:if test="name == openGlobalSubjectListName">
                                                         <strong><s:property value="name"/></strong>
                                                     </s:if>
@@ -298,7 +298,7 @@
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
                                                 <s:a href="%{runGeneListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
-                                                    title="Description: %{description}">
+                                                    title="Description: %{description} / Last Modified: %{displayableLastModifiedDate}">
                                                     <s:if test="name == openGeneListName">
                                                         <strong><s:property value="name"/></strong>
                                                     </s:if>
@@ -336,7 +336,7 @@
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
                                                 <s:a href="%{runSubjectListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
-                                                    title="Description: %{description}">
+                                                    title="Description: %{description} / Last Modified: %{displayableLastModifiedDate}">
                                                     <s:if test="name == openSubjectListName">
                                                         <strong><s:property value="name"/></strong>
                                                     </s:if>

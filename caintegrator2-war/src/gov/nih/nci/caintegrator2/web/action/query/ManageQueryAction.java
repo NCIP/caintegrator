@@ -119,6 +119,7 @@ import gov.nih.nci.caintegrator2.web.action.query.form.TextFieldParameter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -660,6 +661,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             getStudySubscription().getQueryCollection().add(query);
             query.setSubscription(getStudySubscription());
         }
+        query.setLastModifiedDate(new Date());
         queryManagementService.save(query);
         getWorkspaceService().saveUserWorkspace(getWorkspace());
         getQueryForm().setOrgQueryName(query.getName());
@@ -680,6 +682,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             addActionError("Error cloning the Query.");
             return ERROR;
         }
+        query.setLastModifiedDate(new Date());
         queryManagementService.save(query);
         setQueryId(query.getId());
         getStudySubscription().getQueryCollection().add(query);
@@ -713,6 +716,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         SubjectList subjectList = new SubjectList();
         subjectList.setName(getSubjectListName());
         subjectList.setDescription(getSubjectListDescription());
+        subjectList.setLastModifiedDate(new Date());
         if (isSubjectListVisibleToOthers()) {
             subjectList.setVisibility(Visibility.GLOBAL);
             subjectList.setStudyConfiguration(getStudySubscription().getStudy().getStudyConfiguration());

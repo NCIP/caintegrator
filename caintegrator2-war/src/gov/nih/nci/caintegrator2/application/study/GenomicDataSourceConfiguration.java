@@ -85,7 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -95,6 +97,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -105,7 +108,7 @@ import org.apache.commons.lang.StringUtils;
  * Records sample and array data retrieval information.
  */
 @SuppressWarnings("PMD.CyclomaticComplexity")
-public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object {
+public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object implements TimeStampable {
     
     private static final long serialVersionUID = 1L;
     private StudyConfiguration studyConfiguration;
@@ -122,6 +125,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private DnaAnalysisDataConfiguration dnaAnalysisDataConfiguration;
     private Status status = Status.NOT_LOADED;
     private String statusDescription;
+    private Date lastModifiedDate;
     
     private static final String NONE_CONFIGURED = "None Configured";
 
@@ -519,5 +523,26 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
         } else {
             return new File(getSampleMappingFilePath());
         }
+    }
+
+    /**
+     * @return the lastModifiedDate
+     */
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    /**
+     * @param lastModifiedDate the lastModifiedDate to set
+     */
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getDisplayableLastModifiedDate() {
+        return DateUtil.getDisplayableTimeStamp(lastModifiedDate); 
     }
 }

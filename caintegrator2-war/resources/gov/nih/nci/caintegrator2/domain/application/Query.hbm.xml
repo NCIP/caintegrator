@@ -22,6 +22,8 @@
         <property name="reporterType" type="ReporterTypeEnum" column="REPORTER_TYPE"/>
         <property name="orientation" type="ResultsOrientationEnum" column="ORIENTATION"/>
 		<property name="visibility" type="string" column="VISIBILITY"/>
+		<property name="lastModifiedDate" type="java.util.Date" column="LAST_MODIFIED_DATE"/>
+		
 		<!-- Associations mapping for the Query class -->
 		<many-to-one name="compoundCriterion" class="gov.nih.nci.caintegrator2.domain.application.CompoundCriterion" column="COMPOUND_CRITERION_ID" unique="true" lazy="proxy" cascade="all"/>
 		<many-to-one name="subscription" class="gov.nih.nci.caintegrator2.domain.application.StudySubscription" column="STUDY_SUBSCRIPTION_ID" lazy="proxy" cascade="none" />

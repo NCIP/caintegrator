@@ -13,6 +13,8 @@
 		<property name="description" type="string" column="DESCRIPTION"/>
 		<property name="name" type="string" column="NAME"/>
 		<property name="visibility" type="Visibility" column="VISIBILITY"/>
+		<property name="lastModifiedDate" type="java.util.Date" column="LAST_MODIFIED_DATE"/>
+		
 		<!-- Associations mapping for the AbstractList class -->
         <many-to-one name="subscription" class="gov.nih.nci.caintegrator2.domain.application.StudySubscription"
             column="STUDY_SUBSCRIPTION_ID" lazy="proxy" cascade="save-update,merge" />
