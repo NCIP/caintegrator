@@ -100,8 +100,7 @@ import org.apache.commons.lang.time.DateUtils;
  * This is a static utility class to handle Date.
  */
 public final class DateUtil {
-    private static final SimpleDateFormat TIMESTAMP_FORMAT = 
-        new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US);
+    private static final String TIMESTAMP_FORMAT = "MM/dd/yyyy HH:mm:ss";
     private static final String TIMESTAMP_UNAVAILABLE_STRING = "Unavailable";
     private static final Long MILLISECONDS_PER_SECOND = 1000L;
     private static final Long SECONDS_PER_MINUTE = 60L;
@@ -177,6 +176,7 @@ public final class DateUtil {
      * @param date2 second date
      * @return boolean of string comparison
      */
+    @SuppressWarnings("PMD.StringToString") // I thinks I'm calling toString on a string object.
     public static boolean equal(Date date1, Date date2) {
         return DateUtil.toString(date1).equalsIgnoreCase(DateUtil.toString(date2));
     }
@@ -210,6 +210,6 @@ public final class DateUtil {
      */
     public static String getDisplayableTimeStamp(Date timeStamp) {
         return timeStamp == null ? TIMESTAMP_UNAVAILABLE_STRING 
-                : TIMESTAMP_FORMAT.format(timeStamp);
+                : new SimpleDateFormat(TIMESTAMP_FORMAT, Locale.US).format(timeStamp);
     }
 }
