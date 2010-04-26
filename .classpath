@@ -38,7 +38,7 @@
 	<classpathentry kind="lib" path="software/lib/external-runtime/cabio43-beans.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/cabio43-client-framework.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-dojo-plugin-2.1.8.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/spring-2.5.6.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/spring-2.5.6.jar" sourcepath="software/lib/src/spring-2.5.6-sources.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/spring-beans-2.5.6.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/spring-context-2.5.6.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/spring-web-2.5.6.jar"/>
