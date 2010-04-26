@@ -100,6 +100,12 @@ public interface TimeStampable {
     
     /**
      * 
+     * @return timestamp of date of last modification.
+     */
+    Date getLastModifiedDate();
+    
+    /**
+     * 
      * @return formatted lastModifiedDate object.
      */
     String getDisplayableLastModifiedDate();

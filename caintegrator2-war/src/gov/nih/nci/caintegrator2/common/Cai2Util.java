@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.analysis.InvalidSurvivalValueDefini
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
 
 import java.awt.Color;
 import java.io.BufferedOutputStream;
@@ -114,7 +115,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * This is a static utility class used by different caIntegrator2 objects. 
  */
-@SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" }) // See method retrieveValueFromRowColumn
+@SuppressWarnings("PMD.CyclomaticComplexity") // See method retrieveValueFromRowColumn
 public final class Cai2Util {
     private static final Integer BUFFER_SIZE = 4096;
     private static final String ZIP_FILE_SUFFIX = ".zip";
@@ -438,6 +439,30 @@ public final class Cai2Util {
            validDefinitions.add(survivalValueDefinition);
        }
        return validDefinitions;
+   }
+   
+   /**
+    * Retrieves the last modified date (in String format) of the list of timestamped objects.
+    * @param timeStampedObjects list of timestamped objects to retrieve latest date from.
+    * @return last modified date of latest timestamped object (in string format).
+    */
+   public static String retrieveLatestLastModifiedDate(List<TimeStampable> timeStampedObjects) {
+       TimeStampable latestTimestamp = null;
+       for (TimeStampable currentTimetStampedObject 
+               : timeStampedObjects) {
+           if (latestTimestamp == null) {
+               latestTimestamp = currentTimetStampedObject;
+               continue;
+           }
+           if (currentTimetStampedObject.getDisplayableLastModifiedDate() != null
+               && (latestTimestamp.getLastModifiedDate() == null
+                 || currentTimetStampedObject.getLastModifiedDate().compareTo(
+                         latestTimestamp.getLastModifiedDate()) > 0)) {
+               latestTimestamp = currentTimetStampedObject;
+           }
+       }
+       return latestTimestamp == null ? DateUtil.TIMESTAMP_UNAVAILABLE_STRING 
+               : latestTimestamp.getDisplayableLastModifiedDate();
    }
     
 }

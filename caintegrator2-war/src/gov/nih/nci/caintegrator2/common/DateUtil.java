@@ -100,8 +100,11 @@ import org.apache.commons.lang.time.DateUtils;
  * This is a static utility class to handle Date.
  */
 public final class DateUtil {
+    /**
+     * String for timestamp if it is null.
+     */
+    public static final String TIMESTAMP_UNAVAILABLE_STRING = "Unavailable";
     private static final String TIMESTAMP_FORMAT = "MM/dd/yyyy HH:mm:ss";
-    private static final String TIMESTAMP_UNAVAILABLE_STRING = "Unavailable";
     private static final Long MILLISECONDS_PER_SECOND = 1000L;
     private static final Long SECONDS_PER_MINUTE = 60L;
     private static DecimalFormat twoDigit = new DecimalFormat("00");

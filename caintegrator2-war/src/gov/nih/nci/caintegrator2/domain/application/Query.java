@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * 
  */
-public class Query extends AbstractCaIntegrator2Object implements Cloneable {
+public class Query extends AbstractCaIntegrator2Object implements Cloneable, TimeStampable {
     
     private static final long serialVersionUID = 1L;
     
