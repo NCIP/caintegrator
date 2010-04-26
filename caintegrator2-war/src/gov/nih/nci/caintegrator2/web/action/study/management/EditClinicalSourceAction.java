@@ -150,6 +150,7 @@ public class EditClinicalSourceAction extends AbstractClinicalSourceAction {
                         annotationGroupNameToGroupMap.get(displayableFieldDescriptor.getAnnotationGroupName()));
             }
         }
+        setStudyLastModifiedByCurrentUser(getClinicalSource());
         getStudyManagementService().save(getStudyConfiguration());
         return SUCCESS;
     }

@@ -1,6 +1,7 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
 import gov.nih.nci.caintegrator2.application.study.Visibility;
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -8,6 +9,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
     private ResultTypeEnum resultType = ResultTypeEnum.CLINICAL;
     private ResultsOrientationEnum orientation = ResultsOrientationEnum.SUBJECTS_AS_COLUMNS;
     private String visibility;
+    private Date lastModifiedDate;
     private StudySubscription subscription;
     private CompoundCriterion compoundCriterion = new CompoundCriterion();
     private Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
@@ -32,6 +35,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
     private transient List<String> geneSymbolsNotFound = new ArrayList<String>();
     private transient boolean hasMaskedValues = false;
     private transient Platform platform;
+    
     
     /**
      * @return the description
@@ -75,6 +79,27 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
         this.visibility = visibility;
     }
     
+    /**
+     * @return the lastModifiedDate
+     */
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    /**
+     * @param lastModifiedDate the lastModifiedDate to set
+     */
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getDisplayableLastModifiedDate() {
+        return DateUtil.getDisplayableTimeStamp(lastModifiedDate); 
+    }
+
     /**
      * @return the subscription
      */
@@ -159,6 +184,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
         Query clone = (Query) super.clone();
         clone.setCompoundCriterion((CompoundCriterion) compoundCriterion.clone());
         clone.setColumnCollection(cloneColumnCollection());
+        clone.setLastModifiedDate(new Date());
         return clone;
     }
     

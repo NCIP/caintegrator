@@ -154,6 +154,7 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
                         annotationGroupNameToGroupMap.get(displayableFieldDescriptor.getAnnotationGroupName()));
             }
         }
+        setStudyLastModifiedByCurrentUser(getImageSourceConfiguration());
         getStudyManagementService().save(getStudyConfiguration());
         return SUCCESS;
     }

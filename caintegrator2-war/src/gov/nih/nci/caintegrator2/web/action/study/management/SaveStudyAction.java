@@ -112,7 +112,7 @@ public class SaveStudyAction extends AbstractStudyAction {
             if (getStudyConfiguration().getId() == null) {
                 return createStudy();
             } else {
-                setLastModifiedByCurrentUser();
+                setStudyLastModifiedByCurrentUser(null);
                 getStudyManagementService().save(getStudyConfiguration());
             }
             return SUCCESS;

@@ -34,6 +34,7 @@
         <property name="sampleMappingFilePath" type="string" column="SAMPLE_MAPPING_FILE_PATH"/>
         <property name="status" type="Status" column="STATUS"/>
         <property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
+        <property name="lastModifiedDate" type="java.util.Date" column="LAST_MODIFIED_DATE"/>
         
         <list name="sampleIdentifiers" lazy="true" inverse="true" cascade="all">
             <cache usage="read-write" />

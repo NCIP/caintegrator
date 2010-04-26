@@ -3,10 +3,12 @@ package gov.nih.nci.caintegrator2.domain.application;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Visibility;
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +22,7 @@ public class AbstractList extends AbstractCaIntegrator2Object {
     private String description;
     private String name;
     private Visibility visibility;
+    private Date lastModifiedDate;
     private StudyConfiguration studyConfiguration;
     private StudySubscription subscription;
     
@@ -100,6 +103,27 @@ public class AbstractList extends AbstractCaIntegrator2Object {
      */
     public void setVisibility(Visibility visibility) {
         this.visibility = visibility;
+    }
+
+    /**
+     * @return the lastModifiedDate
+     */
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    /**
+     * @param lastModifiedDate the lastModifiedDate to set
+     */
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getDisplayableLastModifiedDate() {
+        return DateUtil.getDisplayableTimeStamp(lastModifiedDate); 
     }
 
     /**

@@ -104,6 +104,7 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String JOB_EXPERIMENT_IDENTIFIER = "genomicSourceExperimentId_";
     private static final String JOB_DATA_TYPE = "genomicSourceDataType_";
     private static final String JOB_DEPLOYMENT_STATUS = "genomicSourceStatus_";
+    private static final String JOB_LAST_MODIFIED_DATE = "genomicSourceLastModifiedDate_";
     private static final String JOB_EDIT_URL = "genomicSourceEditUrl_";
     private static final String JOB_MAP_SAMPLES_URL = "genomicSourceMapSamplesUrl_";
     private static final String JOB_CONFIGURE_SNP_URL = "genomicSourceConfigureSnpUrl_";
@@ -148,7 +149,7 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
     }
 
     private String[][] createRow(GenomicDataSourceConfiguration genomicSource) {
-        String[][] rowString = new String[1][6];
+        String[][] rowString = new String[1][7];
         String id = genomicSource.getId().toString();
         String startSpan = "<span id=\"";
         String endSpan = "\"> </span>";
@@ -157,7 +158,8 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
         rowString[0][2] = startSpan + JOB_FILE_DESCRIPTION + id + endSpan;
         rowString[0][3] = startSpan + JOB_DATA_TYPE + id + endSpan;
         rowString[0][4] = startSpan + JOB_DEPLOYMENT_STATUS + id + endSpan;
-        rowString[0][5] = startSpan + JOB_EDIT_URL + id + endSpan
+        rowString[0][5] = startSpan + JOB_LAST_MODIFIED_DATE + id + endSpan;
+        rowString[0][6] = startSpan + JOB_EDIT_URL + id + endSpan
                           + startSpan + getMappingActionUrl(genomicSource) + id + endSpan
                           + startSpan + JOB_DELETE_URL + id + endSpan;
         
@@ -219,6 +221,8 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
         utilThis.setValue(JOB_DATA_TYPE + genomicSourceId, 
                 genomicSource.getDataTypeString());
         utilThis.setValue(JOB_DEPLOYMENT_STATUS + genomicSourceId, getStatusMessage(genomicSource.getStatus()));
+        utilThis.setValue(JOB_LAST_MODIFIED_DATE + genomicSourceId, 
+                genomicSource.getDisplayableLastModifiedDate());
         updateRowActions(genomicSource, utilThis, genomicSourceId);
         // TJNOTE: this is checking to see if we can enable the button, but the "isDeployable()" function
         // on the study configuration is throwing lazy initialization exception (only on dev, not localhost).

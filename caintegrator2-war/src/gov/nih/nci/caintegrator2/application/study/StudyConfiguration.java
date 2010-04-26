@@ -85,7 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCaIntegrator2StudyObject;
+import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -97,7 +99,6 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Subject;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -115,7 +116,7 @@ import org.apache.commons.lang.xwork.StringUtils;
  * Holds data about the sources of study data and authorization for access to data.
  */
 @SuppressWarnings({"PMD.ExcessiveClassLength", "PMD.TooManyFields" })
-public class StudyConfiguration extends AbstractCaIntegrator2StudyObject {
+public class StudyConfiguration extends AbstractCaIntegrator2StudyObject implements TimeStampable {
     
     private static final long serialVersionUID = 1L;
     private Visibility visibility;
@@ -532,11 +533,10 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject {
     }
     
     /**
-     * @return the lastModifiedDate to display to user.
+     * {@inheritDoc}
      */
     public String getDisplayableLastModifiedDate() {
-        return lastModifiedDate == null ? "" 
-                : new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(lastModifiedDate); 
+        return DateUtil.getDisplayableTimeStamp(lastModifiedDate); 
     }
 
     /**

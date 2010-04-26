@@ -46,6 +46,16 @@
                             <s:hidden name="globalList" />
                             <s:textfield id="listName" name="listName" label="Gene List Name"
                                 theme="css_xhtml" /><br>
+                            
+                            <div class="wwgrp" >
+                                <div class="wwlbl" >
+                                    <label class="label" for="lastModifiedDate">Last Modified Date:</label>
+                                </div> 
+                                <div class="wwctrl">
+                                    <s:property value="abstractList.displayableLastModifiedDate" /><br>
+                                </div> 
+                            </div> <br/>
+                            
                             <s:if test="%{studyManager}">
                                 <s:checkbox name="visibleToOther" label="Make Visible to Others" labelposition="left" />
                             </s:if>

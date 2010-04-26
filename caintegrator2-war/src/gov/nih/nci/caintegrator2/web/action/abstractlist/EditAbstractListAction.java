@@ -90,6 +90,8 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
+import java.util.Date;
+
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -173,6 +175,7 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
         if (abstractList != null) {
             abstractList.setName(listName);
             abstractList.setVisibility(isVisibleToOther() ? Visibility.GLOBAL : null);
+            abstractList.setLastModifiedDate(new Date());
             saveAbstractList();
             listOldName = listName;
             return isVisibleToOther() ? EDIT_GLOBAL_PAGE : EDIT_PAGE;

@@ -332,4 +332,8 @@
         <comment>Handle two color channel platform.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.30.sql"/>
     </changeSet>
+    <changeSet id="1.1.31" author="tandrews">
+        <comment>Adds LAST_MODIFIED_DATE to TimeStampable object tables</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.31.sql"/>
+    </changeSet>
 </databaseChangeLog>
