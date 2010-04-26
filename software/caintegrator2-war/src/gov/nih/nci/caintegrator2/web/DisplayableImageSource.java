@@ -178,5 +178,13 @@ public class DisplayableImageSource {
     public void setNumberImageSeries(int numberImageSeries) {
         this.numberImageSeries = numberImageSeries;
     }
+    
+    /**
+     * 
+     * @return last modified date.
+     */
+    public String getDisplayableLastModifiedDate() {
+        return imageDataSourceConfiguration.getDisplayableLastModifiedDate();
+    }
 
 }

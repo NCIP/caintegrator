@@ -118,7 +118,18 @@
                         </tr>
                     </s:iterator>
                 </table>
-                <s:submit value="Save" />
+                
+                <tr>
+                    <td colspan="2"><div align="center">
+                    <button type="button" 
+                            onclick="document.imagingSourceForm.action = 'cancelImagingSource.action';
+                            document.imagingSourceForm.submit();"> Cancel 
+                    </button>
+                    
+                    <button type="button" onclick="document.imagingSourceForm.submit();">Save</button>
+                    </div></td>
+                </tr>
+                
                 </s:else>
                 
                 </s:form>

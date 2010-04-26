@@ -186,6 +186,14 @@
                 <td />
                 <td />
             </tr>
+            
+            <tr>
+                <td align="right">Last Modified:</td>
+                <td> <b><s:property value="displayableLastModifiedDate"/></b></td>
+                <td />
+                <td />
+            </tr>
+            
                 <s:if test="expressionData">
                     <tr>
                         <td align="right">Number of Samples: </td>
@@ -246,6 +254,12 @@
             <tr>
                 <td align="right">Collection:</td>
                 <td> <b><s:property value="collectionName"/></b></td>
+                <td />
+                <td />
+            </tr>
+            <tr>
+                <td align="right">Last Modified:</td>
+                <td> <b><s:property value="displayableLastModifiedDate"/></b></td>
                 <td />
                 <td />
             </tr>

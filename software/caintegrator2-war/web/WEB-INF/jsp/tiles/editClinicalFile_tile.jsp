@@ -23,7 +23,8 @@
             <tr>
                 <td colspan="2" style="padding: 5px;">
 
-                <s:form action="saveClinicalSource" method="post" enctype="multipart/form-data">
+                <s:form id="subjectAnnotationsForm" name="subjectAnnotationsForm" 
+                action="saveClinicalSource" method="post" enctype="multipart/form-data">
                 <s:hidden name="studyConfiguration.id" />
                 <s:hidden name="clinicalSource.id" />
                 <table class="data">
@@ -95,7 +96,14 @@
                         </tr>
                     </s:iterator>
                 </table>
-                <s:submit value="Save" />
+                <tr>
+                    <td colspan="2"><div align="center">
+                    <button type="button" onclick="document.subjectAnnotationsForm.action = 'cancelClinicalSource.action';
+                    	document.subjectAnnotationsForm.submit();">Cancel</button>
+                    
+                    <button type="button" onclick="document.subjectAnnotationsForm.submit();">Save</button>
+				    </div></td>
+				</tr>
                 </s:form>
                 </td>
             </tr>

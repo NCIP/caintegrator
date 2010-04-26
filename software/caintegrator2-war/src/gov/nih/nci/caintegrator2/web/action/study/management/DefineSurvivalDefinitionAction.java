@@ -373,7 +373,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
      * @return the Struts result.
      */
     public String deleteSurvivalValueDefinition() {
-        setLastModifiedByCurrentUser();
+        setStudyLastModifiedByCurrentUser(null);
         getStudyManagementService().
             removeSurvivalValueDefinition(getStudy(), getSurvivalValueDefinition());
         this.clear();
@@ -402,7 +402,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
             getStudy().getSurvivalValueDefinitionCollection().add(survivalValueDefinition);
         }
         getStudyManagementService().save(getStudyConfiguration());
-        setLastModifiedByCurrentUser();
+        setStudyLastModifiedByCurrentUser(null);
         survivalDefinitionFormValues.clear();
         return SUCCESS;
     }

@@ -219,4 +219,11 @@ public class DisplayableGenomicSource {
         return genomicDataSourceConfiguration.isSnpData();
     }
 
+    /**
+     * 
+     * @return last modified date.
+     */
+    public String getDisplayableLastModifiedDate() {
+        return genomicDataSourceConfiguration.getDisplayableLastModifiedDate();
+    }
 }

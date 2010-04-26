@@ -190,7 +190,7 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
             getStudyManagementService().saveDnaAnalysisMappingFile(getGenomicSource(), getMappingFile(), 
                     getMappingFileFileName());
             getStudyManagementService().save(getStudyConfiguration());
-            setLastModifiedByCurrentUser();
+            setStudyLastModifiedByCurrentUser(getGenomicSource());
             return SUCCESS;
         } catch (Exception e) {
             addActionError("An unexpected error has occurred, please report this problem - " + e.getMessage());

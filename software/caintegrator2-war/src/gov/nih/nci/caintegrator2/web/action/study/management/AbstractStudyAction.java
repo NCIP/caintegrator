@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.security.exceptions.CSSecurityException;
@@ -154,10 +155,16 @@ implements ModelDriven<StudyConfiguration> {
     }
     
     /**
-     * Sets the lastModifiedBy attribute of a StudyConfiguration to the current user's workspace.
+     * Sets the lastModifiedBy attribute of a StudyConfiguration to the current user's workspace.  The 
+     * timeStampedStudyObject is the specific object that is being changed, if null then it will only 
+     * set the timestamp on the current study configuration.  Otherwise it updates the timestamp of both
+     * objects.
+     * @param timeStampedStudyObject optional object, if non-null it will save the lastModifiedDate of this object
+     * as the current time.
      */
-    protected void setLastModifiedByCurrentUser() {
-        getStudyManagementService().setLastModifiedByCurrentUser(getStudyConfiguration(), getWorkspace());
+    protected void setStudyLastModifiedByCurrentUser(TimeStampable timeStampedStudyObject) {
+        getStudyManagementService().setStudyLastModifiedByCurrentUser(getStudyConfiguration(), getWorkspace(),
+                timeStampedStudyObject);
     }
     
     /**

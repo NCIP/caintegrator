@@ -294,6 +294,7 @@
                             <th>Type</th>
                             <th>Description</th>
                             <th>Status</th>
+                            <th>Last Modified</th>
                             <th>Action</th>
                         </tr>
                         <s:iterator value="studyConfiguration.clinicalConfigurationCollection" status="status">
@@ -318,6 +319,7 @@
                                     </s:else>
                                 </s:else>  
                             </td>
+                            <td><s:property value="displayableLastModifiedDate" /></td>
                             <td style="float: right;">
                                 <s:url id="editClinicalSource" action="editClinicalSource" includeParams="none">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
@@ -381,6 +383,7 @@
                             <th>File Description</th>
                             <th>Data Type</th>
                             <th>Status</th>
+                            <th>Last Modified</th>
                             <th>Action</th>
                         </tr>
                         <tbody id="genomicSourceJobStatusTable" />
@@ -417,6 +420,7 @@
                             <th>Collection Name</th>
                             <th>File Description</th>
                             <th>Status</th>
+                            <th>Last Modified</th>
                             <th>Action</th>
                         </tr>
                         <tbody id="imagingSourceJobStatusTable" />

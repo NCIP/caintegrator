@@ -105,6 +105,7 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
     private static final String JOB_HOST_NAME = "imagingSourceHostName_";
     private static final String JOB_COLLECTION_NAME = "imagingSourceCollectionName_";
     private static final String JOB_DEPLOYMENT_STATUS = "imagingSourceStatus_";
+    private static final String JOB_LAST_MODIFIED_DATE = "imagingSourceLastModified_";
     private static final String JOB_EDIT_URL = "imagingSourceEditUrl_";
     private static final String JOB_EDIT_ANNOTATIONS_URL = "imagingSourceEditAnnotationsUrl_";
     private static final String JOB_LOAD_ANNOTATIONS_URL = "imagingSourceLoadAnnotationsUrl_";
@@ -149,7 +150,7 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
     }
 
     private String[][] createRow(ImageDataSourceConfiguration imagingSource) {
-        String[][] rowString = new String[1][5];
+        String[][] rowString = new String[1][6];
         String id = imagingSource.getId().toString();
         String startSpan = "<span id=\"";
         String endSpan = "\"> </span>";
@@ -157,7 +158,8 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
         rowString[0][1] = startSpan + JOB_COLLECTION_NAME + id + endSpan;
         rowString[0][2] = startSpan + JOB_FILE_DESCRIPTION + id + endSpan;
         rowString[0][3] = startSpan + JOB_DEPLOYMENT_STATUS + id + endSpan;
-        rowString[0][4] = startSpan + JOB_EDIT_URL + id + endSpan
+        rowString[0][4] = startSpan + JOB_LAST_MODIFIED_DATE + id + endSpan;
+        rowString[0][5] = startSpan + JOB_EDIT_URL + id + endSpan
                           + startSpan + JOB_EDIT_ANNOTATIONS_URL + id + endSpan
                           + startSpan + JOB_LOAD_ANNOTATIONS_URL + id + endSpan
                           + startSpan + JOB_DELETE_URL + id + endSpan;
@@ -210,6 +212,8 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
                             imagingSource.getCollectionName());
         updateRowFileDescriptions(utilThis, imagingSource, imagingSourceId);
         utilThis.setValue(JOB_DEPLOYMENT_STATUS + imagingSourceId, getStatusMessage(imagingSource.getStatus()));
+        utilThis.setValue(JOB_LAST_MODIFIED_DATE + imagingSourceId, 
+                imagingSource.getDisplayableLastModifiedDate());
         updateRowActions(imagingSource, utilThis, imagingSourceId);        
     }
 

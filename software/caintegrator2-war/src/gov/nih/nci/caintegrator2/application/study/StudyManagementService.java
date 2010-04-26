@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -505,8 +506,11 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * Sets the lastModifiedBy attribute of a StudyConfiguration to the current user's workspace.
      * @param studyConfiguration that is being modified by the user.
      * @param lastModifiedBy the user to last modify this study.
+     * @param timeStampedStudyObject the specific study object that is to be timestamped, if left null it
+     * it will only timestamp the given studyConfiguration.
      */
-    void setLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy);
+    void setStudyLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy, 
+            TimeStampable timeStampedStudyObject);
     
     /**
      * Adds the given ExternalLinkList to the StudyConfiguration.
