@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
@@ -102,7 +103,8 @@ public class DisplayableStudySummary {
     private final Study study;
     private final List<DisplayableGenomicSource> genomicDataSources = new ArrayList<DisplayableGenomicSource>();
     private final List<DisplayableImageSource> imageDataSources = new ArrayList<DisplayableImageSource>();
-
+    private final String subjectAnnotationsLastModifiedDate;
+    
     /**
      * Returns T/F if study has imaging data associated with it.
      * @return T/F value.
@@ -134,8 +136,11 @@ public class DisplayableStudySummary {
             throw new IllegalArgumentException("Study cannot be null");
         }
         this.study = study;
+        
+        subjectAnnotationsLastModifiedDate = Cai2Util.retrieveLatestLastModifiedDate(
+                new ArrayList<TimeStampable>(study.getStudyConfiguration().getClinicalConfigurationCollection()));
     }
-    
+
     /**
      * Number of subjects in a study.
      * @return - number subjects.
@@ -211,6 +216,13 @@ public class DisplayableStudySummary {
      */
     public Set<SurvivalValueDefinition> getValidSurvivalValueDefinitions() {
         return Cai2Util.retrieveValidSurvivalValueDefinitions(study.getSurvivalValueDefinitionCollection());
+    }
+
+    /**
+     * @return the subjectAnnotationsLastModifiedDate
+     */
+    public String getSubjectAnnotationsLastModifiedDate() {
+        return subjectAnnotationsLastModifiedDate;
     }
 
 }

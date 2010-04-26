@@ -57,6 +57,12 @@
             <th colspan="4">Subject Annotation Data</th>
         </tr>
         <tr>
+            <td align="right">Last Modified:</td>
+            <td> <b><s:property value="studySummary.subjectAnnotationsLastModifiedDate"/> </b> </td>
+            <td />  
+            <td />
+        </tr>
+        <tr>
             <td align="right">Number of Subjects:</td>
             <td> <b><s:property value="studySummary.numberSubjects"/> </b> </td>
             <td />  

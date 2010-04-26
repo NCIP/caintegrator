@@ -95,14 +95,19 @@ import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
 import gov.nih.nci.caintegrator2.file.FileManagerImpl;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -263,7 +268,25 @@ public class Cai2UtilTest {
         survivalValues.add(invalidSurvivalDefinition8);
         survivalValues.add(invalidSurvivalDefinition9);
         
-        assertEquals(1, Cai2Util.retrieveValidSurvivalValueDefinitions(survivalValues).size());
+        assertEquals(1, Cai2Util.retrieveValidSurvivalValueDefinitions(survivalValues).size());   
+    }
+    
+    @Test
+    public void testRetrieveLatestLastModifiedDate() {
+        List<TimeStampable> timestampedObjects = new ArrayList<TimeStampable>();
+        assertEquals(DateUtil.TIMESTAMP_UNAVAILABLE_STRING, Cai2Util.retrieveLatestLastModifiedDate(timestampedObjects));
+        Query queryFirst = new Query();
+        queryFirst.setLastModifiedDate(new Date());
+        Query queryUnknown = new Query();
+        Query queryLast = new Query();
+        queryLast.setLastModifiedDate(new Date());
+        
+        timestampedObjects.add(queryUnknown);
+        assertEquals(DateUtil.TIMESTAMP_UNAVAILABLE_STRING, Cai2Util.retrieveLatestLastModifiedDate(timestampedObjects));
+        timestampedObjects.add(queryFirst);
+        assertEquals(queryFirst.getDisplayableLastModifiedDate(), Cai2Util.retrieveLatestLastModifiedDate(timestampedObjects));
+        timestampedObjects.add(queryLast);
+        assertEquals(queryLast.getDisplayableLastModifiedDate(), Cai2Util.retrieveLatestLastModifiedDate(timestampedObjects));
         
         
     }

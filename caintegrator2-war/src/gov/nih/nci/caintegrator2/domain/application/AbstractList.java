@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * 
  */
-public class AbstractList extends AbstractCaIntegrator2Object {
+public class AbstractList extends AbstractCaIntegrator2Object implements TimeStampable {
 
     private static final long serialVersionUID = 1L;
     
