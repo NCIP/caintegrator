@@ -95,10 +95,20 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>saveClinicalSource_</td>
+	<td>//button[@type='button' and @onclick='document.subjectAnnotationsForm.submit();']</td>
 	<td></td>
 </tr>
 <!--//begin create identifier-->
+<tr>
+	<td>clickAndWait</td>
+	<td>//a//span[text()='Edit Annotations']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(text(),'Change Assignment')]</td>
+	<td></td>
+</tr>
 <tr>
 	<td>selectAndWait</td>
 	<td>fieldDescriptorType</td>
@@ -121,7 +131,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
+	<td>//button[@type='button' and @onclick='document.subjectAnnotationsForm.submit();']</td>
 	<td></td>
 </tr>
 <!--// begin Load Clinical-->
@@ -334,7 +344,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>imagingSourceForm_0</td>
+	<td>//button[@type='button' and @onclick='document.imagingSourceForm.submit();']</td>
 	<td></td>
 </tr>
 <!--// end assign imaging annotation-->
