@@ -131,5 +131,20 @@ public class AffymetrixCnPlatformSource extends AbstractPlatformSource {
         return platformName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PlatformTypeEnum getPlatformType() {
+        return PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PlatformChannelTypeEnum getPlatformChannelType() {
+        return PlatformChannelTypeEnum.ONE_COLOR;
+    }
 
 }

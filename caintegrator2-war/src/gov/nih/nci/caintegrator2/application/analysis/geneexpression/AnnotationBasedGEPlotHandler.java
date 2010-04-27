@@ -135,16 +135,20 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
      */
     public GeneExpressionPlotGroup createPlots(StudySubscription subscription) 
     throws ControlSamplesNotMappedException, InvalidCriterionException {
-        
+        boolean twoChannelType = false;
         List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
         for (PermissibleValue permissibleValue : parameters.getSelectedValues()) {
             GenomicDataQueryResult result = retrieveGenomicResults(permissibleValue, subscription);
             fillUsedSubjects(result);
             genomicResults.add(result);
+            if (result.getQuery().isTwoChannelType()) {
+                twoChannelType = true;
+            }
         }
         addOptionalGroups(subscription, genomicResults, parameters.getControlSampleSetName());
         GeneExpressionPlotConfiguration configuration = GeneExpressionPlotConfigurationFactory.createPlotConfiguration(
                 genomicResults, GenomicValueResultsTypeEnum.GENE_EXPRESSION);
+        configuration.setTwoChannelType(twoChannelType);
         return createGeneExpressionPlot(parameters, configuration);
     }
 

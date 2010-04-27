@@ -99,7 +99,22 @@ public class GeneExpressionPlotConfiguration {
     private final List<String> genesNotFound = new ArrayList<String>();
     private List<PlotSampleGroup> plotSampleGroups = new ArrayList<PlotSampleGroup>();
     private GenomicValueResultsTypeEnum genomicValueResultsType = GenomicValueResultsTypeEnum.GENE_EXPRESSION;
+    private boolean twoChannelType;
     
+    /**
+     * @return the twoChannelType
+     */
+    public boolean isTwoChannelType() {
+        return twoChannelType;
+    }
+
+    /**
+     * @param twoChannelType the twoChannelType to set
+     */
+    public void setTwoChannelType(boolean twoChannelType) {
+        this.twoChannelType = twoChannelType;
+    }
+
     /**
      * @return the genomicValueResultsType
      */

@@ -127,4 +127,20 @@ public class AffymetrixExpressionPlatformSource extends AbstractPlatformSource {
         return getLoader().getPlatformName();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PlatformTypeEnum getPlatformType() {
+        return PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PlatformChannelTypeEnum getPlatformChannelType() {
+        return PlatformChannelTypeEnum.ONE_COLOR;
+    }
+
 }

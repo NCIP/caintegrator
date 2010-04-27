@@ -149,7 +149,7 @@ public class QueryManagementServiceImplTest {
     
     @Before
     public void setup() {
-        dao = new CaIntegrator2DaoStub();
+        dao = new GenomicDataTestDaoStub();
         ResultHandler resultHandler = new ResultHandlerImpl();
         dao.clear();
         arrayDataService = new ArrayDataServiceStub();
@@ -197,14 +197,14 @@ public class QueryManagementServiceImplTest {
     @Test
     @SuppressWarnings("PMD")
     public void testExecuteGenomicDataQuery() throws InvalidCriterionException {
-        GenomicDataTestDaoStub daoStub = new GenomicDataTestDaoStub();
-        queryManagementService.setDao(daoStub);
+        Platform platform = dao.getPlatform("platformName");
         Study study = query.getSubscription().getStudy();
         StudySubjectAssignment assignment = new StudySubjectAssignment();
         SampleAcquisition acquisition = new SampleAcquisition();
         Sample sample = new Sample();
         sample.setSampleAcquisition(acquisition);
         Array array = new Array();
+        array.setPlatform(platform);
         ArrayData arrayData = new ArrayData();
         arrayData.setStudy(study);
         arrayData.setArray(array);
@@ -215,6 +215,7 @@ public class QueryManagementServiceImplTest {
         ArrayData arrayData2 = new ArrayData();
         arrayData2.setStudy(study);
         arrayData2.setSample(sample);
+        arrayData2.setArray(array);
         array.getArrayDataCollection().add(arrayData2);
         sample.getArrayDataCollection().add(arrayData2);        
         array.getSampleCollection().add(sample);
@@ -225,8 +226,6 @@ public class QueryManagementServiceImplTest {
         Gene gene = new Gene();
         gene.setSymbol("GENE");
         reporter = new GeneExpressionReporter();
-        Platform platform = new Platform();
-        platform.setName("platformName");
         ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporter.setReporterList(reporterList);
         reporter.getGenes().add(gene);
@@ -235,7 +234,6 @@ public class QueryManagementServiceImplTest {
         reporterList.getArrayDatas().add(arrayData);
         reporterList.getArrayDatas().add(arrayData2);
         reporterList.getReporters().add(reporter);
-        reporter.setReporterList(reporterList);
         arrayData.getReporterLists().add(reporterList);
         reporterList.getArrayDatas().add(arrayData);
         ReporterList reporterList2 = platform.addReporterList("reporterList2", ReporterTypeEnum.GENE_EXPRESSION_GENE);
@@ -248,12 +246,9 @@ public class QueryManagementServiceImplTest {
             fail("Should have caught invalid criterion exception because no platforms selected.");
         } catch (InvalidCriterionException e) {
         }
+        arrayDataService.numberPlatformsInStudy = 1;
         geneNameCriterion.setPlatformName("platformName");
         GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
-        
-        arrayDataService.numberPlatformsInStudy = 1;
-        result = queryManagementService.executeGenomicDataQuery(query);
-        
         
         assertEquals(1, result.getFilteredRowCollection().size());
         assertEquals(1, result.getColumnCollection().size());

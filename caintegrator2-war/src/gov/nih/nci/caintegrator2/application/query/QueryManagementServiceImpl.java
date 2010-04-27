@@ -180,8 +180,9 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     }
 
     private void addPlatformToQuery(Query query) throws InvalidCriterionException {
-        if (retrieveGeneExpressionPlatformsForStudy(query.getSubscription().getStudy()).size() == 1) {
-            query.setPlatform(null);
+        Set<String> platformNames = retrieveGeneExpressionPlatformsForStudy(query.getSubscription().getStudy());
+        if (platformNames.size() == 1) {
+            query.setPlatform(getDao().getPlatform(platformNames.iterator().next()));
         } else {
             Set<String> allPlatformNames = query.getCompoundCriterion().getAllPlatformNames();
             if (allPlatformNames.size() != 1) {
