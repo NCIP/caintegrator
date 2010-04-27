@@ -261,8 +261,11 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         if (platform == null) {
             PlatformConfiguration configuration = new PlatformConfiguration(platformSource);
             configuration.setName(platformSource.getLoader().getPlatformName());
+            configuration.setPlatformType(platformSource.getPlatformType());
+            configuration.setPlatformChannelType(platformSource.getPlatformChannelType());
             arrayDataService.savePlatformConfiguration(configuration);
             platform = arrayDataService.loadArrayDesign(configuration, null).getPlatform();
+            platform.setPlatformConfiguration(configuration);
         }
         return platform;
     }
@@ -613,6 +616,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             GeneNameCriterion geneCriterion = new GeneNameCriterion();
             geneCriterion.setGeneSymbol("EGFR");
+            geneCriterion.setPlatformName(design.getName());
             query.getCompoundCriterion().getCriterionCollection().add(geneCriterion);
             
             GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);

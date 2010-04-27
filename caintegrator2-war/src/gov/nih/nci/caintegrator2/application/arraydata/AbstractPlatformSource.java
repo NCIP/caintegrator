@@ -111,6 +111,16 @@ public abstract class AbstractPlatformSource implements Serializable {
      * @exception PlatformLoadingException loading annotation file error
      */
     public abstract String getPlatformName() throws PlatformLoadingException;
+
+    /**
+     * @return the platform type
+     */
+    public abstract PlatformTypeEnum getPlatformType();
+
+    /**
+     * @return the platform channel type
+     */
+    public abstract PlatformChannelTypeEnum getPlatformChannelType();
     
     /**
      * Creates a new instance.

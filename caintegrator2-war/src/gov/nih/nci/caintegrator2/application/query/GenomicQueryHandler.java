@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
@@ -133,7 +134,7 @@ class GenomicQueryHandler {
     }
 
     GenomicDataQueryResult execute() throws InvalidCriterionException {
-        ArrayDataValues values = getDataValues();
+        ArrayDataValues values = getDataValues(query.getPlatform().getPlatformConfiguration().getPlatformChannelType());
         return createResult(values);
     }
 
@@ -188,19 +189,20 @@ class GenomicQueryHandler {
         }
     }
 
-    private ArrayDataValues getDataValues() throws InvalidCriterionException {
+    private ArrayDataValues getDataValues(PlatformChannelTypeEnum channelType) throws InvalidCriterionException {
         Collection<ArrayData> arrayDatas = getMatchingArrayDatas();
         Collection<AbstractReporter> reporters = getMatchingReporters(arrayDatas);
-        return getDataValues(arrayDatas, reporters);              
+        return getDataValues(arrayDatas, reporters, channelType);              
     }
 
-    private ArrayDataValues getDataValues(Collection<ArrayData> arrayDatas, Collection<AbstractReporter> reporters) {
+    private ArrayDataValues getDataValues(Collection<ArrayData> arrayDatas, Collection<AbstractReporter> reporters,
+            PlatformChannelTypeEnum channelType) {
         DataRetrievalRequest request = new DataRetrievalRequest();
         request.addReporters(reporters);
         request.addArrayDatas(arrayDatas);
         request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
         if (QueryUtil.isFoldChangeQuery(query)) {
-            return arrayDataService.getFoldChangeValues(request, getControlArrayDatas());
+            return arrayDataService.getFoldChangeValues(request, getControlArrayDatas(), channelType);
         } else {
             return arrayDataService.getData(request);
         }
@@ -247,7 +249,7 @@ class GenomicQueryHandler {
         for (ArrayData arrayData : candidateArrayDatas) {
             for (ReporterList reporterList : arrayData.getReporterLists()) {
                 if (reporterType.equals(reporterList.getReporterType())
-                    && (platform == null || platform.equals(arrayData.getArray().getPlatform()))) {
+                        && (platform.equals(arrayData.getArray().getPlatform()))) {
                     matchingArrayDatas.add(arrayData);
                 }
             }

@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -129,6 +130,22 @@ public class ArrayDataValues {
      */
     public List<AbstractReporter> getReporters() {
         return Collections.unmodifiableList(reporters);
+    }
+    
+    /**
+     * Gets log2 value of a single data point for a single reporter / array / type combination.
+     * 
+     * @param arrayData the array data the data value is associated to.
+     * @param reporter the reporter the data value is associated to.
+     * @param type the type of data
+     * @param channelType the channel type of the data array
+     * @return the value.
+     */
+    public double getLog2Value(ArrayData arrayData, AbstractReporter reporter, ArrayDataValueType type,
+            PlatformChannelTypeEnum channelType) {
+        return PlatformChannelTypeEnum.TWO_COLOR.equals(channelType)
+            ? getFloatValue(arrayData, getReporterIndex(reporter), type)
+            : Cai2Util.log2(getFloatValue(arrayData, getReporterIndex(reporter), type));
     }
     
     /**

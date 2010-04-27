@@ -142,7 +142,8 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
         request.addArrayDatas(getCandidateArrayDatas(study, reporterType, platform));
         request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
         ArrayDataValues values = arrayDataService.getFoldChangeValues(request, 
-                getCompareToArrayDatas(reporterType, platform));
+                getCompareToArrayDatas(reporterType, platform),
+                platform.getPlatformConfiguration().getPlatformChannelType());
         return getRows(values, entityTypes);
     }
 

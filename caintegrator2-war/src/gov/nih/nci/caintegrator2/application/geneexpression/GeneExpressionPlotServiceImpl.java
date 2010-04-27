@@ -128,6 +128,7 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
         addLegendItemsToPlot(plotGroup);
         addPlotGroupSubjectCounts(configuration, plotGroup);
         plotGroup.getGenesNotFound().addAll(configuration.getGenesNotFound());
+        plotGroup.setTwoChannelType(configuration.isTwoChannelType());
         return plotGroup;
     }
 

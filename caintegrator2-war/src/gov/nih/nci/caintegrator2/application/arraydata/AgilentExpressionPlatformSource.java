@@ -145,4 +145,20 @@ public class AgilentExpressionPlatformSource extends AbstractPlatformSource {
         return platformFileName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PlatformChannelTypeEnum getPlatformChannelType() {
+        return PlatformChannelTypeEnum.TWO_COLOR;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PlatformTypeEnum getPlatformType() {
+        return PlatformTypeEnum.AGILENT_GENE_EXPRESSION;
+    }
+
 }

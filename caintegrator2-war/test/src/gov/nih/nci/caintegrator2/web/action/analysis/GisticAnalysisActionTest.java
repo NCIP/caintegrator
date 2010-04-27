@@ -101,6 +101,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
@@ -141,6 +142,9 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
         Sample sample = new Sample();
         ArrayData arrayData = new ArrayData();
         Platform platform = new Platform();
+        Array array = new Array();
+        array.setPlatform(platform);
+        arrayData.setArray(array);
         ReporterList reporterList = platform.addReporterList("test", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
         reporterList.setGenomeVersion("hg18");
         arrayData.getReporterLists().add(reporterList);

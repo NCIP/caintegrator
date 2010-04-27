@@ -174,7 +174,7 @@ public class ArrayDataServiceTest {
         request.addArrayDatas(arrayDatas);
         request.addReporters(reporters);
         request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
-        ArrayDataValues foldChangeValues = service.getFoldChangeValues(request, controlArrayDatas);
+        ArrayDataValues foldChangeValues = service.getFoldChangeValues(request, controlArrayDatas, null);
         assertEquals(2, foldChangeValues.getArrayDatas().size());
         assertEquals(2, foldChangeValues.getReporters().size());
         assertEquals(1.752, (float) foldChangeValues.getFloatValue(data1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);

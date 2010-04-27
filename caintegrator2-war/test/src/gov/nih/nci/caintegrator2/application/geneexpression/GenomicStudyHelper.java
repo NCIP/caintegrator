@@ -136,6 +136,8 @@ public class GenomicStudyHelper {
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
         query.setColumnCollection(new HashSet<ResultColumn>());
+        Platform platform= daoStub.getPlatform("platformName");
+        query.setPlatform(platform);
         query.setSubscription(new StudySubscription());
         query.getSubscription().setStudy(new Study());
         Study study = query.getSubscription().getStudy();
@@ -145,6 +147,7 @@ public class GenomicStudyHelper {
         Sample sample = new Sample();
         sample.setSampleAcquisition(acquisition);
         Array array = new Array();
+        array.setPlatform(platform);
         ArrayData arrayData = new ArrayData();
         arrayData.setStudy(study);
         arrayData.setArray(array);
@@ -155,6 +158,7 @@ public class GenomicStudyHelper {
         ArrayData arrayData2 = new ArrayData();
         arrayData2.setStudy(study);
         arrayData2.setSample(sample);
+        arrayData2.setArray(array);
         array.getArrayDataCollection().add(arrayData2);
         sample.getArrayDataCollection().add(arrayData2);        
         array.getSampleCollection().add(sample);
@@ -166,7 +170,6 @@ public class GenomicStudyHelper {
         Gene gene = new Gene();
         gene.setSymbol("EGFR");
         reporter = new GeneExpressionReporter();
-        Platform platform = new Platform();
         ReporterList reporterList = platform.addReporterList("reporterList1", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporter.getGenes().add(gene);
         geneNameCriterion.setGeneSymbol("GENE");

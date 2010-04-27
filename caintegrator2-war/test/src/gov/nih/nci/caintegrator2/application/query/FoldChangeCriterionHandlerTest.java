@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
@@ -129,7 +130,7 @@ public class FoldChangeCriterionHandlerTest {
     
     @Before
     public void setUp() {
-        Platform platform = new Platform();
+        Platform platform = daoStub.getPlatform("platformName");
         ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         gene = new Gene();
         reporter.getGenes().add(gene);
@@ -137,6 +138,7 @@ public class FoldChangeCriterionHandlerTest {
         daoStub.clear();       
         study = new Study();
         query = new Query();
+        query.setPlatform(platform);
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
         query.setSubscription(subscription);
@@ -144,8 +146,11 @@ public class FoldChangeCriterionHandlerTest {
         study.getAssignmentCollection().add(assignment);
         SampleAcquisition acquisition = new SampleAcquisition();
         Sample sample = new Sample();
+        Array array = new Array();
+        array.setPlatform(platform);
         ArrayData arrayData = new ArrayData();
         arrayData.setStudy(study);
+        arrayData.setArray(array);
         arrayData.getReporterLists().add(reporterList);
         reporterList.getArrayDatas().add(arrayData);
         arrayData.setSample(sample);
