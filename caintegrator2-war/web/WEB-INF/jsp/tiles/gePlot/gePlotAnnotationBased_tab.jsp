@@ -61,7 +61,7 @@
                     Select Platform:  
                     <s:select name="gePlotForm.annotationBasedForm.platformName" 
                         list="platformsInStudy"
-                        headerKey="" headerValue=""
+                        headerKey="" headerValue="Select Platform"
                          onchange="document.geneExpressionAnnotationInputForm.action = 'updateControlSamplesAnnotationBasedGEPlot.action';document.geneExpressionAnnotationInputForm.submit();"/>
                 </td>
             </tr>

@@ -60,7 +60,7 @@
                     Select Platform:  
                     <s:select name="gePlotForm.clinicalQueryBasedForm.platformName" 
                         list="platformsInStudy"
-                        headerKey="" headerValue=""
+                        headerKey="" headerValue="Select Platform"
                          onchange="document.geneExpressionClinicalQueryInputForm.action = 'updateControlSamplesClinicalQueryBasedGEPlot.action';document.geneExpressionClinicalQueryInputForm.submit();"/>
                 </td>
             </tr>
