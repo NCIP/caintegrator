@@ -96,7 +96,7 @@ import org.apache.commons.lang.xwork.StringUtils;
  * Wraps access to an <code>AbstractGenomicCriterion</code> subclass instance.
  */
 abstract class AbstractGenomicCriterionWrapper extends AbstractCriterionWrapper {
-    
+    private static final String PLEASE_SELECT = "-- Please Select --";
     private static final String SYMBOL_LABEL = "Gene Symbol(s) (comma separated list) or blank for all genes";
     private static final String PLATFORM_NAME_LABEL = "Platform Name";
     private final GeneExpressionCriterionRow row;
@@ -144,7 +144,7 @@ abstract class AbstractGenomicCriterionWrapper extends AbstractCriterionWrapper 
     protected SelectListParameter<String> createPlatformNameParameter() {
         OptionList<String> options = new OptionList<String>();
         String defaultUnknownPlatform = "";
-        options.addOption(defaultUnknownPlatform, defaultUnknownPlatform);
+        options.addOption(PLEASE_SELECT, defaultUnknownPlatform);
         for (String platformName : getPlatformNames()) {
             options.addOption(platformName, platformName);
         }
