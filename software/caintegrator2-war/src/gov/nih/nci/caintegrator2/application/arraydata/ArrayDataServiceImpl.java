@@ -272,14 +272,15 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Collection<ArrayData> controlArrayDatas) {
+    public ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Collection<ArrayData> controlArrayDatas,
+            PlatformChannelTypeEnum channelType) {
         ArrayDataValues values = getData(request);
         DataRetrievalRequest controlDataRequest = new DataRetrievalRequest();
         controlDataRequest.addReporters(request.getReporters());
         controlDataRequest.addArrayDatas(controlArrayDatas);
         controlDataRequest.addTypes(request.getTypes());
         ArrayDataValues controlValues = getData(controlDataRequest);
-        return new FoldChangeCalculator(values, controlValues).calculate();
+        return new FoldChangeCalculator(values, controlValues, channelType).calculate();
     }
     
     /**

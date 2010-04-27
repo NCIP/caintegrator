@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
@@ -117,6 +118,7 @@ public class QueryManagementServiceForKMPlotStub extends QueryManagementServiceS
     public boolean executeGenomicDataQueryCalled;
     public PlotTypeEnum kmPlotType;
     private KMPlotStudyCreator creator = new KMPlotStudyCreator();
+    private CaIntegrator2DaoStub dao;
 
     public void save(Query query) {
         saveCalled = true;
@@ -151,6 +153,7 @@ public class QueryManagementServiceForKMPlotStub extends QueryManagementServiceS
     public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
         executeGenomicDataQueryCalled = true;
         GenomicDataQueryResult result = new GenomicDataQueryResult();
+        query.setPlatform(dao.getPlatform("platformName"));
         result.setQuery(query);
         GenomicDataResultRow row = new GenomicDataResultRow();
         GenomicDataResultValue value = new GenomicDataResultValue();
@@ -198,6 +201,20 @@ public class QueryManagementServiceForKMPlotStub extends QueryManagementServiceS
 
     public List<Query> createQueriesFromSubjectLists(Collection<SubjectList> subjectLists) {
         return null;
+    }
+
+    /**
+     * @return the dao
+     */
+    public CaIntegrator2DaoStub getDao() {
+        return dao;
+    }
+
+    /**
+     * @param dao the dao to set
+     */
+    public void setDao(CaIntegrator2DaoStub dao) {
+        this.dao = dao;
     }
     
 }

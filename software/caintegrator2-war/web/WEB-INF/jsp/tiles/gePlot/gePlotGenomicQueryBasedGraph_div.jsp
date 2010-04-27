@@ -19,6 +19,9 @@
             <img id="genomicQueryBasedImage" src="${retrieveGenomicQueryGEPlot_mean}" />
             </div>
             <br>
+            <s:if test="#gePlot.annotationBasedGePlot.twoChannelType">
+                <i>Expression values are log2 ratios of sample to common reference.</i>
+            </s:if>
         
         <!-- Legend -->
         <fieldset style='display:table;width:600; border:1px solid gray; text-align:left; padding:5px;'>

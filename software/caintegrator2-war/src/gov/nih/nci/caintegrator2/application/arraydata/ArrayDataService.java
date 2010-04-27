@@ -119,9 +119,11 @@ public interface ArrayDataService {
      * 
      * @param request encapsulated retrieval configuration.
      * @param controlArrayDatas compute fold change values compared to these arrays
+     * @param channelType the array data channel type.
      * @return the fold change values.
      */
-    ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Collection<ArrayData> controlArrayDatas);
+    ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Collection<ArrayData> controlArrayDatas,
+            PlatformChannelTypeEnum channelType);
     
     /**
      * Loads the given array design into the system.

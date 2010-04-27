@@ -1,5 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Visibility;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
@@ -302,5 +303,12 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
     public void setPlatform(Platform platform) {
         this.platform = platform;
     }
-
+    
+    /**
+     * @return T/F is a 2 color channel type platform
+     */
+    public boolean isTwoChannelType() {
+        return PlatformChannelTypeEnum.TWO_COLOR.equals(
+                platform.getPlatformConfiguration().getPlatformChannelType());
+    }
 }

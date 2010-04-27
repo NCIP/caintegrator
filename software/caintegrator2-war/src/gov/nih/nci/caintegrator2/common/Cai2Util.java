@@ -124,6 +124,7 @@ public final class Cai2Util {
     private static final double GOLDEN_ANGLE = 0.381966;
     private static final double MAX_ANGLE_CONSTANT = 360;
     private static final Set<Color> COLOR_PALETTE = new HashSet<Color>();
+    private static final double NATURAL_LOG_OF_2 = Math.log(2);
     
     private Cai2Util() { }
     
@@ -439,6 +440,24 @@ public final class Cai2Util {
            validDefinitions.add(survivalValueDefinition);
        }
        return validDefinitions;
+   }
+   
+   /**
+    * Compute log2 of a given value.
+    * @param value to do log2
+    * @return log2 of the input value
+    */
+   public static double log2(double value) {
+       return Math.log(value) / NATURAL_LOG_OF_2;
+   }
+   
+   /**
+    * Compute the anti-log2 of a given value.
+    * @param value to do anti-log2
+    * @return anti-log2 of the input value
+    */
+   public static double antiLog2(double value) {
+       return Math.pow(2, value);
    }
    
    /**

@@ -100,6 +100,21 @@ public class GeneExpressionPlotGroup {
     private final List<LegendItemWrapper> legendItems = new ArrayList<LegendItemWrapper>();
     private final Map<String, Integer> groupNameToNumberSubjectsMap = new HashMap<String, Integer>();
     private final List<String> genesNotFound = new ArrayList<String>();
+    private boolean twoChannelType = false;
+
+    /**
+     * @return the twoChannelType
+     */
+    public boolean isTwoChannelType() {
+        return twoChannelType;
+    }
+
+    /**
+     * @param twoChannelType the twoChannelType to set
+     */
+    public void setTwoChannelType(boolean twoChannelType) {
+        this.twoChannelType = twoChannelType;
+    }
 
     /**
      * @return the geneExpressionPlots

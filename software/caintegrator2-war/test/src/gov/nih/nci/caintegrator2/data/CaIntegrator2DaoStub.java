@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
@@ -322,8 +323,9 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
      */
     public Platform getPlatform(String name) {
         getPlatformCalled = true;
-        Platform platform = new Platform();
         platform.setName(name);
+        platform.setPlatformConfiguration(new PlatformConfiguration());
+        platform.getPlatformConfiguration().setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
         return platform;
     }
 

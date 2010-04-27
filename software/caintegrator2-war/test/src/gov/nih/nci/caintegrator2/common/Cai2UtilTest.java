@@ -272,6 +272,12 @@ public class Cai2UtilTest {
     }
     
     @Test
+    public void testLog2() {
+        assertTrue(Cai2Util.log2(16) == 4);
+        assertTrue(Cai2Util.antiLog2(4) == 16);
+    }
+    
+    @Test
     public void testRetrieveLatestLastModifiedDate() {
         List<TimeStampable> timestampedObjects = new ArrayList<TimeStampable>();
         assertEquals(DateUtil.TIMESTAMP_UNAVAILABLE_STRING, Cai2Util.retrieveLatestLastModifiedDate(timestampedObjects));

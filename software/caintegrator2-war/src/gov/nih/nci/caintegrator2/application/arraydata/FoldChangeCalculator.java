@@ -89,6 +89,7 @@ import static gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType
 
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 
 /**
  * Computes fold change values for a set of arrays based on data from a set of control arrays.
@@ -98,11 +99,12 @@ class FoldChangeCalculator {
     private final ArrayDataValues values;
     private final ArrayDataValues controlValues;
     private final ArrayDataValues foldChangeValues;
-    private static final double NATURAL_LOG_OF_2 = Math.log(2);
+    private final PlatformChannelTypeEnum channelType;
 
-    FoldChangeCalculator(ArrayDataValues values, ArrayDataValues controlValues) {
+    FoldChangeCalculator(ArrayDataValues values, ArrayDataValues controlValues, PlatformChannelTypeEnum channelType) {
         this.values = values;
         this.controlValues = controlValues;
+        this.channelType = channelType;
         foldChangeValues = new ArrayDataValues(values.getReporters());
     }
 
@@ -116,7 +118,7 @@ class FoldChangeCalculator {
     private void calculate(AbstractReporter reporter) {
         double log2MeanOfControls = getLog2MeanOfControls(reporter);
         for (ArrayData arrayData : values.getArrayDatas()) {
-            double log2OfSample = log2(values.getFloatValue(arrayData, reporter, EXPRESSION_SIGNAL));
+            double log2OfSample = values.getLog2Value(arrayData, reporter, EXPRESSION_SIGNAL, channelType);
             float foldChange = (float) getFoldChange(log2OfSample, log2MeanOfControls);
             foldChangeValues.setFloatValue(arrayData, reporter, EXPRESSION_SIGNAL, foldChange);
         }
@@ -136,12 +138,8 @@ class FoldChangeCalculator {
         for (ArrayData arrayData : controlValues.getArrayDatas()) {
             valueProduct *= controlValues.getFloatValue(arrayData, reporter, EXPRESSION_SIGNAL);
         }
-        double logSum = log2(valueProduct);
+        double logSum = Cai2Util.log2(valueProduct);
         return logSum / controlValues.getArrayDatas().size();
-    }
-    
-    private double log2(double value) {
-        return Math.log(value) / NATURAL_LOG_OF_2;
     }
 
 }

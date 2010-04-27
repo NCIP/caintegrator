@@ -128,6 +128,7 @@ class GenomicQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
                 GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults,
                         QueryUtil.isFoldChangeQuery(parameters.getQuery()) 
                         ? GenomicValueResultsTypeEnum.FOLD_CHANGE : GenomicValueResultsTypeEnum.GENE_EXPRESSION);
+        configuration.setTwoChannelType(parameters.getQuery().isTwoChannelType());
         return createGeneExpressionPlot(parameters, configuration);
     }
 

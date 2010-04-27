@@ -177,6 +177,7 @@ public class AnalysisServiceTest {
         serviceImpl.setDao(daoStub);
         serviceImpl.setKmPlotService(kmPlotService);
         serviceImpl.setGePlotService(gePlotService);
+        queryManagementServiceForKmPlotStub.setDao(daoStub);
         serviceImpl.setQueryManagementService(queryManagementServiceForKmPlotStub);
         serviceImpl.setFileManager(fileManagerStub);
         service = serviceImpl;

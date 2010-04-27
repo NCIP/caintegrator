@@ -152,7 +152,8 @@ public class ArrayDataServiceStub implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Collection<ArrayData> controlArrayDatas) {
+    public ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Collection<ArrayData> controlArrayDatas,
+            PlatformChannelTypeEnum channelType) {
         getFoldChangeValuesCalled = true;
         return getData(request);
     }
