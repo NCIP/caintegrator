@@ -156,7 +156,7 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
             }
         }
         setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(),
-                LogEntry.getSystemLogSaveImagingSource(getImageSourceConfiguration()));
+                LogEntry.getSystemLogSave(getImageSourceConfiguration()));
         getStudyManagementService().save(getStudyConfiguration());
         return SUCCESS;
     }

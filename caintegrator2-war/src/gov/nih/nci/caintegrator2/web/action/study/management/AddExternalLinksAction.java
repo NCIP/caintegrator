@@ -119,7 +119,7 @@ public class AddExternalLinksAction extends AbstractStudyAction {
             externalLinkList.setFileName(externalLinksFileFileName);
             externalLinkList.setFile(externalLinksFile);
             getStudyManagementService().addExternalLinksToStudy(getStudyConfiguration(), externalLinkList);
-            setStudyLastModifiedByCurrentUser(null, LogEntry.getSystemLogAddExternalLinks(externalLinkList));
+            setStudyLastModifiedByCurrentUser(null, LogEntry.getSystemLogAdd(externalLinkList));
             return SUCCESS;
         } catch (ValidationException e) {
             addActionError("Invalid file: " + e.getResult().getInvalidMessage());

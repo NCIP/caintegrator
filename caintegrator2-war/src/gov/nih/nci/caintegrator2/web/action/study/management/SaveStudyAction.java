@@ -112,7 +112,7 @@ public class SaveStudyAction extends AbstractStudyAction {
                 return createStudy();
             } else {
                 setStudyLastModifiedByCurrentUser(null, 
-                        LogEntry.getSystemLogSaveStudy(getStudyConfiguration().getStudy()));
+                        LogEntry.getSystemLogSave(getStudyConfiguration().getStudy()));
                 getStudyManagementService().save(getStudyConfiguration());
             }
             return SUCCESS;
@@ -127,7 +127,7 @@ public class SaveStudyAction extends AbstractStudyAction {
         getStudyConfiguration().setLastModifiedBy(getWorkspace());
         getStudyManagementService().save(getStudyConfiguration());
         setStudyLastModifiedByCurrentUser(null, 
-                LogEntry.getSystemLogCreateStudy(getStudyConfiguration().getStudy()));
+                LogEntry.getSystemLogCreate(getStudyConfiguration().getStudy()));
         getDisplayableWorkspace().setCurrentStudyConfiguration(getStudyConfiguration());
         getWorkspaceService().saveUserWorkspace(getWorkspace());
         try {

@@ -375,7 +375,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
      */
     public String deleteSurvivalValueDefinition() {
         setStudyLastModifiedByCurrentUser(null, 
-                LogEntry.getSystemLogDeleteSurvivalValueDefinition(survivalValueDefinition));
+                LogEntry.getSystemLogDelete(survivalValueDefinition));
         getStudyManagementService().
             removeSurvivalValueDefinition(getStudy(), getSurvivalValueDefinition());
         this.clear();
@@ -405,7 +405,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
         }
         getStudyManagementService().save(getStudyConfiguration());
         setStudyLastModifiedByCurrentUser(null, 
-                LogEntry.getSystemLogSaveSurvivalValueDefinition(survivalValueDefinition));
+                LogEntry.getSystemLogSave(survivalValueDefinition));
         survivalDefinitionFormValues.clear();
         return SUCCESS;
     }

@@ -118,7 +118,7 @@ public class DeleteExternalLinksAction extends AbstractStudyAction {
             addActionError("Cannot delete External Link List, please supply a valid identifier.");
             return ERROR;
         }
-        setStudyLastModifiedByCurrentUser(null, LogEntry.getSystemLogDeleteExternalLinks(externalLinkList));
+        setStudyLastModifiedByCurrentUser(null, LogEntry.getSystemLogDelete(externalLinkList));
         getStudyManagementService().delete(getStudyConfiguration(), getExternalLinkList());
 
         return SUCCESS;

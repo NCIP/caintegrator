@@ -228,7 +228,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
         }
         getStudyManagementService().daoSave(getImageSourceConfiguration());
         setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(), 
-                LogEntry.getSystemLogSaveImagingSource(getImageSourceConfiguration()));
+                LogEntry.getSystemLogSave(getImageSourceConfiguration()));
         updater.runJob(getImageSourceConfiguration().getId(), newMappingFile, mappingType, mapOnly);
         return SUCCESS;
     }
@@ -284,7 +284,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
                             getImageAnnotationFile(), getImageAnnotationFileFileName(),
                             createNewAnnotationDefinition));
             setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(),
-                    LogEntry.getSystemLogAddImagingSourceAnnotations(getImageSourceConfiguration()));
+                    LogEntry.getSystemLogAdd(getImageSourceConfiguration()));
             getStudyManagementService().save(getStudyConfiguration());
         } catch (ValidationException e) {
             addFieldError("imageAnnotationFile", "Invalid file: " + e.getResult().getInvalidMessage());
@@ -303,7 +303,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
         try {
             getStudyManagementService().loadImageAnnotation(getImageSourceConfiguration());
             setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(),
-                    LogEntry.getSystemLogLoadImagingSourceAnnotations(getImageSourceConfiguration()));
+                    LogEntry.getSystemLogLoad(getImageSourceConfiguration()));
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
             return ERROR;
