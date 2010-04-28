@@ -87,6 +87,9 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFileStub;
+import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
@@ -109,6 +112,7 @@ public class LoadClinicalSourceActionTest extends AbstractSessionBasedTest {
         action = (LoadClinicalSourceAction) context.getBean("loadClinicalSourceAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
+        action.getClinicalSource().setAnnotationFile(createAnnotationFile());
     }
 
     @Test
@@ -136,6 +140,13 @@ public class LoadClinicalSourceActionTest extends AbstractSessionBasedTest {
         action.getStudyConfiguration().getStudy().setShortTitleText("");
         assertEquals(Action.SUCCESS, action.delete());
         assertTrue(studyManagementServiceStub.deleteCalled);
+    }
+    
+    private AnnotationFile createAnnotationFile() {
+        DelimitedTextClinicalSourceConfiguration clinicalConf = new DelimitedTextClinicalSourceConfiguration();
+        AnnotationFileStub annotationFile = new AnnotationFileStub();
+        clinicalConf.setAnnotationFile(annotationFile);
+        return annotationFile;
     }
 
 }

@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import gov.nih.nci.caintegrator2.application.analysis.InvalidSurvivalValueDefinitionException;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
@@ -373,7 +374,8 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
      * @return the Struts result.
      */
     public String deleteSurvivalValueDefinition() {
-        setStudyLastModifiedByCurrentUser(null);
+        setStudyLastModifiedByCurrentUser(null, 
+                LogEntry.getSystemLogDeleteSurvivalValueDefinition(survivalValueDefinition));
         getStudyManagementService().
             removeSurvivalValueDefinition(getStudy(), getSurvivalValueDefinition());
         this.clear();
@@ -402,7 +404,8 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
             getStudy().getSurvivalValueDefinitionCollection().add(survivalValueDefinition);
         }
         getStudyManagementService().save(getStudyConfiguration());
-        setStudyLastModifiedByCurrentUser(null);
+        setStudyLastModifiedByCurrentUser(null, 
+                LogEntry.getSystemLogSaveSurvivalValueDefinition(survivalValueDefinition));
         survivalDefinitionFormValues.clear();
         return SUCCESS;
     }

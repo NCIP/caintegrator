@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
@@ -226,7 +227,8 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             getStudyManagementService().addImageSourceToStudy(getStudyConfiguration(), getImageSourceConfiguration());
         }
         getStudyManagementService().daoSave(getImageSourceConfiguration());
-        setStudyLastModifiedByCurrentUser(getImageSourceConfiguration());
+        setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(), 
+                LogEntry.getSystemLogSaveImagingSource(getImageSourceConfiguration()));
         updater.runJob(getImageSourceConfiguration().getId(), newMappingFile, mappingType, mapOnly);
         return SUCCESS;
     }
@@ -245,7 +247,8 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
      */
     public String delete() {
         try {
-            setStudyLastModifiedByCurrentUser(getImageSourceConfiguration());
+            setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(),
+                    LogEntry.getSystemLogDeleteImagingSource(getImageSourceConfiguration()));
             getStudyManagementService().delete(getStudyConfiguration(), getImageSourceConfiguration());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
@@ -276,11 +279,12 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             return INPUT;
         }
         try {
-            setStudyLastModifiedByCurrentUser(getImageSourceConfiguration());
             getImageSourceConfiguration().setImageAnnotationConfiguration(
                     getStudyManagementService().addImageAnnotationFile(getImageSourceConfiguration(),
                             getImageAnnotationFile(), getImageAnnotationFileFileName(),
                             createNewAnnotationDefinition));
+            setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(),
+                    LogEntry.getSystemLogAddImagingSourceAnnotations(getImageSourceConfiguration()));
             getStudyManagementService().save(getStudyConfiguration());
         } catch (ValidationException e) {
             addFieldError("imageAnnotationFile", "Invalid file: " + e.getResult().getInvalidMessage());
@@ -297,8 +301,9 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
      */
     public String loadImageAnnotations() {
         try {
-            setStudyLastModifiedByCurrentUser(getImageSourceConfiguration());
             getStudyManagementService().loadImageAnnotation(getImageSourceConfiguration());
+            setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(),
+                    LogEntry.getSystemLogLoadImagingSourceAnnotations(getImageSourceConfiguration()));
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
             return ERROR;

@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 
 import java.io.File;
@@ -120,7 +121,8 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
                 getStudyManagementService().addClinicalAnnotationFile(getStudyConfiguration(), getClinicalFile(), 
                         getClinicalFileFileName(), createNewAnnotationDefinition);
             setClinicalSource(clinicalSource);
-            setStudyLastModifiedByCurrentUser(clinicalSource);
+            setStudyLastModifiedByCurrentUser(clinicalSource, 
+                    LogEntry.getSystemLogAddSubjectAnnotationFile(getClinicalFileFileName()));
             return SUCCESS;
         } catch (ValidationException e) {
             addActionError("Invalid file: " + e.getResult().getInvalidMessage());

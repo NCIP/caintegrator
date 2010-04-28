@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
@@ -197,7 +198,8 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
            || !getStudyConfiguration().getGenomicDataSources().contains(getGenomicSource())) {
             return SUCCESS;
         }
-        setStudyLastModifiedByCurrentUser(getGenomicSource());
+        setStudyLastModifiedByCurrentUser(getGenomicSource(), 
+                LogEntry.getSystemLogDeleteGenomicSource(getGenomicSource()));
         getStudyManagementService().delete(getStudyConfiguration(), getGenomicSource());
         return SUCCESS;
     }
@@ -219,7 +221,8 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
                 runAsynchronousGenomicDataRetrieval(newGenomicSource);
             }
         } else {
-            setStudyLastModifiedByCurrentUser(getGenomicSource());
+            setStudyLastModifiedByCurrentUser(getGenomicSource(), 
+                    LogEntry.getSystemLogSaveGenomicSource(getGenomicSource()));
             getStudyManagementService().save(getStudyConfiguration());
         }
         return SUCCESS;
@@ -245,7 +248,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         getDisplayableWorkspace().setCurrentStudyConfiguration(getStudyConfiguration());
         genomicSource.setStatus(Status.PROCESSING);
         getStudyManagementService().addGenomicSourceToStudy(getStudyConfiguration(), genomicSource);
-        setStudyLastModifiedByCurrentUser(genomicSource);
+        setStudyLastModifiedByCurrentUser(genomicSource, LogEntry.getSystemLogLoadGenomicSource(getGenomicSource()));
         updater.runJob(genomicSource.getId());
     }
 

@@ -507,10 +507,11 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @param studyConfiguration that is being modified by the user.
      * @param lastModifiedBy the user to last modify this study.
      * @param timeStampedStudyObject the specific study object that is to be timestamped, if left null it
+     * @param systemLogMessage to add a log to the study configuration with the given message.
      * it will only timestamp the given studyConfiguration.
      */
-    void setStudyLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy, 
-            TimeStampable timeStampedStudyObject);
+    void setStudyLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy,
+            TimeStampable timeStampedStudyObject, String systemLogMessage);
     
     /**
      * Adds the given ExternalLinkList to the StudyConfiguration.

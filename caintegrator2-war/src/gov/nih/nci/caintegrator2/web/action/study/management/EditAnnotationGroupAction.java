@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.file.FileManager;
@@ -206,6 +207,8 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
             annotationGroup.setName(getGroupName());
             getStudyManagementService().saveAnnotationGroup(
                     annotationGroup, getStudyConfiguration(), annotationGroupFile);
+            setStudyLastModifiedByCurrentUser(null, 
+                    LogEntry.getSystemLogSaveAnnotationGroup(annotationGroup));
         } catch (ConnectionException e) {
             addActionError("Error connecting to caDSR: " + e.getMessage());
             return ERROR;
@@ -230,6 +233,8 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
                         annotationGroupNameToGroupMap.get(displayableFieldDescriptor.getAnnotationGroupName()));
             }
         }
+        setStudyLastModifiedByCurrentUser(null, 
+                LogEntry.getSystemLogSaveAnnotationGroup(annotationGroup));
         getStudyManagementService().save(getStudyConfiguration());
         return SUCCESS;
     }
