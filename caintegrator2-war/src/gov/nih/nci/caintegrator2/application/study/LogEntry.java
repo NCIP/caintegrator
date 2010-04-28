@@ -190,7 +190,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param study to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogCreateStudy(Study study) {
+    public static String getSystemLogCreate(Study study) {
         return CREATE_STUDY 
             + NAME + QUOTE + study.getShortTitleText() + QUOTE; 
     }
@@ -200,7 +200,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param study to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogSaveStudy(Study study) {
+    public static String getSystemLogSave(Study study) {
         return SAVE_STUDY 
             + NAME + QUOTE + study.getShortTitleText() + QUOTE; 
     }
@@ -210,7 +210,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param study to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogDeployStudy(Study study) {
+    public static String getSystemLogDeploy(Study study) {
         return DEPLOY_STUDY 
             + NAME + QUOTE + study.getShortTitleText() + QUOTE; 
     }
@@ -260,7 +260,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param externalLinks to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogAddExternalLinks(ExternalLinkList externalLinks) {
+    public static String getSystemLogAdd(ExternalLinkList externalLinks) {
         return ADD_EXTERNAL_LINKS 
             + NAME + QUOTE + externalLinks.getName() + QUOTE + COMMA
             + FILENAME + QUOTE + externalLinks.getFileName() + QUOTE; 
@@ -271,7 +271,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param externalLinks to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogDeleteExternalLinks(ExternalLinkList externalLinks) {
+    public static String getSystemLogDelete(ExternalLinkList externalLinks) {
         return DELETE_EXTERNAL_LINKS 
             + NAME + QUOTE + externalLinks.getName() + QUOTE + COMMA
             + FILENAME + QUOTE + externalLinks.getFileName() + QUOTE; 
@@ -282,7 +282,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param annotationGroup to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogSaveAnnotationGroup(AnnotationGroup annotationGroup) {
+    public static String getSystemLogSave(AnnotationGroup annotationGroup) {
         return SAVE_ANNOTATION_GROUP 
             + NAME + QUOTE + annotationGroup.getName() + QUOTE;
     }
@@ -292,7 +292,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param survivalValueDefinition to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogSaveSurvivalValueDefinition(SurvivalValueDefinition survivalValueDefinition) {
+    public static String getSystemLogSave(SurvivalValueDefinition survivalValueDefinition) {
         return SAVE_SURVIVAL_VALUE_DEFINITION 
             + NAME + QUOTE + survivalValueDefinition.getName() + QUOTE;
     }
@@ -302,7 +302,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param survivalValueDefinition to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogDeleteSurvivalValueDefinition(SurvivalValueDefinition survivalValueDefinition) {
+    public static String getSystemLogDelete(SurvivalValueDefinition survivalValueDefinition) {
         return DELETE_SURVIVAL_VALUE_DEFINITION 
             + NAME + QUOTE + survivalValueDefinition.getName() + QUOTE;
     }
@@ -312,7 +312,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param genomicSource to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogSaveGenomicSource(GenomicDataSourceConfiguration genomicSource) {
+    public static String getSystemLogSave(GenomicDataSourceConfiguration genomicSource) {
         return SAVE_GENOMIC_SOURCE 
             + SERVER_INFORMATION + QUOTE + genomicSource.getServerProfile().toString() + QUOTE + COMMA
             + EXPERIMENT_IDENTIFIER + QUOTE + genomicSource.getExperimentIdentifier() + QUOTE + COMMA
@@ -325,7 +325,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param genomicSource to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogDeleteGenomicSource(GenomicDataSourceConfiguration genomicSource) {
+    public static String getSystemLogDelete(GenomicDataSourceConfiguration genomicSource) {
         return DELETE_GENOMIC_SOURCE 
             + EXPERIMENT_IDENTIFIER + QUOTE + genomicSource.getExperimentIdentifier() + QUOTE;
     }
@@ -361,7 +361,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param genomicSource to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogLoadGenomicSource(GenomicDataSourceConfiguration genomicSource) {
+    public static String getSystemLogLoad(GenomicDataSourceConfiguration genomicSource) {
         return LOAD_GENOMIC_SOURCE 
             + SERVER_INFORMATION + QUOTE + genomicSource.getServerProfile().toString() + QUOTE + COMMA
             + EXPERIMENT_IDENTIFIER + QUOTE + genomicSource.getExperimentIdentifier() + QUOTE + COMMA
@@ -374,7 +374,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param imagingSource to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogSaveImagingSource(ImageDataSourceConfiguration imagingSource) {
+    public static String getSystemLogSave(ImageDataSourceConfiguration imagingSource) {
         return SAVE_IMAGING_SOURCE 
             + SERVER_INFORMATION + QUOTE + imagingSource.getServerProfile().toString() + QUOTE + COMMA
             + COLLECTION_NAME + QUOTE + imagingSource.getCollectionName() + QUOTE;
@@ -395,7 +395,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param imagingSource to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogLoadImagingSourceAnnotations(ImageDataSourceConfiguration imagingSource) {
+    public static String getSystemLogLoad(ImageDataSourceConfiguration imagingSource) {
         return LOAD_IMAGING_SOURCE_ANNOTATIONS 
         + COLLECTION_NAME + QUOTE + imagingSource.getCollectionName() + QUOTE;
     }
@@ -405,7 +405,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param imagingSource to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogAddImagingSourceAnnotations(ImageDataSourceConfiguration imagingSource) {
+    public static String getSystemLogAdd(ImageDataSourceConfiguration imagingSource) {
         return ADD_IMAGING_ANNOTATION_FILE
         + COLLECTION_NAME + QUOTE + imagingSource.getCollectionName() + QUOTE + COMMA
         + FILENAME + QUOTE 

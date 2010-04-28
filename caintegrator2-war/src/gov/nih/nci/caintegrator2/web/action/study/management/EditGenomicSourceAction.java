@@ -199,7 +199,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
             return SUCCESS;
         }
         setStudyLastModifiedByCurrentUser(getGenomicSource(), 
-                LogEntry.getSystemLogDeleteGenomicSource(getGenomicSource()));
+                LogEntry.getSystemLogDelete(getGenomicSource()));
         getStudyManagementService().delete(getStudyConfiguration(), getGenomicSource());
         return SUCCESS;
     }
@@ -222,7 +222,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
             }
         } else {
             setStudyLastModifiedByCurrentUser(getGenomicSource(), 
-                    LogEntry.getSystemLogSaveGenomicSource(getGenomicSource()));
+                    LogEntry.getSystemLogSave(getGenomicSource()));
             getStudyManagementService().save(getStudyConfiguration());
         }
         return SUCCESS;
@@ -248,7 +248,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         getDisplayableWorkspace().setCurrentStudyConfiguration(getStudyConfiguration());
         genomicSource.setStatus(Status.PROCESSING);
         getStudyManagementService().addGenomicSourceToStudy(getStudyConfiguration(), genomicSource);
-        setStudyLastModifiedByCurrentUser(genomicSource, LogEntry.getSystemLogLoadGenomicSource(getGenomicSource()));
+        setStudyLastModifiedByCurrentUser(genomicSource, LogEntry.getSystemLogLoad(getGenomicSource()));
         updater.runJob(genomicSource.getId());
     }
 
