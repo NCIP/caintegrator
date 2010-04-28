@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import java.io.File;
+
 public class AnnotationFileStub extends AnnotationFile {
     
     private static final long serialVersionUID = 1L;
@@ -102,5 +104,22 @@ public class AnnotationFileStub extends AnnotationFile {
     @Override
     boolean hasNextDataLine() throws ValidationException {
         return false;
+    }
+    
+    @Override
+    public File getFile() {
+        return new FileStub();
+    }
+    
+    private class FileStub extends File {
+        
+        public FileStub() {
+            super("");
+        }
+        
+        @Override
+        public String getName() {
+            return "file";
+        }
     }
 }

@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 
@@ -190,7 +191,8 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
             getStudyManagementService().saveDnaAnalysisMappingFile(getGenomicSource(), getMappingFile(), 
                     getMappingFileFileName());
             getStudyManagementService().save(getStudyConfiguration());
-            setStudyLastModifiedByCurrentUser(getGenomicSource());
+            setStudyLastModifiedByCurrentUser(getGenomicSource(), 
+                    LogEntry.getSystemLogSaveGenomicSource(getGenomicSource()));
             return SUCCESS;
         } catch (Exception e) {
             addActionError("An unexpected error has occurred, please report this problem - " + e.getMessage());

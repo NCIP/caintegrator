@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -154,7 +155,8 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
                         annotationGroupNameToGroupMap.get(displayableFieldDescriptor.getAnnotationGroupName()));
             }
         }
-        setStudyLastModifiedByCurrentUser(getImageSourceConfiguration());
+        setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(),
+                LogEntry.getSystemLogSaveImagingSource(getImageSourceConfiguration()));
         getStudyManagementService().save(getStudyConfiguration());
         return SUCCESS;
     }

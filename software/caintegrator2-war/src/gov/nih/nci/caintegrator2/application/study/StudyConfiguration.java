@@ -115,7 +115,7 @@ import org.apache.commons.lang.xwork.StringUtils;
 /**
  * Holds data about the sources of study data and authorization for access to data.
  */
-@SuppressWarnings({"PMD.ExcessiveClassLength", "PMD.TooManyFields" })
+@SuppressWarnings({"PMD.ExcessiveClassLength", "PMD.TooManyFields", "PMD.AvoidDuplicateLiterals" })
 public class StudyConfiguration extends AbstractCaIntegrator2StudyObject implements TimeStampable {
     
     private static final long serialVersionUID = 1L;
@@ -128,6 +128,8 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
     private List<GenomicDataSourceConfiguration> genomicDataSources = new ArrayList<GenomicDataSourceConfiguration>();
     private List<ImageDataSourceConfiguration> imageDataSources = new ArrayList<ImageDataSourceConfiguration>();
     private List<ExternalLinkList> externalLinkLists = new ArrayList<ExternalLinkList>();
+    private List<LogEntry> logEntries = new ArrayList<LogEntry>();
+    
     private StudyLogo studyLogo;
     private UserWorkspace userWorkspace;
     private UserWorkspace lastModifiedBy;
@@ -689,5 +691,20 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
             }
         }
         return null;
+    }
+
+    /**
+     * @return the logEntries
+     */
+    public List<LogEntry> getLogEntries() {
+        return logEntries;
+    }
+
+    /**
+     * @param logEntries the logEntries to set
+     */
+    @SuppressWarnings("unused")
+    private void setLogEntries(List<LogEntry> logEntries) {
+        this.logEntries = logEntries;
     }
 }

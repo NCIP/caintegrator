@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentService;
 import gov.nih.nci.caintegrator2.web.ajax.IStudyDeploymentAjaxUpdater;
 
@@ -102,7 +103,7 @@ public class DeployStudyAction extends SaveStudyAction {
      */
     @Override
     public String execute() {
-        setStudyLastModifiedByCurrentUser(null);
+        setStudyLastModifiedByCurrentUser(null, LogEntry.getSystemLogDeployStudy(getStudyConfiguration().getStudy()));
         getDeploymentService().prepareForDeployment(getStudyConfiguration(), null);
         ajaxUpdater.runJob(getStudyConfiguration());
         return SUCCESS;

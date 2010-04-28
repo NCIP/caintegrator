@@ -59,6 +59,13 @@
             <one-to-many class="ExternalLinkList"/>
         </list>
         
+        <list name="logEntries" lazy="false" cascade="all-delete-orphan">
+            <cache usage="read-write" />
+            <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
+            <list-index column="LIST_INDEX"/>
+            <one-to-many class="LogEntry"/>
+        </list>
+        
         <set name="listCollection" lazy="true" cascade="all" inverse="true">
             <cache usage="read-write" />
             <key column="STUDY_CONFIGURATION_ID" />

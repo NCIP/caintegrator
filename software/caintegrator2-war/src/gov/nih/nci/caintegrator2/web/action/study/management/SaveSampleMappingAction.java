@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 
 import java.io.File;
@@ -142,7 +143,9 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
             try {
                 getStudyManagementService().addControlSampleSet(getGenomicSource(),
                         getControlSampleSetName(), getControlSampleFile(), getControlSampleFileFileName());
-                setStudyLastModifiedByCurrentUser(getGenomicSource());
+                setStudyLastModifiedByCurrentUser(getGenomicSource(),
+                        LogEntry.getSystemLogAddControlSampleMappingFile(getGenomicSource(),
+                                getControlSampleFileFileName()));
                 return SUCCESS;
             } catch (ValidationException e) {
                 setControlMappingFieldError("Invalid file: " + e.getResult().getInvalidMessage());
@@ -162,7 +165,9 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
                 getStudyManagementService().mapSamples(getStudyConfiguration(), getSampleMappingFile(), 
                         getGenomicSource());
                 persistFileName();
-                setStudyLastModifiedByCurrentUser(getGenomicSource());
+                setStudyLastModifiedByCurrentUser(getGenomicSource(),
+                        LogEntry.getSystemLogAddSampleMappingFile(getGenomicSource(),
+                                getSampleMappingFileFileName()));
                 return SUCCESS;
             } catch (ValidationException e) {
                 setSampleMappingFieldError("Invalid file: " + e.getResult().getInvalidMessage());

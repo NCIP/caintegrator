@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.ExternalLinkList;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -117,7 +118,7 @@ public class DeleteExternalLinksAction extends AbstractStudyAction {
             addActionError("Cannot delete External Link List, please supply a valid identifier.");
             return ERROR;
         }
-        setStudyLastModifiedByCurrentUser(null);
+        setStudyLastModifiedByCurrentUser(null, LogEntry.getSystemLogDeleteExternalLinks(externalLinkList));
         getStudyManagementService().delete(getStudyConfiguration(), getExternalLinkList());
 
         return SUCCESS;

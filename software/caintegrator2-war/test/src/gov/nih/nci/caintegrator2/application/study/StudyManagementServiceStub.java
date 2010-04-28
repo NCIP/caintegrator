@@ -314,7 +314,9 @@ public class StudyManagementServiceStub implements StudyManagementService {
             throw new IOException();
         }
         addImageAnnotationFileCalled = true;
-        return new ImageAnnotationConfiguration();
+        ImageAnnotationConfiguration imageAnnotationConfiguration = new ImageAnnotationConfiguration();
+        imageAnnotationConfiguration.setAnnotationFile(new AnnotationFileStub());
+        return imageAnnotationConfiguration;
     }
 
     public void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
@@ -492,7 +494,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         
     }
 
-    public void setStudyLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy, TimeStampable object) {
+    public void setStudyLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy, TimeStampable object, String systemLogMessage) {
         
     }
 
