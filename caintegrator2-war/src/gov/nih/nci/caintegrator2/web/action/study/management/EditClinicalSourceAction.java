@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -150,7 +151,8 @@ public class EditClinicalSourceAction extends AbstractClinicalSourceAction {
                         annotationGroupNameToGroupMap.get(displayableFieldDescriptor.getAnnotationGroupName()));
             }
         }
-        setStudyLastModifiedByCurrentUser(getClinicalSource());
+        setStudyLastModifiedByCurrentUser(getClinicalSource(), LogEntry.getSystemLogSaveSubjectAnnotationSource(
+                getClinicalSource().getAnnotationFile().getFile().getName()));
         getStudyManagementService().save(getStudyConfiguration());
         return SUCCESS;
     }

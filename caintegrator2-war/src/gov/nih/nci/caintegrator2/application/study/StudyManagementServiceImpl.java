@@ -134,6 +134,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.springframework.transaction.annotation.Propagation;
@@ -1061,13 +1062,20 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     * {@inheritDoc}
     */
     public void setStudyLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy,
-            TimeStampable timeStampedStudyObject) {
+            TimeStampable timeStampedStudyObject, String systemLogMessage) {
         Date lastModifiedDate = new Date();
         studyConfiguration.setLastModifiedBy(lastModifiedBy);
         studyConfiguration.setLastModifiedDate(lastModifiedDate);
         if (timeStampedStudyObject != null) {
             timeStampedStudyObject.setLastModifiedDate(lastModifiedDate);
             daoSave(timeStampedStudyObject);
+        }
+        if (!StringUtils.isBlank(systemLogMessage)) {
+            LogEntry logEntry = new LogEntry();
+            logEntry.setUsername(lastModifiedBy == null ? null : lastModifiedBy.getUsername());
+            logEntry.setLogDate(lastModifiedDate);
+            logEntry.setSystemLogMessage(systemLogMessage);
+            studyConfiguration.getLogEntries().add(logEntry);
         }
         daoSave(studyConfiguration);
     }

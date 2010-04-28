@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 
@@ -101,8 +102,10 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
     @Override
     public String execute() {
         try {
-            setStudyLastModifiedByCurrentUser(getClinicalSource());
             getStudyManagementService().loadClinicalAnnotation(getStudyConfiguration(), getClinicalSource());
+            setStudyLastModifiedByCurrentUser(getClinicalSource(), 
+                    LogEntry.getSystemLogLoadSubjectAnnotationFile(
+                            getClinicalSource().getAnnotationFile().getFile().getName()));
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
             return ERROR;
@@ -116,8 +119,10 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
      */
     public String reLoad() {
         try {
-            setStudyLastModifiedByCurrentUser(getClinicalSource());
             getStudyManagementService().reLoadClinicalAnnotation(getStudyConfiguration());
+            setStudyLastModifiedByCurrentUser(getClinicalSource(), 
+                    LogEntry.getSystemLogLoadSubjectAnnotationFile(
+                            getClinicalSource().getAnnotationFile().getFile().getName()));
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
             return ERROR;
@@ -131,8 +136,10 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
      */
     public String delete() {
         try {
-            setStudyLastModifiedByCurrentUser(getClinicalSource());
             getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
+            setStudyLastModifiedByCurrentUser(getClinicalSource(),
+                    LogEntry.getSystemLogDeleteSubjectAnnotationFile(
+                            getClinicalSource().getAnnotationFile().getFile().getName()));
             getStudyManagementService().delete(getStudyConfiguration(), getClinicalSource());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());

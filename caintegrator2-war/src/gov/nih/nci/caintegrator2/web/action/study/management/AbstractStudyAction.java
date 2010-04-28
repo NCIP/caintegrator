@@ -161,10 +161,12 @@ implements ModelDriven<StudyConfiguration> {
      * objects.
      * @param timeStampedStudyObject optional object, if non-null it will save the lastModifiedDate of this object
      * as the current time.
+     * @param systemLogEntry optional object, if non-null will add a log entry to the study configuration with the
+     * system log given.
      */
-    protected void setStudyLastModifiedByCurrentUser(TimeStampable timeStampedStudyObject) {
+    protected void setStudyLastModifiedByCurrentUser(TimeStampable timeStampedStudyObject, String systemLogEntry) {
         getStudyManagementService().setStudyLastModifiedByCurrentUser(getStudyConfiguration(), getWorkspace(),
-                timeStampedStudyObject);
+                timeStampedStudyObject, systemLogEntry);
     }
     
     /**

@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.ExternalLinkList;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.logging.api.util.StringUtils;
 
@@ -118,7 +119,7 @@ public class AddExternalLinksAction extends AbstractStudyAction {
             externalLinkList.setFileName(externalLinksFileFileName);
             externalLinkList.setFile(externalLinksFile);
             getStudyManagementService().addExternalLinksToStudy(getStudyConfiguration(), externalLinkList);
-            setStudyLastModifiedByCurrentUser(null);
+            setStudyLastModifiedByCurrentUser(null, LogEntry.getSystemLogAddExternalLinks(externalLinkList));
             return SUCCESS;
         } catch (ValidationException e) {
             addActionError("Invalid file: " + e.getResult().getInvalidMessage());

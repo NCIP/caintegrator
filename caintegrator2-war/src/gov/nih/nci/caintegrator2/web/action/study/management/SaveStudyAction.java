@@ -85,10 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.security.exceptions.CSException;
-
-import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -112,7 +111,8 @@ public class SaveStudyAction extends AbstractStudyAction {
             if (getStudyConfiguration().getId() == null) {
                 return createStudy();
             } else {
-                setStudyLastModifiedByCurrentUser(null);
+                setStudyLastModifiedByCurrentUser(null, 
+                        LogEntry.getSystemLogSaveStudy(getStudyConfiguration().getStudy()));
                 getStudyManagementService().save(getStudyConfiguration());
             }
             return SUCCESS;
@@ -125,8 +125,9 @@ public class SaveStudyAction extends AbstractStudyAction {
     private String createStudy() {
         getStudyConfiguration().setUserWorkspace(getWorkspace());
         getStudyConfiguration().setLastModifiedBy(getWorkspace());
-        getStudyConfiguration().setLastModifiedDate(new Date());
         getStudyManagementService().save(getStudyConfiguration());
+        setStudyLastModifiedByCurrentUser(null, 
+                LogEntry.getSystemLogCreateStudy(getStudyConfiguration().getStudy()));
         getDisplayableWorkspace().setCurrentStudyConfiguration(getStudyConfiguration());
         getWorkspaceService().saveUserWorkspace(getWorkspace());
         try {

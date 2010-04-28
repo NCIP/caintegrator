@@ -850,6 +850,35 @@ public class StudyManagementServiceTest {
         
     }
     
+    @Test
+    public void testSetStudyLastModifiedByCurrentUser() {
+        UserWorkspace lastModifiedBy = new UserWorkspace();
+        Query query = new Query();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        
+        studyManagementService.setStudyLastModifiedByCurrentUser(studyConfiguration, lastModifiedBy, null, null);
+        assertTrue(studyConfiguration.getLogEntries().isEmpty());
+        assertTrue(studyConfiguration.getLastModifiedDate() != null);
+        
+        studyManagementService.setStudyLastModifiedByCurrentUser(studyConfiguration, lastModifiedBy, query, null);
+        assertEquals(studyConfiguration.getLastModifiedDate(), query.getLastModifiedDate());
+        assertTrue(studyConfiguration.getLogEntries().isEmpty());
+        
+        studyManagementService.setStudyLastModifiedByCurrentUser(studyConfiguration, lastModifiedBy, query, "Log Message1");
+        assertEquals("Log Message1", studyConfiguration.getLogEntries().get(0).getSystemLogMessage());
+        assertTrue(studyConfiguration.getLogEntries().get(0).getUsername() == null);
+        
+        lastModifiedBy.setUsername("username");
+        studyManagementService.setStudyLastModifiedByCurrentUser(studyConfiguration, lastModifiedBy, query, "Log Message2");
+        assertEquals("Log Message1", studyConfiguration.getLogEntries().get(0).getSystemLogMessage());
+        assertEquals("Log Message2", studyConfiguration.getLogEntries().get(1).getSystemLogMessage());
+        assertEquals("username", studyConfiguration.getLogEntries().get(1).getUsername());
+        
+        
+        
+        
+    }
+    
     private static class SecureDaoStub extends CaIntegrator2DaoStub {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         StringComparisonCriterion stringCriterion = new StringComparisonCriterion();

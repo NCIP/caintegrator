@@ -336,4 +336,8 @@
         <comment>Adds LAST_MODIFIED_DATE to TimeStampable object tables</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.31.sql"/>
     </changeSet>
+    <changeSet id="1.1.32" author="tandrews">
+        <comment>Adds LOG_ENTRY table</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.32.sql"/>
+    </changeSet>
 </databaseChangeLog>
