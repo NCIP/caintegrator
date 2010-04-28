@@ -103,7 +103,7 @@ public class DeployStudyAction extends SaveStudyAction {
      */
     @Override
     public String execute() {
-        setStudyLastModifiedByCurrentUser(null, LogEntry.getSystemLogDeployStudy(getStudyConfiguration().getStudy()));
+        setStudyLastModifiedByCurrentUser(null, LogEntry.getSystemLogDeploy(getStudyConfiguration().getStudy()));
         getDeploymentService().prepareForDeployment(getStudyConfiguration(), null);
         ajaxUpdater.runJob(getStudyConfiguration());
         return SUCCESS;

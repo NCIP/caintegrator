@@ -208,7 +208,7 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
             getStudyManagementService().saveAnnotationGroup(
                     annotationGroup, getStudyConfiguration(), annotationGroupFile);
             setStudyLastModifiedByCurrentUser(null, 
-                    LogEntry.getSystemLogSaveAnnotationGroup(annotationGroup));
+                    LogEntry.getSystemLogSave(annotationGroup));
         } catch (ConnectionException e) {
             addActionError("Error connecting to caDSR: " + e.getMessage());
             return ERROR;
@@ -234,7 +234,7 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
             }
         }
         setStudyLastModifiedByCurrentUser(null, 
-                LogEntry.getSystemLogSaveAnnotationGroup(annotationGroup));
+                LogEntry.getSystemLogSave(annotationGroup));
         getStudyManagementService().save(getStudyConfiguration());
         return SUCCESS;
     }
