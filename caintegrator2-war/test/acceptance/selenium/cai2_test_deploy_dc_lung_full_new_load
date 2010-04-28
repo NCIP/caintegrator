@@ -1,0 +1,287 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://caintegrator2-dev.nci.nih.gov/" />
+<title>Manage Studies - Load DC Lung Full</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Manage Studies - Load DC Lung Full</td></tr>
+</thead><tbody>
+<tr>
+	<td>setTimeout</td>
+	<td>3600000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>var date = new Date(); var month = date.getMonth() + 1; if(month &lt; 10){month = '0' + month;} var day = date.getDate(); if(day &lt; 10){day = '0' + day;} displaytime = month + '/' + day + '/0' + (date.getYear() - 100); var hour = date.getHours(); if(hour &lt; 10){ hour = '0' + hour; } var min = date.getMinutes(); if(min &lt; 10){ min = '0' + min; } var sec = date.getSeconds(); if(sec &lt; 10){ sec = '0' + sec; } displaytime += ' ' + hour + ':' + min + ':' + sec; displaytime;</td>
+	<td>dateAndTime</td>
+</tr>
+<tr>
+	<td>store</td>
+    <td>${selenium.test.resources.dir}</td>
+	<td>testResourcesDirectory</td>
+</tr>
+<tr>
+	<td>store</td>
+    <td>DC Lung Full</td>
+	<td>Cai2StudyName</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>Demo Study based on ${Cai2StudyName} data.</td>
+	<td>Cai2StudyNameLong</td>
+</tr>
+<!--// begin Check that the genomic platform has been loaded-->
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//*[@id=&quot;platformDeploymentJobStatusTable&quot;]//td//span[text()='HG-U133A']</td>
+	<td>true</td>
+</tr>
+<!--// end Check that genomic platform has been loaded-->
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Create New Study</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>nameId</td>
+	<td>${Cai2StudyNameLong}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>studyDeploymentForm_studyConfiguration_study_longTitleText</td>
+	<td>${Cai2StudyName}.&nbsp;&nbsp;Study created via selenium.</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>studyDeploymentForm_saveStudy</td>
+	<td></td>
+</tr>
+<!--// add logo-->
+<tr>
+	<td>type</td>
+	<td>addStudyLogo_studyLogoFile</td>
+	<td>${testResourcesDirectory}dc_lung.jpg</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addStudyLogo_addStudyLogo</td>
+	<td></td>
+</tr>
+<!--// add clinical data-->
+<tr>
+	<td>click</td>
+	<td>//a[@id='addClinicalFile_clinicalFile']/span/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>clinicalFile</td>
+	<td>${testResourcesDirectory}dc_lung_clinical_data_public.csv</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='addClinicalFile_createNewAnnotationDefinition']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addClinicalFile_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='button' and @onclick='document.subjectAnnotationsForm.submit();']</td>
+	<td></td>
+</tr>
+<!--//begin create identifier-->
+<tr>
+	<td>clickAndWait</td>
+	<td>//a//span[contains(text(),'Edit Annotations')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(text(),'Change Assignment')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>fieldDescriptorType</td>
+	<td>label=Identifier</td>
+</tr>
+<tr>
+	<td>getConfirmation</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>chooseOkOnNextConfirmationAndWait</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>action:updateClinicalAnnotationDefinition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='button' and @onclick='document.subjectAnnotationsForm.submit();']</td>
+	<td></td>
+</tr>
+<!--//begin create karnofsky-->
+<!--// begin Load Clinical-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//a//span[text()='Load Subject Annotation Source']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a//span[text()='Load Subject Annotation Source']</td>
+	<td></td>
+</tr>
+<!--// begin add genomic-->
+<tr>
+	<td>open</td>
+	<td>/caintegrator2/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Studies</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//*[@id=&quot;studyDeploymentJobStatusTable&quot;]//span[text()='${Cai2StudyNameLong}']/parent::td/parent::tr//a[text()='Edit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//*[@id=&quot;studyDeploymentJobStatusTable&quot;]//span[text()='${Cai2StudyNameLong}']/parent::td/parent::tr//a[text()='Edit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>caArrayHost</td>
+	<td>array-stage.nci.nih.gov</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>caArrayPort</td>
+	<td>8080</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>experimentId</td>
+	<td>jacob-00182</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>caArrayUsername</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>caArrayPassword</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>platformVendor</td>
+	<td>label=Affymetrix</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>dataType</td>
+	<td>label=Expression</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>platformName</td>
+	<td>label=HG-U133A</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='button' and @onclick='saveGenomicSource()']</td>
+	<td></td>
+</tr>
+<!--// map genomic samples-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>link=Map Samples</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Map Samples</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>sampleMappingFile</td>
+    <td>${selenium.test.resources.dir}DCLungStudy_full_array_mapping_load_qa.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[contains(text(),'Map Samples')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>link=Map Samples</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Map Samples</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>controlSampleSetName</td>
+	<td>Control Set 1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>controlSampleFile</td>
+    <td>${selenium.test.resources.dir}DCLungStudy_full_control_samples_load.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[contains(text(),'Map Samples')]</td>
+	<td></td>
+</tr>
+<!--// end map samples-->
+<!--// begin Save and Deploy-->
+<tr>
+	<td>clickAndWait</td>
+	<td>deployButton</td>
+	<td></td>
+</tr>
+<!--// scratch-->
+
+</tbody></table>
+</body>
+</html>
