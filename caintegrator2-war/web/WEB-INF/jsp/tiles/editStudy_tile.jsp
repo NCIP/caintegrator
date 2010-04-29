@@ -119,6 +119,25 @@
                                 <s:property value="studyConfiguration.displayableLastModifiedDate"/>
                             </td>
                         </tr>
+                        <s:if test="%{studyConfiguration.id != null}">
+                                <s:url id="viewStudyLog" action="editStudyLog" includeParams="none">
+                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                                    <s:param name="readOnly" value="true" />
+                                </s:url>
+                                <s:url id="editStudyLog" action="editStudyLog" includeParams="none">
+                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                                    <s:param name="readOnly" value="false" />
+                                </s:url>
+                            <tr>
+                                <td class="tdLabel" align="right">
+	                                <label class="label">Study Log:</label>
+	                            </td>
+	                            <td>
+	                               <s:a href="%{viewStudyLog}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="search">View Log</span></span></s:a> 
+	                               <s:a href="%{editStudyLog}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Log</span></span></s:a>
+	                            </td>
+	                        </tr>
+                        </s:if>
                         <s:submit action="saveStudy" value="Save" cssStyle="display:none;"/>
                         <s:if test="%{studyConfiguration.id != null}">
                             <s:if test="%{studyConfiguration.deployable}">

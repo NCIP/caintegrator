@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -131,7 +132,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
     private static final String DELETE_IMAGING_SOURCE = "Delete Imaging Source: ";
     
     
-    private Date logDate;
+    private Date logDate = new Date();
     private String systemLogMessage;
     private String description;
     private String username;
@@ -183,6 +184,14 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      */
     public void setUsername(String username) {
         this.username = username;
+    }
+    
+    /**
+     * 
+     * @return displayableLogDate.
+     */
+    public String getDisplayableLogDate() {
+        return DateUtil.getDisplayableTimeStamp(logDate); 
     }
     
     /**

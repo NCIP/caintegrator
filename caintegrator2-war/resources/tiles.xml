@@ -68,6 +68,11 @@
         <put-attribute name="subTitle" value="Edit Study" />
     </definition>
     
+    <definition name="editStudyLog" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editStudyLog_tile.jsp" />
+        <put-attribute name="subTitle" value="View/Edit Study Log" />
+    </definition>
+    
     <definition name="editAnnotationGroup" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editAnnotationGroup_tile.jsp" />
         <put-attribute name="subTitle" value="Edit Annotation Group" />
@@ -144,6 +149,11 @@
     <definition name="viewDataDictionary" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/viewDataDictionary_tile.jsp" />
         <put-attribute name="subTitle" value="View Data Dictionary" />
+    </definition>
+    
+    <definition name="viewStudyLog" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/viewStudyLog_tile.jsp" />
+        <put-attribute name="subTitle" value="View Study Log" />
     </definition>
 
     <definition name="editSampleMapping" extends="cssBaseDef">

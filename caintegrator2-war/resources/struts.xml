@@ -41,7 +41,7 @@
                         all parameters that contain only numbers (kmPlot page has this)
                      -->
                      <param name="excludeParams">
-                        dojo\..*,^struts\..*,_.*,d-\d+?-[sop],^\d+$
+                        dojo\..*,^struts\..*,_.*,d-\d+?-[sope],^\d+$
                      </param>
                  </interceptor-ref>
                 <interceptor-ref name="servletConfig"/>
@@ -64,7 +64,7 @@
                         all parameters that contain only numbers (kmPlot page has this)
                      -->
                      <param name="excludeParams">
-                        dojo\..*,^struts\..*,_.*,d-\d+?-[sop],^\d+$
+                        dojo\..*,^struts\..*,_.*,d-\d+?-[sope],^\d+$
                      </param>
                  </interceptor-ref>
                 <interceptor-ref name="conversionError"/>
@@ -161,7 +161,31 @@
             </result>
             <result name="input" type="tiles">editStudy</result>
         </action>
-   
+        
+        <action name="editStudyLog" class="editStudyLogAction">
+            <result type="tiles">editStudyLog</result>
+        </action>
+        
+        <action name="saveStudyLog" method="save" class="editStudyLogAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
+        
+        <action name="cancelStudyLog" class="editStudyLogAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
+        
+        
+        <action name="viewStudyLog" class="viewStudyLogAction">
+            <result type="tiles">viewStudyLog</result>
+            <result name="error" type="tiles">unauthorized</result>
+        </action>
+       
         <action name="addStudyLogo" class="addStudyLogoAction">
         
              <interceptor-ref name="paramsPrepareParamsStack">
