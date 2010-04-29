@@ -83,50 +83,85 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 
-import java.util.HashMap;
-
-import org.acegisecurity.context.SecurityContextHolder;
-
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.config.Configuration;
-import com.opensymphony.xwork2.config.ConfigurationManager;
-import com.opensymphony.xwork2.config.providers.XWorkConfigurationProvider;
-import com.opensymphony.xwork2.inject.Container;
-import com.opensymphony.xwork2.util.ValueStack;
-import com.opensymphony.xwork2.util.ValueStackFactory;
-
-public abstract class AbstractSessionBasedTest {
+/**
+ * 
+ */
+public class DisplayableLogEntry implements Comparable<DisplayableLogEntry> {
     
-    private AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
-        
-    public void setUp() {
-        authentication = new AcegiAuthenticationStub();
-        authentication.setUsername("user");
-        ConfigurationManager configurationManager = new ConfigurationManager();
-        configurationManager.addContainerProvider(new XWorkConfigurationProvider());
-        Configuration config = configurationManager.getConfiguration();
-        Container container = config.getContainer();
-
-        ValueStack stack = container.getInstance(ValueStackFactory.class).createValueStack();
-        stack.getContext().put(ActionContext.CONTAINER, container);
-        ActionContext.setContext(new ActionContext(stack.getContext()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-        
+    private LogEntry logEntry = new LogEntry();
+    private String description;
+    private boolean updateDescription = false;
+    
+    /**
+     * Default constructor.
+     */
+    public DisplayableLogEntry() { 
+        // Empty Constructor
     }
     
-    protected void setUserAnonymous() {
-        authentication.setUsername(UserWorkspace.ANONYMOUS_USER_NAME);
+    /**
+     * Constructor for logEntry.
+     * @param logEntry used to construct this object.
+     */
+    public DisplayableLogEntry(LogEntry logEntry) {
+        this.logEntry = logEntry;
+        description = logEntry.getDescription();
+    }
+
+    /**
+     * @return the logEntry
+     */
+    public LogEntry getLogEntry() {
+        return logEntry;
+    }
+
+    /**
+     * @param logEntry the logEntry to set
+     */
+    public void setLogEntry(LogEntry logEntry) {
+        this.logEntry = logEntry;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @return the updateDescription
+     */
+    public boolean isUpdateDescription() {
+        return updateDescription;
+    }
+
+    /**
+     * @param updateDescription the updateDescription to set
+     */
+    public void setUpdateDescription(boolean updateDescription) {
+        this.updateDescription = updateDescription;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(DisplayableLogEntry o) {
+        // More recent dates are sorted ahead of older dates.
+        return o.getLogEntry().getLogDate().compareTo(getLogEntry().getLogDate());
     }
     
-    protected void setUsername(String username) {
-        authentication.setUsername(username);
-    }
+
 
 }
