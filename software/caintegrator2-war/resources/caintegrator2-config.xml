@@ -119,6 +119,17 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
+    
+    <bean id="editStudyLogAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditStudyLogAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
 
     <bean id="addClinicalFileAction"
         scope="prototype"
@@ -164,6 +175,14 @@
     <bean id="viewDataDictionaryAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.ViewDataDictionaryAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
+    
+    <bean id="viewStudyLogAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.ViewStudyLogAction">
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>

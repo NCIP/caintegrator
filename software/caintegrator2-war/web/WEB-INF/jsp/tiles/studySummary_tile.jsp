@@ -52,7 +52,18 @@
             </td>
             <td />  
             <td />
-        </tr>    
+        </tr>
+        <s:if test="%{!anonymousUser}">
+        <tr>
+            <td align="right">Study Log: </td>
+            <td>
+                <s:url id="viewStudyLogUrl" includeParams="none" action="viewStudyLog" />
+                <a href="${viewStudyLogUrl}">View</a>
+            </td>
+            <td />  
+            <td />
+        </tr>
+        </s:if>    
         <tr>
             <th colspan="4">Subject Annotation Data</th>
         </tr>

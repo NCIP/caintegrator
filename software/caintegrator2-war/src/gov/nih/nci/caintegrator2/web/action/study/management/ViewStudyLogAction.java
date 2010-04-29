@@ -83,50 +83,65 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
+import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import org.acegisecurity.context.SecurityContextHolder;
+import org.apache.commons.lang.StringUtils;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.config.Configuration;
-import com.opensymphony.xwork2.config.ConfigurationManager;
-import com.opensymphony.xwork2.config.providers.XWorkConfigurationProvider;
-import com.opensymphony.xwork2.inject.Container;
-import com.opensymphony.xwork2.util.ValueStack;
-import com.opensymphony.xwork2.util.ValueStackFactory;
 
-public abstract class AbstractSessionBasedTest {
+/**
+ * 
+ */
+public class ViewStudyLogAction extends AbstractDeployedStudyAction {
     
-    private AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
-        
-    public void setUp() {
-        authentication = new AcegiAuthenticationStub();
-        authentication.setUsername("user");
-        ConfigurationManager configurationManager = new ConfigurationManager();
-        configurationManager.addContainerProvider(new XWorkConfigurationProvider());
-        Configuration config = configurationManager.getConfiguration();
-        Container container = config.getContainer();
-
-        ValueStack stack = container.getInstance(ValueStackFactory.class).createValueStack();
-        stack.getContext().put(ActionContext.CONTAINER, container);
-        ActionContext.setContext(new ActionContext(stack.getContext()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-        
+    private static final long serialVersionUID = 1L;
+    private List<DisplayableLogEntry> displayableLogEntries = new ArrayList<DisplayableLogEntry>();
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepare() {
+        super.prepare();
+        displayableLogEntries.clear();
+        if (getStudy() != null) {
+            for (LogEntry logEntry : getStudy().getStudyConfiguration().getLogEntries()) {
+                if (StringUtils.isNotBlank(logEntry.getDescription())) {
+                    displayableLogEntries.add(new DisplayableLogEntry(
+                    getWorkspaceService().getRefreshedEntity(logEntry)));
+                }
+            }
+        }
+        Collections.sort(displayableLogEntries);
     }
     
-    protected void setUserAnonymous() {
-        authentication.setUsername(UserWorkspace.ANONYMOUS_USER_NAME);
-    }
-    
-    protected void setUsername(String username) {
-        authentication.setUsername(username);
+    /**
+     * {@inheritDoc}
+     */
+    public String execute() {
+        if (isAnonymousUser()) {
+            return ERROR;
+        }
+        return SUCCESS;
     }
 
+    /**
+     * @return the displayableLogEntries
+     */
+    public List<DisplayableLogEntry> getDisplayableLogEntries() {
+        return displayableLogEntries;
+    }
+
+    /**
+     * @param displayableLogEntries the displayableLogEntries to set
+     */
+    public void setDisplayableLogEntries(List<DisplayableLogEntry> displayableLogEntries) {
+        this.displayableLogEntries = displayableLogEntries;
+    }
 }

@@ -83,50 +83,83 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import java.util.HashMap;
+import java.util.Date;
 
-import org.acegisecurity.context.SecurityContextHolder;
+import org.junit.Before;
+import org.junit.Test;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.config.Configuration;
-import com.opensymphony.xwork2.config.ConfigurationManager;
-import com.opensymphony.xwork2.config.providers.XWorkConfigurationProvider;
-import com.opensymphony.xwork2.inject.Container;
-import com.opensymphony.xwork2.util.ValueStack;
-import com.opensymphony.xwork2.util.ValueStackFactory;
+import com.opensymphony.xwork2.Action;
 
-public abstract class AbstractSessionBasedTest {
-    
-    private AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
-        
+/**
+ * 
+ */
+public class EditStudyLogActionTest extends AbstractSessionBasedTest {
+
+    private EditStudyLogAction action = new EditStudyLogAction();
+    private StudyManagementServiceStub studyManagementService;
+    private LogEntry logEntry1;
+    private LogEntry logEntry2;
+
+    @Before
     public void setUp() {
-        authentication = new AcegiAuthenticationStub();
-        authentication.setUsername("user");
-        ConfigurationManager configurationManager = new ConfigurationManager();
-        configurationManager.addContainerProvider(new XWorkConfigurationProvider());
-        Configuration config = configurationManager.getConfiguration();
-        Container container = config.getContainer();
+        super.setUp();
 
-        ValueStack stack = container.getInstance(ValueStackFactory.class).createValueStack();
-        stack.getContext().put(ActionContext.CONTAINER, container);
-        ActionContext.setContext(new ActionContext(stack.getContext()));
+        action.setStudyConfiguration(new StudyConfiguration());
+        action = new EditStudyLogAction();
+        studyManagementService = new StudyManagementServiceStub();
+        action.setStudyManagementService(studyManagementService);
+        action.setWorkspaceService(new WorkspaceServiceStub());
+        logEntry1 = new LogEntry();
+        logEntry1.setSystemLogMessage("message");
+        logEntry1.setLogDate(new Date());
+        logEntry1.setDescription("desc");
+        try {
+            Thread.sleep(20l);
+        } catch (InterruptedException e) {
+        }
+        logEntry2 = new LogEntry();
+        logEntry2.setSystemLogMessage("message2");
+        logEntry2.setLogDate(new Date());
+        logEntry2.setDescription("desc");
+        action.getStudyConfiguration().getLogEntries().add(logEntry1);
+        action.getStudyConfiguration().getLogEntries().add(logEntry2);
+    }
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
+    @Test
+    public void testPrepare() throws InterruptedException {
         
+        action.prepare();
+        // Verify the most recent ones are sorted first.
+        assertEquals(logEntry2, action.getDisplayableLogEntries().get(0).getLogEntry());
+        assertEquals(logEntry1, action.getDisplayableLogEntries().get(1).getLogEntry());
+        assertTrue(studyManagementService.getRefreshedStudyEntityCalled);
     }
-    
-    protected void setUserAnonymous() {
-        authentication.setUsername(UserWorkspace.ANONYMOUS_USER_NAME);
-    }
-    
-    protected void setUsername(String username) {
-        authentication.setUsername(username);
+
+    @Test
+    public void testSave() {
+        action.prepare();
+        // logEntry2 is first
+        action.getDisplayableLogEntries().get(0).setDescription("new");
+        action.getDisplayableLogEntries().get(0).setUpdateDescription(true);
+        
+        // logEntry1 will have a new description, but the checkbox will be false.
+        action.getDisplayableLogEntries().get(1).setDescription("new");
+        action.getDisplayableLogEntries().get(1).setUpdateDescription(false);
+        
+        assertEquals(Action.SUCCESS, action.save());
+        assertEquals("new", logEntry2.getDescription());
+        assertEquals("desc", logEntry1.getDescription());
+        assertTrue(studyManagementService.saveCalled);
     }
 
 }
