@@ -48,13 +48,16 @@
         </s:iterator>
         </div>
     </s:if>
-    <s:if test='%{query.hasMaskedValues && query.resultType.value.equals("clinical")}' >
+    <s:set name="subjectIdHeaderValue" value="'Subject ID'" />
+    <s:if test='%{query.hasMaskedValues}' >
         <s:url id="dataDictionaryUrl" includeParams="none" action="viewDataDictionary" />
         <div style="color: red;">
             *Search results might include values that have been restricted to a range by the study manager.
               (<a href="${dataDictionaryUrl}">View restrictions</a>)
         </div>
+        <s:set name="subjectIdHeaderValue" value="'Subject ID*'" />
     </s:if>
+        
     <div id="queryResultsDiv" >
         <s:if test='%{query.resultType.value.equals("genomic")}'>
             <s:set name="genomicDataNeedsHighlighting" value="genomicDataQueryResult.hasCriterionSpecifiedReporterValues" />
@@ -65,7 +68,7 @@
                         <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
                             <td />
                         </s:if>
-                        <th>Subject ID</th>
+                        <th><s:property value="%{subjectIdHeaderValue}"/></th>
                         <s:iterator value="genomicDataQueryResult.columnCollection" status="columnIterator">
                             <td>
                                 <s:set name="columnIteratorIndex" value="%{#columnIterator.index}"/>
@@ -173,7 +176,7 @@
                         </tr>
                     </s:if>
                     <tr>
-                        <th>Subject ID</th>
+                        <th><s:property value="%{subjectIdHeaderValue}"/></th>
                         <th>Sample ID</th>
                     </tr>
                     <s:if test="genomicDataQueryResult.columnCollection.isEmpty()">
@@ -246,7 +249,7 @@
                         media="html" sortable="false">
                         <s:checkbox theme="simple" name="queryResult.rows[%{#attr.queryResultRows_rowNum - 1}].selectedSubject" disabled="%{anonymousUser}"/>
                     </display:column>
-                    <display:column title="Subject Identifier" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
+                    <display:column title="${subjectIdHeaderValue}" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
                         <s:property
                             value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).subjectAssignment.identifier}" />
                     </display:column>
