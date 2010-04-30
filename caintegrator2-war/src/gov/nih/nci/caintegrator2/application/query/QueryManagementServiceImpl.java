@@ -148,10 +148,8 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     @Transactional(readOnly = true)
     public QueryResult execute(Query query) throws InvalidCriterionException {
-        Query queryToExecute = retrieveQueryToExecute(query);
-        QueryTranslator queryTranslator = new QueryTranslator(queryToExecute, getDao(), 
-                arrayDataService, resultHandler);
-        return queryTranslator.execute();
+        return new QueryTranslator(retrieveQueryToExecute(query), getDao(), 
+                arrayDataService, resultHandler).execute();
     }
     
     /**
@@ -159,9 +157,8 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     @Transactional(readOnly = true)
     public GenomicDataQueryResult executeGenomicDataQuery(Query query) throws InvalidCriterionException {
-        GenomicQueryHandler handler = new GenomicQueryHandler(retrieveQueryToExecute(query), 
-                getDao(), arrayDataService);
-        return handler.execute();
+        return new GenomicQueryHandler(retrieveQueryToExecute(query), 
+                getDao(), arrayDataService).execute();
     }
     
     private Query retrieveQueryToExecute(Query query) throws InvalidCriterionException {
@@ -171,8 +168,8 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
             Query queryToExecute = query.clone();
             addGenesNotFoundToQuery(query);
-            checkCriterionForMasks(query);
-            maskCompoundCriterion(queryToExecute.getCompoundCriterion());
+            query.setHasMaskedValues(maskCompoundCriterion(queryToExecute.getCompoundCriterion()));
+            checkCriterionColumnsForMasks(query);
             return queryToExecute;
         } catch (CloneNotSupportedException e) {
             throw new IllegalStateException("Unable to clone query.");
@@ -193,18 +190,20 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
             query.setPlatform(getDao().getPlatform(allPlatformNames.iterator().next()));
         }
     }
-
-    private void checkCriterionForMasks(Query query) {
-        query.setHasMaskedValues(false);
-        for (ResultColumn column : query.getColumnCollection()) {
-            if (!column.getAnnotationFieldDescriptor().getAnnotationMasks().isEmpty()) {
-                query.setHasMaskedValues(true);
-                break;
+    
+    private void checkCriterionColumnsForMasks(Query query) {
+        if (!query.isHasMaskedValues()) {
+            for (ResultColumn column : query.getColumnCollection()) {
+                if (!column.getAnnotationFieldDescriptor().getAnnotationMasks().isEmpty()) {
+                    query.setHasMaskedValues(true);
+                    break;
+                }
             }
         }
     }
     
-    private void maskCompoundCriterion(CompoundCriterion compoundCriterion) {
+    private boolean maskCompoundCriterion(CompoundCriterion compoundCriterion) {
+        Boolean isMaskedQuery = false;
         Set<AbstractCriterion> criterionToRemove = new HashSet<AbstractCriterion>();
         Set<AbstractCriterion> criterionToAdd = new HashSet<AbstractCriterion>();
         for (AbstractCriterion criterion : compoundCriterion.getCriterionCollection()) {
@@ -213,13 +212,15 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
                 if (!criterion.equals(newCriterion)) {
                     criterionToAdd.add(newCriterion);
                     criterionToRemove.add(criterion);
+                    isMaskedQuery = true;
                 }
             } else {
-                maskCompoundCriterion((CompoundCriterion) criterion);
+                return isMaskedQuery || maskCompoundCriterion((CompoundCriterion) criterion);
             }
         }
         compoundCriterion.getCriterionCollection().addAll(criterionToAdd);
         compoundCriterion.getCriterionCollection().removeAll(criterionToRemove);
+        return isMaskedQuery;
     }
     
     private AbstractCriterion retrieveMaskedCriterion(AbstractCriterion abstractCriterion) {
