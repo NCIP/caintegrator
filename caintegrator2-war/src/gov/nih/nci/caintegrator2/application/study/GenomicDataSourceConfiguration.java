@@ -127,7 +127,10 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private String statusDescription;
     private Date lastModifiedDate;
     
-    private static final String NONE_CONFIGURED = "None Configured";
+    /**
+     * Mapping file is not configured.
+     */
+    public static final String NONE_CONFIGURED = "None Configured";
 
     /**
      * @return the experimentIdentifier
@@ -544,5 +547,14 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public String getDisplayableLastModifiedDate() {
         return DateUtil.getDisplayableTimeStamp(lastModifiedDate); 
+    }
+
+    /**
+     * 
+     */
+    public void deleteSampleMappingFile() {
+        setSampleMappingFileName(NONE_CONFIGURED);
+        setSampleMappingFilePath(null);
+        setStatus(Status.NOT_MAPPED);
     }
 }

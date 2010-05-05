@@ -116,7 +116,7 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
      * {@inheritDoc}
      */
     @Override
-    void loadAnnontation() throws ValidationException {
+    void loadAnnotation() throws ValidationException {
         getAnnotationFile().loadAnnontation(new SubjectAnnotationHandler(this));
     }
     
@@ -124,10 +124,18 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
      * {@inheritDoc}
      */
     @Override
-    void reLoadAnnontation() throws ValidationException {
+    void reLoadAnnotation() throws ValidationException {
         if (isCurrentlyLoaded()) {
             getAnnotationFile().loadAnnontation(new SubjectAnnotationHandler(this));
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void unloadAnnotation() {
+        getAnnotationFile().unloadAnnotation();
     }
 
     /**

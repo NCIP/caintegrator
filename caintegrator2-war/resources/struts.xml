@@ -159,6 +159,7 @@
                 <param name="actionName">editStudy</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
             </result>
+            <result name="error" type="tiles">editStudy</result>
             <result name="input" type="tiles">editStudy</result>
         </action>
         
@@ -372,6 +373,11 @@
             <result type="tiles">editFieldDescriptor</result>
             <result name="input" type="tiles">editFieldDescriptor</result>
             <result name="error" type="tiles">editFieldDescriptor</result>
+            <result name="saveIdentifier" type="redirectAction">
+                <param name="actionName">editClinicalSource</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="clinicalSource.id">${sourceId}</param>
+            </result>
         </action>
         
         <action name="saveImagingFieldDescriptorType" method="saveFieldDescriptorType" class="defineImagingFieldDescriptorAction">

@@ -123,7 +123,12 @@ public enum Status {
     /**
      * Currently loaded (for data sources).
      */
-    LOADED("Loaded");
+    LOADED("Loaded"),
+    
+    /**
+     * Not yet mapped.
+     */
+    NOT_MAPPED("Not Mapped");
     
     private String value;
     
