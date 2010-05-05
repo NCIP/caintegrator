@@ -277,4 +277,13 @@ public class ImageDataSourceConfiguration extends AbstractCaIntegrator2Object im
         return DateUtil.getDisplayableTimeStamp(lastModifiedDate); 
     }
 
+    /**
+     * Delete mapping file and set the status to NOT_MAPPED.
+     */
+    public void deleteMappingFile() {
+        setMappingFileName(null);
+        getImageSeriesAcquisitions().clear();
+        setStatus(Status.NOT_MAPPED);
+    }
+
 }

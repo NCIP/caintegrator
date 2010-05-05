@@ -511,6 +511,7 @@ public class StudyManagementServiceTest {
         assignment2.setIdentifier("E05012");
         studyConfiguration.getStudy().getAssignmentCollection().add(assignment2);
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        genomicDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
         genomicDataSourceConfiguration.setPlatformVendor("Affymetrix");
         Sample sample1 = new Sample();
         sample1.setId(1L);
@@ -541,6 +542,7 @@ public class StudyManagementServiceTest {
         assignment2.setIdentifier("E05012");
         studyConfiguration.getStudy().getAssignmentCollection().add(assignment2);
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        genomicDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
         genomicDataSourceConfiguration.setPlatformVendor("Agilent");
         Sample sample1 = new Sample();
         sample1.setId(1L);

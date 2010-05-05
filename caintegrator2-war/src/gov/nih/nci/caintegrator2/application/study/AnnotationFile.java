@@ -421,6 +421,11 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         setIdentifierColumn(getColumns().get(index));
     }
 
+    void unloadAnnotation() {
+        currentlyLoadedIdentifier.clear();
+        setCurrentlyLoaded(String.valueOf(false));
+    }
+    
     void loadAnnontation(AbstractAnnotationHandler handler) throws ValidationException {
         currentlyLoadedIdentifier.clear();
         positionAtData();

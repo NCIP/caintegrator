@@ -124,6 +124,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean setDefinitionCalled;
     public boolean loadClinicalAnnotationCalled;
     public boolean reLoadClinicalAnnotationCalled;
+    public boolean unLoadClinicalAnnotationCalled;
     public boolean mapSamplesCalled;
     public boolean addImageSourceCalled;
     public boolean addImageAnnotationFileCalled;
@@ -201,6 +202,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public void clear() {
         loadClinicalAnnotationCalled = false;
         reLoadClinicalAnnotationCalled = false;
+        unLoadClinicalAnnotationCalled = false;
         saveCalled = false;
         addClinicalAnnotationFileCalled = false;
         addGenomicSourceCalled = false;
@@ -558,6 +560,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name,
             StudyConfiguration studyConfiguration) {
         return null;
+    }
+
+    public void unloadAllClinicalAnnotation(StudyConfiguration studyConfiguration) {
+        unLoadClinicalAnnotationCalled = true;
     }
 
 }
