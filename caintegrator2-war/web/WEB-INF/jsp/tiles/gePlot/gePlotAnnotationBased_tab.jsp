@@ -147,9 +147,7 @@
         </button>
         </center>
         </div>
-        <s:if test="twoChannelType">
-            <i>Expression values are log2 ratios of sample to common reference.</i>
-        </s:if>
+
     <!-- /Gene Expression Inputs -->
     <s:url id="createAnnotationBasedGEPlot" action="createAnnotationBasedGEPlot"/>
     

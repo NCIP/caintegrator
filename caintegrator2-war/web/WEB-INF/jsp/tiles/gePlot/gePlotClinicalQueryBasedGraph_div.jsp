@@ -13,15 +13,12 @@
             <b> Plot Type: </b> <a href="#" id="clinicalQueryTypeSelection1" style="background-color:yellow;" onclick="setDynamicPlot('clinicalQueryBasedImage', '${retrieveClinicalQueryGEPlot_mean}', 'clinicalQueryTypeSelection', '1')">Mean</a> | 
                                  <a href="#" id="clinicalQueryTypeSelection2" onclick="setDynamicPlot('clinicalQueryBasedImage', '${retrieveClinicalQueryGEPlot_median}', 'clinicalQueryTypeSelection', '2')">Median</a> |
                                  <a href="#" id="clinicalQueryTypeSelection3" onclick="setDynamicPlot('clinicalQueryBasedImage', '${retrieveClinicalQueryGEPlot_log2}', 'clinicalQueryTypeSelection', '3')">Log2</a> |
-                                 <a href="#" id="clinicalQueryTypeSelection4" onclick="setDynamicPlot('clinicalQueryBasedImage', '${retrieveClinicalQueryGEPlot_bw}', 'clinicalQueryTypeSelection', '4')">Box and Whisker</a>
+                                 <a href="#" id="clinicalQueryTypeSelection4" onclick="setDynamicPlot('clinicalQueryBasedImage', '${retrieveClinicalQueryGEPlot_bw}', 'clinicalQueryTypeSelection', '4')">Box and Whisker Log2</a>
             <br>
-            <div style="overflow:scroll;">
+            <div style="overflow:auto; padding: 0 0 20px 0;">
             <img id="clinicalQueryBasedImage" src="${retrieveClinicalQueryGEPlot_mean}" />
             </div>
             <br>
-            <s:if test="#gePlot.annotationBasedGePlot.twoChannelType">
-                <i>Expression values are log2 ratios of sample to common reference.</i>
-            </s:if>
         
         <!-- Legend -->
         <fieldset style='display:table;width:600; border:1px solid gray; text-align:left; padding:5px;'>

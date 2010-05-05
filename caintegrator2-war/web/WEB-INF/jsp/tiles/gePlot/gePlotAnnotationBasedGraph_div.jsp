@@ -15,13 +15,11 @@
                                  <a href="#" id="annotationTypeSelection3" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_log2}', 'annotationTypeSelection', '3')">Log2</a> |
                                  <a href="#" id="annotationTypeSelection4" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_bw}', 'annotationTypeSelection', '4')">Box and Whisker Log2</a>
             <br>
-            <div style="overflow:scroll;">
+            <div style="overflow:auto; padding: 0 0 10px 0;">
             <img id="annotationBasedImage" src="${retrieveAnnotationGEPlot_mean}" />
             </div>
             <br>
-            <s:if test="#gePlot.annotationBasedGePlot.twoChannelType">
-                <i>Expression values are log2 ratios of sample to common reference.</i>
-            </s:if>
+
         <!-- Legend -->
         <fieldset style='display:table;width:600; border:1px solid gray; text-align:left; padding:5px;'>
         <legend> Legend: Reporters </legend>

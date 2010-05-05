@@ -102,6 +102,7 @@ import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
  */
 public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService {
     private static final String DOMAIN_AXIS_LABEL = "Groups";
+    private static final String RANGE_AXIS_NOTE_TWO_COLOR = " (ratio of sample to common reference)";
     private static final double LOWER_MARGIN = .02;
     private static final double CATEGORY_MARGIN = .20; 
     private static final double UPPER_MARGIN = .02;
@@ -109,6 +110,7 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
     private static final int WIDTH_MULTIPLIER = 33;
     private static final int MINIMUM_WIDTH = 300;
     private LegendItemCollection legendItems;
+    private String rangeAxisNote ="";
     
 
     /**
@@ -117,25 +119,29 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
     public GeneExpressionPlotGroup generatePlots(GeneExpressionPlotConfiguration configuration) {
         GeneExpressionPlotGroup plotGroup = new GeneExpressionPlotGroup();
         PlotGroupDatasets dataSets = PlotGroupDatasetsFactory.createDatasets(configuration);
+        plotGroup.setTwoChannelType(configuration.isTwoChannelType());
+        if(plotGroup.isTwoChannelType()){
+        	rangeAxisNote = RANGE_AXIS_NOTE_TWO_COLOR;
+        }
         plotGroup.getGeneExpressionPlots().put(PlotCalculationTypeEnum.MEAN, 
-                 createMeanTypePlot(dataSets.getMeanDataset(), configuration.getGenomicValueResultsType()));
+                 createMeanTypePlot(dataSets.getMeanDataset(), configuration.getGenomicValueResultsType(), rangeAxisNote));
         plotGroup.getGeneExpressionPlots().put(PlotCalculationTypeEnum.MEDIAN, 
-                createMedianTypePlot(dataSets.getMedianDataset(), configuration.getGenomicValueResultsType()));
+                createMedianTypePlot(dataSets.getMedianDataset(), configuration.getGenomicValueResultsType(), rangeAxisNote));
         plotGroup.getGeneExpressionPlots().put(PlotCalculationTypeEnum.LOG2_INTENSITY, 
-                createLog2TypePlot(dataSets.getLog2Dataset(), configuration.getGenomicValueResultsType()));
+                createLog2TypePlot(dataSets.getLog2Dataset(), configuration.getGenomicValueResultsType(), rangeAxisNote));
         plotGroup.getGeneExpressionPlots().put(PlotCalculationTypeEnum.BOX_WHISKER_LOG2_INTENSITY, 
-                createBoxWhiskerTypePlot(dataSets.getBwDataset(), configuration.getGenomicValueResultsType()));
+                createBoxWhiskerTypePlot(dataSets.getBwDataset(), configuration.getGenomicValueResultsType(), rangeAxisNote));
         addLegendItemsToPlot(plotGroup);
         addPlotGroupSubjectCounts(configuration, plotGroup);
         plotGroup.getGenesNotFound().addAll(configuration.getGenesNotFound());
-        plotGroup.setTwoChannelType(configuration.isTwoChannelType());
         return plotGroup;
     }
 
     private GeneExpressionPlot createMeanTypePlot(DefaultCategoryDataset meanDataset, 
-            GenomicValueResultsTypeEnum genomicValueResultsType) {
+            GenomicValueResultsTypeEnum genomicValueResultsType,
+            String rangeAxisNote) {
         GeneExpressionPlotImpl plot = new GeneExpressionPlotImpl();
-        JFreeChart chart = createChart(meanDataset, "Mean " + genomicValueResultsType.getValue());
+        JFreeChart chart = createChart(meanDataset, "Mean " + genomicValueResultsType.getValue() + rangeAxisNote);
         legendItems = chart.getLegend().getSources()[0].getLegendItems();
         cusomtizeBarChart(chart);
         plot.setPlotChart(chart);
@@ -144,9 +150,10 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
     }
     
     private GeneExpressionPlot createMedianTypePlot(DefaultCategoryDataset medianDataset, 
-            GenomicValueResultsTypeEnum genomicValueResultsType) {
+            GenomicValueResultsTypeEnum genomicValueResultsType,
+            String rangeAxisNote) {
         GeneExpressionPlotImpl plot = new GeneExpressionPlotImpl();
-        JFreeChart chart = createChart(medianDataset, "Median " + genomicValueResultsType.getValue());
+        JFreeChart chart = createChart(medianDataset, "Median " + genomicValueResultsType.getValue() + rangeAxisNote);
         cusomtizeBarChart(chart);
         plot.setPlotChart(chart);
         plot.setWidth(retrievePlotWidth(medianDataset));
@@ -154,9 +161,10 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
     }
 
     private GeneExpressionPlot createLog2TypePlot(DefaultStatisticalCategoryDataset log2Dataset, 
-            GenomicValueResultsTypeEnum genomicValueResultsType) {
+            GenomicValueResultsTypeEnum genomicValueResultsType,
+            String rangeAxisNote) {
         GeneExpressionPlotImpl plot = new GeneExpressionPlotImpl();
-        JFreeChart chart = createChart(log2Dataset, "Log2 " + genomicValueResultsType.getValue());
+        JFreeChart chart = createChart(log2Dataset, "Log2 " + genomicValueResultsType.getValue() + rangeAxisNote);
         chart.getCategoryPlot().setRenderer(cusomtizeStatisticalBarChart(chart));
         plot.setPlotChart(chart);
         plot.setWidth(retrievePlotWidth(log2Dataset));
@@ -164,9 +172,10 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
     }
 
     private GeneExpressionPlot createBoxWhiskerTypePlot(DefaultBoxAndWhiskerCategoryDataset bwDataset, 
-            GenomicValueResultsTypeEnum genomicValueResultsType) {
+            GenomicValueResultsTypeEnum genomicValueResultsType,
+            String rangeAxisNote) {
         GeneExpressionPlotImpl plot = new GeneExpressionPlotImpl();
-        JFreeChart chart = createChart(bwDataset, "Log2 " + genomicValueResultsType.getValue());
+        JFreeChart chart = createChart(bwDataset, "Log2 " + genomicValueResultsType.getValue() + rangeAxisNote);
         chart.getCategoryPlot().setRenderer(cusomtizeBoxWhiskerChart(chart));
         plot.setPlotChart(chart);
         plot.setWidth(retrievePlotWidth(bwDataset));
