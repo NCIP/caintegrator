@@ -15,13 +15,10 @@
                                  <a href="#" id="genomicQueryTypeSelection3" onclick="setDynamicPlot('genomicQueryBasedImage', '${retrieveGenomicQueryGEPlot_log2}', 'genomicQueryTypeSelection', '3')">Log2</a> |
                                  <a href="#" id="genomicQueryTypeSelection4" onclick="setDynamicPlot('genomicQueryBasedImage', '${retrieveGenomicQueryGEPlot_bw}', 'genomicQueryTypeSelection', '4')">Box and Whisker Log2</a>
             <br>
-            <div style="overflow:scroll;">
+            <div style="overflow:auto; padding: 0 0 20px 0;">
             <img id="genomicQueryBasedImage" src="${retrieveGenomicQueryGEPlot_mean}" />
             </div>
             <br>
-            <s:if test="#gePlot.annotationBasedGePlot.twoChannelType">
-                <i>Expression values are log2 ratios of sample to common reference.</i>
-            </s:if>
         
         <!-- Legend -->
         <fieldset style='display:table;width:600; border:1px solid gray; text-align:left; padding:5px;'>
