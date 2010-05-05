@@ -462,12 +462,12 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
      */
     public boolean isDeployable() {
         return ((Status.NOT_DEPLOYED.equals(status) || Status.ERROR.equals(status))
-                && hasOneLoadedClinical() && genomicSourcesDeployed() && imageSourcesLoaded());
+                && allLoadedClinical() && genomicSourcesDeployed() && allImageSourcesLoaded());
     }
     
-    private boolean imageSourcesLoaded() {
+    private boolean allImageSourcesLoaded() {
         for (ImageDataSourceConfiguration imageSource : imageDataSources) {
-            if (Status.PROCESSING.equals(imageSource.getStatus())) {
+            if (!Status.LOADED.equals(imageSource.getStatus())) {
                 return false;
             }
         }
@@ -483,13 +483,13 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
         return true;
     }
 
-    private boolean hasOneLoadedClinical() {
+    private boolean allLoadedClinical() {
         for (AbstractClinicalSourceConfiguration clinicalConfiguration : clinicalConfigurationCollection) {
-            if (clinicalConfiguration.isCurrentlyLoaded()) {
-                return true;
+            if (!clinicalConfiguration.isCurrentlyLoaded()) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**

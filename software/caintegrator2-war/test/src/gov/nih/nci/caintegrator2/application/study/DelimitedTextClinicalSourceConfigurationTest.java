@@ -136,7 +136,7 @@ public class DelimitedTextClinicalSourceConfigurationTest {
         definition = new AnnotationDefinition();
         definition.getCommonDataElement().getValueDomain().setDataType(AnnotationTypeEnum.DATE);
         clinicalSourceConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
-        clinicalSourceConfiguration.loadAnnontation();
+        clinicalSourceConfiguration.loadAnnotation();
     }
 
     @Test

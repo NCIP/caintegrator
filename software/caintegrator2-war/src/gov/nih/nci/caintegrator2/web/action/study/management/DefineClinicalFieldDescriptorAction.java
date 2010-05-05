@@ -150,4 +150,17 @@ public class DefineClinicalFieldDescriptorAction extends AbstractFieldDescriptor
     public String getSelectDefinitionAction() {
         return "selectClinicalDefinition";
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String saveFieldDescriptorType() {
+        String result = super.saveFieldDescriptorType();
+        if (SUCCESS.equals(result) && IDENTIFIER_TYPE.equals(getFieldDescriptorType())) {
+            getStudyManagementService().unloadAllClinicalAnnotation(getStudyConfiguration());
+            result = "saveIdentifier";
+        }
+        return result;
+    }
 }

@@ -114,9 +114,11 @@ public abstract class AbstractClinicalSourceConfiguration extends AbstractCaInte
 
     abstract ClinicalSourceType getType();
 
-    abstract void loadAnnontation() throws ValidationException;
+    abstract void loadAnnotation() throws ValidationException;
 
-    abstract void reLoadAnnontation() throws ValidationException;
+    abstract void reLoadAnnotation() throws ValidationException;
+    
+    abstract void unloadAnnotation();
     
     /**
      * Returns a brief description of this clinical source.

@@ -114,8 +114,11 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Identifier label.
+     */
+    protected static final String IDENTIFIER_TYPE = "Identifier";
     private static final String ANNOTATION_TYPE = "Annotation";
-    private static final String IDENTIFIER_TYPE = "Identifier";
     private static final String TIMEPOINT_TYPE = "Timepoint";
     private static final String GRAY_BACKGROUND = "background-color:#e9e9e9;";
     private static final String GRAY_FOREGROUND = "color:#999999;";

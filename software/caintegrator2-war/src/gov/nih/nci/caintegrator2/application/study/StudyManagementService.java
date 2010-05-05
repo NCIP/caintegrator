@@ -229,6 +229,13 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      */
     void reLoadClinicalAnnotation(StudyConfiguration studyConfiguration)
         throws ValidationException;
+
+    /**
+     * Unloads all clinical annotation from study configuration.
+     * 
+     * @param studyConfiguration study configuration to unload
+     */
+    void unloadAllClinicalAnnotation(StudyConfiguration studyConfiguration);
     
     /**
      * Adds a new, initialized genomic data source to the study. Samples related to this data source are

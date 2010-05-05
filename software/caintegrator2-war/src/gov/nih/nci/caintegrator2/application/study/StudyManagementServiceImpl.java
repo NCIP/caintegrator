@@ -105,6 +105,7 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -277,7 +278,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         throws ValidationException {
         if (validateAnnotationFieldDescriptors(studyConfiguration, 
                 clinicalSourceConfiguration.getAnnotationDescriptors(), EntityTypeEnum.SUBJECT)) {
-            clinicalSourceConfiguration.loadAnnontation();
+            clinicalSourceConfiguration.loadAnnotation();
             save(studyConfiguration);
         } else {
             throw new ValidationException("Unable to load clinical source due to invalid values being loaded.  " 
@@ -338,20 +339,85 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         deleteClinicalAnnotation(studyConfiguration);
         for (AbstractClinicalSourceConfiguration configuration 
                 : studyConfiguration.getClinicalConfigurationCollection()) {
-            configuration.reLoadAnnontation();
-        }        
+            configuration.reLoadAnnotation();
+        }
+        getDao().removeObjects(studyConfiguration.removeObsoleteSubjectAssignment());
+        save(studyConfiguration);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void unloadAllClinicalAnnotation(StudyConfiguration studyConfiguration) {
+        deleteClinicalAnnotation(studyConfiguration);
+        for (AbstractClinicalSourceConfiguration configuration 
+                : studyConfiguration.getClinicalConfigurationCollection()) {
+            configuration.unloadAnnotation();
+        }
+        if (studyConfiguration.isDeployed()) {
+            studyConfiguration.setStatus(Status.NOT_DEPLOYED);
+        }
         getDao().removeObjects(studyConfiguration.removeObsoleteSubjectAssignment());
         save(studyConfiguration);
     }
 
     private void deleteClinicalAnnotation(StudyConfiguration studyConfiguration) {
-        Study study = studyConfiguration.getStudy();
-        for (StudySubjectAssignment studySubjectAssignment : study.getAssignmentCollection()) {
-            for (SubjectAnnotation subjectAnnotation : studySubjectAssignment.getSubjectAnnotationCollection()) {
-                subjectAnnotation.removeValueFromDefinition();
-                getDao().delete(subjectAnnotation);
+        for (StudySubjectAssignment subjectAssignment : studyConfiguration.getStudy().getAssignmentCollection()) {
+            deleteSubjectAnnotations(subjectAssignment);
+            deleteSampleAcquisitions(subjectAssignment);
+            deleteImageSeriesAcquisitions(subjectAssignment);
+        }
+        deleteSampleMappingFiles(studyConfiguration);
+        deleteImagingMappingFiles(studyConfiguration);
+    }
+
+    private void deleteSubjectAnnotations(StudySubjectAssignment subjectAssignment) {
+        for (SubjectAnnotation subjectAnnotation : subjectAssignment.getSubjectAnnotationCollection()) {
+            subjectAnnotation.removeValueFromDefinition();
+            getDao().delete(subjectAnnotation);
+        }
+        subjectAssignment.getSubjectAnnotationCollection().clear();
+    }
+
+    private void deleteSampleAcquisitions(StudySubjectAssignment subjectAssignment) {
+        for (SampleAcquisition sampleAcquisition : subjectAssignment.getSampleAcquisitionCollection()) {
+            if (sampleAcquisition.getTimepoint() != null) {
+                sampleAcquisition.getTimepoint().getSampleAcquisitionCollection().clear();
             }
-            studySubjectAssignment.getSubjectAnnotationCollection().clear();
+            sampleAcquisition.getSample().setSampleAcquisition(null);
+            for (AbstractAnnotationValue annotationValue : sampleAcquisition.getAnnotationCollection()) {
+                annotationValue.setSampleAcquisition(null);
+            }
+        }
+        getDao().removeObjects(subjectAssignment.getSampleAcquisitionCollection());
+        subjectAssignment.getSampleAcquisitionCollection().clear();
+    }
+
+    private void deleteImageSeriesAcquisitions(StudySubjectAssignment subjectAssignment) {
+        for (ImageSeriesAcquisition imageSeriesAcquisition : subjectAssignment.getImageStudyCollection()) {
+            if (imageSeriesAcquisition.getTimepoint() != null) {
+                imageSeriesAcquisition.getTimepoint().getSampleAcquisitionCollection().clear();
+            }
+            for (ImageSeries imageSeries : imageSeriesAcquisition.getSeriesCollection()) {
+                imageSeries.setImageStudy(null);
+            }
+        }
+        getDao().removeObjects(subjectAssignment.getImageStudyCollection());
+        subjectAssignment.getImageStudyCollection().clear();
+    }
+
+    private void deleteSampleMappingFiles(StudyConfiguration studyConfiguration) {
+        for (GenomicDataSourceConfiguration genomicDataSourceConfiguration
+                : studyConfiguration.getGenomicDataSources()) {
+            genomicDataSourceConfiguration.deleteSampleMappingFile();
+        }
+    }
+
+    private void deleteImagingMappingFiles(StudyConfiguration studyConfiguration) {
+        for (ImageDataSourceConfiguration imageDataSourceConfiguration
+                : studyConfiguration.getImageDataSources()) {
+            getDao().removeObjects(imageDataSourceConfiguration.getImageSeriesAcquisitions());
+            imageDataSourceConfiguration.deleteMappingFile();
         }
     }
 
@@ -360,7 +426,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     public void delete(StudyConfiguration studyConfiguration,
             AbstractClinicalSourceConfiguration clinicalSource) throws ValidationException {
-        deleteClinicalAnnotation(studyConfiguration);
         studyConfiguration.getClinicalConfigurationCollection().remove(clinicalSource);
         getDao().delete(clinicalSource);
         reLoadClinicalAnnotation(studyConfiguration);
@@ -459,6 +524,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             GenomicDataSourceConfiguration genomicSource)
         throws ValidationException, IOException {
         new SampleMappingHelper(studyConfiguration, mappingFile, genomicSource).mapSamples();
+        genomicSource.setStatus(genomicSource.getMappedSamples().isEmpty()
+                ? Status.NOT_MAPPED : Status.LOADED);
         save(studyConfiguration);
     }
 
@@ -502,7 +569,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         } else if (genomicSource.isCopyNumberData() || genomicSource.isSnpData()) {
             handleLoadDnaAnalysis(genomicSource);
         }
-        genomicSource.setStatus(Status.LOADED);
+        genomicSource.setStatus(Status.NOT_MAPPED);
         daoSave(genomicSource);
     }
 
@@ -824,7 +891,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             imageDataSource.setStatus(retrieveImageSourceStatus(imageAnnotationConfiguration));
             daoSave(imageDataSource);
         } else {
-            throw new ValidationException("Unable to load clinical source due to invalid values being loaded.  " 
+            throw new ValidationException("Unable to load image source due to invalid values being loaded.  " 
                 + "Check the annotations on the edit screen for more details.");
         }
     }

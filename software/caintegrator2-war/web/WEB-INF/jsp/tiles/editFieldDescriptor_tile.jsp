@@ -32,7 +32,8 @@
         var type = document.getElementById("fieldDescriptorType").value;
         if (document.getElementById("fieldDescriptorType").value == "Identifier") {
             if (confirm("You are about to set this field descriptor to be an Identifier \n" +
-                "which will set any other Identifier columns used in the same source to null.")) {
+                "which will set the annotation definition of the previous Identifier column to null.\n" +
+                "All sample/imaging mapping will be deleted and the study will need to be deployed.")) {
                 document.fieldDescriptorTypeForm.submit();
             } else {
                 document.getElementById("fieldDescriptorType").value = '<s:property value="fieldDescriptorType"/>';
