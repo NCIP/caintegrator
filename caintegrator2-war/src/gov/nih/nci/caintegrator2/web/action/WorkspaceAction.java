@@ -105,8 +105,13 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
         clearForms();
         addRegistrationMessage();
         if (getStudySubscription() != null) {
-            if (getWorkspace().getDefaultSubscription() == null) {
-                getWorkspace().setDefaultSubscription(getStudySubscription());
+            if (getWorkspace().getDefaultSubscription() == null
+                    || !getWorkspace().getDefaultSubscription().getStudy().isDeployed()) {
+                if (getStudySubscription().getStudy().isDeployed()) {
+                    getWorkspace().setDefaultSubscription(getStudySubscription());
+                } else {
+                    return WORKSPACE_NO_STUDY;
+                }
             }
             getWorkspaceService().saveUserWorkspace(getWorkspace());
             return WORKSPACE_STUDY;
