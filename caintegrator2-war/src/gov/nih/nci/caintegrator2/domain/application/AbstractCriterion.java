@@ -51,5 +51,14 @@ public abstract class AbstractCriterion extends AbstractCaIntegrator2Object impl
         this.finalMaskApplied = finalMaskApplied;
     }
     
+    /**
+     * Determines if this criterion has masked criterion.
+     * @return boolean determining if this is a masked criterion or not.
+     */
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // Default implementation is false
+    protected boolean isMaskedCriterion() {
+        return false;
+    }
+    
     
 }

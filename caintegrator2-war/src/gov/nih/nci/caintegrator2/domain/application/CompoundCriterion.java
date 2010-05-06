@@ -46,6 +46,27 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
     public void setBooleanOperator(BooleanOperatorEnum booleanOperator) {
         this.booleanOperator = booleanOperator;
     }
+    
+    /**
+     * Determines if there exists any masked criteria in this compound criterion.
+     * @return boolean if there are any masked criteria.
+     */
+    public boolean isHasMaskedCriteria() {
+        for (AbstractCriterion criterion : getCriterionCollection()) {
+            if (criterion.isMaskedCriterion()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isMaskedCriterion() {
+        return isHasMaskedCriteria();
+    }
 
     /**
      * {@inheritDoc}

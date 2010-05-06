@@ -51,5 +51,13 @@ public class AbstractAnnotationCriterion extends AbstractCriterion implements Cl
             this.entityType = annotationFieldDescriptor.getAnnotationEntityType();
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isMaskedCriterion() {
+        return annotationFieldDescriptor != null && !annotationFieldDescriptor.getAnnotationMasks().isEmpty();
+    }
 
 }
