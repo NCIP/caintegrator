@@ -168,7 +168,10 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
             Query queryToExecute = query.clone();
             addGenesNotFoundToQuery(query);
-            query.setHasMaskedValues(maskCompoundCriterion(queryToExecute.getCompoundCriterion()));
+            query.setHasMaskedValues(queryToExecute.getCompoundCriterion().isHasMaskedCriteria());
+            if (query.isHasMaskedValues()) {
+                maskCompoundCriterion(queryToExecute.getCompoundCriterion());
+            }
             checkCriterionColumnsForMasks(query);
             return queryToExecute;
         } catch (CloneNotSupportedException e) {
@@ -202,8 +205,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
     }
     
-    private boolean maskCompoundCriterion(CompoundCriterion compoundCriterion) {
-        Boolean isMaskedQuery = false;
+    private void maskCompoundCriterion(CompoundCriterion compoundCriterion) {
         Set<AbstractCriterion> criterionToRemove = new HashSet<AbstractCriterion>();
         Set<AbstractCriterion> criterionToAdd = new HashSet<AbstractCriterion>();
         for (AbstractCriterion criterion : compoundCriterion.getCriterionCollection()) {
@@ -212,15 +214,13 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
                 if (!criterion.equals(newCriterion)) {
                     criterionToAdd.add(newCriterion);
                     criterionToRemove.add(criterion);
-                    isMaskedQuery = true;
                 }
             } else {
-                return isMaskedQuery || maskCompoundCriterion((CompoundCriterion) criterion);
+                maskCompoundCriterion((CompoundCriterion) criterion);
             }
         }
         compoundCriterion.getCriterionCollection().addAll(criterionToAdd);
         compoundCriterion.getCriterionCollection().removeAll(criterionToRemove);
-        return isMaskedQuery;
     }
     
     private AbstractCriterion retrieveMaskedCriterion(AbstractCriterion abstractCriterion) {
