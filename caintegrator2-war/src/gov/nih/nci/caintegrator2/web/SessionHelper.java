@@ -214,6 +214,10 @@ public final class SessionHelper {
         return studyManager;
     }
 
+    /**
+     * 
+     * @param studyManager the studyManager to set.
+     */
     public void setStudyManager(boolean studyManager) {
         this.studyManager = studyManager;
     }
