@@ -130,6 +130,7 @@ public class SaveStudyActionTest extends AbstractSessionBasedTest {
         assertEquals(Action.ERROR, action.execute());
         // Must add authentication to pass the action.
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        SessionHelper.getInstance().setStudyManager(true);
         action.prepare();
         assertEquals(Action.SUCCESS, action.execute());
         assertTrue(studyManagementServiceStub.saveCalled);
