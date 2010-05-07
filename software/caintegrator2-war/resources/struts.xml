@@ -81,7 +81,10 @@
         <default-interceptor-ref name="cai2ParamsPrepareParamsStack" />
         
         <global-results>
-            <result name="unauthorized" type="tiles">unauthorized</result>
+            <result name="unauthorized" type="redirectAction">
+                <param name="actionName">workspace</param>
+                <param name="invalidAccess">true</param>
+            </result>
             <result name="invalidDataBeingAccessed" type="redirectAction">workspace</result>
         </global-results>
         

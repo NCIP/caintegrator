@@ -95,6 +95,7 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
     private static final String WORKSPACE_STUDY = "workspaceStudy";
     private static final String WORKSPACE_NO_STUDY = "workspaceNoStudy";
     private boolean registrationSuccess = false;
+    private boolean invalidAccess = false;
     
     /**
      * Opens the current user's workspace.
@@ -104,7 +105,8 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
     public String openWorkspace() {
         clearForms();
         addRegistrationMessage();
-        if (getStudySubscription() != null) {
+        addErrorMessages();
+        if (getStudySubscription() != null  && getActionErrors().isEmpty()) {
             if (getWorkspace().getDefaultSubscription() == null
                     || !getWorkspace().getDefaultSubscription().getStudy().isDeployed()) {
                 if (getStudySubscription().getStudy().isDeployed()) {
@@ -115,14 +117,20 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
             }
             getWorkspaceService().saveUserWorkspace(getWorkspace());
             return WORKSPACE_STUDY;
-        } else {
-            return WORKSPACE_NO_STUDY;
         }
+        return WORKSPACE_NO_STUDY;
     }
     
     private void addRegistrationMessage() {
         if (registrationSuccess) {
             addActionMessage("Registration request sent successfully!");
+        }
+    }
+    
+    private void addErrorMessages() {
+        if (invalidAccess) {
+            addActionError("You are seeing this page because you are trying to access a restricted area that you "
+                    + "do not have authorization to view (possibly because of a timed out session).");
         }
     }
 
@@ -166,6 +174,20 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
      */
     public void setRegistrationSuccess(boolean registrationSuccess) {
         this.registrationSuccess = registrationSuccess;
+    }
+
+    /**
+     * @return the invalidAccess
+     */
+    public boolean isInvalidAccess() {
+        return invalidAccess;
+    }
+
+    /**
+     * @param invalidAccess the invalidAccess to set
+     */
+    public void setInvalidAccess(boolean invalidAccess) {
+        this.invalidAccess = invalidAccess;
     }
 
 }
