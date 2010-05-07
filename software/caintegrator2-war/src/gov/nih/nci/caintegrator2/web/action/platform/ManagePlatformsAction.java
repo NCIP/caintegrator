@@ -99,7 +99,7 @@ import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.file.FileManager;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
-import gov.nih.nci.caintegrator2.web.action.study.management.AbstractStudyManagementAction;
+import gov.nih.nci.caintegrator2.web.action.study.management.AbstractCai2ManagementAction;
 import gov.nih.nci.caintegrator2.web.ajax.IPlatformDeploymentAjaxUpdater;
 
 import java.io.File;
@@ -113,7 +113,7 @@ import org.apache.log4j.Logger;
  * Provides functionality to list and add array designs.
  */
 @SuppressWarnings("PMD") // See createPlatform method
-public class ManagePlatformsAction extends AbstractStudyManagementAction {
+public class ManagePlatformsAction extends AbstractCai2ManagementAction {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(ManagePlatformsAction.class);

@@ -97,7 +97,7 @@ import com.opensymphony.xwork2.ModelDriven;
 /**
  * Base class for actions that require retrieval of persistent <code>StudyConfigurations</code>.
  */
-public abstract class AbstractStudyAction extends AbstractStudyManagementAction 
+public abstract class AbstractStudyAction extends AbstractCai2ManagementAction 
 implements ModelDriven<StudyConfiguration> {
     
     private StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -108,7 +108,9 @@ implements ModelDriven<StudyConfiguration> {
      */
     public void prepare() {
         super.prepare();
-        if (studyConfiguration.getId() != null) {
+        if (!SessionHelper.getInstance().isStudyManager()) {
+            setAuthorizedPage(false);
+        } else if (studyConfiguration.getId() != null) {
             try {
                 studyConfiguration = studyManagementService.getRefreshedSecureStudyConfiguration(
                         SessionHelper.getUsername(), studyConfiguration.getId());
