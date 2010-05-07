@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action;
 
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.HashMap;
 
@@ -118,6 +119,7 @@ public abstract class AbstractSessionBasedTest {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         ActionContext.getContext().setSession(new HashMap<String, Object>());
+        SessionHelper.getInstance().setStudyManager(true);
         
     }
     

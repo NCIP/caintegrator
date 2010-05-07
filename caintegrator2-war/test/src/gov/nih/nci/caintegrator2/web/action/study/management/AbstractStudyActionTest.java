@@ -125,6 +125,10 @@ public class AbstractStudyActionTest extends AbstractSessionBasedTest {
         abstractStudyAction.prepare();
         assertFalse(SessionHelper.getInstance().isAuthorizedPage());
         
+        SessionHelper.getInstance().setStudyManager(false);
+        abstractStudyAction.prepare();
+        assertFalse(SessionHelper.getInstance().isAuthorizedPage());
+        
     }
 
 }

@@ -205,13 +205,16 @@ public final class SessionHelper {
      * @return the studyManager
      */
     public boolean isStudyManager() {
+        if (isAnonymousUser()) {
+            return false;
+        }
         if (studyManager == null && !StringUtils.isBlank(getUsername())) {
             setStudyManager(SecurityHelper.isStudyManager(getUsername()));
         }
         return studyManager;
     }
 
-    private void setStudyManager(boolean studyManager) {
+    public void setStudyManager(boolean studyManager) {
         this.studyManager = studyManager;
     }
 
@@ -219,6 +222,9 @@ public final class SessionHelper {
      * @return the platformManager
      */
     public boolean isPlatformManager() {
+        if (isAnonymousUser()) {
+            return false;
+        }
         if (platformManager == null && !StringUtils.isBlank(getUsername())) {
             setPlatformManager(SecurityHelper.isPlatformManager(getUsername()));
         }
