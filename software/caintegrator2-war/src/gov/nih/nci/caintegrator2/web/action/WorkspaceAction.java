@@ -107,18 +107,22 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
         addRegistrationMessage();
         addErrorMessages();
         if (getStudySubscription() != null  && getActionErrors().isEmpty()) {
-            if (getWorkspace().getDefaultSubscription() == null
-                    || !getWorkspace().getDefaultSubscription().getStudy().isDeployed()) {
-                if (getStudySubscription().getStudy().isDeployed()) {
-                    getWorkspace().setDefaultSubscription(getStudySubscription());
-                } else {
-                    return WORKSPACE_NO_STUDY;
-                }
-            }
-            getWorkspaceService().saveUserWorkspace(getWorkspace());
-            return WORKSPACE_STUDY;
+            return checkDefaultSubscription();
         }
         return WORKSPACE_NO_STUDY;
+    }
+
+    private String checkDefaultSubscription() {
+        if (getWorkspace().getDefaultSubscription() == null
+                || !getWorkspace().getDefaultSubscription().getStudy().isDeployed()) {
+            if (getStudySubscription().getStudy().isDeployed()) {
+                getWorkspace().setDefaultSubscription(getStudySubscription());
+            } else {
+                return WORKSPACE_NO_STUDY;
+            }
+        }
+        getWorkspaceService().saveUserWorkspace(getWorkspace());
+        return WORKSPACE_STUDY;
     }
     
     private void addRegistrationMessage() {
