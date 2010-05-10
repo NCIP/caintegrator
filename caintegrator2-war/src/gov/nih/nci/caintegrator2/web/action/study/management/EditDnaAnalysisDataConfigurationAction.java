@@ -236,8 +236,9 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
             reader = new CSVReader(new FileReader(mappingFile));
             String[] fields;
             int lineNum = 0;
-            int columnNumber = PlatformVendorEnum.getByValue(
-                    getGenomicSource().getPlatformVendor()).getDnaAnalysisMappingColumns();
+            int columnNumber = (getGenomicSource().isSingleDataFile())
+                ? 3
+                : PlatformVendorEnum.getByValue(getGenomicSource().getPlatformVendor()).getDnaAnalysisMappingColumns();
             while ((fields = reader.readNext()) != null) {
                 lineNum++;
                 if (fields.length != columnNumber) {
