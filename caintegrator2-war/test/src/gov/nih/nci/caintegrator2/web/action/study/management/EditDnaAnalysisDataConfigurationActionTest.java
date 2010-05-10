@@ -177,7 +177,7 @@ public class EditDnaAnalysisDataConfigurationActionTest extends AbstractSessionB
         action.setMappingFile(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE);
         action.validate();
         assertFalse(action.hasFieldErrors());
-        action.getGenomicSource().setSingleDataFile(true);
+        action.getDnaAnalysisDataConfiguration().setSingleDataFile(true);
         action.validate();
         assertTrue(action.hasFieldErrors());
         action.setMappingFile(TestDataFiles.REMBRANDT_COPY_NUMBER_SINGLE_FILE);
