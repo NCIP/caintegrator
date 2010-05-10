@@ -36,7 +36,7 @@
                     <s:hidden name="formAction" />
                     <s:file name="mappingFile" label="Subject and Sample Mapping File" size="40"/><br>
                         <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
-                            <span class="wwlbl">(csv file format)</span>
+                            <span class="wwlbl">(csv file with 3 column format for mapping single data file and 5 column format for mapping 1 data file per sample)</span>
                             <span class="wwctrl"></span>
                         </s:div>
                     <s:select id="caDnaCopyUrl" name="caDnaCopyUrl"
