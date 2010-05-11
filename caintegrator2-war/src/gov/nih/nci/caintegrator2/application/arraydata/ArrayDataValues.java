@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -193,6 +194,25 @@ public class ArrayDataValues {
      */
     public void setFloatValue(ArrayData arrayData, AbstractReporter reporter, ArrayDataValueType type, float value) {
         getTypeValues(type).setFloatValue(arrayData, reporter, value);
+    }
+    
+    /**
+     * Sets a single data point for a single reporter / array / type combination.
+     * 
+     * @param arrayData the array data the data value is associated to.
+     * @param reporter the reporter the data value is associated to.
+     * @param type the type of data
+     * @param values the values to set.
+     * @param centralTendencyCalculator used to calculate the central tendency of the float values.
+     */
+    public void setFloatValue(ArrayData arrayData, AbstractReporter reporter, 
+            ArrayDataValueType type, List<Float> values, CentralTendencyCalculator centralTendencyCalculator) {
+        centralTendencyCalculator.calculateCentralTendencyValue(values);
+        setFloatValue(arrayData, reporter, type, centralTendencyCalculator.getCentralTendencyValue());
+        if (centralTendencyCalculator.isHighVariance()) {
+            arrayData.getSample().getReportersHighVariance().add(reporter);
+            reporter.getSamplesHighVariance().add(arrayData.getSample());
+        }
     }
 
     /**

@@ -83,68 +83,150 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.geneexpression;
+package gov.nih.nci.caintegrator2.common;
 
-import gov.nih.nci.caintegrator2.common.MathUtil;
+import gov.nih.nci.caintegrator2.application.study.CentralTendencyTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.HighVarianceCalculationTypeEnum;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Factory utility class for generating a <code>PlotGroupDatasets</code> from a 
- * <code>GeneExpressionPlotConfiguration</code>.
+ * This calculator takes in central tendency type parameters, and a collection of float values, and after it runs will
+ * figure out the central tendency value and (optionally) whether the values have a high variance or not.
  */
-public final class PlotGroupDatasetsFactory {
+public class CentralTendencyCalculator {
+    private static final Integer ONE_HUNDRED_PERCENT = 100;
+    private final Double highVarianceThreshold;
+    private final CentralTendencyTypeEnum type;
+    private final HighVarianceCalculationTypeEnum varianceCalculationType;
+    private final boolean useHighVarianceCalculation;
     
-    private PlotGroupDatasetsFactory() { }
+    private Float centralTendencyValue;
+    private boolean highVariance = false;
     
     /**
-     * Creates the datasets from a plot configuration.
-     * @param configuration for the plot data sets.
-     * @return object containing the JFreeChart datasets.
+     * Constructor to use if not calculating the high variance as well.
+     * @param type central tendency type.
      */
-    public static PlotGroupDatasets createDatasets(GeneExpressionPlotConfiguration configuration) {
-        PlotGroupDatasets datasets = new PlotGroupDatasets();
-        for (PlotSampleGroup sampleGroup : configuration.getPlotSampleGroups()) {
-            String columnKey = sampleGroup.getName();
-            for (PlotReporterGroup reporterGroup : sampleGroup.getReporterGroups()) {
-                List <Double> rowValues = new ArrayList<Double>();
-                List <Double> rowLog2Values = new ArrayList<Double>();
-                Double totalValue = 0.0;
-                Double totalLog2Value = 0.0;
-                String rowKey = reporterGroup.getName();
-                for (Double value : reporterGroup.getGeneExpressionValues()) {
-                    Double log2Value = log2Intensity(value);
-                    rowValues.add(value);
-                    rowLog2Values.add(log2Value);
-                    totalValue += value;
-                    totalLog2Value += log2Value;
-                }
-                if (!rowValues.isEmpty()) {
-                    updateDatasets(datasets, columnKey, rowKey, rowValues, totalValue);
-                    updateLog2Datasets(datasets, columnKey, rowKey, rowLog2Values, totalLog2Value);
-                }
+    public CentralTendencyCalculator(CentralTendencyTypeEnum type) {
+        this.type = type;
+        this.useHighVarianceCalculation = false;
+        this.highVarianceThreshold = null;
+        this.varianceCalculationType = null;
+    }
+    
+    /**
+     * Public constructor.
+     * @param type central tendency type.
+     * @param useHighVarianceCalculation whether or not to calculate a standard deviation limit.
+     * @param highVarianceThreshold percentage off of the central tendency that the standard deviation can be within
+     *                                  before being flagged as "highVariance".
+     * @param varianceCalculationType type of calculation to use for high variance.
+     */
+    public CentralTendencyCalculator(CentralTendencyTypeEnum type, boolean useHighVarianceCalculation, 
+            Double highVarianceThreshold, HighVarianceCalculationTypeEnum varianceCalculationType) {
+        this.type = type;
+        this.useHighVarianceCalculation = useHighVarianceCalculation;
+        this.highVarianceThreshold = highVarianceThreshold;
+        this.varianceCalculationType = varianceCalculationType;
+    }
+    
+    /**
+     * 
+     * @param values to turn into a single central tendency value.
+     */
+    public void calculateCentralTendencyValue(List<Float> values) {
+        Double stdDev = 0.0;
+        highVariance = false;
+        if (CentralTendencyTypeEnum.MEDIAN.equals(type)) {
+            stdDev = handleMedianType(values);
+        } else if (CentralTendencyTypeEnum.MEAN.equals(type)) {
+            stdDev = handleMeanType(values);
+        } else {
+            throw new IllegalArgumentException("Unknokwn CentralTendencyType.");
+        }
+        checkHighVariance(stdDev, values.size());
+    }
+
+    private void checkHighVariance(Double stdDev, int numValues) {
+        if (isHighVarianceCalculationNecessary(numValues)) {
+            if (HighVarianceCalculationTypeEnum.PERCENTAGE.equals(varianceCalculationType)) {
+                calculatePercentageHighVariance(stdDev);
+            } else if (HighVarianceCalculationTypeEnum.VALUE.equals(varianceCalculationType)) {
+                calculateValueHighVariance(stdDev);
             }
         }
-        return datasets;
+    }
+
+    /**
+     * This calculation determines if the standard deviation is >= the percentage of high variance 
+     * (example: 50%) of the central tendency value.  An example is if the central tendency is 10, the 
+     * highVarianceThreshold is 50 and the stdDeviation is 5.  In that case this would be considered 
+     * high variance = true.  In that scenario, if the stdDeviation is 4.9 then it would be considered false.
+     * @param stdDev
+     */
+    private void calculatePercentageHighVariance(Double stdDev) {
+        Double percentageVariance = ((stdDev / centralTendencyValue) * ONE_HUNDRED_PERCENT); 
+        if (percentageVariance >= highVarianceThreshold) {
+            highVariance = true;
+        }
     }
     
-    private static void updateDatasets(PlotGroupDatasets datasets, String columnKey, String rowKey, 
-                                        List<Double> rowValues, Double totalValue) {
-        datasets.getMeanDataset().addValue(MathUtil.mean(totalValue, rowValues.size()), rowKey, columnKey);
-        datasets.getMedianDataset().addValue(MathUtil.median(rowValues), rowKey, columnKey);
+    private void calculateValueHighVariance(Double stdDev) {
+        if (stdDev >= highVarianceThreshold) {
+            highVariance = true;
+        }
+    }
+
+    private Double handleMeanType(List<Float> values) {
+        Double stdDev = 0.0;
+        centralTendencyValue = MathUtil.mean(values);
+        if (isHighVarianceCalculationNecessary(values.size())) {
+            stdDev = MathUtil.standardDeviation(values, centralTendencyValue);
+        }
+        return stdDev;
+    }
+
+    private Double handleMedianType(List<Float> values) {
+        Double stdDev = 0.0;
+        centralTendencyValue = MathUtil.median(values);
+        if (isHighVarianceCalculationNecessary(values.size())) {
+            stdDev = MathUtil.standardDeviation(values, MathUtil.mean(values));
+        }
+        return stdDev;
+    }
+
+    /**
+     * @return the centralTendencyValue
+     */
+    public Float getCentralTendencyValue() {
+        return centralTendencyValue;
+    }
+
+    /**
+     * @param centralTendencyValue the centralTendencyValue to set
+     */
+    public void setCentralTendencyValue(Float centralTendencyValue) {
+        this.centralTendencyValue = centralTendencyValue;
     }
     
-    private static void updateLog2Datasets(PlotGroupDatasets datasets, String columnKey, String rowKey, 
-                                       List<Double> rowLog2Values, Double totalLog2Value) {
-        Double mean = MathUtil.mean(totalLog2Value, rowLog2Values.size());
-        datasets.getLog2Dataset().add(mean, MathUtil.standardDeviation(rowLog2Values, mean), rowKey, columnKey);
-        datasets.getBwDataset().add(rowLog2Values, rowKey, columnKey);   
+    private boolean isHighVarianceCalculationNecessary(int numValues) {
+        return useHighVarianceCalculation && numValues > 1;
     }
-    
-    private static double log2Intensity(Double value) {
-        double log2Value = Math.log(Math.abs(value)) / Math.log(2);
-        return value < 0 ? (-1 * log2Value) : log2Value;
+
+    /**
+     * @return the useHighVarianceCalculation
+     */
+    public boolean isUseHighVarianceCalculation() {
+        return useHighVarianceCalculation;
     }
-    
+
+    /**
+     * @return the highVariance
+     */
+    public boolean isHighVariance() {
+        return highVariance;
+    }
+
+
 }

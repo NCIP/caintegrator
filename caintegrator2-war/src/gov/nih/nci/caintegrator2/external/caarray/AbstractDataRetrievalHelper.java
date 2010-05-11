@@ -100,6 +100,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
@@ -127,6 +128,7 @@ abstract class AbstractDataRetrievalHelper {
     private final GenomicDataSourceConfiguration genomicSource;
     private final SearchService searchService;
     private final CaIntegrator2Dao dao;
+    private final CentralTendencyCalculator centralTendencyCalculator;
     private Map<Hybridization, Sample> hybridizationToSampleMap;
     private Map<String, Biomaterial> nameToCaArraySampleMap;
     private Map<String, Hybridization> idToHybridizationMap;
@@ -138,6 +140,11 @@ abstract class AbstractDataRetrievalHelper {
                 this.genomicSource = genomicSource;
                 this.searchService = searchService;
                 this.dao = dao;
+                this.centralTendencyCalculator = new CentralTendencyCalculator(
+                        genomicSource.getTechnicalReplicatesCentralTendency(), 
+                        genomicSource.isUseHighVarianceCalculation(), 
+                        genomicSource.getHighVarianceThreshold(), 
+                        genomicSource.getHighVarianceCalculationType());
     }
     
     protected void init() throws DataRetrievalException {
@@ -256,12 +263,11 @@ abstract class AbstractDataRetrievalHelper {
         return getReporter(probeSetName);
     }
 
-    protected ArrayData createArrayData(Hybridization hybridization) 
+    protected ArrayData createArrayData(Sample sample, String arrayName) 
     throws InvalidInputException {
         Array array = new Array();
         array.setPlatform(platformHelper.getPlatform());
-        array.setName(hybridization.getName());
-        Sample sample = getAssociatedSample(hybridization);
+        array.setName(arrayName);
         array.getSampleCollection().add(sample);
         ArrayData arrayData = new ArrayData();
         arrayData.setType(ArrayDataType.GENE_EXPRESSION);
@@ -282,7 +288,7 @@ abstract class AbstractDataRetrievalHelper {
         return arrayData;
     }
 
-    private Sample getAssociatedSample(Hybridization hybridization) 
+    protected Sample getAssociatedSample(Hybridization hybridization) 
     throws InvalidInputException {
         return getHybridizationToSampleMap().get(getIdToHybridizationMap().get(hybridization.getId()));
     }
@@ -298,8 +304,10 @@ abstract class AbstractDataRetrievalHelper {
         return idToHybridizationMap;
     }
 
-    protected void setValue(ArrayData arrayData, AbstractReporter reporter, float value) {
-        arrayDataValues.setFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL, value);
+    protected void setValue(ArrayData arrayData, AbstractReporter reporter, List<Float> values) {
+        arrayDataValues.setFloatValue(arrayData, 
+                reporter, ArrayDataValueType.EXPRESSION_SIGNAL, values, centralTendencyCalculator);
+        
     }
 
     /**

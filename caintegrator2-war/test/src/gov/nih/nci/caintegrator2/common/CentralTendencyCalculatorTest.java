@@ -83,68 +83,88 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.geneexpression;
+package gov.nih.nci.caintegrator2.common;
 
-import gov.nih.nci.caintegrator2.common.MathUtil;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.CentralTendencyTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.HighVarianceCalculationTypeEnum;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
+import org.junit.Test;
+
 /**
- * Factory utility class for generating a <code>PlotGroupDatasets</code> from a 
- * <code>GeneExpressionPlotConfiguration</code>.
+ * 
  */
-public final class PlotGroupDatasetsFactory {
+public class CentralTendencyCalculatorTest {
+
+    private CentralTendencyCalculator calculatorNoVariance;
+    private CentralTendencyCalculator calculatorWithVariancePercentage;
+    private CentralTendencyCalculator calculatorWithVarianceValue;
+    private List<Float> values1;
+    private List<Float> values2;
     
-    private PlotGroupDatasetsFactory() { }
     
-    /**
-     * Creates the datasets from a plot configuration.
-     * @param configuration for the plot data sets.
-     * @return object containing the JFreeChart datasets.
-     */
-    public static PlotGroupDatasets createDatasets(GeneExpressionPlotConfiguration configuration) {
-        PlotGroupDatasets datasets = new PlotGroupDatasets();
-        for (PlotSampleGroup sampleGroup : configuration.getPlotSampleGroups()) {
-            String columnKey = sampleGroup.getName();
-            for (PlotReporterGroup reporterGroup : sampleGroup.getReporterGroups()) {
-                List <Double> rowValues = new ArrayList<Double>();
-                List <Double> rowLog2Values = new ArrayList<Double>();
-                Double totalValue = 0.0;
-                Double totalLog2Value = 0.0;
-                String rowKey = reporterGroup.getName();
-                for (Double value : reporterGroup.getGeneExpressionValues()) {
-                    Double log2Value = log2Intensity(value);
-                    rowValues.add(value);
-                    rowLog2Values.add(log2Value);
-                    totalValue += value;
-                    totalLog2Value += log2Value;
-                }
-                if (!rowValues.isEmpty()) {
-                    updateDatasets(datasets, columnKey, rowKey, rowValues, totalValue);
-                    updateLog2Datasets(datasets, columnKey, rowKey, rowLog2Values, totalLog2Value);
-                }
-            }
-        }
-        return datasets;
+    @Before
+    public void setUp() throws Exception {
+        calculatorNoVariance = new CentralTendencyCalculator(CentralTendencyTypeEnum.MEAN);
+        calculatorWithVariancePercentage = new CentralTendencyCalculator(CentralTendencyTypeEnum.MEDIAN, true, 45.0, HighVarianceCalculationTypeEnum.PERCENTAGE);
+        calculatorWithVarianceValue = new CentralTendencyCalculator(CentralTendencyTypeEnum.MEDIAN, true, 2.0, HighVarianceCalculationTypeEnum.VALUE);
+        values1 = new ArrayList<Float>();
+        values1.add(2f);
+        values1.add(4f);
+        values1.add(6f);
+        values1.add(8f);
+        
+        values2 = new ArrayList<Float>();
+        values2.add(2f);
+        values2.add(4f);
+        values2.add(4f);
+        values2.add(4f);
+        values2.add(5f);
+        values2.add(5f);
+        values2.add(7f);
+        values2.add(9f);
+        
+    }
+
+    @Test
+    public void testCalculateCentralTendencyValueNoVariance() {
+        calculatorNoVariance.calculateCentralTendencyValue(values1);
+        assertEquals(Float.valueOf(5), calculatorNoVariance.getCentralTendencyValue());
+        values1.add(8f);
+        calculatorNoVariance.calculateCentralTendencyValue(values1);
+        assertEquals(Float.valueOf("5.6"), calculatorNoVariance.getCentralTendencyValue());
+        calculatorNoVariance = new CentralTendencyCalculator(CentralTendencyTypeEnum.MEDIAN);
+        calculatorNoVariance.calculateCentralTendencyValue(values1);
+        assertEquals(Float.valueOf("6"), calculatorNoVariance.getCentralTendencyValue());
     }
     
-    private static void updateDatasets(PlotGroupDatasets datasets, String columnKey, String rowKey, 
-                                        List<Double> rowValues, Double totalValue) {
-        datasets.getMeanDataset().addValue(MathUtil.mean(totalValue, rowValues.size()), rowKey, columnKey);
-        datasets.getMedianDataset().addValue(MathUtil.median(rowValues), rowKey, columnKey);
+    @Test
+    public void testCalculateCentralTendencyValueWithVarianceAsPercentage() {
+        calculatorWithVariancePercentage.calculateCentralTendencyValue(values2);
+        assertEquals(Float.valueOf("4.5"), calculatorWithVariancePercentage.getCentralTendencyValue());
+        assertFalse(calculatorWithVariancePercentage.isHighVariance());
+        calculatorWithVariancePercentage = new CentralTendencyCalculator(CentralTendencyTypeEnum.MEDIAN, true, 44.0, HighVarianceCalculationTypeEnum.PERCENTAGE);
+        calculatorWithVariancePercentage.calculateCentralTendencyValue(values2);
+        assertTrue(calculatorWithVariancePercentage.isHighVariance());
+        values2.add(4.5f);
+        calculatorWithVariancePercentage.calculateCentralTendencyValue(values2);
+        assertFalse(calculatorWithVariancePercentage.isHighVariance());
     }
     
-    private static void updateLog2Datasets(PlotGroupDatasets datasets, String columnKey, String rowKey, 
-                                       List<Double> rowLog2Values, Double totalLog2Value) {
-        Double mean = MathUtil.mean(totalLog2Value, rowLog2Values.size());
-        datasets.getLog2Dataset().add(mean, MathUtil.standardDeviation(rowLog2Values, mean), rowKey, columnKey);
-        datasets.getBwDataset().add(rowLog2Values, rowKey, columnKey);   
+    @Test
+    public void testCalculateCentralTendencyValueWithVarianceAsValue() {
+        calculatorWithVarianceValue.calculateCentralTendencyValue(values2);
+        assertEquals(Float.valueOf("4.5"), calculatorWithVarianceValue.getCentralTendencyValue());
+        assertTrue(calculatorWithVarianceValue.isHighVariance());
+        values2.add(4.5f);
+        calculatorWithVarianceValue.calculateCentralTendencyValue(values2);
+        assertFalse(calculatorWithVarianceValue.isHighVariance());
     }
-    
-    private static double log2Intensity(Double value) {
-        double log2Value = Math.log(Math.abs(value)) / Math.log(2);
-        return value < 0 ? (-1 * log2Value) : log2Value;
-    }
-    
+
 }
