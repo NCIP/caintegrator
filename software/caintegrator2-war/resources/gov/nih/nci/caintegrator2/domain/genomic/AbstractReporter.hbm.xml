@@ -15,6 +15,11 @@
             <key column="REPORTER_ID" />
             <many-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Gene" column="GENE_ID" />
         </set>
+        <set name="samplesHighVariance" table="SAMPLE_REPORTERS_HIGH_VARIANCE" lazy="true" inverse="true">
+            <cache usage="read-write" />
+            <key column="ABSTRACT_REPORTER_ID" />
+            <many-to-many class="Sample" column="SAMPLE_ID" />
+        </set>
 		<many-to-one name="reporterList" 
             class="gov.nih.nci.caintegrator2.domain.genomic.ReporterList" 
             column="REPORTER_LIST_ID" 

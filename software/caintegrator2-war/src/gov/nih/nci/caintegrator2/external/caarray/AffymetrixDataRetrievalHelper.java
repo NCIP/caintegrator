@@ -104,10 +104,14 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -119,6 +123,8 @@ class AffymetrixDataRetrievalHelper extends AbstractDataRetrievalHelper {
     private static final String CHP_SIGNAL_TYPE_NAME = "CHPSignal";
     private static final Logger LOGGER = Logger.getLogger(AffymetrixDataRetrievalHelper.class);
     private final DataService dataService;
+    private final Map<Sample, List<HybridizationData>> sampleToHybridizationDataMap 
+        = new HashMap<Sample, List<HybridizationData>>();
 
     
     AffymetrixDataRetrievalHelper(GenomicDataSourceConfiguration genomicSource,
@@ -169,16 +175,31 @@ class AffymetrixDataRetrievalHelper extends AbstractDataRetrievalHelper {
 
     private void convertToArrayDataValues(DataSet dataSet) 
     throws DataRetrievalException, InvalidInputException {
-        for (HybridizationData hybridizationData : dataSet.getDatas()) {
-            loadArrayDataValues(hybridizationData, dataSet);
+        fillSampleToHybridizationDataMap(dataSet);
+        for (Sample sample : sampleToHybridizationDataMap.keySet()) {
+            loadArrayDataValues(sample, dataSet);
         }
     }
-
-    private void loadArrayDataValues(HybridizationData hybridizationData, DataSet dataSet) 
+    /**
+     * @param dataSet
+     * @throws InvalidInputException
+     */
+    private void fillSampleToHybridizationDataMap(DataSet dataSet) throws InvalidInputException {
+        sampleToHybridizationDataMap.clear();
+        for (HybridizationData hybridizationData : dataSet.getDatas()) {
+            Sample sample = getAssociatedSample(hybridizationData.getHybridization());
+            if (sampleToHybridizationDataMap.get(sample) == null) {
+                sampleToHybridizationDataMap.put(sample, new ArrayList<HybridizationData>());
+            }
+            sampleToHybridizationDataMap.get(sample).add(hybridizationData);
+        }
+    }
+    private void loadArrayDataValues(Sample sample, DataSet dataSet) 
     throws InvalidInputException {
-        ArrayData arrayData = createArrayData(hybridizationData.getHybridization());
+        List<HybridizationData> hybridizationDatas = sampleToHybridizationDataMap.get(sample);
+        ArrayData arrayData = createArrayData(sample, hybridizationDatas.get(0).getHybridization().getName());
         List<DesignElement> probeSets = dataSet.getDesignElements();
-        float[] values = ((FloatColumn) hybridizationData.getDataColumns().get(0)).getValues();
+        List<float[]> allHybridizationsValues = retrieveAllHybridizationValues(hybridizationDatas);
         for (int i = 0; i < probeSets.size(); i++) {
             AbstractReporter reporter = getReporter(probeSets.get(i));
             if (reporter == null) {
@@ -186,9 +207,26 @@ class AffymetrixDataRetrievalHelper extends AbstractDataRetrievalHelper {
                 LOGGER.warn("Reporter with name " + probeSetName + " was not found in platform " 
                         + getPlatformHelper().getPlatform().getName());
             } else {
-                setValue(arrayData, reporter, values[i]);
+                List<Float> floatValues = new ArrayList<Float>();
+                for (float[] values : allHybridizationsValues) {
+                    floatValues.add(values[i]);
+                }
+                setValue(arrayData, reporter, floatValues);
             }
         }
+    }
+
+    /**
+     * @param hybridizationDatas
+     * @return
+     */
+    private List<float[]> retrieveAllHybridizationValues(List<HybridizationData> hybridizationDatas) {
+        List<float[]> allHybridizationsValues = new ArrayList<float[]>();
+        for (HybridizationData hybridizationData : hybridizationDatas) {
+            float[] values = ((FloatColumn) hybridizationData.getDataColumns().get(0)).getValues();
+            allHybridizationsValues.add(values);
+        }
+        return allHybridizationsValues;
     }
 
 }

@@ -107,10 +107,11 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Records sample and array data retrieval information.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.ExcessiveClassLength" })
 public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object implements TimeStampable {
     
     private static final long serialVersionUID = 1L;
+    private static final Double DEFAULT_HIGH_VARIANCE_THRESHOLD = 50.0; // 50%
     private StudyConfiguration studyConfiguration;
     private ServerConnectionProfile serverProfile = new ServerConnectionProfile();
     private String experimentIdentifier;
@@ -123,9 +124,13 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private List<Sample> samples = new ArrayList<Sample>();
     private Set<SampleSet> controlSampleSetCollection = new HashSet<SampleSet>();
     private DnaAnalysisDataConfiguration dnaAnalysisDataConfiguration;
+    private CentralTendencyTypeEnum technicalReplicatesCentralTendency = CentralTendencyTypeEnum.MEAN;
     private Status status = Status.NOT_LOADED;
     private String statusDescription;
     private Date lastModifiedDate;
+    private Boolean useHighVarianceCalculation = true;
+    private HighVarianceCalculationTypeEnum highVarianceCalculationType = HighVarianceCalculationTypeEnum.PERCENTAGE;
+    private Double highVarianceThreshold = DEFAULT_HIGH_VARIANCE_THRESHOLD;
     
     /**
      * Mapping file is not configured.
@@ -556,5 +561,84 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
         setSampleMappingFileName(NONE_CONFIGURED);
         setSampleMappingFilePath(null);
         setStatus(Status.NOT_MAPPED);
+    }
+
+    /**
+     * @return the technicalReplicatesCentralTendency
+     */
+    public CentralTendencyTypeEnum getTechnicalReplicatesCentralTendency() {
+        return technicalReplicatesCentralTendency;
+    }
+
+    /**
+     * @param technicalReplicatesCentralTendency the technicalReplicatesCentralTendency to set
+     */
+    public void setTechnicalReplicatesCentralTendency(CentralTendencyTypeEnum technicalReplicatesCentralTendency) {
+        this.technicalReplicatesCentralTendency = technicalReplicatesCentralTendency;
+    }
+    
+    /**
+     * @return the resultType
+     */
+    public String getTechnicalReplicatesCentralTendencyString() {
+        if (technicalReplicatesCentralTendency == null) {
+            return "";
+        } else {
+            return technicalReplicatesCentralTendency.getValue();
+        }
+    }
+
+    /**
+     * @param technicalReplicatesCentralTendencyString the technicalReplicatesCentralTendency string value to set
+     */
+    public void setTechnicalReplicatesCentralTendencyString(String technicalReplicatesCentralTendencyString) {
+        if (StringUtils.isBlank(technicalReplicatesCentralTendencyString)) {
+            this.technicalReplicatesCentralTendency = null;
+        } else {
+            this.technicalReplicatesCentralTendency =
+                CentralTendencyTypeEnum.getByValue(technicalReplicatesCentralTendencyString);
+        }
+    }
+
+    /**
+     * @return the useHighVarianceCalculation
+     */
+    public Boolean isUseHighVarianceCalculation() {
+        return useHighVarianceCalculation;
+    }
+
+    /**
+     * @param useHighVarianceCalculation the useHighVarianceCalculation to set
+     */
+    public void setUseHighVarianceCalculation(Boolean useHighVarianceCalculation) {
+        this.useHighVarianceCalculation = useHighVarianceCalculation;
+    }
+
+    /**
+     * @return the highVarianceCalculationType
+     */
+    public HighVarianceCalculationTypeEnum getHighVarianceCalculationType() {
+        return highVarianceCalculationType;
+    }
+
+    /**
+     * @param highVarianceCalculationType the highVarianceCalculationType to set
+     */
+    public void setHighVarianceCalculationType(HighVarianceCalculationTypeEnum highVarianceCalculationType) {
+        this.highVarianceCalculationType = highVarianceCalculationType;
+    }
+
+    /**
+     * @return the highVarianceThreshold
+     */
+    public Double getHighVarianceThreshold() {
+        return highVarianceThreshold;
+    }
+
+    /**
+     * @param highVarianceThreshold the highVarianceThreshold to set
+     */
+    public void setHighVarianceThreshold(Double highVarianceThreshold) {
+        this.highVarianceThreshold = highVarianceThreshold;
     }
 }

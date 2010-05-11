@@ -26,5 +26,11 @@
             <key column="SAMPLE_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ArrayData"/>
         </set>
+        
+        <set name="reportersHighVariance" table="SAMPLE_REPORTERS_HIGH_VARIANCE" lazy="true" cascade="save-update,merge" >
+            <cache usage="read-write" />
+            <key column="SAMPLE_ID" />
+            <many-to-many class="AbstractReporter" column="ABSTRACT_REPORTER_ID" />
+        </set>
     </class>
 </hibernate-mapping>
