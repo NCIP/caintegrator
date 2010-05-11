@@ -292,22 +292,26 @@ public class CaBioFacadeImpl implements CaBioFacade {
         List<CaBioDisplayableGene> genes = new ArrayList<CaBioDisplayableGene>();
         Set<String> usedGeneSymbols = new HashSet<String>();
         for (Gene gene : geneResults) {
-            if (!usedGeneSymbols.contains(gene.getSymbol())) {
-                usedGeneSymbols.add(gene.getSymbol());
-                CaBioDisplayableGene displayableGene = new CaBioDisplayableGene();
-                displayableGene.setId(String.valueOf(gene.getId()));
-                displayableGene.setFullName(gene.getFullName());
-                displayableGene.setHugoSymbol(gene.getHugoSymbol());
-                displayableGene.setSymbol(gene.getSymbol());
-                displayableGene.setTaxonCommonName(gene.getTaxon().getCommonName());
-                genes.add(displayableGene);
-            }
+            addDisplayableGene(genes, usedGeneSymbols, gene);
         }
         if (searchParams.isFilterGenesOnStudy() && !genes.isEmpty()) {
             genes = filterGenesNotInStudy(genes, searchParams.getStudy());
         }
         Collections.sort(genes);
         return genes;
+    }
+
+    private void addDisplayableGene(List<CaBioDisplayableGene> genes, Set<String> usedGeneSymbols, Gene gene) {
+        if (StringUtils.isNotBlank(gene.getSymbol()) && !usedGeneSymbols.contains(gene.getSymbol())) {
+            usedGeneSymbols.add(gene.getSymbol());
+            CaBioDisplayableGene displayableGene = new CaBioDisplayableGene();
+            displayableGene.setId(String.valueOf(gene.getId()));
+            displayableGene.setFullName(gene.getFullName());
+            displayableGene.setHugoSymbol(gene.getHugoSymbol());
+            displayableGene.setSymbol(gene.getSymbol());
+            displayableGene.setTaxonCommonName(gene.getTaxon().getCommonName());
+            genes.add(displayableGene);
+        }
     }
     
     private List<CaBioDisplayablePathway> createCaBioDisplayablePathways(List<Object> pathwayResults) {
