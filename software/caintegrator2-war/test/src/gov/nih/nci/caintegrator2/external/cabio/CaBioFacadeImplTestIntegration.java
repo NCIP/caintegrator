@@ -145,7 +145,7 @@ public class CaBioFacadeImplTestIntegration {
         params.setSearchType(CaBioSearchTypeEnum.PATHWAYS);
         List<CaBioDisplayablePathway> pathways = caBioFacade.retrievePathways(params);
         assertEquals(1, pathways.size());
-        assertEquals("1", pathways.get(0).getId());
+        assertEquals("475", pathways.get(0).getId());
     }
     
     @Test
@@ -156,15 +156,15 @@ public class CaBioFacadeImplTestIntegration {
         params.setTaxon("human");
         params.setFilterGenesOnStudy(false);
         Pathway pathway = new Pathway();
-        pathway.setId(1l);
+        pathway.setId(665l); //h_LDLpathway
         pathway.setTaxon(taxon);
         Pathway pathway2 = new Pathway();
-        pathway2.setId(2l);
+        pathway2.setId(857l); //h_ace2Pathway
         pathway2.setTaxon(taxon);
         params.getPathways().add(pathway);
         params.getPathways().add(pathway2);
         List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenesFromPathways(params);
-        assertEquals(23, genes.size());
+        assertEquals(19, genes.size());
     }
     
     @Test
