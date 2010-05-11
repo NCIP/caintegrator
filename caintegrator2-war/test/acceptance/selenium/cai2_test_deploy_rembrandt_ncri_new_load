@@ -126,11 +126,6 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>action:updateClinicalAnnotationDefinition</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
 	<td>//button[@type='button' and @onclick='document.subjectAnnotationsForm.submit();']</td>
 	<td></td>
 </tr>
