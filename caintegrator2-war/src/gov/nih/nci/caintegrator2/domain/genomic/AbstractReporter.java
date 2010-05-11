@@ -30,6 +30,7 @@ public abstract class AbstractReporter extends AbstractCaIntegrator2Object imple
     private Integer index;
     private ReporterList reporterList;
     private Set<Gene> genes = new HashSet<Gene>();
+    private Set<Sample> samplesHighVariance = new HashSet<Sample>();
     
     /**
      * @return the name
@@ -121,6 +122,21 @@ public abstract class AbstractReporter extends AbstractCaIntegrator2Object imple
         this.genes = genes;
     }
     
+    /**
+     * @return the samplesHighVariance
+     */
+    public Set<Sample> getSamplesHighVariance() {
+        return samplesHighVariance;
+    }
+
+    /**
+     * @param samplesHighVariance the samplesHighVariance to set
+     */
+    @SuppressWarnings("unused") // Used by Hibernate
+    private void setSamplesHighVariance(Set<Sample> samplesHighVariance) {
+        this.samplesHighVariance = samplesHighVariance;
+    }
+
     /**
      * Provides a comma-separated list of gene symbols intended for display.
      * 

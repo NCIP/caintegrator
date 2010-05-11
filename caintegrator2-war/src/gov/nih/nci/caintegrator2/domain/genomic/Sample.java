@@ -20,6 +20,7 @@ public class Sample extends AbstractCaIntegrator2Object {
     private SampleAcquisition sampleAcquisition;
     private Set<ArrayData> arrayDataCollection = new HashSet<ArrayData>();
     private Set<Array> arrayCollection = new HashSet<Array>();
+    private Set<AbstractReporter> reportersHighVariance = new HashSet<AbstractReporter>();
     
     /**
      * @return the name
@@ -95,6 +96,21 @@ public class Sample extends AbstractCaIntegrator2Object {
     @SuppressWarnings("unused") // Required by Hibernate
     private void setArrayCollection(Set<Array> arrayCollection) {
         this.arrayCollection = arrayCollection;
+    }
+
+    /**
+     * @return the reportersHighVariance
+     */
+    public Set<AbstractReporter> getReportersHighVariance() {
+        return reportersHighVariance;
+    }
+
+    /**
+     * @param reportersHighVariance the reportersHighVariance to set
+     */
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setReportersHighVariance(Set<AbstractReporter> reportersHighVariance) {
+        this.reportersHighVariance = reportersHighVariance;
     }
 
     /**

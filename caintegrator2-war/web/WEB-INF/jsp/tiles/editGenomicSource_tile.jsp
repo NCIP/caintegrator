@@ -33,7 +33,8 @@
                     || (origExperimentId != document.getElementById("experimentId").value)
                     || (origPlatformVendor != document.getElementById("platformVendor").value)
                     || (origDataType != document.getElementById("dataType").value)
-                    || (origPlatformName != document.getElementById("platformName").value)) {
+                    || (origPlatformName != document.getElementById("platformName").value)
+                    || (origTechnicalReplicatesCentralTendency != document.getElementById("technicalReplicatesCentralTendency").value)) {
                     if (confirm("You are about to update the configuration information for this data source.  "
                         + "Doing so will require you to remap your samples. "
                         + "Please click OK to update the data source or click Cancel to go back.")) {
@@ -107,6 +108,10 @@
                         label="Platform (needed for Agilent and Affy Expression)"
                         list="filterPlatformNames" 
                         disabled="platformNameDisable"/>
+                    <s:select id="technicalReplicatesCentralTendency" name="genomicSource.technicalReplicatesCentralTendencyString" label="Central Tendency for Technical Replicates"
+                        list="@gov.nih.nci.caintegrator2.application.study.CentralTendencyTypeEnum@getStringValues()"
+                        />
+                    
                     <tr> 
                         <td></td>
                         <td>
@@ -126,6 +131,7 @@
                         var origPlatformVendor = document.genomicSourceForm.platformVendor.value;
                         var origDataType = document.genomicSourceForm.dataType.value;
                         var origPlatformName = document.genomicSourceForm.platformName.value;
+                        var origTechnicalReplicatesCentralTendency = document.genomicSourceForm.technicalReplicatesCentralTendency.value;
                     </script>
                 </s:form>
                 </td>

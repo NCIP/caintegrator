@@ -340,4 +340,8 @@
         <comment>Adds LOG_ENTRY table</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.32.sql"/>
     </changeSet>
+    <changeSet id="1.1.33" author="tandrews">
+        <comment>Adds Central Tendency to GENOMIC_DATA_SOURCE_CONFIGURATION</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.33.sql"/>
+    </changeSet>
 </databaseChangeLog>
