@@ -595,10 +595,10 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
      * @return the same string with html characters removed or empty string.
      */
     protected static final String removeHtmlChars(String inputString) {
-    	if (inputString != null) {
-         return inputString.replaceAll("\\<[^>]*>", StringUtils.EMPTY);
-    	}
-    	return StringUtils.EMPTY;
+        if (inputString != null) {
+             return inputString.replaceAll("\\<[^>]*>", StringUtils.EMPTY);
+        }
+        return StringUtils.EMPTY;
     }    
     
 }
