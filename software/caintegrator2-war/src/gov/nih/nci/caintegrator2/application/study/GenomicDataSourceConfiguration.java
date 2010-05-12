@@ -627,6 +627,29 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     public void setHighVarianceCalculationType(HighVarianceCalculationTypeEnum highVarianceCalculationType) {
         this.highVarianceCalculationType = highVarianceCalculationType;
     }
+    
+    /**
+     * @return the resultType
+     */
+    public String getHighVarianceCalculationTypeString() {
+        if (highVarianceCalculationType == null) {
+            return "";
+        } else {
+            return highVarianceCalculationType.getValue();
+        }
+    }
+
+    /**
+     * @param highVarianceCalculationTypeString the highVarianceCalculationType string value to set
+     */
+    public void setHighVarianceCalculationTypeString(String highVarianceCalculationTypeString) {
+        if (StringUtils.isBlank(highVarianceCalculationTypeString)) {
+            this.highVarianceCalculationType = null;
+        } else {
+            this.highVarianceCalculationType =
+                HighVarianceCalculationTypeEnum.getByValue(highVarianceCalculationTypeString);
+        }
+    }
 
     /**
      * @return the highVarianceThreshold
