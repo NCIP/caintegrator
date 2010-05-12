@@ -117,7 +117,7 @@ public final class MathUtil {
      *            of numbers to calculate median for.
      * @return median value.
      */
-    public static Double median(List<Double> list) {
+    public static Double medianDouble(List<Double> list) {
         if (list.size() == 1) {
             return list.get(0);
         }
@@ -130,20 +130,6 @@ public final class MathUtil {
         }
     }
 
-    /**
-     * Retrieves mean value of the list of floats.
-     * 
-     * @param list
-     *            of values.
-     * @return mean value.
-     */
-    public static Double mean(List<Double> list) {
-        Double totalNumber = 0.0;
-        for (Double value : list) {
-            totalNumber += value;
-        }
-        return list.isEmpty() ? 0 : totalNumber / list.size();
-    }
 
     /**
      * Retrieves mean value of the list of floats.

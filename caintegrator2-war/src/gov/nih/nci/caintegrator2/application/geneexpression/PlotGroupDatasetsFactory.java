@@ -132,7 +132,7 @@ public final class PlotGroupDatasetsFactory {
     private static void updateDatasets(PlotGroupDatasets datasets, String columnKey, String rowKey, 
                                         List<Double> rowValues, Double totalValue) {
         datasets.getMeanDataset().addValue(MathUtil.mean(totalValue, rowValues.size()), rowKey, columnKey);
-        datasets.getMedianDataset().addValue(MathUtil.median(rowValues), rowKey, columnKey);
+        datasets.getMedianDataset().addValue(MathUtil.medianDouble(rowValues), rowKey, columnKey);
     }
     
     private static void updateLog2Datasets(PlotGroupDatasets datasets, String columnKey, String rowKey, 
