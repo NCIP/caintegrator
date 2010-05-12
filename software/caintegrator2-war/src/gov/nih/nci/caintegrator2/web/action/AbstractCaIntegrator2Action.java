@@ -113,6 +113,8 @@ import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 
@@ -586,5 +588,17 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     public boolean isStudyManager() {
         return (isAnonymousUser()) ? false : SecurityHelper.isStudyManager(SecurityHelper.getCurrentUsername());
     }
+
+   
+    /**
+     * @param inputString the string being parsed
+     * @return the same string with html characters removed or empty string.
+     */
+    protected static final String removeHtmlChars(String inputString) {
+    	if (inputString != null) {
+         return inputString.replaceAll("\\<[^>]*>", StringUtils.EMPTY);
+    	}
+    	return StringUtils.EMPTY;
+    }    
     
 }
