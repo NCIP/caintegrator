@@ -344,4 +344,10 @@
         <comment>Adds Central Tendency to GENOMIC_DATA_SOURCE_CONFIGURATION</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.33.sql"/>
     </changeSet>
+    
+    
+    <changeSet id="1.1.35" author="tandrews">
+        <comment>Adds High Variance attributes to GENOMIC_DATA_SOURCE_CONFIGURATION</comment>
+        <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.35.sql"/>
+    </changeSet>
 </databaseChangeLog>
