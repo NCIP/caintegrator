@@ -113,6 +113,7 @@ public class SaveStudyAction extends AbstractStudyAction {
             } else {
                 setStudyLastModifiedByCurrentUser(null, 
                         LogEntry.getSystemLogSave(getStudyConfiguration().getStudy()));
+                cleanStudyName();
                 getStudyManagementService().save(getStudyConfiguration());
             }
             return SUCCESS;
@@ -125,6 +126,7 @@ public class SaveStudyAction extends AbstractStudyAction {
     private String createStudy() {
         getStudyConfiguration().setUserWorkspace(getWorkspace());
         getStudyConfiguration().setLastModifiedBy(getWorkspace());
+        cleanStudyName();     
         getStudyManagementService().save(getStudyConfiguration());
         setStudyLastModifiedByCurrentUser(null, 
                 LogEntry.getSystemLogCreate(getStudyConfiguration().getStudy()));
@@ -162,6 +164,13 @@ public class SaveStudyAction extends AbstractStudyAction {
             addFieldError("study.longTitleText",
                     "Study description exceeds maximum length of 200 characters, please shorten it.");
         }
+    }
+    
+    private void cleanStudyName() {
+        getStudyConfiguration().getStudy().setShortTitleText(removeHtmlChars(getStudyConfiguration().getStudy().
+                getShortTitleText()));
+        getStudyConfiguration().getStudy().setLongTitleText(removeHtmlChars(getStudyConfiguration().getStudy().
+                getLongTitleText()));     	
     }
 
 }
