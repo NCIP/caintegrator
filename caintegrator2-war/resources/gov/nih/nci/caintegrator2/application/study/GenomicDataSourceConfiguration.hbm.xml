@@ -13,6 +13,10 @@
     <typedef name="CentralTendencyType" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
        <param name="enumClass">gov.nih.nci.caintegrator2.application.study.CentralTendencyTypeEnum</param> 
     </typedef> 
+    
+     <typedef name="HighVarianceCalculationType" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator2.application.study.HighVarianceCalculationTypeEnum</param> 
+    </typedef> 
 	
 	<class name="GenomicDataSourceConfiguration" table="GENOMIC_DATA_SOURCE_CONFIGURATION" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
@@ -40,6 +44,9 @@
         <property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
         <property name="lastModifiedDate" type="java.util.Date" column="LAST_MODIFIED_DATE"/>
         <property name="technicalReplicatesCentralTendency" type="CentralTendencyType" column="TECHNICAL_REPLICATES_CENTRAL_TENDENCY"/>
+        <property name="useHighVarianceCalculation" type="boolean" column="USE_HIGH_VARIANCE_CALCULATION" />
+        <property name="highVarianceCalculationType" type="HighVarianceCalculationType" column="HIGH_VARIANCE_CALCULATION_TYPE" />
+        <property name="highVarianceThreshold" type="double" column="HIGH_VARIANCE_THRESHOLD" />
         
         <list name="sampleIdentifiers" lazy="true" inverse="true" cascade="all">
             <cache usage="read-write" />

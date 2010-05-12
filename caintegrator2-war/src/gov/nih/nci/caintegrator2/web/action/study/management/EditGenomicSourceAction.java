@@ -241,6 +241,10 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         configuration.setPlatformVendor(getGenomicSource().getPlatformVendor());
         configuration.setPlatformName(getGenomicSource().getPlatformName());
         configuration.setDataType(getGenomicSource().getDataType());
+        configuration.setTechnicalReplicatesCentralTendency(getGenomicSource().getTechnicalReplicatesCentralTendency());
+        configuration.setUseHighVarianceCalculation(getGenomicSource().isUseHighVarianceCalculation());
+        configuration.setHighVarianceThreshold(getGenomicSource().getHighVarianceThreshold());
+        configuration.setHighVarianceCalculationType(getGenomicSource().getHighVarianceCalculationType());
         return configuration;
     }
 
@@ -258,6 +262,16 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
             addFieldError("genomicSource.platformName", "Platform name is required for Agilent");
             return false;
         }
+        if (!validateGenomicSourceConnection()) {
+            return false;
+        }
+        if (!validateHighVarianceParameters()) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateGenomicSourceConnection() {
         try {
             caArrayFacade.validateGenomicSourceConnection(getGenomicSource());
         } catch (ConnectionException e) {
@@ -265,6 +279,17 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
             return false;
         } catch (ExperimentNotFoundException e) {
             addFieldError("genomicSource.experimentIdentifier", "Experiment identifier not found on server.");
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean validateHighVarianceParameters() {
+        if (getGenomicSource().isUseHighVarianceCalculation()
+                && (getGenomicSource().getHighVarianceThreshold() == null || getGenomicSource()
+                        .getHighVarianceThreshold() <= 0)) {
+            addFieldError("genomicSource.highVarianceThreshold", 
+                    "High Variance Threshold must be a number greater than 0.");
             return false;
         }
         return true;
@@ -375,6 +400,15 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      */
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
+    }
+    
+    /**
+     * 
+     * @return css style value.
+     */
+    public String getVarianceInputCssStyle() {
+        return getGenomicSource().isUseHighVarianceCalculation() 
+            ? "display: block;" : "display: none;";
     }
        
 }
