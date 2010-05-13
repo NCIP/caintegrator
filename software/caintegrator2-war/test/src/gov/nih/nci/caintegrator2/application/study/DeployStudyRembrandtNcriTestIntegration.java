@@ -263,4 +263,9 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
         return "Affymetrix";
     }
 
+    @Override
+    protected boolean getUseSupplementalFiles() {
+        return false;
+    }
+
 }

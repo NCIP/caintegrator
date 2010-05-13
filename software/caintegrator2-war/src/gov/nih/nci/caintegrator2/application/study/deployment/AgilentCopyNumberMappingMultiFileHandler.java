@@ -98,7 +98,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
-import gov.nih.nci.caintegrator2.external.caarray.Level2DataFile;
+import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -121,7 +121,8 @@ import au.com.bytecode.opencsv.CSVReader;
 class AgilentCopyNumberMappingMultiFileHandler extends AbstractDnaAnalysisMappingFileHandler {
     
     static final String FILE_TYPE = "data";
-    private final Map<Sample, List<Level2DataFile>> sampleToDataFileMap = new HashMap<Sample, List<Level2DataFile>>();
+    private final Map<Sample, List<SupplementalDataFile>> sampleToDataFileMap =
+        new HashMap<Sample, List<SupplementalDataFile>>();
     
     AgilentCopyNumberMappingMultiFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
@@ -135,11 +136,11 @@ class AgilentCopyNumberMappingMultiFileHandler extends AbstractDnaAnalysisMappin
             while ((fields = reader.readNext()) != null) {
                 String subjectId = fields[0].trim();
                 String sampleName = fields[1].trim();
-                Level2DataFile level2DataFile = new Level2DataFile();
-                level2DataFile.setFileName(fields[2].trim());
-                level2DataFile.setProbeNameHeader(fields[3].trim());
-                level2DataFile.setLogRatioHeader(fields[4].trim());
-                mappingSample(subjectId, sampleName, level2DataFile);
+                SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
+                supplementalDataFile.setFileName(fields[2].trim());
+                supplementalDataFile.setProbeNameHeader(fields[3].trim());
+                supplementalDataFile.setValueHeader(fields[4].trim());
+                mappingSample(subjectId, sampleName, supplementalDataFile);
             }
             List<ArrayDataValues> arrayDataValues = loadArrayDataValues();
             getDao().save(getGenomicSource().getStudyConfiguration());
@@ -152,19 +153,19 @@ class AgilentCopyNumberMappingMultiFileHandler extends AbstractDnaAnalysisMappin
         }
     }
 
-    private void mappingSample(String subjectIdentifier, String sampleName, Level2DataFile level2DataFile) 
+    private void mappingSample(String subjectIdentifier, String sampleName, SupplementalDataFile supplementalDataFile) 
     throws ValidationException, FileNotFoundException {
         Sample sample = getSample(sampleName, subjectIdentifier);
-        addCopyNumberFile(sample, level2DataFile);
+        addCopyNumberFile(sample, supplementalDataFile);
     }
 
-    private void addCopyNumberFile(Sample sample, Level2DataFile level2DataFile) {
-        List<Level2DataFile> level2DataFiles = sampleToDataFileMap.get(sample);
-        if (level2DataFiles == null) {
-            level2DataFiles = new ArrayList<Level2DataFile>();
-            sampleToDataFileMap.put(sample, level2DataFiles);
+    private void addCopyNumberFile(Sample sample, SupplementalDataFile supplementalDataFile) {
+        List<SupplementalDataFile> supplementalDataFiles = sampleToDataFileMap.get(sample);
+        if (supplementalDataFiles == null) {
+            supplementalDataFiles = new ArrayList<SupplementalDataFile>();
+            sampleToDataFileMap.put(sample, supplementalDataFiles);
         }
-        level2DataFiles.add(level2DataFile);
+        supplementalDataFiles.add(supplementalDataFile);
     }
 
     private List<ArrayDataValues> loadArrayDataValues() 
@@ -178,21 +179,21 @@ class AgilentCopyNumberMappingMultiFileHandler extends AbstractDnaAnalysisMappin
 
     private ArrayDataValues loadArrayDataValues(Sample sample) 
     throws ConnectionException, DataRetrievalException, ValidationException {
-        List<Level2DataFile> level2DataFiles = new ArrayList<Level2DataFile>();
+        List<SupplementalDataFile> supplementalDataFiles = new ArrayList<SupplementalDataFile>();
         try {
-            for (Level2DataFile level2DataFile : sampleToDataFileMap.get(sample)) {
-                level2DataFile.setFile(getDataFile(level2DataFile.getFileName()));
-                level2DataFiles.add(level2DataFile);
+            for (SupplementalDataFile supplementalDataFile : sampleToDataFileMap.get(sample)) {
+                supplementalDataFile.setFile(getDataFile(supplementalDataFile.getFileName()));
+                supplementalDataFiles.add(supplementalDataFile);
             }
-            return loadArrayDataValues(sample, level2DataFiles);
+            return loadArrayDataValues(sample, supplementalDataFiles);
         } finally {
-            for (Level2DataFile level2DataFile : level2DataFiles) {
-                doneWithFile(level2DataFile.getFile());
+            for (SupplementalDataFile supplementalDataFile : supplementalDataFiles) {
+                doneWithFile(supplementalDataFile.getFile());
             }
         }
     }
 
-    private ArrayDataValues loadArrayDataValues(Sample sample, List<Level2DataFile> level2DataFiles) 
+    private ArrayDataValues loadArrayDataValues(Sample sample, List<SupplementalDataFile> supplementalDataFiles) 
     throws DataRetrievalException, ValidationException {
         PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(getGenomicSource().getPlatformName()));
         Set<ReporterList> reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
@@ -200,8 +201,9 @@ class AgilentCopyNumberMappingMultiFileHandler extends AbstractDnaAnalysisMappin
         getDao().save(arrayData);
         ArrayDataValues values = 
             new ArrayDataValues(platformHelper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
-        for (Level2DataFile level2DataFile : level2DataFiles) {
-            AgilentCopyNumberDataRetrieval.INSTANCE.parseDataFile(level2DataFile, values, arrayData, platformHelper);
+        for (SupplementalDataFile supplementalDataFile : supplementalDataFiles) {
+            AgilentCopyNumberDataRetrieval.INSTANCE.parseDataFile(supplementalDataFile, values,
+                    arrayData, platformHelper);
         }
         getArrayDataService().save(values);
         return values;

@@ -178,6 +178,9 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      * @return struts string.
      */
     public String refresh() {
+        if (!isAffyExpression()) {
+            getGenomicSource().setUseSupplementalFiles(true);
+        }
         return SUCCESS;
     }
     
@@ -259,7 +262,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     private boolean validateSave() {
         if (isPlatformNameRequired()
                 && StringUtils.isEmpty(getGenomicSource().getPlatformName())) {
-            addFieldError("genomicSource.platformName", "Platform name is required for Agilent");
+            addFieldError("genomicSource.platformName", "Platform name is required for using supplemental files.");
             return false;
         }
         if (!validateGenomicSourceConnection()) {
@@ -281,8 +284,18 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
             addFieldError("genomicSource.experimentIdentifier", "Experiment identifier not found on server.");
             return false;
         }
+        return checkUseSupplementalFiles();
+    }
+    
+    private boolean checkUseSupplementalFiles() {
+        if (!isAffyExpression() && !getGenomicSource().isUseSupplementalFiles()) {
+            addFieldError("genomicSource.useSupplementalFiles",
+                    "Only Affymetrix Gene Expression is parsed in CaArray, all others have to use supplemental files.");
+            return false;
+        }
         return true;
     }
+
     
     private boolean validateHighVarianceParameters() {
         if (getGenomicSource().isUseHighVarianceCalculation()
@@ -296,16 +309,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     }
     
     private boolean isPlatformNameRequired() {
-        return isAgilent() || isAffyExpression();
-    }
-    
-    private boolean isAgilent() {
-        return PlatformVendorEnum.AGILENT.getValue().equals(getGenomicSource().getPlatformVendor());
-    }
-    
-    private boolean isAffyExpression() {
-        return PlatformVendorEnum.AFFYMETRIX.getValue().equals(getGenomicSource().getPlatformVendor())
-        && GenomicDataSourceDataTypeEnum.EXPRESSION.equals(getGenomicSource().getDataType());
+        return getGenomicSource().isUseSupplementalFiles();
     }
     
     /**
@@ -339,11 +343,11 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     }
     
     /**
-     * Disabled status for the platform name selection.
-     * @return whether to disable the platform names.
+     * Disabled status for the useSupplementalFiles checkbox.
+     * @return whether to disable the checkbox.
      */
-    public String getPlatformNameDisable() {
-        return isPlatformNameRequired() ? "false" : "true";
+    public String getUseSupplementalFilesDisable() {
+        return isAffyExpression() ? "false" : "true";
     }
 
     /**

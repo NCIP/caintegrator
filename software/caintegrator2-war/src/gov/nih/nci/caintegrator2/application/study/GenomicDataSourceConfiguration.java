@@ -123,6 +123,8 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
     private List<Sample> samples = new ArrayList<Sample>();
     private Set<SampleSet> controlSampleSetCollection = new HashSet<SampleSet>();
+    private boolean singleDataFile = false;
+    private boolean useSupplementalFiles = false;
     private DnaAnalysisDataConfiguration dnaAnalysisDataConfiguration;
     private CentralTendencyTypeEnum technicalReplicatesCentralTendency = CentralTendencyTypeEnum.MEAN;
     private Status status = Status.NOT_LOADED;
@@ -561,6 +563,34 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
         setSampleMappingFileName(NONE_CONFIGURED);
         setSampleMappingFilePath(null);
         setStatus(Status.NOT_MAPPED);
+    }
+
+    /**
+     * @return the useSupplementalFiles
+     */
+    public boolean isUseSupplementalFiles() {
+        return useSupplementalFiles;
+    }
+
+    /**
+     * @param useSupplementalFiles the useSupplementalFiles to set
+     */
+    public void setUseSupplementalFiles(boolean useSupplementalFiles) {
+        this.useSupplementalFiles = useSupplementalFiles;
+    }
+
+    /**
+     * @return the singleDataFile
+     */
+    public boolean isSingleDataFile() {
+        return singleDataFile;
+    }
+
+    /**
+     * @param singleDataFile the singleDataFile to set
+     */
+    public void setSingleDataFile(boolean singleDataFile) {
+        this.singleDataFile = singleDataFile;
     }
 
     /**

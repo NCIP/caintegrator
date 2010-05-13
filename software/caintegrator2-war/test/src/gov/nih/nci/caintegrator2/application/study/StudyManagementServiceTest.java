@@ -544,6 +544,7 @@ public class StudyManagementServiceTest {
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
         genomicDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
         genomicDataSourceConfiguration.setPlatformVendor("Agilent");
+        genomicDataSourceConfiguration.setUseSupplementalFiles(true);
         Sample sample1 = new Sample();
         sample1.setId(1L);
         sample1.setName("5500024030700072107989.B09");
@@ -553,7 +554,7 @@ public class StudyManagementServiceTest {
         sample2.setName("5500024030700072107989.G10");
         genomicDataSourceConfiguration.getSamples().add(sample2);
         studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
-        boolean hasException = true;
+        boolean hasException = false;
         try {
             studyManagementService.mapSamples(studyConfiguration, TestDataFiles.SIMPLE_SAMPLE_MAPPING_FILE, 
                 genomicDataSourceConfiguration);

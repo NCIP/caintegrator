@@ -206,10 +206,15 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.setExperimentIdentifier(getCopyNumberCaArrayId());
             genomicSource.setPlatformVendor(getPlatformVendor());
             genomicSource.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
+            genomicSource.setUseSupplementalFiles(getUseSupplementalFiles());
             service.addGenomicSource(studyConfiguration, genomicSource);
             getService().saveDnaAnalysisMappingFile(genomicSource, getCopyNumberFile(), getCopyNumberFile().getName());
             configureSegmentationDataCalcuation(genomicSource.getDnaAnalysisDataConfiguration());
         }
+    }
+
+    protected boolean getUseSupplementalFiles() {
+        return true;
     }
 
     protected int getCopyNumberCaArrayPort() {
@@ -451,6 +456,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.setPlatformName(getPlatformName());
             genomicSource.setPlatformVendor(getPlatformVendor());
             genomicSource.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+            genomicSource.setUseSupplementalFiles(getUseSupplementalFiles());
             if (getSampleMappingFile() != null) {
                 genomicSource.setSampleMappingFileName(getSampleMappingFile().getName());
             }

@@ -108,7 +108,6 @@ public class DnaAnalysisDataConfiguration implements Serializable {
     private Double earlyStoppingCriterion = DEFAULT_EARLY_STOPPING_CRITERION;
     private Integer permutationReplicates = DEFAULT_PERMUTATION_REPLICATES;
     private Integer randomNumberSeed = 0;
-    private boolean singleDataFile = false;;
     private ServerConnectionProfile segmentationService = new ServerConnectionProfile();
 
     /**
@@ -214,19 +213,5 @@ public class DnaAnalysisDataConfiguration implements Serializable {
      */
     public boolean isCaDNACopyConfiguration() {
         return getSegmentationService().getUrl() != null && getSegmentationService().getUrl().endsWith("/CaDNAcopy");
-    }
-
-    /**
-     * @return the singleDataFile
-     */
-    public boolean isSingleDataFile() {
-        return singleDataFile;
-    }
-
-    /**
-     * @param singleDataFile the singleDataFile to set
-     */
-    public void setSingleDataFile(boolean singleDataFile) {
-        this.singleDataFile = singleDataFile;
     }
 }

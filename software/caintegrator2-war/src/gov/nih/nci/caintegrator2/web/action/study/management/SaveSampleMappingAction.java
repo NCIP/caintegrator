@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 
@@ -189,7 +188,7 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
     private void persistFileName() {
         try {
             getGenomicSource().setSampleMappingFileName(getSampleMappingFileFileName());
-            if (PlatformVendorEnum.AGILENT.getValue().equals(getGenomicSource().getPlatformVendor())) {
+            if (getGenomicSource().isUseSupplementalFiles()) {
                 getStudyManagementService().saveSampleMappingFile(getGenomicSource(), getSampleMappingFile(),
                         getSampleMappingFileFileName());
             }
