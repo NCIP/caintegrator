@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>cai2_delete_studies_by_manager2</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">cai2_delete_studies_by_manager2</td></tr>
+</thead><tbody>
+<!--// This script requires a selenium core extension called goto_sel_ide.js-->
+<!--// The goto_sel_ide.js file is in this same directory and need to be selenium -> options -> selenium core extensions-->
+<!--// Start selenium and select the file by setting selenium -> options -> selenium core extensions.-->
+<tr>
+	<td>setTimeout</td>
+	<td>10000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1000</td>
+	<td>stop</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>index</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Studies</td>
+	<td></td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['index']&lt;=storedVars['stop']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//*[@id=&quot;studyDeploymentJobStatusTable&quot;]//span[text()='manager2']/parent::td/parent::tr//a[text()='Delete']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//*[@id=&quot;studyDeploymentJobStatusTable&quot;]//span[text()='manager2']/parent::td/parent::tr//a[text()='Delete']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>This study will be permanently deleted.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
