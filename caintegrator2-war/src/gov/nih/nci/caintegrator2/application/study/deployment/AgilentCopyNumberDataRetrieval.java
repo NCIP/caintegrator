@@ -92,8 +92,8 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataMultiFileParser;
-import gov.nih.nci.caintegrator2.external.caarray.Level2DataFile;
+import gov.nih.nci.caintegrator2.external.caarray.SupplementalMultiFileParser;
+import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
 
 import java.util.Map;
 
@@ -113,15 +113,16 @@ public final class AgilentCopyNumberDataRetrieval {
     
     /**
      * Parsing the level 2 data file.
-     * @param level2DataFile the level 2 data file detail.
+     * @param supplementalDataFile the level 2 data file detail.
      * @param values ArrayDataValues to be populated.
      * @param arrayData ArrayData mapping.
      * @param platformHelper the platformHelper.
      * @throws DataRetrievalException when unable to parse.
      */
-    public void parseDataFile(Level2DataFile level2DataFile, ArrayDataValues values, ArrayData arrayData,
+    public void parseDataFile(SupplementalDataFile supplementalDataFile, ArrayDataValues values, ArrayData arrayData,
             PlatformHelper platformHelper) throws DataRetrievalException {
-        Map<String, Float> agilentDataMap = AgilentLevelTwoDataMultiFileParser.INSTANCE.extractData(level2DataFile);
+        Map<String, Float> agilentDataMap = SupplementalMultiFileParser.INSTANCE.extractData(
+                supplementalDataFile, platformHelper.getPlatform().getVendor());
         loadArrayDataValues(agilentDataMap, values, arrayData, platformHelper);
     }
     

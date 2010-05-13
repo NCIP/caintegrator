@@ -180,8 +180,15 @@ class GenomicDataHelper {
     }
 
     private void loadAffymetrixExpressionData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
-            DataRetrievalException {
-        ArrayDataValues probeSetValues = caArrayFacade.retrieveData(genomicSource);
+            DataRetrievalException, ValidationException {
+        ArrayDataValues probeSetValues;
+        if (genomicSource.isUseSupplementalFiles()) {
+            ExpressionSampleMappingFileHandler handler = expressionHandlerFactory.getHandler(
+                    genomicSource, caArrayFacade, arrayDataService, dao);
+            probeSetValues = handler.loadArrayData();
+        } else {
+            probeSetValues = caArrayFacade.retrieveData(genomicSource);
+        }
         ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
         arrayDataService.save(probeSetValues);
         arrayDataService.save(geneValues);
@@ -189,7 +196,7 @@ class GenomicDataHelper {
     
     private void loadAgilentExpressionData(GenomicDataSourceConfiguration genomicSource)
     throws DataRetrievalException, ConnectionException, ValidationException {
-        AgilentSampleMappingFileHandler handler = expressionHandlerFactory.getHandler(
+        ExpressionSampleMappingFileHandler handler = expressionHandlerFactory.getHandler(
                 genomicSource, caArrayFacade, arrayDataService, dao);
         ArrayDataValues probeSetValues = handler.loadArrayData();
         ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);

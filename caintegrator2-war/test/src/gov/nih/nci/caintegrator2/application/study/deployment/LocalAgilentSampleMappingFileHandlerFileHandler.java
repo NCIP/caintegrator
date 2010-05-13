@@ -114,7 +114,7 @@ import java.util.Map;
  * Loads copy number data from locally-available CNCHP files (as opposed to retrieval from caArray) 
  * for quicker testing.
  */
-class LocalExpressionHandler extends AgilentSampleMappingFileHandler {
+class LocalExpressionHandler extends ExpressionSampleMappingFileHandler {
 
     LocalExpressionHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, CaIntegrator2Dao dao) {

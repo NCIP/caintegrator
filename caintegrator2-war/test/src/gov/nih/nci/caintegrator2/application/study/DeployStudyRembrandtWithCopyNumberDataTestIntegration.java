@@ -288,4 +288,9 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
         return "Affymetrix";
     }
 
+    @Override
+    protected boolean getUseSupplementalFiles() {
+        return false;
+    }
+
 }

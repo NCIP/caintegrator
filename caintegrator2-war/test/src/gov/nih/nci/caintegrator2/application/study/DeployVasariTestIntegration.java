@@ -235,4 +235,9 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
         return "Affymetrix";
     }
 
+    @Override
+    protected boolean getUseSupplementalFiles() {
+        return false;
+    }
+
 }

@@ -43,7 +43,7 @@
 
                 <s:actionerror />
                 <s:form id="sampleMappingForm" name="sampleMappingForm"
-                    action="saveSampleMapping" method="post" enctype="multipart/form-data" >
+                    action="saveSampleMapping" method="post" enctype="multipart/form-data" theme="css_xhtml" >
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="genomicSource.id" />
                     <s:if test="%{genomicSource.mappedSamples.isEmpty}">
@@ -61,6 +61,18 @@
                     <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" cssClass="readonly" />
                     <s:file id="sampleMappingFile" name="sampleMappingFile" label="Subject to Sample Mapping File" size="35" />
                     
+                    <s:if test="genomicSource.useSupplementalFiles">
+                        <s:div id="commentMappingDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
+                            <span class="wwlbl">(For using CaArray supplemental file use 5 column format mapping file)</span>
+                            <span class="wwctrl"></span>
+                        </s:div>
+                    </s:if>
+                    <s:else>
+                        <s:div id="commentMappingDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
+                            <span class="wwlbl">(For parsed CaArray experiment use 2 column format mapping file)</span>
+                            <span class="wwctrl"></span>
+                        </s:div>
+                    </s:else>
                     <s:textfield label="Control Sample Set Name" name="controlSampleSetName" required="true" theme="cai2xhtml" size="35"/>
                     <s:file name="controlSampleFile" label="Control Samples File" size="35" />
                     <tr> 

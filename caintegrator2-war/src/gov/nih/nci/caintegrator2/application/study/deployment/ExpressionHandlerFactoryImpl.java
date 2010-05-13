@@ -99,10 +99,10 @@ public class ExpressionHandlerFactoryImpl implements ExpressionHandlerFactory {
     /**
      * {@inheritDoc}
      */
-    public AgilentSampleMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
+    public ExpressionSampleMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao)
     throws DataRetrievalException {
-        return new AgilentSampleMappingFileHandler(genomicSource, caArrayFacade,
+        return new ExpressionSampleMappingFileHandler(genomicSource, caArrayFacade,
                         arrayDataService, dao);
     }
 }

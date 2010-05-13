@@ -89,16 +89,19 @@
                     <s:hidden name="mappingData" value="true"/>
                     <s:if test="genomicSource.statusDescription != null && genomicSource.statusDescription.length() > 0">
             	        <s:div cssStyle="padding: 1em 0 0 0;">
-                            <s:div cssClass="wwlbl"><label class="label">Status Description: </label></s:div>
+                            <s:div cssClass="wwlbl">
+                            	<label class="label">Status Description: </label></s:div>
 	                        <s:div>
-	                            <s:property value="genomicSource.statusDescription"/>                        
+	                            <s:property value="genomicSource.statusDescription"/>
 	                        </s:div>
 	                    </s:div>
 	                    <br />
                     </s:if>
                     <s:textfield label="caArray Web URL" name="genomicSource.serverProfile.url" id="caArrayUrl" />
                     <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" id="caArrayHost" />
-                    <s:div cssClass="wwlbl"><label class="label">(Note:  caArray v 2.3 or newer is required) </label></s:div>
+                    <s:div cssClass="wwlbl">
+                    	<label class="label">(Note:  caArray v 2.3 or newer is required) </label>
+                    </s:div>
                     <br />
                     <s:textfield label="caArray Server JNDI Port" name="genomicSource.serverProfile.port" id="caArrayPort" />
                     <!-- NOTE - using custom struts theme to turn off autocomplete -->
@@ -116,9 +119,10 @@
                                 document.genomicSourceForm.submit();"/>
                     <s:select id="platformName" 
                         name="genomicSource.platformName" 
-                        label="Platform (needed for Agilent and Affy Expression)"
-                        list="filterPlatformNames" 
-                        disabled="platformNameDisable"/>
+                        label="Platform"
+                        list="filterPlatformNames"/>
+                    <s:checkbox id="useSupplementalFiles" name="genomicSource.useSupplementalFiles" label="Use Supplemental Files"
+                        labelposition="left" disabled="useSupplementalFilesDisable"/>
                     <s:select id="technicalReplicatesCentralTendency" name="genomicSource.technicalReplicatesCentralTendencyString" label="Central Tendency for Technical Replicates"
                         list="@gov.nih.nci.caintegrator2.application.study.CentralTendencyTypeEnum@getStringValues()"
                         />

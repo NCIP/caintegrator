@@ -107,6 +107,8 @@ class SampleMappingHelper {
     private final StudyConfiguration studyConfiguration;
     private final File mappingFile;
     private final GenomicDataSourceConfiguration genomicSource;
+
+    private static final int PARSED_DATA_SAMPLE_MAPPING_COLUMN = 2;
     
     SampleMappingHelper(StudyConfiguration studyConfiguration, File mappingFile, 
             GenomicDataSourceConfiguration genomicSource) {
@@ -120,7 +122,9 @@ class SampleMappingHelper {
         CSVReader reader = new CSVReader(new FileReader(mappingFile));
         String[] values;
         unmapSamples(); // First unmap the previous mappings.
-        int columnNumber = PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor()).getSampleMappingColumns();
+        int columnNumber = (genomicSource.isUseSupplementalFiles())
+            ? PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor()).getSampleMappingColumns()
+            : PARSED_DATA_SAMPLE_MAPPING_COLUMN;
         while ((values = reader.readNext()) != null) {
             if (values.length != columnNumber) {
                 throw new ValidationException("Invalid file format - Expect " + columnNumber
@@ -132,17 +136,22 @@ class SampleMappingHelper {
             StudySubjectAssignment subjectAssignment = getSubjectAssignment(subjectIdentifier);
             Sample sample = getSample(sampleName);
                 
-            // map is throwing an exception.  This is a temporary check for null to prevent it.
-            if (subjectAssignment == null) {
-                throw new ValidationException("Subject Identifier not found '" + subjectIdentifier + "'");
-            }
-            if (StringUtils.isBlank(sampleName)) {
-                throw new ValidationException("No sample name for subject '" + subjectIdentifier + "'");
-            }
-            if (sample == null) {
-                throw new ValidationException("Sample not found '" + sampleName + "'");
-            }
+            validateMapping(subjectIdentifier, sampleName, subjectAssignment, sample);
             map(subjectAssignment, sample);
+        }
+    }
+
+    private void validateMapping(String subjectIdentifier, String sampleName, StudySubjectAssignment subjectAssignment,
+            Sample sample) throws ValidationException {
+        // map is throwing an exception.  This is a temporary check for null to prevent it.
+        if (subjectAssignment == null) {
+            throw new ValidationException("Subject Identifier not found '" + subjectIdentifier + "'");
+        }
+        if (StringUtils.isBlank(sampleName)) {
+            throw new ValidationException("No sample name for subject '" + subjectIdentifier + "'");
+        }
+        if (sample == null) {
+            throw new ValidationException("Sample not found '" + sampleName + "'");
         }
     }
     
