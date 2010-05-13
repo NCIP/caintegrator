@@ -95,6 +95,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -223,6 +224,7 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
         GeneList geneList = new GeneList();
         geneList.setName(getGeneListName());
         geneList.setDescription(getDescription());
+        geneList.setLastModifiedDate(new Date());
         if (isVisibleToOther()) {
             geneList.setVisibility(Visibility.GLOBAL);
             geneList.setStudyConfiguration(getSubscription().getStudy().getStudyConfiguration());
