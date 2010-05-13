@@ -15,12 +15,12 @@ public enum HighVarianceCalculationTypeEnum {
     /**
      * Percentage.
      */
-    PERCENTAGE("Percentage"),
+    PERCENTAGE("Relative (Percentage)"),
     
     /**
      * Value.
      */
-    VALUE("Value");
+    VALUE("Normal (Value)");
     
     private String value;
     

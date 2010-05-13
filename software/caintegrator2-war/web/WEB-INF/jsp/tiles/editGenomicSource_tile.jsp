@@ -122,17 +122,33 @@
                     <s:select id="technicalReplicatesCentralTendency" name="genomicSource.technicalReplicatesCentralTendencyString" label="Central Tendency for Technical Replicates"
                         list="@gov.nih.nci.caintegrator2.application.study.CentralTendencyTypeEnum@getStringValues()"
                         />
+                        
+                    <div class="wwgrp" id="wwgrp_isUseHighVarianceCalculation">
+                        <div class="wwlbl" id="wwlbl_isUseHighVarianceCalculation">
+                            <label class="checkboxLabel" for="isUseHighVarianceCalculation">Indicate if technical replicates have high statistical variability:</label>
+                            <s:checkbox id="isUseHighVarianceCalculation" 
+                                        name="genomicSource.useHighVarianceCalculation"
+                                        onclick="checkVarianceInputParams(this);"
+                                        theme="simple"
+                                        title="Denote in the search results if a sample has high statistical variability among technical replicates"
+                                        /> 
+                        </div> 
+                    </div>
+    
+                    <!-- 
                     <s:checkbox id="isUseHighVarianceCalculation" 
                     name="genomicSource.useHighVarianceCalculation"
-                    label="Calculate high variance among replicates: " 
-                    title="Denote in the search results if a sample has high variance among replicates"
-                    labelposition="left"
+                    label="Indicate if technical replicates have highS variability:" 
+                    title="Denote in the search results if a sample has high standard deviation replicates"
+                    labelposition="top"
                     onclick="checkVarianceInputParams(this);"
                     />
+                    -->
                     <s:div id="varianceInputParams" cssStyle="%{varianceInputCssStyle}">
-                    <s:textfield label="Variance Threshold" name="genomicSource.highVarianceThreshold" id="highVarianceThreshold" />
-                    <s:select id="highVarianceCalculationType" name="genomicSource.highVarianceCalculationTypeString" label="Variance Calculation Type" 
+                    <s:select id="highVarianceCalculationType" name="genomicSource.highVarianceCalculationTypeString" label="Standard Deviation Type" 
                         list="@gov.nih.nci.caintegrator2.application.study.HighVarianceCalculationTypeEnum@getStringValues()"/>
+                    <s:textfield label="Standard Deviation Threshold" name="genomicSource.highVarianceThreshold" id="highVarianceThreshold" />
+                    
                     </s:div>
                     
                     <s:div cssClass="wwgrp">
