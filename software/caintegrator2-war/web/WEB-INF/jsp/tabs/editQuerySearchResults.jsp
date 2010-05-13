@@ -61,6 +61,11 @@
     <div id="queryResultsDiv" >
         <s:if test='%{query.resultType.value.equals("genomic")}'>
             <s:set name="genomicDataNeedsHighlighting" value="genomicDataQueryResult.hasCriterionSpecifiedReporterValues" />
+            <s:if test="genomicDataQueryResult.hasHighVarianceValues" >
+                <div style="color: red;">
+                    **Derived from technical replicates that exceed the correlation threshold as set by the study manager.  See the study summary page for the correlation threshold.  
+                </div>
+            </s:if>
             <table class="data">
                 <s:if test='%{query.orientation.value.equals("subjectsAsColumns")}'>
                     <tr>
@@ -123,11 +128,11 @@
                             <s:iterator value="values">
                                 <s:if test="#genomicDataNeedsHighlighting && meetsCriterion">
                                     <td nowrap="nowrap" bgcolor="<s:property value='highlightColor'/>">
-                                        <b><font color="white"><s:property value="value" /></font></b>
+                                        <b><font color="white"><s:property value="displayableValue" /></font></b>
                                     </td>
                                 </s:if>
                                 <s:else>
-                                    <td nowrap="nowrap"><s:property value="value" /></td>
+                                    <td nowrap="nowrap"><s:property value="displayableValue" /></td>
                                 </s:else>
                             </s:iterator>
                         </s:iterator>
@@ -199,12 +204,12 @@
                             <s:iterator value="values">
                                 <s:if test="#genomicDataNeedsHighlighting && meetsCriterion">
                                     <td nowrap="nowrap" bgcolor="<s:property value='highlightColor'/>"><b><font color="white">
-                                        <s:property value="value" /></font></b>
+                                        <s:property value="displayableValue" /></font></b>
                                     </td>
                                 </s:if>
                                 <s:else>
                                     <td nowrap="nowrap">
-                                        <s:property value="value" />
+                                        <s:property value="displayableValue" />
                                     </td>
                                 </s:else>
                             </s:iterator>

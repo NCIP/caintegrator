@@ -17,6 +17,7 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
     private Query query;
     private List<GenomicDataResultColumn> columnCollection = new ArrayList<GenomicDataResultColumn>();
     private boolean hasCriterionSpecifiedReporterValues = false;
+    private boolean hasHighVarianceValues = false;
     
     /**
      * @return the rowCollection
@@ -138,5 +139,19 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
      */
     public void setHasCriterionSpecifiedReporterValues(boolean hasCriterionSpecifiedReporterValues) {
         this.hasCriterionSpecifiedReporterValues = hasCriterionSpecifiedReporterValues;
+    }
+
+    /**
+     * @return the hasHighVarianceValues
+     */
+    public boolean isHasHighVarianceValues() {
+        return hasHighVarianceValues;
+    }
+
+    /**
+     * @param hasHighVarianceValues the hasHighVarianceValues to set
+     */
+    public void setHasHighVarianceValues(boolean hasHighVarianceValues) {
+        this.hasHighVarianceValues = hasHighVarianceValues;
     }
 }
