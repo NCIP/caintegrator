@@ -40,6 +40,8 @@
         <property name="platformName" type="string" column="PLATFORM_NAME"/>
         <property name="sampleMappingFileName" type="string" column="SAMPLE_MAPPING_FILE_NAME"/>
         <property name="sampleMappingFilePath" type="string" column="SAMPLE_MAPPING_FILE_PATH"/>
+        <property name="useSupplementalFiles" type="boolean" column="USE_SUPPLEMENTAL_FILES" />
+        <property name="singleDataFile" type="boolean" column="SINGLE_DATA_FILE" />
         <property name="status" type="Status" column="STATUS"/>
         <property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
         <property name="lastModifiedDate" type="java.util.Date" column="LAST_MODIFIED_DATE"/>
@@ -74,7 +76,6 @@
             <property name="earlyStoppingCriterion" type="double" column="DNA_ANALYSIS_EARLY_STOPPING_CRITERION" />
             <property name="permutationReplicates" type="integer" column="DNA_ANALYSIS_PERMUTATION_REPLICATES" />
             <property name="randomNumberSeed" type="integer" column="DNA_ANALYSIS_RANDOM_NUMBER_SEED" />
-            <property name="singleDataFile" type="boolean" column="DNA_ANALYSIS_SINGLE_DATA_FILE" />
             <many-to-one name="segmentationService" cascade="all" column="SEGMENTATION_SERVICE_ID" />
         </component>
         

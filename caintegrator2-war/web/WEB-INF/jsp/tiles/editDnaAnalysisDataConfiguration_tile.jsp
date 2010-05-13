@@ -46,7 +46,7 @@
                     <s:textfield name="dnaAnalysisDataConfiguration.permutationReplicates" label="Permutation Replicates" /><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.randomNumberSeed" label="Random Number Seed" /><br>
                     <s:if test="possibleSingleDataFile">
-                        <s:checkbox name="dnaAnalysisDataConfiguration.singleDataFile" label="Single Data File"
+                        <s:checkbox name="genomicSource.singleDataFile" label="Single Data File"
                             labelposition="left" /><br>
                             <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
                                 <span class="wwlbl">(one data file for all samples)</span>

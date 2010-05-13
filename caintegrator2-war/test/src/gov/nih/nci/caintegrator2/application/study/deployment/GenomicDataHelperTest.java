@@ -47,6 +47,7 @@ public class GenomicDataHelperTest {
         genomicDataConfiguration.getSamples().add(sample);
         genomicDataConfiguration.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
         genomicDataConfiguration.setPlatformVendor("Affymetrix");
+        genomicDataConfiguration.setUseSupplementalFiles(false);
         studyConfiguration.getGenomicDataSources().add(genomicDataConfiguration);
         helper.loadData(studyConfiguration);
         assertTrue(arrayDataService.saveCalled);
