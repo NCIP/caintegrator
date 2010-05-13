@@ -129,7 +129,7 @@
                         
                     <div class="wwgrp" id="wwgrp_isUseHighVarianceCalculation">
                         <div class="wwlbl" id="wwlbl_isUseHighVarianceCalculation">
-                            <label class="checkboxLabel" for="isUseHighVarianceCalculation">Indicate if technical replicates have high statistical variability:</label>
+                            <label class="checkboxLabel" for="isUseHighVarianceCalculation">Indicate if Technical Replicates have high statistical variability:</label>
                             <s:checkbox id="isUseHighVarianceCalculation" 
                                         name="genomicSource.useHighVarianceCalculation"
                                         onclick="checkVarianceInputParams(this);"
