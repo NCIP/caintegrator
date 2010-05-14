@@ -54,7 +54,7 @@
     
     <definition name="editDnaAnalysisDataConfiguration" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editDnaAnalysisDataConfiguration_tile.jsp" />
-        <put-attribute name="subTitle" value="Edit DNA Analysis Data Configuration" />
+        <put-attribute name="subTitle" value="Edit Copy Number Data Configuration" />
     </definition>
 
 	<definition name="editImagingSource" extends="cssBaseDef">
