@@ -244,6 +244,8 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         configuration.setPlatformVendor(getGenomicSource().getPlatformVendor());
         configuration.setPlatformName(getGenomicSource().getPlatformName());
         configuration.setDataType(getGenomicSource().getDataType());
+        configuration.setUseSupplementalFiles(getGenomicSource().isUseSupplementalFiles());
+        configuration.setSingleDataFile(getGenomicSource().isSingleDataFile());
         configuration.setTechnicalReplicatesCentralTendency(getGenomicSource().getTechnicalReplicatesCentralTendency());
         configuration.setUseHighVarianceCalculation(getGenomicSource().isUseHighVarianceCalculation());
         configuration.setHighVarianceThreshold(getGenomicSource().getHighVarianceThreshold());
