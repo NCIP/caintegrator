@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -102,7 +103,7 @@ public class AgilentLevelTwoDataMultiFileParserTest {
     @Test
     public void testExtractData() throws DataRetrievalException {
         
-        Map<String, Float> agilentData;
+        Map<String, List<Float>> agilentData;
         boolean exceptionCaught = false;
         try {
             SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
