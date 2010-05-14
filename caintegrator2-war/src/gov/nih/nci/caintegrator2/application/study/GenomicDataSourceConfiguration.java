@@ -123,7 +123,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
     private List<Sample> samples = new ArrayList<Sample>();
     private Set<SampleSet> controlSampleSetCollection = new HashSet<SampleSet>();
-    private boolean singleDataFile = false;
+    private Boolean singleDataFile = false;
     private boolean useSupplementalFiles = false;
     private DnaAnalysisDataConfiguration dnaAnalysisDataConfiguration;
     private CentralTendencyTypeEnum technicalReplicatesCentralTendency = CentralTendencyTypeEnum.MEAN;
@@ -582,14 +582,14 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     /**
      * @return the singleDataFile
      */
-    public boolean isSingleDataFile() {
+    public Boolean isSingleDataFile() {
         return singleDataFile;
     }
 
     /**
      * @param singleDataFile the singleDataFile to set
      */
-    public void setSingleDataFile(boolean singleDataFile) {
+    public void setSingleDataFile(Boolean singleDataFile) {
         this.singleDataFile = singleDataFile;
     }
 
