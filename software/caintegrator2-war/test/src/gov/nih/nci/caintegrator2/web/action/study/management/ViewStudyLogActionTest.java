@@ -159,9 +159,13 @@ public class ViewStudyLogActionTest extends AbstractSessionBasedTest {
         setUsername("user");
         action.prepare();
         assertEquals(Action.SUCCESS, action.execute());
-        
-        
-        
     }
-
+    
+    @Test
+    public void testAcceptableParameterName() {
+        assertTrue(action.acceptableParameterName(null));
+        assertTrue(action.acceptableParameterName("ABC"));
+        assertFalse(action.acceptableParameterName("123"));
+        assertFalse(action.acceptableParameterName("d-123-e"));
+    }
 }
