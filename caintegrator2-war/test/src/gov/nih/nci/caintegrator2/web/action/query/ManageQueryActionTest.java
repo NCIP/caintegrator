@@ -396,4 +396,12 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertNotNull(sessionHelper.getDisplayableUserWorkspace().getTemporaryDownloadFile());
     }
     
+    @Test
+    public void testAcceptableParameterName() {
+        assertTrue(manageQueryAction.acceptableParameterName(null));
+        assertTrue(manageQueryAction.acceptableParameterName("ABC"));
+        assertFalse(manageQueryAction.acceptableParameterName("123"));
+        assertFalse(manageQueryAction.acceptableParameterName("d-123-e"));
+    }
+    
 }

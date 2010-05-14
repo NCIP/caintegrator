@@ -91,15 +91,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.opensymphony.xwork2.interceptor.ParameterNameAware;
+
 
 /**
  * Action called to edit an existing clinical data source.
  */
-public class EditStudyLogAction extends AbstractStudyAction {
+public class EditStudyLogAction extends AbstractStudyAction implements ParameterNameAware {
 
     private static final long serialVersionUID = 1L;
     private List<DisplayableLogEntry> displayableLogEntries = new ArrayList<DisplayableLogEntry>();
     private boolean readOnly = false;
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean acceptableParameterName(String parameterName) {
+        return !(parameterName != null
+                && (parameterName.startsWith("d-")
+                      || StringUtils.isNumeric(parameterName.substring(0, 1))));
+    }
             
     /**
      * {@inheritDoc}

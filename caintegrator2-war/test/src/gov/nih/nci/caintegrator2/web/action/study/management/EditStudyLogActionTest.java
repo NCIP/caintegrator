@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -160,6 +161,14 @@ public class EditStudyLogActionTest extends AbstractSessionBasedTest {
         assertEquals("new", logEntry2.getDescription());
         assertEquals("desc", logEntry1.getDescription());
         assertTrue(studyManagementService.saveCalled);
+    }
+    
+    @Test
+    public void testAcceptableParameterName() {
+        assertTrue(action.acceptableParameterName(null));
+        assertTrue(action.acceptableParameterName("ABC"));
+        assertFalse(action.acceptableParameterName("123"));
+        assertFalse(action.acceptableParameterName("d-123-e"));
     }
 
 }
