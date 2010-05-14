@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
@@ -123,10 +124,17 @@ class AgilentCopyNumberMappingMultiFileHandler extends AbstractDnaAnalysisMappin
     static final String FILE_TYPE = "data";
     private final Map<Sample, List<SupplementalDataFile>> sampleToDataFileMap =
         new HashMap<Sample, List<SupplementalDataFile>>();
+    private final CentralTendencyCalculator centralTendencyCalculator;
+    
     
     AgilentCopyNumberMappingMultiFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
+        this.centralTendencyCalculator = new CentralTendencyCalculator(
+                genomicSource.getTechnicalReplicatesCentralTendency(), 
+                genomicSource.isUseHighVarianceCalculation(), 
+                genomicSource.getHighVarianceThreshold(), 
+                genomicSource.getHighVarianceCalculationType());
     }
 
     List<ArrayDataValues> loadArrayData() throws DataRetrievalException, ConnectionException, ValidationException {
@@ -203,7 +211,7 @@ class AgilentCopyNumberMappingMultiFileHandler extends AbstractDnaAnalysisMappin
             new ArrayDataValues(platformHelper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
         for (SupplementalDataFile supplementalDataFile : supplementalDataFiles) {
             AgilentCopyNumberDataRetrieval.INSTANCE.parseDataFile(supplementalDataFile, values,
-                    arrayData, platformHelper);
+                    arrayData, platformHelper, centralTendencyCalculator);
         }
         getArrayDataService().save(values);
         return values;

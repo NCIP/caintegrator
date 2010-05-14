@@ -133,7 +133,7 @@ class LocalExpressionHandler extends ExpressionSampleMappingFileHandler {
     }
     
     @Override
-    protected void loadArrayDataValues(Map<String, Float> agilentDataMap, ArrayData arrayData) {
+    protected void loadArrayDataValues(Map<String, List<Float>> agilentDataMap, ArrayData arrayData) {
         List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         reporters.add(reporter);

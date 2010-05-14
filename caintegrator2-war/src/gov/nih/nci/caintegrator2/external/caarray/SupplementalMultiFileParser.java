@@ -91,7 +91,9 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -116,14 +118,14 @@ public final class SupplementalMultiFileParser {
      * @return the extracted data.
      * @throws DataRetrievalException when error parsing.
      */
-    public Map<String, Float> extractData(SupplementalDataFile supplementalDataFile, PlatformVendorEnum vendor)
+    public Map<String, List<Float>> extractData(SupplementalDataFile supplementalDataFile, PlatformVendorEnum vendor)
     throws DataRetrievalException {
         try {
             
             dataFileReader = new CSVReader(new InputStreamReader(
                     new FileInputStream(supplementalDataFile.getFile())), '\t');
             loadHeaders(supplementalDataFile.getProbeNameHeader());
-            Map<String, Float> dataMap = new HashMap<String, Float>();
+            Map<String, List<Float>> dataMap = new HashMap<String, List<Float>>();
             String[] fields;
             while ((fields = dataFileReader.readNext()) != null) {
                 String probeName = fields[headerToIndexMap.get(supplementalDataFile.getProbeNameHeader())];
@@ -136,17 +138,24 @@ public final class SupplementalMultiFileParser {
     }
 
     private void extractValue(SupplementalDataFile supplementalDataFile, PlatformVendorEnum vendor,
-            Map<String, Float> agilentDataMap, String[] fields, String probeName) {
+            Map<String, List<Float>> dataMap, String[] fields, String probeName) {
         if (PlatformVendorEnum.AGILENT.equals(vendor) && probeName.startsWith("A_")
                 || !PlatformVendorEnum.AGILENT.equals(vendor)) {
             Float value;
             try {
                 value = new Float(fields[headerToIndexMap.get(supplementalDataFile.getValueHeader())]);
-                agilentDataMap.put(probeName, value);
+                addValueToDataMap(dataMap, probeName, value);
             } catch (NumberFormatException e) {
                 value = 0.0f; // The value is missing ignore this reporter.
             }
         }
+    }
+    
+    private void addValueToDataMap(Map<String, List<Float>> dataMap, String probeName, Float value) {
+        if (!dataMap.containsKey(probeName)) {
+            dataMap.put(probeName, new ArrayList<Float>());
+        }
+        dataMap.get(probeName).add(value);
     }
 
     private void loadHeaders(String probeNameHeader) throws IOException, DataRetrievalException {
