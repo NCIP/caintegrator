@@ -94,14 +94,25 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.opensymphony.xwork2.interceptor.ParameterNameAware;
+
 
 /**
  * 
  */
-public class ViewStudyLogAction extends AbstractDeployedStudyAction {
+public class ViewStudyLogAction extends AbstractDeployedStudyAction implements ParameterNameAware {
     
     private static final long serialVersionUID = 1L;
     private List<DisplayableLogEntry> displayableLogEntries = new ArrayList<DisplayableLogEntry>();
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean acceptableParameterName(String parameterName) {
+        return !(parameterName != null
+                   && (parameterName.startsWith("d-")
+                         || StringUtils.isNumeric(parameterName.substring(0, 1))));
+    }
     
     /**
      * {@inheritDoc}

@@ -41,7 +41,7 @@
                         all parameters that contain only numbers (kmPlot page has this)
                      -->
                      <param name="excludeParams">
-                        dojo\..*,^struts\..*,_.*,d-\d+?-[sope],^\d+$
+                        dojo\..*,^struts\..*,_.*,d-\d+?-[sop],^\d+$
                      </param>
                  </interceptor-ref>
                 <interceptor-ref name="servletConfig"/>

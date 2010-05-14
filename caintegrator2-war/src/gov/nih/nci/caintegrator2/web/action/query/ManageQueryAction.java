@@ -196,15 +196,13 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
      */
     public boolean acceptableParameterName(String parameterName) {
         boolean retVal = true;
-        String firstCharacter = parameterName.substring(0, 1);
-
         if (parameterName != null) {
             if (parameterName.startsWith("d-")) {
                 retVal = false;
                 if (parameterName.endsWith("-e")) {
                     setExport(true);
                 }
-            } else if (StringUtils.isNumeric(firstCharacter)) {
+            } else if (StringUtils.isNumeric(parameterName.substring(0, 1))) {
                 retVal = false;
             }
         }
