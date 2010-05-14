@@ -88,13 +88,15 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
+import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.SupplementalMultiFileParser;
 import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
+import gov.nih.nci.caintegrator2.external.caarray.SupplementalMultiFileParser;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -117,17 +119,20 @@ public final class AgilentCopyNumberDataRetrieval {
      * @param values ArrayDataValues to be populated.
      * @param arrayData ArrayData mapping.
      * @param platformHelper the platformHelper.
+     * @param centralTendencyCalculator to calculate central tendency when there is more than one value 
+     *                                      per sample/reporter.
      * @throws DataRetrievalException when unable to parse.
      */
     public void parseDataFile(SupplementalDataFile supplementalDataFile, ArrayDataValues values, ArrayData arrayData,
-            PlatformHelper platformHelper) throws DataRetrievalException {
-        Map<String, Float> agilentDataMap = SupplementalMultiFileParser.INSTANCE.extractData(
+            PlatformHelper platformHelper, CentralTendencyCalculator centralTendencyCalculator) 
+    throws DataRetrievalException {
+        Map<String, List<Float>> agilentDataMap = SupplementalMultiFileParser.INSTANCE.extractData(
                 supplementalDataFile, platformHelper.getPlatform().getVendor());
-        loadArrayDataValues(agilentDataMap, values, arrayData, platformHelper);
+        loadArrayDataValues(agilentDataMap, values, arrayData, platformHelper, centralTendencyCalculator);
     }
     
-    private void loadArrayDataValues(Map<String, Float> agilentDataMap, ArrayDataValues values,
-            ArrayData arrayData, PlatformHelper platformHelper) {
+    private void loadArrayDataValues(Map<String, List<Float>> agilentDataMap, ArrayDataValues values,
+            ArrayData arrayData, PlatformHelper platformHelper, CentralTendencyCalculator centralTendencyCalculator) {
         for (String probeName : agilentDataMap.keySet()) {
             AbstractReporter reporter = getReporter(platformHelper, probeName);
             if (reporter == null) {
@@ -135,7 +140,7 @@ public final class AgilentCopyNumberDataRetrieval {
                         + platformHelper.getPlatform().getName());
             } else {
                 values.setFloatValue(arrayData, reporter, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO,
-                        agilentDataMap.get(probeName).floatValue());
+                        agilentDataMap.get(probeName), centralTendencyCalculator);
             }
         }
     }

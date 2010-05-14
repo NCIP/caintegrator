@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
@@ -101,9 +102,9 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.SupplementalMultiFileParser;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
+import gov.nih.nci.caintegrator2.external.caarray.SupplementalMultiFileParser;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -129,12 +130,14 @@ class ExpressionSampleMappingFileHandler extends AbstractCaArrayFileHandler {
     private static final Logger LOGGER = Logger.getLogger(ExpressionSampleMappingFileHandler.class);
     
     private final CaIntegrator2Dao dao;
+    private final CentralTendencyCalculator centralTendencyCalculator;
     static final String FILE_TYPE = "data";
     private final Map<Sample, List<SupplementalDataFile>> sampleToDataFileMap =
         new HashMap<Sample, List<SupplementalDataFile>>();
     private final PlatformHelper platformHelper;
     private final Set<ReporterList> reporterLists;
     private ArrayDataValues arrayDataValues;
+    
     
     ExpressionSampleMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
@@ -144,6 +147,11 @@ class ExpressionSampleMappingFileHandler extends AbstractCaArrayFileHandler {
         reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         arrayDataValues = 
             new ArrayDataValues(platformHelper.getAllReportersByType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET));
+        this.centralTendencyCalculator = new CentralTendencyCalculator(
+                genomicSource.getTechnicalReplicatesCentralTendency(), 
+                genomicSource.isUseHighVarianceCalculation(), 
+                genomicSource.getHighVarianceThreshold(), 
+                genomicSource.getHighVarianceCalculationType());
     }
 
     ArrayDataValues loadArrayData() throws DataRetrievalException, ConnectionException, ValidationException {
@@ -212,22 +220,22 @@ class ExpressionSampleMappingFileHandler extends AbstractCaArrayFileHandler {
         ArrayData arrayData = createArrayData(sample);
         dao.save(arrayData);
         for (SupplementalDataFile supplementalDataFile : supplementalDataFiles) {
-            Map<String, Float> agilentDataMap = SupplementalMultiFileParser.INSTANCE.extractData(
+            Map<String, List<Float>> dataMap = SupplementalMultiFileParser.INSTANCE.extractData(
                     supplementalDataFile, platformHelper.getPlatform().getVendor());
-            loadArrayDataValues(agilentDataMap, arrayData);
+            loadArrayDataValues(dataMap, arrayData);
         }
         getArrayDataService().save(arrayDataValues);
     }
     
-    protected void loadArrayDataValues(Map<String, Float> agilentDataMap, ArrayData arrayData) {
-        for (String probeName : agilentDataMap.keySet()) {
+    protected void loadArrayDataValues(Map<String, List<Float>> dataMap, ArrayData arrayData) {
+        for (String probeName : dataMap.keySet()) {
             AbstractReporter reporter = getReporter(probeName);
             if (reporter == null) {
                 LOGGER.warn("Reporter with name " + probeName + " was not found in platform " 
                         + platformHelper.getPlatform().getName());
             } else {
                 arrayDataValues.setFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL,
-                        agilentDataMap.get(probeName).floatValue());
+                        dataMap.get(probeName), centralTendencyCalculator);
             }
         }
     }
