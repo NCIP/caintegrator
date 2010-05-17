@@ -215,6 +215,7 @@ public class KMPlotGeneExpressionBasedActionTest extends AbstractSessionBasedTes
         action.getKmPlotParameters().getSurvivalValueDefinition().getDeathDate().setDataType(AnnotationTypeEnum.DATE);
         action.getKmPlotParameters().getSurvivalValueDefinition().setLastFollowupDate(new AnnotationDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().getLastFollowupDate().setDataType(AnnotationTypeEnum.DATE);
+        action.getKmPlotParameters().setControlSampleSetName("controls");
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
         assertTrue(analysisServiceStub.createKMPlotCalled);
         

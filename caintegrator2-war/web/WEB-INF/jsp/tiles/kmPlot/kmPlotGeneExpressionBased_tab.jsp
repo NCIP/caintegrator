@@ -62,6 +62,20 @@
                       theme="simple"/>
                 </td>
             </tr>
+            <s:if test="%{studyHasMultiplePlatforms}">
+	            <tr>
+	                <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
+	                5a.)
+	                </td>
+	                <td class="value_inline" colspan="4">
+	                    Select Platform:  
+	                    <s:select name="kmPlotForm.geneExpressionBasedForm.platformName" 
+	                        list="platformsInStudy"
+	                        headerKey="" headerValue="Select Platform"
+	                         onchange="document.kaplanMeierGeneExpressionInputForm.action = 'updateControlSamplesGeneExpressionBasedKMPlot.action';document.kaplanMeierGeneExpressionInputForm.submit();"/>
+	                </td>
+	            </tr>
+            </s:if>
             <tr>
                 <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
                 5.)
