@@ -14,7 +14,7 @@
     <!--/Page Help-->          
     
     <h1><s:property value="#subTitleText" /></h1>
-    <p>Assign annotation definitions to data fields and click <strong>Done</strong>.</p>
+    <p>Assign annotation definitions to data fields.</p>
     
     <div class="form_wrapper_outer">
 
