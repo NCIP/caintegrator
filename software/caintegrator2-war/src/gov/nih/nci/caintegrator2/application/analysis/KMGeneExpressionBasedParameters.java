@@ -110,20 +110,46 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
     public boolean validate() {
         getErrorMessages().clear();
         boolean isValid = true;
-        if (StringUtils.isBlank(geneSymbol)) {
-            getErrorMessages().add("Gene Symbol is blank, please enter a valid Gene.");
-            isValid = false;
-        }
-        if (underexpressedFoldChangeNumber == null) {
-            getErrorMessages().add("Under Expressed Fold Change value is not a valid number, must be >= 1.");
-            isValid = false;
-        }
-        if (overexpressedFoldChangeNumber == null) {
-            getErrorMessages().add("Over Expressed Fold Change value is not a valid number, must be >= 1.");
-            isValid = false;
-        }
+        isValid &= validateGeneName();
+        isValid &= validateUnderexpressed();
+        isValid &= validateOverexpressed();
+        isValid &= validateControlSetSelected();
         isValid = validateSurvivalValueDefinition(isValid);
         return isValid;
+    }
+    
+    private boolean validateControlSetSelected() {
+        if (StringUtils.isBlank(controlSampleSetName)) {
+            getErrorMessages().add("Must select a control sample set. "
+                    + "If there are multiple platforms in this study, select a platform first.");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateOverexpressed() {
+        if (overexpressedFoldChangeNumber == null) {
+            getErrorMessages().add("Over Expressed Fold Change value is not a valid number, must be >= 1.");
+            return false;
+        }
+        return true;
+    }
+
+
+    private boolean validateUnderexpressed() {
+        if (underexpressedFoldChangeNumber == null) {
+            getErrorMessages().add("Under Expressed Fold Change value is not a valid number, must be >= 1.");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateGeneName() {
+        if (StringUtils.isBlank(geneSymbol)) {
+            getErrorMessages().add("Gene Symbol is blank, please enter a valid Gene.");
+            return false;
+        }
+        return true;
     }
 
 

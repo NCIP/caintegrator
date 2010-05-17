@@ -85,6 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Form used to store input values for Gene Expression Based KM Plots.
@@ -98,6 +101,8 @@ public class KMPlotGeneExpressionBasedActionForm {
     private String overexpressedNumber;
     private String underexpressedNumber;
     private String controlSampleSetName;
+    private String platformName;
+    private List<String> controlSampleSets = new ArrayList<String>();
     private boolean initialized = false;
     private boolean resetSelected = false;
     
@@ -110,6 +115,8 @@ public class KMPlotGeneExpressionBasedActionForm {
         overexpressedNumber = DEFAULT_OVER_EXPRESSED;
         underexpressedNumber = DEFAULT_UNDER_EXPRESSED;
         initialized = true;
+        platformName = null;
+        controlSampleSets = new ArrayList<String>();
     }
 
     /**
@@ -194,5 +201,33 @@ public class KMPlotGeneExpressionBasedActionForm {
      */
     public void setControlSampleSetName(String controlSampleSetName) {
         this.controlSampleSetName = controlSampleSetName;
+    }
+
+    /**
+     * @return the platformName
+     */
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    /**
+     * @param platformName the platformName to set
+     */
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+    
+    /**
+     * @return the controlSampleSets
+     */
+    public List<String> getControlSampleSets() {
+        return controlSampleSets;
+    }
+
+    /**
+     * @param controlSampleSets the controlSampleSets to set
+     */
+    public void setControlSampleSets(List<String> controlSampleSets) {
+        this.controlSampleSets = controlSampleSets;
     }
 }
