@@ -181,6 +181,7 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
     private void initializeReporterGenes(GenomicDataQueryResult genomicData) {
         for (GenomicDataResultRow row : genomicData.getRowCollection()) {
             HibernateUtil.loadCollection(row.getReporter().getGenes());
+            HibernateUtil.loadCollection(row.getReporter().getSamplesHighVariance());
         }
     }
 
