@@ -290,10 +290,8 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     }
     
     private boolean checkUseSupplementalFiles() {
-        if (!isAffyExpression() && !getGenomicSource().isUseSupplementalFiles()) {
-            addFieldError("genomicSource.useSupplementalFiles",
-                    "Only Affymetrix Gene Expression is parsed in CaArray, all others have to use supplemental files.");
-            return false;
+        if (!isAffyExpression()) {
+            getGenomicSource().setUseSupplementalFiles(true);
         }
         return true;
     }

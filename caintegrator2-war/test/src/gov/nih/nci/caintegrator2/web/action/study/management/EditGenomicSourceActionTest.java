@@ -171,11 +171,9 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
     
     @Test
     public void testSave() {
-        assertEquals(Action.INPUT, action.save());
-        action.getGenomicSource().setUseSupplementalFiles(false);
-        assertEquals(Action.INPUT, action.save());
-        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
         assertEquals(Action.SUCCESS, action.save());
+        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
+        assertEquals(Action.INPUT, action.save());
         GenomicDataSourceAjaxUpdaterStub updaterStub = (GenomicDataSourceAjaxUpdaterStub) action.getUpdater();
         assertTrue(updaterStub.runJobCalled);
         updaterStub.runJobCalled = false;
@@ -185,6 +183,8 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
         studyConfiguration.getGenomicDataSources().add(action.getGenomicSource());
         action.getGenomicSource().setStudyConfiguration(studyConfiguration);
         action.setStudyConfiguration(studyConfiguration);
+        assertEquals(Action.INPUT, action.save());
+        action.getGenomicSource().setPlatformName("Platform name");
         assertEquals(Action.SUCCESS, action.save());
         assertTrue(studyManagementServiceStub.deleteCalled);
         assertTrue(updaterStub.runJobCalled);
@@ -194,8 +194,6 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
         action.getGenomicSource().setPlatformName("");
         assertEquals(Action.INPUT, action.save());
         action.getGenomicSource().setPlatformName("Name");
-        assertEquals(Action.INPUT, action.save());
-        action.getGenomicSource().setUseSupplementalFiles(true);
         assertEquals(Action.SUCCESS, action.save());
         action.setMappingData(false);
         assertEquals(Action.SUCCESS, action.save());
