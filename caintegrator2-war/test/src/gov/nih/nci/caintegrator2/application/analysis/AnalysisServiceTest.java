@@ -400,6 +400,7 @@ public class AnalysisServiceTest {
         geneExpressionParameters.setOverexpressedFoldChangeNumber(2.0F);
         geneExpressionParameters.setUnderexpressedFoldChangeNumber(2.0F);
         geneExpressionParameters.setSurvivalValueDefinition(studyCreator.getSurvivalValueDefinition());
+        geneExpressionParameters.setControlSampleSetName("name");
         assertTrue(geneExpressionParameters.validate());
         runKMPlotTest(studyCreator, subscription, geneExpressionParameters);
         
