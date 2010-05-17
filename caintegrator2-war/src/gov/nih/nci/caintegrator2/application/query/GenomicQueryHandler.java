@@ -157,6 +157,7 @@ class GenomicQueryHandler {
         column.setSampleAcquisition(arrayData.getSample().getSampleAcquisition());
         for (AbstractReporter reporter : values.getReporters()) {
             HibernateUtil.loadCollection(reporter.getGenes());
+            HibernateUtil.loadCollection(reporter.getSamplesHighVariance());
             GenomicDataResultRow row = reporterToRowMap.get(reporter);
             GenomicDataResultValue value = new GenomicDataResultValue();
             value.setColumn(column);
@@ -181,7 +182,7 @@ class GenomicQueryHandler {
 
     private void checkHighVariance(GenomicDataQueryResult result, 
             ArrayData arrayData, AbstractReporter reporter, GenomicDataResultValue value) {
-        if (arrayData.getSample().getReportersHighVariance().contains(reporter)) {
+        if (reporter.getSamplesHighVariance().contains(arrayData.getSample())) {
             value.setHighVariance(true);
             result.setHasHighVarianceValues(true);
         }
