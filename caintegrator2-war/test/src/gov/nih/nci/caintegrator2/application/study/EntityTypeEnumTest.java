@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
 import org.junit.Test;
@@ -96,7 +95,11 @@ public class EntityTypeEnumTest {
     @Test
     public void testGetByValue() {
         assertEquals(EntityTypeEnum.IMAGE, EntityTypeEnum.getByValue("image"));
-        assertNull(EntityTypeEnum.getByValue(null));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNull() {
+        EntityTypeEnum.getByValue(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
