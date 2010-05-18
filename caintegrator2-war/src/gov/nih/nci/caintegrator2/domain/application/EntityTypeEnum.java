@@ -2,6 +2,7 @@ package gov.nih.nci.caintegrator2.domain.application;
 
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -71,8 +72,8 @@ public enum EntityTypeEnum {
      */
     public static Map<String, String> getValueToDisplayableMap() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(EntityTypeEnum.SUBJECT.getValue(), "Subject");
-        map.put(EntityTypeEnum.IMAGESERIES.getValue(), "Image Series");
+        map.put(EntityTypeEnum.SUBJECT.getValue().toLowerCase(Locale.getDefault()), "Subject");
+        map.put(EntityTypeEnum.IMAGESERIES.getValue().toLowerCase(Locale.getDefault()), "Image Series");
         return map;
     }
     
@@ -85,7 +86,7 @@ public enum EntityTypeEnum {
      */
     public static EntityTypeEnum getByValue(String value) {
         checkType(value);
-        return getValueToTypeMap().get(value);
+        return getValueToTypeMap().get(value.toLowerCase(Locale.getDefault()));
     }
 
     /**
@@ -94,7 +95,7 @@ public enum EntityTypeEnum {
      * @param value the value to check;
      */
     public static void checkType(String value) {
-        if (value != null && !getValueToTypeMap().containsKey(value)) {
+        if (value == null || !getValueToTypeMap().containsKey(value.toLowerCase(Locale.getDefault()))) {
             throw new IllegalArgumentException("No matching type for " + value);
         }
     }

@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -133,7 +134,7 @@ public enum AnnotationFieldType {
     private static Map<String, AnnotationFieldType> getValueToTypeMap() {
         if (valueToTypeMap.isEmpty()) {
             for (AnnotationFieldType type : values()) {
-                valueToTypeMap.put(type.getValue(), type);
+                valueToTypeMap.put(type.getValue().toLowerCase(Locale.getDefault()), type);
             }
         }
         return valueToTypeMap;
@@ -148,7 +149,7 @@ public enum AnnotationFieldType {
      */
     public static AnnotationFieldType getByValue(String value) {
         checkType(value);
-        return getValueToTypeMap().get(value);
+        return getValueToTypeMap().get(value.toLowerCase(Locale.getDefault()));
     }
 
     /**
@@ -157,7 +158,7 @@ public enum AnnotationFieldType {
      * @param value the value to check;
      */
     public static void checkType(String value) {
-        if (value != null && !getValueToTypeMap().containsKey(value)) {
+        if (value == null || !getValueToTypeMap().containsKey(value.toLowerCase(Locale.getDefault()))) {
             throw new IllegalArgumentException("No matching type for " + value);
         }
     }    

@@ -96,6 +96,11 @@ import java.util.Date;
  * 
  */
 public class LogEntry extends AbstractCaIntegrator2Object {
+    /**
+     * Default serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
+    
     private static final String QUOTE = "'";
     private static final String COMMA = ", ";
     private static final String NAME = "Name = ";
