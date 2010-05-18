@@ -3,6 +3,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -53,7 +54,7 @@ public enum AnnotationTypeEnum  {
     private static Map<String, AnnotationTypeEnum> getValueToTypeMap() {
         if (valueToTypeMap.isEmpty()) {
             for (AnnotationTypeEnum type : values()) {
-                valueToTypeMap.put(type.getValue(), type);
+                valueToTypeMap.put(type.getValue().toLowerCase(Locale.getDefault()), type);
             }
         }
         return valueToTypeMap;
@@ -68,7 +69,7 @@ public enum AnnotationTypeEnum  {
      */
     public static AnnotationTypeEnum getByValue(String value) {
         checkType(value);
-        return getValueToTypeMap().get(value);
+        return getValueToTypeMap().get(value.toLowerCase(Locale.getDefault()));
     }
 
     /**
@@ -77,7 +78,7 @@ public enum AnnotationTypeEnum  {
      * @param value the value to check;
      */
     public static void checkType(String value) {
-        if (value != null && !getValueToTypeMap().containsKey(value)) {
+        if (value == null || !getValueToTypeMap().containsKey(value.toLowerCase(Locale.getDefault()))) {
             throw new IllegalArgumentException("No matching type for " + value);
         }
     }

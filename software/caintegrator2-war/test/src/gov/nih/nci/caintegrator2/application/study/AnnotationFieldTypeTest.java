@@ -89,21 +89,21 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class AnnotationTypeEnumTest {
+public class AnnotationFieldTypeTest {
 
     @Test
     public void testGetByValue() {
-        assertEquals(AnnotationTypeEnum.DATE, AnnotationTypeEnum.getByValue("date"));
+        assertEquals(AnnotationFieldType.ANNOTATION, AnnotationFieldType.getByValue("Annotation"));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNull() {
-        AnnotationTypeEnum.getByValue(null);
+        AnnotationFieldType.getByValue(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCheckType() {
-        AnnotationTypeEnum.checkType("no match");
+        AnnotationFieldType.checkType("no match");
     }
 
 }
