@@ -107,6 +107,7 @@ import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator2.web.ajax.PersistedAnalysisJobAjaxUpdater;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -140,14 +141,19 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
         query2.setCompoundCriterion(new CompoundCriterion());
         subscription.getQueryCollection().add(query1);
         subscription.getQueryCollection().add(query2);
+        subscription.setId(100l);
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new ComparativeMarkerSelectionAnalysisAction();
         action.setAnalysisService(new AnalysisServiceStub());
         action.setQueryManagementService(queryManagementService);
-        action.setWorkspaceService(new WorkspaceServiceStub());
+        WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
+        workspaceService.setSubscription(subscription);
+        action.setWorkspaceService(workspaceService);
         action.setAjaxUpdater(new PersistedAnalysisJobAjaxUpdater());
+        action.prepare();
     }
+    
     
     @Test
     public void testOpen() {
@@ -173,6 +179,25 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
         action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().add("[Q]-query2");
         action.validate();
         assertFalse(action.hasErrors());
+        
+        // Test platforms
+        queryManagementService.studyHasMultiplePlatforms = false;
+        action.prepare();
+        assertFalse(action.isStudyHasMultiplePlatforms());
+        action.validate();
+        assertFalse(action.hasErrors());
+        
+        queryManagementService.studyHasMultiplePlatforms = true;
+        action.prepare();
+        action.clearErrorsAndMessages();
+        assertTrue(action.isStudyHasMultiplePlatforms());
+        action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.getComparativeMarkerSelectionAnalysisForm().setPlatformName("platform1");
+        action.validate();
+        assertFalse(action.hasErrors());
+        
     }
     
     @Test
@@ -196,6 +221,8 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
     }
     
     private class QueryManagementServiceStubComparativeMarker extends QueryManagementServiceStub {
+        public boolean studyHasMultiplePlatforms = false;
+        
         private QueryResult queryResult;
         
         @Override
@@ -236,6 +263,17 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
             queryResult.getRowCollection().add(row1);
             
         }
+        
+        @Override
+        public Set<String> retrieveGeneExpressionPlatformsForStudy(Study study) {
+            Set<String> platformsInStudy = new HashSet<String>();
+            platformsInStudy.add("Platform1");
+            if (studyHasMultiplePlatforms) {
+                platformsInStudy.add("Platform2");
+            }
+            return platformsInStudy;
+        }
+        
     }
 
 }

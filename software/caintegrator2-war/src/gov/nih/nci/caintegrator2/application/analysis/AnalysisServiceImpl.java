@@ -185,7 +185,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         job.setSubscription(studySubscription);
         File gctFile = createGctFile(studySubscription, preprocessParams.getClinicalQueries(),
                 preprocessParams.getExcludedControlSampleSet(), 
-                preprocessParams.getProcessedGctFilename());
+                preprocessParams.getProcessedGctFilename(), preprocessParams.getPlatformName());
         File clsFile = createClassificationFile(studySubscription, 
                 job.getForm().getComparativeMarkerSelectionParameters().getClinicalQueries(), 
                 job.getForm().getComparativeMarkerSelectionParameters().getClassificationFileName());
@@ -249,7 +249,8 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         PCAParameters parameters = job.getForm().getPcaParameters();
         File gctFile = createGctFile(studySubscription, parameters.getClinicalQueries(), 
                 parameters.getExcludedControlSampleSet(), 
-                parameters.getGctFileName());
+                parameters.getGctFileName(),
+                parameters.getPlatformName());
         job.setInputZipFile(fileManager.createInputZipFile(studySubscription, job,
                 "PCA_INPUT_" +  System.currentTimeMillis() + ".zip", 
                 gctFile));
@@ -300,11 +301,12 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     }
     
     private File createGctFile(StudySubscription studySubscription, Collection<Query> querySet,
-            SampleSet excludedSet, String filename)
+            SampleSet excludedSet, String filename, String platformName)
     throws InvalidCriterionException {
+        SampleSet refreshedExcludedSet = excludedSet == null ? null : getRefreshedEntity(excludedSet);
         return fileManager.createGctFile(studySubscription, 
                 GenePatternUtil.createGctDataset(studySubscription, querySet,
-                        excludedSet, queryManagementService), filename);
+                        refreshedExcludedSet, queryManagementService, platformName), filename);
     }
     
     /**

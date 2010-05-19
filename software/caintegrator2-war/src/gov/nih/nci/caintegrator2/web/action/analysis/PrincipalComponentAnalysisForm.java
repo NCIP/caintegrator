@@ -89,6 +89,8 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -99,11 +101,12 @@ public class PrincipalComponentAnalysisForm {
     
     private PCAParameters pcaParameters;
     private PreprocessDatasetParameters preprocessParameters;
-    
+    private List<String> controlSampleSets = new ArrayList<String>();
     private final ServerConnectionProfile server = new ServerConnectionProfile();
     private boolean usePreprocessDataset = false;
     private String selectedQueryName;
     private String excludeControlSampleSetName;
+    private String platformName = null;
     
     // JSP Select List Options
     private final SortedMap<String, DisplayableQuery> queries = new TreeMap<String, DisplayableQuery>();
@@ -191,5 +194,33 @@ public class PrincipalComponentAnalysisForm {
      */
     public SortedMap<String, DisplayableQuery> getQueries() {
         return queries;
+    }
+
+    /**
+     * @return the controlSampleSets
+     */
+    public List<String> getControlSampleSets() {
+        return controlSampleSets;
+    }
+
+    /**
+     * @param controlSampleSets the controlSampleSets to set
+     */
+    public void setControlSampleSets(List<String> controlSampleSets) {
+        this.controlSampleSets = controlSampleSets;
+    }
+
+    /**
+     * @return the platformName
+     */
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    /**
+     * @param platformName the platformName to set
+     */
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
     }
 }

@@ -103,7 +103,10 @@ import gov.nih.nci.caintegrator2.web.ajax.IPersistedAnalysisJobAjaxUpdater;
 import gridextensions.ComparativeMarkerSelectionParameterSet;
 import gridextensions.PreprocessDatasetParameterSet;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -134,7 +137,19 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
     private QueryManagementService queryManagementService;
     private IPersistedAnalysisJobAjaxUpdater ajaxUpdater;
     private String selectedAction = OPEN_ACTION;
+    private List<String> platformsInStudy = new ArrayList<String>();
 
+    /**
+     * {@inheritDoc}
+     */
+   @Override
+   public void prepare() {
+       super.prepare();
+       platformsInStudy = new ArrayList<String>(
+               getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy()));
+       Collections.sort(platformsInStudy);
+   }
+    
     /**
      * Cancel action.
      * @return struts result.
@@ -176,6 +191,10 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
         }
         if (getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().size() != 2) {
             addFieldError("comparativeMarkerSelectionAnalysisForm.unselectedQueryNames", "2 Queries/Lists required.");
+        }
+        if (isStudyHasMultiplePlatforms() 
+                && StringUtils.isBlank(getComparativeMarkerSelectionAnalysisForm().getPlatformName())) {
+            addFieldError("comparativeMarkerSelectionAnalysisForm.platformName", "Platform name required.");
         }
     }
     
@@ -234,8 +253,14 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
     }
     
     private boolean loadParameters() throws InvalidCriterionException {
+        loadPlatforms();
         loadServers();
         return loadQueries();
+    }
+    
+    private void loadPlatforms() {
+        getComparativeMarkerSelectionAnalysisForm().getPreprocessDatasetparameters().setPlatformName(
+                getComparativeMarkerSelectionAnalysisForm().getPlatformName());
     }
     
     private void loadServers() {
@@ -392,5 +417,21 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
      */
     public Map<String, String> getComparativeMarkerSelectionServices() {
         return GridDiscoveryServiceJob.getGridCmsServices();
+    }
+    
+    
+    /**
+     * Determines if study has multiple platforms.
+     * @return T/F value if study has multiple platforms.
+     */
+    public boolean isStudyHasMultiplePlatforms() {
+        return platformsInStudy.size() > 1;
+    }
+
+    /**
+     * @return the platformsInStudy
+     */
+    public List<String> getPlatformsInStudy() {
+        return platformsInStudy;
     }
 }

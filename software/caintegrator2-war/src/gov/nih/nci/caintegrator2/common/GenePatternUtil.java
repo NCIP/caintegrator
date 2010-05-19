@@ -237,14 +237,16 @@ public final class GenePatternUtil {
      * @param clinicalQueries to be turned into GctDataset.
      * @param excludedControlSampleSet the samples to be excluded.
      * @param queryManagementService to query database.
+     * @param platformName if this is not null, specifies the platform to use for the genomic query.
      * @return gct dataset for the queries.
      * @throws InvalidCriterionException if criterion is not valid.
      */
     public static GctDataset createGctDataset(StudySubscription studySubscription, Collection<Query> clinicalQueries, 
-            SampleSet excludedControlSampleSet, QueryManagementService queryManagementService)
+            SampleSet excludedControlSampleSet, QueryManagementService queryManagementService, String platformName)
     throws InvalidCriterionException {
         Set<Query> clinicalQuerySet = new HashSet<Query>(clinicalQueries);
-        Query allGenomicDataQuery = QueryUtil.createAllGenomicDataQuery(studySubscription, clinicalQuerySet);
+        Query allGenomicDataQuery = 
+            QueryUtil.createAllGenomicDataQuery(studySubscription, clinicalQuerySet, platformName);
         GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
         genomicData.excludeSampleSet(excludedControlSampleSet);
         if (genomicData.getRowCollection().isEmpty()) {
