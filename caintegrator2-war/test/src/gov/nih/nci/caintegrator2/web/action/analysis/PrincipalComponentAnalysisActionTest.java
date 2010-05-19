@@ -107,10 +107,12 @@ import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator2.web.ajax.PersistedAnalysisJobAjaxUpdater;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -140,13 +142,17 @@ public class PrincipalComponentAnalysisActionTest extends AbstractSessionBasedTe
         query2.setCompoundCriterion(new CompoundCriterion());
         subscription.getQueryCollection().add(query1);
         subscription.getQueryCollection().add(query2);
+        subscription.setId(100l);
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new PrincipalComponentAnalysisAction();
         action.setAnalysisService(new AnalysisServiceStub());
         action.setQueryManagementService(queryManagementService);
-        action.setWorkspaceService(new WorkspaceServiceStub());
+        WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
+        workspaceService.setSubscription(subscription);
+        action.setWorkspaceService(workspaceService);
         action.setAjaxUpdater(new PersistedAnalysisJobAjaxUpdater());
+        action.prepare();
     }
     
     @Test
@@ -172,6 +178,25 @@ public class PrincipalComponentAnalysisActionTest extends AbstractSessionBasedTe
         action.getPrincipalComponentAnalysisForm().setSelectedQueryName("[Q]-query1");
         action.validate();
         assertFalse(action.hasErrors());
+        
+        // Test platforms
+        queryManagementService.studyHasMultiplePlatforms = false;
+        action.prepare();
+        assertFalse(action.isStudyHasMultiplePlatforms());
+        action.validate();
+        assertFalse(action.hasErrors());
+        
+        queryManagementService.studyHasMultiplePlatforms = true;
+        action.prepare();
+        action.clearErrorsAndMessages();
+        assertTrue(action.isStudyHasMultiplePlatforms());
+        action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.getPrincipalComponentAnalysisForm().setPlatformName("platform1");
+        action.validate();
+        assertFalse(action.hasErrors());
+        
     }
     
     @Test
@@ -183,7 +208,21 @@ public class PrincipalComponentAnalysisActionTest extends AbstractSessionBasedTe
         assertFalse(action.hasErrors());
     }
     
+    @Test
+    public void testUpdateControlSampleSets() {
+        action.setSelectedAction(PrincipalComponentAnalysisAction.UPDATE_CONTROLS_ACTION);
+        assertEquals(Action.INPUT, action.execute());
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.getPrincipalComponentAnalysisForm().setPlatformName("Platform1");
+        assertEquals(Action.INPUT, action.execute());
+        assertFalse(action.hasErrors());
+        
+    }
+    
     private class QueryManagementServiceStubComparativeMarker extends QueryManagementServiceStub {
+        public boolean studyHasMultiplePlatforms = false;
+
         private QueryResult queryResult;
         
         @Override
@@ -211,6 +250,17 @@ public class PrincipalComponentAnalysisActionTest extends AbstractSessionBasedTe
             queryResult.getRowCollection().add(row2);
             
         }
+
+        @Override
+        public Set<String> retrieveGeneExpressionPlatformsForStudy(Study study) {
+            Set<String> platformsInStudy = new HashSet<String>();
+            platformsInStudy.add("Platform1");
+            if (studyHasMultiplePlatforms) {
+                platformsInStudy.add("Platform2");
+            }
+            return platformsInStudy;
+        }
+        
 
     }
 

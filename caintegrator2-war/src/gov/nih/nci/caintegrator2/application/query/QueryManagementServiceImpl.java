@@ -197,7 +197,8 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     private void checkCriterionColumnsForMasks(Query query) {
         if (!query.isHasMaskedValues()) {
             for (ResultColumn column : query.getColumnCollection()) {
-                if (!column.getAnnotationFieldDescriptor().getAnnotationMasks().isEmpty()) {
+                if (column.getAnnotationFieldDescriptor() != null 
+                     && !column.getAnnotationFieldDescriptor().getAnnotationMasks().isEmpty()) {
                     query.setHasMaskedValues(true);
                     break;
                 }

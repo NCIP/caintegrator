@@ -99,7 +99,10 @@ import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator2.web.ajax.IPersistedAnalysisJobAjaxUpdater;
 import gridextensions.PreprocessDatasetParameterSet;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -125,12 +128,29 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
      * Indicates action should go to the status page.
      */
     public static final String STATUS_ACTION = "status";
+    
+    /**
+     * Indicates action should update the controls.
+     */
+    public static final String UPDATE_CONTROLS_ACTION = "updateControls";
 
     private AnalysisService analysisService;
     private QueryManagementService queryManagementService;
     private IPersistedAnalysisJobAjaxUpdater ajaxUpdater;
     private String selectedAction = OPEN_ACTION;
+    private List<String> platformsInStudy = new ArrayList<String>();
     
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepare() {
+        super.prepare();
+        platformsInStudy = new ArrayList<String>(
+                getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy()));
+        Collections.sort(platformsInStudy);
+    }
+
     /**
      * Cancel action.
      * @return struts result.
@@ -147,10 +167,24 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
             return open();
         } else if (EXECUTE_ACTION.equals(getSelectedAction())) {
             return executeAnalysis();
+        } else if (UPDATE_CONTROLS_ACTION.equals(getSelectedAction())) {
+            return updateControlSampleSets();
         } else  {
             addActionError("Invalid action: " + getSelectedAction());
             return INPUT;
         }
+    }
+    
+    private String updateControlSampleSets() {
+        getPrincipalComponentAnalysisForm().getControlSampleSets().clear();
+        if (StringUtils.isBlank(getPrincipalComponentAnalysisForm().getPlatformName())) {
+            addActionError("Please select a valid platform");
+            return INPUT;
+        }
+        getPrincipalComponentAnalysisForm().setControlSampleSets(
+                getStudy().getStudyConfiguration().getControlSampleSetNames(
+                        getPrincipalComponentAnalysisForm().getPlatformName()));
+        return INPUT;
     }
 
     /**
@@ -169,6 +203,10 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
     private void validateExecuteAnalysis() {
         if (StringUtils.isBlank(getCurrentPrincipalComponentAnalysisJob().getName())) {
             addFieldError("currentPrincipalComponentAnalysisJob.name", "Job name required.");
+        }
+        if (isStudyHasMultiplePlatforms() 
+                && StringUtils.isBlank(getPrincipalComponentAnalysisForm().getPlatformName())) {
+            addFieldError("principalComponentAnalysisForm.platformName", "Platform name required.");
         }
     }
     
@@ -218,9 +256,17 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
     }
     
     private void loadParameters() {
+        loadPlatforms();
         loadServers();
         loadQueries();
         loadExclude();
+    }
+    
+    private void loadPlatforms() {
+        getPrincipalComponentAnalysisForm().getPcaParameters().setPlatformName(
+                getPrincipalComponentAnalysisForm().getPlatformName());
+        getPrincipalComponentAnalysisForm().getPreprocessParameters().setPlatformName(
+                getPrincipalComponentAnalysisForm().getPlatformName());
     }
     
     private void loadServers() {
@@ -358,5 +404,29 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
      */
     public PreprocessDatasetParameters getPreprocessDatasetParameters() {
         return getPrincipalComponentAnalysisForm().getPreprocessParameters();
+    }
+    
+    /**
+     * Determines if study has multiple platforms.
+     * @return T/F value if study has multiple platforms.
+     */
+    public boolean isStudyHasMultiplePlatforms() {
+        return platformsInStudy.size() > 1;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getControlSampleSets() {
+        return isStudyHasMultiplePlatforms() ? getPrincipalComponentAnalysisForm().getControlSampleSets() 
+                : super.getControlSampleSets();
+    }
+
+    /**
+     * @return the platformsInStudy
+     */
+    public List<String> getPlatformsInStudy() {
+        return platformsInStudy;
     }
 }

@@ -23,6 +23,9 @@
                 <s:div cssStyle="text-align:left; width: 550px; margin-left: auto; margin-right: auto;">
                 <span style="font-weight:bold;">Job Name</span> - Please enter a job name.<br>
                 <span style="font-weight:bold;">Principal Component Analysis Server</span> -  Select a PCA grid service from the dropdown.<br>
+                <s:if test="%{studyHasMultiplePlatforms}">
+                    <span style="font-weight:bold;">Select Platform</span> - Select a platform to specify which reporters will be processed.<br>
+                </s:if>
                 <span style="font-weight:bold;">Annotation Queries and Lists</span> - (Optional) Select a saved annotation query or list to specify which samples will be processed.<br>
                 <span style="font-weight:bold;">Exclude Sample Control Set</span> - (Optional) Select a Control Sample Set to exclude from the Annotation Query.<br>
                 <span style="font-weight:bold;">Enable Preprocess Dataset</span> - (Optional) Check this to display and configure preprocessing parameters.
@@ -46,6 +49,14 @@
                     Annotation query / list parameter below, choose either "All Samples" or a annotation query or list.  If "All Samples" is selected, then all samples will be used.  If a annotation query or list is selected, only those samples which map to the subjects in the annotation query/list results will be used.  The annotation queries and lists in this list have been previously saved by the user.  Control samples can be excluded from this processing by selecting a control set name in the Exclude Sample Control Set dropdown.
                 </div>
             </s:div>
+            <s:if test="%{studyHasMultiplePlatforms}">
+                <s:select name="principalComponentAnalysisForm.platformName" 
+                            label="Select Platform" 
+                            list="platformsInStudy"
+                            headerKey="" headerValue="Select Platform" required="true"
+                            onchange="this.form.selectedAction.value = 'updateControls';this.form.submit();"/>
+                <br/>
+            </s:if>
             <s:select name="principalComponentAnalysisForm.selectedQueryName"
                 headerKey="" headerValue="All Samples"
                 list="principalComponentAnalysisForm.queries" listValue="value.displayName" label="Annotation Queries and Lists"
