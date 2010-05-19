@@ -116,6 +116,7 @@ public class PreprocessDatasetParameters {
     private SampleSet excludedControlSampleSet;
     private ServerConnectionProfile server;
     private String processedGctFilename;
+    private String platformName = null;
     
     /**
      * Constructor.
@@ -267,6 +268,20 @@ public class PreprocessDatasetParameters {
         this.excludedControlSampleSet = excludedControlSampleSet;
     }
     
+    /**
+     * @return the platformName
+     */
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    /**
+     * @param platformName the platformName to set
+     */
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
     /**
      * {@inheritDoc}
      */

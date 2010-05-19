@@ -53,7 +53,13 @@
                 buttonCssStyle="min-width:100px; vertical-align=middle;"
                 required="true" 
                 title="Must select two annotation queries and/or subject lists, which are used to group the samples into two separate classifications to run against ComparativeMarkerSelection. The queries and lists selected here have been previously saved by the user.  Selected queries and lists will result in the processing of only those samples which are mapped to patients in the saved query or list result."/>
-            
+            <s:if test="%{studyHasMultiplePlatforms}">
+                <s:select name="comparativeMarkerSelectionAnalysisForm.platformName" 
+                            label="Select Platform" 
+                            list="platformsInStudy"
+                            headerKey="" headerValue="Select Platform" required="true"/>
+                <br/>
+            </s:if>
             <s:checkbox name="preprocessDatasetParameterSet.filterFlag" label="Filter flag" labelposition="left" />
             <s:select name="preprocessDatasetParameters.preprocessingFlag" label="Preprocessing Flag"
                 list="preprocessDatasetParameters.preprocessingFlagOptions" required="true" />

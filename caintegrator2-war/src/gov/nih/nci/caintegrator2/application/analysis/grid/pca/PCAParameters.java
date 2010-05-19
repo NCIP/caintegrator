@@ -109,6 +109,7 @@ public class PCAParameters {
     private String clusterBy = getClusterByOptions().get(1); // rows is default
     private String classificationFileName;
     private String gctFileName;
+    private String platformName = null;
     
 
     /**
@@ -215,6 +216,20 @@ public class PCAParameters {
         this.excludedControlSampleSet = excludedControlSampleSet;
     }
     
+    /**
+     * @return the platformName
+     */
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    /**
+     * @param platformName the platformName to set
+     */
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
     /**
      * {@inheritDoc}
      */
