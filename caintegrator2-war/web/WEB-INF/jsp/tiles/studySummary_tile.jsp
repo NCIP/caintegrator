@@ -217,6 +217,7 @@
                 <td />
             </tr>
             <s:if test="useHighVarianceCalculation">
+            <tr>
                 <td align="right"><s:property value="highVarianceThresholdLabel" /></td>
                 <td> <b><s:property value="highVarianceThresholdString"/></b></td>
                 <td />
