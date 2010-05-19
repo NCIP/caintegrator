@@ -73,17 +73,23 @@
                                     </td>
                                     <td class="criterion" style="white-space:nowrap">
                                         <s:if test="fieldType == 'text'">
-                                            <s:textfield id="%{formFieldId}" name="%{formFieldName}.value"
-                                                size="30"
-                                                cssClass="keyword"
-                                                theme="simple"
-                                                title="%{title}" />
                                             <s:if test="geneSymbol">
-                                                <s:component template="genetextfield.ftl" theme="cai2simple">
-							                        <s:param name="textFieldId" value="%{'%{formFieldId}'}"/>
-							                        <s:param name="textFieldName" value="%{'%{formFieldName}.value'}"/>
-							                        <s:param name="refreshOnShow" value="%{'true'}" />
-							                    </s:component>
+                                                <div style="padding: 0 0 10px 0;">
+                                            </s:if>
+	                                            <s:textfield id="%{formFieldId}" name="%{formFieldName}.value"
+	                                                size="30"
+	                                                cssClass="keyword"
+	                                                theme="simple"
+	                                                title="%{title}" />
+	                                            <s:if test="geneSymbol">
+	                                                <s:component template="genetextfield.ftl" theme="cai2simple">
+								                        <s:param name="textFieldId" value="%{'%{formFieldId}'}"/>
+								                        <s:param name="textFieldName" value="%{'%{formFieldName}.value'}"/>
+								                        <s:param name="refreshOnShow" value="%{'true'}" />
+								                    </s:component>
+	                                            </s:if>
+                                            <s:if test="geneSymbol">
+                                                </div>
                                             </s:if>
                                         </s:if>
                                         <s:elseif test="fieldType == 'select'">
