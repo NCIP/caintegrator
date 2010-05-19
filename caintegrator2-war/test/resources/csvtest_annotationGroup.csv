@@ -1,6 +1,6 @@
 File Column Name,Field Type,Entity Type,CDE ID,Version,Annotation Def Name,Data Type,Permissible,Visible
-Subject,identifier,subject,,,Subject,string,No,Yes
-Age,annotation,subject,2423393,,Age ,,,Yes
+Subject,Identifier,Subject,,,Subject,string,No,Yes
+Age,Annotation,subject,2423393,,Age ,,,Yes
 Gender,annotation,subject,,, Gender ,string,Yes,Yes
-Karnofsky,annotation,subject,,, Karnofsky,numeric,Yes,Yes
+Karnofsky,annotation,subject,,, Karnofsky,Numeric,Yes,Yes
 Survival Start Date,annotation,subject,,,Survival Start Date,date,Yes,Yes

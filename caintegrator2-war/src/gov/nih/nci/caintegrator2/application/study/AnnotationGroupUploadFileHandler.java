@@ -99,16 +99,25 @@ import au.com.bytecode.opencsv.CSVReader;
 public class AnnotationGroupUploadFileHandler {
     
     private final File uploadFile;
+    private final List<String> existingAfdNames = new ArrayList<String>();
 
     private static final int FILE_NUMBER_COLUMNS = 9;
     private static final String HEADER_LINE =  "File Column Name";
     
     /**
+     * @param studyConfiguration the study configuration to get all existing annotation field definitions
      * @param uploadFile the upload file
      */
-    public AnnotationGroupUploadFileHandler(File uploadFile) {
+    public AnnotationGroupUploadFileHandler(StudyConfiguration studyConfiguration, File uploadFile) {
         super();
         this.uploadFile = uploadFile;
+        initializeAfdNames(studyConfiguration);
+    }
+
+    private void initializeAfdNames(StudyConfiguration studyConfiguration) {
+        for (AnnotationFieldDescriptor afd : studyConfiguration.getAllExistingDescriptors()) {
+            existingAfdNames.add(afd.getName());
+        }
     }
 
     /**
@@ -153,10 +162,25 @@ public class AnnotationGroupUploadFileHandler {
                     uploadContent.setPermissible(trimBlank(fields[7]));
                 }
                 uploadContent.setVisible(trimBlank(fields[8]));
+                checkForDuplicateColumnName(annotationGroupUploads, uploadContent);
                 annotationGroupUploads.add(uploadContent);
             } catch (Exception e) {
                 throw new ValidationException(e.getMessage(), e);
             }
+        }
+    }
+
+    private void checkForDuplicateColumnName(List<AnnotationGroupUploadContent> annotationGroupUploads,
+            AnnotationGroupUploadContent uploadContent)
+    throws ValidationException {
+        for (AnnotationGroupUploadContent annotationGroupUploadContent : annotationGroupUploads) {
+            if (annotationGroupUploadContent.getColumnName().equals(uploadContent.getColumnName())
+                    || annotationGroupUploadContent.getDefinitionName().equals(uploadContent.getDefinitionName())) {
+                throw new ValidationException("Duplicate definition: " + uploadContent.getColumnName());
+            }
+        }
+        if (existingAfdNames.contains(uploadContent.getColumnName())) {
+            throw new ValidationException("Definition: " + uploadContent.getColumnName() + " already exist.");
         }
     }
     
