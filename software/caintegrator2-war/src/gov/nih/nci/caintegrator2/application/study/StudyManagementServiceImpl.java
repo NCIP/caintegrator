@@ -1169,13 +1169,14 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     private void uploadAnnotationGroup(StudyConfiguration studyConfiguration,
             AnnotationGroup annotationGroup, File uploadFile)
     throws ConnectionException, ValidationException, IOException {
-        AnnotationGroupUploadFileHandler uploadFileHandler = new AnnotationGroupUploadFileHandler(uploadFile);
+        AnnotationGroupUploadFileHandler uploadFileHandler = new AnnotationGroupUploadFileHandler(
+                studyConfiguration, uploadFile);
         List<AnnotationGroupUploadContent> uploadContents = uploadFileHandler.extractUploadData();
         if (uploadContents != null) {
             StringBuffer validationMsg = new StringBuffer();
             for (AnnotationGroupUploadContent uploadContent : uploadContents) {
                 try {
-                    createAnnotation(studyConfiguration, annotationGroup, uploadContent);
+                    createAnnotation(annotationGroup, uploadContent);
                 } catch (ValidationException e) {
                     validationMsg.append(e.getMessage());
                 }
@@ -1186,10 +1187,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
     }
         
-    private void createAnnotation(StudyConfiguration studyConfiguration,
-            AnnotationGroup annotationGroup, AnnotationGroupUploadContent uploadContent)
+    private void createAnnotation(AnnotationGroup annotationGroup, AnnotationGroupUploadContent uploadContent)
     throws ConnectionException, ValidationException {
-        checkForExistingAnnotationFieldDescriptor(studyConfiguration, uploadContent.getColumnName());
         AnnotationFieldDescriptor annotationFieldDescriptor = uploadContent.createAnnotationFieldDescriptor();
         annotationFieldDescriptor.setAnnotationGroup(annotationGroup);
         if (!AnnotationFieldType.IDENTIFIER.equals(uploadContent.getAnnotationType())) {
@@ -1197,13 +1196,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             annotationFieldDescriptor.setDefinition(annotationDefinition);
         }
         annotationGroup.getAnnotationFieldDescriptors().add(annotationFieldDescriptor);
-    }
-
-    private void checkForExistingAnnotationFieldDescriptor(StudyConfiguration studyConfiguration, String name)
-    throws ValidationException {
-        if (studyConfiguration.getExistingFieldDescriptorInStudy(name) != null) {
-            throw new ValidationException("Definition: " + name + " already exist.\n");
-        }
     }
 
     private AnnotationDefinition createAnnotationDefinition(AnnotationGroupUploadContent uploadContent)
