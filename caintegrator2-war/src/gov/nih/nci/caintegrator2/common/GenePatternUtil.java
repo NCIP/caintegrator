@@ -203,11 +203,13 @@ public final class GenePatternUtil {
      * Creates the sample classifications from the clinical queries.
      * @param queryManagementService to query database.
      * @param clinicalQueries to be turned into sample classifications.
+     * @param sampleNamesToUse the sample names which are to be used for this classification.
      * @return sample classification.
      * @throws InvalidCriterionException if criterion is not valid.
      */
     public static SampleClassificationParameterValue createSampleClassification(
-            QueryManagementService queryManagementService, List<Query> clinicalQueries)
+            QueryManagementService queryManagementService, List<Query> clinicalQueries,
+            Set<String> sampleNamesToUse)
             throws InvalidCriterionException {
         SampleClassificationParameterValue sampleClassifications = new SampleClassificationParameterValue();
         Set<Long> usedSampleIds = new HashSet<Long>();
@@ -218,17 +220,25 @@ public final class GenePatternUtil {
             query.getColumnCollection().add(sampleColumn);
             String classificationName = query.getName();
             QueryResult result = queryManagementService.execute(query);
-            for (ResultRow row : result.getRowCollection()) {
-                if (row.getSampleAcquisition() != null) {
-                    Sample sample = row.getSampleAcquisition().getSample();
-                    if (!usedSampleIds.contains(sample.getId())) {
-                        sampleClassifications.classify(sample, classificationName);
-                        usedSampleIds.add(sample.getId());
-                    }
+            classifySamplesFromResultRows(sampleNamesToUse, sampleClassifications, usedSampleIds, classificationName,
+                    result);
+        }
+        return sampleClassifications;
+    }
+
+    private static void classifySamplesFromResultRows(Set<String> sampleNamesToUse,
+            SampleClassificationParameterValue sampleClassifications, Set<Long> usedSampleIds,
+            String classificationName, QueryResult result) {
+        for (ResultRow row : result.getRowCollection()) {
+            if (row.getSampleAcquisition() != null) {
+                Sample sample = row.getSampleAcquisition().getSample();
+                if (!usedSampleIds.contains(sample.getId())
+                    && sampleNamesToUse.contains(sample.getName())) {
+                    sampleClassifications.classify(sample, classificationName);
+                    usedSampleIds.add(sample.getId());
                 }
             }
         }
-        return sampleClassifications;
     }
     
     /**
