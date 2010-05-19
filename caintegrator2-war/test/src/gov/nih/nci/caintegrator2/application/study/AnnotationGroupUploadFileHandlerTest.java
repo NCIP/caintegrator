@@ -104,9 +104,10 @@ public class AnnotationGroupUploadFileHandlerTest {
     @Test
     public void testExtractData() {
         List<AnnotationGroupUploadContent> dataUploads = new ArrayList<AnnotationGroupUploadContent>();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
         // Wrong format file
         AnnotationGroupUploadFileHandler fileHandler = new AnnotationGroupUploadFileHandler(
-                TestDataFiles.CMS_GCT_FILE);
+                studyConfiguration, TestDataFiles.CMS_GCT_FILE);
         boolean gotValidationException = false;
         boolean gotIOException = false;
         try {
@@ -121,7 +122,7 @@ public class AnnotationGroupUploadFileHandlerTest {
         
         // Good file
         fileHandler = new AnnotationGroupUploadFileHandler(
-                TestDataFiles.ANNOTATION_GROUP_FILE);
+                studyConfiguration, TestDataFiles.ANNOTATION_GROUP_FILE);
         gotValidationException = false;
         gotIOException = false;
         try {
