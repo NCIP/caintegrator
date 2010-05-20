@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
+    <title>Administering caIntegrator2 User Accounts Using UPT</title>
+    <link rel="StyleSheet" href="css/User%20Admin.css" type="text/css" media="all" />
+    <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
+    <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
+    <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/towwhdir.js"></script>
+    <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/wwhpagef.js"></script>
+    <script type="text/javascript" language="JavaScript1.2">
+      <!--
+        var  WebWorksRootPath = "";
+      // -->
+    </script>
+    <script type="text/javascript" language="JavaScript1.2">
+      <!--
+        // Set reference to top level help frame
+        //
+        var  WWHFrame = WWHGetWWHFrame("", true);
+      // -->
+    </script>
+    <script type="text/javascript" language="JavaScript1.2" src="scripts/expand.js"></script>
+  </head>
+  <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
+    <br />
+    <div class="WebWorks_Breadcrumbs" style="text-align: left;">
+      <a class="WebWorks_Breadcrumb_Link" href="User%20Admin.8.1.html#1072263">Administering User Accounts </a> &gt; Administering caIntegrator2 User Accounts Using UPT</div>
+    <hr align="left" />
+    <blockquote>
+      <div class="Heading1"><a name="1072263">Administering caIntegrator2 User Accounts Using UPT</a></div>
+      <div class="Note_Main_Body_outer" style="margin-left: 13px;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1077503">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Note_Main_Body_inner" style="width: 15px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1077503" border="0" width="30" height="30" />
+                </span>
+              </div>
+            </td>
+            <td width="100%">
+              <div class="Note_Main_Body_inner"><a name="1077503">If you are interested in registering an account in caIntegrator2, see </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'Getting_Started.3.1.html#1052621', '');">Registering as a New caIntegrator2 User</a></span>.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text"><a name="1077886">In caIntegrator2, all tasks related to creating and managing user accounts can be </a>performed only by a caIntegrator2 administrator using the CBIIT User Provisioning Tool (UPT) v. 4.2. The following sections discuss the use of the UPT for performing these tasks. For further information about UPT, see Chapter 3 of the CSM 4.2 Programmer’s Guide located here: <span class="HTTP" style="font-size: 10.0pt;"><a href="https://gforge.nci.nih.gov/docman/view.php/12/18945/caCORE_CSM_v42_ProgrammersGuide.pdf" target="_window">https://gforge.nci.nih.gov/docman/view.php/12/18945/caCORE_CSM_v42_ProgrammersGuide.pdf</a></span></div>
+      <div class="Body_Text"><a name="1077504">The UPT is a separately installed application which serves as the user management </a>interface for all National Cancer Institute CBIIT Life Sciences Distribution (LSD) applications, including caIntegrator2. The UPT application is the central point for all user management functionality within caIntegrator2. You can use UPT to add new users and to apply user group assignments to the caIntegrator2 database directly. The UPT groups can refer to predefined groups such as Study Manager or Study Investigator, which determine what roles the user has.</div>
+      <div class="Body_Text"><a name="1079068">The following terms are used both in this </a>section and in the UPT to define user-related roles:</div>
+      <div class="Bullet_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1077506">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1077506">User</a></span> – a person who is accessing caIntegrator2. The user<span style="font-weight: bold;"> </span>has an associated account and user ID.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1077507">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1077507">User Group</a></span> – a group of users, typically grouped by organization and role, for example, “Columbia University Study Managers”</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1079023">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1079023">Protection Group</a></span> – a group of studies given a secure status and typically grouped by organization, for example, “Columbia University Protected Studies”.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <script type="text/javascript" language="JavaScript1.2">
+        <!--
+          // Clear related topics
+          //
+          WWHClearRelatedTopics();
+
+          // Add related topics
+          //
+          WWHAddRelatedTopic("Steps for Creating User Access to caIntegrator2", "caIntegrator2", "User%20Admin.8.3.html#1077510");
+          WWHAddRelatedTopic("Creating a New caIntegrator2 User", "caIntegrator2", "User%20Admin.8.4.html#1077520");
+          WWHAddRelatedTopic("Creating a New User Group", "caIntegrator2", "User%20Admin.8.5.html#1078089");
+          WWHAddRelatedTopic("Creating a New Protection Group", "caIntegrator2", "User%20Admin.8.6.html#1078614");
+          WWHAddRelatedTopic("Assigning a User Group to a Protection Group", "caIntegrator2", "User%20Admin.8.7.html#1077620");
+          WWHAddRelatedTopic("Adding a User to a User Group", "caIntegrator2", "User%20Admin.8.8.html#1079798");
+          WWHAddRelatedTopic("Changing a User Password", "caIntegrator2", "User%20Admin.8.9.html#1077790");
+
+          document.writeln(WWHRelatedTopicsInlineHTML());
+        // -->
+      </script>
+    </blockquote>
+    <script type="text/javascript" language="JavaScript1.2">
+      <!--
+        document.write(WWHRelatedTopicsDivTag() + WWHPopupDivTag() + WWHALinksDivTag());
+      // -->
+    </script>
+  </body>
+</html>

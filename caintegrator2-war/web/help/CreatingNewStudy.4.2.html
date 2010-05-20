@@ -31,8 +31,8 @@
       <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.1.html#1073286">Creating a New Study</a> &gt; Creating a Study – Overview</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading1"><a name="1073286">Creating a Study </a>– Overview</div>
-      <div class="Body_Text"><a name="1077143">You can create a caIntegrator2 study by importing clinical study data, genomics data </a>and imaging data, using a combination of spreadsheet/files and existing caGrid applications as source data. Each instance of caIntegrator2 can support multiple studies. As the manager creating a study, it is important that you understand the study well and that the data you wish to aggregate has been submitted to the applications whose data can be integrated in caIntegrator2. </div>
+      <div class="Heading1"><a name="1073286">C</a>reating a Study – Overview</div>
+      <div class="Body_Text"><a name="1077143">You can create a caIntegrator2 study by importing </a>subject annotation study data, genomics data and imaging data, using a combination of spreadsheet/files and existing caGrid applications as source data. Each instance of caIntegrator2 can support multiple studies. As the manager creating a study, it is important that you understand the study well and that the data you wish to aggregate has been submitted to the applications whose data can be integrated in caIntegrator2. </div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083468">
           <tr style="vertical-align: baseline;">
@@ -40,19 +40,19 @@
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1083468">Clinical</a></span> – The clinical data should be available in CSV files, with a unique patient identifier in one column, one patient per row. Other relevant data can be supplied in other columns to be identified as annotations in the file from within caIntegrator2.  You, as the study creator, must have access to the clinical data file, as the file does not come from a caBIG<span style="vertical-align: super;">®</span> repository.</div>
+              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1083468">Subject Annotation</a></span> – Subject annotation data refers to pre-subject annotation, phenotypic, subject annotation, pathology or any other annotations associated with a subject.The subject annotation data should be available in CSV files, with a unique patient identifier in one column, one patient per row. Other relevant data can be supplied in other columns to be identified as annotations in the file from within caIntegrator2.  You, as the study creator, must have access to the subject annotation data file, as the file does not come from a caBIG<span style="vertical-align: super;">®</span> repository.</div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083477">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1126510">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1083477">Genomic</a></span> – To use caIntegrator2 to integrate array data, the data should be imported into caArray, either locally or the CBIIT installation, using that system's data file import functionality.<span style="font-family: &quot;Times New Roman&quot;; font-size: 12.0pt;"> </span>You must also have a mapping file in CSV format. This file indicates correlations between array files and the clinical subjects in the clinical data files. A mapping file consists of two columns: one with the patient ID, and one with the sample ID.</div>
+              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1126510">Genomic</a></span> – To use caIntegrator2 to integrate array data, the data should be imported into caArray, either locally or the CBIIT installation, using that system's data file import functionality.<span style="font-family: &quot;Times New Roman&quot;; font-size: 12.0pt;"> </span>You must also have a mapping file in CSV format. This file indicates correlations between array files and the subjects in the subject annotation data files. A mapping file consists of two columns: one with the patient ID, and one with the sample ID.</div>
             </td>
           </tr>
         </table>
@@ -64,7 +64,7 @@
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1083526">Imaging</a></span> – Imaging data should have been submitted to the NBIA grid node as public data, either locally or as part of the CBIIT installation. Image annotations, which includes information about images provided by radiologists or other researchers can include such information as tumor size, tumor location, etc. It must be in CSV format, with unique image series IDs in one column and annotation IDs in the second column. You must also have an image mapping file in CSV format. This file indicates correlations between clinical subjects or images in NBIA and clinical subjects in the clinical data files. A mapping file consists of two columns: one with the patient ID, and one with the NBIA image series ID in the other column.</div>
+              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1083526">Imaging</a></span> – Imaging data should have been submitted to the NBIA grid node as public data, either locally or as part of the CBIIT installation. Image annotations, which includes information about images provided by radiologists or other researchers can include such information as tumor size, tumor location, etc. It must be in CSV format, with unique image series IDs in one column and annotation IDs in the second column. You must also have an image mapping file in CSV format. This file indicates correlations between subject annotation subjects or images in NBIA and subjects in the subject annotation data files. A mapping file consists of two columns: one with the patient ID, and one with the NBIA image series ID in the other column.</div>
             </td>
           </tr>
         </table>
@@ -78,8 +78,8 @@
 
           // Add related topics
           //
-          WWHAddRelatedTopic("Configuring and Deploying Study", "caIntegrator2", "CreatingNewStudy.4.3.html#1073216");
-          WWHAddRelatedTopic("Managing a Study", "caIntegrator2", "CreatingNewStudy.4.15.html#1076280");
+          WWHAddRelatedTopic("Configuring and Deploying a Study", "caIntegrator2", "CreatingNewStudy.4.3.html#1073216");
+          WWHAddRelatedTopic("Managing a Study", "caIntegrator2", "CreatingNewStudy.4.20.html#1076280");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->
