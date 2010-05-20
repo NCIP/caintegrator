@@ -106,8 +106,10 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.cabig.icr.asbp.parameter.FloatParameter;
@@ -203,42 +205,51 @@ public final class GenePatternUtil {
      * Creates the sample classifications from the clinical queries.
      * @param queryManagementService to query database.
      * @param clinicalQueries to be turned into sample classifications.
-     * @param sampleNamesToUse the sample names which are to be used for this classification.
+     * @param sampleColumnOrdering the sample names which are to be used for this classification.
      * @return sample classification.
      * @throws InvalidCriterionException if criterion is not valid.
      */
     public static SampleClassificationParameterValue createSampleClassification(
             QueryManagementService queryManagementService, List<Query> clinicalQueries,
-            Set<String> sampleNamesToUse)
+            List<String> sampleColumnOrdering)
             throws InvalidCriterionException {
-        SampleClassificationParameterValue sampleClassifications = new SampleClassificationParameterValue();
-        Set<Long> usedSampleIds = new HashSet<Long>();
+        Map<String, String> sampleNameToClassificationMap = new HashMap<String, String>();
+        Map<String, Sample> sampleNameToSampleMap = new HashMap<String, Sample>();
+        runClinicalQueriesForClassification(queryManagementService, clinicalQueries, sampleNameToClassificationMap,
+                sampleNameToSampleMap);
+        return retrieveSampleClassifications(
+                sampleColumnOrdering, sampleNameToClassificationMap, sampleNameToSampleMap);
+    }
+
+    private static void runClinicalQueriesForClassification(QueryManagementService queryManagementService,
+            List<Query> clinicalQueries, Map<String, String> sampleNameToClassificationMap,
+            Map<String, Sample> sampleNameToSampleMap) throws InvalidCriterionException {
         for (Query query : clinicalQueries) {
             ResultColumn sampleColumn = new ResultColumn();
             sampleColumn.setEntityType(EntityTypeEnum.SAMPLE);
             sampleColumn.setColumnIndex(query.getColumnCollection().size());
             query.getColumnCollection().add(sampleColumn);
-            String classificationName = query.getName();
             QueryResult result = queryManagementService.execute(query);
-            classifySamplesFromResultRows(sampleNamesToUse, sampleClassifications, usedSampleIds, classificationName,
-                    result);
-        }
-        return sampleClassifications;
-    }
-
-    private static void classifySamplesFromResultRows(Set<String> sampleNamesToUse,
-            SampleClassificationParameterValue sampleClassifications, Set<Long> usedSampleIds,
-            String classificationName, QueryResult result) {
-        for (ResultRow row : result.getRowCollection()) {
-            if (row.getSampleAcquisition() != null) {
-                Sample sample = row.getSampleAcquisition().getSample();
-                if (!usedSampleIds.contains(sample.getId())
-                    && sampleNamesToUse.contains(sample.getName())) {
-                    sampleClassifications.classify(sample, classificationName);
-                    usedSampleIds.add(sample.getId());
+            for (ResultRow row : result.getRowCollection()) {
+                if (row.getSampleAcquisition() != null) {
+                    Sample sample = row.getSampleAcquisition().getSample();
+                    if (!sampleNameToClassificationMap.containsKey(sample.getName())) {
+                        sampleNameToClassificationMap.put(sample.getName(), query.getName());
+                        sampleNameToSampleMap.put(sample.getName(), sample);
+                    }
                 }
             }
         }
+    }
+
+    private static SampleClassificationParameterValue retrieveSampleClassifications(List<String> sampleColumnOrdering,
+            Map<String, String> sampleNameToClassificationMap, Map<String, Sample> sampleNameToSampleMap) {
+        SampleClassificationParameterValue sampleClassifications = new SampleClassificationParameterValue();
+        for (String sampleName : sampleColumnOrdering) {
+            sampleClassifications.classify(sampleNameToSampleMap.get(sampleName), 
+                    sampleNameToClassificationMap.get(sampleName));
+        }
+        return sampleClassifications;
     }
     
     /**
