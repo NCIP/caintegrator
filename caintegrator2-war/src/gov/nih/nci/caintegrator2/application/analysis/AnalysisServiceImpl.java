@@ -122,9 +122,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -192,7 +190,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         File clsFile = createClassificationFile(studySubscription, 
                 job.getForm().getComparativeMarkerSelectionParameters().getClinicalQueries(), 
                 job.getForm().getComparativeMarkerSelectionParameters().getClassificationFileName(), 
-                new HashSet<String>(gctDataset.getColumnSampleNames()));
+                gctDataset.getColumnSampleNames());
         job.setInputZipFile(fileManager.createInputZipFile(studySubscription, job,
                 "CMS_INPUT_" +  System.currentTimeMillis() + ".zip", 
                 gctFile, clsFile));
@@ -298,9 +296,10 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     }
     
     private File createClassificationFile(StudySubscription studySubscription, List<Query> clinicalQueries,
-            String clsFilename, Set<String> sampleNamesToUse) throws InvalidCriterionException {
+            String clsFilename, List<String> sampleColumnOrdering) throws InvalidCriterionException {
         return fileManager.createClassificationFile(studySubscription, 
-                GenePatternUtil.createSampleClassification(queryManagementService, clinicalQueries, sampleNamesToUse), 
+                GenePatternUtil.createSampleClassification(
+                        queryManagementService, clinicalQueries, sampleColumnOrdering), 
                 clsFilename);
     }
     
