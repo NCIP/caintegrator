@@ -113,6 +113,7 @@ import gov.nih.nci.caintegrator2.web.action.query.form.AbstractCriterionRow;
 import gov.nih.nci.caintegrator2.web.action.query.form.CriterionRowTypeEnum;
 import gov.nih.nci.caintegrator2.web.action.query.form.GeneNameCriterionWrapper;
 import gov.nih.nci.caintegrator2.web.action.query.form.MultiSelectParameter;
+import gov.nih.nci.caintegrator2.web.action.query.form.SelectListParameter;
 import gov.nih.nci.caintegrator2.web.action.query.form.SubjectListCriterionWrapper;
 import gov.nih.nci.caintegrator2.web.action.query.form.TextFieldParameter;
 
@@ -426,6 +427,10 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         updateCriteria();
         ((TextFieldParameter) criterionRow.getParameters().get(0)).setGeneSymbol(true);
         ((TextFieldParameter) criterionRow.getParameters().get(0)).setValue(getGeneSymbols(isGlobal));
+        if (platformsInStudy.size() > 1) { // It has a platform select list.
+            ((SelectListParameter<?>) criterionRow.getParameters().get(1)).
+                    setValue(platformsInStudy.iterator().next());
+        }
         getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENOMIC.getValue());
         getQueryForm().getResultConfiguration().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());
         if (isGlobal) {
