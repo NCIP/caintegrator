@@ -120,6 +120,9 @@ public class GenePatternAnalysisForm {
     private final List<String> classificationAnnotationNames = new ArrayList<String>();
     private final Map<String, AnnotationFieldDescriptor> nameToClassificationAnnotationMap = 
         new HashMap<String, AnnotationFieldDescriptor>();
+    private final List<String> platformNames = new ArrayList<String>();
+    private boolean multiplePlatformsInStudy = false;
+    
     
     /**
      * Returns the list of all analysis method names.
@@ -344,6 +347,27 @@ public class GenePatternAnalysisForm {
         } catch (MalformedURLException e) {
             throw new IllegalStateException("Server URL should already have been validated.", e);
         }
+    }
+
+    /**
+     * @return the multiplePlatformsInStudy
+     */
+    public boolean isMultiplePlatformsInStudy() {
+        return multiplePlatformsInStudy;
+    }
+
+    /**
+     * @param multiplePlatformsInStudy the multiplePlatformsInStudy to set
+     */
+    public void setMultiplePlatformsInStudy(boolean multiplePlatformsInStudy) {
+        this.multiplePlatformsInStudy = multiplePlatformsInStudy;
+    }
+
+    /**
+     * @return the platformNames
+     */
+    public List<String> getPlatformNames() {
+        return platformNames;
     }
 
 }
