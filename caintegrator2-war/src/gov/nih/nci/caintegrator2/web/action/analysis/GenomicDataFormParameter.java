@@ -110,7 +110,14 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
      */
     public static final String ALL_DATA = "All Genomic Data";
     
+    /**
+     * String value used to indicated that all genomic data for a specified platform should be used.
+     */
+    public static final String ALL_DATA_SPECIFY_PLATFORM = "All Genomic Data for Platform: ";
+    
     private Query selectedQuery;
+    private String selectedPlatform = "";
+    private String selectedOptionValue = "";
 
     GenomicDataFormParameter(GenePatternAnalysisForm form, AbstractParameterValue parameterValue) {
         super(form, parameterValue);
@@ -129,11 +136,7 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
      */
     @Override
     public String getValue() {
-        if (selectedQuery == null) {
-            return ALL_DATA;
-        } else {
-            return selectedQuery.getName();
-        }
+        return selectedOptionValue;
     }
 
     /**
@@ -141,7 +144,13 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
      */
     @Override
     public void setValue(String value) {
+        selectedPlatform = "";
+        selectedOptionValue = value;
         setSelectedQuery(getForm().getGenomicQuery(value));
+        if (getSelectedQuery() == null 
+             && value.contains(ALL_DATA_SPECIFY_PLATFORM)) {
+            selectedPlatform = value.replace(ALL_DATA_SPECIFY_PLATFORM, "");
+        }
     }
 
     /**
@@ -149,9 +158,19 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
      */
     public Collection<String> getChoices() {
         List<String> choices = new ArrayList<String>();
-        choices.add(ALL_DATA);
+        addAllDataToChoices(choices);
         choices.addAll(getForm().getGenomicQueryNames());
         return choices;
+    }
+
+    private void addAllDataToChoices(List<String> choices) {
+        if (getForm().isMultiplePlatformsInStudy()) {
+            for (String platformName : getForm().getPlatformNames()) {
+                choices.add(ALL_DATA_SPECIFY_PLATFORM + platformName);
+            }
+        } else {
+            choices.add(ALL_DATA);
+        }
     }
 
     Query getSelectedQuery() {
@@ -169,7 +188,7 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
     public void configureForInvocation(StudySubscription studySubscription, 
                                        QueryManagementService queryManagementService) throws InvalidCriterionException {
         if (getSelectedQuery() == null) {
-            setSelectedQuery(QueryUtil.createAllGenomicDataQuery(studySubscription, null, null));
+            setSelectedQuery(QueryUtil.createAllGenomicDataQuery(studySubscription, null, selectedPlatform));
         } else {
             refreshSelectedQuery(studySubscription);
         }
@@ -191,6 +210,13 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
                 setSelectedQuery(nextQuery);
             }
         }
+    }
+
+    /**
+     * @return the selectedPlatform
+     */
+    public String getSelectedPlatform() {
+        return selectedPlatform;
     }
 
 }

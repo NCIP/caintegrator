@@ -111,13 +111,14 @@ import gov.nih.nci.caintegrator2.web.ajax.PersistedAnalysisJobAjaxUpdater;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class GenePatternAnalysisActionTest extends AbstractSessionBasedTest {
     
     private GenePatternAnalysisAction action;
-
+    private QueryManagementServiceStub queryManagementService;
 
     @Before
     public void setUp() {
@@ -132,10 +133,21 @@ public class GenePatternAnalysisActionTest extends AbstractSessionBasedTest {
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new GenePatternAnalysisAction();
         action.setAnalysisService(new AnalysisServiceStub());
-        action.setQueryManagementService(new QueryManagementServiceStub());
+        queryManagementService = new QueryManagementServiceStub();
+        action.setQueryManagementService(queryManagementService);
         action.setWorkspaceService(new WorkspaceServiceStub());
         action.setAjaxUpdater(new PersistedAnalysisJobAjaxUpdater());
         action.setConfigurationHelper(new ConfigurationHelperStub());
+    }
+    
+    @Test
+    public void testPrepare() {
+        queryManagementService.platformsForStudy.add("platform1");
+        action.prepare();
+        assertFalse(action.getGenePatternAnalysisForm().isMultiplePlatformsInStudy());
+        queryManagementService.platformsForStudy.add("platform2");
+        action.prepare();
+        assertTrue(action.getGenePatternAnalysisForm().isMultiplePlatformsInStudy());
     }
     
     @Test
@@ -194,6 +206,10 @@ public class GenePatternAnalysisActionTest extends AbstractSessionBasedTest {
         action.getGenePatternAnalysisForm().getInvocation().setParameterValue(genomicParameter, genomicParameterValue);
         action.setSelectedAction(GenePatternAnalysisAction.EXECUTE_ACTION);
         assertEquals("status", action.execute());
+        
+        action.setSelectedAction("INVALID");
+        assertEquals(Action.INPUT, action.execute());
+        
     }
     
     @Test

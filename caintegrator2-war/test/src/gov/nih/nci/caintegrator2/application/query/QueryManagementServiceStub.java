@@ -105,7 +105,8 @@ import java.util.Set;
 
 @SuppressWarnings("PMD")
 public class QueryManagementServiceStub implements QueryManagementService {
-
+    public final Set<String> platformsForStudy = new HashSet<String>();
+    
     public boolean saveCalled;
     public boolean deleteCalled;
     public boolean executeCalled;
@@ -150,6 +151,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
         createCsvFileFromGenomicResultCalled = false;
         getRefreshedEntityCalled = false;
         throwGenesNotFoundException = false;
+        platformsForStudy.clear();
     }
 
 
@@ -215,7 +217,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
     }
 
     public Set<String> retrieveGeneExpressionPlatformsForStudy(Study study) {
-        return new HashSet<String>();
+        return platformsForStudy;
     }
     
 }

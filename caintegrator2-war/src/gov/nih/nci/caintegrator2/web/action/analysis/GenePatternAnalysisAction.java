@@ -101,6 +101,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -151,6 +152,22 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     private IPersistedAnalysisJobAjaxUpdater ajaxUpdater;
     private String selectedAction = OPEN_ACTION;
     private String analysisMethodName;
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepare() {
+        super.prepare();
+        List<String> platformsInStudy = new ArrayList<String>(
+                getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy()));
+        Collections.sort(platformsInStudy);
+        if (platformsInStudy.size() > 1) {
+            getGenePatternAnalysisForm().setMultiplePlatformsInStudy(true);
+            getGenePatternAnalysisForm().getPlatformNames().clear();
+            getGenePatternAnalysisForm().getPlatformNames().addAll(platformsInStudy);
+        }
+    }
 
     /**
      * {@inheritDoc}
