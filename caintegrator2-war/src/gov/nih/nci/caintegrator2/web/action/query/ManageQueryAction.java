@@ -241,9 +241,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             validateExecuteQuery(); 
         } else if (EXECUTE_QUERY.equals(selectedAction)) {
             validateExecuteQuery(); 
-        } else if ("saveQuery".equals(selectedAction)) {
-            validateSaveQuery();
-        } else if ("saveAsQuery".equals(selectedAction)) {
+        } else if ("saveQuery".equals(selectedAction)
+                || "saveAsQuery".equals(selectedAction)) {
             validateSaveQuery();
         } else if ("addCriterionRow".equals(selectedAction)) {
             validateAddCriterionRow();
@@ -266,6 +265,13 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         if (this.hasErrors()) {
             displayTab = SAVE_AS_TAB;
         }
+        try {
+            getQuery().getCompoundCriterion().validateGeneExpressionCriterion();
+        } catch (InvalidCriterionException e) {
+            addActionError(e.getMessage());
+            displayTab = CRITERIA_TAB;
+        }
+        
     }
     
     private void validateSaveSubjectList() {

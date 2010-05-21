@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.apache.commons.lang.xwork.StringUtils;
@@ -35,7 +36,7 @@ public abstract class AbstractGenomicCriterion extends AbstractCriterion impleme
      * @param geneSymbol the geneSymbol to set
      */
     public void setGeneSymbol(String geneSymbol) {
-        this.geneSymbol = geneSymbol;
+        this.geneSymbol = geneSymbol.toUpperCase(Locale.getDefault());
     }
     
     /**
