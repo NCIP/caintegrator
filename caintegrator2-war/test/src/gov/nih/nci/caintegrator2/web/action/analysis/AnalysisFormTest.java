@@ -220,10 +220,16 @@ public class AnalysisFormTest {
         assertEquals("1", form.getInvocation().getParameterValue(parameterValue2.getParameter()).getValueAsString());
         assertEquals("1", formParameter2.getValue());
         assertEquals("1", formParameter2.getValue());
-        assertEquals("All Genomic Data", formParameter3.getValue());
+        assertEquals("", formParameter3.getValue());
         formParameter3.setValue("Test");
         assertEquals("Test", formParameter3.getValue());
         assertEquals(query, formParameter3.getSelectedQuery());
+        
+        formParameter3.setValue("All Genomic Data for Platform: SOME_PLATFORM");
+        assertEquals("All Genomic Data for Platform: SOME_PLATFORM", formParameter3.getValue());
+        assertEquals(null, formParameter3.getSelectedQuery());
+        assertEquals("SOME_PLATFORM", formParameter3.getSelectedPlatform());
+        
         assertEquals("", formParameter4.getValue());
         formParameter4.setValue("Test");
         assertEquals("Test", formParameter4.getValue());
