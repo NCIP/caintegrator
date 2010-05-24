@@ -244,6 +244,8 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
      * @return string
      */
     public String delete() {
+        setStudyLastModifiedByCurrentUser(null, 
+                LogEntry.getSystemLogDelete(annotationGroup));
         getStudyManagementService().delete(getStudyConfiguration(), annotationGroup);
         return SUCCESS;
     }

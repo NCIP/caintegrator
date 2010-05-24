@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+
+import org.apache.commons.lang.xwork.StringUtils;
 
 /**
  * 
@@ -12,8 +15,8 @@ import java.util.Set;
 public abstract class AbstractGenomicCriterion extends AbstractCriterion implements Cloneable {
 
     private static final long serialVersionUID = 1L;
-    private String geneSymbol;
-    private String platformName;
+    private String geneSymbol = "";
+    private String platformName = "";
     
     /**
      * {@inheritDoc}
@@ -33,7 +36,7 @@ public abstract class AbstractGenomicCriterion extends AbstractCriterion impleme
      * @param geneSymbol the geneSymbol to set
      */
     public void setGeneSymbol(String geneSymbol) {
-        this.geneSymbol = geneSymbol;
+        this.geneSymbol = geneSymbol.toUpperCase(Locale.getDefault());
     }
     
     /**
@@ -41,6 +44,9 @@ public abstract class AbstractGenomicCriterion extends AbstractCriterion impleme
      */
     public Set<String> getGeneSymbols() {
         Set<String> geneSymbols = new HashSet<String>();
+        if (StringUtils.isBlank(geneSymbol)) {
+            return geneSymbols;
+        }
         geneSymbols.addAll(Arrays.asList(getGeneSymbol().replaceAll("\\s*", "").split(",")));
         return geneSymbols;
     }

@@ -90,11 +90,11 @@ import java.io.File;
 /**
  * A detail about the unparsed data file in caArray.
  */
-public class Level2DataFile {
+public class SupplementalDataFile {
     private String fileName;
     private File file;
     private String probeNameHeader;
-    private String logRatioHeader;
+    private String valueHeader;
     /**
      * @return the fileName
      */
@@ -132,15 +132,15 @@ public class Level2DataFile {
         this.probeNameHeader = probeNameHeader;
     }
     /**
-     * @return the logRatioHeader
+     * @return the valueHeader
      */
-    public String getLogRatioHeader() {
-        return logRatioHeader;
+    public String getValueHeader() {
+        return valueHeader;
     }
     /**
-     * @param logRatioHeader the logRatioHeader to set
+     * @param valueHeader the valueHeader to set
      */
-    public void setLogRatioHeader(String logRatioHeader) {
-        this.logRatioHeader = logRatioHeader;
+    public void setValueHeader(String valueHeader) {
+        this.valueHeader = valueHeader;
     }
 }

@@ -210,6 +210,20 @@
                 <td />
                 <td />
             </tr>
+            <tr>
+            <td align="right">Central Tendency for Technical Replicates:</td>
+                <td> <b><s:property value="technicalReplicateCentralTendency"/></b></td>
+                <td />
+                <td />
+            </tr>
+            <s:if test="useHighVarianceCalculation">
+            <tr>
+                <td align="right"><s:property value="highVarianceThresholdLabel" /></td>
+                <td> <b><s:property value="highVarianceThresholdString"/></b></td>
+                <td />
+                <td />
+            </tr>
+            </s:if>
             
                 <s:if test="expressionData">
                     <tr>

@@ -113,6 +113,8 @@ public class AnnotationFileStub extends AnnotationFile {
     
     private class FileStub extends File {
         
+        private static final long serialVersionUID = 1L;
+
         public FileStub() {
             super("");
         }

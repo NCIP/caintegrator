@@ -109,7 +109,8 @@ public class ComparativeMarkerSelectionAnalysisForm {
     private Map<String, DisplayableQuery> displayableQueryMap = new HashMap<String, DisplayableQuery>();
     private List<String> selectedQueryNames = new ArrayList<String>();
     private List<String> unselectedQueryNames = new ArrayList<String>();
-    
+    private String platformName = null;
+
     // JSP Select List Options
     private final Map<String, DisplayableQuery> selectedQueries = new HashMap<String, DisplayableQuery>();
     private final SortedMap<String, DisplayableQuery> unselectedQueries = new TreeMap<String, DisplayableQuery>();
@@ -221,4 +222,17 @@ public class ComparativeMarkerSelectionAnalysisForm {
         return unselectedQueries;
     }
     
+    /**
+     * @return the platformName
+     */
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    /**
+     * @param platformName the platformName to set
+     */
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
 }

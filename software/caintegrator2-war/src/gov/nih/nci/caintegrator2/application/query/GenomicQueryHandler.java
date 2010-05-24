@@ -157,22 +157,36 @@ class GenomicQueryHandler {
         column.setSampleAcquisition(arrayData.getSample().getSampleAcquisition());
         for (AbstractReporter reporter : values.getReporters()) {
             HibernateUtil.loadCollection(reporter.getGenes());
+            HibernateUtil.loadCollection(reporter.getSamplesHighVariance());
             GenomicDataResultRow row = reporterToRowMap.get(reporter);
             GenomicDataResultValue value = new GenomicDataResultValue();
             value.setColumn(column);
             Float floatValue = values.getFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL);
             if (floatValue != null) {
                 value.setValue(Math.round(floatValue * DECIMAL_100) / DECIMAL_100);
-            }
-            if (result.isHasCriterionSpecifiedReporterValues()) {
-                value.setMeetsCriterion(criterionHandler.
-                        isGenomicValueMatchCriterion(reporter.getGenes(), value.getValue()));
-                row.setHasMatchingValues(row.isHasMatchingValues() || value.isMeetsCriterion());
+                checkMeetsCriterion(result, criterionHandler, reporter, row, value);
+                checkHighVariance(result, arrayData, reporter, value);
             }
             row.getValues().add(value);
         }
     }
 
+    private void checkMeetsCriterion(GenomicDataQueryResult result, CompoundCriterionHandler criterionHandler,
+            AbstractReporter reporter, GenomicDataResultRow row, GenomicDataResultValue value) {
+        if (result.isHasCriterionSpecifiedReporterValues()) {
+            value.setMeetsCriterion(criterionHandler.
+                    isGenomicValueMatchCriterion(reporter.getGenes(), value.getValue()));
+            row.setHasMatchingValues(row.isHasMatchingValues() || value.isMeetsCriterion());
+        }
+    }
+
+    private void checkHighVariance(GenomicDataQueryResult result, 
+            ArrayData arrayData, AbstractReporter reporter, GenomicDataResultValue value) {
+        if (reporter.getSamplesHighVariance().contains(arrayData.getSample())) {
+            value.setHighVariance(true);
+            result.setHasHighVarianceValues(true);
+        }
+    }
     private Map<AbstractReporter, GenomicDataResultRow> createReporterToRowMap(GenomicDataQueryResult result) {
         Map<AbstractReporter, GenomicDataResultRow> rowMap = new HashMap<AbstractReporter, GenomicDataResultRow>();
         for (GenomicDataResultRow row : result.getRowCollection()) {

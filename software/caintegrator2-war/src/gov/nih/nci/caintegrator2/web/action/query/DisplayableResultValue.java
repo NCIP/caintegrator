@@ -96,7 +96,7 @@ import java.util.regex.Pattern;
  * Represents a value associated to a Row / Column.  (Wraps the <code>ResultValue</code> class).
  */
 public class DisplayableResultValue {
-    private static final Pattern URL_PATTERN = Pattern.compile("(?i)^(https?|ftp)://");
+    private static final Pattern URL_PATTERN = Pattern.compile("(?i)^(https?|ftp|file)://");
     private String displayString = "";
     private Date dateValue = null;
     private boolean dateType = false;

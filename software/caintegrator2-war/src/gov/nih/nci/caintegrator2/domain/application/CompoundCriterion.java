@@ -1,6 +1,8 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
 
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -15,7 +17,8 @@ import org.apache.commons.lang.xwork.StringUtils;
 public class CompoundCriterion extends AbstractCriterion implements Cloneable {
 
     private static final long serialVersionUID = 1L;
-    
+
+    private static final String ALL_GENES = "-AllGenes-";
     private BooleanOperatorEnum booleanOperator;
     private Collection<AbstractCriterion> criterionCollection = new HashSet<AbstractCriterion>();
     
@@ -120,7 +123,63 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
      * {@inheritDoc}
      */
     @Override
-    protected List<String> getGeneSymbolsInCriterion() {
+    public List<String> getGeneSymbolsInCriterion() {
         return getAllGeneSymbols();
+    }
+
+    /**
+     * Validate GeneExpression criterion.
+     * @throws InvalidCriterionException when not valid
+     */
+    public void validateGeneExpressionCriterion() throws InvalidCriterionException {
+        boolean isFoldChange = false;
+        boolean isGeneName = false;
+        List<String> geneSymbols = new ArrayList<String>();
+        for (AbstractCriterion criterion : getCriterionCollection()) {
+            if (criterion instanceof FoldChangeCriterion) {
+                isFoldChange = true;
+                validateDuplicateGeneSymbol(geneSymbols, criterion);
+                validateMixedCriterion(isFoldChange, isGeneName);
+            } else if (criterion instanceof GeneNameCriterion) {
+                isGeneName = true;
+                validateMixedCriterion(isFoldChange, isGeneName);
+            }
+        }
+    }
+
+    private void validateMixedCriterion(boolean isFoldChange, boolean isGeneName) throws InvalidCriterionException {
+        if (isFoldChange && isGeneName) {
+            throw new InvalidCriterionException("Gene name and Fold change criterion can't be mixed.");
+        }
+    }
+
+    private void validateDuplicateGeneSymbol(List<String> geneSymbols,
+            AbstractCriterion criterion) throws InvalidCriterionException {
+        List<String> criterionGeneSymbols = getGeneSymbols(criterion.getGeneSymbolsInCriterion());
+        for (String geneSymbol : criterionGeneSymbols) {
+            checkDuplicateGene(geneSymbols, geneSymbol);
+        }
+        geneSymbols.addAll(criterionGeneSymbols);
+    }
+
+    private void checkDuplicateGene(List<String> geneSymbols, String geneSymbol)
+    throws InvalidCriterionException {
+        if (geneSymbols.contains(geneSymbol)) {
+            throw new InvalidCriterionException("Gene symbol '" + geneSymbol
+                    + "' is in more than 1 Fold Change criterion.");
+        } else if (geneSymbols.contains(ALL_GENES)
+                || (ALL_GENES.equals(geneSymbol) && !geneSymbols.isEmpty())) {
+            throw new InvalidCriterionException("All Genes can't be mixed in different Fold Change criterion.");
+        }
+    }
+
+    private List<String> getGeneSymbols(List<String> geneSymbolsInCriterion) {
+        List<String> geneSymbols = new ArrayList<String>();
+        if (geneSymbolsInCriterion.isEmpty()) {
+            geneSymbols.add(ALL_GENES);
+        } else {
+            geneSymbols.addAll(geneSymbolsInCriterion);
+        }
+        return geneSymbols;
     }
 }

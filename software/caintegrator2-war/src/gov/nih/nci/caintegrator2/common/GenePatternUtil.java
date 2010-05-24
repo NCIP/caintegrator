@@ -106,8 +106,10 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.cabig.icr.asbp.parameter.FloatParameter;
@@ -203,30 +205,49 @@ public final class GenePatternUtil {
      * Creates the sample classifications from the clinical queries.
      * @param queryManagementService to query database.
      * @param clinicalQueries to be turned into sample classifications.
+     * @param sampleColumnOrdering the sample names which are to be used for this classification.
      * @return sample classification.
      * @throws InvalidCriterionException if criterion is not valid.
      */
     public static SampleClassificationParameterValue createSampleClassification(
-            QueryManagementService queryManagementService, List<Query> clinicalQueries)
+            QueryManagementService queryManagementService, List<Query> clinicalQueries,
+            List<String> sampleColumnOrdering)
             throws InvalidCriterionException {
-        SampleClassificationParameterValue sampleClassifications = new SampleClassificationParameterValue();
-        Set<Long> usedSampleIds = new HashSet<Long>();
+        Map<String, String> sampleNameToClassificationMap = new HashMap<String, String>();
+        Map<String, Sample> sampleNameToSampleMap = new HashMap<String, Sample>();
+        runClinicalQueriesForClassification(queryManagementService, clinicalQueries, sampleNameToClassificationMap,
+                sampleNameToSampleMap);
+        return retrieveSampleClassifications(
+                sampleColumnOrdering, sampleNameToClassificationMap, sampleNameToSampleMap);
+    }
+
+    private static void runClinicalQueriesForClassification(QueryManagementService queryManagementService,
+            List<Query> clinicalQueries, Map<String, String> sampleNameToClassificationMap,
+            Map<String, Sample> sampleNameToSampleMap) throws InvalidCriterionException {
         for (Query query : clinicalQueries) {
             ResultColumn sampleColumn = new ResultColumn();
             sampleColumn.setEntityType(EntityTypeEnum.SAMPLE);
             sampleColumn.setColumnIndex(query.getColumnCollection().size());
             query.getColumnCollection().add(sampleColumn);
-            String classificationName = query.getName();
             QueryResult result = queryManagementService.execute(query);
             for (ResultRow row : result.getRowCollection()) {
                 if (row.getSampleAcquisition() != null) {
                     Sample sample = row.getSampleAcquisition().getSample();
-                    if (!usedSampleIds.contains(sample.getId())) {
-                        sampleClassifications.classify(sample, classificationName);
-                        usedSampleIds.add(sample.getId());
+                    if (!sampleNameToClassificationMap.containsKey(sample.getName())) {
+                        sampleNameToClassificationMap.put(sample.getName(), query.getName());
+                        sampleNameToSampleMap.put(sample.getName(), sample);
                     }
                 }
             }
+        }
+    }
+
+    private static SampleClassificationParameterValue retrieveSampleClassifications(List<String> sampleColumnOrdering,
+            Map<String, String> sampleNameToClassificationMap, Map<String, Sample> sampleNameToSampleMap) {
+        SampleClassificationParameterValue sampleClassifications = new SampleClassificationParameterValue();
+        for (String sampleName : sampleColumnOrdering) {
+            sampleClassifications.classify(sampleNameToSampleMap.get(sampleName), 
+                    sampleNameToClassificationMap.get(sampleName));
         }
         return sampleClassifications;
     }
@@ -237,14 +258,16 @@ public final class GenePatternUtil {
      * @param clinicalQueries to be turned into GctDataset.
      * @param excludedControlSampleSet the samples to be excluded.
      * @param queryManagementService to query database.
+     * @param platformName if this is not null, specifies the platform to use for the genomic query.
      * @return gct dataset for the queries.
      * @throws InvalidCriterionException if criterion is not valid.
      */
     public static GctDataset createGctDataset(StudySubscription studySubscription, Collection<Query> clinicalQueries, 
-            SampleSet excludedControlSampleSet, QueryManagementService queryManagementService)
+            SampleSet excludedControlSampleSet, QueryManagementService queryManagementService, String platformName)
     throws InvalidCriterionException {
         Set<Query> clinicalQuerySet = new HashSet<Query>(clinicalQueries);
-        Query allGenomicDataQuery = QueryUtil.createAllGenomicDataQuery(studySubscription, clinicalQuerySet);
+        Query allGenomicDataQuery = 
+            QueryUtil.createAllGenomicDataQuery(studySubscription, clinicalQuerySet, platformName);
         GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
         genomicData.excludeSampleSet(excludedControlSampleSet);
         if (genomicData.getRowCollection().isEmpty()) {

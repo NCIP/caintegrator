@@ -330,7 +330,9 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         }
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
         Criteria criteria = getCurrentSession().createCriteria(AbstractReporter.class);
-        criteria.createCriteria("genes").add(Restrictions.in("symbol", geneSymbols));
+        if (!geneSymbols.isEmpty()) {
+            criteria.createCriteria("genes").add(Restrictions.in("symbol", geneSymbols));
+        }
         criteria.add(Restrictions.in("reporterList", studyReporterLists));
         reporters.addAll((List<AbstractReporter>) criteria.list());
         return reporters;

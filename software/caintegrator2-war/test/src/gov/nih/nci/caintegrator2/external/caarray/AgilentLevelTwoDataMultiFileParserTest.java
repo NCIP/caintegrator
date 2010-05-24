@@ -89,8 +89,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -101,32 +103,34 @@ public class AgilentLevelTwoDataMultiFileParserTest {
     @Test
     public void testExtractData() throws DataRetrievalException {
         
-        Map<String, Float> agilentData;
+        Map<String, List<Float>> agilentData;
         boolean exceptionCaught = false;
         try {
-            Level2DataFile level2DataFile = new Level2DataFile();
-            level2DataFile.setFileName(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE_PATH);
-            level2DataFile.setFile(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE);
-            level2DataFile.setProbeNameHeader("ID");
-            level2DataFile.setLogRatioHeader("logratio");
-            agilentData = AgilentLevelTwoDataMultiFileParser.INSTANCE.extractData(level2DataFile);
+            SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
+            supplementalDataFile.setFileName(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE_PATH);
+            supplementalDataFile.setFile(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE);
+            supplementalDataFile.setProbeNameHeader("ID");
+            supplementalDataFile.setValueHeader("logratio");
+            agilentData = SupplementalMultiFileParser.INSTANCE.extractData(supplementalDataFile,
+                    PlatformVendorEnum.AGILENT);
         } catch (DataRetrievalException e) {
-            assertEquals(e.getMessage(), "Invalid Agilent data file; headers not found in file.");
+            assertEquals(e.getMessage(), "Invalid supplemental data file; headers not found in file.");
             exceptionCaught = true;
         }
         assertTrue(exceptionCaught);
         
         exceptionCaught = false;
         try {
-            Level2DataFile level2DataFile = new Level2DataFile();
-            level2DataFile.setFileName(TestDataFiles.HUAITIAN_LEVEL_2_DATA_FILE_PATH);
-            level2DataFile.setFile(TestDataFiles.HUAITIAN_LEVEL_2_DATA_FILE);
-            level2DataFile.setProbeNameHeader("ID");
-            level2DataFile.setLogRatioHeader("logratio");
-            agilentData = AgilentLevelTwoDataMultiFileParser.INSTANCE.extractData(level2DataFile);
+            SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
+            supplementalDataFile.setFileName(TestDataFiles.HUAITIAN_LEVEL_2_DATA_FILE_PATH);
+            supplementalDataFile.setFile(TestDataFiles.HUAITIAN_LEVEL_2_DATA_FILE);
+            supplementalDataFile.setProbeNameHeader("ID");
+            supplementalDataFile.setValueHeader("logratio");
+            agilentData = SupplementalMultiFileParser.INSTANCE.extractData(supplementalDataFile,
+                    PlatformVendorEnum.AGILENT);
             assertEquals(4, agilentData.keySet().size());
         } catch (DataRetrievalException e) {
-            assertEquals(e.getMessage(), "Invalid Agilent data file; headers not found in file.");
+            assertEquals(e.getMessage(), "Invalid supplemental data file; headers not found in file.");
             exceptionCaught = true;
         }
         assertFalse(exceptionCaught);

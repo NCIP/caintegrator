@@ -94,7 +94,11 @@ public class AnnotationTypeEnumTest {
     @Test
     public void testGetByValue() {
         assertEquals(AnnotationTypeEnum.DATE, AnnotationTypeEnum.getByValue("date"));
-        assertNull(AnnotationTypeEnum.getByValue(null));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNull() {
+        AnnotationTypeEnum.getByValue(null);
     }
 
     @Test(expected = IllegalArgumentException.class)

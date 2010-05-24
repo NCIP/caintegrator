@@ -65,7 +65,7 @@
                                     <li style="padding: 0px 0px 2px 0px">
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
                                             <div style="float: left; white-space: nowrap; width: 38px;">
-                                                <s:a href="%{runGeneListQueryUrl}" cssClass="searches"
+                                                <s:a href="%{runGeneListQueryUrl}" onclick="showBusyDialog();" cssClass="searches"
                                                     cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Run query: %{name}">&nbsp;</s:a>
                                                 <s:if test="%{studyManager}">
@@ -75,7 +75,7 @@
                                                 </s:if>
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
-                                                <s:a href="%{runGeneListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
+                                                <s:a href="%{runGeneListQueryUrl}" onclick="showBusyDialog();" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
                                                     title="Description: %{description} / Last Modified: %{displayableLastModifiedDate}">
                                                     <s:if test="name == openGlobalGeneListName">
                                                         <strong><s:property value="name"/></strong>
@@ -107,7 +107,7 @@
                                     <li style="padding: 0px 0px 2px 0px">
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
                                             <div style="float: left; white-space: nowrap; width: 38px;">
-                                                <s:a href="%{runSubjectListQueryUrl}" cssClass="searches"
+                                                <s:a href="%{runSubjectListQueryUrl}" onclick="showBusyDialog();" cssClass="searches"
                                                     cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Run query: %{name}">&nbsp;</s:a>
                                                 <s:if test="%{studyManager}">
@@ -117,7 +117,7 @@
                                                 </s:if>
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
-                                                <s:a href="%{runSubjectListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
+                                                <s:a href="%{runSubjectListQueryUrl}" onclick="showBusyDialog();" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
                                                     title="Description: %{description} / Last Modified: %{displayableLastModifiedDate}">
                                                     <s:if test="name == openGlobalSubjectListName">
                                                         <strong><s:property value="name"/></strong>
@@ -205,7 +205,7 @@
                                     <li style="padding: 0px 0px 2px 0px">
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
                                             <div style="float: left; white-space: nowrap; width: 38px;">
-                                                <s:a href="%{runGeneListQueryUrl}" cssClass="searches"
+                                                <s:a href="%{runGeneListQueryUrl}" onclick="showBusyDialog();" cssClass="searches"
                                                     cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Run query: %{name}">&nbsp;</s:a>
                                                 <s:if test="%{studyManager}">
@@ -215,7 +215,7 @@
                                                 </s:if>
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
-                                                <s:a href="%{runGeneListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
+                                                <s:a href="%{runGeneListQueryUrl}" onclick="showBusyDialog();" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
                                                     title="Description: %{description} / Last Modified: %{displayableLastModifiedDate}">
                                                     <s:if test="name == openGlobalGeneListName">
                                                         <strong><s:property value="name"/></strong>
@@ -245,7 +245,7 @@
                                     <li style="padding: 0px 0px 2px 0px">
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
                                             <div style="float: left; white-space: nowrap; width: 38px;">
-                                                <s:a href="%{runSubjectListQueryUrl}" cssClass="searches"
+                                                <s:a href="%{runSubjectListQueryUrl}" onclick="showBusyDialog();" cssClass="searches"
                                                     cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Run query: %{name}">&nbsp;</s:a>
                                                 <s:if test="%{studyManager}">
@@ -255,7 +255,7 @@
                                                 </s:if>
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
-                                                <s:a href="%{runSubjectListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
+                                                <s:a href="%{runSubjectListQueryUrl}" onclick="showBusyDialog();" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
                                                     title="Description: %{description} / Last Modified: %{displayableLastModifiedDate}">
                                                     <s:if test="name == openGlobalSubjectListName">
                                                         <strong><s:property value="name"/></strong>
@@ -289,7 +289,7 @@
                                     <li style="padding: 0px 0px 2px 0px">
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
                                             <div style="float: left; white-space: nowrap; width: 38px;">
-                                                <s:a href="%{runGeneListQueryUrl}" cssClass="searches"
+                                                <s:a href="%{runGeneListQueryUrl}" onclick="showBusyDialog();" cssClass="searches"
                                                     cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Run query: %{name}">&nbsp;</s:a>
                                                 <s:a href="%{editGeneListUrl}" cssClass="queryAction"
@@ -297,7 +297,7 @@
                                                     title="Rename List: %{name}">&nbsp;</s:a>
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
-                                                <s:a href="%{runGeneListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
+                                                <s:a href="%{runGeneListQueryUrl}" onclick="showBusyDialog();" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
                                                     title="Description: %{description} / Last Modified: %{displayableLastModifiedDate}">
                                                     <s:if test="name == openGeneListName">
                                                         <strong><s:property value="name"/></strong>
@@ -327,7 +327,7 @@
                                     <li style="padding: 0px 0px 2px 0px">
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
                                             <div style="float: left; white-space: nowrap; width: 38px;">
-                                                <s:a href="%{runSubjectListQueryUrl}" cssClass="searches"
+                                                <s:a href="%{runSubjectListQueryUrl}" onclick="showBusyDialog();" cssClass="searches"
                                                     cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Run query: %{name}">&nbsp;</s:a>
                                                 <s:a href="%{editSubjectListUrl}" cssClass="queryAction"
@@ -335,7 +335,7 @@
                                                     title="Rename List: %{name}">&nbsp;</s:a>
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
-                                                <s:a href="%{runSubjectListQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
+                                                <s:a href="%{runSubjectListQueryUrl}" onclick="showBusyDialog();" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;"
                                                     title="Description: %{description} / Last Modified: %{displayableLastModifiedDate}">
                                                     <s:if test="name == openSubjectListName">
                                                         <strong><s:property value="name"/></strong>

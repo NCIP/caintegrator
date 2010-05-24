@@ -197,7 +197,8 @@ public class ArrayDataValues {
     }
     
     /**
-     * Sets a single data point for a single reporter / array / type combination.
+     * Sets a single data point for a single reporter / array / type combination, where there are more than one float
+     * values to calculate a central tendency.
      * 
      * @param arrayData the array data the data value is associated to.
      * @param reporter the reporter the data value is associated to.

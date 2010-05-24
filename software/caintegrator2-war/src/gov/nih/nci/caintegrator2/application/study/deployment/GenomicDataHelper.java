@@ -105,6 +105,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.bioconductor.BioconductorService;
@@ -179,8 +180,15 @@ class GenomicDataHelper {
     }
 
     private void loadAffymetrixExpressionData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
-            DataRetrievalException {
-        ArrayDataValues probeSetValues = caArrayFacade.retrieveData(genomicSource);
+            DataRetrievalException, ValidationException {
+        ArrayDataValues probeSetValues;
+        if (genomicSource.isUseSupplementalFiles()) {
+            ExpressionSampleMappingFileHandler handler = expressionHandlerFactory.getHandler(
+                    genomicSource, caArrayFacade, arrayDataService, dao);
+            probeSetValues = handler.loadArrayData();
+        } else {
+            probeSetValues = caArrayFacade.retrieveData(genomicSource);
+        }
         ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
         arrayDataService.save(probeSetValues);
         arrayDataService.save(geneValues);
@@ -188,7 +196,7 @@ class GenomicDataHelper {
     
     private void loadAgilentExpressionData(GenomicDataSourceConfiguration genomicSource)
     throws DataRetrievalException, ConnectionException, ValidationException {
-        AgilentSampleMappingFileHandler handler = expressionHandlerFactory.getHandler(
+        ExpressionSampleMappingFileHandler handler = expressionHandlerFactory.getHandler(
                 genomicSource, caArrayFacade, arrayDataService, dao);
         ArrayDataValues probeSetValues = handler.loadArrayData();
         ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
@@ -288,15 +296,20 @@ class GenomicDataHelper {
                 platformHelper.getReportersForGene(geneReporter.getGenes().iterator().next(), 
                         ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             geneValues.setFloatValue(geneArrayData, geneReporter, ArrayDataValueType.EXPRESSION_SIGNAL,
-                    computeGeneReporterValue(probeSetReporters, probeSetValues, arrayData));
+                    computeGeneReporterValue(probeSetReporters, probeSetValues, arrayData, geneReporter));
         }
     }
 
     private float computeGeneReporterValue(Collection<AbstractReporter> probeSetReporters, 
-            ArrayDataValues probeSetValues, ArrayData arrayData) {
+            ArrayDataValues probeSetValues, ArrayData arrayData, AbstractReporter geneReporter) {
+        Sample sample = arrayData.getSample();
         DescriptiveStatistics statistics = new DescriptiveStatistics();
         for (AbstractReporter reporter : probeSetReporters) {
             statistics.addValue(probeSetValues.getFloatValue(arrayData, reporter, EXPRESSION_SIGNAL));
+            if (reporter.getSamplesHighVariance().contains(sample)) {
+                geneReporter.getSamplesHighVariance().add(sample);
+                sample.getReportersHighVariance().add(geneReporter);
+            }
         }
         return (float) statistics.getPercentile(FIFTIETH_PERCENTILE);
     }

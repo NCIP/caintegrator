@@ -118,7 +118,7 @@ public class GenePatternUtilTest {
         queries.add(query1);
         queries.add(query2);
         SampleClassificationParameterValue value = 
-            GenePatternUtil.createSampleClassification(new QueryManagementServiceGenePatternStub(), queries);
+            GenePatternUtil.createSampleClassification(new QueryManagementServiceGenePatternStub(), queries, new ArrayList<String>());
         assertNotNull(value);
         
         assertEquals("1", GenePatternUtil.createBoolean0or1Parameter("name", true).getValue());

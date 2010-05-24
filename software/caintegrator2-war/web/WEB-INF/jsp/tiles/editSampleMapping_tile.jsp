@@ -61,6 +61,16 @@
                     <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" cssClass="readonly" />
                     <s:file id="sampleMappingFile" name="sampleMappingFile" label="Subject to Sample Mapping File" size="35" />
                     
+                    <tr>
+                        <td class="tdLabel">
+                            <s:if test="genomicSource.useSupplementalFiles">
+                                (For using CaArray supplemental file use 5 column format mapping file)
+                            </s:if>
+                            <s:else>
+                                (For parsed CaArray experiment use 2 column format mapping file)
+                            </s:else>            
+                        </td>
+                    </tr>
                     <s:textfield label="Control Sample Set Name" name="controlSampleSetName" required="true" theme="cai2xhtml" size="35"/>
                     <s:file name="controlSampleFile" label="Control Samples File" size="35" />
                     <tr> 

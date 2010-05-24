@@ -105,6 +105,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
 /**
@@ -260,9 +261,11 @@ public final class QueryUtil {
      * are given).
      * @param studySubscription for querying.
      * @param clinicalQueries to limit genomic data returned based.
+     * @param platformName if this is not null, specifies the platform to use for the genomic query.
      * @return a Query which contains all genomic data for all clinical queries given (if any).
      */
-    public static Query createAllGenomicDataQuery(StudySubscription studySubscription, Set<Query> clinicalQueries) {
+    public static Query createAllGenomicDataQuery(StudySubscription studySubscription, Set<Query> clinicalQueries,
+            String platformName) {
         Query query = createQuery(studySubscription);
         query.setResultType(ResultTypeEnum.GENOMIC);
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
@@ -277,6 +280,11 @@ public final class QueryUtil {
                 clinicalCompoundCriterions.getCriterionCollection().add(clinicalCompoundCriterion);
             }
             query.getCompoundCriterion().getCriterionCollection().add(clinicalCompoundCriterions);
+        }
+        if (StringUtils.isNotBlank(platformName)) {
+            GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
+            geneNameCriterion.setPlatformName(platformName);
+            query.getCompoundCriterion().getCriterionCollection().add(geneNameCriterion);
         }
         return query;
     }

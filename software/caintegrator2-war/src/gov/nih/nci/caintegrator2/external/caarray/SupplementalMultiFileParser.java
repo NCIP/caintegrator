@@ -85,58 +85,77 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
- * Parse Agilent level 2 data file.
+ * Parse supplemental data file.
  */
-public final class AgilentLevelTwoDataMultiFileParser {
+public final class SupplementalMultiFileParser {
 
     /**
      * The INSTANCE of the AgilentRawDataFileParser.
      */
-    public static final AgilentLevelTwoDataMultiFileParser INSTANCE = new AgilentLevelTwoDataMultiFileParser();
+    public static final SupplementalMultiFileParser INSTANCE = new SupplementalMultiFileParser();
     
     private CSVReader dataFileReader;
     private final Map<String, Integer> headerToIndexMap = new HashMap<String, Integer>();
 
     /**
      * Extract data from the raw file.
-     * @param level2DataFile the level2 data file detail
+     * @param supplementalDataFile the supplemental data file detail
+     * @param vendor the platform vendor
      * @return the extracted data.
      * @throws DataRetrievalException when error parsing.
      */
-    public Map<String, Float> extractData(Level2DataFile level2DataFile) throws DataRetrievalException {
+    public Map<String, List<Float>> extractData(SupplementalDataFile supplementalDataFile, PlatformVendorEnum vendor)
+    throws DataRetrievalException {
         try {
             
-            dataFileReader = new CSVReader(new InputStreamReader(new FileInputStream(level2DataFile.getFile())), '\t');
-            loadHeaders(level2DataFile.getProbeNameHeader());
-            Map<String, Float> agilentDataMap = new HashMap<String, Float>();
+            dataFileReader = new CSVReader(new InputStreamReader(
+                    new FileInputStream(supplementalDataFile.getFile())), '\t');
+            loadHeaders(supplementalDataFile.getProbeNameHeader());
+            Map<String, List<Float>> dataMap = new HashMap<String, List<Float>>();
             String[] fields;
             while ((fields = dataFileReader.readNext()) != null) {
-                String probeName = fields[headerToIndexMap.get(level2DataFile.getProbeNameHeader())];
-                if (probeName.startsWith("A_")) {
-                    Float logRatio;
-                    try {
-                        logRatio = new Float(fields[headerToIndexMap.get(level2DataFile.getLogRatioHeader())]);
-                        agilentDataMap.put(probeName, logRatio);
-                    } catch (NumberFormatException e) {
-                        logRatio = 0.0f; // The logratio is missing ignore this reporter.
-                    }
-                }
+                String probeName = fields[headerToIndexMap.get(supplementalDataFile.getProbeNameHeader())];
+                extractValue(supplementalDataFile, vendor, dataMap, fields, probeName);
             }
-            return agilentDataMap;
+            return dataMap;
         } catch (IOException e) {
             throw new DataRetrievalException("Couldn't read Agilent data file.", e);
         }
+    }
+
+    private void extractValue(SupplementalDataFile supplementalDataFile, PlatformVendorEnum vendor,
+            Map<String, List<Float>> dataMap, String[] fields, String probeName) {
+        if (PlatformVendorEnum.AGILENT.equals(vendor) && probeName.startsWith("A_")
+                || !PlatformVendorEnum.AGILENT.equals(vendor)) {
+            Float value;
+            try {
+                value = new Float(fields[headerToIndexMap.get(supplementalDataFile.getValueHeader())]);
+                addValueToDataMap(dataMap, probeName, value);
+            } catch (NumberFormatException e) {
+                value = 0.0f; // The value is missing ignore this reporter.
+            }
+        }
+    }
+    
+    private void addValueToDataMap(Map<String, List<Float>> dataMap, String probeName, Float value) {
+        if (!dataMap.containsKey(probeName)) {
+            dataMap.put(probeName, new ArrayList<Float>());
+        }
+        dataMap.get(probeName).add(value);
     }
 
     private void loadHeaders(String probeNameHeader) throws IOException, DataRetrievalException {
@@ -147,7 +166,7 @@ public final class AgilentLevelTwoDataMultiFileParser {
                 return;
             }
         }        
-        throw new DataRetrievalException("Invalid Agilent data file; headers not found in file.");
+        throw new DataRetrievalException("Invalid supplemental data file; headers not found in file.");
     }
     
     private boolean isFeatureHeadersLine(String[] fields, String probeNameHeader) {

@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web;
 
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.HighVarianceCalculationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 
 import java.util.ArrayList;
@@ -225,5 +226,53 @@ public class DisplayableGenomicSource {
      */
     public String getDisplayableLastModifiedDate() {
         return genomicDataSourceConfiguration.getDisplayableLastModifiedDate();
+    }
+    
+    /**
+     * 
+     * @return central tendency.
+     */
+    public String getTechnicalReplicateCentralTendency() {
+        return genomicDataSourceConfiguration.getTechnicalReplicatesCentralTendencyString();
+    }
+    
+    /**
+     * 
+     * @return use high variance.
+     */
+    public boolean isUseHighVarianceCalculation() {
+        return genomicDataSourceConfiguration.isUseHighVarianceCalculation();
+    }
+    
+    /**
+     * 
+     * @return high variance threshold.
+     */
+    public String getHighVarianceThresholdString() {
+        if (isUseHighVarianceCalculation()) {
+            Double highVarianceThreshold = genomicDataSourceConfiguration.getHighVarianceThreshold();
+            if (HighVarianceCalculationTypeEnum.PERCENTAGE.equals(
+                 genomicDataSourceConfiguration.getHighVarianceCalculationType())) {
+                return highVarianceThreshold + "%";
+            }
+            return String.valueOf(highVarianceThreshold);
+        }
+        return "";
+    }
+    
+    /**
+     * 
+     * @return high variance label.
+     */
+    public String getHighVarianceThresholdLabel() {
+        StringBuffer returnString = new StringBuffer("");
+        if (isUseHighVarianceCalculation()) {
+            if (HighVarianceCalculationTypeEnum.PERCENTAGE.equals(
+                    genomicDataSourceConfiguration.getHighVarianceCalculationType())) {
+                returnString.append("Relative ");
+            }
+            returnString.append("Standard Deviation Threshold for Technical Replicates:");
+        }
+        return returnString.toString();
     }
 }

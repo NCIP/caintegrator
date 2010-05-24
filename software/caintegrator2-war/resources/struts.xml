@@ -41,7 +41,7 @@
                         all parameters that contain only numbers (kmPlot page has this)
                      -->
                      <param name="excludeParams">
-                        dojo\..*,^struts\..*,_.*,d-\d+?-[sope],^\d+$
+                        dojo\..*,^struts\..*,_.*,d-\d+?-[sop],^\d+$
                      </param>
                  </interceptor-ref>
                 <interceptor-ref name="servletConfig"/>
@@ -913,6 +913,11 @@
             <result name="kmPlotResult" type="kmPlotResult"> 
                 <param name="type">geneExpression</param>
             </result>
+        </action>
+        
+        <action name="updateControlSamplesGeneExpressionBasedKMPlot" method="updateControlSampleSets" class="kmPlotGeneExpressionBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>
         </action>
         
         <!-- Query Based Kaplan-Meier Actions -->

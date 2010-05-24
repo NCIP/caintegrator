@@ -34,7 +34,10 @@
                     || (origPlatformVendor != document.getElementById("platformVendor").value)
                     || (origDataType != document.getElementById("dataType").value)
                     || (origPlatformName != document.getElementById("platformName").value)
-                    || (origTechnicalReplicatesCentralTendency != document.getElementById("technicalReplicatesCentralTendency").value)) {
+                    || (origTechnicalReplicatesCentralTendency != document.getElementById("technicalReplicatesCentralTendency").value)
+                    || (origIsUseHighVarianceCalculation != document.getElementById("isUseHighVarianceCalculation").checked)
+                    || (origHighVarianceCalculationType != document.getElementById("highVarianceCalculationType").value)
+                    || (origHighVarianceThreshold != document.getElementById("highVarianceThreshold").value)) {
                     if (confirm("You are about to update the configuration information for this data source.  "
                         + "Doing so will require you to remap your samples. "
                         + "Please click OK to update the data source or click Cancel to go back.")) {
@@ -51,6 +54,18 @@
                 document.genomicSourceForm.submit();
             }
         }
+
+        function checkVarianceInputParams(chk){
+            if (chk.checked == 1)
+            {
+              document.getElementById('varianceInputParams').style.display = 'block';
+            }
+            else
+            {
+              document.getElementById('varianceInputParams').style.display = 'none';
+              chk.checked = 0;
+            }
+          }
     </script>
     
     <h1><s:property value="#subTitleText" /></h1>
@@ -68,31 +83,30 @@
     
     
                 <s:actionerror/>
-                <s:form id="genomicSourceForm" name="genomicSourceForm" action="saveGenomicSource">
+                <s:form id="genomicSourceForm" name="genomicSourceForm" action="saveGenomicSource" theme="css_xhtml">
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="genomicSource.id" id="genomicSourceId"/>
                     <s:hidden name="mappingData" value="true"/>
                     <s:if test="genomicSource.statusDescription != null && genomicSource.statusDescription.length() > 0">
-            	        <tr>
-            	            <td class="tdLabel" align="right">
-            	                <label class="label">Status Description:</label>
-            	            </td>
-            	            <td>
-            	                <s:property value="genomicSource.statusDescription"/>
-            	            </td>
-            	        </tr>
+            	        <s:div cssStyle="padding: 1em 0 0 0;">
+                            <s:div cssClass="wwlbl">
+                            	<label class="label">Status Description: </label></s:div>
+	                        <s:div>
+	                            <s:property value="genomicSource.statusDescription"/>
+	                        </s:div>
+	                    </s:div>
+	                    <br />
                     </s:if>
                     <s:textfield label="caArray Web URL" name="genomicSource.serverProfile.url" id="caArrayUrl" />
                     <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" id="caArrayHost" />
-                    <tr>
-                        <td class="tdLabel">
-                            (Note:  caArray v 2.3 or newer is required)
-                        </td>
-                    </tr>
+                    <s:div cssClass="wwlbl">
+                    	<label class="label">(Note:  caArray v 2.3 or newer is required) </label>
+                    </s:div>
+                    <br />
                     <s:textfield label="caArray Server JNDI Port" name="genomicSource.serverProfile.port" id="caArrayPort" />
                     <!-- NOTE - using custom struts theme to turn off autocomplete -->
-                    <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" id="caArrayUsername" theme="cai2xhtml" />
-                    <s:password showPassword="true" label="caArray Password" name="genomicSource.serverProfile.password" id="caArrayPassword" theme="cai2xhtml"/>
+                    <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" id="caArrayUsername" theme="cai2_css_xhtml" />
+                    <s:password showPassword="true" label="caArray Password" name="genomicSource.serverProfile.password" id="caArrayPassword" theme="cai2_css_xhtml"/>
                     <!--/NOTE --> 
                     <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" id="experimentId" />
                     <s:select id="platformVendor" name="genomicSource.platformVendor" label="Vendor"
@@ -105,23 +119,55 @@
                                 document.genomicSourceForm.submit();"/>
                     <s:select id="platformName" 
                         name="genomicSource.platformName" 
-                        label="Platform (needed for Agilent and Affy Expression)"
-                        list="filterPlatformNames" 
-                        disabled="platformNameDisable"/>
+                        label="Platform"
+                        list="filterPlatformNames"/>
+                    <s:checkbox id="useSupplementalFiles" name="genomicSource.useSupplementalFiles" label="Use Supplemental Files"
+                        labelposition="left" disabled="useSupplementalFilesDisable"/>
                     <s:select id="technicalReplicatesCentralTendency" name="genomicSource.technicalReplicatesCentralTendencyString" label="Central Tendency for Technical Replicates"
                         list="@gov.nih.nci.caintegrator2.application.study.CentralTendencyTypeEnum@getStringValues()"
                         />
+                        
+                    <div class="wwgrp" id="wwgrp_isUseHighVarianceCalculation">
+                        <div class="wwlbl" id="wwlbl_isUseHighVarianceCalculation">
+                            <label class="checkboxLabel" for="isUseHighVarianceCalculation">Indicate if Technical Replicates have statistical variability:</label>
+                            <s:checkbox id="isUseHighVarianceCalculation" 
+                                        name="genomicSource.useHighVarianceCalculation"
+                                        onclick="checkVarianceInputParams(this);"
+                                        theme="simple"
+                                        title="Denote in the search results if a sample has high statistical variability among technical replicates"
+                                        /> 
+                        </div> 
+                    </div>
+    
+                    <!-- 
+                    <s:checkbox id="isUseHighVarianceCalculation" 
+                    name="genomicSource.useHighVarianceCalculation"
+                    label="Indicate if technical replicates have highS variability:" 
+                    title="Denote in the search results if a sample has high standard deviation replicates"
+                    labelposition="top"
+                    onclick="checkVarianceInputParams(this);"
+                    />
+                    -->
+                    <s:div id="varianceInputParams" cssStyle="%{varianceInputCssStyle}">
+                    <s:select id="highVarianceCalculationType" name="genomicSource.highVarianceCalculationTypeString" label="Standard Deviation Type" 
+                        list="@gov.nih.nci.caintegrator2.application.study.HighVarianceCalculationTypeEnum@getStringValues()"/>
+                    <s:textfield label="Standard Deviation Threshold" name="genomicSource.highVarianceThreshold" id="highVarianceThreshold" />
                     
-                    <tr> 
-                        <td></td>
-                        <td>
-                            <button type="button" 
+                    </s:div>
+                    
+                    <s:div cssClass="wwgrp">
+                        <s:div cssClass="wwlbl"></s:div>
+                        <s:div cssClass="wwctrl">
+                        <center>
+                        <button type="button" 
                                 onclick="document.genomicSourceForm.action = 'cancelGenomicSource.action';
                                 document.genomicSourceForm.submit();"> Cancel 
                             </button>
                             <button type="button" onclick="saveGenomicSource()"> Save </button>
-                        </td> 
-                    </tr>
+                            </center>
+                         </s:div>
+                    </s:div>
+
                     <script type="text/javascript">
                         var origHostname = document.genomicSourceForm.caArrayHost.value;
                         var origPort = document.genomicSourceForm.caArrayPort.value;
@@ -132,6 +178,9 @@
                         var origDataType = document.genomicSourceForm.dataType.value;
                         var origPlatformName = document.genomicSourceForm.platformName.value;
                         var origTechnicalReplicatesCentralTendency = document.genomicSourceForm.technicalReplicatesCentralTendency.value;
+                        var origIsUseHighVarianceCalculation = document.genomicSourceForm.isUseHighVarianceCalculation.checked;
+                        var origHighVarianceCalculationType = document.genomicSourceForm.highVarianceCalculationType.value;
+                        var origHighVarianceThreshold = document.genomicSourceForm.highVarianceThreshold.value;
                     </script>
                 </s:form>
                 </td>

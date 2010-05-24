@@ -113,6 +113,7 @@ import gov.nih.nci.caintegrator2.web.action.query.form.AbstractCriterionRow;
 import gov.nih.nci.caintegrator2.web.action.query.form.CriterionRowTypeEnum;
 import gov.nih.nci.caintegrator2.web.action.query.form.GeneNameCriterionWrapper;
 import gov.nih.nci.caintegrator2.web.action.query.form.MultiSelectParameter;
+import gov.nih.nci.caintegrator2.web.action.query.form.SelectListParameter;
 import gov.nih.nci.caintegrator2.web.action.query.form.SubjectListCriterionWrapper;
 import gov.nih.nci.caintegrator2.web.action.query.form.TextFieldParameter;
 
@@ -196,15 +197,13 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
      */
     public boolean acceptableParameterName(String parameterName) {
         boolean retVal = true;
-        String firstCharacter = parameterName.substring(0, 1);
-
         if (parameterName != null) {
             if (parameterName.startsWith("d-")) {
                 retVal = false;
                 if (parameterName.endsWith("-e")) {
                     setExport(true);
                 }
-            } else if (StringUtils.isNumeric(firstCharacter)) {
+            } else if (StringUtils.isNumeric(parameterName.substring(0, 1))) {
                 retVal = false;
             }
         }
@@ -243,9 +242,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             validateExecuteQuery(); 
         } else if (EXECUTE_QUERY.equals(selectedAction)) {
             validateExecuteQuery(); 
-        } else if ("saveQuery".equals(selectedAction)) {
-            validateSaveQuery();
-        } else if ("saveAsQuery".equals(selectedAction)) {
+        } else if ("saveQuery".equals(selectedAction)
+                || "saveAsQuery".equals(selectedAction)) {
             validateSaveQuery();
         } else if ("addCriterionRow".equals(selectedAction)) {
             validateAddCriterionRow();
@@ -268,6 +266,13 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         if (this.hasErrors()) {
             displayTab = SAVE_AS_TAB;
         }
+        try {
+            getQuery().getCompoundCriterion().validateGeneExpressionCriterion();
+        } catch (InvalidCriterionException e) {
+            addActionError(e.getMessage());
+            displayTab = CRITERIA_TAB;
+        }
+        
     }
     
     private void validateSaveSubjectList() {
@@ -422,6 +427,10 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         updateCriteria();
         ((TextFieldParameter) criterionRow.getParameters().get(0)).setGeneSymbol(true);
         ((TextFieldParameter) criterionRow.getParameters().get(0)).setValue(getGeneSymbols(isGlobal));
+        if (platformsInStudy.size() > 1) { // It has a platform select list.
+            ((SelectListParameter<?>) criterionRow.getParameters().get(1)).
+                    setValue(platformsInStudy.iterator().next());
+        }
         getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENOMIC.getValue());
         getQueryForm().getResultConfiguration().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());
         if (isGlobal) {

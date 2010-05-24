@@ -96,6 +96,11 @@ import java.util.Date;
  * 
  */
 public class LogEntry extends AbstractCaIntegrator2Object {
+    /**
+     * Default serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
+    
     private static final String QUOTE = "'";
     private static final String COMMA = ", ";
     private static final String NAME = "Name = ";
@@ -125,6 +130,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
     private static final String SAVE_GENOMIC_SOURCE = "Save Genomic Source: ";
     private static final String SAVE_IMAGING_SOURCE = "Save Imaging Source: ";
     
+    private static final String DELETE_ANNOTATION_GROUP = "Delete Annotation Group: ";
     private static final String DELETE_SUBJECT_ANNOTATION_FILE = "Delete Subject Annotation File: ";
     private static final String DELETE_SURVIVAL_VALUE_DEFINITION = "Delete Survival Value Definition: ";
     private static final String DELETE_EXTERNAL_LINKS = "Delete External Links: ";
@@ -293,6 +299,16 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      */
     public static String getSystemLogSave(AnnotationGroup annotationGroup) {
         return SAVE_ANNOTATION_GROUP 
+            + NAME + QUOTE + annotationGroup.getName() + QUOTE;
+    }
+    
+    /**
+     * 
+     * @param annotationGroup to get system log message for.
+     * @return System log message
+     */
+    public static String getSystemLogDelete(AnnotationGroup annotationGroup) {
+        return DELETE_ANNOTATION_GROUP 
             + NAME + QUOTE + annotationGroup.getName() + QUOTE;
     }
     

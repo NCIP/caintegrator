@@ -93,7 +93,7 @@ public class HighVarianceCalculationTypeEnumTest {
 
     @Test
     public void testGetByValue() {
-        assertEquals(HighVarianceCalculationTypeEnum.PERCENTAGE, HighVarianceCalculationTypeEnum.getByValue("Percentage"));
+        assertEquals(HighVarianceCalculationTypeEnum.PERCENTAGE, HighVarianceCalculationTypeEnum.getByValue("Relative (Percentage)"));
         assertNull(HighVarianceCalculationTypeEnum.getByValue(null));
     }
 

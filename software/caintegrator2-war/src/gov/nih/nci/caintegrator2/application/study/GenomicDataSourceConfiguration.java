@@ -123,6 +123,8 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
     private List<Sample> samples = new ArrayList<Sample>();
     private Set<SampleSet> controlSampleSetCollection = new HashSet<SampleSet>();
+    private Boolean singleDataFile = false;
+    private boolean useSupplementalFiles = false;
     private DnaAnalysisDataConfiguration dnaAnalysisDataConfiguration;
     private CentralTendencyTypeEnum technicalReplicatesCentralTendency = CentralTendencyTypeEnum.MEAN;
     private Status status = Status.NOT_LOADED;
@@ -564,6 +566,34 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     }
 
     /**
+     * @return the useSupplementalFiles
+     */
+    public boolean isUseSupplementalFiles() {
+        return useSupplementalFiles;
+    }
+
+    /**
+     * @param useSupplementalFiles the useSupplementalFiles to set
+     */
+    public void setUseSupplementalFiles(boolean useSupplementalFiles) {
+        this.useSupplementalFiles = useSupplementalFiles;
+    }
+
+    /**
+     * @return the singleDataFile
+     */
+    public Boolean isSingleDataFile() {
+        return singleDataFile;
+    }
+
+    /**
+     * @param singleDataFile the singleDataFile to set
+     */
+    public void setSingleDataFile(Boolean singleDataFile) {
+        this.singleDataFile = singleDataFile;
+    }
+
+    /**
      * @return the technicalReplicatesCentralTendency
      */
     public CentralTendencyTypeEnum getTechnicalReplicatesCentralTendency() {
@@ -626,6 +656,29 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public void setHighVarianceCalculationType(HighVarianceCalculationTypeEnum highVarianceCalculationType) {
         this.highVarianceCalculationType = highVarianceCalculationType;
+    }
+    
+    /**
+     * @return the resultType
+     */
+    public String getHighVarianceCalculationTypeString() {
+        if (highVarianceCalculationType == null) {
+            return "";
+        } else {
+            return highVarianceCalculationType.getValue();
+        }
+    }
+
+    /**
+     * @param highVarianceCalculationTypeString the highVarianceCalculationType string value to set
+     */
+    public void setHighVarianceCalculationTypeString(String highVarianceCalculationTypeString) {
+        if (StringUtils.isBlank(highVarianceCalculationTypeString)) {
+            this.highVarianceCalculationType = null;
+        } else {
+            this.highVarianceCalculationType =
+                HighVarianceCalculationTypeEnum.getByValue(highVarianceCalculationTypeString);
+        }
     }
 
     /**

@@ -261,6 +261,7 @@ public class AnalysisServiceTest {
         query.setName("queryNameString");
         pcaParameters.getClinicalQueries().add(query);
         SampleSet sampleSet = new SampleSet();
+        sampleSet.setId(1l);
         sampleSet.setName("sampleSetNameString");
         pcaParameters.setExcludedControlSampleSet(sampleSet);
         job.getForm().setPcaParameters(pcaParameters);
@@ -296,6 +297,7 @@ public class AnalysisServiceTest {
         query.setName("queryNameString");
         cmsParams.getClinicalQueries().add(query);
         SampleSet sampleSet = new SampleSet();
+        sampleSet.setId(1l);
         sampleSet.setName("sampleSetNameString");
         preprocessParams.setExcludedControlSampleSet(sampleSet);
         job.getForm().setComparativeMarkerSelectionParameters(cmsParams);
@@ -400,6 +402,7 @@ public class AnalysisServiceTest {
         geneExpressionParameters.setOverexpressedFoldChangeNumber(2.0F);
         geneExpressionParameters.setUnderexpressedFoldChangeNumber(2.0F);
         geneExpressionParameters.setSurvivalValueDefinition(studyCreator.getSurvivalValueDefinition());
+        geneExpressionParameters.setControlSampleSetName("name");
         assertTrue(geneExpressionParameters.validate());
         runKMPlotTest(studyCreator, subscription, geneExpressionParameters);
         

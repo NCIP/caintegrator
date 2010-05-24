@@ -293,4 +293,9 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
         return "Affymetrix";
     }
 
+    @Override
+    protected boolean getUseSupplementalFiles() {
+        return false;
+    }
+
 }

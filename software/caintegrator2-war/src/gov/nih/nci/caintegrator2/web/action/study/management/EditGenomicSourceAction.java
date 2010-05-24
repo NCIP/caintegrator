@@ -178,6 +178,9 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      * @return struts string.
      */
     public String refresh() {
+        if (!isAffyExpression()) {
+            getGenomicSource().setUseSupplementalFiles(true);
+        }
         return SUCCESS;
     }
     
@@ -241,6 +244,12 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         configuration.setPlatformVendor(getGenomicSource().getPlatformVendor());
         configuration.setPlatformName(getGenomicSource().getPlatformName());
         configuration.setDataType(getGenomicSource().getDataType());
+        configuration.setUseSupplementalFiles(getGenomicSource().isUseSupplementalFiles());
+        configuration.setSingleDataFile(getGenomicSource().isSingleDataFile());
+        configuration.setTechnicalReplicatesCentralTendency(getGenomicSource().getTechnicalReplicatesCentralTendency());
+        configuration.setUseHighVarianceCalculation(getGenomicSource().isUseHighVarianceCalculation());
+        configuration.setHighVarianceThreshold(getGenomicSource().getHighVarianceThreshold());
+        configuration.setHighVarianceCalculationType(getGenomicSource().getHighVarianceCalculationType());
         return configuration;
     }
 
@@ -255,9 +264,19 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     private boolean validateSave() {
         if (isPlatformNameRequired()
                 && StringUtils.isEmpty(getGenomicSource().getPlatformName())) {
-            addFieldError("genomicSource.platformName", "Platform name is required for Agilent");
+            addFieldError("genomicSource.platformName", "Platform name is required for using supplemental files.");
             return false;
         }
+        if (!validateGenomicSourceConnection()) {
+            return false;
+        }
+        if (!validateHighVarianceParameters()) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateGenomicSourceConnection() {
         try {
             caArrayFacade.validateGenomicSourceConnection(getGenomicSource());
         } catch (ConnectionException e) {
@@ -267,20 +286,30 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
             addFieldError("genomicSource.experimentIdentifier", "Experiment identifier not found on server.");
             return false;
         }
+        return checkUseSupplementalFiles();
+    }
+    
+    private boolean checkUseSupplementalFiles() {
+        if (!isAffyExpression()) {
+            getGenomicSource().setUseSupplementalFiles(true);
+        }
+        return true;
+    }
+
+    
+    private boolean validateHighVarianceParameters() {
+        if (getGenomicSource().isUseHighVarianceCalculation()
+                && (getGenomicSource().getHighVarianceThreshold() == null || getGenomicSource()
+                        .getHighVarianceThreshold() <= 0)) {
+            addFieldError("genomicSource.highVarianceThreshold", 
+                    "High Variance Threshold must be a number greater than 0.");
+            return false;
+        }
         return true;
     }
     
     private boolean isPlatformNameRequired() {
-        return isAgilent() || isAffyExpression();
-    }
-    
-    private boolean isAgilent() {
-        return PlatformVendorEnum.AGILENT.getValue().equals(getGenomicSource().getPlatformVendor());
-    }
-    
-    private boolean isAffyExpression() {
-        return PlatformVendorEnum.AFFYMETRIX.getValue().equals(getGenomicSource().getPlatformVendor())
-        && GenomicDataSourceDataTypeEnum.EXPRESSION.equals(getGenomicSource().getDataType());
+        return getGenomicSource().isUseSupplementalFiles();
     }
     
     /**
@@ -314,11 +343,11 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     }
     
     /**
-     * Disabled status for the platform name selection.
-     * @return whether to disable the platform names.
+     * Disabled status for the useSupplementalFiles checkbox.
+     * @return whether to disable the checkbox.
      */
-    public String getPlatformNameDisable() {
-        return isPlatformNameRequired() ? "false" : "true";
+    public String getUseSupplementalFilesDisable() {
+        return isAffyExpression() ? "false" : "true";
     }
 
     /**
@@ -375,6 +404,15 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      */
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
+    }
+    
+    /**
+     * 
+     * @return css style value.
+     */
+    public String getVarianceInputCssStyle() {
+        return getGenomicSource().isUseHighVarianceCalculation() 
+            ? "display: block;" : "display: none;";
     }
        
 }

@@ -183,12 +183,14 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class);
         PreprocessDatasetParameters preprocessParams = job.getForm().getPreprocessDatasetparameters();
         job.setSubscription(studySubscription);
-        File gctFile = createGctFile(studySubscription, preprocessParams.getClinicalQueries(),
-                preprocessParams.getExcludedControlSampleSet(), 
+        GctDataset gctDataset = createGctDataset(studySubscription, preprocessParams.getClinicalQueries(), 
+                preprocessParams.getPlatformName(), preprocessParams.getExcludedControlSampleSet());
+        File gctFile = createGctFile(gctDataset, studySubscription,
                 preprocessParams.getProcessedGctFilename());
         File clsFile = createClassificationFile(studySubscription, 
                 job.getForm().getComparativeMarkerSelectionParameters().getClinicalQueries(), 
-                job.getForm().getComparativeMarkerSelectionParameters().getClassificationFileName());
+                job.getForm().getComparativeMarkerSelectionParameters().getClassificationFileName(), 
+                gctDataset.getColumnSampleNames());
         job.setInputZipFile(fileManager.createInputZipFile(studySubscription, job,
                 "CMS_INPUT_" +  System.currentTimeMillis() + ".zip", 
                 gctFile, clsFile));
@@ -247,9 +249,9 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class); 
         job.setSubscription(studySubscription);
         PCAParameters parameters = job.getForm().getPcaParameters();
-        File gctFile = createGctFile(studySubscription, parameters.getClinicalQueries(), 
-                parameters.getExcludedControlSampleSet(), 
-                parameters.getGctFileName());
+        File gctFile = createGctFile(createGctDataset(studySubscription, parameters.getClinicalQueries(), 
+                parameters.getPlatformName(), parameters.getExcludedControlSampleSet()),
+                studySubscription, parameters.getGctFileName());
         job.setInputZipFile(fileManager.createInputZipFile(studySubscription, job,
                 "PCA_INPUT_" +  System.currentTimeMillis() + ".zip", 
                 gctFile));
@@ -294,17 +296,23 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     }
     
     private File createClassificationFile(StudySubscription studySubscription, List<Query> clinicalQueries,
-            String clsFilename) throws InvalidCriterionException {
+            String clsFilename, List<String> sampleColumnOrdering) throws InvalidCriterionException {
         return fileManager.createClassificationFile(studySubscription, 
-                GenePatternUtil.createSampleClassification(queryManagementService, clinicalQueries), clsFilename);
+                GenePatternUtil.createSampleClassification(
+                        queryManagementService, clinicalQueries, sampleColumnOrdering), 
+                clsFilename);
     }
     
-    private File createGctFile(StudySubscription studySubscription, Collection<Query> querySet,
-            SampleSet excludedSet, String filename)
+    private File createGctFile(GctDataset gctDataset, StudySubscription studySubscription, String filename)
     throws InvalidCriterionException {
-        return fileManager.createGctFile(studySubscription, 
-                GenePatternUtil.createGctDataset(studySubscription, querySet,
-                        excludedSet, queryManagementService), filename);
+        return fileManager.createGctFile(studySubscription, gctDataset, filename);
+    }
+
+    private GctDataset createGctDataset(StudySubscription studySubscription, Collection<Query> querySet,
+            String platformName, SampleSet excludedSet) throws InvalidCriterionException {
+        SampleSet refreshedExcludedSet = excludedSet == null ? null : getRefreshedEntity(excludedSet);
+        return GenePatternUtil.createGctDataset(studySubscription, querySet,
+                refreshedExcludedSet, queryManagementService, platformName);
     }
     
     /**

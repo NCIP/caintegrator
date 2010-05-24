@@ -253,4 +253,9 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
         return "Affymetrix";
     }
 
+    @Override
+    protected boolean getUseSupplementalFiles() {
+        return false;
+    }
+
 }

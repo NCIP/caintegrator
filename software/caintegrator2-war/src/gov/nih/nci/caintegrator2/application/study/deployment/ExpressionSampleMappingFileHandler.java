@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
@@ -101,9 +102,9 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataMultiFileParser;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
-import gov.nih.nci.caintegrator2.external.caarray.Level2DataFile;
+import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
+import gov.nih.nci.caintegrator2.external.caarray.SupplementalMultiFileParser;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -124,18 +125,21 @@ import au.com.bytecode.opencsv.CSVReader;
  * Reads and retrieves copy number data from a caArray instance.
  */
 @Transactional (propagation = Propagation.REQUIRED)
-class AgilentSampleMappingFileHandler extends AbstractCaArrayFileHandler {
+class ExpressionSampleMappingFileHandler extends AbstractCaArrayFileHandler {
 
-    private static final Logger LOGGER = Logger.getLogger(AgilentSampleMappingFileHandler.class);
+    private static final Logger LOGGER = Logger.getLogger(ExpressionSampleMappingFileHandler.class);
     
     private final CaIntegrator2Dao dao;
+    private final CentralTendencyCalculator centralTendencyCalculator;
     static final String FILE_TYPE = "data";
-    private final Map<Sample, List<Level2DataFile>> sampleToDataFileMap = new HashMap<Sample, List<Level2DataFile>>();
+    private final Map<Sample, List<SupplementalDataFile>> sampleToDataFileMap =
+        new HashMap<Sample, List<SupplementalDataFile>>();
     private final PlatformHelper platformHelper;
     private final Set<ReporterList> reporterLists;
     private ArrayDataValues arrayDataValues;
     
-    AgilentSampleMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
+    
+    ExpressionSampleMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService);
         this.dao = dao;
@@ -143,6 +147,11 @@ class AgilentSampleMappingFileHandler extends AbstractCaArrayFileHandler {
         reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         arrayDataValues = 
             new ArrayDataValues(platformHelper.getAllReportersByType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET));
+        this.centralTendencyCalculator = new CentralTendencyCalculator(
+                genomicSource.getTechnicalReplicatesCentralTendency(), 
+                genomicSource.isUseHighVarianceCalculation(), 
+                genomicSource.getHighVarianceThreshold(), 
+                genomicSource.getHighVarianceCalculationType());
     }
 
     ArrayDataValues loadArrayData() throws DataRetrievalException, ConnectionException, ValidationException {
@@ -151,11 +160,11 @@ class AgilentSampleMappingFileHandler extends AbstractCaArrayFileHandler {
             String[] fields;
             while ((fields = reader.readNext()) != null) {
                 String sampleName = fields[1].trim();
-                Level2DataFile level2DataFile = new Level2DataFile();
-                level2DataFile.setFileName(fields[2].trim());
-                level2DataFile.setProbeNameHeader(fields[3].trim());
-                level2DataFile.setLogRatioHeader(fields[4].trim());
-                mappingSample(sampleName, level2DataFile);
+                SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
+                supplementalDataFile.setFileName(fields[2].trim());
+                supplementalDataFile.setProbeNameHeader(fields[3].trim());
+                supplementalDataFile.setValueHeader(fields[4].trim());
+                mappingSample(sampleName, supplementalDataFile);
             }
             loadArrayDataValues();
             dao.save(getGenomicSource().getStudyConfiguration());
@@ -168,19 +177,19 @@ class AgilentSampleMappingFileHandler extends AbstractCaArrayFileHandler {
         }
     }
 
-    private void mappingSample(String sampleName, Level2DataFile level2DataFile) 
+    private void mappingSample(String sampleName, SupplementalDataFile supplementalDataFile) 
     throws ValidationException, FileNotFoundException {
         Sample sample = getGenomicSource().getSample(sampleName);
-        addDataFile(sample, level2DataFile);
+        addDataFile(sample, supplementalDataFile);
     }
 
-    private void addDataFile(Sample sample, Level2DataFile level2DataFile) {
-        List<Level2DataFile> level2DataFiles = sampleToDataFileMap.get(sample);
-        if (level2DataFiles == null) {
-            level2DataFiles = new ArrayList<Level2DataFile>();
-            sampleToDataFileMap.put(sample, level2DataFiles);
+    private void addDataFile(Sample sample, SupplementalDataFile supplementalDataFile) {
+        List<SupplementalDataFile> supplementalDataFiles = sampleToDataFileMap.get(sample);
+        if (supplementalDataFiles == null) {
+            supplementalDataFiles = new ArrayList<SupplementalDataFile>();
+            sampleToDataFileMap.put(sample, supplementalDataFiles);
         }
-        level2DataFiles.add(level2DataFile);
+        supplementalDataFiles.add(supplementalDataFile);
     }
 
     private void loadArrayDataValues() 
@@ -192,40 +201,41 @@ class AgilentSampleMappingFileHandler extends AbstractCaArrayFileHandler {
 
     private void loadArrayDataValues(Sample sample) 
     throws ConnectionException, DataRetrievalException, ValidationException {
-        List<Level2DataFile> level2DataFiles = new ArrayList<Level2DataFile>();
+        List<SupplementalDataFile> supplementalDataFiles = new ArrayList<SupplementalDataFile>();
         try {
-            for (Level2DataFile level2DataFile : sampleToDataFileMap.get(sample)) {
-                level2DataFile.setFile(getDataFile(level2DataFile.getFileName()));
-                level2DataFiles.add(level2DataFile);
+            for (SupplementalDataFile supplementalDataFile : sampleToDataFileMap.get(sample)) {
+                supplementalDataFile.setFile(getDataFile(supplementalDataFile.getFileName()));
+                supplementalDataFiles.add(supplementalDataFile);
             }
-            loadArrayDataValues(sample, level2DataFiles);
+            loadArrayDataValues(sample, supplementalDataFiles);
         } finally {
-            for (Level2DataFile level2DataFile : level2DataFiles) {
-                doneWithFile(level2DataFile.getFile());
+            for (SupplementalDataFile supplementalDataFile : supplementalDataFiles) {
+                doneWithFile(supplementalDataFile.getFile());
             }
         }
     }
 
-    private void loadArrayDataValues(Sample sample, List<Level2DataFile> level2DataFiles) 
+    private void loadArrayDataValues(Sample sample, List<SupplementalDataFile> supplementalDataFiles) 
     throws DataRetrievalException, ValidationException {
         ArrayData arrayData = createArrayData(sample);
         dao.save(arrayData);
-        for (Level2DataFile level2DataFile : level2DataFiles) {
-            Map<String, Float> agilentDataMap = AgilentLevelTwoDataMultiFileParser.INSTANCE.extractData(level2DataFile);
-            loadArrayDataValues(agilentDataMap, arrayData);
+        for (SupplementalDataFile supplementalDataFile : supplementalDataFiles) {
+            Map<String, List<Float>> dataMap = SupplementalMultiFileParser.INSTANCE.extractData(
+                    supplementalDataFile, platformHelper.getPlatform().getVendor());
+            loadArrayDataValues(dataMap, arrayData);
         }
         getArrayDataService().save(arrayDataValues);
     }
     
-    protected void loadArrayDataValues(Map<String, Float> agilentDataMap, ArrayData arrayData) {
-        for (String probeName : agilentDataMap.keySet()) {
+    protected void loadArrayDataValues(Map<String, List<Float>> dataMap, ArrayData arrayData) {
+        for (String probeName : dataMap.keySet()) {
             AbstractReporter reporter = getReporter(probeName);
             if (reporter == null) {
                 LOGGER.warn("Reporter with name " + probeName + " was not found in platform " 
                         + platformHelper.getPlatform().getName());
             } else {
                 arrayDataValues.setFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL,
-                        agilentDataMap.get(probeName).floatValue());
+                        dataMap.get(probeName), centralTendencyCalculator);
             }
         }
     }

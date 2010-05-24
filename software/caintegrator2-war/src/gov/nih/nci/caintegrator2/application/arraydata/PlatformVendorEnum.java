@@ -14,7 +14,7 @@ public enum PlatformVendorEnum {
     /**
      * Affymetrix platform.
      */
-    AFFYMETRIX("Affymetrix", 2, 3),
+    AFFYMETRIX("Affymetrix", 5, 3),
     
     /**
      * Agilent platform.
