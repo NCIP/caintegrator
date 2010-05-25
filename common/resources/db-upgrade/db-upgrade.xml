@@ -352,4 +352,8 @@
         <comment>Adds High Variance attributes to GENOMIC_DATA_SOURCE_CONFIGURATION</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.35.sql"/>
     </changeSet>
+    <changeSet id="1.2.01" author="tandrews">
+        <comment>Adds "IS_PUBLIC_SUBSCRIPTION" to STUDY_SUBSCRIPTION table.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.01.sql"/>
+    </changeSet>
 </databaseChangeLog>

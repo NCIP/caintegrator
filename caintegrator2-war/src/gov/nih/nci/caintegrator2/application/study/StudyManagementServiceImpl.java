@@ -166,7 +166,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public void save(StudyConfiguration studyConfiguration) {
         if (isNew(studyConfiguration)) {
             configureNew(studyConfiguration);
-            getWorkspaceService().subscribe(getWorkspaceService().getWorkspace(), studyConfiguration.getStudy());
+            getWorkspaceService().subscribe(
+                    getWorkspaceService().getWorkspace(), studyConfiguration.getStudy(), false);
         }
         persist(studyConfiguration);
     }
