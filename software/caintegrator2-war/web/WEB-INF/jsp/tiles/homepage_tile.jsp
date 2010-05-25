@@ -22,7 +22,14 @@
     <p style="padding: 0.25em 0pt 1em 2em; max-width: 800px;">
         caIntegrator2 is a web-based software application that allows researchers to set up custom, caBIG®-compatible web portals to conduct integrative research, without requiring programming experience. These portals bring together heterogeneous clinical, microarray and medical imaging data to enrich multidisciplinary research.
     </p>
-    <p style="padding: 0.25em 0pt 1em 2em; max-width: 800px; color: rgb(71, 91, 130);"><font size="3"><b>To begin select a study from the "My Studies" drop down menu.</b></font></p>
+    <p style="padding: 0.25em 0pt 1em 2em; max-width: 800px; color: rgb(71, 91, 130);"><font size="3"><b>To begin select a study from the 
+		<s:if test="anonymousUser"> 
+		"Public 
+	    </s:if>
+	    <s:else>
+	     "My
+	    </s:else> 
+    Studies" drop down menu.</b></font></p>
     <s:if test="anonymousUser"><p style="padding: 0.25em 0pt 1em 2em; max-width: 800px;">Some features that allow a user to customize caIntegrator2 require a login.  <b>You are currently not logged in.</b></p></s:if>
     </div>
     

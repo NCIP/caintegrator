@@ -150,6 +150,7 @@ public class EditGeneListActionTest extends AbstractSessionBasedTest {
         
         StudyConfiguration studyConfiguration = subscription.getStudy().getStudyConfiguration();
         studyConfiguration.setListCollection(subscription.getListCollection());
+        action.prepare();
         
     }
     

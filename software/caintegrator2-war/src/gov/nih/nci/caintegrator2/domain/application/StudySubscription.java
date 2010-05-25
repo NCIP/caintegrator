@@ -23,6 +23,7 @@ public class StudySubscription extends AbstractCaIntegrator2StudyObject {
     private Set<Query> queryCollection = new HashSet<Query>();
     private Set<AbstractPersistedAnalysisJob> analysisJobCollection = new HashSet<AbstractPersistedAnalysisJob>();
     private UserWorkspace userWorkspace;
+    private Boolean publicSubscription = false;
     
     /**
      * @return the study
@@ -118,5 +119,19 @@ public class StudySubscription extends AbstractCaIntegrator2StudyObject {
             return getGeneList(name);
         }
         return null;
+    }
+
+    /**
+     * @return the publicSubscription
+     */
+    public Boolean isPublicSubscription() {
+        return publicSubscription;
+    }
+
+    /**
+     * @param publicSubscription the publicSubscription to set
+     */
+    public void setPublicSubscription(Boolean publicSubscription) {
+        this.publicSubscription = publicSubscription == null ? false : publicSubscription;
     }
 }

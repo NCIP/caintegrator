@@ -115,6 +115,7 @@ import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -224,18 +225,24 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
      */
     public void subscribeAll(UserWorkspace userWorkspace) {
         List<Study> myStudies = new ArrayList<Study>();
+        List<Study> publicStudies = getDao().getPublicStudies();
         if (userWorkspace.isAnonymousUser()) {
-            myStudies.addAll(getDao().getPublicStudies());
+            myStudies.addAll(publicStudies);
         } else {
             myStudies.addAll(getDao().getStudies(userWorkspace.getUsername()));
+            publicStudies.removeAll(myStudies);
         }
-        removeOldSubscriptions(userWorkspace, myStudies);
-        subscribeAll(userWorkspace, myStudies);
+        myStudies.removeAll(publicStudies);
+        Set<Study> allVisibleStudies = new HashSet<Study>(myStudies);
+        allVisibleStudies.addAll(publicStudies);
+        removeOldSubscriptions(userWorkspace, allVisibleStudies);
+        subscribeAll(userWorkspace, myStudies, false);
+        subscribeAll(userWorkspace, publicStudies, true);
     }
     
-    private void subscribeAll(UserWorkspace userWorkspace, List<Study> myStudies) {
-        for (Study study : myStudies) {
-            subscribe(userWorkspace, study);
+    private void subscribeAll(UserWorkspace userWorkspace, List<Study> studies, boolean isPublicSubscription) {
+        for (Study study : studies) {
+            subscribe(userWorkspace, study, isPublicSubscription);
         }
     }
     
@@ -262,7 +269,7 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
         }
     }
     
-    private void removeOldSubscriptions(UserWorkspace userWorkspace, List<Study> myStudies) {
+    private void removeOldSubscriptions(UserWorkspace userWorkspace, Collection<Study> myStudies) {
         List<Study> oldStudies = new ArrayList<Study>();
         for (StudySubscription studySubscription : userWorkspace.getSubscriptionCollection()) {
             if (!myStudies.contains(studySubscription.getStudy())) {
@@ -277,10 +284,11 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
     /**
      * {@inheritDoc}
      */
-    public void subscribe(UserWorkspace workspace, Study study) {
+    public void subscribe(UserWorkspace workspace, Study study, boolean isPublicSubscription) {
         if (!isSubscribed(workspace, study)) {
             StudySubscription subscription = new StudySubscription();
             subscription.setStudy(study);
+            subscription.setPublicSubscription(isPublicSubscription);
             workspace.getSubscriptionCollection().add(subscription);
             saveUserWorkspace(workspace);
         }

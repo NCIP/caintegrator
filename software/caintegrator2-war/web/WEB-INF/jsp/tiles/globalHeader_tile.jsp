@@ -52,7 +52,15 @@
         <div id="mystudies">
                <s:form action="workspace" theme="simple">
 
-                    <label for="currentStudySubscriptionId">My Studies:</label>
+                    <label for="currentStudySubscriptionId">
+	                    <s:if test="anonymousUser"> 
+	                        Public 
+	                    </s:if>
+	                    <s:else>
+	                        My
+	                    </s:else>
+	                       Studies:
+                    </label>
                     <s:select label="My Studies" 
                         name="currentStudySubscriptionId" 
                         value="displayableWorkspace.currentStudySubscriptionId" 
