@@ -123,7 +123,7 @@ import com.opensymphony.xwork2.util.ValueStack;
 /**
  * Session singleton object used for displaying user workspace items such as Study's, Queries, and Lists.
  */
-@SuppressWarnings("PMD.TooManyFields") // Keep track of all current jobs
+@SuppressWarnings({"PMD.TooManyFields", "PMD.ExcessiveClassLength" }) // Keep track of all current jobs
 public class DisplayableUserWorkspace {
 
     /**
@@ -131,6 +131,7 @@ public class DisplayableUserWorkspace {
      */
     public static final Long NO_STUDY_SELECTED_ID = Long.valueOf(-1L);
     
+    private static final String PUBLIC_STUDIES_HEADER = "-- Public Studies --";
     private static final String USER_WORKSPACE_VALUE_STACK_KEY = "workspace";
     private static final String CURRENT_STUDY_SUBSCRIPTION_VALUE_STACK_KEY = "studySubscription";
     private static final String CURRENT_STUDY_VALUE_STACK_KEY = "study";
@@ -297,13 +298,39 @@ public class DisplayableUserWorkspace {
      */
     public List<StudySubscription> getOrderedSubscriptionList() {
         List<StudySubscription> orderedSubscriptionCollection = new ArrayList<StudySubscription>();
+        List<StudySubscription> publicSubscriptionCollection = new ArrayList<StudySubscription>();
         if (getUserWorkspace().getSubscriptionCollection() != null) {
             for (StudySubscription studySubscription : getUserWorkspace().getSubscriptionCollection()) {
                 if (Status.DEPLOYED.equals(studySubscription.getStudy().getStudyConfiguration().getStatus())) {
-                    orderedSubscriptionCollection.add(studySubscription);
+                    if (studySubscription.isPublicSubscription()) {
+                        publicSubscriptionCollection.add(studySubscription);
+                    } else {
+                        orderedSubscriptionCollection.add(studySubscription);
+                    }
                 }
             }
         }
+        sortStudySubscriptions(orderedSubscriptionCollection);
+        addPublicSubscriptions(orderedSubscriptionCollection, publicSubscriptionCollection);
+        return orderedSubscriptionCollection;
+    }
+
+    private void addPublicSubscriptions(List<StudySubscription> orderedSubscriptionCollection,
+            List<StudySubscription> publicSubscriptionCollection) {
+        if (!publicSubscriptionCollection.isEmpty()) {
+            if (!orderedSubscriptionCollection.isEmpty()) {
+                StudySubscription publicStudyHeader = new StudySubscription();
+                publicStudyHeader.setId(NO_STUDY_SELECTED_ID);
+                publicStudyHeader.setStudy(new Study());
+                publicStudyHeader.getStudy().setShortTitleText(PUBLIC_STUDIES_HEADER);
+                sortStudySubscriptions(publicSubscriptionCollection);
+                orderedSubscriptionCollection.add(publicStudyHeader);
+            }
+            orderedSubscriptionCollection.addAll(publicSubscriptionCollection);
+        }
+    }
+
+    private void sortStudySubscriptions(List<StudySubscription> orderedSubscriptionCollection) {
         Comparator<StudySubscription> nameComparator = new Comparator<StudySubscription>() {
             public int compare(StudySubscription subscription1, StudySubscription subscription2) {
                 return subscription1.getStudy().getShortTitleText().
@@ -311,7 +338,6 @@ public class DisplayableUserWorkspace {
             }
         };
         Collections.sort(orderedSubscriptionCollection, nameComparator);
-        return orderedSubscriptionCollection;
     }
     
     private void putResultObjectsOnValueStack() {

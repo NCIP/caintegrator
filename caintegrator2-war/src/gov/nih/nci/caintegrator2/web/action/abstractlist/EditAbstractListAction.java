@@ -224,7 +224,6 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
     @Override
     public void validate() {
         clearErrorsAndMessages();
-        prepareValueStack();
         if (EDIT_ACTION.equals(selectedAction)) {
             setGlobalList(false);
             validateList(isGlobalList());

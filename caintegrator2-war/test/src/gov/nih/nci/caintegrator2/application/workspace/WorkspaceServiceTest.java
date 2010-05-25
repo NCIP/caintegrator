@@ -153,11 +153,12 @@ public class WorkspaceServiceTest {
     public void testSubscribeAllStudies() {
         UserWorkspace workspace = workspaceService.getWorkspace();
         StudySubscription studySubscription = new StudySubscription();
+        studySubscription.setId(1l);
         studySubscription.setStudy(new Study());
         workspace.getSubscriptionCollection().add(studySubscription);
         assertEquals(1, workspace.getSubscriptionCollection().size());
         workspaceService.subscribeAll(workspace);
-        assertEquals(1, workspace.getSubscriptionCollection().size());
+        assertEquals(2, workspace.getSubscriptionCollection().size()); // daoStub has 1 public study.
         assertFalse(workspace.getSubscriptionCollection().contains(studySubscription));
     }
     
@@ -180,9 +181,9 @@ public class WorkspaceServiceTest {
         study.setId(1L);
         UserWorkspace workspace = workspaceService.getWorkspace();
         assertEquals(0, workspace.getSubscriptionCollection().size());
-        workspaceService.subscribe(workspace, study);
+        workspaceService.subscribe(workspace, study, false);
         assertEquals(1, workspace.getSubscriptionCollection().size());
-        workspaceService.subscribe(workspace, study);
+        workspaceService.subscribe(workspace, study, false);
         assertEquals(1, workspace.getSubscriptionCollection().size());
         workspaceService.unsubscribe(workspace, study);
         assertEquals(0, workspace.getSubscriptionCollection().size());

@@ -140,8 +140,9 @@ public interface WorkspaceService extends CaIntegrator2EntityRefresher {
      * 
      * @param workspace workspace of the user.
      * @param study - study to subscribe to.
+     * @param isPublicSubscription - determines if it's a public subscription or not.
      */
-    void subscribe(UserWorkspace workspace, Study study);
+    void subscribe(UserWorkspace workspace, Study study, boolean isPublicSubscription);
         
     /**
      * Subscribe to all studies that the user has read access.
