@@ -64,7 +64,10 @@
 		            </s:div>
 		            <br />
                     <s:textfield label="Name" name="survivalDefinitionFormValues.survivalValueDefinitionName" required="true"/>
-                    
+                    <s:select name="survivalDefinitionFormValues.survivalLengthUnits"
+                                  list="@gov.nih.nci.caintegrator2.domain.annotation.SurvivalLengthUnitsEnum@getDisplayableValues()" 
+                                  label="Survival Length Units" required="true"/>
+                                  
                     <s:div id="dateInputParams" cssStyle="%{dateInputCssStyle}">
 	                    <s:select name="survivalDefinitionFormValues.survivalStartDateId" 
 	                              list="dateAnnotationDefinitions" 
@@ -83,9 +86,6 @@
                                   list="numericAnnotationDefinitions"
                                   listValue="value.displayName" label = "Survival Length" 
                                   headerKey="" headerValue="" required="true"/>
-                        <s:select name="survivalDefinitionFormValues.survivalLengthUnits"
-                                  list="@gov.nih.nci.caintegrator2.domain.annotation.SurvivalLengthUnitsEnum@getDisplayableValues()" 
-                                  label="Survival Length Units" required="true"/>
                         <s:select name="survivalDefinitionFormValues.survivalStatusId" 
                                   list="survivalStatusAnnotationDefinitions"
                                   listValue="value.displayName" label="Censored Status" onchange="document.editSurvivalDefinitionForm.action='updateSurvivalStatusValues.action'; document.editSurvivalDefinitionForm.submit();"

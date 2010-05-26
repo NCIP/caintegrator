@@ -3,7 +3,7 @@ package gov.nih.nci.caintegrator2.domain.annotation;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 /**
- * 
+ * Used to be able to calculate survival values of subjects for KM Plots based on defined annotations.
  */
 public class SurvivalValueDefinition extends AbstractCaIntegrator2Object {
 
@@ -11,6 +11,7 @@ public class SurvivalValueDefinition extends AbstractCaIntegrator2Object {
     
     private String name;
     private SurvivalValueTypeEnum survivalValueType = SurvivalValueTypeEnum.DATE;
+    private SurvivalLengthUnitsEnum survivalLengthUnits = SurvivalLengthUnitsEnum.MONTHS;
     
     //////////
     // For "DATE" type.
@@ -24,7 +25,6 @@ public class SurvivalValueDefinition extends AbstractCaIntegrator2Object {
     //////////
     private AnnotationDefinition survivalLength = new AnnotationDefinition();
     private AnnotationDefinition survivalStatus = new AnnotationDefinition();
-    private SurvivalLengthUnitsEnum survivalLengthUnits = SurvivalLengthUnitsEnum.DAYS;
     private String valueForCensored;
     
     /**
