@@ -417,9 +417,10 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
         survivalValueDefinition.setName(survivalDefinitionFormValues.getSurvivalValueDefinitionName());
         survivalValueDefinition.setSurvivalValueType(SurvivalValueTypeEnum.getByValue(survivalDefinitionFormValues
                 .getSurvivalValueType()));
+        survivalValueDefinition.setSurvivalLengthUnits(SurvivalLengthUnitsEnum.getByValue(
+                survivalDefinitionFormValues.getSurvivalLengthUnits()));
         if (SurvivalValueTypeEnum.DATE.equals(survivalValueDefinition.getSurvivalValueType())) {
             survivalValueDefinition.setSurvivalLength(null);
-            survivalValueDefinition.setSurvivalLengthUnits(null);
             survivalValueDefinition.setSurvivalStatus(null);
             survivalValueDefinition.setValueForCensored(null);
         }
@@ -428,8 +429,6 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
             survivalValueDefinition.setDeathDate(null);
             survivalValueDefinition.setLastFollowupDate(null);
             survivalValueDefinition.setValueForCensored(survivalDefinitionFormValues.getValueForCensored());
-            survivalValueDefinition.setSurvivalLengthUnits(SurvivalLengthUnitsEnum.getByValue(
-                    survivalDefinitionFormValues.getSurvivalLengthUnits()));
             checkNullFormValues();
         }
         

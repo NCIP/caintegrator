@@ -95,18 +95,12 @@ import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalLengthUnitsEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
-import java.util.Calendar;
 import java.util.Collection;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Abstract class representing a Handler for KM Plot creation.
@@ -114,7 +108,6 @@ import org.apache.commons.lang.StringUtils;
 @SuppressWarnings("PMD.CyclomaticComplexity") // See calculateEndDate function
 abstract class AbstractKMPlotHandler {
     
-    private static final int MONTHS_IN_YEAR = 12;
     private final CaIntegrator2Dao dao;
     private final SurvivalValueDefinition survivalValueDefinition;
     private final QueryManagementService queryManagementService;
@@ -173,97 +166,16 @@ abstract class AbstractKMPlotHandler {
     }
     
     protected String getDurationLabel() {
-        if (SurvivalValueTypeEnum.LENGTH_OF_TIME.equals(survivalValueDefinition.getSurvivalValueType())) {
-            if (SurvivalLengthUnitsEnum.DAYS.equals(survivalValueDefinition.getSurvivalLengthUnits())) {
-                return KMPlotConfiguration.DAYS_DURATION_LABEL;
-            } else if (SurvivalLengthUnitsEnum.WEEKS.equals(survivalValueDefinition.getSurvivalLengthUnits())) {
-                return KMPlotConfiguration.WEEKS_DURATION_LABEL;
-            }
+        if (SurvivalLengthUnitsEnum.DAYS.equals(survivalValueDefinition.getSurvivalLengthUnits())) {
+            return KMPlotConfiguration.DAYS_DURATION_LABEL;
+        } else if (SurvivalLengthUnitsEnum.WEEKS.equals(survivalValueDefinition.getSurvivalLengthUnits())) {
+            return KMPlotConfiguration.WEEKS_DURATION_LABEL;
         }
         return KMPlotConfiguration.MONTHS_DURATION_LABEL;
     }
 
     protected SubjectSurvivalData createSubjectSurvivalData(StudySubjectAssignment subjectAssignment) {
-        if (SurvivalValueTypeEnum.DATE.equals(survivalValueDefinition.getSurvivalValueType())) {
-            return createDateBasedSurvivalData(subjectAssignment);
-        }
-        if (SurvivalValueTypeEnum.LENGTH_OF_TIME.equals(survivalValueDefinition.getSurvivalValueType())) {
-            return createDurationBasedSurvivalData(subjectAssignment);
-        }
-        throw new IllegalStateException("Unknown survival value type.");
-    }
-
-    private SubjectSurvivalData createDateBasedSurvivalData(StudySubjectAssignment subjectAssignment) {
-        Integer survivalLength = Integer.valueOf(0);
-        DateAnnotationValue subjectSurvivalStartDate = null;
-        DateAnnotationValue subjectDeathDate = null;
-        DateAnnotationValue subjectLastFollowupDate = null;
-        subjectSurvivalStartDate = subjectAssignment.getDateAnnotation(survivalValueDefinition.getSurvivalStartDate());
-        subjectDeathDate = subjectAssignment.getDateAnnotation(survivalValueDefinition.getDeathDate());
-        subjectLastFollowupDate = subjectAssignment.getDateAnnotation(survivalValueDefinition.getLastFollowupDate());
-        Calendar calSubjectStartDate = Calendar.getInstance();
-        Calendar calSubjectEndDate = Calendar.getInstance();
-        if (subjectSurvivalStartDate != null && subjectSurvivalStartDate.getDateValue() != null) {
-            calSubjectStartDate.setTime(subjectSurvivalStartDate.getDateValue());
-        } else {
-            return null;
-        }
-        Boolean censor = calculateEndDate(subjectDeathDate, subjectLastFollowupDate, calSubjectEndDate);
-        if (censor == null) {
-            return null;
-        }
-        survivalLength = monthsBetween(calSubjectStartDate, calSubjectEndDate);
-        return new SubjectSurvivalData(survivalLength, censor);
-    }
-    
-    private SubjectSurvivalData createDurationBasedSurvivalData(StudySubjectAssignment subjectAssignment) {
-        NumericAnnotationValue survivalLength = subjectAssignment.getNumericAnnotation(
-                survivalValueDefinition.getSurvivalLength());
-        if (survivalLength == null || survivalLength.getNumericValue() == null) {
-            return null;
-        }
-        return new SubjectSurvivalData((int) Math.round(survivalLength.getNumericValue()), 
-                getCensorStatusForDurationBasedSurvival(subjectAssignment));
-    }
-
-    private Boolean getCensorStatusForDurationBasedSurvival(StudySubjectAssignment subjectAssignment) {
-        Boolean censor = false;
-        if (survivalValueDefinition.getSurvivalStatus() != null 
-            && !StringUtils.isBlank(survivalValueDefinition.getValueForCensored())) {
-            String survivalStatus = subjectAssignment.getAnnotationValueAsString(
-                    survivalValueDefinition.getSurvivalStatus());
-            try {
-                censor = Double.valueOf(survivalValueDefinition.getValueForCensored()).
-                    equals(Double.valueOf(survivalStatus));
-            } catch (Exception e) {
-                censor = survivalValueDefinition.getValueForCensored().equals(survivalStatus); 
-            }
-        }
-        return censor;
-    }
-
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Null checks are necessary
-    protected Boolean calculateEndDate(DateAnnotationValue subjectDeathDate,
-                                    DateAnnotationValue subjectLastFollowupDate, 
-                                    Calendar calSubjectEndDate) {
-        Boolean censor = false;
-        if ((subjectDeathDate == null || subjectDeathDate.getDateValue() == null)
-              && (subjectLastFollowupDate != null && subjectLastFollowupDate.getDateValue() != null)) {
-            calSubjectEndDate.setTime(subjectLastFollowupDate.getDateValue());
-            censor = true;
-        } else if ((subjectDeathDate != null && subjectDeathDate.getDateValue() != null)) {
-            calSubjectEndDate.setTime(subjectDeathDate.getDateValue());
-            censor = false;
-        } else {
-            return null;
-        }
-        return censor;
-    }
-    
-    protected Integer monthsBetween(Calendar startDate, Calendar endDate) {
-        int yearsBetween = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
-        int monthsBetween = endDate.get(Calendar.MONTH) - startDate.get(Calendar.MONTH);
-        return ((yearsBetween * MONTHS_IN_YEAR) + monthsBetween);
+        return SurvivalCalculator.createSubjectSurvivalData(survivalValueDefinition, subjectAssignment);
     }
     
     protected void validateSurvivalValueDefinition() throws InvalidSurvivalValueDefinitionException {
