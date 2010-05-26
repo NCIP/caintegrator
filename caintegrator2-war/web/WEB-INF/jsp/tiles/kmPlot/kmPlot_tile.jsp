@@ -37,7 +37,7 @@
     <sx:tabbedpanel id="mainTabPanel" selectedTab="%{displayTab}" templateCssPath="/common/css/TabContainer.css">
 		<sx:div href="%{annotationBasedUrl}" id="annotationTab" label="For Annotation" showLoadingText="true" />
 		<sx:div href="%{geneExpressionBasedUrl}" preload="false" id="geneExpressionTab" label="For Gene Expression" showLoadingText="true"/>
-		<s:if test="%{!anonymousUser}">
+		<s:if test="!anonymousUser || !displayableWorkspace.globalSubjectLists.isEmpty()">
 		  <sx:div href="%{queryBasedUrl}" preload="false" id="queryTab" label="For Queries and Saved Lists" showLoadingText="true"/>
 	    </s:if>
     </sx:tabbedpanel>
