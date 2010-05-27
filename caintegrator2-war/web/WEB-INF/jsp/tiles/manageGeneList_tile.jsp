@@ -86,8 +86,12 @@
                                 <td>
                                     <div class="wwgrp">
                                         <div class="wwlbl"><label class="label">&nbsp</label></div>
-                                        <div class="wwctrl"><s:submit value="Create Gene List" align="center" action="manageGeneList"
-                                            onclick="return setSelectedAction('createGeneList');" theme="css_xhtml" /></div>
+                                        <div class="wwctrl">
+                                            <s:submit value="Create Gene List" align="center" action="manageGeneList"
+                                            onclick="return setSelectedAction('createGeneList');" theme="simple" />
+                                            <s:submit value="Cancel" align="center" action="manageGeneList"
+                                            onclick="return setSelectedAction('cancel');" theme="simple" />
+                                            </div>
                                     </div>
                                 </td>
                             </tr>
