@@ -29,14 +29,12 @@
 
     <h1><s:property value="#subTitleText" /></h1>
     
-    <p>Click <strong>Rename or Delete</strong> to perform editing on this gene list.</p>
+    <p>Click <strong>Rename or Delete</strong> to perform editing on this Gene List.</p>
     <div class="form_wrapper_outer">
- 
     <table class="form_wrapper_table">
             <tr>
                 <td colspan="2" style="padding: 5px;">    
-
-                    <s:actionmessage/>
+                    <font color="green"> <s:actionmessage /> </font>
                     <s:actionerror/>
                     <s:if test="editOn">
                         <s:form id="editGeneListForm" name="editGeneListForm" action="editGeneList"
