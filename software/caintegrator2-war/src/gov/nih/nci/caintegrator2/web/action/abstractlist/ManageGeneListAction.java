@@ -122,10 +122,12 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
     private List<String> geneSymbolList = new ArrayList<String>();
 
     private static final String CREATE_GENE_LIST_ACTION = "createGeneList";
+    private static final String CANCEL_ACTION = "cancel";
     private static final String GENE_LIST_NAME = "geneListName";
     private static final String GENE_LIST_FILE = "geneListFile";
     private static final String EDIT_PAGE = "editPage";
     private static final String EDIT_GLOBAL_PAGE = "editGlobalPage";
+    private static final String HOME_PAGE = "homePage";
 
     /**
      * {@inheritDoc}
@@ -149,6 +151,8 @@ public class ManageGeneListAction extends AbstractDeployedStudyAction {
     public String execute() {
         if (CREATE_GENE_LIST_ACTION.equals(selectedAction)) {
             return createGeneList();
+        } else if (CANCEL_ACTION.equals(selectedAction)) {
+            return HOME_PAGE;
         }
         return SUCCESS;
     }

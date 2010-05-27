@@ -113,6 +113,7 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
     static final String EDIT_ACTION = "editList";
     static final String EDIT_GLOBAL_ACTION = "editGlobalList";
     static final String DELETE_ACTION = "deleteList";
+    static final String CANCEL_ACTION = "cancel";
     static final String SAVE_ACTION = "saveList";
     static final String LIST_NAME = "listName";
     static final String HOME_PAGE = "homePage";
@@ -139,6 +140,9 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
         } else if (SAVE_ACTION.equals(selectedAction)) {
             clearAnalysisCache();
             return saveList();
+        } else if (CANCEL_ACTION.equals(selectedAction)) {
+            clearAnalysisCache();
+            return HOME_PAGE;
         }
         return SUCCESS;
     }

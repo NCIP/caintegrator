@@ -681,6 +681,9 @@
             <result type="tiles">manageGeneList</result>
             <result name="error" type="tiles">manageGeneList</result>
             <result name="input" type="tiles">manageGeneList</result>
+            <result name="homePage" type="redirectAction">
+                <param name="actionName">workspace</param>
+            </result>
             <result name="editPage" type="redirectAction">
                 <param name="actionName">editGeneList</param>
                 <param name="selectedAction">editList</param>

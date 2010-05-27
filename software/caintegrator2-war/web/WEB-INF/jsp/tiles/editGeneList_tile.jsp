@@ -69,6 +69,9 @@
                                 <li><s:a href="#" cssClass="btn" onclick="deleteList();">
                                     <span class="btn_img"><span class="delete">Delete</span></span>
                                 </s:a></li>
+                                <li><s:a href="#" cssClass="btn" onclick="submitForm('cancel');">
+                                    <span class="btn_img"><span class="cancel">Cancel</span></span>
+                                </s:a></li>
                             </ul></del></div>
 
                             <!--Buttons-->

@@ -153,6 +153,9 @@ public class ManageGeneListActionTest extends AbstractSessionBasedTest {
         action.setSelectedAction("createGeneList");
         assertEquals("editPage", action.execute());
         assertTrue(workspaceServiceStub.createGeneListCalled);
+        
+        action.setSelectedAction("cancel");
+        assertEquals("homePage", action.execute());
     }
     
     @Test
