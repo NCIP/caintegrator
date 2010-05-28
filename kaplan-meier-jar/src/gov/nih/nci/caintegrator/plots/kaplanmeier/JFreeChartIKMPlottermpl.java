@@ -8,6 +8,8 @@ import gov.nih.nci.caintegrator.plots.kaplanmeier.model.XYCoordinate;
 import gov.nih.nci.caintegrator.plots.services.KMPlotServiceImpl;
 
 import java.awt.Color;
+import java.awt.Shape;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -102,6 +104,7 @@ public class JFreeChartIKMPlottermpl implements KMPlotter {
              if(kmSeries.getType() == KMPlotPointSeries.SeriesType.CENSOR) {
                  renderer.setSeriesLinesVisible(i, false);
                  renderer.setSeriesShapesVisible(i, true);
+                 renderer.setSeriesShape(i, getCensorShape());
              }else if(kmSeries.getType()==KMPlotPointSeries.SeriesType.PROBABILITY){
                  renderer.setSeriesLinesVisible(i, true);
                  renderer.setSeriesShapesVisible(i, false);
@@ -188,9 +191,13 @@ public class JFreeChartIKMPlottermpl implements KMPlotter {
        sources[0] = legendSrc;
        legend.setSources(sources);
    }
+    
+    private static Shape getCensorShape() {
+        return new Line2D.Float(0, -5, 0, 5);
+    }
 
    @SuppressWarnings("unchecked")
-private static Color getKMSetColor(Collection<KMPlotPointSeriesSet> kmPlotSets, Comparable setKey, KMPlotPointSeries.SeriesType type) {
+   private static Color getKMSetColor(Collection<KMPlotPointSeriesSet> kmPlotSets, Comparable setKey, KMPlotPointSeries.SeriesType type) {
             for(KMPlotPointSeriesSet seriesSet: kmPlotSets)
                 if(seriesSet.getHashKey() == setKey ) return seriesSet.getColor();
             return KMPlotServiceImpl.DEFAULT_COLOR;
