@@ -66,6 +66,12 @@
                     **Derived from technical replicates that exceed the correlation threshold as set by the study manager.  See the study summary page for the correlation threshold.  
                 </div>
             </s:if>
+           <s:if test="genomicDataQueryResult.filteredRowCollection.size() > 2000">
+           <div style="color: red;">
+               Found more than 2000 results, please restrict your search or use the export option.
+           </div>
+           </s:if> 
+           <s:else> 
             <table class="data">
                 <s:if test='%{query.orientation.value.equals("subjectsAsColumns")}'>
                     <tr>
@@ -104,9 +110,6 @@
                     <s:if test="genomicDataQueryResult.filteredRowCollection.isEmpty()">
                         Nothing found to display.
                     </s:if>
-                    <s:elseif test="genomicDataQueryResult.filteredRowCollection.size() > 2000">
-                        Found more than 2000 results, please restrict your search or use the export option.
-                    </s:elseif>
                     <s:else>
                         <s:iterator value="genomicDataQueryResult.filteredRowCollection" status="status">
                             <s:if test="#status.odd == true">
@@ -138,9 +141,6 @@
                         </s:iterator>
                     </s:else>
                 </s:if>
-                <s:elseif test="genomicDataQueryResult.filteredRowCollection.size() > 2000">
-                    Found more than 2000 results, please restrict your search or use the export option.
-                </s:elseif>
                 <s:else>
                     <tr>
                         <td/><td/>
@@ -187,9 +187,6 @@
                     <s:if test="genomicDataQueryResult.columnCollection.isEmpty()">
                         Nothing found to display.
                     </s:if>
-                    <s:elseif test="genomicDataQueryResult.columnCollection.size() > 2000">
-                        Found more than 2000 results, please restrict your search or use the export option.
-                    </s:elseif>
                     <s:else>
                         <s:iterator value="genomicDataQueryResult.columnCollection" status="status">
                             <s:if test="#status.odd == true">
@@ -216,7 +213,8 @@
                         </s:iterator>
                     </s:else>
                 </s:else>
-            </table>    
+            </table>
+            </s:else>    
             <br>
             <s:if test="!genomicDataQueryResult.columnCollection.isEmpty() &&
                     !genomicDataQueryResult.filteredRowCollection.isEmpty()">
