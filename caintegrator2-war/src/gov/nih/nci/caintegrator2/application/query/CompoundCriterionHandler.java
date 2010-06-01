@@ -202,8 +202,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
     }
 
     private Set<ResultRow> getMatchingRows(CaIntegrator2Dao dao, ArrayDataService arrayDataService,
-            Set<EntityTypeEnum> entityTypes, 
-            Query query) throws InvalidCriterionException {
+            Set<EntityTypeEnum> entityTypes, Query query) throws InvalidCriterionException {
         boolean rowsRetrieved = false;
         Set<ResultRow> allValidRows = new HashSet<ResultRow>();
         for (AbstractCriterionHandler handler : handlers) {
@@ -300,39 +299,43 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
 
     @Override
     boolean hasEntityCriterion() {
-        boolean hasEntityCriterion = false;
         for (AbstractCriterionHandler handler : handlers) {
-            hasEntityCriterion |= handler.hasEntityCriterion();
+            if (handler.hasEntityCriterion()) {
+                return true;
+            }
         }
-        return hasEntityCriterion;
+        return false;
     }
 
 
     @Override
     boolean hasReporterCriterion() {
-        boolean hasReporterCriterion = false;
         for (AbstractCriterionHandler handler : handlers) {
-            hasReporterCriterion |= handler.hasReporterCriterion();
+            if (handler.hasReporterCriterion()) {
+                return true;
+            }
         }
-        return hasReporterCriterion;
+        return false;
     }
     
     @Override
     boolean hasCriterionSpecifiedReporterValues() {
-        boolean hasCriterionSpecifiedReporterValues = false;
         for (AbstractCriterionHandler handler : handlers) {
-            hasCriterionSpecifiedReporterValues |= handler.hasCriterionSpecifiedReporterValues();
+            if (handler.hasCriterionSpecifiedReporterValues()) {
+                return true;
+            }
         }
-        return hasCriterionSpecifiedReporterValues;
+        return false;
     }
 
 
     @Override
     boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
-        boolean isReporterValueMatchCriterion = false;
         for (AbstractCriterionHandler handler : handlers) {
-            isReporterValueMatchCriterion |= handler.isGenomicValueMatchCriterion(genes, value);
+            if (handler.isGenomicValueMatchCriterion(genes, value)) {
+                return true;
+            }
         }
-        return isReporterValueMatchCriterion;
+        return false;
     }
 }

@@ -27,7 +27,12 @@ public class ReporterList extends AbstractCaIntegrator2Object implements Compara
         super();
     }
 
-    ReporterList(String name, ReporterTypeEnum reporterTypeEnum) {
+    /**
+     * Constructor.
+     * @param name the reporterList name
+     * @param reporterTypeEnum the reporter type
+     */
+    public ReporterList(String name, ReporterTypeEnum reporterTypeEnum) {
         this();
         if (name == null) {
             throw new IllegalArgumentException("ReporterList name must not be null");

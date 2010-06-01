@@ -14,6 +14,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.io.File;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -145,6 +146,7 @@ public class ArrayDesignChecker {
     
     private static Platform retrievePlatform(AbstractPlatformSource source, ArrayDataService service) {
         PlatformConfiguration configuration = new PlatformConfiguration(source);
+        configuration.setDeploymentStartDate(new Date());
         service.savePlatformConfiguration(configuration);
         return service.loadArrayDesign(configuration, null).getPlatform();
 

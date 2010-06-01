@@ -8,9 +8,11 @@
             && document.sampleMappingForm.sampleMappingFile.value != null 
             && document.sampleMappingForm.sampleMappingFile.value != "") {
                 if (confirm('You are adding a new sample mapping file.  All previous sample mappings will be deleted and re-mapped based on the new file.  Please click OK or Cancel.')) {
+                    showBusyDialog();
                     document.sampleMappingForm.submit();                
                 }
         } else {
+            showBusyDialog();
             document.sampleMappingForm.submit();
         }
     }

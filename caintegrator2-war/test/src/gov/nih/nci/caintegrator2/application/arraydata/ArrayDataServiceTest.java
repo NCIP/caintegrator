@@ -1,16 +1,22 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -110,6 +116,9 @@ public class ArrayDataServiceTest {
     public void testGetFoldChangeValues() throws IOException {
         Platform platform = new Platform();
         platform.setId(1l);
+        PlatformConfiguration platformConfiguration = new PlatformConfiguration();
+        platform.setPlatformConfiguration(platformConfiguration);
+        platformConfiguration.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
         ((ArrayDataServiceImpl) service).setFileManager(new FileManagerStub());
         ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporterList.setId(1L);
@@ -155,6 +164,15 @@ public class ArrayDataServiceTest {
         controlArrayDatas.add(controlData1);
         controlArrayDatas.add(controlData2);
         controlArrayDatas.add(controlData3);
+        ArrayDataValues controlValues = new ArrayDataValues(reporters);
+        controlValues.setFloatValue(controlData1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 0.1);
+        controlValues.setFloatValue(controlData2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.0);
+        controlValues.setFloatValue(controlData3, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 9.9);        
+        controlValues.setFloatValue(controlData1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 0.1);
+        controlValues.setFloatValue(controlData2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.0);
+        controlValues.setFloatValue(controlData3, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 1.1);
+        List<ArrayDataValues> controlValuesList = new ArrayList<ArrayDataValues>();
+        controlValuesList.add(controlValues);
 
         values.setFloatValue(data1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.2);
         values.setFloatValue(data1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 4.4);
@@ -174,13 +192,29 @@ public class ArrayDataServiceTest {
         request.addArrayDatas(arrayDatas);
         request.addReporters(reporters);
         request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
-        ArrayDataValues foldChangeValues = service.getFoldChangeValues(request, controlArrayDatas, null);
+        ArrayDataValues foldChangeValues = service.getFoldChangeValues(request, controlValuesList, null);
         assertEquals(2, foldChangeValues.getArrayDatas().size());
         assertEquals(2, foldChangeValues.getReporters().size());
         assertEquals(1.752, (float) foldChangeValues.getFloatValue(data1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
         assertEquals(5.256, (float) foldChangeValues.getFloatValue(data2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
         assertEquals(7.2886, (float) foldChangeValues.getFloatValue(data1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
         assertEquals(14.5772, (float) foldChangeValues.getFloatValue(data2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        
+        // Test getFoldChangeValues by query
+        Query query = new Query();
+        query.setPlatform(platform);
+        query.setSubscription(new StudySubscription());
+        query.getSubscription().setStudy(study);
+        FoldChangeCriterion foldChangeCriterion = new FoldChangeCriterion();
+        GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        query.getCompoundCriterion().getCriterionCollection().add(geneNameCriterion);
+        query.getCompoundCriterion().getCriterionCollection().add(foldChangeCriterion);
+        query.getCompoundCriterion().getCriterionCollection().add(compoundCriterion);
+        foldChangeValues = service.getFoldChangeValues(request, query);
+        assertEquals(2, foldChangeValues.getArrayDatas().size());
+        assertEquals(2, foldChangeValues.getReporters().size());
+        
     }
 
     private ArrayData createArrayData(Long id, Study study, ReporterList reporterList, Platform platform) {
