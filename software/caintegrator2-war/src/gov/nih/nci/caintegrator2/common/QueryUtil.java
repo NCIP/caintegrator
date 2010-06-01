@@ -102,7 +102,9 @@ import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -222,38 +224,35 @@ public final class QueryUtil {
      * @return T/F value.
      */
     public static boolean isFoldChangeQuery(Query query) {
-        return getFoldChangeCriterion(query) != null;
+        return !getFoldChangeCriterion(query).isEmpty();
     }
 
     /**
-     * Retrieves the fold change criterion for a given query.
+     * Retrieves a list of fold change criterion for a given query.
      * @param query to retrieve fold change criterion for.
      * @return the fold change criterion.
      */
-    public static FoldChangeCriterion getFoldChangeCriterion(Query query) {
+    public static List<FoldChangeCriterion> getFoldChangeCriterion(Query query) {
         return getFoldChangeCriterionFromCompoundCriterion(query.getCompoundCriterion());
     }
 
-    private static FoldChangeCriterion getFoldChangeCriterion(AbstractCriterion criterion) {
-        if (criterion instanceof FoldChangeCriterion) {
-            return (FoldChangeCriterion) criterion;
-        } else if (criterion instanceof CompoundCriterion) {
-            CompoundCriterion compoundCriterion = (CompoundCriterion) criterion;
-            return getFoldChangeCriterionFromCompoundCriterion(compoundCriterion);
-        } else {
-            return null;
+    private static List<FoldChangeCriterion> getFoldChangeCriterionFromCompoundCriterion(
+            CompoundCriterion compoundCriterion) {
+        List<FoldChangeCriterion> foldChangeCriterionResults = new ArrayList<FoldChangeCriterion>();
+        for (AbstractCriterion criterion : compoundCriterion.getCriterionCollection()) {
+            getFoldChangeCriterion(criterion, foldChangeCriterionResults);
         }
+        return foldChangeCriterionResults;
     }
 
-    private static FoldChangeCriterion getFoldChangeCriterionFromCompoundCriterion(
-            CompoundCriterion compoundCriterion) {
-        for (AbstractCriterion criterion : compoundCriterion.getCriterionCollection()) {
-            FoldChangeCriterion foldChangeCriterion = getFoldChangeCriterion(criterion);
-            if (foldChangeCriterion != null) {
-                return foldChangeCriterion;
-            }
+    private static void getFoldChangeCriterion(AbstractCriterion criterion,
+            List<FoldChangeCriterion> foldChangeCriterionResults) {
+        if (criterion instanceof FoldChangeCriterion) {
+            foldChangeCriterionResults.add((FoldChangeCriterion) criterion);
+        } else if (criterion instanceof CompoundCriterion) {
+            CompoundCriterion compoundCriterion = (CompoundCriterion) criterion;
+            foldChangeCriterionResults.addAll(getFoldChangeCriterionFromCompoundCriterion(compoundCriterion));
         }
-        return null;
     }
     
     /**

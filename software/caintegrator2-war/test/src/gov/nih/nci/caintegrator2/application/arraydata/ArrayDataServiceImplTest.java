@@ -83,150 +83,95 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.arraydata;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Array;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
-
-public class FoldChangeCriterionHandlerTest {
-
-    private CaIntegrator2DaoStub daoStub = new DaoStub();
-    private ArrayDataServiceStub arrayDataServiceStub = new ArrayDataServiceStub();
+public class ArrayDataServiceImplTest {
+ 
+    private ArrayDataServiceImpl arrayDataService;
+    private CaIntegrator2DaoStub dao;
     private Query query;
-    private Study study;
-    private Gene gene;
-    GeneExpressionReporter reporter = new GeneExpressionReporter();
     
     @Before
-    public void setUp() {
-        Platform platform = daoStub.getPlatform("platformName");
-        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        gene = new Gene();
-        reporter.getGenes().add(gene);
-        
-        daoStub.clear();       
-        study = new Study();
+    public void setup() {
+        dao = new GenomicDataTestDaoStub();
+        dao.clear();
+        arrayDataService = new ArrayDataServiceImpl();
+        arrayDataService.setDao(dao);
         query = new Query();
-        query.setPlatform(platform);
-        StudySubscription subscription = new StudySubscription();
-        subscription.setStudy(study);
-        query.setSubscription(subscription);
-        StudySubjectAssignment assignment = new StudySubjectAssignment();
-        study.getAssignmentCollection().add(assignment);
-        SampleAcquisition acquisition = new SampleAcquisition();
-        Sample sample = new Sample();
-        Array array = new Array();
-        array.setPlatform(platform);
-        ArrayData arrayData = new ArrayData();
-        arrayData.setStudy(study);
-        arrayData.setArray(array);
-        arrayData.getReporterLists().add(reporterList);
-        reporterList.getArrayDatas().add(arrayData);
-        arrayData.setSample(sample);
-        sample.setSampleAcquisition(acquisition);
-        sample.getArrayDataCollection().add(arrayData);
-        acquisition.setSample(sample);
-        assignment.getSampleAcquisitionCollection().add(acquisition);
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
+        query.setColumnCollection(new HashSet<ResultColumn>());
+        query.setSubscription(new StudySubscription());
+        Study study = new Study();
+        query.getSubscription().setStudy(study);
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyConfiguration.getGenomicDataSources().add(new GenomicDataSourceConfiguration());
         study.setStudyConfiguration(studyConfiguration);
+        studyConfiguration.getGenomicDataSources().add(new GenomicDataSourceConfiguration());
     }
 
     @Test
-    public void testGetMatches() throws InvalidCriterionException {        
-        FoldChangeCriterion criterion = new FoldChangeCriterion();
-        criterion.setRegulationType(RegulationTypeEnum.getByValue("Up"));
-        criterion.setFoldsUp(1.0f);
-        criterion.setGeneSymbol("Tester");
-        criterion.setControlSampleSetName("controlSampleSet1");
-        FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
-        Set<ResultRow> rows = new HashSet<ResultRow>();
-        try {
-            rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
-            fail();
-        } catch(InvalidCriterionException e) { }
-        SampleSet sampleSet1 = new SampleSet();
-        sampleSet1.setName("controlSampleSet1");
-        Sample sample = new Sample();
-        sampleSet1.getSamples().add(sample);
-        ArrayData arrayData = new ArrayData();
-        sample.getArrayDataCollection().add(arrayData);
-        ReporterList reporterList = new ReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        arrayData.getReporterLists().add(reporterList);
-        Array array = new Array();
-        array.setPlatform(query.getPlatform());
-        arrayData.setArray(array);
-        study.getStudyConfiguration().getGenomicDataSources().get(0).getControlSampleSetCollection().add(sampleSet1);
-        rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
-        assertEquals(1, rows.size());
-        criterion.setRegulationType(RegulationTypeEnum.DOWN);
-        criterion.setFoldsDown(1.0f);
-        rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
-        assertEquals(0, rows.size());
-        assertTrue(arrayDataServiceStub.getFoldChangeValuesCalled);
-    }
-    
-    @Test
-    public void testGetters() {
-        FoldChangeCriterion criterion = new FoldChangeCriterion();
-        criterion.setRegulationType(RegulationTypeEnum.UP);
-        criterion.setFoldsUp(1.0f);
-        FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
-        assertTrue(handler.hasEntityCriterion());
-        assertTrue(handler.hasReporterCriterion());
-        assertTrue(handler.isEntityMatchHandler());
-        assertTrue(handler.isReporterMatchHandler());
+    public void testGetPlatformsInStudy() {
+        Study study = new Study();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        study.setStudyConfiguration(studyConfiguration);
+        GenomicDataSourceConfiguration genomicDataSource1 = new GenomicDataSourceConfiguration();
+        GenomicDataSourceConfiguration genomicDataSource2 = new GenomicDataSourceConfiguration();
+        GenomicDataSourceConfiguration genomicDataSource3 = new GenomicDataSourceConfiguration();
+        studyConfiguration.getGenomicDataSources().add(genomicDataSource1);
+        studyConfiguration.getGenomicDataSources().add(genomicDataSource2);
+        studyConfiguration.getGenomicDataSources().add(genomicDataSource3);
+        genomicDataSource1.setPlatformName("Expression_1");
+        genomicDataSource1.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        genomicDataSource2.setPlatformName("Expression_2");
+        genomicDataSource2.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        genomicDataSource3.setPlatformName("Copy number");
+        genomicDataSource3.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
+        
+        Platform platform = arrayDataService.getPlatform("platform1");
+        assertEquals("platform1", platform.getName());
+
+        assertEquals(2,arrayDataService.getPlatformsInStudy(study, GenomicDataSourceDataTypeEnum.EXPRESSION).size());
+        assertEquals(1,arrayDataService.getPlatformsInStudy(study, GenomicDataSourceDataTypeEnum.COPY_NUMBER).size());
+        assertEquals(0,arrayDataService.getPlatformsInStudy(study, GenomicDataSourceDataTypeEnum.SNP).size());
     }
 
-    @Test
-    public void testGetReporterMatches() {        
-        FoldChangeCriterion criterion = new FoldChangeCriterion();
-        criterion.setGeneSymbol("tester");
-        FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
-        assertEquals(1, handler.getReporterMatches(daoStub, study, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, null).size());
-    }
-    
-    private class DaoStub extends CaIntegrator2DaoStub {
+    private class GenomicDataTestDaoStub extends CaIntegrator2DaoStub  {
 
         @Override
-        public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols,
-                ReporterTypeEnum reporterType, Study study, Platform platform) {
-            Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-            reporters.add(reporter);
-            return reporters;
+        public Platform getPlatform(String name) {
+            Platform platform = new Platform();
+            platform.setName(name);
+            return platform;
+        }
+
+        @Override
+        public List<Platform> retrievePlatformsForGenomicSource(GenomicDataSourceConfiguration genomicSource) {
+            List<Platform> results = new ArrayList<Platform>();
+            Platform platform = new Platform();
+            platform.setName(genomicSource.getPlatformName());
+            results.add(platform);
+            return results;
         }
         
     }
- 
 }
