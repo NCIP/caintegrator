@@ -104,9 +104,11 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -114,7 +116,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Handler that returns samples matching the given fold change criterion.
  */
-final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
+public final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
 
     private final FoldChangeCriterion criterion;
 
@@ -122,7 +124,12 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
         this.criterion = criterion;
     }
     
-    static FoldChangeCriterionHandler create(FoldChangeCriterion foldChangeCriterion) {
+    /**
+     * 
+     * @param foldChangeCriterion the fold change criterion 
+     * @return the fold change criterion handler
+     */
+    public static FoldChangeCriterionHandler create(FoldChangeCriterion foldChangeCriterion) {
         return new FoldChangeCriterionHandler(foldChangeCriterion);
     }
     
@@ -136,13 +143,23 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
         ReporterTypeEnum reporterType = query.getReporterType();
         Platform platform = query.getPlatform();
         configureCompareToSamples(study, criterion.getControlSampleSetName());
+        Set<ArrayData> controlArrayData = getCompareToArrayDatas(reporterType, platform);
         Set<AbstractReporter> reporters = getReporterMatches(dao, study, reporterType, platform);
+        
         DataRetrievalRequest request = new DataRetrievalRequest();
         request.addReporters(reporters);
-        request.addArrayDatas(getCandidateArrayDatas(study, reporterType, platform));
-        request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
-        ArrayDataValues values = arrayDataService.getFoldChangeValues(request, 
-                getCompareToArrayDatas(reporterType, platform),
+        request.addArrayDatas(getCandidateArrayDatas(study, controlArrayData, reporterType, platform));
+        request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);        
+
+        DataRetrievalRequest controlDataRequest = new DataRetrievalRequest();
+        controlDataRequest.addReporters(getReporterMatches(dao, study, reporterType, platform));
+        controlDataRequest.addArrayDatas(controlArrayData);
+        controlDataRequest.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
+        ArrayDataValues controlValues = arrayDataService.getData(controlDataRequest);
+        List<ArrayDataValues> controlArrayDataList = new ArrayList<ArrayDataValues>();
+        controlArrayDataList.add(controlValues);
+        
+        ArrayDataValues values = arrayDataService.getFoldChangeValues(request, controlArrayDataList,
                 platform.getPlatformConfiguration().getPlatformChannelType());
         return getRows(values, entityTypes);
     }
@@ -211,15 +228,22 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
         return foldChangeValue >= criterion.getFoldsUp();
     }
 
-    private Collection<ArrayData> getCandidateArrayDatas(Study study, ReporterTypeEnum reporterType
+    private Collection<ArrayData> getCandidateArrayDatas(Study study, Set<ArrayData> controlArrayData,
+            ReporterTypeEnum reporterType
             , Platform platform) {
         Set<ArrayData> candidateDatas = new HashSet<ArrayData>();
         candidateDatas.addAll(study.getArrayDatas(reporterType, platform));
-        candidateDatas.removeAll(getCompareToArrayDatas(reporterType, platform));
+        candidateDatas.removeAll(controlArrayData);
         return candidateDatas;
     }
 
-    private Collection<ArrayData> getCompareToArrayDatas(ReporterTypeEnum reporterType, Platform platform) {
+    /**
+     * Get control array data.
+     * @param reporterType the reporter type
+     * @param platform the platform
+     * @return control array data
+     */
+    public Set<ArrayData> getCompareToArrayDatas(ReporterTypeEnum reporterType, Platform platform) {
         Set<ArrayData> compareToDatas = new HashSet<ArrayData>();
         for (Sample sample : criterion.getCompareToSampleSet().getSamples()) {
             compareToDatas.addAll(sample.getArrayDatas(reporterType, platform));
@@ -241,7 +265,7 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
      * {@inheritDoc}
      */
     @Override
-    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType, 
+    public Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType, 
             Platform platform) {
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
         if (StringUtils.isBlank(criterion.getGeneSymbol())) {
