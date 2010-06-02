@@ -52,7 +52,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			messageid="AntAction.convert-upgrade-path"			
 			>
 			<target name="convert-upgrade-path"/>
-			<property name="application.base.path" value="${application.base.path}"/>
+			<property name="application.base.path" value="$UserPathPanelVariable"/>
 			<property name="jboss.home" value="${jboss.home}"/>
 			<property name="tomcat.home" value="${tomcat.home}"/>
 			<property name="install.path" value="$SYSTEM_user_home/${installer.dir}"/>
