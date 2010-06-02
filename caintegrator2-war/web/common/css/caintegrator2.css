@@ -92,7 +92,7 @@ LEGEND INPUT, LEGEND SELECT
 #appheader
 { background:#475b82 url("../../images/bg_appheader.gif") repeat-x bottom; border-top:1px solid #6f86b0; height:55px; min-width:770px; padding:0 0 5px 0;  }
 #mainlogo
-{ padding:10px 0 0 10px; float:left; width:260px; }
+{ padding:10px 0 0 10px; float:left; width:450px; }
 #versioninfo
 {   color:#BFD5D5;
     font-family:arial,helvetica,sans-serif;
