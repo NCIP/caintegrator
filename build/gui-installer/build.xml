@@ -5,8 +5,8 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 <project name="Installer" default="install" basedir="." >
 	<!-- Generic properties -->
 	<property name="application_installer" value="caintegrator2_installer" />
-	<property name="application_installer_zip" value="caintegrator2-install-1.0.zip" />
-	<property name="application_upgrader_zip" value="caintegrator2-upgrade-1.0.zip" />
+	<property name="application_installer_zip" value="caintegrator2-install-1.1.0.zip" />
+	<property name="application_upgrader_zip" value="caintegrator2-upgrade-1.1.0.zip" />
 	<!-- TARGETS -->
 	<target name="install" >
 		<echo message="${install.path}"/>

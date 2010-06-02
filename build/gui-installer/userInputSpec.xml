@@ -18,7 +18,7 @@ Guide to this file:
 <userInput>
 	<panel order="0">
 		<field type="title" txt="Install or Upgrade software" bold="true" size="1" />
-		<field type="staticText" align="left" txt="Choose Install if you haven't installed caIntegrator2 on this machine before. Choose Upgrade if caIntegrator2 has previously been installed. WARNING: When choosing Install, the installer will remove any previously installed application servers (using caBIG installers) or databases installed based on the information you provide, so be sure to backup your application server and database instance if they exist. For detailed descriptions on each of the properties in this installer, see http://someurl"/>
+		<field type="staticText" align="left" txt="Choose Install if you haven't installed caIntegrator2 on this machine before. Choose Upgrade if caIntegrator2 has previously been installed. WARNING: When choosing Install, the installer will remove any previously installed application servers (using caBIG installers) or databases installed based on the information you provide, so be sure to backup your application server and database instance if they exist. For detailed descriptions on each of the properties in this installer, see https://wiki.nci.nih.gov/x/NAUuAQ"/>
 		<field type="divider" align="top"/>
 		<field type="radio" variable="setup.type">
 			<description align="left" txt="Choose a new Install or Upgrade an existing installation"/>
@@ -53,7 +53,7 @@ Guide to this file:
 		<field type="title" txt="Existing Locations" bold="true" size="1" />
 		<field type="staticText" align="left" txt="Select the locations of the existing components that are installed. These values will be used to read the existing configuration of the components and pre-populate the following screens with the values from the existing install.  New properties that are part of this installation will have default values."/>
 		<field type="divider" align="top"/>
-		<field type="dir" variable="application.base.path">
+		<field type="dir" variable="UserPathPanelVariable">
 			<spec txt="Application Root Directory:" size="25" set="c:/apps/caintegrator2"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Application Root Directory is a required field" />
 		</field>
@@ -72,14 +72,13 @@ Guide to this file:
 		<fileextractor>
 			<extractfile filename="pre-install" toDirName="."/>
 		</fileextractor>
-		
 	</panel>
 	<!-- Upgrade container.all -->
 	<panel order="3">
 		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
 		<field type="staticText" txt="Please click Next to continue." bold="true" size="1" />
 		<panelreader classname="pre-install/install.xml" methodname="upgrade:common:init" language="ant">
-			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="application.base.path"/>
+			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="UserPathPanelVariable"/>
 			<inpropertymap inpropertyname="jboss.home" inpropertyvalue="jboss.home"/>
 			<inpropertymap inpropertyname="jboss.server.name" inpropertyvalue="jboss.server.name"/>
 			<propertymap propertyname="authentication.type" mapname="authentication.type"/>
@@ -178,7 +177,7 @@ Guide to this file:
 		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
 		<field type="staticText" txt="Please click Next to continue." bold="true" size="1" />
 		<panelreader classname="pre-install/install.xml" methodname="upgrade:jboss:init" language="ant">
-			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="application.base.path"/>
+			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="UserPathPanelVariable"/>
 			<inpropertymap inpropertyname="jboss.home" inpropertyvalue="jboss.home"/>
 			<inpropertymap inpropertyname="jboss.server.name" inpropertyvalue="jboss.server.name"/>
 			<propertymap propertyname="authentication.type" mapname="authentication.type"/>
@@ -276,7 +275,7 @@ Guide to this file:
 		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
 		<field type="staticText" txt="Please click Next to continue." bold="true" size="1" />
 		<panelreader classname="pre-install/install.xml" methodname="upgrade:tomcat:init" language="ant">
-			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="application.base.path"/>
+			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="UserPathPanelVariable"/>
 			<inpropertymap inpropertyname="tomcat.home" inpropertyvalue="tomcat.home"/>
 			<propertymap propertyname="database.name" mapname="database.name"/>
 			<propertymap propertyname="database.password" mapname="database.password"/>
@@ -340,7 +339,7 @@ Guide to this file:
 		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
 		<field type="staticText" txt="Please click Next to continue." bold="true" size="1" />
 		<panelreader classname="pre-install/install.xml" methodname="upgrade:database:init" language="ant">
-			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="application.base.path"/>
+			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="UserPathPanelVariable"/>
 			<inpropertymap inpropertyname="jboss.home" inpropertyvalue="jboss.home"/>
 			<inpropertymap inpropertyname="jboss.server.name" inpropertyvalue="jboss.server.name"/>
 			<propertymap propertyname="authentication.type" mapname="authentication.type"/>
@@ -360,7 +359,7 @@ Guide to this file:
 	<!-- Jboss Configuration -->
 	<panel order="7">
 		<field type="title" txt="JBoss Configuration" bold="true" size="1" />
-		<field type="staticText" align="left" txt="As part of this installation, JBoss will be installed in ${UserPathPanelVariable}/${jboss.binaries.relative.dir}.  It will be configured based on the values you enter below and on the following screens.  NOTE: The Hostname below (and on other panels of this installer) is the host name accesible from this machine and others on the local network. To access this JBoss application server from the Internet, you may need to provide the ports below and on the following page to your Network administrator to allow access through the firewall."/>
+		<field type="staticText" align="left" txt="As part of this installation, JBoss will be installed in ${UserPathPanelVariable}/${jboss.binaries.relative.dir}.  It will be configured based on the values you enter below and on the following screens.  NOTE: The Hostname below (and on other panels of this installer) is the hostname accesible from this machine and others on the local network. To access this JBoss application server from the Internet, you may need to provide the ports below and on the following page to your Network administrator to allow access through the firewall."/>
 		<field type="divider" align="top"/>
 		<field type="text" align="left" variable="jboss.server.hostname">
 			<spec txt="Hostname of this Server:" size="25" set="$HOST_NAME"/>
@@ -661,7 +660,7 @@ Guide to this file:
 	<!-- Database Properties -->
 	<panel order="13">
 		<field type="title" txt="Database Configuration" bold="true" size="1" />
-        <field type="staticText" align="left" txt="The information you enter below will connect you to an existing database. It's highly recommended that 'Database Host Name' NOT be the machine from which you are currently installing. The 'Database User' must have full access to 'Database Name'. It's highly recommended you contact your database administrator to obtain this information. NOTE: All database objects for 'Database Name' will be dropped and recreated during the installation process, but will be preserved during database.  In either case we recommend backing up your database before proceeding."/>
+        <field type="staticText" align="left" txt="The information you enter below will connect you to an existing database. It's highly recommended that 'Database Host Name' NOT be the machine from which you are currently installing. The 'Database User' must have full access to 'Database Name'. It's highly recommended you contact your database administrator to obtain this information. NOTE: All database objects for 'Database Name' will be dropped and recreated during the installation process, but will be preserved during database upgrade.  In either case we recommend backing up your database before proceeding."/>
 		<field type="divider" align="top"/>
 
 		<variable name="install.path" value="$INSTALL_PATH"/>
@@ -1017,7 +1016,7 @@ Guide to this file:
 	
 	<panel order="24">
 		<field type="title" txt="Installation Summary" bold="true" size="1" />
-		<field type="staticText" align="left" txt="Below are "/>
+		<field type="staticText" align="left" txt="Below are the current configurations"/>
 		<field type="divider" align="top"/>
 
 		<field type="staticText" align="left" txt="JBoss Home [${UserPathPanelVariable}/${jboss.binaries.relative.dir}] - This is where JBoss is installed."/>
