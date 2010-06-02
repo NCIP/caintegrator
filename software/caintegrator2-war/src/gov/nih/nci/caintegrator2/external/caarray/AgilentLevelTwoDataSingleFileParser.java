@@ -149,12 +149,14 @@ public final class AgilentLevelTwoDataSingleFileParser {
     private void loadData(Map<String, Map<String, Float>> agilentDataMap) throws IOException {
         String[] fields;
         while ((fields = dataFileReader.readNext()) != null) {
-            String probeName = fields[0];
-            for (String sampleName : sampleToIndexMap.keySet()) {
-                Float log2Ratio = getLog2Ratio(fields, sampleToIndexMap.get(sampleName));
-                if (log2Ratio != null) {
-                    Map<String, Float> reporterMap = getReporterMap(agilentDataMap, sampleName);
-                    reporterMap.put(probeName, log2Ratio);
+            if (fields.length > 1) {
+                String probeName = fields[0];
+                for (String sampleName : sampleToIndexMap.keySet()) {
+                    Float log2Ratio = getLog2Ratio(fields, sampleToIndexMap.get(sampleName));
+                    if (log2Ratio != null) {
+                        Map<String, Float> reporterMap = getReporterMap(agilentDataMap, sampleName);
+                        reporterMap.put(probeName, log2Ratio);
+                    }
                 }
             }
         }
