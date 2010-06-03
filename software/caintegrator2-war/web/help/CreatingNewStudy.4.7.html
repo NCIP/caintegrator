@@ -32,8 +32,8 @@
     <hr align="left" />
     <blockquote>
       <div class="Heading2"><a name="1131246">Adding An Annotation Group</a></div>
-      <div class="Body_Text"><a name="1147355">This topic opens from both the Create Annotation Group page and the Edit Annotation </a>Group page. If you plan to create a group, continue with this topic. If you plan to edit an annotation group, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.4.8.html#1127752', '');">Editing an Annotation Group</a></span>.</div>
-      <div class="Body_Text"><a name="1143163">An annotation group is a group of annotation definitions configured in a CSV file. This </a>feature is primarily meant for the Study Manager who knows up front that they have tightly restricted vocabulary definitions that are relevant to a study. In this optional step, you can review the uploaded Group Definition Source file before assigning the appropriate definition for your study.</div>
+      <div class="Body_Text"><a name="1147729">This topic opens from both the Create Annotation Group page and the Edit Annotation </a>Group page. If you plan to create a group, continue with this topic. If you plan to edit an annotation group, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.4.8.html#1127752', '');">Editing an Annotation Group</a></span>.</div>
+      <div class="Body_Text"><a name="1143163">An annotation group is a group of annotation definitions configured in a CSV file. This </a>feature is primarily meant for the Study Manager who knows that they have tightly restricted vocabulary definitions that are relevant to a study. In this optional step, you can review the uploaded Group Definition Source file before assigning the appropriate definition for your study.</div>
       <div class="Body_Text"><a name="1126876">To add an annotation group, follow these steps:</a></div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1126930">
@@ -42,7 +42,7 @@
               <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1126930">On the Edit Study page for a study, Annotation Groups section, click the </a><span style="font-weight: bold;">Add </span><span style="font-weight: bold;">Annotation Group</span> button.</div>
+              <div class="Numbered_List_1_inner"><a name="1126930">On the Edit Study page for a study, Annotation Groups section, click the </a><span style="font-weight: bold;">Add </span><span style="font-weight: bold;">New</span> button.</div>
             </td>
           </tr>
         </table>
@@ -54,7 +54,7 @@
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1126936">On the Define Annotation Group page that opens, enter a name for the </a>annotation group.</div>
+              <div class="Numbered_List_inner"><a name="1126936">On the Edit Annotation Group page that opens, enter a name for the annotation </a>group.</div>
             </td>
           </tr>
         </table>
@@ -78,11 +78,12 @@
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">4.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1126938">Browse for the  Group Definition Source CSV file. The file should include the </a>following columns:</div>
+              <div class="Numbered_List_inner"><a name="1126938">Browse for the Group Definition Source CSV file. </a></div>
             </td>
           </tr>
         </table>
       </div>
+      <div class="Body_Text_Indent_2"><a name="1146272">The CSV file must include columns with these column headers in the first row: </a>File Column Name, Field Type, Entity Type, CDE ID, CDE Version, Annotation Def Name, Data Type, Permissible, and Visible. Subsequent rows in the file define each subject annotation column in the subject annotation file<span style="font-family: Tahoma;">.</span></div>
       <div class="Lettered_List_1_outer" style="margin-left: 36pt;">
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1127179">
           <tr style="vertical-align: baseline;">
@@ -92,7 +93,7 @@
               </div>
             </td>
             <td width="100%">
-              <div class="Lettered_List_1_inner"><a name="1127179">CDE Public ID and CDE version</a></div>
+              <div class="Lettered_List_1_inner"><a name="1127179">If a subject annotation is defined by a CDE Public ID, values for the </a>following columns are required: File Column Name, Field Type, Entity Type, CDE ID, and Visible; a value for CDE Version is optional.</div>
             </td>
           </tr>
         </table>
@@ -107,7 +108,7 @@
               </div>
             </td>
             <td width="100%">
-              <div class="Lettered_List_inner"><a name="1131766">Name, Data Type, User Permissible Values (</a><span style="font-weight: bold;">Yes</span> or <span style="font-weight: bold;">No</span>) and Visible (<span style="font-weight: bold;">Yes</span> or <span style="font-weight: bold;">No</span>)</div>
+              <div class="Lettered_List_inner"><a name="1131766">If a subject annotation definition is not defined by a CDE Public ID, values </a>for the following columns are required: File Column Name, Field Type, Entity Type, Annotation Def Name, Data Type (String, Date, Numeric), Permissible  (Yes or No), and Visible (Yes or No).</div>
             </td>
           </tr>
         </table>
