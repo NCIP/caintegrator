@@ -601,7 +601,7 @@
             <result type="tiles">editImagingFile</result>
         </action>
         
-        <action name="addImagingSourceAnnotations" class="editImagingSourceAction" method="addImageAnnotations">
+        <action name="addImagingSourceAnnotations" class="editImagingSourceAnnotationsAction" method="addImageAnnotations">
             <result type="redirectAction">
                 <param name="actionName">editImagingSourceAnnotations</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>

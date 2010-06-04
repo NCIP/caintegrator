@@ -1,6 +1,33 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-            
+
+
+<script type="text/javascript">
+
+    function disableFormElement(obj)
+    {
+        var nameOfCallingElement = obj.name;
+        var arrayOfElements=document.getElementsByName(nameOfCallingElement);
+        
+        for (var i = 0; i < arrayOfElements.length; i++){
+            if (arrayOfElements[i].value == "Use AIM Data Service" &&
+                   arrayOfElements[i].checked==true ) {
+                document.getElementById("imageAnnotationFile").disabled = true;
+                document.getElementById("aimUrl").disabled = false;
+                document.getElementById("aimUsername").disabled = false;
+                document.getElementById("aimPassword").disabled = false;
+                break;
+            } else {
+                document.getElementById("imageAnnotationFile").disabled = false;
+                document.getElementById("aimUrl").disabled = true;
+                document.getElementById("aimUsername").disabled = true;
+                document.getElementById("aimPassword").disabled = true;
+            }
+        } 
+        
+    }   
+
+</script>
 <div id="content">
                    
     <h1 style="color: #FFFFFF; background: #263D6B; padding: 5px;">editing: <strong><s:property value="studyConfiguration.study.shortTitleText" /></strong></h1>    
@@ -30,7 +57,19 @@
                 
                 <s:if test="imageSourceConfiguration.imageAnnotationConfiguration == null">
                 <table>
-                    <s:file name="imageAnnotationFile" label="Image Series Annotation File" />
+                    <s:radio name="uploadType" 
+                        list="@gov.nih.nci.caintegrator2.application.study.ImageAnnotationUploadType@getStringValues()"
+                        required="true" label="Select Annotation Upload Type:"
+                        onclick="disableFormElement(this)"/>
+                    <s:file id="imageAnnotationFile" name="imageAnnotationFile" label="Image Series Annotation File" />
+                    <s:select name="aimServerProfile.url" id="aimUrl" accesskey="false"
+                        headerKey="" headerValue="--Enter an NBIA Server Grid URL--"
+                        list="aimServices" label=" AIM Server Grid URL " required="true" disabled="true"
+                        cssClass="editable-select" />
+                    <s:textfield label=" AIM Username " name="aimServerProfile.username"
+                        disabled="true" id="aimUsername" size="40"/>
+                    <s:password label=" AIM Password " name="aimServerProfile.password"
+                        disabled="true" id="aimPassword" size="40"/>
                     <s:checkbox name="createNewAnnotationDefinition" label="Create a new Annotation Definition if one is not found" 
                         labelposition="left" />
                     <tr> 

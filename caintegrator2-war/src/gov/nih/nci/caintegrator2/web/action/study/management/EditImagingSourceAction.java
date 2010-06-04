@@ -101,7 +101,6 @@ import gov.nih.nci.caintegrator2.web.ajax.IImagingDataSourceAjaxUpdater;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -112,26 +111,11 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
     
     private static final long serialVersionUID = 1L;
 
-    private File imageAnnotationFile;
     private File imageClinicalMappingFile;
-    private String imageAnnotationFileFileName;
     private String imageClinicalMappingFileFileName;
     private ImageDataSourceMappingTypeEnum mappingType = ImageDataSourceMappingTypeEnum.AUTO;
     private IImagingDataSourceAjaxUpdater updater;
-    private boolean createNewAnnotationDefinition = false;
-    private boolean cancelAction = false;
     private NCIAFacade nciaFacade;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void validate() {
-        if (!cancelAction) {
-            fixUrlFromInternetExplorer();
-            prepareValueStack();
-        }
-    }
     
     private boolean validateAddSource() {
         validateMappingFile();
@@ -165,20 +149,6 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             addFieldError("imageClinicalMappingFile", "Image to Clinical Mapping File is required");
         }
         return checkErrors();
-    }
-    
-    private boolean validateAddImageAnnotations() {
-        if (imageAnnotationFile == null) {
-            addFieldError("imageAnnotationFile", "Must specify annotation file");
-        }
-        return checkErrors();
-    }
-
-    private boolean checkErrors() {
-        if (!getFieldErrors().isEmpty() || !getActionErrors().isEmpty()) {
-            return false;
-        }
-        return true;
     }
     
     /**
@@ -269,31 +239,6 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
         configuration.setCollectionName(getImageSourceConfiguration().getCollectionName());
         return configuration;
     }
-
-    /**
-     * Adds annotation file to the imaging source.
-     * @return struts result.
-     */
-    public String addImageAnnotations() {
-        if (!validateAddImageAnnotations()) {
-            return INPUT;
-        }
-        try {
-            getImageSourceConfiguration().setImageAnnotationConfiguration(
-                    getStudyManagementService().addImageAnnotationFile(getImageSourceConfiguration(),
-                            getImageAnnotationFile(), getImageAnnotationFileFileName(),
-                            createNewAnnotationDefinition));
-            setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(),
-                    LogEntry.getSystemLogAdd(getImageSourceConfiguration()));
-            getStudyManagementService().save(getStudyConfiguration());
-        } catch (ValidationException e) {
-            addFieldError("imageAnnotationFile", "Invalid file: " + e.getResult().getInvalidMessage());
-            return INPUT;
-        } catch (IOException e) {
-            return ERROR;
-        }
-        return SUCCESS;
-    }
     
     /**
      * Loads image annotations.
@@ -328,48 +273,6 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
         } else {
             getImageSourceConfiguration().setMappingFileName(ImageDataSourceConfiguration.AUTOMATIC_MAPPING);
         }
-    }
-    
-    /**
-     * This is because the editable-select for internet explorer submits an extra URL after comma.
-     * ex: "http://url, http://url" instead of just "http://url".
-     */
-    private void fixUrlFromInternetExplorer() {
-       if (!StringUtils.isBlank(getImageSourceConfiguration().getServerProfile().getUrl())) {
-           getImageSourceConfiguration().getServerProfile().setUrl(
-                    Pattern.compile(",\\s.*").matcher(getImageSourceConfiguration().getServerProfile().getUrl())
-                            .replaceAll(""));
-       }
-    }
-
-    /**
-     * @return the Imaging File
-     */
-    public File getImageAnnotationFile() {
-        return imageAnnotationFile;
-    }
-
-    /**
-     * @param imageAnnotationFile
-     *            the imageAnnotationFile to set
-     */
-    public void setImageAnnotationFile(File imageAnnotationFile) {
-        this.imageAnnotationFile = imageAnnotationFile;
-    }
-
-    /**
-     * @return ImagingFileFileName
-     */
-    public String getImageAnnotationFileFileName() {
-        return imageAnnotationFileFileName;
-    }
-
-    /**
-     * @param imageAnnotationFileFileName
-     *            the ImagingFileFileName to set
-     */
-    public void setImageAnnotationFileFileName(String imageAnnotationFileFileName) {
-        this.imageAnnotationFileFileName = imageAnnotationFileFileName;
     }
 
     /**
@@ -441,34 +344,6 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
      */
     public Set<String> getNbiaServices() {
         return GridDiscoveryServiceJob.getGridNbiaServices().keySet();
-    }
-    
-    /**
-     * @return the cancelAction
-     */
-    public boolean isCancelAction() {
-        return cancelAction;
-    }
-
-    /**
-     * @param cancelAction the cancelAction to set
-     */
-    public void setCancelAction(boolean cancelAction) {
-        this.cancelAction = cancelAction;
-    }
-
-    /**
-     * @return the createNewAnnotationDefinition
-     */
-    public boolean isCreateNewAnnotationDefinition() {
-        return createNewAnnotationDefinition;
-    }
-
-    /**
-     * @param createNewAnnotationDefinition the createNewAnnotationDefinition to set
-     */
-    public void setCreateNewAnnotationDefinition(boolean createNewAnnotationDefinition) {
-        this.createNewAnnotationDefinition = createNewAnnotationDefinition;
     }
 
     /**
