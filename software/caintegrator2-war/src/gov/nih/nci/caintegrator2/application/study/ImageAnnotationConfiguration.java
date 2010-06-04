@@ -87,8 +87,11 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 /**
  * Contains configuration information for file based annotation of <code>ImageSeries</code>.
@@ -98,6 +101,8 @@ public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
     private static final long serialVersionUID = 1L;
     private ImageDataSourceConfiguration imageDataSourceConfiguration;
     private AnnotationFile annotationFile;
+    private ServerConnectionProfile aimServerProfile = new ServerConnectionProfile();
+    private ImageAnnotationUploadType uploadType = ImageAnnotationUploadType.FILE;
     
     /**
      * Creates a new instance.
@@ -185,5 +190,51 @@ public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
      */
     public List<AnnotationFieldDescriptor> getAnnotationDescriptors() {
         return getAnnotationFile().getDescriptors();
+    }
+
+    /**
+     * @return the aimServerProfile
+     */
+    public ServerConnectionProfile getAimServerProfile() {
+        return aimServerProfile;
+    }
+
+    /**
+     * @param aimServerProfile the aimServerProfile to set
+     */
+    public void setAimServerProfile(ServerConnectionProfile aimServerProfile) {
+        this.aimServerProfile = aimServerProfile;
+    }
+
+    /**
+     * @return the uploadType
+     */
+    public ImageAnnotationUploadType getUploadType() {
+        return uploadType;
+    }
+
+    /**
+     * @param uploadType the uploadType to set
+     */
+    public void setUploadType(ImageAnnotationUploadType uploadType) {
+        this.uploadType = uploadType;
+    }
+
+    /**
+     * @return the uploadType value
+     */
+    public String getUploadTypeValue() {
+        return uploadType.getValue();
+    }
+
+    /**
+     * @param uploadTypeValue the string value of uploadType to set
+     */
+    public void setUploadTypeValue(String uploadTypeValue) {
+        if (StringUtils.isBlank(uploadTypeValue)) {
+            this.uploadType = null;
+        } else {
+            this.uploadType = ImageAnnotationUploadType.getByValue(uploadTypeValue);
+        }
     }
 }

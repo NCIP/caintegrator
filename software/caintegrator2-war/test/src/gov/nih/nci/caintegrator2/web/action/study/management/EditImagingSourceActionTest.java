@@ -168,18 +168,15 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
         
         action.getImageSourceConfiguration().getServerProfile().setUrl("Fake URL");
         action.setMappingType(ImageDataSourceMappingTypeEnum.AUTO.getValue());
-        action.setImageAnnotationFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
         action.clearErrorsAndMessages();
         action.saveImagingSource();
         assertTrue(action.hasFieldErrors());
 
-        action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
         action.clearErrorsAndMessages();
         action.saveImagingSource();
         assertTrue(action.hasFieldErrors());         
 
         // test with INvalid input files
-        action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
         action.clearErrorsAndMessages();
         action.saveImagingSource();
         assertTrue(action.hasFieldErrors());         
@@ -193,7 +190,6 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
 
         // test with valid input files
         action.getImageSourceConfiguration().setCollectionName("Fake Collection Name");
-        action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
         action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
         action.clearErrorsAndMessages();
         action.saveImagingSource();
@@ -204,7 +200,6 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
     @Test
     public void testSaveImagingSource() {
         validateAddSource();
-        action.setImageAnnotationFile(null);
         action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
         assertEquals(Action.SUCCESS, action.saveImagingSource());
         assertTrue(updaterStub.runJobCalled);
@@ -228,25 +223,6 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
         assertTrue(updaterStub.runJobCalled);
         
         
-    }
-    
-    @Test
-    public void testAddImageAnnotations() {
-        action.clearErrorsAndMessages();
-        action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
-        action.setImageAnnotationFileFileName(TestDataFiles.VALID_FILE.getName());
-        assertEquals(Action.SUCCESS, action.addImageAnnotations());
-        action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
-        assertTrue(studyManagementServiceStub.addImageAnnotationFileCalled);
-
-        action.setImageAnnotationFile(TestDataFiles.INVALID_FILE_MISSING_VALUE);
-        assertEquals(Action.INPUT, action.addImageAnnotations());
-        action.clearErrorsAndMessages();
-        action.setImageAnnotationFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
-        assertEquals(Action.ERROR, action.addImageAnnotations());
-        action.clearErrorsAndMessages();
-        action.setImageAnnotationFile(null);
-        assertEquals(Action.INPUT, action.addImageAnnotations());
     }
     
     @Test

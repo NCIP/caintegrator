@@ -364,4 +364,8 @@
         <comment>Updates maximum size of the gene name and fold change criterion to 6000 characters.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.03.sql"/>
     </changeSet>
+    <changeSet id="1.2.04" author="nguyennh">
+        <comment>Add AIM Data Service for Image Annotation.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.04.sql"/>
+    </changeSet>
 </databaseChangeLog>
