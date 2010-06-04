@@ -86,6 +86,10 @@
 
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringUtils;
+
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 
 /**
@@ -94,6 +98,7 @@ import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 public abstract class AbstractImagingSourceAction extends AbstractStudyAction {
 
     private ImageDataSourceConfiguration imageSourceConfiguration = new ImageDataSourceConfiguration();
+    private boolean cancelAction = false;
     /**
      * {@inheritDoc}
      */
@@ -105,6 +110,35 @@ public abstract class AbstractImagingSourceAction extends AbstractStudyAction {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        if (!cancelAction) {
+            fixUrlFromInternetExplorer();
+            prepareValueStack();
+        }
+    }
+
+    boolean checkErrors() {
+        if (!getFieldErrors().isEmpty() || !getActionErrors().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * This is because the editable-select for internet explorer submits an extra URL after comma.
+     * ex: "http://url, http://url" instead of just "http://url".
+     */
+    void fixUrlFromInternetExplorer() {
+       if (!StringUtils.isBlank(getImageSourceConfiguration().getServerProfile().getUrl())) {
+           getImageSourceConfiguration().getServerProfile().setUrl(
+                    Pattern.compile(",\\s.*").matcher(getImageSourceConfiguration().getServerProfile().getUrl())
+                            .replaceAll(""));
+       }
+    }
 
     /**
      * @return the imageSource
@@ -118,5 +152,19 @@ public abstract class AbstractImagingSourceAction extends AbstractStudyAction {
      */
     public void setImageSourceConfiguration(ImageDataSourceConfiguration imageSourceConfiguration) {
         this.imageSourceConfiguration = imageSourceConfiguration;
+    }
+    
+    /**
+     * @return the cancelAction
+     */
+    public boolean isCancelAction() {
+        return cancelAction;
+    }
+
+    /**
+     * @param cancelAction the cancelAction to set
+     */
+    public void setCancelAction(boolean cancelAction) {
+        this.cancelAction = cancelAction;
     }
 }

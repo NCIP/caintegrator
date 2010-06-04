@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFileStub;
@@ -94,6 +95,7 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ImageAnnotationUploadType;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -132,6 +134,33 @@ public class EditImagingSourceAnnotationsActionTest extends AbstractSessionBased
         assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
         assertEquals(2, action.getDisplayableFields().size());
         assertEquals(2, action.getSelectableAnnotationGroups().size());
+    }
+    
+    @Test
+    public void testAddImageAnnotations() {
+        action.clearErrorsAndMessages();
+        action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
+        action.setImageAnnotationFileFileName(TestDataFiles.VALID_FILE.getName());
+        assertEquals(Action.SUCCESS, action.addImageAnnotations());
+
+        action.setImageAnnotationFile(TestDataFiles.INVALID_FILE_MISSING_VALUE);
+        assertEquals(Action.INPUT, action.addImageAnnotations());
+        action.clearErrorsAndMessages();
+        action.setImageAnnotationFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
+        assertEquals(Action.ERROR, action.addImageAnnotations());
+        action.clearErrorsAndMessages();
+        action.setImageAnnotationFile(null);
+        assertEquals(Action.INPUT, action.addImageAnnotations());
+        
+        action.setUploadType(ImageAnnotationUploadType.AIM.getValue());
+        assertEquals(Action.INPUT, action.addImageAnnotations());
+        assertTrue(action.hasFieldErrors());
+    }
+    
+    @Test
+    public void testMisc() {
+        action.setUploadType(ImageAnnotationUploadType.AIM.getValue());
+        assertEquals(ImageAnnotationUploadType.AIM.getValue(), action.getUploadType());
     }
     
     @Test

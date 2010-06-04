@@ -141,6 +141,11 @@ public enum ConfigurationParameter {
     GISTIC_URL("http://node255.broadinstitute.org:10010/wsrf/services/cagrid/Gistic"),
             
     /**
+     * Default AIM service URL.
+     */
+    AIM_URL("http://node01.cci.emory.edu/wsrf/services/cagrid/AIMTCGADataService"),
+            
+    /**
      * Default NBIA service URL.
      */
     NBIA_URL("http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService"),

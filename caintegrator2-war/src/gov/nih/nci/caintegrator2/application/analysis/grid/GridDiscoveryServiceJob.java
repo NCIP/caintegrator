@@ -122,6 +122,8 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         = Collections.synchronizedMap(new HashMap<String, String>());
     private static Map<String, String> gridGisticServices 
         = Collections.synchronizedMap(new HashMap<String, String>());
+    private static Map<String, String> gridAimServices 
+        = Collections.synchronizedMap(new HashMap<String, String>());
 
     /**
      * {@inheritDoc}
@@ -170,6 +172,7 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         gridPcaServices.clear();
         gridCaDnaCopyServices.clear();
         gridGisticServices.clear();
+        gridAimServices.clear();
     }
     
     private static void setDefaultServices() {
@@ -222,6 +225,13 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
             gridGisticServices.put(defaultUrl, "Default GISTIC service - " + defaultUrl);
         }
     }
+    
+    private static void setDefaultAimService() {
+        if (gridAimServices.isEmpty()) {
+            String defaultUrl = configurationHelper.getString(ConfigurationParameter.AIM_URL);
+            gridAimServices.put(defaultUrl, "Default AIM service - " + defaultUrl);
+        }
+    }
 
     @SuppressWarnings("PMD.CyclomaticComplexity") // Check for multiple grid services
     private static void extractSelectedServices(String hostingCenter, String url) {
@@ -233,6 +243,8 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
             gridCaDnaCopyServices.put(url, buildDisplayName(hostingCenter, url));
         } else if (shouldAdd(url, "Gistic", gridGisticServices)) {
             gridGisticServices.put(url, buildDisplayName(hostingCenter, url));
+        } else if (shouldAdd(url, "AIMTCGADataService", gridAimServices)) {
+            gridAimServices.put(url, buildDisplayName(hostingCenter, url));
         } else if (shouldAdd(url, "NCIA", gridNbiaServices)) {
             gridNbiaServices.put(url, buildDisplayName(hostingCenter, url));
         }
@@ -314,6 +326,16 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
             setDefaultGisticService();
         }
         return gridGisticServices;
+    }
+
+    /**
+     * @return the gridAimServices
+     */
+    public static Map<String, String> getGridAimServices() {
+        if (gridAimServices.isEmpty()) {
+            setDefaultAimService();
+        }
+        return gridAimServices;
     }
 
     /**

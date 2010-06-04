@@ -85,14 +85,23 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
+import gov.nih.nci.caintegrator2.application.study.ImageAnnotationUploadType;
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -105,6 +114,11 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
         new ArrayList<DisplayableAnnotationFieldDescriptor>();
     private final List<AnnotationGroup> selectableAnnotationGroups = new ArrayList<AnnotationGroup>();
     private final Map<String, AnnotationGroup> annotationGroupNameToGroupMap = new HashMap<String, AnnotationGroup>();
+    private File imageAnnotationFile;
+    private String imageAnnotationFileFileName;
+    private ImageAnnotationUploadType uploadType = ImageAnnotationUploadType.FILE;
+    private ServerConnectionProfile aimServerProfile = new ServerConnectionProfile();
+    private boolean createNewAnnotationDefinition = false;
     
     /**
      * {@inheritDoc}
@@ -116,6 +130,22 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
             setupAnnotationGroups();
             setupDisplayableFields();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        fixUrlFromInternetExplorer();
+        prepareValueStack();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    protected boolean isFileUpload() {
+        return true;
     }
 
     private void setupAnnotationGroups() {
@@ -162,6 +192,45 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
     }
 
     /**
+     * Adds annotation file to the imaging source.
+     * @return struts result.
+     */
+    public String addImageAnnotations() {
+        if (!validateAddImageAnnotations()) {
+            return INPUT;
+        }
+        try {
+            if (ImageAnnotationUploadType.FILE.equals(uploadType)) {
+                getImageSourceConfiguration().setImageAnnotationConfiguration(
+                    getStudyManagementService().addImageAnnotationFile(getImageSourceConfiguration(),
+                            getImageAnnotationFile(), getImageAnnotationFileFileName(),
+                            createNewAnnotationDefinition));
+            } else {
+                // TODO - AIM Data Service
+                addFieldError("aimServerProfile.url", "Not yet implement.");
+            }
+            setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(),
+                    LogEntry.getSystemLogAdd(getImageSourceConfiguration()));
+            getStudyManagementService().save(getStudyConfiguration());
+        } catch (ValidationException e) {
+            addFieldError("imageAnnotationFile", "Invalid file: " + e.getResult().getInvalidMessage());
+            return INPUT;
+        } catch (IOException e) {
+            return ERROR;
+        }
+        return SUCCESS;
+    }
+    
+    private boolean validateAddImageAnnotations() {
+        if (ImageAnnotationUploadType.FILE.equals(uploadType) && imageAnnotationFile == null) {
+            addFieldError("imageAnnotationFile", "Must specify annotation file");
+        } else if (ImageAnnotationUploadType.AIM.equals(uploadType)) {
+            addFieldError("aimServerProfile.url", "Not yet implement.");
+        }
+        return checkErrors();
+    }
+
+    /**
      * @return the displayableFields
      */
     public List<DisplayableAnnotationFieldDescriptor> getDisplayableFields() {
@@ -182,6 +251,92 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
      */
     public List<AnnotationGroup> getSelectableAnnotationGroups() {
         return selectableAnnotationGroups;
+    }
+
+    /**
+     * @return available NBIA services.
+     */
+    public Set<String> getAimServices() {
+        return GridDiscoveryServiceJob.getGridAimServices().keySet();
+    }
+
+    /**
+     * @return the Imaging File
+     */
+    public File getImageAnnotationFile() {
+        return imageAnnotationFile;
+    }
+
+    /**
+     * @param imageAnnotationFile
+     *            the imageAnnotationFile to set
+     */
+    public void setImageAnnotationFile(File imageAnnotationFile) {
+        this.imageAnnotationFile = imageAnnotationFile;
+    }
+
+    /**
+     * @return ImagingFileFileName
+     */
+    public String getImageAnnotationFileFileName() {
+        return imageAnnotationFileFileName;
+    }
+
+    /**
+     * @param imageAnnotationFileFileName
+     *            the ImagingFileFileName to set
+     */
+    public void setImageAnnotationFileFileName(String imageAnnotationFileFileName) {
+        this.imageAnnotationFileFileName = imageAnnotationFileFileName;
+    }
+
+    /**
+     * @return the uploadType
+     */
+    public String getUploadType() {
+        if (uploadType != null) {
+            return uploadType.getValue();
+        }
+        return "";
+    }
+
+    /**
+     * @param uploadType the uploadType to set
+     */
+    public void setUploadType(String uploadType) {
+        if (StringUtils.isBlank(uploadType)) {
+            this.uploadType = null;
+        } else {
+            this.uploadType = ImageAnnotationUploadType.getByValue(uploadType);
+        }
+    }
+
+    /**
+     * @return the aimServerProfile
+     */
+    public ServerConnectionProfile getAimServerProfile() {
+        return aimServerProfile;
+    }
+
+    /**
+     * @param aimServerProfile the aimServerProfile to set
+     */
+    public void setAimServerProfile(ServerConnectionProfile aimServerProfile) {
+        this.aimServerProfile = aimServerProfile;
+    }
+
+    /**
+     * @return the createNewAnnotationDefinition
+     */
+    public boolean isCreateNewAnnotationDefinition() {
+        return createNewAnnotationDefinition;
+    }
+
+    /**
+     * @param createNewAnnotationDefinition the createNewAnnotationDefinition to set
+     */
+    public void setCreateNewAnnotationDefinition(boolean createNewAnnotationDefinition) {
+        this.createNewAnnotationDefinition = createNewAnnotationDefinition;
     }
 
 }
