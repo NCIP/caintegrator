@@ -44,6 +44,9 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/spring-web-2.5.6.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jsp-api-2.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/spring-webmvc-2.5.6.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/AIMDataService-client.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/AIMDataService-common.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/AIMDataService-stubs.jar"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/src"/>
 	<classpathentry kind="src" path="software/genepattern-service-jar/src"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/GenePattern-3.2.1.jar" sourcepath="software/lib/src/GenePattern-3.2.1-src.zip"/>
