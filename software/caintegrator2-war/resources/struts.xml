@@ -681,15 +681,20 @@
             <result type="tiles">manageGeneList</result>
             <result name="error" type="tiles">manageGeneList</result>
             <result name="input" type="tiles">manageGeneList</result>
+            <result name="homePage" type="redirectAction">
+                <param name="actionName">workspace</param>
+            </result>
             <result name="editPage" type="redirectAction">
                 <param name="actionName">editGeneList</param>
                 <param name="selectedAction">editList</param>
                 <param name="listName">${geneListName}</param>
+                <param name="creationSuccess">true</param>
             </result>
             <result name="editGlobalPage" type="redirectAction">
                 <param name="actionName">editGeneList</param>
                 <param name="selectedAction">editGlobalList</param>
                 <param name="listName">${geneListName}</param>
+                <param name="creationSuccess">true</param>
             </result>
         </action>
         

@@ -89,7 +89,6 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
@@ -105,7 +104,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -134,7 +132,7 @@ class GenomicQueryHandler {
     }
 
     GenomicDataQueryResult execute() throws InvalidCriterionException {
-        ArrayDataValues values = getDataValues(query.getPlatform().getPlatformConfiguration().getPlatformChannelType());
+        ArrayDataValues values = getDataValues();
         return createResult(values);
     }
 
@@ -203,35 +201,24 @@ class GenomicQueryHandler {
         }
     }
 
-    private ArrayDataValues getDataValues(PlatformChannelTypeEnum channelType) throws InvalidCriterionException {
+    private ArrayDataValues getDataValues() throws InvalidCriterionException {
         Collection<ArrayData> arrayDatas = getMatchingArrayDatas();
         Collection<AbstractReporter> reporters = getMatchingReporters(arrayDatas);
-        return getDataValues(arrayDatas, reporters, channelType);              
+        return getDataValues(arrayDatas, reporters);              
     }
 
-    private ArrayDataValues getDataValues(Collection<ArrayData> arrayDatas, Collection<AbstractReporter> reporters,
-            PlatformChannelTypeEnum channelType) {
+    private ArrayDataValues getDataValues(Collection<ArrayData> arrayDatas, Collection<AbstractReporter> reporters) {
         DataRetrievalRequest request = new DataRetrievalRequest();
         request.addReporters(reporters);
         request.addArrayDatas(arrayDatas);
         request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
         if (QueryUtil.isFoldChangeQuery(query)) {
-            return arrayDataService.getFoldChangeValues(request, getControlArrayDatas(), channelType);
+            return arrayDataService.getFoldChangeValues(request, query);
         } else {
             return arrayDataService.getData(request);
         }
     }
-
-    private Collection<ArrayData> getControlArrayDatas() {
-        Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
-        for (Sample sample : QueryUtil.getFoldChangeCriterion(query).getCompareToSampleSet().getSamples()) {
-            arrayDatas.addAll(sample.getArrayDatas(query.getReporterType(), query.getPlatform()));
-        }
-        return arrayDatas;
-    }
-
-
-
+    
     private Collection<ArrayData> getMatchingArrayDatas() throws InvalidCriterionException {
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
         if (criterionHandler.hasEntityCriterion()) {

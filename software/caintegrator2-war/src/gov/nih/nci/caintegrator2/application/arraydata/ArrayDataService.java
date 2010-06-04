@@ -86,12 +86,11 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -118,12 +117,22 @@ public interface ArrayDataService {
      * Retrieves the fold change values from the given arrays for the given reporters.
      * 
      * @param request encapsulated retrieval configuration.
-     * @param controlArrayDatas compute fold change values compared to these arrays
+     * @param controlArrayValuesList compute fold change values compared to these arrays
      * @param channelType the array data channel type.
      * @return the fold change values.
      */
-    ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Collection<ArrayData> controlArrayDatas,
+    ArrayDataValues getFoldChangeValues(DataRetrievalRequest request,
+            List<ArrayDataValues> controlArrayValuesList,
             PlatformChannelTypeEnum channelType);
+    
+    /**
+     * Retrieves the fold change values from the given arrays for the given reporters.
+     * 
+     * @param request encapsulated retrieval configuration.
+     * @param query to get controlSampleSets.
+     * @return the fold change values.
+     */
+    ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Query query);
     
     /**
      * Loads the given array design into the system.

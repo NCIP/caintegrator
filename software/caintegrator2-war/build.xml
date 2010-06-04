@@ -583,7 +583,7 @@
     <target name="database:upgrade" depends="database:init-sql" description="Reload configuration table">
         <mkdir dir="${caintegrator2db.sql.upgrade.target.dir}" />
         <copy todir="${caintegrator2db.sql.upgrade.target.dir}" overwrite="true">
-            <fileset dir="${caintegrator2db.sql.upgrade.src.dir}" includes="*.sql" />
+            <fileset dir="${caintegrator2db.sql.upgrade.src.dir}" includes="**/*.sql" />
         </copy>
         <!-- "replace" command for grid.index.url -->
         <replace file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@grid.index.url@" value="${grid.index.url}" />
@@ -654,6 +654,9 @@
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/upgrade-1.1.33.sql" />
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/upgrade-1.1.34.sql" />
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/upgrade-1.1.35.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.2/upgrade-1.2.01.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.2/upgrade-1.2.02.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.2/upgrade-1.2.03.sql" />
     </target>
 
 

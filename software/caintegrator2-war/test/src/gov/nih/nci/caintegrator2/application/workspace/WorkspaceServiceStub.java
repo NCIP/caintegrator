@@ -186,7 +186,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
         subscribeAllCalled = true;
     }
 
-    public void subscribe(UserWorkspace workspace, Study study) {
+    public void subscribe(UserWorkspace workspace, Study study, boolean isPublicSubscription) {
         subscribeCalled = true;
     }
 

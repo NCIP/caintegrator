@@ -129,6 +129,20 @@ public final class Cai2Util {
     private Cai2Util() { }
     
     /**
+     * Trims string if it is greater than the maxCharacters to be '[trimmedString]...'.
+     * @param string to possibly trim.
+     * @param maxCharacters of the string.
+     * @return trimmed string if too long, or full string if it isn't too long.
+     */
+    public static String trimStringIfTooLong(String string, int maxCharacters) {
+        if (maxCharacters <= 3) {
+            throw new IllegalArgumentException("maxCharacters has to be at least 4 characters.");
+        }
+        return string.length() > maxCharacters 
+            ? string.substring(0, maxCharacters - 3) + "..." : string;
+    }
+    
+    /**
      * Used to see if a Collection of strings contains a string, ignoring case.
      * @param l - collection of strings.
      * @param s - string item to see if exists in the collection.

@@ -6,6 +6,7 @@
 		<id name="id" type="long" column="ID">
 			<generator class="native" />
 		</id>
+		<property name="publicSubscription" type="boolean" column="IS_PUBLIC_SUBSCRIPTION" />
 		<!-- Attributes mapping for the StudySubscription class -->
 		<!-- Associations mapping for the StudySubscription class -->
 		<many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID" lazy="proxy" cascade="save-update,merge" />

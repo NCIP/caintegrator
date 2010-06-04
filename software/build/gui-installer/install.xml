@@ -70,7 +70,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 					<authors>
 					    <author name="NCI" email=""/>
 					</authors>
-					<url>http://www.cancer.org/</url>
+					<url>https://cabig.nci.nih.gov/tools/caIntegrator2</url>
 					<javaversion>1.5</javaversion>
 				</info>
 

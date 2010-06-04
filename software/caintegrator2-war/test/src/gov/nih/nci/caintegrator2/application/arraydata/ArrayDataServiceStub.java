@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -94,7 +95,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -152,8 +152,16 @@ public class ArrayDataServiceStub implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Collection<ArrayData> controlArrayDatas,
+    public ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, List<ArrayDataValues> controlArrayValuesList,
             PlatformChannelTypeEnum channelType) {
+        getFoldChangeValuesCalled = true;
+        return getData(request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Query query) {
         getFoldChangeValuesCalled = true;
         return getData(request);
     }

@@ -304,8 +304,11 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
 
     private boolean verifySampleCounts(Query currentQuery, int numSamples) {
         if (numSamples < 2) {
-            addActionError(currentQuery.isSubjectListQuery() ? "Subject List" : "Query " 
-                + currentQuery.getName() + " is invalid because it contains less than 2 samples.");
+            String invalidString = 
+                "'" + currentQuery.getName() 
+                    + "' is invalid because it contains less than 2 samples.";
+            addActionError(currentQuery.isSubjectListQuery() ? "Subject List " + invalidString 
+                    : "Query " + invalidString);
             return false;
         }
         return true;

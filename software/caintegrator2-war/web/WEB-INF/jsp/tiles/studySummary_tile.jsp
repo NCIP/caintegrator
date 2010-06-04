@@ -110,6 +110,12 @@
             <td> Type: </td>
             <td> <b><s:property value="survivalValueType.value"/> </b></td>
         </tr>
+        <tr>
+            <td />
+            <td />
+            <td> Survival Length Units: </td>
+            <td> <b><s:property value="survivalLengthUnits.value"/> </b></td>
+        </tr>
         <s:if test="%{'By Date'.equals(survivalValueType.value)}">
         <tr>
             <td />
@@ -136,12 +142,6 @@
             <td />
             <td> Survival Length: </td>
             <td> <b><s:property value="survivalLength.displayName"/> </b></td>
-        </tr>
-        <tr>
-            <td />
-            <td />
-            <td> Survival Length Units: </td>
-            <td> <b><s:property value="survivalLengthUnits.value"/> </b></td>
         </tr>
         <s:if test="%{survivalStatus != null}">
         <tr>

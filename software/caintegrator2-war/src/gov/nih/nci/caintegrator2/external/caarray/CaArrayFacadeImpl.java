@@ -112,7 +112,7 @@ import java.util.List;
  */
 public class CaArrayFacadeImpl implements CaArrayFacade {
 
-    private static final String ARRAY_DATA_RETRIEVAL_ERROR_MESSAGE = "Couldn't retrieve the requested array data";
+    private static final String ARRAY_DATA_RETRIEVAL_ERROR_MESSAGE = "Couldn't retrieve the requested array data.  ";
     private CaArrayServiceFactory serviceFactory;
     private CaIntegrator2Dao dao;
 

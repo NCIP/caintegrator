@@ -105,6 +105,7 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
     private String listOldName = "";
     private String listName = "";
     private String selectedAction;
+    private boolean creationSuccess = false;
     private boolean editOn = true;
     private boolean visibleToOther = false;;
     private boolean globalList = false;
@@ -112,12 +113,13 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
     static final String EDIT_ACTION = "editList";
     static final String EDIT_GLOBAL_ACTION = "editGlobalList";
     static final String DELETE_ACTION = "deleteList";
+    static final String CANCEL_ACTION = "cancel";
     static final String SAVE_ACTION = "saveList";
     static final String LIST_NAME = "listName";
     static final String HOME_PAGE = "homePage";
     static final String EDIT_PAGE = "editPage";
     static final String EDIT_GLOBAL_PAGE = "editGlobalPage";
-    
+
     /**
      * @return the Struts result.
      */
@@ -138,6 +140,9 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
         } else if (SAVE_ACTION.equals(selectedAction)) {
             clearAnalysisCache();
             return saveList();
+        } else if (CANCEL_ACTION.equals(selectedAction)) {
+            clearAnalysisCache();
+            return HOME_PAGE;
         }
         return SUCCESS;
     }
@@ -224,7 +229,9 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
     @Override
     public void validate() {
         clearErrorsAndMessages();
-        prepareValueStack();
+        if (creationSuccess) {
+            addActionMessage(getCreationSuccessfulMessage());
+        }
         if (EDIT_ACTION.equals(selectedAction)) {
             setGlobalList(false);
             validateList(isGlobalList());
@@ -238,6 +245,14 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
         } else if (SAVE_ACTION.equalsIgnoreCase(selectedAction)) {
             validateListName();
         }
+    }
+    
+    /**
+     * Creation message (overridden by subclasses).
+     * @return message.
+     */
+    protected String getCreationSuccessfulMessage() {
+        return "List successfully created.";
     }
     
     private void validateList(boolean isGlobal) {
@@ -348,5 +363,19 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
      */
     public AbstractList getAbstractList() {
         return abstractList;
+    }
+
+    /**
+     * @return the creationSuccess
+     */
+    public boolean isCreationSuccess() {
+        return creationSuccess;
+    }
+
+    /**
+     * @param creationSuccess the creationSuccess to set
+     */
+    public void setCreationSuccess(boolean creationSuccess) {
+        this.creationSuccess = creationSuccess;
     }
 }

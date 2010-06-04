@@ -129,4 +129,13 @@ public class EditGeneListAction extends EditAbstractListAction {
         }
         return listing.toString();
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getCreationSuccessfulMessage() {
+        return "Gene List successfully created.";
+    }
+    
 }

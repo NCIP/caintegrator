@@ -29,7 +29,7 @@
 
     <h1><s:property value="#subTitleText" /></h1>
     
-    <p>Click <strong>Rename or Delete</strong> to perform editing on this subject list.</p>
+    <p>Click <strong>Save or Delete</strong> to perform editing on this subject list.</p>
     <div class="form_wrapper_outer">
  
     <table class="form_wrapper_table">
@@ -71,6 +71,9 @@
                                 </s:a></li>
                                 <li><s:a href="#" cssClass="btn" onclick="deleteList();">
                                     <span class="btn_img"><span class="delete">Delete</span></span>
+                                </s:a></li>
+                                <li><s:a href="#" cssClass="btn" onclick="submitForm('cancel');">
+                                    <span class="btn_img"><span class="cancel">Cancel</span></span>
                                 </s:a></li>
                             </ul></del></div>
 

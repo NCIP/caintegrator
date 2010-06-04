@@ -128,8 +128,10 @@ public final class SupplementalMultiFileParser {
             Map<String, List<Float>> dataMap = new HashMap<String, List<Float>>();
             String[] fields;
             while ((fields = dataFileReader.readNext()) != null) {
-                String probeName = fields[headerToIndexMap.get(supplementalDataFile.getProbeNameHeader())];
-                extractValue(supplementalDataFile, vendor, dataMap, fields, probeName);
+                if (fields.length > 1) {
+                    String probeName = fields[headerToIndexMap.get(supplementalDataFile.getProbeNameHeader())];
+                    extractValue(supplementalDataFile, vendor, dataMap, fields, probeName);
+                }
             }
             return dataMap;
         } catch (IOException e) {

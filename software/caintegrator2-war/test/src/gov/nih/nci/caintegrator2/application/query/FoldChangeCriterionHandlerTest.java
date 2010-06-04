@@ -178,7 +178,15 @@ public class FoldChangeCriterionHandlerTest {
         } catch(InvalidCriterionException e) { }
         SampleSet sampleSet1 = new SampleSet();
         sampleSet1.setName("controlSampleSet1");
-        sampleSet1.getSamples().add(new Sample());
+        Sample sample = new Sample();
+        sampleSet1.getSamples().add(sample);
+        ArrayData arrayData = new ArrayData();
+        sample.getArrayDataCollection().add(arrayData);
+        ReporterList reporterList = new ReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        arrayData.getReporterLists().add(reporterList);
+        Array array = new Array();
+        array.setPlatform(query.getPlatform());
+        arrayData.setArray(array);
         study.getStudyConfiguration().getGenomicDataSources().get(0).getControlSampleSetCollection().add(sampleSet1);
         rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertEquals(1, rows.size());

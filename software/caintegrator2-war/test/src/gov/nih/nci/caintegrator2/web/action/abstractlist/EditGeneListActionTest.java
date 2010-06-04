@@ -150,6 +150,7 @@ public class EditGeneListActionTest extends AbstractSessionBasedTest {
         
         StudyConfiguration studyConfiguration = subscription.getStudy().getStudyConfiguration();
         studyConfiguration.setListCollection(subscription.getListCollection());
+        action.prepare();
         
     }
     
@@ -202,6 +203,9 @@ public class EditGeneListActionTest extends AbstractSessionBasedTest {
         action.setListName("List1");
         action.execute();
         assertFalse(action.hasFieldErrors());
+        
+        action.setSelectedAction(EditGeneListAction.CANCEL_ACTION);
+        assertEquals(EditGeneListAction.HOME_PAGE, action.execute());
     }
     
     @Test
