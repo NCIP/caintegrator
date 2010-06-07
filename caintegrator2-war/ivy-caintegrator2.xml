@@ -94,6 +94,10 @@
     <dependency org="objectweb" name="asm" rev="1.5.3" conf="runtime"/>
     <dependency org="apache" name="ant-contrib" rev="1.0b3" conf="compile"/>
     <dependency org="globus" name="axis" rev="1.2RC2" conf="runtime"/>
+    <dependency org="javax.xml.bind" name="jaxb-api" rev="2.1" conf="runtime"/>
+    <dependency org="javax.xml.bind" name="jaxb-impl" rev="2.1.4" conf="runtime"/>
+    <dependency org="javax.xml.bind" name="jaxb-xjc" rev="2.1.4" conf="runtime"/>
+    
     <!-- <dependency org="apache" name="axis" rev="1.4" conf="runtime"/> -->
     <dependency org="apache" name="xalan" rev="2.6.0" conf="compile"/>
     <dependency org="apache" name="xerces" rev="2.6.2" conf="compile"/>

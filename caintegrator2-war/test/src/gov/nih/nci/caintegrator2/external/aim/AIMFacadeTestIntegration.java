@@ -122,7 +122,7 @@ public class AIMFacadeTestIntegration {
         ImageSeries imageSeries = createImageSeries("1.3.6.1.4.1.9328.50.45.239261393324265132190998071373586264552"); // Real.
         ImageSeries imageSeries2 = createImageSeries("1.3.6.1.4.1.9328.50.45.184391227224635150626093626236425843441"); // Real.
         ImageSeries imageSeries3 = createImageSeries("1.3.6.1.4.1.9328.50.45.263636323693757141556368836667354272766"); // Real.
-        ImageSeries imageSeries4 = createImageSeries("FAKE"); // Real.
+        ImageSeries imageSeries4 = createImageSeries("FAKE"); // Not Real.
         
         List<ImageSeries> imageSeriesCollection = new ArrayList<ImageSeries>();
         imageSeriesCollection.add(imageSeries);
@@ -142,6 +142,7 @@ public class AIMFacadeTestIntegration {
         assertTrue(imageSeriesAnnotations.containsKey(imageSeries3));
         assertFalse(imageSeriesAnnotations.containsKey(imageSeries4));
         assertEquals(8, imageSeriesAnnotations.keySet().size());
+        assertEquals(21, imageSeriesAnnotations.get(imageSeries).getAnnotationGroupToDefinitionMap().get("Imaging Observations").keySet().size());
     }
     
     private ImageSeries createImageSeries(String id) {

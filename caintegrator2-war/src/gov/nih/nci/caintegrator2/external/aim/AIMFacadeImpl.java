@@ -85,8 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.external.aim;
 
-import edu.northwestern.radiology.aim.ImageAnnotation;
-import edu.northwestern.radiology.aim.ImagingObservation;
+import edu.northwestern.radiology.aim.jaxb.ImageAnnotation;
+import edu.northwestern.radiology.aim.jaxb.ImagingObservation;
+import edu.northwestern.radiology.aim.jaxb.ImagingObservationCharacteristic;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -127,9 +128,13 @@ public class AIMFacadeImpl implements AIMFacade {
         ImageSeriesAnnotationsWrapper annotationWrapper = new ImageSeriesAnnotationsWrapper();
         if (annotation.getImagingObservationCollection() != null) {
             for (ImagingObservation imagingObservation 
-                    : annotation.getImagingObservationCollection().getImagingObservation()) {
-                annotationWrapper.addDefinitionValueToGroup(IMAGING_OBSERVATION_GROUP_NAME, 
-                        imagingObservation.getCodeMeaning(), imagingObservation.getCodeValue());
+                    : annotation.getImagingObservationCollection().getImagingObservations()) {
+                for (ImagingObservationCharacteristic characteristic 
+                    : imagingObservation.getImagingObservationCharacteristicCollection().
+                                getImagingObservationCharacteristics()) {
+                    annotationWrapper.addDefinitionValueToGroup(IMAGING_OBSERVATION_GROUP_NAME, 
+                            characteristic.getCodeMeaning(), characteristic.getCodeValue());
+                }
             }
         }
         imageSeriesAnnotationsMap.put(imageSeries, annotationWrapper);
