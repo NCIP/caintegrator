@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSSecurityException;
@@ -564,6 +565,15 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     public void unloadAllClinicalAnnotation(StudyConfiguration studyConfiguration) {
         unLoadClinicalAnnotationCalled = true;
+    }
+
+    public ImageAnnotationConfiguration addAimAnnotationSource(ServerConnectionProfile aimConnection,
+            ImageDataSourceConfiguration imageSource) {
+        return null;
+    }
+
+    public void loadAimAnnotations(ImageDataSourceConfiguration imageSource) {
+        
     }
 
 }
