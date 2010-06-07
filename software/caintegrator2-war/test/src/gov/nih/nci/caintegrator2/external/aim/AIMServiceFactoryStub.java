@@ -85,9 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.external.aim;
 
-import edu.northwestern.radiology.aim.AnnotationImagingObservationCollection;
-import edu.northwestern.radiology.aim.ImageAnnotation;
-import edu.northwestern.radiology.aim.ImagingObservation;
+import edu.northwestern.radiology.aim.jaxb.ImageAnnotation;
+import edu.northwestern.radiology.aim.jaxb.ImagingObservationCharacteristic;
+import edu.northwestern.radiology.aim.jaxb.impl.ImageAnnotationImpl;
+import edu.northwestern.radiology.aim.jaxb.impl.ImagingObservationCharacteristicImpl;
+import edu.northwestern.radiology.aim.jaxb.impl.ImagingObservationImpl;
+import edu.northwestern.radiology.aim.jaxb.impl.AnnotationImpl.ImagingObservationCollectionImpl;
+import edu.northwestern.radiology.aim.jaxb.impl.ImagingObservationImpl.ImagingObservationCharacteristicCollectionImpl;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
@@ -110,19 +114,23 @@ public class AIMServiceFactoryStub implements AIMServiceFactory {
         public ImageAnnotation getImageSeriesAnnotation(String seriesInstanceUID) throws ConnectionException {
             if (!alreadyCalled) {
                 alreadyCalled = true;
-                ImageAnnotation imageAnnotation = new ImageAnnotation();
-                List<ImagingObservation> imagingObservations = new ArrayList<ImagingObservation>();
-                ImagingObservation observation1 = new ImagingObservation();
-                observation1.setCodeMeaning("Size");
-                observation1.setCodeValue("1");
-                ImagingObservation observation2 = new ImagingObservation();
-                observation2.setCodeMeaning("Width");
-                observation2.setCodeValue("2");
-                imagingObservations.add(observation1);
-                imagingObservations.add(observation2);
-                imageAnnotation.setImagingObservationCollection(new AnnotationImagingObservationCollection());
-                imageAnnotation.getImagingObservationCollection().setImagingObservation(
-                        imagingObservations.toArray(new ImagingObservation[imagingObservations.size()]));
+                ImageAnnotation imageAnnotation = new ImageAnnotationImpl();
+                List<ImagingObservationCharacteristic> imagingObservationCharacteristics = 
+                    new ArrayList<ImagingObservationCharacteristic>();
+                ImagingObservationCharacteristic characteristic1 = new ImagingObservationCharacteristicImpl();
+                characteristic1.setCodeMeaning("Size");
+                characteristic1.setCodeValue("1");
+                ImagingObservationCharacteristic characteristic2 = new ImagingObservationCharacteristicImpl();
+                characteristic2.setCodeMeaning("Width");
+                characteristic2.setCodeValue("2");
+                imagingObservationCharacteristics.add(characteristic1);
+                imagingObservationCharacteristics.add(characteristic2);
+                ImagingObservationImpl imagingObservation = new ImagingObservationImpl();
+                imagingObservation.setImagingObservationCharacteristicCollection(new ImagingObservationCharacteristicCollectionImpl());
+                imagingObservation.getImagingObservationCharacteristicCollection().
+                    getImagingObservationCharacteristics().addAll(imagingObservationCharacteristics);
+                imageAnnotation.setImagingObservationCollection(new ImagingObservationCollectionImpl());
+                imageAnnotation.getImagingObservationCollection().getImagingObservations().add(imagingObservation);
                 return imageAnnotation;
             }
             return null;

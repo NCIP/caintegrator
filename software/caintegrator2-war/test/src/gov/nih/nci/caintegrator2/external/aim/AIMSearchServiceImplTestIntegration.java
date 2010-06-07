@@ -87,7 +87,7 @@ package gov.nih.nci.caintegrator2.external.aim;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import edu.northwestern.radiology.aim.ImageAnnotation;
+import edu.northwestern.radiology.aim.jaxb.ImageAnnotation;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
@@ -116,7 +116,7 @@ public class AIMSearchServiceImplTestIntegration {
     public void testGetImageSeriesAnnotation() throws ConnectionException {
         assertTrue(aimSearchService.retrieveAllSeriesIdentifiers().contains("1.3.6.1.4.1.9328.50.45.288861537619222119588401224045738055768"));
         ImageAnnotation annotation = aimSearchService.getImageSeriesAnnotation("1.3.6.1.4.1.9328.50.45.288861537619222119588401224045738055768");
-        assertEquals(21, annotation.getImagingObservationCollection().getImagingObservation().length);
+        assertEquals(21, annotation.getImagingObservationCollection().getImagingObservations().get(0).getImagingObservationCharacteristicCollection().getImagingObservationCharacteristics().size());
         
         annotation = aimSearchService.getImageSeriesAnnotation("FAKE");
         assertEquals(null, annotation);

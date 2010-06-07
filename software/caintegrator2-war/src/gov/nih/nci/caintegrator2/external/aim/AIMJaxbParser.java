@@ -85,49 +85,43 @@
  */
 package gov.nih.nci.caintegrator2.external.aim;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
+import java.io.StringReader;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.xml.sax.InputSource;
+
+import edu.northwestern.radiology.aim.jaxb.ImageAnnotation;
+
+
 
 /**
+ * Converts an XML String to jaxb.ImageAnnotation.
+ * This class is used with the JaxB beans because of the following issue (Tony Pan explains):
  * 
+ * The problem is that ImageReference is an abstract xsd type that is mapped to a java bean that’s abstract (can’t be 
+ * instantiated).  Apache Axis apparently is unable to parse the xsi:type and instantiate the correct subclass of 
+ * ImageReference.
  */
-public class AIMFacadeTest {
-    AIMFacadeImpl aimFacade;
+public final class AIMJaxbParser {
+    
+    private AIMJaxbParser() { }
+    
+    /**
+     * Retrieves ImageAnnotation (JaxB) from XML string.
+     * @param xmlImageAnnotation xml string representing an ImageAnnotation object.
+     * @return ImageAnnotationObject.
+     */
+    public static ImageAnnotation retrieveImageAnnotationFromXMLString(String xmlImageAnnotation) {
+        try {
+            JAXBContext jc = JAXBContext.newInstance(ImageAnnotation.class.getPackage().getName());
+            Unmarshaller um = jc.createUnmarshaller();
+            return (ImageAnnotation) um.unmarshal(new InputSource(new StringReader(xmlImageAnnotation)));
+            
+        } catch (Exception e) {
+            return null;
+        } 
 
-    @Before
-    public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("aim-test-config.xml", AIMFacadeTest.class); 
-        aimFacade = (AIMFacadeImpl) context.getBean("aimFacade");
     }
-
-
-    @Test
-    public void testRetrieveImageSeriesAnnotations() throws ConnectionException {
-        ImageSeries imageSeries = new ImageSeries();
-        imageSeries.setIdentifier("1.1.1");
-        ImageSeries imageSeries2NoAdd = new ImageSeries();
-        imageSeries2NoAdd.setIdentifier("1.1.2");
-        List<ImageSeries> imageSeriesCollection = new ArrayList<ImageSeries>();
-        imageSeriesCollection.add(imageSeries);
-        imageSeriesCollection.add(imageSeries2NoAdd);
-        Map<ImageSeries, ImageSeriesAnnotationsWrapper> imageSeriesAnnotations
-            = aimFacade.retrieveImageSeriesAnnotations(null, imageSeriesCollection);
-        assertTrue(imageSeriesAnnotations.containsKey(imageSeries));
-        assertFalse(imageSeriesAnnotations.containsKey(imageSeries2NoAdd));
-        assertEquals(2, 
-                imageSeriesAnnotations.get(imageSeries).getAnnotationGroupToDefinitionMap().get("Imaging Observations").keySet().size());
-    }
-        
 }

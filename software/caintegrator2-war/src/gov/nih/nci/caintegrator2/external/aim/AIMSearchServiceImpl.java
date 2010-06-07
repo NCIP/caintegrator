@@ -92,7 +92,7 @@ import java.util.List;
 import org.apache.axis.types.URI.MalformedURIException;
 
 import edu.emory.cci.aim.client.AIMTCGADataServiceClient;
-import edu.northwestern.radiology.aim.ImageAnnotation;
+import edu.northwestern.radiology.aim.jaxb.ImageAnnotation;
 import gov.nih.nci.cagrid.cqlquery.Association;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
@@ -142,7 +142,7 @@ public class AIMSearchServiceImpl extends AIMTCGADataServiceClient implements AI
         if (result != null) {
             CQLQueryResultsIterator iter = new CQLQueryResultsIterator(result, true);
             if (iter.hasNext()) {
-                imageAnnotation = ImageAnnotationXMLParser.retrieveImageAnnotationFromXMLString((String) iter.next());
+                imageAnnotation = AIMJaxbParser.retrieveImageAnnotationFromXMLString((String) iter.next());
             }
         }
         return imageAnnotation;

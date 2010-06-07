@@ -85,7 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.external.aim;
 
-import edu.northwestern.radiology.aim.ImageAnnotation;
+
+import edu.northwestern.radiology.aim.jaxb.ImageAnnotation;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 /**

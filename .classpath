@@ -47,6 +47,11 @@
 	<classpathentry kind="lib" path="software/lib/external-runtime/AIMDataService-client.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/AIMDataService-common.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/AIMDataService-stubs.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jaxb-api-2.1.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jaxb-impl-2.1.4.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jaxb-xjc-2.1.4.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/AIMDataServiceJaxB-stubs.jar" sourcepath="software/lib/src/aim-jaxb-src.zip"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/jsr173_1.0_api.jar"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/src"/>
 	<classpathentry kind="src" path="software/genepattern-service-jar/src"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/GenePattern-3.2.1.jar" sourcepath="software/lib/src/GenePattern-3.2.1-src.zip"/>
