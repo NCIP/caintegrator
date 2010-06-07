@@ -112,6 +112,8 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.external.aim.AIMFacade;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.DnaAnalysisFilesNotFoundException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
@@ -156,6 +158,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     private FileManager fileManager;
     private CaDSRFacade caDSRFacade;
     private NCIAFacade nciaFacade;
+    private AIMFacade aimFacade;
     private CaArrayFacade caArrayFacade;
     private WorkspaceService workspaceService;
     private SecurityManager securityManager;
@@ -804,6 +807,20 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     }
 
     /**
+     * @return the aimFacade
+     */
+    public AIMFacade getAimFacade() {
+        return aimFacade;
+    }
+
+    /**
+     * @param aimFacade the aimFacade to set
+     */
+    public void setAimFacade(AIMFacade aimFacade) {
+        this.aimFacade = aimFacade;
+    }
+
+    /**
      * @return the caArrayFacade
      */
     public CaArrayFacade getCaArrayFacade() {
@@ -844,6 +861,28 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                 .getImageAnnotationConfiguration()));
         daoSave(imageDataSourceConfiguration.getStudyConfiguration());
         return imageAnnotationConfiguration;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ImageAnnotationConfiguration addAimAnnotationSource(ServerConnectionProfile aimConnection, 
+            ImageDataSourceConfiguration imageSource) {
+        ImageAnnotationConfiguration annotationConfiguration = new ImageAnnotationConfiguration();
+        annotationConfiguration.setUploadType(ImageAnnotationUploadType.AIM);
+        annotationConfiguration.setAimServerProfile(aimConnection);
+        annotationConfiguration.setImageDataSourceConfiguration(imageSource);
+        imageSource.setImageAnnotationConfiguration(annotationConfiguration);
+        imageSource.setStatus(retrieveImageSourceStatus(annotationConfiguration));
+        daoSave(imageSource.getStudyConfiguration());
+        return annotationConfiguration;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void loadAimAnnotations(ImageDataSourceConfiguration imageSource) {
+        // Not implemented yet.
     }
 
     /**

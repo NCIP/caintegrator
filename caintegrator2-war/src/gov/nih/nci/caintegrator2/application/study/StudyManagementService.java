@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSSecurityException;
@@ -341,12 +342,27 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
     throws ValidationException, IOException;
 
     /**
+     * Adds aim annotation source to the image source configuration.
+     * @param aimConnection connection to aim.
+     * @param imageSource imaging source.
+     * @return annotation configuration.
+     */
+    ImageAnnotationConfiguration addAimAnnotationSource(ServerConnectionProfile aimConnection, 
+            ImageDataSourceConfiguration imageSource);
+    
+    /**
      * Loads image annotations given an image data source configuration.
      * 
      * @param imageDataSource to load
      * @throws ValidationException fail to load
      */
     void loadImageAnnotation(ImageDataSourceConfiguration imageDataSource) throws ValidationException;
+    
+    /**
+     * Loads the aim annotations.
+     * @param imageSource image source to load annotations for.
+     */
+    void loadAimAnnotations(ImageDataSourceConfiguration imageSource);
 
     /**
      * Updates the status of the imaging sources.
