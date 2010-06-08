@@ -293,23 +293,24 @@ public class Study extends AbstractCaIntegrator2Object {
     }
 
     /**
+     * @param groupName name of the group.
      * @return the default SubjectAnnotationGroup
      */
-    public AnnotationGroup getOrCreateDefaultAnnotationGroup() {
-        if (getAnnotationGroup(DEFAULT_ANNOTATION_GROUP) == null) {
-            return createDefaultAnnotationGroup();
+    public AnnotationGroup getOrCreateAnnotationGroup(String groupName) {
+        if (getAnnotationGroup(groupName) == null) {
+            return createAnnotationGroup(groupName);
         }
-        return getAnnotationGroup(DEFAULT_ANNOTATION_GROUP);
+        return getAnnotationGroup(groupName);
     }
 
     /**
+     * @param groupName name of the group.
      * @return the created annotation group
      */
-    public AnnotationGroup createDefaultAnnotationGroup() {
+    public AnnotationGroup createAnnotationGroup(String groupName) {
         AnnotationGroup defaultGroup = new AnnotationGroup();
-        defaultGroup.setName(DEFAULT_ANNOTATION_GROUP);
+        defaultGroup.setName(groupName);
         defaultGroup.setStudy(this);
-        defaultGroup.setDescription("Default annotation group");
         getAnnotationGroups().add(defaultGroup);
         return defaultGroup;
     }

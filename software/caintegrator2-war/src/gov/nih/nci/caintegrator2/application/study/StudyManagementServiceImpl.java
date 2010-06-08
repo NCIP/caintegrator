@@ -87,13 +87,14 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
-import gov.nih.nci.caintegrator2.common.AnnotationValueUtil;
+import gov.nih.nci.caintegrator2.common.AnnotationUtil;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
@@ -114,6 +115,7 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.aim.AIMFacade;
+import gov.nih.nci.caintegrator2.external.aim.ImageSeriesAnnotationsWrapper;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.DnaAnalysisFilesNotFoundException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
@@ -134,6 +136,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.math.NumberUtils;
@@ -881,8 +884,41 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public void loadAimAnnotations(ImageDataSourceConfiguration imageSource) {
-        // Not implemented yet.
+    @Transactional(rollbackFor = {ConnectionException.class, ValidationException.class })
+    public void loadAimAnnotations(ImageDataSourceConfiguration imageSource) 
+        throws ConnectionException, ValidationException {
+        List<ImageSeries> imageSeriesCollection = new ArrayList<ImageSeries>();
+        for (ImageSeriesAcquisition imageSeriesAcquisition : imageSource.getImageSeriesAcquisitions()) {
+            for (ImageSeries imageSeries : imageSeriesAcquisition.getSeriesCollection()) {
+                imageSeriesCollection.add(imageSeries);
+            }
+        }
+        Map<ImageSeries, ImageSeriesAnnotationsWrapper> imageSeriesAnnotationsMap = aimFacade
+                .retrieveImageSeriesAnnotations(imageSource.getImageAnnotationConfiguration().getAimServerProfile(),
+                        imageSeriesCollection);
+        createAnnotationValuesForImageSeries(imageSource, imageSeriesAnnotationsMap);
+        daoSave(imageSource);
+        daoSave(imageSource.getStudyConfiguration());
+    }
+
+    private void createAnnotationValuesForImageSeries(ImageDataSourceConfiguration imageSource,
+            Map<ImageSeries, ImageSeriesAnnotationsWrapper> imageSeriesAnnotationsMap) throws ValidationException {
+        for (ImageSeries imageSeries : imageSeriesAnnotationsMap.keySet()) {
+            ImageSeriesAnnotationsWrapper imageSeriesAnnotations = imageSeriesAnnotationsMap.get(imageSeries);
+            for (String groupName : imageSeriesAnnotations.getAnnotationGroupNames()) {
+                for (String definitionName : imageSeriesAnnotations.getAnnotationDefinitions(groupName)) {
+                    String value = imageSeriesAnnotations.getAnnotationValueForGroupDefinition(groupName,
+                            definitionName);
+                    AnnotationFieldDescriptor annotationDescriptor = AnnotationUtil.retrieveOrCreateFieldDescriptor(
+                            getDao(), imageSource.getStudyConfiguration(), EntityTypeEnum.IMAGESERIES, true,
+                            definitionName, groupName);
+                    StringAnnotationValue annotationValue = new StringAnnotationValue();
+                    annotationValue.setStringValue(value);
+                    annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+                    annotationDescriptor.getDefinition().getAnnotationValueCollection().add(annotationValue);
+                }
+            }
+        }
     }
 
     /**
@@ -1340,7 +1376,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                     // This function is for JSP display so it can't fail.
                 }
             }
-            allAvailableValues.addAll(AnnotationValueUtil.getAdditionalValue(fieldDescriptor.getDefinition()
+            allAvailableValues.addAll(AnnotationUtil.getAdditionalValue(fieldDescriptor.getDefinition()
                     .getAnnotationValueCollection(), fileDataValues, PermissibleValueUtil
                     .getDisplayPermissibleValue(fieldDescriptor.getDefinition().getPermissibleValueCollection())));
         }

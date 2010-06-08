@@ -31,6 +31,9 @@
         <property name="securityManager">
             <ref local="securityManager" />
         </property>
+        <property name="aimFacade">
+            <ref local="aimFacade" />
+        </property>
     </bean>
 
     <bean id="deploymentService" 
@@ -162,5 +165,12 @@
     
     <bean id="authorizationManagerFactory" class="gov.nih.nci.caintegrator2.security.AuthorizationManagerFactoryImpl"/>
     
+    <bean id="aimFacade" class="gov.nih.nci.caintegrator2.external.aim.AIMFacadeImpl" >
+        <property name="aimServiceFactory">
+            <ref local="aimServiceFactoryIntegration" />
+        </property>
+    </bean>
+
+    <bean id="aimServiceFactoryIntegration" class="gov.nih.nci.caintegrator2.external.aim.AIMServiceFactoryImpl" />
     
 </beans>
