@@ -85,13 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+
+import java.util.List;
 
 /**
  * Contains configuration information for file based annotation of <code>ImageSeries</code>.
@@ -149,6 +147,9 @@ public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
      * {@inheritDoc}
      */
     public boolean isLoadable() {
+        if (isAimDataService()) {
+            return true;  // TODO - Need implementation
+        }
         return getAnnotationFile().isLoadable();
     }
 
@@ -160,6 +161,9 @@ public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
      * {@inheritDoc}
      */
     public boolean isCurrentlyLoaded() {
+        if (isAimDataService()) {
+            return false;  // TODO - Need implementation
+        }
         return Boolean.valueOf(getAnnotationFile().getCurrentlyLoaded());
     }
 
@@ -219,22 +223,11 @@ public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
     public void setUploadType(ImageAnnotationUploadType uploadType) {
         this.uploadType = uploadType;
     }
-
+    
     /**
-     * @return the uploadType value
+     * @return true if using AIM Data Service
      */
-    public String getUploadTypeValue() {
-        return uploadType.getValue();
-    }
-
-    /**
-     * @param uploadTypeValue the string value of uploadType to set
-     */
-    public void setUploadTypeValue(String uploadTypeValue) {
-        if (StringUtils.isBlank(uploadTypeValue)) {
-            this.uploadType = null;
-        } else {
-            this.uploadType = ImageAnnotationUploadType.getByValue(uploadTypeValue);
-        }
+    public boolean isAimDataService() {
+        return ImageAnnotationUploadType.AIM.equals(uploadType);
     }
 }

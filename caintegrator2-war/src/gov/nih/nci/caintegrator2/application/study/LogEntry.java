@@ -431,9 +431,17 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @return System log message
      */
     public static String getSystemLogAdd(ImageDataSourceConfiguration imagingSource) {
-        return ADD_IMAGING_ANNOTATION_FILE
-        + COLLECTION_NAME + QUOTE + imagingSource.getCollectionName() + QUOTE + COMMA
-        + FILENAME + QUOTE 
-        + imagingSource.getImageAnnotationConfiguration().getAnnotationFile().getFile().getName() + QUOTE;
+        if (imagingSource.getImageAnnotationConfiguration() != null
+                && imagingSource.getImageAnnotationConfiguration().isAimDataService()) {
+            return ADD_IMAGING_ANNOTATION_FILE
+            + COLLECTION_NAME + QUOTE + imagingSource.getCollectionName() + QUOTE + COMMA
+            + "using AIM Data Service: " + QUOTE
+            + imagingSource.getImageAnnotationConfiguration().getAimServerProfile().getUrl() + QUOTE;
+        } else {
+            return ADD_IMAGING_ANNOTATION_FILE
+                + COLLECTION_NAME + QUOTE + imagingSource.getCollectionName() + QUOTE + COMMA
+                + FILENAME + QUOTE 
+                + imagingSource.getImageAnnotationConfiguration().getAnnotationFile().getFile().getName() + QUOTE;
+        }
     }
 }

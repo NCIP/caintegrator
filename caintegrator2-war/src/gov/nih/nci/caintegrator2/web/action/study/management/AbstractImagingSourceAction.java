@@ -86,10 +86,6 @@
 
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang.StringUtils;
-
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 
 /**
@@ -132,13 +128,7 @@ public abstract class AbstractImagingSourceAction extends AbstractStudyAction {
      * This is because the editable-select for internet explorer submits an extra URL after comma.
      * ex: "http://url, http://url" instead of just "http://url".
      */
-    void fixUrlFromInternetExplorer() {
-       if (!StringUtils.isBlank(getImageSourceConfiguration().getServerProfile().getUrl())) {
-           getImageSourceConfiguration().getServerProfile().setUrl(
-                    Pattern.compile(",\\s.*").matcher(getImageSourceConfiguration().getServerProfile().getUrl())
-                            .replaceAll(""));
-       }
-    }
+    abstract void fixUrlFromInternetExplorer();
 
     /**
      * @return the imageSource

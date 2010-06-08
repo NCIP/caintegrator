@@ -101,6 +101,7 @@ import gov.nih.nci.caintegrator2.web.ajax.IImagingDataSourceAjaxUpdater;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -157,6 +158,18 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
     @Override
     public String execute() {
         return SUCCESS;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void fixUrlFromInternetExplorer() {
+       if (!StringUtils.isBlank(getImageSourceConfiguration().getServerProfile().getUrl())) {
+           getImageSourceConfiguration().getServerProfile().setUrl(
+                Pattern.compile(",\\s.*").matcher(getImageSourceConfiguration().getServerProfile().getUrl())
+                        .replaceAll(""));
+       }
     }
     
     /**

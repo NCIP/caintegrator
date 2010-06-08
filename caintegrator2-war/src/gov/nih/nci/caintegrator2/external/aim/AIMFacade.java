@@ -106,4 +106,12 @@ public interface AIMFacade {
      */
     Map<ImageSeries, ImageSeriesAnnotationsWrapper> retrieveImageSeriesAnnotations(ServerConnectionProfile connection, 
             Collection<ImageSeries> imageSeriesCollection) throws ConnectionException;
+    
+    /**
+     * Validates that a connection can be made.
+     * @param profile contains connection information for the AIM server.
+     * @throws ConnectionException if unable to connect to server.
+     */
+    void validateAimConnection(ServerConnectionProfile profile) 
+        throws ConnectionException;
 }
