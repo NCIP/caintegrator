@@ -138,7 +138,7 @@ public final class Cai2Util {
         if (maxCharacters <= 3) {
             throw new IllegalArgumentException("maxCharacters has to be at least 4 characters.");
         }
-        return string.length() > maxCharacters 
+        return (string != null && string.length() > maxCharacters) 
             ? string.substring(0, maxCharacters - 3) + "..." : string;
     }
     

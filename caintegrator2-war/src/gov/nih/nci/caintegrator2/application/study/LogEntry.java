@@ -169,7 +169,13 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param systemLogMessage the systemLogMessage to set
      */
     public void setSystemLogMessage(String systemLogMessage) {
-        this.systemLogMessage = Cai2Util.trimStringIfTooLong(systemLogMessage, MAX_LENGTH);
+        this.systemLogMessage = systemLogMessage;
+    }
+    /**
+     * @param trimSystemLogMessage the systemLogMessage to trim and set
+     */
+    public void setTrimSystemLogMessage(String trimSystemLogMessage) {
+        this.systemLogMessage = Cai2Util.trimStringIfTooLong(trimSystemLogMessage, MAX_LENGTH);
     }
     /**
      * @return the description
@@ -181,7 +187,13 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param description the description to set
      */
     public void setDescription(String description) {
-        this.description = Cai2Util.trimStringIfTooLong(description, MAX_LENGTH);
+        this.description = description;
+    }
+    /**
+     * @param trimDescription the description to trim and set
+     */
+    public void setTrimDescription(String trimDescription) {
+        this.description = Cai2Util.trimStringIfTooLong(trimDescription, MAX_LENGTH);
     }
     /**
      * @return the username

@@ -121,9 +121,9 @@ public class EditStudyLogActionTest extends AbstractSessionBasedTest {
         action.setStudyManagementService(studyManagementService);
         action.setWorkspaceService(new WorkspaceServiceStub());
         logEntry1 = new LogEntry();
-        logEntry1.setSystemLogMessage("message");
+        logEntry1.setTrimSystemLogMessage("message");
         logEntry1.setLogDate(new Date());
-        logEntry1.setDescription("desc");
+        logEntry1.setTrimDescription("desc");
         try {
             Thread.sleep(20l);
         } catch (InterruptedException e) {

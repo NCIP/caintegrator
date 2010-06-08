@@ -1218,7 +1218,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             LogEntry logEntry = new LogEntry();
             logEntry.setUsername(lastModifiedBy == null ? null : lastModifiedBy.getUsername());
             logEntry.setLogDate(lastModifiedDate);
-            logEntry.setSystemLogMessage(systemLogMessage);
+            logEntry.setTrimSystemLogMessage(systemLogMessage);
             studyConfiguration.getLogEntries().add(logEntry);
         }
         daoSave(studyConfiguration);
