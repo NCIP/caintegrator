@@ -600,6 +600,7 @@ public class StudyHelper {
         ImageSeriesAcquisition imageSeriesAcquisition = new ImageSeriesAcquisition();
         Set<ImageSeries> seriesCollection = new HashSet<ImageSeries>();
         ImageSeries imageSeries = new ImageSeries();
+        imageSeries.setIdentifier("1.3.6.1.4.1.9328.50.45.239261393324265132190998071373586264552"); // for AIM annotations loading.
         seriesCollection.add(imageSeries);
         imageSeriesAcquisition.setSeriesCollection(seriesCollection);
         imageSeries.getImageCollection().add(new Image());
@@ -608,6 +609,7 @@ public class StudyHelper {
         imageSeriesAcquisitions.add(imageSeriesAcquisition);
         imageSeriesAcquisition.setAssignment(new StudySubjectAssignment());
         imageDataSourceConfiguration.getImageSeriesAcquisitions().addAll(imageSeriesAcquisitions);
+        imageDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
         return study;
     }
     

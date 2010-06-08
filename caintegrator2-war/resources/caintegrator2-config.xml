@@ -779,6 +779,9 @@
         <property name="securityManager">
             <ref local="securityManager" />
         </property>
+        <property name="aimFacade">
+            <ref local="aimFacade" />
+        </property>
     </bean>
 
     <bean id="deploymentService" 

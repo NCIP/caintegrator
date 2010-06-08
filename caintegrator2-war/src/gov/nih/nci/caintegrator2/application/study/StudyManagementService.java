@@ -361,8 +361,10 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
     /**
      * Loads the aim annotations.
      * @param imageSource image source to load annotations for.
+     * @throws ConnectionException unable to connect to AIM service.
+     * @throws ValidationException if unable to create annotation field descriptor.
      */
-    void loadAimAnnotations(ImageDataSourceConfiguration imageSource);
+    void loadAimAnnotations(ImageDataSourceConfiguration imageSource) throws ConnectionException, ValidationException;
 
     /**
      * Updates the status of the imaging sources.
