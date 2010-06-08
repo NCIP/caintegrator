@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -96,6 +97,9 @@ import java.util.Date;
  * 
  */
 public class LogEntry extends AbstractCaIntegrator2Object {
+
+    private static final int MAX_LENGTH = 255;
+
     /**
      * Default serial version UID.
      */
@@ -165,7 +169,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param systemLogMessage the systemLogMessage to set
      */
     public void setSystemLogMessage(String systemLogMessage) {
-        this.systemLogMessage = systemLogMessage;
+        this.systemLogMessage = Cai2Util.trimStringIfTooLong(systemLogMessage, MAX_LENGTH);
     }
     /**
      * @return the description
@@ -177,7 +181,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param description the description to set
      */
     public void setDescription(String description) {
-        this.description = description;
+        this.description = Cai2Util.trimStringIfTooLong(description, MAX_LENGTH);
     }
     /**
      * @return the username
