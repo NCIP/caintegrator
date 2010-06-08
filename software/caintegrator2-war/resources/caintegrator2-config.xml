@@ -236,6 +236,9 @@
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
+        <property name="aimFacade">
+            <ref local="aimFacade" />
+        </property>
     </bean>
     
     <bean id="editClinicalSourceAction"
@@ -930,6 +933,13 @@
         </property>    
     </bean>
     
+    <bean id="aimFacade" 
+         class="gov.nih.nci.caintegrator2.external.aim.AIMFacadeImpl">
+         <property name="aimServiceFactory">
+            <ref local="aimServiceFactory"/>
+        </property>
+    </bean>
+    
     <bean id="kmPlotService" 
          class="gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImpl">
          <property name="caIntegratorPlotService">
@@ -948,6 +958,8 @@
     <bean id="nciaServiceFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIAServiceFactoryImpl" />
     
     <bean id="nciaDicomJobFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIADicomJobFactoryImpl" />
+    
+    <bean id="aimServiceFactory" class="gov.nih.nci.caintegrator2.external.aim.AIMServiceFactoryImpl" />
         
     <bean id="nciaServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
        <!--  <property name="url" value="http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService?" /> -->

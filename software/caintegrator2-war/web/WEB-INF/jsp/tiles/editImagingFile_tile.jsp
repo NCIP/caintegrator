@@ -13,12 +13,14 @@
             if (arrayOfElements[i].value == "Use AIM Data Service" &&
                    arrayOfElements[i].checked==true ) {
                 document.getElementById("imageAnnotationFile").disabled = true;
+                document.getElementById("createNewAnnotationDefinition").disabled = true;
                 document.getElementById("aimUrl").disabled = false;
                 document.getElementById("aimUsername").disabled = false;
                 document.getElementById("aimPassword").disabled = false;
                 break;
             } else {
                 document.getElementById("imageAnnotationFile").disabled = false;
+                document.getElementById("createNewAnnotationDefinition").disabled = false;
                 document.getElementById("aimUrl").disabled = true;
                 document.getElementById("aimUsername").disabled = true;
                 document.getElementById("aimPassword").disabled = true;
@@ -61,17 +63,18 @@
                         list="@gov.nih.nci.caintegrator2.application.study.ImageAnnotationUploadType@getStringValues()"
                         required="true" label="Select Annotation Upload Type:"
                         onclick="disableFormElement(this)"/>
-                    <s:file id="imageAnnotationFile" name="imageAnnotationFile" label="Image Series Annotation File" />
+                    <s:file id="imageAnnotationFile" name="imageAnnotationFile" label="Image Series Annotation File"
+                        disabled="%{annotationFileDisable}" />
+                    <s:checkbox name="createNewAnnotationDefinition" id="createNewAnnotationDefinition"
+                        label="Create a new Annotation Definition if one is not found" labelposition="left" />
                     <s:select name="aimServerProfile.url" id="aimUrl" accesskey="false"
                         headerKey="" headerValue="--Enter an NBIA Server Grid URL--"
-                        list="aimServices" label=" AIM Server Grid URL " required="true" disabled="true"
+                        list="aimServices" label=" AIM Server Grid URL " required="true" disabled="%{aimDisable}"
                         cssClass="editable-select" />
                     <s:textfield label=" AIM Username " name="aimServerProfile.username"
-                        disabled="true" id="aimUsername" size="40"/>
+                        disabled="%{aimDisable}" id="aimUsername" size="40"/>
                     <s:password label=" AIM Password " name="aimServerProfile.password"
-                        disabled="true" id="aimPassword" size="40"/>
-                    <s:checkbox name="createNewAnnotationDefinition" label="Create a new Annotation Definition if one is not found" 
-                        labelposition="left" />
+                        disabled="%{aimDisable}" id="aimPassword" size="40"/>
                     <tr> 
                     <td></td>
                     <td>

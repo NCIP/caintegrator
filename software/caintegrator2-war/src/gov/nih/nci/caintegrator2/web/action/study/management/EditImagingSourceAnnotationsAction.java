@@ -91,7 +91,9 @@ import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.ImageAnnotationUploadType;
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.external.aim.AIMFacade;
 
 import java.io.File;
 import java.io.IOException;
@@ -100,6 +102,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -119,6 +122,7 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
     private ImageAnnotationUploadType uploadType = ImageAnnotationUploadType.FILE;
     private ServerConnectionProfile aimServerProfile = new ServerConnectionProfile();
     private boolean createNewAnnotationDefinition = false;
+    private AIMFacade aimFacade;
     
     /**
      * {@inheritDoc}
@@ -139,6 +143,17 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
     public void validate() {
         fixUrlFromInternetExplorer();
         prepareValueStack();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void fixUrlFromInternetExplorer() {
+       if (!StringUtils.isBlank(getAimServerProfile().getUrl())) {
+           getAimServerProfile().setUrl(
+                Pattern.compile(",\\s.*").matcher(getAimServerProfile().getUrl()).replaceAll(""));
+       }
     }
     
     /**
@@ -206,8 +221,13 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
                             getImageAnnotationFile(), getImageAnnotationFileFileName(),
                             createNewAnnotationDefinition));
             } else {
-                // TODO - AIM Data Service
-                addFieldError("aimServerProfile.url", "Not yet implement.");
+//                getStudyManagementService().addAimAnnotationSource(getAimServerProfile(),
+//                        getImageSourceConfiguration());
+//                getStudyManagementService().loadAimAnnotations(getImageSourceConfiguration(),
+//                        createNewAnnotationDefinition);
+                // TODO - Remove these 2 line when ready to test.
+                addFieldError("aimServerProfile.url", "Not yet implement");
+                return INPUT;
             }
             setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(),
                     LogEntry.getSystemLogAdd(getImageSourceConfiguration()));
@@ -225,9 +245,22 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
         if (ImageAnnotationUploadType.FILE.equals(uploadType) && imageAnnotationFile == null) {
             addFieldError("imageAnnotationFile", "Must specify annotation file");
         } else if (ImageAnnotationUploadType.AIM.equals(uploadType)) {
-            addFieldError("aimServerProfile.url", "Not yet implement.");
+            validateAimConnection();
         }
         return checkErrors();
+    }
+
+    private void validateAimConnection() {
+        if (StringUtils.isBlank(getAimServerProfile().getUrl())) {
+            addFieldError("aimServerProfile.url", "URL is required.");
+        }
+        if (checkErrors()) {
+            try {
+                getAimFacade().validateAimConnection(getAimServerProfile());
+            } catch (ConnectionException e) {
+                addFieldError("aimServerProfile.url", "Unable to connect to the server.");
+            }
+        }
     }
 
     /**
@@ -337,6 +370,34 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
      */
     public void setCreateNewAnnotationDefinition(boolean createNewAnnotationDefinition) {
         this.createNewAnnotationDefinition = createNewAnnotationDefinition;
+    }
+
+    /**
+     * @return the aimFacade
+     */
+    public AIMFacade getAimFacade() {
+        return aimFacade;
+    }
+
+    /**
+     * @param aimFacade the aimFacade to set
+     */
+    public void setAimFacade(AIMFacade aimFacade) {
+        this.aimFacade = aimFacade;
+    }
+    
+    /**
+     * @return true/false to disable the annotation file field.
+     */
+    public boolean isAnnotationFileDisable() {
+        return ImageAnnotationUploadType.AIM.equals(uploadType);
+    }
+    
+    /**
+     * @return true/false to disable the AIM server info fields.
+     */
+    public boolean isAimDisable() {
+        return ImageAnnotationUploadType.FILE.equals(uploadType);
     }
 
 }
