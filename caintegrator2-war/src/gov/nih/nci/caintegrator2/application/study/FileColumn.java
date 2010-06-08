@@ -85,10 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.AnnotationUtil;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
 import java.text.ParseException;
@@ -309,50 +309,7 @@ public class FileColumn extends AbstractCaIntegrator2Object implements Comparabl
     void retrieveOrCreateFieldDescriptor(CaIntegrator2Dao dao,
             StudyConfiguration studyConfiguration, EntityTypeEnum type, boolean createNewAnnotationDefinition) 
         throws ValidationException {
-        if (studyConfiguration != null) {
-            fieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy(getName());
-            validateFieldDescriptorEntityType(type);
-        }
-        if (fieldDescriptor == null) {
-            createNewAnnotationFieldDescriptor(dao, studyConfiguration, type, createNewAnnotationDefinition);
-        } else if (createNewAnnotationDefinition && fieldDescriptor.getDefinition() == null) {
-            createNewAnnotationDefinition(dao);
-        }
+        fieldDescriptor = AnnotationUtil.retrieveOrCreateFieldDescriptor(dao, studyConfiguration, 
+                type, createNewAnnotationDefinition, getName(), null);
     }
-
-    private void createNewAnnotationFieldDescriptor(CaIntegrator2Dao dao, StudyConfiguration studyConfiguration,
-            EntityTypeEnum type, boolean createNewAnnotationDefinition) {
-        fieldDescriptor = new AnnotationFieldDescriptor();
-        fieldDescriptor.setName(getName());
-        fieldDescriptor.setType(AnnotationFieldType.ANNOTATION);
-        fieldDescriptor.setAnnotationEntityType(type);
-        if (createNewAnnotationDefinition) {
-            createNewAnnotationDefinition(dao);
-        }
-        AnnotationGroup defaultGroup = studyConfiguration.getStudy().getOrCreateDefaultAnnotationGroup();
-        fieldDescriptor.setAnnotationGroup(defaultGroup);
-        defaultGroup.getAnnotationFieldDescriptors().add(fieldDescriptor);
-    }
-
-    private void createNewAnnotationDefinition(CaIntegrator2Dao dao) {
-        AnnotationDefinition annotationDefinition = dao.getAnnotationDefinition(getName(),
-                AnnotationTypeEnum.STRING);
-        if (annotationDefinition == null) {
-            annotationDefinition = new AnnotationDefinition();
-            annotationDefinition.setDefault(fieldDescriptor.getName());
-        }
-        fieldDescriptor.setDefinition(annotationDefinition);
-    }
-
-
-    private void validateFieldDescriptorEntityType(EntityTypeEnum entityType) throws ValidationException {
-        if (fieldDescriptor != null && !entityType.equals(fieldDescriptor.getAnnotationEntityType())) {
-            throw new ValidationException(
-                    "Found a currently existing field descriptor with the same name '"
-                        + fieldDescriptor.getName() + "' in this study of type '"
-                        + fieldDescriptor.getAnnotationEntityType() + "' which doesn't match type "
-                        + entityType);
-        }
-    }
-
 }

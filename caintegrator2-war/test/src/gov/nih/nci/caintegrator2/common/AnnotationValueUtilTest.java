@@ -110,7 +110,7 @@ import org.junit.Test;
 public class AnnotationValueUtilTest {
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator2.common.AnnotationValueUtil#getDisplayString(gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue)}.
+     * Test method for {@link gov.nih.nci.caintegrator2.common.AnnotationUtil#getDisplayString(gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue)}.
      * @throws ParseException 
      */
     @Test
@@ -140,7 +140,7 @@ public class AnnotationValueUtilTest {
     }
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator2.common.AnnotationValueUtil#getDistinctAnnotationValue(java.util.Collection)}.
+     * Test method for {@link gov.nih.nci.caintegrator2.common.AnnotationUtil#getDistinctAnnotationValue(java.util.Collection)}.
      */
     @Test
     public void testGetAdditionalValue() {
@@ -154,11 +154,11 @@ public class AnnotationValueUtilTest {
         assertTrue(annotationValueCollection.size() == 2);
         Set<String> filterList = new HashSet<String>();
         List<String> dataValues = new ArrayList<String>();
-        assertTrue(AnnotationValueUtil.getAdditionalValue(annotationValueCollection, dataValues, filterList).size() == 1);
+        assertTrue(AnnotationUtil.getAdditionalValue(annotationValueCollection, dataValues, filterList).size() == 1);
         dataValues.add("345");
-        assertTrue(AnnotationValueUtil.getAdditionalValue(annotationValueCollection, dataValues, filterList).size() == 2);
+        assertTrue(AnnotationUtil.getAdditionalValue(annotationValueCollection, dataValues, filterList).size() == 2);
         filterList.add("123");
-        assertTrue(AnnotationValueUtil.getAdditionalValue(annotationValueCollection, dataValues, filterList).size() == 1);
+        assertTrue(AnnotationUtil.getAdditionalValue(annotationValueCollection, dataValues, filterList).size() == 1);
     }
 
 }

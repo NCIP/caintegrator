@@ -85,7 +85,17 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -100,9 +110,9 @@ import org.apache.commons.lang.math.NumberUtils;
  * This is a static utility class used by the UI to display the annotation value. 
  */
 @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Checking for type and null.
-public final class AnnotationValueUtil {
+public final class AnnotationUtil {
 
-    private AnnotationValueUtil() {
+    private AnnotationUtil() {
         
     }
     
@@ -130,6 +140,81 @@ public final class AnnotationValueUtil {
             }
         }
         return results;
+    }
+    
+    /**
+     * Retrieves existing field descriptor, and if that doesn't exist creates a new one.
+     * @param dao database access object.
+     * @param studyConfiguration study.
+     * @param type entity type.
+     * @param createNewAnnotationDefinition determines whether to create an annotation definition.
+     * @param annotationFieldDescriptorName name of the afd.
+     * @param annotationGroupName name of the group (optional, if null or blank will use default study group).
+     * @return annotation field descriptor.
+     * @throws ValidationException if invalid afd.
+     */
+    @SuppressWarnings("PMD.ExcessiveParameterList") // necessary parameters.
+    public static AnnotationFieldDescriptor retrieveOrCreateFieldDescriptor(CaIntegrator2Dao dao,
+            StudyConfiguration studyConfiguration, EntityTypeEnum type, boolean createNewAnnotationDefinition,
+            String annotationFieldDescriptorName, String annotationGroupName) 
+        throws ValidationException {
+        AnnotationFieldDescriptor fieldDescriptor = null;
+        if (studyConfiguration != null) {
+            fieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy(annotationFieldDescriptorName);
+            validateFieldDescriptorEntityType(fieldDescriptor, type);
+        }
+        if (fieldDescriptor == null) {
+            fieldDescriptor = createNewAnnotationFieldDescriptor(dao, studyConfiguration, type, 
+                    createNewAnnotationDefinition, 
+                    annotationFieldDescriptorName, annotationGroupName);
+        } else if (createNewAnnotationDefinition && fieldDescriptor.getDefinition() == null) {
+            createNewAnnotationDefinition(dao, fieldDescriptor);
+        }
+        return fieldDescriptor;
+    }
+
+    @SuppressWarnings("PMD.ExcessiveParameterList") // necessary parameters.
+    private static AnnotationFieldDescriptor createNewAnnotationFieldDescriptor(CaIntegrator2Dao dao, 
+            StudyConfiguration studyConfiguration,
+            EntityTypeEnum type, boolean createNewAnnotationDefinition,
+            String annotationFieldDescriptorName,
+            String annotationGroupName) {
+        AnnotationFieldDescriptor fieldDescriptor = new AnnotationFieldDescriptor();
+        fieldDescriptor.setName(annotationFieldDescriptorName);
+        fieldDescriptor.setType(AnnotationFieldType.ANNOTATION);
+        fieldDescriptor.setAnnotationEntityType(type);
+        if (createNewAnnotationDefinition) {
+            createNewAnnotationDefinition(dao, fieldDescriptor);
+        }
+        AnnotationGroup group = studyConfiguration.getStudy().getOrCreateAnnotationGroup(
+                StringUtils.isBlank(annotationGroupName) ? Study.DEFAULT_ANNOTATION_GROUP
+                        : annotationGroupName);
+        fieldDescriptor.setAnnotationGroup(group);
+        group.getAnnotationFieldDescriptors().add(fieldDescriptor);
+        return fieldDescriptor;
+    }
+
+    private static void createNewAnnotationDefinition(CaIntegrator2Dao dao, 
+            AnnotationFieldDescriptor fieldDescriptor) {
+        AnnotationDefinition annotationDefinition = dao.getAnnotationDefinition(fieldDescriptor.getName(),
+                AnnotationTypeEnum.STRING);
+        if (annotationDefinition == null) {
+            annotationDefinition = new AnnotationDefinition();
+            annotationDefinition.setDefault(fieldDescriptor.getName());
+        }
+        fieldDescriptor.setDefinition(annotationDefinition);
+    }
+
+
+    private static void validateFieldDescriptorEntityType(AnnotationFieldDescriptor fieldDescriptor, 
+            EntityTypeEnum entityType) throws ValidationException {
+        if (fieldDescriptor != null && !entityType.equals(fieldDescriptor.getAnnotationEntityType())) {
+            throw new ValidationException(
+                    "Found a currently existing field descriptor with the same name '"
+                        + fieldDescriptor.getName() + "' in this study of type '"
+                        + fieldDescriptor.getAnnotationEntityType() + "' which doesn't match type "
+                        + entityType);
+        }
     }
     
 }
