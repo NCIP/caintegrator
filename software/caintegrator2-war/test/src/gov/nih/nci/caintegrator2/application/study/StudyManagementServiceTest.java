@@ -116,6 +116,7 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
@@ -360,6 +361,10 @@ public class StudyManagementServiceTest {
     public void testSetDefinition() throws ValidationException {
         Study study = new Study();
         study.setId(Long.valueOf(1L));
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setStudy(study);
+        ImageDataSourceConfiguration imageDataSource = new ImageDataSourceConfiguration();
+        imageDataSource.setStudyConfiguration(studyConfiguration);
         FileColumn fileColumn = new FileColumn();
         fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
         fileColumn.setAnnotationFile(new AnnotationFile());
@@ -372,6 +377,7 @@ public class StudyManagementServiceTest {
         ImageSeriesAcquisition imageStudy = new ImageSeriesAcquisition();
         imageSeries.setImageStudy(imageStudy);
         imageStudy.setAssignment(assignment);
+        imageStudy.setImageDataSource(imageDataSource);
         SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
         subjectAnnotation.setStudySubjectAssignment(assignment);
         
@@ -624,6 +630,16 @@ public class StudyManagementServiceTest {
         assertEquals(5, imageAnnotationConfiguration.getAnnotationFile().getColumns().size());
         assertTrue(daoStub.saveCalled);
     }
+    
+    @Test
+    public void testAddAimAnnotationSource() throws Exception {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
+        imageDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
+        ServerConnectionProfile connection = new ServerConnectionProfile();
+        studyManagementService.addAimAnnotationSource(connection, imageDataSourceConfiguration);
+        assertEquals(connection, imageDataSourceConfiguration.getImageAnnotationConfiguration().getAimServerProfile());
+    }
 
     @Test
     public void testAddImageSource() throws Exception {
@@ -678,6 +694,30 @@ public class StudyManagementServiceTest {
         studyManagementService.loadImageAnnotation(imageDataSourceConfiguration); 
         assertEquals(4, series1.getAnnotationCollection().size());
         assertEquals(4, series2.getAnnotationCollection().size());
+    }
+    
+    
+    @Test
+    public void testLoadAimAnnotations() throws Exception {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyManagementService.save(studyConfiguration);
+        ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
+        imageDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
+        ImageSeriesAcquisition acquisition = new ImageSeriesAcquisition();
+        acquisition.setSeriesCollection(new HashSet<ImageSeries>());
+        ImageSeries series1 = new ImageSeries();
+        series1.setIdentifier("100");
+        ImageSeries series2 = new ImageSeries();
+        series2.setIdentifier("101");
+        acquisition.getSeriesCollection().add(series1);
+        acquisition.getSeriesCollection().add(series2);
+        imageDataSourceConfiguration.getImageSeriesAcquisitions().add(acquisition);
+        studyConfiguration.getImageDataSources().add(imageDataSourceConfiguration);
+        imageDataSourceConfiguration.setImageAnnotationConfiguration(new ImageAnnotationConfiguration());
+        studyManagementService.loadAimAnnotations(imageDataSourceConfiguration);
+        assertEquals(1, studyConfiguration.getStudy().getAnnotationGroups().size());
+        assertEquals(2, studyConfiguration.getStudy().getAnnotationGroup("Group").getAnnotationFieldDescriptors().
+                iterator().next().getDefinition().getAnnotationValueCollection().size()); // 2 values, one for each image series.
     }
     
     @Test
