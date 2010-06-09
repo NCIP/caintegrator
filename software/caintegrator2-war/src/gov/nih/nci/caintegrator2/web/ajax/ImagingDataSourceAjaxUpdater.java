@@ -221,6 +221,23 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
             String imagingSourceId) {
         StringBuffer fileDescriptionString = new StringBuffer();
         String brString = "<br>";
+        if (isAimDataService(imagingSource)) {
+            fileDescriptionString.append("<i>Aim Service Url: </i>");
+            fileDescriptionString
+                    .append(imagingSource.getImageAnnotationConfiguration().getAimServerProfile().getUrl());
+        } else {
+            updateFileDescriptionString(imagingSource, fileDescriptionString, brString);
+        }
+        utilThis.setValue(JOB_FILE_DESCRIPTION + imagingSourceId, fileDescriptionString.toString());
+    }
+
+    private boolean isAimDataService(ImageDataSourceConfiguration imagingSource) {
+        return imagingSource.getImageAnnotationConfiguration() != null
+             && imagingSource.getImageAnnotationConfiguration().isAimDataService();
+    }
+
+    private void updateFileDescriptionString(ImageDataSourceConfiguration imagingSource,
+            StringBuffer fileDescriptionString, String brString) {
         fileDescriptionString.append("<i>Annotation File: </i>");
         if (imagingSource.getImageAnnotationConfiguration() != null) {
             fileDescriptionString.append(imagingSource.getImageAnnotationConfiguration().
@@ -231,7 +248,6 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
         fileDescriptionString.append(brString);
         fileDescriptionString.append("<i>Mapping File: </i>");
         fileDescriptionString.append(imagingSource.getMappingFileName());
-        utilThis.setValue(JOB_FILE_DESCRIPTION + imagingSourceId, fileDescriptionString.toString());
     }
 
     private void updateRowActions(ImageDataSourceConfiguration imagingSource, Util utilThis, String imagingSourceId) {
@@ -269,7 +285,8 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
                 "editImagingSourceAnnotations", "Edit Annotations", "edit_annotations", false));
         utilThis.setValue(JOB_ACTION_BAR2 + imagingSourceId, jobActionBarString, false);
         
-        if (imagingSource.getImageAnnotationConfiguration() != null 
+        if (imagingSource.getImageAnnotationConfiguration() != null
+            && !isAimDataService(imagingSource)
             && imagingSource.getImageAnnotationConfiguration().isLoadable() 
             && !imagingSource.getImageAnnotationConfiguration().isCurrentlyLoaded()) {
             utilThis.setValue(JOB_LOAD_ANNOTATIONS_URL + imagingSourceId, 
