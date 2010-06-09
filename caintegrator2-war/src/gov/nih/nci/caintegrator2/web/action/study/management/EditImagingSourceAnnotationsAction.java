@@ -96,7 +96,6 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.aim.AIMFacade;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -130,7 +129,8 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
     @Override
     public void prepare() {
         super.prepare();
-        if (getImageSourceConfiguration().getImageAnnotationConfiguration() != null) {
+        if (getImageSourceConfiguration().getImageAnnotationConfiguration() != null
+                && !getImageSourceConfiguration().getImageAnnotationConfiguration().isAimDataService()) {
             setupAnnotationGroups();
             setupDisplayableFields();
         }
@@ -221,13 +221,9 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
                             getImageAnnotationFile(), getImageAnnotationFileFileName(),
                             createNewAnnotationDefinition));
             } else {
-//                getStudyManagementService().addAimAnnotationSource(getAimServerProfile(),
-//                        getImageSourceConfiguration());
-//                getStudyManagementService().loadAimAnnotations(getImageSourceConfiguration(),
-//                        createNewAnnotationDefinition);
-                // TODO - Remove these 2 line when ready to test.
-                addFieldError("aimServerProfile.url", "Not yet implement");
-                return INPUT;
+                getStudyManagementService().addAimAnnotationSource(getAimServerProfile(),
+                        getImageSourceConfiguration());
+                getStudyManagementService().loadAimAnnotations(getImageSourceConfiguration());
             }
             setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(),
                     LogEntry.getSystemLogAdd(getImageSourceConfiguration()));
@@ -235,7 +231,7 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
         } catch (ValidationException e) {
             addFieldError("imageAnnotationFile", "Invalid file: " + e.getResult().getInvalidMessage());
             return INPUT;
-        } catch (IOException e) {
+        } catch (Exception e) {
             return ERROR;
         }
         return SUCCESS;
