@@ -25,6 +25,9 @@
         <property name="securityManager">
             <ref local="securityManagerStub" />
         </property>
+        <property name="aimFacade">
+            <ref local="aimFacadeStub" />
+        </property>
     </bean>
 
     <bean id="deploymentService" 
@@ -76,5 +79,7 @@
         class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub" />
         
     <bean id="securityManagerStub" class="gov.nih.nci.caintegrator2.security.SecurityManagerStub"/>
+    
+    <bean id="aimFacadeStub" class="gov.nih.nci.caintegrator2.external.aim.AIMFacadeStub" />
 
 </beans>
