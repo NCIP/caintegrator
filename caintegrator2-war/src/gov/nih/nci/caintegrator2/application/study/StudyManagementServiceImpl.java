@@ -915,6 +915,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                     StringAnnotationValue annotationValue = new StringAnnotationValue();
                     annotationValue.setStringValue(value);
                     annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+                    annotationValue.setImageSeries(imageSeries);
                     annotationDescriptor.getDefinition().getAnnotationValueCollection().add(annotationValue);
                 }
             }
@@ -1086,13 +1087,15 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                 && study.equals(value.getSubjectAnnotation().getStudySubjectAssignment().getStudy())) {
             return true;
         } else if (value.getImageSeries() != null 
-                && study.equals(value.getImageSeries().getImageStudy().getAssignment().getStudy())) {
+                && study.equals(value.getImageSeries().getImageStudy().
+                        getImageDataSource().getStudyConfiguration().getStudy())) {
             return true;
         } else if (value.getSampleAcquisition() != null
                 && study.equals(value.getSampleAcquisition().getAssignment().getStudy())) { 
             return true;
         } else if (value.getImage() != null 
-                && study.equals(value.getImage().getSeries().getImageStudy().getAssignment().getStudy())) {
+                && study.equals(value.getImage().getSeries().getImageStudy().
+                        getImageDataSource().getStudyConfiguration().getStudy())) {
             return true;
         }
         return false;
@@ -1365,6 +1368,9 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public Set<String> getAvailableValuesForFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) 
     throws ValidationException {
         Set<String> allAvailableValues = new HashSet<String>();
+        allAvailableValues.addAll(AnnotationUtil.getAdditionalValue(fieldDescriptor.getDefinition()
+                .getAnnotationValueCollection(), new ArrayList<String>(), PermissibleValueUtil
+                .getDisplayPermissibleValue(fieldDescriptor.getDefinition().getPermissibleValueCollection())));
         for (FileColumn fileColumn : getDao().getFileColumnsUsingAnnotationFieldDescriptor(fieldDescriptor)) {
             List<String> fileDataValues = fileColumn.getAnnotationFile() != null ? fileColumn.getDataValues()
                     : new ArrayList<String>();
