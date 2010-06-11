@@ -357,7 +357,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         
         assertEquals("nciaBasket", manageQueryAction.execute());
         
-        assertEquals("https://" + null + "/ncia/externalDataBasketDisplay.jsf", manageQueryAction.getNciaBasketUrl());
+        assertEquals(null + "/externalDataBasketDisplay.jsf", manageQueryAction.getNciaBasketUrl());
         
         // Test retrieve DICOM images
         manageQueryAction.setSelectedAction("retrieveDicomImages");
