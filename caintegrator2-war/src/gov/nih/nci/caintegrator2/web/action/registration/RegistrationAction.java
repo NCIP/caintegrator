@@ -150,6 +150,7 @@ public class RegistrationAction extends ActionSupport implements Preparable {
     
     private boolean validateLoginName() {
         if (StringUtils.isBlank(registrationRequest.getLoginName())) {
+            addFieldError("registrationRequest.loginName", "Username required for LDAP account.");
             return false;
         }
         if (securityManager.doesUserExist(registrationRequest.getLoginName())) {
