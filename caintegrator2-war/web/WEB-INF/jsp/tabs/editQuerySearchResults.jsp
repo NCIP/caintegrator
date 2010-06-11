@@ -340,7 +340,7 @@
                             <s:if test="%{!anonymousUser}">
                             <li><s:a href="#" cssClass="btn" 
                                 onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='retrieveDicomImages';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
-                                <span class="btn_img"><span class="download">Retrieve Dicom Images</span></span>
+                                <span class="btn_img"><span class="download">Retrieve DICOM Images</span></span>
                             </s:a></li>
                             </s:if>
                         </s:if>
