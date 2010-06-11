@@ -11,6 +11,7 @@
 		<property name="hostname" type="string" column="HOSTNAME"/>
 		<property name="port" type="int" column="PORT"/>
 		<property name="url" type="string" column="URL"/>
+		<property name="webUrl" type="string" column="WEB_URL"/>
 		<property name="username" type="string" column="USERNAME"/>
 		<property name="password" type="string" column="PASSWORD"/>
 		

@@ -864,7 +864,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
      */
     public String getNciaBasketUrl() {
         ImageDataSourceConfiguration dataSource = studyManagementService.retrieveImageDataSource(getStudy());
-       return "https://" + dataSource.getServerProfile().getHostname() + "/ncia/externalDataBasketDisplay.jsf";
+       return dataSource.getServerProfile().getWebUrl() + "/externalDataBasketDisplay.jsf";
     }
 
 

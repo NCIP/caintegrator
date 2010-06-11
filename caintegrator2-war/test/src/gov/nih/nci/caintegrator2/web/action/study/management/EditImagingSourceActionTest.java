@@ -171,6 +171,20 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
         action.clearErrorsAndMessages();
         action.saveImagingSource();
         assertTrue(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
+        action.getImageSourceConfiguration().getServerProfile().setWebUrl("http://someurl.nci.nih.gov/");
+        action.setMappingType(ImageDataSourceMappingTypeEnum.AUTO.getValue());
+        action.clearErrorsAndMessages();
+        action.saveImagingSource();
+        assertTrue(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
+        action.getImageSourceConfiguration().getServerProfile().setWebUrl("http://someurl.nci.nih.gov/ncia");
+        action.setMappingType(ImageDataSourceMappingTypeEnum.AUTO.getValue());
+        action.clearErrorsAndMessages();
+        action.saveImagingSource();
+        assertTrue(action.hasFieldErrors());
 
         action.clearErrorsAndMessages();
         action.saveImagingSource();

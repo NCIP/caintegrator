@@ -95,7 +95,8 @@ public class ServerConnectionProfile extends AbstractCaIntegrator2Object {
     private static final long serialVersionUID = 1L;
     private String hostname;
     private int port;
-    private String url;
+    private String url; // Grid Url
+    private String webUrl; // Web Url
     private String username;
     private String password;
     
@@ -139,6 +140,20 @@ public class ServerConnectionProfile extends AbstractCaIntegrator2Object {
      */
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    /**
+     * @return the webUrl
+     */
+    public String getWebUrl() {
+        return webUrl;
+    }
+
+    /**
+     * @param webUrl the webUrl to set
+     */
+    public void setWebUrl(String webUrl) {
+        this.webUrl = webUrl;
     }
 
     /**
