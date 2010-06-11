@@ -31,6 +31,9 @@
                 	showBusyDialog();
                     document.imagingSourceForm.submit();                
                 }
+            } else if (origWebUrl != document.getElementById("nbiaWebUrl").value){
+            	document.imagingSourceForm.action = 'updateImagingSource.action';
+                document.imagingSourceForm.submit();
             } else {
             	showBusyDialog();
                 document.imagingSourceForm.action = 'mapImagingSource.action';
@@ -132,6 +135,7 @@
                         headerKey="" headerValue="--Enter an NBIA Server Grid URL--"
                         list="nbiaServices" label=" NBIA Server Grid URL " required="true"
                         cssClass="editable-select" />
+                    <s:textfield label=" NBIA Web URL " name="imageSourceConfiguration.serverProfile.webUrl" id="nbiaWebUrl" size="40" required="true"/>
                     <s:textfield label=" NBIA Username " name="imageSourceConfiguration.serverProfile.username" id="nbiaUsername" size="40"/>
                     <s:password label=" NBIA Password " name="imageSourceConfiguration.serverProfile.password" id="nbiaPassword" size="40"/>
                     <s:textfield required="true" label=" Collection Name " name="imageSourceConfiguration.collectionName" id="nbiaCollectionName" size="40"/>
@@ -139,6 +143,7 @@
                 </tr>
                      <script type="text/javascript">
                         var origUrl = document.imagingSourceForm.serverProfileUrl.value;
+                        var origWebUrl = document.imagingSourceForm.nbiaWebUrl.value;
                         var origCollection = document.imagingSourceForm.nbiaCollectionName.value;
                         var origUsername = document.imagingSourceForm.nbiaUsername.value;
                         var origPassword = document.imagingSourceForm.nbiaPassword.value;
