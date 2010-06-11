@@ -569,6 +569,14 @@
             <result name="input" type="tiles">editImagingSource</result>
         </action>
         
+        <action name="updateImagingSource" class="editImagingSourceAction" method="updateImagingSource" >
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editImagingSource</result>
+        </action>
+        
        <action name="mapImagingSource" class="editImagingSourceAction" method="mapImagingSource" >
             <result name="success" type="redirectAction">
                 <param name="actionName">editStudy</param>

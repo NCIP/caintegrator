@@ -111,7 +111,9 @@ import org.apache.commons.lang.StringUtils;
 public class EditImagingSourceAction extends AbstractImagingSourceAction {
     
     private static final long serialVersionUID = 1L;
-
+    private static final String DEFAULT_WEB_URL = "https://imaging.nci.nih.gov/ncia";
+    private static final String NBIA_WEB_URL_STRING = "https?://.*/ncia$";
+    private static final Pattern NBIA_WEB_URL_PATTERN = Pattern.compile(NBIA_WEB_URL_STRING);
     private File imageClinicalMappingFile;
     private String imageClinicalMappingFileFileName;
     private ImageDataSourceMappingTypeEnum mappingType = ImageDataSourceMappingTypeEnum.AUTO;
@@ -126,10 +128,21 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
         if (StringUtils.isBlank(getImageSourceConfiguration().getServerProfile().getUrl())) {
             addFieldError("imageSourceConfiguration.serverProfile.url", "URL is required.");
         }
+        validateWebUrl();
         if (!checkErrors()) {
             return false;
         }
         checkConnection();
+        return checkErrors();
+    }
+
+    private boolean validateWebUrl() {
+        if (StringUtils.isBlank(getImageSourceConfiguration().getServerProfile().getWebUrl())
+                || !NBIA_WEB_URL_PATTERN.matcher(
+                        getImageSourceConfiguration().getServerProfile().getWebUrl()).find()) {
+            addFieldError("imageSourceConfiguration.serverProfile.webUrl", "Web url must be of the pattern " 
+                    + "http[s]://imaging.url[:port]/ncia");
+        }
         return checkErrors();
     }
 
@@ -157,6 +170,9 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
      */
     @Override
     public String execute() {
+        if (getImageSourceConfiguration().getId() == null) {
+            getImageSourceConfiguration().getServerProfile().setWebUrl(DEFAULT_WEB_URL);
+        }
         return SUCCESS;
     }
 
@@ -168,6 +184,11 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
        if (!StringUtils.isBlank(getImageSourceConfiguration().getServerProfile().getUrl())) {
            getImageSourceConfiguration().getServerProfile().setUrl(
                 Pattern.compile(",\\s.*").matcher(getImageSourceConfiguration().getServerProfile().getUrl())
+                        .replaceAll(""));
+       }
+       if (!StringUtils.isBlank(getImageSourceConfiguration().getServerProfile().getWebUrl())) {
+           getImageSourceConfiguration().getServerProfile().setWebUrl(
+                Pattern.compile(",\\s.*").matcher(getImageSourceConfiguration().getServerProfile().getWebUrl())
                         .replaceAll(""));
        }
     }
@@ -245,6 +266,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
         ServerConnectionProfile newProfile = configuration.getServerProfile();
         ServerConnectionProfile oldProfile = getImageSourceConfiguration().getServerProfile();
         newProfile.setUrl(oldProfile.getUrl());
+        newProfile.setWebUrl(oldProfile.getWebUrl());
         newProfile.setHostname(oldProfile.getHostname());
         newProfile.setPort(oldProfile.getPort());
         newProfile.setUsername(oldProfile.getUsername());
@@ -278,6 +300,18 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             return INPUT;
         }
         return runAsynchronousJob(true);
+    }
+    
+    /**
+     * Saves the image source only (web URL in particular).
+     * @return struts result.
+     */
+    public String updateImagingSource() {
+        if (!validateWebUrl()) {
+            return INPUT;
+        }
+        getStudyManagementService().daoSave(getImageSourceConfiguration());
+        return SUCCESS;
     }
 
     private void storeImageMappingFileName() {

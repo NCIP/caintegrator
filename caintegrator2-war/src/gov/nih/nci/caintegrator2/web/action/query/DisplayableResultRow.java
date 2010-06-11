@@ -157,11 +157,10 @@ public class DisplayableResultRow {
      */
     public String getNciaLink() {
         if (getImageSeries() != null) {
-            String hostname = getImageSeries().getImageStudy().getImageDataSource().getServerProfile().getHostname();
+            String webUrl = getImageSeries().getImageStudy().getImageDataSource().getServerProfile().getWebUrl();
             StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer.append("https://");
-            stringBuffer.append(hostname);
-            stringBuffer.append("/ncia/referencedImages.jsf?source=ISPY&image1TrialId=");
+            stringBuffer.append(webUrl);
+            stringBuffer.append("/referencedImages.jsf?source=ISPY&image1TrialId=");
             stringBuffer.append(getImageSeries().getImageStudy().getNciaTrialIdentifier());
             stringBuffer.append("&image1PatientId=");
             stringBuffer.append(getImageSeries().getImageStudy().getAssignment().getIdentifier());
