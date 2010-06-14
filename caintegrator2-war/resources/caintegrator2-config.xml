@@ -236,6 +236,9 @@
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
+        <property name="updater">
+            <ref local="imagingDataSourceAjaxUpdater"/>
+        </property>
         <property name="aimFacade">
             <ref local="aimFacade" />
         </property>

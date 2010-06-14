@@ -233,7 +233,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
         getStudyManagementService().daoSave(getImageSourceConfiguration());
         setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(), 
                 LogEntry.getSystemLogSave(getImageSourceConfiguration()));
-        updater.runJob(getImageSourceConfiguration().getId(), newMappingFile, mappingType, mapOnly);
+        updater.runJob(getImageSourceConfiguration().getId(), newMappingFile, mappingType, mapOnly, false);
         return SUCCESS;
     }
 

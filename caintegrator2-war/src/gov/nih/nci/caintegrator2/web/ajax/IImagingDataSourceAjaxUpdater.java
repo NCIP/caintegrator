@@ -106,10 +106,11 @@ public interface IImagingDataSourceAjaxUpdater {
      * @param imageClinicalMappingFile file to map.
      * @param mappingType type of mapping for the image source. 
      * @param mapOnly to determine if it's only re-mapping the source.
+     * @param loadAimAnnotation to load AIM annotation.
      */
     void runJob(Long imagingSourceId, 
             File imageClinicalMappingFile, 
             ImageDataSourceMappingTypeEnum mappingType,
-            boolean mapOnly);
+            boolean mapOnly, boolean loadAimAnnotation);
 
 }

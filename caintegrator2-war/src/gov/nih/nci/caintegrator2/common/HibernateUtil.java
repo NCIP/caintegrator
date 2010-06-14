@@ -248,14 +248,18 @@ public final class HibernateUtil {
         loadImageSeriesAcquisitions(imageSource.getImageSeriesAcquisitions());
         if (imageSource.getImageAnnotationConfiguration() != null) {
             Hibernate.initialize(imageSource.getImageAnnotationConfiguration());
-            Hibernate.initialize(imageSource.getImageAnnotationConfiguration().getAnnotationFile());
-            loadCollection(imageSource.getImageAnnotationConfiguration().getAnnotationFile().getColumns());
-            for (FileColumn column 
-                    : imageSource.getImageAnnotationConfiguration().getAnnotationFile().getColumns()) {
-                Hibernate.initialize(column);
-                if (column.getFieldDescriptor() != null) {
-                    Hibernate.initialize(column.getFieldDescriptor());
-                    Hibernate.initialize(column.getFieldDescriptor().getDefinition());
+            if (imageSource.getImageAnnotationConfiguration().isAimDataService()) {
+                Hibernate.initialize(imageSource.getImageAnnotationConfiguration().getAimServerProfile());
+            } else {
+                Hibernate.initialize(imageSource.getImageAnnotationConfiguration().getAnnotationFile());
+                loadCollection(imageSource.getImageAnnotationConfiguration().getAnnotationFile().getColumns());
+                for (FileColumn column : imageSource.getImageAnnotationConfiguration().
+                        getAnnotationFile().getColumns()) {
+                    Hibernate.initialize(column);
+                    if (column.getFieldDescriptor() != null) {
+                        Hibernate.initialize(column.getFieldDescriptor());
+                        Hibernate.initialize(column.getFieldDescriptor().getDefinition());
+                    }
                 }
             }
         }

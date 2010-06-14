@@ -173,9 +173,9 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
     public void runJob(Long imagingSourceId, 
                        File imageClinicalMappingFile, 
                        ImageDataSourceMappingTypeEnum mappingType,
-                       boolean mapOnly) {
+                       boolean mapOnly, boolean loadAimAnnotation) {
         Thread imagingSourceRunner = new Thread(new ImagingDataSourceAjaxRunner(this, imagingSourceId,
-                imageClinicalMappingFile, mappingType, mapOnly));
+                imageClinicalMappingFile, mappingType, mapOnly, loadAimAnnotation));
         imagingSourceRunner.start();
     }
     
@@ -274,6 +274,12 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
                 retrieveUrl(imagingSource, "editImagingSource", "Edit", "edit", false),
                 false);
         utilThis.setValue(JOB_ACTION_BAR1 + imagingSourceId, jobActionBarString, false);
+        if (isAimDataService(imagingSource)) {
+            utilThis.setValue(JOB_LOAD_ANNOTATIONS_URL + imagingSourceId, 
+                    retrieveUrl(imagingSource, "loadAimAnnotation", "Load Aim Annotations", "load", false),
+                    false);
+            utilThis.setValue(JOB_ACTION_BAR2 + imagingSourceId, "");
+        }
         utilThis.setValue(JOB_DELETE_URL + imagingSourceId, 
                 retrieveUrl(imagingSource, "deleteImagingSource", "Delete", "delete", true),
                 false);
@@ -285,16 +291,27 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
                 "editImagingSourceAnnotations", "Edit Annotations", "edit_annotations", false));
         utilThis.setValue(JOB_ACTION_BAR2 + imagingSourceId, jobActionBarString, false);
         
-        if (imagingSource.getImageAnnotationConfiguration() != null
-            && !isAimDataService(imagingSource)
-            && imagingSource.getImageAnnotationConfiguration().isLoadable() 
-            && !imagingSource.getImageAnnotationConfiguration().isCurrentlyLoaded()) {
-            utilThis.setValue(JOB_LOAD_ANNOTATIONS_URL + imagingSourceId, 
-                retrieveUrl(imagingSource, "loadImagingSource", "Load Annotations", "load", false),
-                false);
-            utilThis.setValue(JOB_ACTION_BAR3 + imagingSourceId, jobActionBarString, false);
+        if (imagingSource.getImageAnnotationConfiguration() != null) {
+            addLoadAnnotationAction(imagingSource, utilThis, imagingSourceId, jobActionBarString);
         } 
         
+    }
+
+    private void addLoadAnnotationAction(ImageDataSourceConfiguration imagingSource, Util utilThis,
+            String imagingSourceId, String jobActionBarString) {
+        if (isAimDataService(imagingSource)
+                && !Status.LOADED.equals(imagingSource.getStatus())) {
+            utilThis.setValue(JOB_LOAD_ANNOTATIONS_URL + imagingSourceId, 
+                    retrieveUrl(imagingSource, "loadAimAnnotation", "Load Aim Annotations", "load", false),
+                    false);
+            utilThis.setValue(JOB_ACTION_BAR3 + imagingSourceId, jobActionBarString, false);
+        } else if (imagingSource.getImageAnnotationConfiguration().isLoadable() 
+                && !imagingSource.getImageAnnotationConfiguration().isCurrentlyLoaded()) {
+            utilThis.setValue(JOB_LOAD_ANNOTATIONS_URL + imagingSourceId, 
+                    retrieveUrl(imagingSource, "loadImagingSource", "Load Annotations", "load", false),
+                    false);
+            utilThis.setValue(JOB_ACTION_BAR3 + imagingSourceId, jobActionBarString, false);
+        }
     }
 
     private String retrieveUrl(ImageDataSourceConfiguration imagingSource, String actionName, 

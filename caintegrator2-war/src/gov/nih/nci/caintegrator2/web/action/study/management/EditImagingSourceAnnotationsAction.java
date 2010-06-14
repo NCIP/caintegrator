@@ -90,10 +90,12 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.ImageAnnotationUploadType;
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
+import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.aim.AIMFacade;
+import gov.nih.nci.caintegrator2.web.ajax.IImagingDataSourceAjaxUpdater;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -122,6 +124,8 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
     private ServerConnectionProfile aimServerProfile = new ServerConnectionProfile();
     private boolean createNewAnnotationDefinition = false;
     private AIMFacade aimFacade;
+    private IImagingDataSourceAjaxUpdater updater;
+    private boolean aimReload = false;
     
     /**
      * {@inheritDoc}
@@ -129,10 +133,13 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
     @Override
     public void prepare() {
         super.prepare();
-        if (getImageSourceConfiguration().getImageAnnotationConfiguration() != null
-                && !getImageSourceConfiguration().getImageAnnotationConfiguration().isAimDataService()) {
-            setupAnnotationGroups();
-            setupDisplayableFields();
+        if (getImageSourceConfiguration().getImageAnnotationConfiguration() != null) {
+            if (getImageSourceConfiguration().getImageAnnotationConfiguration().isAimDataService()) {
+                aimReload = true;
+            } else {
+                setupAnnotationGroups();
+                setupDisplayableFields();
+            }
         }
     }
 
@@ -141,7 +148,9 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
      */
     @Override
     public void validate() {
-        fixUrlFromInternetExplorer();
+        if (!isAimReload()) {
+            fixUrlFromInternetExplorer();
+        }
         prepareValueStack();
     }
 
@@ -220,14 +229,12 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
                     getStudyManagementService().addImageAnnotationFile(getImageSourceConfiguration(),
                             getImageAnnotationFile(), getImageAnnotationFileFileName(),
                             createNewAnnotationDefinition));
+                setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(),
+                        LogEntry.getSystemLogAdd(getImageSourceConfiguration()));
+                getStudyManagementService().save(getStudyConfiguration());
             } else {
-                getStudyManagementService().addAimAnnotationSource(getAimServerProfile(),
-                        getImageSourceConfiguration());
-                getStudyManagementService().loadAimAnnotations(getImageSourceConfiguration());
+                return loadAimAnnotation();
             }
-            setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(),
-                    LogEntry.getSystemLogAdd(getImageSourceConfiguration()));
-            getStudyManagementService().save(getStudyConfiguration());
         } catch (ValidationException e) {
             addFieldError("imageAnnotationFile", "Invalid file: " + e.getResult().getInvalidMessage());
             return INPUT;
@@ -235,6 +242,24 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
             return ERROR;
         }
         return SUCCESS;
+    }
+    
+    /**
+     * Load the image annotation from AIM Data Service.
+     * @return struts result.
+     */
+    public String loadAimAnnotation() {
+        if (getImageSourceConfiguration().getImageAnnotationConfiguration() == null) {
+            getStudyManagementService().addAimAnnotationSource(getAimServerProfile(),
+                getImageSourceConfiguration());
+        }
+        getImageSourceConfiguration().setStatus(Status.PROCESSING);
+        getStudyManagementService().daoSave(getImageSourceConfiguration());
+        setStudyLastModifiedByCurrentUser(getImageSourceConfiguration(), 
+                LogEntry.getSystemLogSave(getImageSourceConfiguration()));
+        getStudyManagementService().save(getStudyConfiguration());
+        updater.runJob(getImageSourceConfiguration().getId(), null, null, false, true);
+        return "loadingAimAnnotation";
     }
     
     private boolean validateAddImageAnnotations() {
@@ -323,21 +348,14 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
      * @return the uploadType
      */
     public String getUploadType() {
-        if (uploadType != null) {
-            return uploadType.getValue();
-        }
-        return "";
+        return uploadType.getValue();
     }
 
     /**
      * @param uploadType the uploadType to set
      */
     public void setUploadType(String uploadType) {
-        if (StringUtils.isBlank(uploadType)) {
-            this.uploadType = null;
-        } else {
-            this.uploadType = ImageAnnotationUploadType.getByValue(uploadType);
-        }
+        this.uploadType = ImageAnnotationUploadType.getByValue(uploadType);
     }
 
     /**
@@ -394,6 +412,34 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
      */
     public boolean isAimDisable() {
         return ImageAnnotationUploadType.FILE.equals(uploadType);
+    }
+
+    /**
+     * @return the updater
+     */
+    public IImagingDataSourceAjaxUpdater getUpdater() {
+        return updater;
+    }
+
+    /**
+     * @param updater the updater to set
+     */
+    public void setUpdater(IImagingDataSourceAjaxUpdater updater) {
+        this.updater = updater;
+    }
+
+    /**
+     * @return the aimReload
+     */
+    public boolean isAimReload() {
+        return aimReload;
+    }
+
+    /**
+     * @param aimReload the aimReload to set
+     */
+    public void setAimReload(boolean aimReload) {
+        this.aimReload = aimReload;
     }
 
 }

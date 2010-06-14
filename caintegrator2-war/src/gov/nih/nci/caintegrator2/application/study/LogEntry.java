@@ -447,8 +447,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @return System log message
      */
     public static String getSystemLogAdd(ImageDataSourceConfiguration imagingSource) {
-        if (imagingSource.getImageAnnotationConfiguration() != null
-                && imagingSource.getImageAnnotationConfiguration().isAimDataService()) {
+        if (imagingSource.getImageAnnotationConfiguration().isAimDataService()) {
             return ADD_IMAGING_ANNOTATION_FILE
             + COLLECTION_NAME + QUOTE + imagingSource.getCollectionName() + QUOTE + COMMA
             + "using AIM Data Service: " + QUOTE

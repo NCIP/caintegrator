@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -149,9 +150,11 @@ public class ImagingDataSourceAjaxUpdaterTest extends AbstractSessionBasedTest {
     
     @Test
     public void testRunJob() throws InterruptedException {
+        // Test load image clinical mapping 
         studyConfiguration.setUserWorkspace(workspaceService.getWorkspace());
         studyConfiguration.setLastModifiedBy(workspaceService.getWorkspace());
-        updater.runJob(1l, null, ImageDataSourceMappingTypeEnum.AUTO, false);
+        File dummyImageClinicalMappingFile = new File("");
+        updater.runJob(1l, dummyImageClinicalMappingFile , ImageDataSourceMappingTypeEnum.AUTO, false, false);
         Thread.sleep(500);
         assertTrue(studyManagementServiceStub.loadImageSourceCalled);
         assertTrue(studyManagementServiceStub.mapImageSeriesCalled);
@@ -159,14 +162,39 @@ public class ImagingDataSourceAjaxUpdaterTest extends AbstractSessionBasedTest {
         studyManagementServiceStub.clear();
         
         studyManagementServiceStub.throwValidationException = true;
-        updater.runJob(1l, null, ImageDataSourceMappingTypeEnum.AUTO, false);
+        updater.runJob(1l, dummyImageClinicalMappingFile, ImageDataSourceMappingTypeEnum.AUTO, false, false);
         Thread.sleep(500);
         assertEquals(Status.ERROR, imagingDataSource.getStatus());
         assertTrue(studyManagementServiceStub.daoSaveCalled);
         
         studyManagementServiceStub.clear();
         studyManagementServiceStub.throwIOException = true;
-        updater.runJob(1l, null, ImageDataSourceMappingTypeEnum.AUTO, false);
+        updater.runJob(1l, dummyImageClinicalMappingFile, ImageDataSourceMappingTypeEnum.AUTO, false, false);
+        Thread.sleep(500);
+        assertEquals(Status.ERROR, imagingDataSource.getStatus());
+        assertTrue(studyManagementServiceStub.daoSaveCalled);
+    }
+    
+    @Test
+    public void testRunJobAIM() throws InterruptedException {
+        // Test load AIM annotation 
+        studyConfiguration.setUserWorkspace(workspaceService.getWorkspace());
+        studyConfiguration.setLastModifiedBy(workspaceService.getWorkspace());
+        updater.runJob(1l, null, null, false, true);
+        Thread.sleep(500);
+        assertTrue(studyManagementServiceStub.loadAimAnnotationsCalled);
+        assertTrue(studyManagementServiceStub.getRefreshedImageSourceCalled);
+        studyManagementServiceStub.clear();
+        
+        studyManagementServiceStub.throwValidationException = true;
+        updater.runJob(1l, null, null, false, true);
+        Thread.sleep(500);
+        assertEquals(Status.ERROR, imagingDataSource.getStatus());
+        assertTrue(studyManagementServiceStub.daoSaveCalled);
+        
+        studyManagementServiceStub.clear();
+        studyManagementServiceStub.throwConnectionException = true;
+        updater.runJob(1l, null, null, false, true);
         Thread.sleep(500);
         assertEquals(Status.ERROR, imagingDataSource.getStatus());
         assertTrue(studyManagementServiceStub.daoSaveCalled);
