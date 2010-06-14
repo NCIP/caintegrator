@@ -111,17 +111,20 @@ public class ImagingDataSourceAjaxRunner implements Runnable {
     private final boolean mapOnly;
     private ImageDataSourceConfiguration imagingSource;
     private String username;
+    private final boolean loadAimAnnotation;
     
+    @SuppressWarnings("PMD.ExcessiveParameterList") // necessary parameters.
     ImagingDataSourceAjaxRunner(ImagingDataSourceAjaxUpdater updater,
             Long imageDataSourceId,
             File imageClinicalMappingFile,
             ImageDataSourceMappingTypeEnum mappingType,
-            boolean mapOnly) {
+            boolean mapOnly, boolean loadAimAnnotation) {
         this.updater = updater;
         this.imageDataSourceId = imageDataSourceId;
         this.imageClinicalMappingFile = imageClinicalMappingFile;
         this.mappingType = mappingType;
         this.mapOnly = mapOnly;
+        this.loadAimAnnotation = loadAimAnnotation;
     }
 
     /**
@@ -130,17 +133,37 @@ public class ImagingDataSourceAjaxRunner implements Runnable {
     public void run() {
         setupSession();
         updater.updateJobStatus(username, imagingSource);
+        if (loadAimAnnotation) {
+            runLoadAimAnnotation();
+        } else {
+            mapImaging();
+        }
+        updater.updateJobStatus(username, imagingSource);
+    }
+
+    private void runLoadAimAnnotation() {
+        try {
+            updater.getStudyManagementService().loadAimAnnotations(imagingSource);
+        } catch (ConnectionException e) {
+            addError("The configured AIM server couldn't be reached. Please check the configuration settings.", e);
+        } catch (ValidationException e) {
+            addError("AIM validation error: " + e.getMessage(), e);
+        } catch (Exception e) {
+            addError("AIM exception: " + e.getMessage(), e);
+        }
+    }
+
+    private void mapImaging() {
         try {
             if (!mapOnly) {
                 addSource();
             }
             mapSource();
         } catch (ConnectionException e) {
-            addError("The configured server couldn't reached. Please check the configuration settings.", e);
+            addError("The configured server couldn't be reached. Please check the configuration settings.", e);
         } catch (InvalidImagingCollectionException e) {
             addError(e.getMessage(), e);
         }
-        updater.updateJobStatus(username, imagingSource);
     }
 
     private void setupSession() {

@@ -143,7 +143,7 @@ public class EditStudyLogAction extends AbstractStudyAction implements Parameter
     public String save() {
         for (DisplayableLogEntry displayableLogEntry : displayableLogEntries) {
             if (displayableLogEntry.isUpdateDescription()) {
-                displayableLogEntry.getLogEntry().setDescription(displayableLogEntry.getDescription());
+                displayableLogEntry.getLogEntry().setTrimDescription(displayableLogEntry.getDescription());
             }
         }
         getStudyManagementService().save(getStudyConfiguration());

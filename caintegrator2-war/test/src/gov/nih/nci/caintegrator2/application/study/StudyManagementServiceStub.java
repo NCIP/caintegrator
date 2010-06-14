@@ -126,6 +126,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean loadClinicalAnnotationCalled;
     public boolean reLoadClinicalAnnotationCalled;
     public boolean unLoadClinicalAnnotationCalled;
+    public boolean loadAimAnnotationsCalled;
     public boolean mapSamplesCalled;
     public boolean addImageSourceCalled;
     public boolean addImageAnnotationFileCalled;
@@ -235,6 +236,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         getRefreshedImageSourceCalled = false;
         addImageSourceToStudyCalled = false;
         loadImageSourceCalled = false;
+        loadAimAnnotationsCalled = false;
         saveFileStoStudyDirectoryCalled = false;
         updateImageDataSourceStatusCalled = false;
         getRefreshedStudyConfigurationCalled = false;
@@ -572,8 +574,15 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return null;
     }
 
-    public void loadAimAnnotations(ImageDataSourceConfiguration imageSource) {
-        
+    public void loadAimAnnotations(ImageDataSourceConfiguration imageSource)
+    throws ConnectionException, ValidationException {
+        loadAimAnnotationsCalled = true;
+        if (throwConnectionException) {
+            throw new ConnectionException("");
+        }
+        if (throwValidationException) {
+            throw new ValidationException("");
+        }
     }
 
 }

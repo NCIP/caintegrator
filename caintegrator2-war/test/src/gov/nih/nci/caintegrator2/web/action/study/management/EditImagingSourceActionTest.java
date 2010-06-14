@@ -292,7 +292,12 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
         }
 
         public void runJob(Long imagingSourceId, File imageClinicalMappingFile,
-                ImageDataSourceMappingTypeEnum mappingType, boolean mapOnly) {
+                ImageDataSourceMappingTypeEnum mappingType, boolean mapOnly,
+                boolean loadAimAnnotation) {
+            runJobCalled = true;
+        }
+
+        public void runJob(Long imagingSourceId) {
             runJobCalled = true;
         }
         
