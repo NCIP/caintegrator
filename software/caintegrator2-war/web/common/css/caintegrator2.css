@@ -101,7 +101,7 @@ LEGEND INPUT, LEGEND SELECT
     float:left;
     padding:4px 0 0 10px; }
 #userarea_wrapper
-{ background:#475b82 url("../../images/bg_user.jpg") no-repeat left 0; height:30px; width:48em; margin-top:10px; padding:8px 0 0 12px; float:right; color:#bfd5d5; font-size:92%; font-weight:bold; }
+{ background:#475b82 url("../../images/bg_user.jpg") no-repeat left 0; height:30px; width:48em; margin-top:10px; padding:8px 0 0 12px; position:absolute; top: 35px; right: 0px; color:#bfd5d5; font-size:92%; font-weight:bold; }
 #user
 { float:left; width:20em; margin-top:-5px; padding:8px 0 0 12px; float:right; color:#bfd5d5; font-weight:bold; }
 #user A
