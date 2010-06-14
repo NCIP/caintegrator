@@ -115,17 +115,17 @@ LEGEND INPUT, LEGEND SELECT
 #main
 { float:left; width:100%; min-height:400px; min-width:770px;  }
 #leftnav
-{ float:left; width:210px; margin:0 0 10px -100%; font-size:92%; padding-right:10px; border-right:1px solid #dcdcdc; }
+{ float:left; width:230px; margin:0 0 10px -100%; font-size:92%; padding-right:10px; border-right:1px solid #dcdcdc; }
 #study_logo
-{ padding:0 0 0 10px }
+{ padding:0 0 0 20px }
 #study_logo IMG
 { display:block; padding-bottom:10px }
 #contentwrapper
 { float:left; width:100%; }
 #content
-{ margin-left:220px; padding:0 10px 10px 10px; min-height:400px; }
+{ margin-left:240px; padding:0 10px 10px 10px; min-height:400px; }
 #contenthome
-{ margin-left:220px; min-height:330px; border-left:1px solid #fff; border-top:0; padding:0; padding-bottom:40px  }
+{ margin-left:240px; min-height:330px; border-left:1px solid #fff; border-top:0; padding:0; padding-bottom:40px  }
 .bordertop
 { border-top:1px solid #999 }
 
