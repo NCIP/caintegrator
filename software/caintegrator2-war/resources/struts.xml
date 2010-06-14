@@ -615,8 +615,21 @@
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="imageSourceConfiguration.id">${imageSourceConfiguration.id}</param>
             </result>
+            <result name="loadingAimAnnotation" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
             <result name="input" type="tiles">editImagingFile</result>
             <result name="error" type="tiles">editImagingFile</result>
+        </action>
+        
+        <action name="loadAimAnnotation" class="editImagingSourceAnnotationsAction" method="loadAimAnnotation">
+            <result name="loadingAimAnnotation" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editStudy</result>
+            <result name="error" type="tiles">editStudy</result>
         </action>
         
         <action name="saveImagingSourceAnnotations" method="save" class="editImagingSourceAnnotationsAction">
