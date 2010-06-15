@@ -86,6 +86,10 @@ public class PermissibleValue extends AbstractCaIntegrator2Object implements Com
      * {@inheritDoc}
      */
     public int compareTo(PermissibleValue o) {
-        return getValue().compareTo(o.getValue());
+        try {
+            return Double.valueOf(getValue()).compareTo(Double.valueOf(o.getValue())); 
+        } catch (Exception e) {
+            return getValue().compareTo(o.getValue());
+        }      
     }
 }
