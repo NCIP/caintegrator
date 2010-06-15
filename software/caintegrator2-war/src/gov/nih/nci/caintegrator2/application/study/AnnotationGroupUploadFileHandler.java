@@ -91,6 +91,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
@@ -157,12 +159,15 @@ public class AnnotationGroupUploadFileHandler {
                 uploadContent.setCdeId(trimBlank(fields[3]));
                 uploadContent.setVersion(trimBlank(fields[4]));
                 uploadContent.setDefinitionName(trimBlank(fields[5]));
+                checkForDuplicateColumnName(annotationGroupUploads, uploadContent);
                 if (uploadContent.getCdeId() == null) {
                     uploadContent.setDataType(trimBlank(fields[6]));
                     uploadContent.setPermissible(trimBlank(fields[7]));
+                    checkForDuplicateDefinition(annotationGroupUploads, uploadContent);
+                } else {
+                    checkForDuplicateCde(annotationGroupUploads, uploadContent);
                 }
                 uploadContent.setVisible(trimBlank(fields[8]));
-                checkForDuplicateColumnName(annotationGroupUploads, uploadContent);
                 annotationGroupUploads.add(uploadContent);
             } catch (Exception e) {
                 throw new ValidationException(e.getMessage(), e);
@@ -173,14 +178,39 @@ public class AnnotationGroupUploadFileHandler {
     private void checkForDuplicateColumnName(List<AnnotationGroupUploadContent> annotationGroupUploads,
             AnnotationGroupUploadContent uploadContent)
     throws ValidationException {
+        if (StringUtils.isBlank(uploadContent.getColumnName())) {
+            throw new ValidationException("Column name can't be blank.");
+        }
         for (AnnotationGroupUploadContent annotationGroupUploadContent : annotationGroupUploads) {
-            if (annotationGroupUploadContent.getColumnName().equals(uploadContent.getColumnName())
-                    || annotationGroupUploadContent.getDefinitionName().equals(uploadContent.getDefinitionName())) {
-                throw new ValidationException("Duplicate definition: " + uploadContent.getColumnName());
+            if (uploadContent.getColumnName().equals(annotationGroupUploadContent.getColumnName())) {
+                throw new ValidationException("Duplicate column name: " + uploadContent.getColumnName());
             }
         }
         if (existingAfdNames.contains(uploadContent.getColumnName())) {
             throw new ValidationException("Definition: " + uploadContent.getColumnName() + " already exist.");
+        }
+    }
+
+    private void checkForDuplicateDefinition(List<AnnotationGroupUploadContent> annotationGroupUploads,
+            AnnotationGroupUploadContent uploadContent)
+    throws ValidationException {
+        if (StringUtils.isBlank(uploadContent.getDefinitionName())) {
+            throw new ValidationException("Definition is required for column: " + uploadContent.getColumnName());
+        }
+        for (AnnotationGroupUploadContent annotationGroupUploadContent : annotationGroupUploads) {
+            if (uploadContent.getDefinitionName().equals(annotationGroupUploadContent.getDefinitionName())) {
+                throw new ValidationException("Duplicate definition: " + uploadContent.getDefinitionName());
+            }
+        }
+    }
+
+    private void checkForDuplicateCde(List<AnnotationGroupUploadContent> annotationGroupUploads,
+            AnnotationGroupUploadContent uploadContent)
+    throws ValidationException {
+        for (AnnotationGroupUploadContent annotationGroupUploadContent : annotationGroupUploads) {
+            if (uploadContent.getCdeId().equals(annotationGroupUploadContent.getCdeId())) {
+                throw new ValidationException("Duplicate CDE definition: " + uploadContent.getCdeId());
+            }
         }
     }
     
