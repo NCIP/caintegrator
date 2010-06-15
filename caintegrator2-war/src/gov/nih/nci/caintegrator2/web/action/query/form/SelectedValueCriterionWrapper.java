@@ -92,7 +92,6 @@ import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -169,12 +168,7 @@ final class SelectedValueCriterionWrapper extends AbstractAnnotationCriterionWra
     private OptionList<PermissibleValue> getOptions() {
         List<PermissibleValue> orderedValues = new ArrayList<PermissibleValue>();
         orderedValues.addAll(criterion.getAnnotationFieldDescriptor().getDefinition().getPermissibleValueCollection());
-        Comparator<PermissibleValue> valueComparator = new Comparator<PermissibleValue>() {
-            public int compare(PermissibleValue value1, PermissibleValue value2) {
-                return value1.toString().compareTo(value2.toString());
-            }
-        };
-        Collections.sort(orderedValues, valueComparator);
+        Collections.sort(orderedValues);
         OptionList<PermissibleValue> options = new OptionList<PermissibleValue>();
         for (PermissibleValue value : orderedValues) {
             options.addOption(value.toString(), value);
