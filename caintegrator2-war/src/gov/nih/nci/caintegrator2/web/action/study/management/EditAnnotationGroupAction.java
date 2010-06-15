@@ -210,18 +210,21 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
             setStudyLastModifiedByCurrentUser(null, 
                     LogEntry.getSystemLogSave(annotationGroup));
         } catch (ConnectionException e) {
-            addActionError("Error connecting to caDSR: " + e.getMessage());
-            return ERROR;
+            return errorSavingAnnotationGroup("Error connecting to caDSR: ");
         } catch (ValidationException e) {
-            addActionError("Unable to save annotation group: " + e.getMessage());
-            return ERROR;
+            return errorSavingAnnotationGroup("Unable to save annotation group: " + e.getMessage());
         } catch (IOException e) {
-            addActionError("Error reading upload file: " + e.getMessage());
-            return ERROR;
+            return errorSavingAnnotationGroup("Error reading upload file: " + e.getMessage());
         }
         return SUCCESS;
     }
     
+    private String errorSavingAnnotationGroup(String errorMsg) {
+        addActionError(errorMsg);
+        annotationGroup = new AnnotationGroup();
+        return ERROR;
+    }
+
     /**
      * Saves field descriptors.
      * @return struts return value.
