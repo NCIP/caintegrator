@@ -5,8 +5,11 @@ import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -108,6 +111,17 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
      */
     public Set<PermissibleValue> getPermissibleValueCollection() {
         return commonDataElement.getValueDomain().getPermissibleValueCollection();
+    }
+    
+    /**
+     * Gets the sorted permissible values from the value domain.
+     * @return permissible values.
+     */
+    public List<PermissibleValue> getSortedPermissibleValueList() {
+        List<PermissibleValue> permissibleValues = new ArrayList<PermissibleValue>();
+        permissibleValues.addAll(commonDataElement.getValueDomain().getPermissibleValueCollection());
+        Collections.sort(permissibleValues);
+        return permissibleValues;
     }
     
     /**

@@ -285,7 +285,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
 
     private void loadPermissibleValues() {
         for (PermissibleValue value 
-              : plotParameters.getSelectedAnnotation().getDefinition().getPermissibleValueCollection()) {
+              : plotParameters.getSelectedAnnotation().getDefinition().getSortedPermissibleValueList()) {
             getForm().getPermissibleValues().put(value.getId().toString(), 
                     value.toString());
         }
