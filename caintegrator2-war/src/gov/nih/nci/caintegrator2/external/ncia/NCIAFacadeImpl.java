@@ -92,9 +92,6 @@ import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.file.FileManager;
 import gov.nih.nci.ncia.domain.Image;
-import gov.nih.nci.ncia.domain.Patient;
-import gov.nih.nci.ncia.domain.Series;
-import gov.nih.nci.ncia.domain.Study;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -144,10 +141,10 @@ public class NCIAFacadeImpl implements NCIAFacade {
         LOGGER.info(new String("Retrieving ImageSeriesAcquisitions for " + collectionNameProject));
         NCIASearchService client = nciaServiceFactory.createNCIASearchService(profile);
         List<ImageSeriesAcquisition> imageSeriesAcquisitions = new ArrayList<ImageSeriesAcquisition>();
-        List<Patient> patientCollection = 
-            client.retrievePatientCollectionFromCollectionNameProject(collectionNameProject);
-        for (Patient patient : patientCollection) {
-            imageSeriesAcquisitions.addAll(createImageSeriesAcquisitions(patient, client));
+        List<String> patientIdsCollection = 
+            client.retrievePatientCollectionIdsFromCollectionNameProject(collectionNameProject);
+        for (String patientId : patientIdsCollection) {
+            imageSeriesAcquisitions.addAll(createImageSeriesAcquisitions(patientId, client));
         }
         if (imageSeriesAcquisitions.isEmpty()) {
             throw new InvalidImagingCollectionException(
@@ -157,36 +154,36 @@ public class NCIAFacadeImpl implements NCIAFacade {
         return imageSeriesAcquisitions;
     }
 
-    private List<ImageSeriesAcquisition> createImageSeriesAcquisitions(Patient patient, NCIASearchService client) 
+    private List<ImageSeriesAcquisition> createImageSeriesAcquisitions(String patientId, NCIASearchService client) 
     throws ConnectionException {
-        List<Study> studies = client.retrieveStudyCollectionFromPatient(patient.getPatientId());
+        List<String> studies = client.retrieveStudyCollectionIdsFromPatient(patientId);
         List<ImageSeriesAcquisition> acquisitions = new ArrayList<ImageSeriesAcquisition>(studies.size());
-        for (Study study : studies) {
-            acquisitions.add(convertToImageSeriesAcquisition(study, client, patient.getPatientId()));
+        for (String studyId : studies) {
+            acquisitions.add(convertToImageSeriesAcquisition(studyId, client, patientId));
         }
         return acquisitions;
     }
 
-    private ImageSeriesAcquisition convertToImageSeriesAcquisition(Study study, NCIASearchService client, 
+    private ImageSeriesAcquisition convertToImageSeriesAcquisition(String studyId, NCIASearchService client, 
             String patientId) 
     throws ConnectionException {
         ImageSeriesAcquisition acquisition = new ImageSeriesAcquisition();
-        acquisition.setIdentifier(study.getStudyInstanceUID());
+        acquisition.setIdentifier(studyId);
         acquisition.setSeriesCollection(new HashSet<ImageSeries>());
         acquisition.setPatientIdentifier(patientId);
-        List<Series> seriesList = client.retrieveImageSeriesCollectionFromStudy(study.getStudyInstanceUID());
-        for (Series series : seriesList) {
-            ImageSeries imageSeries = convertToImageSeries(series, client);
+        List<String> seriesIdList = client.retrieveImageSeriesCollectionIdsFromStudy(studyId);
+        for (String seriesId : seriesIdList) {
+            ImageSeries imageSeries = convertToImageSeries(seriesId, client);
             acquisition.getSeriesCollection().add(imageSeries);
             imageSeries.setImageStudy(acquisition);
         }
         return acquisition;
     }
 
-    private ImageSeries convertToImageSeries(Series series, NCIASearchService client) throws ConnectionException {
+    private ImageSeries convertToImageSeries(String seriesId, NCIASearchService client) throws ConnectionException {
         ImageSeries imageSeries = new ImageSeries();
-        imageSeries.setIdentifier(series.getSeriesInstanceUID());
-        Image nciaImage = client.retrieveRepresentativeImageBySeries(series.getSeriesInstanceUID());
+        imageSeries.setIdentifier(seriesId);
+        Image nciaImage = client.retrieveRepresentativeImageBySeries(seriesId);
         // TODO - 5/25/09 Ngoc, temporary check because this method is only available on Dev
         if (nciaImage == null) {
             return imageSeries;
