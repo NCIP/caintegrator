@@ -87,7 +87,9 @@ package gov.nih.nci.caintegrator2.external.ncia;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.io.File;
@@ -156,18 +158,16 @@ public class NCIAFacadeTestIntegration {
 
     // Test below is commented out because getting all projects for "RIDER" takes a very long time...
     // might want to uncomment it later if we find a reasonable size project name to use.
-//    @Test
-//    public void testGetImageSeriesAcquisition() throws ConnectionException {
-//        String collectionNameProject = "RIDER";
-//        List<ImageStudy> imageStudies;
-//            imageStudies = nciaFacade.getImageSeriesAcquisition(collectionNameProject, connection);
-//            if (!imageStudies.isEmpty()){
-//                LOGGER.info("Retrieve ImageSeriesAcquisition PASSED - " + imageStudies.size() + " were found.");
-//            } else {
-//                LOGGER.error("Retrieve ImageSeriesAcquisition FAILED, might be a connection error!");
-//            }
-//        }
-//        
-//    }
+    @Test
+    public void testGetImageSeriesAcquisition() throws ConnectionException, InvalidImagingCollectionException {
+        String collectionNameProject = "NCRI";
+        List<ImageSeriesAcquisition> imageSeriesAcquisitions;
+        imageSeriesAcquisitions = nciaFacade.getImageSeriesAcquisitions(collectionNameProject, connection);
+        if (!imageSeriesAcquisitions.isEmpty()){
+            LOGGER.info("Retrieve ImageSeriesAcquisition PASSED - " + imageSeriesAcquisitions.size() + " were found.");
+        } else {
+            LOGGER.error("Retrieve ImageSeriesAcquisition FAILED, might be a connection error!");
+        }
+    }
         
 }
