@@ -271,7 +271,7 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
 
     private void loadPermissibleValues() {
         for (PermissibleValue value 
-              : kmPlotParameters.getSelectedAnnotation().getDefinition().getPermissibleValueCollection()) {
+              : kmPlotParameters.getSelectedAnnotation().getDefinition().getSortedPermissibleValueList()) {
             getForm().getPermissibleValues().put(value.getId().toString(), 
                     value.toString());
         }
