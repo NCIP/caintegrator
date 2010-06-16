@@ -113,6 +113,15 @@ public interface NCIASearchService {
      */
     List<Patient> retrievePatientCollectionFromCollectionNameProject(String collectionNameProject)
             throws ConnectionException;
+    
+    /**
+     * Retrieves a list of all Patient Identifiers given an Project.
+     * @param collectionNameProject project to find the patients of.
+     * @return List of Patient Identifiers.
+     * @throws ConnectionException if there's a problem connecting to the NCIA server.
+     */
+    List<String> retrievePatientCollectionIdsFromCollectionNameProject(String collectionNameProject) 
+        throws ConnectionException;
 
     /**
      * Retrieves a list of all Studies given a Patient ID.
@@ -121,6 +130,14 @@ public interface NCIASearchService {
      * @throws ConnectionException if there's a problem connecting to the NCIA server.
      */
     List<Study> retrieveStudyCollectionFromPatient(String patientId) throws ConnectionException;
+    
+    /**
+     * Retrieves a list of all Study IDs given a Patient ID.
+     * @param patientId patient ID to find the studies for.
+     * @return List of Study IDs.
+     * @throws ConnectionException if there's a problem connecting to the NCIA server.
+     */
+    List<String> retrieveStudyCollectionIdsFromPatient(String patientId) throws ConnectionException;
 
     /**
      * Retrieves a list of all image series from a study.
@@ -129,6 +146,14 @@ public interface NCIASearchService {
      * @throws ConnectionException if there's a problem connecting to the NCIA server.
      */
     List<Series> retrieveImageSeriesCollectionFromStudy(String studyInstanceUID) throws ConnectionException;
+    
+    /**
+     * Retrieves a list of all image series IDs from a study.
+     * @param studyInstanceUID study UID to retrieve image series from.
+     * @return List of ImageSeries IDs.
+     * @throws ConnectionException if there's a problem connecting to the NCIA server.
+     */
+    List<String> retrieveImageSeriesCollectionIdsFromStudy(String studyInstanceUID) throws ConnectionException;
 
     /**
      * Retrieves a list of all images given a series ID.
@@ -137,6 +162,14 @@ public interface NCIASearchService {
      * @throws ConnectionException if there's a problem connecting to the NCIA server.
      */
     List<Image> retrieveImageCollectionFromSeries(String seriesInstanceUID) throws ConnectionException;
+    
+    /**
+     * Retrieves a list of all images IDs given a series ID.
+     * @param seriesInstanceUID series ID to find images from.
+     * @return List of Image IDs.
+     * @throws ConnectionException if there's a problem connecting to the NCIA server.
+     */
+    List<String> retrieveImageCollectionIdsFromSeries(String seriesInstanceUID) throws ConnectionException;
     
     /**
      * Retrieves a representative image given a series ID.

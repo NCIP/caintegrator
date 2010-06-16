@@ -89,26 +89,27 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
      */
     public List<Patient> retrievePatientCollectionFromCollectionNameProject(String collectionNameProject) 
     throws ConnectionException {
-        List<Patient> patientsCollection = new ArrayList<Patient>();
-
-        Attribute att = retrieveAttribute("project", Predicate.EQUAL_TO, collectionNameProject);
-
-        Association assoc = retrieveAssociation("gov.nih.nci.ncia.domain.TrialDataProvenance", "dataProvenance", att);
-
-        CQLQuery fcqlq = retrieveQuery("gov.nih.nci.ncia.domain.Patient", assoc);
-
+        CQLQuery fcqlq = retrieveQueryForPatients(collectionNameProject);
         CQLQueryResults result = connectAndExecuteQuery(fcqlq);
+        return iterateAndRetrieveResults(result, Patient.class);
+    }
 
-        // Iterate Results
-        if (result != null) {
-            CQLQueryResultsIterator iter2 = new CQLQueryResultsIterator(result);
-            
-            while (iter2.hasNext()) {
-                Patient obj = (Patient) iter2.next();
-                patientsCollection.add(obj);
-            }
-        } 
-        return patientsCollection;
+    /**
+     * {@inheritDoc}
+     */
+    public List<String> retrievePatientCollectionIdsFromCollectionNameProject(String collectionNameProject) 
+    throws ConnectionException {
+        CQLQuery fcqlq = retrieveQueryForPatients(collectionNameProject);
+        fcqlq.setQueryModifier(retrieveQueryModifierForProperty("patientId"));
+        CQLQueryResults result = connectAndExecuteQuery(fcqlq);
+        return iterateAndRetrieveResults(result, String.class);
+    }
+
+    
+    private CQLQuery retrieveQueryForPatients(String collectionNameProject) {
+        Attribute att = retrieveAttribute("project", Predicate.EQUAL_TO, collectionNameProject);
+        Association assoc = retrieveAssociation("gov.nih.nci.ncia.domain.TrialDataProvenance", "dataProvenance", att);
+        return retrieveQuery("gov.nih.nci.ncia.domain.Patient", assoc);
     }
     
     /**
@@ -116,26 +117,26 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
      */
     public List<Study> retrieveStudyCollectionFromPatient(String patientId) 
     throws ConnectionException {
-        List<Study> studyCollection = new ArrayList<Study>();
-
-        Attribute att = retrieveAttribute("patientId", Predicate.EQUAL_TO, patientId);
-
-        Association assoc = retrieveAssociation("gov.nih.nci.ncia.domain.Patient", "patient", att);
-
-        CQLQuery fcqlq = retrieveQuery("gov.nih.nci.ncia.domain.Study", assoc);
-
+        CQLQuery fcqlq = retrieveQueryForStudies(patientId);
         CQLQueryResults result = connectAndExecuteQuery(fcqlq);
+        return iterateAndRetrieveResults(result, Study.class);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<String> retrieveStudyCollectionIdsFromPatient(String patientId) 
+    throws ConnectionException {
+        CQLQuery fcqlq = retrieveQueryForStudies(patientId);
+        fcqlq.setQueryModifier(retrieveQueryModifierForProperty("studyInstanceUID"));
+        CQLQueryResults result = connectAndExecuteQuery(fcqlq);
+        return iterateAndRetrieveResults(result, String.class);
+    }
 
-        // Iterate Results
-        if (result != null) {
-            CQLQueryResultsIterator iter2 = new CQLQueryResultsIterator(result);
-            while (iter2.hasNext()) {
-                Study obj = (Study) iter2.next();
-                studyCollection.add(obj);
-            }
-        }
-
-        return studyCollection;
+    private CQLQuery retrieveQueryForStudies(String patientId) {
+        Attribute att = retrieveAttribute("patientId", Predicate.EQUAL_TO, patientId);
+        Association assoc = retrieveAssociation("gov.nih.nci.ncia.domain.Patient", "patient", att);
+        return retrieveQuery("gov.nih.nci.ncia.domain.Study", assoc);
     }
 
     /**
@@ -143,26 +144,27 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
      */
     public List<Series> retrieveImageSeriesCollectionFromStudy(String studyInstanceUID) 
     throws ConnectionException {
-        List<Series> imageSeriesCollection = new ArrayList<Series>();
-
-        Attribute att = retrieveAttribute("studyInstanceUID", Predicate.EQUAL_TO, studyInstanceUID);
-
-        Association assoc = retrieveAssociation("gov.nih.nci.ncia.domain.Study", "study", att);
-
-        CQLQuery fcqlq = retrieveQuery("gov.nih.nci.ncia.domain.Series", assoc);
-
+        CQLQuery fcqlq = retrieveQueryForImageSeries(studyInstanceUID);
         CQLQueryResults result = connectAndExecuteQuery(fcqlq);
+        return iterateAndRetrieveResults(result, Series.class);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<String> retrieveImageSeriesCollectionIdsFromStudy(String studyInstanceUID) 
+    throws ConnectionException {
+        CQLQuery fcqlq = retrieveQueryForImageSeries(studyInstanceUID);
+        fcqlq.setQueryModifier(retrieveQueryModifierForProperty("seriesInstanceUID"));
+        CQLQueryResults result = connectAndExecuteQuery(fcqlq);
+        return iterateAndRetrieveResults(result, String.class);
+    }
 
-        // Iterate Results
-        if (result != null) {
-            CQLQueryResultsIterator iter2 = new CQLQueryResultsIterator(result);
-            while (iter2.hasNext()) {
-                Series obj = (Series) iter2.next();
-                imageSeriesCollection.add(obj);
-            }
-        } 
 
-        return imageSeriesCollection;
+    private CQLQuery retrieveQueryForImageSeries(String studyInstanceUID) {
+        Attribute att = retrieveAttribute("studyInstanceUID", Predicate.EQUAL_TO, studyInstanceUID);
+        Association assoc = retrieveAssociation("gov.nih.nci.ncia.domain.Study", "study", att);
+        return retrieveQuery("gov.nih.nci.ncia.domain.Series", assoc);
     }
 
     /**
@@ -170,26 +172,26 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
      */
     public List<Image> retrieveImageCollectionFromSeries(String seriesInstanceUID) 
     throws ConnectionException {
-        List<Image> imageSeriesCollection = new ArrayList<Image>();
-
-        Attribute att = retrieveAttribute("seriesInstanceUID", Predicate.EQUAL_TO, seriesInstanceUID);
-
-        Association assoc = retrieveAssociation("gov.nih.nci.ncia.domain.Series", "series", att);
-
-        CQLQuery fcqlq = retrieveQuery("gov.nih.nci.ncia.domain.Image", assoc);
-
+        CQLQuery fcqlq = retrieveQueryForImages(seriesInstanceUID);
         CQLQueryResults result = connectAndExecuteQuery(fcqlq);
+        return iterateAndRetrieveResults(result, Image.class);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<String> retrieveImageCollectionIdsFromSeries(String seriesInstanceUID) 
+    throws ConnectionException {
+        CQLQuery fcqlq = retrieveQueryForImages(seriesInstanceUID);
+        fcqlq.setQueryModifier(retrieveQueryModifierForProperty("sopInstanceUID"));
+        CQLQueryResults result = connectAndExecuteQuery(fcqlq);
+        return iterateAndRetrieveResults(result, String.class);
+    }
 
-        // Iterate Results
-        if (result != null) {
-            CQLQueryResultsIterator iter2 = new CQLQueryResultsIterator(result);
-            while (iter2.hasNext()) {
-                Image obj = (Image) iter2.next();
-                imageSeriesCollection.add(obj);
-            }
-        } 
-
-        return imageSeriesCollection;
+    private CQLQuery retrieveQueryForImages(String seriesInstanceUID) {
+        Attribute att = retrieveAttribute("seriesInstanceUID", Predicate.EQUAL_TO, seriesInstanceUID);
+        Association assoc = retrieveAssociation("gov.nih.nci.ncia.domain.Series", "series", att);
+        return retrieveQuery("gov.nih.nci.ncia.domain.Image", assoc);
     }
 
     /**
@@ -221,7 +223,6 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
      */
     
     public boolean validate(String seriesInstanceUID) throws ConnectionException {
-        List<Series> imageSeriesCollection = new ArrayList<Series>();
         CQLQuery query = new CQLQuery();
         Object target = new Object();
         target.setName("gov.nih.nci.ncia.domain.Series");
@@ -229,14 +230,7 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
         target.setAttribute(symbolAttribute);
         query.setTarget(target);
         CQLQueryResults result = connectAndExecuteQuery(query);
-        if (result != null) {
-            CQLQueryResultsIterator iter2 = new CQLQueryResultsIterator(result);
-            while (iter2.hasNext()) {
-                Series obj = (Series) iter2.next();
-                imageSeriesCollection.add(obj);
-            }
-        } 
-        return (!imageSeriesCollection.isEmpty());
+        return !iterateAndRetrieveResults(result, Series.class).isEmpty();
     }
     
       
@@ -277,5 +271,30 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
         }
     }
 
+    @SuppressWarnings({"unchecked", "PMD.UnusedFormalParameter" }) // Generic type.
+    private <T> List<T> iterateAndRetrieveResults(CQLQueryResults result, Class<T> clazz) {
+        // Iterate Results
+        List<T> resultsCollection = new ArrayList<T>();
+        
+        if (result != null) {
+            CQLQueryResultsIterator iter2 = new CQLQueryResultsIterator(result);
+            
+            while (iter2.hasNext()) {
+                T obj = (T) iter2.next();
+                if (String.class.equals(clazz)) {
+                    TargetAttribute[] targetAttributeArray = (TargetAttribute[]) obj;
+                    obj = (T) targetAttributeArray[0].getValue();
+                }
+                resultsCollection.add(obj);
+            }
+        } 
+        return resultsCollection;
+    }
+    
+    private QueryModifier retrieveQueryModifierForProperty(String property) {
+        QueryModifier queryModifier = new QueryModifier();
+        queryModifier.setAttributeNames(new String[]{property});
+        return queryModifier;
+    }
 
 }

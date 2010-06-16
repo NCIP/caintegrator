@@ -134,6 +134,17 @@ public class NCIAServiceStubFactory implements NCIAServiceFactory {
             series.add(s);
             return series;
         }
+        
+        public List<String> retrieveImageSeriesCollectionIdsFromStudy(String studyInstanceUID)
+                throws ConnectionException {
+            List<String> seriesIds = new ArrayList<String>();
+            seriesIds.add("SERIESUID");
+            return seriesIds;
+        }
+        
+        public List<String> retrieveImageCollectionIdsFromSeries(String seriesInstanceUID) throws ConnectionException {
+            return null;
+        }
 
         
         public List<Study> retrieveStudyCollectionFromPatient(String patientId) throws ConnectionException {
@@ -143,6 +154,12 @@ public class NCIAServiceStubFactory implements NCIAServiceFactory {
             List<Study> studies = new ArrayList<Study>();
             studies.add(s);
             return studies;
+        }
+        
+        public List<String> retrieveStudyCollectionIdsFromPatient(String patientId) throws ConnectionException {
+            List<String> studyIds = new ArrayList<String>();
+            studyIds.add("STUDYUID");
+            return studyIds;
         }
 
         
@@ -155,6 +172,13 @@ public class NCIAServiceStubFactory implements NCIAServiceFactory {
             patients.add(p);
             return patients;
         }
+        
+        public List<String> retrievePatientCollectionIdsFromCollectionNameProject(String collectionNameProject)
+                throws ConnectionException {
+            List<String> patientIds = new ArrayList<String>();
+            patientIds.add("PATIENTID");
+            return patientIds;
+        }
 
         
         public List<String> retrieveAllCollectionNameProjects() throws ConnectionException {
@@ -163,6 +187,8 @@ public class NCIAServiceStubFactory implements NCIAServiceFactory {
             projects.add("Project2");
             return projects;
         }
+        
+        
 
     }
 
