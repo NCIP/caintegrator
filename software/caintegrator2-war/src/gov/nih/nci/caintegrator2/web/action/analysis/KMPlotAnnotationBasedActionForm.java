@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -106,7 +107,7 @@ public class KMPlotAnnotationBasedActionForm {
     // JSP Select List Options
     private Map<String, AnnotationFieldDescriptor> annotationFieldDescriptors = 
         new HashMap<String, AnnotationFieldDescriptor>();
-    private Map<String, String> permissibleValues = new HashMap<String, String>();
+    private Map<String, String> permissibleValues = new LinkedHashMap<String, String>();
     
 
 
@@ -133,7 +134,7 @@ public class KMPlotAnnotationBasedActionForm {
      * Clears the permissible values.
      */
     public void clearPermissibleValues() {
-        permissibleValues = new HashMap<String, String>();
+        permissibleValues = new LinkedHashMap<String, String>();
         getSelectedValuesIds().clear();
     }
     
@@ -199,13 +200,6 @@ public class KMPlotAnnotationBasedActionForm {
      */
     public Map<String, String> getPermissibleValues() {
         return permissibleValues;
-    }
-
-    /**
-     * @param permissibleValues the permissibleValues to set
-     */
-    public void setPermissibleValues(Map<String, String> permissibleValues) {
-        this.permissibleValues = permissibleValues;
     }
 
     /**

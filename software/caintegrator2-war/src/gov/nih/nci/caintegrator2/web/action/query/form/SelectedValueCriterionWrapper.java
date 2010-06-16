@@ -90,8 +90,6 @@ import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -166,11 +164,9 @@ final class SelectedValueCriterionWrapper extends AbstractAnnotationCriterionWra
     }
     
     private OptionList<PermissibleValue> getOptions() {
-        List<PermissibleValue> orderedValues = new ArrayList<PermissibleValue>();
-        orderedValues.addAll(criterion.getAnnotationFieldDescriptor().getDefinition().getPermissibleValueCollection());
-        Collections.sort(orderedValues);
         OptionList<PermissibleValue> options = new OptionList<PermissibleValue>();
-        for (PermissibleValue value : orderedValues) {
+        for (PermissibleValue value
+                : criterion.getAnnotationFieldDescriptor().getDefinition().getSortedPermissibleValueList()) {
             options.addOption(value.toString(), value);
         }
         return options;
