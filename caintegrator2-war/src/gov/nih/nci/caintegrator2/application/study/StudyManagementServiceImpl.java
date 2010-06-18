@@ -897,6 +897,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                 .retrieveImageSeriesAnnotations(imageSource.getImageAnnotationConfiguration().getAimServerProfile(),
                         imageSeriesCollection);
         createAnnotationValuesForImageSeries(imageSource, imageSeriesAnnotationsMap);
+        imageSource.setStatus(Status.LOADED);
         daoSave(imageSource);
         daoSave(imageSource.getStudyConfiguration());
     }
