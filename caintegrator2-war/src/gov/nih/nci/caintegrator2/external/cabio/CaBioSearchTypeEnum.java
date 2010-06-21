@@ -108,7 +108,17 @@ public enum CaBioSearchTypeEnum {
     /**
      * Search on pathways.
      */
-    PATHWAYS("Pathways", "name", "displayValue", "description");
+    PATHWAYS("Pathways", "name", "displayValue", "description"),
+    
+    /**
+     * Search on pathways.
+     */
+    GENE_ALIAS("Gene Alias", "name"),
+    
+    /**
+     * Search on Database cross reference.
+     */
+    DATABASE_CROSS_REF("Database Cross Reference", "dataSourceName");
     
     private static Map<String, CaBioSearchTypeEnum> valueToTypeMap = 
         new HashMap<String, CaBioSearchTypeEnum>();
@@ -152,6 +162,8 @@ public enum CaBioSearchTypeEnum {
         List<String> list = new ArrayList<String>();
         list.add(CaBioSearchTypeEnum.GENE_KEYWORDS.getValue());
         list.add(CaBioSearchTypeEnum.GENE_SYMBOL.getValue());
+        list.add(CaBioSearchTypeEnum.GENE_ALIAS.getValue());
+        list.add(CaBioSearchTypeEnum.DATABASE_CROSS_REF.getValue());
         list.add(CaBioSearchTypeEnum.PATHWAYS.getValue());
         return list;
     }

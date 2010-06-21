@@ -112,7 +112,7 @@ public class CaBioFacadeImplTest {
         applicationServiceStub = (ApplicationServiceStub) 
             caBioFacade.getCaBioApplicationServiceFactory().retrieveCaBioApplicationService("");
     }
-
+    
     @Test
     public void testRetrieveGenes() throws ConnectionException {
         CaBioSearchParameters params = new CaBioSearchParameters();
@@ -133,7 +133,7 @@ public class CaBioFacadeImplTest {
         assertTrue(applicationServiceStub.hqlString.contains("o.taxon.commonName LIKE ?"));
         assertEquals(1, genes.size());
         assertEquals("BRCA1", genes.get(0).getSymbol());
-        
+
         params.setSearchType(CaBioSearchTypeEnum.GENE_SYMBOL);
         params.setKeywords("egfr brca");
         params.setSearchPreference(KeywordSearchPreferenceEnum.ANY);
@@ -144,6 +144,34 @@ public class CaBioFacadeImplTest {
         genes = caBioFacade.retrieveGenes(params);
         // Should contain 4 keyword matches, because 2 keywords, and 2 fields (symbol and hugoSymbol), but it must match both keywords, hence the AND instead of OR.
         assertTrue(applicationServiceStub.hqlString.contains("(  lower(o.symbol) LIKE ?  OR  lower(o.hugoSymbol) LIKE ?  )  AND  (  lower(o.symbol) LIKE ?  OR  lower(o.hugoSymbol) LIKE ?  )"));
+
+        params.setSearchType(CaBioSearchTypeEnum.DATABASE_CROSS_REF);
+        params.setKeywords("OMIM");
+        genes = caBioFacade.retrieveGenes(params);
+        // Should contain 2 keyword matches
+        assertTrue(applicationServiceStub.hqlString.contains("(  lower(o.dataSourceName) LIKE ?  )  ) and o.gene.taxon.commonName LIKE ?"));
+    }
+
+    @Test
+    public void testRetrieveGenesFromGeneAlias() throws ConnectionException {
+        CaBioSearchParameters params = new CaBioSearchParameters();
+        params.setKeywords("test here");
+        params.setFilterGenesOnStudy(false);
+        params.setSearchType(CaBioSearchTypeEnum.GENE_ALIAS);
+        params.setSearchPreferenceForDisplay(KeywordSearchPreferenceEnum.ANY.getValue());
+        params.setTaxon(CaBioSearchParameters.ALL_TAXONS);
+        List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenesFromGeneAlias(params);
+        assertEquals("EGFR", genes.get(0).getSymbol());
+        System.out.println(applicationServiceStub.hqlString);
+        assertTrue(applicationServiceStub.hqlString.contains("(  lower(o.name) LIKE ?  )  OR  (  lower(o.name) LIKE ?  )"));
+        params.setKeywords("test here");
+        params.setFilterGenesOnStudy(true);
+        params.setSearchPreferenceForDisplay(KeywordSearchPreferenceEnum.ALL.getValue());
+        params.setTaxon(CaBioSearchParameters.HUMAN_TAXON);
+        genes = caBioFacade.retrieveGenesFromGeneAlias(params);
+        System.out.println(applicationServiceStub.hqlString);
+        assertTrue(applicationServiceStub.hqlString.contains("(  lower(o.name) LIKE ?  )  AND  (  lower(o.name) LIKE ?  )"));
+        assertEquals(0, genes.size());
     }
     
     @Test

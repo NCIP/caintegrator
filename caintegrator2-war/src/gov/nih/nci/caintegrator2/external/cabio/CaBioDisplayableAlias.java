@@ -85,53 +85,69 @@
  */
 package gov.nih.nci.caintegrator2.external.cabio;
 
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-
-import java.util.List;
+import gov.nih.nci.logging.api.util.StringUtils;
 
 /**
- * Facade to retrieve data from CaBio.
+ * 
  */
-public interface CaBioFacade {
+public class CaBioDisplayableAlias implements Comparable<CaBioDisplayableAlias> {
+    private static final int MAX_NAME_LENGTH = 19;
+    
+    private String id;
+    private String name;
+    private boolean checked = true;
     
     /**
-     * Retrieves genes from caBio given input parameters.
-     * @param searchParams to search genes on.
-     * @return list of displayable genes.
-     * @throws ConnectionException if unable to connect to caBio.
+     * @return the id
      */
-    List<CaBioDisplayableGene> retrieveGenes(CaBioSearchParameters searchParams) throws ConnectionException;
-    
+    public String getId() {
+        return id;
+    }
     /**
-     * Retrieves genes from caBio given gene alias.
-     * @param searchParams to search genes on.
-     * @return list of displayable genes.
-     * @throws ConnectionException if unable to connect to caBio.
+     * @param id the id to set
      */
-    List<CaBioDisplayableGene> retrieveGenesFromGeneAlias(CaBioSearchParameters searchParams)
-    throws ConnectionException;
-    
+    public void setId(String id) {
+        this.id = id;
+    }    
     /**
-     * Retrieves genes from caBio given pathways.
-     * @param searchParams to search genes on.
-     * @return list of displayable genes.
-     * @throws ConnectionException if unable to connect to caBio.
+     * @return the name substring.
      */
-    List<CaBioDisplayableGene> retrieveGenesFromPathways(CaBioSearchParameters searchParams) 
-    throws ConnectionException;
-    
+    public String getDisplayableName() {
+        if (StringUtils.isBlank(name)) {
+            return name;
+        }
+        return name.length() > MAX_NAME_LENGTH 
+            ? name.substring(0, MAX_NAME_LENGTH - 3) + "..." : name;
+    }
     /**
-     * Retrievs pathways from caBio given input parameters.
-     * @param searchParams to search pathways on.
-     * @return list of displayable pathways.
-     * @throws ConnectionException if unable to connect to caBio.
+     * @return the name
      */
-    List<CaBioDisplayablePathway> retrievePathways(CaBioSearchParameters searchParams) throws ConnectionException;
+    public String getName() {
+        return name;
+    }
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    /**
+     * @return the checked
+     */
+    public boolean isChecked() {
+        return checked;
+    }
+    /**
+     * @param checked the checked to set
+     */
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(CaBioDisplayableAlias o) {
+        return this.getName().compareTo(o.getName());
+    }
 
-    /**
-     * Retrieves all taxons from caBio.
-     * @return list of taxons.
-     * @throws ConnectionException if unable to connect to caBio.
-     */
-    List<String> retrieveAllTaxons() throws ConnectionException;
 }

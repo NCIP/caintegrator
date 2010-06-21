@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.external.cabio.CaBioDisplayableGene;
 import gov.nih.nci.caintegrator2.external.cabio.CaBioDisplayablePathway;
 import gov.nih.nci.caintegrator2.external.cabio.CaBioFacade;
 import gov.nih.nci.caintegrator2.external.cabio.CaBioSearchParameters;
+import gov.nih.nci.caintegrator2.external.cabio.CaBioSearchTypeEnum;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.util.ArrayList;
@@ -103,11 +104,13 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * 
+ * CaBio search action.
  */
 public class CaBioSearchAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
+
+    private static final int MAX_RESULTS = 200;
     
     private CaBioFacade caBioFacade;
     private CaBioSearchParameters searchParams = new CaBioSearchParameters();
@@ -164,17 +167,10 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
     }
 
     private String retrieveDisplayableValues() {
-        switch (searchParams.getSearchType()) {
-        case GENE_KEYWORDS:
-            return retrieveGenesFromCaBio(false);
-        case GENE_SYMBOL:
-            return retrieveGenesFromCaBio(false);
-        case PATHWAYS:
+        if (CaBioSearchTypeEnum.PATHWAYS.equals(searchParams.getSearchType())) {
             return retrievePathwaysFromCaBio();
-        default:
-            addActionError("Unknown search type.");
-            return INPUT;
         }
+        return retrieveGenesFromCaBio(false);
     }
     
     private String runGeneSearchFromPathways() {
@@ -221,11 +217,13 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
             getCaBioPathways().clear();
             if (isSearchFromPathwaysSelected) {
                 caBioGenes = caBioFacade.retrieveGenesFromPathways(searchParams);
+            } else if (CaBioSearchTypeEnum.GENE_ALIAS.equals(searchParams.getSearchType())) {
+                caBioGenes = caBioFacade.retrieveGenesFromGeneAlias(searchParams);
             } else {
                 caBioGenes = caBioFacade.retrieveGenes(searchParams);
             }
-            if (caBioGenes.isEmpty()) {
-                addActionError("No results were returned from search.");
+            if (checkResultSize(caBioGenes.size())) {
+                caBioGenes.clear();
                 return INPUT;
             }
         } catch (ConnectionException e) {
@@ -234,6 +232,17 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
         }
         return SUCCESS;
     }
+
+    private boolean checkResultSize(int size) {
+        if (size == 0) {
+            addActionError("No results were returned from search.");
+            return true;
+        } else if (size > MAX_RESULTS) {
+            addActionError("Found " + size + " results, too many to display.");
+            return true;
+        }
+        return false;
+    }
     
     private String retrievePathwaysFromCaBio() {
         try {
@@ -241,8 +250,8 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
             caBioGenes.clear();
             getCaBioPathways().clear();
             getCaBioPathways().addAll(caBioFacade.retrievePathways(searchParams));
-            if (getCaBioPathways().isEmpty()) {
-                addActionError("No results were returned from search.");
+            if (checkResultSize(getCaBioPathways().size())) {
+                getCaBioPathways().clear();
                 return INPUT;
             }
         } catch (ConnectionException e) {
