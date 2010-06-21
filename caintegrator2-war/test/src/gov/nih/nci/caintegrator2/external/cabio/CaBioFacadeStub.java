@@ -97,6 +97,7 @@ import java.util.List;
 public class CaBioFacadeStub implements CaBioFacade {
 
     public boolean retrieveGenesCalled;
+    public boolean retrieveGenesFromGeneAliasCalled;
     public boolean isConnectionException;
     public boolean retrieveAllTaxonsCalled;
     public boolean isReturnResults;
@@ -105,6 +106,7 @@ public class CaBioFacadeStub implements CaBioFacade {
     
     public void clear() {
         retrieveGenesCalled = false;
+        retrieveGenesFromGeneAliasCalled = false;
         isConnectionException = false;
         retrieveAllTaxonsCalled = false;
         isReturnResults = false;
@@ -114,6 +116,19 @@ public class CaBioFacadeStub implements CaBioFacade {
     
     public List<CaBioDisplayableGene> retrieveGenes(CaBioSearchParameters params) throws ConnectionException {
         retrieveGenesCalled = true;
+        if (isConnectionException) {
+            throw new ConnectionException("");
+        }
+        List<CaBioDisplayableGene> genes = new ArrayList<CaBioDisplayableGene>();
+        if (isReturnResults) {
+            genes.add(new CaBioDisplayableGene());
+        }
+        return genes;
+    }
+    
+    public List<CaBioDisplayableGene> retrieveGenesFromGeneAlias(CaBioSearchParameters params)
+    throws ConnectionException {
+        retrieveGenesFromGeneAliasCalled = true;
         if (isConnectionException) {
             throw new ConnectionException("");
         }
