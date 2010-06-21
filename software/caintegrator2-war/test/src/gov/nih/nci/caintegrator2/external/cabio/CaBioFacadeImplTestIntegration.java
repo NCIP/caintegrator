@@ -114,6 +114,32 @@ public class CaBioFacadeImplTestIntegration {
     }
 
     @Test
+    public void testRetrieveGenesFromAlias() throws ConnectionException {
+        CaBioSearchParameters params = new CaBioSearchParameters();
+        params.setKeywords("egfr");
+        params.setTaxon("human");
+        params.setSearchType(CaBioSearchTypeEnum.GENE_ALIAS);
+        params.setFilterGenesOnStudy(false);
+        List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenesFromGeneAlias(params);
+        assertTrue(checkSymbolExists("EGFR", genes));
+        
+        params.setTaxon(CaBioSearchParameters.ALL_TAXONS);
+        genes = caBioFacade.retrieveGenesFromGeneAlias(params);
+        assertTrue(!genes.isEmpty());
+    }
+
+    @Test
+    public void testRetrieveGenesFromDatabase() throws ConnectionException {
+        CaBioSearchParameters params = new CaBioSearchParameters();
+        params.setKeywords("OMIM");
+        params.setTaxon("human");
+        params.setSearchType(CaBioSearchTypeEnum.DATABASE_CROSS_REF);
+        params.setFilterGenesOnStudy(false);
+        List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenes(params);
+        assertTrue(checkSymbolExists("EGFR", genes));
+    }
+
+    @Test
     public void testRetrieveGenes() throws ConnectionException {
         CaBioSearchParameters params = new CaBioSearchParameters();
         params.setKeywords("heart");
