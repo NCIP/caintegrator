@@ -129,7 +129,6 @@ public class EditImagingSourceAnnotationsActionTest extends AbstractSessionBased
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
         updaterStub = new ImagingDataSourceAjaxUpdaterStub();
-        updaterStub.clear();
         aimFacadeStub = new AIMFacadeStub();
         action.setUpdater(updaterStub);
         action.setAimFacade(aimFacadeStub);
@@ -251,12 +250,6 @@ public class EditImagingSourceAnnotationsActionTest extends AbstractSessionBased
     
     private static class ImagingDataSourceAjaxUpdaterStub implements IImagingDataSourceAjaxUpdater {
         
-        public boolean runJobCalled = false;
-        
-        public void clear() {
-            runJobCalled = false;
-        }
-        
         public void initializeJsp() {
             
         }
@@ -264,12 +257,8 @@ public class EditImagingSourceAnnotationsActionTest extends AbstractSessionBased
         public void runJob(Long imagingSourceId, File imageClinicalMappingFile,
                 ImageDataSourceMappingTypeEnum mappingType, boolean mapOnly,
                 boolean loadAimAnnotation) {
-            runJobCalled = true;
         }
 
-        public void runJob(Long imagingSourceId) {
-            runJobCalled = true;
-        }
         
     }
 }

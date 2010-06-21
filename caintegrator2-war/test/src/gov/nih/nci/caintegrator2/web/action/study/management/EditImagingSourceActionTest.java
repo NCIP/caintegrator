@@ -297,10 +297,6 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
             runJobCalled = true;
         }
 
-        public void runJob(Long imagingSourceId) {
-            runJobCalled = true;
-        }
-        
     }
     
     private static class NCIAFacadeStubForAction extends NCIAFacadeStub {
