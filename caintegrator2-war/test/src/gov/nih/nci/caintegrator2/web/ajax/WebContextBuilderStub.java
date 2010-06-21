@@ -109,6 +109,7 @@ import org.springframework.mock.web.MockHttpSession;
 /**
  * Stub for DWR's WebContextBuilder.
  */
+@SuppressWarnings("unused") // Unused methods
 public class WebContextBuilderStub implements WebContextBuilder {
 
     public WebContext get() {
@@ -161,11 +162,7 @@ public class WebContextBuilderStub implements WebContextBuilder {
             return null;
         }
 
-        public void setCurrentPageInformation(String arg0, String arg1) {
-
-        }
-
-        public Collection<Object> getAllScriptSessions() {
+        public Collection<ScriptSession> getAllScriptSessions() {
             return null;
         }
 
@@ -173,7 +170,7 @@ public class WebContextBuilderStub implements WebContextBuilder {
             return null;
         }
 
-        public Collection<Object> getScriptSessionsByPage(String arg0) {
+        public Collection<ScriptSession> getScriptSessionsByPage(String arg0) {
             return null;
         }
 
@@ -200,7 +197,7 @@ public class WebContextBuilderStub implements WebContextBuilder {
                 return null;
             }
 
-            public Iterator<Object> getAttributeNames() {
+            public Iterator<String> getAttributeNames() {
                 return null;
             }
 
@@ -233,6 +230,22 @@ public class WebContextBuilderStub implements WebContextBuilder {
 
             }
 
+            public String getPage() {
+                return null;
+            }
+
+        }
+
+        public String getContextPath() {
+            return null;
+        }
+
+        public ScriptSession getScriptSessionById(String arg0) {
+            return null;
+        }
+
+        public void setCurrentPageInformation(String page, String scriptSessionId) {
+            
         }
     }
 }
