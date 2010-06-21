@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:ivy="antlib:org.apache.ivy.ant" basedir="." default="retrieve-bda" name="bda-utils">
 <!--
-$Id: bda-ivy-build.xml 2611 2010-04-09 13:49:01Z saksass $
-$HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-download/bda-ivy-build.xml $
+$Id$
+$HeadURL$
 
 This ant build file downloads the bda project from the official NCICB Ivy Repository.  It also downloads files required to complete the operation if they do not exist.  This script aslo includes some sample publish tasks.  It can be called from other build scripts to download the bda project and it's supporting libraries.  Below is what you might add to your build.xml to use this script.
 
@@ -15,29 +15,26 @@ This ant build file downloads the bda project from the official NCICB Ivy Reposi
 <import file="${bda-utils.dir}/bda-build-utils-1.4.0.xml"/>
 -->
 	<!-- Properties -->
-	<property name="lib.dir" value="${basedir}/lib"/>
-	<property name="software.dir" value="${basedir}"/>
-	<property name="bda-utils.dir" value="${basedir}/bda-utils"/>
-	<property name="commonlibrary.dir" value=""/>
-	<property name="bda.local.repo.dir" value="${software.dir}/../../bda-local-ivy-repo"/>
+	<property location="${basedir}/lib" name="lib.dir"/>
+	<property location="${basedir}" name="software.dir"/>
+	<property location="../" name="target.dir"/>
+	<property location="${basedir}/bda-utils" name="bda-utils.dir"/>
+	<property location="" name="commonlibrary.dir"/>
+	<property location="${software.dir}/../../bda-local-ivy-repo" name="bda.local.repo.dir"/>
 	<property name="bda.version" value="1.6.0"/>
 
-	<property name="ivy.file" value="ivy-2.0.0-beta2.jar"/>
-	<property name="ivy-core.file" value="ivy-core-2.0.0-beta2.jar"/>
+	<property name="ivy.jar.file" value="ivy-2.0.0.jar"/>
 	<property name="ivy.settings.file" value="ivy-bda-settings.xml"/>
-	<property name="ivy.bda.file" value="ivy-bda.xml"/>
+	<property name="ivy.bda.file" value="ivy-bda-2.0.0.xml"/>
 
-	<property name="ivy.src.url" value="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/apache/ivy/2.0.0-beta2/${ivy.file}"/>
-	<property name="ivy-core.src.url" value="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/apache/ivy-core/2.0.0-beta2/${ivy-core.file}"/>
+	<property name="ivy.src.url" value="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/apache/ivy/2.0.0/${ivy.jar.file}"/>
 	<property name="ivy-bda.src.url.base" value="http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-download"/>
 
-	<property name="ivy.dest.file" value="${lib.dir}/${ivy.file}"/>
-	<property name="ivy-core.dest.file" value="${lib.dir}/${ivy-core.file}"/>
+	<property name="ivy.dest.file" value="${lib.dir}/${ivy.jar.file}"/>
 	<!-- Paths-->
 	<path id="ivy.classpath">
 		<fileset dir="${lib.dir}">
-			<include name="${ivy.file}"/>
-			<include name="${ivy-core.file}"/>
+			<include name="${ivy.jar.file}"/>
 		</fileset>
 	</path>
 
@@ -45,9 +42,18 @@ This ant build file downloads the bda project from the official NCICB Ivy Reposi
 	<condition property="ivy.available">
 		<and>
 			<available file="${ivy.dest.file}"/>
-			<available file="${ivy-core.dest.file}"/>
 		</and>
 	</condition>
+	<condition property="local.cbiit-ivy-repo.dir" value="/">
+		<or>
+			<os family="unix"/>
+			<os family="mac"/>
+		</or>
+	</condition>
+	<condition property="local.cbiit-ivy-repo.dir" value="c:/">
+		<os family="windows"/>
+	</condition>
+
 	<available file="${ivy.settings.file}" property="ivy.settings.available"/>
 	<available file="${ivy.bda.file}" property="ivy.bda.available"/>
 	<echo message="comonlibrary.dir=${commonlibrary.dir}"/>
@@ -74,7 +80,6 @@ This ant build file downloads the bda project from the official NCICB Ivy Reposi
 
 	<target description="Downloads ivy jars if not present" name="download-ivy" unless="ivy.available">
 		<get dest="${ivy.dest.file}" src="${ivy.src.url}"/>
-		<get dest="${ivy-core.dest.file}" src="${ivy-core.src.url}"/>
 	</target>
 
 	<target description="Downloads ivy settings file if not present" name="download-ivy-settings" unless="ivy.settings.available">
@@ -112,7 +117,7 @@ This ant build file downloads the bda project from the official NCICB Ivy Reposi
 		<property name="ivy.repo.url" value="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk"/>
 		<property name="ivy.sample.path" value="ivy-repo/jakarta/commons-logging/1.0.4"/>
 		<property name="ivy.sample.file" value="commons-logging-1.0.4.jar"/>
-		<property name="ivy.sample.ivy.file" value="ivy.xml"/>
+		<property name="ivy.sample.ivy.jar.file" value="ivy.xml"/>
 		<property name="scratch.dir" value="scratch"/>
 		<property name="version" value="1.0.4"/>
 		<tstamp>
@@ -121,7 +126,7 @@ This ant build file downloads the bda project from the official NCICB Ivy Reposi
 		<mkdir dir="${bda.local.repo.dir}"/>
 		<mkdir dir="${scratch.dir}"/>
 		<get dest="${scratch.dir}/${ivy.sample.file}" src="${ivy.repo.url}/${ivy.sample.path}/${ivy.sample.file}"/>
-		<get dest="${scratch.dir}/${ivy.sample.ivy.file}" src="${ivy.repo.url}/${ivy.sample.path}/${ivy.sample.ivy.file}"/>
+		<get dest="${scratch.dir}/${ivy.sample.ivy.jar.file}" src="${ivy.repo.url}/${ivy.sample.path}/${ivy.sample.ivy.jar.file}"/>
 		<property name="ivy.dep.file" value="${scratch.dir}/ivy.xml"/>
 		<ivy:settings file="ivy-bda-settings.xml"/>
 		<ivy:info file="${ivy.dep.file}"/>
