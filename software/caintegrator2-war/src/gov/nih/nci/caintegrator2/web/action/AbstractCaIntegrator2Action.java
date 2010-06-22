@@ -329,6 +329,14 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
             return null;
         }
     }
+    
+    /**
+     * Resets the query results.
+     */
+    protected final void resetQueryResult() {
+        setQueryResult(null);
+        setGenomicDataQueryResult(null);
+    }
 
     /**
      * @param queryResult the queryResult to set

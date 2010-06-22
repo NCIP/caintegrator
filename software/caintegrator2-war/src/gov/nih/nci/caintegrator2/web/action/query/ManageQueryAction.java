@@ -307,7 +307,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
 
         // Check which user action is submitted
         if ("remove".equals(selectedAction)) {
-            setQueryResult(null);
+            resetQueryResult();
             returnValue = removeRow();
         } else if ("addCriterionRow".equals(selectedAction)) {
             setQueryResult(null);
@@ -409,7 +409,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
 
     private String createNewQuery() {
         getQueryForm().createQuery(getStudySubscription(), platformsInStudy);
-        setQueryResult(null);
+        resetQueryResult();
         return SUCCESS;
     }
     
@@ -616,6 +616,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         getQueryForm().setGenomicSortingOrder(-1);
         ensureQueryIsLoaded();
         updateSorting();
+        resetQueryResult();
         try {
             if (ResultTypeEnum.GENOMIC.getValue().equals(getQueryForm().getResultConfiguration().getResultType())) {
                 GenomicDataQueryResult genomicResult;
@@ -625,7 +626,6 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
                 }
                 setGenomicDataQueryResult(genomicResult);
             } else {
-                setQueryResult(null);
                 QueryResult result = queryManagementService.execute(getQueryForm().getQuery());
                 loadAllImages(result);
                 setQueryResult(new DisplayableQueryResult(result));
@@ -712,7 +712,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         queryManagementService.delete(query);
         getWorkspaceService().saveUserWorkspace(getWorkspace());
         getQueryForm().createQuery(getStudySubscription(), platformsInStudy);
-        setQueryResult(null);
+        resetQueryResult();
         return SUCCESS;
     }
     
