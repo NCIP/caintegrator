@@ -137,25 +137,13 @@ public class CaBioApplicationServiceFactoryStub implements CaBioApplicationServi
 
         public List<Object> query(HQLCriteria hqlCriteria) throws ApplicationException {
             hqlString = hqlCriteria.getHqlString();
-            if (hqlString.contains("Gene o") || hqlString.contains("DatabaseCrossReference o")) {
+            if (hqlString.contains("Gene o") || hqlString.contains("geneAliasCollection o")
+                    || hqlString.contains("DatabaseCrossReference o")) {
                 return retrieveGenes();
             } else if (hqlString.contains("Pathway o")) {
                 return retrievePathways();
-            } else if (hqlString.contains("GeneAlias o")) {
-                return retrieveGeneAlias();
             }
             return null;
-        }
-        
-        private List<Object> retrieveGeneAlias() {
-            List<Object> objects = new ArrayList<Object>();
-            Object[] object1 = new Object[4];
-            Long id1 = 1l;
-            String name1 = "geneAlias1";
-            object1[0] = name1;
-            object1[1] = id1;
-            objects.add(object1);
-            return objects;
         }
 
         private List<Object> retrievePathways() {

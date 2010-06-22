@@ -160,18 +160,20 @@ public class CaBioFacadeImplTest {
         params.setSearchType(CaBioSearchTypeEnum.GENE_ALIAS);
         params.setSearchPreferenceForDisplay(KeywordSearchPreferenceEnum.ANY.getValue());
         params.setTaxon(CaBioSearchParameters.ALL_TAXONS);
-        List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenesFromGeneAlias(params);
-        assertEquals("EGFR", genes.get(0).getSymbol());
-        System.out.println(applicationServiceStub.hqlString);
+        List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenes(params);
+        assertEquals("BRCA1", genes.get(0).getSymbol());
+        assertEquals("EGFR", genes.get(1).getSymbol());
+        assertEquals("EGFR", genes.get(2).getSymbol());
         assertTrue(applicationServiceStub.hqlString.contains("(  lower(o.name) LIKE ?  )  OR  (  lower(o.name) LIKE ?  )"));
         params.setKeywords("test here");
         params.setFilterGenesOnStudy(true);
         params.setSearchPreferenceForDisplay(KeywordSearchPreferenceEnum.ALL.getValue());
         params.setTaxon(CaBioSearchParameters.HUMAN_TAXON);
-        genes = caBioFacade.retrieveGenesFromGeneAlias(params);
-        System.out.println(applicationServiceStub.hqlString);
+        genes = caBioFacade.retrieveGenes(params);
         assertTrue(applicationServiceStub.hqlString.contains("(  lower(o.name) LIKE ?  )  AND  (  lower(o.name) LIKE ?  )"));
-        assertEquals(0, genes.size());
+        assertTrue(applicationServiceStub.hqlString.contains("gene.taxon.commonName LIKE ?"));
+        assertEquals(1, genes.size());
+        assertEquals("BRCA1", genes.get(0).getSymbol());
     }
     
     @Test

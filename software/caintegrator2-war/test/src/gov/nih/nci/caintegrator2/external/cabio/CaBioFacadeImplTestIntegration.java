@@ -120,11 +120,11 @@ public class CaBioFacadeImplTestIntegration {
         params.setTaxon("human");
         params.setSearchType(CaBioSearchTypeEnum.GENE_ALIAS);
         params.setFilterGenesOnStudy(false);
-        List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenesFromGeneAlias(params);
+        List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenes(params);
         assertTrue(checkSymbolExists("EGFR", genes));
         
         params.setTaxon(CaBioSearchParameters.ALL_TAXONS);
-        genes = caBioFacade.retrieveGenesFromGeneAlias(params);
+        genes = caBioFacade.retrieveGenes(params);
         assertTrue(!genes.isEmpty());
     }
 
