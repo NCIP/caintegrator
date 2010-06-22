@@ -56,7 +56,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<property name="download.dir" location="${target.dir}/download" />
 	<property name="pt.dir" location="${target.dir}/persistent-transient" />
 	<property name="working.dir" location="${target.dir}/working" />
-	<property name="ivy.settings.file" location="${build.dir}/ivy-bda-settings.xml" />
+	<property name="ivy.settings.file" location="${common.dir}/ivysettings.xml" />
 
 	<!-- Used by dist:*:prep to copy resource files to distribution area -->
 
@@ -194,7 +194,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			<property name="software.dir" value="${software.dir}" />
 		</ant>
 		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="ivy:clean" dir="${caintegrator2-war.base.dir}" />
-
+		<ant inheritAll="false" inheritRefs="false" antfile="${genepattern-service-jar.build.file}" target="ivy:clean" dir="${genepattern-service-jar.base.dir}" />
+	    <ant inheritAll="false" inheritRefs="false" antfile="${kaplan-meier-jar.build.file}" target="ivy:clean" dir="${kaplan-meier-jar.base.dir}" />
 	</target>
 
 	<target name="validate:pre:build">
