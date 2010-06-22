@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.external.cabio;
 
 import gov.nih.nci.cabio.domain.Gene;
-import gov.nih.nci.cabio.domain.GeneAlias;
 import gov.nih.nci.cabio.domain.Pathway;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -144,56 +143,12 @@ public class CaBioFacadeImpl implements CaBioFacade {
         }
         return createCaBioDisplayableGenesFromObjects(geneResults, searchParams);
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public List<CaBioDisplayableGene> retrieveGenesFromGeneAlias(CaBioSearchParameters searchParams) 
-    throws ConnectionException {
-        // When using an ApplicationService must store our context and re-set it so that the user still has old
-        // authentication.
-        SecurityContext originalContext = SecurityContextHolder.getContext();
-        CaBioApplicationService caBioApplicationService =  
-            caBioApplicationServiceFactory.retrieveCaBioApplicationService(caBioUrl);
-        List<Gene> results = new ArrayList<Gene>();
-        List<CaBioDisplayableGene> displayableGenes = new ArrayList<CaBioDisplayableGene>();
-        try {
-            List<GeneAlias> aliasResults = retrieveGeneAlias(searchParams, caBioApplicationService);
-            for (GeneAlias alias : aliasResults) {
-                for (Object geneResult : caBioApplicationService.search(Gene.class, alias)) {
-                    addGeneFromAlias(searchParams, results, (Gene) geneResult);
-                }
-            }
-            displayableGenes = createCaBioDisplayableGenesFromGenes(results, searchParams);
-        } catch (ApplicationException e) {
-            throw new ConnectionException("Search genes from alias failed", e);
-        } finally {
-            // Restore context as described above.
-            SecurityContextHolder.setContext(originalContext);
-        }
-        return displayableGenes;
-    }
-
-    private void addGeneFromAlias(CaBioSearchParameters searchParams, List<Gene> results, Gene gene) {
-        if (CaBioSearchParameters.ALL_TAXONS.equals(searchParams.getTaxon())
-                || gene.getTaxon().getCommonName().contains(searchParams.getTaxon())) {
-            results.add(gene);
-        }
-    }
-
-    private List<GeneAlias> retrieveGeneAlias(CaBioSearchParameters searchParams,
-            CaBioApplicationService caBioApplicationService) 
-    throws ConnectionException, ApplicationException {
-        StringBuffer hqlString = new StringBuffer(getAliasQueryString());
-        List<String> params = new ArrayList<String>();
-        addKeywordsToQuery(searchParams, hqlString, params);
-        HQLCriteria hqlCriteria = new HQLCriteria(hqlString.toString(), params);
-        return createAlias(caBioApplicationService.query(hqlCriteria));
-    }
 
     private void addTaxonParam(CaBioSearchParameters searchParams, StringBuffer hqlString, List<String> params) {
         if (CaBioSearchTypeEnum.DATABASE_CROSS_REF.equals(searchParams.getSearchType())) {
             hqlString.append(" and o.gene.taxon.commonName LIKE ?");
+        } else if (CaBioSearchTypeEnum.GENE_ALIAS.equals(searchParams.getSearchType())) {
+            hqlString.append(" and gene.taxon.commonName LIKE ?");
         } else {
             hqlString.append(" and o.taxon.commonName LIKE ?");
         }
@@ -255,11 +210,18 @@ public class CaBioFacadeImpl implements CaBioFacade {
     }
 
     private String getGeneQueryString(CaBioSearchTypeEnum searchType) {
-        return (CaBioSearchTypeEnum.DATABASE_CROSS_REF.equals(searchType))
-            ? "SELECT DISTINCT o.gene.symbol, o.gene.id, o.gene.fullName, o.gene.taxon.commonName, o.gene.hugoSymbol " 
+        if (CaBioSearchTypeEnum.DATABASE_CROSS_REF.equals(searchType)) {
+            return "SELECT DISTINCT o.gene.symbol, o.gene.id, o.gene.fullName, "
+                    + " o.gene.taxon.commonName, o.gene.hugoSymbol " 
                     + " FROM gov.nih.nci.common.domain.DatabaseCrossReference o"
-                    + " WHERE o.gene.symbol is not null "
-            : "SELECT DISTINCT o.symbol, o.id, o.fullName, o.taxon.commonName, o.hugoSymbol " 
+                    + " WHERE o.gene.symbol is not null ";
+        } else if (CaBioSearchTypeEnum.GENE_ALIAS.equals(searchType)) {
+            return "SELECT DISTINCT gene.symbol, gene.id, gene.fullName, gene.taxon.commonName, gene.hugoSymbol " 
+                    + " FROM gov.nih.nci.cabio.domain.Gene gene"
+                    + " LEFT JOIN gene.geneAliasCollection o "
+                    + " WHERE gene.symbol is not null";
+        }
+        return "SELECT DISTINCT o.symbol, o.id, o.fullName, o.taxon.commonName, o.hugoSymbol " 
                 + " FROM gov.nih.nci.cabio.domain.Gene o"
                 + " WHERE o.symbol is not null ";
     }
@@ -268,12 +230,6 @@ public class CaBioFacadeImpl implements CaBioFacade {
         return "SELECT o.name, o.id, o.displayValue, o.description " 
                             + " FROM gov.nih.nci.cabio.domain.Pathway o"
                             + " WHERE o.name is not null ";
-    }
-    
-    private String getAliasQueryString() {
-        return "SELECT DISTINCT o.name, o.id " 
-            + " FROM gov.nih.nci.cabio.domain.GeneAlias o"
-            + " WHERE o.name is not null ";
     }
 
     private void addKeywordsToQuery(CaBioSearchParameters searchParams, StringBuffer hqlString, 
@@ -396,23 +352,6 @@ public class CaBioFacadeImpl implements CaBioFacade {
         }
         Collections.sort(pathways);
         return pathways;
-    }
-    
-    private List<GeneAlias> createAlias(List<Object> aliasResults) {
-        List<GeneAlias> aliases = new ArrayList<GeneAlias>();
-        Set<String> usedNames = new HashSet<String>();
-        for (Object result : aliasResults) {
-            Object[] aliasObject = (Object[]) result;
-            String name = ((String) aliasObject[0]);
-            if (!usedNames.contains(name)) {
-                usedNames.add(name);
-                GeneAlias alias = new GeneAlias();
-                alias.setName(name);
-                alias.setId((Long) aliasObject[1]);
-                aliases.add(alias);
-            }
-        }
-        return aliases;
     }
     
     private List<CaBioDisplayableGene> filterGenesNotInStudy(List<CaBioDisplayableGene> genes, Study study) {

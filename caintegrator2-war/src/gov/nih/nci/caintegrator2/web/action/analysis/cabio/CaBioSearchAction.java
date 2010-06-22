@@ -217,8 +217,6 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
             getCaBioPathways().clear();
             if (isSearchFromPathwaysSelected) {
                 caBioGenes = caBioFacade.retrieveGenesFromPathways(searchParams);
-            } else if (CaBioSearchTypeEnum.GENE_ALIAS.equals(searchParams.getSearchType())) {
-                caBioGenes = caBioFacade.retrieveGenesFromGeneAlias(searchParams);
             } else {
                 caBioGenes = caBioFacade.retrieveGenes(searchParams);
             }
