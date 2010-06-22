@@ -103,15 +103,6 @@ public interface CaBioFacade {
     List<CaBioDisplayableGene> retrieveGenes(CaBioSearchParameters searchParams) throws ConnectionException;
     
     /**
-     * Retrieves genes from caBio given gene alias.
-     * @param searchParams to search genes on.
-     * @return list of displayable genes.
-     * @throws ConnectionException if unable to connect to caBio.
-     */
-    List<CaBioDisplayableGene> retrieveGenesFromGeneAlias(CaBioSearchParameters searchParams)
-    throws ConnectionException;
-    
-    /**
      * Retrieves genes from caBio given pathways.
      * @param searchParams to search genes on.
      * @return list of displayable genes.
