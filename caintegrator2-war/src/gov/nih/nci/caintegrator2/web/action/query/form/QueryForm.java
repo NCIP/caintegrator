@@ -295,7 +295,7 @@ public class QueryForm {
         for (AnnotationGroup group : sortedAnnotationGroups) {
             options.add(group.getName());
         }
-        if (study.hasGenomicDataSources()) {
+        if (study.hasExpressionData()) {
             options.add(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
         }
         options.add(CriterionRowTypeEnum.UNIQUE_IDENTIIFER.getValue());
