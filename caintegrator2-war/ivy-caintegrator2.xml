@@ -63,7 +63,7 @@
     <dependency org="jboss" name="jboss-aop-client" rev="1.5.2.GA" conf="compile"/>
     <dependency org="jboss" name="jboss-ejb3-client" rev="noversion" conf="runtime"/>
     <dependency org="jboss" name="jboss-aspect-client" rev="1.5" conf="compile"/>
-    <dependency org="caintegrator2" name="freestylesearch" rev="4.0" conf="runtime"/>
+    <dependency org="gov.nih.nci.caintegrator2" name="freestylesearch" rev="4.0" conf="runtime"/>
     <dependency org="org.hibernate" name="hibernate-commons-annotations" rev="3.0.0.ga" conf="compile->master"/>
     <dependency org="org.hibernate" name="hibernate-tools" rev="3.2.3.GA" conf="compile->master"/>
     <dependency org="org.hibernate" name="hibernate-validator" rev="3.0.0.ga" conf="runtime->master"/>
