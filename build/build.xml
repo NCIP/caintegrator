@@ -56,7 +56,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<property name="download.dir" location="${target.dir}/download" />
 	<property name="pt.dir" location="${target.dir}/persistent-transient" />
 	<property name="working.dir" location="${target.dir}/working" />
-	<property name="ivy.settings.file" location="${common.dir}/ivysettings.xml" />
+    <property name="ivy.settings.file" location="${build.dir}/ivy-bda-settings.xml" />
+
 
 	<!-- Used by dist:*:prep to copy resource files to distribution area -->
 
@@ -183,8 +184,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</target>
 
 	<target name="ivy:clean" description="Clean">
-		<ivy:settings file="${ivy.settings.file}" />
-		<ivy:cleancache />
 		<ant inheritAll="false" inheritRefs="false"
 			antfile="bda-ivy-build.xml"
 			target="ivy-cleancache"
