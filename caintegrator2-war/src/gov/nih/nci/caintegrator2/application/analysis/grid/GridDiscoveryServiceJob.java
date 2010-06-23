@@ -182,6 +182,7 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         setDefaultPcaService();
         setDefaultCaDnaCopyService();
         setDefaultGisticService();
+        setDefaultAimService();
     }
     
     private static void setDefaultNbiaService() {
