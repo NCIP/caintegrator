@@ -105,8 +105,9 @@
     <!-- ** IVY TARGETS AND DEPENDENCY PATHS                              ** -->
     <!-- ******************************************************************* -->
 
-    <property name="ivy.jar" location="${build.lib.dir}/ivy-2.0.0-beta2.jar" />
-
+    <property name="ivy.jar" location="${build.lib.dir}/ivy-2.0.0.jar" />
+    <get src="https://ncisvn.nci.nih.gov/svn/maven-mirror/trunk/org/apache/ivy/ivy/2.0.0/ivy-2.0.0.jar"
+                        dest="${ivy.jar}" usetimestamp="true"/>
     <property name="ivy.settings.file" location="${common.dir}/ivysettings.xml" />
     <property name="ivy.def.file" location="ivy-caintegrator2.xml" />
     <property name="local.repo.dir" location="${software.dir}/local-ivy-repo" />
@@ -128,7 +129,7 @@
 
     <target name="ivy:init">
         <property name="ivy.dep.file" value="${ivy.def.file}"/>
-        <ivy:settings file="${ivy.settings.file}" override="true" />
+        <ivy:settings file="${ivy.settings.file}" />
     </target>
     
     <target name="ivy:clean" depends="clean:dependencies" description="Clean">

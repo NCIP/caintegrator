@@ -23,7 +23,9 @@
   </publications>
   
   <dependencies>
-    <dependency org="openqa" name="selenium" rev="0.9.0" conf="test-selenium->master"/>
+	  <dependency org="org.seleniumhq.selenium.server" name="selenium-server" rev="1.0.3" conf="test-selenium->master">
+		  <artifact name="selenuim-server" type="jar" url="https://ncisvn.nci.nih.gov/svn/maven-mirror/trunk/org/seleniumhq/selenium/server/selenium-server/1.0.3/selenium-server-1.0.3-standalone.jar"/>
+	  </dependency>
     <dependency org="junit" name="junit" rev="4.3.1" conf="test-junit,test-pmd->master"/>
     <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9" conf="test-cobertura->master"/>  
     <dependency org="log4j" name="log4j" rev="1.2.9" conf="test-cobertura->master"/>  
@@ -122,7 +124,7 @@
     <dependency org="org.codehaus.castor" name="castor" rev="1.0.4" conf="runtime->master"/>
     <dependency org="gov.nih.nci.security" name="csm" rev="4.2" conf="runtime->master"/>
     <dependency org="ncicb" name="nci-commons-core" rev="1.2.8" conf="runtime"/>
-    <dependency org="org.hibernate" name="ejb3-persistence" rev="1.0.1" conf="runtime"/>
+    <dependency org="org.hibernate" name="ejb3-persistence" rev="1.0.1.GA" conf="runtime->default"/>
     <dependency org="org.hibernate" name="hibernate-annotations" rev="1.0" conf="runtime"/>
     <dependency org="org.hibernate" name="hibernate" rev="3.2.0.ga" conf="runtime->master"/>
     <dependency org="junit" name="junit" rev="4.4" conf="compile->master"/>
