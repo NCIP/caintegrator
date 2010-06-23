@@ -299,12 +299,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>imagingSourceForm_imageAnnotationFile</td>
+	<td>imageAnnotationFile</td>
 	<td>${testResourcesDirectory}ncri_image_annotations.csv</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>imagingSourceForm_createNewAnnotationDefinition</td>
+	<td>createNewAnnotationDefinition</td>
 	<td></td>
 </tr>
 <tr>
