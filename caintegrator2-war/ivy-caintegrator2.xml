@@ -23,9 +23,12 @@
   </publications>
   
   <dependencies>
+	<!-- 
 	  <dependency org="org.seleniumhq.selenium.server" name="selenium-server" rev="1.0.3" conf="test-selenium->master">
 		  <artifact name="selenuim-server" type="jar" url="https://ncisvn.nci.nih.gov/svn/maven-mirror/trunk/org/seleniumhq/selenium/server/selenium-server/1.0.3/selenium-server-1.0.3-standalone.jar"/>
 	  </dependency>
+     -->
+    <dependency org="openqa" name="selenium" rev="0.9.0" conf="test-selenium->master"/>
     <dependency org="junit" name="junit" rev="4.3.1" conf="test-junit,test-pmd->master"/>
     <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9" conf="test-cobertura->master"/>  
     <dependency org="log4j" name="log4j" rev="1.2.9" conf="test-cobertura->master"/>  
@@ -138,7 +141,7 @@
     <dependency org="jfree" name="jfreechart" rev="1.0.9" conf="runtime"/>
     <dependency org="jfree" name="jcommon" rev="1.0.12" conf="runtime"/>
     <dependency org="weka" name="weka" rev="3.4.13" conf="runtime"/>
-    <dependency org="org.directwebremoting" name="dwr" rev="2.0.3" conf="runtime->master" />
+    <dependency org="org.directwebremoting" name="dwr" rev="2.0.6" conf="runtime->master" />
     <dependency org="commons-dbcp" name="commons-dbcp" rev="1.2.1" conf="runtime->master" />
     <dependency org="org.apache.axis2" name="axis2-saaj" rev="1.1" conf="runtime->default" />
    
