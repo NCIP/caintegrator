@@ -1,7 +1,5 @@
 <ivysettings>
 	<property name="cagrid.ivy.repo" value="http://software.cagrid.org/repository-1.2/"/>
-	<property name="ivy.project.repo" value="${target.dir}/local-repo-dir"/>
-    <property name="ivy.system.repo" value="${software.dir}/../../system-ivy-repo"/>
 	
 	<settings defaultResolver="ncicb-chain" />
 	<caches defaultCacheDir="${user.home}/.ivy2-${ant.project.name}" useOrigin="true"/>
@@ -12,21 +10,6 @@
 				<artifact pattern="${local.repo.dir}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
 				<ivy pattern="${local.repo.dir}/[organisation]/[module]/[revision]/ivy.xml" />
 			</filesystem> 
-            <filesystem name="local-project-repo" local="true">
-                <!-- Local project level repo -->
-                <artifact pattern="${ivy.project.repo}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
-                <ivy pattern="${ivy.project.repo}/[organisation]/[module]/[revision]/ivy.xml" />
-            </filesystem>
-            <filesystem name="local-system-repo" local="true">
-                <!-- Local system level repo, to share chagnes ammong multiple projects-->
-                <artifact pattern="${ivy.system.repo}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
-                <ivy pattern="${ivy.system.repo}/[organisation]/[module]/[revision]/ivy.xml" />
-            </filesystem>      
-            <filesystem name="local-cbiit-ivy-repo" local="true">
-                <!-- local enterprise repository checkout, best used when working remote or network disconnected -->
-                <artifact pattern="${local.cbiit-ivy-repo.dir}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
-                <ivy pattern="${local.cbiit-ivy-repo.dir}/[organisation]/[module]/[revision]/ivy.xml" />
-            </filesystem>           
             <url name="cbiit-ivy-repo">
                 <!-- remote enterprise repository -->
                 <artifact pattern="https://ncisvn.nci.nih.gov/svn/cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
