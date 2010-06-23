@@ -33,6 +33,7 @@
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "block";
             document.getElementById("commentAdfGemlDiv").style.display = "none";
+            document.getElementById("commentAllFormatsDiv").style.display = "none";
         } else if (type == "Affymetrix SNP" || type == "Affymetrix Copy Number"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
@@ -42,15 +43,17 @@
             document.getElementById("addFileButtonDiv").style.display = "block";
             document.getElementById("commentCsvDiv").style.display = "block";
             document.getElementById("commentAdfGemlDiv").style.display = "none";
+            document.getElementById("commentAllFormatsDiv").style.display = "none";
         } else if (type == "Agilent Gene Expression"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
             document.getElementById("platformChannelTypeDiv").style.display = "block";
             document.getElementById("platformChannelType").value = "Two-Color";
-            document.getElementById("commentNameDiv").style.display = "none";
+            document.getElementById("commentNameDiv").style.display = "block";
             document.getElementById("addFileButtonDiv").style.display = "none";
-            document.getElementById("commentCsvDiv").style.display = "block";
+            document.getElementById("commentCsvDiv").style.display = "none";
             document.getElementById("commentAdfGemlDiv").style.display = "none";
+            document.getElementById("commentAllFormatsDiv").style.display = "block";
         } else if (type == "Agilent Copy Number"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
@@ -60,6 +63,7 @@
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "none";
             document.getElementById("commentAdfGemlDiv").style.display = "block";
+            document.getElementById("commentAllFormatsDiv").style.display = "none";
         }
     }
     
@@ -139,6 +143,10 @@
                         </s:div>
                         <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="%{csvlFileDisplay}">
                             <span class="wwlbl">(csv file format)</span>
+                            <span class="wwctrl"></span>
+                        </s:div>
+                        <s:div id="commentAllFormatsDiv" cssClass="inlinehelp_form_element" cssStyle="%{adfGemlFileDisplay}">
+                            <span class="wwlbl">(csv, adf, or GEML xml file format)</span>
                             <span class="wwctrl"></span>
                         </s:div>
                         <s:div id="addFileButtonDiv" cssStyle="%{addButtonDisplay}">
