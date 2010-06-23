@@ -6,7 +6,7 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-sdkQuery4-processor-1.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/iviCore-1.2dev.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/ncia-beans.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/dwr-2.0.3.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/dwr-2.0.6.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/ComparativeMarkerSelMAGESvc-service.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/ComparativeMarkerSelMAGESvc-stubs.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/gpCabigUtil.jar"/>
