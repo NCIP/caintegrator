@@ -3,8 +3,16 @@
             
 <div id="content">
     <script language="javascript">
+        // This function is called at body onload because IE 7 puts the footer in the middle of the page
+        // sporadically, and this toggles it to go to the proper position.
+        function initializeJsp() {
+        	var tbody = document.getElementById('securityInformationTbody');
+        	tbody.style.display = "none";
+        	tbody.style.display = "";
+        }
+        
         function toggleLdap() {
-            var tbody = document.getElementById('acct_details');
+        	var tbody = document.getElementById('acct_details');
             var isLdap = document.getElementById('registrationForm_ldapAuthenticatetrue').checked;
             if (isLdap) {
                 tbody.style.display = "";
@@ -26,7 +34,7 @@
    
     <s:form name="registrationForm" id="registrationForm" action="save">
         <table>
-        <tbody>
+        <tbody id="securityInformationTbody" >
         <tr><td colspan="2"><h2>Security Information</h2></td></tr>
         </tbody>
         <s:if test="%{ldapInstall}">
@@ -65,8 +73,6 @@
 	    </tbody>
 	    </table>
     </s:form>
-    
-            
 </div>
 
 <div class="clear"><br /></div>
