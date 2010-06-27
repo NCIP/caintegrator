@@ -2,7 +2,15 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
             
 <div id="content">                      
-
+    <script language="javascript">
+        // This function is called at body onload because IE 7 puts the footer in the middle of the page
+        // sporadically, and this toggles it to go to the proper position.
+        function initializeJsp() {
+            var tbody = document.getElementById('survivalTypeDiv');
+            tbody.style.display = "none";
+            tbody.style.display = "";
+        }
+    </script>
     <h1 style="color: #FFFFFF; background: #263D6B; padding: 5px;">editing: <strong><s:property value="studyConfiguration.study.shortTitleText" /></strong></h1>    
     
     <!--Page Help-->
@@ -55,7 +63,7 @@
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="survivalValueDefinition.id" />
                     <br />
-		            <s:div cssStyle="padding: 1em 0 0 0;">
+		            <s:div cssStyle="padding: 1em 0 0 0;" id="survivalTypeDiv">
 		                <s:div cssClass="wwlbl"><label class="label">Survival Definition Type: </label></s:div>
 		                <s:div>
 		                    <s:radio theme="css_xhtml" name="survivalDefinitionFormValues.survivalValueType" list="#{'By Date':'By Date'}" onclick="document.getElementById('lengthOfTimeInputParams').style.display = 'none'; document.getElementById('dateInputParams').style.display = 'block';" />
