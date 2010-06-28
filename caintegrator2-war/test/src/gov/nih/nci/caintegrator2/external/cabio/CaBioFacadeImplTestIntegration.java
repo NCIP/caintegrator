@@ -131,12 +131,12 @@ public class CaBioFacadeImplTestIntegration {
     @Test
     public void testRetrieveGenesFromDatabase() throws ConnectionException {
         CaBioSearchParameters params = new CaBioSearchParameters();
-        params.setKeywords("OMIM");
+        params.setKeywords("13649");
         params.setTaxon("human");
         params.setSearchType(CaBioSearchTypeEnum.DATABASE_CROSS_REF);
         params.setFilterGenesOnStudy(false);
         List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenes(params);
-        assertTrue(checkSymbolExists("EGFR", genes));
+        assertTrue(checkSymbolExists("BRIP1", genes));
     }
 
     @Test
