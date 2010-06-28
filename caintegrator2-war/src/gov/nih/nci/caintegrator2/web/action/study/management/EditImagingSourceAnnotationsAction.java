@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.study.ImageAnnotationUploadType;
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.aim.AIMFacade;
@@ -103,7 +104,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -160,8 +160,7 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
     @Override
     protected void fixUrlFromInternetExplorer() {
        if (!StringUtils.isBlank(getAimServerProfile().getUrl())) {
-           getAimServerProfile().setUrl(
-                Pattern.compile(",\\s.*").matcher(getAimServerProfile().getUrl()).replaceAll(""));
+           getAimServerProfile().setUrl(Cai2Util.fixUrlForEditableSelect(getAimServerProfile().getUrl()));
        }
     }
     

@@ -242,11 +242,13 @@
     <definition name="principalComponentAnalysis" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/principalComponentAnalysis_tile.jsp" />
         <put-attribute name="subTitle" value="Principal Component Analysis" />
+        <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyDwrAjax_tile.jsp" />
     </definition>
     
     <definition name="gisticAnalysis" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/gisticAnalysis_tile.jsp" />
         <put-attribute name="subTitle" value="GISTIC Analysis" />
+        <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyDwrAjax_tile.jsp" />
     </definition>
     
     <!-- Plot pages -->
