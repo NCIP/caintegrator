@@ -117,12 +117,18 @@ public class GenePatternAjaxRunner implements Runnable {
         try {
             processLocally();
         } catch (Exception e) {
-            String errorMessage = "Couldn't execute GenePattern analysis job: " + e.getMessage();
-            updater.addError(errorMessage, job);
-            job.setStatus(AnalysisJobStatusEnum.LOCAL_ERROR);
-            job.setStatusDescription(errorMessage);
-            updater.saveAndUpdateJobStatus(job);
+            processErrorState(e);
+        } catch (Error e) {
+            processErrorState(e);
         }
+    }
+
+    private void processErrorState(Throwable e) {
+        String errorMessage = "Couldn't execute GenePattern analysis job: " + e.getMessage();
+        updater.addError(errorMessage, job);
+        job.setStatus(AnalysisJobStatusEnum.LOCAL_ERROR);
+        job.setStatusDescription(errorMessage);
+        updater.saveAndUpdateJobStatus(job);
     }
 
     private JobInfoWrapper processLocally() throws WebServiceException, InvalidCriterionException {

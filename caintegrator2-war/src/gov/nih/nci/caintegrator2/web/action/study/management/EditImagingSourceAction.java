@@ -183,13 +183,11 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
     protected void fixUrlFromInternetExplorer() {
        if (!StringUtils.isBlank(getImageSourceConfiguration().getServerProfile().getUrl())) {
            getImageSourceConfiguration().getServerProfile().setUrl(
-                Pattern.compile(",\\s.*").matcher(getImageSourceConfiguration().getServerProfile().getUrl())
-                        .replaceAll(""));
+               Cai2Util.fixUrlForEditableSelect(getImageSourceConfiguration().getServerProfile().getUrl()));
        }
        if (!StringUtils.isBlank(getImageSourceConfiguration().getServerProfile().getWebUrl())) {
            getImageSourceConfiguration().getServerProfile().setWebUrl(
-                Pattern.compile(",\\s.*").matcher(getImageSourceConfiguration().getServerProfile().getWebUrl())
-                        .replaceAll(""));
+               Cai2Util.fixUrlForEditableSelect(getImageSourceConfiguration().getServerProfile().getWebUrl()));
        }
     }
     

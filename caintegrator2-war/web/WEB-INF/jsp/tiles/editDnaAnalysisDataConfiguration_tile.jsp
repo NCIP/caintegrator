@@ -1,5 +1,30 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+
+<script type="text/javascript" src="/caintegrator2/common/js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="/caintegrator2/common/js/jquery.editable-select.js"></script>
+<script type="text/javascript">
+    jQuery.noConflict();
+
+    jQuery(function() {
+      jQuery('.editable-select').editableSelect(
+        {
+          bg_iframe: true,
+          onSelect: false,
+          case_sensitive: false, // If set to true, the user has to type in an exact
+                                 // match for the item to get highlighted
+          items_then_scroll: 10 // If there are more than 10 items, display a scrollbar
+        }
+      );
+      document.getElementById("caDnaCopyUrl").value = document.dnaAnalysisDataConfigurationForm.serverProfileUrl.value;
+    });
+
+    function saveDatasource() {
+    	document.dnaAnalysisDataConfigurationForm.serverProfileUrl.value = document.getElementById("caDnaCopyUrl").value; // The value isn't set without doing this.
+    	document.dnaAnalysisDataConfigurationForm.submit();
+    }
+
+</script>   
             
 <div id="content">                      
 
@@ -34,13 +59,15 @@
                     <s:hidden name="genomicSource.id" />
                     <s:hidden name="useGlad" value="false"/>
                     <s:hidden name="formAction" />
+                    <s:hidden name="dnaAnalysisDataConfiguration.segmentationService.url" id="serverProfileUrl" />
+                    
                     <s:file name="mappingFile" label="Subject and Sample Mapping File" size="40"/><br>
                         <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
                             <span class="wwlbl">(csv file with 3 column format for mapping single data file and 5 column format for mapping 1 data file per sample)</span>
                             <span class="wwctrl"></span>
                         </s:div>
-                    <s:select id="caDnaCopyUrl" name="caDnaCopyUrl"
-                            list="caDnaCopyServices" label="CaDNACopy Service URL" required="true" /><br>
+                    <s:select id="caDnaCopyUrl" name="dnaAnalysisDataConfiguration.segmentationService.url"
+                            list="caDnaCopyServices" label="CaDNACopy Service URL" required="true" cssClass="editable-select"/><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.changePointSignificanceLevel" label="Change Point Significance Level" /><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.earlyStoppingCriterion" label="Early Stopping Criterion" /><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.permutationReplicates" label="Permutation Replicates" /><br>
@@ -57,7 +84,7 @@
                         <td></td>
                         <td><br>
                             <s:submit type="button" value="Save Segmentation Data Calculation Configuration" 
-                                align="center" theme="simple"/>
+                                align="center" theme="simple" onclick="saveDatasource();"/>
                             <s:submit type="button" value="Cancel"
                                 onclick="document.dnaAnalysisDataConfigurationForm.action = 'cancelGenomicSource.action';
                                     document.dnaAnalysisDataConfigurationForm.submit();"  theme="simple"/>

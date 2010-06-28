@@ -1,6 +1,30 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
             
+<script type="text/javascript" src="/caintegrator2/common/js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="/caintegrator2/common/js/jquery.editable-select.js"></script>
+<script type="text/javascript">
+    jQuery.noConflict();
+
+    jQuery(function() {
+      jQuery('.editable-select').editableSelect(
+        {
+          bg_iframe: true,
+          onSelect: false,
+          case_sensitive: false, // If set to true, the user has to type in an exact
+                                 // match for the item to get highlighted
+          items_then_scroll: 10 // If there are more than 10 items, display a scrollbar
+        }
+      );
+    });
+
+    // This function is called at body onload because to get editable-select to work it needs to show the div first and then hide it by default.
+    function initializeJsp() {
+        var div = document.getElementById('gridServiceInputParams');
+        div.style.display = "none";
+    }
+</script>   
+
 <div id="content">                      
     
     <!--Page Help-->
@@ -48,9 +72,9 @@
                 <s:password id="password" name="gisticParameters.server.password" label="GenePattern Password" size="50" showPassword="true" />
             </s:div>
             <br />
-            <s:div id="gridServiceInputParams" cssStyle="display: none;">
+            <s:div id="gridServiceInputParams">
             <s:select id="gridServiceUrl" name="gridServiceUrl"
-                list="gisticServices" label="GISTIC Grid Server" required="true" disabled="true" />
+                list="gisticServices" label="GISTIC Grid Server" required="true" disabled="true" cssClass="editable-select"/>
             </s:div>    
             <br />
             <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin: 1em 0 0 0px; height:110px; padding-bottom: 0;">

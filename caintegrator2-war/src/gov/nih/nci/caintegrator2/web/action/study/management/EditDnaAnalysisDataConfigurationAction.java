@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJ
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 
@@ -123,8 +124,6 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
     private File mappingFile;
     private String mappingFileContentType;
     private String mappingFileFileName;
-    private String gladUrl;
-    private String caDnaCopyUrl;
     private boolean useGlad = false;
     private ConfigurationHelper configurationHelper;
     private static final String MAPPING_FILE = "mappingFile";
@@ -135,12 +134,9 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
     @Override
     public void prepare() {
         super.prepare();
-        updateServiceUrl();
         if (getDnaAnalysisDataConfiguration().isCaDNACopyConfiguration()) {
-            setCaDnaCopyUrl(getDnaAnalysisDataConfiguration().getSegmentationService().getUrl());
             setUseGlad(false);
         } else {
-            setGladUrl(getDnaAnalysisDataConfiguration().getSegmentationService().getUrl());
             setUseGlad(true);
         }
     }
@@ -187,7 +183,6 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
      */
     public String save() {
         try {
-            updateServiceUrl();
             getStudyManagementService().saveDnaAnalysisMappingFile(getGenomicSource(), getMappingFile(), 
                     getMappingFileFileName());
             getStudyManagementService().save(getStudyConfiguration());
@@ -198,14 +193,6 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
             addActionError("An unexpected error has occurred, please report this problem - " + e.getMessage());
             return INPUT;
         } 
-    }
-
-    private void updateServiceUrl() {
-        if (getUseGlad()) {
-            getDnaAnalysisDataConfiguration().getSegmentationService().setUrl(getGladUrl());
-        } else {
-            getDnaAnalysisDataConfiguration().getSegmentationService().setUrl(getCaDnaCopyUrl());
-        }
     }
     
     /**
@@ -254,10 +241,11 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
     }
 
     private void validateServiceUrl() {
-        if (getUseGlad() && StringUtils.isBlank(getGladUrl())) {
-            addFieldError("gladUrl", "GLAD Service URL is required.");
-        } else if (!getUseGlad() && StringUtils.isBlank(getCaDnaCopyUrl())) {
-            addFieldError("caDnaCopyUrl", "CaDNACopy Service URL is required.");
+        if (StringUtils.isBlank(getDnaAnalysisDataConfiguration().getSegmentationService().getUrl())) {
+            addFieldError("dnaAnalysisDataConfiguration.segmentationService.url", "CaDNACopy Service URL is required.");
+        } else {
+            getDnaAnalysisDataConfiguration().getSegmentationService().setUrl(
+                Cai2Util.fixUrlForEditableSelect(getDnaAnalysisDataConfiguration().getSegmentationService().getUrl()));
         }
     }
 
@@ -330,34 +318,6 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
      */
     public Map<String, String> getCaDnaCopyServices() {
         return GridDiscoveryServiceJob.getGridCaDnaCopyServices();
-    }
-
-    /**
-     * @return the gladUrl
-     */
-    public String getGladUrl() {
-        return gladUrl;
-    }
-
-    /**
-     * @param gladUrl the gladUrl to set
-     */
-    public void setGladUrl(String gladUrl) {
-        this.gladUrl = gladUrl;
-    }
-
-    /**
-     * @return the caDnaCopyUrl
-     */
-    public String getCaDnaCopyUrl() {
-        return caDnaCopyUrl;
-    }
-
-    /**
-     * @param caDnaCopyUrl the caDnaCopyUrl to set
-     */
-    public void setCaDnaCopyUrl(String caDnaCopyUrl) {
-        this.caDnaCopyUrl = caDnaCopyUrl;
     }
 
     /**

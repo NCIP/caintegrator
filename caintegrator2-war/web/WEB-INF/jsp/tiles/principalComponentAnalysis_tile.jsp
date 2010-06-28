@@ -1,6 +1,30 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-            
+
+<script type="text/javascript" src="/caintegrator2/common/js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="/caintegrator2/common/js/jquery.editable-select.js"></script>
+<script type="text/javascript">
+    jQuery.noConflict();
+
+    jQuery(function() {
+      jQuery('.editable-select').editableSelect(
+        {
+          bg_iframe: true,
+          onSelect: false,
+          case_sensitive: false, // If set to true, the user has to type in an exact
+                                 // match for the item to get highlighted
+          items_then_scroll: 10 // If there are more than 10 items, display a scrollbar
+        }
+      );
+    });
+
+    // This function is called at body onload because to get editable-select to work it needs to show the div first and then hide it by default.
+    function initializeJsp() {
+        var div = document.getElementById('principalComponentAnalysisForm_collapsiblediv');
+        div.style.display = "none";
+    }
+</script>   
+    
 <div id="content">                      
     
     <!--Page Help-->
@@ -41,7 +65,8 @@
             <s:select name="currentPrincipalComponentAnalysisJob.pcaUrl"
                 list="pcaServices" label="Principal Component Analysis Server"
                 required="true" theme="css_xhtml"
-                title="Principle Component Analysis Server is a server which hosts the grid-enabled Gene Pattern Principle Component Analysis module.  Select one from the list and caIntegrator2 will use the selected server for this portion of the processing."/>
+                title="Principle Component Analysis Server is a server which hosts the grid-enabled Gene Pattern Principle Component Analysis module.  Select one from the list and caIntegrator2 will use the selected server for this portion of the processing."
+                cssClass="editable-select"/>
             <br />
             <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin-left: 0px;height:110px;width:100%">
                 <div class="wwlbl">&nbsp;</div >
@@ -85,9 +110,9 @@
             </s:div>
             <br>
 
-            <s:div name="collapsiblediv" cssStyle="display: none;">          
+            <s:div name="collapsiblediv">          
                 <s:select name="currentPrincipalComponentAnalysisJob.preprocessDataSetUrl"
-                    list="preprocessDatasetServices" label="Preprocess Server" required="true" theme="css_xhtml"/> <br>
+                    list="preprocessDatasetServices" label="Preprocess Server" required="true" theme="css_xhtml" cssClass="editable-select"/> <br>
                 <s:checkbox name="preprocessDatasetParameterSet.filterFlag" label="Filter flag" labelposition="left" theme="css_xhtml"/> <br>
                 <s:select name="preprocessDatasetParameters.preprocessingFlag" label="Preprocessing Flag"
                     list="preprocessDatasetParameters.preprocessingFlagOptions" required="true" theme="css_xhtml"/> <br>

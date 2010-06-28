@@ -128,9 +128,7 @@ public class GisticAjaxRunner implements Runnable {
         } catch (ParameterException e) {
             addErrorMessage("Couldn't execute GISTIC analysis job: " + job.getName()
             + " - " + e.getMessage(), AnalysisJobStatusEnum.INVALID_PARAMETER);
-        } catch (InvalidCriterionException e) {
-            addErrorMessage(e.getMessage(), AnalysisJobStatusEnum.LOCAL_ERROR);
-        } catch (IOException e) {
+        } catch (Exception e) {
             addErrorMessage(e.getMessage(), AnalysisJobStatusEnum.LOCAL_ERROR);
         }
     }
