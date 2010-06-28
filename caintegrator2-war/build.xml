@@ -423,7 +423,7 @@
             <lib dir="${caintegrator2.war.runtime.lib.dir}" includes="*.jar"/> 
             <lib dir="${genepattern-service.jar.target.dir}" includes="*.jar"/> 
             <lib dir="${genepattern-service.jar.compile.lib.dir}" includes="*.jar"> 
-                <exclude name="activation-1.0.2.jar"/>
+                <exclude name="activation-*.jar"/>
             </lib>
             <lib dir="${kaplan-meier.jar.target.dir}" includes="*.jar"/> 
             <lib dir="${kaplan-meier.jar.compile.lib.dir}" includes="*.jar"> 
