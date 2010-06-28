@@ -372,4 +372,8 @@
         <comment>Add WEB_URL to ServerConnectionProfile.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.05.sql"/>
     </changeSet>
+    <changeSet id="1.2.06" author="nguyennh">
+        <comment>Change the study description type to text.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.06.sql"/>
+    </changeSet>
 </databaseChangeLog>
