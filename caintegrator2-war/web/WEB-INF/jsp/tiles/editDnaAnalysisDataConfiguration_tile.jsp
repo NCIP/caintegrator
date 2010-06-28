@@ -66,6 +66,7 @@
                             <span class="wwlbl">(csv file with 3 column format for mapping single data file and 5 column format for mapping 1 data file per sample)</span>
                             <span class="wwctrl"></span>
                         </s:div>
+                    <br/>
                     <s:select id="caDnaCopyUrl" name="dnaAnalysisDataConfiguration.segmentationService.url"
                             list="caDnaCopyServices" label="CaDNACopy Service URL" required="true" cssClass="editable-select"/><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.changePointSignificanceLevel" label="Change Point Significance Level" /><br>
