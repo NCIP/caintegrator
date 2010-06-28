@@ -90,22 +90,48 @@ package gov.nih.nci.caintegrator2.external.cabio;
  */
 public class CaBioDisplayableGene implements Comparable<CaBioDisplayableGene> {
     
-    private String id;
+    private Long id;
     private String symbol;
     private String fullName;
     private String taxonCommonName;
     private String hugoSymbol;
+    private String geneAliases;
+    private String databaseCrossReferences;
     
+    /**
+     * @return the geneAliases
+     */
+    public String getGeneAliases() {
+        return geneAliases;
+    }
+    /**
+     * @param geneAliases the geneAliases to set
+     */
+    public void setGeneAliases(String geneAliases) {
+        this.geneAliases = geneAliases;
+    }
+    /**
+     * @return the databaseCrossReferences
+     */
+    public String getDatabaseCrossReferences() {
+        return databaseCrossReferences;
+    }
+    /**
+     * @param databaseCrossReferences the databaseCrossReferences to set
+     */
+    public void setDatabaseCrossReferences(String databaseCrossReferences) {
+        this.databaseCrossReferences = databaseCrossReferences;
+    }
     /**
      * @return the id
      */
-    public String getId() {
+    public Long getId() {
         return id;
     }
     /**
      * @param id the id to set
      */
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }    
 

@@ -191,12 +191,30 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
    padding-bottom: 5px;
    padding-left: 0px;
 }
+.left5{
+   position: relative;
+   float: left;
+   left: 0px;
+   width: 200px;
+   border-right:1px solid #A8B8CE;
+   padding-bottom: 5px;
+   padding-left: 0px;
+}
+.left6{
+   position: relative;
+   float: left;
+   left: 0px;
+   width: 200px;
+   border-right:1px solid #A8B8CE;
+   padding-bottom: 5px;
+   padding-left: 0px;
+}
 .right{
    position: relative;
    float: right;
    right: 0px;
-   width: 299px;
-   min-width: 299px;
+   width: 199px;
+   min-width: 199px;
    border-right:1px solid #A8B8CE;
    padding-bottom: 5px;
    padding-left: 2px;

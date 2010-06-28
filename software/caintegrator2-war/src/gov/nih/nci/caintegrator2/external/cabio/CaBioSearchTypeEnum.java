@@ -118,7 +118,7 @@ public enum CaBioSearchTypeEnum {
     /**
      * Search on Database cross reference.
      */
-    DATABASE_CROSS_REF("Database Cross Reference", "dataSourceName");
+    DATABASE_CROSS_REF("Database Cross Reference Identifier", "crossReferenceId");
     
     private static Map<String, CaBioSearchTypeEnum> valueToTypeMap = 
         new HashMap<String, CaBioSearchTypeEnum>();
