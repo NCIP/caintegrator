@@ -1,6 +1,18 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
+<script type="text/javascript" src="/caintegrator2/common/js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="/caintegrator2/common/js/jTruncate.js"></script>
+<script type="text/javascript">
+
+    jQuery.noConflict();
+
+    jQuery().ready(function() {
+        jQuery('#studyDescDiv').jTruncate();
+    });
+
+</script>
+
             
 <div id="content">                      
     
@@ -28,7 +40,7 @@
         </tr>
         <tr>
             <td align="right">Description: </td>
-            <td colspan="3" class="wrap"><b><s:property value="studySummary.studyDescription" /></b></td>
+            <td colspan="3" class="wrap"><b><s:div id="studyDescDiv"><s:property value="studySummary.studyDescription" /></s:div></b></td>
         </tr>
         <tr>
             <td align="right">Deployment Status: </td>
