@@ -100,7 +100,6 @@ public class SaveStudyAction extends AbstractStudyAction {
     private static final long serialVersionUID = 1L;
     
     private static final int NAME_LENGTH = 50;
-    private static final int DESC_LENGTH = 200;
 
     /**
      * {@inheritDoc}
@@ -158,11 +157,6 @@ public class SaveStudyAction extends AbstractStudyAction {
                 getWorkspace().getUsername())) {
             addFieldError("study.shortTitleText", "There is already a study named '" + studyName
                     + "', please use a different name.");
-        }
-        if (!StringUtils.isEmpty(getStudyConfiguration().getStudy().getLongTitleText())
-                && getStudyConfiguration().getStudy().getLongTitleText().length() > DESC_LENGTH) {
-            addFieldError("study.longTitleText",
-                    "Study description exceeds maximum length of 200 characters, please shorten it.");
         }
     }
     
