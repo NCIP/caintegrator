@@ -196,6 +196,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<ant inheritAll="false" inheritRefs="false" antfile="${genepattern-service-jar.build.file}" target="ivy:clean" dir="${genepattern-service-jar.base.dir}" />
 	    <ant inheritAll="false" inheritRefs="false" antfile="${kaplan-meier-jar.build.file}" target="ivy:clean" dir="${kaplan-meier-jar.base.dir}" />
 	</target>
+    
+    <target name="report:ivy:cai2" description="Runs ivy reports on all dependencies in the ivy defnintion file, also produces dependency diagrams" >
+        <property name="ivy.dep.file" value="${caintegrator2-war.base.dir}/ivy-caintegrator2.xml" />
+        <ivy:settings file="${common.dir}/ivysettings.xml" />
+        <ivy:resolve refresh="true" />
+        <property name="ivy.report.dir" value="${reports.dir}/ivy" />
+        <delete dir="${ivy.report.dir}" />
+        <mkdir dir="${ivy.report.dir}" />
+        <ivy:report outputpattern="../target/reports/ivy/[organisation]-[module]-[conf].[ext]" dot="true" graph="false" />
+        <util-dot-on-dir dot-file.dir="../target/reports/ivy" />
+    </target>
 
 	<target name="validate:pre:build">
 		<validate-pre-build
