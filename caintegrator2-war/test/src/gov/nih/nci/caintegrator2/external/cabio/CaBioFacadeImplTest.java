@@ -149,7 +149,7 @@ public class CaBioFacadeImplTest {
         params.setKeywords("OMIM");
         genes = caBioFacade.retrieveGenes(params);
         // Should contain 2 keyword matches
-        assertTrue(applicationServiceStub.hqlString.contains("(  lower(o.dataSourceName) LIKE ?  )  ) and o.gene.taxon.commonName LIKE ?"));
+        assertTrue(applicationServiceStub.hqlString.contains("(  lower(o.crossReferenceId) LIKE ?  )  ) and o.gene.taxon.commonName LIKE ?"));
     }
 
     @Test

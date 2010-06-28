@@ -109,8 +109,6 @@ import org.apache.commons.lang.StringUtils;
 public class CaBioSearchAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
-
-    private static final int MAX_RESULTS = 200;
     
     private CaBioFacade caBioFacade;
     private CaBioSearchParameters searchParams = new CaBioSearchParameters();
@@ -220,8 +218,8 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
             } else {
                 caBioGenes = caBioFacade.retrieveGenes(searchParams);
             }
-            if (checkResultSize(caBioGenes.size())) {
-                caBioGenes.clear();
+            if (caBioGenes.isEmpty()) {
+                addActionError("No results were returned from search.");
                 return INPUT;
             }
         } catch (ConnectionException e) {
@@ -230,17 +228,6 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
         }
         return SUCCESS;
     }
-
-    private boolean checkResultSize(int size) {
-        if (size == 0) {
-            addActionError("No results were returned from search.");
-            return true;
-        } else if (size > MAX_RESULTS) {
-            addActionError("Found " + size + " results, too many to display.");
-            return true;
-        }
-        return false;
-    }
     
     private String retrievePathwaysFromCaBio() {
         try {
@@ -248,8 +235,8 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
             caBioGenes.clear();
             getCaBioPathways().clear();
             getCaBioPathways().addAll(caBioFacade.retrievePathways(searchParams));
-            if (checkResultSize(getCaBioPathways().size())) {
-                getCaBioPathways().clear();
+            if (getCaBioPathways().isEmpty()) {
+                addActionError("No results were returned from search.");
                 return INPUT;
             }
         } catch (ConnectionException e) {

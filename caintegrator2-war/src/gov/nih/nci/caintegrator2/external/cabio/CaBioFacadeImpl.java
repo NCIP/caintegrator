@@ -86,10 +86,12 @@
 package gov.nih.nci.caintegrator2.external.cabio;
 
 import gov.nih.nci.cabio.domain.Gene;
+import gov.nih.nci.cabio.domain.GeneAlias;
 import gov.nih.nci.cabio.domain.Pathway;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.common.domain.DatabaseCrossReference;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.applicationservice.CaBioApplicationService;
@@ -135,13 +137,13 @@ public class CaBioFacadeImpl implements CaBioFacade {
         List<Object> geneResults;
         try {
             geneResults = caBioApplicationService.query(hqlCriteria);
+            return createCaBioDisplayableGenesFromObjects(geneResults, searchParams, caBioApplicationService);
         } catch (ApplicationException e) {
             throw new ConnectionException("HQL Query Failed", e);
         } finally {
             // Restore context as described above.
             SecurityContextHolder.setContext(originalContext);
         }
-        return createCaBioDisplayableGenesFromObjects(geneResults, searchParams);
     }
 
     private void addTaxonParam(CaBioSearchParameters searchParams, StringBuffer hqlString, List<String> params) {
@@ -288,17 +290,12 @@ public class CaBioFacadeImpl implements CaBioFacade {
     }
 
     private List<CaBioDisplayableGene> createCaBioDisplayableGenesFromObjects(List<Object> geneResults, 
-            CaBioSearchParameters searchParams) {
+            CaBioSearchParameters searchParams, CaBioApplicationService caBioApplicationService)
+    throws ApplicationException {
         List<CaBioDisplayableGene> genes = new ArrayList<CaBioDisplayableGene>();
         for (Object result : geneResults) {
-            Object[] geneObject = (Object[]) result;
-            CaBioDisplayableGene gene = new CaBioDisplayableGene();
-            gene.setSymbol(((String) geneObject[0]).toUpperCase(Locale.getDefault()));
-            gene.setId(String.valueOf((Long) geneObject[1]));
-            gene.setFullName((String) geneObject[2]);
-            gene.setTaxonCommonName((String) geneObject[3]);
-            gene.setHugoSymbol((String) geneObject[4]);
-            genes.add(gene);
+            CaBioDisplayableGene displayableGene = createDisplayableGene(result, caBioApplicationService);
+            genes.add(displayableGene);
         }
         if (searchParams.isFilterGenesOnStudy() && !genes.isEmpty()) {
             genes = filterGenesNotInStudy(genes, searchParams.getStudy());
@@ -325,13 +322,49 @@ public class CaBioFacadeImpl implements CaBioFacade {
         if (StringUtils.isNotBlank(gene.getSymbol()) && !usedGeneSymbols.contains(gene.getSymbol())) {
             usedGeneSymbols.add(gene.getSymbol());
             CaBioDisplayableGene displayableGene = new CaBioDisplayableGene();
-            displayableGene.setId(String.valueOf(gene.getId()));
+            displayableGene.setId(gene.getId());
             displayableGene.setFullName(gene.getFullName());
             displayableGene.setHugoSymbol(gene.getHugoSymbol());
             displayableGene.setSymbol(gene.getSymbol());
             displayableGene.setTaxonCommonName(gene.getTaxon().getCommonName());
             genes.add(displayableGene);
         }
+    }
+
+    private CaBioDisplayableGene createDisplayableGene(Object result, CaBioApplicationService caBioApplicationService)
+    throws ApplicationException {
+        Object[] geneObject = (Object[]) result;
+        CaBioDisplayableGene displayableGene = new CaBioDisplayableGene();
+        displayableGene.setSymbol(((String) geneObject[0]).toUpperCase(Locale.getDefault()));
+        displayableGene.setId((Long) geneObject[1]);
+        displayableGene.setFullName((String) geneObject[2]);
+        displayableGene.setTaxonCommonName((String) geneObject[3]);
+        displayableGene.setHugoSymbol((String) geneObject[4]);
+        Gene gene = new Gene();
+        gene.setId(displayableGene.getId());
+        displayableGene.setGeneAliases(getGeneAliases(gene, caBioApplicationService));
+        displayableGene.setDatabaseCrossReferences(getDatabaseCrossRefs(gene, caBioApplicationService));
+        return displayableGene;
+    }
+
+    private String getDatabaseCrossRefs(Gene gene, CaBioApplicationService caBioApplicationService)
+    throws ApplicationException {
+        List<Object> databaseCrossReferenceObjects = caBioApplicationService.search(DatabaseCrossReference.class, gene);
+        List<String> dbCrossReferences = new ArrayList<String>();
+        for (Object object : databaseCrossReferenceObjects) {
+            dbCrossReferences.add(((DatabaseCrossReference) object).getCrossReferenceId());
+        }
+        return StringUtils.join(dbCrossReferences, " , ");
+    }
+
+    private String getGeneAliases(Gene gene, CaBioApplicationService caBioApplicationService)
+    throws ApplicationException {
+        List<Object> geneAliasObjects = caBioApplicationService.search(GeneAlias.class, gene);
+        List<String> geneAliases = new ArrayList<String>();
+        for (Object object : geneAliasObjects) {
+            geneAliases.add(((GeneAlias) object).getName());
+        }
+        return StringUtils.join(geneAliases, " , ");
     }
     
     private List<CaBioDisplayablePathway> createCaBioDisplayablePathways(List<Object> pathwayResults) {
