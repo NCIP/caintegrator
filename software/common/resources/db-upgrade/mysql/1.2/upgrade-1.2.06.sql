@@ -1,0 +1,1 @@
+alter table STUDY change LONG_TITLE_TEXT LONG_TITLE_TEXT text;
