@@ -119,27 +119,22 @@ public class EditDnaAnalysisDataConfigurationActionTest extends AbstractSessionB
     @Test
     public void testEdit() {
         action.setUseGlad(true);
-        action.setGladUrl(ConfigurationParameter.GENE_PATTERN_URL.getDefaultValue());
+        action.getDnaAnalysisDataConfiguration().getSegmentationService().setUrl(ConfigurationParameter.GENE_PATTERN_URL.getDefaultValue());
         action.getGenomicSource().setDnaAnalysisDataConfiguration(null);
         action.prepare();
         action.edit();
         assertNotNull(action.getGenomicSource().getDnaAnalysisDataConfiguration());
-        assertEquals(ConfigurationParameter.GENE_PATTERN_URL.getDefaultValue(), action.getGladUrl());
+        assertEquals(ConfigurationParameter.GENE_PATTERN_URL.getDefaultValue(), action.getDnaAnalysisDataConfiguration().getSegmentationService().getUrl());
     }
     
     @Test
     public void testSave() {
         action.prepare();
-        action.setUseGlad(true);
-        action.setGladUrl("gladUrl");
-        action.setCaDnaCopyUrl("caDnaCopyUrl");
-        action.save();
-        assertEquals("gladUrl", action.getDnaAnalysisDataConfiguration().getSegmentationService().getUrl());
-        assertTrue(studyManagementServiceStub.saveDnaAnalysisMappingFileCalled);
-        assertTrue(studyManagementServiceStub.saveCalled);
-        action.setUseGlad(false);
+        action.getDnaAnalysisDataConfiguration().getSegmentationService().setUrl("caDnaCopyUrl");
         action.save();
         assertEquals("caDnaCopyUrl", action.getDnaAnalysisDataConfiguration().getSegmentationService().getUrl());
+        assertTrue(studyManagementServiceStub.saveDnaAnalysisMappingFileCalled);
+        assertTrue(studyManagementServiceStub.saveCalled);
     }
     
     @Test
@@ -159,7 +154,7 @@ public class EditDnaAnalysisDataConfigurationActionTest extends AbstractSessionB
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
         action.setUseGlad(false);
-        action.setCaDnaCopyUrl("url");
+        action.getDnaAnalysisDataConfiguration().getSegmentationService().setUrl("url");
         action.validate();
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();

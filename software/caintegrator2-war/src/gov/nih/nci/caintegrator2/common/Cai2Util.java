@@ -106,6 +106,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -496,6 +497,16 @@ public final class Cai2Util {
        }
        return latestTimestamp == null ? DateUtil.TIMESTAMP_UNAVAILABLE_STRING 
                : latestTimestamp.getDisplayableLastModifiedDate();
+   }
+   
+   /**
+    * The editable-select for internet explorer submits an extra URL after comma.
+    * ex: "http://url, http://url" instead of just "http://url".
+    * @param originalUrl url to convert.
+    * @return fixed URL.
+    */
+   public static String fixUrlForEditableSelect(String originalUrl) {
+       return Pattern.compile(",\\s.*").matcher(originalUrl).replaceAll("");
    }
     
 }
