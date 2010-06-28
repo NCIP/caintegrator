@@ -37,10 +37,10 @@
     <dependency org="checkstyle" name="checkstyle" rev="4.4" conf="test-checkstyle->master"/>
     <dependency org="commons-beanutils" name="commons-beanutils-core" rev="1.7.0" conf="test-checkstyle->master"/>
     <dependency org="commons-cli" name="commons-cli" rev="1.0" conf="test-checkstyle->master"/>
-    <dependency org="umd" name="findbugs-ant" rev="1.3.4" conf="test-findbugs->master"/>
+    <!-- <dependency org="umd" name="findbugs-ant" rev="1.3.4" conf="test-findbugs->master"/> -->
     <dependency org="redhill" name="simian" rev="2.2.4" conf="test-simian->master"/>
     <dependency org="pmd" name="pmd" rev="4.2.1" conf="test-pmd->master"/>
-    <dependency org="fit" name="fit" rev="1.1" conf="test-acceptance->master"/>
+    <!-- <dependency org="fit" name="fit" rev="1.1" conf="test-acceptance->master"/> -->
     <dependency org="fitlibrary" name="fitrunner" rev="1.0" conf="test-acceptance->master"/>
     <dependency org="antfit" name="antfit" rev="1.0" conf="test-acceptance->master"/>
     <dependency org="jaxen" name="jaxen" rev="1.1.1" conf="test-pmd->master" />
