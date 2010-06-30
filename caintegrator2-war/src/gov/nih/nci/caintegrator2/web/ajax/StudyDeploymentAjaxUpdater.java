@@ -199,10 +199,12 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     public void updateJobStatus(String username, StudyConfiguration studyConfiguration) {
         Util utilThis = getDwrUtil(username);
         String studyConfigurationId = studyConfiguration.getId().toString();
+        String descriptionDivId = JOB_STUDY_DESCRIPTION + "div_" + studyConfigurationId;
         utilThis.setValue(JOB_STUDY_NAME + studyConfigurationId, 
-                          studyConfiguration.getStudy().getShortTitleText());
+                studyConfiguration.getStudy().getShortTitleText());
         utilThis.setValue(JOB_STUDY_DESCRIPTION + studyConfigurationId, 
-                          studyConfiguration.getStudy().getLongTitleText());
+                "<s:div id=\"" + descriptionDivId + "\">"
+                + studyConfiguration.getStudy().getLongTitleText() + "</s:div>");
         utilThis.setValue(JOB_LAST_MODIFIED_BY + studyConfigurationId, 
                           studyConfiguration.getLastModifiedBy().getUsername());
         utilThis.setValue(JOB_STUDY_STATUS + studyConfigurationId, 
@@ -212,6 +214,7 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
         utilThis.setValue(JOB_FINISH_DATE + studyConfigurationId, 
                           getDateString(studyConfiguration.getDeploymentFinishDate()));
         updateRowActions(studyConfiguration, utilThis, studyConfigurationId);
+        utilThis.addFunctionCall("truncateDescriptionDiv", descriptionDivId);
     }
 
     private void updateRowActions(StudyConfiguration studyConfiguration, Util utilThis, String studyConfigurationId) {
