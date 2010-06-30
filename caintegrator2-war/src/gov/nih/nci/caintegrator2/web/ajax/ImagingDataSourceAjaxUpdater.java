@@ -274,9 +274,9 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
                 retrieveUrl(imagingSource, "editImagingSource", "Edit", "edit", false),
                 false);
         utilThis.setValue(JOB_ACTION_BAR1 + imagingSourceId, jobActionBarString, false);
-        if (isAimDataService(imagingSource)) {
+        if (isAimDataService(imagingSource) && !Status.LOADED.equals(imagingSource.getStatus())) {
             utilThis.setValue(JOB_LOAD_ANNOTATIONS_URL + imagingSourceId, 
-                    retrieveUrl(imagingSource, "loadAimAnnotation", "Load Aim Annotations", "load", false),
+                    retrieveUrl(imagingSource, "loadAimAnnotation", "Load AIM Annotations", "load", false),
                     false);
             utilThis.setValue(JOB_ACTION_BAR2 + imagingSourceId, "");
         }
@@ -299,12 +299,13 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
 
     private void addLoadAnnotationAction(ImageDataSourceConfiguration imagingSource, Util utilThis,
             String imagingSourceId, String jobActionBarString) {
-        if (isAimDataService(imagingSource)
-                && !Status.LOADED.equals(imagingSource.getStatus())) {
-            utilThis.setValue(JOB_LOAD_ANNOTATIONS_URL + imagingSourceId, 
-                    retrieveUrl(imagingSource, "loadAimAnnotation", "Load Aim Annotations", "load", false),
+        if (isAimDataService(imagingSource)) {
+            if (!Status.LOADED.equals(imagingSource.getStatus())) {
+                utilThis.setValue(JOB_LOAD_ANNOTATIONS_URL + imagingSourceId, 
+                    retrieveUrl(imagingSource, "loadAimAnnotation", "Load AIM Annotations", "load", false),
                     false);
-            utilThis.setValue(JOB_ACTION_BAR3 + imagingSourceId, jobActionBarString, false);
+                utilThis.setValue(JOB_ACTION_BAR3 + imagingSourceId, jobActionBarString, false);
+            }
         } else if (imagingSource.getImageAnnotationConfiguration().isLoadable() 
                 && !imagingSource.getImageAnnotationConfiguration().isCurrentlyLoaded()) {
             utilThis.setValue(JOB_LOAD_ANNOTATIONS_URL + imagingSourceId, 
