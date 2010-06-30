@@ -228,7 +228,7 @@ LEGEND INPUT, LEGEND SELECT
 .box
 { border:1px solid #999; margin:0 0 10px 0; background:#fff;}
 .box2
-{ border:1px solid #999; margin:0; background:#fff url("../../images/bg_h2.gif") repeat-x; height:1%; }
+{ border:1px solid #999; margin:0; background:#fff url("../../images/bg_h2.gif") repeat-x; height:1%; min-width:1050px }
 .box2 H2
 { padding-top:10px; padding-bottom:8px; border:0; border-bottom:1px solid #999; }
 .whitebg
@@ -788,7 +788,7 @@ TABLE.data TBODY TR TH FORM TABLE.editStudyFile TBODY TR TD
 { border-style: none; border:0px solid #ccc; float: left; }
 
 .form_wrapper_outer
-{ border:1px solid #999; background:#eee; padding:10px 10px 5px 10px; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius:10px;}
+{ border:1px solid #999; background:#eee; padding:10px 10px 5px 10px; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius:10px; min-width:900px}
 .form_wrapper_outer .bottombtns 
 { margin:0 auto; width:28em; height:3em; }
 TABLE.form_wrapper_table
