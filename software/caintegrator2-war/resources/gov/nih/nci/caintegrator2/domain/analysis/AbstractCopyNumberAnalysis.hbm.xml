@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator2.domain.analysis">
+	<class name="AbstractCopyNumberAnalysis" table="ABSTRACT_COPY_NUMBER_ANALYSIS" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the AbstractAnnotationValue class -->
+		<!-- Associations mapping for the AbstractAnnotationValue class -->
+        <set name="samplesUsedForCalculation" lazy="true" cascade="none" table="COPY_NUMBER_ANALYSIS_SAMPLES">
+            <cache usage="read-write" />
+            <key column="COPY_NUMBER_ANALYSIS_ID" />
+            <many-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Sample" column="SAMPLE_ID"/>
+        </set>
+
+		<joined-subclass name="GisticAnalysis" table="GISTIC_ANALYSIS" lazy="false">
+			<key column="ID" />
+			<!-- Attributes mapping for the GisticAnalysis class -->
+			<property name="name" type="string" column="NAME"/>
+			<property name="amplificationsThreshold" type="double" column="AMPLIFICATIONS_THRESHOLD"/>
+		    <property name="deletionsThreshold" type="double" column="DELETIONS_THRESHOLD"/>
+		    <property name="genomeBuildInformation" type="string" column="GENOME_BUILD_INFORMATION"/>
+		    <property name="joinSegmentSize" type="double" column="JOIN_SEGMENT_SIZE"/>
+		    <property name="queryOrListName" type="string" column="QUERY_OR_LIST_NAME"/>
+		    <property name="qvThreshold" type="double" column="QV_THRESHOLD"/>
+		    <property name="url" type="string" column="URL"/>
+		    <many-to-one name="reporterList" class="gov.nih.nci.caintegrator2.domain.genomic.ReporterList" column="REPORTER_LIST_ID" lazy="proxy" cascade="all" />
+		    
+		</joined-subclass>
+	</class>
+</hibernate-mapping>

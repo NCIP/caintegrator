@@ -1,5 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
+import gov.nih.nci.caintegrator2.domain.analysis.AbstractCopyNumberAnalysis;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class StudySubscription extends AbstractCaIntegrator2StudyObject {
     private Study study;
     private Set<Query> queryCollection = new HashSet<Query>();
     private Set<AbstractPersistedAnalysisJob> analysisJobCollection = new HashSet<AbstractPersistedAnalysisJob>();
+    private Set<AbstractCopyNumberAnalysis> copyNumberAnalysisCollection = new HashSet<AbstractCopyNumberAnalysis>();
     private UserWorkspace userWorkspace;
     private Boolean publicSubscription = false;
     
@@ -83,6 +85,21 @@ public class StudySubscription extends AbstractCaIntegrator2StudyObject {
         this.analysisJobCollection = analysisJobCollection;
     }
     
+    /**
+     * @return the copyNumberAnalysisCollection
+     */
+    public Set<AbstractCopyNumberAnalysis> getCopyNumberAnalysisCollection() {
+        return copyNumberAnalysisCollection;
+    }
+
+    /**
+     * @param copyNumberAnalysisCollection the copyNumberAnalysisCollection to set
+     */
+    @SuppressWarnings("unused") // For hibernate.
+    private void setCopyNumberAnalysisCollection(Set<AbstractCopyNumberAnalysis> copyNumberAnalysisCollection) {
+        this.copyNumberAnalysisCollection = copyNumberAnalysisCollection;
+    }
+
     /**
      * @return a list of all gene lists including global lists
      */
