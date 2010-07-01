@@ -98,6 +98,11 @@ public enum ArrayDataType {
     /**
      * Copy number.
      */
-    COPY_NUMBER;
+    COPY_NUMBER,
+    
+    /**
+     * Gistic Analysis.
+     */
+    GISTIC_ANALYSIS;
 
 }
