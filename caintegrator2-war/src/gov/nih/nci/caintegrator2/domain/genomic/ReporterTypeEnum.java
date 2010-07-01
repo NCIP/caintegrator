@@ -22,7 +22,12 @@ public enum ReporterTypeEnum {
     /**
      * Gene-level reporter.
      */
-    GENE_EXPRESSION_GENE("geneExpressionGeneLevel");
+    GENE_EXPRESSION_GENE("geneExpressionGeneLevel"),
+    
+    /**
+     * Gistic genomic region reporter.
+     */
+    GISTIC_GENOMIC_REGION_REPORTER("gisticGenomicRegionReporter");
     
     private static Map<String, ReporterTypeEnum> valueToTypeMap = new HashMap<String, ReporterTypeEnum>();
 

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.caintegrator2.domain.genomic">
+    <typedef name="AmplificationTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+        <param name="enumClass">gov.nih.nci.caintegrator2.domain.genomic.AmplificationTypeEnum</param> 
+    </typedef> 
 	<class name="AbstractReporter" table="ABSTRACT_REPORTER" lazy="false" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="ID">
@@ -36,6 +39,17 @@
             <property name="dbSnpId" type="string" column="DB_SNP_ID"/>
             <property name="alleleA" type="character" column="ALLELE_A"/>
             <property name="alleleB" type="character" column="ALLELE_B"/>
+        </joined-subclass>
+        <joined-subclass name="GisticGenomicRegionReporter" table="GISTIC_GENOMIC_REGION_REPORTER" lazy="false">
+            <key column="ID" />
+            <property name="genomicDescriptor" type="string" column="GENOMIC_DESCRIPTOR"/>
+            <property name="broadOrFocal" type="string" column="BROAD_OR_FOCAL"/>
+            <property name="qvalue" type="double" column="QVALUE"/>
+            <property name="residualQValue" type="double" column="RESIDUAL_QVALUE"/>
+            <property name="regionBoundaries" type="string" column="REGION_BOUNDARIES"/>
+            <property name="widePeakBoundaries" type="string" column="WIDE_PEAK_BOUNDARIES"/>
+            <property name="geneAmplificationType" type="AmplificationTypeEnum" column="GENE_AMPLIFICATION_TYPE"/>
+            
         </joined-subclass>
 	</class>
 </hibernate-mapping>

@@ -376,4 +376,8 @@
         <comment>Change the study description type to text.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.06.sql"/>
     </changeSet>
+    <changeSet id="1.2.07" author="tandrews">
+        <comment>Create tables for gistic copy number querying.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.07.sql"/>
+    </changeSet>
 </databaseChangeLog>
