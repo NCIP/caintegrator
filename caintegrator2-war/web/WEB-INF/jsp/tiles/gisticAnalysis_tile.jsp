@@ -66,16 +66,15 @@
                 </s:div>
             </s:div>
             <br />
+            <s:div id="gridServiceInputParams">
+            <s:select id="gridServiceUrl" name="gridServiceUrl"
+                list="gisticServices" label="GISTIC Grid Server" required="true" disabled="true" cssClass="editable-select"/>
+            </s:div>
             <s:div id="webServiceInputParams" cssStyle="%{useWebServiceOn}">
                 <s:textfield id="webServiceUrl" name="webServiceUrl" label="GenePattern Web Service URL" size="50" required="true" /> <br />
                 <s:textfield id="username" name="gisticParameters.server.username" label="GenePattern Username" size="50" required="true" /> <br />
                 <s:password id="password" name="gisticParameters.server.password" label="GenePattern Password" size="50" showPassword="true" />
             </s:div>
-            <br />
-            <s:div id="gridServiceInputParams">
-            <s:select id="gridServiceUrl" name="gridServiceUrl"
-                list="gisticServices" label="GISTIC Grid Server" required="true" disabled="true" cssClass="editable-select"/>
-            </s:div>    
             <br />
             <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin: 1em 0 0 0px; height:110px; padding-bottom: 0;">
                 <div class="wwlbl">&nbsp;</div >
