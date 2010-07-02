@@ -81,7 +81,7 @@
                         loadingText="<img src='images/ajax-loader.gif'/>"
                         listenTopics="caBioGeneSearchTopic"
                         refreshOnShow="false" 
-                        cssStyle="display:none;visibility:hidden;margin-top:-62px;width:908px;max-height: 300px; overflow:auto;"/>
+                        cssStyle="display:none;visibility:hidden;margin-top:-62px;width:830px;max-height: 300px; overflow:auto;"/>
                 </s:form>
                 <!-- End caBioGeneSearchForm -->
 				<div id="contentwrapper">
