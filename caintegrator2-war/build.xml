@@ -665,6 +665,7 @@
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.2/upgrade-1.2.06.sql" />
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.2/upgrade-1.2.07.sql" />
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.2/upgrade-1.2.08.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.2/upgrade-1.2.09.sql" />
     </target>
 
 
@@ -813,7 +814,7 @@
     </target>
 
     <target name="test:cobertura-check" depends="ivy:setup-test">
-        <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="70" totallinerate="79" />
+        <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="70" totallinerate="80" />
     </target>
 
     <!-- ******************************************************************* -->

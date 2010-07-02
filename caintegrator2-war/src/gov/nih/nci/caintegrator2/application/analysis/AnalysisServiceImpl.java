@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEP
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunner;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticSamplesMarkers;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
@@ -104,12 +105,14 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
@@ -123,6 +126,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -200,8 +204,10 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * {@inheritDoc}
      */
+    @Transactional(readOnly = false)
     public File executeGridGistic(StatusUpdateListener updater, GisticAnalysisJob job) 
         throws ConnectionException, InvalidCriterionException, ParameterException, IOException {
+        File resultsZipFile = null;
         StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class); 
         job.setSubscription(studySubscription);
         GisticSamplesMarkers gisticSamplesMarkers = 
@@ -221,10 +227,33 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
                 "GISTIC_INPUT_" +  System.currentTimeMillis() + ".zip", 
                 inputFiles.toArray(new File[inputFiles.size()])));
         if (job.isGridServiceCall()) {
-            return genePatternGridRunner.runGistic(updater, job, segmentFile, markersFile, cnvFile);
+            resultsZipFile = genePatternGridRunner.runGistic(updater, job, segmentFile, markersFile, cnvFile);
         } else {
-            return runGisticWebService(job, updater, segmentFile, markersFile);
+            resultsZipFile = runGisticWebService(job, updater, segmentFile, markersFile);
         }
+        createGisticAnalysis(job, gisticSamplesMarkers.getUsedSamples());
+        //TODO parse the resultsZipFile for gistic analysis (the *all_lesions_file* file)
+        return resultsZipFile;
+    }
+    
+    private GisticAnalysis createGisticAnalysis(GisticAnalysisJob job, Set<Sample> samplesUsed) {
+        GisticAnalysis gisticAnalysis = new GisticAnalysis();
+        StudySubscription subscription = job.getSubscription();
+        GisticParameters parameters = job.getGisticAnalysisForm().getGisticParameters();
+        gisticAnalysis.setAmplificationsThreshold(parameters.getAmplificationsThreshold());
+        gisticAnalysis.setDeletionsThreshold(parameters.getDeletionsThreshold());
+        gisticAnalysis.setGenomeBuildInformation(parameters.getRefgeneFile().getParameterValue());
+        gisticAnalysis.setJoinSegmentSize(parameters.getJoinSegmentSize());
+        gisticAnalysis.setName(job.getName());
+        if (parameters.getClinicalQuery() != null) {
+            gisticAnalysis.setQueryOrListName(parameters.getClinicalQuery().getName());
+        }
+        gisticAnalysis.setQvThreshold(parameters.getQvThresh());
+        gisticAnalysis.setUrl(parameters.getServer().getUrl());
+        gisticAnalysis.getSamplesUsedForCalculation().addAll(samplesUsed);
+        subscription.getCopyNumberAnalysisCollection().add(gisticAnalysis);
+        getDao().save(subscription);
+        return gisticAnalysis;
     }
     
     private File runGisticWebService(GisticAnalysisJob job, StatusUpdateListener updater, 

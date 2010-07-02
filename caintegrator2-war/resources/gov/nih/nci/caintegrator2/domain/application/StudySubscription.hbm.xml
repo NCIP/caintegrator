@@ -25,13 +25,12 @@
             <key column="STUDY_SUBSCRIPTION_ID" />
             <one-to-many class="AbstractPersistedAnalysisJob"/>
         </set>
-        <!-- 
         <set name="copyNumberAnalysisCollection" lazy="true" cascade="all" >
             <cache usage="read-write" />
             <key column="STUDY_SUBSCRIPTION_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.analysis.AbstractCopyNumberAnalysis"/>
         </set>
-        -->
+        
 		<many-to-one name="userWorkspace" class="UserWorkspace" column="USER_WORKSPACE_ID" lazy="proxy" cascade="save-update,merge" />
 	</class>
 </hibernate-mapping>

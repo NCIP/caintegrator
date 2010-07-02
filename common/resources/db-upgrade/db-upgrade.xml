@@ -384,4 +384,8 @@
         <comment>Add column GENOMIC_DESCRIPTOR to the gistic_genomic_region_reporter table</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.08.sql"/>
     </changeSet>
+    <changeSet id="1.2.09" author="tandrews">
+        <comment>Update data types in Gistic_Analysis table from double to float/integer.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.09.sql"/>
+    </changeSet>
 </databaseChangeLog>
