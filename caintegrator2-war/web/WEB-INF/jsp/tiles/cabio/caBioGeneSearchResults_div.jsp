@@ -50,7 +50,7 @@
                 <s:div cssClass="columnHeader" cssStyle="float: left; width: 100px;"> HUGO Symbol </s:div>
                 <s:div cssClass="columnHeader" cssStyle="float: left; width: 50px;"> Taxon </s:div>
                 <s:div cssClass="columnHeader" cssStyle="float: left; width: 200px;"> Full Name </s:div>
-                <s:div cssClass="columnHeader" cssStyle="float: left; width: 200px;"> Gene Aliases </s:div>
+                <s:div cssClass="columnHeader" cssStyle="float: left; width: 100px;"> Gene Aliases </s:div>
                 <s:div cssClass="columnHeader" cssStyle="float: left; width: 200px;"> Database Cross Reference </s:div>
             </s:div><br>
     	    <s:iterator value="caBioGenes" status="status">
