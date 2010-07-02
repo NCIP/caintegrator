@@ -110,6 +110,7 @@ public class GisticSamplesMarkers {
     private final List<Marker> markers = new ArrayList<Marker>();
     private final List<SampleWithChromosomalSegmentSet> samples = new ArrayList<SampleWithChromosomalSegmentSet>();
     private final Set<DnaAnalysisReporter> usedReporters = new HashSet<DnaAnalysisReporter>();
+    private final Set<Sample> usedSamples = new HashSet<Sample>();
     
     /**
      * @return the markers
@@ -174,6 +175,13 @@ public class GisticSamplesMarkers {
         }
         chromosomalSample.setSegments(chromosomalSegments);
         samples.add(chromosomalSample);
+        usedSamples.add(sample);
+    }
+    /**
+     * @return the usedSamples
+     */
+    public Set<Sample> getUsedSamples() {
+        return usedSamples;
     }
     
     

@@ -95,12 +95,12 @@ public class GisticAnalysis extends AbstractCopyNumberAnalysis {
     private static final long serialVersionUID = 1L;
     
     private String name;
-    private Double amplificationsThreshold;
-    private Double deletionsThreshold;
+    private Float amplificationsThreshold;
+    private Float deletionsThreshold;
     private String genomeBuildInformation;
-    private Double joinSegmentSize;
+    private Integer joinSegmentSize;
     private String queryOrListName;
-    private Double qvThreshold;
+    private Float qvThreshold;
     private String url;
     private ReporterList reporterList;
     
@@ -119,25 +119,25 @@ public class GisticAnalysis extends AbstractCopyNumberAnalysis {
     /**
      * @return the amplificationsThreshold
      */
-    public Double getAmplificationsThreshold() {
+    public Float getAmplificationsThreshold() {
         return amplificationsThreshold;
     }
     /**
      * @param amplificationsThreshold the amplificationsThreshold to set
      */
-    public void setAmplificationsThreshold(Double amplificationsThreshold) {
+    public void setAmplificationsThreshold(Float amplificationsThreshold) {
         this.amplificationsThreshold = amplificationsThreshold;
     }
     /**
      * @return the deletionsThreshold
      */
-    public Double getDeletionsThreshold() {
+    public Float getDeletionsThreshold() {
         return deletionsThreshold;
     }
     /**
      * @param deletionsThreshold the deletionsThreshold to set
      */
-    public void setDeletionsThreshold(Double deletionsThreshold) {
+    public void setDeletionsThreshold(Float deletionsThreshold) {
         this.deletionsThreshold = deletionsThreshold;
     }
     /**
@@ -155,13 +155,13 @@ public class GisticAnalysis extends AbstractCopyNumberAnalysis {
     /**
      * @return the joinSegmentSize
      */
-    public Double getJoinSegmentSize() {
+    public Integer getJoinSegmentSize() {
         return joinSegmentSize;
     }
     /**
      * @param joinSegmentSize the joinSegmentSize to set
      */
-    public void setJoinSegmentSize(Double joinSegmentSize) {
+    public void setJoinSegmentSize(Integer joinSegmentSize) {
         this.joinSegmentSize = joinSegmentSize;
     }
     /**
@@ -179,13 +179,13 @@ public class GisticAnalysis extends AbstractCopyNumberAnalysis {
     /**
      * @return the qvThreshold
      */
-    public Double getQvThreshold() {
+    public Float getQvThreshold() {
         return qvThreshold;
     }
     /**
      * @param qvThreshold the qvThreshold to set
      */
-    public void setQvThreshold(Double qvThreshold) {
+    public void setQvThreshold(Float qvThreshold) {
         this.qvThreshold = qvThreshold;
     }
     /**

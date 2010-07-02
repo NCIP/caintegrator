@@ -213,12 +213,14 @@ public class AnalysisServiceTest {
         GisticAnalysisJob job = new GisticAnalysisJob();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(new Study());
+        daoStub.subscription = subscription;
         job.setSubscription(subscription);
         GisticParameters parameters = new GisticParameters();
         job.getGisticAnalysisForm().setGisticParameters(parameters);
         parameters.getServer().setUrl("http://genepattern.broadinstitute.org/gp/services/Analysis");
         parameters.setRefgeneFile(GisticRefgeneFileEnum.HUMAN_HG16);
         service.executeGridGistic(listener, job);
+        assertEquals(1, subscription.getCopyNumberAnalysisCollection().size());
         assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.PROCESSING_LOCALLY));
         assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.PROCESSING_REMOTELY));
         assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.COMPLETED));
@@ -638,6 +640,7 @@ public class AnalysisServiceTest {
     private static class DaoForAnalysisServiceStub extends CaIntegrator2DaoStub {
         
         public boolean returnNoGeneSymbols = false;
+        public StudySubscription subscription;
         
         /**
          * {@inheritDoc}
@@ -646,9 +649,11 @@ public class AnalysisServiceTest {
         @Override
         public <T> T get(Long id, Class<T> objectClass) {
             if (objectClass.equals(StudySubscription.class)) {
-                 StudySubscription studySubscription = new StudySubscription();
-                 studySubscription.setStudy(new Study());
-                 return (T) studySubscription;
+                if (subscription == null) {
+                     subscription = new StudySubscription();
+                     subscription.setStudy(new Study());
+                }
+                 return (T) subscription;
             } else {
                 return super.get(id, objectClass);
             }
