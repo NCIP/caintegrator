@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -12,8 +10,19 @@
 <tr><td rowspan="1" colspan="3">cai2_delete_studies_by_manager2</td></tr>
 </thead><tbody>
 <!--// This script requires a selenium core extension called goto_sel_ide.js-->
-<!--// The goto_sel_ide.js file is in this same directory and need to be selenium -> options -> selenium core extensions-->
+<!--// The goto_sel_ide.js file is in this same directory and you need to add it as a selenium core extension.-->
 <!--// Start selenium and select the file by setting selenium -> options -> selenium core extensions.-->
+<tr>
+	<td>//</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--// On the next line, change manager2 to be the userid for which all studies will be deleted.-->
+<tr>
+	<td>store</td>
+	<td>manager2</td>
+	<td>ManagerUserId</td>
+</tr>
 <tr>
 	<td>setTimeout</td>
 	<td>10000</td>
@@ -41,12 +50,12 @@
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>//*[@id=&quot;studyDeploymentJobStatusTable&quot;]//span[text()='manager2']/parent::td/parent::tr//a[text()='Delete']</td>
+	<td>//*[@id=&quot;studyDeploymentJobStatusTable&quot;]//span[text()='${ManagerUserId}']/parent::td/parent::tr//a[text()='Delete']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//*[@id=&quot;studyDeploymentJobStatusTable&quot;]//span[text()='manager2']/parent::td/parent::tr//a[text()='Delete']</td>
+	<td>//*[@id=&quot;studyDeploymentJobStatusTable&quot;]//span[text()='${ManagerUserId}']/parent::td/parent::tr//a[text()='Delete']</td>
 	<td></td>
 </tr>
 <tr>
