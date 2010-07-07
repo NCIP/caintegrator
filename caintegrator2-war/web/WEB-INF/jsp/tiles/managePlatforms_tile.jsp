@@ -129,7 +129,7 @@
                                 theme="css_xhtml" /><br>
                         </s:div>
                         <s:div id="platformNameDiv" cssStyle="%{platformNameDisplay}">
-                            <s:textfield id="platformName" name="platformName" label="Platform Name"
+                            <s:textfield id="platformName" name="platformName" label="Platform Name" size="50"
                                 theme="css_xhtml" /><br>
                         </s:div>
                         <s:div id="commentNameDiv" cssClass="inlinehelp_form_element" cssStyle="%{adfGemlFileDisplay}">
