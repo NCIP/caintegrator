@@ -43,7 +43,7 @@
     <s:if test="%{!caBioGenes.empty}">
         <hr align="center" width="100%" />
         <s:div cssStyle="padding-left: 5px;">
-        <s:property value="caBioGeneCount" />
+        <s:property value="%{caBioGenes.size}" /> gene(s) found.
             <s:div cssClass="columnWrapper">
                 <s:div cssClass="columnHeader" cssStyle="float: left; width: 20px; padding-bottom: 1px;"> <input type="checkbox" name="checkall" onclick="checkUncheckAll(this,'searchParams.filterGenesOnStudy');" checked="checked"/> </s:div>
                 <s:div cssClass="columnHeader" cssStyle="float: left; width: 100px;"> Symbol </s:div>
