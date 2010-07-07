@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.cabig.icr.asbp.parameter.Parameter;
@@ -111,6 +112,7 @@ public class GisticParameters {
     private static final Float DEFAULT_QV_THRESH = .25f;
     
     private Query clinicalQuery;
+    private List<String> platformNames;
     private SampleSet excludeControlSampleSet;
     private File cnvSegmentsToIgnoreFile;
     private final ServerConnectionProfile server = new ServerConnectionProfile();
@@ -334,5 +336,19 @@ public class GisticParameters {
                 append(genomeBuild.getBuild()).append(nl);
         sb.append(GenePatternUtil.parameterListToString(createParameterList())).append(nl);
         return sb.toString();
+    }
+
+    /**
+     * @return the platformNames
+     */
+    public List<String> getPlatformNames() {
+        return platformNames;
+    }
+
+    /**
+     * @param platformNames the platformNames to set
+     */
+    public void setPlatformNames(List<String> platformNames) {
+        this.platformNames = platformNames;
     }
 }

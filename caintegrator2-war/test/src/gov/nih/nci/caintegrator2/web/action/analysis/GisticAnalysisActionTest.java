@@ -193,6 +193,15 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
         action.getCurrentGisticAnalysisJob().setName("Test");
         action.validate();
         assertFalse(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.getPlatformsInStudy().add("Platform 1");
+        action.getPlatformsInStudy().add("Platform 2");
+        action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.getGisticAnalysisForm().getSelectedPlatformNames().add("Platform 1");
+        action.validate();
+        assertFalse(action.hasErrors());
         action.getGisticAnalysisForm().getGisticParameters().setAmplificationsThreshold(-1f);
         action.validate();
         assertTrue(action.hasErrors());
