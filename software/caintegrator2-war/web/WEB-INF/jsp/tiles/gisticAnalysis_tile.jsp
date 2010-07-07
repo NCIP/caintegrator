@@ -23,6 +23,25 @@
         var div = document.getElementById('gridServiceInputParams');
         div.style.display = "none";
     }
+    
+    function checkDisplaySelectPlatform(entry) {
+        if (document.getElementById("selectedQuery").value == "") {
+            document.getElementById('platformSelectorDiv').style.display = 'block'
+        } else {   
+            document.getElementById('platformSelectorDiv').style.display = 'none'
+        }
+    }
+    
+    function selectService(service) {
+        if (service == "WEB") {
+            document.getElementById('gridServiceInputParams').style.display = 'none';
+            document.getElementById('webServiceInputParams').style.display = 'block';
+        } else {
+            document.getElementById('webServiceInputParams').style.display = 'none';
+            document.getElementById('gridServiceInputParams').style.display = 'block';
+        } 
+    }
+    
 </script>   
 
 <div id="content">                      
@@ -61,8 +80,8 @@
             <s:div cssStyle="padding: 1em 0 0 0;">
                 <s:div cssClass="wwlbl"><label class="label">GISTIC Service Type:&nbsp;</label></s:div>
                 <s:div>
-                    <s:radio theme="css_xhtml" name="useWebService" list="#{true:'Use GenePattern GISTIC Web Service'}" onclick="document.getElementById('gridServiceInputParams').style.display = 'none'; document.getElementById('webServiceInputParams').style.display = 'block'; webServiceUrl.disabled = false; username.disabled = false; password.disabled = false; gridServiceUrl.disabled = true; " />
-                    <s:radio theme="css_xhtml" name="useWebService" list="#{false:'Use GISTIC Grid Service'}" onclick="document.getElementById('webServiceInputParams').style.display = 'none'; document.getElementById('gridServiceInputParams').style.display = 'block'; webServiceUrl.disabled = true; webServiceUrl.value = ''; username.disabled = true; username.value = ''; password.disabled = true; password.value = ''; gridServiceUrl.disabled = false; " />
+                    <s:radio theme="css_xhtml" name="useWebService" list="#{true:'Use GenePattern GISTIC Web Service'}" onclick="selectService('WEB'); " />
+                    <s:radio theme="css_xhtml" name="useWebService" list="#{false:'Use GISTIC Grid Service'}" onclick="selectService('GRID'); " />
                 </s:div>
             </s:div>
             <br />
@@ -83,10 +102,17 @@
                 </div>
             </s:div>
             <br />
-            <s:select name="gisticAnalysisForm.selectedQuery"
+            <s:select id="selectedQuery" name="gisticAnalysisForm.selectedQuery"
                 headerKey="" headerValue="All Samples"
-                list="gisticAnalysisForm.clinicalQueries" listValue="value.displayName" label="Annotation Queries and Lists" />
+                list="gisticAnalysisForm.clinicalQueries" listValue="value.displayName" label="Annotation Queries and Lists"
+                onchange="if (%{studyHasMultiplePlatforms}) {checkDisplaySelectPlatform()}" />
             <br />
+            <s:if test="%{studyHasMultiplePlatforms}">
+                <s:div id="platformSelectorDiv">
+                    <s:select name="gisticAnalysisForm.selectedPlatformNames" multiple="true"
+                        list="platformsInStudy" label="Select Platform"/>
+                </s:div>
+            </s:if>
             <s:select name="gisticAnalysisForm.excludeControlSampleSetName"
                 headerKey="" headerValue="None"
                 list="controlSampleSets" label="Exclude Sample Control Set"

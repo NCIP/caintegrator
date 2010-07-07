@@ -139,6 +139,7 @@ class AgilentCopyNumberMappingSingleFileHandler extends AbstractDnaAnalysisMappi
         try {
             CSVReader reader = new CSVReader(new FileReader(getMappingFile()));
             String[] fields;
+            samples.clear();
             while ((fields = reader.readNext()) != null) {
                 String subjectId = fields[0].trim();
                 String sampleName = fields[1].trim();
