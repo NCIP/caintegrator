@@ -219,5 +219,9 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public Set<String> retrieveGeneExpressionPlatformsForStudy(Study study) {
         return platformsForStudy;
     }
+
+    public Set<String> retrieveCopyNumberPlatformsForStudy(Study study) {
+        return new HashSet<String>();
+    }
     
 }

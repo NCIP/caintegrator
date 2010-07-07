@@ -122,6 +122,7 @@ public final class AgilentLevelTwoDataSingleFileParser {
     public Map<String, Map<String, Float>> extractData(File dataFile, List<String> sampleList)
     throws DataRetrievalException {
         try {
+            sampleToIndexMap.clear();
             return extractData(new InputStreamReader(new FileInputStream(dataFile)), sampleList);
         } catch (IOException e) {
             throw new DataRetrievalException("Couldn't read Agilent data file.", e);

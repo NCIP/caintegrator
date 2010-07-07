@@ -133,6 +133,13 @@ public interface QueryManagementService extends CaIntegrator2EntityRefresher {
     Set<String> retrieveGeneExpressionPlatformsForStudy(Study study);
     
     /**
+     * Retrieves the copy number platforms that exist in a study.
+     * @param study to find platforms for.
+     * @return copy number platform names.
+     */
+    Set<String> retrieveCopyNumberPlatformsForStudy(Study study);
+    
+    /**
      * Creates a list of queries given a group of subject lists.
      * @param subscription to study subscription.
      * @return list of queries.

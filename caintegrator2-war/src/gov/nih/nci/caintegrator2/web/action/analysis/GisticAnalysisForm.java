@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -98,6 +100,7 @@ public class GisticAnalysisForm {
     private GisticParameters gisticParameters;
     
     private String selectedQuery = null;
+    private List<String> selectedPlatformNames = new ArrayList<String>();
     private String excludeControlSampleSetName;
     
     // JSP Select List Options
@@ -158,6 +161,20 @@ public class GisticAnalysisForm {
      */
     public boolean isGridServiceCall() {
         return getGisticParameters().getServer().getUrl().endsWith("/Gistic");
+    }
+
+    /**
+     * @return the selectedPlatformNames
+     */
+    public List<String> getSelectedPlatformNames() {
+        return selectedPlatformNames;
+    }
+
+    /**
+     * @param selectedPlatformNames the selectedPlatformNames to set
+     */
+    public void setSelectedPlatformNames(List<String> selectedPlatformNames) {
+        this.selectedPlatformNames = selectedPlatformNames;
     }
     
 }

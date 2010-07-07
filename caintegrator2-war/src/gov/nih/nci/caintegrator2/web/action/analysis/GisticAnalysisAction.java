@@ -108,8 +108,11 @@ import gov.nih.nci.caintegrator2.web.ajax.IPersistedAnalysisJobAjaxUpdater;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -147,6 +150,17 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     private String gridServiceUrl;
     private boolean useWebService = true;
     private ConfigurationHelper configurationHelper;
+    private List<String> platformsInStudy = new ArrayList<String>();
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void prepare() {
+        super.prepare();
+        platformsInStudy = new ArrayList<String>(
+                getQueryManagementService().retrieveCopyNumberPlatformsForStudy(getStudy()));
+        Collections.sort(platformsInStudy);
+    }
 
     /**
      * @return the useWebService
@@ -191,6 +205,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
         if (StringUtils.isBlank(getCurrentGisticAnalysisJob().getName())) {
             addFieldError("currentGisticAnalysisJob.name", "Job name required.");
         }
+        checkSelectedPlatform();
         checkNegativeValue("gisticParameters.amplificationsThreshold",
                 getGisticParameters().getAmplificationsThreshold());
         checkNegativeValue("gisticParameters.deletionsThreshold",
@@ -199,6 +214,14 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
                 getGisticParameters().getJoinSegmentSize());
         checkNegativeValue("gisticParameters.qvThresh",
             getGisticParameters().getQvThresh());
+    }
+
+    private void checkSelectedPlatform() {
+        if (StringUtils.isBlank(getGisticAnalysisForm().getSelectedQuery())
+                && isStudyHasMultiplePlatforms()
+                && getGisticAnalysisForm().getSelectedPlatformNames().isEmpty()) {
+            addFieldError("gisticAnalysisForm.selectedPlatformNames", "Platform is required.");
+        }
     }
 
     private void checkNegativeValue(String field, Integer value) {
@@ -478,5 +501,20 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
      */
     public String getUseWebServiceOn() {
         return (useWebService) ? "display: block;" : "display: none;";
+    }
+    
+    /**
+     * @return the platformsInStudy
+     */
+    public List<String> getPlatformsInStudy() {
+        return platformsInStudy;
+    }
+
+    /**
+     * Determines if study has multiple platforms.
+     * @return T/F value if study has multiple platforms.
+     */
+    public boolean isStudyHasMultiplePlatforms() {
+        return platformsInStudy.size() > 1;
     }
 }

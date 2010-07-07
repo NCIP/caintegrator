@@ -29,7 +29,6 @@
     }
     
     function changeFieldDescriptorType() {
-        var type = document.getElementById("fieldDescriptorType").value;
         if (document.getElementById("fieldDescriptorType").value == "Identifier") {
             if (confirm("You are about to set this field descriptor to be an Identifier \n" +
                 "which will set the annotation definition of the previous Identifier column to null.\n" +
