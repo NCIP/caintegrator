@@ -287,29 +287,29 @@ class AffymetrixCnPlatformLoader extends AbstractPlatformLoader {
         return LOGGER;
     }
 
-	/**
-	 * @return the positionHeader
-	 */
-	public String getPositionHeader() {
-		String chromosomePositionHeader = POSITION_HEADER;
-		
-		if (getHeaderValue(CHIP_TYPE_HEADER) == CHIP_TYPE_SNP6) {
-			chromosomePositionHeader = "Chromosome Start";
-		} else if (getHeaderValue(CHIP_TYPE_HEADER) == CHIP_TYPE_50K_XBA) {
-			chromosomePositionHeader = "Physical Position";
-		} else if (getHeaderValue(CHIP_TYPE_HEADER) == CHIP_TYPE_50K_HIND) {
-			chromosomePositionHeader = "Physical Position";
-		}
-		return chromosomePositionHeader;
-	}
+    /**
+     * @return the positionHeader
+     */
+    public String getPositionHeader() {
+        String chromosomePositionHeader = POSITION_HEADER;
+        
+        if (getHeaderValue(CHIP_TYPE_HEADER) == CHIP_TYPE_SNP6) {
+            chromosomePositionHeader = "Chromosome Start";
+        } else if (getHeaderValue(CHIP_TYPE_HEADER) == CHIP_TYPE_50K_XBA) {
+            chromosomePositionHeader = "Physical Position";
+        } else if (getHeaderValue(CHIP_TYPE_HEADER) == CHIP_TYPE_50K_HIND) {
+            chromosomePositionHeader = "Physical Position";
+        }
+        return chromosomePositionHeader;
+    }
 
-	/**
-	 * @return the requiredHeaders
-	 */
-	private String[] getRequiredHeaders() {
-		String [] holdString = {PROBE_SET_ID_HEADER, GENE_SYMBOL_HEADER,
-		        CHROMOSOME_HEADER, getPositionHeader()}; 
-		return holdString;
-	}
+    /**
+     * @return the requiredHeaders
+     */
+    private String[] getRequiredHeaders() {
+        String [] holdString = {PROBE_SET_ID_HEADER, GENE_SYMBOL_HEADER,
+                CHROMOSOME_HEADER, getPositionHeader()}; 
+        return holdString;
+    }
 
 }
