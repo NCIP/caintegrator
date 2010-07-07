@@ -108,7 +108,7 @@ public class AffymetrixCnPlatformLoaderTest {
     @Test
     public void testLoad() throws PlatformLoadingException {
         List<File> annotationFiles = new ArrayList<File>();
-        annotationFiles.add(TestArrayDesignFiles.GENOME_SNP6_CN_ANNOTATION_TEST_FILE);
+        annotationFiles.add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_TEST_FILE);
         AffymetrixCnPlatformSource affymetrixCnPlatformSource = new AffymetrixCnPlatformSource (
                 annotationFiles, "AffymetrixCnPlatform");
 
@@ -122,7 +122,7 @@ public class AffymetrixCnPlatformLoaderTest {
         assertEquals(1, reporterLists.size());
         ReporterList reporterList = reporterLists.iterator().next();
         assertTrue("hg18".equals(reporterList.getGenomeVersion()));
-        assertEquals(4, reporterList.getReporters().size());
+        assertEquals(10, reporterList.getReporters().size());
         
         // Test wrong header file
         annotationFiles.clear();

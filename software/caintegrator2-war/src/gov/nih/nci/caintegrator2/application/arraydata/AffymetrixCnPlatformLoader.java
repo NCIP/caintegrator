@@ -117,16 +117,17 @@ class AffymetrixCnPlatformLoader extends AbstractPlatformLoader {
     static final String DBSNP_RS_ID_HEADER = "dbSNP RS ID";
     private static final Logger LOGGER = Logger.getLogger(AffymetrixCnPlatformLoader.class);
     private static final String CHIP_TYPE_HEADER = "chip_type";
+    private static final String CHIP_TYPE_50K_XBA = "Mapping50K_Xba240";
+    private static final String CHIP_TYPE_50K_HIND = "Mapping50K_Hind240";
+    private static final String CHIP_TYPE_SNP6 = "GenomeWideSNP_6";
     private static final String VERSION_HEADER = "netaffx-annotation-netaffx-build";
     private static final String GENOME_VERSION_HEADER = "genome-version";
     private static final String PROBE_SET_ID_HEADER = "Probe Set ID";
     private static final String GENE_SYMBOL_HEADER = "Associated Gene";
     private static final String NO_VALUE_INDICATOR = "---";
     private static final String CHROMOSOME_HEADER = "Chromosome";
-    private static final String POSITION_HEADER = "Chromosome Start";
+    private static final String POSITION_HEADER = "Physical Position";
     private Map<String, String> fileHeaders;
-    private static final String[] REQUIRED_HEADERS = {PROBE_SET_ID_HEADER, GENE_SYMBOL_HEADER,
-        CHROMOSOME_HEADER, POSITION_HEADER}; 
 
     AffymetrixCnPlatformLoader(AffymetrixCnPlatformSource source) {
         super(source);
@@ -182,7 +183,7 @@ class AffymetrixCnPlatformLoader extends AbstractPlatformLoader {
         reporter.setReporterList(reporterList);
         reporter.getGenes().addAll(genes);
         reporter.setChromosome(getAnnotationValue(fields, CHROMOSOME_HEADER, NO_VALUE_INDICATOR));
-        reporter.setPosition(getIntegerValue(fields, POSITION_HEADER));
+        reporter.setPosition(getIntegerValue(fields, getPositionHeader()));
     }
 
     private Integer getIntegerValue(String[] fields, String header) {
@@ -271,7 +272,7 @@ class AffymetrixCnPlatformLoader extends AbstractPlatformLoader {
         AffymetrixAnnotationHeaderReader headerReader = new AffymetrixAnnotationHeaderReader(
                 getAnnotationFileReader());
         fileHeaders = headerReader.getFileHeaders();
-        loadAnnotationHeaders(headerReader.getDataHeaders(), REQUIRED_HEADERS);
+        loadAnnotationHeaders(headerReader.getDataHeaders(), getRequiredHeaders());
     }
 
     @Override
@@ -285,5 +286,30 @@ class AffymetrixCnPlatformLoader extends AbstractPlatformLoader {
     Logger getLogger() {
         return LOGGER;
     }
+
+	/**
+	 * @return the positionHeader
+	 */
+	public String getPositionHeader() {
+		String chromosomePositionHeader = POSITION_HEADER;
+		
+		if (getHeaderValue(CHIP_TYPE_HEADER) == CHIP_TYPE_SNP6) {
+			chromosomePositionHeader = "Chromosome Start";
+		} else if (getHeaderValue(CHIP_TYPE_HEADER) == CHIP_TYPE_50K_XBA) {
+			chromosomePositionHeader = "Physical Position";
+		} else if (getHeaderValue(CHIP_TYPE_HEADER) == CHIP_TYPE_50K_HIND) {
+			chromosomePositionHeader = "Physical Position";
+		}
+		return chromosomePositionHeader;
+	}
+
+	/**
+	 * @return the requiredHeaders
+	 */
+	private String[] getRequiredHeaders() {
+		String [] holdString = {PROBE_SET_ID_HEADER, GENE_SYMBOL_HEADER,
+		        CHROMOSOME_HEADER, getPositionHeader()}; 
+		return holdString;
+	}
 
 }
