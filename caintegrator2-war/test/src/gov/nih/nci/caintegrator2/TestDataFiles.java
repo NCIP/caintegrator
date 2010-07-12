@@ -247,6 +247,10 @@ public class TestDataFiles {
     public static final String GISTIC_SAMPLES_FILE_PATH = "/gistic_samples.txt";
     public static final File GISTIC_SAMPLES_FILE = getFile(GISTIC_SAMPLES_FILE_PATH);
     
+    public static final String GISTIC_RESULT_FILE_PATH = "/gisticResult.zip";
+    public static final File GISTIC_RESULT_FILE = getFile(GISTIC_RESULT_FILE_PATH);
+    
+    // Platform data files
     public static File getAffymetrixDataFile(String filename) {
         return getFile(AFFYMETRIX_DATA_FILE_DIRECTORY_PATH + "/" + filename);
     }

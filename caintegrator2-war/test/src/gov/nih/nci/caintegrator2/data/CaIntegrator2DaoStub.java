@@ -497,4 +497,10 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return new ArrayList<ResultColumn>();
     }
 
+    public Gene lookupOrCreateGene(String symbol) {
+        Gene gene = new Gene();
+        gene.setSymbol(symbol);
+        return gene;
+    }
+
 }
