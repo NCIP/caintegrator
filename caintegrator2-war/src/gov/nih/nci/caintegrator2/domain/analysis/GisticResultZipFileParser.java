@@ -187,8 +187,8 @@ public class GisticResultZipFileParser {
 
     private File unZipFile(ZipInputStream zipinputstream) throws IOException {
         int n;
-        String outputFileName = System.getProperty("java.io.tmpdir") + "Gistic_result_file.txt"
-            + System.currentTimeMillis();
+        String outputFileName = System.getProperty("java.io.tmpdir") + "/Gistic_result_file_"
+            + System.currentTimeMillis() + ".txt";
         FileOutputStream fileoutputstream = new FileOutputStream(outputFileName);
         while ((n = zipinputstream.read(buf, 0, BYTE_SIZE)) > -1) {
             fileoutputstream.write(buf, 0, n);
