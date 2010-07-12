@@ -257,6 +257,13 @@ public interface CaIntegrator2Dao {
      */
     Gene getGene(String symbol);
     
+
+    /**
+     * Returns the gene that matches, if not found then create one.
+     * @param symbol the gene symbol
+     * @return gene
+     */
+    Gene lookupOrCreateGene(String symbol);
     
     /**
      * Given a collection of gene symbols, it will return back all the ones that exist for given study.

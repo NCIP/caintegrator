@@ -103,7 +103,6 @@ import gov.nih.nci.caintegrator2.domain.application.SubjectIdentifier;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -413,18 +412,9 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
      */
     public void createGeneList(GeneList geneList, List<String> geneSymbols) {
         for (String symbol : geneSymbols) {
-            geneList.getGeneCollection().add(lookupOrCreateGene(symbol));
+            geneList.getGeneCollection().add(getDao().lookupOrCreateGene(symbol));
         }
         saveAbstractList(geneList);
-    }
-    
-    private Gene lookupOrCreateGene(String symbol) {
-        Gene gene = getDao().getGene(symbol);
-        if (gene == null) {
-            gene = new Gene();
-            gene.setSymbol(symbol);
-        }
-        return gene;
     }
 
     /**

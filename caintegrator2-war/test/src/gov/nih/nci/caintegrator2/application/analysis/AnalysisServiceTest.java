@@ -132,6 +132,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
@@ -208,7 +209,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testGisticWebService() throws ConnectionException, InvalidCriterionException, ParameterException, IOException {
+    public void testGisticWebService() throws ConnectionException, InvalidCriterionException, ParameterException, IOException, DataRetrievalException {
         StatusUpdateTestListener listener = new StatusUpdateTestListener();
         GisticAnalysisJob job = new GisticAnalysisJob();
         StudySubscription subscription = new StudySubscription();

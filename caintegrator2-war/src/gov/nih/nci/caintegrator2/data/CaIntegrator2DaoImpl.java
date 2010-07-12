@@ -427,6 +427,18 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    public Gene lookupOrCreateGene(String symbol) {
+        Gene gene = getGene(symbol);
+        if (gene == null) {
+            gene = new Gene();
+            gene.setSymbol(symbol);
+        }
+        return gene;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public Platform getPlatform(String name) {
         List values = getHibernateTemplate().findByNamedParam("from Platform where name = :name", 

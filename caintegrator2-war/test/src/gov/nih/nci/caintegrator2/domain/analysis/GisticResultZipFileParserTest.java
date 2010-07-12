@@ -83,75 +83,39 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.ajax;
+package gov.nih.nci.caintegrator2.domain.analysis;
 
-import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
-import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
+import static org.junit.Assert.*;
+
+import java.util.Map;
+
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.ParameterException;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticResultZipFileParser;
+import gov.nih.nci.caintegrator2.domain.genomic.GisticGenomicRegionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 
-import java.io.File;
-import java.io.IOException;
+import org.junit.Test;
 
-import org.apache.log4j.Logger;
 
 /**
- * Asynchronous thread that runs GenePatternAnalysis jobs and updates the status of those jobs.  Still
- * need to eventually add a function to process the job remotely and update the status on GenePattern side.
+ * 
  */
-public class GisticAjaxRunner implements Runnable {
-    
-    private static final Logger LOGGER = Logger.getLogger(GisticAjaxRunner.class);
-    
-    private final PersistedAnalysisJobAjaxUpdater updater;
-    private final GisticAnalysisJob job;
-    
-    GisticAjaxRunner(PersistedAnalysisJobAjaxUpdater updater,
-            GisticAnalysisJob job) {
-        this.updater = updater;
-        this.job = job;
-    }
+public class GisticResultZipFileParserTest {
 
-    /**
-     * {@inheritDoc}
-     */
-    public void run() {
-        job.setStatus(AnalysisJobStatusEnum.PROCESSING_LOCALLY);
-        updater.saveAndUpdateJobStatus(job);
-        try {
-            process();
-        } catch (ConnectionException e) {
-            addErrorMessage("Couldn't execute GISTIC analysis job: " + job.getName()
-            + " - " + e.getMessage(), AnalysisJobStatusEnum.ERROR_CONNECTING);
-        } catch (ParameterException e) {
-            addErrorMessage("Couldn't execute GISTIC analysis job: " + job.getName()
-            + " - " + e.getMessage(), AnalysisJobStatusEnum.INVALID_PARAMETER);
-        } catch (Exception e) {
-            addErrorMessage(e.getMessage(), AnalysisJobStatusEnum.LOCAL_ERROR);
+    private CaIntegrator2Dao dao = new CaIntegrator2DaoStub();
+    @Test
+    public void testParse() throws DataRetrievalException {
+        ReporterList reporterList = new ReporterList("GISTIC test results", ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER);
+        Map<String, Map<GisticGenomicRegionReporter, Float>> gisticData =
+            new GisticResultZipFileParser(reporterList, dao).parse(TestDataFiles.GISTIC_RESULT_FILE);
+        assertEquals(20, gisticData.keySet().size());
+        for (String sample : gisticData.keySet()) {
+            Map<GisticGenomicRegionReporter, Float> data = gisticData.get(sample);
+            assertEquals(10, data.keySet().size());
         }
     }
-    
-    private void addErrorMessage(String errorMessage, AnalysisJobStatusEnum errorState) {
-        updater.addError(errorMessage, job);
-        LOGGER.error(errorMessage);
-        job.setStatus(errorState);
-        job.setStatusDescription(errorMessage);
-        updater.saveAndUpdateJobStatus(job);
-    }
-
-    private void process() throws ConnectionException, InvalidCriterionException, ParameterException,
-            IOException, DataRetrievalException {
-        File resultFile = updater.getAnalysisService().executeGridGistic(updater, job);
-        job.setStatus(AnalysisJobStatusEnum.COMPLETED);
-        if (resultFile != null) {
-            ResultsZipFile resultZipFile = new ResultsZipFile();
-            resultZipFile.setPath(resultFile.getAbsolutePath());
-            job.setResultsZipFile(resultZipFile);
-        }
-        updater.saveAndUpdateJobStatus(job);
-    }
-
 }

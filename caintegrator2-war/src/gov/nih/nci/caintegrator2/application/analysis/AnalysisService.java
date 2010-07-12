@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
@@ -163,9 +164,11 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @throws InvalidCriterionException if criterion is not valid.
      * @throws ParameterException if parameter is invalid.
      * @throws IOException if there's a problem saving files.
+     * @throws DataRetrievalException exception parsing the result files.
      */
     File executeGridGistic(StatusUpdateListener updater, GisticAnalysisJob job)
-            throws ConnectionException, InvalidCriterionException, ParameterException, IOException;
+            throws ConnectionException, InvalidCriterionException, ParameterException, IOException,
+                DataRetrievalException;
     
     /**
      * Creates a KMPlot object based on clinical subjects for the given parameters.

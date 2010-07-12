@@ -106,15 +106,19 @@ import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticResultZipFileParser;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.file.FileManager;
@@ -203,16 +207,28 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     
     /**
      * {@inheritDoc}
+     * @throws DataRetrievalException 
      */
     @Transactional(readOnly = false)
     public File executeGridGistic(StatusUpdateListener updater, GisticAnalysisJob job) 
-        throws ConnectionException, InvalidCriterionException, ParameterException, IOException {
+        throws ConnectionException, InvalidCriterionException, ParameterException, IOException,
+            DataRetrievalException {
         File resultsZipFile = null;
         StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class); 
         job.setSubscription(studySubscription);
         GisticSamplesMarkers gisticSamplesMarkers = 
             GenePatternUtil.createGisticSamplesMarkers(queryManagementService, 
                     job.getGisticAnalysisForm().getGisticParameters(), job.getSubscription());
+        resultsZipFile = runGistic(updater, job, studySubscription, gisticSamplesMarkers);
+        GisticAnalysis gisticAnalysis = createGisticAnalysis(job, gisticSamplesMarkers.getUsedSamples());
+        parserGisticResults(gisticAnalysis.getReporterList(), resultsZipFile);
+        return resultsZipFile;
+    }
+
+    private File runGistic(StatusUpdateListener updater, GisticAnalysisJob job, StudySubscription studySubscription,
+            GisticSamplesMarkers gisticSamplesMarkers) throws IOException, ConnectionException,
+            InvalidCriterionException, ParameterException {
+        File resultsZipFile;
         List<File> inputFiles = new ArrayList<File>();
         File segmentFile = fileManager.createSamplesFile(studySubscription, gisticSamplesMarkers.getSamples());
         File markersFile = fileManager.createMarkersFile(studySubscription, gisticSamplesMarkers.getMarkers());
@@ -231,11 +247,17 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         } else {
             resultsZipFile = runGisticWebService(job, updater, segmentFile, markersFile);
         }
-        createGisticAnalysis(job, gisticSamplesMarkers.getUsedSamples());
-        //TODO parse the resultsZipFile for gistic analysis (the *all_lesions_file* file)
         return resultsZipFile;
     }
     
+    private void parserGisticResults(ReporterList reporterList, File resultsZipFile)
+    throws DataRetrievalException {
+        if (resultsZipFile != null) {
+            new GisticResultZipFileParser(reporterList, getDao()).parse(resultsZipFile);
+            //TODO write to .netcdf
+        }
+    }
+
     private GisticAnalysis createGisticAnalysis(GisticAnalysisJob job, Set<Sample> samplesUsed) {
         GisticAnalysis gisticAnalysis = new GisticAnalysis();
         StudySubscription subscription = job.getSubscription();
@@ -252,6 +274,10 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         gisticAnalysis.setUrl(parameters.getServer().getUrl());
         gisticAnalysis.getSamplesUsedForCalculation().addAll(samplesUsed);
         subscription.getCopyNumberAnalysisCollection().add(gisticAnalysis);
+
+        ReporterList reporterList = new ReporterList("GISTIC result", ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER);
+        gisticAnalysis.setReporterList(reporterList);
+
         getDao().save(subscription);
         return gisticAnalysis;
     }
