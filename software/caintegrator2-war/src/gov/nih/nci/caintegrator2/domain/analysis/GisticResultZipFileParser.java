@@ -83,154 +83,118 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study.deployment;
+package gov.nih.nci.caintegrator2.domain.analysis;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.Array;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GisticGenomicRegionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.HashSet;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
- * Provides base handling to retrieve copy number data based on a copy number mapping file.
+ * Parse the GISTIC result zip file.
  */
-public abstract class AbstractDnaAnalysisMappingFileHandler extends AbstractCaArrayFileHandler {
+public class GisticResultZipFileParser {
 
+    private static final int BYTE_SIZE = 1024;
+    private  static byte[] buf = new byte[BYTE_SIZE];
+
+    private final Map<String, List<Gene>> ampGeneMap = new HashMap<String, List<Gene>>();
+    private final Map<String, List<Gene>> delGeneMap = new HashMap<String, List<Gene>>();
+    private Map<String, Map<GisticGenomicRegionReporter, Float>> gisticData;
+
+    private final ReporterList reporterList;
     private final CaIntegrator2Dao dao;
-    
-    AbstractDnaAnalysisMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
-            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
-        super(genomicSource, caArrayFacade, arrayDataService);
-                this.dao = dao;
+
+    /**
+     * @param dao the caintegrator2 dao
+     * @param reporterList the reporter list
+     */
+    public GisticResultZipFileParser(ReporterList reporterList, CaIntegrator2Dao dao) {
+        super();
+        this.reporterList = reporterList;
+        this.dao = dao;
     }
 
     /**
      * 
-     * @param sampleName the sample name to retrieve
-     * @param subjectIdentifier the study assignment id
-     * @return the sample object
-     * @throws ValidationException Validation exception
-     * @throws FileNotFoundException IO exception
+     * @param zipFile the Gistic result zip file
+     * @return the gistic data
+     * @throws DataRetrievalException data retrieval exception
      */
-    protected Sample getSample(String sampleName, String subjectIdentifier)
-    throws FileNotFoundException, ValidationException {
-        Sample sample = getGenomicSource().getSample(sampleName);
-        if (sample == null) {
-            StudySubjectAssignment assignment = getSubjectAssignment(subjectIdentifier);
-            sample = new Sample();
-            sample.setName(sampleName);
-            SampleAcquisition acquisition = new SampleAcquisition();
-            acquisition.setAssignment(assignment);
-            acquisition.setSample(sample);
-            sample.setSampleAcquisition(acquisition);
-            assignment.getSampleAcquisitionCollection().add(acquisition);
-            getGenomicSource().getSamples().add(sample);
-            dao.save(sample);
+    public Map<String, Map<GisticGenomicRegionReporter, Float>> parse(File zipFile) throws DataRetrievalException {
+        try {
+            ampGeneMap.clear();
+            delGeneMap.clear();
+            mapGenes(zipFile);
+            processResults(zipFile);
+            return gisticData;
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't parse allLesion file: " + e.getMessage(), e);
         }
-        return sample;
     }
 
-    /**
-     * 
-     * @return the mapping file.
-     * @throws FileNotFoundException IO exception.
-     */
-    protected File getMappingFile() throws FileNotFoundException {
-        return getGenomicSource().getDnaAnalysisDataConfiguration().getMappingFile();
-    }
+    private void processResults(File zipFile) throws IOException, DataRetrievalException {
+        ZipInputStream zipInputStream = null;
+        ZipEntry zipEntry;
+        zipInputStream = new ZipInputStream(
+            new FileInputStream(zipFile));
 
-    abstract List<ArrayDataValues> loadArrayData()
-    throws ConnectionException, DataRetrievalException, ValidationException;
-    
-    /**
-     * Get the platform.
-     * @param reporterListNames the set of report lists.
-     * @return Platform
-     * @throws ValidationException when platform not found or not unique.
-     */
-    protected Platform getPlatform(Set<String> reporterListNames) throws ValidationException {
-        Set<Platform> platforms = new HashSet<Platform>();
-        for (String reporterListName : reporterListNames) {
-            ReporterList reporterList = dao.getReporterList(reporterListName);
-            if (reporterList == null) {
-                throw new ValidationException("There is no platform that supports chip type " + reporterListName);
+        zipEntry = zipInputStream.getNextEntry();
+        while (zipEntry != null)  {
+            String entryName = zipEntry.getName();
+            if (entryName.contains("all_lesions")) {
+                GisticAllLesionsFileParser parser = new GisticAllLesionsFileParser(
+                        ampGeneMap, delGeneMap, reporterList);
+                gisticData = parser.parse(unZipFile(zipInputStream));
+                break;
             }
-            platforms.add(reporterList.getPlatform());
+            zipInputStream.closeEntry();
+            zipEntry = zipInputStream.getNextEntry();
         }
-        if (platforms.size() > 1) {
-            throw new ValidationException(
-                    "DNA analysis data files for a single sample are mapped to multiple platforms.");
-        }
-        return platforms.iterator().next();
+        zipInputStream.close();
     }
 
-    /**
-     * Clean up.
-     * @param dataFile the data file to delete.
-     */
-    protected void doneWithFile(File dataFile) {
-        dataFile.delete();
-    }
-    
-    abstract String getFileType();
+    private void mapGenes(File zipFile) throws IOException {
+        ZipInputStream zipInputStream = null;
+        ZipEntry zipEntry;
+        zipInputStream = new ZipInputStream(
+            new FileInputStream(zipFile));
 
-    /**
-     * Create the ArrayData for the sample.
-     * @param sample the sample to get arrayData for.
-     * @param reporterLists the set of report lists.
-     * @return ArrayData
-     */
-    protected ArrayData createArrayData(Sample sample, Set<ReporterList> reporterLists) {
-        ArrayData arrayData = new ArrayData();
-        arrayData.setType(ArrayDataType.COPY_NUMBER);
-        arrayData.setSample(sample);
-        sample.getArrayDataCollection().add(arrayData);
-        arrayData.setStudy(getGenomicSource().getStudyConfiguration().getStudy());
-        Array array = new Array();
-        array.getArrayDataCollection().add(arrayData);
-        arrayData.setArray(array);
-        array.getSampleCollection().add(sample);
-        sample.getArrayCollection().add(array);
-        if (!reporterLists.isEmpty()) {
-            arrayData.getReporterLists().addAll(reporterLists);
-            for (ReporterList reporterList : reporterLists) {
-                reporterList.getArrayDatas().add(arrayData);    
+        zipEntry = zipInputStream.getNextEntry();
+        while (zipEntry != null)  {
+            String entryName = zipEntry.getName();
+            if (entryName.contains("Amp_genes")) {
+                ampGeneMap.putAll(new GisticGeneMapFileParser(dao).parse(unZipFile(zipInputStream)));
+            } else if (entryName.contains("Del_genes")) {
+                delGeneMap.putAll(new GisticGeneMapFileParser(dao).parse(unZipFile(zipInputStream)));
             }
-            array.setPlatform(reporterLists.iterator().next().getPlatform());
+            zipInputStream.closeEntry();
+            zipEntry = zipInputStream.getNextEntry();
         }
-        return arrayData;
+        zipInputStream.close();
     }
 
-    private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier)
-    throws ValidationException, FileNotFoundException {
-        StudySubjectAssignment assignment = 
-            getGenomicSource().getStudyConfiguration().getSubjectAssignment(subjectIdentifier);
-        if (assignment == null) {
-            throw new ValidationException("Subject identifier " + subjectIdentifier + " in DNA analysis mapping file " 
-                    + getMappingFile().getAbsolutePath() + " doesn't map to a known subject in the study.");
+    private File unZipFile(ZipInputStream zipinputstream) throws IOException {
+        int n;
+        String outputFileName = System.getProperty("java.io.tmpdir") + "Gistic_result_file.txt"
+            + System.currentTimeMillis();
+        FileOutputStream fileoutputstream = new FileOutputStream(outputFileName);
+        while ((n = zipinputstream.read(buf, 0, BYTE_SIZE)) > -1) {
+            fileoutputstream.write(buf, 0, n);
         }
-        return assignment;
-    }
-
-    CaIntegrator2Dao getDao() {
-        return dao;
+        fileoutputstream.close();
+        return new File(outputFileName);
     }
 
 }
