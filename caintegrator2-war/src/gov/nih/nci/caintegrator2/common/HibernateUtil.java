@@ -273,6 +273,7 @@ public final class HibernateUtil {
             for (ImageSeries imageSeries : imageSeriesAcquisition.getSeriesCollection()) {
                 Hibernate.initialize(imageSeries);
                 loadCollection(imageSeries.getImageCollection());
+                loadCollection(imageSeries.getAnnotationCollection());
             }
         }
         

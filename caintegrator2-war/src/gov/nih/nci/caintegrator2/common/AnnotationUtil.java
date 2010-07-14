@@ -91,12 +91,17 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.application.study.ValidationResult;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -141,6 +146,92 @@ public final class AnnotationUtil {
         }
         return results;
     }
+    
+    /**
+     * Creates an annotation value for the given value / field descriptor.
+     * @param annotationDescriptor to create value for.
+     * @param value string value.
+     * @return annotation value.
+     * @throws ValidationException for validation errors.
+     */
+    @SuppressWarnings("PMD.CyclomaticComplexity")   // switch statement and argument checking
+    public static AbstractAnnotationValue createAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
+           String value) throws ValidationException {
+       if (annotationDescriptor.getDefinition() == null 
+               || annotationDescriptor.getDefinition().getDataType() == null) {
+           throwValidationException("Type for field " + annotationDescriptor.getName() + " was not set.");
+       }
+       AnnotationTypeEnum type = annotationDescriptor.getDefinition().getDataType();
+       switch (type) {
+       case DATE:
+           return createDateAnnotationValue(annotationDescriptor, value);
+       case STRING:
+           return createStringAnnotationValue(annotationDescriptor, value);
+       case NUMERIC:
+           return createNumericAnnotationValue(annotationDescriptor, value);
+       default:
+           throwValidationException("Unknown AnnotationDefinitionType: " + type);
+           return null;
+       }
+   }
+    
+    private static void throwValidationException(String message) throws ValidationException {
+        ValidationResult result = new ValidationResult();
+        result.setInvalidMessage(message);
+        throw new ValidationException(result);
+    }
+
+   private static StringAnnotationValue createStringAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
+           String value) {
+       StringAnnotationValue annotationValue = new StringAnnotationValue();
+       annotationValue.setStringValue(value);
+       annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+       annotationDescriptor.getDefinition().getAnnotationValueCollection().add(annotationValue);
+       return annotationValue;
+   }
+
+   private static DateAnnotationValue createDateAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
+           String value) throws ValidationException {
+       DateAnnotationValue annotationValue = new DateAnnotationValue();
+       try {
+           annotationValue.setDateValue(DateUtil.createDate(value));
+       } catch (ParseException e) {
+           throwValidationException(createFormatErrorMsg(annotationDescriptor, value, 
+                   "The two formats allowed are MM-dd-yyyy and MM/dd/yyyy"));
+       }
+       annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+       annotationDescriptor.getDefinition().getAnnotationValueCollection().add(annotationValue);
+       return annotationValue;
+   }
+
+   private static NumericAnnotationValue createNumericAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
+           String value) throws ValidationException {
+       NumericAnnotationValue annotationValue = new NumericAnnotationValue();
+       try {
+           annotationValue.setNumericValue(getNumericValue(value));
+       } catch (NumberFormatException e) {
+           throwValidationException(createFormatErrorMsg(annotationDescriptor, value, null));
+       }
+       annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+       annotationDescriptor.getDefinition().getAnnotationValueCollection().add(annotationValue);
+       return annotationValue;
+   }
+   
+   private static Double getNumericValue(String value) {
+       if (StringUtils.isBlank(value)) {
+           return null;
+       } else {
+           return Double.parseDouble(value);
+       }
+   }
+
+   private static String createFormatErrorMsg(
+           AnnotationFieldDescriptor descriptor, String value, String allowedFormats) {
+       return "Invalid format for data type '" + descriptor.getDefinition().getDataType()
+           + "' on field '" + descriptor.getName()
+           + "' of descriptor '" + descriptor.getDefinition().getDisplayName()
+           + "' with value = '" + value + "'. " + allowedFormats;
+   }
     
     /**
      * Retrieves existing field descriptor, and if that doesn't exist creates a new one.

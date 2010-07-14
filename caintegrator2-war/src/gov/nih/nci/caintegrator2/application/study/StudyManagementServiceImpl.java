@@ -94,7 +94,6 @@ import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
-import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
@@ -913,11 +912,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                     AnnotationFieldDescriptor annotationDescriptor = AnnotationUtil.retrieveOrCreateFieldDescriptor(
                             getDao(), imageSource.getStudyConfiguration(), EntityTypeEnum.IMAGESERIES, true,
                             definitionName, groupName);
-                    StringAnnotationValue annotationValue = new StringAnnotationValue();
-                    annotationValue.setStringValue(value);
-                    annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+                    AbstractAnnotationValue annotationValue = 
+                        AnnotationUtil.createAnnotationValue(annotationDescriptor, value);
                     annotationValue.setImageSeries(imageSeries);
-                    annotationDescriptor.getDefinition().getAnnotationValueCollection().add(annotationValue);
+                    imageSeries.getAnnotationCollection().add(annotationValue);
                 }
             }
         }
