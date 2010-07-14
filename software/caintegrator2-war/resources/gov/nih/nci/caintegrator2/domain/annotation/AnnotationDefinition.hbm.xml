@@ -14,7 +14,7 @@
 		<!-- Attributes mapping for the AnnotationDefinition class -->
 		<property name="keywords" type="string" column="KEYWORDS"/>
 		<!-- Associations mapping for the AnnotationDefinition class -->
-		<set name="annotationValueCollection" lazy="extra" cascade="all-delete-orphan" >
+		<set name="annotationValueCollection" lazy="extra" cascade="all-delete-orphan" inverse="true">
 			<cache usage="read-write" />
 			<key column="ANNOTATION_DEFINITION_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue"/>

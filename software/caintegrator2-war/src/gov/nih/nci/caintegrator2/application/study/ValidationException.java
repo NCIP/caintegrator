@@ -95,7 +95,11 @@ public class ValidationException extends Exception {
     
     private final ValidationResult result;
 
-    ValidationException(ValidationResult result) {
+    /**
+     * Creates a new exception.
+     * @param result validation result.
+     */
+    public ValidationException(ValidationResult result) {
         this.result = result;
     }
 
