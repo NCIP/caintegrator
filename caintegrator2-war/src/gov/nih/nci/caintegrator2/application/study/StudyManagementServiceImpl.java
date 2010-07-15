@@ -883,7 +883,11 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    @Transactional(rollbackFor = {ConnectionException.class, ValidationException.class })
+    @Transactional(propagation = Propagation.NOT_SUPPORTED, 
+            rollbackFor = {ConnectionException.class, ValidationException.class })
+    // Using Propagation.NOT_SUPPORTED because when it was being run it wouldn't always save the 
+    // AnnotationValue.AnnotationDefinition or AnnotationValue.ImageSeries, so when it's outside 
+    // of the transaction and using a daoSave it correctly saves the objects
     public void loadAimAnnotations(ImageDataSourceConfiguration imageSource) 
         throws ConnectionException, ValidationException {
         List<ImageSeries> imageSeriesCollection = new ArrayList<ImageSeries>();
@@ -897,7 +901,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                         imageSeriesCollection);
         createAnnotationValuesForImageSeries(imageSource, imageSeriesAnnotationsMap);
         imageSource.setStatus(Status.LOADED);
-        daoSave(imageSource);
         daoSave(imageSource.getStudyConfiguration());
     }
 
@@ -914,8 +917,11 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                             definitionName, groupName);
                     AbstractAnnotationValue annotationValue = 
                         AnnotationUtil.createAnnotationValue(annotationDescriptor, value);
+                    daoSave(annotationDescriptor.getAnnotationGroup());
                     annotationValue.setImageSeries(imageSeries);
                     imageSeries.getAnnotationCollection().add(annotationValue);
+                    daoSave(imageSeries);
+                    daoSave(annotationValue);
                 }
             }
         }
