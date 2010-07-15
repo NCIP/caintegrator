@@ -86,10 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.io.IOException;
 
@@ -144,26 +141,6 @@ public class StudyManagementServiceTestIntegration extends AbstractTransactional
         
         assertNotNull(studyManagementService.retrieveStudyLogo(studyConfiguration.getStudy().getId(), name));
         
-    }
-    
-    @Test
-    public void testLoadAimAnnotations() throws ConnectionException, ValidationException {
-        ServerConnectionProfile aimServerConnectionProfile = new ServerConnectionProfile();
-        aimServerConnectionProfile.setUrl("http://node01.cci.emory.edu/wsrf/services/cagrid/AIMTCGADataService");
-        StudyHelper studyHelper = new StudyHelper();
-        Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
-        ImageDataSourceConfiguration imageSource = study.getStudyConfiguration().getImageDataSources().get(0);
-        ImageAnnotationConfiguration imageAnnotationConfiguration = new ImageAnnotationConfiguration();
-        imageAnnotationConfiguration.setAimServerProfile(aimServerConnectionProfile);
-        imageAnnotationConfiguration.setUploadType(ImageAnnotationUploadType.AIM);
-        imageSource.setImageAnnotationConfiguration(imageAnnotationConfiguration);
-        studyManagementService.daoSave(study.getStudyConfiguration());
-        studyManagementService.daoSave(imageSource);
-        studyManagementService.loadAimAnnotations(imageSource);
-        study = imageSource.getStudyConfiguration().getStudy();
-        assertEquals(21, study.getAllVisibleAnnotationFieldDescriptors().size());  // AIM has 21 currently.
-        assertEquals(1, study.getAnnotationGroups().size());
-        assertTrue(study.getAnnotationGroup("Imaging Observations") != null);
     }
 
 }
