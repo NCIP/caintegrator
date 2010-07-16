@@ -98,6 +98,7 @@ public class GisticGenomicRegionReporter extends AbstractReporter {
     private String regionBoundaries;
     private String widePeakBoundaries;
     private AmplificationTypeEnum geneAmplificationType;
+
     /**
      * @return the genomicDescriptor
      */

@@ -172,12 +172,13 @@ public class GisticResultZipFileParser {
             new FileInputStream(zipFile));
 
         zipEntry = zipInputStream.getNextEntry();
+        GisticGeneMapFileParser parser = new GisticGeneMapFileParser(dao);
         while (zipEntry != null)  {
             String entryName = zipEntry.getName();
             if (entryName.contains("Amp_genes")) {
-                ampGeneMap.putAll(new GisticGeneMapFileParser(dao).parse(unZipFile(zipInputStream)));
+                ampGeneMap.putAll(parser.parse(unZipFile(zipInputStream)));
             } else if (entryName.contains("Del_genes")) {
-                delGeneMap.putAll(new GisticGeneMapFileParser(dao).parse(unZipFile(zipInputStream)));
+                delGeneMap.putAll(parser.parse(unZipFile(zipInputStream)));
             }
             zipInputStream.closeEntry();
             zipEntry = zipInputStream.getNextEntry();

@@ -861,6 +861,9 @@
         <property name="fileManager">
             <ref local="fileManager"/>
         </property>
+        <property name="arrayDataService">
+            <ref local="arrayDataService"/>
+        </property>
     </bean>
 
     <bean id="resultHandler" class="gov.nih.nci.caintegrator2.application.query.ResultHandlerImpl" />
@@ -916,7 +919,6 @@
     </bean>
 
     <bean id="arrayDataService" 
-
         class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceImpl">
         <property name="dao">
             <ref local="caIntegrator2Dao"/>

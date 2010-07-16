@@ -123,8 +123,10 @@ import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
@@ -501,6 +503,10 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         Gene gene = new Gene();
         gene.setSymbol(symbol);
         return gene;
+    }
+
+    public Map<String, Gene> getGeneSymbolMap() {
+        return new HashMap<String, Gene>();
     }
 
 }

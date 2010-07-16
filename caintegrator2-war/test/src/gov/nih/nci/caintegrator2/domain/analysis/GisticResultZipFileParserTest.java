@@ -112,10 +112,10 @@ public class GisticResultZipFileParserTest {
         ReporterList reporterList = new ReporterList("GISTIC test results", ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER);
         Map<String, Map<GisticGenomicRegionReporter, Float>> gisticData =
             new GisticResultZipFileParser(reporterList, dao).parse(TestDataFiles.GISTIC_RESULT_FILE);
-        assertEquals(20, gisticData.keySet().size());
+        assertEquals(3, gisticData.keySet().size());
         for (String sample : gisticData.keySet()) {
             Map<GisticGenomicRegionReporter, Float> data = gisticData.get(sample);
-            assertEquals(10, data.keySet().size());
+            assertEquals(38, data.keySet().size());
         }
     }
 }

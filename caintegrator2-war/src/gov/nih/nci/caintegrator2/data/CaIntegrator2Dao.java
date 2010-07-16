@@ -110,6 +110,7 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -248,6 +249,13 @@ public interface CaIntegrator2Dao {
      * @return the matching definition or null.
      */
     AnnotationDefinition getAnnotationDefinition(Long cdeId, Float version);
+    
+    /**
+     * Returns the map of symbol and gene.
+     * 
+     * @return the mapping of symbol and gene.
+     */
+    Map<String, Gene> getGeneSymbolMap();
     
     /**
      * Returns the gene that matches the given symbol or null if no match is found.
