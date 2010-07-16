@@ -96,6 +96,9 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParamete
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticSamplesMarkers;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
@@ -113,10 +116,16 @@ import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Array;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
+import gov.nih.nci.caintegrator2.domain.genomic.GisticGenomicRegionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
@@ -130,6 +139,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -150,6 +160,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     private GenePatternClientFactory genePatternClientFactory;
     private GenePatternGridRunner genePatternGridRunner;
     private FileManager fileManager;
+    private ArrayDataService arrayDataService;
     
     /**
      * {@inheritDoc}
@@ -221,7 +232,11 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
                     job.getGisticAnalysisForm().getGisticParameters(), job.getSubscription());
         resultsZipFile = runGistic(updater, job, studySubscription, gisticSamplesMarkers);
         GisticAnalysis gisticAnalysis = createGisticAnalysis(job, gisticSamplesMarkers.getUsedSamples());
-        parserGisticResults(gisticAnalysis.getReporterList(), resultsZipFile);
+        Map<String, Map<GisticGenomicRegionReporter, Float>> gisticData = parseGisticResults(
+                gisticAnalysis.getReporterList(), resultsZipFile);
+        getDao().save(studySubscription);
+        
+        createArrayData(studySubscription.getStudy(), gisticAnalysis, gisticData);
         return resultsZipFile;
     }
 
@@ -250,13 +265,51 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         return resultsZipFile;
     }
     
-    private void parserGisticResults(ReporterList reporterList, File resultsZipFile)
-    throws DataRetrievalException {
+    private Map<String, Map<GisticGenomicRegionReporter, Float>> parseGisticResults(
+            ReporterList reporterList, File resultsZipFile) throws DataRetrievalException {
         if (resultsZipFile != null) {
-            new GisticResultZipFileParser(reporterList, getDao()).parse(resultsZipFile);
-            //TODO write to .netcdf
+            return new GisticResultZipFileParser(reporterList, getDao()).parse(resultsZipFile);
+        }
+        return null;
+    }
+    
+    private void createArrayData(Study study, GisticAnalysis gisticAnalysis,
+            Map<String, Map<GisticGenomicRegionReporter, Float>> gisticData) {
+        if (gisticData != null) {
+            for (String sampleName : gisticData.keySet()) {
+                ArrayData arrayData = createArrayData(study, gisticAnalysis.getSample(sampleName), gisticAnalysis
+                        .getReporterList());
+                getDao().save(arrayData);
+                List<AbstractReporter> regionReporters = new ArrayList<AbstractReporter>();
+                for (GisticGenomicRegionReporter reporter : gisticData.get(sampleName).keySet()) {
+                    regionReporters.add((AbstractReporter) reporter);
+                }
+                ArrayDataValues values = new ArrayDataValues(regionReporters);
+                for (GisticGenomicRegionReporter regionReporter : gisticData.get(sampleName).keySet()) {
+                    values.setFloatValue(arrayData, regionReporter, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO,
+                            gisticData.get(sampleName).get(regionReporter));
+                }
+                getArrayDataService().save(values);
+            }
         }
     }
+
+    private ArrayData createArrayData(Study study, Sample sample, ReporterList reporterList) {
+        ArrayData arrayData = new ArrayData();
+        arrayData.setType(ArrayDataType.GISTIC_ANALYSIS);
+        arrayData.setSample(sample);
+        sample.getArrayDataCollection().add(arrayData);
+        arrayData.setStudy(study);
+        Array array = new Array();
+        array.getArrayDataCollection().add(arrayData);
+        arrayData.setArray(array);
+        array.getSampleCollection().add(sample);
+        sample.getArrayCollection().add(array);
+        arrayData.getReporterLists().add(reporterList);
+        reporterList.getArrayDatas().add(arrayData);    
+        return arrayData;
+    }
+
 
     private GisticAnalysis createGisticAnalysis(GisticAnalysisJob job, Set<Sample> samplesUsed) {
         GisticAnalysis gisticAnalysis = new GisticAnalysis();
@@ -278,7 +331,6 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         ReporterList reporterList = new ReporterList("GISTIC result", ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER);
         gisticAnalysis.setReporterList(reporterList);
 
-        getDao().save(subscription);
         return gisticAnalysis;
     }
     
@@ -485,5 +537,19 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
      */
     public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;
+    }
+
+    /**
+     * @return the arrayDataService
+     */
+    public ArrayDataService getArrayDataService() {
+        return arrayDataService;
+    }
+
+    /**
+     * @param arrayDataService the arrayDataService to set
+     */
+    public void setArrayDataService(ArrayDataService arrayDataService) {
+        this.arrayDataService = arrayDataService;
     }
 }

@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.domain.analysis;
 
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
 /**
  * Created after a gistic analysis job is run to store the <code>GisticGenomicRegionReporter</code>
@@ -211,6 +212,20 @@ public class GisticAnalysis extends AbstractCopyNumberAnalysis {
      */
     public void setReporterList(ReporterList reporterList) {
         this.reporterList = reporterList;
+    }
+    
+    /**
+     * Return the sample by sample name.
+     * @param sampleName use to retrieve sample
+     * @return sample
+     */
+    public Sample getSample(String sampleName) {
+        for (Sample sample : getSamplesUsedForCalculation()) {
+            if (sample.getName().equalsIgnoreCase(sampleName)) {
+                return sample;
+            }
+        }
+        return null;
     }
     
 }

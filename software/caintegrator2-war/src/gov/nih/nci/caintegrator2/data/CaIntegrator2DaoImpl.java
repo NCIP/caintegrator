@@ -122,9 +122,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -408,6 +410,19 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             }
         }
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Gene> getGeneSymbolMap() {
+        Map <String, Gene> resultMap = new HashMap<String, Gene>();
+        Query query = getCurrentSession().createQuery("from Gene order by Symbol");
+        for (Object object : query.list()) {
+            Gene gene = (Gene) object;
+            resultMap.put(gene.getSymbol(), gene);
+        }
+        return resultMap;
     }
     
     /**

@@ -116,6 +116,7 @@ public class GisticAllLesionsFileParser {
     private final Map<String, List<Gene>> ampGeneMap;
     private final Map<String, List<Gene>> delGeneMap;
     private final ReporterList reporterList;
+    private int regionReporterIndex;
 
     private static final String UNIQUE_NAME_HEADER = "Unique Name";
     private static final String DESCRIPTOR_HEADER = "Descriptor";
@@ -157,6 +158,7 @@ public class GisticAllLesionsFileParser {
         CSVReader csvReader = new CSVReader(fileReader, '\t');
         loadHeaders(csvReader);
         String[] fields;
+        regionReporterIndex = 0;
         while ((fields = csvReader.readNext()) != null) {
             processDataLine(fields);
         }
@@ -178,9 +180,11 @@ public class GisticAllLesionsFileParser {
 
     private void createRegionReporter(String[] fields, Map<String, List<Gene>> geneMap,
             AmplificationTypeEnum type) {
-        if (geneMap.containsKey(getField(fields, DESCRIPTOR_HEADER))) {
+        String boundaries = getBoundaries(fields);
+        if (geneMap.containsKey(boundaries)) {
             GisticGenomicRegionReporter regionReporter = new GisticGenomicRegionReporter();
             reporterList.getReporters().add(regionReporter);
+            regionReporter.setIndex(regionReporterIndex++);
             regionReporter.setReporterList(reporterList);
             regionReporter.setGeneAmplificationType(type);
             regionReporter.setGenomicDescriptor(getField(fields, DESCRIPTOR_HEADER));
@@ -190,9 +194,15 @@ public class GisticAllLesionsFileParser {
                     getField(fields, RESIDUAL_Q_VALUES_HEADER)));
             regionReporter.setRegionBoundaries(getField(fields, REGION_LIMITS_HEADER));
             regionReporter.setWidePeakBoundaries(getField(fields, WIDE_PEAK_LIMITS_HEADER));
-            regionReporter.getGenes().addAll(geneMap.get(getField(fields, DESCRIPTOR_HEADER)));
+            regionReporter.getGenes().addAll(geneMap.get(boundaries));
             loadGisticData(regionReporter, fields);
         }
+    }
+
+    private String getBoundaries(String[] fields) {
+        String boundaries = getField(fields, WIDE_PEAK_LIMITS_HEADER);
+        boundaries =  boundaries.substring(0, boundaries.indexOf("(probes"));
+        return boundaries;
     }
 
     private String getField(String[] fields, String descriptorHeader) {

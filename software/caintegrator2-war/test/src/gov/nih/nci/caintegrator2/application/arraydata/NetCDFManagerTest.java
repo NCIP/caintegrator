@@ -90,6 +90,7 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.GisticGenomicRegionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -326,7 +327,91 @@ public class NetCDFManagerTest {
         assertEquals(16.16f, values.getFloatValue(arrayData3, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
         assertEquals(18.18f, values.getFloatValue(arrayData3, reporter3, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
         FileUtils.deleteQuietly(netCdfFile);
-}
+    }
+    
+    @Test
+    public void testStoreGisticValues() throws IOException {
+        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
+        GisticGenomicRegionReporter reporter1 = new GisticGenomicRegionReporter();
+        ReporterList reporterList = new ReporterList("GisticReporterList", ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER);
+        reporterList.setId(1L);
+        reporter1.setReporterList(reporterList);
+        reporter1.setIndex(0);
+        GisticGenomicRegionReporter reporter2 = new GisticGenomicRegionReporter();
+        reporter2.setReporterList(reporterList);
+        reporter2.setIndex(1);
+        GisticGenomicRegionReporter reporter3 = new GisticGenomicRegionReporter();
+        reporter3.setReporterList(reporterList);
+        reporter3.setIndex(2);
+        reporters.add(reporter1);
+        reporters.add(reporter2);
+        reporters.add(reporter3);
+        ArrayDataValues values = new ArrayDataValues(reporters);
+        Study study = new Study();
+        study.setId(1L);
+        ArrayData arrayData1 = createArrayData(study);
+        arrayData1.getReporterLists().add(reporterList);
+        ArrayData arrayData2 = createArrayData(study);
+        arrayData2.getReporterLists().add(reporterList);
+        
+        // Store first set of values
+        values.setFloatValue(arrayData1, reporter1, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 1.1f);
+        values.setFloatValue(arrayData1, reporter2, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 2.2f);
+        values.setFloatValue(arrayData1, reporter3, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 3.3f);
+        values.setFloatValue(arrayData2, reporter1, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 4.4f);
+        values.setFloatValue(arrayData2, reporter2, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 5.5f);
+        values.setFloatValue(arrayData2, reporter3, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 6.6f);
+        File netCdfFile = new File(fileManagerStub.getStudyDirectory(study), 
+                "data" + reporterList.getId() + "_" + ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER.getValue() + ".nc");
+        FileUtils.deleteQuietly(netCdfFile);
+        manager.storeValues(values);
+        assertTrue(netCdfFile.exists());
+        // Store additional values
+        values = new ArrayDataValues(reporters);
+        ArrayData arrayData3 = createArrayData(study);
+        arrayData3.getReporterLists().add(reporterList);
+        values.setFloatValue(arrayData3, reporter1, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 13.13f);
+        values.setFloatValue(arrayData3, reporter2, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 14.14f);
+        values.setFloatValue(arrayData3, reporter3, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 15.15f);
+        manager.storeValues(values);
+
+        // Retrieve values and compare
+        DataRetrievalRequest request = new DataRetrievalRequest();
+        request.addArrayData(arrayData1);
+        request.addArrayData(arrayData2);
+        request.addArrayData(arrayData3);
+        request.addType(ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO);
+        request.addReporters(reporters);
+        values = manager.retrieveValues(request);
+        assertEquals(3, values.getArrayDatas().size());
+        assertEquals(3, values.getReporters().size());
+        assertEquals(1, values.getTypes().size());
+        assertEquals(1.1f, values.getFloatValue(arrayData1, reporter1, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        assertEquals(2.2f, values.getFloatValue(arrayData1, reporter2, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        assertEquals(3.3f, values.getFloatValue(arrayData1, reporter3, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        assertEquals(4.4f, values.getFloatValue(arrayData2, reporter1, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        assertEquals(5.5f, values.getFloatValue(arrayData2, reporter2, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        assertEquals(6.6f, values.getFloatValue(arrayData2, reporter3, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        assertEquals(13.13f, values.getFloatValue(arrayData3, reporter1, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        assertEquals(14.14f, values.getFloatValue(arrayData3, reporter2, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        assertEquals(15.15f, values.getFloatValue(arrayData3, reporter3, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+
+        request = new DataRetrievalRequest();
+        request.addArrayData(arrayData1);
+        request.addArrayData(arrayData3);
+        request.addType(ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO);
+        request.addReporter(reporter1);
+        request.addReporter(reporter3);
+        values = manager.retrieveValues(request);
+        assertEquals(2, values.getArrayDatas().size());
+        assertEquals(2, values.getReporters().size());
+        assertEquals(1, values.getTypes().size());
+        assertEquals(1.1f, values.getFloatValue(arrayData1, reporter1, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        assertEquals(3.3f, values.getFloatValue(arrayData1, reporter3, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        assertEquals(13.13f, values.getFloatValue(arrayData3, reporter1, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        assertEquals(15.15f, values.getFloatValue(arrayData3, reporter3, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO), 0.0f);
+        FileUtils.deleteQuietly(netCdfFile);
+    }
 
     private ArrayData createArrayData(Study study) {
         ArrayData arrayData = new ArrayData();
