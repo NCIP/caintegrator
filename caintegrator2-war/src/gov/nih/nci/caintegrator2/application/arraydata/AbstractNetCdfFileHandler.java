@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.file.FileManager;
@@ -123,20 +124,28 @@ abstract class AbstractNetCdfFileHandler {
     }
 
     File getFile(ArrayDataValues values) {
-        return getFile(getStudy(values), getPlatform(values), getReporterType(values));
+        ReporterTypeEnum reporterType = getReporterType(values);
+        File studyDirectory = fileManager.getStudyDirectory(getStudy(values));
+        return (ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER.equals(reporterType))
+            ? new File(studyDirectory, getFileName(getReporterList(values).getId(), reporterType))
+            : new File(studyDirectory, getFileName(getPlatform(values).getId(), reporterType));
     }
 
-    File getFile(Study study, Platform platform, ReporterTypeEnum reporterType) {
+    File getFile(Study study, Long id, ReporterTypeEnum reporterType) {
         File studyDirectory = fileManager.getStudyDirectory(study);
-        return new File(studyDirectory, getFileName(platform, reporterType));
+        return new File(studyDirectory, getFileName(id, reporterType));
     }
 
-    private String getFileName(Platform platform, ReporterTypeEnum reporterType) {
-        return "data" + platform.getId() + "_" + reporterType.getValue() + ".nc";
+    private String getFileName(Long id, ReporterTypeEnum reporterType) {
+        return "data" + id + "_" + reporterType.getValue() + ".nc";
+    }
+
+    private ReporterList getReporterList(ArrayDataValues values) {
+        return values.getArrayDatas().iterator().next().getReporterLists().iterator().next();
     }
 
     private ReporterTypeEnum getReporterType(ArrayDataValues values) {
-        return values.getArrayDatas().iterator().next().getReporterLists().iterator().next().getReporterType();
+        return getReporterList(values).getReporterType();
     }
     
     private Platform getPlatform(ArrayDataValues values) {

@@ -127,13 +127,17 @@ public class ReporterList extends AbstractCaIntegrator2Object implements Compara
     }
 
     Integer getFirstDataStorageIndex() {
-        SortedSet<ReporterList> precedingReporterLists = 
-            getPlatform().getReporterLists(getReporterType()).headSet(this);
-        if (precedingReporterLists.isEmpty()) {
+        if (ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER.equals(reporterType)) {
             return 0;
         } else {
-            return precedingReporterLists.last().getFirstDataStorageIndex() 
-            + precedingReporterLists.last().getReporters().size();
+            SortedSet<ReporterList> precedingReporterLists = 
+                getPlatform().getReporterLists(getReporterType()).headSet(this);
+            if (precedingReporterLists.isEmpty()) {
+                return 0;
+            } else {
+                return precedingReporterLists.last().getFirstDataStorageIndex() 
+                    + precedingReporterLists.last().getReporters().size();
+            }
         }
     }
 
