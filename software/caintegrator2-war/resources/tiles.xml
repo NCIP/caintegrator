@@ -162,6 +162,15 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editSampleMapping_tile.jsp" />
         <put-attribute name="subTitle" value="Edit Sample Mappings" />
     </definition>
+    
+    <!-- Gistic Analysis Edit page -->
+    <!-- Gistic Analysis Edit page -->
+    <!-- Gistic Analysis Edit page -->
+    
+    <definition name="editGisticAnalysis" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editGisticAnalysis_tile.jsp" />
+        <put-attribute name="subTitle" value="Edit GISTIC Analysis" />
+    </definition>
 
     <!-- Subject List Edit page -->
     <!-- Subject List Edit page -->

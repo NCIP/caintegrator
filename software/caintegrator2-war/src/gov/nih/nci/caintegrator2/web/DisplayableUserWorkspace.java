@@ -90,6 +90,8 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
+import gov.nih.nci.caintegrator2.domain.analysis.AbstractCopyNumberAnalysis;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
@@ -405,6 +407,28 @@ public class DisplayableUserWorkspace {
         };
         Collections.sort(queries, nameComparator);
         return queries;
+    }
+    
+    /**
+     * @return the user's queries, ordered by name.
+     */
+    public List<GisticAnalysis> getUserGisticAnalysisList() {
+        List<GisticAnalysis> gisticAnalysisList = new ArrayList<GisticAnalysis>();
+        if (getCurrentStudySubscription() != null) {
+            for (AbstractCopyNumberAnalysis copyNumberAnalysis 
+                    : getCurrentStudySubscription().getCopyNumberAnalysisCollection()) {
+                if (copyNumberAnalysis instanceof GisticAnalysis) {
+                    gisticAnalysisList.add((GisticAnalysis) copyNumberAnalysis);
+                }
+            }
+        }
+        Comparator<GisticAnalysis> nameComparator = new Comparator<GisticAnalysis>() {
+            public int compare(GisticAnalysis gisticAnalysis1, GisticAnalysis gisticAnalysis2) {
+                return gisticAnalysis1.getName().compareToIgnoreCase(gisticAnalysis2.getName());
+            }
+        };
+        Collections.sort(gisticAnalysisList, nameComparator);
+        return gisticAnalysisList;
     }
     
     /**
