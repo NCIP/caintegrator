@@ -354,6 +354,40 @@
                     </li>
                 </ul>
                 </li>
+                <s:if test="currentStudy.studyConfiguration.hasCopyNumberData()">
+                <!-- BEGIN - Saved Copy Number Analysis -->
+                <li style="max-height: 150px; overflow-x:hidden; overflow-y: auto;"><a href="#">Saved Copy Number Analysis</a>
+                    <ul style="padding: 3px 0px 10px 10px;">                  
+	                    <s:iterator value="displayableWorkspace.userGisticAnalysisList">
+	                        <s:url id="editGisticUrl" action="editGisticAnalysis" includeParams="none">
+	                            <s:param name="selectedAction" value="%{'edit'}" />
+	                            <s:param name="gisticAnalysis.id" value="id" />
+	                        </s:url>
+	              
+	                        <li style="padding: 0px 0px 2px 0px">
+	                            <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
+	                                <div style="float: left; white-space: nowrap; width: 32px;">
+	                                    <s:a href="%{editGisticUrl}" cssClass="queryAction" cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+	                                        title="Edit query: %{name}">&nbsp;</s:a>
+	                                </div>
+	                                <div style="float: right; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
+	                                    <s:a href="%{editGisticUrl}" onclick="showBusyDialog();" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;" title="Edit: %{name}">
+	                                        <s:if test="id == openQueryId">
+	                                            <strong><s:property value="name"/></strong>
+	                                        </s:if>
+	                                        <s:else>
+	                                            <s:property value="name"/>
+	                                        </s:else>
+	                                    </s:a>
+	                                </div>
+	                            </div>
+	                        </li>
+	                    </s:iterator>
+                    </ul>
+                </li>
+                <!-- END - Saved Copy Number Analysis -->
+                </s:if>
+                
             </ul>
             </s:else>
         </li>
