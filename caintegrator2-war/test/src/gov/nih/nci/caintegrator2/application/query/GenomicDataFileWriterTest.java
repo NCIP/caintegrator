@@ -103,6 +103,7 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Locale;
 
 import org.junit.Test;
 
@@ -168,7 +169,7 @@ public class GenomicDataFileWriterTest {
         reporter.setName(reporterName);
         if (geneName != null) {
             Gene gene = new Gene();
-            gene.setSymbol(geneName);
+            gene.setSymbol(geneName.toUpperCase(Locale.getDefault()));
             reporter.getGenes().add(gene);
         }
         row.setReporter(reporter);
