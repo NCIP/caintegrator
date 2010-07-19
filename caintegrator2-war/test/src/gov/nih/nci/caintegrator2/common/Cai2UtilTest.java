@@ -93,10 +93,16 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
+import gov.nih.nci.caintegrator2.domain.genomic.AmplificationTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GisticGenomicRegionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.file.FileManagerImpl;
 
 import java.io.File;
@@ -308,7 +314,44 @@ public class Cai2UtilTest {
         assertEquals(queryFirst.getDisplayableLastModifiedDate(), Cai2Util.retrieveLatestLastModifiedDate(timestampedObjects));
         timestampedObjects.add(queryLast);
         assertEquals(queryLast.getDisplayableLastModifiedDate(), Cai2Util.retrieveLatestLastModifiedDate(timestampedObjects));
+    }
+    
+    @Test
+    public void testRetrieveGisticAmplifiedDeletedGenes() {
+        GisticAnalysis gisticAnalysis = new GisticAnalysis();
+        List<Gene> amplifiedGenes = new ArrayList<Gene>();
+        List<Gene> deletedGenes = new ArrayList<Gene>();
+        Cai2Util.retrieveGisticAmplifiedDeletedGenes(gisticAnalysis, amplifiedGenes, deletedGenes);
+        assertTrue(amplifiedGenes.isEmpty());
+        assertTrue(deletedGenes.isEmpty());
+        ReporterList reporterList = new ReporterList("gistic", ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER);
+        Gene gene1Amp = new Gene();
+        gene1Amp.setSymbol("ampgene1");
+        Gene gene2Amp = new Gene();
+        gene2Amp.setSymbol("ampgene2");
+        Gene gene1Del = new Gene();
+        gene1Del.setSymbol("delgene1");
+        Gene gene2Del = new Gene();
+        gene2Del.setSymbol("delgene2");
+        GisticGenomicRegionReporter reporter1 = new GisticGenomicRegionReporter();
+        reporter1.setGeneAmplificationType(AmplificationTypeEnum.AMPLIFIED);
+        reporter1.getGenes().add(gene2Amp);
+        reporter1.getGenes().add(gene1Amp);
         
+        GisticGenomicRegionReporter reporter2 = new GisticGenomicRegionReporter();
+        reporter2.setGeneAmplificationType(AmplificationTypeEnum.DELETED);
+        reporter2.getGenes().add(gene2Del);
+        reporter2.getGenes().add(gene1Del);
         
+        reporterList.addReporter(reporter1);
+        reporterList.addReporter(reporter2);
+        gisticAnalysis.setReporterList(reporterList);
+        Cai2Util.retrieveGisticAmplifiedDeletedGenes(gisticAnalysis, amplifiedGenes, deletedGenes);
+        assertEquals(2, amplifiedGenes.size());
+        assertEquals(2, deletedGenes.size());
+        assertEquals("ampgene1", amplifiedGenes.get(0).getSymbol());
+        assertEquals("ampgene2", amplifiedGenes.get(1).getSymbol());
+        assertEquals("delgene1", deletedGenes.get(0).getSymbol());
+        assertEquals("delgene2", deletedGenes.get(1).getSymbol());
     }
 }
