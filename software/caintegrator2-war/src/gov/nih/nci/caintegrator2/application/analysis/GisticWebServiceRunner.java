@@ -147,7 +147,7 @@ class GisticWebServiceRunner {
         if ("Error".equals(jobInfo.getStatus())) {
             updateStatus(updater, job, AnalysisJobStatusEnum.ERROR_CONNECTING);
         } else {
-            updateStatus(updater, job, AnalysisJobStatusEnum.COMPLETED);
+            updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_LOCALLY);
         }
         File resultsDir = new File(fileManager.getUserDirectory(job.getSubscription()) + File.separator
                 + "GISTIC_RESULTS_" + System.currentTimeMillis());
