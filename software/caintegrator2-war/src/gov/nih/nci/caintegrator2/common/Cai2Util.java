@@ -88,9 +88,14 @@ package gov.nih.nci.caintegrator2.common;
 import gov.nih.nci.cagrid.common.ZipUtilities;
 import gov.nih.nci.caintegrator2.application.analysis.InvalidSurvivalValueDefinitionException;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.AmplificationTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GisticGenomicRegionReporter;
 
 import java.awt.Color;
 import java.io.BufferedOutputStream;
@@ -102,6 +107,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -507,6 +513,31 @@ public final class Cai2Util {
     */
    public static String fixUrlForEditableSelect(String originalUrl) {
        return Pattern.compile(",\\s.*").matcher(originalUrl).replaceAll("");
+   }
+   
+   /**
+    * Fills the amplifiedGenes and deletedGenes with the amplified and deleted genes associated 
+    * with the gisticAnalysis.
+    * @param gisticAnalysis to get genes for.
+    * @param amplifiedGenes amplified genes associated with gisticAnalysis.
+    * @param deletedGenes deleted genes associated with gisticAnalysis.
+    */
+   public static void retrieveGisticAmplifiedDeletedGenes(GisticAnalysis gisticAnalysis, List<Gene> amplifiedGenes, 
+           List<Gene> deletedGenes) {
+       if (gisticAnalysis.getReporterList() != null) {
+           for (AbstractReporter reporter : gisticAnalysis.getReporterList().getReporters()) {
+               if (reporter instanceof GisticGenomicRegionReporter) {
+                   GisticGenomicRegionReporter gisticReporter = (GisticGenomicRegionReporter) reporter;
+                   if (AmplificationTypeEnum.AMPLIFIED.equals(gisticReporter.getGeneAmplificationType())) {
+                       amplifiedGenes.addAll(gisticReporter.getGenes());
+                   } else if (AmplificationTypeEnum.DELETED.equals(gisticReporter.getGeneAmplificationType())) {
+                       deletedGenes.addAll(gisticReporter.getGenes());
+                   }
+               }
+           }
+           Collections.sort(amplifiedGenes);
+           Collections.sort(deletedGenes);
+       }
    }
     
 }
