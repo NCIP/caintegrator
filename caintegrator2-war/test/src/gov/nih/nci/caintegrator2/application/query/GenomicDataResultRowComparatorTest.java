@@ -101,9 +101,9 @@ public class GenomicDataResultRowComparatorTest {
     @Test
     public void testCompare() {
         Gene egfr = new Gene();
-        egfr.setSymbol("egfr");
+        egfr.setSymbol("EGFR");
         Gene brca1 = new Gene();
-        brca1.setSymbol("brca1");
+        brca1.setSymbol("BRCA1");
         
         GenomicDataResultRow resultRow1 = new GenomicDataResultRow();
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();

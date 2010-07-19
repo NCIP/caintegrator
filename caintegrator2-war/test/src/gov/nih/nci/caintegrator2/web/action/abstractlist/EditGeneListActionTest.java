@@ -139,10 +139,10 @@ public class EditGeneListActionTest extends AbstractSessionBasedTest {
         geneList.setName("List1");
         subscription.getListCollection().add(geneList);
         Gene gene = new Gene();
-        gene.setSymbol("symbol1");
+        gene.setSymbol("SYMBOL1");
         geneList.getGeneCollection().add(gene);
         gene = new Gene();
-        gene.setSymbol("symbol2");
+        gene.setSymbol("SYMBOL2");
         geneList.getGeneCollection().add(gene);
         geneList = new GeneList();
         geneList.setName("List2");

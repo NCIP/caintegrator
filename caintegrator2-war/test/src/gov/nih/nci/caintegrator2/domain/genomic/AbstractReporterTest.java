@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.domain.genomic;
 
 import static org.junit.Assert.*;
 
+import java.util.Locale;
+
 import org.junit.Test;
 
 public class AbstractReporterTest {
@@ -104,7 +106,7 @@ public class AbstractReporterTest {
 
     private Gene createGene(String symbol) {
         Gene gene = new Gene();
-        gene.setSymbol(symbol);
+        gene.setSymbol(symbol.toUpperCase(Locale.getDefault()));
         return gene;
     }
 

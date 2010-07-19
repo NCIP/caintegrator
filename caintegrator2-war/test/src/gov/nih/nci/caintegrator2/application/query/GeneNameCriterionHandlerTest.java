@@ -114,7 +114,7 @@ import org.junit.Test;
 
 public class GeneNameCriterionHandlerTest {
     
-    private static final String GENE_NAME = "egfr";
+    private static final String GENE_NAME = "EGFR";
     private static final Long ASSIGNMENT_ID = Long.valueOf(1);
     private CaIntegrator2DaoStub daoStub = new DaoStub();
     private Query query;

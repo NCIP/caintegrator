@@ -2,6 +2,7 @@ package gov.nih.nci.caintegrator2.domain.genomic;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Locale;
 import java.util.Set;
 
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
@@ -28,7 +29,7 @@ public class GeneGenerator extends AbstractTestDataGenerator<Gene> {
         gene.setFullName(getUniqueString());
         gene.setGenbankAccession(getUniqueString());
         gene.setGenbankAccessionVersion(getUniqueString());
-        gene.setSymbol(getUniqueString());
+        gene.setSymbol(getUniqueString().toUpperCase(Locale.getDefault()));
         gene.setUnigeneclusterID(getUniqueString());
     }
 
