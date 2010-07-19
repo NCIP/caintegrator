@@ -85,8 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis.copynumber;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provides functionality to view / edit the gistic analysis job.
@@ -95,9 +100,11 @@ import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 public class EditGisticAnalysisAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
+    private final List<Gene> amplifiedGenes = new ArrayList<Gene>();
+    private final List<Gene> deletedGenes = new ArrayList<Gene>();
     private GisticAnalysis gisticAnalysis;
     private String selectedAction;
-
+    
     static final String EDIT_ACTION = "edit";
     static final String DELETE_ACTION = "delete";
     static final String CANCEL_ACTION = "cancel";
@@ -112,6 +119,9 @@ public class EditGisticAnalysisAction extends AbstractCaIntegrator2Action {
         super.prepare();
         if (gisticAnalysis.getId() != null) {
             gisticAnalysis = getWorkspaceService().getRefreshedEntity(gisticAnalysis);
+            amplifiedGenes.clear();
+            deletedGenes.clear();
+            Cai2Util.retrieveGisticAmplifiedDeletedGenes(gisticAnalysis, amplifiedGenes, deletedGenes);
         }
     }
     
@@ -188,5 +198,19 @@ public class EditGisticAnalysisAction extends AbstractCaIntegrator2Action {
      */
     public void setGisticAnalysis(GisticAnalysis gisticAnalysis) {
         this.gisticAnalysis = gisticAnalysis;
+    }
+
+    /**
+     * @return the amplifiedGenes
+     */
+    public List<Gene> getAmplifiedGenes() {
+        return amplifiedGenes;
+    }
+
+    /**
+     * @return the deletedGenes
+     */
+    public List<Gene> getDeletedGenes() {
+        return deletedGenes;
     }
 }

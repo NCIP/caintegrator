@@ -101,8 +101,17 @@
                             <s:select label="Samples used in analysis calculation" list="gisticAnalysis.samplesUsedForCalculation" 
                             name=""
                             listValue="name"
-                            disabled="true"    theme="css_xhtml" multiple="true" /><br>
+                            disabled="true"    theme="css_xhtml" multiple="true" size="5"/><br>
+                            
+                            <s:select label="Amplified Genes" list="amplifiedGenes" 
+                            name=""
+                            listValue="symbol"
+                            disabled="true"    theme="css_xhtml" multiple="true" size="5"/><br>
 
+                            <s:select label="Deleted Genes" list="deletedGenes" 
+                            name=""
+                            listValue="symbol"
+                            disabled="true"    theme="css_xhtml" multiple="true" size="5"/><br>
                             <!--Buttons-->
 
                             <div class="actionsrow"><del class="btnwrapper"><ul class="btnrow">
