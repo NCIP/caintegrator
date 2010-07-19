@@ -125,7 +125,17 @@ public abstract class AbstractPlatformLoader {
 
     abstract Platform load(CaIntegrator2Dao dao) throws PlatformLoadingException;
 
-    abstract  Gene createGene(String symbol, String[] fields);
+    /**
+     * 
+     * @param symbol to set
+     * @param fields input fields
+     * @return a new gene
+     */
+    protected Gene createGene(String symbol, String[] fields) {
+        Gene gene = new Gene();
+        gene.setSymbol(symbol.toUpperCase(Locale.getDefault()));
+        return gene;
+    }
 
     /**
      * Create platform and set vendor.
@@ -203,7 +213,7 @@ public abstract class AbstractPlatformLoader {
         if (gene == null) {
             gene = createGene(symbol, fields);
         }
-        getSymbolToGeneMap().put(symbol.toUpperCase(Locale.getDefault()), gene);
+        getSymbolToGeneMap().put(gene.getSymbol(), gene);
         return gene;
     }
 

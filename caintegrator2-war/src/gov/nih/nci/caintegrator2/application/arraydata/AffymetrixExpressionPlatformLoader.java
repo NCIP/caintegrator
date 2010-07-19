@@ -222,7 +222,7 @@ class AffymetrixExpressionPlatformLoader extends AbstractExpressionPlatformLoade
 
     protected Gene createGene(String symbol, String[] fields) {
         Gene gene = new Gene();
-        gene.setSymbol(symbol);
+        gene.setSymbol(symbol.toUpperCase(Locale.getDefault()));
         gene.setEntrezgeneID(getAnnotationValue(fields, ENTREZ_GENE_HEADER, NO_VALUE_INDICATOR));
         gene.setEnsemblgeneID(getAnnotationValue(fields, ENSEMBL_HEADER, NO_VALUE_INDICATOR));
         gene.setUnigeneclusterID(getAnnotationValue(fields, UNIGENE_ID_HEADER, NO_VALUE_INDICATOR));

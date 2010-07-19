@@ -234,9 +234,9 @@ class AgilentExpressionPlatformLoader extends AbstractExpressionPlatformLoader {
      * {@inheritDoc}
      */
     @Override
-    Gene createGene(String symbol, String[] fields) {
+    protected Gene createGene(String symbol, String[] fields) {
         Gene gene = new Gene();
-        gene.setSymbol(symbol);
+        gene.setSymbol(symbol.toUpperCase(Locale.getDefault()));
         gene.setGenbankAccession(getAnnotationValue(fields, ACCESSIONS_HEADER));
         gene.setFullName(getAnnotationValue(fields, GENE_NAME_HEADER));
         return gene;
