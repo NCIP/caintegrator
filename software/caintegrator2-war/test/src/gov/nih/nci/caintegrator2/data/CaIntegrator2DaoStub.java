@@ -126,6 +126,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -306,7 +307,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public Gene getGene(String symbol) {
         getGeneCalled = true;
         Gene gene = new Gene();
-        gene.setSymbol(symbol);
+        gene.setSymbol(symbol.toUpperCase(Locale.getDefault()));
         return gene;
     }
 
@@ -501,7 +502,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
     public Gene lookupOrCreateGene(String symbol) {
         Gene gene = new Gene();
-        gene.setSymbol(symbol);
+        gene.setSymbol(symbol.toUpperCase(Locale.getDefault()));
         return gene;
     }
 

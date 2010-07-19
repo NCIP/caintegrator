@@ -326,13 +326,13 @@ public class Cai2UtilTest {
         assertTrue(deletedGenes.isEmpty());
         ReporterList reporterList = new ReporterList("gistic", ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER);
         Gene gene1Amp = new Gene();
-        gene1Amp.setSymbol("ampgene1");
+        gene1Amp.setSymbol("AMPGENE1");
         Gene gene2Amp = new Gene();
-        gene2Amp.setSymbol("ampgene2");
+        gene2Amp.setSymbol("AMPGENE2");
         Gene gene1Del = new Gene();
-        gene1Del.setSymbol("delgene1");
+        gene1Del.setSymbol("DELGENE1");
         Gene gene2Del = new Gene();
-        gene2Del.setSymbol("delgene2");
+        gene2Del.setSymbol("DELGENE2");
         GisticGenomicRegionReporter reporter1 = new GisticGenomicRegionReporter();
         reporter1.setGeneAmplificationType(AmplificationTypeEnum.AMPLIFIED);
         reporter1.getGenes().add(gene2Amp);
@@ -349,9 +349,9 @@ public class Cai2UtilTest {
         Cai2Util.retrieveGisticAmplifiedDeletedGenes(gisticAnalysis, amplifiedGenes, deletedGenes);
         assertEquals(2, amplifiedGenes.size());
         assertEquals(2, deletedGenes.size());
-        assertEquals("ampgene1", amplifiedGenes.get(0).getSymbol());
-        assertEquals("ampgene2", amplifiedGenes.get(1).getSymbol());
-        assertEquals("delgene1", deletedGenes.get(0).getSymbol());
-        assertEquals("delgene2", deletedGenes.get(1).getSymbol());
+        assertEquals("AMPGENE1", amplifiedGenes.get(0).getSymbol());
+        assertEquals("AMPGENE2", amplifiedGenes.get(1).getSymbol());
+        assertEquals("DELGENE1", deletedGenes.get(0).getSymbol());
+        assertEquals("DELGENE2", deletedGenes.get(1).getSymbol());
     }
 }

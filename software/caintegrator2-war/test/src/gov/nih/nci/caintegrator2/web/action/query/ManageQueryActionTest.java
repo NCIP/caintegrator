@@ -168,7 +168,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         GeneList geneList = new GeneList();
         geneList.setName("GeneList1");
         Gene gene = new Gene();
-        gene.setSymbol("egfr");
+        gene.setSymbol("EGFR");
         geneList.getGeneCollection().add(gene);
         studySubscription.getListCollection().add(geneList);
     }
