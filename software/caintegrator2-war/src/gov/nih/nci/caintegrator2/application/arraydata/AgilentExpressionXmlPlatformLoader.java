@@ -160,16 +160,6 @@ class AgilentExpressionXmlPlatformLoader extends AbstractPlatformLoader {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    Gene createGene(String symbol, String[] fields) {
-        Gene gene = new Gene();
-        gene.setSymbol(symbol);
-        return gene;
-    }
-
     @Override
     Logger getLogger() {
         return LOGGER;

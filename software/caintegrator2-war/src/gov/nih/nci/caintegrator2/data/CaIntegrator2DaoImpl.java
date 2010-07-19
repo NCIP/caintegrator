@@ -446,7 +446,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         Gene gene = getGene(symbol);
         if (gene == null) {
             gene = new Gene();
-            gene.setSymbol(symbol);
+            gene.setSymbol(symbol.toUpperCase(Locale.getDefault()));
         }
         return gene;
     }
