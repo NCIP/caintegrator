@@ -111,6 +111,7 @@ import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticResultZipFileParser;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
@@ -237,6 +238,8 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         getDao().save(studySubscription);
         
         createArrayData(studySubscription.getStudy(), gisticAnalysis, gisticData);
+        job.setStatus(AnalysisJobStatusEnum.COMPLETED);
+        updater.updateStatus(job);
         return resultsZipFile;
     }
 
