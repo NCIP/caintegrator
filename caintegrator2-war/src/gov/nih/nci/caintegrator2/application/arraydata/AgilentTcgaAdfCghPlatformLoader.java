@@ -244,16 +244,6 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
         }
         return symbols;
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    Gene createGene(String symbol, String[] fields) {
-        Gene gene = new Gene();
-        gene.setSymbol(symbol);
-        return gene;
-    }
 
     @Override
     Logger getLogger() {

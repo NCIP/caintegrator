@@ -170,16 +170,6 @@ class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
      * {@inheritDoc}
      */
     @Override
-    Gene createGene(String symbol, String[] fields) {
-        Gene gene = new Gene();
-        gene.setSymbol(symbol);
-        return gene;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     Logger getLogger() {
         return LOGGER;
     }
