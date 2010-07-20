@@ -527,6 +527,27 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     private AbstractPersistedAnalysisJob getAnalysisJob(Long id) {
         return getDao().get(id, AbstractPersistedAnalysisJob.class);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly = false)
+    public void deleteGisticAnalysis(GisticAnalysis gisticAnalysis) {
+        StudySubscription studySubscription = gisticAnalysis.getStudySubscription();
+        if (gisticAnalysis.getReporterList() != null) {
+            getArrayDataService().deleteGisticAnalysisNetCDFFile(studySubscription.getStudy(), 
+                    gisticAnalysis.getReporterList().getId());
+            for (ArrayData arrayData : gisticAnalysis.getReporterList().getArrayDatas()) {
+                for (Sample sample : arrayData.getArray().getSampleCollection()) {
+                    sample.getArrayCollection().remove(arrayData.getArray());
+                }
+                getDao().delete(arrayData.getArray());
+            }
+        }
+        studySubscription.getCopyNumberAnalysisCollection().remove(gisticAnalysis);
+        getDao().delete(gisticAnalysis);
+        getDao().save(studySubscription);
+    }
 
     /**
      * @return the fileManager

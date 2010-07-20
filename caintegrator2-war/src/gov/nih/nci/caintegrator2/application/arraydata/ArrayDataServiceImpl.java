@@ -176,6 +176,13 @@ public class ArrayDataServiceImpl implements ArrayDataService {
         return platformConfiguration;
         
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void deleteGisticAnalysisNetCDFFile(Study study, Long reporterListId) {
+        new NetCDFManager(fileManager).deleteGisticAnalysisNetCDFFile(study, reporterListId);
+    }
 
     private void handlePlatformException(PlatformConfiguration platformConfiguration,
             PlatformDeploymentListener listener, Throwable e) {

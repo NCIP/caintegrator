@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis.copynumber;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
@@ -111,6 +112,7 @@ public class EditGisticAnalysisActionTest extends AbstractSessionBasedTest {
     EditGisticAnalysisAction action = new EditGisticAnalysisAction();
     StudySubscription subscription = new StudySubscription();
     WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
+    AnalysisServiceStub analysisService = new AnalysisServiceStub();
     
     @Before
     public void setUp() {
@@ -124,6 +126,8 @@ public class EditGisticAnalysisActionTest extends AbstractSessionBasedTest {
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         workspaceService.setSubscription(subscription);
         action.setWorkspaceService(workspaceService);
+        action.setAnalysisService(analysisService);
+        analysisService.clear();
         workspaceService.clear();
     }
     
@@ -142,6 +146,7 @@ public class EditGisticAnalysisActionTest extends AbstractSessionBasedTest {
         assertEquals(Action.SUCCESS, action.execute());
         action.setSelectedAction(EditGisticAnalysisAction.DELETE_ACTION);
         assertEquals(EditGisticAnalysisAction.HOME_PAGE, action.execute());
+        assertTrue(analysisService.deleteGisticAnalysisCalled);
         action.setSelectedAction(EditGisticAnalysisAction.CANCEL_ACTION);
         assertEquals(EditGisticAnalysisAction.HOME_PAGE, action.execute());
         action.setSelectedAction(EditGisticAnalysisAction.SAVE_ACTION);

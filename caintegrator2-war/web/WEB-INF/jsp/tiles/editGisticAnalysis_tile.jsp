@@ -15,7 +15,7 @@
 <script language="javascript">
 
     function deleteGistic () {
-        if (confirm('This gistic analysis will be permanently deleted. (Not yet implemented)')) {
+        if (confirm('This gistic analysis will be permanently deleted.')) {
             submitForm("delete");
         }
     }

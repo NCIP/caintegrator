@@ -201,5 +201,12 @@ public interface ArrayDataService {
       * @return refreshed platformConfiguration.
       */
      PlatformConfiguration getRefreshedPlatformConfiguration(Long id);
+     
+     /**
+      * Deletes GisticAnalysis netCDF file.
+      * @param study that contains the Gistic job.
+      * @param reporterListId for gistic analysis.
+      */
+     void deleteGisticAnalysisNetCDFFile(Study study, Long reporterListId);
     
 }
