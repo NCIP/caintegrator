@@ -90,6 +90,8 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
@@ -139,7 +141,7 @@ public class CriteriaGroup {
 
     private String getCriterionRowType(AbstractCriterion criterion) {
         if (criterion instanceof AbstractGenomicCriterion) {
-            return CriterionRowTypeEnum.GENE_EXPRESSION.getValue();
+            return getGenomicCriterionRowType(criterion);
         } else if (criterion instanceof SubjectListCriterion) {
             return CriterionRowTypeEnum.SAVED_LIST.getValue();
         } else if (criterion instanceof IdentifierCriterion) {
@@ -149,6 +151,15 @@ public class CriteriaGroup {
         } else {
             throw new IllegalArgumentException("Unsupported criterion: " + criterion.getClass());
         }
+    }
+
+    private String getGenomicCriterionRowType(AbstractCriterion criterion) {
+        if (criterion instanceof GeneNameCriterion
+                && GenomicCriterionTypeEnum.COPY_NUMBER.equals(((GeneNameCriterion) criterion)
+                        .getGenomicCriterionType())) {
+            return CriterionRowTypeEnum.COPY_NUMBER.getValue();
+        }
+        return CriterionRowTypeEnum.GENE_EXPRESSION.getValue();
     }
 
     private String getAnnotationCriterionRowName(AbstractCriterion criterion) {
@@ -217,6 +228,8 @@ public class CriteriaGroup {
         switch (CriterionRowTypeEnum.getByValue(rowType)) {
         case GENE_EXPRESSION:
             return new GeneExpressionCriterionRow(study, this);
+        case COPY_NUMBER:
+            return new CopyNumberCriterionRow(study, this);
         case SAVED_LIST:
             return new SavedListCriterionRow(this);
         case UNIQUE_IDENTIIFER:

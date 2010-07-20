@@ -97,12 +97,12 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Contains and manages a gene expression criterion.
  */
-public class GeneExpressionCriterionRow extends AbstractCriterionRow {
+public class CopyNumberCriterionRow extends AbstractCriterionRow {
     
     private AbstractGenomicCriterionWrapper genomicCriterionWrapper;
     private final Study study;
 
-    GeneExpressionCriterionRow(Study study, CriteriaGroup criteriaGroup) {
+    CopyNumberCriterionRow(Study study, CriteriaGroup criteriaGroup) {
         super(criteriaGroup);
         this.study = study;
     }
@@ -114,14 +114,7 @@ public class GeneExpressionCriterionRow extends AbstractCriterionRow {
     public List<String> getAvailableFieldNames() {
         List<String> fieldNames = new ArrayList<String>();
         fieldNames.add(GeneNameCriterionWrapper.FIELD_NAME);
-        if (hasControlSamples()) {
-            fieldNames.add(FoldChangeCriterionWrapper.FOLD_CHANGE);
-        }
         return fieldNames;
-    }
-    
-    private boolean hasControlSamples() {
-        return getGroup().getForm().isControlSamplesInStudy();
     }
 
     /**
@@ -152,9 +145,7 @@ public class GeneExpressionCriterionRow extends AbstractCriterionRow {
         if (StringUtils.isBlank(fieldName)) {
             setGenomicCriterionWrapper(null);
         } else if (fieldName.equals(GeneNameCriterionWrapper.FIELD_NAME)) {
-            setGenomicCriterionWrapper(new GeneNameCriterionWrapper(this, GenomicCriterionTypeEnum.GENE_EXPRESSION));
-        } else if (fieldName.equals(FoldChangeCriterionWrapper.FOLD_CHANGE)) {
-            setGenomicCriterionWrapper(new FoldChangeCriterionWrapper(study, this));
+            setGenomicCriterionWrapper(new GeneNameCriterionWrapper(this, GenomicCriterionTypeEnum.COPY_NUMBER));
         } else {
             throw new IllegalArgumentException("Unsupported genomic field name " + fieldName);
         }
@@ -189,7 +180,7 @@ public class GeneExpressionCriterionRow extends AbstractCriterionRow {
      */
     @Override
     public String getRowType() {
-        return CriterionRowTypeEnum.GENE_EXPRESSION.getValue();
+        return CriterionRowTypeEnum.COPY_NUMBER.getValue();
     }
 
 }

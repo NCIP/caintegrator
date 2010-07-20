@@ -99,10 +99,10 @@ abstract class AbstractGenomicCriterionWrapper extends AbstractCriterionWrapper 
     private static final String PLEASE_SELECT = "-- Please Select --";
     private static final String SYMBOL_LABEL = "Gene Symbol(s) (comma separated list) or blank for all genes";
     private static final String PLATFORM_NAME_LABEL = "Platform Name";
-    private final GeneExpressionCriterionRow row;
+    private final AbstractCriterionRow row;
 
 
-    AbstractGenomicCriterionWrapper(GeneExpressionCriterionRow row) {
+    AbstractGenomicCriterionWrapper(AbstractCriterionRow row) {
         this.row = row;
     }
     
@@ -120,7 +120,7 @@ abstract class AbstractGenomicCriterionWrapper extends AbstractCriterionWrapper 
 
     abstract AbstractGenomicCriterion getAbstractGenomicCriterion();
 
-    GeneExpressionCriterionRow getRow() {
+    AbstractCriterionRow getRow() {
         return row;
     }
     
