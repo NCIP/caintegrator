@@ -107,6 +107,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
     public boolean saveCalled;
     public boolean getPlatformConfigurationsCalled;
     public boolean getRefreshedPlatformConfigurationCalled;
+    public boolean deleteGisticAnalysisNetCDFFileCalled;
     
     
     public void reset() {
@@ -117,6 +118,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
         saveCalled = false;
         getPlatformConfigurationsCalled = false;
         getRefreshedPlatformConfigurationCalled = false;
+        deleteGisticAnalysisNetCDFFileCalled = false;
     }
 
     /**
@@ -264,6 +266,10 @@ public class ArrayDataServiceStub implements ArrayDataService {
             
         }
         return platforms;
+    }
+
+    public void deleteGisticAnalysisNetCDFFile(Study study, Long reporterListId) {
+        deleteGisticAnalysisNetCDFFileCalled = true;
     }
 
 }

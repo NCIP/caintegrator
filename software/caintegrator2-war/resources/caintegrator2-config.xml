@@ -407,6 +407,9 @@
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
+        <property name="analysisService">
+            <ref local="analysisService"/>
+        </property>
     </bean>
 
     <!-- Query Management actions -->

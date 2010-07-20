@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceStub;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
@@ -116,6 +117,7 @@ public class AnalysisServiceStub implements AnalysisService {
     public boolean executePcaJobCalled;
     public boolean executeGisticJobCalled;
     public boolean deleteAnalysisJobCalled;
+    public boolean deleteGisticAnalysisCalled;
     
     public void clear() {
         createKMPlotCalled = false;
@@ -125,6 +127,7 @@ public class AnalysisServiceStub implements AnalysisService {
         executePcaJobCalled = false;
         executeGisticJobCalled = false;
         deleteAnalysisJobCalled = false;
+        deleteGisticAnalysisCalled = false;
     }
 
     /**
@@ -212,5 +215,9 @@ public class AnalysisServiceStub implements AnalysisService {
     public List<String> validateGeneSymbols(StudySubscription studySubscription, List<String> geneSymbols)
             throws GenesNotFoundInStudyException {
         return geneSymbols;
+    }
+
+    public void deleteGisticAnalysis(GisticAnalysis gisticAnalysis) {
+        deleteGisticAnalysisCalled = true;
     }
 }

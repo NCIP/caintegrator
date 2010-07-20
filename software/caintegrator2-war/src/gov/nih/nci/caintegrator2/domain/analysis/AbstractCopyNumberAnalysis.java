@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.domain.analysis;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
 import java.util.HashSet;
@@ -98,6 +99,7 @@ public abstract class AbstractCopyNumberAnalysis extends AbstractCaIntegrator2Ob
     private static final long serialVersionUID = 1L;
     
     private Set<Sample> samplesUsedForCalculation = new HashSet<Sample>();
+    private StudySubscription studySubscription;
 
     /**
      * @return the samplesUsedForCalculation
@@ -112,6 +114,20 @@ public abstract class AbstractCopyNumberAnalysis extends AbstractCaIntegrator2Ob
     @SuppressWarnings("unused")     // required by Hibernate
     private void setSamplesUsedForCalculation(Set<Sample> samplesUsedForCalculation) {
         this.samplesUsedForCalculation = samplesUsedForCalculation;
+    }
+
+    /**
+     * @return the studySubscription
+     */
+    public StudySubscription getStudySubscription() {
+        return studySubscription;
+    }
+
+    /**
+     * @param studySubscription the studySubscription to set
+     */
+    public void setStudySubscription(StudySubscription studySubscription) {
+        this.studySubscription = studySubscription;
     }
     
 }
