@@ -137,6 +137,16 @@ public final class CriterionWrapperBuilder {
         }
     }
     
+    static AbstractGenomicCriterionWrapper createGenomicCriterionWrapper(AbstractCriterion criterion, 
+            CopyNumberCriterionRow row, Study study) {
+        if (criterion instanceof GeneNameCriterion) {
+            GeneNameCriterion geneNameCriterion = (GeneNameCriterion) criterion;
+            return new GeneNameCriterionWrapper(geneNameCriterion, row);
+        } else {
+            throw new IllegalArgumentException("Illegal criterion type " + criterion.getClass());
+        }
+    }
+    
     static AbstractCriterionWrapper createIdentifierCriterionWrapper(AbstractCriterion criterion, 
             IdentifierCriterionRow row) {
         return new IdentifierCriterionWrapper((IdentifierCriterion) criterion, row);

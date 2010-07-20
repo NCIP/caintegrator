@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 
 /**
  * Wraps access to a single <code>GeneNameCriterion</code>.
@@ -100,11 +101,11 @@ public class GeneNameCriterionWrapper extends AbstractGenomicCriterionWrapper {
 
     private final GeneNameCriterion criterion;
 
-    GeneNameCriterionWrapper(GeneExpressionCriterionRow row) {
-        this(new GeneNameCriterion(), row);
+    GeneNameCriterionWrapper(AbstractCriterionRow row, GenomicCriterionTypeEnum criterionType) {
+        this(new GeneNameCriterion(criterionType), row);
     }
 
-    GeneNameCriterionWrapper(GeneNameCriterion criterion, GeneExpressionCriterionRow row) {
+    GeneNameCriterionWrapper(GeneNameCriterion criterion, AbstractCriterionRow row) {
         super(row);
         this.criterion = criterion;
         setupDefaultGenomicParameters();
