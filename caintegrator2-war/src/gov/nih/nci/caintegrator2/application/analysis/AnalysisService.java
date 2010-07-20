@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFou
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
@@ -220,4 +221,9 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      */
     StudySubscription getRefreshedStudySubscription(StudySubscription studySubscription);
     
+    /**
+     * Deletes the gistic analysis.
+     * @param gisticAnalysis to delete.
+     */
+    void deleteGisticAnalysis(GisticAnalysis gisticAnalysis);
 }

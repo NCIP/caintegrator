@@ -103,6 +103,7 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParamete
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticRefgeneFileEnum;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotServiceImpl;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
@@ -114,6 +115,7 @@ import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceForKMPlotStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
@@ -128,6 +130,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -165,6 +168,7 @@ public class AnalysisServiceTest {
                         new QueryManagementServiceForKMPlotStub();
     private GenePatternGridRunnerStub genePatternGridRunnerStub = new GenePatternGridRunnerStub();
     private FileManagerStub fileManagerStub = new FileManagerStub();
+    private ArrayDataServiceStub arrayDataServiceStub;
     
     @Before
     public void setUp() {
@@ -184,6 +188,9 @@ public class AnalysisServiceTest {
         service = serviceImpl;
         genePatternGridRunnerStub.clear();
         serviceImpl.setGenePatternGridRunner(genePatternGridRunnerStub);
+        arrayDataServiceStub = new ArrayDataServiceStub();
+        serviceImpl.setArrayDataService(arrayDataServiceStub);
+        arrayDataServiceStub.clear();
     }
 
     @Test
@@ -523,6 +530,24 @@ public class AnalysisServiceTest {
         genomicQueryParameters.setGeneSymbol("EGFR");
         assertTrue(genomicQueryParameters.validate());
         runGEPlotTest(subscription, genomicQueryParameters);
+    }
+    
+    @Test
+    public void testDeleteGisticAnalysis() {
+        GisticAnalysis gisticAnalysis = new GisticAnalysis();
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(new Study());
+        subscription.getCopyNumberAnalysisCollection().add(gisticAnalysis);
+        gisticAnalysis.setStudySubscription(subscription);
+        service.deleteGisticAnalysis(gisticAnalysis);
+        assertFalse(subscription.getCopyNumberAnalysisCollection().contains(gisticAnalysis));
+        assertFalse(arrayDataServiceStub.deleteGisticAnalysisNetCDFFileCalled);
+        subscription.getCopyNumberAnalysisCollection().add(gisticAnalysis);
+        gisticAnalysis.setStudySubscription(subscription);
+        ReporterList reporterList = new ReporterList("test", ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER);
+        gisticAnalysis.setReporterList(reporterList);
+        service.deleteGisticAnalysis(gisticAnalysis);
+        assertTrue(arrayDataServiceStub.deleteGisticAnalysisNetCDFFileCalled);
     }
     
     private final class GenePatternClientFactoryStub implements GenePatternClientFactory {

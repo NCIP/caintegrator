@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis.copynumber;
 
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
@@ -100,6 +101,7 @@ import java.util.List;
 public class EditGisticAnalysisAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
+    private AnalysisService analysisService;
     private final List<Gene> amplifiedGenes = new ArrayList<Gene>();
     private final List<Gene> deletedGenes = new ArrayList<Gene>();
     private GisticAnalysis gisticAnalysis;
@@ -167,7 +169,7 @@ public class EditGisticAnalysisAction extends AbstractCaIntegrator2Action {
      * @return the Struts result.
      */
     public String delete() {
-        // Still need to implement this.
+        analysisService.deleteGisticAnalysis(gisticAnalysis);
         return HOME_PAGE;
     }
     
@@ -212,5 +214,19 @@ public class EditGisticAnalysisAction extends AbstractCaIntegrator2Action {
      */
     public List<Gene> getDeletedGenes() {
         return deletedGenes;
+    }
+
+    /**
+     * @return the analysisService
+     */
+    public AnalysisService getAnalysisService() {
+        return analysisService;
+    }
+
+    /**
+     * @param analysisService the analysisService to set
+     */
+    public void setAnalysisService(AnalysisService analysisService) {
+        this.analysisService = analysisService;
     }
 }

@@ -85,107 +85,39 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.File;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+
+import ucar.nc2.NetcdfFile;
 
 /**
- * Provides read and write access to the underlying NetCDF array data store.
+ * Provides functionality to read NetCDF files.
  */
-public class NetCDFManager {
+class NetCDFDeleter extends AbstractNetCdfFileHandler {
     
-    private final FileManager fileManager;
+    private static final Logger LOGGER = Logger.getLogger(NetCDFDeleter.class);
 
-    NetCDFManager(FileManager fileManager) {
-        this.fileManager = fileManager;
-    }
-
-    /**
-     * Persists all the values in the given values object. The values object must correspond to
-     * arrays in a single experiment and values for a single <code>ReporterList</code>.
-     * 
-     * @param values values to store.
-     */
-    void storeValues(ArrayDataValues values) {
-        checkIsValid(values);
-        NetCDFWriter writer = new NetCDFWriter(values, fileManager);
-        writer.storeValues();
-    }
-
-    /**
-     * Retrieves the requested array data.
-     * 
-     * @param request encapsulated retrieval configuration.
-     * @return the requested data.
-     */
-    ArrayDataValues retrieveValues(DataRetrievalRequest request) {
-        if (request.hasEmptyParameter()) {
-            return new ArrayDataValues(request.getReporters());
-        }
-        NetCDFReader reader = new NetCDFReader(fileManager, request);
-        return reader.retrieveValues();
+    NetCDFDeleter(FileManager fileManager) {
+        super(fileManager);
     }
     
     void deleteGisticAnalysisNetCDFFile(Study study, Long reporterListId) {
-        NetCDFDeleter deleter = new NetCDFDeleter(fileManager);
-        deleter.deleteGisticAnalysisNetCDFFile(study, reporterListId);
-    }
-
-    private void checkIsValid(ArrayDataValues values) {
-        checkNotEmpty(values);
-        checkSingleStudy(values);
-        checkReporterLists(values);
-        checkArrayDatas(values);
-    }
-
-    private void checkArrayDatas(ArrayDataValues values) {
-        for (ArrayData arrayData : values.getArrayDatas()) {
-            if (arrayData.getId() == null) {
-                throw new IllegalArgumentException("Unsaved ArrayData");
-            }
-            if (arrayData.getReporterLists().isEmpty()) {
-                throw new IllegalArgumentException("ArrayData with id " + arrayData.getId() + " has no ReporterLists");
-            }
+        File fileToDelete = getFile(study, reporterListId, ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER);
+        String filePath = fileToDelete.getPath();
+        if (FileUtils.deleteQuietly(fileToDelete)) {
+            LOGGER.info("Deleted file: " + filePath);
         }
     }
 
-    private void checkSingleStudy(ArrayDataValues values) {
-        Set<Study> studies = new HashSet<Study>();
-        for (ArrayData arrayData : values.getArrayDatas()) {
-            arrayData.checkHasStudy();
-            studies.add(arrayData.getStudy());
-        }
-        if (studies.size() != 1) {
-            throw new IllegalArgumentException("ArrayDatas are related to multiple studies.");
-        }
-        if (studies.iterator().next().getId() == null) {
-            throw new IllegalArgumentException("Study is unsaved.");
-        }
-    }
-
-    private void checkReporterLists(ArrayDataValues values) {
-        Set<ReporterTypeEnum> reporterTypes = new HashSet<ReporterTypeEnum>();
-        for (ReporterList reporterList : values.getReporterLists()) {
-            reporterTypes.add(reporterList.getReporterType());
-            if (reporterList.getId() == null) {
-                throw new IllegalArgumentException("ReporterList is unsaved.");
-            }
-        }
-        if (reporterTypes.size() != 1) {
-            throw new IllegalArgumentException("ReporterLists must be of the same type, types were: " 
-                    + reporterTypes.toString());
-        }
-    }
-
-    private void checkNotEmpty(ArrayDataValues values) {
-        if (values.getArrayDatas().isEmpty()) {
-            throw new IllegalArgumentException("No ArrayDatas in ArrayDataValues object");
-        }
+    @Override
+    NetcdfFile getNetCdfFile() {
+        return null;
     }
 
 }
