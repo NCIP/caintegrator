@@ -298,6 +298,9 @@ public class QueryForm {
         if (study.hasExpressionData()) {
             options.add(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
         }
+        if (study.hasCopyNumberData()) {
+            options.add(CriterionRowTypeEnum.COPY_NUMBER.getValue());
+        }
         options.add(CriterionRowTypeEnum.UNIQUE_IDENTIIFER.getValue());
         if (studyHasSavedLists) {
             options.add(CriterionRowTypeEnum.SAVED_LIST.getValue());

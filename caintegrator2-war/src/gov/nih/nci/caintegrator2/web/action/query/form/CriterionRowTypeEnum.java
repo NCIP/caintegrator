@@ -13,7 +13,12 @@ public enum CriterionRowTypeEnum {
      * Gene Expression.
      */
     GENE_EXPRESSION("Gene Expression"),
-
+    
+    /**
+     * Copy Number.
+     */
+    COPY_NUMBER("Copy Number"),
+    
     /**
      * Saved List.
      */

@@ -703,6 +703,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public List<Platform> retrievePlatformsForGenomicSource(GenomicDataSourceConfiguration genomicSource) {
         Criteria arrayCriteria = getCurrentSession().createCriteria(Array.class);
         arrayCriteria.setProjection(Projections.distinct(Projections.property("platform")))
+                     .add(Restrictions.isNotNull("platform"))
                      .createCriteria("sampleCollection")
                      .add(Restrictions.eq("genomicDataSource", genomicSource));
                      

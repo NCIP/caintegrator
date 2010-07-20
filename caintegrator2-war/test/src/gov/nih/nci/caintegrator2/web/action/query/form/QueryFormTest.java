@@ -312,6 +312,7 @@ public class QueryFormTest {
         checkChangeNumericOperator(criterionRow);
         checkAddImageSeriesCriterion(group);
         checkAddGeneExpressionCriterion(group);
+        checkAddCopyNumberCriterion(group);
         checkRemoveRow(group);
         
     }
@@ -383,6 +384,9 @@ public class QueryFormTest {
      * @param group
      */
     private void checkRemoveRow(CriteriaGroup group) {
+        assertEquals(4, group.getRows().size());
+        assertEquals(4, queryForm.getQuery().getCompoundCriterion().getCriterionCollection().size());
+        group.removeRow(3);
         assertEquals(3, group.getRows().size());
         assertEquals(3, queryForm.getQuery().getCompoundCriterion().getCriterionCollection().size());
         group.removeRow(2);
@@ -468,6 +472,25 @@ public class QueryFormTest {
         assertEquals(NumericComparisonOperatorEnum.LESSOREQUAL, criterion.getNumericComparisonOperator());
         setOperator(parameter, CriterionOperatorEnum.EQUALS.getValue());
         assertEquals(NumericComparisonOperatorEnum.EQUAL, criterion.getNumericComparisonOperator());
+    }
+    
+    private void checkAddCopyNumberCriterion(CriteriaGroup group) {
+        group.setCriterionTypeName(CriterionRowTypeEnum.COPY_NUMBER.getValue());
+        group.addCriterion(subscription.getStudy());
+        assertEquals(4, group.getRows().size());
+        assertEquals(3, group.getCompoundCriterion().getCriterionCollection().size());
+        CopyNumberCriterionRow criterionRow = (CopyNumberCriterionRow) group.getRows().get(3);
+        
+        assertEquals(1, criterionRow.getAvailableFieldNames().size());
+        assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
+        
+        assertEquals(group, criterionRow.getGroup());
+        setFieldName(criterionRow, "Gene Name");
+        assertEquals(4, group.getCompoundCriterion().getCriterionCollection().size());
+        assertEquals("Gene Name", criterionRow.getFieldName());
+        assertTrue(criterionRow.getCriterion() instanceof GeneNameCriterion);
+        ((TextFieldParameter) criterionRow.getParameters().get(0)).setValue("EGFR");
+        assertEquals("EGFR", ((GeneNameCriterion) criterionRow.getCriterion()).getGeneSymbol());
     }
 
     @SuppressWarnings("unchecked")

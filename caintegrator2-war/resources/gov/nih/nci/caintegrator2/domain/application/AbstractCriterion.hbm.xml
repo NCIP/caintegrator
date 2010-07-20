@@ -19,6 +19,9 @@
     <typedef name="EntityTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
         <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum</param> 
     </typedef> 
+    <typedef name="GenomicCriterionTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+        <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum</param> 
+    </typedef> 
     <class name="AbstractCriterion" table="ABSTRACT_CRITERION" lazy="false" polymorphism="explicit">
         <cache usage="read-write" />
         <id name="id" type="long" column="ID">
@@ -91,6 +94,7 @@
                 <key column="ID" />
                 <property name="geneSymbol" type="string" column="GENE_SYMBOL"/>
                 <property name="platformName" type="string" column="PLATFORM_NAME"/>
+                <property name="genomicCriterionType" type="GenomicCriterionTypeEnum" column="GENOMIC_CRITERION_TYPE" />
             </joined-subclass>
         </joined-subclass>
         <joined-subclass name="SubjectListCriterion" table="SUBJECT_LIST_CRITERION" lazy="false">
