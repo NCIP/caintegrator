@@ -430,7 +430,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public Gene getGene(String symbol) {
-        List values = getHibernateTemplate().findByNamedParam("from Gene where symbol like binary :symbol", 
+        List values = getHibernateTemplate().findByNamedParam("from Gene where symbol = :symbol", 
                 "symbol", symbol.toUpperCase(Locale.getDefault()));
         if (values.isEmpty()) {
             return null;
