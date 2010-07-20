@@ -67,12 +67,12 @@
 <tr>
 	<td>type</td>
 	<td>platformName</td>
-	<td>AgilentG4502A_07_01</td>
+	<td>AgilentG4502A_07_3</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>platformFile</td>
-	<td>${testResourcesDesignsAgilentDirectory}AgilentG4502A_07_01.tcga.adf</td>
+	<td>${testResourcesDesignsAgilentDirectory}AgilentG4502A_07_3.adf</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -88,7 +88,7 @@
 <tr>
 	<td>select</td>
 	<td>managePlatformForm_platformType</td>
-	<td>label=Affymetrix SNP</td>
+	<td>label=Affymetrix Copy Number</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -190,6 +190,33 @@
 	<td>type</td>
 	<td>platformFile</td>
 	<td>${testResourcesDesignsAffyDirectory}HG_U95D.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>managePlatformForm_createPlatform</td>
+	<td></td>
+</tr>
+<!--// add agilent copy number platforms-->
+<!--// add Agilent-022522-->
+<tr>
+	<td>open</td>
+	<td>/caintegrator2/managePlatforms.action</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>managePlatformForm_platformType</td>
+	<td>label=Agilent Copy Number</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>platformName</td>
+	<td>Agilent-022522</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>platformFile</td>
+	<td>${testResourcesDesignsAgilentDirectory}Agilent-022522.xml</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>

@@ -1,0 +1,354 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://caintegrator2-dev.nci.nih.gov/" />
+<title>Manage Studies - Deploy Pilot Study</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Manage Studies - Deploy Rembrandt with Small Copy Number</td></tr>
+</thead><tbody>
+<tr>
+	<td>setTimeout</td>
+	<td>3600000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>var date = new Date(); var month = date.getMonth() + 1; if(month &lt; 10){month = '0' + month;} var day = date.getDate(); if(day &lt; 10){day = '0' + day;} displaytime = month + '/' + day + '/0' + (date.getYear() - 100); var hour = date.getHours(); if(hour &lt; 10){ hour = '0' + hour; } var min = date.getMinutes(); if(min &lt; 10){ min = '0' + min; } var sec = date.getSeconds(); if(sec &lt; 10){ sec = '0' + sec; } displaytime += ' ' + hour + ':' + min + ':' + sec; displaytime;</td>
+	<td>dateAndTime</td>
+</tr>
+<tr>
+    <td>store</td>
+    <td>${selenium.test.resources.dir}Pilot Study/</td>
+    <td>testResourcesDirectory</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>Pilot Study</td>
+	<td>Cai2StudyName</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Create New Study</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>nameId</td>
+	<td>Demo Study based on ${Cai2StudyName} data.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>studyDeploymentForm_studyConfiguration_study_longTitleText</td>
+	<td>${Cai2StudyName}.&nbsp;&nbsp;Study created via selenium.</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>studyDeploymentForm_saveStudy</td>
+	<td></td>
+</tr>
+<!--// add logo-->
+<tr>
+	<td>type</td>
+	<td>addStudyLogo_studyLogoFile</td>
+	<td>${testResourcesDirectory}pilot.JPG</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addStudyLogo_addStudyLogo</td>
+	<td></td>
+</tr>
+<!--// add clinical data-->
+<tr>
+	<td>click</td>
+	<td>//a[@id='addClinicalFile_clinicalFile']/span/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>addClinicalFile_createNewAnnotationDefinition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>clinicalFile</td>
+	<td>${testResourcesDirectory}Subject Data/clinical_data.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addClinicalFile_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='button' and @onclick='document.subjectAnnotationsForm.submit();']</td>
+	<td></td>
+</tr>
+<!--//begin create identifier-->
+<tr>
+	<td>clickAndWait</td>
+	<td>//a//span[text()='Edit Annotations']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(text(),'Change Assignment')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>fieldDescriptorType</td>
+	<td>label=Identifier</td>
+</tr>
+<tr>
+	<td>getConfirmation</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>chooseOkOnNextConfirmationAndWait</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='button' and @onclick='document.subjectAnnotationsForm.submit();']</td>
+	<td></td>
+</tr>
+<!--// begin Load Clinical-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//a//span[text()='Load Subject Annotation Source']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a//span[text()='Load Subject Annotation Source']</td>
+	<td></td>
+</tr>
+<!--// begin add genomic-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td></td>
+</tr>
+<!--// provide genomic source configuration parameters-->
+<!--// configure caarray experiment ID with Agilent Gene Expression data - formerly topal-00211-->
+<tr>
+	<td>type</td>
+	<td>caArrayUrl</td>
+	<td>http://cbwapp-p1001.nci.nih.gov:38080</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>caArrayHost</td>
+	<td>cbwapp-p1001.nci.nih.gov</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>caArrayPort</td>
+	<td>31099</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>experimentId</td>
+	<td>admin-00014</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>caArrayUsername</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>caArrayPassword</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>platformVendor</td>
+	<td>label=Agilent</td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>dataType</td>
+	<td>label=Expression</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>platformName</td>
+	<td>label=AgilentG4502A_07_3</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='button' and @onclick='saveGenomicSource()']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>link=Map Samples</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Map Samples</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>sampleMappingFile</td>
+	<td>${testResourcesDirectory}Genomic Data/Expression Data/Agilent/data_mapping-37samples.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='button' and @onclick='saveSampleMapping()']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>link=Map Samples</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Map Samples</td>
+	<td></td>
+</tr>
+<!--// add a set of control samples-->
+<tr>
+	<td>type</td>
+	<td>controlSampleSetName</td>
+	<td>control set 1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>controlSampleFile</td>
+	<td>${testResourcesDirectory}Genomic Data/Expression Data/Agilent/controls-1.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='button' and @onclick='saveSampleMapping()']</td>
+	<td></td>
+</tr>
+<!--// end map samples-->
+<!--// begin add copy number-->
+<tr>
+	<td>store</td>
+	<td>liu-00252</td>
+	<td>caarrayExperimentNameCopyNumber</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//th[text()='Genomic Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>caArrayHost</td>
+	<td>array.nci.nih.gov</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>caArrayPort</td>
+	<td>8080</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>experimentId</td>
+	<td>${caarrayExperimentNameCopyNumber}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>caArrayUsername</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>caArrayPassword</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>platformVendor</td>
+	<td>label=Affymetrix</td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>dataType</td>
+	<td>label=Copy Number</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='button' and @onclick='saveGenomicSource()']</td>
+	<td></td>
+</tr>
+<!--// configure copy number settings-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//*[@id=&quot;genomicSourceJobStatusTable&quot;]//span[text()='${caarrayExperimentNameCopyNumber}']/parent::td/parent::tr//a//span[text()='ConfigureCopyNumberData']</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//*[@id=&quot;genomicSourceJobStatusTable&quot;]//span[text()='${caarrayExperimentNameCopyNumber}']/parent::td/parent::tr//a//span[text()='ConfigureCopyNumberData']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>mappingFile</td>
+	<td>${testResourcesDirectory}Genomic Data/Copy Number Data/Affy (SNP)/CopyNumber_Data_Mapping.csv</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>dnaAnalysisDataConfiguration.changePointSignificanceLevel</td>
+	<td>0.01</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>dnaAnalysisDataConfiguration.earlyStoppingCriterion</td>
+	<td>0.05</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>dnaAnalysisDataConfiguration.permutationReplicates</td>
+	<td>10000</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>dnaAnalysisDataConfiguration.randomNumberSeed</td>
+	<td>1234567</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[contains(text(),'Save Segmentation Data Calculation Configuration')]</td>
+	<td></td>
+</tr>
+<!--// end add copy number-->
+<!--// begin add imaging data source-->
+<!--// end add imaging data source-->
+<!--// begin assign imaging annotation-->
+<!--// end assign imaging annotation-->
+<!--// begin load imaging-->
+<!--// endload imaging-->
+<!--// begin Save and Deploy-->
+<tr>
+	<td>clickAndWait</td>
+	<td>deployButton</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
