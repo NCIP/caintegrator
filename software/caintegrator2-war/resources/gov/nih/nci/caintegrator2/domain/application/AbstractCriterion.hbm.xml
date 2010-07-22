@@ -22,6 +22,13 @@
     <typedef name="GenomicCriterionTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
         <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum</param> 
     </typedef> 
+    <typedef name="GenomicIntervalTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+        <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.GenomicIntervalTypeEnum</param> 
+    </typedef> 
+    <typedef name="SegmentBoundaryTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+        <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.SegmentBoundaryTypeEnum</param> 
+    </typedef> 
+    
     <class name="AbstractCriterion" table="ABSTRACT_CRITERION" lazy="false" polymorphism="explicit">
         <cache usage="read-write" />
         <id name="id" type="long" column="ID">
@@ -95,6 +102,19 @@
                 <property name="geneSymbol" type="string" column="GENE_SYMBOL"/>
                 <property name="platformName" type="string" column="PLATFORM_NAME"/>
                 <property name="genomicCriterionType" type="GenomicCriterionTypeEnum" column="GENOMIC_CRITERION_TYPE" />
+            </joined-subclass>
+            <joined-subclass name="CopyNumberAlterationCriterion" table="COPY_NUMBER_ALTERATION_CRITERION" lazy="false">
+                <key column="ID" />
+                <!-- Attributes mapping for the CopyNumberAlterationCriterion class -->
+                <property name="platformName" type="string" column="PLATFORM_NAME"/>
+                <property name="geneSymbol" type="string" column="GENE_SYMBOL"/>
+                <property name="chromosomeCoordinateHigh" type="float" column="CHROMOSOMAL_COORDINATE_HIGH"/>
+                <property name="chromosomeCoordinateLow" type="float" column="CHROMOSOMAL_COORDINATE_LOW"/>
+                <property name="chromosomeNumber" type="integer" column="CHROMOSOME_NUMBER"/>
+                <property name="genomicIntervalType" type="GenomicIntervalTypeEnum" column="GENOMIC_INTERVAL_TYPE"/>
+                <property name="segmentBoundaryType" type="SegmentBoundaryTypeEnum" column="SEGMENT_BOUNDARY_TYPE"/>
+                <property name="lowerLimit" type="float" column="LOWER_LIMIT"/>
+                <property name="upperLimit" type="float" column="UPPER_LIMIT"/>
             </joined-subclass>
         </joined-subclass>
         <joined-subclass name="SubjectListCriterion" table="SUBJECT_LIST_CRITERION" lazy="false">
