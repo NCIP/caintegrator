@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.abstractlist;
 
-import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
@@ -131,10 +130,7 @@ public class SearchGeneListAction extends AbstractCaIntegrator2Action {
     
     private void retrieveGenes() {
         genes = new ArrayList<Gene>();
-        GeneList list = getStudySubscription().getSelectedGeneList(getGeneListName());
-        if (list != null) {
-            genes.addAll(list.getGeneCollection());
-        }
+        genes.addAll(getStudySubscription().getSelectedGeneList(getGeneListName()));
     }
 
     /**

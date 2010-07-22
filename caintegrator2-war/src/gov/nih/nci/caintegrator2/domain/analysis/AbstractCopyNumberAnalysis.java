@@ -99,6 +99,7 @@ public abstract class AbstractCopyNumberAnalysis extends AbstractCaIntegrator2Ob
     private static final long serialVersionUID = 1L;
     
     private Set<Sample> samplesUsedForCalculation = new HashSet<Sample>();
+    private String name;
     private StudySubscription studySubscription;
 
     /**
@@ -128,6 +129,20 @@ public abstract class AbstractCopyNumberAnalysis extends AbstractCaIntegrator2Ob
      */
     public void setStudySubscription(StudySubscription studySubscription) {
         this.studySubscription = studySubscription;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
     
 }

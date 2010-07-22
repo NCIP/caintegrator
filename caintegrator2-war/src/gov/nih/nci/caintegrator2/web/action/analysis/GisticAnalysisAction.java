@@ -202,9 +202,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     }
 
     private void validateExecuteAnalysis() {
-        if (StringUtils.isBlank(getCurrentGisticAnalysisJob().getName())) {
-            addFieldError("currentGisticAnalysisJob.name", "Job name required.");
-        }
+        checkName();
         checkSelectedPlatform();
         checkNegativeValue("gisticParameters.amplificationsThreshold",
                 getGisticParameters().getAmplificationsThreshold());
@@ -216,11 +214,21 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
             getGisticParameters().getQvThresh());
     }
 
+    private void checkName() {
+        if (StringUtils.isBlank(getCurrentGisticAnalysisJob().getName())) {
+            addFieldError("currentGisticAnalysisJob.name", "Job name required.");
+        } else if (getStudySubscription().getGisticAnalysisNames().contains(getCurrentGisticAnalysisJob().getName())) {
+            addFieldError("currentGisticAnalysisJob.name", "Job name is duplicate, please use other name.");
+        }
+    }
+
     private void checkSelectedPlatform() {
         if (StringUtils.isBlank(getGisticAnalysisForm().getSelectedQuery())
                 && isStudyHasMultiplePlatforms()
-                && getGisticAnalysisForm().getSelectedPlatformNames().isEmpty()) {
+                && StringUtils.isBlank(getGisticAnalysisForm().getSelectedPlatformName())) {
             addFieldError("gisticAnalysisForm.selectedPlatformNames", "Platform is required.");
+        } else if (StringUtils.isBlank(getGisticAnalysisForm().getSelectedPlatformName())) {
+            getGisticAnalysisForm().setSelectedPlatformName(getPlatformsInStudy().get(0));
         }
     }
 
@@ -508,6 +516,13 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
      */
     public List<String> getPlatformsInStudy() {
         return platformsInStudy;
+    }
+
+    /**
+     * @param platformsInStudy the platformsInStudy to set
+     */
+    public void setPlatformsInStudy(List<String> platformsInStudy) {
+        this.platformsInStudy = platformsInStudy;
     }
 
     /**

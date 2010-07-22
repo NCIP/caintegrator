@@ -18,18 +18,21 @@
                 <s:div cssClass="columnWrapper" cssStyle="background-color: #ffffff;">
                     <s:div cssClass="left1"><input type="checkbox" checked="checked" name="cb_symbols" value="<s:property value='symbol'/>"/> </s:div>
                     <s:div cssClass="left2"><s:property value="symbol" /></s:div>
-                    <s:div cssClass="right"><s:property value="fullName" /></s:div>
+                    <s:div cssClass="right" cssStyle="width: 300px;"><s:property value="fullName" /></s:div>
                 </s:div><br>
             </s:if>
             <s:else>
                 <s:div cssClass="columnWrapper" cssStyle="background-color: #dcdcdc;">
                     <s:div cssClass="left1"><input type="checkbox" checked="checked" name="cb_symbols" value="<s:property value='symbol'/>"/> </s:div>
                     <s:div cssClass="left2"><s:property value="symbol" /></s:div>
-                    <s:div cssClass="right"><s:property value="fullName" /></s:div>
+                    <s:div cssClass="right" cssStyle="width: 300px;"><s:property value="fullName" /></s:div>
                 </s:div><br>
             </s:else>
         </s:iterator>
-        <button type="button" onclick="captureGeneListCheckBoxes('<s:property value='geneSymbolElementId' />')">Use Genes</button>    
+        <br>
+        <s:div cssClass="columnWrapper">
+            <button type="button" onclick="captureGeneListCheckBoxes('<s:property value='geneSymbolElementId' />')">Use Genes</button>
+        </s:div>
     </s:div>
     </s:if>
     <!-- /Gene List Gene Results -->
