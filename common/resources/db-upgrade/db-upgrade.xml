@@ -392,4 +392,8 @@
         <comment>Adds the GENOMIC_CRITERION_TYPE to the GENE_NAME_CRITERION table and back-populates.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.10.sql"/>
     </changeSet>
+    <changeSet id="1.2.11" author="tandrews">
+        <comment>Adds the GENOMIC_CRITERION_TYPE to the COPY_NUMBER_ALTERATION_CRITERION table.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.11.sql"/>
+    </changeSet>
 </databaseChangeLog>
