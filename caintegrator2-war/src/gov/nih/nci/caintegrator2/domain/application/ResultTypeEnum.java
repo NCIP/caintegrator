@@ -16,7 +16,12 @@ public enum ResultTypeEnum {
     /**
      * Genomic data.
      */
-    GENOMIC("genomic");
+    GENOMIC("genomic"),
+    
+    /**
+     * Copy Number.
+     */
+     COPY_NUMBER("copyNumber");
     
     private static Map<String, ResultTypeEnum> valueToTypeMap = new HashMap<String, ResultTypeEnum>();
 
