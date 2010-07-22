@@ -417,10 +417,10 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     public Map<String, Gene> getGeneSymbolMap() {
         Map <String, Gene> resultMap = new HashMap<String, Gene>();
-        Query query = getCurrentSession().createQuery("from Gene order by Symbol");
+        Query query = getCurrentSession().createQuery("from Gene");
         for (Object object : query.list()) {
             Gene gene = (Gene) object;
-            resultMap.put(gene.getSymbol(), gene);
+            resultMap.put(gene.getSymbol().toUpperCase(Locale.getDefault()), gene);
         }
         return resultMap;
     }

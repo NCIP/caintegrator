@@ -95,7 +95,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 public class GisticAnalysis extends AbstractCopyNumberAnalysis {
     private static final long serialVersionUID = 1L;
     
-    private String name;
     private Float amplificationsThreshold;
     private Float deletionsThreshold;
     private String genomeBuildInformation;
@@ -105,18 +104,6 @@ public class GisticAnalysis extends AbstractCopyNumberAnalysis {
     private String url;
     private ReporterList reporterList;
     
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
     /**
      * @return the amplificationsThreshold
      */

@@ -87,6 +87,12 @@ package gov.nih.nci.caintegrator2.domain.application;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
+import gov.nih.nci.caintegrator2.domain.genomic.AmplificationTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GisticGenomicRegionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import org.junit.Test;
@@ -99,15 +105,44 @@ public class StudySubscriptionTest {
         subscription.setStudy(new Study());
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         subscription.getStudy().setStudyConfiguration(studyConfiguration);
+        Gene gene1 = new Gene();
+        gene1.setSymbol("EGFR");
+        Gene gene2 = new Gene();
+        gene2.setSymbol("BRAC1");
         GeneList geneList1 = new GeneList();
         geneList1.setName("myGeneList");
+        geneList1.getGeneCollection().add(gene1);
         GeneList geneList2 = new GeneList();
         geneList2.setName("global-GeneList");
+        geneList2.getGeneCollection().add(gene2);
         subscription.getListCollection().add(geneList1);
         studyConfiguration.getListCollection().add(geneList2);
+        // Add Gistic
+        GisticAnalysis analysis = createGisticAnalysis(gene1, gene2);
+        subscription.getCopyNumberAnalysisCollection().add(analysis);
         
-        assertEquals(2, subscription.getAllGeneListNames().size());
-        assertEquals(geneList1.getName(), subscription.getSelectedGeneList("myGeneList").getName());
-        assertEquals(geneList2.getName(), subscription.getSelectedGeneList("[Global]-global-GeneList").getName());
+        assertEquals(4, subscription.getAllGeneListNames().size());
+        assertEquals(gene1, subscription.getSelectedGeneList("myGeneList").iterator().next());
+        assertEquals(gene2, subscription.getSelectedGeneList("[Global]-global-GeneList").iterator().next());
+        assertEquals(gene1, subscription.getSelectedGeneList("[GISTIC-Amplified]-Gistic 1").iterator().next());
+        assertEquals(gene2, subscription.getSelectedGeneList("[GISTIC-Deleted]-Gistic 1").iterator().next());
+    }
+    
+    private GisticAnalysis createGisticAnalysis(Gene ampGene, Gene delGene) {
+        GisticAnalysis analysis = new GisticAnalysis();
+        analysis.setName("Gistic 1");
+        ReporterList reporterList = new ReporterList("Test", ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER);
+        GisticGenomicRegionReporter ampReporter = new GisticGenomicRegionReporter();
+        ampReporter.setReporterList(reporterList);
+        ampReporter.setGeneAmplificationType(AmplificationTypeEnum.AMPLIFIED);
+        ampReporter.getGenes().add(ampGene);
+        GisticGenomicRegionReporter delReporter = new GisticGenomicRegionReporter();
+        delReporter.setReporterList(reporterList);
+        delReporter.setGeneAmplificationType(AmplificationTypeEnum.DELETED);
+        delReporter.getGenes().add(delGene);
+        reporterList.getReporters().add(ampReporter);
+        reporterList.getReporters().add(delReporter);
+        analysis.setReporterList(reporterList);
+        return analysis;
     }
 }

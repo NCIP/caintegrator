@@ -1,9 +1,14 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.analysis.AbstractCopyNumberAnalysis;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
+import gov.nih.nci.caintegrator2.domain.genomic.AmplificationTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +24,10 @@ public class StudySubscription extends AbstractCaIntegrator2StudyObject {
 
     private static final String GLOBAL_GENE_LIST_PREFIX = "[Global]-";
     private static final Pattern GLOBAL_PATTERN = Pattern.compile("^\\[Global\\]-(.+)");
+    private static final String GISTIC_AMP_GENE_LIST_PREFIX = "[GISTIC-Amplified]-";
+    private static final Pattern GISTIC_AMP_PATTERN = Pattern.compile("^\\[GISTIC-Amplified\\]-(.+)");
+    private static final String GISTIC_DEL_GENE_LIST_PREFIX = "[GISTIC-Deleted]-";
+    private static final Pattern GISTIC_DEL_PATTERN = Pattern.compile("^\\[GISTIC-Deleted\\]-(.+)");
     
     private Study study;
     private Set<Query> queryCollection = new HashSet<Query>();
@@ -111,7 +120,7 @@ public class StudySubscription extends AbstractCaIntegrator2StudyObject {
     }
     
     /**
-     * @return a list of all gene list names including global lists
+     * @return a list of all gene list names including global lists and GISTIC Amp & Del lists
      */
     public List<String> getAllGeneListNames() {
         List<String> resultList = new ArrayList<String>();
@@ -119,23 +128,69 @@ public class StudySubscription extends AbstractCaIntegrator2StudyObject {
         for (String name : getStudy().getStudyConfiguration().getGeneListNames()) {
             resultList.add(GLOBAL_GENE_LIST_PREFIX + name);
         }
+        for (String name : getGisticAnalysisNames()) {
+            resultList.add(GISTIC_AMP_GENE_LIST_PREFIX + name);
+            resultList.add(GISTIC_DEL_GENE_LIST_PREFIX + name);
+        }
         return resultList;
     }
     
+    /**
+     * 
+     * @return all GISTIC analysis names
+     */
+    public List<String> getGisticAnalysisNames() {
+        List<String> names = new ArrayList<String>();
+        for (AbstractCopyNumberAnalysis analysis : getCopyNumberAnalysisCollection()) {
+            if (analysis instanceof GisticAnalysis) {
+                names.add(analysis.getName());
+            }
+        }
+        return names;
+    }
+
     /**
      * Parse the gene list name from the given name including prefix then retrieve the gene list.
      * @param name then gene list name with prefix
      * @return The gene list
      */
-    public GeneList getSelectedGeneList(String name) {
+    public Collection<Gene> getSelectedGeneList(String name) {
         if (name != null) {
-            Matcher nameMatcher = GLOBAL_PATTERN.matcher(name);
-            if (nameMatcher.find()) {
-                return getStudy().getStudyConfiguration().getGeneList(nameMatcher.group(1));
+            Matcher globalNameMatcher = GLOBAL_PATTERN.matcher(name);
+            Matcher gisticAmpNameMatcher = GISTIC_AMP_PATTERN.matcher(name);
+            Matcher gisticDelNameMatcher = GISTIC_DEL_PATTERN.matcher(name);
+            GeneList geneList;
+            if (globalNameMatcher.find()) {
+                geneList = getStudy().getStudyConfiguration().getGeneList(globalNameMatcher.group(1));
+            } else if (gisticAmpNameMatcher.find()) {
+                return getGisticGenes(gisticAmpNameMatcher.group(1), AmplificationTypeEnum.AMPLIFIED);
+            } else if (gisticDelNameMatcher.find()) {
+                return getGisticGenes(gisticDelNameMatcher.group(1), AmplificationTypeEnum.DELETED);
+            } else {
+                geneList = getGeneList(name);
             }
-            return getGeneList(name);
+            return geneList.getGeneCollection();
         }
         return null;
+    }
+
+    private Set<Gene>  getGisticGenes(String gisticAnalysisName, AmplificationTypeEnum type) {
+        Set<Gene> resultGenes = new HashSet<Gene>();
+        for (AbstractCopyNumberAnalysis analysis : getCopyNumberAnalysisCollection()) {
+            if (analysis instanceof GisticAnalysis
+                    && analysis.getName().equalsIgnoreCase(gisticAnalysisName)) {
+                List<Gene> amplifiedGenes = new ArrayList<Gene>();
+                List<Gene> deletedGenes = new ArrayList<Gene>();
+                Cai2Util.retrieveGisticAmplifiedDeletedGenes((GisticAnalysis) analysis, amplifiedGenes, deletedGenes);
+                if (AmplificationTypeEnum.AMPLIFIED.equals(type)) {
+                    resultGenes.addAll(amplifiedGenes);
+                } else {
+                    resultGenes.addAll(deletedGenes);
+                }
+                break;
+            }
+        }
+        return resultGenes;
     }
 
     /**

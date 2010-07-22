@@ -172,6 +172,8 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
         action.setAjaxUpdater(new PersistedAnalysisJobAjaxUpdater());
         action.getGisticAnalysisForm().setGisticParameters(new GisticParameters());
         action.setConfigurationHelper(new ConfigurationHelperStub());
+        action.getPlatformsInStudy().add("Platform 1");
+        action.getPlatformsInStudy().add("Platform 2");
     }
     
     @Test
@@ -192,14 +194,9 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
         action.clearErrorsAndMessages();
         action.getCurrentGisticAnalysisJob().setName("Test");
         action.validate();
-        assertFalse(action.hasErrors());
-        action.clearErrorsAndMessages();
-        action.getPlatformsInStudy().add("Platform 1");
-        action.getPlatformsInStudy().add("Platform 2");
-        action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
-        action.getGisticAnalysisForm().getSelectedPlatformNames().add("Platform 1");
+        action.getGisticAnalysisForm().setSelectedPlatformName("Platform 1");
         action.validate();
         assertFalse(action.hasErrors());
         action.getGisticAnalysisForm().getGisticParameters().setAmplificationsThreshold(-1f);

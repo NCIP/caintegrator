@@ -21,7 +21,7 @@
                        <s:div cssClass="left1"><s:checkbox theme="simple" id="caBioPathwayCkBox_%{#status.count - 1}" name="caBioPathways[%{#status.count - 1}].checked"/> </s:div>
                        <s:div cssClass="left2" cssStyle="width: 125px;" title="%{name}"><s:property value="displayableName" /></s:div>
                        <s:div cssClass="left3" cssStyle="width: 125px;"><s:property value="displayValue" /></s:div>
-                       <s:div cssClass="right" title="%{description}"><s:property value="displayableDescription" /><s:div cssStyle="font-size: .9em;font-style: italic">  (mouseover for full description)</s:div></s:div>
+                       <s:div cssClass="right" cssStyle="width: 300px;" title="%{description}"><s:property value="displayableDescription" /><s:div cssStyle="font-size: .9em;font-style: italic">  (mouseover for full description)</s:div></s:div>
                     </s:div><br>
                 </s:if>
                 <s:else>
@@ -29,7 +29,7 @@
                        <s:div cssClass="left1"><s:checkbox theme="simple" id="caBioPathwayCkBox_%{#status.count - 1}" name="caBioPathways[%{#status.count - 1}].checked"/> </s:div>
                        <s:div cssClass="left2" cssStyle="width: 125px;" title="%{name}"><s:property value="displayableName" /></s:div>
                        <s:div cssClass="left3" cssStyle="width: 125px;"><s:property value="displayValue" /></s:div>
-                       <s:div cssClass="right" title="%{description}"><s:property value="displayableDescription" /><s:div cssStyle="font-size: .9em;font-style: italic">  (mouseover for full description)</s:div></s:div>
+                       <s:div cssClass="right" cssStyle="width: 300px;" title="%{description}"><s:property value="displayableDescription" /><s:div cssStyle="font-size: .9em;font-style: italic">  (mouseover for full description)</s:div></s:div>
                     </s:div><br>
                 </s:else>
             </s:iterator>
@@ -62,7 +62,7 @@
                        <s:div cssClass="left4"><s:property value="taxonCommonName" /></s:div>
                        <s:div cssClass="left5"><s:property value="fullName" /></s:div>
                        <s:div cssClass="left6"><s:property value="geneAliases" /></s:div>
-                       <s:div cssClass="right"><s:property value="databaseCrossReferences" /></s:div>
+                       <s:div cssClass="right" cssStyle="width: 200px;"><s:property value="databaseCrossReferences" /></s:div>
                     </s:div><br>
                 </s:if>
                 <s:else>
@@ -73,7 +73,7 @@
                        <s:div cssClass="left4"><s:property value="taxonCommonName" /></s:div>
                        <s:div cssClass="left5"><s:property value="fullName" /></s:div>
                        <s:div cssClass="left6"><s:property value="geneAliases" /></s:div>
-                       <s:div cssClass="right"><s:property value="databaseCrossReferences" /></s:div>
+                       <s:div cssClass="right" cssStyle="width: 200px;"><s:property value="databaseCrossReferences" /></s:div>
                     </s:div><br>
                 </s:else>
     	    </s:iterator>
