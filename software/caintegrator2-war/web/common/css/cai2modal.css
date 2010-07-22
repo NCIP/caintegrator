@@ -213,8 +213,6 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
    position: relative;
    float: right;
    right: 0px;
-   width: 199px;
-   min-width: 199px;
    border-right:1px solid #A8B8CE;
    padding-bottom: 5px;
    padding-left: 2px;
