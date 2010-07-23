@@ -109,7 +109,7 @@
             <br />
             <s:if test="%{studyHasMultiplePlatforms}">
                 <s:div id="platformSelectorDiv">
-                    <s:select name="gisticAnalysisForm.selectedPlatformNames" multiple="false"
+                    <s:select name="gisticAnalysisForm.selectedPlatformName" multiple="false"
                         list="platformsInStudy" label="Select Platform"/>
                 </s:div>
             </s:if>
