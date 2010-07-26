@@ -138,9 +138,9 @@ public class GisticSamplesMarkersTest {
         SampleWithChromosomalSegmentSet sample = gisticSamplesMarkers.getSamples()[0];
         ChromosomalSegment segment = sample.getSegments().getChromosomalSegment(0);
         assertTrue(sample.getName().contains("SAMPLE_"));
-        assertEquals("3", segment.getChromosomeNumber());
-        assertEquals(BigInteger.valueOf(48603), segment.getSegmentStart());
-        assertEquals(BigInteger.valueOf(198541751), segment.getSegmentEnd());
+        int chromosomeNumber = Integer.valueOf(segment.getChromosomeNumber());
+        assertEquals(BigInteger.valueOf(chromosomeNumber * 10000), segment.getSegmentStart());
+        assertEquals(BigInteger.valueOf(chromosomeNumber * 20000), segment.getSegmentEnd());
     }
 
 }

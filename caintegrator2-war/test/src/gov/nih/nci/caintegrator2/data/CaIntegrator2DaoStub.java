@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
@@ -114,6 +115,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -508,6 +510,15 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
     public Map<String, Gene> getGeneSymbolMap() {
         return new HashMap<String, Gene>();
+    }
+
+    /* (non-Javadoc)
+     * @see gov.nih.nci.caintegrator2.data.CaIntegrator2Dao#findMatchingSegmentDatas(gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion, gov.nih.nci.caintegrator2.domain.translational.Study, gov.nih.nci.caintegrator2.domain.genomic.Platform)
+     */
+    public List<SegmentData> findMatchingSegmentDatas(CopyNumberAlterationCriterion copyNumberCriterion, Study study,
+            Platform platform) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

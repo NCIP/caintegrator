@@ -88,12 +88,14 @@ package gov.nih.nci.caintegrator2.data;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.GenomicIntervalTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
@@ -102,6 +104,7 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -109,6 +112,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -238,6 +242,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     @SuppressWarnings({"PMD.ExcessiveMethodLength"})
     public void testFindMatchingSamples() {
         StudyHelper studyHelper = new StudyHelper();
+        dao.save(studyHelper.getPlatform());
         Study study = studyHelper.populateAndRetrieveStudy().getStudy();
         dao.save(study);
         
@@ -299,6 +304,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     @SuppressWarnings({"PMD.ExcessiveMethodLength"})
     public void testFindMatchingImageSeries() {
         StudyHelper studyHelper = new StudyHelper();
+        dao.save(studyHelper.getPlatform());
         Study study = studyHelper.populateAndRetrieveStudy().getStudy();
         dao.save(study);
         
@@ -332,6 +338,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     @Test
     public void testFindMatchingSubjects() {
         StudyHelper studyHelper = new StudyHelper();
+        dao.save(studyHelper.getPlatform());
         Study study = studyHelper.populateAndRetrieveStudy().getStudy();
         dao.save(study);
         
@@ -521,6 +528,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     @Test
     public void testRetrieveNumberImage() {
         StudyHelper studyHelper = new StudyHelper();
+        dao.save(studyHelper.getPlatform());
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
         dao.save(study.getStudyConfiguration());
         dao.save(study);
@@ -533,12 +541,61 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     @Test
     public void testRetrievePlatformsForGenomicSource() {
         StudyHelper studyHelper = new StudyHelper();
+        dao.save(studyHelper.getPlatform());
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
         dao.save(study.getStudyConfiguration());
         dao.save(study);
         List<Platform> platforms = dao.retrievePlatformsForGenomicSource(
                     study.getStudyConfiguration().getGenomicDataSources().get(0));
         assertEquals(2, platforms.size());
+    }
+    
+    @Test
+    public void testFindMatchingSegmentDatas() {
+        Platform platform = new Platform();
+        platform.setName("platform");
+        dao.save(platform);
+        StudyHelper studyHelper = new StudyHelper();
+        studyHelper.setArrayDataType(ArrayDataType.COPY_NUMBER);
+        studyHelper.setPlatform(platform);
+        Study study = studyHelper.populateAndRetrieveStudy().getStudy();
+        dao.save(study);
+        
+        CopyNumberAlterationCriterion copyNumberCriterion = new CopyNumberAlterationCriterion();
+        copyNumberCriterion.setLowerLimit(.02f);
+        copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES);
+        copyNumberCriterion.setChromosomeCoordinateHigh(1800000f);
+        copyNumberCriterion.setChromosomeCoordinateLow(20000f);
+        List<SegmentData> segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
+        assertEquals(5, segmentDatas.size());
+
+        copyNumberCriterion.setUpperLimit(.08f);
+        segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
+        assertEquals(3, segmentDatas.size());
+        
+        copyNumberCriterion.setChromosomeCoordinateLow(0f);
+        copyNumberCriterion.setChromosomeCoordinateHigh(1000000f);
+        copyNumberCriterion.setUpperLimit(.12f);
+        segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
+        assertEquals(4, segmentDatas.size());
+        
+        copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.CHROMOSOME_NUMBER);
+        copyNumberCriterion.setChromosomeNumber(3);
+        segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
+        assertEquals(1, segmentDatas.size());
+        
+        copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.GENE_NAME);
+        copyNumberCriterion.setGeneSymbol("GENE_3, GENE_4");
+        segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
+        assertEquals(2, segmentDatas.size());
+        
+        copyNumberCriterion.setUpperLimit(.03f);
+        copyNumberCriterion.setLowerLimit(null);
+        segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
+        assertEquals(1, segmentDatas.size());
+        assertEquals(.03f, segmentDatas.get(0).getSegmentValue());
+        
+        
     }
     
     /**
