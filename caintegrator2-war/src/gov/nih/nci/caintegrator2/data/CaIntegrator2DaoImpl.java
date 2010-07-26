@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
@@ -111,6 +112,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.imaging.Image;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -152,6 +154,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     private static final String IMAGE_SERIES_ACQUISITION_ASSOCIATION = "imageStudy";
     private static final String STUDY_ASSOCIATION = "study";
     private static final String NAME_ATTRIBUTE = "name";
+    private static final String SYMBOL_ATTRIBUTE = "symbol";
     private SecurityManager securityManager;
     
     /**
@@ -333,11 +336,60 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
         Criteria criteria = getCurrentSession().createCriteria(AbstractReporter.class);
         if (!geneSymbols.isEmpty()) {
-            criteria.createCriteria("genes").add(Restrictions.in("symbol", geneSymbols));
+            criteria.createCriteria("genes").add(Restrictions.in(SYMBOL_ATTRIBUTE, geneSymbols));
         }
         criteria.add(Restrictions.in("reporterList", studyReporterLists));
         reporters.addAll((List<AbstractReporter>) criteria.list());
         return reporters;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
+    public List<SegmentData> findMatchingSegmentDatas(CopyNumberAlterationCriterion copyNumberCriterion,
+            Study study, Platform platform) {
+        Criteria segmentDataCrit = getCurrentSession().createCriteria(SegmentData.class);
+        Criteria arrayDataCrit = segmentDataCrit.createCriteria("arrayData");
+        Criteria reporterListsCrit = arrayDataCrit.createCriteria("reporterLists");
+        reporterListsCrit.add(Restrictions.eq("platform", platform));
+        arrayDataCrit.add(Restrictions.eq("study", study));
+        if (copyNumberCriterion.getUpperLimit() != null) {
+            segmentDataCrit.add(Restrictions.le("segmentValue",  
+                copyNumberCriterion.getUpperLimit()));
+        }
+        if (copyNumberCriterion.getLowerLimit() != null) {
+            segmentDataCrit.add(Restrictions.ge("segmentValue",  
+                copyNumberCriterion.getLowerLimit()));
+        }
+        addGenomicIntervalTypeToCriteria(copyNumberCriterion, segmentDataCrit, reporterListsCrit);
+        
+        // todo: Figure out the "Segment Interval", not sure exactly what that means at this time.
+        return segmentDataCrit.list();
+    }
+
+    private void addGenomicIntervalTypeToCriteria(CopyNumberAlterationCriterion copyNumberCriterion,
+            Criteria segmentDataCrit, Criteria reporterListsCrit) {
+        switch (copyNumberCriterion.getGenomicIntervalType()) {
+            case GENE_NAME:
+                reporterListsCrit.createCriteria("reporters").
+                    createCriteria("genes").add(Restrictions.in(SYMBOL_ATTRIBUTE, 
+                            copyNumberCriterion.getGeneSymbols()));
+                break;
+            case CHROMOSOME_NUMBER:
+                segmentDataCrit.add(Restrictions.eq("Location.chromosome", 
+                        String.valueOf(copyNumberCriterion.getChromosomeNumber())));
+                break;
+            case CHROMOSOME_COORDINATES:
+                segmentDataCrit.add(
+                    Restrictions.ge("Location.startPosition", Math.round(copyNumberCriterion
+                            .getChromosomeCoordinateLow()))).add(
+                    Restrictions.le("Location.endPosition", Math.round(copyNumberCriterion
+                            .getChromosomeCoordinateHigh())));
+                break;
+            default:
+                throw new IllegalStateException("Unknown genomic interval type");
+            }
     }
 
     private Set<ReporterList> getStudyReporterLists(Study study, ReporterTypeEnum reporterType, Platform platform) {
@@ -431,7 +483,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public Gene getGene(String symbol) {
         List values = getHibernateTemplate().findByNamedParam("from Gene where symbol = :symbol", 
-                "symbol", symbol.toUpperCase(Locale.getDefault()));
+                SYMBOL_ATTRIBUTE, symbol.toUpperCase(Locale.getDefault()));
         if (values.isEmpty()) {
             return null;
         } else {
@@ -489,7 +541,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                 createCriteria("arrayDatas").
                     add(Restrictions.eq(STUDY_ASSOCIATION, study));
         reporterCriteria.createCriteria("genes").
-            add(Restrictions.in("symbol", symbols));
+            add(Restrictions.in(SYMBOL_ATTRIBUTE, symbols));
         Set<AbstractReporter> reporterSet = new HashSet<AbstractReporter>();
         reporterSet.addAll(reporterCriteria.list());
         Set<String> geneSymbols = new HashSet<String>();

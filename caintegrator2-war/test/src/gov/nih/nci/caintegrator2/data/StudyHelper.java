@@ -151,6 +151,7 @@ public class StudyHelper {
     private Timepoint defaultTimepoint;
     private ArrayDataType arrayDataType = ArrayDataType.GENE_EXPRESSION;
     private List<StudySubjectAssignment> studySubjects = new ArrayList<StudySubjectAssignment>();
+    private Platform platform = new Platform();
     
     @SuppressWarnings({"PMD", "deprecation"}) // This is a long method for setting up test data
     public StudySubscription populateAndRetrieveStudy() {
@@ -395,20 +396,22 @@ public class StudyHelper {
         Collection<SampleAcquisition> saCollection4 = studySubjectAssignment4.getSampleAcquisitionCollection();
         Collection<SampleAcquisition> saCollection5 = studySubjectAssignment5.getSampleAcquisitionCollection();
         
+        Array array = new Array();
+        array.setPlatform(platform);
         saCollection1.add(sampleAcquisition1);
-        createGenomicData(sampleAcquisition1, 1);
+        createGenomicData(sampleAcquisition1, 1, array, myStudy);
         saCollection1.add(sampleAcquisition1_2);
-        createGenomicData(sampleAcquisition1_2, 12);
+        createGenomicData(sampleAcquisition1_2, 12, array, myStudy);
         saCollection1.add(sampleAcquisition1_3);
-        createGenomicData(sampleAcquisition1_3, 13);
+        createGenomicData(sampleAcquisition1_3, 13, array, myStudy);
         saCollection2.add(sampleAcquisition2);
-        createGenomicData(sampleAcquisition2, 2);
+        createGenomicData(sampleAcquisition2, 2, array, myStudy);
         saCollection3.add(sampleAcquisition3);
-        createGenomicData(sampleAcquisition3, 3);
+        createGenomicData(sampleAcquisition3, 3, array, myStudy);
         saCollection4.add(sampleAcquisition4);
-        createGenomicData(sampleAcquisition4, 4);
+        createGenomicData(sampleAcquisition4, 4, array, myStudy);
         saCollection5.add(sampleAcquisition5);
-        createGenomicData(sampleAcquisition5, 5);
+        createGenomicData(sampleAcquisition5, 5, array, myStudy);
 
         /**
          * Add the 5 Image Series
@@ -505,7 +508,7 @@ public class StudyHelper {
     /**
      * @param sampleAcquisition1
      */
-    private void createGenomicData(SampleAcquisition sampleAcquisition, int sampleNum) {
+    private void createGenomicData(SampleAcquisition sampleAcquisition, int sampleNum, Array array, Study study) {
         Sample sample = new Sample();
         sample.setSampleAcquisition(sampleAcquisition);
         sampleAcquisition.setSample(sample);
@@ -513,19 +516,19 @@ public class StudyHelper {
         ArrayData arrayData = createArrayData(sampleNum); 
         arrayData.setSample(sample);
         sample.getArrayDataCollection().add(arrayData);
+        arrayData.setStudy(study);
     }
 
     private ArrayData createArrayData(int sampleNum) {
         ArrayData arrayData = new ArrayData();
         arrayData.setType(arrayDataType);
-        Platform platform = new Platform();
         ReporterList reporterList = null;
         if (ArrayDataType.COPY_NUMBER.equals(arrayDataType)) {
-            reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-            createDnaReporter(reporterList); 
-            addSegmentationData(arrayData);
+            reporterList = platform.addReporterList("reporterList" + sampleNum, ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+            createDnaReporter(sampleNum, reporterList); 
+            addSegmentationData(arrayData, sampleNum);
         } else {
-            reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+            reporterList = platform.addReporterList("reporterList" + sampleNum, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             createGeneExpressionReporter(sampleNum, reporterList);
         }
         reporterList.getArrayDatas().add(arrayData);
@@ -533,15 +536,15 @@ public class StudyHelper {
         return arrayData;
     }
     
-    private void addSegmentationData(ArrayData arrayData) {
+    private void addSegmentationData(ArrayData arrayData, int sampleNum) {
         SegmentData segmentData = new SegmentData();
         segmentData.setArrayData(arrayData);
         segmentData.setNumberOfMarkers(7813);
-        segmentData.setSegmentValue(.135339f);
+        segmentData.setSegmentValue(Float.valueOf(sampleNum) / 100f);
         ChromosomalLocation location = new ChromosomalLocation();
-        location.setChromosome("3");
-        location.setStartPosition(48603);
-        location.setEndPosition(198541751);
+        location.setChromosome(String.valueOf(sampleNum));
+        location.setStartPosition(10000 * sampleNum);
+        location.setEndPosition(20000 * sampleNum);
         segmentData.setLocation(location);
         arrayData.getSegmentDatas().add(segmentData);
         
@@ -558,8 +561,11 @@ public class StudyHelper {
         reporterList.getReporters().add(reporter);
     }
     
-    private void createDnaReporter(ReporterList reporterList) {
+    private void createDnaReporter(int sampleNum, ReporterList reporterList) {
         DnaAnalysisReporter reporter = new DnaAnalysisReporter();
+        Gene gene = new Gene();
+        gene.setSymbol("GENE_" + sampleNum);
+        reporter.getGenes().add(gene);
         reporter.setAlleleA('C');
         reporter.setAlleleB('G');
         reporter.setChromosome("1");
@@ -806,6 +812,20 @@ public class StudyHelper {
      */
     public List<StudySubjectAssignment> getStudySubjects() {
         return studySubjects;
+    }
+
+    /**
+     * @return the platform
+     */
+    public Platform getPlatform() {
+        return platform;
+    }
+
+    /**
+     * @param platform the platform to set
+     */
+    public void setPlatform(Platform platform) {
+        this.platform = platform;
     }
 
 }
