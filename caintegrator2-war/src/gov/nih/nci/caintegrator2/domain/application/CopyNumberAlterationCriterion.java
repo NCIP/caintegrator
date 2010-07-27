@@ -8,14 +8,13 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
 
     private static final long serialVersionUID = 1L;
     
-    private Float upperLimit;
-    private Float lowerLimit;
-    private SegmentBoundaryTypeEnum segmentBoundaryType = SegmentBoundaryTypeEnum.INCLUSIVE;
+    private Float upperLimit = 0.0f;
+    private Float lowerLimit = 0.0f;
+    private SegmentBoundaryTypeEnum segmentBoundaryType = SegmentBoundaryTypeEnum.ONE_OR_MORE;
     private GenomicIntervalTypeEnum genomicIntervalType = GenomicIntervalTypeEnum.GENE_NAME;
     private Float chromosomeCoordinateHigh;
     private Float chromosomeCoordinateLow;
-    private Integer chromosomeNumber;
-    
+    private Integer chromosomeNumber = 1;
 
     /**
      * @return the upperLimit
@@ -23,7 +22,6 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
     public Float getUpperLimit() {
         return upperLimit;
     }
-
 
     /**
      * @param upperLimit the upperLimit to set
@@ -39,7 +37,6 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
     public Float getLowerLimit() {
         return lowerLimit;
     }
-
 
     /**
      * @param lowerLimit the lowerLimit to set
@@ -88,6 +85,13 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
         return chromosomeCoordinateHigh;
     }
 
+    /**
+     * @return the chromosomeCoordinateHigh to display
+     */
+    public String getDisplayChromosomeCoordinateHigh() {
+        return (chromosomeCoordinateHigh == null) ? "" : chromosomeCoordinateHigh.toString();
+    }
+
 
     /**
      * @param chromosomeCoordinateHigh the chromosomeCoordinateHigh to set
@@ -102,6 +106,13 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
      */
     public Float getChromosomeCoordinateLow() {
         return chromosomeCoordinateLow;
+    }
+
+    /**
+     * @return the chromosomeCoordinateLow to display
+     */
+    public String getDisplayChromosomeCoordinateLow() {
+        return (chromosomeCoordinateLow == null) ? "" : chromosomeCoordinateLow.toString();
     }
 
 
@@ -120,7 +131,6 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
         return chromosomeNumber;
     }
 
-
     /**
      * @param chromosomeNumber the chromosomeNumber to set
      */
@@ -135,6 +145,5 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
     protected CopyNumberAlterationCriterion clone() throws CloneNotSupportedException {
         return (CopyNumberAlterationCriterion) super.clone();
     }
-
 
 }
