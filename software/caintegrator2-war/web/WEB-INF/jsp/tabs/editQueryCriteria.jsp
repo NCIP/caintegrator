@@ -114,7 +114,6 @@
                                     </td>
                                 </tr>
                             </s:iterator>
-                            </s:else>
                         </table>
                     </td>
                     <td class="action_inline"><a href="#" class="remove"
