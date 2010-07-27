@@ -170,7 +170,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
     private TextFieldParameter createUpperLimitParameter() {
         final String label = "Upper Limit";
         TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
-                getRow().getRowIndex(), criterion.getUpperLimit().toString());
+                getRow().getRowIndex(), criterion.getDisplayUpperLimit());
         textParameter.setLabel(label);
         ValueHandler valueChangeHandler = new ValueHandlerAdapter() {
 
@@ -185,7 +185,9 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
             }
 
             public void valueChanged(String value) {
-                if (!StringUtils.isBlank(value)) {
+                if (StringUtils.isBlank(value)) {
+                    criterion.setUpperLimit(null);
+                } else {
                     criterion.setUpperLimit(Float.valueOf(value));
                 }
             }
@@ -198,7 +200,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
     private TextFieldParameter createLowerLimitParameter() {
         final String label = "Lower Limit";
         TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
-                getRow().getRowIndex(), criterion.getLowerLimit().toString());
+                getRow().getRowIndex(), criterion.getDisplayLowerLimit());
         textParameter.setLabel(label);
         ValueHandler valueChangeHandler = new ValueHandlerAdapter() {
 
@@ -213,7 +215,9 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
             }
 
             public void valueChanged(String value) {
-                if (!StringUtils.isBlank(value)) {
+                if (StringUtils.isBlank(value)) {
+                    criterion.setLowerLimit(null);
+                } else {
                     criterion.setLowerLimit(Float.valueOf(value));
                 }
             }
@@ -280,7 +284,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
             getParameters().add(createGeneSymbolParameter());
             break;
         case CHROMOSOME_NUMBER:
-            getParameters().add(createChromosomeParameter());
+            getParameters().add(createChromosomeNumberParameter());
             break;
         case CHROMOSOME_COORDINATES:
             getParameters().add(createFromCoordinateParameter());
@@ -302,7 +306,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
         ValueHandler valueChangeHandler = new ValueHandlerAdapter() {
 
             public boolean isValid(String value) {
-                return NumberUtils.isNumber(value);
+                return StringUtils.isBlank(value) || NumberUtils.isNumber(value);
             }
 
             public void validate(String formFieldName, String value, ValidationAware action) {
@@ -312,7 +316,11 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
             }
 
             public void valueChanged(String value) {
-                criterion.setChromosomeCoordinateHigh(Float.valueOf(value));
+                if (StringUtils.isBlank(value)) {
+                    criterion.setChromosomeCoordinateHigh(null);
+                } else {
+                    criterion.setChromosomeCoordinateHigh(Float.valueOf(value));
+                }
             }
         };
         textParameter.setValueHandler(valueChangeHandler);
@@ -330,7 +338,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
         ValueHandler valueChangeHandler = new ValueHandlerAdapter() {
 
             public boolean isValid(String value) {
-                return NumberUtils.isNumber(value);
+                return StringUtils.isBlank(value) || NumberUtils.isNumber(value);
             }
 
             public void validate(String formFieldName, String value, ValidationAware action) {
@@ -340,7 +348,11 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
             }
 
             public void valueChanged(String value) {
-                criterion.setChromosomeCoordinateLow(Float.valueOf(value));
+                if (StringUtils.isBlank(value)) {
+                    criterion.setChromosomeCoordinateLow(null);
+                } else {
+                    criterion.setChromosomeCoordinateLow(Float.valueOf(value));
+                }
             }
         };
         textParameter.setValueHandler(valueChangeHandler);
@@ -350,7 +362,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
     /**
      * @return
      */
-    private AbstractCriterionParameter createChromosomeParameter() {
+    private AbstractCriterionParameter createChromosomeNumberParameter() {
         final String label = "Chomosome Number";
         TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
                 getRow().getRowIndex(), criterion.getChromosomeNumber().toString());
