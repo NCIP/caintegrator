@@ -98,7 +98,7 @@ import org.apache.commons.lang.StringUtils;
  * Contains and manages a gene expression criterion.
  */
 public class CopyNumberCriterionRow extends AbstractCriterionRow {
-    
+
     private AbstractGenomicCriterionWrapper genomicCriterionWrapper;
     private final Study study;
 
@@ -114,6 +114,7 @@ public class CopyNumberCriterionRow extends AbstractCriterionRow {
     public List<String> getAvailableFieldNames() {
         List<String> fieldNames = new ArrayList<String>();
         fieldNames.add(GeneNameCriterionWrapper.FIELD_NAME);
+        fieldNames.add(SegmentCriterionWrapper.FIELD_NAME);
         return fieldNames;
     }
 
@@ -146,6 +147,8 @@ public class CopyNumberCriterionRow extends AbstractCriterionRow {
             setGenomicCriterionWrapper(null);
         } else if (fieldName.equals(GeneNameCriterionWrapper.FIELD_NAME)) {
             setGenomicCriterionWrapper(new GeneNameCriterionWrapper(this, GenomicCriterionTypeEnum.COPY_NUMBER));
+        } else if (fieldName.equals(SegmentCriterionWrapper.FIELD_NAME)) {
+            setGenomicCriterionWrapper(new SegmentCriterionWrapper(this));
         } else {
             throw new IllegalArgumentException("Unsupported genomic field name " + fieldName);
         }

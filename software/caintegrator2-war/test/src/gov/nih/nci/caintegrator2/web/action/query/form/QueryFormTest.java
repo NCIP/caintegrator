@@ -101,9 +101,11 @@ import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicIntervalTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
@@ -474,6 +476,7 @@ public class QueryFormTest {
         assertEquals(NumericComparisonOperatorEnum.EQUAL, criterion.getNumericComparisonOperator());
     }
     
+    @SuppressWarnings("unchecked")
     private void checkAddCopyNumberCriterion(CriteriaGroup group) {
         group.setCriterionTypeName(CriterionRowTypeEnum.COPY_NUMBER.getValue());
         group.addCriterion(subscription.getStudy());
@@ -481,8 +484,9 @@ public class QueryFormTest {
         assertEquals(3, group.getCompoundCriterion().getCriterionCollection().size());
         CopyNumberCriterionRow criterionRow = (CopyNumberCriterionRow) group.getRows().get(3);
         
-        assertEquals(1, criterionRow.getAvailableFieldNames().size());
+        assertEquals(2, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
+        assertTrue(criterionRow.getAvailableFieldNames().contains("Segmentation"));
         
         assertEquals(group, criterionRow.getGroup());
         setFieldName(criterionRow, "Gene Name");
@@ -491,6 +495,32 @@ public class QueryFormTest {
         assertTrue(criterionRow.getCriterion() instanceof GeneNameCriterion);
         ((TextFieldParameter) criterionRow.getParameters().get(0)).setValue("EGFR");
         assertEquals("EGFR", ((GeneNameCriterion) criterionRow.getCriterion()).getGeneSymbol());
+
+        setFieldName(criterionRow, "Segmentation");
+        assertEquals(4, group.getCompoundCriterion().getCriterionCollection().size());
+        assertEquals("Segmentation", criterionRow.getFieldName());
+        assertTrue(criterionRow.getCriterion() instanceof CopyNumberAlterationCriterion);
+        ((TextFieldParameter) criterionRow.getParameters().get(4)).setValue("EGFR");
+        assertEquals("EGFR", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getGeneSymbol());
+
+        setFieldName(criterionRow, "Segmentation");
+        ((SelectListParameter<GenomicIntervalTypeEnum>) criterionRow.getParameters().get(3)).setValue(GenomicIntervalTypeEnum.CHROMOSOME_NUMBER.getValue());
+        queryForm.processCriteriaChanges();
+        assertEquals(4, group.getCompoundCriterion().getCriterionCollection().size());
+        assertEquals("Segmentation", criterionRow.getFieldName());
+        assertTrue(criterionRow.getCriterion() instanceof CopyNumberAlterationCriterion);
+        ((TextFieldParameter) criterionRow.getParameters().get(4)).setValue("1");
+        assertEquals("1", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getChromosomeNumber().toString());
+
+        setFieldName(criterionRow, "Segmentation");
+        ((SelectListParameter<GenomicIntervalTypeEnum>) criterionRow.getParameters().get(3)).setValue(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES.getValue());
+        queryForm.processCriteriaChanges();
+        assertEquals(4, group.getCompoundCriterion().getCriterionCollection().size());
+        assertEquals("Segmentation", criterionRow.getFieldName());
+        assertTrue(criterionRow.getCriterion() instanceof CopyNumberAlterationCriterion);
+        ((TextFieldParameter) criterionRow.getParameters().get(5)).setValue("1.2");
+        assertEquals("1.2", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getChromosomeCoordinateHigh().toString());
+        
     }
 
     @SuppressWarnings("unchecked")
