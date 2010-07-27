@@ -8,8 +8,8 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
 
     private static final long serialVersionUID = 1L;
     
-    private Float upperLimit = 0.0f;
-    private Float lowerLimit = 0.0f;
+    private Float upperLimit;
+    private Float lowerLimit;
     private SegmentBoundaryTypeEnum segmentBoundaryType = SegmentBoundaryTypeEnum.ONE_OR_MORE;
     private GenomicIntervalTypeEnum genomicIntervalType = GenomicIntervalTypeEnum.GENE_NAME;
     private Float chromosomeCoordinateHigh;
@@ -24,12 +24,18 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
     }
 
     /**
+     * @return the upperLimit to display
+     */
+    public String getDisplayUpperLimit() {
+        return (upperLimit == null) ? "" : upperLimit.toString();
+    }
+
+    /**
      * @param upperLimit the upperLimit to set
      */
     public void setUpperLimit(Float upperLimit) {
         this.upperLimit = upperLimit;
     }
-
 
     /**
      * @return the lowerLimit
@@ -39,12 +45,18 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
     }
 
     /**
+     * @return the lowerLimit to display
+     */
+    public String getDisplayLowerLimit() {
+        return (lowerLimit == null) ? "" : lowerLimit.toString();
+    }
+
+    /**
      * @param lowerLimit the lowerLimit to set
      */
     public void setLowerLimit(Float lowerLimit) {
         this.lowerLimit = lowerLimit;
     }
-
 
     /**
      * @return the segmentBoundaryType
@@ -53,7 +65,6 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
         return segmentBoundaryType;
     }
 
-
     /**
      * @param segmentBoundaryType the segmentBoundaryType to set
      */
@@ -61,14 +72,12 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
         this.segmentBoundaryType = segmentBoundaryType;
     }
 
-
     /**
      * @return the genomicIntervalType
      */
     public GenomicIntervalTypeEnum getGenomicIntervalType() {
         return genomicIntervalType;
     }
-
 
     /**
      * @param genomicIntervalType the genomicIntervalType to set
@@ -92,14 +101,12 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
         return (chromosomeCoordinateHigh == null) ? "" : chromosomeCoordinateHigh.toString();
     }
 
-
     /**
      * @param chromosomeCoordinateHigh the chromosomeCoordinateHigh to set
      */
     public void setChromosomeCoordinateHigh(Float chromosomeCoordinateHigh) {
         this.chromosomeCoordinateHigh = chromosomeCoordinateHigh;
     }
-
 
     /**
      * @return the chromosomeCoordinateLow
@@ -115,14 +122,12 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
         return (chromosomeCoordinateLow == null) ? "" : chromosomeCoordinateLow.toString();
     }
 
-
     /**
      * @param chromosomeCoordinateLow the chromosomeCoordinateLow to set
      */
     public void setChromosomeCoordinateLow(Float chromosomeCoordinateLow) {
         this.chromosomeCoordinateLow = chromosomeCoordinateLow;
     }
-
 
     /**
      * @return the chromosomeNumber
@@ -137,7 +142,6 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
     public void setChromosomeNumber(Integer chromosomeNumber) {
         this.chromosomeNumber = chromosomeNumber;
     }
-
 
     /**
      * {@inheritDoc}
