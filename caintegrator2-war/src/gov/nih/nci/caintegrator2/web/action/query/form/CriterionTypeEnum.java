@@ -97,6 +97,7 @@ enum CriterionTypeEnum {
     SELECTED_VALUE,
     SUBJECT_LIST,
     GENE_NAME,
-    FOLD_CHANGE;
+    FOLD_CHANGE,
+    SEGMENTATION;
 
 }
