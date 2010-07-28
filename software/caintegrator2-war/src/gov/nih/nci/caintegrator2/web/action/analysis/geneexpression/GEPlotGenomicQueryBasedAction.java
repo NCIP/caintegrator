@@ -127,7 +127,7 @@ public class GEPlotGenomicQueryBasedAction extends AbstractGeneExpressionAction 
     
     private void retrieveFormValues() {
         plotParameters.setReporterType(ReporterTypeEnum.
-                getByValue(getGePlotForm().getGenomicQueryBasedForm().getReporterType()));
+                getByValue(getGePlotForm().getGeneExpressionQueryBasedForm().getReporterType()));
         if (!StringUtils.isBlank(getForm().getSelectedQueryId())) {
             Query query = new Query();
             query.setId(Long.valueOf(getForm().getSelectedQueryId()));
@@ -149,11 +149,11 @@ public class GEPlotGenomicQueryBasedAction extends AbstractGeneExpressionAction 
     private void initialize() {
         if (getStudySubscription() != null 
             && getStudySubscription().getQueryCollection() != null) {
-            getGePlotForm().getGenomicQueryBasedForm().getQueries().clear();
+            getGePlotForm().getGeneExpressionQueryBasedForm().getQueries().clear();
             for (Query query 
                     : getStudySubscription().getQueryCollection()) {
-                if (ResultTypeEnum.GENOMIC.equals(query.getResultType())) {
-                    getGePlotForm().getGenomicQueryBasedForm().getQueries().
+                if (ResultTypeEnum.GENE_EXPRESSION.equals(query.getResultType())) {
+                    getGePlotForm().getGeneExpressionQueryBasedForm().getQueries().
                                                     put(query.getId().toString(), query);
                 }
             }
@@ -227,8 +227,8 @@ public class GEPlotGenomicQueryBasedAction extends AbstractGeneExpressionAction 
     /**
      * @return
      */
-    private GEPlotGenomicQueryBasedActionForm getForm() {
-        return getGePlotForm().getGenomicQueryBasedForm();
+    private GEPlotGeneExpressionQueryBasedActionForm getForm() {
+        return getGePlotForm().getGeneExpressionQueryBasedForm();
     }
 
     /**

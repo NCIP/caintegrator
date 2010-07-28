@@ -432,7 +432,7 @@ public class AnalysisServiceTest {
         Query query1 = new Query();
         query1.setId(Long.valueOf(1));
         query1.setSubscription(subscription);
-        query1.setResultType(ResultTypeEnum.GENOMIC);
+        query1.setResultType(ResultTypeEnum.GENE_EXPRESSION);
         queryBasedParameters.getQueries().add(query1);
         Query query2 = new Query();
         query2.setId(Long.valueOf(2));
@@ -495,7 +495,7 @@ public class AnalysisServiceTest {
         query1.setName("Query1");
         query1.setId(Long.valueOf(1));
         query1.setSubscription(subscription);
-        query1.setResultType(ResultTypeEnum.GENOMIC);
+        query1.setResultType(ResultTypeEnum.GENE_EXPRESSION);
         query1.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
         query1.setCompoundCriterion(new CompoundCriterion());
         assertFalse(genomicQueryParameters.validate());

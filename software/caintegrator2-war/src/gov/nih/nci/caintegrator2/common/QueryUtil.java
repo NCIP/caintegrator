@@ -188,25 +188,25 @@ public final class QueryUtil {
     }
     
     /**
-     * Determines if a query is genomic (genomic results type or if it has genomic criterion).
-     * @param query to check to see if it is genomic.
-     * @return T/F if it is genomic type or not.
+     * Determines if a query is gene expression (gene expression results type or if it has gene expression criterion).
+     * @param query to check to see if it is gene expression.
+     * @return T/F if it is gene expression type or not.
      */
-    public static boolean isQueryGenomic(Query query) {
-        return (ResultTypeEnum.GENOMIC.equals(query.getResultType()) 
-                || QueryUtil.isCompoundCriterionGenomic(query.getCompoundCriterion())) ? true : false;
+    public static boolean isQueryGeneExpression(Query query) {
+        return (ResultTypeEnum.GENE_EXPRESSION.equals(query.getResultType()) 
+                || QueryUtil.isCompoundCriterionGeneExpression(query.getCompoundCriterion())) ? true : false;
     }
 
     /**
      * Recursive function that goes through all criterion in a CompoundCriterion to determine
-     * if any of them are genomic based criterion.
+     * if any of them are gene expression based criterion.
      * @param criterion input for the recursive function.
      * @return T/F value.
      */
-    public static boolean isCompoundCriterionGenomic(CompoundCriterion criterion) {
+    public static boolean isCompoundCriterionGeneExpression(CompoundCriterion criterion) {
         for (AbstractCriterion abstractCriterion : criterion.getCriterionCollection()) {
             if (abstractCriterion instanceof CompoundCriterion) {
-                if (isCompoundCriterionGenomic((CompoundCriterion) abstractCriterion)) {
+                if (isCompoundCriterionGeneExpression((CompoundCriterion) abstractCriterion)) {
                     return true;
                 }
             } else if (abstractCriterion instanceof GeneNameCriterion) {
@@ -256,25 +256,25 @@ public final class QueryUtil {
     }
     
     /**
-     * Creates a query for all genomic data in the study, and limits it to the given clinical queries (if any
+     * Creates a query for all gene expression data in the study, and limits it to the given clinical queries (if any
      * are given).
      * @param studySubscription for querying.
-     * @param clinicalQueries to limit genomic data returned based.
-     * @param platformName if this is not null, specifies the platform to use for the genomic query.
-     * @return a Query which contains all genomic data for all clinical queries given (if any).
+     * @param clinicalQueries to limit gene expression data returned based.
+     * @param platformName if this is not null, specifies the platform to use for the gene expression query.
+     * @return a Query which contains all gene expression data for all clinical queries given (if any).
      */
-    public static Query createAllGenomicDataQuery(StudySubscription studySubscription, Set<Query> clinicalQueries,
-            String platformName) {
+    public static Query createAllGeneExpressionDataQuery(StudySubscription studySubscription,
+            Set<Query> clinicalQueries, String platformName) {
         Query query = createQuery(studySubscription);
-        query.setResultType(ResultTypeEnum.GENOMIC);
+        query.setResultType(ResultTypeEnum.GENE_EXPRESSION);
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         if (clinicalQueries != null && !clinicalQueries.isEmpty()) {
             CompoundCriterion clinicalCompoundCriterions = new CompoundCriterion();
             clinicalCompoundCriterions.setBooleanOperator(BooleanOperatorEnum.OR);
             for (Query clinicalQuery : clinicalQueries) {
                 CompoundCriterion clinicalCompoundCriterion = clinicalQuery.getCompoundCriterion();
-                if (isCompoundCriterionGenomic(clinicalCompoundCriterion)) {
-                    throw new IllegalArgumentException("Clinical query has genomic criterion");
+                if (isCompoundCriterionGeneExpression(clinicalCompoundCriterion)) {
+                    throw new IllegalArgumentException("Clinical query has gene expression criterion");
                 }
                 clinicalCompoundCriterions.getCriterionCollection().add(clinicalCompoundCriterion);
             }

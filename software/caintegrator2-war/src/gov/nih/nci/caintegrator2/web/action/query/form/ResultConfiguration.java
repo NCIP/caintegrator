@@ -141,7 +141,7 @@ public class ResultConfiguration {
         } else {
             getQuery().setResultType(ResultTypeEnum.getByValue(resultType));
         }
-        if (ResultTypeEnum.GENOMIC.equals(getQuery().getResultType())) {
+        if (ResultTypeEnum.GENE_EXPRESSION.equals(getQuery().getResultType())) {
             getQuery().getColumnCollection().clear();
             if (StringUtils.isBlank(getReporterType())) {
                 setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());

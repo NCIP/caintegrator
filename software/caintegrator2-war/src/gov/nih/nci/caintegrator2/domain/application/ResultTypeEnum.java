@@ -14,9 +14,9 @@ public enum ResultTypeEnum {
     CLINICAL("clinical"),
 
     /**
-     * Genomic data.
+     * Gene Expression data.
      */
-    GENOMIC("genomic"),
+    GENE_EXPRESSION("geneExpression"),
     
     /**
      * Copy Number.
@@ -61,7 +61,8 @@ public enum ResultTypeEnum {
     public static Map<String, String> getValueToDisplayableMap() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(ResultTypeEnum.CLINICAL.getValue(), "Annotation");
-        map.put(ResultTypeEnum.GENOMIC.getValue(), "Genomic");
+        map.put(ResultTypeEnum.GENE_EXPRESSION.getValue(), "Gene Expression");
+        map.put(ResultTypeEnum.COPY_NUMBER.getValue(), "Copy Number");
         return map;
     }
     

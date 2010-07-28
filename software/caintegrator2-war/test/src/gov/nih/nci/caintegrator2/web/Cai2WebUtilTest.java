@@ -119,7 +119,7 @@ public class Cai2WebUtilTest {
         query2.setName("query2");
         Query query3 = new Query();
         query3.setName("query3");
-        query3.setResultType(ResultTypeEnum.GENOMIC);
+        query3.setResultType(ResultTypeEnum.GENE_EXPRESSION);
         SubjectList subjectList1 = new SubjectList();
         subjectList1.setName("subjectList1");
         subjectList1.setVisibility(Visibility.PRIVATE);

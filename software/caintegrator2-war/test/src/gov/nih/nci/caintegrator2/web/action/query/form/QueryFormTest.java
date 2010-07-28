@@ -828,7 +828,7 @@ public class QueryFormTest {
         assertFalse(queryForm.isPotentiallyLargeQuery());
         queryForm.createQuery(subscription, null);
         assertFalse(queryForm.isPotentiallyLargeQuery());
-        queryForm.getQuery().setResultType(ResultTypeEnum.GENOMIC);
+        queryForm.getQuery().setResultType(ResultTypeEnum.GENE_EXPRESSION);
         assertTrue(queryForm.isPotentiallyLargeQuery());
         queryForm.getCriteriaGroup().setCriterionTypeName("Gene Expression");
         queryForm.getCriteriaGroup().addCriterion(subscription.getStudy());

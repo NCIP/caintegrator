@@ -179,7 +179,7 @@ public class AnalysisFormTest {
         List<Query> queries = new ArrayList<Query>();
         query.setId(1L);
         query.setName("Test");
-        query.setResultType(ResultTypeEnum.GENOMIC);
+        query.setResultType(ResultTypeEnum.GENE_EXPRESSION);
         queries.add(query);
         formParameter3.getForm().setGenomicQueries(queries);
         studySubscription.getQueryCollection().add(query);

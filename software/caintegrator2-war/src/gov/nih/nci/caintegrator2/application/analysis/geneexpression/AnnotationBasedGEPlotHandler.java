@@ -211,7 +211,7 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
         query.getCompoundCriterion().getCriterionCollection().add(retrieveGeneNameCriterion());
         query.getCompoundCriterion().getCriterionCollection().add(selectedValueCriterion);
-        query.setResultType(ResultTypeEnum.GENOMIC);
+        query.setResultType(ResultTypeEnum.GENE_EXPRESSION);
         query.setReporterType(parameters.getReporterType());
         query.setSubscription(subscription);
         return getQueryManagementService().executeGenomicDataQuery(query);

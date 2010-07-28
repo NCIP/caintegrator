@@ -164,7 +164,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     private Query retrieveQueryToExecute(Query query) throws InvalidCriterionException {
         try {
             query.getCompoundCriterion().validateGeneExpressionCriterion();
-            if (QueryUtil.isQueryGenomic(query)) {
+            if (QueryUtil.isQueryGeneExpression(query)) {
                 addPlatformToQuery(query);
             }
             Query queryToExecute = query.clone();
