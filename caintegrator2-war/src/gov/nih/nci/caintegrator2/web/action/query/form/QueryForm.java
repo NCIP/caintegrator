@@ -402,4 +402,18 @@ public class QueryForm {
     public List<String> getPlatformNames() {
         return platformNames;
     }
+    
+    /**
+     * @return available result types for this study
+     */
+    public Map<String, String> getResultTypes() {
+        Map<String, String> resultTypes = ResultTypeEnum.getValueToDisplayableMap();
+        if (!query.getSubscription().getStudy().hasCopyNumberData()) {
+            resultTypes.remove(ResultTypeEnum.COPY_NUMBER.getValue());
+        }
+        if (!query.getSubscription().getStudy().hasExpressionData()) {
+            resultTypes.remove(ResultTypeEnum.GENE_EXPRESSION.getValue());
+        }
+        return resultTypes;
+    }
 }
