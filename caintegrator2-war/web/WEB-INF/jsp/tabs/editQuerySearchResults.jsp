@@ -26,7 +26,7 @@
     
     <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
         <div style="float: left; position: relative; width: 100px; margin-top: 0.3em;">
-            <s:if test='%{query.resultType.value.equals("genomic")}'></s:if>
+            <s:if test='%{query.resultType.value.equals("geneExpression")}'></s:if>
             <s:else>
                 <label>Results per Page:</label>
                 <s:select name="pageSize" list="{'10', '20', '50', '100'}" />
@@ -59,7 +59,7 @@
     </s:if>
         
     <div id="queryResultsDiv" >
-        <s:if test='%{query.resultType.value.equals("genomic")}'>
+        <s:if test='%{query.resultType.value.equals("geneExpression")}'>
             <s:set name="genomicDataNeedsHighlighting" value="genomicDataQueryResult.hasCriterionSpecifiedReporterValues" />
             <s:if test="genomicDataQueryResult.hasHighVarianceValues" >
                 <div style="color: red;">
@@ -302,7 +302,7 @@
         </s:else>
     </div>
     <!--Buttons-->
-    <s:if test='%{query.resultType.value.equals("genomic")}'>
+    <s:if test='%{query.resultType.value.equals("geneExpression")}'>
         <s:if test="!genomicDataQueryResult.columnCollection.isEmpty() &&
                 !genomicDataQueryResult.filteredRowCollection.isEmpty()">
             <div class="actionsrow">
