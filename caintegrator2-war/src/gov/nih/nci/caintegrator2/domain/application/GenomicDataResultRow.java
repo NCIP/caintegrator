@@ -3,7 +3,6 @@ package gov.nih.nci.caintegrator2.domain.application;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
-import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ public class GenomicDataResultRow extends AbstractCaIntegrator2Object implements
     private static final long serialVersionUID = 1L;
     
     private AbstractReporter reporter;
-    private SegmentData segmentData;
+    private SegmentDataResultValue segmentDataResultValue;
     private final List<GenomicDataResultValue> values = new ArrayList<GenomicDataResultValue>();
     private boolean hasMatchingValues = false;
     private Float sortedValue;
@@ -83,17 +82,17 @@ public class GenomicDataResultRow extends AbstractCaIntegrator2Object implements
     }
 
     /**
-     * @return the segmentData
+     * @return the segmentDataResultValue
      */
-    public SegmentData getSegmentData() {
-        return segmentData;
+    public SegmentDataResultValue getSegmentDataResultValue() {
+        return segmentDataResultValue;
     }
 
     /**
-     * @param segmentData the segmentData to set
+     * @param segmentDataResultValue the segmentDataResultValue to set
      */
-    public void setSegmentData(SegmentData segmentData) {
-        this.segmentData = segmentData;
+    public void setSegmentDataResultValue(SegmentDataResultValue segmentDataResultValue) {
+        this.segmentDataResultValue = segmentDataResultValue;
     }
 
 }
