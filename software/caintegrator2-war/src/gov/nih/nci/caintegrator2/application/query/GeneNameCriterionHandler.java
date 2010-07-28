@@ -98,8 +98,10 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -192,6 +194,26 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
                 return true;
             }
         }
+        return false;
+    }
+    
+    @Override
+    Set<SegmentData> getSegmentDataMatches(CaIntegrator2Dao dao, Study study, Platform platform) {
+        return Collections.emptySet();
+    }
+
+    @Override
+    boolean hasSegmentDataCriterion() {
+        return false;
+    }
+
+    @Override
+    boolean hasCriterionSpecifiedSegmentValues() {
+        return false;
+    }
+
+    @Override
+    boolean isSegmentValueMatchCriterion(Float value) {
         return false;
     }
 

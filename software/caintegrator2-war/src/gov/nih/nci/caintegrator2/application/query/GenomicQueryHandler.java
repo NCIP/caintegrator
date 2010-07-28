@@ -99,12 +99,15 @@ import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.SegmentDataResultValue;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.Collection;
@@ -132,25 +135,97 @@ class GenomicQueryHandler {
     }
 
     GenomicDataQueryResult execute() throws InvalidCriterionException {
+        if (ResultTypeEnum.COPY_NUMBER.equals(query.getResultType())) {
+            query.setReporterType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+            return createCopyNumberResult();
+        }
         ArrayDataValues values = getDataValues();
-        return createResult(values);
+        return createGeneExpressionResult(values);
     }
 
-    private GenomicDataQueryResult createResult(ArrayDataValues values) {
+    private GenomicDataQueryResult createGeneExpressionResult(ArrayDataValues values) {
         GenomicDataQueryResult result = new GenomicDataQueryResult();
-        createResultRows(result, values);
+        createGeneExpressionResultRows(result, values);
         Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap = createReporterToRowMap(result);
         for (ArrayData arrayData : values.getArrayDatas()) {
-            addToResult(values, result, reporterToRowMap, arrayData);
+            addToGeneExpressionResult(values, result, reporterToRowMap, arrayData);
+        }
+        result.setQuery(query);
+        return result;
+    }
+    
+    private GenomicDataQueryResult createCopyNumberResult() 
+        throws InvalidCriterionException {
+        GenomicDataQueryResult result = new GenomicDataQueryResult();
+        Collection<ArrayData> arrayDatas = getMatchingArrayDatas();
+        Collection<SegmentData> segmentDatas = getMatchingSegmentDatas(arrayDatas);
+        Map<SegmentData, GenomicDataResultRow> segmentDataToRowMap = 
+            createCopyNumberResultRows(result, arrayDatas, segmentDatas);
+        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
+        result.setHasCriterionSpecifiedValues(criterionHandler.hasCriterionSpecifiedSegmentValues());
+        for (ArrayData arrayData : arrayDatas) {
+            addToCopyNumberResult(result, segmentDataToRowMap, arrayData, criterionHandler);
         }
         result.setQuery(query);
         return result;
     }
 
-    private void addToResult(ArrayDataValues values, GenomicDataQueryResult result,
+    private void addToCopyNumberResult(GenomicDataQueryResult result,
+            Map<SegmentData, GenomicDataResultRow> segmentDataToRowMap, ArrayData arrayData,
+            CompoundCriterionHandler criterionHandler) {
+        
+        GenomicDataResultColumn column = result.addColumn();
+        column.setSampleAcquisition(arrayData.getSample().getSampleAcquisition());
+        for (SegmentData segmentData : segmentDataToRowMap.keySet()) {
+            if (segmentData.getArrayData().equals(arrayData)) {
+                GenomicDataResultRow row = segmentDataToRowMap.get(segmentData);
+                GenomicDataResultValue value = new GenomicDataResultValue();
+                value.setColumn(column);
+                Float floatValue = segmentData.getSegmentValue();
+                if (floatValue != null) {
+                    value.setValue(Math.round(floatValue * DECIMAL_100) / DECIMAL_100);
+                    checkMeetsCopyNumberCriterion(result, criterionHandler, row, value);
+                }
+                row.getValues().add(value);
+            }
+        }
+    }
+
+    private Map<SegmentData, GenomicDataResultRow> createCopyNumberResultRows(
+            GenomicDataQueryResult result, Collection<ArrayData> arrayDatas,
+            Collection<SegmentData> segmentDatas) {
+        Map<Integer, Map<Integer, GenomicDataResultRow>> startEndPositionResultRowMap 
+            = new HashMap<Integer, Map<Integer, GenomicDataResultRow>>();
+        Map<SegmentData, GenomicDataResultRow> segmentDataToRowMap = new HashMap<SegmentData, GenomicDataResultRow>();
+        for (SegmentData segmentData : segmentDatas) {
+            if (arrayDatas.contains(segmentData.getArrayData())) {
+                Integer startPosition = segmentData.getLocation().getStartPosition();
+                Integer endPosition = segmentData.getLocation().getEndPosition();
+                if (!startEndPositionResultRowMap.containsKey(startPosition)) {
+                    startEndPositionResultRowMap.put(startPosition, new HashMap<Integer, GenomicDataResultRow>());
+                }
+                if (!startEndPositionResultRowMap.get(startPosition).containsKey(endPosition)) {
+                    GenomicDataResultRow row = new GenomicDataResultRow();
+                    addSegmentDataToRow(segmentData, row);
+                    startEndPositionResultRowMap.get(startPosition).put(endPosition, row);
+                    result.getRowCollection().add(row);
+                }
+                segmentDataToRowMap.put(segmentData, startEndPositionResultRowMap.get(startPosition).get(endPosition));
+            }
+        }
+        return segmentDataToRowMap;
+    }
+
+    private void addSegmentDataToRow(SegmentData segmentData, GenomicDataResultRow row) {
+        row.setSegmentDataResultValue(new SegmentDataResultValue());
+        row.getSegmentDataResultValue().setChromosomalLocation(segmentData.getLocation());
+        // todo: make a DAO function that can retrieve all the genes falling in the range of a segment data.
+    }
+
+    private void addToGeneExpressionResult(ArrayDataValues values, GenomicDataQueryResult result,
         Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap, ArrayData arrayData) {
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
-        result.setHasCriterionSpecifiedReporterValues(criterionHandler.hasCriterionSpecifiedReporterValues());
+        result.setHasCriterionSpecifiedValues(criterionHandler.hasCriterionSpecifiedReporterValues());
         GenomicDataResultColumn column = result.addColumn();
         column.setSampleAcquisition(arrayData.getSample().getSampleAcquisition());
         for (AbstractReporter reporter : values.getReporters()) {
@@ -162,18 +237,28 @@ class GenomicQueryHandler {
             Float floatValue = values.getFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL);
             if (floatValue != null) {
                 value.setValue(Math.round(floatValue * DECIMAL_100) / DECIMAL_100);
-                checkMeetsCriterion(result, criterionHandler, reporter, row, value);
+                checkMeetsGeneExpressionCriterion(result, criterionHandler, reporter, row, value);
                 checkHighVariance(result, arrayData, reporter, value);
             }
             row.getValues().add(value);
         }
     }
 
-    private void checkMeetsCriterion(GenomicDataQueryResult result, CompoundCriterionHandler criterionHandler,
+    private void checkMeetsGeneExpressionCriterion(GenomicDataQueryResult result, 
+            CompoundCriterionHandler criterionHandler,
             AbstractReporter reporter, GenomicDataResultRow row, GenomicDataResultValue value) {
-        if (result.isHasCriterionSpecifiedReporterValues()) {
+        if (result.isHasCriterionSpecifiedValues()) {
             value.setMeetsCriterion(criterionHandler.
                     isGenomicValueMatchCriterion(reporter.getGenes(), value.getValue()));
+            row.setHasMatchingValues(row.isHasMatchingValues() || value.isMeetsCriterion());
+        }
+    }
+    
+    private void checkMeetsCopyNumberCriterion(GenomicDataQueryResult result, CompoundCriterionHandler criterionHandler,
+            GenomicDataResultRow row, GenomicDataResultValue value) {
+        if (result.isHasCriterionSpecifiedValues()) {
+            value.setMeetsCriterion(criterionHandler.
+                    isSegmentValueMatchCriterion(value.getValue()));
             row.setHasMatchingValues(row.isHasMatchingValues() || value.isMeetsCriterion());
         }
     }
@@ -193,7 +278,7 @@ class GenomicQueryHandler {
         return rowMap;
     }
 
-    private void createResultRows(GenomicDataQueryResult result, ArrayDataValues values) {
+    private void createGeneExpressionResultRows(GenomicDataQueryResult result, ArrayDataValues values) {
         for (AbstractReporter reporter : values.getReporters()) {
             GenomicDataResultRow row = new GenomicDataResultRow();
             row.setReporter(reporter);
@@ -288,6 +373,27 @@ class GenomicQueryHandler {
             reporters.addAll(arrayData.getReporters());
         }
         return reporters;
+    }
+    
+    private Collection<SegmentData> getMatchingSegmentDatas(Collection<ArrayData> arrayDatas) {
+        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
+        if (arrayDatas.isEmpty()) {
+            return Collections.emptySet();
+        } else if (criterionHandler.hasSegmentDataCriterion()) {
+            return criterionHandler.getSegmentDataMatches(dao, query.getSubscription().getStudy(), 
+                    query.getPlatform());
+        } else {
+            return getAllSegmentDatas(arrayDatas);
+        }
+    }
+    
+    private Collection<SegmentData> getAllSegmentDatas(Collection<ArrayData> arrayDatas) {
+        HashSet<SegmentData> segmentDatas = new HashSet<SegmentData>();
+        for (ArrayData arrayData : arrayDatas) {
+            arrayData = dao.get(arrayData.getId(), ArrayData.class);
+            segmentDatas.addAll(arrayData.getSegmentDatas());
+        }
+        return segmentDatas;
     }
 
 }

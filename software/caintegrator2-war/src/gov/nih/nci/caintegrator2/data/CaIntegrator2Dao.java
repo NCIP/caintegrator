@@ -243,6 +243,15 @@ public interface CaIntegrator2Dao {
     List<SegmentData> findMatchingSegmentDatas(CopyNumberAlterationCriterion copyNumberCriterion,
             Study study, Platform platform);
 
+    /**
+     * Returns the SegmentDatas that match the location of the given segment datas.
+     * @param segmentDatasToMatch uses the location of these segment datas to find all others.
+     * @param study restrict search to given study.
+     * @param platform restricts search to the given platform.
+     * @return the list of matches.
+     */
+    List<SegmentData> findMatchingSegmentDatasByLocation(List<SegmentData> segmentDatasToMatch, 
+            Study study, Platform platform);
 
     /**
      * Returns the definitions that matches the name given (if one exists).

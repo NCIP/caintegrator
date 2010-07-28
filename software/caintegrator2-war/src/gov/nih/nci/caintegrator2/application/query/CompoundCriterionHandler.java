@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
@@ -102,6 +103,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -148,6 +150,9 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
                     handlers.add(FoldChangeCriterionHandler.create((FoldChangeCriterion) abstractCriterion));
                 } else if (abstractCriterion instanceof SubjectListCriterion) {
                     handlers.add(SubjectListCriterionHandler.create((SubjectListCriterion) abstractCriterion));
+                } else if (abstractCriterion instanceof CopyNumberAlterationCriterion) {
+                   handlers.add(CopyNumberAlterationCriterionHandler.create((CopyNumberAlterationCriterion) 
+                           abstractCriterion));
                 } else {
                     throw new IllegalStateException("Unknown AbstractCriterion class: " + abstractCriterion);
                 }
@@ -286,6 +291,18 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         }
         return reporters;
     }
+    
+    @Override
+    Set<SegmentData> getSegmentDataMatches(CaIntegrator2Dao dao, Study study, Platform platform) {
+        Set<SegmentData> segmentDatas = new HashSet<SegmentData>();
+        for (AbstractCriterionHandler handler : handlers) {
+            if (handler.hasSegmentDataCriterion()) {
+                segmentDatas.addAll(handler.getSegmentDataMatches(dao, study, platform));
+            }
+        }
+        return segmentDatas;
+    }
+
 
     @Override
     boolean isEntityMatchHandler() {
@@ -333,6 +350,38 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
     boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
         for (AbstractCriterionHandler handler : handlers) {
             if (handler.isGenomicValueMatchCriterion(genes, value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    boolean hasSegmentDataCriterion() {
+        for (AbstractCriterionHandler handler : handlers) {
+            if (handler.hasSegmentDataCriterion()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    @Override
+    boolean hasCriterionSpecifiedSegmentValues() {
+        for (AbstractCriterionHandler handler : handlers) {
+            if (handler.hasCriterionSpecifiedSegmentValues()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    @Override
+    boolean isSegmentValueMatchCriterion(Float value) {
+        for (AbstractCriterionHandler handler : handlers) {
+            if (handler.isSegmentValueMatchCriterion(value)) {
                 return true;
             }
         }
