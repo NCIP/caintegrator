@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
@@ -110,10 +111,12 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -122,6 +125,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
@@ -129,7 +133,9 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregationTypeEnum;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResultTest;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
@@ -146,6 +152,8 @@ public class QueryManagementServiceImplTest {
     private Query query;
     private GeneExpressionReporter reporter;
     private ArrayDataServiceStub arrayDataService;
+    private SegmentData segmentData;
+    private SegmentData segmentData2;
     
     @Before
     public void setup() {
@@ -167,6 +175,13 @@ public class QueryManagementServiceImplTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         study.setStudyConfiguration(studyConfiguration);
         studyConfiguration.getGenomicDataSources().add(new GenomicDataSourceConfiguration());
+        segmentData = new SegmentData();
+        ChromosomalLocation location = new ChromosomalLocation();
+        location.setStartPosition(1);
+        location.setEndPosition(2);
+        segmentData.setLocation(location);
+        segmentData2 = new SegmentData();
+        segmentData2.setLocation(location);
     }
 
     
@@ -211,11 +226,17 @@ public class QueryManagementServiceImplTest {
         array.getArrayDataCollection().add(arrayData);
         arrayData.setSample(sample);
         sample.getArrayDataCollection().add(arrayData);
+        segmentData.setSegmentValue(.1f);
+        arrayData.getSegmentDatas().add(segmentData);
+        segmentData.setArrayData(arrayData);
         sample.getArrayCollection().add(array);
         ArrayData arrayData2 = new ArrayData();
         arrayData2.setStudy(study);
         arrayData2.setSample(sample);
         arrayData2.setArray(array);
+        segmentData2.setSegmentValue(.4f);
+        arrayData2.getSegmentDatas().add(segmentData2);
+        segmentData2.setArrayData(arrayData2);
         array.getArrayDataCollection().add(arrayData2);
         sample.getArrayDataCollection().add(arrayData2);        
         array.getSampleCollection().add(sample);
@@ -239,6 +260,7 @@ public class QueryManagementServiceImplTest {
         ReporterList reporterList2 = platform.addReporterList("reporterList2", ReporterTypeEnum.GENE_EXPRESSION_GENE);
         arrayData2.getReporterLists().add(reporterList2);
         reporterList2.getArrayDatas().add(arrayData2);
+        
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         try {
             arrayDataService.numberPlatformsInStudy = 2;
@@ -248,6 +270,7 @@ public class QueryManagementServiceImplTest {
         }
         arrayDataService.numberPlatformsInStudy = 1;
         geneNameCriterion.setPlatformName("platformName");
+        query.setResultType(ResultTypeEnum.GENE_EXPRESSION);
         GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
         
         assertEquals(1, result.getFilteredRowCollection().size());
@@ -291,6 +314,24 @@ public class QueryManagementServiceImplTest {
             fail("Should have caught invalid criterion exception because genes are not found.");
         } catch (InvalidCriterionException e) {
         }
+        
+        ReporterList reporterList3 = platform.addReporterList("reporterList3", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        arrayData.getReporterLists().add(reporterList3);
+        reporterList3.getArrayDatas().add(arrayData);
+        arrayData2.getReporterLists().add(reporterList3);
+        reporterList3.getArrayDatas().add(arrayData2);
+        CopyNumberAlterationCriterion copyNumberCriterion = new CopyNumberAlterationCriterion();
+        query.setResultType(ResultTypeEnum.COPY_NUMBER);
+        query.getCompoundCriterion().getCriterionCollection().clear();
+        query.getCompoundCriterion().getCriterionCollection().add(copyNumberCriterion);
+        result = queryManagementService.executeGenomicDataQuery(query);
+        assertEquals(1, result.getFilteredRowCollection().size());
+        ChromosomalLocation location = new ChromosomalLocation();
+        location.setStartPosition(1);
+        location.setEndPosition(4);
+        segmentData2.setLocation(location);
+        result = queryManagementService.executeGenomicDataQuery(query);
+        assertEquals(2, result.getFilteredRowCollection().size());
     }
 
     
@@ -354,6 +395,21 @@ public class QueryManagementServiceImplTest {
             Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
             reporters.add(reporter );
             return reporters;
+        }
+        
+        @Override
+        public List<SegmentData> findMatchingSegmentDatas(CopyNumberAlterationCriterion copyNumberCriterion,
+                Study study, Platform platform) {
+            List<SegmentData> segmentDatas = new ArrayList<SegmentData>();
+            segmentDatas.add(segmentData);
+            segmentDatas.add(segmentData2);
+            return segmentDatas;
+        }
+        
+        @Override
+        public List<SegmentData> findMatchingSegmentDatasByLocation(List<SegmentData> segmentDatasToMatch, 
+                Study study, Platform platform) {
+            return findMatchingSegmentDatas(null, study, platform);
         }
     }
     

@@ -106,6 +106,7 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
@@ -135,6 +136,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -153,6 +155,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     private static final String STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION = "assignment";
     private static final String IMAGE_SERIES_ACQUISITION_ASSOCIATION = "imageStudy";
     private static final String STUDY_ASSOCIATION = "study";
+    private static final String PLATFORM_ASSOCIATION = "platform";
     private static final String NAME_ATTRIBUTE = "name";
     private static final String SYMBOL_ATTRIBUTE = "symbol";
     private SecurityManager securityManager;
@@ -244,7 +247,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public List<UserWorkspace> retrieveAllSubscribedWorkspaces(Study study) {
         Criteria workspaceCriteria = getCurrentSession().createCriteria(UserWorkspace.class);
         workspaceCriteria.createCriteria("subscriptionCollection").
-                          add(Restrictions.eq("study", study));
+                          add(Restrictions.eq(STUDY_ASSOCIATION, study));
         return workspaceCriteria.list();
     }
 
@@ -352,8 +355,8 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         Criteria segmentDataCrit = getCurrentSession().createCriteria(SegmentData.class);
         Criteria arrayDataCrit = segmentDataCrit.createCriteria("arrayData");
         Criteria reporterListsCrit = arrayDataCrit.createCriteria("reporterLists");
-        reporterListsCrit.add(Restrictions.eq("platform", platform));
-        arrayDataCrit.add(Restrictions.eq("study", study));
+        reporterListsCrit.add(Restrictions.eq(PLATFORM_ASSOCIATION, platform));
+        arrayDataCrit.add(Restrictions.eq(STUDY_ASSOCIATION, study));
         if (copyNumberCriterion.getUpperLimit() != null) {
             segmentDataCrit.add(Restrictions.le("segmentValue",  
                 copyNumberCriterion.getUpperLimit()));
@@ -365,6 +368,28 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         addGenomicIntervalTypeToCriteria(copyNumberCriterion, segmentDataCrit, reporterListsCrit);
         
         // todo: Figure out the "Segment Interval", not sure exactly what that means at this time.
+        return segmentDataCrit.list();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
+    public List<SegmentData> findMatchingSegmentDatasByLocation(List<SegmentData> segmentDatasToMatch, 
+            Study study, Platform platform) {
+        Criteria segmentDataCrit = getCurrentSession().createCriteria(SegmentData.class);
+        Criteria arrayDataCrit = segmentDataCrit.createCriteria("arrayData");
+        Criteria reporterListsCrit = arrayDataCrit.createCriteria("reporterLists");
+        reporterListsCrit.add(Restrictions.eq(PLATFORM_ASSOCIATION, platform));
+        arrayDataCrit.add(Restrictions.eq(STUDY_ASSOCIATION, study));
+        Junction overallOrStatement = Restrictions.disjunction();
+        for (SegmentData segmentData : segmentDatasToMatch) {
+            ChromosomalLocation location = segmentData.getLocation();
+            overallOrStatement.add(Restrictions.conjunction().
+                    add(Restrictions.eq("Location.startPosition", location.getStartPosition())).
+                    add(Restrictions.eq("Location.endPosition", location.getEndPosition())));
+        }
+        segmentDataCrit.add(overallOrStatement);
         return segmentDataCrit.list();
     }
 
@@ -754,8 +779,8 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @SuppressWarnings(UNCHECKED)
     public List<Platform> retrievePlatformsForGenomicSource(GenomicDataSourceConfiguration genomicSource) {
         Criteria arrayCriteria = getCurrentSession().createCriteria(Array.class);
-        arrayCriteria.setProjection(Projections.distinct(Projections.property("platform")))
-                     .add(Restrictions.isNotNull("platform"))
+        arrayCriteria.setProjection(Projections.distinct(Projections.property(PLATFORM_ASSOCIATION)))
+                     .add(Restrictions.isNotNull(PLATFORM_ASSOCIATION))
                      .createCriteria("sampleCollection")
                      .add(Restrictions.eq("genomicDataSource", genomicSource));
                      

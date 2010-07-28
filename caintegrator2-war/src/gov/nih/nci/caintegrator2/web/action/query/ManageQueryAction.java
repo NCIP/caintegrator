@@ -627,7 +627,9 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     private String runQuery() {
         try {
             if (ResultTypeEnum.GENE_EXPRESSION.getValue().equals(
-                    getQueryForm().getResultConfiguration().getResultType())) {
+                    getQueryForm().getResultConfiguration().getResultType()) 
+                || ResultTypeEnum.COPY_NUMBER.getValue().equals(
+                        getQueryForm().getResultConfiguration().getResultType())) {
                 GenomicDataQueryResult genomicResult;
                 genomicResult = queryManagementService.executeGenomicDataQuery(getQueryForm().getQuery());
                 if (genomicResult.getRowCollection() != null) {

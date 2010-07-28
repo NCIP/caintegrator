@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -188,6 +189,15 @@ public final class QueryUtil {
     }
     
     /**
+     * Determines if a query has any genomic data associated.
+     * @param query to check if it is genomic.
+     * @return T/F value.
+     */
+    public static boolean isQueryGenomic(Query query) {
+        return isQueryGeneExpression(query) || isQueryCopyNumber(query);
+    }
+    
+    /**
      * Determines if a query is gene expression (gene expression results type or if it has gene expression criterion).
      * @param query to check to see if it is gene expression.
      * @return T/F if it is gene expression type or not.
@@ -195,6 +205,35 @@ public final class QueryUtil {
     public static boolean isQueryGeneExpression(Query query) {
         return (ResultTypeEnum.GENE_EXPRESSION.equals(query.getResultType()) 
                 || QueryUtil.isCompoundCriterionGeneExpression(query.getCompoundCriterion())) ? true : false;
+    }
+    
+    /**
+     * Determines if a query is copy number (copy number results type or if it has copy number criterion).
+     * @param query to check to see if it is copy number.
+     * @return T/F if it is copy number type or not.
+     */
+    public static boolean isQueryCopyNumber(Query query) {
+        return (ResultTypeEnum.COPY_NUMBER.equals(query.getResultType()) 
+                || QueryUtil.isCompoundCriterionCopyNumber(query.getCompoundCriterion())) ? true : false;
+    }
+    
+    /**
+     * Recursive function that goes through all criterion in a CompoundCriterion to determine
+     * if any of them are copy number based criterion.
+     * @param criterion input for the recursive function.
+     * @return T/F value.
+     */
+    public static boolean isCompoundCriterionCopyNumber(CompoundCriterion criterion) {
+        for (AbstractCriterion abstractCriterion : criterion.getCriterionCollection()) {
+            if (abstractCriterion instanceof CompoundCriterion) {
+                if (isCompoundCriterionCopyNumber((CompoundCriterion) abstractCriterion)) {
+                    return true;
+                }
+            } else if (abstractCriterion instanceof CopyNumberAlterationCriterion) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

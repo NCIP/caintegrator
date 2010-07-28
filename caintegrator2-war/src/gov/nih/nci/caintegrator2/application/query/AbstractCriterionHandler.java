@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Set;
@@ -131,6 +132,22 @@ abstract class AbstractCriterionHandler {
                                                       Platform platform);
 
     /**
+     * Gets all <code>SegmentData</code> matched by this handler.
+     * 
+     * @param dao DAO to use
+     * @param study being queries.
+     * @param platform the platform to use.
+     * @return the matching segment datas.
+     */
+    abstract Set<SegmentData> getSegmentDataMatches(CaIntegrator2Dao dao, Study study, Platform platform);
+    
+    /**
+     * Determines whether this handler provieds segment data matches.
+     * @return true if can match segment datas.
+     */
+    abstract boolean hasSegmentDataCriterion();
+    
+    /**
      * Determines whether this handler provides reporter matches.
      * 
      * @return true if can match reporters.
@@ -152,7 +169,13 @@ abstract class AbstractCriterionHandler {
      * @return true if has criterion specified reporter values (fold change criterion for example).
      */
     abstract boolean hasCriterionSpecifiedReporterValues();
-
+    
+    /**
+     * Determines if the handler has segment values which are narrowed down by the criterion.
+     * @return true if has criterion specified criterion values (copy number alteration criterion, for example).
+     */
+    abstract boolean hasCriterionSpecifiedSegmentValues();
+    
     /**
      * Determines if the value matches the criterion specified for the genes, 
      * at the current time only foldChangeCriterion would use this, but if we ever do 
@@ -162,4 +185,11 @@ abstract class AbstractCriterionHandler {
      * @return true if the given value matches the criterion.
      */
     abstract boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value);
+    
+    /**
+     * Determines if the value matches the criterion.
+     * @param value is the value to match the criterion against.
+     * @return true if the given value matches the criterion.
+     */
+    abstract boolean isSegmentValueMatchCriterion(Float value);
 }
