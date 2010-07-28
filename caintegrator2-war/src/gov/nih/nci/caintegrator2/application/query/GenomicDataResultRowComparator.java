@@ -99,7 +99,9 @@ public class GenomicDataResultRowComparator implements Comparator <GenomicDataRe
      * {@inheritDoc}
      */
     public int compare(GenomicDataResultRow row1, GenomicDataResultRow row2) {
-        return row1.getReporter().compareTo(row2.getReporter());
+        return (row1.getReporter() != null)
+            ? row1.getReporter().compareTo(row2.getReporter())
+            : row1.getSegmentDataResultValue().compareTo(row2.getSegmentDataResultValue());
     }
 
 }
