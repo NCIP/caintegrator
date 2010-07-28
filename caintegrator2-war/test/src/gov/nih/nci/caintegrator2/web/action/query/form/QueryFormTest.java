@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -836,5 +837,17 @@ public class QueryFormTest {
         assertFalse(queryForm.isPotentiallyLargeQuery());
         queryForm.getCriteriaGroup().getRows().get(0).setCriterion(new FoldChangeCriterion());
         assertFalse(queryForm.isPotentiallyLargeQuery());
+    }
+    
+    @Test
+    public void testResultTypes() {
+        queryForm.createQuery(subscription, null);
+        assertEquals(2, queryForm.getResultTypes().size());
+        GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+        subscription.getStudy().getStudyConfiguration().getGenomicDataSources().add(genomicSource);
+        genomicSource.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
+        assertEquals(3, queryForm.getResultTypes().size());
+        subscription.getStudy().getStudyConfiguration().getGenomicDataSources().clear();
+        assertEquals(1, queryForm.getResultTypes().size());
     }
 }

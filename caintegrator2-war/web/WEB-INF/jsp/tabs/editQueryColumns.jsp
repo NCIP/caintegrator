@@ -12,7 +12,7 @@
     <div class="resultTypeSelector">
         <s:radio name="queryForm.resultConfiguration.resultType"
             onclick="this.form.selectedAction.value = 'updateColumns'; this.form.submit();"
-            list="@gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum@getValueToDisplayableMap()" 
+            list="queryForm.resultTypes"
             listKey="key"
             listValue="value"/><br>
         
