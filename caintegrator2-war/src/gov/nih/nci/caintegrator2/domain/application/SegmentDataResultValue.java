@@ -49,4 +49,21 @@ public class SegmentDataResultValue extends AbstractCaIntegrator2Object {
     public String getDislpayGenes() {
         return StringUtils.join(genes, ", ");
     }
+    /**
+     * @param segmentDataResultValue to compare
+     * @return the comparator code
+     */
+    public int compareTo(SegmentDataResultValue segmentDataResultValue) {
+        int i = chromosomalLocation.getChromosome().compareTo(
+                    segmentDataResultValue.getChromosomalLocation().getChromosome());
+        if (i == 0) {
+            i = chromosomalLocation.getStartPosition().compareTo(
+                    segmentDataResultValue.getChromosomalLocation().getStartPosition());
+        }
+        if (i == 0) {
+            i = chromosomalLocation.getEndPosition().compareTo(
+                    segmentDataResultValue.getChromosomalLocation().getEndPosition());
+        }
+        return i;
+    }
 }
