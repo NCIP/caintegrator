@@ -168,7 +168,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
     
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private TextFieldParameter createUpperLimitParameter() {
-        final String label = "Upper Limit";
+        final String label = "Segment Mean Value <=";
         TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
                 getRow().getRowIndex(), criterion.getDisplayUpperLimit());
         textParameter.setLabel(label);
@@ -198,7 +198,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private TextFieldParameter createLowerLimitParameter() {
-        final String label = "Lower Limit";
+        final String label = "Segment Mean Value >=";
         TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
                 getRow().getRowIndex(), criterion.getDisplayLowerLimit());
         textParameter.setLabel(label);
