@@ -155,7 +155,7 @@ public class GEPlotGenomicQueryBasedActionTest extends AbstractSessionBasedTest 
         setupActionVariables();
         action.prepare();
         assertTrue(queryManagementServiceStub.getRefreshedEntityCalled);
-        assertNotNull(action.getGePlotForm().getGenomicQueryBasedForm().getSelectedQueryId());
+        assertNotNull(action.getGePlotForm().getGeneExpressionQueryBasedForm().getSelectedQueryId());
     }
     
     @Test
@@ -192,12 +192,12 @@ public class GEPlotGenomicQueryBasedActionTest extends AbstractSessionBasedTest 
     @Test
     public void testReset() {
         setupActionVariables();
-        assertFalse(StringUtils.isBlank(action.getGePlotForm().getGenomicQueryBasedForm().getSelectedQueryId()));
+        assertFalse(StringUtils.isBlank(action.getGePlotForm().getGeneExpressionQueryBasedForm().getSelectedQueryId()));
         action.reset();
-        assertFalse(StringUtils.isBlank(action.getGePlotForm().getGenomicQueryBasedForm().getSelectedQueryId()));
+        assertFalse(StringUtils.isBlank(action.getGePlotForm().getGeneExpressionQueryBasedForm().getSelectedQueryId()));
         action.setResetSelected(true);
         action.reset();
-        assertTrue(StringUtils.isBlank(action.getGePlotForm().getGenomicQueryBasedForm().getSelectedQueryId()));
+        assertTrue(StringUtils.isBlank(action.getGePlotForm().getGeneExpressionQueryBasedForm().getSelectedQueryId()));
     }
     
     @Test
@@ -215,9 +215,9 @@ public class GEPlotGenomicQueryBasedActionTest extends AbstractSessionBasedTest 
     private void setupActionVariables() {
         action.getPlotParameters().setQuery(new Query());
         action.getPlotParameters().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        action.getGePlotForm().getGenomicQueryBasedForm().setSelectedQueryId("1");
-        action.getGePlotForm().getGenomicQueryBasedForm().getQueries().put("1", new Query());
-        action.getGePlotForm().getGenomicQueryBasedForm().
+        action.getGePlotForm().getGeneExpressionQueryBasedForm().setSelectedQueryId("1");
+        action.getGePlotForm().getGeneExpressionQueryBasedForm().getQueries().put("1", new Query());
+        action.getGePlotForm().getGeneExpressionQueryBasedForm().
                 setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
     }
     

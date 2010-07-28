@@ -107,25 +107,25 @@ public final class Cai2WebUtil {
      * lists for the given studySubscription.
      * @param studySubscription for the study.
      * @param queryManagementService for query management.
-     * @param includeGenomic determines whether or not need to include genomic type queries as well.
+     * @param includeGeneExpression determines whether or not need to include gene expression type queries as well.
      * @return list of displayable queries.
      */
     public static List<DisplayableQuery> retrieveDisplayableQueries(StudySubscription studySubscription,
-            QueryManagementService queryManagementService, boolean includeGenomic) {
+            QueryManagementService queryManagementService, boolean includeGeneExpression) {
         List<DisplayableQuery> displayableQueries = new ArrayList<DisplayableQuery>();
-        displayableQueries.addAll(retrieveQueries(studySubscription, includeGenomic));
+        displayableQueries.addAll(retrieveQueries(studySubscription, includeGeneExpression));
         displayableQueries.addAll(retrieveSubjectLists(studySubscription, queryManagementService));
         Collections.sort(displayableQueries);
         return displayableQueries;
     }
 
     private static List<DisplayableQuery> retrieveQueries(StudySubscription studySubscription, 
-        boolean includeGenomic) {
+        boolean includeGeneExpression) {
         List<DisplayableQuery> displayableQueries = new ArrayList<DisplayableQuery>();
         for (Query query 
                 : studySubscription.getQueryCollection()) {
-            if (includeGenomic 
-                || !QueryUtil.isQueryGenomic(query)) {
+            if (includeGeneExpression 
+                || !QueryUtil.isQueryGeneExpression(query)) {
                 displayableQueries.add(new DisplayableQuery(query));
             }
         }

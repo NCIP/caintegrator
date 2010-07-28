@@ -267,7 +267,7 @@ public final class GenePatternUtil {
     throws InvalidCriterionException {
         Set<Query> clinicalQuerySet = new HashSet<Query>(clinicalQueries);
         Query allGenomicDataQuery = 
-            QueryUtil.createAllGenomicDataQuery(studySubscription, clinicalQuerySet, platformName);
+            QueryUtil.createAllGeneExpressionDataQuery(studySubscription, clinicalQuerySet, platformName);
         GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
         genomicData.excludeSampleSet(excludedControlSampleSet);
         if (genomicData.getRowCollection().isEmpty()) {

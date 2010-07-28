@@ -144,10 +144,10 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
     }
 
     /**
-     * @return a  boolean of is a genomic result type
+     * @return a  boolean of is a gene expression result type
      */
-    public boolean isGenomicResultType() {
-        return getResultType().equals(ResultTypeEnum.GENOMIC);
+    public boolean isGeneExpressionResultType() {
+        return getResultType().equals(ResultTypeEnum.GENE_EXPRESSION);
     }
 
     /**

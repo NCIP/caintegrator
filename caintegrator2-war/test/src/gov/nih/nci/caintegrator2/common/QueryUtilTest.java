@@ -164,16 +164,16 @@ public class QueryUtilTest {
         compoundCriterion2.getCriterionCollection().add(new StringComparisonCriterion());
         compoundCriterion2.getCriterionCollection().add(new StringComparisonCriterion());
         compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
-        assertFalse(QueryUtil.isCompoundCriterionGenomic(compoundCriterion1));
+        assertFalse(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
         compoundCriterion1.getCriterionCollection().add(new GeneNameCriterion());
-        assertTrue(QueryUtil.isCompoundCriterionGenomic(compoundCriterion1));
+        assertTrue(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
         
         compoundCriterion1.setCriterionCollection(new HashSet<AbstractCriterion>());
         compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
         compoundCriterion1.getCriterionCollection().add(new StringComparisonCriterion());
-        assertFalse(QueryUtil.isCompoundCriterionGenomic(compoundCriterion1));
+        assertFalse(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
         compoundCriterion2.getCriterionCollection().add(new FoldChangeCriterion());
-        assertTrue(QueryUtil.isCompoundCriterionGenomic(compoundCriterion1));
+        assertTrue(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
     }
     
     @Test
