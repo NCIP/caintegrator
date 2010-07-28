@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator2.domain.application.SegmentDataResultValue;
 import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
