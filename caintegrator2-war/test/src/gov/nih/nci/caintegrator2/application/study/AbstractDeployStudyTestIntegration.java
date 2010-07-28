@@ -618,7 +618,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         if (getLoadSamples() && getLoadDesign()) {
             logStart();
             Query query = createQuery();
-            query.setResultType(ResultTypeEnum.GENOMIC);
+            query.setResultType(ResultTypeEnum.GENE_EXPRESSION);
             query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             GeneNameCriterion geneCriterion = new GeneNameCriterion();
             geneCriterion.setGeneSymbol("EGFR");

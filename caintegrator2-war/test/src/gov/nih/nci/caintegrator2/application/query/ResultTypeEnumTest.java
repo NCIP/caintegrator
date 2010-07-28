@@ -95,7 +95,8 @@ public class ResultTypeEnumTest {
     @Test
     public void testGetByValue() {
         assertEquals(ResultTypeEnum.CLINICAL, ResultTypeEnum.getByValue(ResultTypeEnum.CLINICAL.getValue()));
-        assertEquals(ResultTypeEnum.GENOMIC, ResultTypeEnum.getByValue(ResultTypeEnum.GENOMIC.getValue()));
+        assertEquals(ResultTypeEnum.GENE_EXPRESSION, ResultTypeEnum.getByValue(ResultTypeEnum.GENE_EXPRESSION.getValue()));
+        assertEquals(ResultTypeEnum.COPY_NUMBER, ResultTypeEnum.getByValue(ResultTypeEnum.COPY_NUMBER.getValue()));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -106,7 +107,8 @@ public class ResultTypeEnumTest {
     @Test
     public void testGetValueToDisplayableMap() {
         assertEquals("Annotation", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.CLINICAL.getValue()));
-        assertEquals("Genomic", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.GENOMIC.getValue()));
+        assertEquals("Gene Expression", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.GENE_EXPRESSION.getValue()));
+        assertEquals("Copy Number", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.COPY_NUMBER.getValue()));
     }
 
 }

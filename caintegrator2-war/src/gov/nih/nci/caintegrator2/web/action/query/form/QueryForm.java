@@ -309,12 +309,12 @@ public class QueryForm {
     }
 
     /**
-     * Check if search result is genomic and all genes are going to be searched.
+     * Check if search result is gene expression and all genes are going to be searched.
      * @return boolean of potentially a large query
      */
     public boolean isPotentiallyLargeQuery() {
-        if (query != null && query.isGenomicResultType()) {
-            return criteriaGroup.hasNoGenomicCriterion();
+        if (query != null && query.isGeneExpressionResultType()) {
+            return criteriaGroup.hasNoGeneExpressionCriterion();
         }
         return false;
     }

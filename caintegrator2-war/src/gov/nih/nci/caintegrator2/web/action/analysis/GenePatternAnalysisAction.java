@@ -219,7 +219,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     private String open() {
         resetCurrentGenePatternAnalysisJob();
         getGenePatternAnalysisForm().setUrl(configurationHelper.getString(ConfigurationParameter.GENE_PATTERN_URL));
-        getGenePatternAnalysisForm().setGenomicQueries(getGenomicQueries());
+        getGenePatternAnalysisForm().setGenomicQueries(getGeneExpressionQueries());
         Collection<AnnotationFieldDescriptor> fieldDescriptors = 
             getClassificationAnnotations(getStudy().getAllVisibleAnnotationFieldDescriptors());
         getGenePatternAnalysisForm().clearClassificationAnnotations();
@@ -243,10 +243,10 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     /**
      * @return
      */
-    private List<Query> getGenomicQueries() {
+    private List<Query> getGeneExpressionQueries() {
         List<Query> queries = new ArrayList<Query>();
         for (Query query : getStudySubscription().getQueryCollection()) {
-            if (ResultTypeEnum.GENOMIC.equals(query.getResultType())) {
+            if (ResultTypeEnum.GENE_EXPRESSION.equals(query.getResultType())) {
                 queries.add(query);
             }
         }

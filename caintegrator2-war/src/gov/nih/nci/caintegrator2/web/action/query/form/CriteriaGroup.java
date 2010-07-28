@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
@@ -285,11 +286,12 @@ public class CriteriaGroup {
     }
     
     /**
-     * @return boolean of having no genomic criterion
+     * @return boolean of having no gene expression criterion
      */
-    public boolean hasNoGenomicCriterion() {
+    public boolean hasNoGeneExpressionCriterion() {
         for (AbstractCriterionRow row : getRows()) {
-            if (row.getCriterion() instanceof AbstractGenomicCriterion) {
+            if (row.getCriterion() instanceof GeneNameCriterion
+                    || row.getCriterion() instanceof FoldChangeCriterion) {
                 return false;
             }
         }

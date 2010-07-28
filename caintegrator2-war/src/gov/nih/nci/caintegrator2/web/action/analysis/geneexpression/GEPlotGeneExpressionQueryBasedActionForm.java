@@ -92,9 +92,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Form used to store input values for Genomic Query Based GE Plots. 
+ * Form used to store input values for Gene Expression Query Based GE Plots. 
  */
-public class GEPlotGenomicQueryBasedActionForm {
+public class GEPlotGeneExpressionQueryBasedActionForm {
     
     private String selectedQueryId;
     private String reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue();

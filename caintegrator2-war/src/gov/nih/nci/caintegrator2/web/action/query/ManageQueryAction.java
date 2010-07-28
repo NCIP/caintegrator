@@ -431,7 +431,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             ((SelectListParameter<?>) criterionRow.getParameters().get(1)).
                     setValue(platformsInStudy.iterator().next());
         }
-        getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENOMIC.getValue());
+        getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENE_EXPRESSION.getValue());
         getQueryForm().getResultConfiguration().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());
         if (isGlobal) {
             setOpenGlobalGeneListName(geneListName);
@@ -626,7 +626,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
 
     private String runQuery() {
         try {
-            if (ResultTypeEnum.GENOMIC.getValue().equals(getQueryForm().getResultConfiguration().getResultType())) {
+            if (ResultTypeEnum.GENE_EXPRESSION.getValue().equals(
+                    getQueryForm().getResultConfiguration().getResultType())) {
                 GenomicDataQueryResult genomicResult;
                 genomicResult = queryManagementService.executeGenomicDataQuery(getQueryForm().getQuery());
                 if (genomicResult.getRowCollection() != null) {

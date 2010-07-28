@@ -94,7 +94,8 @@ import gov.nih.nci.caintegrator2.web.SessionHelper;
 public class GEPlotForm {
 
     private final GEPlotAnnotationBasedActionForm annotationBasedForm = new GEPlotAnnotationBasedActionForm();
-    private final GEPlotGenomicQueryBasedActionForm genomicQueryBasedForm = new GEPlotGenomicQueryBasedActionForm();
+    private final GEPlotGeneExpressionQueryBasedActionForm geneExpressionQueryBasedForm =
+        new GEPlotGeneExpressionQueryBasedActionForm();
     private final GEPlotClinicalQueryBasedActionForm clinicalQueryBasedForm = new GEPlotClinicalQueryBasedActionForm();
 
     /**
@@ -103,7 +104,7 @@ public class GEPlotForm {
     public void clear() {
         SessionHelper.clearGePlots();
         annotationBasedForm.clear();
-        genomicQueryBasedForm.clear();
+        geneExpressionQueryBasedForm.clear();
         clinicalQueryBasedForm.clear();
     }
     
@@ -115,10 +116,10 @@ public class GEPlotForm {
     }
 
     /**
-     * @return the genomicQueryBasedForm
+     * @return the geneExpressionQueryBasedForm
      */
-    public GEPlotGenomicQueryBasedActionForm getGenomicQueryBasedForm() {
-        return genomicQueryBasedForm;
+    public GEPlotGeneExpressionQueryBasedActionForm getGeneExpressionQueryBasedForm() {
+        return geneExpressionQueryBasedForm;
     }
 
     /**
