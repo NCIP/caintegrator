@@ -512,12 +512,13 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return new HashMap<String, Gene>();
     }
 
-    /* (non-Javadoc)
-     * @see gov.nih.nci.caintegrator2.data.CaIntegrator2Dao#findMatchingSegmentDatas(gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion, gov.nih.nci.caintegrator2.domain.translational.Study, gov.nih.nci.caintegrator2.domain.genomic.Platform)
-     */
     public List<SegmentData> findMatchingSegmentDatas(CopyNumberAlterationCriterion copyNumberCriterion, Study study,
             Platform platform) {
-        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<SegmentData> findMatchingSegmentDatasByLocation(List<SegmentData> segmentDatasToMatch, Study study,
+            Platform platform) {
         return null;
     }
 

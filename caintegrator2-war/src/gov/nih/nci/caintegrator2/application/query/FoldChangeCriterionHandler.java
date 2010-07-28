@@ -102,6 +102,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
@@ -331,6 +332,26 @@ public final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
     @Override
     boolean hasCriterionSpecifiedReporterValues() {
         return true;
+    }
+    
+    @Override
+    Set<SegmentData> getSegmentDataMatches(CaIntegrator2Dao dao, Study study, Platform platform) {
+        return Collections.emptySet();
+    }
+
+    @Override
+    boolean hasSegmentDataCriterion() {
+        return false;
+    }
+
+    @Override
+    boolean hasCriterionSpecifiedSegmentValues() {
+        return false;
+    }
+
+    @Override
+    boolean isSegmentValueMatchCriterion(Float value) {
+        return false;
     }
 
 

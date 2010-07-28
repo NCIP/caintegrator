@@ -164,7 +164,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     private Query retrieveQueryToExecute(Query query) throws InvalidCriterionException {
         try {
             query.getCompoundCriterion().validateGeneExpressionCriterion();
-            if (QueryUtil.isQueryGeneExpression(query)) {
+            if (QueryUtil.isQueryGenomic(query)) {
                 addPlatformToQuery(query);
             }
             Query queryToExecute = query.clone();
@@ -181,7 +181,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     }
 
     private void addPlatformToQuery(Query query) throws InvalidCriterionException {
-        Set<String> platformNames = retrieveGeneExpressionPlatformsForStudy(query.getSubscription().getStudy());
+        Set<String> platformNames = retrievePlatformNames(query);
         if (platformNames.size() == 1) {
             query.setPlatform(getDao().getPlatform(platformNames.iterator().next()));
         } else {
@@ -194,6 +194,17 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
             query.setPlatform(getDao().getPlatform(allPlatformNames.iterator().next()));
         }
+    }
+    
+    private Set<String> retrievePlatformNames(Query query) {
+        Set<String> platformNames = new HashSet<String>();
+        if (QueryUtil.isQueryCopyNumber(query)) {
+            platformNames.addAll(retrieveCopyNumberPlatformsForStudy(query.getSubscription().getStudy()));
+        }
+        if (QueryUtil.isQueryGeneExpression(query)) {
+            platformNames.addAll(retrieveGeneExpressionPlatformsForStudy(query.getSubscription().getStudy()));
+        }
+        return platformNames;
     }
     
     private void checkCriterionColumnsForMasks(Query query) {

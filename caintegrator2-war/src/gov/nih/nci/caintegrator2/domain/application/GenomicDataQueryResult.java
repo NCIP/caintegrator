@@ -16,7 +16,7 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
     private List<GenomicDataResultRow> rowCollection = new ArrayList<GenomicDataResultRow>();
     private Query query;
     private List<GenomicDataResultColumn> columnCollection = new ArrayList<GenomicDataResultColumn>();
-    private boolean hasCriterionSpecifiedReporterValues = false;
+    private boolean hasCriterionSpecifiedValues = false;
     private boolean hasHighVarianceValues = false;
     
     /**
@@ -40,7 +40,7 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
      * @return filtered rows based on having any criterion matches.
      */
     public List<GenomicDataResultRow> getFilteredRowCollection() {
-        if (!hasCriterionSpecifiedReporterValues) {
+        if (!hasCriterionSpecifiedValues) {
             return rowCollection;
         }
         List<GenomicDataResultRow> filteredRows = new ArrayList<GenomicDataResultRow>();
@@ -130,15 +130,15 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
     /**
      * @return the hasCriterionSpecifiedReporterValues
      */
-    public boolean isHasCriterionSpecifiedReporterValues() {
-        return hasCriterionSpecifiedReporterValues;
+    public boolean isHasCriterionSpecifiedValues() {
+        return hasCriterionSpecifiedValues;
     }
 
     /**
-     * @param hasCriterionSpecifiedReporterValues the hasCriterionSpecifiedReporterValues to set
+     * @param hasCriterionSpecifiedValues the hasCriterionSpecifiedValues to set
      */
-    public void setHasCriterionSpecifiedReporterValues(boolean hasCriterionSpecifiedReporterValues) {
-        this.hasCriterionSpecifiedReporterValues = hasCriterionSpecifiedReporterValues;
+    public void setHasCriterionSpecifiedValues(boolean hasCriterionSpecifiedValues) {
+        this.hasCriterionSpecifiedValues = hasCriterionSpecifiedValues;
     }
 
     /**

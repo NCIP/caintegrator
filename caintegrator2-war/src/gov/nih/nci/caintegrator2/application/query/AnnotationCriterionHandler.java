@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Collections;
@@ -218,6 +219,26 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
 
     @Override
     boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
+        return false;
+    }
+
+    @Override
+    Set<SegmentData> getSegmentDataMatches(CaIntegrator2Dao dao, Study study, Platform platform) {
+        return Collections.emptySet();
+    }
+
+    @Override
+    boolean hasSegmentDataCriterion() {
+        return false;
+    }
+
+    @Override
+    boolean hasCriterionSpecifiedSegmentValues() {
+        return false;
+    }
+
+    @Override
+    boolean isSegmentValueMatchCriterion(Float value) {
         return false;
     }
 

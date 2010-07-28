@@ -16,7 +16,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 public class SegmentDataResultValue extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
-    private List<Gene> genes = new ArrayList<Gene>();
+    private final List<Gene> genes = new ArrayList<Gene>();
     private ChromosomalLocation chromosomalLocation;
     
     /**
@@ -25,12 +25,7 @@ public class SegmentDataResultValue extends AbstractCaIntegrator2Object {
     public List<Gene> getGenes() {
         return genes;
     }
-    /**
-     * @param genes the genes to set
-     */
-    public void setGenes(List<Gene> genes) {
-        this.genes = genes;
-    }
+
     /**
      * @return the chromosomalLocation
      */

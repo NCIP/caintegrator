@@ -563,6 +563,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         
         CopyNumberAlterationCriterion copyNumberCriterion = new CopyNumberAlterationCriterion();
         copyNumberCriterion.setLowerLimit(.02f);
+        copyNumberCriterion.setUpperLimit(null);
         copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES);
         copyNumberCriterion.setChromosomeCoordinateHigh(1800000f);
         copyNumberCriterion.setChromosomeCoordinateLow(20000f);
@@ -587,6 +588,10 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.GENE_NAME);
         copyNumberCriterion.setGeneSymbol("GENE_3, GENE_4");
         segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
+        assertEquals(2, segmentDatas.size());
+        
+        // Try matching the segment datas based on the location of the two previous ones.
+        segmentDatas = dao.findMatchingSegmentDatasByLocation(segmentDatas, study, platform);
         assertEquals(2, segmentDatas.size());
         
         copyNumberCriterion.setUpperLimit(.03f);
