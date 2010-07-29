@@ -213,7 +213,9 @@ public final class CopyNumberAlterationCriterionHandler extends AbstractCriterio
         if (criterion.getLowerLimit() != null) {
             lowerLimitValid = value >= criterion.getLowerLimit();
         }
-        return upperLimitValid && lowerLimitValid;
+        
+        return criterion.isOutsideBoundaryType() 
+                ? upperLimitValid || lowerLimitValid : upperLimitValid && lowerLimitValid;
     }
     
     boolean hasCriterionSpecifiedSegmentValues() {
