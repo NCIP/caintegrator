@@ -429,15 +429,20 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                 }
                 break;
             case CHROMOSOME_NUMBER:
-                segmentDataCrit.add(Restrictions.eq("Location.chromosome", 
+                if (copyNumberCriterion.getChromosomeNumber() != null) {
+                    segmentDataCrit.add(Restrictions.eq("Location.chromosome", 
                         String.valueOf(copyNumberCriterion.getChromosomeNumber())));
+                }
                 break;
             case CHROMOSOME_COORDINATES:
-                segmentDataCrit.add(
-                    Restrictions.ge("Location.startPosition", Math.round(copyNumberCriterion
-                            .getChromosomeCoordinateLow()))).add(
-                    Restrictions.le("Location.endPosition", Math.round(copyNumberCriterion
+                if (copyNumberCriterion.getChromosomeCoordinateHigh() != null) {
+                    segmentDataCrit.add(Restrictions.le("Location.endPosition", Math.round(copyNumberCriterion
                             .getChromosomeCoordinateHigh())));
+                }
+                if (copyNumberCriterion.getChromosomeCoordinateLow() != null) {
+                    segmentDataCrit.add(Restrictions.ge("Location.startPosition", Math.round(copyNumberCriterion
+                            .getChromosomeCoordinateLow())));
+                }
                 break;
             default:
                 throw new IllegalStateException("Unknown genomic interval type");
