@@ -612,10 +612,6 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
      * @return the Struts result.
      */
     public String executeQuery() {
-        if (hasCopyNumberSegmentation()) {
-            addActionError("Copy number segmentation query is not yet implemented");
-            return ERROR;
-        }
         getQueryForm().setGenomicPreviousSorting("None");
         getQueryForm().setGenomicSortingOrder(-1);
         ensureQueryIsLoaded();
@@ -648,18 +644,6 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         }
         displayTab = RESULTS_TAB;
         return SUCCESS;
-    }
-
-    /**
-     * @return
-     */
-    private boolean hasCopyNumberSegmentation() {
-        for (AbstractCriterionRow row : getQueryForm().getCriteriaGroup().getRows()) {
-            if (row.getFieldName().equals("Segmentation")) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private void ensureQueryIsLoaded() {

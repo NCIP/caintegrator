@@ -140,12 +140,13 @@ import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.SimpleExpression;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  * Implementation of the DAO.
  */
-@SuppressWarnings("PMD.ExcessiveClassLength") // Until we refactor into multiple DAOs, it will be excessive.
+@SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" }) // Until we refactor into multiple DAOs
 public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaIntegrator2Dao  {
     
     private static final String UNCHECKED = "unchecked";
@@ -357,18 +358,42 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         Criteria reporterListsCrit = arrayDataCrit.createCriteria("reporterLists");
         reporterListsCrit.add(Restrictions.eq(PLATFORM_ASSOCIATION, platform));
         arrayDataCrit.add(Restrictions.eq(STUDY_ASSOCIATION, study));
-        if (copyNumberCriterion.getUpperLimit() != null) {
-            segmentDataCrit.add(Restrictions.le("segmentValue",  
-                copyNumberCriterion.getUpperLimit()));
-        }
-        if (copyNumberCriterion.getLowerLimit() != null) {
-            segmentDataCrit.add(Restrictions.ge("segmentValue",  
-                copyNumberCriterion.getLowerLimit()));
-        }
+        addSegmentValueCriterion(copyNumberCriterion, segmentDataCrit);
         addGenomicIntervalTypeToCriteria(copyNumberCriterion, segmentDataCrit, reporterListsCrit);
         
         // todo: Figure out the "Segment Interval", not sure exactly what that means at this time.
         return segmentDataCrit.list();
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity") // There are 5 different cases of segment value criteria.
+    private void addSegmentValueCriterion(CopyNumberAlterationCriterion copyNumberCriterion, Criteria segmentDataCrit) {
+        // First case, if both are null.
+        if (copyNumberCriterion.getUpperLimit() == null && copyNumberCriterion.getLowerLimit() == null) {
+            return;
+        }
+        SimpleExpression upperLimitExpression = Restrictions.le("segmentValue", 
+                copyNumberCriterion.getUpperLimit());
+        SimpleExpression lowerLimitExpression = Restrictions.ge("segmentValue", 
+                copyNumberCriterion.getLowerLimit());
+        // Second case, upper limit is higher than lower limit, value is in between the two
+        if (copyNumberCriterion.isInsideBoundaryType()) {
+            segmentDataCrit.add(Restrictions.conjunction().add(upperLimitExpression).add(lowerLimitExpression));
+            return;
+         } 
+        // Third case, lower limit is higher than upper limit, value is outside of the limits
+        if (copyNumberCriterion.isOutsideBoundaryType()) {
+            segmentDataCrit.add(Restrictions.disjunction().add(upperLimitExpression).add(lowerLimitExpression));
+            return;
+        }
+        // Fourth case, upper limit has a value, lower limit is null.
+        if (copyNumberCriterion.getUpperLimit() != null) {
+            segmentDataCrit.add(upperLimitExpression);
+            return;
+        }
+        // Fifth case, lower limit has a value, upper limit is null.
+        if (copyNumberCriterion.getLowerLimit() != null) {
+            segmentDataCrit.add(lowerLimitExpression);
+        }
     }
     
     /**
@@ -397,9 +422,11 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             Criteria segmentDataCrit, Criteria reporterListsCrit) {
         switch (copyNumberCriterion.getGenomicIntervalType()) {
             case GENE_NAME:
-                reporterListsCrit.createCriteria("reporters").
-                    createCriteria("genes").add(Restrictions.in(SYMBOL_ATTRIBUTE, 
+                if (StringUtils.isNotBlank(copyNumberCriterion.getGeneSymbol())) {
+                    reporterListsCrit.createCriteria("reporters").
+                        createCriteria("genes").add(Restrictions.in(SYMBOL_ATTRIBUTE, 
                             copyNumberCriterion.getGeneSymbols()));
+                }
                 break;
             case CHROMOSOME_NUMBER:
                 segmentDataCrit.add(Restrictions.eq("Location.chromosome", 

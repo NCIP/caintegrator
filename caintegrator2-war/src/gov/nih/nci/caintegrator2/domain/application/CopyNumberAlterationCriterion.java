@@ -149,5 +149,23 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
     protected CopyNumberAlterationCriterion clone() throws CloneNotSupportedException {
         return (CopyNumberAlterationCriterion) super.clone();
     }
+    
+    /**
+     * Determines if it is an outside boundary type of query, meaning the upperLimit and lowerLimit
+     * values are both non-null and upperLimit < lowerLimit.
+     * @return true if the upperLimit < lowerLimit.
+     */
+    public boolean isOutsideBoundaryType() {
+        return upperLimit != null && lowerLimit != null && lowerLimit > upperLimit; 
+    }
+    
+    /**
+     * Determines if it is an outside boundary type of query, meaning the upperLimit and lowerLimit
+     * values are both non-null and upperLimit >= lowerLimit.
+     * @return true if the upperLimit >= lowerLimit.
+     */
+    public boolean isInsideBoundaryType() {
+        return upperLimit != null && lowerLimit != null && lowerLimit <= upperLimit; 
+    }
 
 }

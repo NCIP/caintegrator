@@ -600,7 +600,11 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         assertEquals(1, segmentDatas.size());
         assertEquals(.03f, segmentDatas.get(0).getSegmentValue());
         
-        
+        copyNumberCriterion.setGeneSymbol("");
+        copyNumberCriterion.setLowerLimit(.04f);
+        copyNumberCriterion.setUpperLimit(.02f);
+        segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
+        assertEquals(5, segmentDatas.size());
     }
     
     /**
