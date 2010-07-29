@@ -60,7 +60,7 @@
         
     <div id="queryResultsDiv" >
         <s:if test='%{query.resultType.value.equals("geneExpression")}'>
-            <s:set name="genomicDataNeedsHighlighting" value="genomicDataQueryResult.hasCriterionSpecifiedReporterValues" />
+            <s:set name="genomicDataNeedsHighlighting" value="genomicDataQueryResult.hasCriterionSpecifiedValues" />
             <s:if test="genomicDataQueryResult.hasHighVarianceValues" >
                 <div style="color: red;">
                     **Derived from technical replicates that exceed the correlation threshold as set by the study manager.  See the study summary page for the correlation threshold.  
