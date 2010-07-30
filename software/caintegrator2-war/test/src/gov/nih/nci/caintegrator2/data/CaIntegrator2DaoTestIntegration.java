@@ -607,6 +607,20 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         assertEquals(5, segmentDatas.size());
     }
     
+    @Test
+    public void testFindGenesByLocation() {
+        Platform platform = new Platform();
+        platform.setName("platform");
+        dao.save(platform);
+        StudyHelper studyHelper = new StudyHelper();
+        studyHelper.setArrayDataType(ArrayDataType.COPY_NUMBER);
+        studyHelper.setPlatform(platform);
+        Study study = studyHelper.populateAndRetrieveStudy().getStudy();
+        dao.save(study);
+        List<Gene> genes = dao.findGenesByLocation(1, 200000000, study, platform);
+        assertEquals(7, genes.size());
+    }
+    
     /**
      * @param caIntegrator2Dao the caIntegrator2Dao to set
      */

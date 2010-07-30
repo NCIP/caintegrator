@@ -107,6 +107,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
+import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
@@ -157,6 +158,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     private static final String IMAGE_SERIES_ACQUISITION_ASSOCIATION = "imageStudy";
     private static final String STUDY_ASSOCIATION = "study";
     private static final String PLATFORM_ASSOCIATION = "platform";
+    private static final String GENES_ASSOCIATION = "genes";
     private static final String NAME_ATTRIBUTE = "name";
     private static final String SYMBOL_ATTRIBUTE = "symbol";
     private SecurityManager securityManager;
@@ -340,7 +342,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
         Criteria criteria = getCurrentSession().createCriteria(AbstractReporter.class);
         if (!geneSymbols.isEmpty()) {
-            criteria.createCriteria("genes").add(Restrictions.in(SYMBOL_ATTRIBUTE, geneSymbols));
+            criteria.createCriteria(GENES_ASSOCIATION).add(Restrictions.in(SYMBOL_ATTRIBUTE, geneSymbols));
         }
         criteria.add(Restrictions.in("reporterList", studyReporterLists));
         reporters.addAll((List<AbstractReporter>) criteria.list());
@@ -424,7 +426,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             case GENE_NAME:
                 if (StringUtils.isNotBlank(copyNumberCriterion.getGeneSymbol())) {
                     reporterListsCrit.createCriteria("reporters").
-                        createCriteria("genes").add(Restrictions.in(SYMBOL_ATTRIBUTE, 
+                        createCriteria(GENES_ASSOCIATION).add(Restrictions.in(SYMBOL_ATTRIBUTE, 
                             copyNumberCriterion.getGeneSymbols()));
                 }
                 break;
@@ -448,6 +450,26 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                 throw new IllegalStateException("Unknown genomic interval type");
             }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
+    public List<Gene> findGenesByLocation(Integer startPosition, Integer endPosition, 
+            Study study, Platform platform) {
+        Criteria reporterCrit = getCurrentSession().createCriteria(DnaAnalysisReporter.class);
+        reporterCrit.add(Restrictions.between("position", startPosition, endPosition));
+        Criteria reporterListCrit = reporterCrit.createCriteria("reporterList");
+        reporterListCrit.add(Restrictions.eq(PLATFORM_ASSOCIATION, platform));
+        reporterListCrit.createCriteria("arrayDatas").add(Restrictions.eq(STUDY_ASSOCIATION, study));
+        List<DnaAnalysisReporter> reporters = reporterCrit.list();
+        Set<Gene> geneList = new HashSet<Gene>();
+        for (DnaAnalysisReporter reporter : reporters) {
+            geneList.addAll(reporter.getGenes());
+        }
+        return new ArrayList(geneList);
+    }
+
 
     private Set<ReporterList> getStudyReporterLists(Study study, ReporterTypeEnum reporterType, Platform platform) {
         Set<ReporterList> reporterLists = new HashSet<ReporterList>();
@@ -597,7 +619,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         reporterCriteria.createCriteria("reporterList").
                 createCriteria("arrayDatas").
                     add(Restrictions.eq(STUDY_ASSOCIATION, study));
-        reporterCriteria.createCriteria("genes").
+        reporterCriteria.createCriteria(GENES_ASSOCIATION).
             add(Restrictions.in(SYMBOL_ATTRIBUTE, symbols));
         Set<AbstractReporter> reporterSet = new HashSet<AbstractReporter>();
         reporterSet.addAll(reporterCriteria.list());
