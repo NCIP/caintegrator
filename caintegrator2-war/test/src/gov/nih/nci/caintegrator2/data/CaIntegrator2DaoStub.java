@@ -522,4 +522,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return null;
     }
 
+    public List<Gene> findGenesByLocation(Integer startPosition, Integer endPosition, Study study, Platform platform) {
+        return new ArrayList<Gene>();
+    }
+
 }
