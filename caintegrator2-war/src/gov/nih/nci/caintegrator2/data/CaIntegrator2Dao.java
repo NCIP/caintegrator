@@ -252,6 +252,17 @@ public interface CaIntegrator2Dao {
      */
     List<SegmentData> findMatchingSegmentDatasByLocation(List<SegmentData> segmentDatasToMatch, 
             Study study, Platform platform);
+    
+    /**
+     * Returns the genes associated with Dna reporters for the given chromosomal start and end positions.
+     * @param startPosition on the chromosome to search for genes.
+     * @param endPosition on the chromosome to search for genes.
+     * @param study to restrict search for the genes belonging to this study.
+     * @param platform to restrict search for the genes belonging to this platform.
+     * @return list of genes in given location.
+     */
+    List<Gene> findGenesByLocation(Integer startPosition, Integer endPosition, 
+            Study study, Platform platform);
 
     /**
      * Returns the definitions that matches the name given (if one exists).

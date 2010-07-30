@@ -219,7 +219,9 @@ class GenomicQueryHandler {
     private void addSegmentDataToRow(SegmentData segmentData, GenomicDataResultRow row) {
         row.setSegmentDataResultValue(new SegmentDataResultValue());
         row.getSegmentDataResultValue().setChromosomalLocation(segmentData.getLocation());
-        // todo: make a DAO function that can retrieve all the genes falling in the range of a segment data.
+        row.getSegmentDataResultValue().getGenes().addAll(
+                dao.findGenesByLocation(segmentData.getLocation().getStartPosition(), 
+                segmentData.getLocation().getEndPosition(), query.getSubscription().getStudy(), query.getPlatform()));
     }
 
     private void addToGeneExpressionResult(ArrayDataValues values, GenomicDataQueryResult result,
