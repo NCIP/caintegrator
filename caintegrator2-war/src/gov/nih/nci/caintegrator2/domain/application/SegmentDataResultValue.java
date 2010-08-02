@@ -49,8 +49,15 @@ public class SegmentDataResultValue extends AbstractCaIntegrator2Object {
      * @return the comparator code
      */
     public int compareTo(SegmentDataResultValue segmentDataResultValue) {
-        int i = chromosomalLocation.getChromosome().compareTo(
+        int i = 0;
+        try {
+            // Try casting the chromosome to an integer, if it fails then just compare as string.
+            i = Integer.valueOf(chromosomalLocation.getChromosome()).compareTo(
+                    Integer.valueOf(segmentDataResultValue.getChromosomalLocation().getChromosome()));
+        } catch (Exception e) {
+            i = chromosomalLocation.getChromosome().compareTo(
                     segmentDataResultValue.getChromosomalLocation().getChromosome());
+        }
         if (i == 0) {
             i = chromosomalLocation.getStartPosition().compareTo(
                     segmentDataResultValue.getChromosomalLocation().getStartPosition());

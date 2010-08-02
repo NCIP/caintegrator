@@ -117,9 +117,9 @@ public final class DisplayableSegmentationQueryResult {
     private void loadRows() {
         for (GenomicDataResultRow row : result.getRowCollection()) {
             List<String> values = new ArrayList<String>();
+            values.add(row.getSegmentDataResultValue().getChromosomalLocation().getChromosome().toString());
             values.add(row.getSegmentDataResultValue().getChromosomalLocation().getStartPosition().toString());
             values.add(row.getSegmentDataResultValue().getChromosomalLocation().getEndPosition().toString());
-            values.add(row.getSegmentDataResultValue().getChromosomalLocation().getChromosome().toString());
             values.add(row.getSegmentDataResultValue().getDisplayGenes());
             for (GenomicDataResultColumn column : result.getColumnCollection()) {
                 values.add(getValue(row, column));
@@ -138,9 +138,9 @@ public final class DisplayableSegmentationQueryResult {
     }
 
     private void loadHeaders() {
+        headers.add("Chromosome");
         headers.add("Segment Start");
         headers.add("Segment Stop");
-        headers.add("Chromosome");
         headers.add("Gene");
         for (GenomicDataResultColumn column : result.getColumnCollection()) {
             headers.add(column.getSampleAcquisition().getSample().getName());

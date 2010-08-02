@@ -191,7 +191,7 @@ public class GenomicDataResultRowComparatorTest {
         // Test segment data result
         resultRow1 = new GenomicDataResultRow();
          segmentDataResultValue1 = new SegmentDataResultValue();
-        segmentDataResultValue1.setChromosomalLocation(createChromosomalLocation("2", 111, 777));
+        segmentDataResultValue1.setChromosomalLocation(createChromosomalLocation("nonNumber", 111, 777));
         resultRow1.setSegmentDataResultValue(segmentDataResultValue1);
         resultRow2 = new GenomicDataResultRow();
          segmentDataResultValue2 = new SegmentDataResultValue();
@@ -199,7 +199,7 @@ public class GenomicDataResultRowComparatorTest {
         resultRow2.setSegmentDataResultValue(segmentDataResultValue2);
         resultRow3 = new GenomicDataResultRow();
          segmentDataResultValue3 = new SegmentDataResultValue();
-        segmentDataResultValue3.setChromosomalLocation(createChromosomalLocation("1", 111, 555));
+        segmentDataResultValue3.setChromosomalLocation(createChromosomalLocation("11", 111, 555));
         resultRow3.setSegmentDataResultValue(segmentDataResultValue3);
         
         resultRows.clear();
@@ -209,9 +209,9 @@ public class GenomicDataResultRowComparatorTest {
 
         Collections.sort(resultRows, new GenomicDataResultRowComparator());
 
-        assertEquals(resultRow3, resultRows.get(0));
-        assertEquals(resultRow1, resultRows.get(1));
-        assertEquals(resultRow2, resultRows.get(2));
+        assertEquals(resultRow2, resultRows.get(0));
+        assertEquals(resultRow3, resultRows.get(1));
+        assertEquals(resultRow1, resultRows.get(2));
         
         
     }
