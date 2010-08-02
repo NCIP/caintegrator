@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicIntervalTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
+import gov.nih.nci.caintegrator2.domain.application.SegmentBoundaryTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -564,6 +565,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         CopyNumberAlterationCriterion copyNumberCriterion = new CopyNumberAlterationCriterion();
         copyNumberCriterion.setLowerLimit(.02f);
         copyNumberCriterion.setUpperLimit(null);
+        copyNumberCriterion.setSegmentBoundaryType(SegmentBoundaryTypeEnum.INCLUSIVE);
         copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES);
         copyNumberCriterion.setChromosomeCoordinateHigh(1800000f);
         copyNumberCriterion.setChromosomeCoordinateLow(20000f);
@@ -605,6 +607,20 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         copyNumberCriterion.setUpperLimit(.02f);
         segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
         assertEquals(5, segmentDatas.size());
+        
+        copyNumberCriterion.setUpperLimit(.15f);
+        copyNumberCriterion.setLowerLimit(.01f);
+        copyNumberCriterion.setChromosomeCoordinateLow(20000f);
+        copyNumberCriterion.setChromosomeCoordinateHigh(40000f);
+        copyNumberCriterion.setSegmentBoundaryType(SegmentBoundaryTypeEnum.ONE_OR_MORE);
+        copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES);
+        segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
+        assertEquals(3, segmentDatas.size());
+        
+        copyNumberCriterion.setSegmentBoundaryType(SegmentBoundaryTypeEnum.INCLUSIVE);
+        segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
+        assertEquals(1, segmentDatas.size());
+        
     }
     
     @Test
