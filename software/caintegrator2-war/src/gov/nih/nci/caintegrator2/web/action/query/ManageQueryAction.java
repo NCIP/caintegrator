@@ -623,15 +623,11 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     private String runQuery() {
         try {
             if (ResultTypeEnum.GENE_EXPRESSION.getValue().equals(
-                    getQueryForm().getResultConfiguration().getResultType()) 
-                || ResultTypeEnum.COPY_NUMBER.getValue().equals(
-                        getQueryForm().getResultConfiguration().getResultType())) {
-                GenomicDataQueryResult genomicResult;
-                genomicResult = queryManagementService.executeGenomicDataQuery(getQueryForm().getQuery());
-                if (genomicResult.getRowCollection() != null) {
-                    Collections.sort(genomicResult.getRowCollection(), new GenomicDataResultRowComparator());
-                }
-                setGenomicDataQueryResult(genomicResult);
+                    getQueryForm().getResultConfiguration().getResultType())) {
+                setGenomicDataQueryResult(runGenomicQuery());
+            } else if (ResultTypeEnum.COPY_NUMBER.getValue().equals(
+                            getQueryForm().getResultConfiguration().getResultType())) {
+                setSegmentationQueryResult(new DisplayableSegmentationQueryResult(runGenomicQuery()));
             } else {
                 QueryResult result = queryManagementService.execute(getQueryForm().getQuery());
                 loadAllImages(result);
@@ -644,6 +640,15 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         }
         displayTab = RESULTS_TAB;
         return SUCCESS;
+    }
+
+    private GenomicDataQueryResult runGenomicQuery() throws InvalidCriterionException {
+        GenomicDataQueryResult genomicResult;
+        genomicResult = queryManagementService.executeGenomicDataQuery(getQueryForm().getQuery());
+        if (genomicResult.getRowCollection() != null) {
+            Collections.sort(genomicResult.getRowCollection(), new GenomicDataResultRowComparator());
+        }
+        return genomicResult;
     }
 
     private void ensureQueryIsLoaded() {
@@ -856,6 +861,9 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     public void setPageSize(int pageSize) {
         if (getQueryResult() != null) {
             getQueryResult().setPageSize(pageSize);
+        }
+        if (getSegmentationQueryResult() != null) {
+            getSegmentationQueryResult().setPageSize(pageSize);
         }
     }
 

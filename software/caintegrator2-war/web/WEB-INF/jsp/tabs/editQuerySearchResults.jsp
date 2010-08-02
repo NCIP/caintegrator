@@ -226,6 +226,21 @@
                 </div>
             </s:if>
         </s:if>
+        <s:elseif test='%{query.resultType.value.equals("copyNumber")}'>
+            <s:set name="pageSizeVar" id="pageSizeVar" value="%{segmentationQueryResult.pageSize}" />
+            <display:table name="segmentationQueryResult.rows" uid="segmentationQueryResultRows" id="segmentationQueryResultRows" pagesize="${pageSizeVar}"
+                sort="list" class="data" requestURI="manageQuery.action#" export="true">
+                <display:setProperty name="paging.banner.placement" value="both" />
+                <display:setProperty name="export.excel" value="false" />
+                <display:setProperty name="export.xml" value="false" />
+                <display:setProperty name="export.csv.filename" value="StudySearchResults.csv" />
+                <display:setProperty name="export.csv.include_header" value="true" />
+                <s:iterator value="segmentationQueryResult.headers" status="status" id="column">
+                    <s:set id="curValue" name="curValue" value="%{segmentationQueryResult.rows.get(#attr.segmentationQueryResultRows_rowNum - 1).get(#status.count - 1)}" />
+                    <display:column title="${column}">${curValue}</display:column>
+                </s:iterator>
+            </display:table>
+        </s:elseif>
         <s:else>
             <s:set name="pageSizeVar" id="pageSizeVar" value="%{queryResult.pageSize}" />
             <display:table name="queryResult.rows" uid="queryResultRows" id="queryResultRows" pagesize="${pageSizeVar}"
