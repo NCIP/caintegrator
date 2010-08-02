@@ -108,6 +108,7 @@ import gov.nih.nci.caintegrator2.web.action.analysis.PrincipalComponentAnalysisF
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
 import gov.nih.nci.caintegrator2.web.action.platform.form.PlatformForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
+import gov.nih.nci.caintegrator2.web.action.query.DisplayableSegmentationQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
 
 import java.util.HashMap;
@@ -122,6 +123,7 @@ import com.opensymphony.xwork2.Preparable;
  * Base class for all Struts 2 <code>Actions</code> in the application, provides context set up
  * for the current request.
  */
+@SuppressWarnings("PMD.ExcessiveClassLength")  // A lot of methods
 public abstract class AbstractCaIntegrator2Action extends ActionSupport implements Preparable {
     
     private WorkspaceService workspaceService;
@@ -329,6 +331,17 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
             return null;
         }
     }
+
+    /**
+     * @return the DisplayableSegmentationQueryResult to set
+     */
+    protected final DisplayableSegmentationQueryResult getSegmentationQueryResult() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getSegmentationQueryResult();
+        } else {
+            return null;
+        }
+    }
     
     /**
      * Resets the query results.
@@ -352,6 +365,12 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
         getDisplayableWorkspace().setGenomicDataQueryResult(genomicDataQueryResult);
     }
 
+    /**
+     * @param result the segmentationQueryResult to set
+     */
+    protected final void setSegmentationQueryResult(DisplayableSegmentationQueryResult result) {
+        getDisplayableWorkspace().setSegmentationQueryResult(result);
+    }
 
     /**
      * @return the analysisForm
@@ -596,7 +615,6 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     public boolean isStudyManager() {
         return (isAnonymousUser()) ? false : SecurityHelper.isStudyManager(SecurityHelper.getCurrentUsername());
     }
-
    
     /**
      * @param inputString the string being parsed

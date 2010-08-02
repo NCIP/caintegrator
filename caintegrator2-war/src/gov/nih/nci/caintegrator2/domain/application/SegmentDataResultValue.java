@@ -41,7 +41,7 @@ public class SegmentDataResultValue extends AbstractCaIntegrator2Object {
     /**
      * @return the display list of genes
      */
-    public String getDislpayGenes() {
+    public String getDisplayGenes() {
         return StringUtils.join(genes, ", ");
     }
     /**
