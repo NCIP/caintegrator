@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
@@ -158,6 +159,8 @@ public class CriteriaGroup {
         if (criterion instanceof GeneNameCriterion
                 && GenomicCriterionTypeEnum.COPY_NUMBER.equals(((GeneNameCriterion) criterion)
                         .getGenomicCriterionType())) {
+            return CriterionRowTypeEnum.COPY_NUMBER.getValue();
+        } else if (criterion instanceof CopyNumberAlterationCriterion) {
             return CriterionRowTypeEnum.COPY_NUMBER.getValue();
         }
         return CriterionRowTypeEnum.GENE_EXPRESSION.getValue();
