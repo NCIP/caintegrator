@@ -102,6 +102,7 @@ public final class DisplayableSegmentationQueryResult {
     private final GenomicDataQueryResult result;
     private final List<String> headers = new ArrayList<String>();
     private final List<List<String>> rows = new ArrayList<List<String>>();
+    private final List<List<Boolean>> meetsCriterion = new ArrayList<List<Boolean>>();
     private int pageSize = DEFAULT_PAGE_SIZE;
     
     DisplayableSegmentationQueryResult(GenomicDataQueryResult result) {
@@ -117,14 +118,21 @@ public final class DisplayableSegmentationQueryResult {
     private void loadRows() {
         for (GenomicDataResultRow row : result.getRowCollection()) {
             List<String> values = new ArrayList<String>();
+            List<Boolean> matches = new ArrayList<Boolean>();
             values.add(row.getSegmentDataResultValue().getChromosomalLocation().getChromosome().toString());
+            matches.add(false);
             values.add(row.getSegmentDataResultValue().getChromosomalLocation().getStartPosition().toString());
+            matches.add(false);
             values.add(row.getSegmentDataResultValue().getChromosomalLocation().getEndPosition().toString());
+            matches.add(false);
             values.add(row.getSegmentDataResultValue().getDisplayGenes());
+            matches.add(false);
             for (GenomicDataResultColumn column : result.getColumnCollection()) {
                 values.add(getValue(row, column));
+                matches.add(isMatching(row, column));
             }
             rows.add(values);
+            meetsCriterion.add(matches);
         }
     }
 
@@ -135,6 +143,15 @@ public final class DisplayableSegmentationQueryResult {
             }
         }
         return null;
+    }
+
+    private Boolean isMatching(GenomicDataResultRow row, GenomicDataResultColumn column) {
+        for (GenomicDataResultValue value : row.getValues()) {
+            if (value.getColumn().equals(column)) {
+                return value.isMeetsCriterion();
+            }
+        }
+        return false;
     }
 
     private void loadHeaders() {
@@ -172,6 +189,13 @@ public final class DisplayableSegmentationQueryResult {
         return rows;
     }
     
+    /**
+     * @return the meetsCriterion
+     */
+    public List<List<Boolean>> getMeetsCriterion() {
+        return meetsCriterion;
+    }
+
     /**
      * @return the number of rows.
      */
