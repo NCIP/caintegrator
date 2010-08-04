@@ -117,8 +117,6 @@ class AffymetrixCnPlatformLoader extends AbstractPlatformLoader {
     static final String DBSNP_RS_ID_HEADER = "dbSNP RS ID";
     private static final Logger LOGGER = Logger.getLogger(AffymetrixCnPlatformLoader.class);
     private static final String CHIP_TYPE_HEADER = "chip_type";
-    private static final String CHIP_TYPE_50K_XBA = "Mapping50K_Xba240";
-    private static final String CHIP_TYPE_50K_HIND = "Mapping50K_Hind240";
     private static final String CHIP_TYPE_SNP6 = "GenomeWideSNP_6";
     private static final String VERSION_HEADER = "netaffx-annotation-netaffx-build";
     private static final String GENOME_VERSION_HEADER = "genome-version";
@@ -127,6 +125,7 @@ class AffymetrixCnPlatformLoader extends AbstractPlatformLoader {
     private static final String NO_VALUE_INDICATOR = "---";
     private static final String CHROMOSOME_HEADER = "Chromosome";
     private static final String POSITION_HEADER = "Physical Position";
+    private static final String POSITION_HEADER_SNP_6 = "Chromosome Start";
     private Map<String, String> fileHeaders;
 
     AffymetrixCnPlatformLoader(AffymetrixCnPlatformSource source) {
@@ -284,16 +283,8 @@ class AffymetrixCnPlatformLoader extends AbstractPlatformLoader {
      * @return the positionHeader
      */
     public String getPositionHeader() {
-        String chromosomePositionHeader = POSITION_HEADER;
-        
-        if (getHeaderValue(CHIP_TYPE_HEADER) == CHIP_TYPE_SNP6) {
-            chromosomePositionHeader = "Chromosome Start";
-        } else if (getHeaderValue(CHIP_TYPE_HEADER) == CHIP_TYPE_50K_XBA) {
-            chromosomePositionHeader = "Physical Position";
-        } else if (getHeaderValue(CHIP_TYPE_HEADER) == CHIP_TYPE_50K_HIND) {
-            chromosomePositionHeader = "Physical Position";
-        }
-        return chromosomePositionHeader;
+        return CHIP_TYPE_SNP6.equals(getHeaderValue(CHIP_TYPE_HEADER)) 
+            ? POSITION_HEADER_SNP_6 : POSITION_HEADER;
     }
 
     /**
