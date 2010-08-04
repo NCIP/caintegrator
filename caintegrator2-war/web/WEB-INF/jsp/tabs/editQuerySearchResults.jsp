@@ -237,7 +237,20 @@
                 <display:setProperty name="export.csv.include_header" value="true" />
                 <s:iterator value="segmentationQueryResult.headers" status="status" id="column">
                     <s:set id="curValue" name="curValue" value="%{segmentationQueryResult.rows.get(#attr.segmentationQueryResultRows_rowNum - 1).get(#status.count - 1)}" />
-                    <display:column title="${column}">${curValue}</display:column>
+                    <s:set name="meetsCriterion" value="%{segmentationQueryResult.meetsCriterion.get(#attr.segmentationQueryResultRows_rowNum - 1).get(#status.count - 1)}" />
+                    <s:if test='#status.count == 4'>
+                        <display:column title="${column}">
+                            <a onclick="alert('${curValue}');">View</a>
+                        </display:column>
+                    </s:if>
+                    <s:else>
+                        <s:if test="#meetsCriterion">
+                            <display:column title="${column}"><b><font color="white">${curValue}</font></b></display:column>
+                        </s:if>
+                        <s:else>
+                            <display:column title="${column}">${curValue}</display:column>
+                        </s:else>
+                    </s:else>
                 </s:iterator>
             </display:table>
         </s:elseif>

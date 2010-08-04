@@ -109,6 +109,7 @@ public class DisplayableSegmentationQueryResultTest {
         assertEquals(6, result.getHeaders().size());
         assertEquals("Sample2", result.getHeaders().get(5));
         assertEquals("0.123", result.getRows().get(0).get(5));
+        assertTrue(result.getMeetsCriterion().get(0).get(5));
         assertEquals(null, result.getRows().get(1).get(5));
     }
     
@@ -139,6 +140,7 @@ public class DisplayableSegmentationQueryResultTest {
         GenomicDataResultValue genomicDataResultValue = new GenomicDataResultValue();
         genomicDataResultValue.setColumn(column);
         genomicDataResultValue.setValue(0.123F);
+        genomicDataResultValue.setMeetsCriterion(true);
         return genomicDataResultValue;
     }
 
