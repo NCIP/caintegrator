@@ -233,7 +233,7 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
             break;
             
         case AGILENT_GENE_EXPRESSION:
-            if (!platformFileFileName.endsWith(".csv")
+            if (!checkCsvTsvTxtExtension()
                     && !platformFileFileName.endsWith(".xml")
                     && !platformFileFileName.endsWith(".adf")) {
                 extensionNotSupported();
@@ -250,6 +250,14 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
         default:
             addActionError("Invalid platform type: " + platformType);
         }
+    }
+    
+    private boolean checkCsvTsvTxtExtension() {
+        if (!platformFileFileName.endsWith(".csv") 
+                && !platformFileFileName.endsWith(".tsv") && !platformFileFileName.endsWith(".txt")) {
+            return false;
+        }
+        return true;
     }
     
     private void extensionNotSupported() {

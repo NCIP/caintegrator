@@ -137,7 +137,7 @@ public class AffymetrixCnPlatformLoaderTest {
             platform = loader.load(dao);
         } catch (PlatformLoadingException e) {
             hasException = true;
-            assertEquals("Invalid file format; Headers not match.", e.getMessage());
+            assertEquals("Invalid file format; header 'Probe Set ID' is missing", e.getMessage());
         }
         assertTrue(hasException);
     }

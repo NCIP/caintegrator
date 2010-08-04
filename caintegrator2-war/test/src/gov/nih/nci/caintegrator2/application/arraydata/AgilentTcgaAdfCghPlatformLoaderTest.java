@@ -138,7 +138,7 @@ public class AgilentTcgaAdfCghPlatformLoaderTest {
             platform = loader.load(dao);
         } catch (PlatformLoadingException e) {
             hasException = true;
-            assertEquals("Invalid file format; Headers not match.", e.getMessage());
+            assertEquals("Invalid file format; header 'Composite_chr_coords' is missing", e.getMessage());
         }
         assertTrue(hasException);
     }
