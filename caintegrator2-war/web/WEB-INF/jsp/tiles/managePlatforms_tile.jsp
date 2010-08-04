@@ -146,7 +146,7 @@
                             <span class="wwctrl"></span>
                         </s:div>
                         <s:div id="commentAllFormatsDiv" cssClass="inlinehelp_form_element" cssStyle="%{adfGemlFileDisplay}">
-                            <span class="wwlbl">(csv, adf, or GEML xml file format)</span>
+                            <span class="wwlbl">(tab-delimited csv/txt/tsv, adf, or GEML xml file format)</span>
                             <span class="wwctrl"></span>
                         </s:div>
                         <s:div id="addFileButtonDiv" cssStyle="%{addButtonDisplay}">

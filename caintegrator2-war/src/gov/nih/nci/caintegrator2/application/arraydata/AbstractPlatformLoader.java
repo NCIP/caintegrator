@@ -186,7 +186,7 @@ public abstract class AbstractPlatformLoader {
     private void validate(String[] requiredHeaders) throws PlatformLoadingException {
         for (String header : requiredHeaders) {
             if (!headerToIndexMap.containsKey(header)) {
-                throw new PlatformLoadingException("Invalid file format; Headers not match.");
+                throw new PlatformLoadingException("Invalid file format; header '" + header + "' is missing");
             }
         }
     }
