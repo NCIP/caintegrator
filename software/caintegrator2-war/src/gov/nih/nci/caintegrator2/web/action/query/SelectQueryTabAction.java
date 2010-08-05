@@ -130,6 +130,9 @@ public class SelectQueryTabAction extends AbstractCaIntegrator2Action {
         if (getQueryResult() != null) {
             return getQueryResult().getPageSize();
         }
+        if (getCopyNumberQueryResult() != null) {
+            return getCopyNumberQueryResult().getPageSize();
+        }
         return DEFAULT_PAGE_SIZE;
     }
 
