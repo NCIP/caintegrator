@@ -250,7 +250,7 @@
                     <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).meetsCriterion}" />
                     <s:if test="#meetsCriterion">
                         <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).highlightColor}" />
-                        <display:column title="${column}" media="html"><div style="background-color:${highlightColor}"><b><font color="white">${curValue}</font></b></div></display:column>
+                        <display:column title="${column}" style="background-color:${highlightColor};color:white">${curValue}</display:column>
                     </s:if>
                     <s:else>
                         <display:column title="${column}">${curValue}</display:column>
