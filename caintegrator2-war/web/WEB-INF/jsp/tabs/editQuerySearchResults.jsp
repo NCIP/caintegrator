@@ -227,7 +227,7 @@
             </s:if>
         </s:if>
         <s:elseif test='%{query.resultType.value.equals("copyNumber")}'>
-            <s:set name="pageSizeVar" id="pageSizeVar" value="%copyNumberQueryResult.pageSize}" />
+            <s:set name="pageSizeVar" id="pageSizeVar" value="%{copyNumberQueryResult.pageSize}" />
             <display:table name="copyNumberQueryResult.rows" uid="copyNumberQueryResultRows" id="copyNumberQueryResultRows" pagesize="${pageSizeVar}"
                 sort="list" class="data" requestURI="manageQuery.action#" export="true">
                 <display:setProperty name="paging.banner.placement" value="both" />
