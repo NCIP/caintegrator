@@ -227,29 +227,33 @@
             </s:if>
         </s:if>
         <s:elseif test='%{query.resultType.value.equals("copyNumber")}'>
-            <s:set name="pageSizeVar" id="pageSizeVar" value="%{segmentationQueryResult.pageSize}" />
-            <display:table name="segmentationQueryResult.rows" uid="segmentationQueryResultRows" id="segmentationQueryResultRows" pagesize="${pageSizeVar}"
+            <s:set name="pageSizeVar" id="pageSizeVar" value="%copyNumberQueryResult.pageSize}" />
+            <display:table name="copyNumberQueryResult.rows" uid="copyNumberQueryResultRows" id="copyNumberQueryResultRows" pagesize="${pageSizeVar}"
                 sort="list" class="data" requestURI="manageQuery.action#" export="true">
                 <display:setProperty name="paging.banner.placement" value="both" />
                 <display:setProperty name="export.excel" value="false" />
                 <display:setProperty name="export.xml" value="false" />
                 <display:setProperty name="export.csv.filename" value="StudySearchResults.csv" />
                 <display:setProperty name="export.csv.include_header" value="true" />
-                <s:iterator value="segmentationQueryResult.headers" status="status" id="column">
-                    <s:set id="curValue" name="curValue" value="%{segmentationQueryResult.rows.get(#attr.segmentationQueryResultRows_rowNum - 1).get(#status.count - 1)}" />
-                    <s:set name="meetsCriterion" value="%{segmentationQueryResult.meetsCriterion.get(#attr.segmentationQueryResultRows_rowNum - 1).get(#status.count - 1)}" />
-                    <s:if test='#status.count == 4'>
-                        <display:column title="${column}">
-                            <a onclick="alert('${curValue}');">View</a>
-                        </display:column>
+                
+                <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).chromosome}" />
+                <display:column title="Chromosome">${curValue}</display:column>
+                <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).startPosition}" />
+                <display:column title="Start Position">${curValue}</display:column>
+                <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).endPosition}" />
+                <display:column title="End Position">${curValue}</display:column>
+                <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).genes}" />
+                <display:column title="Genes"><a onclick="alert('${curValue}');">View</a></display:column>
+                
+                <s:iterator value="copyNumberQueryResult.sampleHeaders" status="status" id="column">
+                    <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).displayableValue}" />
+                    <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).meetsCriterion}" />
+                    <s:if test="#meetsCriterion">
+                        <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).highlightColor}" />
+                        <display:column title="${column}"><div style="background-color:${highlightColor}"><b><font color="white">${curValue}</font></b></div></display:column>
                     </s:if>
                     <s:else>
-                        <s:if test="#meetsCriterion">
-                            <display:column title="${column}"><b><font color="white">${curValue}</font></b></display:column>
-                        </s:if>
-                        <s:else>
-                            <display:column title="${column}">${curValue}</display:column>
-                        </s:else>
+                        <display:column title="${column}">${curValue}</display:column>
                     </s:else>
                 </s:iterator>
             </display:table>
