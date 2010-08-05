@@ -99,18 +99,18 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 
 
-public class DisplayableSegmentationQueryResultTest {
+public class DisplayableCopyNumberQueryResultTest {
     
     @Test
     public void testAll() {
         GenomicDataQueryResult genomicDataQueryResult = createGenomicDataQueryResult();
-        DisplayableSegmentationQueryResult result = new DisplayableSegmentationQueryResult(
+        DisplayableCopyNumberQueryResult result = new DisplayableCopyNumberQueryResult(
                 genomicDataQueryResult);
-        assertEquals(6, result.getHeaders().size());
-        assertEquals("Sample2", result.getHeaders().get(5));
-        assertEquals("0.123", result.getRows().get(0).get(5));
-        assertTrue(result.getMeetsCriterion().get(0).get(5));
-        assertEquals(null, result.getRows().get(1).get(5));
+        assertEquals(2, result.getSampleHeaders().size());
+        assertEquals("Sample2", result.getSampleHeaders().get(1));
+        assertEquals("0.123", result.getRows().get(0).getValues().get(1).getDisplayableValue());
+        assertTrue(result.getRows().get(0).getValues().get(1).isMeetsCriterion());
+        assertEquals(null, result.getRows().get(0).getValues().get(0));
     }
     
     private GenomicDataQueryResult createGenomicDataQueryResult() {

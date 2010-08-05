@@ -627,7 +627,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
                 setGenomicDataQueryResult(runGenomicQuery());
             } else if (ResultTypeEnum.COPY_NUMBER.getValue().equals(
                             getQueryForm().getResultConfiguration().getResultType())) {
-                setSegmentationQueryResult(new DisplayableSegmentationQueryResult(runGenomicQuery()));
+                setCopyNumberQueryResult(new DisplayableCopyNumberQueryResult(runGenomicQuery()));
             } else {
                 QueryResult result = queryManagementService.execute(getQueryForm().getQuery());
                 loadAllImages(result);
@@ -862,8 +862,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         if (getQueryResult() != null) {
             getQueryResult().setPageSize(pageSize);
         }
-        if (getSegmentationQueryResult() != null) {
-            getSegmentationQueryResult().setPageSize(pageSize);
+        if (getCopyNumberQueryResult() != null) {
+            getCopyNumberQueryResult().setPageSize(pageSize);
         }
     }
 
