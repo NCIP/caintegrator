@@ -243,14 +243,14 @@
                 <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).endPosition}" />
                 <display:column title="End Position">${curValue}</display:column>
                 <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).genes}" />
-                <display:column title="Genes"><a onclick="alert('${curValue}');">View</a></display:column>
+                <display:column title="Genes" media="html"><a onclick="alert('${curValue}');">View</a></display:column>
                 
                 <s:iterator value="copyNumberQueryResult.sampleHeaders" status="status" id="column">
                     <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).displayableValue}" />
                     <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).meetsCriterion}" />
                     <s:if test="#meetsCriterion">
                         <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).highlightColor}" />
-                        <display:column title="${column}"><div style="background-color:${highlightColor}"><b><font color="white">${curValue}</font></b></div></display:column>
+                        <display:column title="${column}" media="html"><div style="background-color:${highlightColor}"><b><font color="white">${curValue}</font></b></div></display:column>
                     </s:if>
                     <s:else>
                         <display:column title="${column}">${curValue}</display:column>
