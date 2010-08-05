@@ -108,7 +108,7 @@ import gov.nih.nci.caintegrator2.web.action.analysis.PrincipalComponentAnalysisF
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
 import gov.nih.nci.caintegrator2.web.action.platform.form.PlatformForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableSegmentationQueryResult;
+import gov.nih.nci.caintegrator2.web.action.query.DisplayableCopyNumberQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
 
 import java.util.HashMap;
@@ -333,11 +333,11 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     }
 
     /**
-     * @return the DisplayableSegmentationQueryResult to set
+     * @return the DisplayableCopyNumberQueryResult
      */
-    protected final DisplayableSegmentationQueryResult getSegmentationQueryResult() {
+    protected final DisplayableCopyNumberQueryResult getCopyNumberQueryResult() {
         if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getSegmentationQueryResult();
+            return getDisplayableWorkspace().getCopyNumberQueryResult();
         } else {
             return null;
         }
@@ -366,10 +366,10 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     }
 
     /**
-     * @param result the segmentationQueryResult to set
+     * @param result the DisplayableCopyNumberQueryResult to set
      */
-    protected final void setSegmentationQueryResult(DisplayableSegmentationQueryResult result) {
-        getDisplayableWorkspace().setSegmentationQueryResult(result);
+    protected final void setCopyNumberQueryResult(DisplayableCopyNumberQueryResult result) {
+        getDisplayableWorkspace().setCopyNumberQueryResult(result);
     }
 
     /**

@@ -109,7 +109,7 @@ import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
 import gov.nih.nci.caintegrator2.web.action.platform.form.PlatformForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableSegmentationQueryResult;
+import gov.nih.nci.caintegrator2.web.action.query.DisplayableCopyNumberQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
 import gov.nih.nci.caintegrator2.web.action.study.management.DataElementSearchObject;
 
@@ -140,7 +140,7 @@ public class DisplayableUserWorkspace {
     private static final String CURRENT_STUDY_VALUE_STACK_KEY = "study";
     private static final String CURRENT_QUERY_RESULT_VALUE_STACK_KEY = "queryResult";
     private static final String CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY = "genomicDataQueryResult";
-    private static final String CURRENT_SEGMENTATION_RESULT_VALUE_STACK_KEY = "segmentationQueryResult";
+    private static final String CURRENT_COPY_NUMBER_RESULT_VALUE_STACK_KEY = "copyNumberQueryResult";
     private static final String CURRENT_STUDY_LOGO_KEY = "studyLogo";
     
     private Long currentStudySubscriptionId;
@@ -156,7 +156,7 @@ public class DisplayableUserWorkspace {
     private final GEPlotForm gePlotForm = new GEPlotForm();
     private DisplayableQueryResult queryResult;
     private GenomicDataQueryResult genomicDataQueryResult;
-    private DisplayableSegmentationQueryResult segmentationQueryResult;
+    private DisplayableCopyNumberQueryResult copyNumberQueryResult;
     private NCIADicomJob dicomJob;
     private final DataElementSearchObject dataElementSearchObject = new DataElementSearchObject();
     private boolean createPlotSelected = false;
@@ -276,7 +276,7 @@ public class DisplayableUserWorkspace {
         if (currentStudySubscriptionId == null || currentStudySubscriptionId.equals(NO_STUDY_SELECTED_ID)) {
             setQueryResult(null);
             setGenomicDataQueryResult(null);
-            setSegmentationQueryResult(null);
+            setCopyNumberQueryResult(null);
             getQueryForm().setQuery(null, null);
         }
         this.currentStudySubscriptionId = currentStudySubscriptionId;
@@ -349,7 +349,7 @@ public class DisplayableUserWorkspace {
     private void putResultObjectsOnValueStack() {
         getValueStack().set(CURRENT_QUERY_RESULT_VALUE_STACK_KEY, getQueryResult());
         getValueStack().set(CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY, getGenomicDataQueryResult());
-        getValueStack().set(CURRENT_SEGMENTATION_RESULT_VALUE_STACK_KEY, getSegmentationQueryResult());
+        getValueStack().set(CURRENT_COPY_NUMBER_RESULT_VALUE_STACK_KEY, getCopyNumberQueryResult());
     }
 
     /**
@@ -383,18 +383,18 @@ public class DisplayableUserWorkspace {
     }
     
     /**
-     * @return the segmentationQueryResult
+     * @return the copyNumberQueryResult
      */
-    public DisplayableSegmentationQueryResult getSegmentationQueryResult() {
-        return segmentationQueryResult;
+    public DisplayableCopyNumberQueryResult getCopyNumberQueryResult() {
+        return copyNumberQueryResult;
     }
 
     /**
-     * @param segmentationQueryResult the segmentationQueryResult to set
+     * @param copyNumberQueryResult the copyNumberQueryResult to set
      */
-    public void setSegmentationQueryResult(DisplayableSegmentationQueryResult segmentationQueryResult) {
-        this.segmentationQueryResult = segmentationQueryResult;
-        getValueStack().set(CURRENT_SEGMENTATION_RESULT_VALUE_STACK_KEY, getSegmentationQueryResult());
+    public void setCopyNumberQueryResult(DisplayableCopyNumberQueryResult copyNumberQueryResult) {
+        this.copyNumberQueryResult = copyNumberQueryResult;
+        getValueStack().set(CURRENT_COPY_NUMBER_RESULT_VALUE_STACK_KEY, getCopyNumberQueryResult());
     }
 
     /**

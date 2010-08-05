@@ -97,15 +97,14 @@ import java.util.List;
 /**
  * Wraps access to a <code>QueryResult</code> object for easy use in display JSPs.
  */
-public final class DisplayableSegmentationQueryResult {
+public final class DisplayableCopyNumberQueryResult {
     private static final int DEFAULT_PAGE_SIZE = 20;
     private final GenomicDataQueryResult result;
-    private final List<String> headers = new ArrayList<String>();
-    private final List<List<String>> rows = new ArrayList<List<String>>();
-    private final List<List<Boolean>> meetsCriterion = new ArrayList<List<Boolean>>();
+    private final List<String> sampleHeaders = new ArrayList<String>();
+    private final List<DisplayableCopyNumberResultRow> rows = new ArrayList<DisplayableCopyNumberResultRow>();
     private int pageSize = DEFAULT_PAGE_SIZE;
     
-    DisplayableSegmentationQueryResult(GenomicDataQueryResult result) {
+    DisplayableCopyNumberQueryResult(GenomicDataQueryResult result) {
         this.result = result;
         load();
     }
@@ -117,50 +116,33 @@ public final class DisplayableSegmentationQueryResult {
 
     private void loadRows() {
         for (GenomicDataResultRow row : result.getRowCollection()) {
-            List<String> values = new ArrayList<String>();
-            List<Boolean> matches = new ArrayList<Boolean>();
-            values.add(row.getSegmentDataResultValue().getChromosomalLocation().getChromosome().toString());
-            matches.add(false);
-            values.add(row.getSegmentDataResultValue().getChromosomalLocation().getStartPosition().toString());
-            matches.add(false);
-            values.add(row.getSegmentDataResultValue().getChromosomalLocation().getEndPosition().toString());
-            matches.add(false);
-            values.add(row.getSegmentDataResultValue().getDisplayGenes());
-            matches.add(false);
+            DisplayableCopyNumberResultRow displayableRow = new DisplayableCopyNumberResultRow();
+            displayableRow.setChromosome(
+                    row.getSegmentDataResultValue().getChromosomalLocation().getChromosome().toString());
+            displayableRow.setStartPosition(
+                    row.getSegmentDataResultValue().getChromosomalLocation().getStartPosition().toString());
+            displayableRow.setEndPosition(
+                    row.getSegmentDataResultValue().getChromosomalLocation().getEndPosition().toString());
+            displayableRow.setGenes(row.getSegmentDataResultValue().getDisplayGenes());
             for (GenomicDataResultColumn column : result.getColumnCollection()) {
-                values.add(getValue(row, column));
-                matches.add(isMatching(row, column));
+                displayableRow.getValues().add(getValue(row, column));
             }
-            rows.add(values);
-            meetsCriterion.add(matches);
+            rows.add(displayableRow);
         }
     }
 
-    private String getValue(GenomicDataResultRow row, GenomicDataResultColumn column) {
+    private GenomicDataResultValue getValue(GenomicDataResultRow row, GenomicDataResultColumn column) {
         for (GenomicDataResultValue value : row.getValues()) {
             if (value.getColumn().equals(column)) {
-                return value.getDisplayableValue();
+                return value;
             }
         }
         return null;
     }
 
-    private Boolean isMatching(GenomicDataResultRow row, GenomicDataResultColumn column) {
-        for (GenomicDataResultValue value : row.getValues()) {
-            if (value.getColumn().equals(column)) {
-                return value.isMeetsCriterion();
-            }
-        }
-        return false;
-    }
-
     private void loadHeaders() {
-        headers.add("Chromosome");
-        headers.add("Segment Start");
-        headers.add("Segment Stop");
-        headers.add("Gene");
         for (GenomicDataResultColumn column : result.getColumnCollection()) {
-            headers.add(column.getSampleAcquisition().getSample().getName());
+            sampleHeaders.add(column.getSampleAcquisition().getSample().getName());
         }
     }
 
@@ -174,26 +156,19 @@ public final class DisplayableSegmentationQueryResult {
     }
     
     /**
-     * Returns the list of headers to display.
+     * Returns the list of sampleHeaders to display.
      * 
-     * @return the headers.
+     * @return the sampleHeaders.
      */
-    public List<String> getHeaders() {
-        return headers;
+    public List<String> getSampleHeaders() {
+        return sampleHeaders;
     }
 
     /**
      * @return the rows
      */
-    public List<List<String>> getRows() {
+    public List<DisplayableCopyNumberResultRow> getRows() {
         return rows;
-    }
-    
-    /**
-     * @return the meetsCriterion
-     */
-    public List<List<Boolean>> getMeetsCriterion() {
-        return meetsCriterion;
     }
 
     /**
