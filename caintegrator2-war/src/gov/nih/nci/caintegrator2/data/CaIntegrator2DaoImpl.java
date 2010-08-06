@@ -440,40 +440,42 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                 }
                 break;
             case CHROMOSOME_COORDINATES:
-                addChromosomeCoordinatesToCriterion(copyNumberCriterion, segmentDataCrit);
+                addChromosomeCoordinatesToCriterion(copyNumberCriterion.getSegmentBoundaryType(), 
+                        Math.round(copyNumberCriterion.getChromosomeCoordinateHigh()), 
+                        Math.round(copyNumberCriterion.getChromosomeCoordinateLow()), segmentDataCrit);
                 break;
             default:
                 throw new IllegalStateException("Unknown genomic interval type");
             }
     }
     
-    private void addChromosomeCoordinatesToCriterion(CopyNumberAlterationCriterion copyNumberCriterion,
+    private void addChromosomeCoordinatesToCriterion(SegmentBoundaryTypeEnum segmentBoundaryType,
+            Integer chromosomeCoordinateHigh, Integer chromosomeCooordinateLow,
             Criteria segmentDataCrit) {
-        SimpleExpression endLessThanHigh = Restrictions.le(LOCATION_END_ATTRIBUTE, Math.round(copyNumberCriterion
-                .getChromosomeCoordinateHigh()));
-        SimpleExpression startGreaterThanLow = Restrictions.ge(LOCATION_START_ATTRIBUTE, Math.round(copyNumberCriterion
-                    .getChromosomeCoordinateLow()));
-        SimpleExpression startLessThanLow = Restrictions.le(LOCATION_START_ATTRIBUTE, Math.round(copyNumberCriterion
-                    .getChromosomeCoordinateLow()));
-        SimpleExpression startLessThanHigh = Restrictions.le(LOCATION_START_ATTRIBUTE, Math.round(copyNumberCriterion
-                    .getChromosomeCoordinateHigh()));
-        SimpleExpression endGreaterThanLow = Restrictions.ge(LOCATION_END_ATTRIBUTE, Math.round(copyNumberCriterion
-                    .getChromosomeCoordinateLow()));
-        if (SegmentBoundaryTypeEnum.INCLUSIVE.equals(copyNumberCriterion.getSegmentBoundaryType()) 
-                || copyNumberCriterion.getChromosomeCoordinateHigh() == null 
-                || copyNumberCriterion.getChromosomeCoordinateLow() == null) {
-            if (copyNumberCriterion.getChromosomeCoordinateHigh() != null) {
-                segmentDataCrit.add(endLessThanHigh);
+        SimpleExpression segmentEndLessThanHigh = Restrictions.le(LOCATION_END_ATTRIBUTE, chromosomeCoordinateHigh);
+        SimpleExpression segmentStartGreaterThanLow = Restrictions.ge(LOCATION_START_ATTRIBUTE,
+                chromosomeCooordinateLow);
+        SimpleExpression segmentStartLessThanLow = Restrictions.le(LOCATION_START_ATTRIBUTE, chromosomeCooordinateLow);
+        SimpleExpression segmentStartLessThanHigh = Restrictions.le(LOCATION_START_ATTRIBUTE, 
+                chromosomeCoordinateHigh);
+        SimpleExpression segmentEndGreaterThanLow = Restrictions.ge(LOCATION_END_ATTRIBUTE, chromosomeCooordinateLow);
+        if (SegmentBoundaryTypeEnum.INCLUSIVE.equals(segmentBoundaryType) 
+                || chromosomeCoordinateHigh == null 
+                || chromosomeCooordinateLow == null) {
+            if (chromosomeCoordinateHigh != null) {
+                segmentDataCrit.add(segmentEndLessThanHigh);
             }
-            if (copyNumberCriterion.getChromosomeCoordinateLow() != null) {
-                segmentDataCrit.add(startGreaterThanLow);
+            if (chromosomeCooordinateLow != null) {
+                segmentDataCrit.add(segmentStartGreaterThanLow);
             }
         } else {
             Junction overallOrStatement = Restrictions.disjunction();
             // (loc.startPos <= lowerInput && loc.endPos >= lowerInput) 
             //  || (loc.startPos >= lowerInput  && loc.startPos <= higherInput) 
-            overallOrStatement.add(Restrictions.conjunction().add(startLessThanLow).add(endGreaterThanLow));
-            overallOrStatement.add(Restrictions.conjunction().add(startGreaterThanLow).add(startLessThanHigh));
+            overallOrStatement.add(Restrictions.conjunction().add(segmentStartLessThanLow)
+                    .add(segmentEndGreaterThanLow));
+            overallOrStatement.add(Restrictions.conjunction().add(segmentStartGreaterThanLow).add(
+                    segmentStartLessThanHigh));
             segmentDataCrit.add(overallOrStatement);
         }
     }
