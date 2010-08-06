@@ -519,7 +519,9 @@ public class QueryFormTest {
         assertEquals(4, group.getCompoundCriterion().getCriterionCollection().size());
         assertEquals("Segmentation", criterionRow.getFieldName());
         assertTrue(criterionRow.getCriterion() instanceof CopyNumberAlterationCriterion);
-        ((TextFieldParameter) criterionRow.getParameters().get(5)).setValue("1.2");
+        ((TextFieldParameter) criterionRow.getParameters().get(5)).setValue("1");
+        assertEquals("1", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getChromosomeNumber().toString());
+        ((TextFieldParameter) criterionRow.getParameters().get(6)).setValue("1.2");
         assertEquals("1.2", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getChromosomeCoordinateHigh().toString());
         
     }
