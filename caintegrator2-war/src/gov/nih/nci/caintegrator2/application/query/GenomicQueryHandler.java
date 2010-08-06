@@ -219,9 +219,10 @@ class GenomicQueryHandler {
     private void addSegmentDataToRow(SegmentData segmentData, GenomicDataResultRow row) {
         row.setSegmentDataResultValue(new SegmentDataResultValue());
         row.getSegmentDataResultValue().setChromosomalLocation(segmentData.getLocation());
-        row.getSegmentDataResultValue().getGenes().addAll(
-                dao.findGenesByLocation(segmentData.getLocation().getStartPosition(), 
-                segmentData.getLocation().getEndPosition(), query.getSubscription().getStudy(), query.getPlatform()));
+    // This is an incorrect way to add genes, and it's inefficient, need to wait until we have gene locations filled.
+//        row.getSegmentDataResultValue().getGenes().addAll(
+//              dao.findGenesByLocation(segmentData.getLocation().getStartPosition(), 
+//              segmentData.getLocation().getEndPosition(), query.getSubscription().getStudy(), query.getPlatform()));
     }
 
     private void addToGeneExpressionResult(ArrayDataValues values, GenomicDataQueryResult result,

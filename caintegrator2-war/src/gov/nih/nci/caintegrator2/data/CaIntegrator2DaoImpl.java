@@ -101,7 +101,6 @@ import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterio
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.SegmentBoundaryTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
@@ -365,8 +364,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         arrayDataCrit.add(Restrictions.eq(STUDY_ASSOCIATION, study));
         addSegmentValueCriterion(copyNumberCriterion, segmentDataCrit);
         addGenomicIntervalTypeToCriteria(copyNumberCriterion, segmentDataCrit, reporterListsCrit);
-        
-        // todo: Figure out the "Segment Interval", not sure exactly what that means at this time.
         return segmentDataCrit.list();
     }
 
@@ -434,24 +431,28 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                 }
                 break;
             case CHROMOSOME_NUMBER:
-                if (copyNumberCriterion.getChromosomeNumber() != null) {
-                    segmentDataCrit.add(Restrictions.eq("Location.chromosome", 
-                        String.valueOf(copyNumberCriterion.getChromosomeNumber())));
-                }
+                addChromosomeNumberToCriterion(copyNumberCriterion.getChromosomeNumber(), segmentDataCrit);
                 break;
             case CHROMOSOME_COORDINATES:
-                addChromosomeCoordinatesToCriterion(copyNumberCriterion.getSegmentBoundaryType(), 
-                        Math.round(copyNumberCriterion.getChromosomeCoordinateHigh()), 
+                addChromosomeCoordinatesToCriterion(Math.round(copyNumberCriterion.getChromosomeCoordinateHigh()), 
                         Math.round(copyNumberCriterion.getChromosomeCoordinateLow()), segmentDataCrit);
+                addChromosomeNumberToCriterion(copyNumberCriterion.getChromosomeNumber(), segmentDataCrit);
                 break;
             default:
                 throw new IllegalStateException("Unknown genomic interval type");
             }
     }
-    
-    private void addChromosomeCoordinatesToCriterion(SegmentBoundaryTypeEnum segmentBoundaryType,
-            Integer chromosomeCoordinateHigh, Integer chromosomeCooordinateLow,
+
+    private void addChromosomeNumberToCriterion(Integer chromosomeNumber,
             Criteria segmentDataCrit) {
+        if (chromosomeNumber != null) {
+            segmentDataCrit.add(Restrictions.eq("Location.chromosome", 
+                String.valueOf(chromosomeNumber)));
+        }
+    }
+    
+    private void addChromosomeCoordinatesToCriterion(Integer chromosomeCoordinateHigh, 
+            Integer chromosomeCooordinateLow, Criteria segmentDataCrit) {
         SimpleExpression segmentEndLessThanHigh = Restrictions.le(LOCATION_END_ATTRIBUTE, chromosomeCoordinateHigh);
         SimpleExpression segmentStartGreaterThanLow = Restrictions.ge(LOCATION_START_ATTRIBUTE,
                 chromosomeCooordinateLow);
@@ -459,9 +460,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         SimpleExpression segmentStartLessThanHigh = Restrictions.le(LOCATION_START_ATTRIBUTE, 
                 chromosomeCoordinateHigh);
         SimpleExpression segmentEndGreaterThanLow = Restrictions.ge(LOCATION_END_ATTRIBUTE, chromosomeCooordinateLow);
-        if (SegmentBoundaryTypeEnum.INCLUSIVE.equals(segmentBoundaryType) 
-                || chromosomeCoordinateHigh == null 
-                || chromosomeCooordinateLow == null) {
+        if (chromosomeCoordinateHigh == null || chromosomeCooordinateLow == null) {
             if (chromosomeCoordinateHigh != null) {
                 segmentDataCrit.add(segmentEndLessThanHigh);
             }
