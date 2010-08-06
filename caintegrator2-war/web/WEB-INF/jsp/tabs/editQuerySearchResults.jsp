@@ -253,7 +253,7 @@
                         <display:column title="${column}" style="background-color:${highlightColor};color:white">${curValue}</display:column>
                     </s:if>
                     <s:else>
-                        <display:column title="${column}">${curValue}</display:column>
+                        <display:column title="${column}" style="">${curValue}</display:column>
                     </s:else>
                 </s:iterator>
             </display:table>
