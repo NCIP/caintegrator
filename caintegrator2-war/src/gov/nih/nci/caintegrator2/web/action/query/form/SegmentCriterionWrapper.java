@@ -287,6 +287,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
             getParameters().add(createChromosomeNumberParameter());
             break;
         case CHROMOSOME_COORDINATES:
+            getParameters().add(createChromosomeNumberParameter());
             getParameters().add(createFromCoordinateParameter());
             getParameters().add(createToCoordinateParameter());
             break;
