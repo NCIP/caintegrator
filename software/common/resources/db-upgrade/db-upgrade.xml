@@ -404,4 +404,8 @@
         <comment>Create GENE_CHROMOSOMAL_LOCATION tables.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.13.sql"/>
     </changeSet>
+     <changeSet id="1.2.14" author="tandrews">
+        <comment>Fills the gene chromosomal locations with HG18.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.14.sql"/>
+    </changeSet>
 </databaseChangeLog>
