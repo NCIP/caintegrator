@@ -23,7 +23,7 @@
         <set name="geneLocations" lazy="true" cascade="all" >
             <cache usage="read-write" />
             <key column="GENE_LOCATION_CONFIGURATION_ID" />
-            <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ArrayData" />
+            <one-to-many class="GeneChromosomalLocation" />
         </set>
 	</class>
 </hibernate-mapping>
