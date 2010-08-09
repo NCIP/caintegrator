@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator2.domain.genomic">
+
+    <!-- Create typedef's for the enums -->
+    <typedef name="Status" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator2.application.study.Status</param> 
+    </typedef> 
+    
+    <typedef name="GenomeBuildVersionEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum</param> 
+    </typedef>
+
+	<class name="GeneLocationConfiguration" table="GENE_LOCATION_CONFIGURATION" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the Platform class -->
+		<property name="genomeBuildVersion" type="GenomeBuildVersionEnum" column="GENOME_BUILD_VERSION"/>
+		<property name="status" type="Status" column="STATUS"/>
+        <property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
+        <set name="geneLocations" lazy="true" cascade="all" >
+            <cache usage="read-write" />
+            <key column="GENE_LOCATION_CONFIGURATION_ID" />
+            <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ArrayData" />
+        </set>
+	</class>
+</hibernate-mapping>
