@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.query.FoldChangeCriterionHandler;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
@@ -96,12 +97,16 @@ import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
+import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -198,6 +203,19 @@ public class ArrayDataServiceImpl implements ArrayDataService {
         if (listener != null) {
             listener.statusUpdated(platformConfiguration);
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public GeneLocationConfiguration loadGeneLocationFile(File geneLocationFile, 
+            GenomeBuildVersionEnum genomeBuildVersion) 
+        throws ValidationException, IOException {
+        GeneLocationConfiguration geneLocationConfiguration = new GeneLocationConfiguration();
+        geneLocationConfiguration.setGenomeBuildVersion(genomeBuildVersion);
+        GeneLocationFileLoader.loadFile(geneLocationConfiguration, geneLocationFile);
+        dao.save(geneLocationConfiguration);
+        return geneLocationConfiguration;
     }
     
     
