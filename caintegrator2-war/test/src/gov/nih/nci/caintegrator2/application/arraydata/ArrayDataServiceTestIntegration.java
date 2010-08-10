@@ -1,9 +1,15 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
+import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
+import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.junit.Test;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
@@ -21,6 +27,13 @@ public class ArrayDataServiceTestIntegration extends AbstractTransactionalSpring
     
     protected String[] getConfigLocations() {
         return new String[] {"classpath*:/**/service-test-integration-config.xml"};
+    }
+    
+    @Test
+    public void testLoadGeneLocationFile() throws ValidationException, IOException {
+        GeneLocationConfiguration geneLocationConf = 
+            arrayDataService.loadGeneLocationFile(TestDataFiles.HG18_GENE_LOCATIONS_FILE, GenomeBuildVersionEnum.HG18);
+        assertEquals(19058, geneLocationConf.getGeneLocations().size());
     }
 
     @Test

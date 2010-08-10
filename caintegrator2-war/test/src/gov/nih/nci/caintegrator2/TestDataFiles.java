@@ -124,6 +124,8 @@ public class TestDataFiles {
     public static final String REMBRANDT_NCRI_SAMPLE_MAPPING_FILE_PATH = "/ncri_sample_mapping.csv";
     public static final String REMBRANDT_NCRI_COPY_NUMBER_MAPPING_FILE_PATH = "/rembrandt_copy_number_mapping.csv";
     public static final String NCRI_LOGO_FILE_PATH = "/ncri_logo.jpg";
+    public static final String HG18_GENE_LOCATIONS_FILE_PATH = "/glist-hg18.txt";
+    public static final String HG18_GENE_LOCATIONS_SMALL_FILE_PATH = "/glist-hg18-small.txt";
     
     public static final File VALID_FILE = getFile(VALID_FILE_RESOURCE_PATH);
     public static final File VALID_ANNOTATION_GROUP_FILE = getFile(VALID_ANNOTATION_GROUP_FILE_PATH);
@@ -147,6 +149,8 @@ public class TestDataFiles {
     public static final File ISPY_IMAGE_ANNOTATION_FILE = getFile(ISPY_IMAGE_ANNOTATION_FILE_PATH);
     public static final File ISPY_IMAGE_SERIES_TO_SUBJECT_FILE = getFile(ISPY_IMAGE_SERIES_TO_SUBJECT_FILE_PATH);
     public static final File NCRI_LOGO = getFile(NCRI_LOGO_FILE_PATH);
+    public static final File HG18_GENE_LOCATIONS_FILE = getFile(HG18_GENE_LOCATIONS_FILE_PATH);
+    public static final File HG18_GENE_LOCATIONS_SMALL_FILE = getFile(HG18_GENE_LOCATIONS_SMALL_FILE_PATH);
     
     // Test genomic data files
     public static final String TEST_AGILENT_SAMPLE_MAPPING_FILE_PATH = "/test_Agilent_sample_mapping.csv";

@@ -86,18 +86,23 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
+import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -153,6 +158,15 @@ public class ArrayDataServiceImplTest {
         assertEquals(2,arrayDataService.getPlatformsInStudy(study, GenomicDataSourceDataTypeEnum.EXPRESSION).size());
         assertEquals(1,arrayDataService.getPlatformsInStudy(study, GenomicDataSourceDataTypeEnum.COPY_NUMBER).size());
         assertEquals(0,arrayDataService.getPlatformsInStudy(study, GenomicDataSourceDataTypeEnum.SNP).size());
+    }
+    
+    @Test
+    public void testLoadGeneLocationFile() throws ValidationException, IOException {
+        GeneLocationConfiguration geneLocationConf = 
+            arrayDataService.loadGeneLocationFile(TestDataFiles.HG18_GENE_LOCATIONS_SMALL_FILE, 
+                    GenomeBuildVersionEnum.HG18);
+        assertEquals(GenomeBuildVersionEnum.HG18, geneLocationConf.getGenomeBuildVersion());
+        assertEquals(3, geneLocationConf.getGeneLocations().size());
     }
 
     private class GenomicDataTestDaoStub extends CaIntegrator2DaoStub  {

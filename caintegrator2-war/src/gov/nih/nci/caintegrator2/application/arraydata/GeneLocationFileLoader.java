@@ -85,144 +85,45 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
-import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
- * Interface to the subsystem used store and retrieve microarray data.
+ * Loader for the Gene Location file, line format is the following:.
+ * chromosomeNumber startPosition endPosition geneSymbol
  */
-public interface ArrayDataService {
+final class GeneLocationFileLoader {
+    private static final char DELIMITER = ' ';
     
-    /**
-     * Stores the values of an <code>ArrayDataValues</code> for later search and retrieval.
-     * 
-     * @param values the data matrix values to store.
-     */
-    void save(ArrayDataValues values);
-
-    /**
-     * Retrieves the requested array data.
-     * 
-     * @param request encapsulated retrieval configuration.
-     * @return the requested data.
-     */
-    ArrayDataValues getData(DataRetrievalRequest request);
+    private GeneLocationFileLoader() { }
     
-    /**
-     * Retrieves the fold change values from the given arrays for the given reporters.
-     * 
-     * @param request encapsulated retrieval configuration.
-     * @param controlArrayValuesList compute fold change values compared to these arrays
-     * @param channelType the array data channel type.
-     * @return the fold change values.
-     */
-    ArrayDataValues getFoldChangeValues(DataRetrievalRequest request,
-            List<ArrayDataValues> controlArrayValuesList,
-            PlatformChannelTypeEnum channelType);
-    
-    /**
-     * Retrieves the fold change values from the given arrays for the given reporters.
-     * 
-     * @param request encapsulated retrieval configuration.
-     * @param query to get controlSampleSets.
-     * @return the fold change values.
-     */
-    ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Query query);
-    
-    /**
-     * Loads the given array design into the system.
-     * 
-     * @param platformConfiguration contains the platformSource necessary to load the design
-     * @param listener informed of status changes during deployment.
-     * @return updated PlatformConfiguration object.
-     */
-     PlatformConfiguration loadArrayDesign(PlatformConfiguration platformConfiguration,
-            PlatformDeploymentListener listener);
+    static void loadFile(GeneLocationConfiguration geneLocationConfiguration, 
+            File geneLocationFile) throws ValidationException, IOException {
+        CSVReader geneFileReader = new CSVReader(new FileReader(geneLocationFile), DELIMITER);
+        String[] fields;
+        while ((fields = geneFileReader.readNext()) != null) {
+            if (fields.length != 4) {
+                throw new ValidationException("A line in the Gene Location File has '" 
+                        + fields.length + "' fields, expected number is 4");
+            }
+            GeneChromosomalLocation gcl = new GeneChromosomalLocation();
+            ChromosomalLocation cl = new ChromosomalLocation();
+            cl.setChromosome(fields[0]);
+            cl.setStartPosition(Integer.valueOf(fields[1]));
+            cl.setEndPosition(Integer.valueOf(fields[2]));
+            gcl.setLocation(cl);
+            gcl.setGeneSymbol(fields[3]);
+            gcl.setGeneLocationConfiguration(geneLocationConfiguration);
+            geneLocationConfiguration.getGeneLocations().add(gcl);
+        }
+    }
 
-     /**
-      * Returns the platform of name.
-      * 
-      * @param name the platform name to get.
-      * @return the platform.
-      */
-     Platform getPlatform(String name);
-
-     /**
-      * Returns all platforms in alphabetical order.
-      * 
-      * @return the platforms.
-      */
-     List<Platform> getPlatforms();
-     
-     /**
-      * 
-      * @param study that the platforms exist in.
-      * @param sourceType to narrow down the platform type based on GeneExpression or CopyNumber.
-      * @return Platforms in the study matching the given source.
-      */
-     List<Platform> getPlatformsInStudy(Study study, GenomicDataSourceDataTypeEnum sourceType);
-
-     /**
-      * Returns the PlatformConfiguration of name.
-      * 
-      * @param name the platformConfiguration name to get.
-      * @return the platformConfiguration.
-      */
-     PlatformConfiguration getPlatformConfiguration(String name);
-
-     /**
-      * Returns all PlatformConfigurations.
-      * 
-      * @return the platformConfigurations.
-      */
-     List<PlatformConfiguration> getPlatformConfigurations();
-
-     /**
-      * Delete the platform with given id.
-      * 
-      * @param platformConfigurationId the id of the platform configuration to delete.
-      */
-     void deletePlatform(Long platformConfigurationId);
-     
-     /**
-      * Saves platform configuration.
-      * @param platformConfiguration to save.
-      */
-     void savePlatformConfiguration(PlatformConfiguration platformConfiguration);
-     
-     /**
-      * Gets refreshed platformConfiguration from database.
-      * @param id of platformConfiguration.
-      * @return refreshed platformConfiguration.
-      */
-     PlatformConfiguration getRefreshedPlatformConfiguration(Long id);
-     
-     /**
-      * Deletes GisticAnalysis netCDF file.
-      * @param study that contains the Gistic job.
-      * @param reporterListId for gistic analysis.
-      */
-     void deleteGisticAnalysisNetCDFFile(Study study, Long reporterListId);
-     
-     /**
-      * Loads gene location file.
-      * @param geneLocationFile to load.
-      * @param genomeBuildVersion build version.
-      * @return the geneLocationConfiguration created from the file.
-      * @throws ValidationException if something is not valid.
-      * @throws IOException if problem opening file.
-      */
-     GeneLocationConfiguration loadGeneLocationFile(File geneLocationFile, GenomeBuildVersionEnum genomeBuildVersion) 
-     throws ValidationException, IOException;
-    
 }
