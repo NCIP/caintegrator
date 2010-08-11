@@ -355,7 +355,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
     public List<SegmentData> findMatchingSegmentDatas(CopyNumberAlterationCriterion copyNumberCriterion,
             Study study, Platform platform) {
-        return new CopyNumberAlterationCriterionHandler(copyNumberCriterion).
+        return new CopyNumberAlterationCriterionConverter(copyNumberCriterion).
                         retrieveSegmentDataCriteria(study, platform, getCurrentSession()).list();
     }
     
