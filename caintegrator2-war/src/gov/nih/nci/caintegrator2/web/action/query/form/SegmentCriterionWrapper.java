@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicIntervalTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.SegmentBoundaryTypeEnum;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -107,7 +106,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
      */
     public static final String FIELD_NAME = "Segmentation";
     
-    private static final int MIN_NUMBER_PARAMETERS = 3;
+    private static final int MIN_NUMBER_PARAMETERS = 2;
 
     private final CopyNumberAlterationCriterion criterion;
 
@@ -120,7 +119,6 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
         this.criterion = criterion;
         getParameters().add(createUpperLimitParameter());
         getParameters().add(createLowerLimitParameter());
-        getParameters().add(createBoundaryTypeParameter());
         getParameters().add(createIntervalTypeParameter());
         setIntervalParameters();
     }
@@ -245,25 +243,6 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
         intervalTypeParameter.setLabel("Genome Interval");
         intervalTypeParameter.setUpdateFormOnChange(true);
         return intervalTypeParameter;
-    }
-
-    private SelectListParameter<SegmentBoundaryTypeEnum> createBoundaryTypeParameter() {
-        OptionList<SegmentBoundaryTypeEnum> options = new OptionList<SegmentBoundaryTypeEnum>();
-        options.addOption(SegmentBoundaryTypeEnum.ONE_OR_MORE.getValue(),
-                SegmentBoundaryTypeEnum.ONE_OR_MORE);
-        options.addOption(SegmentBoundaryTypeEnum.INCLUSIVE.getValue(),
-                SegmentBoundaryTypeEnum.INCLUSIVE);
-        ValueSelectedHandler<SegmentBoundaryTypeEnum> handler = new ValueSelectedHandler<SegmentBoundaryTypeEnum>() {
-            public void valueSelected(SegmentBoundaryTypeEnum value) {
-                criterion.setSegmentBoundaryType(value);
-            }
-        };
-        SelectListParameter<SegmentBoundaryTypeEnum> boundaryTypeParameter = 
-            new SelectListParameter<SegmentBoundaryTypeEnum>(getParameters().size(), getRow().getRowIndex(), 
-                                                        options, handler, criterion.getSegmentBoundaryType());
-        boundaryTypeParameter.setLabel("Boundary Type");
-        boundaryTypeParameter.setUpdateFormOnChange(false);
-        return boundaryTypeParameter;
     }
 
     private void setIntervalParameters() {

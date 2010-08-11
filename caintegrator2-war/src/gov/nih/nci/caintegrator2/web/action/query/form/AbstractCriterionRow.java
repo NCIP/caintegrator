@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -190,9 +191,15 @@ public abstract class AbstractCriterionRow {
     }
 
     private void processParameterChanges() {
+        List<AbstractCriterionParameter> nullParameters = new ArrayList<AbstractCriterionParameter>();
         for (AbstractCriterionParameter parameter : getParameters()) {
-            parameter.processCriteriaChanges();
+            if (parameter == null) {
+                nullParameters.add(parameter);
+            } else {
+                parameter.processCriteriaChanges();
+            }
         }
+        getParameters().removeAll(nullParameters);
     }
 
     abstract void handleFieldNameChange(String fieldName);
