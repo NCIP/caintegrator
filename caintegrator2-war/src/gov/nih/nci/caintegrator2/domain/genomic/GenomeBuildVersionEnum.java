@@ -92,6 +92,7 @@ import java.util.Map;
 /**
  * Genome Build.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // Check all known string
 public enum GenomeBuildVersionEnum {
 
     /**
@@ -166,5 +167,23 @@ public enum GenomeBuildVersionEnum {
         if (value != null && !getValueToTypeMap().containsKey(value)) {
             throw new IllegalArgumentException("No matching type for " + value);
         }
+    }
+
+    /**
+     * @param genomeVersion the genome version
+     * @return the enum of the known genome version else null
+     */
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Check all known string
+    public static GenomeBuildVersionEnum matchGenomVersion(String genomeVersion) {
+        if (genomeVersion.contains("g16") || genomeVersion.equalsIgnoreCase("ncbi build 34")) {
+            return HG16;
+        } else if (genomeVersion.contains("g17") || genomeVersion.equalsIgnoreCase("ncbi build 35")) {
+            return HG17;
+        } else if (genomeVersion.contains("g18") || genomeVersion.equalsIgnoreCase("ncbi build 36.1")) {
+            return HG18;
+        } else if (genomeVersion.contains("g19")) {
+            return HG19;
+        }
+        return null;
     }
 }

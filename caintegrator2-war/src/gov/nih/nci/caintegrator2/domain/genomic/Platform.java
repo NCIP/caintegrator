@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * 
  */
@@ -196,5 +198,17 @@ public class Platform extends AbstractCaIntegrator2Object implements Comparable<
     public int compareTo(Platform o) {
         return this.getName().compareTo(o.getName());
     }
-
+    
+    /**
+     * Loop through the reporterLists to look for genome version.
+     * @return the genome version enum
+     */
+    public GenomeBuildVersionEnum getGenomeVersion() {
+        for (ReporterList reporterList : getReporterLists()) {
+            if (!StringUtils.isBlank(reporterList.getGenomeVersion())) {
+                return GenomeBuildVersionEnum.matchGenomVersion(reporterList.getGenomeVersion());
+            }
+        }
+        return null;
+    }
 }
