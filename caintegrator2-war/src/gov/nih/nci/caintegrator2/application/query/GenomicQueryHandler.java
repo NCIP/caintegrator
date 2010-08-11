@@ -103,6 +103,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.SegmentDataResultValue;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -219,10 +220,10 @@ class GenomicQueryHandler {
     private void addSegmentDataToRow(SegmentData segmentData, GenomicDataResultRow row) {
         row.setSegmentDataResultValue(new SegmentDataResultValue());
         row.getSegmentDataResultValue().setChromosomalLocation(segmentData.getLocation());
-    // This is an incorrect way to add genes, and it's inefficient, need to wait until we have gene locations filled.
-//        row.getSegmentDataResultValue().getGenes().addAll(
-//              dao.findGenesByLocation(segmentData.getLocation().getStartPosition(), 
-//              segmentData.getLocation().getEndPosition(), query.getSubscription().getStudy(), query.getPlatform()));
+        row.getSegmentDataResultValue().getGenes().addAll(
+              dao.findGenesByLocation(segmentData.getLocation().getChromosome(), 
+                      segmentData.getLocation().getStartPosition(), segmentData.getLocation().getEndPosition(), 
+                      GenomeBuildVersionEnum.HG18));
     }
 
     private void addToGeneExpressionResult(ArrayDataValues values, GenomicDataQueryResult result,
