@@ -105,13 +105,13 @@ import org.hibernate.criterion.SimpleExpression;
  * Handles creation of hibernate criteria objects given a CopyNumberAlterationCriterion.
  */
 @SuppressWarnings("PMD.CyclomaticComplexity") // See addSegmentValueCriterion()
-public class CopyNumberAlterationCriterionHandler {
+public class CopyNumberAlterationCriterionConverter {
     
     private static final String LOCATION_START_ATTRIBUTE = "Location.startPosition";
     private static final String LOCATION_END_ATTRIBUTE = "Location.endPosition";
     private final CopyNumberAlterationCriterion copyNumberCriterion;
     
-    CopyNumberAlterationCriterionHandler(CopyNumberAlterationCriterion copyNumberCriterion) {
+    CopyNumberAlterationCriterionConverter(CopyNumberAlterationCriterion copyNumberCriterion) {
         this.copyNumberCriterion = copyNumberCriterion;
     }
     
