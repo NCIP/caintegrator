@@ -109,6 +109,7 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
@@ -522,7 +523,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return null;
     }
 
-    public List<Gene> findGenesByLocation(Integer startPosition, Integer endPosition, Study study, Platform platform) {
+    public List<Gene> findGenesByLocation(String chromosome, Integer startPosition, Integer endPosition, 
+            GenomeBuildVersionEnum genomeBuildVersion) {
         return new ArrayList<Gene>();
     }
 

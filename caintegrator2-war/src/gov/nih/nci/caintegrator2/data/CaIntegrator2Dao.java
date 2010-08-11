@@ -100,6 +100,7 @@ import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
@@ -255,14 +256,14 @@ public interface CaIntegrator2Dao {
     
     /**
      * Returns the genes associated with Dna reporters for the given chromosomal start and end positions.
+     * @param chromosome the chromosome to search for genes.
      * @param startPosition on the chromosome to search for genes.
      * @param endPosition on the chromosome to search for genes.
-     * @param study to restrict search for the genes belonging to this study.
-     * @param platform to restrict search for the genes belonging to this platform.
+     * @param genomeBuildVersion retrieves the genes in the locations for this build version.
      * @return list of genes in given location.
      */
-    List<Gene> findGenesByLocation(Integer startPosition, Integer endPosition, 
-            Study study, Platform platform);
+    List<Gene> findGenesByLocation(String chromosome, Integer startPosition, Integer endPosition, 
+            GenomeBuildVersionEnum genomeBuildVersion);
 
     /**
      * Returns the definitions that matches the name given (if one exists).

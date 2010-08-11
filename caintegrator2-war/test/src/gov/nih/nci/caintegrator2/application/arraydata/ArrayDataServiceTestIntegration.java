@@ -1,6 +1,5 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
