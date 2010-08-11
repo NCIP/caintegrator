@@ -106,8 +106,12 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
+import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
+import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -571,16 +575,15 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         copyNumberCriterion.setChromosomeNumber(3);
         List<SegmentData> segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
         assertEquals(1, segmentDatas.size());
-        copyNumberCriterion.setChromosomeNumber(null);
         copyNumberCriterion.setUpperLimit(.08f);
         segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
-        assertEquals(3, segmentDatas.size());
+        assertEquals(1, segmentDatas.size());
         
         copyNumberCriterion.setChromosomeCoordinateLow(0f);
         copyNumberCriterion.setChromosomeCoordinateHigh(1000000f);
         copyNumberCriterion.setUpperLimit(.12f);
         segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
-        assertEquals(4, segmentDatas.size());
+        assertEquals(1, segmentDatas.size());
         
         copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.CHROMOSOME_NUMBER);
         copyNumberCriterion.setChromosomeNumber(3);
@@ -590,17 +593,16 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.GENE_NAME);
         copyNumberCriterion.setGeneSymbol("GENE_3, GENE_4");
         segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
-        assertEquals(2, segmentDatas.size());
+        assertEquals(4, segmentDatas.size());
         
         // Try matching the segment datas based on the location of the two previous ones.
         segmentDatas = dao.findMatchingSegmentDatasByLocation(segmentDatas, study, platform);
-        assertEquals(2, segmentDatas.size());
+        assertEquals(4, segmentDatas.size());
         
         copyNumberCriterion.setUpperLimit(.03f);
         copyNumberCriterion.setLowerLimit(null);
         segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
-        assertEquals(1, segmentDatas.size());
-        assertEquals(.03f, segmentDatas.get(0).getSegmentValue());
+        assertEquals(3, segmentDatas.size());
         
         copyNumberCriterion.setGeneSymbol("");
         copyNumberCriterion.setLowerLimit(.04f);
@@ -614,23 +616,75 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         copyNumberCriterion.setChromosomeCoordinateHigh(40000f);
         copyNumberCriterion.setSegmentBoundaryType(SegmentBoundaryTypeEnum.ONE_OR_MORE);
         copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES);
-        copyNumberCriterion.setChromosomeNumber(null);
+        copyNumberCriterion.setChromosomeNumber(2);
         segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
-        assertEquals(3, segmentDatas.size());
+        assertEquals(1, segmentDatas.size());
     }
     
     @Test
     public void testFindGenesByLocation() {
-        Platform platform = new Platform();
-        platform.setName("platform");
-        dao.save(platform);
-        StudyHelper studyHelper = new StudyHelper();
-        studyHelper.setArrayDataType(ArrayDataType.COPY_NUMBER);
-        studyHelper.setPlatform(platform);
-        Study study = studyHelper.populateAndRetrieveStudy().getStudy();
-        dao.save(study);
-        List<Gene> genes = dao.findGenesByLocation(1, 200000000, study, platform);
-        assertEquals(7, genes.size());
+        Gene gene1 = createGene("gene1");
+        Gene gene2 = createGene("gene2");
+        Gene gene3 = createGene("gene3");
+        Gene gene4 = createGene("gene4");
+        Gene gene5 = createGene("gene5");
+        Gene gene6 = createGene("gene6");
+        Gene gene7 = createGene("gene7");
+        dao.save(gene1);
+        dao.save(gene2);
+        dao.save(gene3);
+        dao.save(gene4);
+        dao.save(gene5);
+        dao.save(gene6);
+        dao.save(gene7);
+        
+        
+        GeneLocationConfiguration geneLocationConfiguration = new GeneLocationConfiguration();
+        geneLocationConfiguration.setGenomeBuildVersion(GenomeBuildVersionEnum.HG18);
+        geneLocationConfiguration.getGeneLocations().add(createGeneChromosomalLocation("gene1", "1", 1, 3));
+        geneLocationConfiguration.getGeneLocations().add(createGeneChromosomalLocation("gene2", "1", 2, 6));
+        geneLocationConfiguration.getGeneLocations().add(createGeneChromosomalLocation("gene3", "1", 2, 11));
+        geneLocationConfiguration.getGeneLocations().add(createGeneChromosomalLocation("gene4", "1", 8, 9));
+        geneLocationConfiguration.getGeneLocations().add(createGeneChromosomalLocation("gene5", "1", 10, 12));
+        geneLocationConfiguration.getGeneLocations().add(createGeneChromosomalLocation("gene6", "1", 11, 15));
+        geneLocationConfiguration.getGeneLocations().add(createGeneChromosomalLocation("gene7", "2", 1, 15));
+        dao.save(geneLocationConfiguration);
+        
+        List<Gene> genes = dao.findGenesByLocation("1", 2, 10, GenomeBuildVersionEnum.HG18);
+        assertEquals(5, genes.size());
+        
+        genes = dao.findGenesByLocation("1", 6, 8, GenomeBuildVersionEnum.HG18);
+        assertEquals(3, genes.size());
+        genes = dao.findGenesByLocation("2", 3, 4, GenomeBuildVersionEnum.HG18);
+        assertEquals(1, genes.size());
+        genes = dao.findGenesByLocation("2", 3, 4, GenomeBuildVersionEnum.HG19);
+        assertEquals(0, genes.size());
+        genes = dao.findGenesByLocation("3", 3, 4, GenomeBuildVersionEnum.HG18);
+        assertEquals(0, genes.size());
+    }
+
+    /**
+     * 
+     */
+    private Gene createGene(String symbol) {
+        Gene gene = new Gene();
+        gene.setSymbol(symbol);
+        return gene;
+    }
+
+    /**
+     * @return
+     */
+    private GeneChromosomalLocation createGeneChromosomalLocation(String symbol, 
+            String chromosome, Integer start, Integer end) {
+        GeneChromosomalLocation gcl = new GeneChromosomalLocation();
+        gcl.setGeneSymbol(symbol);
+        ChromosomalLocation location = new ChromosomalLocation();
+        location.setChromosome(chromosome);
+        location.setStartPosition(start);
+        location.setEndPosition(end);
+        gcl.setLocation(location);
+        return gcl;
     }
     
     /**
