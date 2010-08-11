@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -109,6 +110,7 @@ import java.util.Set;
  */
 public final class CopyNumberAlterationCriterionHandler extends AbstractCriterionHandler {
     
+    private static final int SEGMENT_BUFFER_SIZE = 500;
     private final CopyNumberAlterationCriterion criterion;
 
     private CopyNumberAlterationCriterionHandler(CopyNumberAlterationCriterion criterion) {
@@ -156,8 +158,21 @@ public final class CopyNumberAlterationCriterionHandler extends AbstractCriterio
     
     Set<SegmentData> getSegmentDataMatches(CaIntegrator2Dao dao, Study study, Platform platform) {
         List<SegmentData> segmentDataMatchesFromDao = dao.findMatchingSegmentDatas(criterion, study, platform);
-        return new HashSet<SegmentData>(dao.
-                findMatchingSegmentDatasByLocation(segmentDataMatchesFromDao, study, platform));
+        List<List<SegmentData>> segmentDataMatchesList = new ArrayList<List<SegmentData>>();
+        int startPos = 0;
+        int endPos = SEGMENT_BUFFER_SIZE;
+        int totalSize = segmentDataMatchesFromDao.size();
+        while (totalSize > startPos) {
+            int positionToEnd = endPos >= totalSize ? totalSize : endPos;
+            segmentDataMatchesList.add(segmentDataMatchesFromDao.subList(startPos, positionToEnd));
+            startPos = positionToEnd + 1;
+            endPos += SEGMENT_BUFFER_SIZE;
+        }
+        HashSet<SegmentData> segmentDataMatches = new HashSet<SegmentData>();
+        for (List<SegmentData> segments : segmentDataMatchesList) {
+            segmentDataMatches.addAll(dao.findMatchingSegmentDatasByLocation(segments, study, platform));
+        }
+        return segmentDataMatches;
     }
 
     /**
