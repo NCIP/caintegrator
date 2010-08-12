@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
@@ -240,9 +241,10 @@ public interface CaIntegrator2Dao {
      * @param study restrict search to given study.
      * @param platform restricts search to the given platform.
      * @return the list of matches.
+     * @throws InvalidCriterionException if a criterion is invalid.
      */
     List<SegmentData> findMatchingSegmentDatas(CopyNumberAlterationCriterion copyNumberCriterion,
-            Study study, Platform platform);
+            Study study, Platform platform) throws InvalidCriterionException;
 
     /**
      * Returns the SegmentDatas that match the location of the given segment datas.
@@ -261,10 +263,18 @@ public interface CaIntegrator2Dao {
      * @param endPosition on the chromosome to search for genes.
      * @param genomeBuildVersion retrieves the genes in the locations for this build version.
      * @return list of genes in given location.
+     * 
      */
     List<Gene> findGenesByLocation(String chromosome, Integer startPosition, Integer endPosition, 
             GenomeBuildVersionEnum genomeBuildVersion);
 
+    /**
+     * Looks to see if a Genome Location version has been mapped to chromosomal locations.
+     * @param genomeVersion to check if it is mapped.
+     * @return T/F value determining if it was mapped or not.
+     */
+    boolean isGenomeVersionMapped(GenomeBuildVersionEnum genomeVersion);
+    
     /**
      * Returns the definitions that matches the name given (if one exists).
      * 

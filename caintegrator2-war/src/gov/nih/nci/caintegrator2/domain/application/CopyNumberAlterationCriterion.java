@@ -1,5 +1,8 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * 
@@ -166,6 +169,15 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
      */
     public boolean isInsideBoundaryType() {
         return upperLimit != null && lowerLimit != null && lowerLimit <= upperLimit; 
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected List<String> getGeneSymbolsInCriterion() {
+        return GenomicIntervalTypeEnum.GENE_NAME.equals(genomicIntervalType) 
+            ? super.getGeneSymbolsInCriterion() : new ArrayList<String>();
     }
 
 }

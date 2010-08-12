@@ -121,7 +121,7 @@ public class CopyNumberAlterationCriterionConverter {
         arrayDataCrit.createCriteria("reporterLists").add(Restrictions.eq("platform", platform));
         arrayDataCrit.add(Restrictions.eq("study", study));
         addSegmentValueCriterion(segmentDataCrit);
-        addGenomicIntervalTypeToCriteria(segmentDataCrit, currentSession);
+        addGenomicIntervalTypeToCriteria(segmentDataCrit, currentSession, platform.getGenomeVersion());
         return segmentDataCrit;
     }
     
@@ -157,10 +157,11 @@ public class CopyNumberAlterationCriterionConverter {
     }
     
     
-    private void addGenomicIntervalTypeToCriteria(Criteria segmentDataCrit, Session currentSession) {
+    private void addGenomicIntervalTypeToCriteria(Criteria segmentDataCrit, Session currentSession, 
+            GenomeBuildVersionEnum genomeBuildVersion) {
         switch (copyNumberCriterion.getGenomicIntervalType()) {
             case GENE_NAME:
-            handleGeneNameCriteria(segmentDataCrit, currentSession);
+            handleGeneNameCriteria(segmentDataCrit, currentSession, genomeBuildVersion);
                 break;
             case CHROMOSOME_NUMBER:
                 addChromosomeNumberToCriterion(copyNumberCriterion.getChromosomeNumber(), segmentDataCrit);
@@ -176,14 +177,14 @@ public class CopyNumberAlterationCriterionConverter {
     }
     
     @SuppressWarnings("unchecked") // Hibernate operations are untyped    
-    private void handleGeneNameCriteria(Criteria segmentDataCrit, Session currentSession) {
+    private void handleGeneNameCriteria(Criteria segmentDataCrit, Session currentSession, 
+            GenomeBuildVersionEnum genomeBuildVersion) {
         if (StringUtils.isNotBlank(copyNumberCriterion.getGeneSymbol())) {
-        //todo - don't hardcode HG18 here, look it up based on the query platform.
-        List<GeneChromosomalLocation> geneLocations = 
-            currentSession.createCriteria(GeneChromosomalLocation.class).add(
+            List<GeneChromosomalLocation> geneLocations = 
+                currentSession.createCriteria(GeneChromosomalLocation.class).add(
                 Restrictions.in("geneSymbol", copyNumberCriterion.getGeneSymbols())).createCriteria(
                 "geneLocationConfiguration").add(
-                Restrictions.eq("genomeBuildVersion", GenomeBuildVersionEnum.HG18)).list();
+                Restrictions.eq("genomeBuildVersion", genomeBuildVersion)).list();
             if (!geneLocations.isEmpty()) {
                 addMultipleChromosomeCoordinatesToCriterion(segmentDataCrit, geneLocations);
             }

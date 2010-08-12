@@ -156,7 +156,8 @@ public final class CopyNumberAlterationCriterionHandler extends AbstractCriterio
         return Collections.emptySet();
     }
     
-    Set<SegmentData> getSegmentDataMatches(CaIntegrator2Dao dao, Study study, Platform platform) {
+    Set<SegmentData> getSegmentDataMatches(CaIntegrator2Dao dao, Study study, Platform platform) 
+        throws InvalidCriterionException {
         List<SegmentData> segmentDataMatchesFromDao = dao.findMatchingSegmentDatas(criterion, study, platform);
         List<List<SegmentData>> segmentDataMatchesList = new ArrayList<List<SegmentData>>();
         int startPos = 0;

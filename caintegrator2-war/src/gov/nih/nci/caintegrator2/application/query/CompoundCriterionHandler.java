@@ -293,7 +293,8 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
     }
     
     @Override
-    Set<SegmentData> getSegmentDataMatches(CaIntegrator2Dao dao, Study study, Platform platform) {
+    Set<SegmentData> getSegmentDataMatches(CaIntegrator2Dao dao, Study study, Platform platform) 
+        throws InvalidCriterionException {
         Set<SegmentData> segmentDatas = new HashSet<SegmentData>();
         for (AbstractCriterionHandler handler : handlers) {
             if (handler.hasSegmentDataCriterion()) {
