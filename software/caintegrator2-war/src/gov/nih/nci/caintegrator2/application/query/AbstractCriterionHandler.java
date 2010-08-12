@@ -139,7 +139,8 @@ abstract class AbstractCriterionHandler {
      * @param platform the platform to use.
      * @return the matching segment datas.
      */
-    abstract Set<SegmentData> getSegmentDataMatches(CaIntegrator2Dao dao, Study study, Platform platform);
+    abstract Set<SegmentData> getSegmentDataMatches(CaIntegrator2Dao dao, Study study, Platform platform)
+        throws InvalidCriterionException;
     
     /**
      * Determines whether this handler provieds segment data matches.

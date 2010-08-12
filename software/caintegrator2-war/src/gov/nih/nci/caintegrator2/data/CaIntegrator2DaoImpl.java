@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
@@ -99,6 +100,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.GenomicIntervalTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
@@ -109,6 +111,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneChromosomalLocation;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
@@ -351,10 +354,18 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     
     /**
      * {@inheritDoc}
+     * @throws InvalidCriterionException 
      */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
     public List<SegmentData> findMatchingSegmentDatas(CopyNumberAlterationCriterion copyNumberCriterion,
-            Study study, Platform platform) {
+            Study study, Platform platform) throws InvalidCriterionException {
+        if (GenomicIntervalTypeEnum.GENE_NAME.equals(copyNumberCriterion.getGenomicIntervalType()) 
+              && !copyNumberCriterion.getGeneSymbols().isEmpty() 
+              && (platform.getGenomeVersion() == null || !isGenomeVersionMapped(platform.getGenomeVersion()))) {
+            throw new InvalidCriterionException("The platform genome version '" 
+                    + platform.getGenomeVersion().getValue() + "' is not mapped to chromosomal locations, "
+                    + "it is not possible to query based on gene locations.");
+        }
         return new CopyNumberAlterationCriterionConverter(copyNumberCriterion).
                         retrieveSegmentDataCriteria(study, platform, getCurrentSession()).list();
     }
@@ -379,6 +390,14 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         }
         segmentDataCrit.add(overallOrStatement);
         return segmentDataCrit.list();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isGenomeVersionMapped(GenomeBuildVersionEnum genomeVersion) {
+        return !getCurrentSession().createCriteria(GeneLocationConfiguration.class).
+                    add(Restrictions.eq("genomeBuildVersion", genomeVersion)).list().isEmpty();
     }
     
     /**

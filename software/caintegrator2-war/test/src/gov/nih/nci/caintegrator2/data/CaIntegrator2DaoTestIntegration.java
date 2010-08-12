@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -556,9 +557,11 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     }
     
     @Test
-    public void testFindMatchingSegmentDatas() {
+    public void testFindMatchingSegmentDatas() throws InvalidCriterionException {
         Platform platform = new Platform();
         platform.setName("platform");
+        ReporterList reporterList = platform.addReporterList("name", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        reporterList.setGenomeVersion("hg18");
         dao.save(platform);
         StudyHelper studyHelper = new StudyHelper();
         studyHelper.setArrayDataType(ArrayDataType.COPY_NUMBER);

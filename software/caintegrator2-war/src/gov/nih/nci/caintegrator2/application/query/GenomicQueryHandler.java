@@ -198,6 +198,8 @@ class GenomicQueryHandler {
         Map<Integer, Map<Integer, GenomicDataResultRow>> startEndPositionResultRowMap 
             = new HashMap<Integer, Map<Integer, GenomicDataResultRow>>();
         Map<SegmentData, GenomicDataResultRow> segmentDataToRowMap = new HashMap<SegmentData, GenomicDataResultRow>();
+        GenomeBuildVersionEnum genomeVersion = query.getPlatform().getGenomeVersion();
+        boolean isGenomeVersionMapped = dao.isGenomeVersionMapped(genomeVersion);
         for (SegmentData segmentData : segmentDatas) {
             if (arrayDatas.contains(segmentData.getArrayData())) {
                 Integer startPosition = segmentData.getLocation().getStartPosition();
@@ -207,7 +209,7 @@ class GenomicQueryHandler {
                 }
                 if (!startEndPositionResultRowMap.get(startPosition).containsKey(endPosition)) {
                     GenomicDataResultRow row = new GenomicDataResultRow();
-                    addSegmentDataToRow(segmentData, row);
+                    addSegmentDataToRow(segmentData, row, isGenomeVersionMapped, genomeVersion);
                     startEndPositionResultRowMap.get(startPosition).put(endPosition, row);
                     result.getRowCollection().add(row);
                 }
@@ -217,13 +219,16 @@ class GenomicQueryHandler {
         return segmentDataToRowMap;
     }
 
-    private void addSegmentDataToRow(SegmentData segmentData, GenomicDataResultRow row) {
+    private void addSegmentDataToRow(SegmentData segmentData, GenomicDataResultRow row,
+            boolean isGenomeVersionMapped, GenomeBuildVersionEnum genomeVersion) {
         row.setSegmentDataResultValue(new SegmentDataResultValue());
         row.getSegmentDataResultValue().setChromosomalLocation(segmentData.getLocation());
-        row.getSegmentDataResultValue().getGenes().addAll(
-              dao.findGenesByLocation(segmentData.getLocation().getChromosome(), 
-                      segmentData.getLocation().getStartPosition(), segmentData.getLocation().getEndPosition(), 
-                      GenomeBuildVersionEnum.HG18));
+        if (isGenomeVersionMapped) {
+            row.getSegmentDataResultValue().getGenes().addAll(
+                    dao.findGenesByLocation(segmentData.getLocation().getChromosome(), segmentData.getLocation()
+                            .getStartPosition(), segmentData.getLocation().getEndPosition(),
+                            genomeVersion));
+        }
     }
 
     private void addToGeneExpressionResult(ArrayDataValues values, GenomicDataQueryResult result,
@@ -379,7 +384,8 @@ class GenomicQueryHandler {
         return reporters;
     }
     
-    private Collection<SegmentData> getMatchingSegmentDatas(Collection<ArrayData> arrayDatas) {
+    private Collection<SegmentData> getMatchingSegmentDatas(Collection<ArrayData> arrayDatas) 
+        throws InvalidCriterionException {
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
         if (arrayDatas.isEmpty()) {
             return Collections.emptySet();
