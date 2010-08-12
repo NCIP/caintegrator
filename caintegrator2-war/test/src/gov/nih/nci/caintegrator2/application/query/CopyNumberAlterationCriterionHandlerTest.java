@@ -171,7 +171,7 @@ public class CopyNumberAlterationCriterionHandlerTest {
     }
     
     @Test
-    public void testGetSegmentDataMatches() {
+    public void testGetSegmentDataMatches() throws InvalidCriterionException {
         CopyNumberAlterationCriterion criterion = new CopyNumberAlterationCriterion();
         CopyNumberAlterationCriterionHandler handler = CopyNumberAlterationCriterionHandler.create(criterion);
         Set<SegmentData> segments = handler.getSegmentDataMatches(daoStub, study, null);
