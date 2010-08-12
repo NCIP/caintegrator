@@ -58,7 +58,7 @@
         <s:set name="subjectIdHeaderValue" value="'Subject ID*'" />
     </s:if>
         
-    <div id="queryResultsDiv" >
+    <div id="queryResultsDiv">
         <s:if test='%{query.resultType.value.equals("geneExpression")}'>
             <s:set name="genomicDataNeedsHighlighting" value="genomicDataQueryResult.hasCriterionSpecifiedValues" />
             <s:if test="genomicDataQueryResult.hasHighVarianceValues" >
@@ -243,7 +243,7 @@
                 <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).endPosition}" />
                 <display:column title="End Position">${curValue}</display:column>
                 <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).genes}" />
-                <display:column title="Genes" media="html"><a onclick="alert('${curValue}');">View</a></display:column>
+                <display:column title="Genes" media="html"><s:div name="truncateDiv">${curValue}</s:div></display:column>
                 
                 <s:iterator value="copyNumberQueryResult.sampleHeaders" status="status" id="column">
                     <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).displayableValue}" />
@@ -257,6 +257,9 @@
                     </s:else>
                 </s:iterator>
             </display:table>
+            <SCRIPT LANGUAGE="JavaScript" TYPE="TEXT/JAVASCRIPT">
+                jQuery("div[name*='truncateDiv']").jTruncate({length: 8, minTrail: 3});;
+            </SCRIPT>
         </s:elseif>
         <s:else>
             <s:set name="pageSizeVar" id="pageSizeVar" value="%{queryResult.pageSize}" />

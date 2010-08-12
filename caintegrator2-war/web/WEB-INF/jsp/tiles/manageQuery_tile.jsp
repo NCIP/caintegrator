@@ -7,6 +7,7 @@
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <script type="text/javascript" src="/caintegrator2/common/js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="/caintegrator2/common/js/jTruncate.js"></script>
 <script language="javascript">
 
     jQuery.noConflict();
@@ -150,7 +151,7 @@
                 <sx:div href="%{criteriaUrl}" id="criteria" label="Criteria" formId="manageQueryForm" formFilter="filterParam" showLoadingText="true"/>
                 <sx:div href="%{columnsUrl}" id="columns" label="Results Type" formId="manageQueryForm" formFilter="filterParam" showLoadingText="true"/>
                 <sx:div href="%{sortingUrl}" id="sorting" label="Sorting" formId="manageQueryForm" refreshOnShow="true" showLoadingText="true"/>
-                <sx:div href="%{searchResultsUrl}" id="searchResults" label="Query Results" formId="manageQueryForm" formFilter="filterParam" showLoadingText="true" preload="false"/>
+                <sx:div href="%{searchResultsUrl}" id="searchResults" label="Query Results" formId="manageQueryForm" formFilter="filterParam" showLoadingText="true" preload="false" executeScripts="true"/>
                 <s:if test="%{!anonymousUser}">
                     <sx:div href="%{saveAsUrl}" id="saveAs" label="Save query as..." formId="manageQueryForm" formFilter="filterParam" showLoadingText="true"/>
                 </s:if>
