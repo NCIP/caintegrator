@@ -351,6 +351,19 @@
            </s:if>
         </s:if>
     </s:if>
+    <s:elseif test='%{query.resultType.value.equals("copyNumber")}'>
+        <s:if test="!copyNumberQueryResult.rows.isEmpty()">
+            <div class="actionsrow">
+                <del class="btnwrapper">
+                    <ul class="btnrow">
+                        <li><s:a href="#" cssClass="btn" onclick="openExportLink(); return false;">
+                            <span class="btn_img"><span class="export">Export To CSV</span></span>
+                        </s:a></li>
+                    </ul>
+                </del>
+           </div>
+        </s:if>
+    </s:elseif>
     <s:else>
         <s:if test="!queryResult.rows.isEmpty()">
             <div class="actionsrow">
