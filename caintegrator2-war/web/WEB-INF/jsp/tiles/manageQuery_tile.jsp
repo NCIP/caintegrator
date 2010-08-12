@@ -9,7 +9,7 @@
 <script type="text/javascript" src="/caintegrator2/common/js/jquery-1.3.2.min.js"></script>
 <script language="javascript">
 
-     jQuery.noConflict();
+    jQuery.noConflict();
 
     function setGroupAnnotations(onOff, size, checkboxListNum){
         for(i=1;i<=size;i++){
@@ -92,9 +92,9 @@
     }
     
     function openExportLink() {
-        var allLinks = document.getElementById("queryResultsDiv").getElementsByTagName("div");
-        if (allLinks.length == 1) {
-            window.location.href = allLinks[0].getElementsByTagName("a")[0].href;
+        var exportLink = jQuery("div.exportlinks");
+        if (exportLink.length == 1) {
+            window.location.href = exportLink[0].getElementsByTagName("a")[0].href;
         }
         else {
             alert ("Please report the error.\n" +
