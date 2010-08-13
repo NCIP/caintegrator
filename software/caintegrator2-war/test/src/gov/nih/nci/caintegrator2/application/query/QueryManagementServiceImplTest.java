@@ -103,6 +103,7 @@ import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterio
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
@@ -244,6 +245,7 @@ public class QueryManagementServiceImplTest {
         assignment.getSampleAcquisitionCollection().add(acquisition);
         study.getAssignmentCollection().add(assignment);
         GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
+        geneNameCriterion.setGenomicCriterionType(GenomicCriterionTypeEnum.GENE_EXPRESSION);
         Gene gene = new Gene();
         gene.setSymbol("GENE");
         reporter = new GeneExpressionReporter();

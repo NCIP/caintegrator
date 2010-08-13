@@ -321,7 +321,7 @@ public class ArrayDataServiceImpl implements ArrayDataService {
         ArrayDataValues values = getData(request);
         return new FoldChangeCalculator(values,
                 getFoldChangeControlDataFromCompoundCriterion(query, query.getCompoundCriterion()),
-                query.getPlatform().getPlatformConfiguration().getPlatformChannelType()).calculate();
+                query.getGeneExpressionPlatform().getPlatformConfiguration().getPlatformChannelType()).calculate();
     }
 
     private List<ArrayDataValues> getFoldChangeControlDataFromCompoundCriterion(
@@ -346,12 +346,12 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     private ArrayDataValues getFoldChangeControlValues(Query query, FoldChangeCriterion criterion) {
         Set<ArrayData> controlArrayData = new HashSet<ArrayData>();
         for (Sample sample : criterion.getCompareToSampleSet().getSamples()) {
-            controlArrayData.addAll(sample.getArrayDatas(query.getReporterType(), query.getPlatform()));
+            controlArrayData.addAll(sample.getArrayDatas(query.getReporterType(), query.getGeneExpressionPlatform()));
         }
         DataRetrievalRequest controlDataRequest = new DataRetrievalRequest();
         controlDataRequest.addReporters(FoldChangeCriterionHandler.create(criterion)
                 .getReporterMatches(dao, query.getSubscription().getStudy(),
-                query.getReporterType(), query.getPlatform()));
+                query.getReporterType(), query.getGeneExpressionPlatform()));
         controlDataRequest.addArrayDatas(controlArrayData);
         controlDataRequest.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
         return getData(controlDataRequest);

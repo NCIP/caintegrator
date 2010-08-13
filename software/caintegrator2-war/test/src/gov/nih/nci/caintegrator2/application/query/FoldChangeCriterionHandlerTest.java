@@ -138,7 +138,7 @@ public class FoldChangeCriterionHandlerTest {
         daoStub.clear();       
         study = new Study();
         query = new Query();
-        query.setPlatform(platform);
+        query.setGeneExpressionPlatform(platform);
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
         query.setSubscription(subscription);
@@ -185,7 +185,7 @@ public class FoldChangeCriterionHandlerTest {
         ReporterList reporterList = new ReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         arrayData.getReporterLists().add(reporterList);
         Array array = new Array();
-        array.setPlatform(query.getPlatform());
+        array.setPlatform(query.getGeneExpressionPlatform());
         arrayData.setArray(array);
         study.getStudyConfiguration().getGenomicDataSources().get(0).getControlSampleSetCollection().add(sampleSet1);
         rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());

@@ -1,6 +1,11 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,19 +21,23 @@ public enum ResultTypeEnum {
     /**
      * Gene Expression data.
      */
-    GENE_EXPRESSION("geneExpression"),
+    GENE_EXPRESSION("geneExpression", ReporterTypeEnum.GENE_EXPRESSION_GENE, 
+            ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET),
     
     /**
      * Copy Number.
      */
-     COPY_NUMBER("copyNumber");
+     COPY_NUMBER("copyNumber", ReporterTypeEnum.DNA_ANALYSIS_REPORTER, 
+             ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER);
     
     private static Map<String, ResultTypeEnum> valueToTypeMap = new HashMap<String, ResultTypeEnum>();
 
     private String value;
+    private List<ReporterTypeEnum> associatedReporterTypes = new ArrayList<ReporterTypeEnum>();
     
-    private ResultTypeEnum(String value) {
+    private ResultTypeEnum(String value, ReporterTypeEnum... associatedReporterTypes) {
         setValue(value);
+        this.associatedReporterTypes.addAll(Arrays.asList(associatedReporterTypes));
     }
 
     /**
@@ -87,5 +96,14 @@ public enum ResultTypeEnum {
         if (value != null && !getValueToTypeMap().containsKey(value)) {
             throw new IllegalArgumentException("No matching type for " + value);
         }
+    }
+    
+    /**
+     * Function to determine if the given reporterType is associated with this result type.
+     * @param reporterType to check against.
+     * @return T/F if reporter type matches this result type.
+     */
+    public boolean isReporterMatch(ReporterTypeEnum reporterType) {
+        return associatedReporterTypes.contains(reporterType);
     }
 }

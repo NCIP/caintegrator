@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
@@ -122,11 +123,14 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
 
     private final Collection <AbstractCriterionHandler> handlers;
     private final CompoundCriterion compoundCriterion;
+    private final ResultTypeEnum resultType;
     
     private CompoundCriterionHandler(Collection <AbstractCriterionHandler> handlers, 
-                                     CompoundCriterion compoundCriterion) {
+                                     CompoundCriterion compoundCriterion,
+                                     ResultTypeEnum resultType) {
         this.handlers = handlers;
         this.compoundCriterion = compoundCriterion;
+        this.resultType = resultType;
     }
     
 
@@ -136,14 +140,14 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
      * @return CompoundCriterionHandler object returned, with the handlers collection filled.
      */
     @SuppressWarnings("PMD.CyclomaticComplexity") // requires switch-like statement
-    static CompoundCriterionHandler create(CompoundCriterion compoundCriterion) {
+    static CompoundCriterionHandler create(CompoundCriterion compoundCriterion, ResultTypeEnum resultType) {
         Collection<AbstractCriterionHandler> handlers = new HashSet<AbstractCriterionHandler>();
         if (compoundCriterion.getCriterionCollection() != null) {
             for (AbstractCriterion abstractCriterion : compoundCriterion.getCriterionCollection()) {
                 if (abstractCriterion instanceof AbstractAnnotationCriterion) {
                     handlers.add(new AnnotationCriterionHandler((AbstractAnnotationCriterion) abstractCriterion));
                 } else if (abstractCriterion instanceof CompoundCriterion) {
-                    handlers.add(CompoundCriterionHandler.create((CompoundCriterion) abstractCriterion));
+                    handlers.add(CompoundCriterionHandler.create((CompoundCriterion) abstractCriterion, resultType));
                 } else if (abstractCriterion instanceof GeneNameCriterion) {
                     handlers.add(GeneNameCriterionHandler.create((GeneNameCriterion) abstractCriterion));
                 } else if (abstractCriterion instanceof FoldChangeCriterion) {
@@ -158,7 +162,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
                 }
             }
         }
-        return new CompoundCriterionHandler(handlers, compoundCriterion);
+        return new CompoundCriterionHandler(handlers, compoundCriterion, resultType);
     }
 
     /**
@@ -219,7 +223,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
                 allValidRows = newRows;
                 rowsRetrieved = true;
             } else {
-                allValidRows = combineResults(allValidRows, newRows);
+                allValidRows = combineResults(allValidRows, newRows, query.isMultiplePlatformQuery());
             }
             
         }
@@ -234,15 +238,15 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
      * @return - combination of rows.
      */
     private Set<ResultRow> combineResults(Set<ResultRow> currentValidRows, 
-                                          Set<ResultRow> newRows) {
+                                          Set<ResultRow> newRows, boolean isMultiplePlatformQuery) {
         Set<ResultRow> combinedResults = new HashSet<ResultRow>();
         if (compoundCriterion.getBooleanOperator() != null) {
            switch(compoundCriterion.getBooleanOperator()) {
            case AND:
-               combinedResults = combineResultsForAndOperator(currentValidRows, newRows);
+               combinedResults = combineResultsForAndOperator(currentValidRows, newRows, isMultiplePlatformQuery);
            break;
            case OR:
-               combinedResults = combineResultsForOrOperator(currentValidRows, newRows);
+               combinedResults = combineResultsForOrOperator(currentValidRows, newRows, isMultiplePlatformQuery);
            break;
            default:
                // TODO : figure out what to actually do in this case?
@@ -257,22 +261,44 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
 
     
     private Set<ResultRow> combineResultsForAndOperator(Set<ResultRow> currentValidRows, 
-                                   Set<ResultRow> newRows) {
+                                   Set<ResultRow> newRows, boolean isMultiplePlatformQuery) {
         Set<ResultRow> combinedResults = new HashSet<ResultRow>();
            for (ResultRow row : newRows) {
-               if (QueryUtil.resultRowSetContainsResultRow(currentValidRows, row)) {
-                   combinedResults.add(row);
+               ResultRow rowFound = 
+                   QueryUtil.resultRowSetContainsResultRow(currentValidRows, row, isMultiplePlatformQuery);
+               if (rowFound != null) {
+                   if (isMultiplePlatformQuery) {
+                       combinedResults.add(checkRowsForAppropriateReporter(rowFound, row));
+                   } else {
+                       combinedResults.add(row);
+                   }
                }
            }
            return combinedResults;
     }
     
+    private ResultRow checkRowsForAppropriateReporter(ResultRow rowFound, ResultRow row) {
+        if (rowFound.getSampleAcquisition() != null && rowFound.getSampleAcquisition().getSample() != null 
+                && !rowFound.getSampleAcquisition().getSample().getArrayDataCollection().isEmpty()) {
+            ReporterTypeEnum reporterType = 
+                rowFound.getSampleAcquisition().getSample().getArrayDataCollection().
+                    iterator().next().getReporterType();
+            if (resultType.isReporterMatch(reporterType)) {
+                return rowFound;
+            }
+        }
+        return row;
+    }
+
+
     private Set<ResultRow> combineResultsForOrOperator(Set<ResultRow> currentValidRows,
-                                             Set<ResultRow> newRows) {
+                                             Set<ResultRow> newRows, boolean isMultiplePlatformQuery) {
         Set<ResultRow> combinedResults = new HashSet<ResultRow>();
         combinedResults.addAll(currentValidRows);
         for (ResultRow row : newRows) {
-            if (!QueryUtil.resultRowSetContainsResultRow(combinedResults, row)) {
+            ResultRow rowFound = 
+                QueryUtil.resultRowSetContainsResultRow(currentValidRows, row, isMultiplePlatformQuery);
+            if (rowFound == null) {
                 combinedResults.add(row);
             }
             

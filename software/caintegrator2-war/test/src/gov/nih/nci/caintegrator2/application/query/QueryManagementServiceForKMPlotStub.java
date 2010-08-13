@@ -153,7 +153,7 @@ public class QueryManagementServiceForKMPlotStub extends QueryManagementServiceS
     public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
         executeGenomicDataQueryCalled = true;
         GenomicDataQueryResult result = new GenomicDataQueryResult();
-        query.setPlatform(dao.getPlatform("platformName"));
+        query.setGeneExpressionPlatform(dao.getPlatform("platformName"));
         result.setQuery(query);
         GenomicDataResultRow row = new GenomicDataResultRow();
         GenomicDataResultValue value = new GenomicDataResultValue();
