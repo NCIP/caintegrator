@@ -137,7 +137,6 @@ class GenomicQueryHandler {
 
     GenomicDataQueryResult execute() throws InvalidCriterionException {
         if (ResultTypeEnum.COPY_NUMBER.equals(query.getResultType())) {
-            query.setReporterType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
             return createCopyNumberResult();
         }
         ArrayDataValues values = getDataValues();
@@ -162,7 +161,8 @@ class GenomicQueryHandler {
         Collection<SegmentData> segmentDatas = getMatchingSegmentDatas(arrayDatas);
         Map<SegmentData, GenomicDataResultRow> segmentDataToRowMap = 
             createCopyNumberResultRows(result, arrayDatas, segmentDatas);
-        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
+        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(
+                query.getCompoundCriterion(), query.getResultType());
         result.setHasCriterionSpecifiedValues(criterionHandler.hasCriterionSpecifiedSegmentValues());
         for (ArrayData arrayData : arrayDatas) {
             addToCopyNumberResult(result, segmentDataToRowMap, arrayData, criterionHandler);
@@ -198,7 +198,7 @@ class GenomicQueryHandler {
         Map<Integer, Map<Integer, GenomicDataResultRow>> startEndPositionResultRowMap 
             = new HashMap<Integer, Map<Integer, GenomicDataResultRow>>();
         Map<SegmentData, GenomicDataResultRow> segmentDataToRowMap = new HashMap<SegmentData, GenomicDataResultRow>();
-        GenomeBuildVersionEnum genomeVersion = query.getPlatform().getGenomeVersion();
+        GenomeBuildVersionEnum genomeVersion = query.getCopyNumberPlatform().getGenomeVersion();
         boolean isGenomeVersionMapped = dao.isGenomeVersionMapped(genomeVersion);
         for (SegmentData segmentData : segmentDatas) {
             if (arrayDatas.contains(segmentData.getArrayData())) {
@@ -233,7 +233,8 @@ class GenomicQueryHandler {
 
     private void addToGeneExpressionResult(ArrayDataValues values, GenomicDataQueryResult result,
         Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap, ArrayData arrayData) {
-        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
+        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(
+                query.getCompoundCriterion(), query.getResultType());
         result.setHasCriterionSpecifiedValues(criterionHandler.hasCriterionSpecifiedReporterValues());
         GenomicDataResultColumn column = result.addColumn();
         column.setSampleAcquisition(arrayData.getSample().getSampleAcquisition());
@@ -314,23 +315,24 @@ class GenomicQueryHandler {
     }
     
     private Collection<ArrayData> getMatchingArrayDatas() throws InvalidCriterionException {
-        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
+        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(
+                query.getCompoundCriterion(), query.getResultType());
         if (criterionHandler.hasEntityCriterion()) {
             Set<EntityTypeEnum> samplesOnly = new HashSet<EntityTypeEnum>();
             samplesOnly.add(EntityTypeEnum.SAMPLE);
             Set<ResultRow> rows = criterionHandler.getMatches(dao, 
                     arrayDataService, query, samplesOnly);
-            return getArrayDatas(rows, query.getReporterType());
+            return getArrayDatas(rows);
         } else {
-            return getAllArrayDatas(query.getReporterType());
+            return getAllArrayDatas();
         }
     }
 
-    private Set<ArrayData> getAllArrayDatas(ReporterTypeEnum reporterType) {
+    private Set<ArrayData> getAllArrayDatas() {
         Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
         for (StudySubjectAssignment assignment : query.getSubscription().getStudy().getAssignmentCollection()) {
             for (SampleAcquisition acquisition : assignment.getSampleAcquisitionCollection()) {
-                addMatchesFromArrayDatas(arrayDatas, acquisition.getSample().getArrayDataCollection(), reporterType);
+                addMatchesFromArrayDatas(arrayDatas, acquisition.getSample().getArrayDataCollection());
             }
         }
         return arrayDatas;
@@ -338,12 +340,16 @@ class GenomicQueryHandler {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private void addMatchesFromArrayDatas(Set<ArrayData> matchingArrayDatas, 
-            Collection<ArrayData> candidateArrayDatas,
-            ReporterTypeEnum reporterType) {
-        Platform platform = query.getPlatform();
+            Collection<ArrayData> candidateArrayDatas) {
+        Platform platform = query.getGeneExpressionPlatform();
+        ReporterTypeEnum reporterTypeToUse = query.getReporterType();
+        if (ResultTypeEnum.COPY_NUMBER.equals(query.getResultType())) {
+            platform = query.getCopyNumberPlatform();
+            reporterTypeToUse = ReporterTypeEnum.DNA_ANALYSIS_REPORTER;
+        }
         for (ArrayData arrayData : candidateArrayDatas) {
             for (ReporterList reporterList : arrayData.getReporterLists()) {
-                if (reporterType.equals(reporterList.getReporterType())
+                if (reporterTypeToUse.equals(reporterList.getReporterType())
                         && (platform.equals(arrayData.getArray().getPlatform()))) {
                     matchingArrayDatas.add(arrayData);
                 }
@@ -351,25 +357,26 @@ class GenomicQueryHandler {
         }
     }
 
-    private Set<ArrayData> getArrayDatas(Set<ResultRow> rows, ReporterTypeEnum reporterType) {
+    private Set<ArrayData> getArrayDatas(Set<ResultRow> rows) {
         Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
         for (ResultRow row : rows) {
             if (row.getSampleAcquisition() != null) {
                 Collection<ArrayData> candidateArrayDatas = 
                     row.getSampleAcquisition().getSample().getArrayDataCollection();
-                addMatchesFromArrayDatas(arrayDatas, candidateArrayDatas, reporterType);
+                addMatchesFromArrayDatas(arrayDatas, candidateArrayDatas);
             }
         }
         return arrayDatas;
     }
 
     private Collection<AbstractReporter> getMatchingReporters(Collection<ArrayData> arrayDatas) {
-        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
+        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(
+                query.getCompoundCriterion(), query.getResultType());
         if (arrayDatas.isEmpty()) {
             return Collections.emptySet();
         } else if (criterionHandler.hasReporterCriterion()) {
             return criterionHandler.getReporterMatches(dao, query.getSubscription().getStudy(), 
-                    query.getReporterType(), query.getPlatform());
+                    query.getReporterType(), query.getGeneExpressionPlatform());
         } else {
             return getAllReporters(arrayDatas);
         }
@@ -386,12 +393,13 @@ class GenomicQueryHandler {
     
     private Collection<SegmentData> getMatchingSegmentDatas(Collection<ArrayData> arrayDatas) 
         throws InvalidCriterionException {
-        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
+        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(
+                query.getCompoundCriterion(), query.getResultType());
         if (arrayDatas.isEmpty()) {
             return Collections.emptySet();
         } else if (criterionHandler.hasSegmentDataCriterion()) {
             return criterionHandler.getSegmentDataMatches(dao, query.getSubscription().getStudy(), 
-                    query.getPlatform());
+                    query.getCopyNumberPlatform());
         } else {
             return getAllSegmentDatas(arrayDatas);
         }

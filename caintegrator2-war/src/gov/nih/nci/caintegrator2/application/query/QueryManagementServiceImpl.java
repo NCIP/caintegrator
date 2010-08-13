@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
@@ -181,30 +182,33 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     }
 
     private void addPlatformToQuery(Query query) throws InvalidCriterionException {
-        Set<String> platformNames = retrievePlatformNames(query);
+        if (QueryUtil.isQueryCopyNumber(query)) {
+            query.setCopyNumberPlatform(
+                retrievePlatform(query, retrieveCopyNumberPlatformsForStudy(query.getSubscription().getStudy()),
+                        GenomicCriterionTypeEnum.COPY_NUMBER));
+        }
+        if (QueryUtil.isQueryGeneExpression(query)) {
+            query.setGeneExpressionPlatform(
+                retrievePlatform(query, retrieveGeneExpressionPlatformsForStudy(query.getSubscription().getStudy()),
+                        GenomicCriterionTypeEnum.GENE_EXPRESSION));
+        }
+    }
+
+    private Platform retrievePlatform(Query query, Set<String> platformNames, 
+            GenomicCriterionTypeEnum genomicCriterionType) throws InvalidCriterionException {
         if (platformNames.size() == 1) {
-            query.setPlatform(getDao().getPlatform(platformNames.iterator().next()));
+            return getDao().getPlatform(platformNames.iterator().next());
         } else {
-            Set<String> allPlatformNames = query.getCompoundCriterion().getAllPlatformNames();
+            Set<String> allPlatformNames = query.getCompoundCriterion().getAllPlatformNames(genomicCriterionType);
             if (allPlatformNames.size() != 1) {
-               throw new InvalidCriterionException("A genomic query must contain exactly 1 platform.  " 
-                       + "This one contains " + allPlatformNames.size() + " platforms.  " 
+               throw new InvalidCriterionException("A genomic query must contain exactly 1 platform of type " 
+                       + genomicCriterionType.getValue() + ".  This one contains " 
+                       + allPlatformNames.size() + " platforms.  " 
                        + "Create a query with a 'Gene Name' criterion, and within that 'Gene Name' "
                        + "criterion, select a platform.");
             }
-            query.setPlatform(getDao().getPlatform(allPlatformNames.iterator().next()));
+            return getDao().getPlatform(allPlatformNames.iterator().next());
         }
-    }
-    
-    private Set<String> retrievePlatformNames(Query query) {
-        Set<String> platformNames = new HashSet<String>();
-        if (QueryUtil.isQueryCopyNumber(query)) {
-            platformNames.addAll(retrieveCopyNumberPlatformsForStudy(query.getSubscription().getStudy()));
-        }
-        if (QueryUtil.isQueryGeneExpression(query)) {
-            platformNames.addAll(retrieveGeneExpressionPlatformsForStudy(query.getSubscription().getStudy()));
-        }
-        return platformNames;
     }
     
     private void checkCriterionColumnsForMasks(Query query) {

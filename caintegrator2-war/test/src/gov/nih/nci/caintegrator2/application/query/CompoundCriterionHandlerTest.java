@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
@@ -165,7 +166,8 @@ public class CompoundCriterionHandlerTest {
         compoundCriterion3.setCriterionCollection(new HashSet<AbstractCriterion>());
         compoundCriterion3.getCriterionCollection().add(compoundCriterion);
         compoundCriterion3.getCriterionCollection().add(compoundCriterion2);
-        CompoundCriterionHandler compoundCriterionHandler=CompoundCriterionHandler.create(compoundCriterion3);
+        CompoundCriterionHandler compoundCriterionHandler=CompoundCriterionHandler.create(compoundCriterion3, 
+                ResultTypeEnum.GENE_EXPRESSION);
         compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.OR);
         
         compoundCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());

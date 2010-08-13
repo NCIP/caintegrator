@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.*;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import org.junit.Test;
 
@@ -109,6 +110,12 @@ public class ResultTypeEnumTest {
         assertEquals("Annotation", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.CLINICAL.getValue()));
         assertEquals("Gene Expression", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.GENE_EXPRESSION.getValue()));
         assertEquals("Copy Number", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.COPY_NUMBER.getValue()));
+    }
+    
+    @Test
+    public void testIsReporterMatch() {
+        assertFalse(ResultTypeEnum.COPY_NUMBER.isReporterMatch(ReporterTypeEnum.GENE_EXPRESSION_GENE));
+        assertTrue(ResultTypeEnum.COPY_NUMBER.isReporterMatch(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
     }
 
 }

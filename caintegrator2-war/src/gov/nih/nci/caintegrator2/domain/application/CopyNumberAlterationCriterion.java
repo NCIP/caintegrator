@@ -180,4 +180,14 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
             ? super.getGeneSymbolsInCriterion() : new ArrayList<String>();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPlatformName(GenomicCriterionTypeEnum genomicCriterionType) {
+        if (GenomicCriterionTypeEnum.COPY_NUMBER.equals(genomicCriterionType)) {
+            return getPlatformName();
+        }
+        return null;
+    }
 }

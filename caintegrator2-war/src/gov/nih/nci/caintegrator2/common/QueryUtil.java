@@ -124,18 +124,21 @@ public final class QueryUtil {
      * This needs to be tweaked, not sure if the algorithm is correct.
      * @param rowSet - set of rows.
      * @param rowToTest - ResultRow item to test if it exists in set.
+     * @param isMultiplePlatformQuery - if multiple platforms in query then we don't need to match sample acquisitions.
      * @return true/false value.
      */
-    public static boolean resultRowSetContainsResultRow(Set<ResultRow> rowSet, 
-                                                        ResultRow rowToTest) {
+    public static ResultRow resultRowSetContainsResultRow(Set<ResultRow> rowSet, 
+                                                        ResultRow rowToTest,
+                                                        boolean isMultiplePlatformQuery) {
         for (ResultRow curRow : rowSet) {
             if (curRow.getSubjectAssignment() == rowToTest.getSubjectAssignment()
                     && curRow.getImageSeries() == rowToTest.getImageSeries()
-                    && curRow.getSampleAcquisition() == rowToTest.getSampleAcquisition()) {
-                    return true;
+                    && (isMultiplePlatformQuery 
+                            || curRow.getSampleAcquisition() == rowToTest.getSampleAcquisition())) {
+                    return curRow;
                 }
             }
-        return false;
+        return null;
     }
 
     /**

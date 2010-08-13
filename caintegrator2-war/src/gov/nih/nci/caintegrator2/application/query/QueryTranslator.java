@@ -130,7 +130,7 @@ class QueryTranslator {
     QueryResult execute() throws InvalidCriterionException {
         if (query.getCompoundCriterion() != null) {
             CompoundCriterionHandler compoundCriterionHandler = 
-                CompoundCriterionHandler.create(query.getCompoundCriterion());
+                CompoundCriterionHandler.create(query.getCompoundCriterion(), query.getResultType());
             Set<EntityTypeEnum> entityTypesInQuery = new HashSet<EntityTypeEnum>();
             for (ResultColumn col : query.getColumnCollection()) {
                 entityTypesInQuery.add(col.getEntityType());
