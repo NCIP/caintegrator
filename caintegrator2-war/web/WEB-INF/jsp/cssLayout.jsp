@@ -10,7 +10,7 @@
     
     <head>
 		<title>
-		caIntegrator2 
+		caIntegrator 
 		<s:if test="#subTitleText != null && #subTitleText != ''">
 		    - <s:property value="#subTitleText" />
 		</s:if>
