@@ -58,5 +58,13 @@ public class SubjectListCriterion extends AbstractCriterion implements Cloneable
         }
         return identifiers;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPlatformName(GenomicCriterionTypeEnum genomicCriterionType) {
+        return null;
+    }
 
 }

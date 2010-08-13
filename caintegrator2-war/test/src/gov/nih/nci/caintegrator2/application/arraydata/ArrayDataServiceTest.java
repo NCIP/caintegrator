@@ -202,7 +202,7 @@ public class ArrayDataServiceTest {
         
         // Test getFoldChangeValues by query
         Query query = new Query();
-        query.setPlatform(platform);
+        query.setGeneExpressionPlatform(platform);
         query.setSubscription(new StudySubscription());
         query.getSubscription().setStudy(study);
         FoldChangeCriterion foldChangeCriterion = new FoldChangeCriterion();

@@ -60,4 +60,12 @@ public class AbstractAnnotationCriterion extends AbstractCriterion implements Cl
         return annotationFieldDescriptor != null && !annotationFieldDescriptor.getAnnotationMasks().isEmpty();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPlatformName(GenomicCriterionTypeEnum genomicCriterionType) {
+        return null;
+    }
+
 }

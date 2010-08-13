@@ -29,13 +29,11 @@ public abstract class AbstractCriterion extends AbstractCaIntegrator2Object impl
     }
     
     /**
-     * 
+     * @param genomicCriterionType the type of genomic criterion to get platform for.
      * @return default value for platformName is null;
      */
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // Default implementation is null
-    public String getPlatformName() {
-        return null;
-    }
+    public abstract String getPlatformName(GenomicCriterionTypeEnum genomicCriterionType);
 
     /**
      * @return the finalMaskApplied

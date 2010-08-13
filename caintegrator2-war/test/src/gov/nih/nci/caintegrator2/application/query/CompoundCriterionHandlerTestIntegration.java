@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
@@ -135,7 +136,8 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
         entityTypesInQuery.add(EntityTypeEnum.SAMPLE);
         entityTypesInQuery.add(EntityTypeEnum.SUBJECT);
         compoundCriterion1.setBooleanOperator(BooleanOperatorEnum.AND);
-        CompoundCriterionHandler compoundCriterionHandler1 = CompoundCriterionHandler.create(compoundCriterion1);
+        CompoundCriterionHandler compoundCriterionHandler1 = CompoundCriterionHandler.create(compoundCriterion1, 
+                ResultTypeEnum.GENE_EXPRESSION);
         
         assertEquals(1, compoundCriterionHandler1.getMatches(dao, arrayDataService, query, entityTypesInQuery).size());
         
@@ -145,7 +147,8 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
         // Try compoundCriterion2.
         CompoundCriterion compoundCriterion2 = studyHelper.createCompoundCriterion2();
         compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.AND);
-        CompoundCriterionHandler compoundCriterionHandler2 = CompoundCriterionHandler.create(compoundCriterion2);
+        CompoundCriterionHandler compoundCriterionHandler2 = CompoundCriterionHandler.create(compoundCriterion2,
+                ResultTypeEnum.GENE_EXPRESSION);
         assertEquals(0, compoundCriterionHandler2.getMatches(dao, arrayDataService, query, entityTypesInQuery).size());
 
         compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.OR);
@@ -163,7 +166,8 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
         
         // If we AND them together we should get 7 results
         compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.AND);
-        CompoundCriterionHandler compoundCriterionHandler3 = CompoundCriterionHandler.create(compoundCriterion3);
+        CompoundCriterionHandler compoundCriterionHandler3 = CompoundCriterionHandler.create(compoundCriterion3,
+                ResultTypeEnum.GENE_EXPRESSION);
         assertEquals(7, compoundCriterionHandler3.getMatches(dao, arrayDataService, query, entityTypesInQuery).size());
         
         // If we OR them together we should get 7 results, all 5 subjects, plus 2 more samples for subject1.
@@ -175,7 +179,8 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
         entityTypesInQuery = new HashSet<EntityTypeEnum>();
         entityTypesInQuery.add(EntityTypeEnum.SAMPLE);
         CompoundCriterion compoundCriterion4 = studyHelper.createCompoundCriterion3();
-        CompoundCriterionHandler compoundCriterionHandler4 = CompoundCriterionHandler.create(compoundCriterion4);
+        CompoundCriterionHandler compoundCriterionHandler4 = CompoundCriterionHandler.create(compoundCriterion4,
+                ResultTypeEnum.GENE_EXPRESSION);
         assertEquals(1, compoundCriterionHandler4.getMatches(dao, arrayDataService, query, entityTypesInQuery).size());
     }
     

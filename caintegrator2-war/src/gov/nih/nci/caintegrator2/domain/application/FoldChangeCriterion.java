@@ -94,4 +94,15 @@ public class FoldChangeCriterion extends AbstractGenomicCriterion implements Clo
     public void setCompareToSampleSet(SampleSet compareToSampleSet) {
         this.compareToSampleSet = compareToSampleSet;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPlatformName(GenomicCriterionTypeEnum genomicCriterionType) {
+        if (GenomicCriterionTypeEnum.GENE_EXPRESSION.equals(genomicCriterionType)) {
+            return getPlatformName();
+        }
+        return null;
+    }
 }

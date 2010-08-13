@@ -133,7 +133,7 @@ public class CopyNumberAlterationCriterionHandlerTest {
         daoStub.clear();       
         study = new Study();
         query = new Query();
-        query.setPlatform(platform);
+        query.setCopyNumberPlatform(platform);
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
         query.setSubscription(subscription);

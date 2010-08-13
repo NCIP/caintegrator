@@ -17,6 +17,7 @@ import java.util.List;
 /**
  * 
  */
+@SuppressWarnings("PMD.TooManyFields") // Necessary fields for this object.
 public class Query extends AbstractCaIntegrator2Object implements Cloneable, TimeStampable {
     
     private static final long serialVersionUID = 1L;
@@ -35,7 +36,8 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
     private transient Visibility subjectListVisibility = null;
     private transient List<String> geneSymbolsNotFound = new ArrayList<String>();
     private transient boolean hasMaskedValues = false;
-    private transient Platform platform;
+    private transient Platform geneExpressionPlatform;
+    private transient Platform copyNumberPlatform;
     
     
     /**
@@ -290,25 +292,48 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
         this.subjectListVisibility = subjectListVisibility;
     }
 
+    
     /**
-     * @return the platform
+     * @return the geneExpressionPlatform
      */
-    public Platform getPlatform() {
-        return platform;
+    public Platform getGeneExpressionPlatform() {
+        return geneExpressionPlatform;
     }
 
     /**
-     * @param platform the platform to set
+     * @param geneExpressionPlatform the geneExpressionPlatform to set
      */
-    public void setPlatform(Platform platform) {
-        this.platform = platform;
+    public void setGeneExpressionPlatform(Platform geneExpressionPlatform) {
+        this.geneExpressionPlatform = geneExpressionPlatform;
     }
-    
+
+    /**
+     * @return the copyNumberPlatform
+     */
+    public Platform getCopyNumberPlatform() {
+        return copyNumberPlatform;
+    }
+
+    /**
+     * @param copyNumberPlatform the copyNumberPlatform to set
+     */
+    public void setCopyNumberPlatform(Platform copyNumberPlatform) {
+        this.copyNumberPlatform = copyNumberPlatform;
+    }
+
     /**
      * @return T/F is a 2 color channel type platform
      */
     public boolean isTwoChannelType() {
         return PlatformChannelTypeEnum.TWO_COLOR.equals(
-                platform.getPlatformConfiguration().getPlatformChannelType());
+                geneExpressionPlatform.getPlatformConfiguration().getPlatformChannelType());
+    }
+    
+    /**
+     * If the query has both copy number and fold change platforms.
+     * @return T/F value.
+     */
+    public boolean isMultiplePlatformQuery() {
+        return geneExpressionPlatform != null && copyNumberPlatform != null;
     }
 }

@@ -37,6 +37,18 @@ public class GeneNameCriterion extends AbstractGenomicCriterion {
     public void setGenomicCriterionType(GenomicCriterionTypeEnum genomicCriterionType) {
         this.genomicCriterionType = genomicCriterionType;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPlatformName(GenomicCriterionTypeEnum criterionType) {
+        if (genomicCriterionType.equals(criterionType)) {
+            return getPlatformName();
+        }
+        return null;
+    }
+    
     
     
 }

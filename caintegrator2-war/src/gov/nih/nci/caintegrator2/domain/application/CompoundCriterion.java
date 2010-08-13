@@ -102,21 +102,29 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
     }
     
     /**
-     * 
+     * @param genomicCriterionType the criterion type to get the platforms for.
      * @return returns all platform names for all criterion under this compound criterion.
      */
-    public Set<String> getAllPlatformNames() {
+    public Set<String> getAllPlatformNames(GenomicCriterionTypeEnum genomicCriterionType) {
         Set<String> platformNames = new HashSet<String>();
         for (AbstractCriterion criterion : getCriterionCollection()) {
             if (criterion instanceof CompoundCriterion) {
-                platformNames.addAll(((CompoundCriterion) criterion).getAllPlatformNames());
+                platformNames.addAll(((CompoundCriterion) criterion).getAllPlatformNames(genomicCriterionType));
             } else {
-                if (StringUtils.isNotBlank(criterion.getPlatformName())) {
-                    platformNames.add(criterion.getPlatformName());
+                if (StringUtils.isNotBlank(criterion.getPlatformName(genomicCriterionType))) {
+                    platformNames.add(criterion.getPlatformName(genomicCriterionType));
                 }
             }
         }
         return platformNames;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPlatformName(GenomicCriterionTypeEnum genomicCriterionType) {
+        return null;
     }
 
     /**

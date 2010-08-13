@@ -124,7 +124,7 @@ public class QueryUtilTest {
         ResultRow rowToTest = new ResultRow();
         rowToTest.setSubjectAssignment(subjectAssignment);
         
-        assertTrue(QueryUtil.resultRowSetContainsResultRow(rowSet, rowToTest));
+        assertTrue(QueryUtil.resultRowSetContainsResultRow(rowSet, rowToTest, false) != null);
         
     }
 

@@ -124,7 +124,8 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
             Set<EntityTypeEnum> entityTypes) {
         Study study = query.getSubscription().getStudy();
         ReporterTypeEnum reporterType = query.getReporterType();
-        Set<AbstractReporter> reporters = getReporterMatches(dao, study, reporterType, query.getPlatform());
+        Set<AbstractReporter> reporters = 
+            getReporterMatches(dao, study, reporterType, query.getGeneExpressionPlatform());
         Set<SampleAcquisition> sampleAcquisitions = new HashSet<SampleAcquisition>();
         for (AbstractReporter reporter : reporters) {
             for (ArrayData arrayData : reporter.getReporterList().getArrayDatas()) {

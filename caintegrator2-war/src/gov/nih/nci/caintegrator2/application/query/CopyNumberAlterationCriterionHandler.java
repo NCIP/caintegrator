@@ -133,7 +133,7 @@ public final class CopyNumberAlterationCriterionHandler extends AbstractCriterio
     Set<ResultRow> getMatches(CaIntegrator2Dao dao, ArrayDataService arrayDataService, Query query,
             Set<EntityTypeEnum> entityTypes) throws InvalidCriterionException {
         Study study = query.getSubscription().getStudy();
-        Platform platform = query.getPlatform();
+        Platform platform = query.getCopyNumberPlatform();
         List<SegmentData> segmentDatas = dao.findMatchingSegmentDatas(criterion, study, platform);
         return getRows(segmentDatas, entityTypes);
     }

@@ -142,7 +142,7 @@ public final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
             Set<EntityTypeEnum> entityTypes) throws InvalidCriterionException {
         Study study = query.getSubscription().getStudy();
         ReporterTypeEnum reporterType = query.getReporterType();
-        Platform platform = query.getPlatform();
+        Platform platform = query.getGeneExpressionPlatform();
         configureCompareToSamples(study, criterion.getControlSampleSetName());
         Set<ArrayData> controlArrayData = getCompareToArrayDatas(reporterType, platform);
         Set<AbstractReporter> reporters = getReporterMatches(dao, study, reporterType, platform);

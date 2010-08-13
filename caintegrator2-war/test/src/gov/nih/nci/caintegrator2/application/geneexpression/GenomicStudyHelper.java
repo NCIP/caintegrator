@@ -137,7 +137,7 @@ public class GenomicStudyHelper {
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
         query.setColumnCollection(new HashSet<ResultColumn>());
         Platform platform= daoStub.getPlatform("platformName");
-        query.setPlatform(platform);
+        query.setGeneExpressionPlatform(platform);
         query.setSubscription(new StudySubscription());
         query.getSubscription().setStudy(new Study());
         Study study = query.getSubscription().getStudy();
