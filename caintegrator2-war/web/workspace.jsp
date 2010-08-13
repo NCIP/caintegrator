@@ -74,7 +74,7 @@
 						
 						<!--ADD CONTENT HERE-->
 						
-						<h1>Welcome to <strong><s:property value="openStudySubscription.study.shortTitleText" /></strong> Powered by caIntegrator2</h1>
+						<h1>Welcome to <strong><s:property value="openStudySubscription.study.shortTitleText" /></strong> Powered by caIntegrator</h1>
 						
 						<div class="box">
 							<h2>About VASARI</h2>
@@ -233,7 +233,7 @@
 								<li><a href="analysis_tools/genepattern_analysis.html">GenePattern Analysis</a></li>
 							</ul>
 						</li>
-						<li class="stdnav" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
+						<li class="stdnav" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator Menu</div>
 							<ul>
 								<li><a href="#">Deploy New Study</a></li>
 								<li><a href="#">Support</a></li>

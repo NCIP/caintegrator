@@ -448,7 +448,7 @@
     </s:if>
     
     <ul class="menu">
-        <li class="stdnavforinvestigator" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
+        <li class="stdnavforinvestigator" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator Menu</div>
             <ul>
                 <s:if test="#sessionHelper.anonymousUser">
                     <li><a href="/caintegrator2/logout.jsp">Login</a></li>
