@@ -2,7 +2,7 @@
 
 <!--Columns-->
     
-    <h2 class="resultsColumnsTabHeader">Select Results Type:</h2>
+    <h2 class="resultsColumnsTabHeader" style="height: 40px;">Select Results Type:</h2>
     <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
         <div class="tabhelp" style="white-space:nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
             <a href="javascript:openHelpWindowWithNavigation('search_columns_help')" class="help">
@@ -16,7 +16,7 @@
             listKey="key"
             listValue="value"/><br>
         
-        <div class="selectorNote">Genomic result type - will display a gene expression data matrix.<br>
+        <div class="selectorNote">Gene Expression result type - will display a gene expression data matrix.<br>
                 Copy Number result type - will display segmentation data with Chromosome position.<br>
                 Annotation result type - will display tabular data, including column selection.</div>
     <s:if test="queryForm.resultConfiguration.resultType == 'geneExpression'">
