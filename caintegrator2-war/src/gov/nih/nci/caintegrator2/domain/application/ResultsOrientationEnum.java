@@ -61,6 +61,20 @@ public enum ResultsOrientationEnum {
     }
     
     /**
+     * Used in the JSP's to retrieve the displayable string version of the Enum values for Copy Number results.
+     * Ex usage: 
+     * list="@gov.nih.nci.caintegrator2.application.query.ResultTypeEnum@getValueToDisplayableMap()" 
+     *              listKey="key" listValue="value"
+     * @return HashMap of EnumeratedValue's String to Displayable String. 
+     */
+    public static Map<String, String> getCopyNumberValueToDisplayableMap() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(ResultsOrientationEnum.SUBJECTS_AS_COLUMNS.getValue(), "Samples in Columns");
+        map.put(ResultsOrientationEnum.SUBJECTS_AS_ROWS.getValue(), "Samples in Rows");
+        return map;
+    }
+    
+    /**
      * Returns the <code>ResultTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
      * 
