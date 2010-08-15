@@ -41,6 +41,29 @@
         <div class="selectorNote">Genes in Rows / Subjects in Columns - will display the subjects and samples along the top and genes and reporters along the side.<br>
                 Genes in Columns / Subjects in Rows - will display the genes and reporters along the top and subjects and samples along the side. Useful when there are many samples and few reporters.</div>    
     </s:if>
+    <s:elseif test="queryForm.resultConfiguration.resultType == 'copyNumber'">
+        <s:if test="!queryForm.criteriaGroup.hasNoGeneExpressionCriterion()">
+            <br>
+            <div class="reporterTypeSelector">
+            <b>Select Reporter Type: </b> 
+                <s:radio name="queryForm.resultConfiguration.reporterType"
+                    list="@gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum@getValueToDisplayableMap()"
+                    listKey="key" listValue="value" />
+            </div>
+            <div class="selectorNote">Reporter Id - use reporter in the gene expression criterion.<br>
+                Gene - use gene in the gene expression criterion.</div>
+        </s:if>
+        <br>
+        <div class="reporterTypeSelector">
+        <b>Select Results Orientation: </b> 
+            <s:radio name="queryForm.resultConfiguration.orientation"
+                list="@gov.nih.nci.caintegrator2.domain.application.ResultsOrientationEnum@getCopyNumberValueToDisplayableMap()"
+                listKey="key" 
+                listValue="value" />
+        </div>  
+        <div class="selectorNote">Samples in Columns - will display a matrix of samples versus segments.<br>
+                Samples in Rows - will display the samples along the side.</div>    
+    </s:elseif>
     </div>
     
     <s:if test="queryForm.resultConfiguration.resultType == 'clinical'">
@@ -70,6 +93,17 @@
             </ul>
             </div>
         </s:iterator>
+        <s:if test="!queryForm.criteriaGroup.hasNoGeneExpressionCriterion()">
+            <br>
+            <div class="reporterTypeSelector">
+            <b>Select Reporter Type: </b> 
+                <s:radio name="queryForm.resultConfiguration.reporterType"
+                    list="@gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum@getValueToDisplayableMap()"
+                    listKey="key" listValue="value" />
+            </div>
+            <div class="selectorNote">Reporter Id - use reporter in the gene expression criterion.<br>
+                Gene - use gene in the gene expression criterion.</div>
+        </s:if>
             
         </div>    
     

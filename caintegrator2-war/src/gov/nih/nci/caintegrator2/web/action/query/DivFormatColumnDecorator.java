@@ -85,78 +85,28 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
+import javax.servlet.jsp.PageContext;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.displaytag.decorator.DisplaytagColumnDecorator;
+import org.displaytag.exception.DecoratorException;
+import org.displaytag.properties.MediaTypeEnum;
 
 /**
- * 
+ * This is a Displaytag Decorator for the Div columns, which will insert s:div tag around the value which is
+ * what will get returned after it is "decorated".
+ * This was the most practical way to allow for exporting the value properly, as our design of using
+ * Struts2 + displaytag + dynamic columns was not a well documented approach.
  */
-public class DisplayableCopyNumberResultRow {
-    private String chromosome;
-    private String startPosition;
-    private String endPosition;
-    private String genes;
-    private List<GenomicDataResultValue> values = new ArrayList<GenomicDataResultValue>();
+public class DivFormatColumnDecorator implements DisplaytagColumnDecorator {
+    
     /**
-     * @return the chromosome
+     * {@inheritDoc}
      */
-    public String getChromosome() {
-        return chromosome;
+    public Object decorate(Object columnValue, PageContext pageContext, MediaTypeEnum media) throws DecoratorException {
+        String value = (String) columnValue;
+        value = value.replaceAll("\r\n", "");
+        value = value.trim();
+        return "<div name=\"truncateDiv\">" + value + "</div>";
     }
-    /**
-     * @param chromosome the chromosome to set
-     */
-    public void setChromosome(String chromosome) {
-        this.chromosome = chromosome;
-    }
-    /**
-     * @return the startPosition
-     */
-    public String getStartPosition() {
-        return startPosition;
-    }
-    /**
-     * @param startPosition the startPosition to set
-     */
-    public void setStartPosition(String startPosition) {
-        this.startPosition = startPosition;
-    }
-    /**
-     * @return the endPosition
-     */
-    public String getEndPosition() {
-        return endPosition;
-    }
-    /**
-     * @param endPosition the endPosition to set
-     */
-    public void setEndPosition(String endPosition) {
-        this.endPosition = endPosition;
-    }
-    /**
-     * @return the genes
-     */
-    public String getGenes() {
-        return genes;
-    }
-    /**
-     * @param genes the genes to set
-     */
-    public void setGenes(String genes) {
-        this.genes = genes;
-    }
-    /**
-     * @return the values
-     */
-    public List<GenomicDataResultValue> getValues() {
-        return values;
-    }
-    /**
-     * @param values the values to set
-     */
-    public void setValues(List<GenomicDataResultValue> values) {
-        this.values = values;
-    }
+        
 }

@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultsOrientationEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,22 +102,52 @@ public final class DisplayableCopyNumberQueryResult {
     private static final int DEFAULT_PAGE_SIZE = 20;
     private final GenomicDataQueryResult result;
     private final List<String> sampleHeaders = new ArrayList<String>();
-    private final List<DisplayableCopyNumberResultRow> rows = new ArrayList<DisplayableCopyNumberResultRow>();
+    private final List<DisplayableCopyNumberGeneBasedRow> rows = new ArrayList<DisplayableCopyNumberGeneBasedRow>();
+    private final List<DisplayableCopyNumberSampleBasedRow> sampleRows =
+        new ArrayList<DisplayableCopyNumberSampleBasedRow>();
     private int pageSize = DEFAULT_PAGE_SIZE;
     
-    DisplayableCopyNumberQueryResult(GenomicDataQueryResult result) {
+    DisplayableCopyNumberQueryResult(GenomicDataQueryResult result, ResultsOrientationEnum orientation) {
         this.result = result;
-        load();
+        if (ResultsOrientationEnum.SUBJECTS_AS_COLUMNS.equals(orientation)) {
+            loadGeneBasedRow();
+        } else {
+            loadSampleBasedRow();
+        }
+    }
+
+    private void loadSampleBasedRow() {
+        for (GenomicDataResultColumn column : result.getColumnCollection()) {
+            for (GenomicDataResultRow row : result.getRowCollection()) {
+                GenomicDataResultValue value = getValue(row, column);
+                if (value != null && value.isMeetsCriterion()) {
+                    DisplayableCopyNumberSampleBasedRow displayableRow = new DisplayableCopyNumberSampleBasedRow();
+                    displayableRow.setSubject(
+                            column.getSampleAcquisition().getAssignment().getIdentifier());
+                    displayableRow.setSample(
+                            column.getSampleAcquisition().getSample().getName());
+                    displayableRow.setChromosome(
+                            row.getSegmentDataResultValue().getChromosomalLocation().getChromosome().toString());
+                    displayableRow.setStartPosition(
+                            row.getSegmentDataResultValue().getChromosomalLocation().getStartPosition().toString());
+                    displayableRow.setEndPosition(
+                            row.getSegmentDataResultValue().getChromosomalLocation().getEndPosition().toString());
+                    displayableRow.setGenes(row.getSegmentDataResultValue().getDisplayGenes());
+                    displayableRow.setValue(value);
+                    sampleRows.add(displayableRow);
+                }
+            }
+        }
     }
     
-    private void load() {
+    private void loadGeneBasedRow() {
         loadHeaders();
         loadRows();
     }
 
     private void loadRows() {
         for (GenomicDataResultRow row : result.getRowCollection()) {
-            DisplayableCopyNumberResultRow displayableRow = new DisplayableCopyNumberResultRow();
+            DisplayableCopyNumberGeneBasedRow displayableRow = new DisplayableCopyNumberGeneBasedRow();
             displayableRow.setChromosome(
                     row.getSegmentDataResultValue().getChromosomalLocation().getChromosome().toString());
             displayableRow.setStartPosition(
@@ -134,7 +165,7 @@ public final class DisplayableCopyNumberQueryResult {
     private GenomicDataResultValue getValue(GenomicDataResultRow row, GenomicDataResultColumn column) {
         for (GenomicDataResultValue value : row.getValues()) {
             if (value.getColumn().equals(column)) {
-                return value;
+                return (value.isMeetsCriterion()) ? value : null;
             }
         }
         return null;
@@ -142,7 +173,8 @@ public final class DisplayableCopyNumberQueryResult {
 
     private void loadHeaders() {
         for (GenomicDataResultColumn column : result.getColumnCollection()) {
-            sampleHeaders.add(column.getSampleAcquisition().getSample().getName());
+            sampleHeaders.add(column.getSampleAcquisition().getAssignment().getIdentifier() + "/"
+                    + column.getSampleAcquisition().getSample().getName());
         }
     }
 
@@ -167,7 +199,7 @@ public final class DisplayableCopyNumberQueryResult {
     /**
      * @return the rows
      */
-    public List<DisplayableCopyNumberResultRow> getRows() {
+    public List<DisplayableCopyNumberGeneBasedRow> getRows() {
         return rows;
     }
 
@@ -191,5 +223,12 @@ public final class DisplayableCopyNumberQueryResult {
      */
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    /**
+     * @return the sampleRows
+     */
+    public List<DisplayableCopyNumberSampleBasedRow> getSampleRows() {
+        return sampleRows;
     }
 }

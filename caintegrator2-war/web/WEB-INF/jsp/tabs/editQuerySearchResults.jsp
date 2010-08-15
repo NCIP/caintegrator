@@ -228,37 +228,83 @@
         </s:if>
         <s:elseif test='%{query.resultType.value.equals("copyNumber")}'>
             <s:set name="pageSizeVar" id="pageSizeVar" value="%{copyNumberQueryResult.pageSize}" />
-            <display:table name="copyNumberQueryResult.rows" uid="copyNumberQueryResultRows" id="copyNumberQueryResultRows" pagesize="${pageSizeVar}"
-                sort="list" class="data" requestURI="manageQuery.action#" export="true">
-                <display:setProperty name="paging.banner.placement" value="both" />
-                <display:setProperty name="export.excel" value="false" />
-                <display:setProperty name="export.xml" value="false" />
-                <display:setProperty name="export.csv.filename" value="StudySearchResults.csv" />
-                <display:setProperty name="export.csv.include_header" value="true" />
+            <s:if test='%{query.orientation.value.equals("subjectsAsColumns")}'>
+                <display:table name="copyNumberQueryResult.rows" uid="copyNumberQueryResultRows" id="copyNumberQueryResultRows" pagesize="${pageSizeVar}"
+                    sort="list" class="data" requestURI="manageQuery.action#" export="true">
+                    <display:setProperty name="paging.banner.placement" value="both" />
+                    <display:setProperty name="export.excel" value="false" />
+                    <display:setProperty name="export.xml" value="false" />
+                    <display:setProperty name="export.csv.filename" value="StudySearchResults.csv" />
+                    <display:setProperty name="export.csv.include_header" value="true" />
+                    <display:setProperty name="export.decorated" value="false" />
                 
-                <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).chromosome}" />
-                <display:column title="Chromosome">${curValue}</display:column>
-                <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).startPosition}" />
-                <display:column title="Start Position">${curValue}</display:column>
-                <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).endPosition}" />
-                <display:column title="End Position">${curValue}</display:column>
-                <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).genes}" />
-                <display:column title="Genes" media="html"><s:div name="truncateDiv">${curValue}</s:div></display:column>
+                    <display:column title="Chromosome">
+                        <s:property  value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).chromosome}" />
+                    </display:column>
+                    <display:column title="Start Position">
+                        <s:property  value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).startPosition}" />
+                    </display:column>
+                    <display:column title="End Position">
+                        <s:property  value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).endPosition}" />
+                    </display:column>
+                    <display:column title="Genes" decorator="gov.nih.nci.caintegrator2.web.action.query.DivFormatColumnDecorator">
+                        <s:property  value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).genes}" />
+                    </display:column>
                 
-                <s:iterator value="copyNumberQueryResult.sampleHeaders" status="status" id="column">
-                    <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).displayableValue}" />
-                    <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).meetsCriterion}" />
-                    <s:if test="#meetsCriterion">
-                        <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).highlightColor}" />
-                        <display:column title="${column}" style="background-color:${highlightColor};color:white">${curValue}</display:column>
-                    </s:if>
-                    <s:else>
-                        <display:column title="${column}" style="">${curValue}</display:column>
-                    </s:else>
-                </s:iterator>
-            </display:table>
+                    <s:iterator value="copyNumberQueryResult.sampleHeaders" status="status" id="column">
+                        <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).displayableValue}" />
+                        <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).meetsCriterion}" />
+                        <s:if test="#meetsCriterion">
+                            <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).highlightColor}" />
+                            <display:column title="${column}" style="background-color:${highlightColor};color:white">${curValue}</display:column>
+                        </s:if>
+                        <s:else>
+                            <display:column title="${column}" style="">${curValue}</display:column>
+                        </s:else>
+                    </s:iterator>
+                </display:table>
+            </s:if>
+            <s:else>
+                <display:table name="copyNumberQueryResult.sampleRows" uid="copyNumberQueryResultRows" id="copyNumberQueryResultRows" pagesize="${pageSizeVar}"
+                    sort="list" class="data" requestURI="manageQuery.action#" export="true">
+                    <display:setProperty name="paging.banner.placement" value="both" />
+                    <display:setProperty name="export.excel" value="false" />
+                    <display:setProperty name="export.xml" value="false" />
+                    <display:setProperty name="export.csv.filename" value="StudySearchResults.csv" />
+                    <display:setProperty name="export.csv.include_header" value="true" />
+                    <display:setProperty name="export.decorated" value="false" />
+                
+                    <display:column title="Subject">
+                        <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).subject}" />
+                    </display:column>
+                    <display:column title="Sample">
+                        <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).sample}" />
+                    </display:column>
+                    <display:column title="Genes" decorator="gov.nih.nci.caintegrator2.web.action.query.DivFormatColumnDecorator">
+                        <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).genes}" />
+                    </display:column>
+                    <display:column title="Chromosome">
+                        <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).chromosome}" />
+                    </display:column>
+                    <display:column title="Start Position">
+                        <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).startPosition}" />
+                    </display:column>
+                    <display:column title="End Position">
+                        <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).endPosition}" />
+                    </display:column>
+                    <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.displayableValue}" />
+                    <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.meetsCriterion}" />
+                        <s:if test="#meetsCriterion">
+                            <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.highlightColor}" />
+                            <display:column title="Value" style="background-color:${highlightColor};color:white">${curValue}</display:column>
+                        </s:if>
+                        <s:else>
+                            <display:column title="Value" style="">${curValue}</display:column>
+                        </s:else>
+                </display:table>
+            </s:else>
             <SCRIPT LANGUAGE="JavaScript" TYPE="TEXT/JAVASCRIPT">
-                jQuery("div[name*='truncateDiv']").jTruncate({length: 8, minTrail: 3});;
+                jQuery("div[name*='truncateDiv']").jTruncate({length: 8, minTrail: 3});
             </SCRIPT>
         </s:elseif>
         <s:else>
@@ -288,8 +334,7 @@
                         <s:checkbox theme="simple" name="queryResult.rows[%{#attr.queryResultRows_rowNum - 1}].selectedSubject" disabled="%{anonymousUser}"/>
                     </display:column>
                     <display:column title="${subjectIdHeaderValue}" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
-                        <s:property
-                            value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).subjectAssignment.identifier}" />
+                        <s:property value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).subjectAssignment.identifier}" />
                     </display:column>
                 </s:if>
                 <s:if test="queryResult.hasImageSeries">
@@ -355,7 +400,7 @@
         </s:if>
     </s:if>
     <s:elseif test='%{query.resultType.value.equals("copyNumber")}'>
-        <s:if test="!copyNumberQueryResult.rows.isEmpty()">
+        <s:if test="!copyNumberQueryResult.rows.isEmpty() or !copyNumberQueryResult.sampleRows.isEmpty()">
             <div class="actionsrow">
                 <del class="btnwrapper">
                     <ul class="btnrow">
