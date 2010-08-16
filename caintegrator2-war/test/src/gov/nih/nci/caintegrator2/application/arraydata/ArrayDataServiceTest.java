@@ -195,10 +195,10 @@ public class ArrayDataServiceTest {
         ArrayDataValues foldChangeValues = service.getFoldChangeValues(request, controlValuesList, null);
         assertEquals(2, foldChangeValues.getArrayDatas().size());
         assertEquals(2, foldChangeValues.getReporters().size());
-        assertEquals(1.752, (float) foldChangeValues.getFloatValue(data1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
-        assertEquals(5.256, (float) foldChangeValues.getFloatValue(data2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
-        assertEquals(7.2886, (float) foldChangeValues.getFloatValue(data1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
-        assertEquals(14.5772, (float) foldChangeValues.getFloatValue(data2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(1.3905, (float) foldChangeValues.getFloatValue(data1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(4.1716, (float) foldChangeValues.getFloatValue(data2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(5.7849, (float) foldChangeValues.getFloatValue(data1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(11.5699, (float) foldChangeValues.getFloatValue(data2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
         
         // Test getFoldChangeValues by query
         Query query = new Query();
