@@ -190,6 +190,9 @@ class GenePatternHelper {
                }
             }
         }
+        if (getAttributeValue(parameterInfo, TYPE_ATTRIBUTE) == null) {
+            return false;
+        }
         return true;
     }
     
