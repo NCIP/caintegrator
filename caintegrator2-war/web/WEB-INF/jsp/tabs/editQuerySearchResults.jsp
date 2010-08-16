@@ -238,13 +238,13 @@
                     <display:setProperty name="export.csv.include_header" value="true" />
                     <display:setProperty name="export.decorated" value="false" />
                 
-                    <display:column title="Chromosome" sortable="true">
+                    <display:column title="Chromosome" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
                         <s:property  value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).chromosome}" />
                     </display:column>
-                    <display:column title="Start Position" sortable="true">
+                    <display:column title="Start Position" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
                         <s:property  value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).startPosition}" />
                     </display:column>
-                    <display:column title="End Position" sortable="true">
+                    <display:column title="End Position" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
                         <s:property  value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).endPosition}" />
                     </display:column>
                     <display:column title="Genes" sortable="true" decorator="gov.nih.nci.caintegrator2.web.action.query.DivFormatColumnDecorator">
@@ -256,10 +256,10 @@
                         <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).meetsCriterion}" />
                         <s:if test="#meetsCriterion">
                             <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).highlightColor}" />
-                            <display:column title="${column}" sortable="true" style="background-color:${highlightColor};color:white">${curValue}</display:column>
+                            <display:column title="${column}" sortable="true" style="background-color:${highlightColor};color:white" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">${curValue}</display:column>
                         </s:if>
                         <s:else>
-                            <display:column title="${column}" sortable="true" style="">${curValue}</display:column>
+                            <display:column title="${column}" sortable="true" style="" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">${curValue}</display:column>
                         </s:else>
                     </s:iterator>
                 </display:table>
@@ -283,23 +283,23 @@
                     <display:column title="Genes" sortable="true" decorator="gov.nih.nci.caintegrator2.web.action.query.DivFormatColumnDecorator">
                         <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).genes}" />
                     </display:column>
-                    <display:column title="Chromosome" sortable="true">
+                    <display:column title="Chromosome" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
                         <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).chromosome}" />
                     </display:column>
-                    <display:column title="Start Position" sortable="true">
+                    <display:column title="Start Position" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
                         <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).startPosition}" />
                     </display:column>
-                    <display:column title="End Position" sortable="true">
+                    <display:column title="End Position" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
                         <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).endPosition}" />
                     </display:column>
                     <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.displayableValue}" />
                     <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.meetsCriterion}" />
                         <s:if test="#meetsCriterion">
                             <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.highlightColor}" />
-                            <display:column title="Value" sortable="true"style="background-color:${highlightColor};color:white">${curValue}</display:column>
+                            <display:column title="Value" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" style="background-color:${highlightColor};color:white">${curValue}</display:column>
                         </s:if>
                         <s:else>
-                            <display:column title="Value" sortable="true"style="">${curValue}</display:column>
+                            <display:column title="Value" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" style="">${curValue}</display:column>
                         </s:else>
                 </display:table>
             </s:else>
