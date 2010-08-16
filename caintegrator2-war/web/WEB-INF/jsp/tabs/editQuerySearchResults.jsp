@@ -29,7 +29,7 @@
             <s:if test='%{query.resultType.value.equals("geneExpression")}'></s:if>
             <s:else>
                 <label>Results per Page:</label>
-                <s:select name="pageSize" list="{'10', '20', '50', '100'}" />
+                <s:select name="pageSize" list="{'10', '20', '50', '100', '200', '500', '1000'}" />
                 <s:a href="#" onclick="submitForm('updateResultsPerPage')">
                     <span class="btn_img">Apply</span>
                 </s:a>
@@ -238,16 +238,16 @@
                     <display:setProperty name="export.csv.include_header" value="true" />
                     <display:setProperty name="export.decorated" value="false" />
                 
-                    <display:column title="Chromosome">
+                    <display:column title="Chromosome" sortable="true">
                         <s:property  value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).chromosome}" />
                     </display:column>
-                    <display:column title="Start Position">
+                    <display:column title="Start Position" sortable="true">
                         <s:property  value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).startPosition}" />
                     </display:column>
-                    <display:column title="End Position">
+                    <display:column title="End Position" sortable="true">
                         <s:property  value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).endPosition}" />
                     </display:column>
-                    <display:column title="Genes" decorator="gov.nih.nci.caintegrator2.web.action.query.DivFormatColumnDecorator">
+                    <display:column title="Genes" sortable="true" decorator="gov.nih.nci.caintegrator2.web.action.query.DivFormatColumnDecorator">
                         <s:property  value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).genes}" />
                     </display:column>
                 
@@ -256,10 +256,10 @@
                         <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).meetsCriterion}" />
                         <s:if test="#meetsCriterion">
                             <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).highlightColor}" />
-                            <display:column title="${column}" style="background-color:${highlightColor};color:white">${curValue}</display:column>
+                            <display:column title="${column}" sortable="true" style="background-color:${highlightColor};color:white">${curValue}</display:column>
                         </s:if>
                         <s:else>
-                            <display:column title="${column}" style="">${curValue}</display:column>
+                            <display:column title="${column}" sortable="true" style="">${curValue}</display:column>
                         </s:else>
                     </s:iterator>
                 </display:table>
@@ -274,32 +274,32 @@
                     <display:setProperty name="export.csv.include_header" value="true" />
                     <display:setProperty name="export.decorated" value="false" />
                 
-                    <display:column title="Subject">
+                    <display:column title="Subject" sortable="true">
                         <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).subject}" />
                     </display:column>
-                    <display:column title="Sample">
+                    <display:column title="Sample" sortable="true">
                         <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).sample}" />
                     </display:column>
-                    <display:column title="Genes" decorator="gov.nih.nci.caintegrator2.web.action.query.DivFormatColumnDecorator">
+                    <display:column title="Genes" sortable="true" decorator="gov.nih.nci.caintegrator2.web.action.query.DivFormatColumnDecorator">
                         <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).genes}" />
                     </display:column>
-                    <display:column title="Chromosome">
+                    <display:column title="Chromosome" sortable="true">
                         <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).chromosome}" />
                     </display:column>
-                    <display:column title="Start Position">
+                    <display:column title="Start Position" sortable="true">
                         <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).startPosition}" />
                     </display:column>
-                    <display:column title="End Position">
+                    <display:column title="End Position" sortable="true">
                         <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).endPosition}" />
                     </display:column>
                     <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.displayableValue}" />
                     <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.meetsCriterion}" />
                         <s:if test="#meetsCriterion">
                             <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.highlightColor}" />
-                            <display:column title="Value" style="background-color:${highlightColor};color:white">${curValue}</display:column>
+                            <display:column title="Value" sortable="true"style="background-color:${highlightColor};color:white">${curValue}</display:column>
                         </s:if>
                         <s:else>
-                            <display:column title="Value" style="">${curValue}</display:column>
+                            <display:column title="Value" sortable="true"style="">${curValue}</display:column>
                         </s:else>
                 </display:table>
             </s:else>
