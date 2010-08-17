@@ -365,7 +365,7 @@
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="clinicalSource.id" value="id" />
                                 </s:url> 
-                                <s:a href="%{deleteClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;" onclick="return confirm('This subject annotation source file will be permanently deleted.')"><span class="btn_img"><span class="delete">Delete</span></span></s:a>                                
+                                <s:a href="%{deleteClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;" onclick="if (confirm('This subject annotation source file will be permanently deleted.')) { showBusyDialog(); return true;} return false;"><span class="btn_img"><span class="delete">Delete</span></span></s:a>                                
                             </td>
                         </tr>
                         </s:iterator>
