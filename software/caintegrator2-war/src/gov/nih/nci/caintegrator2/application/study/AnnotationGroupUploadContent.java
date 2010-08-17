@@ -226,7 +226,9 @@ public class AnnotationGroupUploadContent {
         annotationFieldDescriptor.setName(getColumnName());
         annotationFieldDescriptor.setAnnotationEntityType(getEntityType());
         annotationFieldDescriptor.setType(getAnnotationType());
-        annotationFieldDescriptor.setUsePermissibleValues(isPermissible());
+        if (AnnotationFieldType.ANNOTATION.equals(annotationFieldDescriptor.getType())) {
+            annotationFieldDescriptor.setUsePermissibleValues(isPermissible());    
+        }
         annotationFieldDescriptor.setShownInBrowse(isVisible());
         return annotationFieldDescriptor;
     }
