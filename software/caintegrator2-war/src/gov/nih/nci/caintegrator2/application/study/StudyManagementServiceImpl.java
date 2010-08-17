@@ -174,7 +174,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             getWorkspaceService().subscribe(
                     getWorkspaceService().getWorkspace(), studyConfiguration.getStudy(), false);
         }
-        persist(studyConfiguration);
+        daoSave(studyConfiguration);
     }
     
     /**
@@ -494,30 +494,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
         getDao().removeObjects(studyConfiguration.removeObsoleteSubjectAssignment());
         save(studyConfiguration);
-    }
-    
-    private void persist(StudyConfiguration studyConfiguration) {
-        for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
-            saveSubjectAnnotations(assignment.getSubjectAnnotationCollection());
-            saveSampleAcquisitions(assignment.getSampleAcquisitionCollection());
-            daoSave(assignment.getSubject());
-            daoSave(assignment);
-        }
-        daoSave(studyConfiguration);
-    }
-
-    private void saveSampleAcquisitions(Collection<SampleAcquisition> sampleAcquisitionCollection) {
-        for (SampleAcquisition sampleAcquisition : sampleAcquisitionCollection) {
-            daoSave(sampleAcquisition.getSample());
-            daoSave(sampleAcquisition);
-        }
-    }
-
-    private void saveSubjectAnnotations(Collection<SubjectAnnotation> subjectAnnotations) {
-        for (SubjectAnnotation annotation : subjectAnnotations) {
-            daoSave(annotation.getAnnotationValue());
-            daoSave(annotation);
-        }
     }
     
     /**
