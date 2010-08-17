@@ -321,7 +321,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
 
     private void populatePermissibleValues(Study study, EntityTypeEnum entityType,
             AnnotationFieldDescriptor descriptor) throws ValidationException {
-        if (descriptor.isUsePermissibleValues()
+        if (descriptor.isUsePermissibleValues() && AnnotationFieldType.ANNOTATION.equals(descriptor.getType())
                 && descriptor.getDefinition().getPermissibleValueCollection().isEmpty()) {
             Set<Object> uniqueValues = validateAndRetrieveUniqueValues(study, entityType, 
                     descriptor, descriptor.getDefinition());

@@ -258,7 +258,9 @@ public final class AnnotationUtil {
             fieldDescriptor = createNewAnnotationFieldDescriptor(dao, studyConfiguration, type, 
                     createNewAnnotationDefinition, 
                     annotationFieldDescriptorName, annotationGroupName);
-        } else if (createNewAnnotationDefinition && fieldDescriptor.getDefinition() == null) {
+        } else if (createNewAnnotationDefinition 
+                    && AnnotationFieldType.ANNOTATION.equals(fieldDescriptor.getType()) 
+                    && fieldDescriptor.getDefinition() == null) {
             createNewAnnotationDefinition(dao, fieldDescriptor);
         }
         return fieldDescriptor;
