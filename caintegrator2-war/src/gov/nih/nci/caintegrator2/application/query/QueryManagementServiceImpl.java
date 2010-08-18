@@ -123,6 +123,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -255,23 +256,31 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     }
     
     private void addSubjectsNotFoundToQuery(Query query) throws InvalidCriterionException {
+        query.getSubjectIdsNotFound().clear();
+        query.getSubjectIdsNotFound().addAll(getAllSubjectsNotFoundInCriteria(query));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Set<String> getAllSubjectsNotFoundInCriteria(Query query) throws InvalidCriterionException {
         Set<String> allSubjectsInCriterion = query.getCompoundCriterion().getAllSubjectIds();
         Set<String> allSubjectsNotFound = new HashSet<String>(allSubjectsInCriterion);
         Set<String> allSubjectsInStudy = new HashSet<String>();
-        query.getSubjectIdsNotFound().clear();
         if (!allSubjectsInCriterion.isEmpty()) {
             for (StudySubjectAssignment assignment : query.getSubscription().getStudy().getAssignmentCollection()) {
                 allSubjectsInStudy.add(assignment.getIdentifier());
             }
             allSubjectsNotFound.removeAll(allSubjectsInStudy);
-            if (!allSubjectsNotFound.isEmpty()) {
-                query.getSubjectIdsNotFound().addAll(allSubjectsNotFound);
-                if (allSubjectsNotFound.size() == allSubjectsInCriterion.size()) {
-                    throw new InvalidCriterionException(
-                            "None of the subject IDs in the query were found in the study.");
-                }
+            if (!allSubjectsNotFound.isEmpty() && allSubjectsNotFound.size() == allSubjectsInCriterion.size()) {
+                String queryNameString = StringUtils.isNotBlank(query.getName()) ? "'" 
+                        + query.getName() + "'  " : "";
+                throw new InvalidCriterionException(
+                        "None of the Subject IDs in the query "
+                        +  queryNameString + "were found in the study.");
             }
         }
+        return allSubjectsNotFound;
     }
     
     private void addGenesNotFoundToQuery(Query query) throws InvalidCriterionException {

@@ -12,6 +12,17 @@
             <img src="${retrieveQueryKMPlot}"/>
             <br>
             
+            <s:if test="!subjectsNotFound.isEmpty()">
+            <strong>Subjects Not Found in Study</strong>
+            <br/>
+            <font color="red">
+            <s:iterator value="subjectsNotFound" status="subjectIteratorStatus">
+                <s:if test="#subjectIteratorStatus.first == false">, </s:if><s:property />
+            </s:iterator>
+             </font>
+             <br/>
+            </s:if>
+            
             <strong>Log-rank P-value for significance of difference in survival between groups</strong>
             <br>
             <table cellspacing="10">
