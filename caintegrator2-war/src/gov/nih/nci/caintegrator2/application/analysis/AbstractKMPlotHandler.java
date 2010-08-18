@@ -150,7 +150,8 @@ abstract class AbstractKMPlotHandler {
         throws InvalidCriterionException, InvalidSurvivalValueDefinitionException; 
     
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // empty default implementation
-    void setupAndValidateParameters(AnalysisService analysisService) throws GenesNotFoundInStudyException {
+    void setupAndValidateParameters(AnalysisService analysisService) 
+        throws GenesNotFoundInStudyException, InvalidCriterionException {
         // no-op : default implementation is no-op, override if necessary.
     }
 

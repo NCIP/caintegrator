@@ -115,6 +115,7 @@ public class KMPlotConfiguration {
     private final List<SubjectGroup> groups = new ArrayList<SubjectGroup>();
     private final List<SubjectGroup> filteredGroups = new ArrayList<SubjectGroup>();
     private final List<String> genesNotFound = new ArrayList<String>();
+    private final List<String> subjectsNotFound = new ArrayList<String>();
     
     /**
      * @return the probabilityLabel
@@ -177,6 +178,13 @@ public class KMPlotConfiguration {
      */
     public List<String> getGenesNotFound() {
         return genesNotFound;
+    }
+    
+    /**
+     * @return the subjectsNotFound
+     */
+    public List<String> getSubjectsNotFound() {
+        return subjectsNotFound;
     }
 
 }

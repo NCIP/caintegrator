@@ -97,6 +97,7 @@ public class GeneExpressionPlotConfiguration {
     
     private final Set<String> geneNames = new HashSet<String>();
     private final List<String> genesNotFound = new ArrayList<String>();
+    private final List<String> subjectsNotFound = new ArrayList<String>();
     private List<PlotSampleGroup> plotSampleGroups = new ArrayList<PlotSampleGroup>();
     private GenomicValueResultsTypeEnum genomicValueResultsType = GenomicValueResultsTypeEnum.GENE_EXPRESSION;
     private boolean twoChannelType;
@@ -155,6 +156,13 @@ public class GeneExpressionPlotConfiguration {
      */
     public List<String> getGenesNotFound() {
         return genesNotFound;
+    }
+
+    /**
+     * @return the subjectsNotFound
+     */
+    public List<String> getSubjectsNotFound() {
+        return subjectsNotFound;
     }
     
 
