@@ -247,7 +247,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
         return null;
     }
 
-    public void createGeneList(GeneList geneList, List<String> geneSymbols) {
+    public void createGeneList(GeneList geneList, Set<String> geneSymbols) {
         createGeneListCalled = true;
     }
 

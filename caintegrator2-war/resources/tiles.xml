@@ -172,22 +172,22 @@
         <put-attribute name="subTitle" value="Edit GISTIC Analysis" />
     </definition>
 
-    <!-- Subject List Edit page -->
-    <!-- Subject List Edit page -->
-    <!-- Subject List Edit page -->
+    <!-- List Management page -->
+    <!-- List Management page -->
+    <!-- List Management page -->
+    
+    <definition name="manageList" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageList_tile.jsp" />
+        <put-attribute name="subTitle" value="Manage List" />
+    </definition>
+
+    <!-- List Edit page -->
+    <!-- List Edit page -->
+    <!-- List Edit page -->
     
     <definition name="editSubjectList" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editSubjectList_tile.jsp" />
         <put-attribute name="subTitle" value="Edit Subject List" />
-    </definition>
-
-    <!-- Gene List Management page -->
-    <!-- Gene List Management page -->
-    <!-- Gene List Management page -->
-    
-    <definition name="manageGeneList" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageGeneList_tile.jsp" />
-        <put-attribute name="subTitle" value="Manage Gene List" />
     </definition>
     
     <definition name="editGeneList" extends="cssBaseDef">
