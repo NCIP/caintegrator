@@ -29,10 +29,10 @@
                 </td>
                 <td class="value_inline">
                     <s:select
-	                    list="gePlotForm.genomicQueryBasedForm.queries"
+	                    list="gePlotForm.geneExpressionQueryBasedForm.queries"
 	                    listValue="value.name"
 	                    listKey="key"
-	                    name="gePlotForm.genomicQueryBasedForm.selectedQueryId" 
+	                    name="gePlotForm.geneExpressionQueryBasedForm.selectedQueryId" 
 	                    size="5"
 	                    multiple="false"
 	                    theme="simple" />                
@@ -48,7 +48,7 @@
                     Select Reporter Type:
                 </td>
                 <td class="value_inline">
-	                <s:radio name="gePlotForm.genomicQueryBasedForm.reporterType"
+	                <s:radio name="gePlotForm.geneExpressionQueryBasedForm.reporterType"
 	                list="@gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum@getValueToDisplayableMap()"
 	                listKey="key" 
 	                listValue="value" />                
