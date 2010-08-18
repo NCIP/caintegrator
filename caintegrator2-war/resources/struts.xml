@@ -677,6 +677,40 @@
             </result>
         </action>
         
+        <!-- Manage List Actions -->
+        <action name="manageList" class="manageListAction">
+            <result type="tiles">manageList</result>
+            <result name="error" type="tiles">manageList</result>
+            <result name="input" type="tiles">manageList</result>
+            <result name="homePage" type="redirectAction">
+                <param name="actionName">workspace</param>
+            </result>
+            <result name="editGenePage" type="redirectAction">
+                <param name="actionName">editGeneList</param>
+                <param name="selectedAction">editList</param>
+                <param name="listName">${listName}</param>
+                <param name="creationSuccess">true</param>
+            </result>
+            <result name="editGlobalGenePage" type="redirectAction">
+                <param name="actionName">editGeneList</param>
+                <param name="selectedAction">editGlobalList</param>
+                <param name="listName">${listName}</param>
+                <param name="creationSuccess">true</param>
+            </result>
+            <result name="editSubjectPage" type="redirectAction">
+                <param name="actionName">editSubjectList</param>
+                <param name="selectedAction">editList</param>
+                <param name="listName">${listName}</param>
+                <param name="creationSuccess">true</param>
+            </result>
+            <result name="editGlobalSubjectPage" type="redirectAction">
+                <param name="actionName">editSubjectList</param>
+                <param name="selectedAction">editGlobalList</param>
+                <param name="listName">${listName}</param>
+                <param name="creationSuccess">true</param>
+            </result>
+        </action>
+        
         <!-- Subject List Actions -->
         <action name="editSubjectList" class="editSubjectListAction">
             <result type="tiles">editSubjectList</result>
@@ -698,27 +732,6 @@
         </action>
         
         <!-- Gene List Actions -->
-        <action name="manageGeneList" class="manageGeneListAction">
-            <result type="tiles">manageGeneList</result>
-            <result name="error" type="tiles">manageGeneList</result>
-            <result name="input" type="tiles">manageGeneList</result>
-            <result name="homePage" type="redirectAction">
-                <param name="actionName">workspace</param>
-            </result>
-            <result name="editPage" type="redirectAction">
-                <param name="actionName">editGeneList</param>
-                <param name="selectedAction">editList</param>
-                <param name="listName">${geneListName}</param>
-                <param name="creationSuccess">true</param>
-            </result>
-            <result name="editGlobalPage" type="redirectAction">
-                <param name="actionName">editGeneList</param>
-                <param name="selectedAction">editGlobalList</param>
-                <param name="listName">${geneListName}</param>
-                <param name="creationSuccess">true</param>
-            </result>
-        </action>
-        
         <action name="editGeneList" class="editGeneListAction">
             <result type="tiles">editGeneList</result>
             <result name="error" type="tiles">editGeneList</result>
