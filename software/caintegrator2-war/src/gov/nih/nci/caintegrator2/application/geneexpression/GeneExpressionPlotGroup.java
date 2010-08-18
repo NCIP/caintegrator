@@ -100,6 +100,7 @@ public class GeneExpressionPlotGroup {
     private final List<LegendItemWrapper> legendItems = new ArrayList<LegendItemWrapper>();
     private final Map<String, Integer> groupNameToNumberSubjectsMap = new HashMap<String, Integer>();
     private final List<String> genesNotFound = new ArrayList<String>();
+    private final List<String> subjectsNotFound = new ArrayList<String>();
     private boolean twoChannelType = false;
 
     /**
@@ -151,5 +152,12 @@ public class GeneExpressionPlotGroup {
      */
     public List<String> getGenesNotFound() {
         return genesNotFound;
+    }
+
+    /**
+     * @return the subjectsNotFound
+     */
+    public List<String> getSubjectsNotFound() {
+        return subjectsNotFound;
     }
 }

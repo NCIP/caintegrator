@@ -49,6 +49,15 @@
             </s:iterator>
             </fieldset>
         </s:if>
+        
+        <s:if test="!#gePlot.clinicalQueryBasedGePlot.subjectsNotFound.empty">
+            <fieldset style='display:table;width:400; border:1px solid gray; text-align:left; padding:5px;'>
+            <legend> Legend: Subjects Not Found </legend>
+            <s:iterator value="#gePlot.clinicalQueryBasedGePlot.subjectsNotFound" >
+                <b><s:property /></b><br>
+            </s:iterator>
+            </fieldset>
+        </s:if>
         </center>
     </s:if>
     <!-- /Gene Expression Graph -->

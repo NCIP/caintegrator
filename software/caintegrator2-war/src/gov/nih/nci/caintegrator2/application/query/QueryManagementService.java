@@ -198,5 +198,14 @@ public interface QueryManagementService extends CaIntegrator2EntityRefresher {
      */
     List<String> validateGeneSymbols(StudySubscription studySubscription, List<String> geneSymbols)
         throws GenesNotFoundInStudyException;
+    
+    /**
+     * Retrieves all subject identifiers not found in the criteria of the given query.
+     * @param query to scan criteria for subject identifiers that aren't found in the study.
+     * @return set of all identifiers not found in study but found in criteria.
+     * @throws InvalidCriterionException if there is a criterion that specifies subjects and
+     * none of the subjects specified exist in the study.
+     */
+    Set<String> getAllSubjectsNotFoundInCriteria(Query query) throws InvalidCriterionException;
 
 }

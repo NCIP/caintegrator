@@ -133,6 +133,7 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
     throws ControlSamplesNotMappedException, InvalidCriterionException {
         boolean twoChannelType = false;
         List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
+        Set<String> subjectsNotFound = new HashSet<String>();
         for (Query query : parameters.getQueries()) {
             GenomicDataQueryResult queryResults = 
                 retrieveGenomicResultsForQuery(subscription, query, SampleGroupType.DEFAULT);
@@ -141,11 +142,13 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
             if (query.isTwoChannelType()) {
                 twoChannelType = true;
             }
+            subjectsNotFound.addAll(getQueryManagementService().getAllSubjectsNotFoundInCriteria(query));
         }
         addOptionalGroups(subscription, genomicResults);
         GeneExpressionPlotConfiguration configuration = GeneExpressionPlotConfigurationFactory.createPlotConfiguration(
                 genomicResults, GenomicValueResultsTypeEnum.GENE_EXPRESSION);
         configuration.setTwoChannelType(twoChannelType);
+        configuration.getSubjectsNotFound().addAll(subjectsNotFound);
         return createGeneExpressionPlot(parameters, configuration);
     }
 

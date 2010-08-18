@@ -98,6 +98,7 @@ public class KMQueryBasedParameters extends AbstractKMParameters {
     private final List<Query> queries = new ArrayList<Query>();
     private boolean exclusiveGroups = false;
     private boolean addPatientsNotInQueriesGroup = false;
+    private final List<String> subjectsNotFoundInStudy = new ArrayList<String>();
     
     /**
      * {@inheritDoc}
@@ -159,6 +160,13 @@ public class KMQueryBasedParameters extends AbstractKMParameters {
      */
     public List<Query> getQueries() {
         return queries;
+    }
+
+    /**
+     * @return the subjectsNotFoundInStudy
+     */
+    public List<String> getSubjectsNotFoundInStudy() {
+        return subjectsNotFoundInStudy;
     }
     
     

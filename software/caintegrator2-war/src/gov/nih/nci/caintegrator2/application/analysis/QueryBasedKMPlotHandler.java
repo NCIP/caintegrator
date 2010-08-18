@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
@@ -133,6 +134,7 @@ class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
         retrieveSubjectGroups(getStudySubscription(), subjectGroupCollection);
         filterGroupsWithoutSurvivalData(configuration, subjectGroupCollection);
         configuration.setDurationLabel(getDurationLabel());
+        configuration.getSubjectsNotFound().addAll(kmParameters.getSubjectsNotFoundInStudy());
         return kmPlotService.generatePlot(configuration);
     }
 
@@ -187,5 +189,15 @@ class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
             }
         }
         return otherSubjectsGroup;
+    }
+    
+    @Override
+    void setupAndValidateParameters(AnalysisService analysisService)
+            throws GenesNotFoundInStudyException, InvalidCriterionException {
+        kmParameters.getSubjectsNotFoundInStudy().clear();
+        for (Query query : kmParameters.getQueries()) {
+            kmParameters.getSubjectsNotFoundInStudy().addAll(getQueryManagementService().
+                    getAllSubjectsNotFoundInCriteria(query));
+        }
     }
 }
