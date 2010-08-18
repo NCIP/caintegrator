@@ -102,6 +102,18 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
     }
     
     /**
+     * @return Returns all gene symbols for all criterion under this compound criterion.
+     */
+    public Set<String> getAllSubjectIds() {
+        Set<String> subjectIdsInQuery = new HashSet<String>();
+        for (AbstractCriterion criterion : getCriterionCollection()) {
+            subjectIdsInQuery.addAll(criterion.getSubjectIdentifiers());
+        }
+        
+        return subjectIdsInQuery;
+    }
+    
+    /**
      * @param genomicCriterionType the criterion type to get the platforms for.
      * @return returns all platform names for all criterion under this compound criterion.
      */
@@ -125,6 +137,14 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
     @Override
     public String getPlatformName(GenomicCriterionTypeEnum genomicCriterionType) {
         return null;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Set<String> getSubjectIdentifiers() {
+        return getAllSubjectIds();
     }
 
     /**

@@ -4,7 +4,9 @@ package gov.nih.nci.caintegrator2.domain.application;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 
@@ -26,6 +28,14 @@ public abstract class AbstractCriterion extends AbstractCaIntegrator2Object impl
      */
     protected List<String> getGeneSymbolsInCriterion() {
         return new ArrayList<String>();
+    }
+    
+    /**
+     * 
+     * @return all subject identifiers in this criterion.
+     */
+    protected Set<String> getSubjectIdentifiers() {
+        return new HashSet<String>();
     }
     
     /**

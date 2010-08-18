@@ -170,6 +170,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
             Query queryToExecute = query.clone();
             addGenesNotFoundToQuery(query);
+            addSubjectsNotFoundToQuery(query);
             query.setHasMaskedValues(queryToExecute.getCompoundCriterion().isHasMaskedCriteria());
             if (query.isHasMaskedValues()) {
                 maskCompoundCriterion(queryToExecute.getCompoundCriterion());
@@ -251,6 +252,26 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
                                 .getAnnotationMasks(), abstractCriterion);
             }
         return abstractCriterion;
+    }
+    
+    private void addSubjectsNotFoundToQuery(Query query) throws InvalidCriterionException {
+        Set<String> allSubjectsInCriterion = query.getCompoundCriterion().getAllSubjectIds();
+        Set<String> allSubjectsNotFound = new HashSet<String>(allSubjectsInCriterion);
+        Set<String> allSubjectsInStudy = new HashSet<String>();
+        query.getSubjectIdsNotFound().clear();
+        if (!allSubjectsInCriterion.isEmpty()) {
+            for (StudySubjectAssignment assignment : query.getSubscription().getStudy().getAssignmentCollection()) {
+                allSubjectsInStudy.add(assignment.getIdentifier());
+            }
+            allSubjectsNotFound.removeAll(allSubjectsInStudy);
+            if (!allSubjectsNotFound.isEmpty()) {
+                query.getSubjectIdsNotFound().addAll(allSubjectsNotFound);
+                if (allSubjectsNotFound.size() == allSubjectsInCriterion.size()) {
+                    throw new InvalidCriterionException(
+                            "None of the subject IDs in the query were found in the study.");
+                }
+            }
+        }
     }
     
     private void addGenesNotFoundToQuery(Query query) throws InvalidCriterionException {
