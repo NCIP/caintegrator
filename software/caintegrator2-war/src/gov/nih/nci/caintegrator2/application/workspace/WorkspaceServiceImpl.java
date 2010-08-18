@@ -410,7 +410,7 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
     /**
      * {@inheritDoc}
      */
-    public void createGeneList(GeneList geneList, List<String> geneSymbols) {
+    public void createGeneList(GeneList geneList, Set<String> geneSymbols) {
         for (String symbol : geneSymbols) {
             geneList.getGeneCollection().add(getDao().lookupOrCreateGene(symbol));
         }

@@ -369,9 +369,9 @@
         </property>
     </bean>
 
-    <bean id="manageGeneListAction"
+    <bean id="manageListAction"
         scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.abstractlist.ManageGeneListAction">
+        class="gov.nih.nci.caintegrator2.web.action.abstractlist.ManageListAction">
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
