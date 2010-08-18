@@ -23,7 +23,8 @@
         PlatformDeploymentAjaxUpdater.initializeJsp();
     }
     
-    function CheckPlatformType(type) {
+    function CheckPlatformType() {
+        var type = document.managePlatformForm.platformType.value;
         if (type == "Affymetrix Gene Expression") {
             document.getElementById("platformNameDiv").style.display = "none";
             document.getElementById("platformName").value = "N/A";
@@ -101,7 +102,6 @@
             document.statusTableForm.submit();
         }
     }
-    
 </script>
 
     <h1><s:property value="#subTitleText" /></h1>
@@ -120,9 +120,9 @@
                     <s:actionerror/>
                     <s:form id="managePlatformForm" name="managePlatformForm" method="post" enctype="multipart/form-data" theme="css_xhtml">
                         <s:hidden name="selectedAction" />
-                        <s:select name="platformType" label="Platform Type"
+                        <s:select id="platformType" name="platformType" label="Platform Type"
                             list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum@getValuesToDisplay()"
-                            onchange="CheckPlatformType(this.form.platformType.value);" theme="css_xhtml" /><br>
+                            onchange="CheckPlatformType();" theme="css_xhtml" /><br>
                         <s:div id="platformChannelTypeDiv" cssStyle="%{platformChannelTypeDisplay}">
                             <s:select id="platformChannelType" name="platformChannelType" label="Platform Channel Type"
                                 list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum@getValuesToDisplay()"
@@ -146,7 +146,7 @@
                             <span class="wwctrl"></span>
                         </s:div>
                         <s:div id="commentAllFormatsDiv" cssClass="inlinehelp_form_element" cssStyle="%{adfGemlFileDisplay}">
-                            <span class="wwlbl">(tab-delimited csv/txt/tsv, adf, or GEML xml file format)</span>
+                            <span class="wwlbl">(tab-delimited txt/tsv, adf, or GEML xml file format)</span>
                             <span class="wwctrl"></span>
                         </s:div>
                         <s:div id="addFileButtonDiv" cssStyle="%{addButtonDisplay}">
@@ -167,6 +167,10 @@
                 </td>
             </tr>
     </table>
+    
+    <script type="text/javascript">
+    CheckPlatformType();
+    </script>
     
     <table class="form_wrapper_table">
         <tr>
