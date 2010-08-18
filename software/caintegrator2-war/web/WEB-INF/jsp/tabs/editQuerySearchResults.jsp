@@ -48,6 +48,15 @@
         </s:iterator>
         </div>
     </s:if>
+    <s:if test="%{!query.subjectIdsNotFound.isEmpty()}" >
+        <div style="color: red;"> Warning: The following subject(s) were in the criterion but not found: 
+        <s:iterator value="query.subjectIdsNotFound" status="subjectIdStatus">
+            <b>
+            <s:property /><s:if test="!#subjectIdStatus.last">,</s:if>
+            </b>
+        </s:iterator>
+        </div>
+    </s:if>
     <s:set name="subjectIdHeaderValue" value="'Subject ID'" />
     <s:if test='%{query.hasMaskedValues}' >
         <s:url id="dataDictionaryUrl" includeParams="none" action="viewDataDictionary" />

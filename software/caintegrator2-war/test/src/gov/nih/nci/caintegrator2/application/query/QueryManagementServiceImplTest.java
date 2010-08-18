@@ -114,6 +114,9 @@ import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectIdentifier;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
+import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -208,6 +211,43 @@ public class QueryManagementServiceImplTest {
         query.getCompoundCriterion().getCriterionCollection().add(numericCrit);
         queryManagementService.execute(query);
         assertTrue(query.isHasMaskedValues());
+        
+        // Test SubjectList with all matches
+        SubjectList sl1 = new SubjectList();
+        SubjectIdentifier subjectIdentifier = new SubjectIdentifier();
+        subjectIdentifier.setIdentifier("real");
+        sl1.getSubjectIdentifiers().add(subjectIdentifier);
+        
+        StudySubjectAssignment subject1 = new StudySubjectAssignment();
+        subject1.setIdentifier("real");
+        query.getSubscription().getStudy().getAssignmentCollection().add(subject1);
+        query.getCompoundCriterion().getCriterionCollection().clear();
+        SubjectListCriterion subjectListCriterion = new SubjectListCriterion();
+        subjectListCriterion.getSubjectListCollection().add(sl1);
+        query.getCompoundCriterion().getCriterionCollection().add(subjectListCriterion);
+        queryResult = queryManagementService.execute(query);
+        assertTrue(queryResult.getQuery().getSubjectIdsNotFound().isEmpty());
+        
+        // Test 2 subject lists, one matches, and one doesn't.
+        SubjectList sl2 = new SubjectList();
+        SubjectIdentifier subjectIdentifier2 = new SubjectIdentifier();
+        subjectIdentifier2.setIdentifier("fake");
+        sl2.getSubjectIdentifiers().add(subjectIdentifier2);
+        subjectListCriterion.getSubjectListCollection().add(sl2);
+        queryResult = queryManagementService.execute(query);
+        assertTrue(queryResult.getQuery().getSubjectIdsNotFound().contains("fake"));
+        
+        
+        // Test 1 subject list, where neither matches.
+        subjectListCriterion.getSubjectListCollection().clear();
+        subjectListCriterion.getSubjectListCollection().add(sl2);
+        try {
+            queryResult = queryManagementService.execute(query);
+            fail("Should catch invalid criterion exception because there are no valid subject IDs in query.");
+        } catch (InvalidCriterionException e) {
+            // noop - expect it to come here.
+        }
+        
     }
     
     @Test

@@ -35,6 +35,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
     private transient boolean subjectListQuery = false;
     private transient Visibility subjectListVisibility = null;
     private transient List<String> geneSymbolsNotFound = new ArrayList<String>();
+    private transient List<String> subjectIdsNotFound = new ArrayList<String>();
     private transient boolean hasMaskedValues = false;
     private transient Platform geneExpressionPlatform;
     private transient Platform copyNumberPlatform;
@@ -262,6 +263,20 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
      */
     public void setGeneSymbolsNotFound(List<String> geneSymbolsNotFound) {
         this.geneSymbolsNotFound = geneSymbolsNotFound;
+    }
+
+    /**
+     * @return the subjectIdsNotFound
+     */
+    public List<String> getSubjectIdsNotFound() {
+        return subjectIdsNotFound;
+    }
+
+    /**
+     * @param subjectIdsNotFound the subjectIdsNotFound to set
+     */
+    public void setSubjectIdsNotFound(List<String> subjectIdsNotFound) {
+        this.subjectIdsNotFound = subjectIdsNotFound;
     }
 
     /**
