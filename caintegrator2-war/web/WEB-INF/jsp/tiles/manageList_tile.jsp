@@ -11,7 +11,7 @@
 </div>
 
 <!--/Page Help-->
-    
+
 <script type="text/javascript">
     
     function setSelectedAction(selectAction) {
@@ -19,7 +19,7 @@
         return true;
     }
     
-    function CheckListType(type) {
+    function checkListType(type) {
         if (type == "Gene List") {
             document.getElementById("geneDiv").style.display = "block";
             document.getElementById("subjectDiv").style.display = "none";
@@ -77,7 +77,7 @@
                                         <div class="wwctrl">
                                             <s:radio id="listType" name="listType"
                                                 list="@gov.nih.nci.caintegrator2.web.action.abstractlist.ListTypeEnum@getValueToTypeMap()"
-                                                listKey="key" listValue="value" onclick="CheckListType(this.value);"/>
+                                                listKey="key" listValue="value" onclick="checkListType(this.value);"/>
                                         </div>
                                 </td>
                             </tr>
@@ -90,13 +90,13 @@
                                                 <s:component template="genetextfield.ftl" theme="cai2simple">
                                                     <s:param name="createTextField" value="true" />
                                                     <s:param name="textFieldId" value="%{'geneSymbolsId'}"/>
-                                                    <s:param name="textFieldName" value="%{'inputElements'}"/>
+                                                    <s:param name="textFieldName" value="%{'geneInputElements'}"/>
                                                 </s:component>
                                             </div>
                                         </div>
                                     </s:div>
                                     <s:div id="subjectDiv" cssStyle="display: none;">
-                                        <s:textfield id="inputElements" name="inputElements" label="Subject Ids"
+                                        <s:textfield id="subjectInputElements" name="subjectInputElements" label="Subject Ids"
                                             theme="css_xhtml" required="true"/>
                                     </s:div>
                                 </td>
@@ -131,6 +131,9 @@
         </table>   
     </div>
     </s:else>
+    <script type="text/javascript">
+        checkListType('<s:property value="listType"/>');
+    </script>
 </div>
 
 <div class="clear"><br />

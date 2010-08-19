@@ -119,7 +119,8 @@ public class ManageListAction extends AbstractDeployedStudyAction {
     private String listName;
     private String description;
     private boolean visibleToOther = false;
-    private String inputElments;
+    private String subjectInputElements;
+    private String geneInputElements;
     private String selectedAction;
     private String listId;
     private Set<String> elementList = new HashSet<String>();
@@ -205,8 +206,12 @@ public class ManageListAction extends AbstractDeployedStudyAction {
 
     private void validateListData() {
         elementList.clear();
+        if (ListTypeEnum.GENE.equals(listType)) {
+            extractInputElements(getGeneInputElements());
+        } else {
+            extractInputElements(getSubjectInputElements());
+        }
         extractInputElements(getListFile());
-        extractInputElements(getInputElements());
         if (elementList.isEmpty()) {
             addActionError("There is nothing to save, you need to enter some list elements or upload from a file.");
         }
@@ -363,20 +368,6 @@ public class ManageListAction extends AbstractDeployedStudyAction {
     }
 
     /**
-     * @return the inputElements
-     */
-    public String getInputElements() {
-        return inputElments;
-    }
-
-    /**
-     * @param inputElements the inputElements to set
-     */
-    public void setInputElements(String inputElements) {
-        this.inputElments = inputElements;
-    }
-
-    /**
      * @return the description
      */
     public String getDescription() {
@@ -430,5 +421,33 @@ public class ManageListAction extends AbstractDeployedStudyAction {
      */
     public void setListType(String listType) {
         this.listType = ListTypeEnum.getByValue(listType);
+    }
+
+    /**
+     * @return the subjectInputElements
+     */
+    public String getSubjectInputElements() {
+        return subjectInputElements;
+    }
+
+    /**
+     * @param subjectInputElements the subjectInputElements to set
+     */
+    public void setSubjectInputElements(String subjectInputElements) {
+        this.subjectInputElements = subjectInputElements;
+    }
+
+    /**
+     * @return the geneInputElements
+     */
+    public String getGeneInputElements() {
+        return geneInputElements;
+    }
+
+    /**
+     * @param geneInputElements the geneInputElements to set
+     */
+    public void setGeneInputElements(String geneInputElements) {
+        this.geneInputElements = geneInputElements;
     }
 }
