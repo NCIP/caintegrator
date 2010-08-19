@@ -757,7 +757,7 @@ A.btn SPAN.download
 H2.resultsColumnsTabHeader
 { padding-bottom: 50px; }
 DIV.resultTypeSelector
-{ margin-top: -75px; margin-bottom: 5px; margin-left: 150px; }
+{ margin-top: 1px; margin-bottom: 5px; margin-left: 150px; }
 DIV.reporterTypeSelector
 { margin-top: 10px; }
 DIV.selectorNote
