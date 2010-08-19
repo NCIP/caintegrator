@@ -95,8 +95,10 @@ import gov.nih.nci.mageom.domain.bioassay.BioAssay;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * An object representing a GctDataset, which can only be created from GenomicDataQueryResults.
@@ -107,6 +109,7 @@ public class GctDataset {
     private final List<String> rowDescription = new ArrayList<String>();
     private final List<String> columnSampleNames = new ArrayList<String>();
     private float[][] values;
+    private final Set<String> subjectsNotFoundFromQueries = new HashSet<String>();
     
     /**
      * Creates a GctDataset from GenomicDataQueryResults.
@@ -206,6 +209,13 @@ public class GctDataset {
      */
     public List<String> getRowDescription() {
         return rowDescription;
+    }
+    
+    /**
+     * @return the subjectsNotFoundFromQueries
+     */
+    public Set<String> getSubjectsNotFoundFromQueries() {
+        return subjectsNotFoundFromQueries;
     }
 
 }

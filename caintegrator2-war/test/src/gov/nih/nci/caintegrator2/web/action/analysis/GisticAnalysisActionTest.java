@@ -163,6 +163,8 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
         query2.setCompoundCriterion(new CompoundCriterion());
         subscription.getQueryCollection().add(query1);
         subscription.getQueryCollection().add(query2);
+        query1.setSubscription(subscription);
+        query2.setSubscription(subscription);
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new GisticAnalysisAction();

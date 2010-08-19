@@ -145,6 +145,7 @@ public final class HibernateUtil {
                 }
             }
         }
+        loadCollection(query.getSubscription().getStudy().getAssignmentCollection());
         loadCollection(query.getColumnCollection());
     }
 

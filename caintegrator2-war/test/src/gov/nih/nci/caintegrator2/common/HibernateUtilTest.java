@@ -94,6 +94,8 @@ import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import org.junit.Test;
 
@@ -105,6 +107,9 @@ public class HibernateUtilTest {
     @Test
     public void testLoadCollection() {
         Query query = new Query();
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(new Study());
+        query.setSubscription(subscription);
         HibernateUtil.loadCollection(query);
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         query.setCompoundCriterion(compoundCriterion);

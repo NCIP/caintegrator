@@ -372,8 +372,10 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
         Query query = displayableQuery.getQuery();
         if (!query.isSubjectListQuery()) {
             query = getQueryManagementService().getRefreshedEntity(query);
-            HibernateUtil.loadCollection(query);
+        } else {
+            query.setSubscription(getQueryManagementService().getRefreshedEntity(query.getSubscription()));
         }
+        HibernateUtil.loadCollection(query);
         return query;
     }
 
