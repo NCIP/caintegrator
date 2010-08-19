@@ -222,7 +222,7 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
         StringBuffer fileDescriptionString = new StringBuffer();
         String brString = "<br>";
         if (isAimDataService(imagingSource)) {
-            fileDescriptionString.append("<i>Aim Service Url: </i>");
+            fileDescriptionString.append("<i>Aim Service URL: </i>");
             fileDescriptionString
                     .append(imagingSource.getImageAnnotationConfiguration().getAimServerProfile().getUrl());
         } else {
