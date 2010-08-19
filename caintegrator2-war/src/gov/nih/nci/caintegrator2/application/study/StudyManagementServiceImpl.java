@@ -894,6 +894,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                     AbstractAnnotationValue annotationValue = 
                         AnnotationUtil.createAnnotationValue(annotationDescriptor, value);
                     daoSave(annotationDescriptor.getAnnotationGroup());
+                    daoSave(annotationDescriptor);
                     annotationValue.setImageSeries(imageSeries);
                     imageSeries.getAnnotationCollection().add(annotationValue);
                     daoSave(imageSeries);
