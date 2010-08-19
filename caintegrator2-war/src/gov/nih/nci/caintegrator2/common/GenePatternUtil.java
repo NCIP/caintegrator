@@ -273,7 +273,9 @@ public final class GenePatternUtil {
         if (genomicData.getRowCollection().isEmpty()) {
             throw new InvalidCriterionException("Unable to create GCT file: No data found from selection.");
         }
-        return new GctDataset(genomicData);
+        GctDataset gctDataset = new GctDataset(genomicData);
+        gctDataset.getSubjectsNotFoundFromQueries().addAll(genomicData.getQuery().getSubjectIdsNotFound());
+        return gctDataset;
     }
     
     /**

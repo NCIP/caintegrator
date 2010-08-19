@@ -214,6 +214,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         job.setInputZipFile(fileManager.createInputZipFile(studySubscription, job,
                 "CMS_INPUT_" +  System.currentTimeMillis() + ".zip", 
                 gctFile, clsFile));
+        checkForMissingSubjects(job, gctDataset.getSubjectsNotFoundFromQueries());
         return genePatternGridRunner.runPreprocessComparativeMarkerSelection(updater, job, gctFile, clsFile);
     }
     
@@ -231,12 +232,13 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         GisticSamplesMarkers gisticSamplesMarkers = 
             GenePatternUtil.createGisticSamplesMarkers(queryManagementService, 
                     job.getGisticAnalysisForm().getGisticParameters(), job.getSubscription());
+        checkForMissingSubjects(job, queryManagementService.getAllSubjectsNotFoundInCriteria(job
+                .getGisticAnalysisForm().getGisticParameters().getClinicalQuery()));
         resultsZipFile = runGistic(updater, job, studySubscription, gisticSamplesMarkers);
         GisticAnalysis gisticAnalysis = createGisticAnalysis(job, gisticSamplesMarkers.getUsedSamples());
         Map<String, Map<GisticGenomicRegionReporter, Float>> gisticData = parseGisticResults(
                 gisticAnalysis.getReporterList(), resultsZipFile);
         getDao().save(studySubscription);
-        
         createArrayData(studySubscription.getStudy(), gisticAnalysis, gisticData);
         job.setStatus(AnalysisJobStatusEnum.COMPLETED);
         updater.updateStatus(job);
@@ -359,13 +361,21 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class); 
         job.setSubscription(studySubscription);
         PCAParameters parameters = job.getForm().getPcaParameters();
-        File gctFile = createGctFile(createGctDataset(studySubscription, parameters.getClinicalQueries(), 
-                parameters.getPlatformName(), parameters.getExcludedControlSampleSet()),
-                studySubscription, parameters.getGctFileName());
+        GctDataset gctDataset = createGctDataset(studySubscription, parameters.getClinicalQueries(), 
+                parameters.getPlatformName(), parameters.getExcludedControlSampleSet());
+        File gctFile = createGctFile(gctDataset, studySubscription, parameters.getGctFileName());
+        checkForMissingSubjects(job, gctDataset.getSubjectsNotFoundFromQueries());
         job.setInputZipFile(fileManager.createInputZipFile(studySubscription, job,
                 "PCA_INPUT_" +  System.currentTimeMillis() + ".zip", 
                 gctFile));
         return genePatternGridRunner.runPCA(updater, job, gctFile);
+    }
+
+    private void checkForMissingSubjects(AbstractPersistedAnalysisJob job, Set<String> subjectsNotFound) {
+        if (!subjectsNotFound.isEmpty()) {
+            job.setStatusDescription("Subjects not found in queries/subject lists: " 
+                    + StringUtils.join(subjectsNotFound, ","));
+        }
     }
 
     /**
