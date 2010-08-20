@@ -62,7 +62,7 @@
                     <s:select name="gePlotForm.annotationBasedForm.platformName" 
                         list="platformsInStudy"
                         headerKey="" headerValue="Select Platform"
-                         onchange="document.geneExpressionAnnotationInputForm.action = 'updateControlSamplesAnnotationBasedGEPlot.action';document.geneExpressionAnnotationInputForm.submit();"/>
+                         onchange="showBusyDialog();document.geneExpressionAnnotationInputForm.action = 'updateControlSamplesAnnotationBasedGEPlot.action';document.geneExpressionAnnotationInputForm.submit();"/>
                 </td>
             </tr>
             </s:if>
@@ -88,7 +88,7 @@
                               listKey="name"
                               headerKey="invalidSelection"
                               headerValue="Select Annotation Group"
-                              onchange="document.geneExpressionAnnotationInputForm.action = 'gePlotUpdateAnnotationDefinitions.action';document.geneExpressionAnnotationInputForm.submit();"
+                              onchange="showBusyDialog();document.geneExpressionAnnotationInputForm.action = 'gePlotUpdateAnnotationDefinitions.action';document.geneExpressionAnnotationInputForm.submit();"
                               theme="simple"/>
                 </td>
                 <td class="value_inline">
@@ -97,7 +97,7 @@
                               listValue="value.definition.displayName"
                               headerKey="-1"
                               headerValue="Select Annotation"
-                              onchange="document.geneExpressionAnnotationInputForm.action = 'gePlotUpdatePermissibleValues.action';document.geneExpressionAnnotationInputForm.permissibleValuesNeedUpdate.value = 'true';document.geneExpressionAnnotationInputForm.submit();"
+                              onchange="showBusyDialog();document.geneExpressionAnnotationInputForm.action = 'gePlotUpdatePermissibleValues.action';document.geneExpressionAnnotationInputForm.permissibleValuesNeedUpdate.value = 'true';document.geneExpressionAnnotationInputForm.submit();"
                               theme="simple"/>
                 </td>
                 <td class="value_inline">
