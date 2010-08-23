@@ -17,7 +17,7 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
     private GenomicIntervalTypeEnum genomicIntervalType = GenomicIntervalTypeEnum.GENE_NAME;
     private Float chromosomeCoordinateHigh;
     private Float chromosomeCoordinateLow;
-    private Integer chromosomeNumber = 1;
+    private String chromosomeNumber = "1";
 
     /**
      * @return the upperLimit
@@ -135,14 +135,14 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
     /**
      * @return the chromosomeNumber
      */
-    public Integer getChromosomeNumber() {
+    public String getChromosomeNumber() {
         return chromosomeNumber;
     }
 
     /**
      * @param chromosomeNumber the chromosomeNumber to set
      */
-    public void setChromosomeNumber(Integer chromosomeNumber) {
+    public void setChromosomeNumber(String chromosomeNumber) {
         this.chromosomeNumber = chromosomeNumber;
     }
 
