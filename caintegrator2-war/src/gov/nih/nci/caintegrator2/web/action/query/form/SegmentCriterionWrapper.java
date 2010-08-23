@@ -106,7 +106,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
      */
     public static final String FIELD_NAME = "Segmentation";
     
-    private static final int MIN_NUMBER_PARAMETERS = 2;
+    private int minNumberParameters = 2;
 
     private final CopyNumberAlterationCriterion criterion;
 
@@ -117,6 +117,10 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
     SegmentCriterionWrapper(CopyNumberAlterationCriterion criterion, AbstractCriterionRow row) {
         super(row);
         this.criterion = criterion;
+        if (isStudyHasMultipleCopyNumberPlatforms()) {
+            getParameters().add(createPlatformNameParameter(getCopyNumberPlatformNames()));
+            minNumberParameters = 3;
+        }
         getParameters().add(createUpperLimitParameter());
         getParameters().add(createLowerLimitParameter());
         getParameters().add(createIntervalTypeParameter());
@@ -252,7 +256,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
 
     private void removeExistingIntervalParameters() {
         int paramLastIndex = getParameters().size() - 1;
-        for (int i = paramLastIndex; i > MIN_NUMBER_PARAMETERS; i--) {
+        for (int i = paramLastIndex; i > minNumberParameters; i--) {
             getParameters().remove(i);
         }
     }

@@ -203,11 +203,11 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         } else {
             Set<String> allPlatformNames = query.getCompoundCriterion().getAllPlatformNames(genomicCriterionType);
             if (allPlatformNames.size() != 1) {
-               throw new InvalidCriterionException("A genomic query must contain exactly 1 platform of type " 
+               throw new InvalidCriterionException("A " + genomicCriterionType.getValue()
+                       + " query must contain exactly 1 platform of type " 
                        + genomicCriterionType.getValue() + ".  This one contains " 
                        + allPlatformNames.size() + " platforms.  " 
-                       + "Create a query with a 'Gene Name' criterion, and within that 'Gene Name' "
-                       + "criterion, select a platform.");
+                       + "Create a query and within the criterion, select a platform.");
             }
             return getDao().getPlatform(allPlatformNames.iterator().next());
         }
