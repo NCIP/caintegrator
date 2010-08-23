@@ -108,7 +108,7 @@ public class GeneNameCriterionWrapper extends AbstractGenomicCriterionWrapper {
     GeneNameCriterionWrapper(GeneNameCriterion criterion, AbstractCriterionRow row) {
         super(row);
         this.criterion = criterion;
-        setupDefaultGenomicParameters();
+        setupDefaultGenomicParameters(criterion.getGenomicCriterionType());
     }
 
 

@@ -94,8 +94,10 @@ import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
@@ -165,15 +167,36 @@ public class QueryUtilTest {
         compoundCriterion2.getCriterionCollection().add(new StringComparisonCriterion());
         compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
         assertFalse(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
-        compoundCriterion1.getCriterionCollection().add(new GeneNameCriterion());
+        assertFalse(QueryUtil.isCompoundCriterionCopyNumber(compoundCriterion1));
+        GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
+        compoundCriterion1.getCriterionCollection().add(geneNameCriterion);
+        geneNameCriterion.setGenomicCriterionType(GenomicCriterionTypeEnum.GENE_EXPRESSION);
         assertTrue(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
+        assertFalse(QueryUtil.isCompoundCriterionCopyNumber(compoundCriterion1));
+        geneNameCriterion.setGenomicCriterionType(GenomicCriterionTypeEnum.COPY_NUMBER);
+        assertFalse(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
+        assertTrue(QueryUtil.isCompoundCriterionCopyNumber(compoundCriterion1));
         
         compoundCriterion1.setCriterionCollection(new HashSet<AbstractCriterion>());
         compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
         compoundCriterion1.getCriterionCollection().add(new StringComparisonCriterion());
         assertFalse(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
+        assertFalse(QueryUtil.isCompoundCriterionCopyNumber(compoundCriterion1));
         compoundCriterion2.getCriterionCollection().add(new FoldChangeCriterion());
         assertTrue(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
+        assertFalse(QueryUtil.isCompoundCriterionCopyNumber(compoundCriterion1));
+
+        compoundCriterion1 = new CompoundCriterion();
+        compoundCriterion1.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion2 = new CompoundCriterion();
+        compoundCriterion2.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
+        compoundCriterion1.getCriterionCollection().add(new StringComparisonCriterion());
+        assertFalse(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
+        assertFalse(QueryUtil.isCompoundCriterionCopyNumber(compoundCriterion1));
+        compoundCriterion2.getCriterionCollection().add(new CopyNumberAlterationCriterion());
+        assertFalse(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
+        assertTrue(QueryUtil.isCompoundCriterionCopyNumber(compoundCriterion1));
     }
     
     @Test
