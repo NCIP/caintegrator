@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import static gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType.EXPRESSION_SIGNAL;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 
@@ -147,11 +148,16 @@ class FoldChangeCalculator {
     }
 
     private double getLog2MeanOfControls(AbstractReporter reporter, ArrayDataValues controlValues) {
-        double valueProduct = 1.0f;
+        double totalSum = 0.0f;
         for (ArrayData arrayData : controlValues.getArrayDatas()) {
-            valueProduct += controlValues.getLog2Value(arrayData, reporter, EXPRESSION_SIGNAL, channelType);
+            if (PlatformChannelTypeEnum.ONE_COLOR.equals(channelType)) {
+                totalSum += controlValues.getFloatValue(arrayData, reporter, EXPRESSION_SIGNAL);
+            } else {
+                totalSum += Cai2Util.antiLog2(
+                        controlValues.getLog2Value(arrayData, reporter, EXPRESSION_SIGNAL, channelType));
+            }
         }
-        return valueProduct / controlValues.getArrayDatas().size();
+        return Cai2Util.log2(totalSum / controlValues.getArrayDatas().size());
     }
 
 }

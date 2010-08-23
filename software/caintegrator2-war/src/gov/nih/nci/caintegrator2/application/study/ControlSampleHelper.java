@@ -132,7 +132,7 @@ class ControlSampleHelper {
 
     private void addControlSample(SampleSet newControlSampleSet, String sampleName,
             int lineNumber) throws ValidationException {
-        Sample sample = genomicSource.getStudyConfiguration().getSample(sampleName);
+        Sample sample = genomicSource.getSample(sampleName);
         if (sample == null) {
             throw new ValidationException("Invalid sample identifier on line " + lineNumber
                     + ", there is no sample with the identifier " + sampleName + " in the study.");
