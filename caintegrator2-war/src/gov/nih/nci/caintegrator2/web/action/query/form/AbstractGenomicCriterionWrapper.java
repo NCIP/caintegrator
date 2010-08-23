@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 
 import java.util.List;
 
@@ -106,10 +107,16 @@ abstract class AbstractGenomicCriterionWrapper extends AbstractCriterionWrapper 
         this.row = row;
     }
     
-    protected void setupDefaultGenomicParameters() {
+    protected void setupDefaultGenomicParameters(GenomicCriterionTypeEnum type) {
         getParameters().add(createGeneSymbolParameter());
-        if (isStudyHasMultiplePlatforms()) {
-            getParameters().add(createPlatformNameParameter());
+        if (GenomicCriterionTypeEnum.GENE_EXPRESSION.equals(type)) {
+            if (isStudyHasMultipleGeneExpressionPlatforms()) {
+                getParameters().add(createPlatformNameParameter(getGeneExpressionPlatformNames()));
+            }
+        } else {
+            if (isStudyHasMultipleCopyNumberPlatforms()) {
+                getParameters().add(createPlatformNameParameter(getCopyNumberPlatformNames()));
+            }
         }
     }
 
@@ -141,11 +148,11 @@ abstract class AbstractGenomicCriterionWrapper extends AbstractCriterionWrapper 
         return geneSymbolParameter;
     }
     
-    protected SelectListParameter<String> createPlatformNameParameter() {
+    protected SelectListParameter<String> createPlatformNameParameter(List<String> platformNames) {
         OptionList<String> options = new OptionList<String>();
         String defaultUnknownPlatform = "";
         options.addOption(PLEASE_SELECT, defaultUnknownPlatform);
-        for (String platformName : getPlatformNames()) {
+        for (String platformName : platformNames) {
             options.addOption(platformName, platformName);
         }
         ValueSelectedHandler<String> handler = new ValueSelectedHandler<String>() {
@@ -168,12 +175,20 @@ abstract class AbstractGenomicCriterionWrapper extends AbstractCriterionWrapper 
 
     protected abstract void updateControlParameters();
     
-    protected Boolean isStudyHasMultiplePlatforms() {
-        return getRow().getGroup().getForm().isStudyHasMultiplePlatforms();
+    protected Boolean isStudyHasMultipleGeneExpressionPlatforms() {
+        return getRow().getGroup().getForm().isStudyHasMultipleGeneExpressionPlatforms();
     }
     
-    protected List<String> getPlatformNames() {
-        return getRow().getGroup().getForm().getPlatformNames();
+    protected Boolean isStudyHasMultipleCopyNumberPlatforms() {
+        return getRow().getGroup().getForm().isStudyHasMultipleCopyNumberPlatforms();
+    }
+    
+    protected List<String> getGeneExpressionPlatformNames() {
+        return getRow().getGroup().getForm().getGeneExpressionPlatformNames();
+    }
+    
+    protected List<String> getCopyNumberPlatformNames() {
+        return getRow().getGroup().getForm().getCopyNumberPlatformNames();
     }
 
 }

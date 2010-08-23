@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
@@ -232,6 +233,10 @@ public final class QueryUtil {
                 if (isCompoundCriterionCopyNumber((CompoundCriterion) abstractCriterion)) {
                     return true;
                 }
+            } else if (abstractCriterion instanceof GeneNameCriterion
+                    && (GenomicCriterionTypeEnum.COPY_NUMBER.equals(
+                            ((GeneNameCriterion) abstractCriterion).getGenomicCriterionType()))) {
+                return true;
             } else if (abstractCriterion instanceof CopyNumberAlterationCriterion) {
                 return true;
             }
@@ -251,7 +256,9 @@ public final class QueryUtil {
                 if (isCompoundCriterionGeneExpression((CompoundCriterion) abstractCriterion)) {
                     return true;
                 }
-            } else if (abstractCriterion instanceof GeneNameCriterion) {
+            } else if (abstractCriterion instanceof GeneNameCriterion
+                    && (GenomicCriterionTypeEnum.GENE_EXPRESSION.equals(
+                            ((GeneNameCriterion) abstractCriterion).getGenomicCriterionType()))) {
                 return true;
             } else if (abstractCriterion instanceof FoldChangeCriterion) {
                 return true;
