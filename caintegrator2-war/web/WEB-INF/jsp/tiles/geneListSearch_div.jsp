@@ -25,11 +25,16 @@
         </s:else>
     </tr>
     <br>
-    <sx:div id="geneListSearchResultsDiv" 
-        href="geneListSearch.action" 
-        formId="geneListSearchForm" 
-        showLoadingText="true"
-        loadingText="<img src='images/ajax-loader.gif'/>"
-        listenTopics="searchGeneList" 
-        refreshOnShow="false" />
+    <s:if test="!studySubscription.allGeneListNames.isEmpty()">
+        <sx:div id="geneListSearchResultsDiv" 
+            href="geneListSearch.action" 
+            formId="geneListSearchForm" 
+            showLoadingText="true"
+            loadingText="<img src='images/ajax-loader.gif'/>"
+            listenTopics="searchGeneList" 
+            refreshOnShow="false" />
+    </s:if>
+    <s:else>
+        <sx:div id="geneListSearchResultsDiv" />
+    </s:else>
 </s:div>
