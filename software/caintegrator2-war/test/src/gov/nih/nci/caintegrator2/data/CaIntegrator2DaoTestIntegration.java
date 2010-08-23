@@ -575,7 +575,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES);
         copyNumberCriterion.setChromosomeCoordinateHigh(1800000f);
         copyNumberCriterion.setChromosomeCoordinateLow(20000f);
-        copyNumberCriterion.setChromosomeNumber(3);
+        copyNumberCriterion.setChromosomeNumber("3");
         List<SegmentData> segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
         assertEquals(1, segmentDatas.size());
         copyNumberCriterion.setUpperLimit(.08f);
@@ -589,7 +589,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         assertEquals(1, segmentDatas.size());
         
         copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.CHROMOSOME_NUMBER);
-        copyNumberCriterion.setChromosomeNumber(3);
+        copyNumberCriterion.setChromosomeNumber("3");
         segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
         assertEquals(1, segmentDatas.size());
         
@@ -619,7 +619,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         copyNumberCriterion.setChromosomeCoordinateHigh(40000f);
         copyNumberCriterion.setSegmentBoundaryType(SegmentBoundaryTypeEnum.ONE_OR_MORE);
         copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES);
-        copyNumberCriterion.setChromosomeNumber(2);
+        copyNumberCriterion.setChromosomeNumber("2");
         segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
         assertEquals(1, segmentDatas.size());
     }

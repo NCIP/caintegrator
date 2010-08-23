@@ -110,7 +110,7 @@
                 <property name="geneSymbol" type="string" column="GENE_SYMBOL"/>
                 <property name="chromosomeCoordinateHigh" type="float" column="CHROMOSOMAL_COORDINATE_HIGH"/>
                 <property name="chromosomeCoordinateLow" type="float" column="CHROMOSOMAL_COORDINATE_LOW"/>
-                <property name="chromosomeNumber" type="integer" column="CHROMOSOME_NUMBER"/>
+                <property name="chromosomeNumber" type="string" column="CHROMOSOME_NUMBER"/>
                 <property name="genomicIntervalType" type="GenomicIntervalTypeEnum" column="GENOMIC_INTERVAL_TYPE"/>
                 <property name="segmentBoundaryType" type="SegmentBoundaryTypeEnum" column="SEGMENT_BOUNDARY_TYPE"/>
                 <property name="lowerLimit" type="float" column="LOWER_LIMIT"/>

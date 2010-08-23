@@ -354,17 +354,17 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
         ValueHandler valueChangeHandler = new ValueHandlerAdapter() {
 
             public boolean isValid(String value) {
-                return NumberUtils.isNumber(value);
+                return !StringUtils.isBlank(value);
             }
 
             public void validate(String formFieldName, String value, ValidationAware action) {
                 if (!isValid(value)) {
-                    action.addActionError("Numeric value required for " + label);
+                    action.addActionError("Chromosome number value required for " + label);
                 }
             }
 
             public void valueChanged(String value) {
-                criterion.setChromosomeNumber(Integer.valueOf(value));
+                criterion.setChromosomeNumber(value.trim());
             }
         };
         textParameter.setValueHandler(valueChangeHandler);
