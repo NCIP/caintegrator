@@ -224,10 +224,12 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
                     + studyConfiguration.getId() + "\">Edit</a>",
                     false);
             utilThis.setValue(JOB_ACTION_BAR + studyConfigurationId, "&nbsp;|&nbsp;", false);
+            String deleteMsg = "The study: " + studyConfiguration.getStudy().getShortTitleText()
+                + " will be permanently deleted.";
             utilThis.setValue(JOB_DELETE_STUDY_URL + studyConfigurationId, 
                     "<a href=\"deleteStudy.action?studyConfiguration.id=" 
                     + studyConfiguration.getId() 
-                    + "\" onclick=\"return confirm('This study will be permanently deleted.')\">Delete</a>",
+                    + "\" onclick=\"return confirm('" + deleteMsg + "')\">Delete</a>",
                     false);
             if (Status.ERROR.equals(studyConfiguration.getStatus())) {
                 utilThis.setValue(JOB_STUDY_STATUS + studyConfigurationId, 
