@@ -168,7 +168,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     
     public void deployStudy() throws Exception {
         AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
-        authentication.setUsername("manager");
+        authentication.setUsername("ncimanager");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         loadDesigns();
         UserWorkspace userWorkspace = workspaceService.getWorkspace();
