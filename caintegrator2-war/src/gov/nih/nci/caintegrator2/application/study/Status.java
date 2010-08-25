@@ -121,6 +121,11 @@ public enum Status {
     DEPLOYED("Deployed"),
     
     /**
+     * Ready to be loaded.
+     */
+    READY_FOR_LOAD("Ready to be loaded"),
+    
+    /**
      * Currently loaded (for data sources).
      */
     LOADED("Loaded"),
@@ -148,6 +153,14 @@ public enum Status {
      */
     public void setValue(String value) {
         this.value = value;
+    }
+    
+    /**
+     * 
+     * @return if this status is loaded or ready for load.
+     */
+    public boolean isLoadable() {
+        return this.equals(Status.LOADED) || this.equals(Status.READY_FOR_LOAD);
     }
 
 }
