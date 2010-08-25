@@ -506,8 +506,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             GenomicDataSourceConfiguration genomicSource)
         throws ValidationException, IOException {
         new SampleMappingHelper(studyConfiguration, mappingFile, genomicSource).mapSamples();
-        genomicSource.setStatus(genomicSource.getMappedSamples().isEmpty()
-                ? Status.NOT_MAPPED : Status.LOADED);
+        if (!Status.LOADED.equals(genomicSource.getStatus())) {
+            genomicSource.setStatus(genomicSource.getMappedSamples().isEmpty()
+                ? Status.NOT_MAPPED : Status.READY_FOR_LOAD);
+        }
         save(studyConfiguration);
     }
 
@@ -1164,7 +1166,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             source.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
         }
         source.getDnaAnalysisDataConfiguration().setMappingFilePath(savedFile.getAbsolutePath());
-        source.setStatus(Status.LOADED);
+        source.setStatus(Status.READY_FOR_LOAD);
         daoSave(source);
     }
 

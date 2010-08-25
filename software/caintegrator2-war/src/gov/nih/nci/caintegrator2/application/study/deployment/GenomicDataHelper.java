@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
@@ -148,10 +149,14 @@ class GenomicDataHelper {
     void loadData(StudyConfiguration studyConfiguration) 
     throws ConnectionException, DataRetrievalException, ValidationException {
         for (GenomicDataSourceConfiguration genomicSource : studyConfiguration.getGenomicDataSources()) {
-            if (genomicSource.isExpressionData()) {
-                loadExpressionData(genomicSource);
-            } else {
-                loadDnaAnalysisData(genomicSource);
+            if (!Status.LOADED.equals(genomicSource.getStatus())) {
+                if (genomicSource.isExpressionData()) {
+                    loadExpressionData(genomicSource);
+                } else {
+                    loadDnaAnalysisData(genomicSource);
+                }
+                genomicSource.setStatus(Status.LOADED);
+                dao.save(genomicSource);
             }
         }
     }

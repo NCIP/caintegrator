@@ -275,8 +275,8 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
             addNonErrorActions(genomicSource, utilThis, genomicSourceId, jobActionBarString);
         }
         utilThis.setValue(JOB_EDIT_URL + genomicSourceId, 
-                retrieveUrl(genomicSource, "editGenomicSource", "Edit", "edit", false),
-                false);
+            retrieveUrl(genomicSource, "editGenomicSource", "Edit", "edit", false),
+            false);
         utilThis.setValue(JOB_ACTION_BAR1 + genomicSourceId, jobActionBarString, false);
         utilThis.setValue(JOB_DELETE_URL + genomicSourceId, 
                 retrieveUrl(genomicSource, "deleteGenomicSource", "Delete", "delete", true),
