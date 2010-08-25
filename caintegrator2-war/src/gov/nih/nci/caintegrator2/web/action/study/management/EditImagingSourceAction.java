@@ -155,6 +155,8 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             addFieldError("imageSourceConfiguration.serverProfile.url", "Unable to connect to the server.");
         } catch (InvalidImagingCollectionException e) {
             addActionError(e.getMessage());
+        } catch (Exception e) {
+            addActionError("An unknown exception has occurred.");
         }
     }
 
