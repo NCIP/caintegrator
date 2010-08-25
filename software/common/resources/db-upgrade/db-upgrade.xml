@@ -412,4 +412,8 @@
         <comment>Change the chromosome number in the COPY_NUMBER_ALTERATION_CRITERION to varchar(2).</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.15.sql"/>
     </changeSet>
+    <changeSet id="1.2.16" author="tandrews">
+        <comment>Remove old chromosomal locations and load HG18 and HG19 based on newest files.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.16.sql"/>
+    </changeSet>
 </databaseChangeLog>
