@@ -26,28 +26,11 @@
         function saveGenomicSource() {
             if (document.genomicSourceForm.genomicSourceId.value != null
                     && document.genomicSourceForm.genomicSourceId.value != "") {
-                if ((origHostname != document.getElementById("caArrayHost").value)
-                    || (origPort != document.getElementById("caArrayPort").value)
-                    || (origUsername != document.getElementById("caArrayUsername").value)
-                    || (origPassword != document.getElementById("caArrayPassword").value)
-                    || (origExperimentId != document.getElementById("experimentId").value)
-                    || (origPlatformVendor != document.getElementById("platformVendor").value)
-                    || (origDataType != document.getElementById("dataType").value)
-                    || (origPlatformName != document.getElementById("platformName").value)
-                    || (origTechnicalReplicatesCentralTendency != document.getElementById("technicalReplicatesCentralTendency").value)
-                    || (origIsUseHighVarianceCalculation != document.getElementById("isUseHighVarianceCalculation").checked)
-                    || (origHighVarianceCalculationType != document.getElementById("highVarianceCalculationType").value)
-                    || (origHighVarianceThreshold != document.getElementById("highVarianceThreshold").value)) {
-                    if (confirm("You are about to update the configuration information for this data source.  "
+                if (confirm("You are about to update the configuration information for this data source.  "
                         + "Doing so will require you to remap your samples. "
                         + "Please click OK to update the data source or click Cancel to go back.")) {
                 	    showBusyDialog();
                         document.genomicSourceForm.submit();
-                    }
-                } else {
-                    document.genomicSourceForm.mappingData.value = "false";
-                    showBusyDialog();
-                    document.genomicSourceForm.submit();          
                 }
             } else {
             	showBusyDialog();
@@ -86,7 +69,6 @@
                 <s:form id="genomicSourceForm" name="genomicSourceForm" action="saveGenomicSource" theme="css_xhtml">
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="genomicSource.id" id="genomicSourceId"/>
-                    <s:hidden name="mappingData" value="true"/>
                     <s:if test="genomicSource.statusDescription != null && genomicSource.statusDescription.length() > 0">
             	        <s:div cssStyle="padding: 1em 0 0 0;">
                             <s:div cssClass="wwlbl">
@@ -138,16 +120,6 @@
                                         /> 
                         </div> 
                     </div>
-    
-                    <!-- 
-                    <s:checkbox id="isUseHighVarianceCalculation" 
-                    name="genomicSource.useHighVarianceCalculation"
-                    label="Indicate if technical replicates have highS variability:" 
-                    title="Denote in the search results if a sample has high standard deviation replicates"
-                    labelposition="top"
-                    onclick="checkVarianceInputParams(this);"
-                    />
-                    -->
                     <s:div id="varianceInputParams" cssStyle="%{varianceInputCssStyle}">
                     <s:select id="highVarianceCalculationType" name="genomicSource.highVarianceCalculationTypeString" label="Standard Deviation Type" 
                         list="@gov.nih.nci.caintegrator2.application.study.HighVarianceCalculationTypeEnum@getStringValues()"/>
@@ -167,21 +139,6 @@
                             </center>
                          </s:div>
                     </s:div>
-
-                    <script type="text/javascript">
-                        var origHostname = document.genomicSourceForm.caArrayHost.value;
-                        var origPort = document.genomicSourceForm.caArrayPort.value;
-                        var origUsername = document.genomicSourceForm.caArrayUsername.value;
-                        var origPassword = document.genomicSourceForm.caArrayPassword.value;
-                        var origExperimentId = document.genomicSourceForm.experimentId.value;
-                        var origPlatformVendor = document.genomicSourceForm.platformVendor.value;
-                        var origDataType = document.genomicSourceForm.dataType.value;
-                        var origPlatformName = document.genomicSourceForm.platformName.value;
-                        var origTechnicalReplicatesCentralTendency = document.genomicSourceForm.technicalReplicatesCentralTendency.value;
-                        var origIsUseHighVarianceCalculation = document.genomicSourceForm.isUseHighVarianceCalculation.checked;
-                        var origHighVarianceCalculationType = document.genomicSourceForm.highVarianceCalculationType.value;
-                        var origHighVarianceThreshold = document.genomicSourceForm.highVarianceThreshold.value;
-                    </script>
                 </s:form>
                 </td>
             </tr>

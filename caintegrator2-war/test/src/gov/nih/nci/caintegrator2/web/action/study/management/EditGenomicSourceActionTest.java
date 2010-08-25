@@ -195,9 +195,6 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
         assertEquals(Action.INPUT, action.save());
         action.getGenomicSource().setPlatformName("Name");
         assertEquals(Action.SUCCESS, action.save());
-        action.setMappingData(false);
-        assertEquals(Action.SUCCESS, action.save());
-        action.setMappingData(true);
         
         // Test server validation.
         caArrayFacadeStub.throwConnectionException = true;
