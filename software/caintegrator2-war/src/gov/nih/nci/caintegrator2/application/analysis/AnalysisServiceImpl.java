@@ -550,6 +550,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
             for (ArrayData arrayData : gisticAnalysis.getReporterList().getArrayDatas()) {
                 for (Sample sample : arrayData.getArray().getSampleCollection()) {
                     sample.getArrayCollection().remove(arrayData.getArray());
+                    sample.getArrayDataCollection().remove(arrayData);
                 }
                 getDao().delete(arrayData.getArray());
             }
