@@ -521,6 +521,7 @@
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIASearchServiceImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIAServiceFactoryImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIADicomJobRunnerImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator2/external/ncia/NBIAVersionUtil.class" />
                  <exclude name="gov/nih/nci/caintegrator2/application/registration/RegistrationServiceImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/common/GenericEnumUserType.class" />
                  <exclude name="gov/nih/nci/caintegrator2/common/ConfigurationHelperImpl.class" />
