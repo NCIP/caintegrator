@@ -132,14 +132,6 @@ public class NCIASearchServiceTestIntegration {
         List<Series> series = searchService.retrieveImageSeriesCollectionFromStudy(studies.get(0).getStudyInstanceUID());
         assertNotNull(series);
         
-        List<Image> images = searchService.retrieveImageCollectionFromSeries(series.get(0).getSeriesInstanceUID());
-        assertNotNull(images);
-        
-        Image image = searchService.retrieveRepresentativeImageBySeries(series.get(0).getSeriesInstanceUID());
-        assertTrue(contains(images, image));
-        
-        assertTrue(searchService.validate(series.get(0).getSeriesInstanceUID()));
-        
         assertFalse(searchService.validate("INVALID SERIES UID"));
     }
     
@@ -159,16 +151,10 @@ public class NCIASearchServiceTestIntegration {
         List<String> images = searchService.retrieveImageCollectionIdsFromSeries(series.get(0));
         assertNotNull(images);
         
+        Image image = searchService.retrieveRepresentativeImageBySeries(series.get(0));
+        String imageId = image.getSopInstanceUID();
+        assertTrue(images.contains(imageId));
         assertTrue(searchService.validate(series.get(0)));
-    }
-    
-    private boolean contains(List<Image> images, Image checkImage) {
-        for (Image image : images) {
-            if (image.getSopInstanceUID().equalsIgnoreCase(checkImage.getSopInstanceUID())) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }
