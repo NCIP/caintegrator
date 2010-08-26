@@ -123,6 +123,13 @@
             <result name="workspaceNoStudy" type="tiles">homepage</result>
         </action>
         
+        <action name="sessionTimeout" method="openLogin" class="loginAction">
+            <result name="login" type="redirectAction">
+                <param name="actionName">workspace</param>
+                <param name="sessionTimeout">true</param>
+            </result>
+        </action>
+        
         <action name="retrieveStudyLogo" method="retrieveStudyLogo" class="workspaceAction">
             <result type="studyLogoResult"/> 
         </action>

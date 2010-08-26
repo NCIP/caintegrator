@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
-    <display-name>caIntegrator 2</display-name>
+    <display-name>caIntegrator</display-name>
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
@@ -44,7 +44,18 @@
         </web-resource-collection>
         <auth-constraint/>
     </security-constraint>
-    
+
+<!-- For testing uncomment this session to set the session timeout to 1 minute.
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
+-->
+
+    <filter>
+        <filter-name>SessionTimeoutFilter</filter-name>
+        <filter-class>gov.nih.nci.caintegrator2.web.filter.SessionTimeoutFilter</filter-class>
+    </filter>
+ 
     <!-- Export Filter (for exporting data results) -->
     <filter>
 		<filter-name>ResponseOverrideFilter</filter-name>
@@ -79,6 +90,11 @@
       <filter-name>neverExpireFilter</filter-name>
       <filter-class>gov.nih.nci.caintegrator2.web.filter.NeverExpireFilter</filter-class>
     </filter>    
+
+    <filter-mapping>
+        <filter-name>SessionTimeoutFilter</filter-name>
+        <url-pattern>*.action</url-pattern>
+    </filter-mapping>
 
     <filter-mapping>
         <filter-name>sessionFixation</filter-name>
