@@ -128,7 +128,7 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
 
     @Override
     protected void configureSegmentationDataCalcuation(DnaAnalysisDataConfiguration dnaAnalysisDataConfiguration) {
-        dnaAnalysisDataConfiguration.getSegmentationService().setUrl("http://ncias-d227-v.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
+        dnaAnalysisDataConfiguration.getSegmentationService().setUrl("http://ncias-s412.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
         dnaAnalysisDataConfiguration.setRandomNumberSeed(1234567);
     }
 
