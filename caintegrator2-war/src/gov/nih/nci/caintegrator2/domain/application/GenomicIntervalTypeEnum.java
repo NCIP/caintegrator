@@ -17,12 +17,7 @@ public enum GenomicIntervalTypeEnum {
     /**
      * Chromosome Coordinates.
      */
-    CHROMOSOME_COORDINATES("Chromosome Coordinates"),
-
-    /**
-     * Chromosome Number.
-     */
-    CHROMOSOME_NUMBER("Chromosome Number");
+    CHROMOSOME_COORDINATES("Chromosome Coordinates");
     
     private static Map<String, GenomicIntervalTypeEnum> valueToTypeMap = 
         new HashMap<String, GenomicIntervalTypeEnum>();

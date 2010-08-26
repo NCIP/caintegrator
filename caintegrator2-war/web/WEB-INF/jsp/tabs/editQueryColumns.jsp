@@ -11,7 +11,8 @@
     </div>
     <div class="resultTypeSelector">
         <s:radio name="queryForm.resultConfiguration.resultType"
-            onclick="this.form.selectedAction.value = 'updateColumns'; this.form.submit();"
+            onclick="this.form.selectedAction.value = 'updateColumns'; 
+                showBusyDialog(); this.form.submit();"
             list="queryForm.resultTypes"
             listKey="key"
             listValue="value"/><br>

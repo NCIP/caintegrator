@@ -163,12 +163,9 @@ public class CopyNumberAlterationCriterionConverter {
             case GENE_NAME:
             handleGeneNameCriteria(segmentDataCrit, currentSession, genomeBuildVersion);
                 break;
-            case CHROMOSOME_NUMBER:
-                addChromosomeNumberToCriterion(copyNumberCriterion.getChromosomeNumber(), segmentDataCrit);
-                break;
             case CHROMOSOME_COORDINATES:
-                addChromosomeCoordinatesToCriterion(roundFloat(copyNumberCriterion.getChromosomeCoordinateHigh()), 
-                        roundFloat(copyNumberCriterion.getChromosomeCoordinateLow()), segmentDataCrit, 
+                addChromosomeCoordinatesToCriterion(copyNumberCriterion.getChromosomeCoordinateHigh(), 
+                        copyNumberCriterion.getChromosomeCoordinateLow(), segmentDataCrit, 
                         copyNumberCriterion.getChromosomeNumber());
                 break;
             default:
@@ -188,13 +185,6 @@ public class CopyNumberAlterationCriterionConverter {
             if (!geneLocations.isEmpty()) {
                 addMultipleChromosomeCoordinatesToCriterion(segmentDataCrit, geneLocations);
             }
-        }
-    }
-    
-    private void addChromosomeNumberToCriterion(String chromosomeNumber,
-            Criteria segmentDataCrit) {
-        if (chromosomeNumber != null) {
-            segmentDataCrit.add(chromosomeNumberExpression(chromosomeNumber));
         }
     }
     
@@ -262,10 +252,6 @@ public class CopyNumberAlterationCriterionConverter {
     
     private SimpleExpression chromosomeNumberExpression(String chromosomeNumber) {
         return Restrictions.eq("Location.chromosome", chromosomeNumber);
-    }
-
-    private Integer roundFloat(Float number) {
-        return number == null ? null : Math.round(number);
     }
 
 }
