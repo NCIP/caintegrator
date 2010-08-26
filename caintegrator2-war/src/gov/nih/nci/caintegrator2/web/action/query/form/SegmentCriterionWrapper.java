@@ -231,8 +231,6 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
     private SelectListParameter<GenomicIntervalTypeEnum> createIntervalTypeParameter() {
         OptionList<GenomicIntervalTypeEnum> options = new OptionList<GenomicIntervalTypeEnum>();
         options.addOption(GenomicIntervalTypeEnum.GENE_NAME.getValue(), GenomicIntervalTypeEnum.GENE_NAME);
-        options.addOption(GenomicIntervalTypeEnum.CHROMOSOME_NUMBER.getValue(),
-                GenomicIntervalTypeEnum.CHROMOSOME_NUMBER);
         options.addOption(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES.getValue(),
                 GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES);
         ValueSelectedHandler<GenomicIntervalTypeEnum> handler = new ValueSelectedHandler<GenomicIntervalTypeEnum>() {
@@ -265,9 +263,6 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
         switch (criterion.getGenomicIntervalType()) {
         case GENE_NAME:
             getParameters().add(createGeneSymbolParameter());
-            break;
-        case CHROMOSOME_NUMBER:
-            getParameters().add(createChromosomeNumberParameter());
             break;
         case CHROMOSOME_COORDINATES:
             getParameters().add(createChromosomeNumberParameter());
@@ -303,7 +298,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
                 if (StringUtils.isBlank(value)) {
                     criterion.setChromosomeCoordinateHigh(null);
                 } else {
-                    criterion.setChromosomeCoordinateHigh(Float.valueOf(value));
+                    criterion.setChromosomeCoordinateHigh(Integer.valueOf(value));
                 }
             }
         };
@@ -335,7 +330,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
                 if (StringUtils.isBlank(value)) {
                     criterion.setChromosomeCoordinateLow(null);
                 } else {
-                    criterion.setChromosomeCoordinateLow(Float.valueOf(value));
+                    criterion.setChromosomeCoordinateLow(Integer.valueOf(value));
                 }
             }
         };
@@ -349,7 +344,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
     private AbstractCriterionParameter createChromosomeNumberParameter() {
         final String label = "Chomosome Number";
         TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
-                getRow().getRowIndex(), criterion.getChromosomeNumber().toString());
+                getRow().getRowIndex(), criterion.getChromosomeNumber());
         textParameter.setLabel(label);
         ValueHandler valueChangeHandler = new ValueHandlerAdapter() {
 
@@ -364,7 +359,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
             }
 
             public void valueChanged(String value) {
-                criterion.setChromosomeNumber(value.trim());
+                criterion.setChromosomeNumber(value);
             }
         };
         textParameter.setValueHandler(valueChangeHandler);

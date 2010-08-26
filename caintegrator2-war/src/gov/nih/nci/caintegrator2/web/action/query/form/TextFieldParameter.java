@@ -122,9 +122,9 @@ public class TextFieldParameter extends AbstractCriterionParameter {
      * @param value the value to set
      */
     public void setValue(String value) {
-        if (!StringUtils.equals(getValue(), value)) {
-            this.value = value;
-            if (getValueHandler().isValid(value)) {
+        if (!StringUtils.equals(getValue(), value.trim())) {
+            this.value = value.trim();
+            if (getValueHandler().isValid(getValue())) {
                 getValueHandler().valueChanged(value);
             }
         }

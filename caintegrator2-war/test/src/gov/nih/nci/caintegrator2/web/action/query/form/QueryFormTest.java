@@ -505,15 +505,6 @@ public class QueryFormTest {
         assertEquals("EGFR", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getGeneSymbol());
 
         setFieldName(criterionRow, "Segmentation");
-        ((SelectListParameter<GenomicIntervalTypeEnum>) criterionRow.getParameters().get(2)).setValue(GenomicIntervalTypeEnum.CHROMOSOME_NUMBER.getValue());
-        queryForm.processCriteriaChanges();
-        assertEquals(4, group.getCompoundCriterion().getCriterionCollection().size());
-        assertEquals("Segmentation", criterionRow.getFieldName());
-        assertTrue(criterionRow.getCriterion() instanceof CopyNumberAlterationCriterion);
-        ((TextFieldParameter) criterionRow.getParameters().get(3)).setValue("1");
-        assertEquals("1", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getChromosomeNumber().toString());
-
-        setFieldName(criterionRow, "Segmentation");
         ((SelectListParameter<GenomicIntervalTypeEnum>) criterionRow.getParameters().get(2)).setValue(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES.getValue());
         queryForm.processCriteriaChanges();
         assertEquals(4, group.getCompoundCriterion().getCriterionCollection().size());
@@ -521,8 +512,8 @@ public class QueryFormTest {
         assertTrue(criterionRow.getCriterion() instanceof CopyNumberAlterationCriterion);
         ((TextFieldParameter) criterionRow.getParameters().get(4)).setValue("1");
         assertEquals("1", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getChromosomeNumber().toString());
-        ((TextFieldParameter) criterionRow.getParameters().get(5)).setValue("1.2");
-        assertEquals("1.2", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getChromosomeCoordinateHigh().toString());
+        ((TextFieldParameter) criterionRow.getParameters().get(5)).setValue("2");
+        assertEquals("2", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getChromosomeCoordinateHigh().toString());
         
     }
 
