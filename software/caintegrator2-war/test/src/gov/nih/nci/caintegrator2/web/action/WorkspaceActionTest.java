@@ -124,6 +124,11 @@ public class WorkspaceActionTest extends AbstractSessionBasedTest {
         workspaceAction.setInvalidAccess(true);
         workspaceAction.openWorkspace();
         assertTrue(workspaceAction.hasActionErrors());
+
+        workspaceAction.setInvalidAccess(false);
+        workspaceAction.setSessionTimeout(true);
+        workspaceAction.openWorkspace();
+        assertTrue(workspaceAction.hasActionErrors());
         
     }
 
