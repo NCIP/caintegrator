@@ -15,8 +15,8 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
     private Float lowerLimit;
     private SegmentBoundaryTypeEnum segmentBoundaryType = SegmentBoundaryTypeEnum.ONE_OR_MORE;
     private GenomicIntervalTypeEnum genomicIntervalType = GenomicIntervalTypeEnum.GENE_NAME;
-    private Float chromosomeCoordinateHigh;
-    private Float chromosomeCoordinateLow;
+    private Integer chromosomeCoordinateHigh;
+    private Integer chromosomeCoordinateLow;
     private String chromosomeNumber = "1";
 
     /**
@@ -93,7 +93,7 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
     /**
      * @return the chromosomeCoordinateHigh
      */
-    public Float getChromosomeCoordinateHigh() {
+    public Integer getChromosomeCoordinateHigh() {
         return chromosomeCoordinateHigh;
     }
 
@@ -107,14 +107,14 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
     /**
      * @param chromosomeCoordinateHigh the chromosomeCoordinateHigh to set
      */
-    public void setChromosomeCoordinateHigh(Float chromosomeCoordinateHigh) {
+    public void setChromosomeCoordinateHigh(Integer chromosomeCoordinateHigh) {
         this.chromosomeCoordinateHigh = chromosomeCoordinateHigh;
     }
 
     /**
      * @return the chromosomeCoordinateLow
      */
-    public Float getChromosomeCoordinateLow() {
+    public Integer getChromosomeCoordinateLow() {
         return chromosomeCoordinateLow;
     }
 
@@ -128,7 +128,7 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
     /**
      * @param chromosomeCoordinateLow the chromosomeCoordinateLow to set
      */
-    public void setChromosomeCoordinateLow(Float chromosomeCoordinateLow) {
+    public void setChromosomeCoordinateLow(Integer chromosomeCoordinateLow) {
         this.chromosomeCoordinateLow = chromosomeCoordinateLow;
     }
 
