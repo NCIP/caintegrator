@@ -90,7 +90,8 @@ import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 /**
  * 
  */
-public class DisplayableCopyNumberSampleBasedRow extends AbstractDisplayableCopyNumberRow {
+public class DisplayableCopyNumberSampleBasedRow extends AbstractDisplayableCopyNumberRow
+implements Comparable<DisplayableCopyNumberSampleBasedRow> {
     
     private String subject;
     private String sample;
@@ -130,5 +131,12 @@ public class DisplayableCopyNumberSampleBasedRow extends AbstractDisplayableCopy
      */
     public void setSample(String sample) {
         this.sample = sample;
+    }
+    /**
+     * Compare based on the Sample.
+     * {@inheritDoc}
+     */
+    public int compareTo(DisplayableCopyNumberSampleBasedRow o) {
+        return getSample().compareTo(o.getSample());
     }
 }
