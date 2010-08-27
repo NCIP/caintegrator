@@ -91,13 +91,16 @@ import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Action to search for gene list.
  */
 public class SearchGeneListAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
-
+    private static final int MAX_NUMBER_GENES_TO_DISPLAY = 500; 
+        
     // JSP Form Hidden Variables
     private String geneSymbolElementId;
     private boolean geneListSearchTopicPublished = false;
@@ -194,5 +197,32 @@ public class SearchGeneListAction extends AbstractCaIntegrator2Action {
      */
     public List<Gene> getGenes() {
         return genes;
+    }
+    
+    /**
+     * 
+     * @return genes as a comma separated string.
+     */
+    public String getGenesAsString() {
+        List<String> geneSymbolString = new ArrayList<String>();
+        for (Gene gene : genes) {
+            geneSymbolString.add(gene.getSymbol());
+        }
+        return StringUtils.join(geneSymbolString, ",");
+    }
+
+    /**
+     * @return the maxNumberGenesToDisplay
+     */
+    public static int getMaxNumberGenesToDisplay() {
+        return MAX_NUMBER_GENES_TO_DISPLAY;
+    }
+    
+    /**
+     * 
+     * @return if genes found is more than the max number.
+     */
+    public boolean isGenesHigherThanMax() {
+        return genes.size() >= MAX_NUMBER_GENES_TO_DISPLAY;
     }
 }
