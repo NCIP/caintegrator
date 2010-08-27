@@ -420,4 +420,8 @@
         <comment>Change the chromosome coordinate in the COPY_NUMBER_ALTERATION_CRITERION to bigint(20).</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.17.sql"/>
     </changeSet>
+     <changeSet id="1.2.18" author="marplej">
+        <comment>Change the server host name of the CA_DNA_COPY_URL.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.18.sql"/>
+    </changeSet>    
 </databaseChangeLog>

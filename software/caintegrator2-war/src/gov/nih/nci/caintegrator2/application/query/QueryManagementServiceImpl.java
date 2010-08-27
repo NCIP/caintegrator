@@ -264,6 +264,9 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     public Set<String> getAllSubjectsNotFoundInCriteria(Query query) throws InvalidCriterionException {
+        if (query == null) {
+            return new HashSet<String>();
+        }
         Set<String> allSubjectsInCriterion = query.getCompoundCriterion().getAllSubjectIds();
         Set<String> allSubjectsNotFound = new HashSet<String>(allSubjectsInCriterion);
         Set<String> allSubjectsInStudy = new HashSet<String>();
