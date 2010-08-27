@@ -117,6 +117,7 @@ public class GenomicDataFileWriterTest {
         result.setHasCriterionSpecifiedValues(true);
         Query query = new Query();
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        query.setOrientation(ResultsOrientationEnum.SUBJECTS_AS_COLUMNS);
         result.setQuery(query);
         File csvFile = new File(System.getProperty("java.io.tmpdir") + File.separator + "genomicResultTest.csv");
         csvFile = GenomicDataFileWriter.writeAsCsv(result, csvFile);
