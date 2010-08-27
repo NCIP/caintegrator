@@ -32,7 +32,7 @@
     <hr align="left" />
     <blockquote>
       <div class="Heading2"><a name="1080238">K-M Plot for Gene Expression</a></div>
-      <div class="Body_Text"><a name="1080255">caIntegrator2 allows you to compare expression levels for one given gene at a time. </a>The relative expression level is referred to as “fold change” and the numeric value for a given sample and reporter combination is the ratio of the expression value for that particular reporter for the given sample to a reference value calculated for that reporter across all control samples. The reference value is calculated by taking the mean of the log<span style="vertical-align: sub;">2</span> of the expression values for all control samples for the reporter in question. The log<span style="vertical-align: sub;">2</span> mean value (n) is then converted back to a comparable expression signal by returning 2 to the exponent <span style="font-style: italic;">n</span>. </div>
+      <div class="Body_Text"><a name="1080255">caIntegrator a</a>llows you to compare expression levels for one given gene in different representative groups. The relative expression level is referred to as “fold change”. Fold change is the ratio of the measured gene expression value in an experimental sample as determined by a reporter to a reference value calculated for that reporter against all control samples. The reference value is calculated by taking the mean of the log<span style="vertical-align: sub;">2</span> of the expression values for all control samples for the reporter in question. The log<span style="vertical-align: sub;">2</span> mean value (n) is then converted back to a comparable expression signal by returning 2 to the exponent <span style="font-style: italic;">n</span>. </div>
       <div class="Body_Text"><a name="1080253">To create a K-M plot illustrating gene expression values, follow these steps:</a></div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080320">
@@ -82,227 +82,15 @@
           </tr>
         </table>
       </div>
-      <div class="Body_Text_Indent"><a name="1113499">caIntegrator2 provides three methods whereby you can obtain gene names for </a>calculating a KM plot:</div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113491">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><a name="1113491"> </a><span style="font-weight: bold;">caBIO</span> – This link searches caBIO, then pulls identified genes into caIntegrator2 for analysis. </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Lettered_List_1_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1117947">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Lettered_List_1_inner" style="width: 18pt; white-space: nowrap;">
-                <span class="Lettered_List_Char">a.	</span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Lettered_List_1_inner"><a name="1117947">Click the </a><span style="font-weight: bold;">caBIO</span> icon (<img id="1113406" class="Default" src="images/PerformingAnalysis.6.5.1.jpg" width="39" height="37" style="display: inline; float: none; left: 0.0; text-align: left; top: 0.0;" alt="caBIO icon" />).</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Lettered_List_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113409">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Lettered_List_inner" style="width: 18pt; white-space: nowrap;">
-                <span class="Lettered_List_Char">b.	</span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Lettered_List_inner"><a name="1113409">Enter </a><span style="font-weight: bold;">Search Terms</span>. Note that caIntegrator2 can perform a search on a partial HUGO symbol. For example, as search using <span style="font-style: italic; font-weight: bold;">nicotin </span>would find matches with “nicotinic” and “nicotinamide”.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Lettered_List_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113410">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Lettered_List_inner" style="width: 18pt; white-space: nowrap;">
-                <span class="Lettered_List_Char">c.	</span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Lettered_List_inner"><a name="1113410">Select if you want to search in </a><span style="font-weight: bold;">Gene</span> <span style="font-weight: bold;">Keywords</span>,<span style="font-weight: bold;"> Gene Symbols </span>or<span style="font-weight: bold;"> </span><span style="font-weight: bold;">Pathways </span>(from the drop-down list). </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1117954">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_2_inner"><a name="1117954">Selecting </a><span style="font-weight: bold;">Gene Keywords</span> searches only the Full Name field in caBIO. </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1117958">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_2_inner"><a name="1117958">Selecting </a><span style="font-weight: bold;">Gene Symbols</span> searches only the Unigene and HUGO gene symbols in caBIO. </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1117959">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_2_inner"><a name="1117959">Selecting </a><span style="font-weight: bold;">Pathways</span> searches only the pathway names in caBIO. Note that searching in Pathways is a two step process. First, the initial Pathway search produces search results which are pathways. Second, from the pathway search results screen, you must select pathways of interest, then click <span style="font-weight: bold;">Search Pathways for Genes</span> to obtain a list of genes related to the selected pathways.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Lettered_List_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113411">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Lettered_List_inner" style="width: 18pt; white-space: nowrap;">
-                <span class="Lettered_List_Char">d.	</span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Lettered_List_inner"><a name="1113411">Select the </a><span style="font-weight: bold;">Any</span> or <span style="font-weight: bold;">All</span> choice to determine how your search terms will be matched. <span style="font-weight: bold;">Any</span> finds any match for any search term you entered. <span style="font-weight: bold;">All</span> finds only results that match all of the search terms.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Lettered_List_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113412">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Lettered_List_inner" style="width: 18pt; white-space: nowrap;">
-                <span class="Lettered_List_Char">e.	</span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Lettered_List_inner"><a name="1113412">Choose the </a><span style="font-weight: bold;">Taxon</span> from the drop-down list and click <span style="font-weight: bold;">Search. </span>The search results display in the same dialog box.  </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Lettered_List_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113421">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Lettered_List_inner" style="width: 18pt; white-space: nowrap;">
-                <span class="Lettered_List_Char">f.	</span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Lettered_List_inner"><a name="1113421">In the search results, use the check boxes to identify the genes whose </a>symbols you want to use in the plot calculation.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Lettered_List_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113422">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Lettered_List_inner" style="width: 18pt; white-space: nowrap;">
-                <span class="Lettered_List_Char">g.	</span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Lettered_List_inner"><a name="1113422">Click </a><span style="font-weight: bold;">Use Genes</span> at the bottom of the page. This pulls the checked genes into the For Gene Expression tab in a comma-separated list.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113431">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1113431">Gene List</a></span><span style="font-size: 10.0pt;"> </span><span style="font-size: 10.0pt;">–</span> This link locates gene lists saved in caIntegrator2. </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Lettered_List_1_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113436">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Lettered_List_1_inner" style="width: 18pt; white-space: nowrap;">
-                <span class="Lettered_List_Char">a.	</span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Lettered_List_1_inner"><a name="1113436">Click the Gene List icon (<img id="1113434" class="Default" src="images/PerformingAnalysis.6.5.2.jpg" width="21" height="18" style="display: inline; float: none; left: 0.0; text-align: left; top: 0.0;" alt="gene list icon" />) to open a small dialog that lists prior-saved </a>gene lists in caIntegrator2. See <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'View%20Search%20Results.5.6.html#1182721', '');">Creating a Gene List</a></span>.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Lettered_List_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113437">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Lettered_List_inner" style="width: 18pt; white-space: nowrap;">
-                <span class="Lettered_List_Char">b.	</span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Lettered_List_inner"><a name="1113437">In the drop-down menu, select a gene list. In the list that appears, use the </a>check boxes to identify the genes whose symbols you want to use in the plot  analysis. </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Lettered_List_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113438">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Lettered_List_inner" style="width: 18pt; white-space: nowrap;">
-                <span class="Lettered_List_Char">c.	</span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Lettered_List_inner"><a name="1113438">Click </a><span style="font-weight: bold;">Use Genes</span> at the bottom of the dialog. This pulls the checked genes into the For Gene Expression tab.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113439">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1113439">CGAP</a></span> – Use this directory to identify genes. Before clicking this link you must enter gene symbols in the text box. This link does not pull anything into caIntegrator2 but does provide information about the gene(s) whose names you enter.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
+      <div class="Body_Text_Indent_2"><a name="1113499">caIntegrator p</a>rovides three methods whereby you can obtain gene symbols for calculating a KM plot for gene expression. For more information, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.6.16.html#1136516', '');">Choosing Genes</a></span></div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113398">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">5. </div>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">5.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><span style="font-weight: bold;"><a name="1113398">Over-expressed</a></span>/<span style="font-weight: bold;">Under-expressed</span> – Define the over- and under-expression criteria, expressed in terms of fold-change. Fold change is the ratio of the measured gene expression value for an experimental sample to the expression value for the control sample.</div>
+              <div class="Numbered_List_inner"><span style="font-weight: bold;"><a name="1113398">O</a></span><span style="font-weight: bold;">ver-expressed</span>/<span style="font-weight: bold;">Under-expressed</span> – Define the over- and under-expression criteria, expressed in terms of fold-change. Fold change is the ratio of the measured gene expression value for an experimental sample to the expression value for the control sample.</div>
             </td>
           </tr>
         </table>
@@ -311,7 +99,7 @@
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113629">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">6. </div>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">6.	</div>
             </td>
             <td width="100%">
               <div class="Numbered_List_inner"><span style="font-weight: bold;"><a name="1113629">Survival value</a></span> – The length of time the patient lived. For <span style="font-weight: bold;">Survival Value</span>, select the survival measure which is the unit of measurement for the survival value to be used for the plot.</div>
@@ -323,27 +111,31 @@
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113638">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">7. </div>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">7.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><span style="font-weight: bold;"><a name="1113638">Control Sample Sets</a></span> – One or more are created by the study manager when a study is deployed. Select the <span style="font-weight: bold;">Control Sample Set</span> you would like to use to calculate fold-change.</div>
+              <div class="Numbered_List_inner"><span style="font-weight: bold;"><a name="1113638">Control Sample Sets</a></span> – One or more are created by the study manager when a study is deployed. Select the <span style="font-weight: bold;">Control Sample Set</span> you would like to use to calculate fold-change. </div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080552">
+      <div class="Note_Indent_outer" style="margin-left: 50.25pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1128172">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">8. </div>
+              <div class="Note_Indent_inner" style="width: 25px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1128172" border="0" width="30" height="30" />
+                </span>
+              </div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1080552">Click the </a><span style="font-weight: bold;">Create Plot</span> button. caIntegrator2 generates the plot which then displays below the plot criteria.</div>
+              <div class="Note_Indent_inner"><a name="1128172">If the study has more than one platform associated with it, the platform </a>is inherently selected when you select the control set. Control sets are comprised of samples from only one platform.</div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text"><a name="1127153">See </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.6.6.html#1127155', '');">KM Plot from Gene Expression Data Display</a></span>.</div>
+      <div class="Body_Text"><a name="1138344">Click the </a><span style="font-weight: bold;">Create Plot</span> button. caIntegrator generates the plot which then displays below the plot criteria.See <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.6.6.html#1138346', '');">KM Plot from Gene Expression Data Display</a></span>.</div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
