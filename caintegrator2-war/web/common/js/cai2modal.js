@@ -41,6 +41,11 @@
         hideGeneListInputForm(inputForm);
     }
     
+    function captureGeneListStringValue(geneSymbolsTextBox, geneSymbolsString) {
+    	document.getElementById(geneSymbolsTextBox).value = geneSymbolsString;
+    	hideGeneListInputForm(document.geneListSearchForm);
+    }
+    
 //********************//
 // CaBio Modal Dialog //
 //********************//
