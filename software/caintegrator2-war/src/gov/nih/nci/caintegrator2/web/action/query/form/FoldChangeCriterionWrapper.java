@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
@@ -126,7 +127,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
             criterion.setRegulationType(RegulationTypeEnum.UP);
             setCriterionDefaults();
         }
-        setupDefaultGenomicParameters();
+        setupDefaultGenomicParameters(GenomicCriterionTypeEnum.GENE_EXPRESSION);
         getParameters().add(createControlSampleSetParameter());
         getParameters().add(createRegulationTypeParameter());
         addFoldsParameters();
@@ -173,7 +174,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
     }
     
     private int getNumberMaxParameters() {
-        return isStudyHasMultiplePlatforms() 
+        return isStudyHasMultipleGeneExpressionPlatforms() 
                 ? NUMBER_OF_MAX_PARAMETERS_MULTIPLE_PLATFORMS : NUMBER_OF_MAX_PARAMETERS;
     }
 
@@ -202,7 +203,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
     private SelectListParameter<String> createControlSampleSetParameter() {
         OptionList<String> options = new OptionList<String>();
         String platformNameToUse = null;
-        if (isStudyHasMultiplePlatforms()) {
+        if (isStudyHasMultipleGeneExpressionPlatforms()) {
             platformNameToUse = StringUtils.isBlank(criterion.getPlatformName()) 
                     ? "UNKNOWN" : criterion.getPlatformName();
         }
@@ -329,7 +330,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
      */
     @Override
     protected boolean platformParameterUpdateOnChange() {
-        return true;
+        return false;
     }
 
 }

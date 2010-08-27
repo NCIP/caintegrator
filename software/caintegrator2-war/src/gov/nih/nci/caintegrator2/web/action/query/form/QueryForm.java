@@ -115,7 +115,8 @@ public class QueryForm {
     private Query query;
     private final List<AnnotationGroup> sortedAnnotationGroups = new ArrayList<AnnotationGroup>();
     private final List<String> annotationGroupNames = new ArrayList<String>();
-    private final List<String> platformNames = new ArrayList<String>();
+    private final List<String> geneExpressionPlatformNames = new ArrayList<String>();
+    private final List<String> copyNumberPlatformNames = new ArrayList<String>();
     private final Map<String, AnnotationFieldDescriptorList> annotationGroupMap = 
         new HashMap<String, AnnotationFieldDescriptorList>();
     private CriteriaGroup criteriaGroup;
@@ -123,7 +124,8 @@ public class QueryForm {
     private String orgQueryName = "";
     private boolean controlSamplesInStudy = false;
     private boolean studyHasSavedLists = false;
-    private boolean studyHasMultiplePlatforms = false;
+    private boolean studyHasMultipleGeneExpressionPlatforms = false;
+    private boolean studyHasMultipleCopyNumberPlatforms = false;
     
     private String genomicPreviousSorting;
     private int genomicSortingOrder = -1;
@@ -132,9 +134,11 @@ public class QueryForm {
      * Configures a new query.
      * 
      * @param subscription query belongs to this subscription
-     * @param geneExpressionPlatformsInStudy the platforms for the study (null if unknown)
+     * @param geneExpressionPlatformsInStudy the gene expression platforms in the study (null if unknown)
+     * @param copyNumberPlatformsInStudy the copy number platforms in the study (null if unknown)
      */
-    public void createQuery(StudySubscription subscription, Set<String> geneExpressionPlatformsInStudy) {
+    public void createQuery(StudySubscription subscription, Set<String> geneExpressionPlatformsInStudy,
+            Set<String> copyNumberPlatformsInStudy) {
         query = new Query();
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
@@ -142,19 +146,19 @@ public class QueryForm {
         query.setColumnCollection(new HashSet<ResultColumn>());
         query.setSubscription(subscription);
         query.setResultType(ResultTypeEnum.CLINICAL);
-        setQuery(query, geneExpressionPlatformsInStudy);
+        setQuery(query, geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy);
         setResultConfiguration(new ResultConfiguration(this));
     }
 
-    private void initialize(Set<String> geneExpressionPlatformsInStudy) {
-        studyHasMultiplePlatforms = false;
-        platformNames.clear();
+    private void initialize(Set<String> geneExpressionPlatformsInStudy, Set<String> copyNumberPlatformsInStudy) {
+        studyHasMultipleGeneExpressionPlatforms = false;
+        studyHasMultipleCopyNumberPlatforms = false;
+        geneExpressionPlatformNames.clear();
+        copyNumberPlatformNames.clear();
         if (query != null) {
             Study study = getQuery().getSubscription().getStudy();
             initializeAnnotationGroups(study);
-            if (geneExpressionPlatformsInStudy != null && geneExpressionPlatformsInStudy.size() > 1) {
-                setupPlatforms(geneExpressionPlatformsInStudy);
-            } 
+            setupPlatforms(geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy); 
             criteriaGroup = new CriteriaGroup(this);
             resultConfiguration = new ResultConfiguration(this);
             controlSamplesInStudy = study.getStudyConfiguration().hasControlSamples();
@@ -165,16 +169,29 @@ public class QueryForm {
             annotationGroupNames.clear();
             annotationGroupMap.clear();
             sortedAnnotationGroups.clear();
-            platformNames.clear();
         }
         orgQueryName = "";
     }
 
-    private void setupPlatforms(Set<String> geneExpressionPlatformsInStudy) {
-        studyHasMultiplePlatforms = true;
-        platformNames.clear();
-        platformNames.addAll(geneExpressionPlatformsInStudy);
-        Collections.sort(platformNames);
+    private void setupPlatforms(Set<String> geneExpressionPlatformsInStudy, Set<String> copyNumberPlatformsInStudy) {
+        if (geneExpressionPlatformsInStudy != null && geneExpressionPlatformsInStudy.size() > 1) {
+            setupGeneExpressionPlatforms(geneExpressionPlatformsInStudy);
+        }
+        if (copyNumberPlatformsInStudy != null && copyNumberPlatformsInStudy.size() > 1) {
+            setupCopyNumberPlatforms(copyNumberPlatformsInStudy);
+        }
+    }
+
+    private void setupGeneExpressionPlatforms(Set<String> geneExpressionPlatformsInStudy) {
+        studyHasMultipleGeneExpressionPlatforms = true;
+        geneExpressionPlatformNames.addAll(geneExpressionPlatformsInStudy);
+        Collections.sort(geneExpressionPlatformNames);
+    }
+
+    private void setupCopyNumberPlatforms(Set<String> copyNumberPlatformsInStudy) {
+        studyHasMultipleCopyNumberPlatforms = true;
+        copyNumberPlatformNames.addAll(copyNumberPlatformsInStudy);
+        Collections.sort(copyNumberPlatformNames);
     }
     
     private void initializeAnnotationGroups(Study study) {
@@ -207,11 +224,13 @@ public class QueryForm {
      * Sets the query for the form.
      * 
      * @param q the query for the form
-     * @param geneExpressionPlatformsInStudy the platforms for the study (null if unknown)
+     * @param geneExpressionPlatformsInStudy the gene expression platforms in the study (null if unknown)
+     * @param copyNumberPlatformsInStudy the copy number platforms in the study (null if unknown)
      */
-    public void setQuery(Query q, Set<String> geneExpressionPlatformsInStudy) {
+    public void setQuery(Query q, Set<String> geneExpressionPlatformsInStudy,
+            Set<String> copyNumberPlatformsInStudy) {
         this.query = q;
-        initialize(geneExpressionPlatformsInStudy);
+        initialize(geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy);
     }
     
     AnnotationFieldDescriptorList getAnnotations(String groupName) {
@@ -388,21 +407,35 @@ public class QueryForm {
     public void reverseGenomicSortingOrder() {
         this.genomicSortingOrder *= -1;
     }
-
-    /**
-     * @return the studyHasMultiplePlatforms
-     */
-    public boolean isStudyHasMultiplePlatforms() {
-        return studyHasMultiplePlatforms;
-    }
-
-    /**
-     * @return the platformNames
-     */
-    public List<String> getPlatformNames() {
-        return platformNames;
-    }
     
+    /**
+     * @return the studyHasMultipleGeneExpressionPlatforms
+     */
+    public boolean isStudyHasMultipleGeneExpressionPlatforms() {
+        return studyHasMultipleGeneExpressionPlatforms;
+    }
+
+    /**
+     * @return the studyHasMultipleCopyNumberPlatforms
+     */
+    public boolean isStudyHasMultipleCopyNumberPlatforms() {
+        return studyHasMultipleCopyNumberPlatforms;
+    }
+
+    /**
+     * @return the geneExpressionPlatformNames
+     */
+    public List<String> getGeneExpressionPlatformNames() {
+        return geneExpressionPlatformNames;
+    }
+
+    /**
+     * @return the copyNumberPlatformNames
+     */
+    public List<String> getCopyNumberPlatformNames() {
+        return copyNumberPlatformNames;
+    }
+
     /**
      * @return available result types for this study
      */

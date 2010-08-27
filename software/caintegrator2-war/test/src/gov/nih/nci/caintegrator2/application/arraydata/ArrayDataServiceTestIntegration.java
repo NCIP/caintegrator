@@ -32,7 +32,11 @@ public class ArrayDataServiceTestIntegration extends AbstractTransactionalSpring
     public void testLoadGeneLocationFile() throws ValidationException, IOException {
         GeneLocationConfiguration geneLocationConf = 
             arrayDataService.loadGeneLocationFile(TestDataFiles.HG18_GENE_LOCATIONS_FILE, GenomeBuildVersionEnum.HG18);
-        assertEquals(19058, geneLocationConf.getGeneLocations().size());
+        assertEquals(22404, geneLocationConf.getGeneLocations().size());
+        
+        geneLocationConf = 
+            arrayDataService.loadGeneLocationFile(TestDataFiles.HG19_GENE_LOCATIONS_FILE, GenomeBuildVersionEnum.HG19);
+        assertEquals(22397, geneLocationConf.getGeneLocations().size());
     }
 
     @Test

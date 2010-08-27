@@ -98,7 +98,6 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 import gov.nih.nci.security.exceptions.CSException;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -207,7 +206,7 @@ public interface WorkspaceService extends CaIntegrator2EntityRefresher {
      * @param geneList the gene list to create
      * @param geneSymbols the list of gene symbols
      */
-    void createGeneList(GeneList geneList, List<String> geneSymbols);
+    void createGeneList(GeneList geneList, Set<String> geneSymbols);
     
     /**
      * @param subjectList the subject list to create

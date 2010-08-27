@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Adding Imaging Data</title>
+    <title>Uploading Control Samples</title>
     <link rel="StyleSheet" href="css/CreatingNewStudy.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,167 +28,61 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1075831">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.5.html#1075831">Working with Annotations – An Overview</a> &gt; Adding Imaging Data</div>
+      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1080249">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.14.html#1080249">Adding/Editing Genomic Data</a> &gt; Uploading Control Samples </div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading2"><a name="1075831">Adding Imaging Data</a></div>
-      <div class="Body_Text"><a name="1077974">Once you have loaded </a>subject annotation data and identified patient IDs, you can add either array genomic sample data from caArray which caIntegrator2 maps by sample IDs to the patient IDs in the subject annotation data, or you can load imaging files from NBIA, also mapped by IDs to the patient data, covered in this section. Genomic sample data and imaging data are independent of each other, so neither is required before loading the other.</div>
-      <div class="Body_Text"><a name="1083440">It is essential that you are well acquainted with the data you are working with--the </a>subject annotation data, and the corresponding imaging data in NBIA. </div>
-      <div class="Body_Text"><a name="1081340">Any data in NBIA can be uploaded to caIntegrator2. Imaging data consist of images </a>and or annotations for images.</div>
-      <div class="Body_Text"><a name="1081374">To add imaging data to the study you are creating or are editing, follow these steps:</a></div>
+      <div class="Heading2"><a name="1080249">Uploading Control Samples </a></div>
+      <div class="Body_Text"><a name="1081202">A Control Samples file is used to calculate fold change data, which compares “tumor” </a>sample gene expression in the caArray experiment to the control samples to identify those that exhibit up or down gene regulation. Control samples can be the “normal” samples, but that is not necessarily the case.</div>
+      <div class="Body_Text"><a name="1081271">To upload the control samples, follow these steps:</a></div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080129">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081324">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1080129">On the Edit Study page, click the </a><span style="font-weight: bold;">Add</span> button under Imaging Data Sources section. Imaging data can be NBIA images or image annotations, which are uploaded in spreadsheet format.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080167">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1080167">NBIA Server Grid URL*</a></span> – Enter the URL for the grid connection to NBIA</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080168">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1080168">NBIA Username and NBIA Password</a></span>. This information is not required, as currently all data in the NBIA grid is Public data.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081393">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1081393">Collection Name*</a></span> – Enter the name/source for the collection.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1094418">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1094418">Current Mapping</a></span> – If a mapping file has already been uploaded to the study to map imaging data, the file name displays here.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1094422">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1094422">Select Mapping File Type*</a></span> – Click to select the file type: </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1095465">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_2_inner"><span style="font-weight: bold;"><a name="1095465">Auto </a></span>–<span style="font-weight: bold;"> </span>No file is required. Selecting this takes all subject annotation subject IDs and attempts to map them to the corresponding ID in the collection in NBIA. If the ID does not exist in NBIA, then no mapping is made for that ID.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1095474">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_2_inner"><span style="font-weight: bold;"><a name="1095474">By Subject</a></span> –<span style="font-weight: bold;"> </span>Requires a file to be uploaded. The “subject annotation to imaging mapping file” must be a two column mapping (CSV) from the caintegrator2 subject annotation subject ID to the NBIA subject ID. </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1095490">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_2_inner"><span style="font-weight: bold;"><a name="1095490">By Image Series</a></span> – Requires a file to be uploaded. The subject annotation to imaging mapping file needs to be a two column mapping (CSV) from the caintegrator2 subject annotation subject ID to the NBIA study instance UID.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081403">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1081403">Subject Annotation t</a></span><span style="font-weight: bold;">o Imaging Mapping File</span> – Click <span style="font-weight: bold;">Browse</span> to navigate to the  appropriate subject annotation to imaging mapping file. See<span style="font-weight: bold;"> Select </span><span style="font-weight: bold;">Mapping File Type* </span>field description.</div>
+              <div class="Numbered_List_1_inner"><a name="1081324">On the Edit Sample Mappings page, click the </a><span style="font-weight: bold;">Map Samples</span> link.</div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081453">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1091190">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1081453">Click </a><span style="font-weight: bold;">Add</span> to upload the data to caIntegrator2.</div>
+              <div class="Numbered_List_inner"><a name="1091190">Click </a><span style="font-weight: bold;">Browse</span> to navigate for the control samples file, and click the <span style="font-weight: bold;">Upload </span><span style="font-weight: bold;">Control Samples</span> File button. The control sets display at the top of the page once they have been uploaded . </div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text_Indent_2"><a name="1108908">The imaging data information displays on the Edit Study page under the </a>Imaging Data Sources section. </div>
+      <div class="Body_Text_Indent_2"><a name="1091182">The control samples now display toward the bottom of the page.</a></div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1082278">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1079626">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1082278">Once the data is uploaded, you must assign identifiers and annotations to the </a>data in the same way you did with the subject annotation data. For more information, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.9.html#1125074', '');">Assigning An Identifier or Annotation</a></span> and <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.10.html#1082197', '');">Searching for Annotation Definitions</a></span>.</div>
+              <div class="Numbered_List_inner"><a name="1079626">This information will be used when performing other tasks in caIntegrator, to be </a>described in other sections.</div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1082287">
+      <div class="Note_Main_Body_outer" style="margin-left: 13px;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1132244">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">4.	</div>
+              <div class="Note_Main_Body_inner" style="width: 15px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1132244" border="0" width="30" height="30" />
+                </span>
+              </div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1082287">To deploy the study, see </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.18.html#1126457', '');">Deploying the Study</a></span>.</div>
+              <div class="Note_Main_Body_inner"><a name="1132244">If a Control Set is to be used in Gene Expression For Annotation, or Gene Expression </a>plots for Annotation Query, then the control set should be composed of only samples which are mapped to subjects.</div>
             </td>
           </tr>
         </table>
@@ -201,10 +95,9 @@
 
           // Add related topics
           //
-          WWHAddRelatedTopic("Adding Subject Annotation Data", "caIntegrator2", "CreatingNewStudy.3.8.html#1075197");
-          WWHAddRelatedTopic("Adding/Editing Genomic Data", "caIntegrator2", "CreatingNewStudy.3.12.html#1076975");
-          WWHAddRelatedTopic("Managing a Study", "caIntegrator2", "CreatingNewStudy.3.19.html#1076280");
-          WWHAddRelatedTopic("Managing Platforms", "caIntegrator2", "CreatingNewStudy.3.20.html#1078043");
+          WWHAddRelatedTopic("Define Fields Page for Editing Annotations", "caIntegrator2", "CreatingNewStudy.3.10.html#1134706");
+          WWHAddRelatedTopic("Working with Imaging Data", "caIntegrator2", "CreatingNewStudy.3.18.html#1151070");
+          WWHAddRelatedTopic("Managing Platforms", "caIntegrator2", "CreatingNewStudy.3.24.html#1078043");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

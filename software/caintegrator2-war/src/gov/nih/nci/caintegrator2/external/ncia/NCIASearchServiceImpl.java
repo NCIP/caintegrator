@@ -33,28 +33,33 @@ import org.globus.gsi.GlobusCredential;
 public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIASearchService {
 
     private ServerConnectionProfile serverConnection;
+    private NBIAVersionEnum nbiaVersion;
 
     /**
      * Constructor given a gridServiceURL.
      * @param conn - ServerConnectionProfile for NCIA grid service
+     * @param nbiaVersion - version of NBIA.
      * @throws MalformedURIException - exception.
      * @throws RemoteException - exception.
      */
-    public NCIASearchServiceImpl(ServerConnectionProfile conn) throws MalformedURIException, RemoteException {
-        this(conn, null);
+    public NCIASearchServiceImpl(ServerConnectionProfile conn, NBIAVersionEnum nbiaVersion) 
+        throws MalformedURIException, RemoteException {
+        this(conn, nbiaVersion, null);
     }
 
     /**
      * Constructor given a gridServiceURL.
      * @param conn - ServerConnectionProfile for NCIA grid service
+     * @param nbiaVersion - version of NBIA.
      * @param proxy - proxy...
      * @throws MalformedURIException - exception.
      * @throws RemoteException - exception.
      */
-    public NCIASearchServiceImpl(ServerConnectionProfile conn, GlobusCredential proxy) 
-                                    throws MalformedURIException, RemoteException {
+    public NCIASearchServiceImpl(ServerConnectionProfile conn, NBIAVersionEnum nbiaVersion,
+            GlobusCredential proxy) throws MalformedURIException, RemoteException {
         super(conn.getUrl(), proxy);
         serverConnection = conn;
+        this.nbiaVersion = nbiaVersion;
     }
     
     /**
@@ -155,7 +160,7 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
     public List<String> retrieveImageSeriesCollectionIdsFromStudy(String studyInstanceUID) 
     throws ConnectionException {
         CQLQuery fcqlq = retrieveQueryForImageSeries(studyInstanceUID);
-        fcqlq.setQueryModifier(retrieveQueryModifierForProperty("seriesInstanceUID"));
+        fcqlq.setQueryModifier(retrieveQueryModifierForProperty(nbiaVersion.getSeriesIdAtt()));
         CQLQueryResults result = connectAndExecuteQuery(fcqlq);
         return iterateAndRetrieveResults(result, String.class);
     }
@@ -189,7 +194,7 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
     }
 
     private CQLQuery retrieveQueryForImages(String seriesInstanceUID) {
-        Attribute att = retrieveAttribute("seriesInstanceUID", Predicate.EQUAL_TO, seriesInstanceUID);
+        Attribute att = retrieveAttribute(nbiaVersion.getSeriesIdAtt(), Predicate.EQUAL_TO, seriesInstanceUID);
         Association assoc = retrieveAssociation("gov.nih.nci.ncia.domain.Series", "series", att);
         return retrieveQuery("gov.nih.nci.ncia.domain.Image", assoc);
     }
@@ -226,7 +231,7 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
         CQLQuery query = new CQLQuery();
         Object target = new Object();
         target.setName("gov.nih.nci.ncia.domain.Series");
-        Attribute symbolAttribute = new Attribute("seriesInstanceUID", Predicate.EQUAL_TO, seriesInstanceUID);
+        Attribute symbolAttribute = new Attribute(nbiaVersion.getSeriesIdAtt(), Predicate.EQUAL_TO, seriesInstanceUID);
         target.setAttribute(symbolAttribute);
         query.setTarget(target);
         CQLQueryResults result = connectAndExecuteQuery(query);

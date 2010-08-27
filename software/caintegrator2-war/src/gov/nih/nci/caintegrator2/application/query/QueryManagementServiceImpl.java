@@ -123,6 +123,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -170,6 +171,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
             Query queryToExecute = query.clone();
             addGenesNotFoundToQuery(query);
+            addSubjectsNotFoundToQuery(query);
             query.setHasMaskedValues(queryToExecute.getCompoundCriterion().isHasMaskedCriteria());
             if (query.isHasMaskedValues()) {
                 maskCompoundCriterion(queryToExecute.getCompoundCriterion());
@@ -201,11 +203,11 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         } else {
             Set<String> allPlatformNames = query.getCompoundCriterion().getAllPlatformNames(genomicCriterionType);
             if (allPlatformNames.size() != 1) {
-               throw new InvalidCriterionException("A genomic query must contain exactly 1 platform of type " 
+               throw new InvalidCriterionException("A " + genomicCriterionType.getValue()
+                       + " query must contain exactly 1 platform of type " 
                        + genomicCriterionType.getValue() + ".  This one contains " 
                        + allPlatformNames.size() + " platforms.  " 
-                       + "Create a query with a 'Gene Name' criterion, and within that 'Gene Name' "
-                       + "criterion, select a platform.");
+                       + "Create a query and within the criterion, select a platform.");
             }
             return getDao().getPlatform(allPlatformNames.iterator().next());
         }
@@ -251,6 +253,34 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
                                 .getAnnotationMasks(), abstractCriterion);
             }
         return abstractCriterion;
+    }
+    
+    private void addSubjectsNotFoundToQuery(Query query) throws InvalidCriterionException {
+        query.getSubjectIdsNotFound().clear();
+        query.getSubjectIdsNotFound().addAll(getAllSubjectsNotFoundInCriteria(query));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Set<String> getAllSubjectsNotFoundInCriteria(Query query) throws InvalidCriterionException {
+        Set<String> allSubjectsInCriterion = query.getCompoundCriterion().getAllSubjectIds();
+        Set<String> allSubjectsNotFound = new HashSet<String>(allSubjectsInCriterion);
+        Set<String> allSubjectsInStudy = new HashSet<String>();
+        if (!allSubjectsInCriterion.isEmpty()) {
+            for (StudySubjectAssignment assignment : query.getSubscription().getStudy().getAssignmentCollection()) {
+                allSubjectsInStudy.add(assignment.getIdentifier());
+            }
+            allSubjectsNotFound.removeAll(allSubjectsInStudy);
+            if (!allSubjectsNotFound.isEmpty() && allSubjectsNotFound.size() == allSubjectsInCriterion.size()) {
+                String queryNameString = StringUtils.isNotBlank(query.getName()) ? "'" 
+                        + query.getName() + "'  " : "";
+                throw new InvalidCriterionException(
+                        "None of the Subject IDs in the query "
+                        +  queryNameString + "were found in the study.");
+            }
+        }
+        return allSubjectsNotFound;
     }
     
     private void addGenesNotFoundToQuery(Query query) throws InvalidCriterionException {

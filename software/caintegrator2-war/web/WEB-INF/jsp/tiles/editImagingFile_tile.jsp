@@ -68,7 +68,7 @@
                     <s:checkbox name="createNewAnnotationDefinition" id="createNewAnnotationDefinition"
                         label="Create a new Annotation Definition if one is not found" labelposition="left" />
                     <s:select name="aimServerProfile.url" id="aimUrl" accesskey="false"
-                        headerKey="" headerValue="--Enter an NBIA Server Grid URL--"
+                        headerKey="" headerValue="--Enter an AIM Server Grid URL--"
                         list="aimServices" label=" AIM Server Grid URL " required="true" disabled="%{aimDisable}"
                         cssClass="editable-select" />
                     <s:textfield label=" AIM Username " name="aimServerProfile.username"

@@ -467,7 +467,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
     
     private boolean allImageSourcesLoaded() {
         for (ImageDataSourceConfiguration imageSource : imageDataSources) {
-            if (!Status.LOADED.equals(imageSource.getStatus())) {
+            if (!imageSource.getStatus().isLoadable()) {
                 return false;
             }
         }
@@ -476,7 +476,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
 
     private boolean genomicSourcesDeployed() {
         for (GenomicDataSourceConfiguration genomicSource : genomicDataSources) {
-            if (!Status.LOADED.equals(genomicSource.getStatus())) {
+            if (!genomicSource.getStatus().isLoadable()) {
                 return false;
             }
         }

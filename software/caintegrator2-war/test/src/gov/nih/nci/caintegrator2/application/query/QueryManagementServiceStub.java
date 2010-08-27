@@ -223,5 +223,10 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public Set<String> retrieveCopyNumberPlatformsForStudy(Study study) {
         return new HashSet<String>();
     }
+
+
+    public Set<String> getAllSubjectsNotFoundInCriteria(Query query) throws InvalidCriterionException {
+        return new HashSet<String>();
+    }
     
 }

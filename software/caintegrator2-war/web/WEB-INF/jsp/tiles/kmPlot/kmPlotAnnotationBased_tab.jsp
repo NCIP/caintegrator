@@ -28,7 +28,7 @@
                               listKey="name"
                               headerKey="invalidSelection"
                               headerValue="Select Annotation Group"
-                              onchange="document.kaplanMeierAnnotationInputForm.action = 'kmPlotUpdateAnnotationDefinitions.action';document.kaplanMeierAnnotationInputForm.submit();"
+                              onchange="showBusyDialog();document.kaplanMeierAnnotationInputForm.action = 'kmPlotUpdateAnnotationDefinitions.action';document.kaplanMeierAnnotationInputForm.submit();"
                               theme="simple"/>
                 </td>
                 <td class="value_inline">
@@ -37,7 +37,7 @@
                               listValue="value.definition.displayName"
                               headerKey="-1"
                               headerValue="Select Annotation"
-                              onchange="document.kaplanMeierAnnotationInputForm.action = 'kmPlotUpdatePermissibleValues.action';document.kaplanMeierAnnotationInputForm.permissibleValuesNeedUpdate.value = 'true';document.kaplanMeierAnnotationInputForm.submit();"
+                              onchange="showBusyDialog();document.kaplanMeierAnnotationInputForm.action = 'kmPlotUpdatePermissibleValues.action';document.kaplanMeierAnnotationInputForm.permissibleValuesNeedUpdate.value = 'true';document.kaplanMeierAnnotationInputForm.submit();"
                               theme="simple"/>
                 </td>
                 <td>

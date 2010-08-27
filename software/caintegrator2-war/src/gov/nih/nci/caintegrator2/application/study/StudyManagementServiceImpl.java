@@ -174,7 +174,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             getWorkspaceService().subscribe(
                     getWorkspaceService().getWorkspace(), studyConfiguration.getStudy(), false);
         }
-        persist(studyConfiguration);
+        daoSave(studyConfiguration);
     }
     
     /**
@@ -321,7 +321,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
 
     private void populatePermissibleValues(Study study, EntityTypeEnum entityType,
             AnnotationFieldDescriptor descriptor) throws ValidationException {
-        if (descriptor.isUsePermissibleValues()
+        if (descriptor.isUsePermissibleValues() && AnnotationFieldType.ANNOTATION.equals(descriptor.getType())
                 && descriptor.getDefinition().getPermissibleValueCollection().isEmpty()) {
             Set<Object> uniqueValues = validateAndRetrieveUniqueValues(study, entityType, 
                     descriptor, descriptor.getDefinition());
@@ -496,30 +496,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         save(studyConfiguration);
     }
     
-    private void persist(StudyConfiguration studyConfiguration) {
-        for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
-            saveSubjectAnnotations(assignment.getSubjectAnnotationCollection());
-            saveSampleAcquisitions(assignment.getSampleAcquisitionCollection());
-            daoSave(assignment.getSubject());
-            daoSave(assignment);
-        }
-        daoSave(studyConfiguration);
-    }
-
-    private void saveSampleAcquisitions(Collection<SampleAcquisition> sampleAcquisitionCollection) {
-        for (SampleAcquisition sampleAcquisition : sampleAcquisitionCollection) {
-            daoSave(sampleAcquisition.getSample());
-            daoSave(sampleAcquisition);
-        }
-    }
-
-    private void saveSubjectAnnotations(Collection<SubjectAnnotation> subjectAnnotations) {
-        for (SubjectAnnotation annotation : subjectAnnotations) {
-            daoSave(annotation.getAnnotationValue());
-            daoSave(annotation);
-        }
-    }
-    
     /**
      * {@inheritDoc}
      * @throws ValidationException 
@@ -530,8 +506,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             GenomicDataSourceConfiguration genomicSource)
         throws ValidationException, IOException {
         new SampleMappingHelper(studyConfiguration, mappingFile, genomicSource).mapSamples();
-        genomicSource.setStatus(genomicSource.getMappedSamples().isEmpty()
-                ? Status.NOT_MAPPED : Status.LOADED);
+        if (!Status.LOADED.equals(genomicSource.getStatus())) {
+            genomicSource.setStatus(genomicSource.getMappedSamples().isEmpty()
+                ? Status.NOT_MAPPED : Status.READY_FOR_LOAD);
+        }
         save(studyConfiguration);
     }
 
@@ -918,6 +896,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                     AbstractAnnotationValue annotationValue = 
                         AnnotationUtil.createAnnotationValue(annotationDescriptor, value);
                     daoSave(annotationDescriptor.getAnnotationGroup());
+                    daoSave(annotationDescriptor);
                     annotationValue.setImageSeries(imageSeries);
                     imageSeries.getAnnotationCollection().add(annotationValue);
                     daoSave(imageSeries);
@@ -1187,7 +1166,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             source.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
         }
         source.getDnaAnalysisDataConfiguration().setMappingFilePath(savedFile.getAbsolutePath());
-        source.setStatus(Status.LOADED);
+        source.setStatus(Status.READY_FOR_LOAD);
         daoSave(source);
     }
 

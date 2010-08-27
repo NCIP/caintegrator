@@ -11,13 +11,25 @@
 </div>
 
 <!--/Page Help-->
-    
+
 <script type="text/javascript">
     
     function setSelectedAction(selectAction) {
-        document.manageGeneList.selectedAction.value = selectAction;
+        document.manageList.selectedAction.value = selectAction;
         return true;
     }
+    
+    function checkListType(type) {
+        if (type == "Gene List") {
+            document.getElementById("geneDiv").style.display = "block";
+            document.getElementById("subjectDiv").style.display = "none";
+        }
+        else {
+            document.getElementById("geneDiv").style.display = "none";
+            document.getElementById("subjectDiv").style.display = "block";
+        }
+    }
+    
 </script>
 
     <h1><s:property value="#subTitleText" /></h1>
@@ -26,27 +38,27 @@
     <font color="red"><strong>Must be registered to use this feature.</strong></font>
     </s:if>
     <s:else>
-    <p>Click <strong>Create Gene List</strong> to create a new Gene List.</p>
+    <p>Click <strong>Create List</strong> to create a new List.</p>
     <div class="form_wrapper_outer">
  
         <table class="form_wrapper_table">
             <tr>
-                <th class="title" style="height: 2.5em;">Create a New Gene List</th>
+                <th class="title" style="height: 2.5em;">Create a New List</th>
                 <th class="alignright">&nbsp;</th>
             </tr>
             <tr>
                 <td colspan="2" style="padding: 5px;">    
 
                     <s:actionerror/>
-                    <s:form id="manageGeneList" name="manageGeneList" method="post" enctype="multipart/form-data" theme="simple">
+                    <s:form id="manageList" name="manageList" method="post" enctype="multipart/form-data" theme="simple">
                         <s:hidden name="selectedAction" />
                         <table>
                             <tr>
-                                <td><s:textfield id="geneListName" name="geneListName" label="Gene List Name"
+                                <td><s:textfield id="listName" name="listName" label="List Name"
                                     theme="css_xhtml" required="true"/></td>
                             </tr>
                             <tr>
-                                <td><s:textarea label="Gene List Description" name="description"
+                                <td><s:textarea label="List Description" name="description"
                                     cols="40" rows="4" cssStyle="width: 280px;" theme="css_xhtml" /></td>
                             </tr>
                             <s:if test="%{studyManager}">
@@ -61,20 +73,36 @@
                             </s:if>
                             <tr>
                                 <td>
-                                    <div class="wwgrp">
-                                        <div class="wwlbl"><label class="label">Gene Symbols</label></div>
+                                    <div class="wwlbl"><label class="label">List Type</label></div>
                                         <div class="wwctrl">
-                                            <s:component template="genetextfield.ftl" theme="cai2simple">
-                                                <s:param name="createTextField" value="true" />
-                                                <s:param name="textFieldId" value="%{'geneSymbolsId'}"/>
-                                                <s:param name="textFieldName" value="%{'geneSymbols'}"/>
-                                            </s:component>
+                                            <s:radio id="listType" name="listType"
+                                                list="@gov.nih.nci.caintegrator2.web.action.abstractlist.ListTypeEnum@getValueToTypeMap()"
+                                                listKey="key" listValue="value" onclick="checkListType(this.value);"/>
                                         </div>
-                                    </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td><s:file id="geneListFile" name="geneListFile" label="Upload File"
+                                <td>
+                                    <s:div id="geneDiv" cssStyle="display: block;">
+                                        <div class="wwgrp">
+                                            <div class="wwlbl"><label class="label">Gene Symbols</label></div>
+                                            <div class="wwctrl">
+                                                <s:component template="genetextfield.ftl" theme="cai2simple">
+                                                    <s:param name="createTextField" value="true" />
+                                                    <s:param name="textFieldId" value="%{'geneSymbolsId'}"/>
+                                                    <s:param name="textFieldName" value="%{'geneInputElements'}"/>
+                                                </s:component>
+                                            </div>
+                                        </div>
+                                    </s:div>
+                                    <s:div id="subjectDiv" cssStyle="display: none;">
+                                        <s:textfield id="subjectInputElements" name="subjectInputElements" label="Subject Ids"
+                                            theme="css_xhtml" required="true"/>
+                                    </s:div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><s:file id="listFile" name="listFile" label="Upload File"
                                         theme="css_xhtml" />
                                     <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="%{csvlFileDisplay}">
                                         <span class="wwlbl">(csv file format)</span>
@@ -87,9 +115,9 @@
                                     <div class="wwgrp">
                                         <div class="wwlbl"><label class="label">&nbsp</label></div>
                                         <div class="wwctrl">
-                                            <s:submit value="Create Gene List" align="center" action="manageGeneList"
-                                            onclick="return setSelectedAction('createGeneList');" theme="simple" />
-                                            <s:submit value="Cancel" align="center" action="manageGeneList"
+                                            <s:submit value="Create List" align="center" action="manageList"
+                                            onclick="return setSelectedAction('createList');" theme="simple" />
+                                            <s:submit value="Cancel" align="center" action="manageList"
                                             onclick="return setSelectedAction('cancel');" theme="simple" />
                                             </div>
                                     </div>
@@ -103,6 +131,9 @@
         </table>   
     </div>
     </s:else>
+    <script type="text/javascript">
+        checkListType('<s:property value="listType"/>');
+    </script>
 </div>
 
 <div class="clear"><br />

@@ -46,9 +46,9 @@ public class SubjectListCriterion extends AbstractCriterion implements Cloneable
     }
     
     /**
-     * Retrieves the list of subject identifiers for this criterion.
-     * @return subject identifiers in this criterion.
+     * {@inheritDoc}
      */
+    @Override
     public Set<String> getSubjectIdentifiers() {
         Set<String> identifiers = new HashSet<String>();
         for (SubjectList subjectList : getSubjectListCollection()) {

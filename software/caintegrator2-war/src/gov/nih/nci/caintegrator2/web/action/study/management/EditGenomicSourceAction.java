@@ -119,22 +119,6 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     private CaArrayFacade caArrayFacade;
     private ConfigurationHelper configurationHelper;
     
-    private boolean mappingData = true;
-
-    /**
-     * @return the mappingData
-     */
-    public boolean isMappingData() {
-        return mappingData;
-    }
-
-    /**
-     * @param mappingData the mappingData to set
-     */
-    public void setMappingData(boolean mappingData) {
-        this.mappingData = mappingData;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -214,19 +198,14 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         if (!validateSave()) {
             return INPUT;
         }
-        if (isMappingData()) {
-            getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
-            if (getGenomicSource().getId() == null) {
-                runAsynchronousGenomicDataRetrieval(getGenomicSource());
-            } else { // Need to create a new source, delete the old one, and load the new one
-                GenomicDataSourceConfiguration newGenomicSource = createNewGenomicSource();
-                delete();
-                runAsynchronousGenomicDataRetrieval(newGenomicSource);
-            }
-        } else {
-            setStudyLastModifiedByCurrentUser(getGenomicSource(), 
-                    LogEntry.getSystemLogSave(getGenomicSource()));
-            getStudyManagementService().save(getStudyConfiguration());
+        
+        getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
+        if (getGenomicSource().getId() == null) {
+            runAsynchronousGenomicDataRetrieval(getGenomicSource());
+        } else { // Need to create a new source, delete the old one, and load the new one
+            GenomicDataSourceConfiguration newGenomicSource = createNewGenomicSource();
+            delete();
+            runAsynchronousGenomicDataRetrieval(newGenomicSource);
         }
         return SUCCESS;
     }

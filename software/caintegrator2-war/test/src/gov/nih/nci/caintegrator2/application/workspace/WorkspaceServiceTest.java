@@ -108,7 +108,6 @@ import gov.nih.nci.caintegrator2.web.DisplayableGenomicSource;
 import gov.nih.nci.caintegrator2.web.DisplayableImageSource;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -295,7 +294,7 @@ public class WorkspaceServiceTest {
         GeneList geneList = new GeneList();
         geneList.setVisibility(Visibility.PRIVATE);
         geneList.setSubscription(studySubscription);
-        List<String> geneSymbols = new ArrayList<String>();
+        Set<String> geneSymbols = new HashSet<String>();
         geneList.setName("Gene List 1");
         geneSymbols.add("egfr");
         geneSymbols.add("brca1");
@@ -352,7 +351,7 @@ public class WorkspaceServiceTest {
         geneList.setVisibility(Visibility.GLOBAL);
         geneList.setStudyConfiguration(studySubscription.getStudy().getStudyConfiguration());
         geneList.setSubscription(studySubscription);
-        geneSymbols = new ArrayList<String>();
+        geneSymbols = new HashSet<String>();
         geneList.setName("Gene List 1");
         geneSymbols.add("egfr");
         geneSymbols.add("brca1");

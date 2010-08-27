@@ -96,6 +96,7 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
     private static final String WORKSPACE_NO_STUDY = "workspaceNoStudy";
     private boolean registrationSuccess = false;
     private boolean invalidAccess = false;
+    private boolean sessionTimeout = false;
     
     /**
      * Opens the current user's workspace.
@@ -134,7 +135,10 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
     private void addErrorMessages() {
         if (invalidAccess) {
             addActionError("You are seeing this page because you are trying to access a restricted area that you "
-                    + "do not have authorization to view (possibly because of a timed out session).");
+                    + "do not have authorization to view.");
+        }
+        if (sessionTimeout) {
+            addActionError("You are seeing this page because your seesion has timed out.");
         }
     }
 
@@ -192,6 +196,20 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
      */
     public void setInvalidAccess(boolean invalidAccess) {
         this.invalidAccess = invalidAccess;
+    }
+
+    /**
+     * @return the sessionTimeout
+     */
+    public boolean isSessionTimeout() {
+        return sessionTimeout;
+    }
+
+    /**
+     * @param sessionTimeout the sessionTimeout to set
+     */
+    public void setSessionTimeout(boolean sessionTimeout) {
+        this.sessionTimeout = sessionTimeout;
     }
 
 }

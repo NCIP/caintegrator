@@ -305,5 +305,16 @@ public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
     private boolean isResetSelected() {
         return getForm().isResetSelected();
     }
+    
+    /**
+     * 
+     * @return list of genesNotFound.
+     */
+    public List<String> getSubjectsNotFound() {
+        if (SessionHelper.getQueryBasedKmPlot() != null) {
+            return SessionHelper.getQueryBasedKmPlot().getConfiguration().getSubjectsNotFound();
+        }
+        return new ArrayList<String>();
+    }
 
 }

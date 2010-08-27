@@ -84,8 +84,9 @@
                     <tr>
                         <td></td>
                         <td><br>
+                            
                             <s:submit type="button" value="Save Segmentation Data Calculation Configuration" 
-                                align="center" theme="simple" onclick="saveDatasource();"/>
+                                align="center" theme="simple" onclick="saveDatasource();" disabled="%{genomicSource.status.value == 'Loaded'}"/>
                             <s:submit type="button" value="Cancel"
                                 onclick="document.dnaAnalysisDataConfigurationForm.action = 'cancelGenomicSource.action';
                                     document.dnaAnalysisDataConfigurationForm.submit();"  theme="simple"/>

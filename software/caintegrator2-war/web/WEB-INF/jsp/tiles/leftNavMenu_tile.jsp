@@ -35,8 +35,8 @@
                     <a href='<s:property value="#newQueryUrl" />'>
                     Search <s:property value="currentStudy.shortTitleText"/></a>
                 </li>
-                <li><s:url id="createGeneListUrl" includeParams="none" action="manageGeneList" />
-                    <a href="${createGeneListUrl}">Create New Gene List</a>
+                <li><s:url id="createListUrl" includeParams="none" action="manageList" />
+                    <a href="${createListUrl}">Create New List</a>
                 </li>
             </ul>
         </li>

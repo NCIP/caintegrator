@@ -86,57 +86,133 @@
 package gov.nih.nci.caintegrator2.web.action.abstractlist;
 
 import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.file.FileManagerStub;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
-
-import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.opensymphony.xwork2.ActionContext;
+public class ManageListActionTest extends AbstractSessionBasedTest {
 
-public class SearchGeneListActionTest extends AbstractSessionBasedTest {
-
-    SearchGeneListAction action = new SearchGeneListAction();
-    StudySubscription subscription = new StudySubscription();
-    WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
+    ManageListAction action = new ManageListAction();
+    WorkspaceServiceStub workspaceServiceStub = new WorkspaceServiceStub();
 
     @Before
     public void setUp() {
         super.setUp();
         SessionHelper.getInstance().getDisplayableUserWorkspace().
-            setCurrentStudySubscription(subscription);
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-        ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
-        workspaceService.setSubscription(subscription);
-        subscription.setStudy(new Study());
-        subscription.getStudy().setStudyConfiguration(new StudyConfiguration());
-        action.setWorkspaceService(workspaceService);
+            setCurrentStudySubscription(new StudySubscription());
+        action.setWorkspaceService(workspaceServiceStub);     
+        action.setFileManager(new FileManagerStub());
     }
     
     @Test
     public void testAll() {
-        // Test Execute
-        assertEquals(ManageGeneListAction.SUCCESS, action.execute());
-        assertEquals(null, action.getGeneListName());
+        action.setVisibleToOther(false);
+        // Test Validate
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.setSelectedAction("createList");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.setListName("Test");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        assertTrue(action.hasActionErrors());
+        action.setGeneInputElements("egfr");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        assertFalse(action.hasActionErrors());
+        assertEquals(1, action.getElementList().size());
+        action.setGeneInputElements("egfr cox412");
+        action.validate();
+        assertEquals(1, action.getElementList().size());
+        action.setGeneInputElements("egfr,cox412");
+        action.validate();
+        assertEquals(2, action.getElementList().size());
+        action.setGeneInputElements(null);
+        action.setListFile(TestArrayDesignFiles.EMPTY_FILE);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.setListFile(TestDataFiles.GENE_LIST_SAMPLES_FILE);
+        action.validate();
+        assertEquals(4, action.getElementList().size());
+        action.setGeneInputElements("egfr,cox412");
+        action.validate();
+        assertEquals(4, action.getElementList().size());
+        action.setGeneInputElements("brac,emd");
+        action.validate();
+        assertEquals(6, action.getElementList().size());
         
-        GeneList geneList = new GeneList();
-        geneList.setName("List1");
-        subscription.getListCollection().add(geneList);
-        assertEquals(ManageGeneListAction.SUCCESS, action.execute());
-        assertEquals("List1", action.getGeneListName());
-        assertEquals(0, action.getGenes().size());
+        // Test execute
+        action.setDescription("Test description");
+        action.setSelectedAction("createList");
+        action.setListType(ListTypeEnum.GENE.getValue());
+        assertEquals("editGenePage", action.execute());
+        assertTrue(workspaceServiceStub.createGeneListCalled);
+        // Subject List
+        action.setListType(ListTypeEnum.SUBJECT.getValue());
+        assertEquals("editSubjectPage", action.execute());
+        assertTrue(workspaceServiceStub.createSubjectListCalled);
         
-        geneList.getGeneCollection().add(new Gene());
-        assertEquals(ManageGeneListAction.SUCCESS, action.execute());
-        assertEquals("List1", action.getGeneListName());
-        assertEquals(1, action.getGenes().size());
+        action.setSelectedAction("cancel");
+        assertEquals("homePage", action.execute());
+    }
+    
+    @Test
+    public void testAllGlobal() {
+        action.setVisibleToOther(true);
+        // Test Validate
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.setSelectedAction("createList");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.setListName("Test");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        assertTrue(action.hasActionErrors());
+        action.setGeneInputElements("egfr");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        assertFalse(action.hasActionErrors());
+        assertEquals(1, action.getElementList().size());
+        action.setGeneInputElements("egfr cox412");
+        action.validate();
+        assertEquals(1, action.getElementList().size());
+        action.setGeneInputElements("egfr,cox412");
+        action.validate();
+        assertEquals(2, action.getElementList().size());
+        action.setGeneInputElements(null);
+        action.setListFile(TestArrayDesignFiles.EMPTY_FILE);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.setListFile(TestDataFiles.GENE_LIST_SAMPLES_FILE);
+        action.validate();
+        assertEquals(4, action.getElementList().size());
+        action.setGeneInputElements("egfr,cox412");
+        action.validate();
+        assertEquals(4, action.getElementList().size());
+        action.setGeneInputElements("espn,emd");
+        action.validate();
+        assertEquals(6, action.getElementList().size());
+        
+        // Test execute
+        action.setDescription("Test description");
+        action.setSelectedAction("createList");
+        action.setListType(ListTypeEnum.GENE.getValue());
+        assertEquals("editGlobalGenePage", action.execute());
+        assertTrue(workspaceServiceStub.createGeneListCalled);
+        // Subject List
+        action.setListType(ListTypeEnum.SUBJECT.getValue());
+        assertEquals("editGlobalSubjectPage", action.execute());
+        assertTrue(workspaceServiceStub.createSubjectListCalled);
     }
 }

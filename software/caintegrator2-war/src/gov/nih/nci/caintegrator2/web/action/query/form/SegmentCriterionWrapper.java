@@ -106,7 +106,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
      */
     public static final String FIELD_NAME = "Segmentation";
     
-    private static final int MIN_NUMBER_PARAMETERS = 2;
+    private int minNumberParameters = 2;
 
     private final CopyNumberAlterationCriterion criterion;
 
@@ -117,6 +117,10 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
     SegmentCriterionWrapper(CopyNumberAlterationCriterion criterion, AbstractCriterionRow row) {
         super(row);
         this.criterion = criterion;
+        if (isStudyHasMultipleCopyNumberPlatforms()) {
+            getParameters().add(createPlatformNameParameter(getCopyNumberPlatformNames()));
+            minNumberParameters = 3;
+        }
         getParameters().add(createUpperLimitParameter());
         getParameters().add(createLowerLimitParameter());
         getParameters().add(createIntervalTypeParameter());
@@ -227,8 +231,6 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
     private SelectListParameter<GenomicIntervalTypeEnum> createIntervalTypeParameter() {
         OptionList<GenomicIntervalTypeEnum> options = new OptionList<GenomicIntervalTypeEnum>();
         options.addOption(GenomicIntervalTypeEnum.GENE_NAME.getValue(), GenomicIntervalTypeEnum.GENE_NAME);
-        options.addOption(GenomicIntervalTypeEnum.CHROMOSOME_NUMBER.getValue(),
-                GenomicIntervalTypeEnum.CHROMOSOME_NUMBER);
         options.addOption(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES.getValue(),
                 GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES);
         ValueSelectedHandler<GenomicIntervalTypeEnum> handler = new ValueSelectedHandler<GenomicIntervalTypeEnum>() {
@@ -252,7 +254,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
 
     private void removeExistingIntervalParameters() {
         int paramLastIndex = getParameters().size() - 1;
-        for (int i = paramLastIndex; i > MIN_NUMBER_PARAMETERS; i--) {
+        for (int i = paramLastIndex; i > minNumberParameters; i--) {
             getParameters().remove(i);
         }
     }
@@ -261,9 +263,6 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
         switch (criterion.getGenomicIntervalType()) {
         case GENE_NAME:
             getParameters().add(createGeneSymbolParameter());
-            break;
-        case CHROMOSOME_NUMBER:
-            getParameters().add(createChromosomeNumberParameter());
             break;
         case CHROMOSOME_COORDINATES:
             getParameters().add(createChromosomeNumberParameter());
@@ -299,7 +298,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
                 if (StringUtils.isBlank(value)) {
                     criterion.setChromosomeCoordinateHigh(null);
                 } else {
-                    criterion.setChromosomeCoordinateHigh(Float.valueOf(value));
+                    criterion.setChromosomeCoordinateHigh(Integer.valueOf(value));
                 }
             }
         };
@@ -331,7 +330,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
                 if (StringUtils.isBlank(value)) {
                     criterion.setChromosomeCoordinateLow(null);
                 } else {
-                    criterion.setChromosomeCoordinateLow(Float.valueOf(value));
+                    criterion.setChromosomeCoordinateLow(Integer.valueOf(value));
                 }
             }
         };
@@ -345,22 +344,22 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
     private AbstractCriterionParameter createChromosomeNumberParameter() {
         final String label = "Chomosome Number";
         TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
-                getRow().getRowIndex(), criterion.getChromosomeNumber().toString());
+                getRow().getRowIndex(), criterion.getChromosomeNumber());
         textParameter.setLabel(label);
         ValueHandler valueChangeHandler = new ValueHandlerAdapter() {
 
             public boolean isValid(String value) {
-                return NumberUtils.isNumber(value);
+                return !StringUtils.isBlank(value);
             }
 
             public void validate(String formFieldName, String value, ValidationAware action) {
                 if (!isValid(value)) {
-                    action.addActionError("Numeric value required for " + label);
+                    action.addActionError("Chromosome number value required for " + label);
                 }
             }
 
             public void valueChanged(String value) {
-                criterion.setChromosomeNumber(Integer.valueOf(value));
+                criterion.setChromosomeNumber(value);
             }
         };
         textParameter.setValueHandler(valueChangeHandler);

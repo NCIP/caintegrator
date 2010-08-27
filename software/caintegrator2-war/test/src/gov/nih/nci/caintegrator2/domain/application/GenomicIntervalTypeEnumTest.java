@@ -95,7 +95,7 @@ public class GenomicIntervalTypeEnumTest {
 
     @Test
     public void testGetByValue() {
-        assertEquals(GenomicIntervalTypeEnum.CHROMOSOME_NUMBER, GenomicIntervalTypeEnum.getByValue("Chromosome Number"));
+        assertEquals(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES, GenomicIntervalTypeEnum.getByValue("Chromosome Coordinates"));
         assertNull(GenomicIntervalTypeEnum.getByValue(null));
     }
     
