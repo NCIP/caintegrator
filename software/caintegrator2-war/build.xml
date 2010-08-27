@@ -676,6 +676,7 @@
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.2/upgrade-1.2.15.sql" />
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.2/upgrade-1.2.16.sql" />
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.2/upgrade-1.2.17.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.2/upgrade-1.2.18.sql" />        
     </target>
 
 
@@ -1035,8 +1036,7 @@
 
     <target name="deploy:rembrandt-ncri" depends="test:compile:caintegrator2.war.test.classes,
         caintegrator2.war,
-        hibernate.cfg.xml.test, caintegrator2.csm.xml.test,
-        database:reinitialize">
+        hibernate.cfg.xml.test, caintegrator2.csm.xml.test">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
              <classpath>
                  <pathelement path="${caintegrator2.war.test.dependencies.path}" />
