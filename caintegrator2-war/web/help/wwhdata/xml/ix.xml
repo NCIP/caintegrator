@@ -2,23 +2,58 @@
 <WebWorksHelpIX version="5.0" xmlns="urn:WebWorks-Help-Index-Schema">
   <g t="A" o="002">
     <i t="account, requesting new user">
-      <j l="4#1141099" />
+      <j l="3#1141099" />
     </i>
     <i t="adding">
       <i t="annotation group">
-        <j l="19#1143163" />
+        <j l="18#1143163" />
       </i>
       <i t="genomic data">
         <j l="25#1090798" />
       </i>
+      <i t="image annotations">
+        <j l="31#1150688" />
+      </i>
       <i t="imaging data">
-        <j l="29#1077974" />
+        <j l="30#1081374" />
       </i>
       <i t="new user to user group">
-        <j l="85#1079800" />
+        <j l="94#1079800" />
       </i>
       <i t="subject annotation">
-        <j l="21#1134708" />
+        <j l="20#1150070" />
+      </i>
+    </i>
+    <i t="analysis">
+      <i t="gene expression value plot for annotation queries">
+        <j l="78#1083443" />
+      </i>
+      <i t="gene expression value plot for annotations">
+        <j l="75#1083002" />
+      </i>
+      <i t="gene expression value plot for genomic queries">
+        <j l="77#1083381" />
+      </i>
+      <i t="gene expression value plot for saved list queries">
+        <j l="78#1083443" />
+      </i>
+      <i t="K-M plot">
+        <j l="68#1105761" />
+      </i>
+      <i t="K-M plot for annotations">
+        <j l="69#1089381" />
+      </i>
+      <i t="K-M plot for gene expression">
+        <j l="70#1080255" />
+      </i>
+      <i t="K-M plot for queries">
+        <j l="72#1073748" />
+      </i>
+      <i t="K-M plot for saved lists">
+        <j l="72#1073748" />
+      </i>
+      <i t="understanding gene expression plot">
+        <j l="80#1089063" />
       </i>
     </i>
     <i t="annotation">
@@ -26,16 +61,19 @@
         <j l="22#1081979" />
       </i>
       <i t="configuring field">
-        <j l="91#1073233" />
+        <j l="99#1073233" />
       </i>
       <i t="importing delimited text">
-        <j l="90#1073226" />
+        <j l="98#1073226" />
       </i>
       <i t="K-M plot for">
-        <j l="61#1089381" />
+        <j l="69#1089381" />
       </i>
       <i t="searching for definitions">
         <j l="23#1074853" />
+      </i>
+      <i t="searching for patients/samples">
+        <j l="39#1094074" />
       </i>
     </i>
     <i t="annotation definition">
@@ -48,14 +86,20 @@
     </i>
     <i t="annotation group">
       <i t="adding">
-        <j l="19#1143163" />
+        <j l="18#1143163" />
       </i>
       <i t="editing">
-        <j l="20#1127772" />
+        <j l="19#1149052" />
+      </i>
+    </i>
+    <i t="annotations">
+      <i t="image, editing">
+        <j l="31#1150688" />
       </i>
     </i>
     <i t="Application Support">
-      <j l="12#1136641" />
+      <j l="11#1136641" />
+      <j l="107#1083452" />
     </i>
     <i t="assigning, annotation identifier">
       <j l="22#1081979" />
@@ -64,145 +108,209 @@
   <g t="B" o="002">
     <i t="box and whisker plot">
       <i t="interpretation">
-        <j l="72#1089283" />
+        <j l="80#1089283" />
       </i>
       <i t="uses for">
-        <j l="72#1089283" />
+        <j l="80#1089283" />
       </i>
     </i>
   </g>
   <g t="C" o="002">
-    <i t="caBio search">
-      <j l="87#1126043" />
+    <i t="caBIO search">
+      <j l="81#1136519" />
+    </i>
+    <i t="caBIO, genes search">
+      <j l="42#1094292" />
+      <j l="57#1193032" />
     </i>
     <i t="caIntegrator2">
       <i t="browser-based functions">
-        <j l="6#1122024" />
+        <j l="5#1122024" />
       </i>
       <i t="logging in">
-        <j l="5#1155818" />
+        <j l="4#1164936" />
       </i>
       <i t="logging out">
-        <j l="11#1141079" />
+        <j l="10#1141079" />
       </i>
       <i t="online help">
-        <j l="10#1136529" />
+        <j l="9#1136529" />
       </i>
       <i t="requesting user account">
-        <j l="4#1141099" />
+        <j l="3#1141099" />
       </i>
       <i t="using workspace">
-        <j l="5#1122586" />
+        <j l="4#1122586" />
       </i>
       <i t="viewing existing studies">
-        <j l="7#1151723" />
+        <j l="6#1151723" />
       </i>
       <i t="workspace">
-        <j l="5#1122586" />
+        <j l="4#1122586" />
       </i>
     </i>
+    <i t="CGAP, genes search">
+      <j l="42#1094333" />
+      <j l="57#1193073" />
+      <j l="81#1137395" />
+    </i>
+    <i t="choosing genes">
+      <j l="42#1094287" />
+      <j l="57#1193030" />
+      <j l="81#1136517" />
+    </i>
     <i t="columns, defining display">
-      <j l="39#1089377" />
-      <j l="40#1074619" />
+      <j l="43#1095156" />
+      <j l="45#1074619" />
     </i>
     <i t="Comparative Marker Selection (CMS)">
       <i t="data analysis">
-        <j l="75#1090810" />
+        <j l="84#1090810" />
       </i>
     </i>
     <i t="configuring">
       <i t="annotation fields for import">
-        <j l="91#1073233" />
+        <j l="99#1073233" />
       </i>
       <i t="copy number data">
         <j l="28#1119394" />
       </i>
       <i t="genomic data for import">
-        <j l="93#1073253" />
+        <j l="101#1073253" />
       </i>
       <i t="imaging data for import">
-        <j l="94#1073265" />
+        <j l="105#1073265" />
       </i>
       <i t="sample data for import">
-        <j l="92#1073243" />
+        <j l="100#1073243" />
       </i>
       <i t="subject annotation data for import">
-        <j l="89#1073215" />
+        <j l="97#1073215" />
       </i>
     </i>
     <i t="control samples, uploading">
       <j l="27#1081202" />
     </i>
-    <i t="copy number data, configuring">
-      <j l="28#1119394" />
+    <i t="copy number">
+      <i t="amplified">
+        <j l="59#1193717" />
+      </i>
+      <i t="configuring data">
+        <j l="28#1119394" />
+      </i>
+      <i t="deleted">
+        <j l="59#1193717" />
+      </i>
+      <i t="search results">
+        <j l="55#1194089" />
+      </i>
+      <i t="searching data,">
+        <j l="41#1095835" />
+      </i>
     </i>
     <i t="creating">
       <i t="gene list">
-        <j l="50#1182736" />
+        <j l="56#1182736" />
       </i>
       <i t="K-M plot">
-        <j l="60#1105761" />
+        <j l="68#1105761" />
       </i>
       <i t="new user">
-        <j l="82#1079273" />
+        <j l="91#1079273" />
       </i>
       <i t="protection group">
-        <j l="83#1078147" />
+        <j l="92#1078147" />
       </i>
       <i t="study">
-        <j l="15#1079473" />
-        <j l="16#1074101" />
+        <j l="14#1079473" />
+        <j l="15#1074101" />
       </i>
       <i t="user account">
-        <j l="79#1077886" />
+        <j l="88#1077886" />
       </i>
     </i>
   </g>
   <g t="D" o="002">
+    <i t="data analysis see analysis" />
     <i t="data analysis, overview">
-      <j l="59#1073194" />
+      <j l="67#1073194" />
     </i>
     <i t="data dictionary">
-      <j l="8#1151824" />
+      <j l="7#1151824" />
+    </i>
+    <i t="data import">
+      <i t="configuring annotation fields for">
+        <j l="99#1073233" />
+      </i>
+      <i t="configuring genomic data for">
+        <j l="101#1073253" />
+      </i>
+      <i t="configuring images for">
+        <j l="105#1073265" />
+      </i>
+      <i t="configuring sample data for">
+        <j l="100#1073243" />
+      </i>
+      <i t="configuring subject annotations for">
+        <j l="97#1073215" />
+      </i>
+      <i t="configuring supplemental files for">
+        <j l="102#1078641" />
+      </i>
+      <i t="required delimited text format">
+        <j l="98#1073226" />
+      </i>
     </i>
     <i t="defining survival values">
       <j l="24#1077702" />
     </i>
     <i t="delimited text annotation import">
-      <j l="90#1073226" />
+      <j l="98#1073226" />
     </i>
     <i t="deploying study">
-      <j l="15#1079473" />
+      <j l="14#1079473" />
     </i>
     <i t="DICOM, retrieving images">
-      <j l="54#1168195" />
+      <j l="62#1168195" />
     </i>
   </g>
   <g t="E" o="002">
     <i t="editing">
       <i t="annotation group">
-        <j l="20#1127772" />
+        <j l="19#1149052" />
       </i>
       <i t="gene list">
-        <j l="51#1183107" />
+        <j l="58#1183107" />
+      </i>
+      <i t="GISTIC analysis results">
+        <j l="59#1193786" />
+      </i>
+      <i t="image annotations">
+        <j l="31#1150688" />
       </i>
       <i t="query">
-        <j l="43#1073533" />
+        <j l="48#1073533" />
       </i>
       <i t="study">
-        <j l="32#1085452" />
+        <j l="34#1085452" />
       </i>
+      <i t="subject annotation">
+        <j l="21#1150022" />
+      </i>
+    </i>
+    <i t="editing imaging files">
+      <j l="30#1081374" />
     </i>
     <i t="exporting">
       <i t="data">
-        <j l="57#1164508" />
+        <j l="65#1164508" />
       </i>
       <i t="query results">
-        <j l="44#1073522" />
+        <j l="49#1073522" />
       </i>
     </i>
     <i t="external links, adding for a study">
-      <j l="30#1126393" />
+      <j l="32#1126393" />
     </i>
   </g>
   <g t="F" o="002">
@@ -211,92 +319,119 @@
         <j l="27#1081202" />
       </i>
       <i t="search">
-        <j l="38#1083277" />
+        <j l="40#1083277" />
       </i>
     </i>
     <i t="fold-change criteria, genomic data">
-      <j l="49#1187976" />
+      <j l="54#1187976" />
     </i>
   </g>
   <g t="G" o="002">
+    <i t="gene expression">
+      <i t="searching data">
+        <j l="40" />
+      </i>
+    </i>
     <i t="gene expression plot">
       <i t="description">
-        <j l="59#1079518" />
-        <j l="66#1084199" />
-        <j l="72#1091490" />
+        <j l="67#1079518" />
+        <j l="74#1084199" />
+        <j l="80#1091490" />
       </i>
       <i t="for genomic queries">
-        <j l="69#1083381" />
+        <j l="77#1083381" />
+      </i>
+      <i t="for saved list queries">
+        <j l="78#1083443" />
       </i>
       <i t="for subject annotation queries">
-        <j l="70#1083443" />
+        <j l="78#1083443" />
       </i>
       <i t="interpreting">
-        <j l="72#1089063" />
+        <j l="80#1089063" />
       </i>
       <i t="plot display, box &amp; whisker">
-        <j l="72#1089283" />
+        <j l="80#1089283" />
       </i>
       <i t="plot display, log2 intensity">
-        <j l="72#1089102" />
+        <j l="80#1089102" />
       </i>
       <i t="plot display, mean">
-        <j l="72#1088726" />
+        <j l="80#1088726" />
       </i>
       <i t="plot display, median">
-        <j l="72#1088789" />
+        <j l="80#1088789" />
+      </i>
+      <i t="value plot for annotations">
+        <j l="75#1083002" />
       </i>
     </i>
     <i t="gene expression, K-M plot for">
-      <j l="62#1080255" />
+      <j l="70#1080255" />
     </i>
     <i t="gene list">
       <i t="creating">
-        <j l="50#1182736" />
+        <j l="56#1182736" />
       </i>
       <i t="deletinggene list">
         <i t="viewing">
           <i t="list">
             <i t="deleting gene">
-              <j l="51#1183107" />
+              <j l="58#1183107" />
             </i>
           </i>
         </i>
       </i>
       <i t="editing">
-        <j l="51#1183107" />
+        <j l="58#1183107" />
       </i>
       <i t="global">
-        <j l="50#1188686" />
+        <j l="56#1188686" />
       </i>
       <i t="search">
-        <j l="87#1126078" />
+        <j l="42#1094327" />
+        <j l="57#1193067" />
+        <j l="81#1136554" />
       </i>
       <i t="visibility">
-        <j l="50#1188686" />
+        <j l="56#1188686" />
       </i>
     </i>
     <i t="GenePattern">
       <i t="analyses, description">
-        <j l="73#1073260" />
+        <j l="82#1073260" />
       </i>
       <i t="analyses, in caIntegrator2">
-        <j l="73#1084384" />
+        <j l="82#1084384" />
       </i>
       <i t="analyses, modules">
-        <j l="74#1085979" />
+        <j l="83#1085979" />
       </i>
       <i t="CMS analysis">
-        <j l="75#1090810" />
+        <j l="84#1090810" />
       </i>
       <i t="GISTIC analysis">
-        <j l="77#1120404" />
+        <j l="86#1120404" />
       </i>
       <i t="PCA">
-        <j l="76#1086355" />
+        <j l="85#1086355" />
       </i>
       <i t="plot description">
-        <j l="59#1079547" />
+        <j l="67#1079547" />
+      </i>
+    </i>
+    <i t="genes">
+      <i t="finding">
+        <j l="42#1094287" />
+      </i>
+      <i t="searching caBIO">
+        <j l="42#1094292" />
+      </i>
+      <i t="searching CGAP">
+        <j l="42#1094333" />
+      </i>
+      <i t="searching gene list">
+        <j l="42#1094327" />
       </i>
     </i>
     <i t="genomic data">
@@ -307,105 +442,131 @@
         <j l="25#1090798" />
       </i>
       <i t="configuring for import">
-        <j l="93#1073253" />
+        <j l="101#1073253" />
       </i>
       <i t="fold-change criteria">
-        <j l="49#1187976" />
+        <j l="54#1187976" />
       </i>
       <i t="for study">
-        <j l="14#1126510" />
+        <j l="13#1126510" />
       </i>
       <i t="mapping to subject annotation data">
         <j l="26#1082153" />
       </i>
     </i>
-    <i t="GISTIC-based data analysis">
-      <j l="77#1120404" />
+    <i t="GISTIC">
+      <i t="-based data analysis">
+        <j l="86#1120404" />
+      </i>
+      <i t="editing analysis results">
+        <j l="59#1193786" />
+      </i>
+      <i t="saved genes">
+        <j l="56#1193906" />
+      </i>
     </i>
   </g>
   <g t="H" o="002">
     <i t="hierarchy of objects, NBIA">
-      <j l="56#1168576" />
+      <j l="64#1168576" />
     </i>
   </g>
   <g t="I" o="002">
-    <i t="images, example of retrieving">
-      <j l="55#1169876" />
+    <i t="image">
+      <i t="adding annotations">
+        <j l="31#1150688" />
+      </i>
+    </i>
+    <i t="images">
+      <i t="example of retrieving">
+        <j l="63#1169876" />
+      </i>
+      <i t="searching">
+        <j l="39#1094074" />
+      </i>
     </i>
     <i t="imaging data">
       <i t="adding to study">
-        <j l="29#1077974" />
+        <j l="30#1081374" />
       </i>
       <i t="configuring for import">
-        <j l="94#1073265" />
+        <j l="105#1073265" />
+      </i>
+      <i t="editing NBIA images sources">
+        <j l="30#1081374" />
       </i>
       <i t="for study">
-        <j l="14#1083526" />
+        <j l="13#1083526" />
+      </i>
+      <i t="working with">
+        <j l="29#1151072" />
       </i>
     </i>
     <i t="importing delimited text annotations">
-      <j l="90#1073226" />
+      <j l="98#1073226" />
     </i>
   </g>
   <g t="K" o="002">
     <i t="Kaplan_Meier plot see K-M plot" />
     <i t="K-M plot">
       <i t="creating">
-        <j l="60#1105761" />
+        <j l="68#1105761" />
       </i>
       <i t="description">
-        <j l="59#1079472" />
-        <j l="60#1105761" />
+        <j l="67#1079472" />
+        <j l="68#1105761" />
       </i>
       <i t="for annotations">
-        <j l="61#1089381" />
+        <j l="69#1089381" />
       </i>
       <i t="for gene expression">
-        <j l="62#1080255" />
+        <j l="70#1080255" />
       </i>
       <i t="for queries">
-        <j l="64#1073748" />
+        <j l="72#1073748" />
       </i>
     </i>
   </g>
   <g t="L" o="002">
     <i t="list">
       <i t="creating gene">
-        <j l="50#1182736" />
+        <j l="56#1182736" />
       </i>
       <i t="editing gene">
-        <j l="51#1183107" />
+        <j l="58#1183107" />
       </i>
       <i t="searching gene">
-        <j l="87#1126078" />
+        <j l="42#1094327" />
+        <j l="57#1193067" />
+        <j l="81#1136554" />
       </i>
     </i>
     <i t="log view of study">
-      <j l="7#1157241" />
+      <j l="6#1157241" />
     </i>
     <i t="log, viewing or editing">
-      <j l="17#1134344" />
+      <j l="16#1134344" />
     </i>
     <i t="logout link">
-      <j l="11#1141079" />
+      <j l="10#1141079" />
     </i>
     <i t="log-rank p-Value">
-      <j l="60#1120791" />
+      <j l="68#1120791" />
     </i>
   </g>
   <g t="M" o="002">
     <i t="managing">
       <i t="platforms">
-        <j l="33#1078047" />
+        <j l="35#1078047" />
       </i>
       <i t="queries">
-        <j l="41#1077949" />
+        <j l="46#1077949" />
       </i>
       <i t="study">
-        <j l="32#1085452" />
+        <j l="34#1085452" />
       </i>
       <i t="user accounts">
-        <j l="79#1077886" />
+        <j l="88#1077886" />
       </i>
     </i>
     <i t="mapping genomic to subject annotation data">
@@ -414,229 +575,280 @@
   </g>
   <g t="N" o="002">
     <i t="NBIA">
+      <i t="adding files to caIntegrator">
+        <j l="30#1081374" />
+      </i>
       <i t="forwarding imaging results to">
-        <j l="53#1161874" />
+        <j l="61#1161874" />
       </i>
       <i t="viewing imaging results in">
-        <j l="53#1164465" />
+        <j l="61#1164465" />
       </i>
     </i>
     <i t="NCICB Application Support">
-      <j l="12#1136641" />
+      <j l="11#1136641" />
+      <j l="107#1083452" />
     </i>
   </g>
   <g t="O" o="002">
     <i t="objects in NBIA, hierarchy of">
-      <j l="56#1168576" />
+      <j l="64#1168576" />
     </i>
     <i t="online help, using">
-      <j l="10#1136529" />
+      <j l="9#1136529" />
     </i>
   </g>
   <g t="P" o="002">
     <i t="password, changing">
-      <j l="86#1078390" />
+      <j l="95#1078390" />
     </i>
     <i t="patient, relationship to study, series, images">
-      <j l="56#1168597" />
+      <j l="64#1168597" />
     </i>
     <i t="permissible value, annotation definition">
       <j l="22#1076646" />
     </i>
     <i t="platform, deploying">
-      <j l="33#1125480" />
+      <j l="35#1125480" />
     </i>
     <i t="platforms, managing">
-      <j l="33#1078047" />
+      <j l="35#1078047" />
     </i>
     <i t="plot">
       <i t="gene expression description">
-        <j l="72#1089063" />
+        <j l="80#1089063" />
       </i>
       <i t="gene expression, description">
-        <j l="59#1079518" />
-        <j l="66#1084199" />
+        <j l="67#1079518" />
+        <j l="74#1084199" />
       </i>
       <i t="GenePattern description">
-        <j l="59#1079547" />
+        <j l="67#1079547" />
       </i>
       <i t="K-M description">
-        <j l="59#1079472" />
+        <j l="67#1079472" />
       </i>
     </i>
     <i t="Principal Component Analysis">
       <i t="data analysis">
-        <j l="76#1086355" />
+        <j l="85#1086355" />
       </i>
     </i>
     <i t="protection group">
       <i t="creating">
-        <j l="83#1078147" />
+        <j l="92#1078147" />
       </i>
       <i t="definition">
-        <j l="79#1079023" />
+        <j l="88#1079023" />
       </i>
     </i>
     <i t="p-value, calculation for K-M plots">
-      <j l="60#1120791" />
+      <j l="68#1120791" />
     </i>
   </g>
   <g t="Q" o="002">
     <i t="query">
       <i t="editing">
-        <j l="43#1073533" />
+        <j l="48#1073533" />
       </i>
       <i t="exporting results">
-        <j l="44#1073522" />
+        <j l="49#1073522" />
       </i>
       <i t="K-M plot for">
-        <j l="64#1073748" />
+        <j l="72#1073748" />
       </i>
       <i t="managing">
-        <j l="41#1077949" />
+        <j l="46#1077949" />
+      </i>
+      <i t="results">
+        <j l="43#1095156" />
       </i>
       <i t="saving">
-        <j l="42#1075755" />
+        <j l="47#1075755" />
       </i>
     </i>
     <i t="query  See also searching" />
   </g>
   <g t="R" o="002">
     <i t="registering new user">
-      <j l="4#1141099" />
+      <j l="3#1141099" />
     </i>
     <i t="Results Type tab">
-      <j l="39#1089377" />
+      <j l="43#1095156" />
     </i>
   </g>
   <g t="S" o="002">
     <i t="sample data, configuring for import">
-      <j l="92#1073243" />
+      <j l="100#1073243" />
     </i>
     <i t="saving query">
-      <j l="42#1075755" />
+      <j l="47#1075755" />
     </i>
     <i t="search results">
       <i t="annotation data">
-        <j l="48#1170152" />
+        <j l="53#1170152" />
       </i>
       <i t="browsing">
-        <j l="47#1168460" />
+        <j l="52#1168460" />
+      </i>
+      <i t="copy number data">
+        <j l="55#1194089" />
       </i>
       <i t="exporting data">
-        <j l="57#1164508" />
+        <j l="65#1164508" />
       </i>
       <i t="forwarding imaging results to NBIA">
-        <j l="53#1161874" />
+        <j l="61#1161874" />
       </i>
       <i t="imaging data">
-        <j l="48#1170152" />
-        <j l="52#1190605" />
+        <j l="53#1170152" />
+        <j l="60#1190605" />
       </i>
       <i t="overview">
-        <j l="46#1163460" />
+        <j l="51#1163460" />
       </i>
       <i t="retrieving DICOM images">
-        <j l="54#1168195" />
+        <j l="62#1168195" />
       </i>
-      <i t="specifying genomic data">
-        <j l="49#1159226" />
+      <i t="specifying gene expression data">
+        <j l="54#1197029" />
       </i>
       <i t="viewing imaging data in NBIA">
-        <j l="53#1164465" />
+        <j l="61#1164465" />
       </i>
     </i>
     <i t="searching">
       <i t="annotation definitions">
         <j l="23#1074853" />
       </i>
+      <i t="annotations">
+        <j l="39#1094074" />
+      </i>
       <i t="caBIO">
-        <j l="87#1126043" />
+        <j l="42#1094292" />
+        <j l="57#1193032" />
+        <j l="81#1136519" />
+      </i>
+      <i t="CGAP">
+        <j l="42#1094333" />
+        <j l="57#1193073" />
+        <j l="81#1137395" />
+      </i>
+      <i t="copy number data">
+        <j l="41#1095835" />
       </i>
       <i t="fold change">
-        <j l="38#1083277" />
+        <j l="40#1083277" />
+      </i>
+      <i t="for genes">
+        <j l="42#1094287" />
+      </i>
+      <i t="gene expression data">
+        <j l="40" />
       </i>
       <i t="gene list">
-        <j l="87#1126078" />
+        <j l="42#1094327" />
+        <j l="57#1193067" />
+        <j l="81#1136554" />
+      </i>
+      <i t="images">
+        <j l="39#1094074" />
       </i>
       <i t="overview">
-        <j l="35#1077420" />
+        <j l="37#1077420" />
       </i>
       <i t="Results Type tab">
-        <j l="39#1089377" />
+        <j l="43#1095156" />
       </i>
       <i t="study">
-        <j l="36#1073200" />
+        <j l="38#1073200" />
       </i>
     </i>
+    <i t="sorting copy number results">
+      <j l="45#1074619" />
+    </i>
     <i t="Sorting tab">
-      <j l="40#1074619" />
+      <j l="45#1074619" />
     </i>
     <i t="study">
       <i t="adding genomic data">
         <j l="25#1090798" />
       </i>
       <i t="adding imaging data">
-        <j l="29#1077974" />
+        <j l="30#1081374" />
       </i>
       <i t="adding subject annotations">
-        <j l="21#1134708" />
+        <j l="20#1150070" />
       </i>
       <i t="configuring copy number data">
         <j l="28#1119394" />
       </i>
       <i t="creating">
-        <j l="14#1077143" />
-        <j l="15#1079473" />
-        <j l="16#1074101" />
+        <j l="13#1077143" />
+        <j l="14#1079473" />
+        <j l="15#1074101" />
       </i>
       <i t="deploying">
-        <j l="31#1081471" />
+        <j l="33#1081471" />
       </i>
       <i t="editing">
-        <j l="32#1085452" />
+        <j l="34#1085452" />
+      </i>
+      <i t="editing subject annotations">
+        <j l="21#1150022" />
       </i>
       <i t="genomic data, description">
-        <j l="14#1126510" />
+        <j l="13#1126510" />
       </i>
       <i t="imaging data, description">
-        <j l="14#1083526" />
+        <j l="13#1083526" />
       </i>
       <i t="log view">
-        <j l="7#1157241" />
+        <j l="6#1157241" />
       </i>
       <i t="managing">
-        <j l="32#1085452" />
+        <j l="34#1085452" />
       </i>
       <i t="mapping genomic data to subject annotation">
         <j l="26#1082153" />
       </i>
       <i t="relationship patient, study, series, images">
-        <j l="56#1168597" />
+        <j l="64#1168597" />
       </i>
       <i t="searching">
-        <j l="36#1073200" />
+        <j l="38#1073200" />
       </i>
       <i t="subject annotation description">
-        <j l="14#1083468" />
+        <j l="13#1083468" />
       </i>
       <i t="uploading control samples to">
         <j l="27#1081202" />
       </i>
       <i t="viewing an existing">
-        <j l="7#1151723" />
+        <j l="6#1151723" />
+      </i>
+      <i t="working with imaging data">
+        <j l="29#1151072" />
       </i>
     </i>
     <i t="subject annotation">
       <i t="adding data">
-        <j l="21#1134708" />
+        <j l="20#1150070" />
+      </i>
+      <i t="configuring data for import">
+        <j l="97#1073215" />
       </i>
       <i t="data for">
-        <j l="14#1083468" />
+        <j l="13#1083468" />
+      </i>
+      <i t="editing">
+        <j l="21#1150022" />
       </i>
     </i>
-    <i t="subject annotation data, configuring for import">
-      <j l="89#1073215" />
+    <i t="supplemental files">
+      <i t="configuring for import">
+        <j l="102#1078641" />
+      </i>
     </i>
     <i t="survival values, defining">
       <j l="24#1077702" />
@@ -645,56 +857,56 @@
   <g t="U" o="002">
     <i t="UPT">
       <i t="adding new user to user group">
-        <j l="85#1079800" />
+        <j l="94#1079800" />
       </i>
       <i t="assigning user group to protection group">
-        <j l="84#1077621" />
+        <j l="93#1077621" />
       </i>
       <i t="creating new user">
-        <j l="81#1077521" />
+        <j l="90#1077521" />
       </i>
       <i t="creating protection group">
-        <j l="83#1078147" />
+        <j l="92#1078147" />
       </i>
       <i t="creating user group">
-        <j l="82#1079273" />
+        <j l="91#1079273" />
       </i>
       <i t="description">
-        <j l="79#1077504" />
+        <j l="88#1077504" />
       </i>
       <i t="summary of steps">
-        <j l="80#1077940" />
+        <j l="89#1077940" />
       </i>
     </i>
     <i t="user">
       <i t="adding to user group">
-        <j l="85#1079800" />
+        <j l="94#1079800" />
       </i>
       <i t="changing password">
-        <j l="86#1078390" />
+        <j l="95#1078390" />
       </i>
       <i t="creating new">
-        <j l="81#1077521" />
+        <j l="90#1077521" />
       </i>
       <i t="creating user access, summary">
-        <j l="80#1077940" />
+        <j l="89#1077940" />
       </i>
       <i t="definition">
-        <j l="79#1077506" />
+        <j l="88#1077506" />
       </i>
     </i>
     <i t="user account, new">
-      <j l="79#1077886" />
+      <j l="88#1077886" />
     </i>
     <i t="user group">
       <i t="assigning to protection group">
-        <j l="84#1077621" />
+        <j l="93#1077621" />
       </i>
       <i t="creating">
-        <j l="82#1079273" />
+        <j l="91#1079273" />
       </i>
       <i t="definition">
-        <j l="79#1077507" />
+        <j l="88#1077507" />
       </i>
     </i>
   </g>
