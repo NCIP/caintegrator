@@ -26,7 +26,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
     private String name;
     private ReporterTypeEnum reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET;
     private ResultTypeEnum resultType = ResultTypeEnum.CLINICAL;
-    private ResultsOrientationEnum orientation = ResultsOrientationEnum.SUBJECTS_AS_COLUMNS;
+    private ResultsOrientationEnum orientation = ResultsOrientationEnum.SUBJECTS_AS_ROWS;
     private String visibility;
     private Date lastModifiedDate;
     private StudySubscription subscription;

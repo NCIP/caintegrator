@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultsOrientationEnum;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -138,6 +139,7 @@ public final class DisplayableCopyNumberQueryResult {
                 }
             }
         }
+        Collections.sort(sampleRows);
     }
     
     private void loadGeneBasedRow() {
