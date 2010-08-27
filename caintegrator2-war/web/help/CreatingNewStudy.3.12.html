@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Adding/Editing Genomic Data</title>
+    <title>Searching for Annotation Definitions</title>
     <link rel="StyleSheet" href="css/CreatingNewStudy.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,176 +28,194 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1076975">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.5.html#1076975">Working with Annotations – An Overview</a> &gt; Adding/Editing Genomic Data</div>
+      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1082197">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.6.html#1082197">Working with Annotations – An Overview</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.10.html#1082197"> Define Fields Page for Editing Annotations</a> &gt; Searching for Annotation Definitions</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading2"><a name="1076975">Adding/Editing Genomic Data</a></div>
-      <div class="Note_Main_Body_outer" style="margin-left: 13px;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1090800">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Note_Main_Body_inner" style="width: 15px; white-space: nowrap;">
-                <span style="left: -20px; position: relative; top: 15px;">
-                  <img src="note_NCI.gif" alt="*" id="bullet1090800" border="0" width="30" height="30" />
-                </span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Note_Main_Body_inner"><a name="1090800">Genomic data must be parsed and stored in caArray to be able to use it in </a>caIntegrator2.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text"><a name="1090798">Once you have loaded </a>subject annotation data and identified patient IDs, you can add either array genomic sample data from caArray, which caIntegrator2 maps by sample IDs to the patient IDs in the subject annotation data, covered in this section, or you can load imaging files from NBIA, also mapped by IDs to the patient data, covered in <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.16.html#1075831', '');">Adding Imaging Data</a></span>. You can also edit genomic data information that you have already added to the study. Genomic sample data and imaging data are independent of each other, so neither is required before loading the other.</div>
-      <div class="Body_Text"><a name="1081008">It is essential that you are well acquainted with the data you are working with--the </a>subject annotation data, and the corresponding array data in caArray.</div>
-      <div class="Body_Text"><a name="1080137">caIntegrator2 supports a limited number of array platforms. For more information, see </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.20.html#1078043', '');">Managing Platforms</a></span>.</div>
-      <div class="Body_Text"><a name="1077960">To add genomic data to your caIntegrator2 study, follow these steps:</a></div>
+      <div class="Heading3"><a name="1082197">Searching for Annotation Definitions</a></div>
+      <div class="Body_Text"><a name="1074853">An alternative to creating a new definition is to search for annotation definitions already </a>present in caIntegrator studies or in caDSR. </div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1074448">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1092124">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1074448">On the Edit Study page where you have selected and added the </a>subject annotation data, click the <span style="font-weight: bold;">Add</span> button under Genomic Data Sources. You can upload genomic data only from caArray.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text_Indent_2"><a name="1075918">This opens the Edit Genomic Data Source dialog box ( Enter the appropriate </a>information in the fields. </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;vertical-align: baseline;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1091140">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner" style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;"><a name="1091140">caArray Web URL: </a><span style="font-weight: normal;">Enter the URL for the caArray to be used for the </span><span style="font-weight: normal;">genomic data sources. This will enable a user to link to the referenced </span><span style="font-weight: normal;">caArray experiment from the study summary page. </span></div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1131932">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1131932">caArray Host Name</a></span> – Enter the hostname for your local installation or for the CBIIT installation of caArray, <span class="HTTP">array.nci.nih.gov.</span> If you misspell it, you will receive an error message.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1077831">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1077831">caArray JNDI Port</a></span> – Enter the appropriate server port. See your administrator for more information. <span style="font-style: italic;">Example</span>: For the CBIIT installation of caArray, enter <span style="font-style: italic; font-weight: bold;">8080</span>.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1077838">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1077838">caArray Username</a></span> and <span style="font-weight: bold;">caArray</span> <span style="font-weight: bold;">Password</span> – If the data is private, you must enter your caArray account user name and password; you must have been given permissions in caArray for the experiment. If the data is public, you can leave these fields blank. </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1079605">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1079605">caArray Experiment ID</a></span> – Enter the caArray Experiment ID which you know corresponds with the subject annotation data you uploaded. <span style="font-style: italic;">Example</span>: Public experiment “beer-00196” on the CBIIT installation of caArray (<span class="HTTP">array.nci.nih.gov</span>). If you misspell your entry, you will receive an error message.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1090365">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1090365">Vendor</a></span> – Select either <span style="font-weight: bold;">Agilent</span> or <span style="font-weight: bold;">Affymetrix</span></div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1090369">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1090369">Data Type</a></span> – Select <span style="font-weight: bold;">Expression</span> or <span style="font-weight: bold;">Copy Number</span>.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;vertical-align: baseline;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1090380">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner" style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;"><span style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090380">Platform (needed only for Agilent)  </a></span><span style="font-weight: normal;">–</span><span style="font-weight: normal;"> If appropriate, select the </span>Agilent<span style="font-weight: normal;"> </span><span style="font-weight: normal;">platform.</span></div>
+              <div class="Numbered_List_1_inner"><a name="1092124">Enter search keyword(s) in the </a><span style="font-weight: bold;">Search</span> text box on the Assign Annotation Definition page. Click <span style="font-weight: bold;">Search </span>or click <span style="font-weight: bold;">Enter</span> to launch the search. After a few moments, the search results display on the page.</div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1090381">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1091084">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1090381">Click </a><span style="font-weight: bold;">Save</span>. </div>
+              <div class="Numbered_List_inner"><a name="1091084">To view the definitions corresponding to any of the “Matching Annotation </a>Definitions”, which are those currently found in other caIntegrator studies, click the [term], such as “age”, hypertext link. The definition then appears in the Current Annotation Definition segment of the page just above. </div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text_Indent_2"><a name="1108860">caIntegrator2 goes to caArray, validates the information you have entered here, </a>finds the experiment and retrieves all the sample IDs in the experiment. Once this finishes, the experiment information displays on the Edit Study page under the Genomic Data Sources section. </div>
+      <div class="Body_Text_Indent_2"><a name="1090756">In summary, when you click the link, that assigns the definition to the Define </a>Fields for Subject Data page, and it also closes the Annotation Definition page.</div>
+      <div class="Body_Text_Indent_2"><a name="1090767"> You can modify any portion of the definition, as described in </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.11.html#1091072', '');">step 6 </a></span>. </div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1131936">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1075682">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1131936">If you want to redefine the caArray experiment information, you can edit it. Click </a>the <span style="font-weight: bold;">Edit</span> link corresponding to the Experiment ID. The Edit Genomic Data Source dialog box reopens, allowing you to edit the information.</div>
+              <div class="Numbered_List_inner"><a name="1075682">The matches from caDSR display some of the details of the search results. To </a>view more details of a match, such as permissible values, click <span style="font-weight: bold;">View</span>, which opens caDSR to the term. If you click <span style="font-weight: bold;">Select</span>, the caDSR definition automatically replaces the annotation definition for this field with which you are working. </div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Note_Main_Body_outer" style="margin-left: 13px;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1131937">
+      <div class="Caution_Indent_outer" style="margin-left: 68.25pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1076180">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Note_Main_Body_inner" style="width: 15px; white-space: nowrap;">
+              <div class="Caution_Indent_inner" style="width: 25px; white-space: nowrap;">
                 <span style="left: -20px; position: relative; top: 15px;">
-                  <img src="note_NCI.gif" alt="*" id="bullet1131937" border="0" width="30" height="30" />
+                  <img src="caution_NCI.gif" alt="*" id="bullet1076180" border="0" width="30" height="30" />
                 </span>
               </div>
             </td>
             <td width="100%">
-              <div class="Note_Main_Body_inner"><a name="1131937">At any point in the process of working within a study, you can create a gene list. For </a>more information, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'View%20Search%20Results.5.6.html#1182721', '');">Creating a Gene List</a></span>.</div>
+              <div class="Caution_Indent_inner"><a name="1076180">Take care before you add a caDSR definition that it says exactly what </a>you want. caDSR definitions can have minor nuances that require specific and limited applications of their use.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1075717">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">4.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1075717">Once you have settled on an appropriate field definition for the annotation, click </a><span style="font-weight: bold;">Save</span>. This returns you to the Define Fields for Subject Data page.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Note_Indent_outer" style="margin-left: 50.25pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1077238">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Note_Indent_inner" style="width: 25px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1077238" border="0" width="30" height="30" />
+                </span>
+              </div>
+            </td>
+            <td width="100%">
+              <div class="Note_Indent_inner"><a name="1077238">If you have not clicked </a><span style="font-weight: bold;">Select</span> for alternate definitions in this dialog box, then click <span style="font-weight: bold;">Save</span> to return to the Define Field...dialog box without making any definition changes.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1076837">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">5.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1076837">From the Define Fields for Subject Data page, be sure and designate the data </a>types for each field in the file. Click <span style="font-weight: bold;">Save</span> on each page to save your entries or click <span style="font-weight: bold;">New</span> to clear the fields and start again. You will not be able to proceed until every field definition entry on the Fields for Subject Data screen has an entry, one as the unique Identifier and the remainder as annotations.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text_Indent_2"><a name="1075741">The Data From File columns on the page display the column header values of </a>the first three rows you designated as “annotations”.</div>
+      <div class="Tip_Indent_outer" style="margin-left: 50.25pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1131546">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Tip_Indent_inner" style="width: 25px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="tip_NCI.gif" alt="*" id="bullet1131546" border="0" width="30" height="30" />
+                </span>
+              </div>
+            </td>
+            <td width="100%">
+              <div class="Tip_Indent_inner"><span style="font-family: Arial;"><a name="1131546">Saving your entries in this way saves the study by name and description, </a></span><span style="font-family: Arial;">but does not deploy the study. See </span><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.22.html#1126457', '');">Deploying the Study</a></span><span style="font-family: Arial;">.</span></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text_Indent_2"><a name="1083426">The Edit Study page now displays a “Not Loaded” status for the file whose </a>annotations (column headers) you have defined. </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1091094">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">6.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1091094">Click the </a><span style="font-weight: bold;">Load Subject Annotation Source </span>button in the Action section to load the data file you have configured, The <span style="font-weight: bold;">Deploy Study</span> button, to this point has been unavailable, but this step activates the button. </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Note_Indent_outer" style="margin-left: 50.25pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1077770">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Note_Indent_inner" style="width: 25px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1077770" border="0" width="30" height="30" />
+                </span>
+              </div>
+            </td>
+            <td width="100%">
+              <div class="Note_Indent_inner"><a name="1077770">You can add as many files as are necessary for a study. Patients 1-20 in </a>first file, 21-40 in second file, or many patients in first file and annotations in second file, etc. As long as IDs are defined correctly, it works.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081048">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">7.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1081048">Click </a><span style="font-weight: bold;">Deploy Study</span>. caIntegrator now loads data from the file to the caIntegrator database, and the file status changes to “Loaded”.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Note_Indent_outer" style="margin-left: 50.25pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1084921">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Note_Indent_inner" style="width: 25px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1084921" border="0" width="30" height="30" />
+                </span>
+              </div>
+            </td>
+            <td width="100%">
+              <div class="Note_Indent_inner"><a name="1084921">You can change assignments even after the study is deployed, using the </a>Edit feature. For more information, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.4.html#1073921', '');">Creating/Editing a Study</a></span>.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text"><a name="1083176">The Manage Studies page opens when the study is deployed. The </a><span style="font-weight: bold;">Deployed</span> status is indicated on the Manage Studies page as well as the Edit Study page.  For more information, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.23.html#1076280', '');">Managing a Study</a></span>.</div>
+      <div class="Body_Text"><a name="1085073">You can continue to perform other tasks in caIntegrator while deployment is in process. </a></div>
+      <div class="Body_Text"><a name="1085083">See also </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.22.html#1126457', '');">Deploying the Study</a></span>.</div>
+      <div class="Note_Main_Body_outer" style="margin-left: 13px;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1085068">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Note_Main_Body_inner" style="width: 15px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1085068" border="0" width="30" height="30" />
+                </span>
+              </div>
+            </td>
+            <td width="100%">
+              <div class="Note_Main_Body_inner"><a name="1085068">You can repeatedly upload additional or updated subject annotations, samples, image </a>data, array data to the study at later intervals. These later imports do not remove any existing data; they instead insert any new subjects or update annotations for existing subjects.</div>
             </td>
           </tr>
         </table>
@@ -210,9 +228,15 @@
 
           // Add related topics
           //
-          WWHAddRelatedTopic("Mapping Genomic Data to Subject Annotation Data", "caIntegrator2", "CreatingNewStudy.3.13.html#1081247");
-          WWHAddRelatedTopic("Uploading Control Samples", "caIntegrator2", "CreatingNewStudy.3.14.html#1080249");
-          WWHAddRelatedTopic("Configuring Copy Number Data", "caIntegrator2", "CreatingNewStudy.3.15.html#1089873");
+          WWHAddRelatedTopic("Mapping Genomic Data to Subject Annotation Data", "caIntegrator2", "CreatingNewStudy.3.15.html#1081247");
+          WWHAddRelatedTopic("Uploading Control Samples", "caIntegrator2", "CreatingNewStudy.3.16.html#1080249");
+          WWHAddRelatedTopic("Deploying the Study", "caIntegrator2", "CreatingNewStudy.3.22.html#1126457");
+          WWHAddRelatedTopic("Creating/Editing a Study", "caIntegrator2", "CreatingNewStudy.3.4.html#1073921");
+          WWHAddRelatedTopic("Define Fields Page for Editing Annotations", "caIntegrator2", "CreatingNewStudy.3.10.html#1134706");
+          WWHAddRelatedTopic("Defining Survival Values", "caIntegrator2", "CreatingNewStudy.3.13.html#1077698");
+          WWHAddRelatedTopic("Adding/Editing Genomic Data", "caIntegrator2", "CreatingNewStudy.3.14.html#1076975");
+          WWHAddRelatedTopic("Working with Imaging Data", "caIntegrator2", "CreatingNewStudy.3.18.html#1151070");
+          WWHAddRelatedTopic("Managing Platforms", "caIntegrator2", "CreatingNewStudy.3.24.html#1078043");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->
