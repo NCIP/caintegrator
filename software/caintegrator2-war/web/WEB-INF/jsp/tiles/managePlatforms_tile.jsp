@@ -27,7 +27,6 @@
         var type = document.managePlatformForm.platformType.value;
         if (type == "Affymetrix Gene Expression") {
             document.getElementById("platformNameDiv").style.display = "none";
-            document.getElementById("platformName").value = "N/A";
             document.getElementById("platformChannelTypeDiv").style.display = "none";
             document.getElementById("platformChannelType").value = "One-Color";
             document.getElementById("commentNameDiv").style.display = "none";
@@ -37,7 +36,6 @@
             document.getElementById("commentAllFormatsDiv").style.display = "none";
         } else if (type == "Affymetrix SNP" || type == "Affymetrix Copy Number"){
             document.getElementById("platformNameDiv").style.display = "block";
-            document.getElementById("platformName").value = "";
             document.getElementById("platformChannelTypeDiv").style.display = "none";
             document.getElementById("platformChannelType").value = "One-Color";
             document.getElementById("commentNameDiv").style.display = "none";
@@ -47,7 +45,6 @@
             document.getElementById("commentAllFormatsDiv").style.display = "none";
         } else if (type == "Agilent Gene Expression"){
             document.getElementById("platformNameDiv").style.display = "block";
-            document.getElementById("platformName").value = "";
             document.getElementById("platformChannelTypeDiv").style.display = "block";
             document.getElementById("platformChannelType").value = "Two-Color";
             document.getElementById("commentNameDiv").style.display = "block";
@@ -57,7 +54,6 @@
             document.getElementById("commentAllFormatsDiv").style.display = "block";
         } else if (type == "Agilent Copy Number"){
             document.getElementById("platformNameDiv").style.display = "block";
-            document.getElementById("platformName").value = "";
             document.getElementById("platformChannelTypeDiv").style.display = "block";
             document.getElementById("platformChannelType").value = "Two-Color";
             document.getElementById("commentNameDiv").style.display = "block";
