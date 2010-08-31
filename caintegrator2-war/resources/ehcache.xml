@@ -53,14 +53,14 @@
 		overflowToDisk="true"/>
 
     <cache name="gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter.genes"
-        maxElementsInMemory="5000"
+        maxElementsInMemory="500"
         eternal="false"
         timeToIdleSeconds="100000"
         timeToLiveSeconds="100000"
         overflowToDisk="true"/>
 
     <cache name="gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter.samplesHighVariance"
-        maxElementsInMemory="5000"
+        maxElementsInMemory="500"
         eternal="false"
         timeToIdleSeconds="100000"
         timeToLiveSeconds="100000"
