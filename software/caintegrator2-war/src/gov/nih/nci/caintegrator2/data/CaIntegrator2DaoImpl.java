@@ -141,6 +141,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -417,7 +418,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         overallOrStatement.add(Restrictions.conjunction().add(Restrictions.ge(locStartPosition, startPosition)).add(
                 Restrictions.le(locStartPosition, endPosition)));
         geneLocationCriteria.add(overallOrStatement);
-        geneLocationCriteria.add(Restrictions.eq("location.chromosome", chromosome));
+        geneLocationCriteria.add(getChromosomeRestriction(chromosome));
         geneLocationCriteria.createCriteria("geneLocationConfiguration").
             add(Restrictions.eq("genomeBuildVersion", genomeBuildVersion));
         geneLocationCriteria.setProjection(Projections.property("geneSymbol"));
@@ -428,6 +429,17 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                         add(Restrictions.in(SYMBOL_ATTRIBUTE, geneSymbols)).
                         addOrder(Order.asc(SYMBOL_ATTRIBUTE)).list();
     }
+
+    private Criterion getChromosomeRestriction(String chromosome) {
+        if (Cai2Util.getAlternateChromosome(chromosome) != null) {
+            List<String> chromosomes = new ArrayList<String>();
+            chromosomes.add(chromosome);
+            chromosomes.add(Cai2Util.getAlternateChromosome(chromosome));
+            return Restrictions.in("location.chromosome", chromosomes);
+        }
+        return Restrictions.eq("location.chromosome", chromosome);
+    }
+
 
 
     private Set<ReporterList> getStudyReporterLists(Study study, ReporterTypeEnum reporterType, Platform platform) {
