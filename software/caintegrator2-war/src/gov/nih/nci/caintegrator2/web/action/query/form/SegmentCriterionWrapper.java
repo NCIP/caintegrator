@@ -342,7 +342,7 @@ public class SegmentCriterionWrapper extends AbstractGenomicCriterionWrapper {
      * @return
      */
     private AbstractCriterionParameter createChromosomeNumberParameter() {
-        final String label = "Chomosome Number";
+        final String label = "Chromosome Number";
         TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
                 getRow().getRowIndex(), criterion.getChromosomeNumber());
         textParameter.setLabel(label);
