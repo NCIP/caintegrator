@@ -354,4 +354,22 @@ public class Cai2UtilTest {
         assertEquals("DELGENE1", deletedGenes.get(0).getSymbol());
         assertEquals("DELGENE2", deletedGenes.get(1).getSymbol());
     }
+
+    @Test
+    public void testChromosome() {
+        assertEquals("1", Cai2Util.getInternalChromosomeNumber("1"));
+        assertEquals("23", Cai2Util.getInternalChromosomeNumber("X"));
+        assertEquals("24", Cai2Util.getInternalChromosomeNumber("Y"));
+        
+        assertEquals("1", Cai2Util.getDisplayChromosomeNumber("1"));
+        assertEquals("X / 23", Cai2Util.getDisplayChromosomeNumber("23"));
+        assertEquals("Y / 24", Cai2Util.getDisplayChromosomeNumber("24"));
+        
+        assertNull(Cai2Util.getAlternateChromosome("1"));
+        assertEquals("23", Cai2Util.getAlternateChromosome("X"));
+        assertEquals("24", Cai2Util.getAlternateChromosome("Y"));
+        assertEquals("X", Cai2Util.getAlternateChromosome("23"));
+        assertEquals("Y", Cai2Util.getAlternateChromosome("24"));
+    }
+    
 }

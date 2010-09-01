@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
+
 /**
  * 
  */
@@ -96,10 +98,10 @@ abstract class AbstractDisplayableCopyNumberRow {
     private String genes;
 
     /**
-     * @return the chromosome
+     * @return the display chromosome
      */
     public String getChromosome() {
-        return chromosome;
+        return Cai2Util.getDisplayChromosomeNumber(chromosome);
     }
 
     /**
