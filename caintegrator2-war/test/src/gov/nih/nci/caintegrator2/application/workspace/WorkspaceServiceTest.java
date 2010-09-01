@@ -90,10 +90,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.ExternalLinkList;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.application.study.Visibility;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
@@ -282,7 +284,7 @@ public class WorkspaceServiceTest {
     }
     
     @Test
-    public void testCreateList() {
+    public void testCreateList() throws ValidationException {
         UserWorkspace workspace = workspaceService.getWorkspace();
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(new Study());
@@ -345,6 +347,14 @@ public class WorkspaceServiceTest {
         assertEquals(1, studySubscription.getSubjectLists().size());
         assertNotNull(studySubscription.getSubjectList("Subject List 1"));
         assertNull(studySubscription.getSubjectList("Subject List 2"));
+        
+        subjects.add("really long string to prove that identifiers can only be so long");
+        try {
+            workspaceService.createSubjectList(subjectList, subjects);
+            fail("Shouldn't get here due to long identifier");
+        } catch(ValidationException e) {
+            // noop.
+        }
         
         // Test Global Gene List
         geneList = new GeneList();

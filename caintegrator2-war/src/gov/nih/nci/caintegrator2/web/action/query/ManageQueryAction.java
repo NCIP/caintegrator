@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.application.study.Visibility;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
@@ -749,7 +750,12 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             subjectList.setVisibility(Visibility.PRIVATE);
             subjectList.setSubscription(getStudySubscription());
         }
-        getWorkspaceService().createSubjectList(subjectList, retrieveSelectedSubjects());
+        try {
+            getWorkspaceService().createSubjectList(subjectList, retrieveSelectedSubjects());
+        } catch (ValidationException e) {
+            addActionError(e.getMessage());
+            return ERROR;
+        }
         return SUCCESS;
     }
 

@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.application.study.Visibility;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
@@ -128,7 +129,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRED)
 public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements WorkspaceService  {
     
+    private static final int MAX_SUBJECT_IDENTIFIER_LEGNTH = 50;
     private SecurityManager securityManager;
+    
     
     /**
      * {@inheritDoc}
@@ -420,8 +423,12 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
     /**
      * {@inheritDoc}
      */
-    public void createSubjectList(SubjectList subjectList, Set<String> subjects) {
+    public void createSubjectList(SubjectList subjectList, Set<String> subjects) throws ValidationException {
         for (String subject : subjects) {
+            if (MAX_SUBJECT_IDENTIFIER_LEGNTH < subject.length()) {
+                throw new ValidationException("The identifier '" + subject + "' exceeds the maximum length of " 
+                        + MAX_SUBJECT_IDENTIFIER_LEGNTH);
+            }
             subjectList.getSubjectIdentifiers().add(new SubjectIdentifier(subject));
         }
         saveAbstractList(subjectList);
