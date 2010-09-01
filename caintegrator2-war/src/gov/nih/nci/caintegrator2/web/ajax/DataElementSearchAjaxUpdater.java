@@ -319,7 +319,7 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
     }
     
     void setCaDsrInProgress() {
-        setTableRowMessage(CADSR_TABLE, AJAX_LOADING_GIF + " Please Wait, CaDSR Search In Progress...");
+        setTableRowMessage(CADSR_TABLE, AJAX_LOADING_GIF + " Please Wait, caDSR Search In Progress...");
     }
     
     private void setTableRowMessage(String table, String rowString) {
