@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.workspace;
 
 import gov.nih.nci.caintegrator2.application.CaIntegrator2EntityRefresher;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.domain.application.AbstractList;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
@@ -211,8 +212,9 @@ public interface WorkspaceService extends CaIntegrator2EntityRefresher {
     /**
      * @param subjectList the subject list to create
      * @param subjects the set of subject identifier
+     * @throws ValidationException if identifier is too long.
      */
-    void createSubjectList(SubjectList subjectList, Set<String>subjects);
+    void createSubjectList(SubjectList subjectList, Set<String>subjects) throws ValidationException;
 
     /**
      * @param abstractList the list to make global

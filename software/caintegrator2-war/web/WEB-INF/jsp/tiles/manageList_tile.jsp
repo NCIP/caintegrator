@@ -93,18 +93,31 @@
                                                     <s:param name="textFieldName" value="%{'geneInputElements'}"/>
                                                 </s:component>
                                             </div>
+                                            <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element">
+	                                            <span class="wwlbl">(comma separated list)</span>
+	                                            <span class="wwctrl"></span>
+	                                        </s:div>
                                         </div>
                                     </s:div>
                                     <s:div id="subjectDiv" cssStyle="display: none;">
                                         <s:textfield id="subjectInputElements" name="subjectInputElements" label="Subject Ids"
-                                            theme="css_xhtml" required="true"/>
+                                            theme="css_xhtml" />
+                                        <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element">
+                                            <span class="wwlbl">(comma separated list)</span>
+                                            <span class="wwctrl"></span>
+                                        </s:div>
                                     </s:div>
                                 </td>
                             </tr>
                             <tr>
+                            <td align="center">
+                                OR
+                            </td>
+                            </tr>
+                            <tr>
                                 <td><s:file id="listFile" name="listFile" label="Upload File"
                                         theme="css_xhtml" />
-                                    <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="%{csvlFileDisplay}">
+                                    <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element">
                                         <span class="wwlbl">(csv file format)</span>
                                         <span class="wwctrl"></span>
                                     </s:div>

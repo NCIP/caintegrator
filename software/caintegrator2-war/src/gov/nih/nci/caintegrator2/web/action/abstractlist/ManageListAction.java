@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.abstractlist;
 
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.application.study.Visibility;
 import gov.nih.nci.caintegrator2.domain.application.AbstractList;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
@@ -156,7 +157,12 @@ public class ManageListAction extends AbstractDeployedStudyAction {
      */
     public String execute() {
         if (CREATE_LIST_ACTION.equals(selectedAction)) {
-            return createList();
+            try {
+                return createList();
+            } catch (ValidationException e) {
+                addActionError(e.getMessage());
+                return INPUT;
+            }
         } else if (CANCEL_ACTION.equals(selectedAction)) {
             return HOME_PAGE;
         }
@@ -247,8 +253,9 @@ public class ManageListAction extends AbstractDeployedStudyAction {
 
     /**
      * @return SUCCESS
+     * @throws ValidationException 
      */
-    private String createList() {
+    private String createList() throws ValidationException {
         AbstractList newList = (ListTypeEnum.GENE.equals(listType)) ? new GeneList() : new SubjectList();
         newList.setName(getListName());
         newList.setDescription(getDescription());
