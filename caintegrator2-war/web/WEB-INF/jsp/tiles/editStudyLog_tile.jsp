@@ -8,7 +8,7 @@
 
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('edit_study_log_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('view_log_help')" class="help">
    &nbsp;</a>
     </div>
 
