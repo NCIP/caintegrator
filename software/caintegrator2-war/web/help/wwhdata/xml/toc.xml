@@ -69,9 +69,9 @@
       <i t="Subject Annotation and Imaging Data" l="53" />
       <i t="Gene Expression Data" l="54">
         <i t="Copy Number Data" l="55" />
-        <i t="Creating a Gene List" l="56" />
+        <i t="Creating a Gene or Subject List" l="56" />
         <i t="Choosing Genes" l="57" />
-        <i t="Editing a Gene List" l="58" />
+        <i t="Editing a Gene or Subject List" l="58" />
         <i t="Editing a GISTIC Analysis" l="59" />
       </i>
       <i t="Expanding Imaging Data Results" l="60">
