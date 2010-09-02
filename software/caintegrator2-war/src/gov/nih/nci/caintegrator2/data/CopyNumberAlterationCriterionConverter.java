@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
@@ -166,7 +167,7 @@ public class CopyNumberAlterationCriterionConverter {
             case CHROMOSOME_COORDINATES:
                 addChromosomeCoordinatesToCriterion(copyNumberCriterion.getChromosomeCoordinateHigh(), 
                         copyNumberCriterion.getChromosomeCoordinateLow(), segmentDataCrit, 
-                        copyNumberCriterion.getChromosomeNumber());
+                        Cai2Util.getInternalChromosomeNumber(copyNumberCriterion.getChromosomeNumber()));
                 break;
             default:
                 throw new IllegalStateException("Unknown genomic interval type");
@@ -222,10 +223,12 @@ public class CopyNumberAlterationCriterionConverter {
             Integer chromosomeCoordinateHigh = geneLocation.getLocation().getEndPosition();
             overallOrStatement.add(Restrictions.conjunction().add(segmentStartLessThanLow(chromosomeCoordinateLow))
                     .add(segmentEndGreaterThanLow(chromosomeCoordinateLow)).add(
-                            chromosomeNumberExpression(geneLocation.getLocation().getChromosome())));
+                            chromosomeNumberExpression(Cai2Util.getInternalChromosomeNumber(
+                                    geneLocation.getLocation().getChromosome()))));
             overallOrStatement.add(Restrictions.conjunction().add(segmentStartGreaterThanLow(chromosomeCoordinateLow))
                     .add(segmentStartLessThanHigh(chromosomeCoordinateHigh)).add(
-                            chromosomeNumberExpression(geneLocation.getLocation().getChromosome())));
+                            chromosomeNumberExpression(Cai2Util.getInternalChromosomeNumber(
+                                    geneLocation.getLocation().getChromosome()))));
         }
         segmentDataCrit.add(overallOrStatement);
         

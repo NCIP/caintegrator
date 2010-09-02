@@ -539,5 +539,48 @@ public final class Cai2Util {
            Collections.sort(deletedGenes);
        }
    }
+
+   /**
+     * @param chromosomeNumber to convert to 1-24 range
+     * @return internal value of chromosome number.
+     */
+    public static String getInternalChromosomeNumber(String chromosomeNumber) {
+        if ("X".equalsIgnoreCase(chromosomeNumber)) {
+            return "23";
+        } else if ("Y".equalsIgnoreCase(chromosomeNumber)) {
+            return "24";
+        }
+        return chromosomeNumber;
+    }
+
+    /**
+      * @param chromosomeNumber the internal chromosome number
+      * @return display value of chromosome number.
+      */
+     public static String getDisplayChromosomeNumber(String chromosomeNumber) {
+         if ("23".equals(chromosomeNumber)) {
+             return "X / 23";
+         } else if ("24".equals(chromosomeNumber)) {
+             return "Y / 24";
+         }
+         return chromosomeNumber;
+     }
+
+    /**
+     * @param chromosomeNumber to get the alternate
+     * @return the alternate chromosome number if any
+     */
+    public static String getAlternateChromosome(String chromosomeNumber) {
+        if ("X".equalsIgnoreCase(chromosomeNumber)) {
+            return "23";
+        } else if ("Y".equalsIgnoreCase(chromosomeNumber)) {
+            return "24";
+        } else if ("23".equals(chromosomeNumber)) {
+            return "X";
+        } else if ("24".equals(chromosomeNumber)) {
+            return "Y";
+        }
+        return null;
+    }
     
 }
