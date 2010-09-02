@@ -36,6 +36,7 @@ x.t("user","study");
 x.t("current","definition");
 x.t("subject","annotation");
 x.t("subject","identifier");
+x.t("subject","data");
 x.t("subject","image");
 x.t("blank","correlating");
 x.t("field","type");

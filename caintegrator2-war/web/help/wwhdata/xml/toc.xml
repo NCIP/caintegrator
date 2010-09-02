@@ -52,7 +52,7 @@
       <i t="Annotation and Image Data Searches" l="39" />
       <i t="Gene Expression Data Searches" l="40" />
       <i t="Copy Number Searches" l="41" />
-      <i t="Continue with step 4 in Searching a Study.Choosing Genes" l="42" />
+      <i t="Choosing Genes" l="42" />
       <i t="Query Results" l="43" />
       <i t="Results Type Tab" l="44" />
       <i t="Sorting Tab" l="45" />
@@ -76,7 +76,7 @@
       </i>
       <i t="Expanding Imaging Data Results" l="60">
         <i t="caIntegrator and NBIA" l="61" />
-        <i t="Retrieving Dicom Images" l="62" />
+        <i t="Retrieving DICOM Images" l="62" />
         <i t="Example of Retrieving Images:" l="63" />
         <i t="Relationship of Patient to Study to Series to Images" l="64" />
       </i>
