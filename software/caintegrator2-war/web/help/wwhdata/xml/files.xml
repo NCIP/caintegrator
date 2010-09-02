@@ -80,7 +80,7 @@
     <Document title="Annotation and Image Data Searches" href="SearchingWithinAStudy.4.4.html" />
     <Document title="Gene Expression Data Searches" href="SearchingWithinAStudy.4.5.html" />
     <Document title="Copy Number Searches" href="SearchingWithinAStudy.4.6.html" />
-    <Document title="Continue with step 4 in Searching a Study.Choosing Genes" href="SearchingWithinAStudy.4.7.html" />
+    <Document title="Choosing Genes" href="SearchingWithinAStudy.4.7.html" />
     <Document title="Query Results" href="SearchingWithinAStudy.4.8.html" />
     <Document title="Results Type Tab" href="SearchingWithinAStudy.4.9.html" />
     <Document title="Sorting Tab" href="SearchingWithinAStudy.4.10.html" />
@@ -100,7 +100,7 @@
     <Document title="Editing a GISTIC Analysis" href="View%20Search%20Results.5.10.html" />
     <Document title="Expanding Imaging Data Results" href="View%20Search%20Results.5.11.html" />
     <Document title="caIntegrator and NBIA" href="View%20Search%20Results.5.12.html" />
-    <Document title="Retrieving Dicom Images" href="View%20Search%20Results.5.13.html" />
+    <Document title="Retrieving DICOM Images" href="View%20Search%20Results.5.13.html" />
     <Document title="Example of Retrieving Images:" href="View%20Search%20Results.5.14.html" />
     <Document title="Relationship of Patient to Study to Series to Images" href="View%20Search%20Results.5.15.html" />
     <Document title="Exporting Data" href="View%20Search%20Results.5.16.html" />
