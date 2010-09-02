@@ -113,6 +113,7 @@ public class GenomicDataSourceAjaxRunner implements Runnable {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("PMD.AvoidCatchingThrowable") // We want to catch all so that it goes into the error state.
     public void run() {
         setupSession();
         updater.updateJobStatus(username, genomicSource, true);
@@ -123,6 +124,8 @@ public class GenomicDataSourceAjaxRunner implements Runnable {
             addError("The configured server couldn't be reached. Please check the configuration settings.", e);
         } catch (ExperimentNotFoundException e) {
             addError(e.getMessage(), e);
+        } catch (Throwable e) {
+            addError(e.getMessage(), e);
         }
     }
 
@@ -131,7 +134,7 @@ public class GenomicDataSourceAjaxRunner implements Runnable {
         username = genomicSource.getStudyConfiguration().getLastModifiedBy().getUsername();
     }
 
-    private void addError(String message, Exception e) {
+    private void addError(String message, Throwable e) {
         LOGGER.error("Deployment of genomic source failed.", e);
         genomicSource.setStatus(Status.ERROR);
         genomicSource.setStatusDescription(message);
