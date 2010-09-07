@@ -93,6 +93,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
         </condition>    
         <echo message="application.base.path=${application.base.path}"/>
         <property name="jboss.home" value="${application.base.path}/${jboss.relative.path}"/>
+        <jboss-version/>
     </target>
     <target name="install:jboss:init" depends="common:init:pre" >
         <!-- determine if port configurations or port lists are being called -->
@@ -130,6 +131,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
         <math result="jboss.ssl.port" operand1="${jboss.server.port}" operation="+" operand2="363" datatype="int"/>
         <property name="jboss.ssl.enable" value="false"/>
         <property name="jboss.home" value="${application.base.path}/${jboss.relative.path}"/>
+		<jboss-version/>
         <property name="jboss.application.url" value="http://${jboss.server.hostname}:${jboss.server.port}/caintegrator2"/>
         <available file="${jboss.home}/server/${jboss.server.name}/conf/jboss-service.xml" property="jboss.exists"/>
         <basename file="${jboss.ssl.keystore.location}" property="jboss.ssl.keystore.file"/>
@@ -179,16 +181,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
         </filterset>
 
         <!--OS Temp dir -->
-        <condition property="os.temp.dir" value="/tmp">
+        <condition property="os.temp.dir" value="/tmp/${project.name}">
             <or>
                 <os family="unix" />
                 <os family="mac" />
             </or>
         </condition>
 
-        <condition property="os.temp.dir" value="c:/temp">
+        <condition property="os.temp.dir" value="c:/temp/${project.name}">
             <os family="windows" />
         </condition>
+        <echo message="os.temp.dir - ${os.temp.dir}"/>
         <!-- Copy files to ensure values containing variables are expanded, such properties are stored in embedded.filterset and then copy with filter files -->
         <copy todir="${common.dir.dest}" filtering="true">
             <fileset dir="${common.dir.src}">
@@ -865,7 +868,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
                 <property name="jboss.server.binding.template.location" value="${bda-utils.dir}/resource/${jboss.binaries.relative.dir}/bindings.xml"/>
             </else>
         </if>
-
+		<jboss-version/>
         <property name="upgrade.running" value="true"/>
         <!-- Upgrades always use port configs -->
         <property name="jboss.ncicb-standard.port-config" value="true"/>
