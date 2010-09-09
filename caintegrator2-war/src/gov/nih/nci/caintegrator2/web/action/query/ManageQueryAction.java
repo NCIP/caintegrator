@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.application.study.Visibility;
@@ -419,8 +420,13 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     
     private String loadGeneListExecute(boolean isGlobal) {
         createNewQuery();
-        loadGeneList(isGlobal);
-        return executeQuery();
+        if (getStudy().hasGenomicDataSources()) {
+            loadGeneList(isGlobal);
+            return executeQuery();
+        }
+        addActionError("There is no gene expression data defined for this sudy, unable to perform query.");
+        displayTab = CRITERIA_TAB;
+        return ERROR;
     }
     
     private void loadGeneList(boolean isGlobal) {
@@ -983,5 +989,12 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         Collections.sort(getGenomicDataQueryResult().getRowCollection(),
                 new GenomicDataResultComparator(getQueryForm().getGenomicSortingOrder()));
         return SUCCESS;
+    }
+    
+    /**
+     * @return Return the StudyConfiguration for jUnit test.
+     */
+    public StudyConfiguration getStudyConfiguration() {
+        return getStudy().getStudyConfiguration();
     }
 }
