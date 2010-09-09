@@ -91,6 +91,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
@@ -204,11 +205,18 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertTrue(queryManagementService.executeGenomicDataQueryCalled);
         
         // test load & execute my gene list
+        queryManagementService.executeGenomicDataQueryCalled = false;
         manageQueryAction.setSelectedAction("loadGeneListExecute");
         manageQueryAction.setGeneListName("GeneList1");
+        assertEquals(Action.ERROR, manageQueryAction.execute());
+        assertFalse(queryManagementService.executeGenomicDataQueryCalled);
+        assertEquals("criteria", manageQueryAction.getDisplayTab());
+
+        manageQueryAction.getStudyConfiguration().getGenomicDataSources().add(new GenomicDataSourceConfiguration());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        assertTrue(queryManagementService.executeCalled);
+        assertTrue(queryManagementService.executeGenomicDataQueryCalled);
         assertEquals("searchResults", manageQueryAction.getDisplayTab());
+        manageQueryAction.getStudyConfiguration().getGenomicDataSources().clear();
         // Clean up after testing
         manageQueryAction.setGeneListName("");
         manageQueryAction.setSelectedAction("remove");
