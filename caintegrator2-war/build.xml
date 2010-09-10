@@ -66,7 +66,7 @@
             <include name="hibernate-annotations-1.0.jar" />
             <include name="hibernate-commons-annotations-3.0.0.GA.jar" />
             <include name="hibernate-tools-3.2.2.beta1.jar" />
-            <include name="mysql-connector-java-5.0.5.jar" />
+            <include name="mysql-connector-java-5.1.13.jar" />
             <include name="antlr-2.7.6.jar" />
             <include name="asm-1.5.3.jar" />
             <include name="c3p0-0.9.0.jar" />
@@ -973,7 +973,8 @@
             <filterset refid="caintegrator2.filterset" />
         </copy>
         <copy file="${caintegrator2.jms.destinations.file}" todir="${jboss.deploy.dir}/jms" />
-        <copy file="${caintegrator2.war.compile.lib.dir}/mysql-connector-java-5.0.5.jar" todir="${jboss.server.dir}/lib" />
+        <delete file="${jboss.server.dir}/lib/mysql-connector-java-5.0.5.jar" />
+        <copy file="${caintegrator2.war.compile.lib.dir}/mysql-connector-java-5.1.13.jar" todir="${jboss.server.dir}/lib" />
         <copy file="${caintegrator2.war}" todir="${jboss.deploy.dir}" />
     </target>
 
