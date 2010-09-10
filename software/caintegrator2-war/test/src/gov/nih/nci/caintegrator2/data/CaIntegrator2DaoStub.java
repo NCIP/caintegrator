@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
+import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
@@ -531,6 +532,11 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
     public boolean isGenomeVersionMapped(GenomeBuildVersionEnum genomeVersion) {
         return true;
+    }
+
+
+    public void saveSubjectSourceStatus(AbstractClinicalSourceConfiguration source) {
+
     }
 
 }

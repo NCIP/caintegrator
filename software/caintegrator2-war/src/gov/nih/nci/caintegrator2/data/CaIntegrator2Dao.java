@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
+import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
@@ -153,6 +154,12 @@ public interface CaIntegrator2Dao {
      * @return the requested object.
      */
     <T> T get(Long id, Class<T> objectClass);
+    
+    /**
+     * Saves the status/status description only for the given source.
+     * @param source to save status for.
+     */
+    void saveSubjectSourceStatus(AbstractClinicalSourceConfiguration source);
     
     /**
      * Deletes all given objects from the database.

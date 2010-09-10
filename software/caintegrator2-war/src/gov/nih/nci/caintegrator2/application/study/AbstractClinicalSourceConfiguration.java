@@ -100,13 +100,15 @@ public abstract class AbstractClinicalSourceConfiguration extends AbstractCaInte
     
     private StudyConfiguration studyConfiguration;
     private Date lastModifiedDate;
+    private Status status = Status.NOT_LOADED;
+    private String statusDescription;
     
     AbstractClinicalSourceConfiguration() {
         super();
     }
 
     AbstractClinicalSourceConfiguration(StudyConfiguration configuration) {
-        setStudyConfiguration(configuration);
+        this.studyConfiguration = configuration;
         configuration.addClinicalConfiguration(this);
     }
     
@@ -139,7 +141,11 @@ public abstract class AbstractClinicalSourceConfiguration extends AbstractCaInte
         return studyConfiguration;
     }
 
-    private void setStudyConfiguration(StudyConfiguration studyConfiguration) {
+    /**
+     * 
+     * @param studyConfiguration the studyConfiguration.
+     */
+    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
         this.studyConfiguration = studyConfiguration;
     }
     
@@ -162,6 +168,34 @@ public abstract class AbstractClinicalSourceConfiguration extends AbstractCaInte
      */
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    /**
+     * @return the status
+     */
+    public Status getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the statusDescription
+     */
+    public String getStatusDescription() {
+        return statusDescription;
+    }
+
+    /**
+     * @param statusDescription the statusDescription to set
+     */
+    public void setStatusDescription(String statusDescription) {
+        this.statusDescription = statusDescription;
     }
 
     /**

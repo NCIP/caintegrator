@@ -15,7 +15,9 @@
     
     <h1><s:property value="#subTitleText" /></h1>
     <p>Assign annotation definitions to data fields.</p>
-    
+    <s:if test = "'Error'.equals(clinicalSource.status.value)" >
+    <p><font color="red">Error: <s:property value="clinicalSource.statusDescription"/></font></p>
+    </s:if>
     <div class="form_wrapper_outer">
 
     <table class="form_wrapper_table">

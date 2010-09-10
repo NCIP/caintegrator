@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,113 +83,25 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.web.ajax;
 
-import java.util.List;
+
 
 /**
- * Holds configuration information for annotation stored in a CSV text file.
+ * This interface is to allow DWR to javascript remote the methods using Spring. 
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")   // see method createAnnotationValue
-public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSourceConfiguration {
-    
-    private static final long serialVersionUID = 1L;
-    private AnnotationFile annotationFile;
-
-    /**
-     * Creates a new instance.
-     */
-    public DelimitedTextClinicalSourceConfiguration() {
-        super();
-    }
-    
-    DelimitedTextClinicalSourceConfiguration(AnnotationFile annotationFile, StudyConfiguration configuration) {
-        super(configuration);
-        this.annotationFile = annotationFile;
-    }
-
-    ValidationResult validate() {
-        return getAnnotationFile().validate();
-    }
+public interface ISubjectDataSourceAjaxUpdater {
     
     /**
-     * {@inheritDoc}
+     * Initializes the web context to this JSP so the update messages stream here.
      */
-    @Override
-    void loadAnnotation() throws ValidationException {
-        getAnnotationFile().loadAnnontation(new SubjectAnnotationHandler(this));
-        setStatus(Status.LOADED);
-    }
+    void initializeJsp();
     
     /**
-     * {@inheritDoc}
+     * Used to run the SubjectDataSource Job.
+     * @param subjectSourceId to load data for subject source (asynchronously).
+     * @param jobType the job type to run.
      */
-    @Override
-    void reLoadAnnotation() throws ValidationException {
-        if (isCurrentlyLoaded() || Status.PROCESSING.equals(getStatus())) {
-            getAnnotationFile().loadAnnontation(new SubjectAnnotationHandler(this));
-            setStatus(Status.LOADED);
-        }
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    void unloadAnnotation() {
-        getAnnotationFile().unloadAnnotation();
-        setStatus(Status.NOT_LOADED);
-    }
-
-    /**
-     * @return ClinicalSourceType
-     */
-    public ClinicalSourceType getType() {
-        return ClinicalSourceType.DELIMITED_TEXT;
-    }
-
-    /**
-     * @return the annotationFile
-     */
-    public AnnotationFile getAnnotationFile() {
-        return annotationFile;
-    }
-
-    /**
-     * @param annotationFile the annotationFile to set
-     */
-    public void setAnnotationFile(AnnotationFile annotationFile) {
-        this.annotationFile = annotationFile;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getDescription() {
-        return getAnnotationFile().getFile().getName();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<AnnotationFieldDescriptor> getAnnotationDescriptors() {
-        return getAnnotationFile().getDescriptors();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isLoadable() {
-        return getAnnotationFile().isLoadable();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isCurrentlyLoaded() {
-        return Status.LOADED.equals(getStatus());
-    }
+    void runJob(Long subjectSourceId, SubjectDataSourceAjaxRunner.JobType jobType);
 
 }

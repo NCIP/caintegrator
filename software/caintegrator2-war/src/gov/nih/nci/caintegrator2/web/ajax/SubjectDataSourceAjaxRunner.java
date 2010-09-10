@@ -85,137 +85,97 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import java.util.HashMap;
-import java.util.Map;
+import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 
-import org.directwebremoting.proxy.dwr.Util;
+import org.apache.log4j.Logger;
 
 /**
- * Application scope factory which will store and return Dwr Util objects for specific users on different
- * <code>PersistedJob</code>types.
+ * Asynchronous thread that runs Subject Source Loading jobs and updates the status of those jobs.
  */
-public class DwrUtilFactory {
+@SuppressWarnings("PMD.CyclomaticComplexity")
+public class SubjectDataSourceAjaxRunner implements Runnable {
+    
+    private static final Logger LOGGER = Logger.getLogger(SubjectDataSourceAjaxRunner.class);
+        
+    private final SubjectDataSourceAjaxUpdater updater;
+    private final Long subjectSourceId;
+    private final JobType jobType;
+    private DelimitedTextClinicalSourceConfiguration subjectSource;
+    private String username;
+    
+    SubjectDataSourceAjaxRunner(SubjectDataSourceAjaxUpdater updater,
+            Long subjectSourceId, JobType jobType) {
+        this.updater = updater;
+        this.subjectSourceId = subjectSourceId;
+        this.jobType = jobType;
+    }
 
-    private final Map <String, Util> analysisUsernameUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> studyConfigurationUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> genomicDataSourceUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> imagingDataSourceUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> platformConfigurationUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> subjectDataSourceUtilityMap = new HashMap<String, Util>();
-    
     /**
-     * Retrieves the DWR utility object for an Analysis Job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
+     * {@inheritDoc}
      */
-    public Util retrieveAnalysisJobUtil(String username) {
-        return retrieveDwrUtil(username, analysisUsernameUtilityMap);
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidCatchingThrowable" })
+    public void run() {
+        try {
+            setupSession();
+            updater.updateJobStatus(username, subjectSource);
+            StudyConfiguration studyConfiguration = subjectSource.getStudyConfiguration();
+            StudyManagementService studyManagementService = updater.getStudyManagementService();
+            switch (jobType) {
+            case LOAD:
+                studyManagementService.loadClinicalAnnotation(studyConfiguration, subjectSource);
+                updater.updateJobStatus(username, subjectSource);
+                break;
+            case RELOAD:
+                studyManagementService.reLoadClinicalAnnotation(studyConfiguration);
+                updater.updateJobStatus(username, subjectSource);
+                break;
+            case DELETE:
+                studyConfiguration.setStatus(Status.NOT_DEPLOYED);
+                studyManagementService.delete(studyConfiguration, subjectSource);
+                updater.reinitializeDynamicTable(username, studyConfiguration);
+                break;
+            default:
+                throw new IllegalStateException("Unknown job type.");
+            }
+        } catch (ValidationException e) {
+            addError(e.getResult().getInvalidMessage(), e);
+        } catch (Throwable e) {
+            addError(e.getMessage(), e);
+        }
     }
-    
-    /**
-     * Retrieves the DWR utility object for a Study Configuration job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrieveStudyConfigurationUtil(String username) {
-        return retrieveDwrUtil(username, studyConfigurationUtilityMap);
-    }
-    
-    /**
-     * Retrieves the DWR utility object for a Platform Configuration job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrievePlatformConfigurationUtil(String username) {
-        return retrieveDwrUtil(username, platformConfigurationUtilityMap);
-    }
-    
-    /**
-     * Retrieves the DWR utility object for a GenomicDataSourceConfiguration job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrieveGenomicDataSourceUtil(String username) {
-        return retrieveDwrUtil(username, genomicDataSourceUtilityMap);
-    }
-    
-    /**
-     * Retrieves the DWR utility object for an ImageDataSourceConfiguration job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrieveImagingDataSourceUtil(String username) {
-        return retrieveDwrUtil(username, imagingDataSourceUtilityMap);
-    }
-    
-    /**
-     * Retrieves the DWR utility object for a SubjectDataSourceConfiguration job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrieveSubjectDataSourceUtil(String username) {
-        return retrieveDwrUtil(username, subjectDataSourceUtilityMap);
-    }
-    
-    private Util retrieveDwrUtil(String username, Map<String, Util> map) {
-        return (map.get(username) == null) 
-            ? new Util() : map.get(username);
-    }
-    
-    /**
-     * Associates a username with a session for the <code>AbstractPersistedAnalysisJob</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateAnalysisJobWithSession(String username, Util util) {
-        analysisUsernameUtilityMap.put(username, util);
-    }
-    
-    
-    /**
-     * Associates a username with a session for the <code>StudyDeploymentJob</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateStudyConfigurationJobWithSession(String username, Util util) {
-        studyConfigurationUtilityMap.put(username, util);
-    }
-    
-    /**
-     * Associates a username with a session for the <code>PlatformDeploymentJob</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associatePlatformConfigurationJobWithSession(String username, Util util) {
-        platformConfigurationUtilityMap.put(username, util);
-    }
-    
-    /**
-     * Associates a username with a session for the <code>GenomicDataSourceConfiguration</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateGenomicDataSourceWithSession(String username, Util util) {
-        genomicDataSourceUtilityMap.put(username, util);
-    }
-    
-    /**
-     * Associates a username with a session for the <code>AbstractClinicalDataSourceConfiguration</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateSubjectDataSourceWithSession(String username, Util util) {
-        subjectDataSourceUtilityMap.put(username, util);
-    }
-    
-    /**
-     * Associates a username with a session for the <code>ImageDataSourceConfiguration</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateImagingDataSourceWithSession(String username, Util util) {
-        imagingDataSourceUtilityMap.put(username, util);
-    }
-    
 
+    private void setupSession() {
+        subjectSource = updater.getStudyManagementService().getRefreshedClinicalSource(subjectSourceId);
+        username = subjectSource.getStudyConfiguration().getLastModifiedBy().getUsername();
+    }
+
+    private void addError(String message, Throwable e) {
+        LOGGER.error("Loading of subject annotation source failed.", e);
+        subjectSource.setStatus(Status.ERROR);
+        subjectSource.setStatusDescription(message);
+        updater.addError(message, username);
+        updater.saveAndUpdateJobStatus(username, subjectSource);
+    }
+    
+    /**
+     * The job type to run for this ajax runner.
+     */
+    public static enum JobType {
+        /**
+         * Load.
+         */
+        LOAD,
+        /**
+         * Reload.
+         */
+        RELOAD,
+        /**
+         * Delete.
+         */
+        DELETE;
+    }
 }

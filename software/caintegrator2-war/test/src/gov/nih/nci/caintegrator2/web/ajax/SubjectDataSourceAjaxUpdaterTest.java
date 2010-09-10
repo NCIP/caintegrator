@@ -85,137 +85,110 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import java.util.HashMap;
-import java.util.Map;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.data.StudyHelper;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
-import org.directwebremoting.proxy.dwr.Util;
+import java.io.IOException;
 
-/**
- * Application scope factory which will store and return Dwr Util objects for specific users on different
- * <code>PersistedJob</code>types.
- */
-public class DwrUtilFactory {
+import javax.servlet.ServletException;
 
-    private final Map <String, Util> analysisUsernameUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> studyConfigurationUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> genomicDataSourceUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> imagingDataSourceUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> platformConfigurationUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> subjectDataSourceUtilityMap = new HashMap<String, Util>();
-    
-    /**
-     * Retrieves the DWR utility object for an Analysis Job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrieveAnalysisJobUtil(String username) {
-        return retrieveDwrUtil(username, analysisUsernameUtilityMap);
+import org.directwebremoting.WebContextFactory;
+import org.junit.Before;
+import org.junit.Test;
+
+
+public class SubjectDataSourceAjaxUpdaterTest extends AbstractSessionBasedTest {
+
+    private SubjectDataSourceAjaxUpdater updater;
+    private DwrUtilFactory dwrUtilFactory;
+    private WorkspaceServiceStudyDeploymentJobStub workspaceService;
+    private StudyManagementServiceStub studyManagementServiceStub;
+    private StudyConfiguration studyConfiguration;
+    private DelimitedTextClinicalSourceConfiguration clinicalDataSource;
+
+    @Before
+    public void setUp() {
+        super.setUp();
+        updater = new SubjectDataSourceAjaxUpdater();
+        dwrUtilFactory = new DwrUtilFactory();
+        workspaceService = new WorkspaceServiceStudyDeploymentJobStub();
+        studyManagementServiceStub = new StudyManagementServiceStub();
+        studyManagementServiceStub.clear();
+        workspaceService.clear();
+        updater.setWorkspaceService(workspaceService);
+        updater.setDwrUtilFactory(dwrUtilFactory);
+        updater.setStudyManagementService(studyManagementServiceStub);
+        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+        StudyHelper studyHelper = new StudyHelper();
+        studyConfiguration = studyHelper.populateAndRetrieveStudyWithSourceConfigurations().getStudyConfiguration();
+        studyConfiguration.setId(Long.valueOf(1));
+
+        SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudyConfiguration(studyConfiguration);
+        clinicalDataSource = (DelimitedTextClinicalSourceConfiguration) 
+                                studyConfiguration.getClinicalConfigurationCollection().get(0);
+        clinicalDataSource.setId(Long.valueOf(1));
+    }
+
+    @Test
+    public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
+        updater.initializeJsp();
+        assertNotNull(dwrUtilFactory.retrieveGenomicDataSourceUtil("Test"));
     }
     
-    /**
-     * Retrieves the DWR utility object for a Study Configuration job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrieveStudyConfigurationUtil(String username) {
-        return retrieveDwrUtil(username, studyConfigurationUtilityMap);
+    @Test
+    public void testRunJob() throws InterruptedException {
+        studyConfiguration.setUserWorkspace(workspaceService.getWorkspace());
+        studyConfiguration.setLastModifiedBy(workspaceService.getWorkspace());
+        studyManagementServiceStub.refreshedClinicalSource = clinicalDataSource;
+        
+        studyConfiguration.getStudy().setShortTitleText("Invalid");
+        updater.runJob(clinicalDataSource.getId(), SubjectDataSourceAjaxRunner.JobType.LOAD);
+        Thread.sleep(500);
+        assertEquals(Status.ERROR, clinicalDataSource.getStatus());
+        
+        studyConfiguration.getStudy().setShortTitleText("valid");
+        studyManagementServiceStub.clear();
+        updater.runJob(clinicalDataSource.getId(), SubjectDataSourceAjaxRunner.JobType.LOAD);
+        Thread.sleep(500);
+        assertTrue(studyManagementServiceStub.loadClinicalAnnotationCalled);
+        assertTrue(studyManagementServiceStub.getRefreshedClinicalSourceCalled);
+        assertEquals(Status.LOADED, clinicalDataSource.getStatus());
+        
+        studyManagementServiceStub.clear();
+        updater.runJob(clinicalDataSource.getId(), SubjectDataSourceAjaxRunner.JobType.RELOAD);
+        Thread.sleep(500);
+        assertTrue(studyManagementServiceStub.reLoadClinicalAnnotationCalled);
+        assertTrue(studyManagementServiceStub.getRefreshedClinicalSourceCalled);
+        assertEquals(Status.LOADED, clinicalDataSource.getStatus());
+        
+        studyManagementServiceStub.clear();
+        updater.runJob(clinicalDataSource.getId(), SubjectDataSourceAjaxRunner.JobType.DELETE);
+        Thread.sleep(500);
+        assertTrue(studyManagementServiceStub.deleteCalled);
+        assertTrue(studyManagementServiceStub.getRefreshedClinicalSourceCalled);
+        
     }
     
-    /**
-     * Retrieves the DWR utility object for a Platform Configuration job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrievePlatformConfigurationUtil(String username) {
-        return retrieveDwrUtil(username, platformConfigurationUtilityMap);
+    private final class WorkspaceServiceStudyDeploymentJobStub extends WorkspaceServiceStub {
+        @Override
+        public UserWorkspace getWorkspace() {
+            UserWorkspace workspace = new UserWorkspace();
+            workspace.setUsername("Test");
+            workspace.getSubscriptionCollection().add(getSubscription());
+            studyConfiguration.setUserWorkspace(workspace);
+            
+            return workspace;
+        }
     }
-    
-    /**
-     * Retrieves the DWR utility object for a GenomicDataSourceConfiguration job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrieveGenomicDataSourceUtil(String username) {
-        return retrieveDwrUtil(username, genomicDataSourceUtilityMap);
-    }
-    
-    /**
-     * Retrieves the DWR utility object for an ImageDataSourceConfiguration job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrieveImagingDataSourceUtil(String username) {
-        return retrieveDwrUtil(username, imagingDataSourceUtilityMap);
-    }
-    
-    /**
-     * Retrieves the DWR utility object for a SubjectDataSourceConfiguration job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrieveSubjectDataSourceUtil(String username) {
-        return retrieveDwrUtil(username, subjectDataSourceUtilityMap);
-    }
-    
-    private Util retrieveDwrUtil(String username, Map<String, Util> map) {
-        return (map.get(username) == null) 
-            ? new Util() : map.get(username);
-    }
-    
-    /**
-     * Associates a username with a session for the <code>AbstractPersistedAnalysisJob</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateAnalysisJobWithSession(String username, Util util) {
-        analysisUsernameUtilityMap.put(username, util);
-    }
-    
-    
-    /**
-     * Associates a username with a session for the <code>StudyDeploymentJob</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateStudyConfigurationJobWithSession(String username, Util util) {
-        studyConfigurationUtilityMap.put(username, util);
-    }
-    
-    /**
-     * Associates a username with a session for the <code>PlatformDeploymentJob</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associatePlatformConfigurationJobWithSession(String username, Util util) {
-        platformConfigurationUtilityMap.put(username, util);
-    }
-    
-    /**
-     * Associates a username with a session for the <code>GenomicDataSourceConfiguration</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateGenomicDataSourceWithSession(String username, Util util) {
-        genomicDataSourceUtilityMap.put(username, util);
-    }
-    
-    /**
-     * Associates a username with a session for the <code>AbstractClinicalDataSourceConfiguration</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateSubjectDataSourceWithSession(String username, Util util) {
-        subjectDataSourceUtilityMap.put(username, util);
-    }
-    
-    /**
-     * Associates a username with a session for the <code>ImageDataSourceConfiguration</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateImagingDataSourceWithSession(String username, Util util) {
-        imagingDataSourceUtilityMap.put(username, util);
-    }
-    
 
 }

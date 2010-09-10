@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFileStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
@@ -152,6 +153,7 @@ public class StudyHelper {
     private ArrayDataType arrayDataType = ArrayDataType.GENE_EXPRESSION;
     private List<StudySubjectAssignment> studySubjects = new ArrayList<StudySubjectAssignment>();
     private Platform platform = new Platform();
+    private DelimitedTextClinicalSourceConfiguration clinicalConf;
     
     @SuppressWarnings({"PMD", "deprecation"}) // This is a long method for setting up test data
     public StudySubscription populateAndRetrieveStudy() {
@@ -197,9 +199,9 @@ public class StudyHelper {
         defaultAnnotationGroup.getAnnotationFieldDescriptors().add(getSampleAnnotationFieldDescriptor());
         myStudy.getAnnotationGroups().add(defaultAnnotationGroup);
 
-        DelimitedTextClinicalSourceConfiguration clinicalConf = new DelimitedTextClinicalSourceConfiguration();
+        clinicalConf = new DelimitedTextClinicalSourceConfiguration();
         myStudy.getStudyConfiguration().getClinicalConfigurationCollection().add(clinicalConf);
-        AnnotationFile annotationFile = new AnnotationFile();
+        AnnotationFile annotationFile = new AnnotationFileStub();
         clinicalConf.setAnnotationFile(annotationFile);
         
         addColumn(annotationFile, subjectAnnotationDefinition);
@@ -616,6 +618,8 @@ public class StudyHelper {
         imageSeriesAcquisition.setAssignment(new StudySubjectAssignment());
         imageDataSourceConfiguration.getImageSeriesAcquisitions().addAll(imageSeriesAcquisitions);
         imageDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
+        studyConfiguration.getClinicalConfigurationCollection().add(clinicalConf);
+        clinicalConf.setStudyConfiguration(studyConfiguration);
         return study;
     }
     

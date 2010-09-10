@@ -264,6 +264,9 @@
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
+        <property name="updater">
+            <ref local="subjectDataSourceAjaxUpdater"/>
+        </property>
     </bean>
     
     <bean id="defineClinicalFieldDescriptorAction"
@@ -708,6 +711,20 @@
         </property>
         <property name="deploymentService">
           <ref local="deploymentService"/>
+        </property>
+        <property name="dwrUtilFactory">
+            <ref local="dwrUtilFactory"/>
+        </property>
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
+    
+    <bean id="subjectDataSourceAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.SubjectDataSourceAjaxUpdater">
+        <dwr:remote javascript="SubjectDataSourceAjaxUpdater" />
+        <property name="workspaceService">
+          <ref local="workspaceService"/>
+        </property>
+        <property name="studyManagementService">
+          <ref local="studyManagementService"/>
         </property>
         <property name="dwrUtilFactory">
             <ref local="dwrUtilFactory"/>
