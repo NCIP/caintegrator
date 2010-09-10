@@ -87,7 +87,10 @@ package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.cagrid.common.ZipUtilities;
 import gov.nih.nci.caintegrator2.application.analysis.InvalidSurvivalValueDefinitionException;
+import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueTypeEnum;
@@ -583,4 +586,17 @@ public final class Cai2Util {
         return null;
     }
     
+    /**
+     * 
+     * @param studyConfiguration the study.
+     * @return true if any subject source is in progress (currently being loaded).
+     */
+    public static boolean isAnySubjectSourceInProgress(StudyConfiguration studyConfiguration) {
+        for (AbstractClinicalSourceConfiguration source : studyConfiguration.getClinicalConfigurationCollection()) {
+            if (Status.PROCESSING.equals(source.getStatus())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

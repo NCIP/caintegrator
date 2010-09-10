@@ -3,6 +3,7 @@
 
 <script type='text/javascript' src='dwr/interface/GenomicDataSourceAjaxUpdater.js'></script>
 <script type='text/javascript' src='dwr/interface/ImagingDataSourceAjaxUpdater.js'></script>
+<script type='text/javascript' src='dwr/interface/SubjectDataSourceAjaxUpdater.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
 
@@ -12,6 +13,7 @@
 
     function initializeJsp() {
         dwr.engine.setActiveReverseAjax(true);
+        SubjectDataSourceAjaxUpdater.initializeJsp();
         GenomicDataSourceAjaxUpdater.initializeJsp();
         ImagingDataSourceAjaxUpdater.initializeJsp();
     }
@@ -212,7 +214,7 @@
         
         <s:if test="%{studyConfiguration.id != null}">
         <s:actionerror/>
-        
+        <div id="errors" style="color: red;"> </div>
         <table class="form_wrapper_table">
             <tbody><tr>
                 <th class="title">Annotation Groups</th>
@@ -276,7 +278,7 @@
                 
         <table class="form_wrapper_table">
             <tbody><tr>
-                <th class="title">Subject Annotation Data Sources</th>
+                <th class="title">Subject Annotation Data Sources<span id="subjectSourceLoader"> <img src="images/ajax-loader.gif"/> </span></th>
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
@@ -316,59 +318,7 @@
                             <th>Last Modified</th>
                             <th>Action</th>
                         </tr>
-                        <s:iterator value="studyConfiguration.clinicalConfigurationCollection" status="status">
-                            <s:if test="#status.odd == true">
-                              <tr class="odd">
-                            </s:if>
-                            <s:else>
-                              <tr class="even">
-                            </s:else>            
-                            <td><s:property value="type" /></td>
-                            <td><s:property value="description" /></td>
-                            <td>
-                                <s:if test="%{!loadable}">
-                                            Definition Incomplete
-                                </s:if>
-                                <s:else>
-                                    <s:if test="%{currentlyLoaded}">
-                                            Loaded
-                                    </s:if>
-                                    <s:else>
-                                            Not Loaded
-                                    </s:else>
-                                </s:else>  
-                            </td>
-                            <td><s:property value="displayableLastModifiedDate" /></td>
-                            <td style="float: right;">
-                                <s:url id="editClinicalSource" action="editClinicalSource" includeParams="none">
-                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                    <s:param name="clinicalSource.id" value="id" />
-                                </s:url>
-                                <s:a href="%{editClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Annotations</span></span></s:a>
-                                <s:if test="%{loadable}" >
-                                    <s:if test="%{currentlyLoaded}">
-                                       <s:url id="reLoadClinicalSource" action="reLoadClinicalSource" includeParams="none">
-                                          <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                          <s:param name="clinicalSource.id" value="id" />
-                                       </s:url> 
-                                       <s:a href="%{reLoadClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;" onclick="showBusyDialog();"><span class="btn_img"><span class="reload">Reload All Subject Annotation Sources</span></span></s:a>
-                                    </s:if>
-                                    <s:else>
-                                       <s:url id="loadClinicalSource" action="loadClinicalSource" includeParams="none">
-                                          <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                          <s:param name="clinicalSource.id" value="id" />
-                                       </s:url> 
-                                       <s:a href="%{loadClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;" onclick="showBusyDialog();"><span class="btn_img"><span class="load">Load Subject Annotation Source</span></span></s:a>
-                                    </s:else>
-                                </s:if>
-                                <s:url id="deleteClinicalSource" action="deleteClinicalSource" includeParams="none">
-                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                    <s:param name="clinicalSource.id" value="id" />
-                                </s:url> 
-                                <s:a href="%{deleteClinicalSource}" cssClass="btn" cssStyle="margin: 0pt;" onclick="if (confirm('This subject annotation source file will be permanently deleted.')) { showBusyDialog(); return true;} return false;"><span class="btn_img"><span class="delete">Delete</span></span></s:a>                                
-                            </td>
-                        </tr>
-                        </s:iterator>
+                        <tbody id="subjectSourceJobStatusTable" />
                         
                     </table>
                 </td>

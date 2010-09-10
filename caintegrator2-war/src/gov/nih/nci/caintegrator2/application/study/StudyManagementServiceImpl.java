@@ -195,6 +195,12 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    public void saveSubjectSourceStatus(AbstractClinicalSourceConfiguration source) {
+        getDao().saveSubjectSourceStatus(source);
+    }
+    /**
+     * {@inheritDoc}
+     */
     public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
         securityManager.createProtectionElement(studyConfiguration);
     }
@@ -278,17 +284,21 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
 
     /**
      * {@inheritDoc}
+     * @throws InvalidFieldDescriptorException 
      */
+    @Transactional(rollbackFor = ValidationException.class)
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
             AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
-        throws ValidationException {
+        throws ValidationException, InvalidFieldDescriptorException {
+        save(studyConfiguration); // without saving first it was throwing an error upon second save below.
         if (validateAnnotationFieldDescriptors(studyConfiguration, 
                 clinicalSourceConfiguration.getAnnotationDescriptors(), EntityTypeEnum.SUBJECT)) {
             clinicalSourceConfiguration.loadAnnotation();
             save(studyConfiguration);
         } else {
-            throw new ValidationException("Unable to load clinical source due to invalid values being loaded.  " 
-                + "Check the annotations on the edit screen for more details.");
+            throw new InvalidFieldDescriptorException(
+                "Unable to load clinical source due to invalid values being loaded.  " 
+                    + "Check the annotations on the edit screen for more details.");
         }
     }
 
@@ -342,6 +352,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     public void reLoadClinicalAnnotation(StudyConfiguration studyConfiguration) throws ValidationException {
+        save(studyConfiguration); // without saving first it was throwing an error upon second save below.
         deleteClinicalAnnotation(studyConfiguration);
         for (AbstractClinicalSourceConfiguration configuration 
                 : studyConfiguration.getClinicalConfigurationCollection()) {
@@ -1008,6 +1019,17 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         imagingSource = getRefreshedEntity(imagingSource);
         HibernateUtil.loadCollection(imagingSource.getStudyConfiguration());
         return imagingSource;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public DelimitedTextClinicalSourceConfiguration getRefreshedClinicalSource(Long id) {
+        DelimitedTextClinicalSourceConfiguration source = new DelimitedTextClinicalSourceConfiguration();
+        source.setId(id);
+        source = getRefreshedEntity(source);
+        HibernateUtil.loadCollection(source.getStudyConfiguration());
+        return source;
     }
 
     /**

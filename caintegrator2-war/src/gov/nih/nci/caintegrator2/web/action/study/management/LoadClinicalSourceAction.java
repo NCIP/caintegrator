@@ -87,7 +87,8 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.Status;
-import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.web.ajax.ISubjectDataSourceAjaxUpdater;
+import gov.nih.nci.caintegrator2.web.ajax.SubjectDataSourceAjaxRunner;
 
 /**
  * Action called to edit an existing clinical data source.
@@ -95,21 +96,18 @@ import gov.nih.nci.caintegrator2.application.study.ValidationException;
 public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
 
     private static final long serialVersionUID = 1L;
+    private ISubjectDataSourceAjaxUpdater updater;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String execute() {
-        try {
-            getStudyManagementService().loadClinicalAnnotation(getStudyConfiguration(), getClinicalSource());
-            setStudyLastModifiedByCurrentUser(getClinicalSource(), 
-                    LogEntry.getSystemLogLoadSubjectAnnotationFile(
-                            getClinicalSource().getAnnotationFile().getFile().getName()));
-        } catch (ValidationException e) {
-            addActionError(e.getResult().getInvalidMessage());
-            return ERROR;
-        }
+        getClinicalSource().setStatus(Status.PROCESSING);
+        setStudyLastModifiedByCurrentUser(getClinicalSource(), 
+                LogEntry.getSystemLogLoadSubjectAnnotationFile(
+                        getClinicalSource().getAnnotationFile().getFile().getName()));
+        updater.runJob(getClinicalSource().getId(), SubjectDataSourceAjaxRunner.JobType.LOAD);
         return SUCCESS;
     }
     
@@ -118,15 +116,11 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
      * @return string
      */
     public String reLoad() {
-        try {
-            getStudyManagementService().reLoadClinicalAnnotation(getStudyConfiguration());
-            setStudyLastModifiedByCurrentUser(getClinicalSource(), 
-                    LogEntry.getSystemLogLoadSubjectAnnotationFile(
-                            getClinicalSource().getAnnotationFile().getFile().getName()));
-        } catch (ValidationException e) {
-            addActionError(e.getResult().getInvalidMessage());
-            return ERROR;
-        }
+        getClinicalSource().setStatus(Status.PROCESSING);
+        setStudyLastModifiedByCurrentUser(getClinicalSource(), 
+                LogEntry.getSystemLogLoadSubjectAnnotationFile(
+                        getClinicalSource().getAnnotationFile().getFile().getName()));
+        updater.runJob(getClinicalSource().getId(), SubjectDataSourceAjaxRunner.JobType.RELOAD);
         return SUCCESS;
     }
     
@@ -135,17 +129,27 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
      * @return string
      */
     public String delete() {
-        try {
-            getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
-            setStudyLastModifiedByCurrentUser(getClinicalSource(),
-                    LogEntry.getSystemLogDeleteSubjectAnnotationFile(
-                            getClinicalSource().getAnnotationFile().getFile().getName()));
-            getStudyManagementService().delete(getStudyConfiguration(), getClinicalSource());
-        } catch (ValidationException e) {
-            addActionError(e.getResult().getInvalidMessage());
-            return ERROR;
-        }
+        getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
+        getClinicalSource().setStatus(Status.PROCESSING);
+        setStudyLastModifiedByCurrentUser(getClinicalSource(),
+                LogEntry.getSystemLogDeleteSubjectAnnotationFile(
+                        getClinicalSource().getAnnotationFile().getFile().getName()));
+        updater.runJob(getClinicalSource().getId(), SubjectDataSourceAjaxRunner.JobType.DELETE);
         return SUCCESS;
+    }
+
+    /**
+     * @return the updater
+     */
+    public ISubjectDataSourceAjaxUpdater getUpdater() {
+        return updater;
+    }
+
+    /**
+     * @param updater the updater to set
+     */
+    public void setUpdater(ISubjectDataSourceAjaxUpdater updater) {
+        this.updater = updater;
     }
     
 }

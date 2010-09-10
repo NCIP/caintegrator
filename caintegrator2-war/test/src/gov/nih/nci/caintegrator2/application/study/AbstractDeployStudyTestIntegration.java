@@ -531,7 +531,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     }
 
     private void loadClinicalData()
-    throws IOException, ValidationException, ConnectionException {
+    throws IOException, ValidationException, ConnectionException, InvalidFieldDescriptorException {
         logStart();
         sourceConfiguration = 
             service.addClinicalAnnotationFile(studyConfiguration, getSubjectAnnotationFile(), 

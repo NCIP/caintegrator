@@ -242,7 +242,7 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testLoadClinicalAnnotation() throws ValidationException, IOException {
+    public void testLoadClinicalAnnotation() throws ValidationException, IOException, InvalidFieldDescriptorException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyManagementService.save(studyConfiguration);
         DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
@@ -284,8 +284,8 @@ public class StudyManagementServiceTest {
     }
     
     
-    @Test(expected=ValidationException.class)
-    public void testLoadInvalidClinicalAnnotation() throws ValidationException, IOException {
+    @Test(expected=InvalidFieldDescriptorException.class)
+    public void testLoadInvalidClinicalAnnotation() throws ValidationException, IOException, InvalidFieldDescriptorException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyManagementService.save(studyConfiguration);
         DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
@@ -308,7 +308,7 @@ public class StudyManagementServiceTest {
         daoStub.fileColumns.add(sourceConfiguration.getAnnotationFile().getColumns().get(3));
         definition.setDataType(AnnotationTypeEnum.DATE);
         sourceConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
-        studyManagementService.loadClinicalAnnotation(studyConfiguration, sourceConfiguration); 
+        studyManagementService.loadClinicalAnnotation(studyConfiguration, sourceConfiguration);
         studyManagementService.reLoadClinicalAnnotation(studyConfiguration); 
     }
     
