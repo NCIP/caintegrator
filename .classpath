@@ -128,7 +128,7 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/log4j-1.2.9.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/mail-1.4.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/mysql-connector-java-5.0.5.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/mysql-connector-java-5.1.13.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ognl-2.7.3.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ojdbc14-10.2.0.3.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/opencsv-1.8.jar"/>
