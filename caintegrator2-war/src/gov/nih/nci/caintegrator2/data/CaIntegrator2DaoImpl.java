@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
+import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
@@ -209,6 +210,17 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @SuppressWarnings(UNCHECKED)
     public <T> T get(Long id, Class<T> objectClass) {
         return (T) getHibernateTemplate().get(objectClass, id);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void saveSubjectSourceStatus(AbstractClinicalSourceConfiguration source) {
+        getHibernateTemplate().evict(source);
+        AbstractClinicalSourceConfiguration newSource = get(source.getId(), AbstractClinicalSourceConfiguration.class);
+        newSource.setStatus(source.getStatus());
+        newSource.setStatusDescription(source.getStatusDescription());
+        save(newSource);
     }
     
     /**

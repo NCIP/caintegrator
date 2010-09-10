@@ -158,9 +158,12 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean addExternalLinksToStudyCalled;
     public boolean saveAnnotationGroupCalled = false;
     public boolean daoSaveCalled = false;
+    public boolean getRefreshedClinicalSourceCalled = false;
     
     public ImageDataSourceConfiguration refreshedImageSource = new ImageDataSourceConfiguration();
     public GenomicDataSourceConfiguration refreshedGenomicSource = new GenomicDataSourceConfiguration();
+    public DelimitedTextClinicalSourceConfiguration refreshedClinicalSource = 
+        new DelimitedTextClinicalSourceConfiguration();
     public StudyConfiguration refreshedStudyConfiguration = new StudyConfiguration();
 
 
@@ -171,6 +174,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         if (studyConfiguration.getStudy().getShortTitleText().equalsIgnoreCase("Invalid")) {
             throw new ValidationException(new ValidationResult());
         }
+        clinicalSourceConfiguration.setStatus(Status.LOADED);
     }
 
     public void reLoadClinicalAnnotation(StudyConfiguration studyConfiguration)
@@ -245,6 +249,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         addExternalLinksToStudyCalled = false;
         saveAnnotationGroupCalled = false;
         daoSaveCalled = false;
+        getRefreshedClinicalSourceCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -583,6 +588,15 @@ public class StudyManagementServiceStub implements StudyManagementService {
         if (throwValidationException) {
             throw new ValidationException("");
         }
+    }
+
+    public DelimitedTextClinicalSourceConfiguration getRefreshedClinicalSource(Long id) {
+        getRefreshedClinicalSourceCalled = true;
+        return refreshedClinicalSource;
+    }
+
+    public void saveSubjectSourceStatus(AbstractClinicalSourceConfiguration source) {
+        
     }
 
 }

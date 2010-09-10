@@ -86,7 +86,9 @@
 package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
+import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
@@ -195,7 +197,20 @@ public final class HibernateUtil {
         }
         loadCollection(studySubscription.getStudy().getStudyConfiguration());
     }
-
+    
+    /**
+     * Make sure all persistent collections are loaded.
+     * @param clinicalSource to load from hibernate.
+     */
+    private static void loadClinicalSource(AbstractClinicalSourceConfiguration clinicalSource) {
+        loadCollection(clinicalSource.getAnnotationDescriptors());
+        if (clinicalSource instanceof DelimitedTextClinicalSourceConfiguration) {
+            loadAnnotationFile(((DelimitedTextClinicalSourceConfiguration) clinicalSource).getAnnotationFile());
+        } else {
+            throw new IllegalStateException("Unknown clinical source type.");
+        }
+    }
+    
     /**
      * Make sure all persistent collections are loaded.
      * @param genomicSources List of GenomicDataSourceConfiguration to load from hibernate.
@@ -235,7 +250,7 @@ public final class HibernateUtil {
     
     private static void loadClinicalSources(List<AbstractClinicalSourceConfiguration> clinicalConfigurationCollection) {
         for (AbstractClinicalSourceConfiguration clinicalSource : clinicalConfigurationCollection) {
-            HibernateUtil.loadCollection(clinicalSource.getAnnotationDescriptors());
+            loadClinicalSource(clinicalSource);
         }
     }
 
@@ -252,15 +267,20 @@ public final class HibernateUtil {
             if (imageSource.getImageAnnotationConfiguration().isAimDataService()) {
                 Hibernate.initialize(imageSource.getImageAnnotationConfiguration().getAimServerProfile());
             } else {
-                Hibernate.initialize(imageSource.getImageAnnotationConfiguration().getAnnotationFile());
-                loadCollection(imageSource.getImageAnnotationConfiguration().getAnnotationFile().getColumns());
-                for (FileColumn column : imageSource.getImageAnnotationConfiguration().
-                        getAnnotationFile().getColumns()) {
-                    Hibernate.initialize(column);
-                    if (column.getFieldDescriptor() != null) {
-                        Hibernate.initialize(column.getFieldDescriptor());
-                        Hibernate.initialize(column.getFieldDescriptor().getDefinition());
-                    }
+                loadAnnotationFile(imageSource.getImageAnnotationConfiguration().getAnnotationFile());
+            }
+        }
+    }
+    
+    private static void loadAnnotationFile(AnnotationFile annotationFile) {
+        Hibernate.initialize(annotationFile);
+        loadCollection(annotationFile.getColumns());
+        for (FileColumn column : annotationFile.getColumns()) {
+            Hibernate.initialize(column);
+            if (column.getFieldDescriptor() != null) {
+                Hibernate.initialize(column.getFieldDescriptor());
+                if (column.getFieldDescriptor().getDefinition() != null) {
+                    loadCollections(column.getFieldDescriptor().getDefinition());
                 }
             }
         }

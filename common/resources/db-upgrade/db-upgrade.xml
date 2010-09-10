@@ -424,4 +424,9 @@
         <comment>Change the server host name of the CA_DNA_COPY_URL.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.18.sql"/>
     </changeSet>    
+    <changeSet id="1.3.01" author="tandrews">
+        <comment>Adding a status to the clinical source.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.3/upgrade-1.3.01.sql"/>
+    </changeSet>    
+    
 </databaseChangeLog>

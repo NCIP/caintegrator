@@ -155,3 +155,9 @@
            document.getElementById('busyDialogDiv').style.visibility = 'visible';
            setTimeout("ProgressImg.src = ProgressImg.src",100);
        }
+       
+       function hideBusyDialog() {
+           document.getElementById('TB_overlay').style.display = 'none';
+           document.getElementById('busyDialogDiv').style.display = 'none';
+           document.getElementById('busyDialogDiv').style.visibility = 'hidden';
+       }

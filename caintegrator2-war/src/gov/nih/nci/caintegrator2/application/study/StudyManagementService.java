@@ -108,6 +108,7 @@ import java.util.Set;
 /**
  * Service used to create, define, deploy and update studies.
  */
+@SuppressWarnings("PMD.ExcessiveClassLength")
 public interface StudyManagementService extends CaIntegrator2EntityRefresher {
     
     /**
@@ -123,6 +124,12 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @throws ValidationException if values are invalid for the given type.
      */
     void save(AnnotationDefinition definition) throws ValidationException;
+    
+    /**
+     * Saves the status/status description only for the given source.
+     * @param source to save status for.
+     */
+    void saveSubjectSourceStatus(AbstractClinicalSourceConfiguration source);
     
     /**
      * Creates a protection element for the Study Configuration.
@@ -217,10 +224,11 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @param studyConfiguration study configuration to load
      * @param clinicalSourceConfiguration clinical source configuration to load
      * @throws ValidationException fail to load
+     * @throws InvalidFieldDescriptorException  if field descriptors are invalid.
      */
     void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
             AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
-        throws ValidationException;
+        throws ValidationException, InvalidFieldDescriptorException;
 
     /**
      * ReLoads clinical annotations for study configuration.
@@ -275,6 +283,13 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @return refreshed genomic source.
      */
     GenomicDataSourceConfiguration getRefreshedGenomicSource(Long id);
+    
+    /**
+     * Retrieves refreshed clinical source.
+     * @param id of the clinical source.
+     * @return refreshed clinical source.
+     */
+    DelimitedTextClinicalSourceConfiguration getRefreshedClinicalSource(Long id);
     
     /**
      * Retrieves refreshed study configuration.
