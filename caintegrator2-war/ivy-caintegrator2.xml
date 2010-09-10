@@ -131,7 +131,7 @@
     <dependency org="org.hibernate" name="hibernate-annotations" rev="1.0" conf="runtime"/>
     <dependency org="org.hibernate" name="hibernate" rev="3.2.0.ga" conf="runtime->master"/>
     <dependency org="junit" name="junit" rev="4.4" conf="compile->master"/>
-    <dependency org="mysql" name="mysql-connector-java" rev="5.0.5" conf="compile->master"/>
+    <dependency org="mysql" name="mysql-connector-java" rev="5.1.13" conf="compile->master"/>
     <dependency org="commons-collections" name="commons-collections" rev="3.2" conf="runtime,test-checkstyle->master"/>
     <dependency org="commons-logging" name="commons-logging" rev="1.0.4" conf="compile,test-checkstyle->master"/>
     <dependency org="oro" name="oro" rev="2.0.8" conf="runtime,test-cobertura->master"/>
