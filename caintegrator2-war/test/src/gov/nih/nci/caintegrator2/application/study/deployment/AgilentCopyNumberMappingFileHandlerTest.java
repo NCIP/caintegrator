@@ -26,6 +26,7 @@ import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -69,7 +70,15 @@ public class AgilentCopyNumberMappingFileHandlerTest {
         for (ArrayData arrayData : arrayDatas) {
             checkArrayData(arrayData);
         }
-    }
+        
+/*        exceptionCaught = false;
+        try {
+            handler.loadArrayData();
+        } catch (DataRetrievalException e) {
+            exceptionCaught = true;
+        }
+        assertTrue(exceptionCaught);
+*/    }
 
     private void checkArrayData(ArrayData arrayData) {
         assertNotNull(arrayData.getArray());
@@ -106,7 +115,10 @@ public class AgilentCopyNumberMappingFileHandlerTest {
         throws IOException, UnsignedOutOfLimitsException, DataRetrievalException {
             List<String> sampleNames = new ArrayList<String>();
             sampleNames.add("TCGA-13-0805-01A-01D-0357-04");
-            Map<String, Map<String, Float>> dataMap = AgilentLevelTwoDataSingleFileParser.INSTANCE.extractData(dataFile, sampleNames);
+            AgilentLevelTwoDataSingleFileParser parser = new AgilentLevelTwoDataSingleFileParser(dataFile,
+                    "ProbeID", "Hybridization Ref", sampleNames);
+            Map<String, Map<String, Float>> dataMap = new HashMap<String, Map<String, Float>>();
+            parser.loadData(dataMap);
             Map<String, Float> reporterMap = dataMap.values().iterator().next();
             
             ReporterList reporterList = platform.addReporterList(reporterListName, ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
