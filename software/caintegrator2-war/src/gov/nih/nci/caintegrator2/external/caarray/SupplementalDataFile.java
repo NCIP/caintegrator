@@ -95,6 +95,7 @@ public class SupplementalDataFile {
     private File file;
     private String probeNameHeader;
     private String valueHeader;
+    private String sampleHeader;
     /**
      * @return the fileName
      */
@@ -142,5 +143,17 @@ public class SupplementalDataFile {
      */
     public void setValueHeader(String valueHeader) {
         this.valueHeader = valueHeader;
+    }
+    /**
+     * @return the sampleHeader
+     */
+    public String getSampleHeader() {
+        return sampleHeader;
+    }
+    /**
+     * @param sampleHeader the sampleHeader to set
+     */
+    public void setSampleHeader(String sampleHeader) {
+        this.sampleHeader = sampleHeader;
     }
 }
