@@ -220,14 +220,15 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
     private void updateRowFileDescriptions(Util utilThis, ImageDataSourceConfiguration imagingSource,
             String imagingSourceId) {
         StringBuffer fileDescriptionString = new StringBuffer();
-        String brString = "<br>";
         if (isAimDataService(imagingSource)) {
             fileDescriptionString.append("<i>AIM Service URL: </i>");
             fileDescriptionString
                     .append(imagingSource.getImageAnnotationConfiguration().getAimServerProfile().getUrl());
         } else {
-            updateFileDescriptionString(imagingSource, fileDescriptionString, brString);
+            updateFileDescriptionString(imagingSource, fileDescriptionString);
         }
+        fileDescriptionString.append("<br><i>Mapping File: </i>");
+        fileDescriptionString.append(imagingSource.getMappingFileName());
         utilThis.setValue(JOB_FILE_DESCRIPTION + imagingSourceId, fileDescriptionString.toString());
     }
 
@@ -237,7 +238,7 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
     }
 
     private void updateFileDescriptionString(ImageDataSourceConfiguration imagingSource,
-            StringBuffer fileDescriptionString, String brString) {
+            StringBuffer fileDescriptionString) {
         fileDescriptionString.append("<i>Annotation File: </i>");
         if (imagingSource.getImageAnnotationConfiguration() != null) {
             fileDescriptionString.append(imagingSource.getImageAnnotationConfiguration().
@@ -245,9 +246,6 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
         } else {
             fileDescriptionString.append("None");
         }
-        fileDescriptionString.append(brString);
-        fileDescriptionString.append("<i>Mapping File: </i>");
-        fileDescriptionString.append(imagingSource.getMappingFileName());
     }
 
     private void updateRowActions(ImageDataSourceConfiguration imagingSource, Util utilThis, String imagingSourceId) {
