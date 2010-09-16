@@ -285,14 +285,24 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
 
     private void addNonErrorActions(ImageDataSourceConfiguration imagingSource, 
                     Util utilThis, String imagingSourceId, String jobActionBarString) {
-        utilThis.setValue(JOB_EDIT_ANNOTATIONS_URL + imagingSourceId, retrieveUrl(imagingSource, 
-                "editImagingSourceAnnotations", "Edit Annotations", "edit_annotations", false));
-        utilThis.setValue(JOB_ACTION_BAR2 + imagingSourceId, jobActionBarString, false);
-        
+        addEditAnnotationAction(imagingSource, utilThis, imagingSourceId, jobActionBarString);
         if (imagingSource.getImageAnnotationConfiguration() != null) {
             addLoadAnnotationAction(imagingSource, utilThis, imagingSourceId, jobActionBarString);
         } 
         
+    }
+
+    private void addEditAnnotationAction(ImageDataSourceConfiguration imagingSource, Util utilThis,
+            String imagingSourceId, String jobActionBarString) {
+        if (!isAimDataService(imagingSource)) {
+            String editString = "Edit Annotations";
+            if (imagingSource.getImageAnnotationConfiguration() == null) {
+                editString = "Add Annotations";
+            }
+            utilThis.setValue(JOB_EDIT_ANNOTATIONS_URL + imagingSourceId, retrieveUrl(imagingSource, 
+                    "editImagingSourceAnnotations", editString, "edit_annotations", false));
+            utilThis.setValue(JOB_ACTION_BAR2 + imagingSourceId, jobActionBarString, false);
+        }
     }
 
     private void addLoadAnnotationAction(ImageDataSourceConfiguration imagingSource, Util utilThis,
