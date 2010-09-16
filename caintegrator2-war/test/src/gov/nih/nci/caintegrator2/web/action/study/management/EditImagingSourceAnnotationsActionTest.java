@@ -160,6 +160,9 @@ public class EditImagingSourceAnnotationsActionTest extends AbstractSessionBased
         assertEquals(2, action.getSelectableAnnotationGroups().size());
         
         action.getImageSourceConfiguration().getImageAnnotationConfiguration().setUploadType(ImageAnnotationUploadType.AIM);
+        action.setUploadType(ImageAnnotationUploadType.AIM.getValue());
+        assertEquals("display: block;", action.getAimInputCssStyle());
+        assertEquals("display: none;", action.getFileInputCssStyle());
         action.prepare();
         assertTrue(action.isAimReload());
     }
@@ -167,6 +170,9 @@ public class EditImagingSourceAnnotationsActionTest extends AbstractSessionBased
     @Test
     public void testAddImageAnnotations() {
         action.clearErrorsAndMessages();
+        action.setUploadType(ImageAnnotationUploadType.FILE.getValue());
+        assertEquals("display: block;", action.getFileInputCssStyle());
+        assertEquals("display: none;", action.getAimInputCssStyle());
         action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
         action.setImageAnnotationFileFileName(TestDataFiles.VALID_FILE.getName());
         assertEquals(Action.SUCCESS, action.addImageAnnotations());

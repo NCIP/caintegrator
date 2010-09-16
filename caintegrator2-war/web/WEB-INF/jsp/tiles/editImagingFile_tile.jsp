@@ -4,30 +4,13 @@
 
 <script type="text/javascript">
 
-    function disableFormElement(obj)
-    {
-        var nameOfCallingElement = obj.name;
-        var arrayOfElements=document.getElementsByName(nameOfCallingElement);
-        
-        for (var i = 0; i < arrayOfElements.length; i++){
-            if (arrayOfElements[i].value == "Use AIM Data Service" &&
-                   arrayOfElements[i].checked==true ) {
-                document.getElementById("imageAnnotationFile").disabled = true;
-                document.getElementById("createNewAnnotationDefinition").disabled = true;
-                document.getElementById("aimUrl").disabled = false;
-                document.getElementById("aimUsername").disabled = false;
-                document.getElementById("aimPassword").disabled = false;
-                break;
-            } else {
-                document.getElementById("imageAnnotationFile").disabled = false;
-                document.getElementById("createNewAnnotationDefinition").disabled = false;
-                document.getElementById("aimUrl").disabled = true;
-                document.getElementById("aimUsername").disabled = true;
-                document.getElementById("aimPassword").disabled = true;
-            }
-        } 
-        
-    }   
+    // This function is called at body onload because IE 7 puts the footer in the middle of the page
+    // sporadically, and this toggles it to go to the proper position.
+    function initializeJsp() {
+        var tbody = document.getElementById('annotationUploadTypeDiv');
+        tbody.style.display = "none";
+        tbody.style.display = "";
+    }
 
 </script>
 <div id="content">
@@ -43,7 +26,6 @@
     <!--/Page Help-->          
     
     <h1><s:property value="#subTitleText" /></h1>
-    <p>Assign annotation definitions to data fields.</p>
 
     <div class="form_wrapper_outer">
 
@@ -53,41 +35,51 @@
                 <td colspan="2" style="padding: 5px;">
                     
                 <s:form id="imagingSourceForm" name="imagingSourceForm" action="saveImagingSourceAnnotations"
-                    method="post" enctype="multipart/form-data">
+                    method="post" enctype="multipart/form-data" theme="css_xhtml">
                 <s:hidden name="studyConfiguration.id" />
                 <s:hidden name="imageSourceConfiguration.id" />
                 
                 <s:if test="imageSourceConfiguration.imageAnnotationConfiguration == null">
-                <table>
-                    <s:radio name="uploadType" 
-                        list="@gov.nih.nci.caintegrator2.application.study.ImageAnnotationUploadType@getStringValues()"
-                        required="true" label="Select Annotation Upload Type:"
-                        onclick="disableFormElement(this)"/>
-                    <s:file id="imageAnnotationFile" name="imageAnnotationFile" label="Image Series Annotation File"
-                        disabled="%{annotationFileDisable}" />
-                    <s:checkbox name="createNewAnnotationDefinition" id="createNewAnnotationDefinition"
-                        label="Create a new Annotation Definition if one is not found" labelposition="left" />
-                    <s:select name="aimServerProfile.url" id="aimUrl" accesskey="false"
-                        headerKey="" headerValue="--Enter an AIM Server Grid URL--"
-                        list="aimServices" label=" AIM Server Grid URL " required="true" disabled="%{aimDisable}"
-                        cssClass="editable-select" />
-                    <s:textfield label=" AIM Username " name="aimServerProfile.username"
-                        disabled="%{aimDisable}" id="aimUsername" size="40"/>
-                    <s:password label=" AIM Password " name="aimServerProfile.password"
-                        disabled="%{aimDisable}" id="aimPassword" size="40"/>
-                    <tr> 
-                    <td></td>
-                    <td>
-                    <button type="button" 
-                            onclick="document.imagingSourceForm.action = 'cancelImagingSource.action';
-                            document.imagingSourceForm.submit();"> Cancel 
-                    </button>
-                    <button type="button" 
-                            onclick="document.imagingSourceForm.action = 'addImagingSourceAnnotations.action';
-                            document.imagingSourceForm.submit();"> Add </button>
-                    </td> 
-                    </tr>
-                </table>
+                <s:div>
+                    <br />
+                    <s:div cssStyle="padding: 1em 0 0 0;" id="annotationUploadTypeDiv">
+                        <s:div cssClass="wwlbl"><label class="label"><span class="required">*</span>Select Annotation Upload Type: </label></s:div>
+                        <s:div>
+                            <s:radio theme="css_xhtml" name="uploadType" list="#{'Upload Annotation File':'Upload Annotation File'}" onclick="document.getElementById('aimInputParams').style.display = 'none'; document.getElementById('fileInputParams').style.display = 'block';" />
+                            <s:radio theme="css_xhtml" name="uploadType" list="#{'Use AIM Data Service':'Use AIM Data Service'}" onclick="document.getElementById('fileInputParams').style.display = 'none'; document.getElementById('aimInputParams').style.display = 'block';" />
+                        </s:div>
+                    </s:div>
+                    <br />
+                
+                    <s:div id="fileInputParams" cssStyle="%{fileInputCssStyle}">
+	                    <s:file id="imageAnnotationFile" name="imageAnnotationFile" label="Image Series Annotation File"/>
+                        <s:checkbox name="createNewAnnotationDefinition" id="createNewAnnotationDefinition"
+                                label="Create a new Annotation Definition if one is not found" labelposition="left" />
+                    </s:div>
+                    <s:div id="aimInputParams" cssStyle="%{aimInputCssStyle}">
+	                    <s:select name="aimServerProfile.url" id="aimUrl" accesskey="false"
+	                        headerKey="" headerValue="--Enter an AIM Server Grid URL--"
+	                        list="aimServices" label=" AIM Server Grid URL " required="true"
+	                        cssClass="editable-select" />
+	                    <s:textfield label=" AIM Username " name="aimServerProfile.username"
+	                        id="aimUsername" size="40"/>
+	                    <s:password label=" AIM Password " name="aimServerProfile.password"
+	                        id="aimPassword" size="40"/>
+                    </s:div>
+                    <div style="position: relative; white-space: nowrap;">
+                    <div class="wwlbl" id="wwlbl_webServiceUrl"><label class="label" for="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId"></label>
+                    </div>
+                    <div class="wwctrl" id="wwlbl_webServiceUrl">
+		                   <button type="button" 
+		                           onclick="document.imagingSourceForm.action = 'cancelImagingSource.action';
+		                           document.imagingSourceForm.submit();"> Cancel 
+		                   </button>
+		                   <button type="button" 
+		                           onclick="document.imagingSourceForm.action = 'addImagingSourceAnnotations.action';
+		                           document.imagingSourceForm.submit();"> Add </button>
+                    </div>
+                    </div>
+                </s:div>
                 </s:if>
                 
                 <s:else>

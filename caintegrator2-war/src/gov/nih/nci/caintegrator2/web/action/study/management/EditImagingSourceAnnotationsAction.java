@@ -440,5 +440,24 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
     public void setAimReload(boolean aimReload) {
         this.aimReload = aimReload;
     }
+    
+    /**
+     * 
+     * @return css style value.
+     */
+    public String getFileInputCssStyle() {
+        return ImageAnnotationUploadType.FILE.getValue().equals(uploadType.getValue()) 
+            ? "display: block;" : "display: none;";
+    }
+    
+    /**
+     * 
+     * @return css style value.
+     */
+    public String getAimInputCssStyle() {
+        return ImageAnnotationUploadType.AIM.getValue().equals(uploadType.getValue()) 
+            ? "display: block;" : "display: none;";
+    }
+
 
 }
