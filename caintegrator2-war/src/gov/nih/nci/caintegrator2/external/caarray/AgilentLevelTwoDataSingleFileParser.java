@@ -110,8 +110,8 @@ public final class AgilentLevelTwoDataSingleFileParser {
      * @param sampleList list of samples to process
      * @param probeHeader the probe header
      * @param sampleHeader the sample header
-     * @throws DataRetrievalException 
-     * @throws IOException 
+     * @throws DataRetrievalException data retrieval exception
+     * @throws IOException I/O exception
      */
     public AgilentLevelTwoDataSingleFileParser(File dataFile, String probeHeader, String sampleHeader,
             List<String> sampleList)
