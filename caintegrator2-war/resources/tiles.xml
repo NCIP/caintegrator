@@ -39,7 +39,8 @@
     
 	<definition name="editImagingFile" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editImagingFile_tile.jsp" />
-        <put-attribute name="subTitle" value="Define Fields for Imaging Data" />
+        <put-attribute name="subTitle" value="Add Imaging Annotations Data" />
+        <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyDwrAjax_tile.jsp" />
     </definition>
     
     <definition name="editFieldDescriptor" extends="cssBaseDef">
