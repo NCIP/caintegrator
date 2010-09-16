@@ -174,7 +174,7 @@ public class EditDnaAnalysisDataConfigurationActionTest extends AbstractSessionB
         assertFalse(action.hasFieldErrors());
         action.getGenomicSource().setSingleDataFile(true);
         action.validate();
-        assertTrue(action.hasFieldErrors());
+        assertFalse(action.hasFieldErrors());
         action.setMappingFile(TestDataFiles.REMBRANDT_COPY_NUMBER_SINGLE_FILE);
     }
     

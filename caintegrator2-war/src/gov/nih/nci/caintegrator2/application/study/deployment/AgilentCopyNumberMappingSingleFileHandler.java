@@ -101,12 +101,13 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataSingleFileParser;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -124,8 +125,9 @@ import au.com.bytecode.opencsv.CSVReader;
 class AgilentCopyNumberMappingSingleFileHandler extends AbstractDnaAnalysisMappingFileHandler {
     
     static final String FILE_TYPE = "data";
-    private String dataFileName;
     private final List<Sample> samples = new ArrayList<Sample>();
+    private final List<String> dataFileNames = new ArrayList<String>();
+    private final List<SupplementalDataFile> dataFiles = new ArrayList<SupplementalDataFile>();
     
     private static final Logger LOGGER = Logger.getLogger(AgilentCopyNumberMappingSingleFileHandler.class);
     
@@ -143,8 +145,16 @@ class AgilentCopyNumberMappingSingleFileHandler extends AbstractDnaAnalysisMappi
             while ((fields = reader.readNext()) != null) {
                 String subjectId = fields[0].trim();
                 String sampleName = fields[1].trim();
-                dataFileName = fields[2].trim();
                 mappingSample(subjectId, sampleName);
+                String dataFileName = fields[2].trim();
+                if (!dataFileNames.contains(dataFileName)) {
+                    dataFileNames.add(dataFileName);
+                    SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
+                    supplementalDataFile.setFileName(dataFileName);
+                    supplementalDataFile.setProbeNameHeader(fields[3].trim());
+                    supplementalDataFile.setSampleHeader(fields[4].trim());
+                    dataFiles.add(supplementalDataFile);
+                }
             }
             List<ArrayDataValues> arrayDataValues = loadArrayDataValue();
             getDao().save(getGenomicSource().getStudyConfiguration());
@@ -157,26 +167,49 @@ class AgilentCopyNumberMappingSingleFileHandler extends AbstractDnaAnalysisMappi
         }
     }
 
-    private void mappingSample(String subjectIdentifier, String sampleName) 
-    throws ValidationException, FileNotFoundException {
-        Sample sample = getSample(sampleName, subjectIdentifier);
-        samples.add(sample);
+    private void mappingSample(String subjectIdentifier, String sampleName)
+    throws FileNotFoundException, ValidationException {
+        samples.add(getSample(sampleName, subjectIdentifier));
     }
 
     private List<ArrayDataValues> loadArrayDataValue() 
-    throws ConnectionException, DataRetrievalException, ValidationException {
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
         List<ArrayDataValues> arrayDataValuesList = new ArrayList<ArrayDataValues>();
-        File dataFile = getDataFile(dataFileName);
-        try {
-            PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(
-                    getGenomicSource().getPlatformName()));
-            Set<ReporterList> reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-            Map<String, Map<String, Float>> agilentDataMap = AgilentLevelTwoDataSingleFileParser.INSTANCE.extractData(
-                    dataFile, getSampleList());
-            loadArrayData(arrayDataValuesList, platformHelper, reporterLists, agilentDataMap);
-            return arrayDataValuesList;
-        } finally {
-            doneWithFile(dataFile);
+        PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(
+            getGenomicSource().getPlatformName()));
+        Set<ReporterList> reporterLists = platformHelper.getReporterLists(
+            ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        Map<String, Map<String, Float>> agilentDataMap = extractData();
+        loadArrayData(arrayDataValuesList, platformHelper, reporterLists, agilentDataMap);
+        return arrayDataValuesList;
+    }
+
+    private Map<String, Map<String, Float>> extractData()
+    throws DataRetrievalException, ConnectionException, ValidationException, IOException {
+        Map<String, Map<String, Float>> agilentDataMap = new HashMap<String, Map<String, Float>>();
+        for (SupplementalDataFile dataFile : dataFiles) {
+            AgilentLevelTwoDataSingleFileParser parser = new AgilentLevelTwoDataSingleFileParser(
+                    getDataFile(dataFile.getFileName()), dataFile.getProbeNameHeader(),
+                    dataFile.getSampleHeader(), getSampleList());
+            parser.loadData(agilentDataMap);
+        }
+        validateSampleMapping(agilentDataMap, getSampleList());
+        return agilentDataMap;
+    }
+
+    private void validateSampleMapping(Map<String, Map<String, Float>> agilentDataMap, List<String> sampleList)
+    throws DataRetrievalException {
+        StringBuffer errorMsg = new StringBuffer();
+        for (String sampleName : sampleList) {
+            if (!agilentDataMap.containsKey(sampleName)) {
+                if (errorMsg.length() > 0) {
+                    errorMsg.append(", ");
+                }
+                errorMsg.append(sampleName);
+            }
+        }
+        if (errorMsg.length() > 0) {
+            throw new DataRetrievalException("Sample not found error: " + errorMsg.toString());
         }
     }
 
