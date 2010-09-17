@@ -63,7 +63,7 @@
                     
                     <s:file name="mappingFile" label="Subject and Sample Mapping File" size="40"/><br>
                         <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
-                            <span class="wwlbl">(csv file with 3 column format for mapping single data file and 5 column format for mapping 1 data file per sample)</span>
+                            <span class="wwlbl">(csv file with 6 column format)</span>
                             <span class="wwctrl"></span>
                         </s:div>
                     <br/>
@@ -74,10 +74,10 @@
                     <s:textfield name="dnaAnalysisDataConfiguration.permutationReplicates" label="Permutation Replicates" /><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.randomNumberSeed" label="Random Number Seed" /><br>
                     <s:if test="possibleSingleDataFile">
-                        <s:checkbox name="genomicSource.singleDataFile" label="Single Data File"
+                        <s:checkbox name="genomicSource.singleDataFile" label="Multiple Samples Per Data File"
                             labelposition="left" /><br>
                             <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
-                                <span class="wwlbl">(one data file for all samples)</span>
+                                <span class="wwlbl">(Default is 1 sample per data file)</span>
                                 <span class="wwctrl"></span>
                             </s:div>
                     </s:if>
