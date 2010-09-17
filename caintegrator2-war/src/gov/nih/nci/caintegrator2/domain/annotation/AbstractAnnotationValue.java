@@ -154,12 +154,12 @@ public abstract class AbstractAnnotationValue extends AbstractCaIntegrator2Objec
     
     /**
      * This function does 2 things:
-     * <ol><li>Converts the current annotation value to the data type of the given AnnotationDefinition.</li>
-     * <dl><dt>*If the type is the same as the current type then it will not convert.</dt> 
-     * <dt>*If the type is different, it will create a new AnnotationValue and convert itself into that type.</dt></dl>
-     * <li> Moves the value to the given AnnotationDefinition.</li>
-     * <dl><dt>*If the annotationDefinition is the same as the current annotationDefinition it will not move</dt></dl>
-     * </ol>
+     * Converts the current annotation value to the data type of the given AnnotationDefinition.
+     * *If the type is the same as the current type then it will not convert.
+     * *If the type is different, it will create a new AnnotationValue and convert itself into that type.
+     * Moves the value to the given AnnotationDefinition.
+     * *If the annotationDefinition is the same as the current annotationDefinition it will not move
+     * 
      * NOTE: If the given annotationDefinition is different than current AnnotationDefinition then the current value 
      * will be removed from the old annotationDefinition (and subsequently deleted).
      * @param newAnnotationDefinition to move the value to.
