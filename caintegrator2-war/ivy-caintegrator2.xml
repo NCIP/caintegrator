@@ -34,7 +34,7 @@
     <dependency org="log4j" name="log4j" rev="1.2.9" conf="test-cobertura->master"/>  
     <dependency org="javancss" name="javancss" rev="29.50" conf="test-javancss->master"/>
     <dependency org="javancss" name="ccl" rev="29.50" conf="test-javancss->master"/>
-    <dependency org="checkstyle" name="checkstyle" rev="4.4" conf="test-checkstyle->master"/>
+    <dependency org="checkstyle" name="checkstyle" rev="all.5.1" conf="test-checkstyle->master"/>
     <dependency org="commons-beanutils" name="commons-beanutils-core" rev="1.7.0" conf="test-checkstyle->master"/>
     <dependency org="commons-cli" name="commons-cli" rev="1.0" conf="test-checkstyle->master"/>
     <!-- <dependency org="umd" name="findbugs-ant" rev="1.3.4" conf="test-findbugs->master"/> -->

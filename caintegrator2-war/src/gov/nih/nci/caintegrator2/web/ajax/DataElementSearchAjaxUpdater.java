@@ -210,9 +210,6 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
         
     }
 
-    /**
-     * {@inheritDoc}
-     */
     private void killRunningThreads() {
         if (annotationDefinitionSearchThread != null 
                 && annotationDefinitionSearchThread.isAlive()) {
