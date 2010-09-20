@@ -61,7 +61,7 @@
 </tr>
 <tr>
 	<td>select</td>
-	<td>managePlatformForm_platformType</td>
+	<td>platformType</td>
 	<td>label=Agilent Gene Expression</td>
 </tr>
 <tr>
@@ -87,7 +87,7 @@
 </tr>
 <tr>
 	<td>select</td>
-	<td>managePlatformForm_platformType</td>
+	<td>platformType</td>
 	<td>label=Affymetrix Copy Number</td>
 </tr>
 <tr>
@@ -205,7 +205,7 @@
 </tr>
 <tr>
 	<td>select</td>
-	<td>managePlatformForm_platformType</td>
+	<td>platformType</td>
 	<td>label=Agilent Copy Number</td>
 </tr>
 <tr>
