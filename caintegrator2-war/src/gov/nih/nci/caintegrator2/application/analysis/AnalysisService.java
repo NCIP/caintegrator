@@ -172,6 +172,13 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
                 DataRetrievalException;
     
     /**
+     * Validates that we can connect to a gene pattern server.
+     * @param server to validate connection.
+     * @return true if valid, false otherwise.
+     */
+    boolean validateGenePatternConnection(ServerConnectionProfile server);
+    
+    /**
      * Creates a KMPlot object based on clinical subjects for the given parameters.
      * @param subscription the study subscription that the user wants to create the plot for.
      * @param kmParameters are the input parameters for the KMPlot.

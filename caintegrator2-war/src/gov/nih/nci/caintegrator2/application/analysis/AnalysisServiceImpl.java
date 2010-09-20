@@ -270,6 +270,17 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         return resultsZipFile;
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public boolean validateGenePatternConnection(ServerConnectionProfile server) {
+        try {
+            return retrieveClient(server).validateConnection();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
     private Map<String, Map<GisticGenomicRegionReporter, Float>> parseGisticResults(
             ReporterList reporterList, File resultsZipFile) throws DataRetrievalException {
         if (resultsZipFile != null) {

@@ -101,6 +101,8 @@ import javax.activation.FileDataSource;
 import javax.xml.rpc.ServiceException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+
 
 /**
  * Wrapper around the GenePattern web service.
@@ -132,8 +134,9 @@ public class GenePatternClientImpl implements GenePatternClient {
     }
 
     private Analysis openAnalysisSerivce() throws GenePatternServiceException {
-        if (url == null || username == null) {
-            throw new IllegalStateException("Must set URL and username prior to using GenePattern service");
+        if (StringUtils.isBlank(url) || StringUtils.isBlank(username)) {
+            throw new GenePatternServiceException(
+                    new Exception("Must set URL and username prior to using GenePattern service."));
         }
         try {
             AnalysisService service = new AnalysisServiceLocator();
@@ -545,6 +548,19 @@ public class GenePatternClientImpl implements GenePatternClient {
         IOUtils.copy(fileWrapper.getDataHandler().getInputStream(), fileOutputStream);
         fileOutputStream.close();
         return outputFile;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean validateConnection() {
+        try {
+            getAnalysis().ping();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+        
     }
 
 }
