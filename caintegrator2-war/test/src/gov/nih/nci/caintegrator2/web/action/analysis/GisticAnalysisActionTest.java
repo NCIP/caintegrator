@@ -126,6 +126,7 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
     
     private GisticAnalysisAction action;
     private QueryManagementServiceStubGistic queryManagementService;
+    private AnalysisServiceStub analysisService;
     private StudySubscription subscription;
     
     @Before
@@ -168,7 +169,8 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new GisticAnalysisAction();
-        action.setAnalysisService(new AnalysisServiceStub());
+        analysisService = new AnalysisServiceStub();
+        action.setAnalysisService(analysisService);
         action.setQueryManagementService(queryManagementService);
         action.setWorkspaceService(new WorkspaceServiceStub());
         action.setAjaxUpdater(new PersistedAnalysisJobAjaxUpdater());
@@ -210,6 +212,9 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
     public void testExecute() {
         testOpen();
         action.setSelectedAction(GisticAnalysisAction.EXECUTE_ACTION);
+        analysisService.isValidGenePatternConnection = false;
+        assertEquals("input", action.execute());
+        analysisService.isValidGenePatternConnection = true;
         assertEquals("status", action.execute());
         testOpen();
         queryManagementService.setupValidQueryResult();

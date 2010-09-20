@@ -143,4 +143,8 @@ public class GenePatternClientStub implements CaIntegrator2GPClient {
         return null;
     }
 
+    public boolean validateConnection() {
+        return true;
+    }
+
 }

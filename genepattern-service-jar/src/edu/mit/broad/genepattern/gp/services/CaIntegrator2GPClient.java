@@ -139,4 +139,10 @@ public interface CaIntegrator2GPClient {
      */
     File getResultFile(JobInfo jobInfo, String filename) throws WebServiceException;
     
+    /**
+     * Validates the connection to gene pattern.
+     * @return true if connection is valid, false otherwise.
+     */
+    boolean validateConnection();
+    
 }
