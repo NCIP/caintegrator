@@ -1,1 +1,13 @@
-E09176,TCGA-02-0001-01C ,US22502676_252252210154_S01_CGH_105_Dec08_1_1.MN,ID,logratio
+#-##############################################################################################################-#
+#-#                                                                                                            #-#
+#-#     This is the subject to sample mapping file format when using caArray supplemental file.                #-#
+#-#     Blank line and line start with #-# are ignored.                                                        #-#
+#-#     It contains 6 columns with comma separated.                                                            #-#
+#-#     Note: Only one of the last 2 columns is used, single sample per file uses "Value_Header"               #-#
+#-#           multiple samples per file uses "Sample_Header".                                                  #-#
+#-#                                                                                                            #-#
+#-# Subject_ID, Sample_Name, Supplemental_Data_File_Name, Probe_Header, Value_Header, Sample_Header            #-#
+#-#                                                                                                            #-#
+#-##############################################################################################################-#
+
+E09176,TCGA-02-0001-01C,US22502676_252252210154_S01_CGH_105_Dec08_1_1.MN,ID,logratio,/n/a

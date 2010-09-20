@@ -225,12 +225,12 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
             int lineNum = 0;
             int columnNumber = PlatformVendorEnum.getByValue(
                     getGenomicSource().getPlatformVendor()).getDnaAnalysisMappingColumns();
-            while ((fields = reader.readNext()) != null) {
+            while ((fields = Cai2Util.readDataLine(reader)) != null) {
                 lineNum++;
                 if (fields.length != columnNumber) {
                     addFieldError(MAPPING_FILE,
                             " File must have " + columnNumber + " columns instead of " + fields.length
-                            + " on line number " + lineNum);
+                            + " on data line number " + lineNum);
                     return;
                 }
             }

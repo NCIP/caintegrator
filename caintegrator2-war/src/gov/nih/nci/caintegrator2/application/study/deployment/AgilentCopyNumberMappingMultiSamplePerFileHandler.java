@@ -99,12 +99,11 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataSingleFileParser;
+import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataMultiSamplePerFileParser;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,63 +115,34 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import au.com.bytecode.opencsv.CSVReader;
-
 /**
  * Reads and retrieves copy number data from a caArray instance.
  */
 @Transactional (propagation = Propagation.REQUIRED)
-class AgilentCopyNumberMappingSingleFileHandler extends AbstractDnaAnalysisMappingFileHandler {
+class AgilentCopyNumberMappingMultiSamplePerFileHandler extends AbstractAgilentDnaAnalysisMappingFileHandler {
     
     static final String FILE_TYPE = "data";
     private final List<Sample> samples = new ArrayList<Sample>();
     private final List<String> dataFileNames = new ArrayList<String>();
     private final List<SupplementalDataFile> dataFiles = new ArrayList<SupplementalDataFile>();
     
-    private static final Logger LOGGER = Logger.getLogger(AgilentCopyNumberMappingSingleFileHandler.class);
+    private static final Logger LOGGER = Logger.getLogger(AgilentCopyNumberMappingMultiSamplePerFileHandler.class);
     
-    AgilentCopyNumberMappingSingleFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
-            ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+    AgilentCopyNumberMappingMultiSamplePerFileHandler(GenomicDataSourceConfiguration genomicSource,
+            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
     }
 
-    List<ArrayDataValues> loadArrayData()
-    throws DataRetrievalException, ConnectionException, ValidationException {
-        try {
-            CSVReader reader = new CSVReader(new FileReader(getMappingFile()));
-            String[] fields;
-            samples.clear();
-            while ((fields = reader.readNext()) != null) {
-                String subjectId = fields[0].trim();
-                String sampleName = fields[1].trim();
-                mappingSample(subjectId, sampleName);
-                String dataFileName = fields[2].trim();
-                if (!dataFileNames.contains(dataFileName)) {
-                    dataFileNames.add(dataFileName);
-                    SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
-                    supplementalDataFile.setFileName(dataFileName);
-                    supplementalDataFile.setProbeNameHeader(fields[3].trim());
-                    supplementalDataFile.setSampleHeader(fields[4].trim());
-                    dataFiles.add(supplementalDataFile);
-                }
-            }
-            List<ArrayDataValues> arrayDataValues = loadArrayDataValue();
-            getDao().save(getGenomicSource().getStudyConfiguration());
-            reader.close();
-            return arrayDataValues;
-        } catch (FileNotFoundException e) {
-            throw new DataRetrievalException("Copy number mapping file not found: ", e);
-        } catch (IOException e) {
-            throw new DataRetrievalException("Couldn't read copy number mapping file: ", e);
+    void mappingSample(String subjectIdentifier, String sampleName, SupplementalDataFile supplementalDataFile)
+    throws FileNotFoundException, ValidationException {
+        samples.add(getSample(sampleName, subjectIdentifier));
+        if (!dataFileNames.contains(supplementalDataFile.getFileName())) {
+            dataFileNames.add(supplementalDataFile.getFileName());
+            dataFiles.add(supplementalDataFile);
         }
     }
 
-    private void mappingSample(String subjectIdentifier, String sampleName)
-    throws FileNotFoundException, ValidationException {
-        samples.add(getSample(sampleName, subjectIdentifier));
-    }
-
-    private List<ArrayDataValues> loadArrayDataValue() 
+    List<ArrayDataValues> loadArrayDataValue() 
     throws ConnectionException, DataRetrievalException, ValidationException, IOException {
         List<ArrayDataValues> arrayDataValuesList = new ArrayList<ArrayDataValues>();
         PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(
@@ -188,7 +158,7 @@ class AgilentCopyNumberMappingSingleFileHandler extends AbstractDnaAnalysisMappi
     throws DataRetrievalException, ConnectionException, ValidationException, IOException {
         Map<String, Map<String, Float>> agilentDataMap = new HashMap<String, Map<String, Float>>();
         for (SupplementalDataFile dataFile : dataFiles) {
-            AgilentLevelTwoDataSingleFileParser parser = new AgilentLevelTwoDataSingleFileParser(
+            AgilentLevelTwoDataMultiSamplePerFileParser parser = new AgilentLevelTwoDataMultiSamplePerFileParser(
                     getDataFile(dataFile.getFileName()), dataFile.getProbeNameHeader(),
                     dataFile.getSampleHeader(), getSampleList());
             parser.loadData(agilentDataMap);

@@ -85,116 +85,50 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import au.com.bytecode.opencsv.CSVReader;
+import org.junit.Test;
 
-/**
- * Reads data in Agilent data file.
- */
-public final class AgilentLevelTwoDataSingleFileParser {
-    
-    private CSVReader dataFileReader;
-    private final Map<String, Integer> sampleToIndexMap = new HashMap<String, Integer>();
-    
-    /**
-     * @param dataFile data file
-     * @param sampleList list of samples to process
-     * @param probeHeader the probe header
-     * @param sampleHeader the sample header
-     * @throws DataRetrievalException data retrieval exception
-     * @throws IOException I/O exception
-     */
-    public AgilentLevelTwoDataSingleFileParser(File dataFile, String probeHeader, String sampleHeader,
-            List<String> sampleList)
-    throws IOException, DataRetrievalException {
-        createDataFileReader(dataFile, probeHeader, sampleHeader, sampleList);
-    }
+@SuppressWarnings("PMD")
+public class AgilentLevelTwoDataMultiSamplePerFileParserTest {
 
-    private CSVReader createDataFileReader(File dataFile, String probeHeader,
-            String sampleHeader, List<String> sampleList)
-    throws IOException, DataRetrievalException {
-        dataFileReader = new CSVReader(new InputStreamReader(
-                new FileInputStream(dataFile)), '\t');
-        loadHeaders(probeHeader, sampleHeader, sampleList);
-        return null;
-    }
-
-    /**
-     * @param agilentDataMap the Agilent data mapping
-     * @throws IOException I/O exception
-     */
-    public void loadData(Map<String, Map<String, Float>> agilentDataMap)
-    throws IOException {
-        String[] fields;
-        while ((fields = readDataFile()) != null) {
-            String probeName = fields[0];
-            for (String sampleName : sampleToIndexMap.keySet()) {
-                Float log2Ratio = getLog2Ratio(fields, sampleToIndexMap.get(sampleName));
-                if (log2Ratio != null) {
-                    setReporterMap(agilentDataMap, sampleName, probeName, log2Ratio);
-                }
-            }
-        }
-    }
+    private String sample1 = "TCGA-13-0805-01A-01D-0357-04";
+    private String sample2 = "TCGA-13-0805-10A-01D-0357-04";
+    private AgilentLevelTwoDataMultiSamplePerFileParser parser;
     
-    private Float getLog2Ratio(String[] fields, int index) {
+    @Test
+    public void testExtractData() throws DataRetrievalException, IOException {
+        
+        Map<String, Map<String, Float>> agilentData =  new HashMap<String, Map<String, Float>>();
+        List<String> sampleList = new ArrayList<String>();
+        sampleList.add(sample1);
+        sampleList.add(sample2);
+        boolean exceptionCaught = false;
         try {
-            return new Float(fields[index]);
-        } catch (Exception e) {
-            return null;
+            parser = new AgilentLevelTwoDataMultiSamplePerFileParser(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE,
+                    "ProbeID", "Hybridization Ref", sampleList);
+            parser.loadData(agilentData);
+        } catch (DataRetrievalException e) {
+            assertEquals(e.getMessage(), "Invalid header for Agilent data file.");
+            exceptionCaught = true;
         }
-    }
-    
-    private void setReporterMap(Map<String, Map<String, Float>> agilentDataMap, String sampleName,
-            String probeName, Float log2Ratio) {
-        if (!agilentDataMap.containsKey(sampleName)) {
-            Map<String, Float> reporterMap = new HashMap<String, Float>();
-            agilentDataMap.put(sampleName, reporterMap);
-        }
-        agilentDataMap.get(sampleName).put(probeName, log2Ratio);
-    }
+        assertTrue(exceptionCaught);
 
-    private void loadHeaders(String probeHeader, String sampleHeader, List<String> sampleList)
-    throws IOException, DataRetrievalException {
-        sampleToIndexMap.clear();
-        String[] fields;
-        fields = readDataFile();
-        checkHeadersLine(fields, sampleHeader);
-        loadSampleHeaders(fields, sampleList);
-        fields = readDataFile();
-        checkHeadersLine(fields, probeHeader);
-    }
-
-    private String[] readDataFile() throws IOException {
-        String[] fields;
-        while ((fields = dataFileReader.readNext()) != null) {
-            if (fields.length > 1) {
-                return fields;
-            }
-        }
-        return fields;
-    }
-
-    private void loadSampleHeaders(String[] headers, List<String> sampleList) {
-        for (int i = 0; i < headers.length; i++) {
-            if (sampleList.contains(headers[i])) {
-                sampleToIndexMap.put(headers[i], i);
-            }
-        }
-    }
-    
-    private void checkHeadersLine(String[] fields, String keyword) throws DataRetrievalException {
-        if (fields == null || !keyword.equals(fields[0])) {
-            throw new DataRetrievalException("Invalid header for Agilent data file.");
+        parser = new AgilentLevelTwoDataMultiSamplePerFileParser(TestDataFiles.TCGA_LEVEL_2_DATA_FILE,
+                "ProbeID", "Hybridization Ref", sampleList);
+        parser.loadData(agilentData);
+        assertEquals(2, agilentData.keySet().size());
+        for (Map<String, Float> reporterList : agilentData.values()) {
+            assertTrue(reporterList.keySet().size() > 0);
         }
     }
 }

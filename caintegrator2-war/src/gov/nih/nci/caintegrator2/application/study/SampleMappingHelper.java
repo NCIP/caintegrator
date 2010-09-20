@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -125,7 +126,7 @@ class SampleMappingHelper {
         int columnNumber = (genomicSource.isUseSupplementalFiles())
             ? PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor()).getSampleMappingColumns()
             : PARSED_DATA_SAMPLE_MAPPING_COLUMN;
-        while ((values = reader.readNext()) != null) {
+        while ((values = Cai2Util.readDataLine(reader)) != null) {
             if (values.length != columnNumber) {
                 throw new ValidationException("Invalid file format - Expect " + columnNumber
                         + " columns but has " + values.length);

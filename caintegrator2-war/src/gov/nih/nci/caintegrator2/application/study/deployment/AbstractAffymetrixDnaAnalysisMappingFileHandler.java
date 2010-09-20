@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -130,12 +131,11 @@ public abstract class AbstractAffymetrixDnaAnalysisMappingFileHandler extends Ab
         super(genomicSource, caArrayFacade, arrayDataService, dao);
     }
     
-    @Override
     List<ArrayDataValues> loadArrayData() throws DataRetrievalException, ConnectionException, ValidationException {
         try {
             CSVReader reader = new CSVReader(new FileReader(getMappingFile()));
             String[] fields;
-            while ((fields = reader.readNext()) != null) {
+            while ((fields = Cai2Util.readDataLine(reader)) != null) {
                 String subjectId = fields[0].trim();
                 String sampleName = fields[1].trim();
                 String dnaAnalysisFilename = fields[2].trim();

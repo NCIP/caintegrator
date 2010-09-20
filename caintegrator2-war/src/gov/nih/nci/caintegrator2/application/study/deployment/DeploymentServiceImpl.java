@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.bioconductor.BioconductorService;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
+import java.io.IOException;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -136,13 +137,10 @@ public class DeploymentServiceImpl implements DeploymentService {
 
     /**
      * {@inheritDoc}
-     * @throws ValidationException 
-     * @throws DataRetrievalException 
-     * @throws ConnectionException 
      */
     @SuppressWarnings("PMD.AvoidReassigningParameters") // preferable in this instance for error handling.
     public Status performDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener)
-    throws ConnectionException, DataRetrievalException, ValidationException {
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
             studyConfiguration = getDao().get(studyConfiguration.getId(), StudyConfiguration.class);
             if (!Status.PROCESSING.equals(studyConfiguration.getStatus())) {
                 startDeployment(studyConfiguration, listener);
@@ -173,7 +171,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     }
 
     private Status doDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener) 
-    throws ConnectionException, DataRetrievalException, ValidationException {
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
         if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
             GenomicDataHelper genomicDataHelper = new GenomicDataHelper(getCaArrayFacade(), 
                     getArrayDataService(), getDao(), getBioconductorService(), getDnaAnalysisHandlerFactory());

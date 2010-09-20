@@ -121,10 +121,10 @@ public class DnaAnalysisHandlerFactoryImpl implements DnaAnalysisHandlerFactory 
     private AbstractDnaAnalysisMappingFileHandler singleOrMultiFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         if (genomicSource.isSingleDataFile()) {
-            return new AgilentCopyNumberMappingSingleFileHandler(genomicSource, caArrayFacade,
+            return new AgilentCopyNumberMappingMultiSamplePerFileHandler(genomicSource, caArrayFacade,
                     arrayDataService, dao);
         } else {
-            return new AgilentCopyNumberMappingMultiFileHandler(genomicSource, caArrayFacade,
+            return new AgilentCopyNumberMappingSingleSamplePerFileHandler(genomicSource, caArrayFacade,
                     arrayDataService, dao);
         }
     }

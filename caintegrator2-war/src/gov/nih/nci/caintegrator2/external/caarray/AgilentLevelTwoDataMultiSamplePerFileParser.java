@@ -85,13 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,85 +99,93 @@ import java.util.Map;
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
- * Parse supplemental data file.
+ * Reads data in Agilent data file.
  */
-public final class SupplementalMultiFileParser {
-
-    /**
-     * The INSTANCE of the AgilentRawDataFileParser.
-     */
-    public static final SupplementalMultiFileParser INSTANCE = new SupplementalMultiFileParser();
+public final class AgilentLevelTwoDataMultiSamplePerFileParser {
     
     private CSVReader dataFileReader;
-    private final Map<String, Integer> headerToIndexMap = new HashMap<String, Integer>();
+    private final Map<String, Integer> sampleToIndexMap = new HashMap<String, Integer>();
+    
+    /**
+     * @param dataFile data file
+     * @param sampleList list of samples to process
+     * @param probeHeader the probe header
+     * @param sampleHeader the sample header
+     * @throws DataRetrievalException data retrieval exception
+     * @throws IOException I/O exception
+     */
+    public AgilentLevelTwoDataMultiSamplePerFileParser(File dataFile, String probeHeader,
+            String sampleHeader, List<String> sampleList)
+    throws IOException, DataRetrievalException {
+        createDataFileReader(dataFile, probeHeader, sampleHeader, sampleList);
+    }
+
+    private CSVReader createDataFileReader(File dataFile, String probeHeader,
+            String sampleHeader, List<String> sampleList)
+    throws IOException, DataRetrievalException {
+        dataFileReader = new CSVReader(new InputStreamReader(
+                new FileInputStream(dataFile)), '\t');
+        loadHeaders(probeHeader, sampleHeader, sampleList);
+        return null;
+    }
 
     /**
-     * Extract data from the raw file.
-     * @param supplementalDataFile the supplemental data file detail
-     * @param vendor the platform vendor
-     * @return the extracted data.
-     * @throws DataRetrievalException when error parsing.
+     * @param agilentDataMap the Agilent data mapping
+     * @throws IOException I/O exception
      */
-    public Map<String, List<Float>> extractData(SupplementalDataFile supplementalDataFile, PlatformVendorEnum vendor)
-    throws DataRetrievalException {
-        try {
-            
-            dataFileReader = new CSVReader(new InputStreamReader(
-                    new FileInputStream(supplementalDataFile.getFile())), '\t');
-            loadHeaders(supplementalDataFile.getProbeNameHeader());
-            Map<String, List<Float>> dataMap = new HashMap<String, List<Float>>();
-            String[] fields;
-            while ((fields = dataFileReader.readNext()) != null) {
-                if (fields.length > 1) {
-                    String probeName = fields[headerToIndexMap.get(supplementalDataFile.getProbeNameHeader())];
-                    extractValue(supplementalDataFile, vendor, dataMap, fields, probeName);
+    public void loadData(Map<String, Map<String, Float>> agilentDataMap)
+    throws IOException {
+        String[] fields;
+        while ((fields = Cai2Util.readDataLine(dataFileReader)) != null) {
+            String probeName = fields[0];
+            for (String sampleName : sampleToIndexMap.keySet()) {
+                Float log2Ratio = getLog2Ratio(fields, sampleToIndexMap.get(sampleName));
+                if (log2Ratio != null) {
+                    setReporterMap(agilentDataMap, sampleName, probeName, log2Ratio);
                 }
             }
-            return dataMap;
-        } catch (IOException e) {
-            throw new DataRetrievalException("Couldn't read Agilent data file.", e);
-        }
-    }
-
-    private void extractValue(SupplementalDataFile supplementalDataFile, PlatformVendorEnum vendor,
-            Map<String, List<Float>> dataMap, String[] fields, String probeName) {
-        if (PlatformVendorEnum.AGILENT.equals(vendor) && probeName.startsWith("A_")
-                || !PlatformVendorEnum.AGILENT.equals(vendor)) {
-            Float value;
-            try {
-                value = new Float(fields[headerToIndexMap.get(supplementalDataFile.getValueHeader())]);
-                addValueToDataMap(dataMap, probeName, value);
-            } catch (NumberFormatException e) {
-                value = 0.0f; // The value is missing ignore this reporter.
-            }
         }
     }
     
-    private void addValueToDataMap(Map<String, List<Float>> dataMap, String probeName, Float value) {
-        if (!dataMap.containsKey(probeName)) {
-            dataMap.put(probeName, new ArrayList<Float>());
+    private Float getLog2Ratio(String[] fields, int index) {
+        try {
+            return new Float(fields[index]);
+        } catch (Exception e) {
+            return null;
         }
-        dataMap.get(probeName).add(value);
+    }
+    
+    private void setReporterMap(Map<String, Map<String, Float>> agilentDataMap, String sampleName,
+            String probeName, Float log2Ratio) {
+        if (!agilentDataMap.containsKey(sampleName)) {
+            Map<String, Float> reporterMap = new HashMap<String, Float>();
+            agilentDataMap.put(sampleName, reporterMap);
+        }
+        agilentDataMap.get(sampleName).put(probeName, log2Ratio);
     }
 
-    private void loadHeaders(String probeNameHeader) throws IOException, DataRetrievalException {
+    private void loadHeaders(String probeHeader, String sampleHeader, List<String> sampleList)
+    throws IOException, DataRetrievalException {
+        sampleToIndexMap.clear();
         String[] fields;
-        while ((fields = dataFileReader.readNext()) != null) {
-            if (isFeatureHeadersLine(fields, probeNameHeader)) {
-                loadFeatureHeaders(fields);
-                return;
-            }
-        }        
-        throw new DataRetrievalException("Invalid supplemental data file; headers not found in file.");
-    }
-    
-    private boolean isFeatureHeadersLine(String[] fields, String probeNameHeader) {
-        return fields.length > 0 && probeNameHeader.equals(fields[0]);
+        fields = Cai2Util.readDataLine(dataFileReader);
+        checkHeadersLine(fields, sampleHeader);
+        loadSampleHeaders(fields, sampleList);
+        fields = Cai2Util.readDataLine(dataFileReader);
+        checkHeadersLine(fields, probeHeader);
     }
 
-    private void loadFeatureHeaders(String[] headers) {
+    private void loadSampleHeaders(String[] headers, List<String> sampleList) {
         for (int i = 0; i < headers.length; i++) {
-            headerToIndexMap.put(headers[i], i);
+            if (sampleList.contains(headers[i])) {
+                sampleToIndexMap.put(headers[i], i);
+            }
+        }
+    }
+    
+    private void checkHeadersLine(String[] fields, String keyword) throws DataRetrievalException {
+        if (fields == null || !keyword.equals(fields[0])) {
+            throw new DataRetrievalException("Invalid header for Agilent data file.");
         }
     }
 }
