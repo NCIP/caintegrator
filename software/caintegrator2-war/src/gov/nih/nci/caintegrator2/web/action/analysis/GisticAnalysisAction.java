@@ -213,6 +213,17 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
         checkNegativeValue("gisticParameters.qvThresh",
             getGisticParameters().getQvThresh());
     }
+    
+    private boolean validateConnection() {
+        if (getUseWebService()
+                && !analysisService.validateGenePatternConnection(
+                getCurrentGisticAnalysisJob().getGisticAnalysisForm().getGisticParameters().getServer())) {
+            addActionError("Unable to connect to the specified gistic web service, "
+                    + "make sure the URL, username, and password are correct.");
+            return false;
+        }
+        return true;
+    }
 
     private void checkName() {
         if (StringUtils.isBlank(getCurrentGisticAnalysisJob().getName())) {
@@ -270,6 +281,9 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     private String executeAnalysis() {
         try {
             if (!loadParameters()) {
+                return INPUT;
+            }
+            if (!validateConnection()) {
                 return INPUT;
             }
             storeCnvSegmentsToIgnoreFile();

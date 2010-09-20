@@ -185,6 +185,13 @@ public class CaIntegrator2GPClientImpl extends GPClient implements CaIntegrator2
         }
         return files[0];
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean validateConnection() {
+        return false; // Unimplemented
+    }
         
     
 

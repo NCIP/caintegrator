@@ -118,6 +118,7 @@ public class AnalysisServiceStub implements AnalysisService {
     public boolean executeGisticJobCalled;
     public boolean deleteAnalysisJobCalled;
     public boolean deleteGisticAnalysisCalled;
+    public boolean isValidGenePatternConnection = true;
     
     public void clear() {
         createKMPlotCalled = false;
@@ -219,5 +220,9 @@ public class AnalysisServiceStub implements AnalysisService {
 
     public void deleteGisticAnalysis(GisticAnalysis gisticAnalysis) {
         deleteGisticAnalysisCalled = true;
+    }
+
+    public boolean validateGenePatternConnection(ServerConnectionProfile server) {
+        return isValidGenePatternConnection;
     }
 }
