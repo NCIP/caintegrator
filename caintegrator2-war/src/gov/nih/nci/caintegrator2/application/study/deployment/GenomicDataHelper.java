@@ -112,6 +112,7 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.bioconductor.BioconductorService;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -147,7 +148,7 @@ class GenomicDataHelper {
     }
 
     void loadData(StudyConfiguration studyConfiguration) 
-    throws ConnectionException, DataRetrievalException, ValidationException {
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
         for (GenomicDataSourceConfiguration genomicSource : studyConfiguration.getGenomicDataSources()) {
             if (!Status.LOADED.equals(genomicSource.getStatus())) {
                 if (genomicSource.isExpressionData()) {
@@ -162,7 +163,7 @@ class GenomicDataHelper {
     }
     
     private void loadDnaAnalysisData(GenomicDataSourceConfiguration genomicSource)
-    throws DataRetrievalException, ConnectionException, ValidationException {
+    throws DataRetrievalException, ConnectionException, ValidationException, IOException {
         if (genomicSource.getDnaAnalysisDataConfiguration() != null) {
                 handleDnaAnalysisData(genomicSource);
         }
@@ -210,7 +211,7 @@ class GenomicDataHelper {
     }
 
     private void handleDnaAnalysisData(GenomicDataSourceConfiguration genomicSource) 
-    throws DataRetrievalException, ConnectionException, ValidationException {
+    throws DataRetrievalException, ConnectionException, ValidationException, IOException {
         AbstractDnaAnalysisMappingFileHandler handler = 
             dnaAnalysisHandlerFactory.getHandler(genomicSource, caArrayFacade, arrayDataService, dao);
         List<ArrayDataValues> valuesList = handler.loadArrayData();

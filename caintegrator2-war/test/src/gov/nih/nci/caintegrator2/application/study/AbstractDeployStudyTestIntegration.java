@@ -519,7 +519,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     }
     
     private void deploy(UserWorkspace userWorkspace)
-    throws ConnectionException, DataRetrievalException, ValidationException {
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
         logStart();
         service.setStudyLastModifiedByCurrentUser(studyConfiguration, userWorkspace, null, LogEntry.getSystemLogDeploy(studyConfiguration.getStudy()));
         deploymentService.prepareForDeployment(studyConfiguration, null);

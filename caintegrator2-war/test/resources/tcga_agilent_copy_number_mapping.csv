@@ -1,1 +1,13 @@
-E09176,TCGA-13-0805-01A-01D-0357-04,mskcc.org_OV.HG-CGH-244A.9.data.txt,ProbeID,Hybridization Ref
+#-##############################################################################################################-#
+#-#                                                                                                            #-#
+#-#     This is the subject to sample mapping file format when using caArray supplemental file.                #-#
+#-#     Blank line and line start with #-# are ignored.                                                        #-#
+#-#     It contains 6 columns with comma separated.                                                            #-#
+#-#     Note: Only one of the last 2 columns is used, single sample per file uses "Value_Header"               #-#
+#-#           multiple samples per file uses "Sample_Header".                                                  #-#
+#-#                                                                                                            #-#
+#-# Subject_ID, Sample_Name, Supplemental_Data_File_Name, Probe_Header, Value_Header, Sample_Header            #-#
+#-#                                                                                                            #-#
+#-##############################################################################################################-#
+
+E09176,TCGA-13-0805-01A-01D-0357-04,mskcc.org_OV.HG-CGH-244A.9.data.txt,ProbeID,n/a,Hybridization Ref

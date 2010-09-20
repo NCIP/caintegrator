@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
+import java.io.IOException;
+
 import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -115,9 +117,10 @@ public interface DeploymentService {
      * @throws ValidationException validation exception
      * @throws DataRetrievalException dataretrieval exception
      * @throws ConnectionException connection exception
+     * @throws IOException I/O exception
      */
     Status performDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener)
-    throws ConnectionException, DataRetrievalException, ValidationException;
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException;
     
     /**
      * Update the study configuration status. 

@@ -86,49 +86,53 @@
 package gov.nih.nci.caintegrator2.external.caarray;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
 
 @SuppressWarnings("PMD")
-public class AgilentLevelTwoDataSingleFileParserTest {
-
-    private String sample1 = "TCGA-13-0805-01A-01D-0357-04";
-    private String sample2 = "TCGA-13-0805-10A-01D-0357-04";
-    private AgilentLevelTwoDataSingleFileParser parser;
+public class AgilentLevelTwoDataSingleSamplePerFileParserTest {
     
     @Test
-    public void testExtractData() throws DataRetrievalException, IOException {
+    public void testExtractData() throws DataRetrievalException {
         
-        Map<String, Map<String, Float>> agilentData =  new HashMap<String, Map<String, Float>>();
-        List<String> sampleList = new ArrayList<String>();
-        sampleList.add(sample1);
-        sampleList.add(sample2);
+        Map<String, List<Float>> agilentData;
         boolean exceptionCaught = false;
         try {
-            parser = new AgilentLevelTwoDataSingleFileParser(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE,
-                    "ProbeID", "Hybridization Ref", sampleList);
-            parser.loadData(agilentData);
+            SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
+            supplementalDataFile.setFileName(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE_PATH);
+            supplementalDataFile.setFile(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE);
+            supplementalDataFile.setProbeNameHeader("ID");
+            supplementalDataFile.setValueHeader("logratio");
+            agilentData = SupplementalSingleSamplePerFileParser.INSTANCE.extractData(supplementalDataFile,
+                    PlatformVendorEnum.AGILENT);
         } catch (DataRetrievalException e) {
-            assertEquals(e.getMessage(), "Invalid header for Agilent data file.");
+            assertEquals(e.getMessage(), "Invalid supplemental data file; headers not found in file.");
             exceptionCaught = true;
         }
         assertTrue(exceptionCaught);
-
-        parser = new AgilentLevelTwoDataSingleFileParser(TestDataFiles.TCGA_LEVEL_2_DATA_FILE,
-                "ProbeID", "Hybridization Ref", sampleList);
-        parser.loadData(agilentData);
-        assertEquals(2, agilentData.keySet().size());
-        for (Map<String, Float> reporterList : agilentData.values()) {
-            assertTrue(reporterList.keySet().size() > 0);
+        
+        exceptionCaught = false;
+        try {
+            SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
+            supplementalDataFile.setFileName(TestDataFiles.HUAITIAN_LEVEL_2_DATA_FILE_PATH);
+            supplementalDataFile.setFile(TestDataFiles.HUAITIAN_LEVEL_2_DATA_FILE);
+            supplementalDataFile.setProbeNameHeader("ID");
+            supplementalDataFile.setValueHeader("logratio");
+            agilentData = SupplementalSingleSamplePerFileParser.INSTANCE.extractData(supplementalDataFile,
+                    PlatformVendorEnum.AGILENT);
+            assertEquals(4, agilentData.keySet().size());
+        } catch (DataRetrievalException e) {
+            assertEquals(e.getMessage(), "Invalid supplemental data file; headers not found in file.");
+            exceptionCaught = true;
         }
+        assertFalse(exceptionCaught);
     }
 }

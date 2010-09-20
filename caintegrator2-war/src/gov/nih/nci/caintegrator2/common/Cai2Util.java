@@ -122,6 +122,8 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
+import au.com.bytecode.opencsv.CSVReader;
+
 /**
  * This is a static utility class used by different caIntegrator2 objects. 
  */
@@ -598,5 +600,21 @@ public final class Cai2Util {
             }
         }
         return false;
+    }
+    /**
+     * Read the next data line.
+     * @param reader the CSVReader
+     * @return the data fields
+     * @throws IOException reading error
+     */
+    public static String[] readDataLine(CSVReader reader) throws IOException {
+        String[] fields;
+        while ((fields = reader.readNext()) != null) {
+            if (!(fields.length == 1 && StringUtils.isBlank(fields[0]))
+                    && !fields[0].startsWith("#-#")) {
+                return fields;
+            }
+        }
+        return fields;
     }
 }

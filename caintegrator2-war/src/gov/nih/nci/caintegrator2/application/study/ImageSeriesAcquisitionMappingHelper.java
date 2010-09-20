@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -129,7 +130,7 @@ class ImageSeriesAcquisitionMappingHelper {
         }
         CSVReader reader = new CSVReader(new FileReader(mappingFile));
         String[] values;
-        while ((values = reader.readNext()) != null) {
+        while ((values = Cai2Util.readDataLine(reader)) != null) {
             if (values.length != 2) {
                 throw new ValidationException("Invalid file format - Expect 2 columns but has " + values.length);
             }
