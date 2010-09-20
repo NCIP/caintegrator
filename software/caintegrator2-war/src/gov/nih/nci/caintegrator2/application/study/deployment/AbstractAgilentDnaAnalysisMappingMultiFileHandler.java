@@ -87,15 +87,10 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
@@ -105,10 +100,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,38 +111,23 @@ import au.com.bytecode.opencsv.CSVReader;
  * Reads and retrieves copy number data from a caArray instance.
  */
 @Transactional (propagation = Propagation.REQUIRED)
-class AgilentCopyNumberMappingMultiFileHandler extends AbstractDnaAnalysisMappingFileHandler {
+abstract class AbstractAgilentDnaAnalysisMappingFileHandler extends AbstractDnaAnalysisMappingFileHandler {
     
-    static final String FILE_TYPE = "data";
-    private final Map<Sample, List<SupplementalDataFile>> sampleToDataFileMap =
-        new HashMap<Sample, List<SupplementalDataFile>>();
-    private final CentralTendencyCalculator centralTendencyCalculator;
-    
-    
-    AgilentCopyNumberMappingMultiFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
-            ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+    AbstractAgilentDnaAnalysisMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
+            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
-        this.centralTendencyCalculator = new CentralTendencyCalculator(
-                genomicSource.getTechnicalReplicatesCentralTendency(), 
-                genomicSource.isUseHighVarianceCalculation(), 
-                genomicSource.getHighVarianceThreshold(), 
-                genomicSource.getHighVarianceCalculationType());
     }
 
-    List<ArrayDataValues> loadArrayData() throws DataRetrievalException, ConnectionException, ValidationException {
+    @Override
+    List<ArrayDataValues> loadArrayData()
+    throws DataRetrievalException, ConnectionException, ValidationException {
         try {
             CSVReader reader = new CSVReader(new FileReader(getMappingFile()));
             String[] fields;
-            while ((fields = reader.readNext()) != null) {
-                String subjectId = fields[0].trim();
-                String sampleName = fields[1].trim();
-                SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
-                supplementalDataFile.setFileName(fields[2].trim());
-                supplementalDataFile.setProbeNameHeader(fields[3].trim());
-                supplementalDataFile.setValueHeader(fields[4].trim());
-                mappingSample(subjectId, sampleName, supplementalDataFile);
+            while ((fields = Cai2Util.readDataLine(reader)) != null) {
+                processMappingData(fields);
             }
-            List<ArrayDataValues> arrayDataValues = loadArrayDataValues();
+            List<ArrayDataValues> arrayDataValues = loadArrayDataValue();
             getDao().save(getGenomicSource().getStudyConfiguration());
             reader.close();
             return arrayDataValues;
@@ -161,65 +138,74 @@ class AgilentCopyNumberMappingMultiFileHandler extends AbstractDnaAnalysisMappin
         }
     }
 
-    private void mappingSample(String subjectIdentifier, String sampleName, SupplementalDataFile supplementalDataFile) 
-    throws ValidationException, FileNotFoundException {
-        Sample sample = getSample(sampleName, subjectIdentifier);
-        addCopyNumberFile(sample, supplementalDataFile);
-    }
-
-    private void addCopyNumberFile(Sample sample, SupplementalDataFile supplementalDataFile) {
-        List<SupplementalDataFile> supplementalDataFiles = sampleToDataFileMap.get(sample);
-        if (supplementalDataFiles == null) {
-            supplementalDataFiles = new ArrayList<SupplementalDataFile>();
-            sampleToDataFileMap.put(sample, supplementalDataFiles);
+    private void processMappingData(String[] fields)
+    throws FileNotFoundException, ValidationException {
+        if (fields.length > 1 && !fields[0].startsWith("#")) {
+            String subjectId = fields[0].trim();
+            String sampleName = fields[1].trim();
+            SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
+            supplementalDataFile.setFileName(fields[2].trim());
+            supplementalDataFile.setProbeNameHeader(fields[3].trim());
+            supplementalDataFile.setValueHeader(fields[4].trim());
+            supplementalDataFile.setSampleHeader(fields[5].trim());
+            mappingSample(subjectId, sampleName, supplementalDataFile);
         }
-        supplementalDataFiles.add(supplementalDataFile);
     }
 
-    private List<ArrayDataValues> loadArrayDataValues() 
-    throws ConnectionException, DataRetrievalException, ValidationException {
-        List<ArrayDataValues> values = new ArrayList<ArrayDataValues>();
-        for (Sample sample : sampleToDataFileMap.keySet()) {
-            values.add(loadArrayDataValues(sample));
-        }
-        return values;
-    }
+    abstract List<ArrayDataValues> loadArrayDataValue()
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException;
 
-    private ArrayDataValues loadArrayDataValues(Sample sample) 
-    throws ConnectionException, DataRetrievalException, ValidationException {
-        List<SupplementalDataFile> supplementalDataFiles = new ArrayList<SupplementalDataFile>();
+    abstract void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile)
+    throws FileNotFoundException, ValidationException;
+
+    List<MappingData> parseMappingFile() throws DataRetrievalException {
+        List<MappingData> mappingDataList = new ArrayList<MappingData>();
         try {
-            for (SupplementalDataFile supplementalDataFile : sampleToDataFileMap.get(sample)) {
-                supplementalDataFile.setFile(getDataFile(supplementalDataFile.getFileName()));
-                supplementalDataFiles.add(supplementalDataFile);
+            CSVReader reader = new CSVReader(new FileReader(getMappingFile()));
+            String[] fields;
+            while ((fields = Cai2Util.readDataLine(reader)) != null) {
+                MappingData mappingData = new MappingData();
+                mappingData.subjectId = fields[0];
+                mappingData.sampleName = fields[1];
+                SupplementalDataFile dataFile = new SupplementalDataFile();
+                dataFile.setFileName(fields[2]);
+                dataFile.setProbeNameHeader(fields[3]);
+                dataFile.setSampleHeader(fields[4]);
+                dataFile.setValueHeader(fields[5]);
+                mappingData.dataFile = dataFile;
+                mappingDataList.add(mappingData);
             }
-            return loadArrayDataValues(sample, supplementalDataFiles);
-        } finally {
-            for (SupplementalDataFile supplementalDataFile : supplementalDataFiles) {
-                doneWithFile(supplementalDataFile.getFile());
-            }
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't read copy number mapping file: ", e);
         }
+        return mappingDataList;
     }
-
-    private ArrayDataValues loadArrayDataValues(Sample sample, List<SupplementalDataFile> supplementalDataFiles) 
-    throws DataRetrievalException, ValidationException {
-        PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(getGenomicSource().getPlatformName()));
-        Set<ReporterList> reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        ArrayData arrayData = createArrayData(sample, reporterLists);
-        getDao().save(arrayData);
-        ArrayDataValues values = 
-            new ArrayDataValues(platformHelper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
-        for (SupplementalDataFile supplementalDataFile : supplementalDataFiles) {
-            AgilentCopyNumberDataRetrieval.INSTANCE.parseDataFile(supplementalDataFile, values,
-                    arrayData, platformHelper, centralTendencyCalculator);
+    
+    /**
+     * Mapping data.
+     */
+    protected class MappingData {
+        private String subjectId;
+        private String sampleName;
+        private SupplementalDataFile dataFile;
+        /**
+         * @return the subjectId
+         */
+        public String getSubjectId() {
+            return subjectId;
         }
-        getArrayDataService().save(values);
-        return values;
-    }
-
-    @Override
-    String getFileType() {
-        return FILE_TYPE;
+        /**
+         * @return the sampleName
+         */
+        public String getSampleName() {
+            return sampleName;
+        }
+        /**
+         * @return the dataFile
+         */
+        public SupplementalDataFile getDataFile() {
+            return dataFile;
+        }
     }
 
  }

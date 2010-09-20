@@ -19,7 +19,7 @@ public enum PlatformVendorEnum {
     /**
      * Agilent platform.
      */
-    AGILENT("Agilent", 5, 5);
+    AGILENT("Agilent", 6, 6);
     
     private static Map<String, PlatformVendorEnum> valueToTypeMap = new HashMap<String, PlatformVendorEnum>();
 

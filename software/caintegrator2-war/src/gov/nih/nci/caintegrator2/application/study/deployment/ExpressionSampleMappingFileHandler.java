@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
@@ -104,7 +105,7 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
-import gov.nih.nci.caintegrator2.external.caarray.SupplementalMultiFileParser;
+import gov.nih.nci.caintegrator2.external.caarray.SupplementalSingleSamplePerFileParser;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -158,7 +159,7 @@ class ExpressionSampleMappingFileHandler extends AbstractCaArrayFileHandler {
         try {
             CSVReader reader = new CSVReader(new FileReader(getGenomicSource().getSampleMappingFile()));
             String[] fields;
-            while ((fields = reader.readNext()) != null) {
+            while ((fields = Cai2Util.readDataLine(reader)) != null) {
                 String sampleName = fields[1].trim();
                 SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
                 supplementalDataFile.setFileName(fields[2].trim());
@@ -220,7 +221,7 @@ class ExpressionSampleMappingFileHandler extends AbstractCaArrayFileHandler {
         ArrayData arrayData = createArrayData(sample);
         dao.save(arrayData);
         for (SupplementalDataFile supplementalDataFile : supplementalDataFiles) {
-            Map<String, List<Float>> dataMap = SupplementalMultiFileParser.INSTANCE.extractData(
+            Map<String, List<Float>> dataMap = SupplementalSingleSamplePerFileParser.INSTANCE.extractData(
                     supplementalDataFile, platformHelper.getPlatform().getVendor());
             loadArrayDataValues(dataMap, arrayData);
         }

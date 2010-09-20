@@ -2,6 +2,9 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -40,7 +43,8 @@ public class GenomicDataHelperTest {
     }
 
     @Test
-    public void testLoadData() throws ConnectionException, DataRetrievalException, ValidationException {
+    public void testLoadData()
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration genomicDataConfiguration = new GenomicDataSourceConfiguration();
         Sample sample = new Sample();
@@ -57,7 +61,8 @@ public class GenomicDataHelperTest {
     }
 
     @Test
-    public void testAgilentExpressionLoadData() throws ConnectionException, DataRetrievalException, ValidationException {
+    public void testAgilentExpressionLoadData()
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration genomicDataConfiguration = new GenomicDataSourceConfiguration();
         Sample sample = new Sample();

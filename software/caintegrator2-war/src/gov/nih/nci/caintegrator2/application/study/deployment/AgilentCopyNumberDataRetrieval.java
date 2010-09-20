@@ -94,7 +94,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
-import gov.nih.nci.caintegrator2.external.caarray.SupplementalMultiFileParser;
+import gov.nih.nci.caintegrator2.external.caarray.SupplementalSingleSamplePerFileParser;
 
 import java.util.List;
 import java.util.Map;
@@ -126,7 +126,7 @@ public final class AgilentCopyNumberDataRetrieval {
     public void parseDataFile(SupplementalDataFile supplementalDataFile, ArrayDataValues values, ArrayData arrayData,
             PlatformHelper platformHelper, CentralTendencyCalculator centralTendencyCalculator) 
     throws DataRetrievalException {
-        Map<String, List<Float>> agilentDataMap = SupplementalMultiFileParser.INSTANCE.extractData(
+        Map<String, List<Float>> agilentDataMap = SupplementalSingleSamplePerFileParser.INSTANCE.extractData(
                 supplementalDataFile, platformHelper.getPlatform().getVendor());
         loadArrayDataValues(agilentDataMap, values, arrayData, platformHelper, centralTendencyCalculator);
     }

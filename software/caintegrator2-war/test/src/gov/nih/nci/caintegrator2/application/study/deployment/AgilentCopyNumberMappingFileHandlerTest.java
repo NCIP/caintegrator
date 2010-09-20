@@ -19,7 +19,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataSingleFileParser;
+import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataMultiSamplePerFileParser;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub;
 
@@ -49,7 +49,8 @@ public class AgilentCopyNumberMappingFileHandlerTest {
         source.setStudyConfiguration(studyConfiguration);
         source.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
         source.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
-        AgilentCopyNumberMappingSingleFileHandler handler = new AgilentCopyNumberMappingSingleFileHandler(source, caArrayFacade, arrayDataService, dao);
+        AgilentCopyNumberMappingMultiSamplePerFileHandler handler = new AgilentCopyNumberMappingMultiSamplePerFileHandler(
+                source, caArrayFacade, arrayDataService, dao);
         boolean exceptionCaught = false;
         try {
             handler.loadArrayData();
@@ -115,8 +116,8 @@ public class AgilentCopyNumberMappingFileHandlerTest {
         throws IOException, UnsignedOutOfLimitsException, DataRetrievalException {
             List<String> sampleNames = new ArrayList<String>();
             sampleNames.add("TCGA-13-0805-01A-01D-0357-04");
-            AgilentLevelTwoDataSingleFileParser parser = new AgilentLevelTwoDataSingleFileParser(dataFile,
-                    "ProbeID", "Hybridization Ref", sampleNames);
+            AgilentLevelTwoDataMultiSamplePerFileParser parser = new AgilentLevelTwoDataMultiSamplePerFileParser(
+                    dataFile, "ProbeID", "Hybridization Ref", sampleNames);
             Map<String, Map<String, Float>> dataMap = new HashMap<String, Map<String, Float>>();
             parser.loadData(dataMap);
             Map<String, Float> reporterMap = dataMap.values().iterator().next();
