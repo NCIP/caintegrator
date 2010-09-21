@@ -49,6 +49,14 @@
               chk.checked = 0;
             }
           }
+
+        // This function is called at body onload because IE 7 puts the footer in the middle of the page
+        // sporadically, and this toggles it to go to the proper position.
+        function initializeJsp() {
+            var tbody = document.getElementById('varianceInputParams');
+            tbody.style.display = "none";
+            tbody.style.display = "";
+        }
     </script>
     
     <h1><s:property value="#subTitleText" /></h1>
@@ -80,35 +88,45 @@
 	                    <br />
                     </s:if>
                     <s:textfield label="caArray Web URL" name="genomicSource.serverProfile.url" id="caArrayUrl" />
+                    <br/>
                     <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" id="caArrayHost" />
+                    <br/>
                     <s:div cssClass="wwlbl">
                     	<label class="label">(Note:  caArray v 2.3 or newer is required) </label>
                     </s:div>
                     <br />
                     <s:textfield label="caArray Server JNDI Port" name="genomicSource.serverProfile.port" id="caArrayPort" />
+                    <br/>
                     <!-- NOTE - using custom struts theme to turn off autocomplete -->
                     <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" id="caArrayUsername" theme="cai2_css_xhtml" />
+                    <br/>
                     <s:password showPassword="true" label="caArray Password" name="genomicSource.serverProfile.password" id="caArrayPassword" theme="cai2_css_xhtml"/>
+                    <br/>
                     <!--/NOTE --> 
                     <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" id="experimentId" />
+                    <br/>
                     <s:select id="platformVendor" name="genomicSource.platformVendor" label="Vendor"
                         list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum@getValuesToDisplay()"
                         onchange="document.genomicSourceForm.action = 'refreshGenomicSource.action';
                                 document.genomicSourceForm.submit();"/>
+                    <br/>
                     <s:select id="dataType" name="genomicSource.dataTypeString" label="Data Type"
                         list="dataTypes"
                         onchange="document.genomicSourceForm.action = 'refreshGenomicSource.action';
                                 document.genomicSourceForm.submit();"/>
+                    <br/>
                     <s:select id="platformName" 
                         name="genomicSource.platformName" 
                         label="Platform"
                         list="filterPlatformNames"/>
+                    <br/>
                     <s:checkbox id="useSupplementalFiles" name="genomicSource.useSupplementalFiles" label="Use Supplemental Files"
                         labelposition="left" disabled="useSupplementalFilesDisable"/>
+                    <br/>
                     <s:select id="technicalReplicatesCentralTendency" name="genomicSource.technicalReplicatesCentralTendencyString" label="Central Tendency for Technical Replicates"
                         list="@gov.nih.nci.caintegrator2.application.study.CentralTendencyTypeEnum@getStringValues()"
                         />
-                        
+                    <br/>    
                     <div class="wwgrp" id="wwgrp_isUseHighVarianceCalculation">
                         <div class="wwlbl" id="wwlbl_isUseHighVarianceCalculation">
                             <label class="checkboxLabel" for="isUseHighVarianceCalculation">Indicate if Technical Replicates have statistical variability:</label>
@@ -117,16 +135,18 @@
                                         onclick="checkVarianceInputParams(this);"
                                         theme="simple"
                                         title="Denote in the search results if a sample has high statistical variability among technical replicates"
-                                        /> 
+                                        />
+                        <br/> 
                         </div> 
                     </div>
                     <s:div id="varianceInputParams" cssStyle="%{varianceInputCssStyle}">
                     <s:select id="highVarianceCalculationType" name="genomicSource.highVarianceCalculationTypeString" label="Standard Deviation Type" 
                         list="@gov.nih.nci.caintegrator2.application.study.HighVarianceCalculationTypeEnum@getStringValues()"/>
+                    <br/>
                     <s:textfield label="Standard Deviation Threshold" name="genomicSource.highVarianceThreshold" id="highVarianceThreshold" />
-                    
+                    <br/>
                     </s:div>
-                    
+                    <br/>
                     <s:div cssClass="wwgrp">
                         <s:div cssClass="wwlbl"></s:div>
                         <s:div cssClass="wwctrl">

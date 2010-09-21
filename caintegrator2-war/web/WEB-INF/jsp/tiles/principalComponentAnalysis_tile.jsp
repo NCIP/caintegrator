@@ -68,7 +68,7 @@
                 title="Principle Component Analysis Server is a server which hosts the grid-enabled Gene Pattern Principle Component Analysis module.  Select one from the list and caIntegrator2 will use the selected server for this portion of the processing."
                 cssClass="editable-select"/>
             <br />
-            <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin-left: 0px;height:110px;width:100%">
+            <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin-left: 0px;height:130px;width:100%">
                 <div class="wwlbl">&nbsp;</div >
                 <div class="wwctrl" style="width: 300px; white-space:normal; text-align: left; padding-top: 1em; padding-bottom: 1em;">For the
                     Annotation query / list parameter below, choose either "All Samples" or a annotation query or list.  If "All Samples" is selected, then all samples will be used.  If a annotation query or list is selected, only those samples which map to the subjects in the annotation query/list results will be used.  The annotation queries and lists in this list have been previously saved by the user.  Control samples can be excluded from this processing by selecting a control set name in the Exclude Sample Control Set dropdown.
@@ -87,11 +87,13 @@
                 list="principalComponentAnalysisForm.queries" listValue="value.displayName" label="Annotation Queries and Lists"
                 required="false" theme="css_xhtml"
                 title="Annotation Queries and Lists enable the user to specify which samples will be processed using PCA.  The queries and lists selected here have been previously saved by the user.  Selected queries and lists will result in the processing of only those samples which are mapped to subjects in the saved query or list result."/>
+                <br/>
             <s:select name="principalComponentAnalysisForm.excludeControlSampleSetName"
                 headerKey="" headerValue="None"
                 list="controlSampleSets" label="Exclude Sample Control Set"
                 required="false" theme="css_xhtml"
                 title="Samples in this set will be excluded."/>
+                <br/>
             <s:checkbox name="principalComponentAnalysisForm.usePreprocessDataset"
                 label="Enable Preprocess Dataset:"
                 value="aBoolean"
@@ -101,6 +103,7 @@
                 onclick="checkanddisplay(this);"
                 tooltip="stuff"
                 title="Checking this box will display the Preprocess Dataset options and will enable Preprocessing."/>
+                <br/>
             <s:div name="commentdiv" cssClass="inlinehelp_form_element">
                 <span class="wwlbl">
                 (check to display preprocess parameters)
@@ -133,7 +136,7 @@
             </s:div>           
             <br>
             <br>
-            <s:div cssClass="wwgrp">
+            <s:div cssClass="wwgrp" cssStyle="display:inline-block">
                 <s:submit value="Perform Analysis" align="center"
                     onclick="this.form.selectedAction.value = 'execute'; return true;" theme="simple" />
                 <s:submit value="Cancel" action="cancelPrincipalComponentAnalysis" theme="simple"/>
