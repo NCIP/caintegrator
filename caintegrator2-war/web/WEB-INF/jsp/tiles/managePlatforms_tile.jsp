@@ -146,7 +146,7 @@
                             <span class="wwctrl"></span>
                         </s:div>
                         <s:div id="addFileButtonDiv" cssStyle="%{addButtonDisplay}">
-                            <div class="wwlbl"><label class="label">&nbsp</label></div><br>
+                            <div class="wwlbl"><label class="label">&nbsp</label></div>
                             <div class="wwctrl">
                             <s:submit id="addFileButton" name="addFileButton" value="Add Annotation File" align="center"
                                 action="addAnnotationFile" onclick="setSelectedAction('addAnnotationFile')" theme="css_xhtml" />

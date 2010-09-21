@@ -161,7 +161,7 @@
                             <s:hidden name="studyConfiguration.id"  />
                             
                             <!--Study Logo-->
-                            <s:div cssClass="wwgrp">
+                            <s:div cssClass="wwgrp" cssStyle="display:inline-block">
                                 <s:div cssClass="wwlbl">
                                         <label class="label" for="addStudyLogo_studyLogoFile">Study Logo:</label>
                                 </s:div>

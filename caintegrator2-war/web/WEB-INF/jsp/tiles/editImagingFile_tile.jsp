@@ -53,18 +53,23 @@
                 
                     <s:div id="fileInputParams" cssStyle="%{fileInputCssStyle}">
 	                    <s:file id="imageAnnotationFile" name="imageAnnotationFile" label="Image Series Annotation File"/>
+	                    <br/>
                         <s:checkbox name="createNewAnnotationDefinition" id="createNewAnnotationDefinition"
                                 label="Create a new Annotation Definition if one is not found" labelposition="left" />
+                        <br/>
                     </s:div>
                     <s:div id="aimInputParams" cssStyle="%{aimInputCssStyle}">
 	                    <s:select name="aimServerProfile.url" id="aimUrl" accesskey="false"
 	                        headerKey="" headerValue="--Enter an AIM Server Grid URL--"
 	                        list="aimServices" label=" AIM Server Grid URL " required="true"
 	                        cssClass="editable-select" />
+	                    <br/>
 	                    <s:textfield label=" AIM Username " name="aimServerProfile.username"
 	                        id="aimUsername" size="40"/>
+	                    <br/>
 	                    <s:password label=" AIM Password " name="aimServerProfile.password"
 	                        id="aimPassword" size="40"/>
+	                    <br/>
                     </s:div>
                     <div style="position: relative; white-space: nowrap;">
                     <div class="wwlbl" id="wwlbl_webServiceUrl"><label class="label" for="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId"></label>
