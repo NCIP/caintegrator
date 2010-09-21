@@ -58,9 +58,9 @@
     <div class="box2">   
     <div class="whitebg">   
         <s:actionerror/>
-            <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin-left: 0px;height:110px">
+            <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin-left: 0px;height:130px">
                 <div class="wwlbl">&nbsp;</div >
-                <div class="wwctrl" style="width: 300px; white-space:normal; text-align: left; padding-top: 1em; padding-bottom: 1em;">
+                <div class="wwctrl" style="width: 300px; white-space:normal; text-align: left; padding-bottom: 1em;">
                     This form submits a job which analyzes samples using the GenePattern GISTIC module.<br>
                     <br>
                     <s:div cssStyle="text-align:left; width: 550px; margin-left: auto; margin-right: auto;">
@@ -74,7 +74,8 @@
         
         <s:form id="gisticAnalysisForm" action="gisticAnalysis" method="post" enctype="multipart/form-data" theme="css_xhtml">
         
-            <s:hidden name="selectedAction" />
+           <s:hidden name="selectedAction" />
+            
             <s:textfield name="currentGisticAnalysisJob.name" label="Job Name" size="50" required="true" />
             <br />
             <s:div cssStyle="padding: 1em 0 0 0;">
@@ -89,13 +90,14 @@
             <s:select id="gridServiceUrl" name="gridServiceUrl"
                 list="gisticServices" label="GISTIC Grid Server" required="true" disabled="true" cssClass="editable-select"/>
             </s:div>
+            <br/>
             <s:div id="webServiceInputParams" cssStyle="%{useWebServiceOn}">
                 <s:textfield id="webServiceUrl" name="webServiceUrl" label="GenePattern Web Service URL" size="50" required="true" /> <br />
                 <s:textfield id="username" name="gisticParameters.server.username" label="GenePattern Username" size="50" required="true" /> <br />
                 <s:password id="password" name="gisticParameters.server.password" label="GenePattern Password" size="50" showPassword="true" />
             </s:div>
             <br />
-            <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin: 1em 0 0 0px; height:110px; padding-bottom: 0;">
+            <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin: 3em 0 0 0px; height:130px; padding-bottom: 0;">
                 <div class="wwlbl">&nbsp;</div >
                 <div class="wwctrl" style="width: 300px; white-space:normal; text-align: left; padding-top: 1em; padding-bottom: 1em;">For the
                     Annotation Query / List parameter below, choose either "All Samples" or a annotation query or list.  If "All Samples" is selected, then all samples will be used.  If a annotation query or list is selected, only those samples which map to the subjects in the annotation query/list results will be used.  The annotation queries and lists in this list have been previously saved by the user.  Control samples can be excluded from this processing by selecting a control set name in the Exclude Sample Control Set dropdown.
@@ -111,6 +113,7 @@
                 <s:div id="platformSelectorDiv">
                     <s:select name="gisticAnalysisForm.selectedPlatformName" multiple="false"
                         list="platformsInStudy" label="Select Platform"/>
+                        <br/>
                 </s:div>
             </s:if>
             <s:select name="gisticAnalysisForm.excludeControlSampleSetName"
@@ -118,6 +121,7 @@
                 list="controlSampleSets" label="Exclude Sample Control Set"
                 required="true" theme="css_xhtml"
                 title="Samples in this set will be excluded."/>
+            <br/>
             <s:textfield name="gisticParameters.amplificationsThreshold" label="Amplifications Threshold" size="50" required="true" />
             <br />
             <s:textfield name="gisticParameters.deletionsThreshold" label="Deletions Threshold" size="50" required="true" />
@@ -131,8 +135,8 @@
             <br />
             <s:file name="gisticParameters.cnvSegmentsToIgnoreFile" label="cnv File" />
             <br />
-            
-            <s:div cssClass="wwgrp" cssStyle="padding: 1em 0 1em 0;">
+            <br/>
+            <s:div cssClass="wwgrp" cssStyle="padding: 1em 0 1em 0; display:inline-block" >
                 <s:div cssClass="wwlbl">&nbsp;</s:div>
                 <s:div cssClass="wwctrl">
                     <s:submit value="Perform Analysis" align="center" onclick="this.form.selectedAction.value = 'execute'; return true;" theme="simple" />

@@ -72,32 +72,36 @@
 		            </s:div>
 		            <br />
                     <s:textfield label="Name" name="survivalDefinitionFormValues.survivalValueDefinitionName" required="true"/>
+                    <br/>
                     <s:select name="survivalDefinitionFormValues.survivalLengthUnits"
                                   list="@gov.nih.nci.caintegrator2.domain.annotation.SurvivalLengthUnitsEnum@getDisplayableValues()" 
                                   label="Survival Length Units" required="true"/>
-                                  
+                    <br/>              
                     <s:div id="dateInputParams" cssStyle="%{dateInputCssStyle}">
 	                    <s:select name="survivalDefinitionFormValues.survivalStartDateId" 
 	                              list="dateAnnotationDefinitions" 
 	                              listValue="value.displayName" label = "Survival Start Date" required="true"/>
-	                              
+	                   <br/>              
 	                    <s:select name="survivalDefinitionFormValues.survivalDeathDateId" 
 	                              list="dateAnnotationDefinitions" 
 	                              listValue="value.displayName" label = "Death Date" required="true"/>
-	                              
+	                    <br/>          
 	                    <s:select name="survivalDefinitionFormValues.lastFollowupDateId" 
 	                              list="dateAnnotationDefinitions" 
 	                              listValue="value.displayName" label = "Last Followup Date" required="true"/>
+                        <br/>
                     </s:div>
                     <s:div id="lengthOfTimeInputParams" cssStyle="%{lengthOfTimeInputCssStyle}">
                         <s:select name="survivalDefinitionFormValues.survivalLengthId"
                                   list="numericAnnotationDefinitions"
                                   listValue="value.displayName" label = "Survival Length" 
                                   headerKey="" headerValue="" required="true"/>
+                        <br/>
                         <s:select name="survivalDefinitionFormValues.survivalStatusId" 
                                   list="survivalStatusAnnotationDefinitions"
                                   listValue="value.displayName" label="Censored Status" onchange="document.editSurvivalDefinitionForm.action='updateSurvivalStatusValues.action'; document.editSurvivalDefinitionForm.submit();"
                                   headerKey="" headerValue=""/>
+                          <br/>
                           <s:select name="survivalDefinitionFormValues.valueForCensored"
                                   list="survivalStatusValues" label="Value for Censored"
                                   headerKey="" headerValue=""/>

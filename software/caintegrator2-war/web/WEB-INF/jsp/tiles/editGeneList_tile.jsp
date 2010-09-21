@@ -56,6 +56,7 @@
                             
                             <s:if test="%{studyManager}">
                                 <s:checkbox name="visibleToOther" label="Make Visible to Others" labelposition="left" />
+                                <br/>
                             </s:if>
                             <s:textarea label="Gene Symbols" name="geneSymbolListing"
                                 disabled="true" rows="5" cols="20" theme="css_xhtml" /><br>
