@@ -125,8 +125,8 @@ public class AddStudyLogoAction extends AbstractStudyAction {
      */
     @Override
     public void validate() {
-        if (getStudyLogoFile() == null) {
-            addFieldError("studyLogoFile", "File is required");
+        if (!getFieldErrors().containsKey("studyLogoFile") && getStudyLogoFile() == null) {
+            addFieldError("studyLogoFile", getText("struts.messages.error.file.required"));
         }
         prepareValueStack();
     }
