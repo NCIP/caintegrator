@@ -96,7 +96,7 @@
     <dependency org="org.apache.struts" name="struts2-spring-plugin" rev="2.1.8" conf="runtime->master"/>
     <dependency org="org.apache.struts" name="struts2-tiles-plugin" rev="2.1.8" conf="runtime->master"/>
     <dependency org="org.apache.struts" name="struts2-dojo-plugin" rev="2.1.8" conf="runtime->master"/>
-    <dependency org="affymetrix" name="AffxFusion" rev="1.0.10b" conf="runtime" force="true"/>
+    <dependency org="affymetrix" name="AffxFusion" rev="1.1" force="true"/>
     <dependency org="iviCore" name="iviCore" rev="1.2dev" conf="runtime" />
     <dependency org="genepattern" name="GenePattern" rev="3.2.1" conf="runtime" />
 

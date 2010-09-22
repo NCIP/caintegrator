@@ -116,7 +116,8 @@ import affymetrix.fusion.chp.FusionCHPMultiDataData;
 class AffymetrixDnaAnalysisChpParser {
     
     private static final String LO2_RATIO = "Log2Ratio";
-
+    private static final String PARAM_CHIP_TYPE = "affymetrix-algorithm-param-ChipType1";
+    private static final String PARAM_ARRAY_TYPE = "affymetrix-array-type";
     private final File chpFile;
     private FusionCHPMultiDataData chpData;
     private FusionCHPData fusionChpData;
@@ -206,26 +207,34 @@ class AffymetrixDnaAnalysisChpParser {
         }
         return fusionChpData;
     }
-
+    
     String getArrayDesignName() throws DataRetrievalException {
         GenericFileReader reader = new GenericFileReader();
         reader.setFilename(chpFile.getAbsolutePath());
         GenericData data = new GenericData();
+        String arrayName;
+        String paramName = PARAM_ARRAY_TYPE;
         try {
             reader.readHeader(data, GenericFileReader.ReadHeaderOption.ReadNoDataGroupHeader);
-            String name =  data
-                .getHeader()
-                .getGenericDataHdr()
-                .findNameValParam("affymetrix-algorithm-param-ChipType1")
-                .getValueAscii();
+            if (data
+                    .getHeader().getGenericDataHdr().findNameValParam(PARAM_CHIP_TYPE) != null) {
+                paramName = PARAM_CHIP_TYPE;
+                arrayName =  data.getHeader().getGenericDataHdr().findNameValParam(paramName).getValueAscii();
+            } else {
+                arrayName =  data.getHeader().getGenericDataHdr().findNameValParam(paramName).getValueText();
+            }
             reader.close();
-            return name;
+            return arrayName;
         } catch (InvalidVersionException e) {
-            throw new DataRetrievalException("Invalid version from " + chpFile.getAbsolutePath(), e);
+            throw new DataRetrievalException("Couldn't retrieve the array name from the array design file.  "
+                    + "Invalid version from " + chpFile.getAbsolutePath(), e);
         } catch (InvalidFileTypeException e) {
-            throw new DataRetrievalException("Invalid file type from " + chpFile.getAbsolutePath(), e);
+            throw new DataRetrievalException("Couldn't retrieve the array name from the array design file.  "
+                    + "Invalid file type from " + chpFile.getAbsolutePath(), e);
         } catch (Exception e) {
-            throw new DataRetrievalException("Couldn't retrieve data from " + chpFile.getAbsolutePath(), e);
+            throw new DataRetrievalException("Couldn't retrieve the array name from the array design file.  "
+                    + "Looking for parameter named " + paramName + ". Local file path is "
+                    + chpFile.getAbsolutePath(), e);
         }
     }
    
