@@ -147,10 +147,12 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
                                 getControlSampleFileFileName()));
                 return SUCCESS;
             } catch (ValidationException e) {
-                setControlMappingFieldError("Invalid file: " + e.getResult().getInvalidMessage());
+                setControlMappingFieldError(getText("struts.messages.exception.invalid.file",
+                        getArgs(e.getResult().getInvalidMessage())));
                 return INPUT;
             } catch (IOException e) {
-                setControlMappingFieldError("Unexpected IO exception: " + e.getMessage());
+                setControlMappingFieldError(getText("struts.messages.exception.file.ioexception", 
+                        getArgs(e.getMessage())));
                 return INPUT;
             } 
         }
@@ -169,14 +171,16 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
                                 getSampleMappingFileFileName()));
                 return SUCCESS;
             } catch (ValidationException e) {
-                setSampleMappingFieldError("Invalid file: " + e.getResult().getInvalidMessage());
+                setSampleMappingFieldError(getText("struts.messages.exception.invalid.file",
+                        getArgs(e.getResult().getInvalidMessage())));
                 return INPUT;
             } catch (IOException e) {
-                setSampleMappingFieldError("Unexpected IO exception - " + e.getMessage());
+                setSampleMappingFieldError(getText("struts.messages.exception.file.ioexception", 
+                        getArgs(e.getMessage())));
                 return INPUT;
             } catch (Exception e) {
-                setSampleMappingFieldError("Something is very wrong in the code, please report this problem - " 
-                        + e.getMessage());
+                setSampleMappingFieldError(getText("struts.messages.exception.unexpected",
+                        getArgs(e.getMessage())));
                 return INPUT;
             } finally {
                 super.prepare(); // Reloads the genomic source if there's an exception.
@@ -194,7 +198,8 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
             }
             getStudyManagementService().save(getStudyConfiguration());
         } catch (Exception e) {
-            addActionError("An unexpected error has occurred, please report this problem - " + e.getMessage());
+            addActionError(getText("struts.messages.exception.unexpected",
+                    getArgs(e.getMessage())));
         }
     }
     
@@ -212,7 +217,7 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
     @Override
     public void validate() {
         if (sampleMappingFile == null && controlSampleFile == null) {
-            addActionError("File is required.");
+            addActionError(getText("struts.messages.error.file.required", getArgs("")));
         } 
         if (sampleMappingFile != null) {
             validateSampleMappingFile();
@@ -225,18 +230,20 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
 
     private void validateControlMappingFile() {
         if (StringUtils.isEmpty(getControlSampleSetName())) {
-            addFieldError("controlSampleSetName", "Name is required");
+            addFieldError("controlSampleSetName", getText("struts.messages.error.name.required", 
+                    getArgs("")));
         } else if (getStudyConfiguration().getControlSampleSet(getControlSampleSetName()) != null) {
-            addFieldError("controlSampleSetName", "Duplicate name, please enter a new name.");
+            addFieldError("controlSampleSetName", getText("struts.messages.error.duplicate.name", 
+                    getArgs("Control Set", getControlSampleSetName())));
         }
         if (getControlSampleFile().length() == 0) {
-            setControlMappingFieldError("File is empty");
+            setControlMappingFieldError(getText("struts.messages.error.file.empty", getArgs("")));
         }
     }
 
     private void validateSampleMappingFile() {
         if (sampleMappingFile.length() == 0) {
-            setSampleMappingFieldError("File is empty");
+            setSampleMappingFieldError(getText("struts.messages.error.file.empty", getArgs("")));
         }
     }
 

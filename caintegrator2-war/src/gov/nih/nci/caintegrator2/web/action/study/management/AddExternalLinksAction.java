@@ -99,6 +99,7 @@ import java.io.IOException;
 public class AddExternalLinksAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;
+    private static final String[] ERROR_MESSAGE_ARGS = {"External Links"};
     private File externalLinksFile;
     private String externalLinksFileFileName;
     private ExternalLinkList externalLinkList = new ExternalLinkList();
@@ -122,10 +123,12 @@ public class AddExternalLinksAction extends AbstractStudyAction {
             setStudyLastModifiedByCurrentUser(null, LogEntry.getSystemLogAdd(externalLinkList));
             return SUCCESS;
         } catch (ValidationException e) {
-            addActionError("Invalid file: " + e.getResult().getInvalidMessage());
+            addActionError(getText("struts.messages.exception.invalid.file", 
+                                        getArgs(e.getResult().getInvalidMessage())));
             return INPUT;
         } catch (IOException e) {
-            addActionError("Unexpected IO exception: " + e.getMessage());
+            addActionError(getText("struts.messages.exception.file.ioexception", 
+                                        getArgs(e.getMessage())));
             return INPUT;
         }
     }
@@ -136,12 +139,12 @@ public class AddExternalLinksAction extends AbstractStudyAction {
     @Override
     public void validate() {
         if (externalLinksFile == null) {
-            addActionError("External Links File is required");
+            addFieldError("externalLinksFile", getText("struts.messages.error.file.required", ERROR_MESSAGE_ARGS));
         } else if (externalLinksFile.length() == 0) {
-            addActionError("External Links File is empty");
+            addFieldError("externalLinksFile", getText("struts.messages.error.file.empty", ERROR_MESSAGE_ARGS));
         }
         if (StringUtils.isBlank(externalLinkList.getName())) {
-            addActionError("Must supply a name for the External Links List");
+            addFieldError("externalLinkList.name", getText("struts.messages.error.name.required", ERROR_MESSAGE_ARGS));
         }
         prepareValueStack();
     }

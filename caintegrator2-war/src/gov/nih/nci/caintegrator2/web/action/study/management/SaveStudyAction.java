@@ -117,7 +117,7 @@ public class SaveStudyAction extends AbstractStudyAction {
             }
             return SUCCESS;
         } else {
-            addActionError("User is unauthenticated");
+            addActionError(getText("struts.messages.error.unauthenticated.user"));
             return ERROR;
         }
     }
@@ -134,8 +134,8 @@ public class SaveStudyAction extends AbstractStudyAction {
         try {
             getStudyManagementService().createProtectionElement(getStudyConfiguration());
         } catch (CSException e) {
-            addActionError("Problem trying to create instance level security on Study " 
-                    + getStudyConfiguration().getStudy().getShortTitleText());
+            addActionError(getText("struts.messages.error.csm.study.instance.level", 
+                    getArgs(getStudyConfiguration().getStudy().getShortTitleText())));
             return ERROR;
         }
         return SUCCESS;
@@ -149,14 +149,15 @@ public class SaveStudyAction extends AbstractStudyAction {
     public void validate() {
         String studyName = getStudyConfiguration().getStudy().getShortTitleText();
         if (StringUtils.isEmpty(studyName)) {
-            addFieldError("study.shortTitleText", "Study Name is required");
+            addFieldError("study.shortTitleText", getText("struts.messages.error.name.required", 
+                    getArgs("Study")));
         } else if (studyName.length() > NAME_LENGTH) {
             addFieldError("study.shortTitleText",
-                    "Study name exceeds maximum length of 50 characters, please shorten it.");
+                    getText("struts.messages.error.study.length.excessive"));
         } else if (getStudyManagementService().isDuplicateStudyName(getStudyConfiguration().getStudy(),
                 getWorkspace().getUsername())) {
-            addFieldError("study.shortTitleText", "There is already a study named '" + studyName
-                    + "', please use a different name.");
+            addFieldError("study.shortTitleText", getText("struts.messages.error.duplicate.name", getArgs("Study", 
+                    studyName))); 
         }
     }
     

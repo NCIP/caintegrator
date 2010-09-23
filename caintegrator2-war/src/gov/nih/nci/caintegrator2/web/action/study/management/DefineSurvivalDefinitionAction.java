@@ -135,7 +135,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
     public void validate() {
         clearErrorsAndMessages();
         if ("modify".equals(actionType) && survivalValueDefinition.getId() == null) {
-            addActionError("Must select a Survival Value Definition before edit / delete.");
+            addActionError(getText("struts.messages.error.select.survival.definition.first"));
         }
         actionType = "";
         validateStudyHasValidAnnotations();
@@ -146,8 +146,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
                 EntityTypeEnum.SUBJECT, AnnotationTypeEnum.DATE).size() < 3
                 && getStudy().getAllVisibleAnnotationFieldDescriptors(EntityTypeEnum.SUBJECT,
                         AnnotationTypeEnum.NUMERIC).isEmpty()) {
-            addActionError("Study must have at least 3 different date fields OR 1 numeric "
-                    + "field for subject annotations.");
+            addActionError(getText("struts.messages.error.survival.definition.invalid"));
         }
     }
     

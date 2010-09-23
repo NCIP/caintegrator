@@ -185,10 +185,12 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
     
     private void validateAnnotationGroupName() {
         if (StringUtils.isBlank(getGroupName())) {
-            addFieldError(ANNOTATION_GROUP_NAME, "Annotation group name is required");
+            addFieldError(ANNOTATION_GROUP_NAME, getText("struts.messages.error.name.required", 
+                    getArgs("Annotation Group")));
         } else if (!getGroupName().equals(getAnnotationGroup().getName())
                 && getStudy().getAnnotationGroup(getGroupName()) != null) {
-            addFieldError(ANNOTATION_GROUP_NAME, "Duplicate Annotation Group name: " + getGroupName());
+            addFieldError(ANNOTATION_GROUP_NAME, 
+                    getText("struts.messages.error.duplicate.name", getArgs("Annotation Group", getGroupName())));
         }
     }
     

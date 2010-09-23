@@ -185,7 +185,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
         } else if (EXECUTE_ACTION.equals(getSelectedAction())) {
             return executeAnalysis();
         } else  {
-            addActionError("Invalid action: " + getSelectedAction());
+            addActionError(getText("struts.messages.error.invalid.action", getArgs(getSelectedAction())));
             return INPUT;
         }
     }
@@ -218,8 +218,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
         if (getUseWebService()
                 && !analysisService.validateGenePatternConnection(
                 getCurrentGisticAnalysisJob().getGisticAnalysisForm().getGisticParameters().getServer())) {
-            addActionError("Unable to connect to the specified gistic web service, "
-                    + "make sure the URL, username, and password are correct.");
+            addActionError(getText("struts.messages.error.gistic.unable.to.connect"));
             return false;
         }
         return true;
@@ -227,9 +226,10 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
 
     private void checkName() {
         if (StringUtils.isBlank(getCurrentGisticAnalysisJob().getName())) {
-            addFieldError("currentGisticAnalysisJob.name", "Job name required.");
+            addFieldError("currentGisticAnalysisJob.name", getText("struts.messages.error.name.required", getArgs("Job")));
         } else if (getStudySubscription().getGisticAnalysisNames().contains(getCurrentGisticAnalysisJob().getName())) {
-            addFieldError("currentGisticAnalysisJob.name", "Job name is duplicate, please use other name.");
+            addFieldError("currentGisticAnalysisJob.name", getText(
+                    "struts.messages.error.duplicate.name", getArgs("Job", getCurrentGisticAnalysisJob().getName())));
         }
     }
 
@@ -237,7 +237,8 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
         if (StringUtils.isBlank(getGisticAnalysisForm().getSelectedQuery())
                 && isStudyHasMultiplePlatforms()
                 && StringUtils.isBlank(getGisticAnalysisForm().getSelectedPlatformName())) {
-            addFieldError("gisticAnalysisForm.selectedPlatformNames", "Platform is required.");
+            addFieldError("gisticAnalysisForm.selectedPlatformNames", 
+                    getText("struts.messages.error.platform.required"));
         } else if (StringUtils.isBlank(getGisticAnalysisForm().getSelectedPlatformName())) {
             getGisticAnalysisForm().setSelectedPlatformName(getPlatformsInStudy().get(0));
         }
@@ -245,13 +246,13 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
 
     private void checkNegativeValue(String field, Integer value) {
         if (value < 0) {
-            addFieldError(field, "Value must be positive.");
+            addFieldError(field, getText("struts.messages.error.value.must.be.positive"));
         }
     }
     
     private void checkNegativeValue(String field, Float value) {
         if (value < 0) {
-            addFieldError(field, "Value must be positive.");
+            addFieldError(field, getText("struts.messages.error.value.must.be.positive"));
         }
     }
     
@@ -291,7 +292,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
             addActionError(e.getMessage());
             return INPUT;
         } catch (IOException e) {
-            addActionError("Unable to save uploaded CNV ignore file.");
+            addActionError(getText("struts.messages.error.uploading.unable.to.save"));
             return INPUT;
         }
         getCurrentGisticAnalysisJob().setCreationDate(new Date());
@@ -332,13 +333,13 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
                 getQueryManagementService(), getGisticParameters());
         Set<String> genomeVersions = getGenomeVersions(samples);
         if (samples.isEmpty()) {
-            addActionError("There are no samples selected.");
+            addActionError(getText("struts.messages.error.gistic.no.samples.selected"));
             return false;
         } else if (genomeVersions.isEmpty()) {
-            addActionError("The samples selected are not related to any copy number data.");
+            addActionError(getText("struts.messages.error.gistic.samples.not.copy.number"));
             return false;
         } else if (genomeVersions.size() > 1) {
-            addActionError("The samples selected have copy number data loaded for multiple genome build versions.");
+            addActionError(getText("struts.messages.error.gistic.samples.have.multiple.builds"));
             return false;
         } else {
             return loadRefgeneFileParameter(genomeVersions.iterator().next());
@@ -353,9 +354,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
                 return true;
             }
         }
-        addActionError("Copy number data is related to an unsupported genome build for GISTIC analysis. "
-                + "Valid values are Hg16, Hg17 or Hg18. Data was loaded for array annoted with genome build " 
-                + genomeVersion);
+        addActionError(getText("struts.messages.error.gistic.unsupported.genome.build", getArgs(genomeVersion)));
         return false;
     }
 

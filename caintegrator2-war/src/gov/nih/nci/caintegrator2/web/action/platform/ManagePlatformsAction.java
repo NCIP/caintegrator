@@ -188,11 +188,11 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
      */
     public String updatePlatform() {
         if (platformConfigurationId == null) {
-            addActionError("Cannot update platform because the id is not given.");
+            addActionError(getText("struts.messages.error.platform.no.id"));
             return ERROR;
         }
         if (!SessionHelper.getInstance().isAuthenticated()) {
-            addActionError("User is unauthenticated");
+            addActionError(getText("struts.messages.error.unauthenticated.user"));
             return ERROR;
         }
         if ("delete".equalsIgnoreCase(selectedAction)) {
@@ -248,7 +248,7 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
             break;
 
         default:
-            addActionError("Invalid platform type: " + platformType);
+            addActionError(getText("struts.messages.error.platform.invalid.type", getArgs(platformType)));
         }
     }
     
@@ -261,15 +261,16 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
     }
     
     private void extensionNotSupported() {
-        addFieldError(PLATFORM_FILE, "This file format is not supported: " + platformFileFileName);
+        addFieldError(PLATFORM_FILE, getText("struts.messages.error.platform.file.format.not.supported", 
+                getArgs(platformFileFileName)));
     }
     
     private boolean checkAddedPlatformFile() {
         if (platformFile == null) {
-            addFieldError(PLATFORM_FILE, "Annotation file is required");
+            addFieldError(PLATFORM_FILE, getText("struts.messages.error.file.required", getArgs("Annotation")));
             return false;
         } else if (platformFile.length() == 0) {
-            addFieldError(PLATFORM_FILE, "Annotation file is empty");
+            addFieldError(PLATFORM_FILE, getText("struts.messages.error.file.empty", getArgs("Annotation")));
             return false;
         }
         return true;
@@ -291,16 +292,16 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
         if (!PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue().equals(platformType)
                 && StringUtils.isEmpty(platformName)
                 && !platformFileFileName.endsWith(".xml")) {
-            addFieldError(PLATFORM_NAME, "Platform name is required for this platform type and annotation type.");
+            addFieldError(PLATFORM_NAME, getText("struts.messages.error.platform.non.affy.dna.name.req"));
         }
     }
 
     private void checkAffyDnaPlatformType() {
         if (getPlatformForm().getAnnotationFiles().isEmpty()) {
-            addActionError("Annotation File(s) Selected is empty.");
+            addActionError(getText("struts.messages.error.platform.empty.annotation.files"));
         }
         if (StringUtils.isEmpty(platformName)) {
-            addFieldError(PLATFORM_NAME, "Platform name is required for this platform type.");
+            addFieldError(PLATFORM_NAME, getText("struts.messages.error.platform.affy.dna.name.req"));
         }
     }
     
@@ -312,7 +313,7 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
         try {
             getPlatformForm().add(getPlatformFileCopy(), platformFileFileName);
         } catch (IOException e) {
-            addFieldError(PLATFORM_FILE, "Error up load file: " + platformFileFileName);
+            addFieldError(PLATFORM_FILE, getText("struts.messages.error.uploading", getArgs(platformFileFileName)));
             return ERROR;
         }
         return INPUT;
@@ -353,7 +354,7 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
                 break;
 
             default:
-                addActionError("Invalid platform type: " + platformType);
+                addActionError(getText("struts.messages.error.platform.invalid.type", getArgs(platformType)));
                 return ERROR;
             }
             String extractedName = source.getLoader().getPlatformName();
@@ -365,24 +366,22 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
             }
         } catch (IOException e) {
             LOGGER.error("Couldn't copy uploaded file", e);
-            addActionError("Please contact the system administrator. Couldn't copy the uploaded files: " 
-                    + e.getMessage());
+            addActionError(getText("struts.messages.error.platform.copy.file", getArgs(e.getMessage())));
             return ERROR;
         } catch (PlatformLoadingException e) {
-            LOGGER.error("Couldn't loaded annotation file", e);
-            addActionError("Couldn't read annotation file: " + e.getMessage());
+            LOGGER.error("Couldn't load annotation file", e);
+            addActionError(getText("struts.messages.error.platform.read.file",  getArgs(e.getMessage())));
             return ERROR;
         }
     }
     
     private boolean validatePlatformName(String name) {
         if (name == null) {
-            addFieldError(PLATFORM_FILE, "Platform name not found in annotation file: "
-                    + platformFileFileName);
+            addFieldError(PLATFORM_FILE, getText("struts.messages.error.platform.name.not.found", 
+                    getArgs(platformFileFileName)));
             return false;
         } else if (getArrayDataService().getPlatformConfiguration(name) != null) {
-            addActionError("Platform name is duplicate or the platform is already been loaded: "
-                    + name);
+            addActionError(getText("struts.messages.error.platform.name.duplicate.or.loaded", getArgs(name)));
             return false;
         }
         return true;

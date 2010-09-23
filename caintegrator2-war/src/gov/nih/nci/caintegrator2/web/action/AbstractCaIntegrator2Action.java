@@ -148,6 +148,15 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     }
     
     /**
+     * Transforms String... to String[]
+     * @param args to transform to array.
+     * @return string array of args.
+     */
+    protected String[] getArgs(String... args) {
+        return args;
+    }
+    
+    /**
      * Call this method in the prepare statement if an object is being accessed that is unauthorized.  By
      * default in this Action's prepare method it will be set to true otherwise.
      * @param isAuthorized T/F value if user is allowed to proceed with requested action.

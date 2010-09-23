@@ -187,14 +187,17 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
 
     private void validateExecuteAnalysis() {
         if (StringUtils.isBlank(getCurrentComparativeMarkerSelectionAnalysisJob().getName())) {
-            addFieldError("currentComparativeMarkerSelectionAnalysisJob.name", "Job name required.");
+            addFieldError("currentComparativeMarkerSelectionAnalysisJob.name", 
+                    getText("struts.messages.error.name.required", getArgs("Job")));
         }
         if (getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().size() != 2) {
-            addFieldError("comparativeMarkerSelectionAnalysisForm.unselectedQueryNames", "2 Queries/Lists required.");
+            addFieldError("comparativeMarkerSelectionAnalysisForm.unselectedQueryNames", 
+                    getText("struts.messages.error.two.queries.required"));
         }
         if (isStudyHasMultiplePlatforms() 
                 && StringUtils.isBlank(getComparativeMarkerSelectionAnalysisForm().getPlatformName())) {
-            addFieldError("comparativeMarkerSelectionAnalysisForm.platformName", "Platform name required.");
+            addFieldError("comparativeMarkerSelectionAnalysisForm.platformName", 
+                    getText("struts.messages.error.name.required", getArgs("Platform")));
         }
     }
     

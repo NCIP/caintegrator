@@ -135,7 +135,7 @@ public class EditGeneListAction extends EditAbstractListAction {
      */
     @Override
     protected String getCreationSuccessfulMessage() {
-        return "Gene List successfully created.";
+        return getText("struts.messages.gene.list.successfully.created");
     }
     
 }

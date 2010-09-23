@@ -132,8 +132,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
             if (Status.LOADED.equals(platformConfiguration.getStatus())
                     && (platformConfiguration.getPlatformType() == null
                             || platformConfiguration.getPlatformChannelType() == null)) {
-                addActionError("Some Platforms are missing 'Platform Type/Platform Channel Type',"
-                    + " please go to the Manage Platforms page to set them.");
+                addActionError(getText("struts.messages.error.caarray.platforms.invalid"));
                 return ERROR;
             }
         }
@@ -243,7 +242,8 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     private boolean validateSave() {
         if (isPlatformNameRequired()
                 && StringUtils.isEmpty(getGenomicSource().getPlatformName())) {
-            addFieldError("genomicSource.platformName", "Platform name is required for using supplemental files.");
+            addFieldError("genomicSource.platformName", 
+                    getText("struts.messages.error.caarray.platform.name.required"));
             return false;
         }
         if (!validateGenomicSourceConnection()) {
@@ -259,10 +259,11 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         try {
             caArrayFacade.validateGenomicSourceConnection(getGenomicSource());
         } catch (ConnectionException e) {
-            addFieldError("genomicSource.serverProfile.hostname", "Unable to connect to server.");
+            addFieldError("genomicSource.serverProfile.hostname", getText("struts.messages.error.unable.to.connect"));
             return false;
         } catch (ExperimentNotFoundException e) {
-            addFieldError("genomicSource.experimentIdentifier", "Experiment identifier not found on server.");
+            addFieldError("genomicSource.experimentIdentifier", 
+                    getText("struts.messages.error.caarray.experiment.not.found"));
             return false;
         }
         return checkUseSupplementalFiles();
@@ -281,7 +282,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
                 && (getGenomicSource().getHighVarianceThreshold() == null || getGenomicSource()
                         .getHighVarianceThreshold() <= 0)) {
             addFieldError("genomicSource.highVarianceThreshold", 
-                    "High Variance Threshold must be a number greater than 0.");
+                    getText("struts.messages.error.caarray.high.variance.threshold.invalid"));
             return false;
         }
         return true;

@@ -142,8 +142,7 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     public void validate() {
         super.validate();
         if (!getCurrentStudy().hasExpressionData()) {
-            addActionError("There are no gene expression data defined for this study, "
-                    + "unable to perform GeneExpression plot.");
+            addActionError(getText("struts.messages.error.study.has.no.expression.data", getArgs("GeneExpression plot")));
         }
     }
 

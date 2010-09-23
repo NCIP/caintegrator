@@ -138,7 +138,7 @@ public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction 
         } else if (PersistedAnalysisJobAjaxUpdater.DownloadType.INPUT.getType().equals(type)) {
             return handleInputDownload(downloadableFile);
         }
-        addActionError("Must specify the type of file being downloaded.");
+        addActionError(getText("struts.messages.error.must.specify.file.type"));
         return INPUT;
         
     }
@@ -150,7 +150,7 @@ public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction 
             getDisplayableWorkspace().setTemporaryDownloadFile(downloadableFile);
             return DOWNLOAD_RESULTS_FILE;
         }
-        addActionError("The job doens't contain an input file");
+        addActionError(getText("struts.messages.error.no.input.file"));
         return INPUT;
     }
 
@@ -160,7 +160,7 @@ public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction 
             getDisplayableWorkspace().setTemporaryDownloadFile(downloadableFile);
             return DOWNLOAD_RESULTS_FILE;
         } 
-        addActionError("The job doesn't contain a results file");
+        addActionError(getText("struts.messages.error.no.results.file"));
         return INPUT;
     }
     

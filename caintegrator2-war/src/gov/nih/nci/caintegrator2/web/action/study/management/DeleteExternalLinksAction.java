@@ -115,7 +115,7 @@ public class DeleteExternalLinksAction extends AbstractStudyAction {
     @Override
     public String execute() {
         if (StringUtils.isBlank(getExternalLinkList().getName())) {
-            addActionError("Cannot delete External Link List, please supply a valid identifier.");
+            addActionError(getText("struts.messages.error.external.links.delete"));
             return ERROR;
         }
         setStudyLastModifiedByCurrentUser(null, LogEntry.getSystemLogDelete(externalLinkList));

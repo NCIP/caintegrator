@@ -183,7 +183,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
         } else if (EXECUTE_ACTION.equals(getSelectedAction())) {
             return executeAnalysis();
         } else  {
-            addActionError("Invalid action: " + getSelectedAction());
+            addActionError(getText("struts.messages.error.invalid.action", getArgs(getSelectedAction())));
             return INPUT;
         }
     }
@@ -269,12 +269,12 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     
     private void validateConnect() {
         if (StringUtils.isEmpty(getGenePatternAnalysisForm().getUrl())) {
-            addFieldError("genePatternAnalysisForm.url", "URL is required");
+            addFieldError("genePatternAnalysisForm.url", getText("struts.messages.error.url.required", getArgs("")));
         } else {
             validateUrl();
         }
         if (StringUtils.isEmpty(getGenePatternAnalysisForm().getUsername())) {
-            addFieldError("genePatternAnalysisForm.username", "Username is required");
+            addFieldError("genePatternAnalysisForm.username", getText("struts.messages.error.username.required"));
         }
     }
 
@@ -282,13 +282,13 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
         try {
             new URL(getGenePatternAnalysisForm().getUrl());
         } catch (MalformedURLException e) {
-            addFieldError("genePatternAnalysisForm.url", "Invalid URL format");
+            addFieldError("genePatternAnalysisForm.url", getText("struts.messages.error.url.invalid.format"));
         }
     }
 
     private void validateExecuteAnalysis() {
         if (StringUtils.isBlank(getCurrentGenePatternAnalysisJob().getName())) {
-            addFieldError("currentGenePatternAnalysisJob.name", "Job name required.");
+            addFieldError("currentGenePatternAnalysisJob.name", getText("struts.messages.error.name.required", getArgs("Job")));
         }
         getGenePatternAnalysisForm().validate(this);
     }
