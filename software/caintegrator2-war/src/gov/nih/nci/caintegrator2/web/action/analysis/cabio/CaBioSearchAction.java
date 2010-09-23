@@ -132,7 +132,7 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
             reset();
             ableToConnect = true;
         } catch (Exception e) {
-            addActionError("Unable to connect to caBio: " + e.getMessage());
+            addActionError(getText("struts.messages.error.cabio.unable.to.connect", getArgs(e.getMessage())));
             ableToConnect = false;
         }
         return SUCCESS;
@@ -154,7 +154,7 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
         if (runSearchSelected) {
             runSearchSelected = false;
             if (StringUtils.isBlank(searchParams.getKeywords())) {
-                addActionError("Must enter keywords to search on.");
+                addActionError(getText("struts.messages.error.must.enter.keywords"));
                 return INPUT;
             }
             return retrieveDisplayableValues();
@@ -176,7 +176,7 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
         searchParams.getPathways().clear();
         retrievePathwaysFromGuiCheckboxes();
         if (searchParams.getPathways().isEmpty()) {
-            addActionError("Must select pathways to search for genes.");
+            addActionError(getText("struts.messages.error.cabio.must.select.pathway"));
             return INPUT;
         }
         return retrieveGenesFromCaBio(true);
@@ -219,11 +219,11 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
                 caBioGenes = caBioFacade.retrieveGenes(searchParams);
             }
             if (caBioGenes.isEmpty()) {
-                addActionError("No results were returned from search.");
+                addActionError(getText("struts.messages.error.no.results.returned"));
                 return INPUT;
             }
         } catch (ConnectionException e) {
-            addActionError("Unable to connect to caBio.");
+            addActionError(getText("struts.messages.error.unable.to.connect"));
             return ERROR;
         }
         return SUCCESS;
@@ -236,11 +236,11 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
             getCaBioPathways().clear();
             getCaBioPathways().addAll(caBioFacade.retrievePathways(searchParams));
             if (getCaBioPathways().isEmpty()) {
-                addActionError("No results were returned from search.");
+                addActionError(getText("struts.messages.error.no.results.returned"));
                 return INPUT;
             }
         } catch (ConnectionException e) {
-            addActionError("Unable to connect to caBio.");
+            addActionError(getText("struts.messages.error.unable.to.connect"));
             return ERROR;
         }
         return SUCCESS;

@@ -114,7 +114,7 @@ public class EditStudyAction extends AbstractStudyAction {
             getDisplayableWorkspace().getManagedStudies().addAll(
                     getWorkspaceService().retrieveStudyConfigurationJobs(getDisplayableWorkspace().getUserWorkspace()));
         } catch (CSException e) {
-            addActionError("Error accessing CSM to determine user privileges.");
+            addActionError(getText("struts.messages.error.csm.access"));
         }
         return SUCCESS;
     }
@@ -129,9 +129,9 @@ public class EditStudyAction extends AbstractStudyAction {
                 getDisplayableWorkspace().setCurrentStudyConfiguration(null);
                 getStudyManagementService().delete(getStudyConfiguration());
             } catch (CSException e) {
-                addActionError("There was a problem deleting the Study ProtectionElement from the CSM tables.");
+                addActionError(getText("struts.messages.error.csm.error.deleting", getArgs("Study")));
             } catch (RuntimeException e) {
-                addActionError("Study does not exist or cannot be deleted.");
+                addActionError(getText("struts.messages.error.deleting", getArgs("Study")));
             } 
         } else {
             addActionError("User is unauthenticated");

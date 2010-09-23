@@ -106,7 +106,7 @@ public class StudySummaryAction extends AbstractCaIntegrator2Action {
             studySummary = getWorkspaceService().createDisplayableStudySummary(getStudySubscription().getStudy());
             return SUCCESS;
         } else {
-            addActionError("There is no DisplayableStudySubscription object on the session");
+            addActionError(getText("struts.messages.error.study.not.in.session"));
             return ERROR;
         }
     }

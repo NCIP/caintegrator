@@ -190,7 +190,7 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
                     LogEntry.getSystemLogSave(getGenomicSource()));
             return SUCCESS;
         } catch (Exception e) {
-            addActionError("An unexpected error has occurred, please report this problem - " + e.getMessage());
+            addActionError(getText("struts.messages.exception.unexpected", getArgs(e.getMessage())));
             return INPUT;
         } 
     }
@@ -208,9 +208,9 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
 
     private void validateSave() {
         if (mappingFile == null) {
-            addFieldError(MAPPING_FILE, " File is required");
+            addFieldError(MAPPING_FILE, getText("struts.messages.error.file.required"));
         } else if (mappingFile.length() == 0) {
-            addFieldError(MAPPING_FILE, " File is empty");
+            addFieldError(MAPPING_FILE, getText("struts.messages.error.file.empty"));
         } else {
             validateFileFormat();
         }
@@ -229,8 +229,9 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
                 lineNum++;
                 if (fields.length != columnNumber) {
                     addFieldError(MAPPING_FILE,
-                            " File must have " + columnNumber + " columns instead of " + fields.length
-                            + " on data line number " + lineNum);
+                            getText("struts.messages.error.invalid.file.column.length",
+                                    getArgs(String.valueOf(columnNumber), String.valueOf(fields.length), 
+                                    String.valueOf(lineNum))));
                     return;
                 }
             }
@@ -241,7 +242,8 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
 
     private void validateServiceUrl() {
         if (StringUtils.isBlank(getDnaAnalysisDataConfiguration().getSegmentationService().getUrl())) {
-            addFieldError("dnaAnalysisDataConfiguration.segmentationService.url", "CaDNACopy Service URL is required.");
+            addFieldError("dnaAnalysisDataConfiguration.segmentationService.url", 
+                    getText("struts.messages.error.url.required", getArgs("CaDNACopy Service")));
         } else {
             getDnaAnalysisDataConfiguration().getSegmentationService().setUrl(
                 Cai2Util.fixUrlForEditableSelect(getDnaAnalysisDataConfiguration().getSegmentationService().getUrl()));

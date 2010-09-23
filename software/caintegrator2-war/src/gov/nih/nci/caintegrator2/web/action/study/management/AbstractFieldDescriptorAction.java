@@ -356,7 +356,7 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
         } else {
             validateNoPermissibleValues();
             if (maskForm.getNumericRangeMask().getNumericRange() == null) {
-                addActionError("Must enter a valid number to use the numeric range mask.");
+                addActionError(getText("struts.messages.error.numeric.mask.invalid", getArgs("numeric range")));
             } 
             if (getActionErrors().isEmpty()) {
                 fieldDescriptor.setNumericRange(maskForm.getNumericRangeMask().getNumericRange());
@@ -371,7 +371,7 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
         } else {
             validateNoPermissibleValues();
             if (maskForm.getMaxNumberMask().getMaxNumber() == null) {
-                addActionError("Must enter a valid number to use the max number mask.");
+                addActionError(getText("struts.messages.error.numeric.mask.invalid", getArgs("max number")));
             } 
             if (getActionErrors().isEmpty()) {
                 fieldDescriptor.setMaxNumber(maskForm.getMaxNumberMask().getMaxNumber());
@@ -381,7 +381,7 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
     
     private void validateNoPermissibleValues() {
         if (!permissibleUpdateList.isEmpty()) {
-            addActionError("To apply a mask, cannot have any permissible values.");
+            addActionError(getText("struts.messages.error.mask.invalid.no.permissible"));
         }
     }
     

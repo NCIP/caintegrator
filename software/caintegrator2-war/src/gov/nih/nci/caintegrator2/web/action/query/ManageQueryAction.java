@@ -282,9 +282,10 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     
     private void validateSaveSubjectList() {
         if (StringUtils.isEmpty(getSubjectListName())) {
-            addActionError("Subject list name is empty");
+            addActionError(getText("struts.messages.error.query.subject.list.name.empty"));
         } else if (getStudySubscription().getSubjectListNames().contains(getSubjectListName())) {
-            addActionError("There is already a Subject List named " + getSubjectListName() + ".");
+            addActionError(getText("struts.messages.error.query.subject.list.name.duplicate", 
+                    getArgs(getSubjectListName())));
         }
         if (this.hasErrors()) {
             displayTab = RESULTS_TAB;
@@ -386,7 +387,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         } else if ("sortGenomicResult".equals(selectedAction)) {
             returnValue = sortGenomicResult();
         } else {
-            addActionError("Unknown action '" + selectedAction + "'");
+            addActionError(getText("struts.messages.error.invalid.action", getArgs(selectedAction)));
             returnValue = ERROR; 
         }
         return returnValue;
@@ -406,10 +407,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
 
     private void setActionError() {
         addActionError((isStudyManager())
-                ? "Some Platforms are missing 'Platform Type/Platform Channel Type',"
-                    + " please go to the Manage Platforms page to set them."
-                : "Some Platforms are missing 'Platform Type/Platform Channel Type',"
-                    + " please ask the study manager to fix them.");
+                ? getText("struts.messages.error.query.platform.incomplete.manager")
+                : getText("struts.messages.error.query.platform.incomplete.investigator"));
     }
 
     private String createNewQuery() {
@@ -424,7 +423,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             loadGeneList(isGlobal);
             return executeQuery();
         }
-        addActionError("There is no gene expression data defined for this sudy, unable to perform query.");
+        addActionError(getText("struts.messages.error.study.has.no.expression.data", getArgs("query")));
         displayTab = CRITERIA_TAB;
         return ERROR;
     }
@@ -559,8 +558,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     public String createDicomJob() {
         if (getDisplayableWorkspace().getDicomJob() != null 
                 && getDisplayableWorkspace().getDicomJob().isCurrentlyRunning()) {
-            addActionError("There is currently a Dicom retrieval job running on this session, " 
-                            + "please wait for that to complete before running another.");
+            addActionError(getText("struts.messages.error.query.dicom.already.running"));
             return "dicomJobCurrentlyRunning";
         }
         NCIADicomJob dicomJob = queryManagementService.createDicomJob(retrieveCheckedRows());
@@ -711,7 +709,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         try {
             query = getQuery().clone();
         } catch (CloneNotSupportedException e) {
-            addActionError("Error cloning the Query.");
+            addActionError(getText("struts.messages.error.query.cloning"));
             return ERROR;
         }
         query.setLastModifiedDate(new Date());

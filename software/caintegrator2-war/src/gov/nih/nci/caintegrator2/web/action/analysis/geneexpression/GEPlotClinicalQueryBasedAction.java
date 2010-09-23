@@ -223,7 +223,7 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
     public String updateControlSampleSets() {
         getForm().getControlSampleSets().clear();
         if (StringUtils.isBlank(plotParameters.getPlatformName())) {
-            addActionError("Please select a valid platform");
+            addActionError(getText("struts.messages.error.select.valid.platform"));
             return INPUT;
         }
         getForm().setControlSampleSets(getStudy().getStudyConfiguration().getControlSampleSetNames(
@@ -276,8 +276,8 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
                     SessionHelper.setGePlots(PlotTypeEnum.CLINICAL_QUERY_BASED, plots);
                 } catch (ControlSamplesNotMappedException e) {
                     SessionHelper.setGePlots(PlotTypeEnum.CLINICAL_QUERY_BASED, null);
-                    addActionError("Group selected in step 6 invalid, control samples must all be mapped to patients: "
-                            + e.getMessage());
+                    addActionError(getText("struts.messages.error.geplot.selected.controls.not.mapped.to.patients", 
+                            getArgs("6", e.getMessage())));
                 } catch (InvalidCriterionException e) {
                     SessionHelper.setGePlots(PlotTypeEnum.CLINICAL_QUERY_BASED, null);
                     addActionError(e.getMessage());

@@ -202,7 +202,8 @@ public class GEPlotGenomicQueryBasedAction extends AbstractGeneExpressionAction 
                     SessionHelper.setGePlots(PlotTypeEnum.GENOMIC_QUERY_BASED, plots);
                 } catch (ControlSamplesNotMappedException e) {
                     SessionHelper.setGePlots(PlotTypeEnum.GENOMIC_QUERY_BASED, null);
-                    addActionError("Control samples must all be mapped to patients: " + e.getMessage());
+                    addActionError(getText("struts.messages.error.geplot.controls.not.mapped.to.patients", 
+                            getArgs(e.getMessage())));
                 } catch (InvalidCriterionException e) {
                     SessionHelper.setGePlots(PlotTypeEnum.GENOMIC_QUERY_BASED, null);
                     addActionError(e.getMessage());

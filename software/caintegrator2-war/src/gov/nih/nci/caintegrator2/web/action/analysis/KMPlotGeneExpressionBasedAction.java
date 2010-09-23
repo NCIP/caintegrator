@@ -186,7 +186,7 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
     public String updateControlSampleSets() {
         getForm().getControlSampleSets().clear();
         if (StringUtils.isBlank(getForm().getPlatformName())) {
-            addActionError("Please select a valid platform");
+            addActionError(getText("struts.messages.error.select.valid.item", getArgs("platform")));
             return INPUT;
         }
         getForm().setControlSampleSets(getStudy().getStudyConfiguration().getControlSampleSetNames(

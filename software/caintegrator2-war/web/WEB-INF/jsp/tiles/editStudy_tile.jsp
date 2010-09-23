@@ -69,7 +69,9 @@
                     <td>
 
                     <s:form id="studyDeploymentForm" name="studyDeploymentForm" onsubmit="return verifyName(nameId.value)" cssClass="form">        
+                        <s:actionerror/>
                         <s:fielderror />
+                        
                         <s:hidden name="studyConfiguration.id"  />
                         <s:textfield label="Study Name" name="studyConfiguration.study.shortTitleText" id="nameId" cssStyle="width: 280px;"/>
                         <s:textarea label="Study Description" name="studyConfiguration.study.longTitleText" cols="40" rows="4" cssStyle="width: 280px;"/>
@@ -213,7 +215,6 @@
         </table>
         
         <s:if test="%{studyConfiguration.id != null}">
-        <s:actionerror/>
         <div id="errors" style="color: red;"> </div>
         <table class="form_wrapper_table">
             <tbody><tr>
