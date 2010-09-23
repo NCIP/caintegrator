@@ -288,7 +288,8 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
 
     private void validateExecuteAnalysis() {
         if (StringUtils.isBlank(getCurrentGenePatternAnalysisJob().getName())) {
-            addFieldError("currentGenePatternAnalysisJob.name", getText("struts.messages.error.name.required", getArgs("Job")));
+            addFieldError("currentGenePatternAnalysisJob.name", 
+                    getText("struts.messages.error.name.required", getArgs("Job")));
         }
         getGenePatternAnalysisForm().validate(this);
     }
