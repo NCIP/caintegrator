@@ -114,17 +114,17 @@ public class AddExternalLinksActionTest extends AbstractSessionBasedTest {
     @Test
     public void testValidate() {
         action.validate();
-        assertTrue(action.hasActionErrors());
+        assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
         
         action.setExternalLinksFile(TestDataFiles.SIMPLE_EXTERNAL_LINKS_FILE);
         action.validate();
-        assertTrue(action.hasActionErrors());
+        assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
         
         action.getExternalLinkList().setName("name");
         action.validate();
-        assertFalse(action.hasActionErrors());
+        assertFalse(action.hasFieldErrors());
     }
 
     @Test
