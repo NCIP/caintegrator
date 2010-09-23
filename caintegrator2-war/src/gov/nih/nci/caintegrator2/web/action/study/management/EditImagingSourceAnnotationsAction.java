@@ -235,7 +235,7 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
                 return loadAimAnnotation();
             }
         } catch (ValidationException e) {
-            addFieldError("imageAnnotationFile", getText("struts.messages.exception.invalid.file", new String[] { e
+            addFieldError("imageAnnotationFile", getText("struts.messages.exception.invalid.file", new String[] {e
                     .getResult().getInvalidMessage() }));
             return INPUT;
         } catch (Exception e) {

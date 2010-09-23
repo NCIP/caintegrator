@@ -117,7 +117,8 @@ public abstract class AbstractDeployedStudyAction extends AbstractCaIntegrator2A
             addActionError(getText("struts.messages.error.study.not.selected"));
             return;
         } else if (!getStudy().isDeployed()) {
-            addActionError(getText("struts.messages.error.study.not.deployed", getArgs(getStudy().getShortTitleText())));
+            addActionError(getText("struts.messages.error.study.not.deployed", 
+                    getArgs(getStudy().getShortTitleText())));
             return;
         } 
     }
@@ -127,7 +128,7 @@ public abstract class AbstractDeployedStudyAction extends AbstractCaIntegrator2A
      */
     public void validateStudyHasGenomicData(String functionDescription) {
         if (!hasActionErrors() && !getStudy().hasGenomicDataSources()) {
-            addActionError(getText("struts.messages.error.study.has.no.genomic.data",getArgs(functionDescription)));
+            addActionError(getText("struts.messages.error.study.has.no.genomic.data", getArgs(functionDescription)));
         }
     }
     

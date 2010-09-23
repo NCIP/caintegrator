@@ -142,7 +142,8 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     public void validate() {
         super.validate();
         if (!getCurrentStudy().hasExpressionData()) {
-            addActionError(getText("struts.messages.error.study.has.no.expression.data", getArgs("GeneExpression plot")));
+            addActionError(getText("struts.messages.error.study.has.no.expression.data", 
+                    getArgs("GeneExpression plot")));
         }
     }
 
