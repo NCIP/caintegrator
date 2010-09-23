@@ -170,7 +170,7 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
         } else if (UPDATE_CONTROLS_ACTION.equals(getSelectedAction())) {
             return updateControlSampleSets();
         } else  {
-            addActionError("Invalid action: " + getSelectedAction());
+            addActionError(getText("struts.messages.error.invalid.action", getArgs(getSelectedAction())));
             return INPUT;
         }
     }
@@ -178,7 +178,7 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
     private String updateControlSampleSets() {
         getPrincipalComponentAnalysisForm().getControlSampleSets().clear();
         if (StringUtils.isBlank(getPrincipalComponentAnalysisForm().getPlatformName())) {
-            addActionError("Please select a valid platform");
+            addActionError(getText("struts.messages.error.select.valid.platform"));
             return INPUT;
         }
         getPrincipalComponentAnalysisForm().setControlSampleSets(
@@ -202,11 +202,13 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
 
     private void validateExecuteAnalysis() {
         if (StringUtils.isBlank(getCurrentPrincipalComponentAnalysisJob().getName())) {
-            addFieldError("currentPrincipalComponentAnalysisJob.name", "Job name required.");
+            addFieldError("currentPrincipalComponentAnalysisJob.name", 
+                    getText("struts.messages.error.name.required", getArgs("Job")));
         }
         if (isStudyHasMultiplePlatforms() 
                 && StringUtils.isBlank(getPrincipalComponentAnalysisForm().getPlatformName())) {
-            addFieldError("principalComponentAnalysisForm.platformName", "Platform name required.");
+            addFieldError("principalComponentAnalysisForm.platformName", 
+                    getText("struts.messages.error.name.required", getArgs("Platform")));
         }
     }
     

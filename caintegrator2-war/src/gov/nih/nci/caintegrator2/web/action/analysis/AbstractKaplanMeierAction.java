@@ -204,8 +204,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     public void validate() {
         super.validate();
         if (!hasActionErrors() && getKmPlotForm().getSurvivalValueDefinitions().isEmpty()) {
-            addActionError("There are no valid survival value definitions defined for this study, "
-                    + "unable to create Kaplan-Meier plot.");
+            addActionError(getText("struts.messages.error.kmplot.no.survival.definitions"));
         }
     }
     

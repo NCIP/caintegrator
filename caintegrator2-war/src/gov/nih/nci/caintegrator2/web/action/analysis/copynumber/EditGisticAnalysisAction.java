@@ -160,7 +160,7 @@ public class EditGisticAnalysisAction extends AbstractCaIntegrator2Action {
      */
     public String save() {
         getWorkspaceService().saveUserWorkspace(getWorkspace());
-        addActionMessage("GISTIC Analysis updated successfully.");
+        addActionMessage(getText("struts.messages.gistic.updated.successfully"));
         return SUCCESS;
     }
 

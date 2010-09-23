@@ -123,10 +123,12 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
     private boolean validateAddSource() {
         validateMappingFile();
         if (StringUtils.isBlank(getImageSourceConfiguration().getCollectionName())) {
-            addFieldError("imageSourceConfiguration.collectionName", "Collection Name is required.");
+            addFieldError("imageSourceConfiguration.collectionName", 
+                    getText("struts.messages.error.name.required", getArgs("Collection")));
         }
         if (StringUtils.isBlank(getImageSourceConfiguration().getServerProfile().getUrl())) {
-            addFieldError("imageSourceConfiguration.serverProfile.url", "URL is required.");
+            addFieldError("imageSourceConfiguration.serverProfile.url", 
+                    getText("struts.messages.error.url.required", getArgs("")));
         }
         validateWebUrl();
         if (!checkErrors()) {
@@ -140,8 +142,9 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
         if (StringUtils.isBlank(getImageSourceConfiguration().getServerProfile().getWebUrl())
                 || !NBIA_WEB_URL_PATTERN.matcher(
                         getImageSourceConfiguration().getServerProfile().getWebUrl()).find()) {
-            addFieldError("imageSourceConfiguration.serverProfile.webUrl", "Web url must be of the pattern " 
-                    + "http[s]://imaging.url[:port]/ncia");
+            addFieldError("imageSourceConfiguration.serverProfile.webUrl", 
+                    getText("struts.messages.error.url.invalid", 
+                            getArgs("http[s]://imaging.url[:port]/ncia")));
         }
         return checkErrors();
     }
@@ -152,17 +155,18 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             nciaFacade.validateImagingSourceConnection(imageSourceToTest.getServerProfile(), imageSourceToTest
                     .getCollectionName());
         } catch (ConnectionException e) {
-            addFieldError("imageSourceConfiguration.serverProfile.url", "Unable to connect to the server.");
+            addFieldError("imageSourceConfiguration.serverProfile.url", 
+                    getText("struts.messages.error.unable.to.connect"));
         } catch (InvalidImagingCollectionException e) {
             addActionError(e.getMessage());
         } catch (Exception e) {
-            addActionError("An unknown exception has occurred.");
+            addActionError(getText("struts.messages.exception.unexpected", getArgs(e.getMessage())));
         }
     }
 
     private boolean validateMappingFile() {
         if (imageClinicalMappingFile == null && !ImageDataSourceMappingTypeEnum.AUTO.equals(mappingType)) {
-            addFieldError("imageClinicalMappingFile", "Image to Clinical Mapping File is required");
+            addFieldError("imageClinicalMappingFile", getText("struts.messages.error.imaging.mapping.file.required"));
         }
         return checkErrors();
     }
@@ -223,7 +227,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
         try {
             newMappingFile = storeTemporaryMappingFile();
         } catch (IOException e) {
-            addActionError("Unable to save uploaded file.");
+            addActionError(getText("struts.messages.error.uploading.unable.to.save"));
             return INPUT;
         }
         getImageSourceConfiguration().setStatus(Status.PROCESSING);

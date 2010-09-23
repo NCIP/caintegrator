@@ -104,7 +104,7 @@ public class NCIADicomRetrievalAction extends AbstractCaIntegrator2Action {
         if (dicomJob != null && dicomJob.getDicomFile() != null && dicomJob.isCompleted()) {
             return "dicomFileResult";
         }
-        addActionError("Dicom file doesn't exist, it may have already been downloaded and removed from server.");
+        addActionError(getText("struts.messages.error.query.dicom.not.exist"));
         return ERROR;
     }
 }

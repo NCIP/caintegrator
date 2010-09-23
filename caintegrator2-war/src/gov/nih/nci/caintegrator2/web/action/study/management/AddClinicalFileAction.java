@@ -98,6 +98,7 @@ import java.io.IOException;
 public class AddClinicalFileAction extends AbstractClinicalSourceAction {
 
     private static final long serialVersionUID = 1L;
+    private static final String[] ERROR_MESSAGE_ARGS = {"Subject Annotation"};
     private File clinicalFile;
     private String clinicalFileContentType;
     private String clinicalFileFileName;
@@ -125,10 +126,12 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
                     LogEntry.getSystemLogAddSubjectAnnotationFile(getClinicalFileFileName()));
             return SUCCESS;
         } catch (ValidationException e) {
-            addActionError("Invalid file: " + e.getResult().getInvalidMessage());
+            addActionError(getText("struts.messages.exception.invalid.file", 
+                                        getArgs(e.getResult().getInvalidMessage())));
             return INPUT;
         } catch (IOException e) {
-            addActionError("Unexpected IO exception: " + e.getMessage());
+            addActionError(getText("struts.messages.exception.file.ioexception", 
+                                        getArgs(e.getMessage())));
             return INPUT;
         }
     }
@@ -139,9 +142,9 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
     @Override
     public void validate() {
         if (clinicalFile == null) {
-            addActionError("Clinical File is required");
+            addActionError(getText("struts.messages.error.file.required", ERROR_MESSAGE_ARGS));
         } else if (clinicalFile.length() == 0) {
-            addActionError("Clinical File is empty");
+            addActionError(getText("struts.messages.error.file.empty", ERROR_MESSAGE_ARGS));
         }
         prepareValueStack();
     }

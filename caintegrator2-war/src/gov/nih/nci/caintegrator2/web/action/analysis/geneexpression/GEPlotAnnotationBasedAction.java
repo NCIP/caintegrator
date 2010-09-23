@@ -230,11 +230,11 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
 
     private boolean validateAnnotationGroup() {
         if (getForm().getAnnotationGroupSelection() == null) {
-            addActionError("Please select a valid Annotation Group.");
+            addActionError(getText("struts.messages.error.select.valid.item", getArgs("annotation group")));
             return false;
         }
         if (getStudy().getAnnotationGroup(getForm().getAnnotationGroupSelection()) == null) {
-            addActionError("Please select a valid Annotation Group.");
+            addActionError(getText("struts.messages.error.select.valid.item", getArgs("annotation group")));
             return false;
         }
         return true;
@@ -244,7 +244,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     private boolean loadAnnotationDefinitions() {
         if (getForm().getAnnotationGroupSelection() == null 
                 || getForm().getAnnotationGroupSelection().equals("invalidSelection")) {
-            addActionError("Must select Annotation Group first");
+            addActionError(getText("struts.messages.error.must.select.annotation.group"));
             return false;
         }
         AnnotationGroup annotationGroup = 
@@ -273,7 +273,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
         if (isPermissibleValuesNeedUpdate()) {
             loadAnnotationDefinitions();
             if (plotParameters.getSelectedAnnotation() == null) {
-                addActionError("Please select a valid annotation");
+                addActionError(getText("struts.messages.error.select.valid.item", getArgs("annotation")));
                 return INPUT;
             }
             getForm().clearPermissibleValues();
@@ -298,7 +298,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     public String updateControlSampleSets() {
         getForm().getControlSampleSets().clear();
         if (StringUtils.isBlank(plotParameters.getPlatformName())) {
-            addActionError("Please select a valid platform");
+            addActionError(getText("struts.messages.error.select.valid.platform"));
             return INPUT;
         }
         getForm().setControlSampleSets(getStudy().getStudyConfiguration().getControlSampleSetNames(
@@ -325,8 +325,8 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
                     SessionHelper.setGePlots(PlotTypeEnum.ANNOTATION_BASED, plots);
                 } catch (ControlSamplesNotMappedException e) {
                     SessionHelper.setGePlots(PlotTypeEnum.ANNOTATION_BASED, null);
-                    addActionError("Group selected in step 5 invalid, control samples must all be mapped to patients: "
-                            + e.getMessage());
+                    addActionError(getText("struts.messages.error.geplot.selected.controls.not.mapped.to.patients", 
+                            getArgs("5", e.getMessage())));
                 } catch (Exception e) {
                     SessionHelper.setGePlots(PlotTypeEnum.ANNOTATION_BASED, null);
                     addActionError(e.getMessage());

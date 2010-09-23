@@ -114,12 +114,10 @@ public abstract class AbstractDeployedStudyAction extends AbstractCaIntegrator2A
     public void validate() {
         super.validate();
         if (getStudySubscription() == null) {
-            addActionError("Please select a study under \"My Studies\".");
+            addActionError(getText("struts.messages.error.study.not.selected"));
             return;
         } else if (!getStudy().isDeployed()) {
-            addActionError("The study '"
-                    + getStudy().getShortTitleText()
-                    + "' is not yet deployed.");
+            addActionError(getText("struts.messages.error.study.not.deployed", getArgs(getStudy().getShortTitleText())));
             return;
         } 
     }
@@ -129,8 +127,7 @@ public abstract class AbstractDeployedStudyAction extends AbstractCaIntegrator2A
      */
     public void validateStudyHasGenomicData(String functionDescription) {
         if (!hasActionErrors() && !getStudy().hasGenomicDataSources()) {
-            addActionError("There are no genomic data defined for this study, "
-                    + "unable to perform " + functionDescription + ".");
+            addActionError(getText("struts.messages.error.study.has.no.genomic.data",getArgs(functionDescription)));
         }
     }
     

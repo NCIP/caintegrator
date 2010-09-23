@@ -140,7 +140,7 @@ public class RegistrationAction extends ActionSupport implements Preparable {
                 return;
             }
             if (StringUtils.isBlank(password)) {
-                addFieldError("password", "Must enter a password for LDAP authentication.");
+                addFieldError("password", getText("struts.messages.error.registration.ldap.no.password"));
                 return;
             }
             validateLdap();
@@ -150,11 +150,13 @@ public class RegistrationAction extends ActionSupport implements Preparable {
     
     private boolean validateLoginName() {
         if (StringUtils.isBlank(registrationRequest.getLoginName())) {
-            addFieldError("registrationRequest.loginName", "Username required for LDAP account.");
+            addFieldError("registrationRequest.loginName", 
+                    getText("struts.messages.error.registration.ldap.no.username"));
             return false;
         }
         if (securityManager.doesUserExist(registrationRequest.getLoginName())) {
-           addFieldError("registrationRequest.loginName", "Login name is already in use.");
+           addFieldError("registrationRequest.loginName", 
+                   getText("struts.messages.error.registration.login.name.already.used"));
            return false;
         }
         return true;
@@ -165,8 +167,7 @@ public class RegistrationAction extends ActionSupport implements Preparable {
         try {
             if (!registrationService.ldapAuthenticate(ldapContextParams, registrationRequest
                     .getLoginName(), password)) {
-                addActionError("LDAP Authentication Failure.  " 
-                             + "Please verify that your LDAP username and password are correct.");
+                addActionError(getText("struts.messages.error.registration.ldap.authentication"));
             }
         } catch (CSInternalConfigurationException e) {
             addActionError(e.getMessage());
@@ -185,7 +186,7 @@ public class RegistrationAction extends ActionSupport implements Preparable {
             registrationService.registerUser(registrationRequest);
             return SUCCESS;
         } catch (MessagingException e) {
-            addActionError("Failed to send email due to the following: " + e.getMessage());
+            addActionError(getText("struts.messages.error.registration.email.failure", new String[]{e.getMessage()}));
             return INPUT;
         }
     }

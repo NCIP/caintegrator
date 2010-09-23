@@ -235,7 +235,8 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
                 return loadAimAnnotation();
             }
         } catch (ValidationException e) {
-            addFieldError("imageAnnotationFile", "Invalid file: " + e.getResult().getInvalidMessage());
+            addFieldError("imageAnnotationFile", getText("struts.messages.exception.invalid.file", new String[] { e
+                    .getResult().getInvalidMessage() }));
             return INPUT;
         } catch (Exception e) {
             return ERROR;
@@ -263,7 +264,7 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
     
     private boolean validateAddImageAnnotations() {
         if (ImageAnnotationUploadType.FILE.equals(uploadType) && imageAnnotationFile == null) {
-            addFieldError("imageAnnotationFile", "Must specify annotation file");
+            addFieldError("imageAnnotationFile", getText("struts.messages.error.imaging.annotation.file.required"));
         } else if (ImageAnnotationUploadType.AIM.equals(uploadType)) {
             validateAimConnection();
         }
@@ -272,13 +273,14 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
 
     private void validateAimConnection() {
         if (StringUtils.isBlank(getAimServerProfile().getUrl())) {
-            addFieldError("aimServerProfile.url", "URL is required.");
+            addFieldError("aimServerProfile.url", getText("struts.messages.error.url.required", 
+                    getArgs("AIM")));
         }
         if (checkErrors()) {
             try {
                 getAimFacade().validateAimConnection(getAimServerProfile());
             } catch (ConnectionException e) {
-                addFieldError("aimServerProfile.url", "Unable to connect to the server.");
+                addFieldError("aimServerProfile.url", getText("struts.messages.error.unable.to.connect"));
             }
         }
     }

@@ -189,9 +189,9 @@ public class ManageListAction extends AbstractDeployedStudyAction {
     
     private void validateListName() {
         if (StringUtils.isEmpty(getListName())) {
-            addFieldError(LIST_NAME, "List name is required");
+            addFieldError(LIST_NAME, getText("struts.messages.error.name.required", getArgs("List")));
         } else if (duplicateListName()) {
-            addFieldError(LIST_NAME, "List name is duplicate: " + getListName());
+            addFieldError(LIST_NAME, getText("struts.messages.error.duplicate.name", getArgs("List", getListName())));
         }
     }
     
@@ -219,7 +219,7 @@ public class ManageListAction extends AbstractDeployedStudyAction {
         }
         extractInputElements(getListFile());
         if (elementList.isEmpty()) {
-            addActionError("There is nothing to save, you need to enter some list elements or upload from a file.");
+            addActionError(getText("struts.messages.error.list.nothing.to.save"));
         }
     }
     
@@ -243,10 +243,10 @@ public class ManageListAction extends AbstractDeployedStudyAction {
                     }
                 }
                 if (elementList.isEmpty()) {
-                    addFieldError(LIST_FILE, "The upload file is empty");
+                    addFieldError(LIST_FILE, getText("struts.messages.error.file.empty", getArgs("")));
                 }
             } catch (IOException e) {
-                addFieldError(LIST_FILE, " Error reading gene list file");
+                addFieldError(LIST_FILE, getText("struts.messages.error.file.read", getArgs("list")));
             }
         }
     }

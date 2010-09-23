@@ -128,17 +128,16 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
     
     private void addRegistrationMessage() {
         if (registrationSuccess) {
-            addActionMessage("Registration request sent successfully!");
+            addActionMessage(getText("struts.messages.registration.successful"));
         }
     }
     
     private void addErrorMessages() {
         if (invalidAccess) {
-            addActionError("You are seeing this page because you are trying to access a restricted area that you "
-                    + "do not have authorization to view.");
+            addActionError(getText("struts.messages.error.invalid.access"));
         }
         if (sessionTimeout) {
-            addActionError("You are seeing this page because your seesion has timed out.");
+            addActionError(getText("struts.messages.error.session.timeout"));
         }
     }
 

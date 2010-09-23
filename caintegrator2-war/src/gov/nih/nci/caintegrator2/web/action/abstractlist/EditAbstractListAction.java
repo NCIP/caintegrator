@@ -219,7 +219,7 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
     }
     
     private void listNoLongerAvailable() {
-        addActionError("The subject list '" + listOldName + "' is no longer available.");
+        addActionError(getText("struts.messages.error.list.unavailable", getArgs(listOldName)));
         editOn = false;
     }
     
@@ -252,23 +252,23 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
      * @return message.
      */
     protected String getCreationSuccessfulMessage() {
-        return "List successfully created.";
+        return getText("struts.messages.list.successfully.created");
     }
     
     private void validateList(boolean isGlobal) {
         abstractList = getAbstractList(getListName(), isGlobal);
         if (abstractList == null) {
-            addActionError("The requested list name '" + getListName() + "' is not available.");
+            addActionError(getText("struts.messages.error.list.unavailable", getArgs(getListName())));
             editOn = false;
         }
     }
     
     private void validateListName() {
         if (StringUtils.isEmpty(getListName())) {
-            addFieldError(LIST_NAME, "List name is required");
+            addFieldError(LIST_NAME, getText("struts.messages.error.name.required", getArgs("List")));
         } else if ((!listOldName.equals(listName) && getAbstractList(listName, isVisibleToOther()) != null)
                 || (isVisibleToOther() != isGlobalList() && getAbstractList(listName, isVisibleToOther()) != null)) {
-            addFieldError(LIST_NAME, "List name '" + getListName() + "' is duplicate.");
+            addFieldError(LIST_NAME, getText("struts.messages.error.duplicate.name", getArgs("List", getListName())));
             abstractList = getAbstractList(listOldName, isGlobalList());
             setListName(listOldName);
         }
