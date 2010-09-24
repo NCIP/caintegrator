@@ -282,7 +282,9 @@ public class ImageDataSourceConfiguration extends AbstractCaIntegrator2Object im
      */
     public void deleteMappingFile() {
         setMappingFileName(null);
-        getImageSeriesAcquisitions().clear();
+        for (ImageSeriesAcquisition isa : getImageSeriesAcquisitions()) {
+            isa.setAssignment(null);
+        }
         setStatus(Status.NOT_MAPPED);
     }
 
