@@ -19,7 +19,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataMultiSamplePerFileParser;
+import gov.nih.nci.caintegrator2.external.caarray.GenericMultiSamplePerFileParser;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub;
 
@@ -36,7 +36,7 @@ import org.junit.Test;
 
 import affymetrix.calvin.exception.UnsignedOutOfLimitsException;
 
-public class AgilentCopyNumberMappingFileHandlerTest {
+public class GenericUnparsedSupplementalFileHandlerTest {
 
     @Test
     public void testLoadCopyNumberData() throws ConnectionException, ValidationException {
@@ -49,7 +49,7 @@ public class AgilentCopyNumberMappingFileHandlerTest {
         source.setStudyConfiguration(studyConfiguration);
         source.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
         source.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
-        AgilentCopyNumberMappingMultiSamplePerFileHandler handler = new AgilentCopyNumberMappingMultiSamplePerFileHandler(
+        GenericSupplementalMultiSamplePerFileHandler handler = new GenericSupplementalMultiSamplePerFileHandler(
                 source, caArrayFacade, arrayDataService, dao);
         boolean exceptionCaught = false;
         try {
@@ -116,7 +116,7 @@ public class AgilentCopyNumberMappingFileHandlerTest {
         throws IOException, UnsignedOutOfLimitsException, DataRetrievalException {
             List<String> sampleNames = new ArrayList<String>();
             sampleNames.add("TCGA-13-0805-01A-01D-0357-04");
-            AgilentLevelTwoDataMultiSamplePerFileParser parser = new AgilentLevelTwoDataMultiSamplePerFileParser(
+            GenericMultiSamplePerFileParser parser = new GenericMultiSamplePerFileParser(
                     dataFile, "ProbeID", "Hybridization Ref", sampleNames);
             Map<String, Map<String, Float>> dataMap = new HashMap<String, Map<String, Float>>();
             parser.loadData(dataMap);

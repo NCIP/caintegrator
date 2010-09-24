@@ -66,13 +66,19 @@
                     <tr>
                         <td class="tdLabel">
                             <s:if test="genomicSource.useSupplementalFiles">
-                                (For using CaArray supplemental file use 5 column format mapping file)
+                                (For using CaArray supplemental file use 6 column format mapping file)
                             </s:if>
                             <s:else>
                                 (For parsed CaArray experiment use 2 column format mapping file)
                             </s:else>            
                         </td>
                     </tr>
+                    <s:checkbox name="genomicSource.singleDataFile" label="Multiple Samples Per Data File"
+                        labelposition="left" /><br>
+                        <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
+                            <span class="wwlbl">(Default is 1 sample per data file)</span>
+                            <span class="wwctrl"></span>
+                        </s:div>
                     <s:textfield label="Control Sample Set Name" name="controlSampleSetName" required="true" theme="cai2xhtml" size="35"/>
                     <s:file name="controlSampleFile" label="Control Samples File" size="35" />
                     <tr> 

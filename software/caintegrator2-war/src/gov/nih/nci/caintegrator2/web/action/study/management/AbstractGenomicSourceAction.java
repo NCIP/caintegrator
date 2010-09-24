@@ -123,13 +123,6 @@ public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
     }
     
     /**
-     * @return boolean allow single data file
-     */
-    public boolean isPossibleSingleDataFile() {
-        return isAgilent();
-    }
-    
-    /**
      * @return is Agilent
      */
     protected boolean isAgilent() {

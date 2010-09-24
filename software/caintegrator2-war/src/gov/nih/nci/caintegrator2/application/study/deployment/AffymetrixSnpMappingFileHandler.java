@@ -85,11 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
-import affymetrix.calvin.data.CHPMultiDataData.MultiDataType;
+import java.io.FileNotFoundException;
+
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
+import affymetrix.calvin.data.CHPMultiDataData.MultiDataType;
 
 /**
  * Reads and retrieves copy number data from a caArray instance.
@@ -117,6 +121,12 @@ class AffymetrixSnpMappingFileHandler extends AbstractAffymetrixDnaAnalysisMappi
     @Override
     MultiDataType getDataType() {
         return MultiDataType.GenotypeMultiDataType;
+    }
+
+    @Override
+    void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile)
+            throws ValidationException, FileNotFoundException {
+        // Using CHP file not generic supplemental file
     }
 
 }

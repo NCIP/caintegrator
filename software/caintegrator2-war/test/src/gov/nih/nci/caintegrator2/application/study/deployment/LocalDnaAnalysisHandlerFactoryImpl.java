@@ -87,7 +87,7 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.deployment.AbstractDnaAnalysisMappingFileHandler;
+import gov.nih.nci.caintegrator2.application.study.deployment.AbstractUnparsedSupplementalMappingFileHandler;
 import gov.nih.nci.caintegrator2.application.study.deployment.DnaAnalysisHandlerFactory;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
@@ -100,7 +100,7 @@ public class LocalDnaAnalysisHandlerFactoryImpl implements DnaAnalysisHandlerFac
     /**
      * {@inheritDoc}
      */
-    public AbstractDnaAnalysisMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
+    public AbstractUnparsedSupplementalMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         return new LocalCopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
     }

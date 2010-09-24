@@ -122,7 +122,8 @@ import au.com.bytecode.opencsv.CSVReader;
  * Reads and retrieves copy number data from a caArray instance.
  */
 @Transactional (propagation = Propagation.REQUIRED)
-public abstract class AbstractAffymetrixDnaAnalysisMappingFileHandler extends AbstractDnaAnalysisMappingFileHandler {
+public abstract class AbstractAffymetrixDnaAnalysisMappingFileHandler
+    extends AbstractUnparsedSupplementalMappingFileHandler {
 
     private final Map<Sample, List<String>> sampleToFilenamesMap = new HashMap<Sample, List<String>>();
     
