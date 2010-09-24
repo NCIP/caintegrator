@@ -21,7 +21,7 @@
 			<key column="STUDY_SUBJECT_ASSIGNMENT_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation"/>
 		</set>
-		<set name="imageStudyCollection" lazy="true" cascade="all" >
+		<set name="imageStudyCollection" lazy="true" cascade="save-update,merge" >
 			<cache usage="read-write" />
 			<key column="STUDY_SUBJECT_ASSIGN_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition"/>

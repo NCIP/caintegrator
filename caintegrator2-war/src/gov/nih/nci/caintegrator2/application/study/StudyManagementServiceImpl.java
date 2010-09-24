@@ -382,7 +382,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         for (StudySubjectAssignment subjectAssignment : studyConfiguration.getStudy().getAssignmentCollection()) {
             deleteSubjectAnnotations(subjectAssignment);
             deleteSampleAcquisitions(subjectAssignment);
-            deleteImageSeriesAcquisitions(subjectAssignment);
+            subjectAssignment.getImageStudyCollection().clear();
         }
         deleteSampleMappingFiles(studyConfiguration);
         deleteImagingMappingFiles(studyConfiguration);
@@ -410,19 +410,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         subjectAssignment.getSampleAcquisitionCollection().clear();
     }
 
-    private void deleteImageSeriesAcquisitions(StudySubjectAssignment subjectAssignment) {
-        for (ImageSeriesAcquisition imageSeriesAcquisition : subjectAssignment.getImageStudyCollection()) {
-            if (imageSeriesAcquisition.getTimepoint() != null) {
-                imageSeriesAcquisition.getTimepoint().getSampleAcquisitionCollection().clear();
-            }
-            for (ImageSeries imageSeries : imageSeriesAcquisition.getSeriesCollection()) {
-                imageSeries.setImageStudy(null);
-            }
-        }
-        getDao().removeObjects(subjectAssignment.getImageStudyCollection());
-        subjectAssignment.getImageStudyCollection().clear();
-    }
-
     private void deleteSampleMappingFiles(StudyConfiguration studyConfiguration) {
         for (GenomicDataSourceConfiguration genomicDataSourceConfiguration
                 : studyConfiguration.getGenomicDataSources()) {
@@ -433,7 +420,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     private void deleteImagingMappingFiles(StudyConfiguration studyConfiguration) {
         for (ImageDataSourceConfiguration imageDataSourceConfiguration
                 : studyConfiguration.getImageDataSources()) {
-            getDao().removeObjects(imageDataSourceConfiguration.getImageSeriesAcquisitions());
             imageDataSourceConfiguration.deleteMappingFile();
         }
     }
