@@ -83,109 +83,78 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.caarray;
+package gov.nih.nci.caintegrator2.application.study.deployment;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
- * Reads data in Agilent data file.
+ * Provides base handling to retrieve copy number data based on a copy number mapping file.
  */
-public final class AgilentLevelTwoDataMultiSamplePerFileParser {
-    
-    private CSVReader dataFileReader;
-    private final Map<String, Integer> sampleToIndexMap = new HashMap<String, Integer>();
-    
-    /**
-     * @param dataFile data file
-     * @param sampleList list of samples to process
-     * @param probeHeader the probe header
-     * @param sampleHeader the sample header
-     * @throws DataRetrievalException data retrieval exception
-     * @throws IOException I/O exception
-     */
-    public AgilentLevelTwoDataMultiSamplePerFileParser(File dataFile, String probeHeader,
-            String sampleHeader, List<String> sampleList)
-    throws IOException, DataRetrievalException {
-        createDataFileReader(dataFile, probeHeader, sampleHeader, sampleList);
-    }
+public abstract class AbstractSupplementalMappingFileHandler extends AbstractCaArrayFileHandler {
 
-    private CSVReader createDataFileReader(File dataFile, String probeHeader,
-            String sampleHeader, List<String> sampleList)
-    throws IOException, DataRetrievalException {
-        dataFileReader = new CSVReader(new InputStreamReader(
-                new FileInputStream(dataFile)), '\t');
-        loadHeaders(probeHeader, sampleHeader, sampleList);
-        return null;
-    }
-
-    /**
-     * @param agilentDataMap the Agilent data mapping
-     * @throws IOException I/O exception
-     */
-    public void loadData(Map<String, Map<String, Float>> agilentDataMap)
-    throws IOException {
-        String[] fields;
-        while ((fields = Cai2Util.readDataLine(dataFileReader)) != null) {
-            String probeName = fields[0];
-            for (String sampleName : sampleToIndexMap.keySet()) {
-                Float log2Ratio = getLog2Ratio(fields, sampleToIndexMap.get(sampleName));
-                if (log2Ratio != null) {
-                    setReporterMap(agilentDataMap, sampleName, probeName, log2Ratio);
-                }
-            }
-        }
+    private final CaIntegrator2Dao dao;
+    
+    AbstractSupplementalMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
+            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+        super(genomicSource, caArrayFacade, arrayDataService);
+                this.dao = dao;
     }
     
-    private Float getLog2Ratio(String[] fields, int index) {
+    void loadMappingFile() throws DataRetrievalException, ValidationException {
+        CSVReader reader;
         try {
-            return new Float(fields[index]);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-    
-    private void setReporterMap(Map<String, Map<String, Float>> agilentDataMap, String sampleName,
-            String probeName, Float log2Ratio) {
-        if (!agilentDataMap.containsKey(sampleName)) {
-            Map<String, Float> reporterMap = new HashMap<String, Float>();
-            agilentDataMap.put(sampleName, reporterMap);
-        }
-        agilentDataMap.get(sampleName).put(probeName, log2Ratio);
-    }
-
-    private void loadHeaders(String probeHeader, String sampleHeader, List<String> sampleList)
-    throws IOException, DataRetrievalException {
-        sampleToIndexMap.clear();
-        String[] fields;
-        fields = Cai2Util.readDataLine(dataFileReader);
-        checkHeadersLine(fields, sampleHeader);
-        loadSampleHeaders(fields, sampleList);
-        fields = Cai2Util.readDataLine(dataFileReader);
-        checkHeadersLine(fields, probeHeader);
-    }
-
-    private void loadSampleHeaders(String[] headers, List<String> sampleList) {
-        for (int i = 0; i < headers.length; i++) {
-            if (sampleList.contains(headers[i])) {
-                sampleToIndexMap.put(headers[i], i);
+            reader = new CSVReader(new FileReader(getMappingFile()));
+            String[] fields;
+            while ((fields = Cai2Util.readDataLine(reader)) != null) {
+                processMappingData(fields);
             }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            throw new DataRetrievalException("Copy number mapping file not found: ", e);
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't read sample mapping file: ", e);
+        }
+        
+    }
+
+    private void processMappingData(String[] fields)
+    throws FileNotFoundException, ValidationException {
+        if (fields.length > 1 && !fields[0].startsWith("#")) {
+            String subjectId = fields[0].trim();
+            String sampleName = fields[1].trim();
+            SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
+            supplementalDataFile.setFileName(fields[2].trim());
+            supplementalDataFile.setProbeNameHeader(fields[3].trim());
+            supplementalDataFile.setValueHeader(fields[4].trim());
+            supplementalDataFile.setSampleHeader(fields[5].trim());
+            mappingSample(subjectId, sampleName, supplementalDataFile);
         }
     }
     
-    private void checkHeadersLine(String[] fields, String keyword) throws DataRetrievalException {
-        if (fields == null || !keyword.equals(fields[0])) {
-            throw new DataRetrievalException("Invalid header for Agilent data file.");
-        }
+    abstract File getMappingFile() throws FileNotFoundException;
+    
+    abstract void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile) 
+    throws ValidationException, FileNotFoundException;
+
+    /**
+     * @return the dao
+     */
+    public CaIntegrator2Dao getDao() {
+        return dao;
     }
+
 }

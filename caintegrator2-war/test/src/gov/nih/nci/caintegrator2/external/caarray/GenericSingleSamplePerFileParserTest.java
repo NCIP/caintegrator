@@ -98,7 +98,7 @@ import java.util.Map;
 import org.junit.Test;
 
 @SuppressWarnings("PMD")
-public class AgilentLevelTwoDataSingleSamplePerFileParserTest {
+public class GenericSingleSamplePerFileParserTest {
     
     @Test
     public void testExtractData() throws DataRetrievalException {
@@ -111,7 +111,7 @@ public class AgilentLevelTwoDataSingleSamplePerFileParserTest {
             supplementalDataFile.setFile(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE);
             supplementalDataFile.setProbeNameHeader("ID");
             supplementalDataFile.setValueHeader("logratio");
-            agilentData = SupplementalSingleSamplePerFileParser.INSTANCE.extractData(supplementalDataFile,
+            agilentData = GenericSingleSamplePerFileParser.INSTANCE.extractData(supplementalDataFile,
                     PlatformVendorEnum.AGILENT);
         } catch (DataRetrievalException e) {
             assertEquals(e.getMessage(), "Invalid supplemental data file; headers not found in file.");
@@ -126,7 +126,7 @@ public class AgilentLevelTwoDataSingleSamplePerFileParserTest {
             supplementalDataFile.setFile(TestDataFiles.HUAITIAN_LEVEL_2_DATA_FILE);
             supplementalDataFile.setProbeNameHeader("ID");
             supplementalDataFile.setValueHeader("logratio");
-            agilentData = SupplementalSingleSamplePerFileParser.INSTANCE.extractData(supplementalDataFile,
+            agilentData = GenericSingleSamplePerFileParser.INSTANCE.extractData(supplementalDataFile,
                     PlatformVendorEnum.AGILENT);
             assertEquals(4, agilentData.keySet().size());
         } catch (DataRetrievalException e) {

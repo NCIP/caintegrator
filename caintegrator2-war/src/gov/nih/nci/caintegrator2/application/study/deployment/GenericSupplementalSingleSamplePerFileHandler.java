@@ -102,7 +102,6 @@ import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -116,7 +115,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Reads and retrieves copy number data from a caArray instance.
  */
 @Transactional (propagation = Propagation.REQUIRED)
-class AgilentCopyNumberMappingSingleSamplePerFileHandler extends AbstractAgilentDnaAnalysisMappingFileHandler {
+class GenericSupplementalSingleSamplePerFileHandler extends AbstractGenericSupplementalMappingFileHandler {
     
     static final String FILE_TYPE = "data";
     private final Map<Sample, List<SupplementalDataFile>> sampleToDataFileMap =
@@ -124,7 +123,7 @@ class AgilentCopyNumberMappingSingleSamplePerFileHandler extends AbstractAgilent
     private final CentralTendencyCalculator centralTendencyCalculator;
     
     
-    AgilentCopyNumberMappingSingleSamplePerFileHandler(GenomicDataSourceConfiguration genomicSource,
+    GenericSupplementalSingleSamplePerFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
         this.centralTendencyCalculator = new CentralTendencyCalculator(
@@ -150,7 +149,7 @@ class AgilentCopyNumberMappingSingleSamplePerFileHandler extends AbstractAgilent
     }
 
     List<ArrayDataValues> loadArrayDataValue()
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
+    throws ConnectionException, DataRetrievalException, ValidationException {
         List<ArrayDataValues> values = new ArrayList<ArrayDataValues>();
         for (Sample sample : sampleToDataFileMap.keySet()) {
             values.add(loadArrayDataValues(sample));

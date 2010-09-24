@@ -106,7 +106,7 @@ public interface DnaAnalysisHandlerFactory {
      * @return the handler.
      * @exception DataRetrievalException for invalid platform vendor.
      */
-    AbstractDnaAnalysisMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource, 
+    AbstractUnparsedSupplementalMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource, 
             CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, 
             CaIntegrator2Dao dao) throws DataRetrievalException;

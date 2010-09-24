@@ -73,6 +73,8 @@ public class GenomicDataHelperTest {
         genomicDataConfiguration.setSampleMappingFilePath(TestDataFiles.TEST_AGILENT_SAMPLE_MAPPING_FILE.getAbsolutePath());
         studyConfiguration.getGenomicDataSources().add(genomicDataConfiguration);
         genomicDataConfiguration.setStudyConfiguration(studyConfiguration);
+        genomicDataConfiguration.setUseSupplementalFiles(true);
+        genomicDataConfiguration.setSingleDataFile(false);
         helper.loadData(studyConfiguration);
         assertTrue(arrayDataService.saveCalled);
         assertEquals(2, sample.getArrayCollection().size());
