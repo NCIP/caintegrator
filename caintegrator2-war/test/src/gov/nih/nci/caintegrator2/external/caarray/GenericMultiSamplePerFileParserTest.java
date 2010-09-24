@@ -83,71 +83,52 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study.deployment;
+package gov.nih.nci.caintegrator2.external.caarray;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
-import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
-import gov.nih.nci.caintegrator2.external.caarray.GenericSingleSamplePerFileParser;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.junit.Test;
 
-/**
- * Reads data in Agilent raw data file.
- */
-public final class AgilentCopyNumberDataRetrieval {
+@SuppressWarnings("PMD")
+public class GenericMultiSamplePerFileParserTest {
 
-    /**
-     * The INSTANCE of the AgilentRawDataFileParser.
-     */
-    public static final AgilentCopyNumberDataRetrieval INSTANCE = new AgilentCopyNumberDataRetrieval();
+    private String sample1 = "TCGA-13-0805-01A-01D-0357-04";
+    private String sample2 = "TCGA-13-0805-10A-01D-0357-04";
+    private GenericMultiSamplePerFileParser parser;
     
-    private static final Logger LOGGER = Logger.getLogger(AgilentCopyNumberDataRetrieval.class);
-    
-    /**
-     * Parsing the level 2 data file.
-     * @param supplementalDataFile the level 2 data file detail.
-     * @param values ArrayDataValues to be populated.
-     * @param arrayData ArrayData mapping.
-     * @param platformHelper the platformHelper.
-     * @param centralTendencyCalculator to calculate central tendency when there is more than one value 
-     *                                      per sample/reporter.
-     * @throws DataRetrievalException when unable to parse.
-     */
-    public void parseDataFile(SupplementalDataFile supplementalDataFile, ArrayDataValues values, ArrayData arrayData,
-            PlatformHelper platformHelper, CentralTendencyCalculator centralTendencyCalculator) 
-    throws DataRetrievalException {
-        Map<String, List<Float>> agilentDataMap = GenericSingleSamplePerFileParser.INSTANCE.extractData(
-                supplementalDataFile, platformHelper.getPlatform().getVendor());
-        loadArrayDataValues(agilentDataMap, values, arrayData, platformHelper, centralTendencyCalculator);
-    }
-    
-    private void loadArrayDataValues(Map<String, List<Float>> agilentDataMap, ArrayDataValues values,
-            ArrayData arrayData, PlatformHelper platformHelper, CentralTendencyCalculator centralTendencyCalculator) {
-        for (String probeName : agilentDataMap.keySet()) {
-            AbstractReporter reporter = getReporter(platformHelper, probeName);
-            if (reporter == null) {
-                LOGGER.warn("Reporter with name " + probeName + " was not found in platform " 
-                        + platformHelper.getPlatform().getName());
-            } else {
-                values.setFloatValue(arrayData, reporter, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO,
-                        agilentDataMap.get(probeName), centralTendencyCalculator);
-            }
+    @Test
+    public void testExtractData() throws DataRetrievalException, IOException {
+        
+        Map<String, Map<String, Float>> agilentData =  new HashMap<String, Map<String, Float>>();
+        List<String> sampleList = new ArrayList<String>();
+        sampleList.add(sample1);
+        sampleList.add(sample2);
+        boolean exceptionCaught = false;
+        try {
+            parser = new GenericMultiSamplePerFileParser(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE,
+                    "ProbeID", "Hybridization Ref", sampleList);
+            parser.loadData(agilentData);
+        } catch (DataRetrievalException e) {
+            assertEquals(e.getMessage(), "Invalid header for Agilent data file.");
+            exceptionCaught = true;
         }
-    }
+        assertTrue(exceptionCaught);
 
-    private AbstractReporter getReporter(PlatformHelper platformHelper, String probeSetName) {
-        AbstractReporter reporter = platformHelper.getReporter(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, 
-                probeSetName); 
-        return reporter;
+        parser = new GenericMultiSamplePerFileParser(TestDataFiles.TCGA_LEVEL_2_DATA_FILE,
+                "ProbeID", "Hybridization Ref", sampleList);
+        parser.loadData(agilentData);
+        assertEquals(2, agilentData.keySet().size());
+        for (Map<String, Float> reporterList : agilentData.values()) {
+            assertTrue(reporterList.keySet().size() > 0);
+        }
     }
 }

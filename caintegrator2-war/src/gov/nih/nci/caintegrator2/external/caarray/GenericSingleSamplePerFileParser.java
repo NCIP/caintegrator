@@ -85,50 +85,98 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
+import au.com.bytecode.opencsv.CSVReader;
 
-@SuppressWarnings("PMD")
-public class AgilentLevelTwoDataMultiSamplePerFileParserTest {
+/**
+ * Parse supplemental data file.
+ */
+public final class GenericSingleSamplePerFileParser {
 
-    private String sample1 = "TCGA-13-0805-01A-01D-0357-04";
-    private String sample2 = "TCGA-13-0805-10A-01D-0357-04";
-    private AgilentLevelTwoDataMultiSamplePerFileParser parser;
+    /**
+     * The INSTANCE of the AgilentRawDataFileParser.
+     */
+    public static final GenericSingleSamplePerFileParser INSTANCE = new GenericSingleSamplePerFileParser();
     
-    @Test
-    public void testExtractData() throws DataRetrievalException, IOException {
-        
-        Map<String, Map<String, Float>> agilentData =  new HashMap<String, Map<String, Float>>();
-        List<String> sampleList = new ArrayList<String>();
-        sampleList.add(sample1);
-        sampleList.add(sample2);
-        boolean exceptionCaught = false;
-        try {
-            parser = new AgilentLevelTwoDataMultiSamplePerFileParser(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE,
-                    "ProbeID", "Hybridization Ref", sampleList);
-            parser.loadData(agilentData);
-        } catch (DataRetrievalException e) {
-            assertEquals(e.getMessage(), "Invalid header for Agilent data file.");
-            exceptionCaught = true;
-        }
-        assertTrue(exceptionCaught);
+    private CSVReader dataFileReader;
+    private final Map<String, Integer> headerToIndexMap = new HashMap<String, Integer>();
 
-        parser = new AgilentLevelTwoDataMultiSamplePerFileParser(TestDataFiles.TCGA_LEVEL_2_DATA_FILE,
-                "ProbeID", "Hybridization Ref", sampleList);
-        parser.loadData(agilentData);
-        assertEquals(2, agilentData.keySet().size());
-        for (Map<String, Float> reporterList : agilentData.values()) {
-            assertTrue(reporterList.keySet().size() > 0);
+    /**
+     * Extract data from the raw file.
+     * @param supplementalDataFile the supplemental data file detail
+     * @param vendor the platform vendor
+     * @return the extracted data.
+     * @throws DataRetrievalException when error parsing.
+     */
+    public Map<String, List<Float>> extractData(SupplementalDataFile supplementalDataFile, PlatformVendorEnum vendor)
+    throws DataRetrievalException {
+        try {
+            
+            dataFileReader = new CSVReader(new InputStreamReader(
+                    new FileInputStream(supplementalDataFile.getFile())), '\t');
+            loadHeaders(supplementalDataFile.getProbeNameHeader());
+            Map<String, List<Float>> dataMap = new HashMap<String, List<Float>>();
+            String[] fields;
+            while ((fields = Cai2Util.readDataLine(dataFileReader)) != null) {
+                String probeName = fields[headerToIndexMap.get(supplementalDataFile.getProbeNameHeader())];
+                extractValue(supplementalDataFile, vendor, dataMap, fields, probeName);
+            }
+            return dataMap;
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't read Agilent data file.", e);
+        }
+    }
+
+    private void extractValue(SupplementalDataFile supplementalDataFile, PlatformVendorEnum vendor,
+            Map<String, List<Float>> dataMap, String[] fields, String probeName) {
+        if (PlatformVendorEnum.AGILENT.equals(vendor) && probeName.startsWith("A_")
+                || !PlatformVendorEnum.AGILENT.equals(vendor)) {
+            Float value;
+            try {
+                value = new Float(fields[headerToIndexMap.get(supplementalDataFile.getValueHeader())]);
+                addValueToDataMap(dataMap, probeName, value);
+            } catch (NumberFormatException e) {
+                value = 0.0f; // The value is missing ignore this reporter.
+            }
+        }
+    }
+    
+    private void addValueToDataMap(Map<String, List<Float>> dataMap, String probeName, Float value) {
+        if (!dataMap.containsKey(probeName)) {
+            dataMap.put(probeName, new ArrayList<Float>());
+        }
+        dataMap.get(probeName).add(value);
+    }
+
+    private void loadHeaders(String probeNameHeader) throws IOException, DataRetrievalException {
+        String[] fields;
+        while ((fields = dataFileReader.readNext()) != null) {
+            if (isFeatureHeadersLine(fields, probeNameHeader)) {
+                loadFeatureHeaders(fields);
+                return;
+            }
+        }        
+        throw new DataRetrievalException("Invalid supplemental data file; headers not found in file.");
+    }
+    
+    private boolean isFeatureHeadersLine(String[] fields, String probeNameHeader) {
+        return fields.length > 0 && probeNameHeader.equals(fields[0]);
+    }
+
+    private void loadFeatureHeaders(String[] headers) {
+        for (int i = 0; i < headers.length; i++) {
+            headerToIndexMap.put(headers[i], i);
         }
     }
 }

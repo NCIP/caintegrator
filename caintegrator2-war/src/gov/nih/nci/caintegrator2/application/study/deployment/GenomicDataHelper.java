@@ -92,7 +92,6 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
@@ -172,47 +171,23 @@ class GenomicDataHelper {
     private void loadExpressionData(GenomicDataSourceConfiguration genomicSource)
     throws ConnectionException, DataRetrievalException, ValidationException {
         if (!genomicSource.getSamples().isEmpty()) {
-            switch (PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor())) {
-            case AFFYMETRIX:
-                loadAffymetrixExpressionData(genomicSource);
-                break;
-            case AGILENT:
-                loadAgilentExpressionData(genomicSource);
-                break;
-            default:
-                throw new DataRetrievalException("Unknown platform vendor.");
+            ArrayDataValues probeSetValues;
+            if (genomicSource.isUseSupplementalFiles()) {
+                ExpressionSampleMappingFileHandler handler = expressionHandlerFactory.getHandler(
+                        genomicSource, caArrayFacade, arrayDataService, dao);
+                probeSetValues = handler.loadArrayData();
+            } else {
+                probeSetValues = caArrayFacade.retrieveData(genomicSource);
             }
+            ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
+            arrayDataService.save(probeSetValues);
+            arrayDataService.save(geneValues);
         }
-    }
-
-    private void loadAffymetrixExpressionData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
-            DataRetrievalException, ValidationException {
-        ArrayDataValues probeSetValues;
-        if (genomicSource.isUseSupplementalFiles()) {
-            ExpressionSampleMappingFileHandler handler = expressionHandlerFactory.getHandler(
-                    genomicSource, caArrayFacade, arrayDataService, dao);
-            probeSetValues = handler.loadArrayData();
-        } else {
-            probeSetValues = caArrayFacade.retrieveData(genomicSource);
-        }
-        ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
-        arrayDataService.save(probeSetValues);
-        arrayDataService.save(geneValues);
-    }
-    
-    private void loadAgilentExpressionData(GenomicDataSourceConfiguration genomicSource)
-    throws DataRetrievalException, ConnectionException, ValidationException {
-        ExpressionSampleMappingFileHandler handler = expressionHandlerFactory.getHandler(
-                genomicSource, caArrayFacade, arrayDataService, dao);
-        ArrayDataValues probeSetValues = handler.loadArrayData();
-        ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
-        arrayDataService.save(probeSetValues);
-        arrayDataService.save(geneValues);
     }
 
     private void handleDnaAnalysisData(GenomicDataSourceConfiguration genomicSource) 
     throws DataRetrievalException, ConnectionException, ValidationException, IOException {
-        AbstractDnaAnalysisMappingFileHandler handler = 
+        AbstractUnparsedSupplementalMappingFileHandler handler = 
             dnaAnalysisHandlerFactory.getHandler(genomicSource, caArrayFacade, arrayDataService, dao);
         List<ArrayDataValues> valuesList = handler.loadArrayData();
         if (genomicSource.getDnaAnalysisDataConfiguration().isCaDNACopyConfiguration()) {

@@ -91,7 +91,6 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
@@ -105,11 +104,10 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
-import gov.nih.nci.caintegrator2.external.caarray.SupplementalSingleSamplePerFileParser;
+import gov.nih.nci.caintegrator2.external.caarray.GenericSingleSamplePerFileParser;
 
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -120,17 +118,14 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import au.com.bytecode.opencsv.CSVReader;
-
 /**
  * Reads and retrieves copy number data from a caArray instance.
  */
 @Transactional (propagation = Propagation.REQUIRED)
-class ExpressionSampleMappingFileHandler extends AbstractCaArrayFileHandler {
+class ExpressionSampleMappingFileHandler extends AbstractSupplementalMappingFileHandler {
 
     private static final Logger LOGGER = Logger.getLogger(ExpressionSampleMappingFileHandler.class);
     
-    private final CaIntegrator2Dao dao;
     private final CentralTendencyCalculator centralTendencyCalculator;
     static final String FILE_TYPE = "data";
     private final Map<Sample, List<SupplementalDataFile>> sampleToDataFileMap =
@@ -142,8 +137,7 @@ class ExpressionSampleMappingFileHandler extends AbstractCaArrayFileHandler {
     
     ExpressionSampleMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
-        super(genomicSource, caArrayFacade, arrayDataService);
-        this.dao = dao;
+        super(genomicSource, caArrayFacade, arrayDataService, dao);
         platformHelper = new PlatformHelper(dao.getPlatform(genomicSource.getPlatformName()));
         reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         arrayDataValues = 
@@ -156,29 +150,13 @@ class ExpressionSampleMappingFileHandler extends AbstractCaArrayFileHandler {
     }
 
     ArrayDataValues loadArrayData() throws DataRetrievalException, ConnectionException, ValidationException {
-        try {
-            CSVReader reader = new CSVReader(new FileReader(getGenomicSource().getSampleMappingFile()));
-            String[] fields;
-            while ((fields = Cai2Util.readDataLine(reader)) != null) {
-                String sampleName = fields[1].trim();
-                SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
-                supplementalDataFile.setFileName(fields[2].trim());
-                supplementalDataFile.setProbeNameHeader(fields[3].trim());
-                supplementalDataFile.setValueHeader(fields[4].trim());
-                mappingSample(sampleName, supplementalDataFile);
-            }
-            loadArrayDataValues();
-            dao.save(getGenomicSource().getStudyConfiguration());
-            reader.close();
-            return arrayDataValues;
-        } catch (FileNotFoundException e) {
-            throw new DataRetrievalException("Sample mapping file not found: ", e);
-        } catch (IOException e) {
-            throw new DataRetrievalException("Couldn't read sample mapping file: ", e);
-        }
+        loadMappingFile();
+        loadArrayDataValues();
+        getDao().save(getGenomicSource().getStudyConfiguration());
+        return arrayDataValues;
     }
 
-    private void mappingSample(String sampleName, SupplementalDataFile supplementalDataFile) 
+    void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile) 
     throws ValidationException, FileNotFoundException {
         Sample sample = getGenomicSource().getSample(sampleName);
         addDataFile(sample, supplementalDataFile);
@@ -219,9 +197,9 @@ class ExpressionSampleMappingFileHandler extends AbstractCaArrayFileHandler {
     private void loadArrayDataValues(Sample sample, List<SupplementalDataFile> supplementalDataFiles) 
     throws DataRetrievalException, ValidationException {
         ArrayData arrayData = createArrayData(sample);
-        dao.save(arrayData);
+        getDao().save(arrayData);
         for (SupplementalDataFile supplementalDataFile : supplementalDataFiles) {
-            Map<String, List<Float>> dataMap = SupplementalSingleSamplePerFileParser.INSTANCE.extractData(
+            Map<String, List<Float>> dataMap = GenericSingleSamplePerFileParser.INSTANCE.extractData(
                     supplementalDataFile, platformHelper.getPlatform().getVendor());
             loadArrayDataValues(dataMap, arrayData);
         }
@@ -265,7 +243,7 @@ class ExpressionSampleMappingFileHandler extends AbstractCaArrayFileHandler {
         arrayData.setStudy(getGenomicSource().getStudyConfiguration().getStudy());
         sample.getArrayCollection().add(array);
         sample.getArrayDataCollection().add(arrayData);
-        dao.save(array);
+        getDao().save(array);
         return arrayData;
     }
 
@@ -286,6 +264,11 @@ class ExpressionSampleMappingFileHandler extends AbstractCaArrayFileHandler {
      */
     public void setArrayDataValues(ArrayDataValues arrayDataValues) {
         this.arrayDataValues = arrayDataValues;
+    }
+
+    @Override
+    File getMappingFile() throws FileNotFoundException {
+        return getGenomicSource().getSampleMappingFile();
     }
 
  }

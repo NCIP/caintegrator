@@ -86,155 +86,145 @@
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.AgilentLevelTwoDataMultiSamplePerFileParser;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
-import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 /**
- * Reads and retrieves copy number data from a caArray instance.
+ * Provides base handling to retrieve copy number data based on a copy number mapping file.
  */
-@Transactional (propagation = Propagation.REQUIRED)
-class AgilentCopyNumberMappingMultiSamplePerFileHandler extends AbstractAgilentDnaAnalysisMappingFileHandler {
-    
-    static final String FILE_TYPE = "data";
-    private final List<Sample> samples = new ArrayList<Sample>();
-    private final List<String> dataFileNames = new ArrayList<String>();
-    private final List<SupplementalDataFile> dataFiles = new ArrayList<SupplementalDataFile>();
-    
-    private static final Logger LOGGER = Logger.getLogger(AgilentCopyNumberMappingMultiSamplePerFileHandler.class);
-    
-    AgilentCopyNumberMappingMultiSamplePerFileHandler(GenomicDataSourceConfiguration genomicSource,
+public abstract class AbstractUnparsedSupplementalMappingFileHandler extends AbstractSupplementalMappingFileHandler {
+
+    AbstractUnparsedSupplementalMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
     }
 
-    void mappingSample(String subjectIdentifier, String sampleName, SupplementalDataFile supplementalDataFile)
+    /**
+     * 
+     * @param sampleName the sample name to retrieve
+     * @param subjectIdentifier the study assignment id
+     * @return the sample object
+     * @throws ValidationException Validation exception
+     * @throws FileNotFoundException IO exception
+     */
+    protected Sample getSample(String sampleName, String subjectIdentifier)
     throws FileNotFoundException, ValidationException {
-        samples.add(getSample(sampleName, subjectIdentifier));
-        if (!dataFileNames.contains(supplementalDataFile.getFileName())) {
-            dataFileNames.add(supplementalDataFile.getFileName());
-            dataFiles.add(supplementalDataFile);
+        Sample sample = getGenomicSource().getSample(sampleName);
+        if (sample == null) {
+            StudySubjectAssignment assignment = getSubjectAssignment(subjectIdentifier);
+            sample = new Sample();
+            sample.setName(sampleName);
+            SampleAcquisition acquisition = new SampleAcquisition();
+            acquisition.setAssignment(assignment);
+            acquisition.setSample(sample);
+            sample.setSampleAcquisition(acquisition);
+            assignment.getSampleAcquisitionCollection().add(acquisition);
+            getGenomicSource().getSamples().add(sample);
+            getDao().save(sample);
         }
+        return sample;
     }
 
-    List<ArrayDataValues> loadArrayDataValue() 
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
-        List<ArrayDataValues> arrayDataValuesList = new ArrayList<ArrayDataValues>();
-        PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(
-            getGenomicSource().getPlatformName()));
-        Set<ReporterList> reporterLists = platformHelper.getReporterLists(
-            ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        Map<String, Map<String, Float>> agilentDataMap = extractData();
-        loadArrayData(arrayDataValuesList, platformHelper, reporterLists, agilentDataMap);
-        return arrayDataValuesList;
+    /**
+     * 
+     * @return the mapping file.
+     * @throws FileNotFoundException IO exception.
+     */
+    protected File getMappingFile() throws FileNotFoundException {
+        return getGenomicSource().getDnaAnalysisDataConfiguration().getMappingFile();
     }
 
-    private Map<String, Map<String, Float>> extractData()
-    throws DataRetrievalException, ConnectionException, ValidationException, IOException {
-        Map<String, Map<String, Float>> agilentDataMap = new HashMap<String, Map<String, Float>>();
-        for (SupplementalDataFile dataFile : dataFiles) {
-            AgilentLevelTwoDataMultiSamplePerFileParser parser = new AgilentLevelTwoDataMultiSamplePerFileParser(
-                    getDataFile(dataFile.getFileName()), dataFile.getProbeNameHeader(),
-                    dataFile.getSampleHeader(), getSampleList());
-            parser.loadData(agilentDataMap);
-        }
-        validateSampleMapping(agilentDataMap, getSampleList());
-        return agilentDataMap;
-    }
-
-    private void validateSampleMapping(Map<String, Map<String, Float>> agilentDataMap, List<String> sampleList)
-    throws DataRetrievalException {
-        StringBuffer errorMsg = new StringBuffer();
-        for (String sampleName : sampleList) {
-            if (!agilentDataMap.containsKey(sampleName)) {
-                if (errorMsg.length() > 0) {
-                    errorMsg.append(", ");
-                }
-                errorMsg.append(sampleName);
+    abstract List<ArrayDataValues> loadArrayData()
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException;
+    
+    /**
+     * Get the platform.
+     * @param reporterListNames the set of report lists.
+     * @return Platform
+     * @throws ValidationException when platform not found or not unique.
+     */
+    protected Platform getPlatform(Set<String> reporterListNames) throws ValidationException {
+        Set<Platform> platforms = new HashSet<Platform>();
+        for (String reporterListName : reporterListNames) {
+            ReporterList reporterList = getDao().getReporterList(reporterListName);
+            if (reporterList == null) {
+                throw new ValidationException("There is no platform that supports chip type " + reporterListName);
             }
+            platforms.add(reporterList.getPlatform());
         }
-        if (errorMsg.length() > 0) {
-            throw new DataRetrievalException("Sample not found error: " + errorMsg.toString());
+        if (platforms.size() > 1) {
+            throw new ValidationException(
+                    "DNA analysis data files for a single sample are mapped to multiple platforms.");
         }
+        return platforms.iterator().next();
     }
 
-    private List<String> getSampleList() {
-        List<String> sampleNames = new ArrayList<String>();
-        for (Sample sample : samples) {
-            sampleNames.add(sample.getName());
-        }
-        return sampleNames;
-    }
-
-    private Sample getSample(String sampleName) {
-        for (Sample sample : samples) {
-            if (sampleName.equals(sample.getName())) {
-                return sample;
-            }
-        }
-        return null;
+    /**
+     * Clean up.
+     * @param dataFile the data file to delete.
+     */
+    protected void doneWithFile(File dataFile) {
+        dataFile.delete();
     }
     
-    private void loadArrayData(List<ArrayDataValues> arrayDataValuesList, PlatformHelper platformHelper,
-            Set<ReporterList> reporterLists, Map<String, Map<String, Float>> agilentDataMap)
-    throws DataRetrievalException {
-        for (String sampleName : agilentDataMap.keySet()) {
-            LOGGER.info("Start LoadArrayData for : " + sampleName);
-            ArrayData arrayData = createArrayData(getSample(sampleName), reporterLists);
-            getDao().save(arrayData);
-            ArrayDataValues values = new ArrayDataValues(platformHelper
-                    .getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
-            arrayDataValuesList.add(values);
-            Map<String, Float> reporterMap = agilentDataMap.get(sampleName);
-            for (String probeName : reporterMap.keySet()) {
-                AbstractReporter reporter = getReporter(platformHelper, probeName);
-                if (reporter == null) {
-                    LOGGER.warn("Reporter with name " + probeName + " was not found in platform "
-                            + platformHelper.getPlatform().getName());
-                } else {
-                    values.setFloatValue(arrayData, reporter, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, reporterMap
-                            .get(probeName).floatValue());
-                }
+    abstract String getFileType();
+
+    /**
+     * Create the ArrayData for the sample.
+     * @param sample the sample to get arrayData for.
+     * @param reporterLists the set of report lists.
+     * @return ArrayData
+     */
+    protected ArrayData createArrayData(Sample sample, Set<ReporterList> reporterLists) {
+        ArrayData arrayData = new ArrayData();
+        arrayData.setType(ArrayDataType.COPY_NUMBER);
+        arrayData.setSample(sample);
+        sample.getArrayDataCollection().add(arrayData);
+        arrayData.setStudy(getGenomicSource().getStudyConfiguration().getStudy());
+        Array array = new Array();
+        array.getArrayDataCollection().add(arrayData);
+        arrayData.setArray(array);
+        array.getSampleCollection().add(sample);
+        sample.getArrayCollection().add(array);
+        if (!reporterLists.isEmpty()) {
+            arrayData.getReporterLists().addAll(reporterLists);
+            for (ReporterList reporterList : reporterLists) {
+                reporterList.getArrayDatas().add(arrayData);    
             }
-            getArrayDataService().save(values);
-            LOGGER.info("Done LoadArrayData for : " + sampleName);
+            array.setPlatform(reporterLists.iterator().next().getPlatform());
         }
+        return arrayData;
     }
 
-    private AbstractReporter getReporter(PlatformHelper platformHelper, String probeSetName) {
-        AbstractReporter reporter = platformHelper.getReporter(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, 
-                probeSetName); 
-        return reporter;
+    private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier)
+    throws ValidationException, FileNotFoundException {
+        StudySubjectAssignment assignment = 
+            getGenomicSource().getStudyConfiguration().getSubjectAssignment(subjectIdentifier);
+        if (assignment == null) {
+            throw new ValidationException("Subject identifier " + subjectIdentifier + " in DNA analysis mapping file " 
+                    + getMappingFile().getAbsolutePath() + " doesn't map to a known subject in the study.");
+        }
+        return assignment;
     }
 
-    @Override
-    String getFileType() {
-        return FILE_TYPE;
-    }
-
- }
+}

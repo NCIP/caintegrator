@@ -89,7 +89,6 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
@@ -97,23 +96,18 @@ import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import au.com.bytecode.opencsv.CSVReader;
-
 /**
  * Reads and retrieves copy number data from a caArray instance.
  */
 @Transactional (propagation = Propagation.REQUIRED)
-abstract class AbstractAgilentDnaAnalysisMappingFileHandler extends AbstractDnaAnalysisMappingFileHandler {
+abstract class AbstractGenericSupplementalMappingFileHandler extends AbstractUnparsedSupplementalMappingFileHandler {
     
-    AbstractAgilentDnaAnalysisMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
+    AbstractGenericSupplementalMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
     }
@@ -121,65 +115,17 @@ abstract class AbstractAgilentDnaAnalysisMappingFileHandler extends AbstractDnaA
     @Override
     List<ArrayDataValues> loadArrayData()
     throws DataRetrievalException, ConnectionException, ValidationException {
-        try {
-            CSVReader reader = new CSVReader(new FileReader(getMappingFile()));
-            String[] fields;
-            while ((fields = Cai2Util.readDataLine(reader)) != null) {
-                processMappingData(fields);
-            }
-            List<ArrayDataValues> arrayDataValues = loadArrayDataValue();
-            getDao().save(getGenomicSource().getStudyConfiguration());
-            reader.close();
-            return arrayDataValues;
-        } catch (FileNotFoundException e) {
-            throw new DataRetrievalException("Copy number mapping file not found: ", e);
-        } catch (IOException e) {
-            throw new DataRetrievalException("Couldn't read copy number mapping file: ", e);
-        }
-    }
-
-    private void processMappingData(String[] fields)
-    throws FileNotFoundException, ValidationException {
-        if (fields.length > 1 && !fields[0].startsWith("#")) {
-            String subjectId = fields[0].trim();
-            String sampleName = fields[1].trim();
-            SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
-            supplementalDataFile.setFileName(fields[2].trim());
-            supplementalDataFile.setProbeNameHeader(fields[3].trim());
-            supplementalDataFile.setValueHeader(fields[4].trim());
-            supplementalDataFile.setSampleHeader(fields[5].trim());
-            mappingSample(subjectId, sampleName, supplementalDataFile);
-        }
+        loadMappingFile();
+        List<ArrayDataValues> arrayDataValues = loadArrayDataValue();
+        getDao().save(getGenomicSource().getStudyConfiguration());
+        return arrayDataValues;
     }
 
     abstract List<ArrayDataValues> loadArrayDataValue()
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException;
+    throws ConnectionException, DataRetrievalException, ValidationException;
 
     abstract void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile)
     throws FileNotFoundException, ValidationException;
-
-    List<MappingData> parseMappingFile() throws DataRetrievalException {
-        List<MappingData> mappingDataList = new ArrayList<MappingData>();
-        try {
-            CSVReader reader = new CSVReader(new FileReader(getMappingFile()));
-            String[] fields;
-            while ((fields = Cai2Util.readDataLine(reader)) != null) {
-                MappingData mappingData = new MappingData();
-                mappingData.subjectId = fields[0];
-                mappingData.sampleName = fields[1];
-                SupplementalDataFile dataFile = new SupplementalDataFile();
-                dataFile.setFileName(fields[2]);
-                dataFile.setProbeNameHeader(fields[3]);
-                dataFile.setSampleHeader(fields[4]);
-                dataFile.setValueHeader(fields[5]);
-                mappingData.dataFile = dataFile;
-                mappingDataList.add(mappingData);
-            }
-        } catch (IOException e) {
-            throw new DataRetrievalException("Couldn't read copy number mapping file: ", e);
-        }
-        return mappingDataList;
-    }
     
     /**
      * Mapping data.

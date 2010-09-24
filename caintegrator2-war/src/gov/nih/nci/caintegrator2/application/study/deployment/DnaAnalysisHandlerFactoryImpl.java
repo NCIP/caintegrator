@@ -100,15 +100,12 @@ public class DnaAnalysisHandlerFactoryImpl implements DnaAnalysisHandlerFactory 
     /**
      * {@inheritDoc}
      */
-    public AbstractDnaAnalysisMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
+    public AbstractUnparsedSupplementalMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao)
     throws DataRetrievalException {
         switch (PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor())) {
         case AFFYMETRIX:
-            if (genomicSource.isCopyNumberData()) {
-                return new AffymetrixCopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
-            }
-            return new AffymetrixSnpMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
+            return affymetrixFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
         case AGILENT:
             return singleOrMultiFileHandler(genomicSource, caArrayFacade,
                         arrayDataService, dao);
@@ -117,14 +114,30 @@ public class DnaAnalysisHandlerFactoryImpl implements DnaAnalysisHandlerFactory 
         }
 
     }
-    
-    private AbstractDnaAnalysisMappingFileHandler singleOrMultiFileHandler(GenomicDataSourceConfiguration genomicSource,
-            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+
+    private AbstractUnparsedSupplementalMappingFileHandler affymetrixFileHandler(
+            GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
+            ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+
         if (genomicSource.isSingleDataFile()) {
-            return new AgilentCopyNumberMappingMultiSamplePerFileHandler(genomicSource, caArrayFacade,
+            return new GenericSupplementalMultiSamplePerFileHandler(genomicSource, caArrayFacade,
+                    arrayDataService, dao);
+        }
+        if (genomicSource.isCopyNumberData()) {
+            return new AffymetrixCopyNumberMappingFileHandler(genomicSource, caArrayFacade,
+                    arrayDataService, dao);
+        }
+        return new AffymetrixSnpMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
+    }
+    
+    private AbstractUnparsedSupplementalMappingFileHandler singleOrMultiFileHandler(
+            GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
+            ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+        if (genomicSource.isSingleDataFile()) {
+            return new GenericSupplementalMultiSamplePerFileHandler(genomicSource, caArrayFacade,
                     arrayDataService, dao);
         } else {
-            return new AgilentCopyNumberMappingSingleSamplePerFileHandler(genomicSource, caArrayFacade,
+            return new GenericSupplementalSingleSamplePerFileHandler(genomicSource, caArrayFacade,
                     arrayDataService, dao);
         }
     }
