@@ -107,7 +107,8 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
         setStudyLastModifiedByCurrentUser(getClinicalSource(), 
                 LogEntry.getSystemLogLoadSubjectAnnotationFile(
                         getClinicalSource().getAnnotationFile().getFile().getName()));
-        updater.runJob(getClinicalSource().getId(), SubjectDataSourceAjaxRunner.JobType.LOAD);
+        updater.runJob(getStudyConfiguration().getId(), getClinicalSource().getId(), 
+                SubjectDataSourceAjaxRunner.JobType.LOAD);
         return SUCCESS;
     }
     
@@ -120,7 +121,8 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
         setStudyLastModifiedByCurrentUser(getClinicalSource(), 
                 LogEntry.getSystemLogLoadSubjectAnnotationFile(
                         getClinicalSource().getAnnotationFile().getFile().getName()));
-        updater.runJob(getClinicalSource().getId(), SubjectDataSourceAjaxRunner.JobType.RELOAD);
+        updater.runJob(getStudyConfiguration().getId(), getClinicalSource().getId(), 
+                SubjectDataSourceAjaxRunner.JobType.RELOAD);
         return SUCCESS;
     }
     
@@ -134,7 +136,8 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
         setStudyLastModifiedByCurrentUser(getClinicalSource(),
                 LogEntry.getSystemLogDeleteSubjectAnnotationFile(
                         getClinicalSource().getAnnotationFile().getFile().getName()));
-        updater.runJob(getClinicalSource().getId(), SubjectDataSourceAjaxRunner.JobType.DELETE);
+        updater.runJob(getStudyConfiguration().getId(), getClinicalSource().getId(), 
+                SubjectDataSourceAjaxRunner.JobType.DELETE);
         return SUCCESS;
     }
 

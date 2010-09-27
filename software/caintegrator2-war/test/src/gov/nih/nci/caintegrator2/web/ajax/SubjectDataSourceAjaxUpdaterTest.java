@@ -137,6 +137,7 @@ public class SubjectDataSourceAjaxUpdaterTest extends AbstractSessionBasedTest {
         clinicalDataSource = (DelimitedTextClinicalSourceConfiguration) 
                                 studyConfiguration.getClinicalConfigurationCollection().get(0);
         clinicalDataSource.setId(Long.valueOf(1));
+        studyManagementServiceStub.refreshedStudyConfiguration = studyConfiguration;
     }
 
     @Test
@@ -152,30 +153,34 @@ public class SubjectDataSourceAjaxUpdaterTest extends AbstractSessionBasedTest {
         studyManagementServiceStub.refreshedClinicalSource = clinicalDataSource;
         
         studyConfiguration.getStudy().setShortTitleText("Invalid");
-        updater.runJob(clinicalDataSource.getId(), SubjectDataSourceAjaxRunner.JobType.LOAD);
+        updater.runJob(studyConfiguration.getId(), clinicalDataSource.getId(), 
+                SubjectDataSourceAjaxRunner.JobType.LOAD);
         Thread.sleep(500);
         assertEquals(Status.ERROR, clinicalDataSource.getStatus());
         
         studyConfiguration.getStudy().setShortTitleText("valid");
         studyManagementServiceStub.clear();
-        updater.runJob(clinicalDataSource.getId(), SubjectDataSourceAjaxRunner.JobType.LOAD);
+        updater.runJob(studyConfiguration.getId(), clinicalDataSource.getId(), 
+                SubjectDataSourceAjaxRunner.JobType.LOAD);
         Thread.sleep(500);
         assertTrue(studyManagementServiceStub.loadClinicalAnnotationCalled);
-        assertTrue(studyManagementServiceStub.getRefreshedClinicalSourceCalled);
+        assertTrue(studyManagementServiceStub.getRefreshedStudyConfigurationCalled);
         assertEquals(Status.LOADED, clinicalDataSource.getStatus());
         
         studyManagementServiceStub.clear();
-        updater.runJob(clinicalDataSource.getId(), SubjectDataSourceAjaxRunner.JobType.RELOAD);
+        updater.runJob(studyConfiguration.getId(), clinicalDataSource.getId(), 
+                SubjectDataSourceAjaxRunner.JobType.RELOAD);
         Thread.sleep(500);
         assertTrue(studyManagementServiceStub.reLoadClinicalAnnotationCalled);
-        assertTrue(studyManagementServiceStub.getRefreshedClinicalSourceCalled);
+        assertTrue(studyManagementServiceStub.getRefreshedStudyConfigurationCalled);
         assertEquals(Status.LOADED, clinicalDataSource.getStatus());
         
         studyManagementServiceStub.clear();
-        updater.runJob(clinicalDataSource.getId(), SubjectDataSourceAjaxRunner.JobType.DELETE);
+        updater.runJob(studyConfiguration.getId(), clinicalDataSource.getId(), 
+                SubjectDataSourceAjaxRunner.JobType.DELETE);
         Thread.sleep(500);
         assertTrue(studyManagementServiceStub.deleteCalled);
-        assertTrue(studyManagementServiceStub.getRefreshedClinicalSourceCalled);
+        assertTrue(studyManagementServiceStub.getRefreshedStudyConfigurationCalled);
         
     }
     

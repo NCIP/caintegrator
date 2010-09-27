@@ -99,9 +99,10 @@ public interface ISubjectDataSourceAjaxUpdater {
     
     /**
      * Used to run the SubjectDataSource Job.
+     * @param studyConfigurationId to load data for study.
      * @param subjectSourceId to load data for subject source (asynchronously).
      * @param jobType the job type to run.
      */
-    void runJob(Long subjectSourceId, SubjectDataSourceAjaxRunner.JobType jobType);
+    void runJob(Long studyConfigurationId, Long subjectSourceId, SubjectDataSourceAjaxRunner.JobType jobType);
 
 }
