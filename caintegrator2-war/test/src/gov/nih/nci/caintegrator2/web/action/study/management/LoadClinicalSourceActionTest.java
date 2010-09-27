@@ -162,7 +162,7 @@ public class LoadClinicalSourceActionTest extends AbstractSessionBasedTest {
             
         }
 
-        public void runJob(Long subjectSourceId, SubjectDataSourceAjaxRunner.JobType jobType) {
+        public void runJob(Long studyConfigurationId, Long subjectSourceId, SubjectDataSourceAjaxRunner.JobType jobType) {
             runJobCalled = true;
         }
 

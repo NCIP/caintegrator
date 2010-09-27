@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -103,14 +104,18 @@ public class SubjectDataSourceAjaxRunner implements Runnable {
         
     private final SubjectDataSourceAjaxUpdater updater;
     private final Long subjectSourceId;
+    private final Long studyConfigurationId;
     private final JobType jobType;
     private DelimitedTextClinicalSourceConfiguration subjectSource;
+    private StudyConfiguration studyConfiguration;
     private String username;
     
     SubjectDataSourceAjaxRunner(SubjectDataSourceAjaxUpdater updater,
-            Long subjectSourceId, JobType jobType) {
+            Long studyConfigurationId, Long subjectSourceId,
+            JobType jobType) {
         this.updater = updater;
         this.subjectSourceId = subjectSourceId;
+        this.studyConfigurationId = studyConfigurationId;
         this.jobType = jobType;
     }
 
@@ -122,7 +127,6 @@ public class SubjectDataSourceAjaxRunner implements Runnable {
         try {
             setupSession();
             updater.updateJobStatus(username, subjectSource);
-            StudyConfiguration studyConfiguration = subjectSource.getStudyConfiguration();
             StudyManagementService studyManagementService = updater.getStudyManagementService();
             switch (jobType) {
             case LOAD:
@@ -149,7 +153,13 @@ public class SubjectDataSourceAjaxRunner implements Runnable {
     }
 
     private void setupSession() {
-        subjectSource = updater.getStudyManagementService().getRefreshedClinicalSource(subjectSourceId);
+        studyConfiguration = updater.getStudyManagementService().getRefreshedStudyConfiguration(studyConfigurationId);
+        for (AbstractClinicalSourceConfiguration source : studyConfiguration.getClinicalConfigurationCollection()) {
+            if (source.getId().equals(subjectSourceId)) {
+                subjectSource = (DelimitedTextClinicalSourceConfiguration) source;
+                break;
+            }
+        }
         username = subjectSource.getStudyConfiguration().getLastModifiedBy().getUsername();
     }
 
