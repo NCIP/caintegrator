@@ -430,6 +430,18 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
     }
 
     /**
+     * @return the boolean of whether the study has loaded clinical data 
+     */
+    public boolean hasLoadedClinicalDataSource() {
+        for (AbstractClinicalSourceConfiguration clinicalConfiguration : clinicalConfigurationCollection) {
+            if (Status.LOADED.equals(clinicalConfiguration.getStatus())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @return the boolean of whether the study has Genomic data 
      */
     public boolean hasGenomicDataSources() {

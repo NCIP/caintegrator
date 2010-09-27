@@ -97,6 +97,9 @@ public class EditSampleMappingAction extends AbstractGenomicSourceAction {
      */
     @Override
     public String execute() {
+        if (!getStudyConfiguration().hasLoadedClinicalDataSource()) {
+            addActionError(getText("struts.messages.error.study.no.subject"));
+        }
         return SUCCESS;
     }
        

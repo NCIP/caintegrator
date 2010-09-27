@@ -36,10 +36,10 @@
     <div class="form_wrapper_outer">
  
     <table class="form_wrapper_table">
-            <tr>
-                <th class="title" style="height: 2.5em;">Data Source</th>
-                <th class="alignright">&nbsp;</th>
-            </tr>
+        <tr>
+            <th class="title" style="height: 2.5em;">Data Source</th>
+            <th class="alignright">&nbsp;</th>
+        </tr>
             <tr>
                 <td colspan="2" style="padding: 5px;">    
 
@@ -55,6 +55,7 @@
                         <s:hidden name="genomicSourceCurrentlyMapped" value="true" />
                     </s:else>
                     
+                <s:if test="%{studyConfiguration.hasLoadedClinicalDataSource()}">
                     <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" readonly="true" cssClass="readonly" />
                     <s:textfield label="caArray Server JNDI Port" name="genomicSource.serverProfile.port" readonly="true" cssClass="readonly" />
                     <!-- NOTE - using custom struts theme to turn off autocomplete -->
@@ -75,12 +76,14 @@
                     </tr>
                     <s:checkbox name="genomicSource.singleDataFile" label="Multiple Samples Per Data File"
                         labelposition="left" /><br>
-                        <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
-                            <span class="wwlbl">(Default is 1 sample per data file)</span>
-                            <span class="wwctrl"></span>
-                        </s:div>
+                    <tr>
+                        <td class="tdLabel">
+                            (Default is 1 sample per data file)          
+                        </td>
+                    </tr>
                     <s:textfield label="Control Sample Set Name" name="controlSampleSetName" required="true" theme="cai2xhtml" size="35"/>
                     <s:file name="controlSampleFile" label="Control Samples File" size="35" />
+                </s:if>
                     <tr> 
 	                    <td></td>
 	                    <td>
@@ -88,7 +91,9 @@
 	                            onclick="document.sampleMappingForm.action = 'cancelGenomicSource.action';
 	                            document.sampleMappingForm.submit();"> Cancel 
 	                    </button>
+                    <s:if test="%{studyConfiguration.hasLoadedClinicalDataSource()}">
 	                    <button type="button" onclick="saveSampleMapping()"> Map Samples </button>
+                    </s:if>
 	                    </td> 
 	                </tr>
                 </s:form>

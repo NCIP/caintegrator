@@ -114,11 +114,12 @@
                         <s:actionerror />
                      </td>
                 </tr>
+                <s:hidden name="studyConfiguration.id" />
+                <s:hidden name="cancelAction" />
+                <s:hidden name="imageSourceConfiguration.id" id="imageSourceId"/>
+                <s:hidden name="imageSourceConfiguration.serverProfile.url" id="serverProfileUrl" />
+                <s:if test="%{studyConfiguration.hasLoadedClinicalDataSource()}">
                 <tr>
-                    <s:hidden name="studyConfiguration.id" />
-                    <s:hidden name="cancelAction" />
-                    <s:hidden name="imageSourceConfiguration.id" id="imageSourceId"/>
-                    <s:hidden name="imageSourceConfiguration.serverProfile.url" id="serverProfileUrl" />
                     
                     <s:if test="imageSourceConfiguration.statusDescription != null && imageSourceConfiguration.statusDescription.length() > 0">
                         <tr>
@@ -139,7 +140,6 @@
                     <s:textfield label=" NBIA Username " name="imageSourceConfiguration.serverProfile.username" id="nbiaUsername" size="40"/>
                     <s:password label=" NBIA Password " name="imageSourceConfiguration.serverProfile.password" id="nbiaPassword" size="40"/>
                     <s:textfield required="true" label=" Collection Name " name="imageSourceConfiguration.collectionName" id="nbiaCollectionName" size="40"/>
-            
                 </tr>
                      <script type="text/javascript">
                         var origUrl = document.imagingSourceForm.serverProfileUrl.value;
@@ -166,6 +166,7 @@
                             onclick="disableFormElement(this, 'Auto (No File Required)', document.imagingSourceForm, imageClinicalMappingFile)"/>
                 		<s:file name="imageClinicalMappingFile" label="Subject to Imaging Mapping File" size="40" disabled="true"/>
                 </tr>
+                </s:if>
                 <tr> 
             	    <td></td>
             	    <td>
@@ -174,7 +175,10 @@
             	            document.imagingSourceForm.cancelAction.value = 'true';
             	            document.imagingSourceForm.submit();"> Cancel 
             	    </button>
-            	    <button type="button" onclick="saveDatasource()"> Save </button>
+                    
+                    <s:if test="%{studyConfiguration.hasLoadedClinicalDataSource()}">
+            	       <button type="button" onclick="saveDatasource()"> Save </button>
+                    </s:if>
             	    </td> 
                 </tr>
                             </td>
