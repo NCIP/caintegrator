@@ -61,6 +61,8 @@
                     <s:hidden name="formAction" />
                     <s:hidden name="dnaAnalysisDataConfiguration.segmentationService.url" id="serverProfileUrl" />
                     
+                    
+                <s:if test="%{studyConfiguration.hasLoadedClinicalDataSource()}">
                     <s:file name="mappingFile" label="Subject and Sample Mapping File" size="40"/><br>
                         <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
                             <span class="wwlbl">(csv file with 6 column format)</span>
@@ -79,6 +81,7 @@
                             <span class="wwlbl">(Default is 1 sample per data file)</span>
                             <span class="wwctrl"></span>
                         </s:div>
+                </s:if>
                     <tr>
                         <td></td>
                         <td><br>
