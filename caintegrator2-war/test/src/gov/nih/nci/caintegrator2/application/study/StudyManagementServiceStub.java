@@ -158,7 +158,6 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean addExternalLinksToStudyCalled;
     public boolean saveAnnotationGroupCalled = false;
     public boolean daoSaveCalled = false;
-    public boolean getRefreshedClinicalSourceCalled = false;
     
     public ImageDataSourceConfiguration refreshedImageSource = new ImageDataSourceConfiguration();
     public GenomicDataSourceConfiguration refreshedGenomicSource = new GenomicDataSourceConfiguration();
@@ -249,7 +248,6 @@ public class StudyManagementServiceStub implements StudyManagementService {
         addExternalLinksToStudyCalled = false;
         saveAnnotationGroupCalled = false;
         daoSaveCalled = false;
-        getRefreshedClinicalSourceCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -590,9 +588,9 @@ public class StudyManagementServiceStub implements StudyManagementService {
         }
     }
 
-    public DelimitedTextClinicalSourceConfiguration getRefreshedClinicalSource(Long id) {
-        getRefreshedClinicalSourceCalled = true;
-        return refreshedClinicalSource;
+    public StudyConfiguration getRefreshedStudyConfiguration(Long id) {
+        getRefreshedStudyConfigurationCalled = true;
+        return refreshedStudyConfiguration;
     }
 
     public void saveSubjectSourceStatus(AbstractClinicalSourceConfiguration source) {

@@ -1010,12 +1010,12 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public DelimitedTextClinicalSourceConfiguration getRefreshedClinicalSource(Long id) {
-        DelimitedTextClinicalSourceConfiguration source = new DelimitedTextClinicalSourceConfiguration();
-        source.setId(id);
-        source = getRefreshedEntity(source);
-        HibernateUtil.loadCollection(source.getStudyConfiguration());
-        return source;
+    public StudyConfiguration getRefreshedStudyConfiguration(Long id) {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setId(id);
+        studyConfiguration = getRefreshedEntity(studyConfiguration);
+        HibernateUtil.loadCollection(studyConfiguration);
+        return studyConfiguration;
     }
 
     /**

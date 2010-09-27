@@ -289,7 +289,7 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @param id of the clinical source.
      * @return refreshed clinical source.
      */
-    DelimitedTextClinicalSourceConfiguration getRefreshedClinicalSource(Long id);
+    StudyConfiguration getRefreshedStudyConfiguration(Long id);
     
     /**
      * Retrieves refreshed study configuration.

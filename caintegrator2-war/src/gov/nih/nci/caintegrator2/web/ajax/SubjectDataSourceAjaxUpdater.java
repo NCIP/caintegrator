@@ -195,8 +195,9 @@ public class SubjectDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
     /**
      * {@inheritDoc}
      */
-    public void runJob(Long subjectSourceId, SubjectDataSourceAjaxRunner.JobType jobType) {
-        Thread subjectSourceRunner = new Thread(new SubjectDataSourceAjaxRunner(this, subjectSourceId, jobType));
+    public void runJob(Long studyConfigurationId, Long subjectSourceId, SubjectDataSourceAjaxRunner.JobType jobType) {
+        Thread subjectSourceRunner = new Thread(new SubjectDataSourceAjaxRunner(this, 
+                studyConfigurationId, subjectSourceId, jobType));
         subjectSourceRunner.start();
     }
     
