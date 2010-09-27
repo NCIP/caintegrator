@@ -149,6 +149,9 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
     public String edit() {
         getDnaAnalysisDataConfiguration();
         setFormAction(SAVE_ACTION);
+        if (!getStudyConfiguration().hasLoadedClinicalDataSource()) {
+            addActionError(getText("struts.messages.error.study.no.subject"));
+        }
         return SUCCESS;
     }
 

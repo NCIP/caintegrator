@@ -179,6 +179,9 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
         if (getImageSourceConfiguration().getId() == null) {
             getImageSourceConfiguration().getServerProfile().setWebUrl(DEFAULT_WEB_URL);
         }
+        if (!getStudyConfiguration().hasLoadedClinicalDataSource()) {
+            addActionError(getText("struts.messages.error.study.no.subject"));
+        }
         return SUCCESS;
     }
 
