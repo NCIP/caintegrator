@@ -803,11 +803,11 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
-    public int retrieveNumberImages(Collection<ImageSeries> imageSeries) {
+    public Long retrieveNumberImages(Collection<ImageSeries> imageSeries) {
         Criteria imageCriteria = getCurrentSession().createCriteria(Image.class);
         imageCriteria.add(Restrictions.in("series", imageSeries));
         imageCriteria.setProjection(Projections.rowCount());
-        return (Integer) imageCriteria.list().get(0);
+        return (Long) imageCriteria.list().get(0);
     }
     
     /**

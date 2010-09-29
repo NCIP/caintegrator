@@ -95,12 +95,15 @@ import org.hibernate.Filter;
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
+import org.hibernate.LockOptions;
 import org.hibernate.Query;
 import org.hibernate.ReplicationMode;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.UnknownProfileException;
+import org.hibernate.jdbc.Work;
 import org.hibernate.stat.SessionStatistics;
 
 @SuppressWarnings("unchecked")
@@ -431,6 +434,78 @@ public class HibernateSessionStub implements Session {
 
     public void update(String entityName, Object object) throws HibernateException {
         
+
+    }
+
+    public LockRequest buildLockRequest(LockOptions lockOptions) {
+
+        return null;
+    }
+
+
+    public void disableFetchProfile(String name) throws UnknownProfileException {
+
+        
+    }
+
+
+    public void doWork(Work work) throws HibernateException {
+
+    }
+
+
+    public void enableFetchProfile(String name) throws UnknownProfileException {
+
+        
+    }
+
+
+    public Object get(Class clazz, Serializable id, LockOptions lockOptions) throws HibernateException {
+        return null;
+    }
+
+
+    public Object get(String entityName, Serializable id, LockOptions lockOptions) throws HibernateException {
+
+        return null;
+    }
+
+
+    public boolean isDefaultReadOnly() {
+
+        return false;
+    }
+
+
+    public boolean isFetchProfileEnabled(String name) throws UnknownProfileException {
+
+        return false;
+    }
+
+
+    public boolean isReadOnly(Object entityOrProxy) {
+
+        return false;
+    }
+
+
+    public Object load(Class theClass, Serializable id, LockOptions lockOptions) throws HibernateException {
+
+        return null;
+    }
+
+
+    public Object load(String entityName, Serializable id, LockOptions lockOptions) throws HibernateException {
+
+        return null;
+    }
+
+
+    public void refresh(Object object, LockOptions lockOptions) throws HibernateException {
+
+    }
+
+    public void setDefaultReadOnly(boolean readOnly) {
 
     }
 
