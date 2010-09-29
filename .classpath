@@ -67,7 +67,7 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/asm-1.5.3.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/asm-attrs-1.5.3.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/bcprov-jdk15-140.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/c3p0-0.9.0.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/c3p0-0.9.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caDSR-beans-4.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-BulkDataHandler-client-1.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-BulkDataHandler-common-1.2.jar"/>
@@ -107,15 +107,13 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/concurrent-1.3.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/dom4j-1.6.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ehcache-1.2.4.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ehcache-core-2.2.0.jar" sourcepath="software/lib/src/ehcache-core-2.2.0-sources.jar" />
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ejb3-persistence-1.0.1.GA.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/freemarker-2.3.15.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/freestylesearch-4.0.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-3.2.0.ga.jar" sourcepath="software/lib/src/hibernate-3.2-src.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-annotations-1.0.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-commons-annotations-3.0.0.ga.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-3.5.6.jar" sourcepath="software/lib/src/hibernate-3.5.6-src.zip"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-tools-3.2.3.GA.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-validator-3.0.0.ga.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-validator-4.0.2.GA.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/oro-2.0.8.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jaxrpc-api-1.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jboss-aop-client-1.5.2.GA.jar"/>

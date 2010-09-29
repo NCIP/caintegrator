@@ -428,8 +428,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         refreshCalled = true;
     }
     
-    public int retrieveNumberImages(Collection<ImageSeries> imageSeriesCollection) {
-        int numberImages = 0;
+    public Long retrieveNumberImages(Collection<ImageSeries> imageSeriesCollection) {
+        Long numberImages = 0l;
         for (ImageSeries imageSeries : imageSeriesCollection) {
             if (imageSeries != null && imageSeries.getImageCollection() != null) {
                 numberImages += imageSeries.getImageCollection().size();

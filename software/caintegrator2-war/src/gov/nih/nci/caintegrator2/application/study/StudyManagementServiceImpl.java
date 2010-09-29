@@ -440,6 +440,9 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
         studyConfiguration.getGenomicDataSources().remove(genomicSource);
         for (Sample sample : genomicSource.getSamples()) {
+            if (sample.getSampleAcquisition() != null) {
+                getDao().delete(sample.getSampleAcquisition());
+            }
             sample.removeSampleAcquisitionAssociations();
             for (Array array : sample.getArrayCollection()) {
                 array.getSampleCollection().remove(sample);
