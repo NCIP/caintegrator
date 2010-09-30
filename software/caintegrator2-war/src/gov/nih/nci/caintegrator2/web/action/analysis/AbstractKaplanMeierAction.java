@@ -131,6 +131,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     private QueryManagementService queryManagementService;
     private AnalysisService analysisService;
     private String displayTab;
+    private boolean showGeneExpressionTab = true;
 
 
     /**
@@ -141,6 +142,10 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
         refreshGenomicSources();
         retrieveAndRefreshSurvivalValueDefinition();
         populateSurvivalValueDefinitions();
+        if (!getCurrentStudy().getStudyConfiguration().hasExpressionData() 
+                || !getCurrentStudy().getStudyConfiguration().hasControlSamples()) {
+            showGeneExpressionTab = false;
+        }
     }
     
     /**
@@ -410,6 +415,13 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
      */
     public void setCreatePlotRunning(boolean createPlotRunning) {
         getDisplayableWorkspace().setCreatePlotRunning(createPlotRunning);
+    }
+
+    /**
+     * @return the showGeneExpressionTab
+     */
+    public boolean isShowGeneExpressionTab() {
+        return showGeneExpressionTab;
     }
     
 }
