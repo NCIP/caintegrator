@@ -189,6 +189,8 @@ public class DeploymentServiceImpl implements DeploymentService {
     }
 
     private Status startDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener) {
+        LOGGER.info("Deployment of study " + studyConfiguration.getStudy().getShortTitleText()
+                + " has started.");
         studyConfiguration.setDeploymentStartDate(new Date());
         studyConfiguration.setDeploymentFinishDate(null);
         studyConfiguration.setStatusDescription(null);
