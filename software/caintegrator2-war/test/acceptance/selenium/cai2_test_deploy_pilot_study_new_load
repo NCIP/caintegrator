@@ -204,7 +204,7 @@
 <tr>
 	<td>type</td>
 	<td>sampleMappingFile</td>
-	<td>${testResourcesDirectory}Genomic Data/Expression Data/Agilent/data_mapping-37samples.csv</td>
+	<td>${testResourcesDirectory}Genomic Data/Expression Data/Agilent/data_mapping-37samples_6_col.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
