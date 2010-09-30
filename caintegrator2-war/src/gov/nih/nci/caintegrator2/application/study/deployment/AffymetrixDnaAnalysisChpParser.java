@@ -110,10 +110,13 @@ import affymetrix.fusion.chp.FusionCHPData;
 import affymetrix.fusion.chp.FusionCHPDataReg;
 import affymetrix.fusion.chp.FusionCHPMultiDataData;
 
+import org.apache.log4j.Logger;
+
 /**
  * Reads data in Affymetrix CHP (CNCHP) files.
  */
 class AffymetrixDnaAnalysisChpParser {
+    private static final Logger LOGGER = Logger.getLogger(AffymetrixDnaAnalysisChpParser.class);
     
     private static final String LO2_RATIO = "Log2Ratio";
     private static final String PARAM_CHIP_TYPE = "affymetrix-algorithm-param-ChipType1";
@@ -168,17 +171,27 @@ class AffymetrixDnaAnalysisChpParser {
     }
 
     private void loadData(ProbeSetMultiDataCopyNumberData probeSetData, ArrayDataValues values, ArrayData arrayData) {
-        values.setFloatValue(arrayData, 
-                getReporter(probeSetData.getName()), 
-                ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 
-                getLog2Value(probeSetData));
+        AbstractReporter reporter = getReporter(probeSetData.getName());
+        if (reporter != null) {
+                        values.setFloatValue(arrayData,
+                                reporter,
+                                ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO,
+                                getLog2Value(probeSetData));
+        } else {
+             LOGGER.error("Platform library does not contain this reporter: " + probeSetData.getName());
+        }
     }
 
     private void loadData(ProbeSetMultiDataGenotypeData probeSetData, ArrayDataValues values, ArrayData arrayData) {
-        values.setFloatValue(arrayData, 
-                getReporter(probeSetData.getName()), 
-                ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 
-                getLog2Value(probeSetData));
+        AbstractReporter reporter = getReporter(probeSetData.getName());
+        if (reporter != null) {
+                        values.setFloatValue(arrayData,
+                                reporter, 
+                                ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 
+                                getLog2Value(probeSetData));
+        } else {
+            LOGGER.error("Platform library does not contain this reporter: " + probeSetData.getName());
+        }
     }
 
     private AbstractReporter getReporter(String name) {
