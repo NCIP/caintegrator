@@ -156,7 +156,7 @@ public class ArrayDataServiceImpl implements ArrayDataService {
         AbstractPlatformSource platformSource = platformConfiguration.getPlatformSource();
         platformConfiguration = getRefreshedPlatformConfiguration(platformConfiguration.getId());
         try {
-            LOGGER.info("Started loading design from " + platformSource.toString());
+            LOGGER.info("Platform named " + platformConfiguration.getName() + " has started to load.");
             getDao().setFlushMode(HibernateAccessor.FLUSH_COMMIT);
             String platformName = platformSource.getPlatformName();
             Platform platform = platformSource.getLoader().load(getDao());
@@ -172,7 +172,7 @@ public class ArrayDataServiceImpl implements ArrayDataService {
                 platformConfiguration.setStatusDescription("Load time: Unknown");
             }
             saveAndUpdateDeploymentStatus(platformConfiguration, listener);
-            LOGGER.info("Platform named " + platformName + " has been loaded.");
+            LOGGER.info("Platform named " + platformName + " has been deployed.");
         } catch (Exception e) {
             handlePlatformException(platformConfiguration, listener, e);
         } catch (Error e) {
