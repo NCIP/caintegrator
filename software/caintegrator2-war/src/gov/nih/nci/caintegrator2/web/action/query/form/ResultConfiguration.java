@@ -96,7 +96,9 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -107,6 +109,7 @@ public class ResultConfiguration {
 
     private final QueryForm form;
     private final List<ColumnSelectionList> columnSelectionLists;
+    private final Map<String, Integer> newColumnIndexes = new HashMap<String, Integer>();
 
     ResultConfiguration(QueryForm form) {
         this.form = form;
@@ -241,10 +244,7 @@ public class ResultConfiguration {
      * @param index the index
      */
     public void setColumnIndex(String columnName, int index) {
-        ResultColumn column = getColumn(columnName);
-        if (column != null) {
-            column.setColumnIndex(index - 1);
-        }
+        newColumnIndexes.put(columnName, index);
     }
 
     private ResultColumn getColumn(String columnName) {
@@ -290,6 +290,16 @@ public class ResultConfiguration {
      * Revises the result column indexes to ensure there are no duplicates.
      */
     public void reindexColumns() {
+        if (!newColumnIndexes.isEmpty()) {
+            for (ResultColumn column : getQuery().retrieveVisibleColumns()) {
+                Integer columnIndex = 
+                    newColumnIndexes.get(column.getAnnotationFieldDescriptor().getDefinition().getDisplayName());
+                if (columnIndex != null) {
+                    column.setColumnIndex(columnIndex);
+                }
+            }
+            newColumnIndexes.clear();
+        }
         List<ResultColumn> selectedColumns = getSelectedColumns();
         for (int i = 0; i < selectedColumns.size(); i++) {
             selectedColumns.get(i).setColumnIndex(i);
