@@ -538,7 +538,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
         dao.save(study.getStudyConfiguration());
         dao.save(study);
-        long numImageSeries = dao.retrieveNumberImages(
+        int numImageSeries = dao.retrieveNumberImages(
                 study.getStudyConfiguration().getImageDataSources().get(0)
                     .getImageSeriesAcquisitions().get(0).getSeriesCollection());
         assertEquals(2, numImageSeries);

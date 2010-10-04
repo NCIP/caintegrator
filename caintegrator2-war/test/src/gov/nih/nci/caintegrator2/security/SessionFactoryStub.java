@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.naming.NamingException;
 import javax.naming.Reference;
 
-import org.hibernate.Cache;
 import org.hibernate.HibernateException;
 import org.hibernate.Interceptor;
 import org.hibernate.SessionFactory;
@@ -158,14 +157,6 @@ public class SessionFactoryStub implements SessionFactory {
 
     public Reference getReference() throws NamingException {
         
-        return null;
-    }
-
-    public boolean containsFetchProfileDefinition(String name) {
-        return false;
-    }
-
-    public Cache getCache() {
         return null;
     }
 

@@ -94,7 +94,7 @@ public class DisplayableImageSource {
     private final ImageDataSourceConfiguration imageDataSourceConfiguration;
     private int numberImageStudies;
     private int numberImageSeries;
-    private long numberImages;
+    private int numberImages;
 
 
     /**
@@ -127,7 +127,7 @@ public class DisplayableImageSource {
     /**
      * @return the numberImages
      */
-    public long getNumberImages() {
+    public int getNumberImages() {
         return numberImages;
     }
 
@@ -135,7 +135,7 @@ public class DisplayableImageSource {
     /**
      * @param numberImages the numberImages to set
      */
-    public void setNumberImages(long numberImages) {
+    public void setNumberImages(int numberImages) {
         this.numberImages = numberImages;
     }
 
