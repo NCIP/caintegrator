@@ -410,7 +410,7 @@ public interface CaIntegrator2Dao {
      * @param imageSeries to retrieve number of images.
      * @return number of images for source.
      */
-    Long retrieveNumberImages(Collection<ImageSeries> imageSeries);
+    int retrieveNumberImages(Collection<ImageSeries> imageSeries);
     
     /**
      * For a given genomic source, retrieves all distinct platforms.
