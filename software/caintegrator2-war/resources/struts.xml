@@ -243,6 +243,10 @@
         <action name="viewDataDictionary" class="viewDataDictionaryAction">
             <result type="tiles">viewDataDictionary</result>
         </action>
+        
+        <action name="viewControlSamples" class="viewControlSamplesAction">
+            <result type="tiles">viewControlSamples</result>
+        </action>
        
         <action name="editClinicalSource" class="editClinicalSourceAction">
             <result type="tiles">editClinicalFile</result>

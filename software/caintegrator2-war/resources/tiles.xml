@@ -159,6 +159,11 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/viewStudyLog_tile.jsp" />
         <put-attribute name="subTitle" value="View Study Log" />
     </definition>
+    
+    <definition name="viewControlSamples" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/viewControlSamples_tile.jsp" />
+        <put-attribute name="subTitle" value="View Control Samples" />
+    </definition>
 
     <definition name="editSampleMapping" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editSampleMapping_tile.jsp" />
