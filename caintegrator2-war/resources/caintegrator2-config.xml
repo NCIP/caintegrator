@@ -180,6 +180,14 @@
         </property>
     </bean>
     
+    <bean id="viewControlSamplesAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.investigation.ViewControlSamplesAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
+    
     <bean id="viewStudyLogAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.ViewStudyLogAction">
