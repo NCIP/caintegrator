@@ -69,8 +69,9 @@
     <dependency org="jboss" name="jboss-ejb3-client" rev="noversion" conf="runtime"/>
     <dependency org="jboss" name="jboss-aspect-client" rev="1.5" conf="compile"/>
     <dependency org="gov.nih.nci.caintegrator2" name="freestylesearch" rev="4.0" conf="runtime"/>
+    <dependency org="org.hibernate" name="hibernate-commons-annotations" rev="3.0.0.ga" conf="compile->master"/>
     <dependency org="org.hibernate" name="hibernate-tools" rev="3.2.3.GA" conf="compile->master"/>
-    <dependency org="org.hibernate" name="hibernate-validator" rev="4.0.2.GA" conf="runtime->default" transitive="false"/>
+    <dependency org="org.hibernate" name="hibernate-validator" rev="3.0.0.ga" conf="runtime->master"/>
     <dependency org="org.hibernate" name="hibernate-search" rev="3.1.0.GA" conf="compile->master"/>
     <dependency org="bouncycastle" name="bcprov-jdk15" rev="140" conf="compile->master"/>
     <dependency org="ucar" name="nccore" rev="4.0.34" conf="runtime"/>
@@ -127,7 +128,8 @@
     <dependency org="gov.nih.nci.security" name="csm" rev="4.2" conf="runtime->master"/>
     <dependency org="ncicb" name="nci-commons-core" rev="1.2.8" conf="runtime"/>
     <dependency org="org.hibernate" name="ejb3-persistence" rev="1.0.1.GA" conf="runtime->default"/>
-    <dependency org="org.hibernate" name="hibernate" rev="3.5.6" conf="runtime->master"/>
+    <dependency org="org.hibernate" name="hibernate-annotations" rev="1.0" conf="runtime"/>
+    <dependency org="org.hibernate" name="hibernate" rev="3.2.0.ga" conf="runtime->master"/>
     <dependency org="junit" name="junit" rev="4.4" conf="compile->master"/>
     <dependency org="mysql" name="mysql-connector-java" rev="5.1.13" conf="compile->master"/>
     <dependency org="commons-collections" name="commons-collections" rev="3.2" conf="runtime,test-checkstyle->master"/>

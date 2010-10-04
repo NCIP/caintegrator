@@ -111,9 +111,11 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ejb3-persistence-1.0.1.GA.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/freemarker-2.3.15.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/freestylesearch-4.0.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-3.5.6.jar" sourcepath="software/lib/src/hibernate-3.5.6-src.zip"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-3.2.0.ga.jar" sourcepath="software/lib/src/hibernate-3.2-src.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-annotations-1.0.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-commons-annotations-3.0.0.ga.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-tools-3.2.3.GA.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-validator-4.0.2.GA.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-validator-3.0.0.ga.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/oro-2.0.8.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jaxrpc-api-1.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jboss-aop-client-1.5.2.GA.jar"/>
