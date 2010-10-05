@@ -27,7 +27,7 @@ public enum AnalysisJobTypeEnum {
     /**
      * GISTIC.
      */
-    GISTIC("Gistic", "Gene Pattern - Grid");
+    GISTIC("Gistic", "Gene Pattern - ");
     
     private static Map<String, AnalysisJobTypeEnum> valueToTypeMap = 
                     new HashMap<String, AnalysisJobTypeEnum>();

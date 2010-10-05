@@ -96,6 +96,7 @@ public class GisticAnalysisJob extends AbstractPersistedAnalysisJob {
     
     private final transient GisticAnalysisForm gisticAnalysisForm = new GisticAnalysisForm();
     private ResultsZipFile resultsZipFile;
+    private ServerConnectionTypeEnum connectionType = ServerConnectionTypeEnum.UNKNOWN;
 
     /**
      * Default Constructor.
@@ -124,6 +125,20 @@ public class GisticAnalysisJob extends AbstractPersistedAnalysisJob {
      */
     public void setResultsZipFile(ResultsZipFile resultsZipFile) {
         this.resultsZipFile = resultsZipFile;
+    }
+
+    /**
+     * @return the connectionType
+     */
+    public ServerConnectionTypeEnum getConnectionType() {
+        return connectionType;
+    }
+
+    /**
+     * @param connectionType the connectionType to set
+     */
+    public void setConnectionType(ServerConnectionTypeEnum connectionType) {
+        this.connectionType = connectionType;
     }
 
     /**
