@@ -14,7 +14,7 @@
     <h1><s:property value="#subTitleText" /></h1>
     <p>View control samples sets as defined by the study manager. Shown are the sample names which comprise each set and the subject identifier to which each sample is mapped.</p>
     <div class="form_wrapper_outer">
-    <h4>Experiment: <s:property value="genomicSource.experimentIdentifier" /></h4>
+    <h4 style="padding: 0pt 0pt 5px;">Experiment: <s:property value="genomicSource.experimentIdentifier" /></h4>
     <s:iterator value="genomicSource.controlSampleSetCollection" status="iterator">
         <table class="form_wrapper_table">
                 <tr>
