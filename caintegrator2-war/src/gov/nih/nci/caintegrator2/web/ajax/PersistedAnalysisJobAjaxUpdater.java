@@ -230,7 +230,11 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
         Util utilThis = getDwrUtil(job.getUserWorkspace().getUsername());
         String jobId = job.getId().toString();
         utilThis.setValue(JOB_NAME + jobId, job.getName());
-        utilThis.setValue(JOB_TYPE + jobId, job.getJobType().getType());
+        StringBuffer jobTypeString = new StringBuffer(job.getJobType().getType());
+        if (job instanceof GisticAnalysisJob) {
+            jobTypeString.append(((GisticAnalysisJob) job).getConnectionType().getValue());
+        }
+        utilThis.setValue(JOB_TYPE + jobId, jobTypeString.toString());
         utilThis.setValue(JOB_METHOD + jobId, job.getMethod());
         utilThis.setValue(JOB_CREATION_DATE + jobId, 
                 getDateString(job.getCreationDate()));

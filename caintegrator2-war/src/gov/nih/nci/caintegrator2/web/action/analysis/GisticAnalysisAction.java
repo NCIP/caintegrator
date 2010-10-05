@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ServerConnectionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -322,8 +323,10 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     private boolean loadParameters() throws InvalidCriterionException {
         if (getUseWebService()) {
             getGisticParameters().getServer().setUrl(getWebServiceUrl());
+            getCurrentGisticAnalysisJob().setConnectionType(ServerConnectionTypeEnum.WEB);
         } else {
             getGisticParameters().getServer().setUrl(getGridServiceUrl());
+            getCurrentGisticAnalysisJob().setConnectionType(ServerConnectionTypeEnum.GRID);
         }
         loadQueries();
         return loadRefgeneFileParameter();
