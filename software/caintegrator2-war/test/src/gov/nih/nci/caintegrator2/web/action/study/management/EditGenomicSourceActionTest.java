@@ -88,9 +88,9 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -129,20 +129,20 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
     @Test
     public void testAddNew() {
         action.addNew();
-        assertEquals(PlatformVendorEnum.AFFYMETRIX.getValue(), action.getGenomicSource().getPlatformVendor());
-        assertEquals(GenomicDataSourceDataTypeEnum.EXPRESSION, action.getGenomicSource().getDataType());
+        assertEquals(PlatformVendorEnum.AFFYMETRIX.getValue(), action.getGenomicSource().getPlatformVendor().getValue());
+        assertEquals(PlatformDataTypeEnum.EXPRESSION, action.getGenomicSource().getDataType());
     }
 
     @Test
     public void testGetAgilentPlatformNames() {
-        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
-        action.getGenomicSource().setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
+        action.getGenomicSource().setDataType(PlatformDataTypeEnum.EXPRESSION);
         assertEquals(1, action.getFilterPlatformNames().size());
-        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
-        action.getGenomicSource().setDataType(GenomicDataSourceDataTypeEnum.SNP);
+        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
+        action.getGenomicSource().setDataType(PlatformDataTypeEnum.SNP);
         assertEquals(0, action.getFilterPlatformNames().size());
-        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AGILENT.getValue());
-        action.getGenomicSource().setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AGILENT);
+        action.getGenomicSource().setDataType(PlatformDataTypeEnum.EXPRESSION);
         assertEquals(0, action.getFilterPlatformNames().size());
     }
 
@@ -156,24 +156,22 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
     @Test
     public void testRefresh() {
         assertEquals(Action.SUCCESS, action.refresh());
-        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
+        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
         assertEquals(Action.SUCCESS, action.refresh());
     }
 
     @Test
     public void testGetDataType() {
+        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
         assertEquals(2, action.getDataTypes().size());
-        assertEquals("true", action.getUseSupplementalFilesDisable());
-        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
-        assertEquals(2, action.getDataTypes().size());
-        assertEquals("false", action.getUseSupplementalFilesDisable());
     }
     
     @Test
     public void testSave() {
-        assertEquals(Action.SUCCESS, action.save());
-        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
+        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
         assertEquals(Action.INPUT, action.save());
+        action.getGenomicSource().setPlatformName("Platform name");
+        assertEquals(Action.SUCCESS, action.save());
         GenomicDataSourceAjaxUpdaterStub updaterStub = (GenomicDataSourceAjaxUpdaterStub) action.getUpdater();
         assertTrue(updaterStub.runJobCalled);
         updaterStub.runJobCalled = false;
@@ -183,14 +181,12 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
         studyConfiguration.getGenomicDataSources().add(action.getGenomicSource());
         action.getGenomicSource().setStudyConfiguration(studyConfiguration);
         action.setStudyConfiguration(studyConfiguration);
-        assertEquals(Action.INPUT, action.save());
-        action.getGenomicSource().setPlatformName("Platform name");
         assertEquals(Action.SUCCESS, action.save());
         assertTrue(studyManagementServiceStub.deleteCalled);
         assertTrue(updaterStub.runJobCalled);
         
         // Test platform validation.
-        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AGILENT.getValue());
+        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AGILENT);
         action.getGenomicSource().setPlatformName("");
         assertEquals(Action.INPUT, action.save());
         action.getGenomicSource().setPlatformName("Name");

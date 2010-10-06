@@ -90,11 +90,13 @@ import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixSnpPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -289,13 +291,13 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     }
 
     @Override
-    protected String getPlatformVendor() {
-        return "Affymetrix";
+    protected PlatformVendorEnum getPlatformVendor() {
+        return PlatformVendorEnum.AFFYMETRIX;
     }
 
     @Override
-    protected boolean getUseSupplementalFiles() {
-        return false;
+    protected ArrayDataLoadingTypeEnum getLoadingType() {
+        return ArrayDataLoadingTypeEnum.CNCHP;
     }
 
 }

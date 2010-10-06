@@ -83,82 +83,58 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.study.management;
+package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.common.HibernateUtil;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-/**
- * Base class for actions that require retrieval of persistent <code>GenomicDataSourceConfigurations</code>.
- */
-public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
-    
-    private GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+import org.junit.Test;
 
-    /**
-     * {@inheritDoc}
-     */
-    public void prepare() {
-        super.prepare();
-        if (getGenomicSource().getId() != null) {
-            setGenomicSource(getStudyManagementService().getRefreshedEntity(getGenomicSource()));
-            HibernateUtil.loadGenomicSource(getGenomicSource());
-        }
+public class ArrayDataLoadingTypeEnumTest {
+
+    @Test
+    public void testGetValue() {
     }
 
-    /**
-     * @return the genomicSource
-     */
-    public GenomicDataSourceConfiguration getGenomicSource() {
-        return genomicSource;
+    @Test
+    public void testGetByValue() {
+        assertEquals(ArrayDataLoadingTypeEnum.PARSED_DATA,
+                ArrayDataLoadingTypeEnum.getByValue(ArrayDataLoadingTypeEnum.PARSED_DATA.getValue()));
+        assertEquals(ArrayDataLoadingTypeEnum.CHP,
+                ArrayDataLoadingTypeEnum.getByValue(ArrayDataLoadingTypeEnum.CHP.getValue()));
+        assertEquals(ArrayDataLoadingTypeEnum.CNCHP,
+                ArrayDataLoadingTypeEnum.getByValue(ArrayDataLoadingTypeEnum.CNCHP.getValue()));
+        assertEquals(ArrayDataLoadingTypeEnum.SINGLE_SAMPLE_PER_FILE,
+                ArrayDataLoadingTypeEnum.getByValue(ArrayDataLoadingTypeEnum.SINGLE_SAMPLE_PER_FILE.getValue()));
+        assertEquals(ArrayDataLoadingTypeEnum.MULTI_SAMPLE_PER_FILE,
+                ArrayDataLoadingTypeEnum.getByValue(ArrayDataLoadingTypeEnum.MULTI_SAMPLE_PER_FILE.getValue()));
     }
 
-    /**
-     * @param genomicSource the genomicSource to set
-     */
-    public void setGenomicSource(GenomicDataSourceConfiguration genomicSource) {
-        this.genomicSource = genomicSource;
-    }
-    
-    /**
-     * @return is Agilent
-     */
-    protected boolean isAgilent() {
-        return PlatformVendorEnum.AGILENT.getValue().equals(getGenomicSource().getPlatformVendor());
+    @Test(expected = IllegalArgumentException.class)
+    public void testCheckType() {
+        ArrayDataLoadingTypeEnum.checkType("not found");
     }
 
-    /**
-     * @return is Affymetric gene expression
-     */
-    protected boolean isAffyExpression() {
-        return PlatformVendorEnum.AFFYMETRIX.getValue().equals(getGenomicSource().getPlatformVendor())
-        && PlatformDataTypeEnum.EXPRESSION.equals(getGenomicSource().getDataType());
-    }
-
-    /**
-     * @return is Affymetrix copy number
-     */
-    protected boolean isAffyCopyNumber() {
-        return PlatformVendorEnum.AFFYMETRIX.getValue().equals(getGenomicSource().getPlatformVendor())
-        && PlatformDataTypeEnum.COPY_NUMBER.equals(getGenomicSource().getDataType());
-    }
-
-    /**
-     * @return is Agilent gene expression
-     */
-    protected boolean isAgilentExpression() {
-        return PlatformVendorEnum.AGILENT.getValue().equals(getGenomicSource().getPlatformVendor())
-        && PlatformDataTypeEnum.EXPRESSION.equals(getGenomicSource().getDataType());
-    }
-
-    /**
-     * @return is Agilent copy number
-     */
-    protected boolean isAgilentCopyNumber() {
-        return PlatformVendorEnum.AGILENT.getValue().equals(getGenomicSource().getPlatformVendor())
-        && PlatformDataTypeEnum.COPY_NUMBER.equals(getGenomicSource().getDataType());
+    @Test
+    public void testGetLoadingTypes() {
+        assertTrue(ArrayDataLoadingTypeEnum.getLoadingTypes(PlatformVendorEnum.AFFYMETRIX,
+                PlatformDataTypeEnum.EXPRESSION).contains(
+                        ArrayDataLoadingTypeEnum.PARSED_DATA.getValue()));
+        assertTrue(ArrayDataLoadingTypeEnum.getLoadingTypes(PlatformVendorEnum.AFFYMETRIX,
+                PlatformDataTypeEnum.COPY_NUMBER).contains(
+                        ArrayDataLoadingTypeEnum.CNCHP.getValue()));
+        assertTrue(ArrayDataLoadingTypeEnum.getLoadingTypes(PlatformVendorEnum.AFFYMETRIX,
+                PlatformDataTypeEnum.SNP).contains(
+                        ArrayDataLoadingTypeEnum.CHP.getValue()));
+        assertTrue(ArrayDataLoadingTypeEnum.getLoadingTypes(PlatformVendorEnum.AGILENT,
+                PlatformDataTypeEnum.EXPRESSION).contains(
+                        ArrayDataLoadingTypeEnum.MULTI_SAMPLE_PER_FILE.getValue()));
+        assertTrue(ArrayDataLoadingTypeEnum.getLoadingTypes(PlatformVendorEnum.AGILENT,
+                PlatformDataTypeEnum.COPY_NUMBER).contains(
+                        ArrayDataLoadingTypeEnum.MULTI_SAMPLE_PER_FILE.getValue()));
+        assertTrue(ArrayDataLoadingTypeEnum.getLoadingTypes(PlatformVendorEnum.AGILENT,
+                PlatformDataTypeEnum.SNP).contains(
+                        ArrayDataLoadingTypeEnum.MULTI_SAMPLE_PER_FILE.getValue()));
     }
 
 }

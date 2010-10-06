@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 import static gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType.EXPRESSION_SIGNAL;
 import edu.mit.broad.genepattern.gp.services.CaIntegrator2GPClient;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactory;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
@@ -169,16 +170,16 @@ class GenomicDataHelper {
     }
     
     private void loadExpressionData(GenomicDataSourceConfiguration genomicSource)
-    throws ConnectionException, DataRetrievalException, ValidationException {
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
         if (!genomicSource.getSamples().isEmpty()) {
             ArrayDataValues probeSetValues;
-            if (genomicSource.isUseSupplementalFiles()) {
+            if (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())) {
+                probeSetValues = caArrayFacade.retrieveData(genomicSource);
+            } else {
                 ExpressionSampleMappingFileHandler handler = expressionHandlerFactory.getHandler(
                         genomicSource, caArrayFacade, arrayDataService, dao);
                 probeSetValues = handler.loadArrayData();
-            } else {
-                probeSetValues = caArrayFacade.retrieveData(genomicSource);
-            }
+            } 
             ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
             arrayDataService.save(probeSetValues);
             arrayDataService.save(geneValues);

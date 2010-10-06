@@ -88,7 +88,7 @@ package gov.nih.nci.caintegrator2.application.query;
 import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
@@ -311,7 +311,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     public Set<String> retrieveGeneExpressionPlatformsForStudy(Study study) {
         Set<String> platformsInStudy = new HashSet<String>();
         for (Platform platform : arrayDataService.getPlatformsInStudy(
-                study, GenomicDataSourceDataTypeEnum.EXPRESSION)) {
+                study, PlatformDataTypeEnum.EXPRESSION)) {
             platformsInStudy.add(platform.getName());
         }
         return platformsInStudy;
@@ -323,7 +323,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     public Set<String> retrieveCopyNumberPlatformsForStudy(Study study) {
         Set<String> platformsInStudy = new HashSet<String>();
         for (Platform platform : arrayDataService.getPlatformsInStudy(
-                study, GenomicDataSourceDataTypeEnum.COPY_NUMBER)) {
+                study, PlatformDataTypeEnum.COPY_NUMBER)) {
             platformsInStudy.add(platform.getName());
         }
         return platformsInStudy;

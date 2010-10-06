@@ -159,7 +159,7 @@ public class CaArrayFacadeTestIntegration {
         genomicSource.getServerProfile().setPort(31099);
         genomicSource.setExperimentIdentifier("jagla-00034");
         genomicSource.setPlatformName("HG-U133_Plus_2");
-        genomicSource.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
+        genomicSource.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
         genomicSource.getSamples().addAll(caArrayFacade.getSamples("jagla-00034", genomicSource.getServerProfile()));
         genomicSource.setStudyConfiguration(StudyConfigurationFactory.createNewStudyConfiguration());
         ArrayDataValues values = caArrayFacade.retrieveData(genomicSource);

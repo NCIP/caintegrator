@@ -208,7 +208,8 @@ class ExpressionSampleMappingFileHandler extends AbstractSupplementalMappingFile
     
     protected void loadArrayDataValues(Map<String, List<Float>> dataMap, ArrayData arrayData) {
         for (String probeName : dataMap.keySet()) {
-            AbstractReporter reporter = getReporter(probeName);
+            AbstractReporter reporter = platformHelper.getReporter(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, 
+                    probeName);
             if (reporter == null) {
                 LOGGER.warn("Reporter with name " + probeName + " was not found in platform " 
                         + platformHelper.getPlatform().getName());
@@ -217,12 +218,6 @@ class ExpressionSampleMappingFileHandler extends AbstractSupplementalMappingFile
                         dataMap.get(probeName), centralTendencyCalculator);
             }
         }
-    }
-
-    private AbstractReporter getReporter(String probeSetName) {
-        AbstractReporter reporter = platformHelper.getReporter(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, 
-                probeSetName); 
-        return reporter;
     }
     
     private ArrayData createArrayData(Sample sample) {

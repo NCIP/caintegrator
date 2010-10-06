@@ -1,4 +1,4 @@
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.application.arraydata;
 
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Possible data types for genomic data.
  */
-public enum GenomicDataSourceDataTypeEnum {
+public enum PlatformDataTypeEnum {
 
     /**
      * Expression.
@@ -28,7 +28,7 @@ public enum GenomicDataSourceDataTypeEnum {
     
     private String value;
     
-    private GenomicDataSourceDataTypeEnum(String value) {
+    private PlatformDataTypeEnum(String value) {
         this.value = value;
     }
 
@@ -46,12 +46,12 @@ public enum GenomicDataSourceDataTypeEnum {
         this.value = value;
     }
     
-    private static Map<String, GenomicDataSourceDataTypeEnum> valueToTypeMap = 
-        new HashMap<String, GenomicDataSourceDataTypeEnum>();
+    private static Map<String, PlatformDataTypeEnum> valueToTypeMap = 
+        new HashMap<String, PlatformDataTypeEnum>();
 
-    private static Map<String, GenomicDataSourceDataTypeEnum> getValueToTypeMap() {
+    private static Map<String, PlatformDataTypeEnum> getValueToTypeMap() {
         if (valueToTypeMap.isEmpty()) {
-            for (GenomicDataSourceDataTypeEnum type : values()) {
+            for (PlatformDataTypeEnum type : values()) {
                 valueToTypeMap.put(type.getValue(), type);
             }
         }
@@ -64,8 +64,8 @@ public enum GenomicDataSourceDataTypeEnum {
      */
     public static List<String> getStringValues() {
         List<String> values = new ArrayList<String>();
-        for (GenomicDataSourceDataTypeEnum type : values()) {
-            if (!GenomicDataSourceDataTypeEnum.SNP.equals(type)) { // TODO - For now disable the SNP data type.
+        for (PlatformDataTypeEnum type : values()) {
+            if (!PlatformDataTypeEnum.SNP.equals(type)) { // TODO - For now disable the SNP data type.
                 values.add(type.getValue());
             }
         }
@@ -79,7 +79,7 @@ public enum GenomicDataSourceDataTypeEnum {
      * @param value the value to match
      * @return the matching type.
      */
-    public static GenomicDataSourceDataTypeEnum getByValue(String value) {
+    public static PlatformDataTypeEnum getByValue(String value) {
         checkType(value);
         return getValueToTypeMap().get(value);
     }

@@ -90,12 +90,15 @@ import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixSnpPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AgilentExpressionPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentService;
@@ -205,16 +208,16 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.getServerProfile().setPassword(getCaArrayPassword());
             genomicSource.setExperimentIdentifier(getCopyNumberCaArrayId());
             genomicSource.setPlatformVendor(getPlatformVendor());
-            genomicSource.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
-            genomicSource.setUseSupplementalFiles(getUseSupplementalFiles());
+            genomicSource.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
+            genomicSource.setLoadingType(getLoadingType());
             service.addGenomicSource(studyConfiguration, genomicSource);
             getService().saveDnaAnalysisMappingFile(genomicSource, getCopyNumberFile(), getCopyNumberFile().getName());
             configureSegmentationDataCalcuation(genomicSource.getDnaAnalysisDataConfiguration());
         }
     }
 
-    protected boolean getUseSupplementalFiles() {
-        return true;
+    protected ArrayDataLoadingTypeEnum getLoadingType() {
+        return ArrayDataLoadingTypeEnum.PARSED_DATA;
     }
 
     protected int getCopyNumberCaArrayPort() {
@@ -455,8 +458,8 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.setExperimentIdentifier(getCaArrayId());
             genomicSource.setPlatformName(getPlatformName());
             genomicSource.setPlatformVendor(getPlatformVendor());
-            genomicSource.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
-            genomicSource.setUseSupplementalFiles(getUseSupplementalFiles());
+            genomicSource.setDataType(PlatformDataTypeEnum.EXPRESSION);
+            genomicSource.setLoadingType(getLoadingType());
             if (getSampleMappingFile() != null) {
                 genomicSource.setSampleMappingFileName(getSampleMappingFile().getName());
             }
@@ -649,7 +652,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         return null;
     }
 
-    protected String getPlatformVendor() {
+    protected PlatformVendorEnum getPlatformVendor() {
         return null;
     }
 

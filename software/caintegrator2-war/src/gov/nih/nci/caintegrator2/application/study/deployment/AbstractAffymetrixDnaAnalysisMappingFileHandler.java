@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -217,7 +218,7 @@ public abstract class AbstractAffymetrixDnaAnalysisMappingFileHandler
             List<AffymetrixDnaAnalysisChpParser> parsers) throws DataRetrievalException {
         PlatformHelper helper = new PlatformHelper(platform);
         Set<ReporterList> reporterLists = helper.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        ArrayData arrayData = createArrayData(sample, reporterLists);
+        ArrayData arrayData = createArrayData(sample, reporterLists, ArrayDataType.COPY_NUMBER);
         getDao().save(arrayData);
         ArrayDataValues values = 
             new ArrayDataValues(helper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));

@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
@@ -146,18 +145,18 @@ public class ArrayDataServiceImplTest {
         studyConfiguration.getGenomicDataSources().add(genomicDataSource2);
         studyConfiguration.getGenomicDataSources().add(genomicDataSource3);
         genomicDataSource1.setPlatformName("Expression_1");
-        genomicDataSource1.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        genomicDataSource1.setDataType(PlatformDataTypeEnum.EXPRESSION);
         genomicDataSource2.setPlatformName("Expression_2");
-        genomicDataSource2.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        genomicDataSource2.setDataType(PlatformDataTypeEnum.EXPRESSION);
         genomicDataSource3.setPlatformName("Copy number");
-        genomicDataSource3.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
+        genomicDataSource3.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
         
         Platform platform = arrayDataService.getPlatform("platform1");
         assertEquals("platform1", platform.getName());
 
-        assertEquals(2,arrayDataService.getPlatformsInStudy(study, GenomicDataSourceDataTypeEnum.EXPRESSION).size());
-        assertEquals(1,arrayDataService.getPlatformsInStudy(study, GenomicDataSourceDataTypeEnum.COPY_NUMBER).size());
-        assertEquals(0,arrayDataService.getPlatformsInStudy(study, GenomicDataSourceDataTypeEnum.SNP).size());
+        assertEquals(2,arrayDataService.getPlatformsInStudy(study, PlatformDataTypeEnum.EXPRESSION).size());
+        assertEquals(1,arrayDataService.getPlatformsInStudy(study, PlatformDataTypeEnum.COPY_NUMBER).size());
+        assertEquals(0,arrayDataService.getPlatformsInStudy(study, PlatformDataTypeEnum.SNP).size());
     }
     
     @Test

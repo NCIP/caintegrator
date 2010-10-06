@@ -87,8 +87,9 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
@@ -145,8 +146,8 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      */
     public String addNew() {
         getGenomicSource().setPlatformName("");
-        getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
-        getGenomicSource().setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
+        getGenomicSource().setDataType(PlatformDataTypeEnum.EXPRESSION);
         getGenomicSource().getServerProfile().setHostname(
                 getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_HOST));
         getGenomicSource().getServerProfile().setPort(
@@ -161,9 +162,6 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      * @return struts string.
      */
     public String refresh() {
-        if (!isAffyExpression()) {
-            getGenomicSource().setUseSupplementalFiles(true);
-        }
         return SUCCESS;
     }
     
@@ -222,8 +220,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         configuration.setPlatformVendor(getGenomicSource().getPlatformVendor());
         configuration.setPlatformName(getGenomicSource().getPlatformName());
         configuration.setDataType(getGenomicSource().getDataType());
-        configuration.setUseSupplementalFiles(getGenomicSource().isUseSupplementalFiles());
-        configuration.setSingleDataFile(getGenomicSource().isSingleDataFile());
+        configuration.setLoadingType(getGenomicSource().getLoadingType());
         configuration.setTechnicalReplicatesCentralTendency(getGenomicSource().getTechnicalReplicatesCentralTendency());
         configuration.setUseHighVarianceCalculation(getGenomicSource().isUseHighVarianceCalculation());
         configuration.setHighVarianceThreshold(getGenomicSource().getHighVarianceThreshold());
@@ -240,8 +237,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     }
 
     private boolean validateSave() {
-        if (isPlatformNameRequired()
-                && StringUtils.isEmpty(getGenomicSource().getPlatformName())) {
+        if (StringUtils.isEmpty(getGenomicSource().getPlatformName())) {
             addFieldError("genomicSource.platformName", 
                     getText("struts.messages.error.caarray.platform.name.required"));
             return false;
@@ -266,16 +262,8 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
                     getText("struts.messages.error.caarray.experiment.not.found"));
             return false;
         }
-        return checkUseSupplementalFiles();
-    }
-    
-    private boolean checkUseSupplementalFiles() {
-        if (!isAffyExpression()) {
-            getGenomicSource().setUseSupplementalFiles(true);
-        }
         return true;
     }
-
     
     private boolean validateHighVarianceParameters() {
         if (getGenomicSource().isUseHighVarianceCalculation()
@@ -288,10 +276,6 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         return true;
     }
     
-    private boolean isPlatformNameRequired() {
-        return getGenomicSource().isUseSupplementalFiles();
-    }
-    
     /**
      * @return all platform names
      */
@@ -299,7 +283,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         SortedSet<String> platformNames = new TreeSet<String>();
         for (PlatformConfiguration platformConfiguration : getArrayDataService().getPlatformConfigurations()) {
             if (Status.LOADED.equals(platformConfiguration.getStatus())
-                    && platformConfiguration.getPlatform().getVendor().getValue().equals(
+                    && platformConfiguration.getPlatform().getVendor().equals(
                         getGenomicSource().getPlatformVendor())
                     && platformConfiguration.getPlatformType().getDataType().equals(
                         getGenomicSource().getDataTypeString())) {
@@ -310,24 +294,24 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     }
     
     /**
+     * @return the list of array data loading types
+     */
+    public List<String> getLoadingTypes() {
+        return ArrayDataLoadingTypeEnum.getLoadingTypes(
+                getGenomicSource().getPlatformVendor(), getGenomicSource().getDataType());
+    }
+    
+    /**
      * 
      * @return a list of data types based on the platform vendor.
      */
     public List<String> getDataTypes() {
         if (PlatformVendorEnum.AFFYMETRIX.getValue().equals(getGenomicSource().getPlatformVendor())) {
-            return GenomicDataSourceDataTypeEnum.getStringValues();
+            return PlatformDataTypeEnum.getStringValues();
         }
-        List<String> dataTypes = GenomicDataSourceDataTypeEnum.getStringValues();
+        List<String> dataTypes = PlatformDataTypeEnum.getStringValues();
         dataTypes.remove("SNP");
         return dataTypes;
-    }
-    
-    /**
-     * Disabled status for the useSupplementalFiles checkbox.
-     * @return whether to disable the checkbox.
-     */
-    public String getUseSupplementalFilesDisable() {
-        return isAffyExpression() ? "false" : "true";
     }
 
     /**

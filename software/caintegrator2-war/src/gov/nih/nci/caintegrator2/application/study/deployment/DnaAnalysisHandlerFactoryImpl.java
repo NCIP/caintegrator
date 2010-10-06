@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
@@ -95,6 +94,7 @@ import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 /**
  * Default factory implementation.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // Use switch on ArrayDataLoadingTypeEnum
 public class DnaAnalysisHandlerFactoryImpl implements DnaAnalysisHandlerFactory {
 
     /**
@@ -103,43 +103,22 @@ public class DnaAnalysisHandlerFactoryImpl implements DnaAnalysisHandlerFactory 
     public AbstractUnparsedSupplementalMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao)
     throws DataRetrievalException {
-        switch (PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor())) {
-        case AFFYMETRIX:
-            return affymetrixFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
-        case AGILENT:
-            return singleOrMultiFileHandler(genomicSource, caArrayFacade,
-                        arrayDataService, dao);
+        switch (genomicSource.getLoadingType()) {
+        case CHP:
+            return new AffymetrixSnpMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
+        case CNCHP:
+            return new AffymetrixCopyNumberMappingFileHandler(genomicSource, caArrayFacade,
+                    arrayDataService, dao);
+        case SINGLE_SAMPLE_PER_FILE:
+            return new GenericSupplementalSingleSamplePerFileHandler(genomicSource, caArrayFacade,
+                    arrayDataService, dao);
+        case MULTI_SAMPLE_PER_FILE:
+            return new GenericSupplementalMultiSamplePerFileHandler(genomicSource, caArrayFacade,
+                    arrayDataService, dao);
         default:
             throw new DataRetrievalException("Unknown platform vendor.");
         }
 
-    }
-
-    private AbstractUnparsedSupplementalMappingFileHandler affymetrixFileHandler(
-            GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
-            ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
-
-        if (genomicSource.isSingleDataFile()) {
-            return new GenericSupplementalMultiSamplePerFileHandler(genomicSource, caArrayFacade,
-                    arrayDataService, dao);
-        }
-        if (genomicSource.isCopyNumberData()) {
-            return new AffymetrixCopyNumberMappingFileHandler(genomicSource, caArrayFacade,
-                    arrayDataService, dao);
-        }
-        return new AffymetrixSnpMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
-    }
-    
-    private AbstractUnparsedSupplementalMappingFileHandler singleOrMultiFileHandler(
-            GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
-            ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
-        if (genomicSource.isSingleDataFile()) {
-            return new GenericSupplementalMultiSamplePerFileHandler(genomicSource, caArrayFacade,
-                    arrayDataService, dao);
-        } else {
-            return new GenericSupplementalSingleSamplePerFileHandler(genomicSource, caArrayFacade,
-                    arrayDataService, dao);
-        }
     }
 
 }

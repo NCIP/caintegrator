@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 
 import java.io.File;
 
@@ -231,13 +232,8 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     }
 
     @Override
-    protected String getPlatformVendor() {
-        return "Affymetrix";
-    }
-
-    @Override
-    protected boolean getUseSupplementalFiles() {
-        return false;
+    protected PlatformVendorEnum getPlatformVendor() {
+        return PlatformVendorEnum.AFFYMETRIX;
     }
 
 }

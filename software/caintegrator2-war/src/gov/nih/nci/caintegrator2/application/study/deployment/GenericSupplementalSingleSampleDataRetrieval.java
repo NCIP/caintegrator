@@ -85,147 +85,73 @@
  */
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.Array;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
+import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
+import gov.nih.nci.caintegrator2.external.caarray.GenericSingleSamplePerFileParser;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 /**
- * Provides base handling to retrieve copy number data based on a copy number mapping file.
+ * Reads data in supplemental raw data file.
  */
-public abstract class AbstractUnparsedSupplementalMappingFileHandler extends AbstractSupplementalMappingFileHandler {
-
-    AbstractUnparsedSupplementalMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
-            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
-        super(genomicSource, caArrayFacade, arrayDataService, dao);
-    }
-
-    /**
-     * 
-     * @param sampleName the sample name to retrieve
-     * @param subjectIdentifier the study assignment id
-     * @return the sample object
-     * @throws ValidationException Validation exception
-     * @throws FileNotFoundException IO exception
-     */
-    protected Sample getSample(String sampleName, String subjectIdentifier)
-    throws FileNotFoundException, ValidationException {
-        Sample sample = getGenomicSource().getSample(sampleName);
-        if (sample == null) {
-            StudySubjectAssignment assignment = getSubjectAssignment(subjectIdentifier);
-            sample = new Sample();
-            sample.setName(sampleName);
-            SampleAcquisition acquisition = new SampleAcquisition();
-            acquisition.setAssignment(assignment);
-            acquisition.setSample(sample);
-            sample.setSampleAcquisition(acquisition);
-            assignment.getSampleAcquisitionCollection().add(acquisition);
-            getGenomicSource().getSamples().add(sample);
-            getDao().save(sample);
-        }
-        return sample;
-    }
-
-    /**
-     * 
-     * @return the mapping file.
-     * @throws FileNotFoundException IO exception.
-     */
-    protected File getMappingFile() throws FileNotFoundException {
-        return getGenomicSource().getDnaAnalysisDataConfiguration().getMappingFile();
-    }
-
-    abstract List<ArrayDataValues> loadArrayData()
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException;
+public final class GenericSupplementalSingleSampleDataRetrieval {
     
-    /**
-     * Get the platform.
-     * @param reporterListNames the set of report lists.
-     * @return Platform
-     * @throws ValidationException when platform not found or not unique.
-     */
-    protected Platform getPlatform(Set<String> reporterListNames) throws ValidationException {
-        Set<Platform> platforms = new HashSet<Platform>();
-        for (String reporterListName : reporterListNames) {
-            ReporterList reporterList = getDao().getReporterList(reporterListName);
-            if (reporterList == null) {
-                throw new ValidationException("There is no platform that supports chip type " + reporterListName);
-            }
-            platforms.add(reporterList.getPlatform());
-        }
-        if (platforms.size() > 1) {
-            throw new ValidationException(
-                    "DNA analysis data files for a single sample are mapped to multiple platforms.");
-        }
-        return platforms.iterator().next();
-    }
+    private final SupplementalDataFile supplementalDataFile;
+    private final ReporterTypeEnum reporterType;
+    private final ArrayDataValueType dataType;
 
     /**
-     * Clean up.
-     * @param dataFile the data file to delete.
+     * @param supplementalDataFile the supplemental file
+     * @param reporterType the reporter type
+     * @param dataType the data type
      */
-    protected void doneWithFile(File dataFile) {
-        dataFile.delete();
+    public GenericSupplementalSingleSampleDataRetrieval(SupplementalDataFile supplementalDataFile,
+            ReporterTypeEnum reporterType, ArrayDataValueType dataType) {
+        this.supplementalDataFile = supplementalDataFile;
+        this.reporterType = reporterType;
+        this.dataType = dataType;
     }
     
-    abstract String getFileType();
-
+    private static final Logger LOGGER = Logger.getLogger(GenericSupplementalSingleSampleDataRetrieval.class);
+    
     /**
-     * Create the ArrayData for the sample.
-     * @param sample the sample to get arrayData for.
-     * @param reporterLists the set of report lists.
-     * @param dataType the array data type.
-     * @return ArrayData
+     * Parsing the level 2 data file.
+     * @param values ArrayDataValues to be populated.
+     * @param arrayData ArrayData mapping.
+     * @param platformHelper the platformHelper.
+     * @param centralTendencyCalculator to calculate central tendency when there is more than one value 
+     *                                      per sample/reporter.
+     * @throws DataRetrievalException when unable to parse.
      */
-    protected ArrayData createArrayData(Sample sample, Set<ReporterList> reporterLists, ArrayDataType dataType) {
-        ArrayData arrayData = new ArrayData();
-        arrayData.setType(dataType);
-        arrayData.setSample(sample);
-        sample.getArrayDataCollection().add(arrayData);
-        arrayData.setStudy(getGenomicSource().getStudyConfiguration().getStudy());
-        Array array = new Array();
-        array.getArrayDataCollection().add(arrayData);
-        arrayData.setArray(array);
-        array.getSampleCollection().add(sample);
-        sample.getArrayCollection().add(array);
-        if (!reporterLists.isEmpty()) {
-            arrayData.getReporterLists().addAll(reporterLists);
-            for (ReporterList reporterList : reporterLists) {
-                reporterList.getArrayDatas().add(arrayData);    
+    public void parseDataFile(ArrayDataValues values, ArrayData arrayData,
+            PlatformHelper platformHelper, CentralTendencyCalculator centralTendencyCalculator) 
+    throws DataRetrievalException {
+        Map<String, List<Float>> dataMap = GenericSingleSamplePerFileParser.INSTANCE.extractData(
+                supplementalDataFile, platformHelper.getPlatform().getVendor());
+        loadArrayDataValues(dataMap, values, arrayData, platformHelper, centralTendencyCalculator);
+    }
+    
+    private void loadArrayDataValues(Map<String, List<Float>> dataMap, ArrayDataValues values,
+            ArrayData arrayData, PlatformHelper platformHelper, CentralTendencyCalculator centralTendencyCalculator) {
+        for (String probeName : dataMap.keySet()) {
+            AbstractReporter reporter = platformHelper.getReporter(reporterType, probeName);
+            if (reporter == null) {
+                LOGGER.warn("Reporter with name " + probeName + " was not found in platform " 
+                        + platformHelper.getPlatform().getName());
+            } else {
+                values.setFloatValue(arrayData, reporter, dataType,
+                        dataMap.get(probeName), centralTendencyCalculator);
             }
-            array.setPlatform(reporterLists.iterator().next().getPlatform());
         }
-        return arrayData;
     }
-
-    private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier)
-    throws ValidationException, FileNotFoundException {
-        StudySubjectAssignment assignment = 
-            getGenomicSource().getStudyConfiguration().getSubjectAssignment(subjectIdentifier);
-        if (assignment == null) {
-            throw new ValidationException("Subject identifier " + subjectIdentifier + " in DNA analysis mapping file " 
-                    + getMappingFile().getAbsolutePath() + " doesn't map to a known subject in the study.");
-        }
-        return assignment;
-    }
-
 }

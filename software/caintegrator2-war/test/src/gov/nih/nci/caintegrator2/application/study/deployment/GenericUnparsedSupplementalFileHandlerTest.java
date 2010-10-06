@@ -6,9 +6,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
@@ -19,9 +19,9 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.GenericMultiSamplePerFileParser;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub;
+import gov.nih.nci.caintegrator2.external.caarray.GenericMultiSamplePerFileParser;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class GenericUnparsedSupplementalFileHandlerTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.getOrCreateSubjectAssignment("E09176");
         source.setStudyConfiguration(studyConfiguration);
-        source.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
+        source.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
         source.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
         GenericSupplementalMultiSamplePerFileHandler handler = new GenericSupplementalMultiSamplePerFileHandler(
                 source, caArrayFacade, arrayDataService, dao);

@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -262,7 +261,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
         
     }
 
-    public List<Platform> getPlatformsInStudy(Study study, GenomicDataSourceDataTypeEnum sourceType) {
+    public List<Platform> getPlatformsInStudy(Study study, PlatformDataTypeEnum sourceType) {
         List<Platform> platforms = new ArrayList<Platform>();
         for (int x = 0; x < numberPlatformsInStudy; x++) {
             Platform platform = new Platform();

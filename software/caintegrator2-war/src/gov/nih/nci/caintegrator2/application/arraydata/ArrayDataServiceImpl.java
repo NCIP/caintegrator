@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.application.query.FoldChangeCriterionHandler;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.DateUtil;
@@ -243,7 +242,7 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public List<Platform> getPlatformsInStudy(Study study, GenomicDataSourceDataTypeEnum sourceType) {
+    public List<Platform> getPlatformsInStudy(Study study, PlatformDataTypeEnum sourceType) {
         List<Platform> allPlatforms = new ArrayList<Platform>();
         for (GenomicDataSourceConfiguration genomicSource : study.getStudyConfiguration().getGenomicDataSources()) {
             if (sourceType.equals(genomicSource.getDataType())) {
