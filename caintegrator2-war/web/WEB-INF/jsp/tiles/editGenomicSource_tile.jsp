@@ -105,7 +105,7 @@
                     <!--/NOTE --> 
                     <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" id="experimentId" />
                     <br/>
-                    <s:select id="platformVendor" name="genomicSource.platformVendor" label="Vendor"
+                    <s:select id="platformVendor" name="genomicSource.platformVendorString" label="Vendor"
                         list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum@getValuesToDisplay()"
                         onchange="document.genomicSourceForm.action = 'refreshGenomicSource.action';
                                 document.genomicSourceForm.submit();"/>
@@ -120,8 +120,10 @@
                         label="Platform"
                         list="filterPlatformNames"/>
                     <br/>
-                    <s:checkbox id="useSupplementalFiles" name="genomicSource.useSupplementalFiles" label="Use Supplemental Files"
-                        labelposition="left" disabled="useSupplementalFilesDisable"/>
+                    <s:select id="loadingType" 
+                        name="genomicSource.loadingTypeString" 
+                        label="Array Data Loading Type"
+                        list="loadingTypes"/>
                     <br/>
                     <s:select id="technicalReplicatesCentralTendency" name="genomicSource.technicalReplicatesCentralTendencyString" label="Central Tendency for Technical Replicates"
                         list="@gov.nih.nci.caintegrator2.application.study.CentralTendencyTypeEnum@getStringValues()"

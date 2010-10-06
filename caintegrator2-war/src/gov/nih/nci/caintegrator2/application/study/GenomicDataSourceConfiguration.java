@@ -85,6 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
@@ -115,16 +118,15 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private StudyConfiguration studyConfiguration;
     private ServerConnectionProfile serverProfile = new ServerConnectionProfile();
     private String experimentIdentifier;
-    private GenomicDataSourceDataTypeEnum dataType = GenomicDataSourceDataTypeEnum.EXPRESSION;
-    private String platformVendor;
+    private PlatformDataTypeEnum dataType = PlatformDataTypeEnum.EXPRESSION;
+    private PlatformVendorEnum platformVendor = PlatformVendorEnum.AFFYMETRIX;
     private String platformName;
     private String sampleMappingFileName = NONE_CONFIGURED;
     private String sampleMappingFilePath;
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
     private List<Sample> samples = new ArrayList<Sample>();
     private Set<SampleSet> controlSampleSetCollection = new HashSet<SampleSet>();
-    private Boolean singleDataFile = false;
-    private boolean useSupplementalFiles = false;
+    private ArrayDataLoadingTypeEnum loadingType = ArrayDataLoadingTypeEnum.PARSED_DATA;
     private DnaAnalysisDataConfiguration dnaAnalysisDataConfiguration;
     private CentralTendencyTypeEnum technicalReplicatesCentralTendency = CentralTendencyTypeEnum.MEAN;
     private Status status = Status.NOT_LOADED;
@@ -245,28 +247,50 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     /**
      * @return the platformVendor
      */
-    public String getPlatformVendor() {
+    public PlatformVendorEnum getPlatformVendor() {
         return platformVendor;
+    }
+
+    /**
+     * @return the platformVendorString
+     */
+    public String getPlatformVendorString() {
+        if (platformVendor == null) {
+            return "";
+        } else {
+            return platformVendor.getValue();
+        }
+    }
+
+    /**
+     * @param platformVendorString the platformVendor string value to set
+     */
+    public void setPlatformVendorString(String platformVendorString) {
+        if (StringUtils.isBlank(platformVendorString)) {
+            this.platformVendor = null;
+        } else {
+            this.platformVendor = PlatformVendorEnum.getByValue(platformVendorString);
+        }
     }
 
     /**
      * @param platformVendor the platformVendor to set
      */
-    public void setPlatformVendor(String platformVendor) {
+    public void setPlatformVendor(PlatformVendorEnum platformVendor) {
         this.platformVendor = platformVendor;
     }
 
     /**
      * @return the dataType
      */
-    public GenomicDataSourceDataTypeEnum getDataType() {
+    public PlatformDataTypeEnum getDataType() {
         return dataType;
     }
 
     /**
      * @param dataType the dataType to set
      */
-    public void setDataType(GenomicDataSourceDataTypeEnum dataType) {
+    public void setDataType(PlatformDataTypeEnum dataType) {
         this.dataType = dataType;
     }
 
@@ -288,7 +312,43 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
         if (StringUtils.isBlank(dataTypeString)) {
             this.dataType = null;
         } else {
-            this.dataType = GenomicDataSourceDataTypeEnum.getByValue(dataTypeString);
+            this.dataType = PlatformDataTypeEnum.getByValue(dataTypeString);
+        }
+    }
+
+    /**
+     * @return the loadingType
+     */
+    public ArrayDataLoadingTypeEnum getLoadingType() {
+        return loadingType;
+    }
+
+    /**
+     * @param loadingType the loadingType to set
+     */
+    public void setLoadingType(ArrayDataLoadingTypeEnum loadingType) {
+        this.loadingType = loadingType;
+    }
+
+    /**
+     * @return the loadingType
+     */
+    public String getLoadingTypeString() {
+        if (loadingType == null) {
+            return "";
+        } else {
+            return loadingType.getValue();
+        }
+    }
+
+    /**
+     * @param loadingTypeString the loadingType string value to set
+     */
+    public void setLoadingTypeString(String loadingTypeString) {
+        if (StringUtils.isBlank(loadingTypeString)) {
+            this.loadingType = null;
+        } else {
+            this.loadingType = ArrayDataLoadingTypeEnum.getByValue(loadingTypeString);
         }
     }
 
@@ -488,7 +548,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      * @return boolean.
      */
     public boolean isExpressionData() {
-        return GenomicDataSourceDataTypeEnum.EXPRESSION.equals(dataType);
+        return PlatformDataTypeEnum.EXPRESSION.equals(dataType);
     }
     
     /**
@@ -496,7 +556,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      * @return boolean.
      */
     public boolean isCopyNumberData() {
-        return GenomicDataSourceDataTypeEnum.COPY_NUMBER.equals(dataType);
+        return PlatformDataTypeEnum.COPY_NUMBER.equals(dataType);
     }
     
     /**
@@ -504,7 +564,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      * @return boolean.
      */
     public boolean isSnpData() {
-        return GenomicDataSourceDataTypeEnum.SNP.equals(dataType);
+        return PlatformDataTypeEnum.SNP.equals(dataType);
     }
 
     /**
@@ -563,34 +623,6 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
         setSampleMappingFileName(NONE_CONFIGURED);
         setSampleMappingFilePath(null);
         setStatus(Status.NOT_MAPPED);
-    }
-
-    /**
-     * @return the useSupplementalFiles
-     */
-    public boolean isUseSupplementalFiles() {
-        return useSupplementalFiles;
-    }
-
-    /**
-     * @param useSupplementalFiles the useSupplementalFiles to set
-     */
-    public void setUseSupplementalFiles(boolean useSupplementalFiles) {
-        this.useSupplementalFiles = useSupplementalFiles;
-    }
-
-    /**
-     * @return the singleDataFile
-     */
-    public Boolean isSingleDataFile() {
-        return singleDataFile;
-    }
-
-    /**
-     * @param singleDataFile the singleDataFile to set
-     */
-    public void setSingleDataFile(Boolean singleDataFile) {
-        this.singleDataFile = singleDataFile;
     }
 
     /**

@@ -89,6 +89,7 @@ import static org.junit.Assert.*;
 
 import java.util.Set;
 
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.translational.StudyTestDataGenerator;
 
@@ -150,14 +151,14 @@ public final class StudyConfigurationGenerator extends AbstractTestDataGenerator
             GenomicDataSourceConfiguration config = new GenomicDataSourceConfiguration();
             studyConfiguration.getGenomicDataSources().add(config);
             config.setStudyConfiguration(studyConfiguration);
-            config.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+            config.setDataType(PlatformDataTypeEnum.EXPRESSION);
             GenomicDataSourceConfigurationGenerator.INSTANCE.setValues(config, nonCascadedObjects);
         }
         for (int i = 0; i < 3; i++) {
             GenomicDataSourceConfiguration config = new GenomicDataSourceConfiguration();
             studyConfiguration.getGenomicDataSources().add(config);
             config.setStudyConfiguration(studyConfiguration);
-            config.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
+            config.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
             GenomicDataSourceConfigurationGenerator.INSTANCE.setValues(config, nonCascadedObjects);
         }
         for (int i = 0; i < 3; i++) {

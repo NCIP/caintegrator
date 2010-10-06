@@ -2,17 +2,14 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.application.study.deployment.DnaAnalysisHandlerFactory;
-import gov.nih.nci.caintegrator2.application.study.deployment.GenomicDataHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -20,6 +17,8 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.bioconductor.BioconductorService;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub;
+
+import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -49,9 +48,9 @@ public class GenomicDataHelperTest {
         GenomicDataSourceConfiguration genomicDataConfiguration = new GenomicDataSourceConfiguration();
         Sample sample = new Sample();
         genomicDataConfiguration.getSamples().add(sample);
-        genomicDataConfiguration.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
-        genomicDataConfiguration.setPlatformVendor("Affymetrix");
-        genomicDataConfiguration.setUseSupplementalFiles(false);
+        genomicDataConfiguration.setDataType(PlatformDataTypeEnum.EXPRESSION);
+        genomicDataConfiguration.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
+        genomicDataConfiguration.setLoadingType(ArrayDataLoadingTypeEnum.PARSED_DATA);
         studyConfiguration.getGenomicDataSources().add(genomicDataConfiguration);
         helper.loadData(studyConfiguration);
         assertTrue(arrayDataService.saveCalled);
@@ -68,13 +67,12 @@ public class GenomicDataHelperTest {
         Sample sample = new Sample();
         sample.setName("testSample");
         genomicDataConfiguration.getSamples().add(sample);
-        genomicDataConfiguration.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
-        genomicDataConfiguration.setPlatformVendor("Agilent");
+        genomicDataConfiguration.setDataType(PlatformDataTypeEnum.EXPRESSION);
+        genomicDataConfiguration.setPlatformVendor(PlatformVendorEnum.AGILENT);
         genomicDataConfiguration.setSampleMappingFilePath(TestDataFiles.TEST_AGILENT_SAMPLE_MAPPING_FILE.getAbsolutePath());
         studyConfiguration.getGenomicDataSources().add(genomicDataConfiguration);
         genomicDataConfiguration.setStudyConfiguration(studyConfiguration);
-        genomicDataConfiguration.setUseSupplementalFiles(true);
-        genomicDataConfiguration.setSingleDataFile(false);
+        genomicDataConfiguration.setLoadingType(ArrayDataLoadingTypeEnum.SINGLE_SAMPLE_PER_FILE);
         helper.loadData(studyConfiguration);
         assertTrue(arrayDataService.saveCalled);
         assertEquals(2, sample.getArrayCollection().size());

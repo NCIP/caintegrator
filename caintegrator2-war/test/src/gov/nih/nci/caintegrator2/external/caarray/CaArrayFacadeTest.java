@@ -180,7 +180,7 @@ public class CaArrayFacadeTest {
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         genomicSource.setExperimentIdentifier("test-data");
         genomicSource.setPlatformName("test design");
-        genomicSource.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
+        genomicSource.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
         genomicSource.setStudyConfiguration(new StudyConfiguration());
         Sample sample = new Sample();
         sample.setName("sample");
