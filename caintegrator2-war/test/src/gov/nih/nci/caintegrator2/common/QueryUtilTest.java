@@ -197,6 +197,17 @@ public class QueryUtilTest {
         compoundCriterion2.getCriterionCollection().add(new CopyNumberAlterationCriterion());
         assertFalse(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
         assertTrue(QueryUtil.isCompoundCriterionCopyNumber(compoundCriterion1));
+        
+        compoundCriterion1 = new CompoundCriterion();
+        compoundCriterion2 = new CompoundCriterion();
+        CompoundCriterion compoundCriterion3 = new CompoundCriterion();
+        compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
+        compoundCriterion1.getCriterionCollection().add(compoundCriterion3);
+        compoundCriterion2.getCriterionCollection().add(new StringComparisonCriterion());
+        compoundCriterion3.getCriterionCollection().add(geneNameCriterion);
+        geneNameCriterion.setGenomicCriterionType(GenomicCriterionTypeEnum.GENE_EXPRESSION);
+        assertTrue(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
+        
     }
     
     @Test

@@ -332,6 +332,7 @@ public final class QueryUtil {
         if (StringUtils.isNotBlank(platformName)) {
             GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
             geneNameCriterion.setPlatformName(platformName);
+            geneNameCriterion.setGenomicCriterionType(GenomicCriterionTypeEnum.GENE_EXPRESSION);
             query.getCompoundCriterion().getCriterionCollection().add(geneNameCriterion);
         }
         return query;
