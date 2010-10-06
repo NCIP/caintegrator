@@ -88,10 +88,8 @@ package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotGenomicQueryBasedParameters;
-import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -204,13 +202,10 @@ public class GEPlotGenomicQueryBasedAction extends AbstractGeneExpressionAction 
                     SessionHelper.setGePlots(PlotTypeEnum.GENOMIC_QUERY_BASED, null);
                     addActionError(getText("struts.messages.error.geplot.controls.not.mapped.to.patients", 
                             getArgs(e.getMessage())));
-                } catch (InvalidCriterionException e) {
+                } catch (Exception e) {
                     SessionHelper.setGePlots(PlotTypeEnum.GENOMIC_QUERY_BASED, null);
                     addActionError(e.getMessage());
-                } catch (GenesNotFoundInStudyException e) {
-                    SessionHelper.setGePlots(PlotTypeEnum.GENOMIC_QUERY_BASED, null);
-                    addActionError(e.getMessage());
-                }
+                } 
             }
             setCreatePlotRunning(false);
         }

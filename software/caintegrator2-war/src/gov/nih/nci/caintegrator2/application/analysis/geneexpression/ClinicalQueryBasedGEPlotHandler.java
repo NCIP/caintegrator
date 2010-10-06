@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
@@ -212,6 +213,7 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
                                                                 SampleGroupType groupType) 
     throws ControlSamplesNotMappedException {
         GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
+        geneNameCriterion.setGenomicCriterionType(GenomicCriterionTypeEnum.GENE_EXPRESSION);
         geneNameCriterion.setPlatformName(parameters.getPlatformName());
         geneNameCriterion.setGeneSymbol(parameters.getGeneSymbol());
         CompoundCriterion geneNameCompoundCriterion = new CompoundCriterion();
