@@ -86,10 +86,13 @@
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
@@ -106,10 +109,24 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional (propagation = Propagation.REQUIRED)
 abstract class AbstractGenericSupplementalMappingFileHandler extends AbstractUnparsedSupplementalMappingFileHandler {
+
+    static final String FILE_TYPE = "data";
+    private final ReporterTypeEnum reporterType;
+    private final ArrayDataType dataType;
+    private final ArrayDataValueType dataValueType;
     
     AbstractGenericSupplementalMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
+        if (genomicSource.isExpressionData()) {
+            this.reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET;
+            this.dataType = ArrayDataType.GENE_EXPRESSION;
+            this.dataValueType = ArrayDataValueType.EXPRESSION_SIGNAL;
+        } else {
+            this.reporterType = ReporterTypeEnum.DNA_ANALYSIS_REPORTER;
+            this.dataType = ArrayDataType.COPY_NUMBER;
+            this.dataValueType = ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO;
+        }
     }
 
     @Override
@@ -152,6 +169,32 @@ abstract class AbstractGenericSupplementalMappingFileHandler extends AbstractUnp
         public SupplementalDataFile getDataFile() {
             return dataFile;
         }
+    }
+
+    @Override
+    String getFileType() {
+        return FILE_TYPE;
+    }
+
+    /**
+     * @return the reporterType
+     */
+    protected ReporterTypeEnum getReporterType() {
+        return reporterType;
+    }
+
+    /**
+     * @return the dataType
+     */
+    protected ArrayDataType getDataType() {
+        return dataType;
+    }
+
+    /**
+     * @return the dataValueType
+     */
+    protected ArrayDataValueType getDataValueType() {
+        return dataValueType;
     }
 
  }

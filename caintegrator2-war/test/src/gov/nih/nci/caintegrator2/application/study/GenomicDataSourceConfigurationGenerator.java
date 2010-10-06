@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleGenerator;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
@@ -140,7 +141,7 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
         ServerConnectionProfileGenerator.INSTANCE.setValues(config.getServerProfile(), nonCascadedObjects);
         config.setDnaAnalysisDataConfiguration(null);
         config.getSamples().clear();
-        if (config.getDataType().equals(GenomicDataSourceDataTypeEnum.COPY_NUMBER)) {
+        if (config.getDataType().equals(PlatformDataTypeEnum.COPY_NUMBER)) {
             DnaAnalysisDataConfiguration cnDataConfig = new DnaAnalysisDataConfiguration();
             config.setDnaAnalysisDataConfiguration(cnDataConfig);
             cnDataConfig.setMappingFilePath(getUniqueString());
@@ -149,7 +150,7 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
             cnDataConfig.setPermutationReplicates(getUniqueInt());
             cnDataConfig.setRandomNumberSeed(getUniqueInt());
             ServerConnectionProfileGenerator.INSTANCE.setValues(cnDataConfig.getSegmentationService(), nonCascadedObjects);
-        } else if (config.getDataType().equals(GenomicDataSourceDataTypeEnum.EXPRESSION)) {
+        } else if (config.getDataType().equals(PlatformDataTypeEnum.EXPRESSION)) {
             for (int i = 0; i < 3; i++) {
                 config.getSamples().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));
             }

@@ -74,13 +74,6 @@
                             </s:else>            
                         </td>
                     </tr>
-                    <s:checkbox name="genomicSource.singleDataFile" label="Multiple Samples Per Data File"
-                        labelposition="left" /><br>
-                    <tr>
-                        <td class="tdLabel">
-                            (Default is 1 sample per data file)          
-                        </td>
-                    </tr>
                     <s:textfield label="Control Sample Set Name" name="controlSampleSetName" required="true" theme="cai2xhtml" size="35"/>
                     <s:file name="controlSampleFile" label="Control Samples File" size="35" />
                 </s:if>

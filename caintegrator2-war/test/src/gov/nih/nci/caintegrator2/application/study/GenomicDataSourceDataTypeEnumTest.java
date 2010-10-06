@@ -89,6 +89,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 
 import org.junit.Test;
 
@@ -100,16 +101,16 @@ public class GenomicDataSourceDataTypeEnumTest {
 
     @Test
     public void testGetByValue() {
-        assertEquals(GenomicDataSourceDataTypeEnum.EXPRESSION, GenomicDataSourceDataTypeEnum.getByValue("Expression"));
-        assertEquals(GenomicDataSourceDataTypeEnum.COPY_NUMBER, GenomicDataSourceDataTypeEnum.getByValue("Copy Number"));
-        assertEquals(GenomicDataSourceDataTypeEnum.SNP, GenomicDataSourceDataTypeEnum.getByValue("SNP"));
-        assertNull(GenomicDataSourceDataTypeEnum.getByValue(null));
+        assertEquals(PlatformDataTypeEnum.EXPRESSION, PlatformDataTypeEnum.getByValue("Expression"));
+        assertEquals(PlatformDataTypeEnum.COPY_NUMBER, PlatformDataTypeEnum.getByValue("Copy Number"));
+        assertEquals(PlatformDataTypeEnum.SNP, PlatformDataTypeEnum.getByValue("SNP"));
+        assertNull(PlatformDataTypeEnum.getByValue(null));
     }
 
     @Test
     public void testCheckType() {
-        assertFalse(GenomicDataSourceDataTypeEnum.checkType("no match"));
-        assertTrue(GenomicDataSourceDataTypeEnum.checkType(GenomicDataSourceDataTypeEnum.EXPRESSION.getValue()));
+        assertFalse(PlatformDataTypeEnum.checkType("no match"));
+        assertTrue(PlatformDataTypeEnum.checkType(PlatformDataTypeEnum.EXPRESSION.getValue()));
     }
 
     /**
@@ -117,9 +118,9 @@ public class GenomicDataSourceDataTypeEnumTest {
      */
     @Test
     public void testGetValueToDisplay() {
-        assertFalse(GenomicDataSourceDataTypeEnum.getStringValues().contains(GenomicDataSourceDataTypeEnum.SNP.getValue()));
-        assertTrue(GenomicDataSourceDataTypeEnum.getStringValues().contains(GenomicDataSourceDataTypeEnum.EXPRESSION.getValue()));
-        assertTrue(GenomicDataSourceDataTypeEnum.getStringValues().contains(GenomicDataSourceDataTypeEnum.COPY_NUMBER.getValue()));
+        assertFalse(PlatformDataTypeEnum.getStringValues().contains(PlatformDataTypeEnum.SNP.getValue()));
+        assertTrue(PlatformDataTypeEnum.getStringValues().contains(PlatformDataTypeEnum.EXPRESSION.getValue()));
+        assertTrue(PlatformDataTypeEnum.getStringValues().contains(PlatformDataTypeEnum.COPY_NUMBER.getValue()));
     }
 
 }

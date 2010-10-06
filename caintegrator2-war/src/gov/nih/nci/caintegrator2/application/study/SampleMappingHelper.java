@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -123,12 +123,12 @@ class SampleMappingHelper {
         CSVReader reader = new CSVReader(new FileReader(mappingFile));
         String[] values;
         unmapSamples(); // First unmap the previous mappings.
-        int columnNumber = (genomicSource.isUseSupplementalFiles())
-            ? PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor()).getSampleMappingColumns()
-            : PARSED_DATA_SAMPLE_MAPPING_COLUMN;
+        int columnNumber = (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType()))
+            ? PARSED_DATA_SAMPLE_MAPPING_COLUMN
+            : genomicSource.getPlatformVendor().getSampleMappingColumns();
         while ((values = Cai2Util.readDataLine(reader)) != null) {
-            if (values.length != columnNumber) {
-                throw new ValidationException("Invalid file format - Expect " + columnNumber
+            if (values.length < columnNumber) {
+                throw new ValidationException("Invalid file format - Expect at least " + columnNumber
                         + " columns but has " + values.length);
             }
             String subjectIdentifier = values[0].trim();

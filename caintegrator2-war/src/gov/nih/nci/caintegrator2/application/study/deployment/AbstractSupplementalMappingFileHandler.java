@@ -124,7 +124,7 @@ public abstract class AbstractSupplementalMappingFileHandler extends AbstractCaA
             }
             reader.close();
         } catch (FileNotFoundException e) {
-            throw new DataRetrievalException("Copy number mapping file not found: ", e);
+            throw new DataRetrievalException("Sample mapping file not found: ", e);
         } catch (IOException e) {
             throw new DataRetrievalException("Couldn't read sample mapping file: ", e);
         }

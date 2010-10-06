@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -95,12 +94,11 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.GenericMultiSamplePerFileParser;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+import gov.nih.nci.caintegrator2.external.caarray.GenericMultiSamplePerFileParser;
 import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
 
 import java.io.FileNotFoundException;
@@ -120,7 +118,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional (propagation = Propagation.REQUIRED)
 class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupplementalMappingFileHandler {
     
-    static final String FILE_TYPE = "data";
     private final List<Sample> samples = new ArrayList<Sample>();
     private final List<String> dataFileNames = new ArrayList<String>();
     private final List<SupplementalDataFile> dataFiles = new ArrayList<SupplementalDataFile>();
@@ -146,8 +143,7 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
         List<ArrayDataValues> arrayDataValuesList = new ArrayList<ArrayDataValues>();
         PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(
             getGenomicSource().getPlatformName()));
-        Set<ReporterList> reporterLists = platformHelper.getReporterLists(
-            ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        Set<ReporterList> reporterLists = platformHelper.getReporterLists(getReporterType());
         Map<String, Map<String, Float>> agilentDataMap = extractData();
         loadArrayData(arrayDataValuesList, platformHelper, reporterLists, agilentDataMap);
         return arrayDataValuesList;
@@ -155,15 +151,15 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
 
     private Map<String, Map<String, Float>> extractData()
     throws DataRetrievalException, ConnectionException, ValidationException {
-        Map<String, Map<String, Float>> agilentDataMap = new HashMap<String, Map<String, Float>>();
+        Map<String, Map<String, Float>> dataMap = new HashMap<String, Map<String, Float>>();
         for (SupplementalDataFile dataFile : dataFiles) {
             GenericMultiSamplePerFileParser parser = new GenericMultiSamplePerFileParser(
                     getDataFile(dataFile.getFileName()), dataFile.getProbeNameHeader(),
                     dataFile.getSampleHeader(), getSampleList());
-            parser.loadData(agilentDataMap);
+            parser.loadData(dataMap);
         }
-        validateSampleMapping(agilentDataMap, getSampleList());
-        return agilentDataMap;
+        validateSampleMapping(dataMap, getSampleList());
+        return dataMap;
     }
 
     private void validateSampleMapping(Map<String, Map<String, Float>> agilentDataMap, List<String> sampleList)
@@ -204,36 +200,25 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
     throws DataRetrievalException {
         for (String sampleName : agilentDataMap.keySet()) {
             LOGGER.info("Start LoadArrayData for : " + sampleName);
-            ArrayData arrayData = createArrayData(getSample(sampleName), reporterLists);
+            ArrayData arrayData = createArrayData(getSample(sampleName), reporterLists, getDataType());
             getDao().save(arrayData);
             ArrayDataValues values = new ArrayDataValues(platformHelper
-                    .getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
+                    .getAllReportersByType(getReporterType()));
             arrayDataValuesList.add(values);
             Map<String, Float> reporterMap = agilentDataMap.get(sampleName);
             for (String probeName : reporterMap.keySet()) {
-                AbstractReporter reporter = getReporter(platformHelper, probeName);
+                AbstractReporter reporter = platformHelper.getReporter(getReporterType(), probeName);
                 if (reporter == null) {
                     LOGGER.warn("Reporter with name " + probeName + " was not found in platform "
                             + platformHelper.getPlatform().getName());
                 } else {
-                    values.setFloatValue(arrayData, reporter, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, reporterMap
+                    values.setFloatValue(arrayData, reporter, getDataValueType(), reporterMap
                             .get(probeName).floatValue());
                 }
             }
             getArrayDataService().save(values);
             LOGGER.info("Done LoadArrayData for : " + sampleName);
         }
-    }
-
-    private AbstractReporter getReporter(PlatformHelper platformHelper, String probeSetName) {
-        AbstractReporter reporter = platformHelper.getReporter(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, 
-                probeSetName); 
-        return reporter;
-    }
-
-    @Override
-    String getFileType() {
-        return FILE_TYPE;
     }
 
  }

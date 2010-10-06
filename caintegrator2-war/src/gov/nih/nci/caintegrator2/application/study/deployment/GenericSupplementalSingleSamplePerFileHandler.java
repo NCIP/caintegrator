@@ -94,7 +94,6 @@ import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
@@ -117,11 +116,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional (propagation = Propagation.REQUIRED)
 class GenericSupplementalSingleSamplePerFileHandler extends AbstractGenericSupplementalMappingFileHandler {
     
-    static final String FILE_TYPE = "data";
     private final Map<Sample, List<SupplementalDataFile>> sampleToDataFileMap =
         new HashMap<Sample, List<SupplementalDataFile>>();
     private final CentralTendencyCalculator centralTendencyCalculator;
-    
     
     GenericSupplementalSingleSamplePerFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
@@ -136,10 +133,10 @@ class GenericSupplementalSingleSamplePerFileHandler extends AbstractGenericSuppl
     void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile)
             throws FileNotFoundException, ValidationException {
         Sample sample = getSample(sampleName, subjectId);
-        addCopyNumberFile(sample, supplementalDataFile);
+        addSupplementalFile(sample, supplementalDataFile);
     }
 
-    private void addCopyNumberFile(Sample sample, SupplementalDataFile supplementalDataFile) {
+    private void addSupplementalFile(Sample sample, SupplementalDataFile supplementalDataFile) {
         List<SupplementalDataFile> supplementalDataFiles = sampleToDataFileMap.get(sample);
         if (supplementalDataFiles == null) {
             supplementalDataFiles = new ArrayList<SupplementalDataFile>();
@@ -176,22 +173,19 @@ class GenericSupplementalSingleSamplePerFileHandler extends AbstractGenericSuppl
     private ArrayDataValues loadArrayDataValues(Sample sample, List<SupplementalDataFile> supplementalDataFiles) 
     throws DataRetrievalException, ValidationException {
         PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(getGenomicSource().getPlatformName()));
-        Set<ReporterList> reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        ArrayData arrayData = createArrayData(sample, reporterLists);
+        Set<ReporterList> reporterLists = platformHelper.getReporterLists(getReporterType());
+        ArrayData arrayData = createArrayData(sample, reporterLists, getDataType());
         getDao().save(arrayData);
         ArrayDataValues values = 
-            new ArrayDataValues(platformHelper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
+            new ArrayDataValues(platformHelper.getAllReportersByType(getReporterType()));
         for (SupplementalDataFile supplementalDataFile : supplementalDataFiles) {
-            AgilentCopyNumberDataRetrieval.INSTANCE.parseDataFile(supplementalDataFile, values,
-                    arrayData, platformHelper, centralTendencyCalculator);
+            GenericSupplementalSingleSampleDataRetrieval parser =
+                new GenericSupplementalSingleSampleDataRetrieval(supplementalDataFile,
+                        getReporterType(), getDataValueType());
+            parser.parseDataFile(values, arrayData, platformHelper, centralTendencyCalculator);
         }
         getArrayDataService().save(values);
         return values;
-    }
-
-    @Override
-    String getFileType() {
-        return FILE_TYPE;
     }
 
  }

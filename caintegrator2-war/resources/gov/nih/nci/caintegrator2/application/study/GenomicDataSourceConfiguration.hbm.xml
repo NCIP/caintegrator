@@ -6,8 +6,16 @@
        <param name="enumClass">gov.nih.nci.caintegrator2.application.study.Status</param> 
     </typedef> 
     
+    <typedef name="PlatformVendor" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum</param> 
+    </typedef> 
+    
     <typedef name="DataType" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
-       <param name="enumClass">gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum</param> 
+       <param name="enumClass">gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum</param> 
+    </typedef> 
+    
+    <typedef name="LoadingType" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum</param> 
     </typedef> 
     
     <typedef name="CentralTendencyType" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
@@ -36,12 +44,11 @@
             
         <property name="experimentIdentifier" type="string" column="EXPERIMENT_IDENTIFIER"/>
         <property name="dataType" type="DataType" column="DATA_TYPE"/>
-        <property name="platformVendor" type="string" column="PLATFORM_VENDOR"/>
+        <property name="platformVendor" type="PlatformVendor" column="PLATFORM_VENDOR"/>
         <property name="platformName" type="string" column="PLATFORM_NAME"/>
         <property name="sampleMappingFileName" type="string" column="SAMPLE_MAPPING_FILE_NAME"/>
         <property name="sampleMappingFilePath" type="string" column="SAMPLE_MAPPING_FILE_PATH"/>
-        <property name="useSupplementalFiles" type="boolean" column="USE_SUPPLEMENTAL_FILES" />
-        <property name="singleDataFile" type="boolean" column="SINGLE_DATA_FILE" />
+        <property name="loadingType" type="LoadingType" column="LOADING_TYPE" />
         <property name="status" type="Status" column="STATUS"/>
         <property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
         <property name="lastModifiedDate" type="java.util.Date" column="LAST_MODIFIED_DATE"/>

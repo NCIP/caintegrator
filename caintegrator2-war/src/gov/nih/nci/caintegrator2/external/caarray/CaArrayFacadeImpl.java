@@ -183,7 +183,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
         SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
         DataService dataService = 
             getServiceFactory().createDataService(genomicSource.getServerProfile());
-        if (PlatformVendorEnum.AFFYMETRIX.equals(PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor()))) {
+        if (PlatformVendorEnum.AFFYMETRIX.equals(genomicSource.getPlatformVendor())) {
             return new AffymetrixDataRetrievalHelper(genomicSource, dataService,
                     searchService, dao);
         }
