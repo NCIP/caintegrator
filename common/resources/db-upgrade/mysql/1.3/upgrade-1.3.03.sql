@@ -1,7 +1,7 @@
 update genomic_data_source_configuration set PLATFORM_VENDOR = "AFFYMETRIX"
-    when PLATFORM_VENDOR = "Affymetrix";
+    where PLATFORM_VENDOR = "Affymetrix";
 update genomic_data_source_configuration set PLATFORM_VENDOR = "AGILENT"
-    when PLATFORM_VENDOR = "Agilent";
+    where PLATFORM_VENDOR = "Agilent";
 
 ALTER TABLE genomic_data_source_configuration ADD COLUMN LOADING_TYPE VARCHAR(50) AFTER PLATFORM_NAME;
 
