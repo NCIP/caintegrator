@@ -69,10 +69,30 @@ public class GenomicDataHelperTest {
         genomicDataConfiguration.getSamples().add(sample);
         genomicDataConfiguration.setDataType(PlatformDataTypeEnum.EXPRESSION);
         genomicDataConfiguration.setPlatformVendor(PlatformVendorEnum.AGILENT);
-        genomicDataConfiguration.setSampleMappingFilePath(TestDataFiles.TEST_AGILENT_SAMPLE_MAPPING_FILE.getAbsolutePath());
+        genomicDataConfiguration.setLoadingType(ArrayDataLoadingTypeEnum.SINGLE_SAMPLE_PER_FILE);
+        genomicDataConfiguration.setSampleMappingFilePath(TestDataFiles.TEST_AGILENT_SINGLE_SAMPLE_MAPPING_FILE.getAbsolutePath());
         studyConfiguration.getGenomicDataSources().add(genomicDataConfiguration);
         genomicDataConfiguration.setStudyConfiguration(studyConfiguration);
-        genomicDataConfiguration.setLoadingType(ArrayDataLoadingTypeEnum.SINGLE_SAMPLE_PER_FILE);
+        helper.loadData(studyConfiguration);
+        assertTrue(arrayDataService.saveCalled);
+        assertEquals(2, sample.getArrayCollection().size());
+        assertEquals(3, sample.getArrayDataCollection().size());
+    }
+
+    @Test
+    public void testAgilentExpressionMultiSampleLoadData()
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        GenomicDataSourceConfiguration genomicDataConfiguration = new GenomicDataSourceConfiguration();
+        Sample sample = new Sample();
+        sample.setName("testSample");
+        genomicDataConfiguration.getSamples().add(sample);
+        genomicDataConfiguration.setDataType(PlatformDataTypeEnum.EXPRESSION);
+        genomicDataConfiguration.setPlatformVendor(PlatformVendorEnum.AGILENT);
+        genomicDataConfiguration.setLoadingType(ArrayDataLoadingTypeEnum.MULTI_SAMPLE_PER_FILE);
+        genomicDataConfiguration.setSampleMappingFilePath(TestDataFiles.TEST_AGILENT_MULTI_SAMPLE_MAPPING_FILE.getAbsolutePath());
+        studyConfiguration.getGenomicDataSources().add(genomicDataConfiguration);
+        genomicDataConfiguration.setStudyConfiguration(studyConfiguration);
         helper.loadData(studyConfiguration);
         assertTrue(arrayDataService.saveCalled);
         assertEquals(2, sample.getArrayCollection().size());

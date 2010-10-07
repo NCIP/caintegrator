@@ -93,6 +93,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +101,7 @@ import java.util.Map;
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
- * Reads data in Agilent data file.
+ * Reads data in supplemental data file.
  */
 public final class GenericMultiSamplePerFileParser {
     
@@ -135,10 +136,10 @@ public final class GenericMultiSamplePerFileParser {
     }
 
     /**
-     * @param agilentDataMap the Agilent data mapping
+     * @param dataMap the data mapping
      * @throws DataRetrievalException read data exception
      */
-    public void loadData(Map<String, Map<String, Float>> agilentDataMap) throws DataRetrievalException {
+    public void loadData(Map<String, Map<String, Float>> dataMap) throws DataRetrievalException {
         String[] fields;
         try {
             while ((fields = Cai2Util.readDataLine(dataFileReader)) != null) {
@@ -146,7 +147,28 @@ public final class GenericMultiSamplePerFileParser {
                 for (String sampleName : sampleToIndexMap.keySet()) {
                     Float log2Ratio = getLog2Ratio(fields, sampleToIndexMap.get(sampleName));
                     if (log2Ratio != null) {
-                        setReporterMap(agilentDataMap, sampleName, probeName, log2Ratio);
+                        setReporterMap(dataMap, sampleName, probeName, log2Ratio);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't read supplemental file.", e);
+        }
+    }
+
+    /**
+     * @param dataMap the data mapping
+     * @throws DataRetrievalException read data exception
+     */
+    public void loadMultiDataPoint(Map<String, Map<String, List<Float>>> dataMap) throws DataRetrievalException {
+        String[] fields;
+        try {
+            while ((fields = Cai2Util.readDataLine(dataFileReader)) != null) {
+                String probeName = fields[0];
+                for (String sampleName : sampleToIndexMap.keySet()) {
+                    Float log2Ratio = getLog2Ratio(fields, sampleToIndexMap.get(sampleName));
+                    if (log2Ratio != null) {
+                        setMultiPointReporterMap(dataMap, sampleName, probeName, log2Ratio);
                     }
                 }
             }
@@ -163,13 +185,29 @@ public final class GenericMultiSamplePerFileParser {
         }
     }
     
-    private void setReporterMap(Map<String, Map<String, Float>> agilentDataMap, String sampleName,
+    private void setReporterMap(Map<String, Map<String, Float>> dataMap, String sampleName,
             String probeName, Float log2Ratio) {
-        if (!agilentDataMap.containsKey(sampleName)) {
+        if (!dataMap.containsKey(sampleName)) {
             Map<String, Float> reporterMap = new HashMap<String, Float>();
-            agilentDataMap.put(sampleName, reporterMap);
+            dataMap.put(sampleName, reporterMap);
         }
-        agilentDataMap.get(sampleName).put(probeName, log2Ratio);
+        dataMap.get(sampleName).put(probeName, log2Ratio);
+    }
+    
+    private void setMultiPointReporterMap(Map<String, Map<String, List<Float>>> dataMap, String sampleName,
+            String probeName, Float log2Ratio) {
+        if (!dataMap.containsKey(sampleName)) {
+            Map<String, List<Float>> reporterMap = new HashMap<String, List<Float>>();
+            dataMap.put(sampleName, reporterMap);
+        }
+        addValueToDataMap(dataMap.get(sampleName), probeName, log2Ratio);
+    }
+    
+    private void addValueToDataMap(Map<String, List<Float>> dataMap, String probeName, Float value) {
+        if (!dataMap.containsKey(probeName)) {
+            dataMap.put(probeName, new ArrayList<Float>());
+        }
+        dataMap.get(probeName).add(value);
     }
 
     private void loadHeaders(String probeHeader, String sampleHeader, List<String> sampleList)
@@ -193,7 +231,7 @@ public final class GenericMultiSamplePerFileParser {
     
     private void checkHeadersLine(String[] fields, String keyword) throws DataRetrievalException {
         if (fields == null || !keyword.equals(fields[0])) {
-            throw new DataRetrievalException("Invalid header for Agilent data file.");
+            throw new DataRetrievalException("Invalid supplemental data file; headers not found in file.");
         }
     }
 }

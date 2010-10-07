@@ -105,7 +105,7 @@ import au.com.bytecode.opencsv.CSVReader;
 public final class GenericSingleSamplePerFileParser {
 
     /**
-     * The INSTANCE of the AgilentRawDataFileParser.
+     * The INSTANCE of the GenericSingleSamplePerFileParser.
      */
     public static final GenericSingleSamplePerFileParser INSTANCE = new GenericSingleSamplePerFileParser();
     
@@ -134,7 +134,7 @@ public final class GenericSingleSamplePerFileParser {
             }
             return dataMap;
         } catch (IOException e) {
-            throw new DataRetrievalException("Couldn't read Agilent data file.", e);
+            throw new DataRetrievalException("Couldn't read supplemental data file.", e);
         }
     }
 

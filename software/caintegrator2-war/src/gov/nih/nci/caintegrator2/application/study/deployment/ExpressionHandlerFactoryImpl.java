@@ -99,10 +99,18 @@ public class ExpressionHandlerFactoryImpl implements ExpressionHandlerFactory {
     /**
      * {@inheritDoc}
      */
-    public ExpressionSampleMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
+    public AbstractExpressionMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao)
     throws DataRetrievalException {
-        return new ExpressionSampleMappingFileHandler(genomicSource, caArrayFacade,
+        switch (genomicSource.getLoadingType()) {
+        case SINGLE_SAMPLE_PER_FILE:
+            return new ExpressionSingleSamplePerFileMappingFileHandler(genomicSource, caArrayFacade,
                         arrayDataService, dao);
+        case MULTI_SAMPLE_PER_FILE:
+            return new ExpressionMultiSamplePerFileMappingFileHandler(genomicSource, caArrayFacade,
+                    arrayDataService, dao);
+        default:
+            throw new DataRetrievalException("Unknown platform vendor.");
+        }
     }
 }

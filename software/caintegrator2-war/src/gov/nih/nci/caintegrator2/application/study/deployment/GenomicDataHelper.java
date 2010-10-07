@@ -176,7 +176,7 @@ class GenomicDataHelper {
             if (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())) {
                 probeSetValues = caArrayFacade.retrieveData(genomicSource);
             } else {
-                ExpressionSampleMappingFileHandler handler = expressionHandlerFactory.getHandler(
+                AbstractExpressionMappingFileHandler handler = expressionHandlerFactory.getHandler(
                         genomicSource, caArrayFacade, arrayDataService, dao);
                 probeSetValues = handler.loadArrayData();
             } 

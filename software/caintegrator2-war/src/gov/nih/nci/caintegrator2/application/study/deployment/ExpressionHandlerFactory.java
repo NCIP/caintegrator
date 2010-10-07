@@ -106,7 +106,7 @@ public interface ExpressionHandlerFactory {
      * @return the handler.
      * @exception DataRetrievalException for invalid platform vendor.
      */
-    ExpressionSampleMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource, 
+    AbstractExpressionMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource, 
             CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, 
             CaIntegrator2Dao dao) throws DataRetrievalException;
