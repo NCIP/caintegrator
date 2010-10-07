@@ -83,8 +83,6 @@ public enum ArrayDataLoadingTypeEnum {
         if (PlatformVendorEnum.AFFYMETRIX.equals(vendor)) {
             if (PlatformDataTypeEnum.EXPRESSION.equals(type)) {
                 list.add(PARSED_DATA.value);
-                list.add(SINGLE_SAMPLE_PER_FILE.value);
-                return list;
             } else if (PlatformDataTypeEnum.COPY_NUMBER.equals(type)) {
                 list.add(CNCHP.value);
             } else {

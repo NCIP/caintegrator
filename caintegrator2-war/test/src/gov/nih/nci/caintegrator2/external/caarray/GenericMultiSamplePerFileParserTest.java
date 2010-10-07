@@ -108,7 +108,7 @@ public class GenericMultiSamplePerFileParserTest {
     @Test
     public void testExtractData() throws DataRetrievalException, IOException {
         
-        Map<String, Map<String, Float>> agilentData =  new HashMap<String, Map<String, Float>>();
+        Map<String, Map<String, Float>> dataMap =  new HashMap<String, Map<String, Float>>();
         List<String> sampleList = new ArrayList<String>();
         sampleList.add(sample1);
         sampleList.add(sample2);
@@ -116,18 +116,45 @@ public class GenericMultiSamplePerFileParserTest {
         try {
             parser = new GenericMultiSamplePerFileParser(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE,
                     "ProbeID", "Hybridization Ref", sampleList);
-            parser.loadData(agilentData);
+            parser.loadData(dataMap);
         } catch (DataRetrievalException e) {
-            assertEquals(e.getMessage(), "Invalid header for Agilent data file.");
+            assertEquals(e.getMessage(), "Invalid supplemental data file; headers not found in file.");
             exceptionCaught = true;
         }
         assertTrue(exceptionCaught);
 
         parser = new GenericMultiSamplePerFileParser(TestDataFiles.TCGA_LEVEL_2_DATA_FILE,
                 "ProbeID", "Hybridization Ref", sampleList);
-        parser.loadData(agilentData);
-        assertEquals(2, agilentData.keySet().size());
-        for (Map<String, Float> reporterList : agilentData.values()) {
+        parser.loadData(dataMap);
+        assertEquals(2, dataMap.keySet().size());
+        for (Map<String, Float> reporterList : dataMap.values()) {
+            assertTrue(reporterList.keySet().size() > 0);
+        }
+    }
+    
+    @Test
+    public void testExtractMultiDataPoint() throws DataRetrievalException, IOException {
+        
+        Map<String, Map<String, List<Float>>> dataMap =  new HashMap<String, Map<String, List<Float>>>();
+        List<String> sampleList = new ArrayList<String>();
+        sampleList.add(sample1);
+        sampleList.add(sample2);
+        boolean exceptionCaught = false;
+        try {
+            parser = new GenericMultiSamplePerFileParser(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE,
+                    "ProbeID", "Hybridization Ref", sampleList);
+            parser.loadMultiDataPoint(dataMap);
+        } catch (DataRetrievalException e) {
+            assertEquals(e.getMessage(), "Invalid supplemental data file; headers not found in file.");
+            exceptionCaught = true;
+        }
+        assertTrue(exceptionCaught);
+
+        parser = new GenericMultiSamplePerFileParser(TestDataFiles.TCGA_LEVEL_2_DATA_FILE,
+                "ProbeID", "Hybridization Ref", sampleList);
+        parser.loadMultiDataPoint(dataMap);
+        assertEquals(2, dataMap.keySet().size());
+        for (Map<String, List<Float>> reporterList : dataMap.values()) {
             assertTrue(reporterList.keySet().size() > 0);
         }
     }
