@@ -101,6 +101,7 @@ import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.ExpressionLevelCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
@@ -110,6 +111,7 @@ import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.RangeTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
@@ -284,6 +286,9 @@ public class QueryManagementServiceImplTest {
         acquisition.setSample(sample);
         assignment.getSampleAcquisitionCollection().add(acquisition);
         study.getAssignmentCollection().add(assignment);
+        //////////////////////////////////
+        // Gene Name Criterion Testing. //
+        //////////////////////////////////
         GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
         geneNameCriterion.setGenomicCriterionType(GenomicCriterionTypeEnum.GENE_EXPRESSION);
         Gene gene = new Gene();
@@ -321,6 +326,41 @@ public class QueryManagementServiceImplTest {
         GenomicDataResultColumn column = result.getColumnCollection().iterator().next();
         assertNotNull(column.getSampleAcquisition());
         assertNotNull(column.getSampleAcquisition().getSample());
+        
+        /////////////////////////////////////////
+        // Expression Level Criterion Testing. //
+        /////////////////////////////////////////
+        ExpressionLevelCriterion expressionLevelCriterion = new ExpressionLevelCriterion();
+        expressionLevelCriterion.setPlatformName("platformName");
+        expressionLevelCriterion.setGeneSymbol("GENE");
+        expressionLevelCriterion.setRangeType(RangeTypeEnum.GREATER_OR_EQUAL);
+        expressionLevelCriterion.setLowerLimit(1f);
+        query.getCompoundCriterion().getCriterionCollection().clear();
+        query.getCompoundCriterion().getCriterionCollection().add(expressionLevelCriterion);
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
+        result = queryManagementService.executeGenomicDataQuery(query);
+        assertEquals(1, result.getFilteredRowCollection().size());
+        assertEquals(1, result.getColumnCollection().size());
+        assertEquals(1, result.getFilteredRowCollection().iterator().next().getValues().size());
+        column = result.getColumnCollection().iterator().next();
+        assertNotNull(column.getSampleAcquisition());
+        assertNotNull(column.getSampleAcquisition().getSample());
+        
+        expressionLevelCriterion.setRangeType(RangeTypeEnum.LESS_OR_EQUAL); // No upper limit = always true.
+        result = queryManagementService.executeGenomicDataQuery(query);
+        assertEquals(1, result.getFilteredRowCollection().size());
+        assertEquals(1, result.getColumnCollection().size());
+        assertEquals(1, result.getFilteredRowCollection().iterator().next().getValues().size());
+        
+        expressionLevelCriterion.setUpperLimit(1.1f);
+        result = queryManagementService.executeGenomicDataQuery(query);
+        assertEquals(0, result.getFilteredRowCollection().size());
+        assertEquals(0, result.getColumnCollection().size());
+        
+        
+        ////////////////////////////////////
+        // Fold Change Criterion Testing. //
+        ////////////////////////////////////
         FoldChangeCriterion foldChangeCriterion = new FoldChangeCriterion();
         foldChangeCriterion.setFoldsUp(1.0f);
         foldChangeCriterion.setGeneSymbol("GENE");
