@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.caintegrator2.domain.application">
+
+    <typedef name="RangeTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+        <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.RangeTypeEnum</param> 
+    </typedef> 
     <typedef name="RegulationTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
         <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum</param> 
     </typedef> 
@@ -95,6 +99,15 @@
                 <property name="foldsUp" type="float" column="FOLDS_UP"/>
                 <property name="foldsDown" type="float" column="FOLDS_DOWN"/>
                 <property name="regulationType" type="RegulationTypeEnum" column="REGULATION_TYPE"/>
+                <property name="platformName" type="string" column="PLATFORM_NAME"/>
+            </joined-subclass>
+            <joined-subclass name="ExpressionLevelCriterion" table="EXPRESSION_LEVEL_CRITERION" lazy="false">
+                <key column="ID" />
+                <!-- Attributes mapping for the FoldChangeCriterion class -->
+                <property name="geneSymbol" type="string" column="GENE_SYMBOL"/>
+                <property name="lowerLimit" type="float" column="LOWER_LIMIT"/>
+                <property name="upperLimit" type="float" column="UPPER_LIMIT"/>
+                <property name="rangeType" type="RangeTypeEnum" column="RANGE_TYPE"/>
                 <property name="platformName" type="string" column="PLATFORM_NAME"/>
             </joined-subclass>
             <joined-subclass name="GeneNameCriterion" table="GENE_NAME_CRITERION" lazy="false">

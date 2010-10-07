@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.ExpressionLevelCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -157,6 +158,8 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
                 } else if (abstractCriterion instanceof CopyNumberAlterationCriterion) {
                    handlers.add(CopyNumberAlterationCriterionHandler.create((CopyNumberAlterationCriterion) 
                            abstractCriterion));
+                } else if (abstractCriterion instanceof ExpressionLevelCriterion) {
+                    handlers.add(ExpressionLevelCriterionHandler.create((ExpressionLevelCriterion) abstractCriterion));
                 } else {
                     throw new IllegalStateException("Unknown AbstractCriterion class: " + abstractCriterion);
                 }
