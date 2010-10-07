@@ -112,6 +112,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
     public boolean getPlatformConfigurationsCalled;
     public boolean getRefreshedPlatformConfigurationCalled;
     public boolean deleteGisticAnalysisNetCDFFileCalled;
+    public boolean getDataCalled;
     
     
     public void reset() {
@@ -123,6 +124,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
         getPlatformConfigurationsCalled = false;
         getRefreshedPlatformConfigurationCalled = false;
         deleteGisticAnalysisNetCDFFileCalled = false;
+        getDataCalled = false;
     }
 
     /**
@@ -137,6 +139,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
                 }
             }
         }
+        getDataCalled = true;
         return values;
     }
 
