@@ -114,9 +114,9 @@ import java.util.Map;
  * Loads copy number data from locally-available CNCHP files (as opposed to retrieval from caArray) 
  * for quicker testing.
  */
-class LocalExpressionHandler extends ExpressionSampleMappingFileHandler {
+class LocalExpressionSingleSampleHandler extends ExpressionSingleSamplePerFileMappingFileHandler {
 
-    LocalExpressionHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
+    LocalExpressionSingleSampleHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
     }

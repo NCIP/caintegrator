@@ -83,56 +83,126 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.caarray;
+package gov.nih.nci.caintegrator2.application.study.deployment;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Set;
+
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.genomic.Array;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
-import java.util.List;
-import java.util.Map;
+/**
+ * 
+ */
+public abstract class AbstractExpressionMappingFileHandler extends AbstractSupplementalMappingFileHandler {
 
-import org.junit.Test;
+    private final CentralTendencyCalculator centralTendencyCalculator;
+    private static final String FILE_TYPE = "data";
+    private final PlatformHelper platformHelper;
+    private final Set<ReporterList> reporterLists;
+    private ArrayDataValues arrayDataValues;
 
-@SuppressWarnings("PMD")
-public class GenericSingleSamplePerFileParserTest {
-    
-    @Test
-    public void testExtractData() throws DataRetrievalException {
-        
-        Map<String, List<Float>> dataMap;
-        boolean exceptionCaught = false;
-        try {
-            SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
-            supplementalDataFile.setFileName(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE_PATH);
-            supplementalDataFile.setFile(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE);
-            supplementalDataFile.setProbeNameHeader("ID");
-            supplementalDataFile.setValueHeader("logratio");
-            dataMap = GenericSingleSamplePerFileParser.INSTANCE.extractData(supplementalDataFile,
-                    PlatformVendorEnum.AGILENT);
-        } catch (DataRetrievalException e) {
-            assertEquals(e.getMessage(), "Invalid supplemental data file; headers not found in file.");
-            exceptionCaught = true;
-        }
-        assertTrue(exceptionCaught);
-        
-        exceptionCaught = false;
-        try {
-            SupplementalDataFile supplementalDataFile = new SupplementalDataFile();
-            supplementalDataFile.setFileName(TestDataFiles.HUAITIAN_LEVEL_2_DATA_FILE_PATH);
-            supplementalDataFile.setFile(TestDataFiles.HUAITIAN_LEVEL_2_DATA_FILE);
-            supplementalDataFile.setProbeNameHeader("ID");
-            supplementalDataFile.setValueHeader("logratio");
-            dataMap = GenericSingleSamplePerFileParser.INSTANCE.extractData(supplementalDataFile,
-                    PlatformVendorEnum.AGILENT);
-            assertEquals(4, dataMap.keySet().size());
-        } catch (DataRetrievalException e) {
-            assertEquals(e.getMessage(), "Invalid supplemental data file; headers not found in file.");
-            exceptionCaught = true;
-        }
-        assertFalse(exceptionCaught);
+    AbstractExpressionMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
+            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+        super(genomicSource, caArrayFacade, arrayDataService, dao);
+        this.platformHelper = new PlatformHelper(dao.getPlatform(genomicSource.getPlatformName()));
+        this.reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        this.arrayDataValues = 
+            new ArrayDataValues(platformHelper.getAllReportersByType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET));
+        this.centralTendencyCalculator = new CentralTendencyCalculator(
+                genomicSource.getTechnicalReplicatesCentralTendency(), 
+                genomicSource.isUseHighVarianceCalculation(), 
+                genomicSource.getHighVarianceThreshold(), 
+                genomicSource.getHighVarianceCalculationType());
     }
+    
+    abstract ArrayDataValues loadArrayData() throws DataRetrievalException, ConnectionException, ValidationException;
+    
+    /**
+     * 
+     * @param sample use to create the ArrayData
+     * @return ArrayData
+     */
+    protected ArrayData createArrayData(Sample sample) {
+        Array array = new Array();
+        array.setPlatform(getPlatformHelper().getPlatform());
+        array.getSampleCollection().add(sample);
+        ArrayData arrayData = new ArrayData();
+        arrayData.setType(ArrayDataType.GENE_EXPRESSION);
+        arrayData.setArray(array);
+        if (!getReporterLists().isEmpty()) {
+            arrayData.getReporterLists().addAll(getReporterLists());
+            for (ReporterList reporterList : getReporterLists()) {
+                reporterList.getArrayDatas().add(arrayData);
+            }
+        }
+        array.getArrayDataCollection().add(arrayData);
+        arrayData.setSample(sample);
+        arrayData.setStudy(getGenomicSource().getStudyConfiguration().getStudy());
+        sample.getArrayCollection().add(array);
+        sample.getArrayDataCollection().add(arrayData);
+        getDao().save(array);
+        return arrayData;
+    }
+
+    /**
+     * @return the arrayDataValues
+     */
+    protected ArrayDataValues getArrayDataValues() {
+        return arrayDataValues;
+    }
+
+    /**
+     * @param arrayDataValues the arrayDataValues to set
+     */
+    protected void setArrayDataValues(ArrayDataValues arrayDataValues) {
+        this.arrayDataValues = arrayDataValues;
+    }
+
+    /**
+     * @return the centralTendencyCalculator
+     */
+    protected CentralTendencyCalculator getCentralTendencyCalculator() {
+        return centralTendencyCalculator;
+    }
+
+    @Override
+    String getFileType() {
+        return FILE_TYPE;
+    }
+
+    @Override
+    File getMappingFile() throws FileNotFoundException {
+        return getGenomicSource().getSampleMappingFile();
+    }
+
+    /**
+     * @return the platformHelper
+     */
+    protected PlatformHelper getPlatformHelper() {
+        return platformHelper;
+    }
+
+    /**
+     * @return the reporterLists
+     */
+    protected Set<ReporterList> getReporterLists() {
+        return reporterLists;
+    }
+
 }

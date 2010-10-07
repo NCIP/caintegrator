@@ -144,8 +144,8 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
         PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(
             getGenomicSource().getPlatformName()));
         Set<ReporterList> reporterLists = platformHelper.getReporterLists(getReporterType());
-        Map<String, Map<String, Float>> agilentDataMap = extractData();
-        loadArrayData(arrayDataValuesList, platformHelper, reporterLists, agilentDataMap);
+        Map<String, Map<String, Float>> dataMap = extractData();
+        loadArrayData(arrayDataValuesList, platformHelper, reporterLists, dataMap);
         return arrayDataValuesList;
     }
 
@@ -162,11 +162,11 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
         return dataMap;
     }
 
-    private void validateSampleMapping(Map<String, Map<String, Float>> agilentDataMap, List<String> sampleList)
+    private void validateSampleMapping(Map<String, Map<String, Float>> dataMap, List<String> sampleList)
     throws DataRetrievalException {
         StringBuffer errorMsg = new StringBuffer();
         for (String sampleName : sampleList) {
-            if (!agilentDataMap.containsKey(sampleName)) {
+            if (!dataMap.containsKey(sampleName)) {
                 if (errorMsg.length() > 0) {
                     errorMsg.append(", ");
                 }
@@ -196,16 +196,16 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
     }
     
     private void loadArrayData(List<ArrayDataValues> arrayDataValuesList, PlatformHelper platformHelper,
-            Set<ReporterList> reporterLists, Map<String, Map<String, Float>> agilentDataMap)
+            Set<ReporterList> reporterLists, Map<String, Map<String, Float>> dataMap)
     throws DataRetrievalException {
-        for (String sampleName : agilentDataMap.keySet()) {
+        for (String sampleName : dataMap.keySet()) {
             LOGGER.info("Start LoadArrayData for : " + sampleName);
             ArrayData arrayData = createArrayData(getSample(sampleName), reporterLists, getDataType());
             getDao().save(arrayData);
             ArrayDataValues values = new ArrayDataValues(platformHelper
                     .getAllReportersByType(getReporterType()));
             arrayDataValuesList.add(values);
-            Map<String, Float> reporterMap = agilentDataMap.get(sampleName);
+            Map<String, Float> reporterMap = dataMap.get(sampleName);
             for (String probeName : reporterMap.keySet()) {
                 AbstractReporter reporter = platformHelper.getReporter(getReporterType(), probeName);
                 if (reporter == null) {

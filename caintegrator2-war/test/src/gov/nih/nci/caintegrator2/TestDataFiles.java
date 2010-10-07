@@ -155,8 +155,10 @@ public class TestDataFiles {
     public static final File HG18_GENE_LOCATIONS_SMALL_FILE = getFile(HG18_GENE_LOCATIONS_SMALL_FILE_PATH);
     
     // Test genomic data files
-    public static final String TEST_AGILENT_SAMPLE_MAPPING_FILE_PATH = "/test_Agilent_sample_mapping.csv";
-    public static final File TEST_AGILENT_SAMPLE_MAPPING_FILE = getFile(TEST_AGILENT_SAMPLE_MAPPING_FILE_PATH);
+    public static final String TEST_AGILENT_SINGLE_SAMPLE_MAPPING_FILE_PATH = "/test_Agilent_single_sample_mapping.csv";
+    public static final File TEST_AGILENT_SINGLE_SAMPLE_MAPPING_FILE = getFile(TEST_AGILENT_SINGLE_SAMPLE_MAPPING_FILE_PATH);
+    public static final String TEST_AGILENT_MULTI_SAMPLE_MAPPING_FILE_PATH = "/test_Agilent_multi_sample_mapping.csv";
+    public static final File TEST_AGILENT_MULTI_SAMPLE_MAPPING_FILE = getFile(TEST_AGILENT_MULTI_SAMPLE_MAPPING_FILE_PATH);
     
 
     // Files for DC Lung Study (liu-00175 in caarray-stage)
