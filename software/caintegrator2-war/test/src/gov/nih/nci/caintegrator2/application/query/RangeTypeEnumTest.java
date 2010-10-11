@@ -83,117 +83,25 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.query.form;
+package gov.nih.nci.caintegrator2.application.query;
 
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import gov.nih.nci.caintegrator2.domain.application.RangeTypeEnum;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.Test;
 
-import org.apache.commons.lang.StringUtils;
+public class RangeTypeEnumTest {
 
-/**
- * Contains and manages a gene expression criterion.
- */
-public class GeneExpressionCriterionRow extends AbstractCriterionRow {
-    
-    private AbstractGenomicCriterionWrapper genomicCriterionWrapper;
-    private final Study study;
-
-    GeneExpressionCriterionRow(Study study, CriteriaGroup criteriaGroup) {
-        super(criteriaGroup);
-        this.study = study;
+    @Test
+    public void testGetByValue() {
+        assertEquals(RangeTypeEnum.GREATER_OR_EQUAL, RangeTypeEnum.getByValue(">="));
+        assertNull(GenomicAnnotationEnum.getByValue(null));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<String> getAvailableFieldNames() {
-        List<String> fieldNames = new ArrayList<String>();
-        fieldNames.add(GeneNameCriterionWrapper.FIELD_NAME);
-        fieldNames.add(ExpressionLevelCriterionWrapper.EXPRESSION_LEVEL);
-        if (hasControlSamples()) {
-            fieldNames.add(FoldChangeCriterionWrapper.FOLD_CHANGE);
-        }
-        return fieldNames;
-    }
-    
-    private boolean hasControlSamples() {
-        return getGroup().getForm().isControlSamplesInStudy();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AbstractCriterion getCriterion() {
-        if (getGenomicCriterionWrapper() != null) {
-            return getGenomicCriterionWrapper().getCriterion();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getFieldName() {
-        if (getGenomicCriterionWrapper() != null) {
-            return getGenomicCriterionWrapper().getFieldName();
-        } else {
-            return null;
-        }
-    }
-
-    void handleFieldNameChange(String fieldName) {
-        if (StringUtils.isBlank(fieldName)) {
-            setGenomicCriterionWrapper(null);
-        } else if (fieldName.equals(GeneNameCriterionWrapper.FIELD_NAME)) {
-            setGenomicCriterionWrapper(new GeneNameCriterionWrapper(this, GenomicCriterionTypeEnum.GENE_EXPRESSION));
-        } else if (fieldName.equals(FoldChangeCriterionWrapper.FOLD_CHANGE)) {
-            setGenomicCriterionWrapper(new FoldChangeCriterionWrapper(study, this));
-        } else if (fieldName.equals(ExpressionLevelCriterionWrapper.EXPRESSION_LEVEL)) {
-            setGenomicCriterionWrapper(new ExpressionLevelCriterionWrapper(this));
-        
-        } else {
-            throw new IllegalArgumentException("Unsupported genomic field name " + fieldName);
-        }
-    }
-
-    private AbstractGenomicCriterionWrapper getGenomicCriterionWrapper() {
-        return genomicCriterionWrapper;
-    }
-
-    private void setGenomicCriterionWrapper(AbstractGenomicCriterionWrapper genomicCriterionWrapper) {
-        if (this.genomicCriterionWrapper != null) {
-            removeCriterionFromQuery();
-        }
-        this.genomicCriterionWrapper = genomicCriterionWrapper;
-        if (genomicCriterionWrapper != null) {
-            addCriterionToQuery();
-        }
-    }
-
-    @Override
-    AbstractCriterionWrapper getCriterionWrapper() {
-        return getGenomicCriterionWrapper();
-    }
-
-    @Override
-    void setCriterion(AbstractCriterion criterion) {
-        this.genomicCriterionWrapper = CriterionWrapperBuilder.createGenomicCriterionWrapper(criterion, this, study);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getRowType() {
-        return CriterionRowTypeEnum.GENE_EXPRESSION.getValue();
+    @Test(expected = IllegalArgumentException.class)
+    public void testCheckType() {
+        RangeTypeEnum.checkType("no match");
     }
 
 }

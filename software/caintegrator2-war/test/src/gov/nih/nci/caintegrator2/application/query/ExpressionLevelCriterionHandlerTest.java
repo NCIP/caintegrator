@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -191,14 +190,14 @@ public class ExpressionLevelCriterionHandlerTest {
         Gene gene = new Gene();
         gene.setSymbol("Gene");
         genes.add(gene);
-        assertTrue(handler.isGenomicValueMatchCriterion(genes, 1.4f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.BETWEEN, handler.getGenomicValueMatchCriterionType(genes, 1.4f));
         
         criterion.setGeneSymbol("invalid");
-        assertFalse(handler.isGenomicValueMatchCriterion(genes, 1.4f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getGenomicValueMatchCriterionType(genes, 1.4f));
         criterion.setGeneSymbol("Gene");
         criterion.setRangeType(RangeTypeEnum.OUTSIDE_RANGE);
-        assertTrue(handler.isGenomicValueMatchCriterion(genes, .9f));
-        assertFalse(handler.isGenomicValueMatchCriterion(genes, 1f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.UNDER, handler.getGenomicValueMatchCriterionType(genes, .9f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getGenomicValueMatchCriterionType(genes, 1f));
         
         assertTrue(handler.hasEntityCriterion());
         assertTrue(handler.hasReporterCriterion());

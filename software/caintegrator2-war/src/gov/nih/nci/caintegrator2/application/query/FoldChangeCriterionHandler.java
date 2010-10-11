@@ -201,11 +201,11 @@ public final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
         }
     }
     
-    boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
+    GenomicCriteriaMatchTypeEnum getGenomicValueMatchCriterionType(Set<Gene> genes, Float value) {
         if (isReporterMatch(genes) && isFoldChangeMatch(value)) {
-            return true;
+            return GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE;
         }
-        return false;
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
 
     private boolean isReporterMatch(Set<Gene> genes) {
@@ -350,8 +350,8 @@ public final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
     }
 
     @Override
-    boolean isSegmentValueMatchCriterion(Float value) {
-        return false;
+    GenomicCriteriaMatchTypeEnum getSegmentValueMatchCriterionType(Float value) {
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
 
 
