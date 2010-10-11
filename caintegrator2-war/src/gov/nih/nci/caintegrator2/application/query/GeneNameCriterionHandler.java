@@ -189,13 +189,13 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
     }
 
     @Override
-    boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
+    GenomicCriteriaMatchTypeEnum getGenomicValueMatchCriterionType(Set<Gene> genes, Float value) {
         for (Gene gene : genes) {
             if (criterion.getGeneSymbol().contains(gene.getSymbol())) {
-                return true;
+                return GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE;
             }
         }
-        return false;
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
     
     @Override
@@ -214,8 +214,8 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
     }
 
     @Override
-    boolean isSegmentValueMatchCriterion(Float value) {
-        return false;
+    GenomicCriteriaMatchTypeEnum getSegmentValueMatchCriterionType(Float value) {
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
 
 }

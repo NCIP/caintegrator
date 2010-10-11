@@ -258,8 +258,8 @@ class GenomicQueryHandler {
             CompoundCriterionHandler criterionHandler,
             AbstractReporter reporter, GenomicDataResultRow row, GenomicDataResultValue value) {
         if (result.isHasCriterionSpecifiedValues()) {
-            value.setMeetsCriterion(criterionHandler.
-                    isGenomicValueMatchCriterion(reporter.getGenes(), value.getValue()));
+            value.setCriteriaMatchType(criterionHandler.
+                    getGenomicValueMatchCriterionType(reporter.getGenes(), value.getValue()));
             row.setHasMatchingValues(row.isHasMatchingValues() || value.isMeetsCriterion());
         }
     }
@@ -267,8 +267,8 @@ class GenomicQueryHandler {
     private void checkMeetsCopyNumberCriterion(GenomicDataQueryResult result, CompoundCriterionHandler criterionHandler,
             GenomicDataResultRow row, GenomicDataResultValue value) {
         if (result.isHasCriterionSpecifiedValues()) {
-            value.setMeetsCriterion(criterionHandler.
-                    isSegmentValueMatchCriterion(value.getValue()));
+            value.setCriteriaMatchType(criterionHandler.
+                    getSegmentValueMatchCriterionType(value.getValue()));
             row.setHasMatchingValues(row.isHasMatchingValues() || value.isMeetsCriterion());
         }
     }

@@ -86,85 +86,69 @@
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
-import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
+import gov.nih.nci.caintegrator2.domain.application.ExpressionLevelCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.application.RangeTypeEnum;
 
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.lang.xwork.StringUtils;
 
 import com.opensymphony.xwork2.ValidationAware;
 
 /**
- * Wraps access to a single <code>FoldChangeCriterion</code>.
+ * Wraps access to a single <code>ExpressionLevelCriterion</code>.
  */
 @SuppressWarnings("PMD.CyclomaticComplexity")   // anonymous inner class
-class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
-    private static final int NUMBER_OF_MAX_PARAMETERS = 5;
+class ExpressionLevelCriterionWrapper extends AbstractGenomicCriterionWrapper {
+    private static final int NUMBER_OF_MAX_PARAMETERS = 4;
     private static final int NUMBER_OF_MAX_PARAMETERS_MULTIPLE_PLATFORMS = NUMBER_OF_MAX_PARAMETERS + 1;
-    private static final float DEFAULT_FOLDS = 2.0f;
-    private static final Float DEFAULT_FOLDS_UNCHANGED_DOWN = 0.8f;
-    private static final Float DEFAULT_FOLDS_UNCHANGED_UP = 1.2f;
-    private static final String CONTROL_SAMPLE_SET_LABEL = "Control Sample Set";
-    private static final String REGULATION_TYPE_LABEL = "Regulation Type";
-    static final String FOLD_CHANGE = "Fold Change";
-    private Integer controlParameterIndex = null;
-    private Study study = null;
+    private static final Float DEFAULT_VALUE = 100f;
+    private static final String RANGE_TYPE_LABEL = "Range Type";
+    static final String EXPRESSION_LEVEL = "Expression Level";
 
-    private final FoldChangeCriterion criterion;
+    private final ExpressionLevelCriterion criterion;
 
-    FoldChangeCriterionWrapper(Study study, GeneExpressionCriterionRow row) {
-        this(study, new FoldChangeCriterion(), row);
+    ExpressionLevelCriterionWrapper(GeneExpressionCriterionRow row) {
+        this(new ExpressionLevelCriterion(), row);
     }
 
     @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")  // bogus error; mistakenly thinks isValid is called
-    FoldChangeCriterionWrapper(Study study, FoldChangeCriterion criterion, GeneExpressionCriterionRow row) {
+    ExpressionLevelCriterionWrapper(ExpressionLevelCriterion criterion, GeneExpressionCriterionRow row) {
         super(row);
-        this.study = study;
         this.criterion = criterion;
-        if (criterion.getRegulationType() == null) {
-            criterion.setRegulationType(RegulationTypeEnum.UP);
+        if (criterion.getRangeType() == null) {
+            criterion.setRangeType(RangeTypeEnum.GREATER_OR_EQUAL);
             setCriterionDefaults();
         }
         setupDefaultGenomicParameters(GenomicCriterionTypeEnum.GENE_EXPRESSION);
-        getParameters().add(createControlSampleSetParameter());
-        getParameters().add(createRegulationTypeParameter());
-        addFoldsParameters();
+        getParameters().add(createRangeTypeParameter());
+        addRangeParameters();
     }
 
-    private void setUpFoldsParameters() {
+    private void setUpRangeParameters() {
         setCriterionDefaults();
-        removeExistingFoldsParameters();
-        addFoldsParameters();
-    }
-    
-    protected void updateControlParameters() {
-        if (controlParameterIndex != null) {
-            getParameters().remove(getParameters().get(controlParameterIndex));
-            getParameters().add(controlParameterIndex, createControlSampleSetParameter());
-        }
+        removeExistingRangeParameters();
+        addRangeParameters();
     }
 
-    private void addFoldsParameters() {
-        switch (criterion.getRegulationType()) {
-            case UP:
-                getParameters().add(createFoldsUpParameter());
+    private void addRangeParameters() {
+        switch (criterion.getRangeType()) {
+            case GREATER_OR_EQUAL:
+                getParameters().add(createGreaterOrEqualParameter());
                 break;
-            case DOWN:
-                getParameters().add(createFoldsDownParameter());
+            case LESS_OR_EQUAL:
+                getParameters().add(createLessOrEqualParameter());
                 break;
-            case UP_OR_DOWN:
-            case UNCHANGED:
-                getParameters().add(createFoldsDownParameter());
-                getParameters().add(createFoldsUpParameter());
+            case INSIDE_RANGE:
+            case OUTSIDE_RANGE:
+                getParameters().add(createGreaterOrEqualParameter());
+                getParameters().add(createLessOrEqualParameter());
                 break;
             default:
                 break;
         }
     }
 
-    private void removeExistingFoldsParameters() {
+    private void removeExistingRangeParameters() {
         if (getParameters().size() == getNumberMaxParameters()) {
             getParameters().remove(getNumberMaxParameters() - 1);
         }
@@ -180,81 +164,55 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
 
 
     private void setCriterionDefaults() {
-        switch (criterion.getRegulationType()) {
-            case UP:
-                criterion.setFoldsUp(DEFAULT_FOLDS);
+        switch (criterion.getRangeType()) {
+            case GREATER_OR_EQUAL:
+                criterion.setLowerLimit(DEFAULT_VALUE);
                 break;
-            case DOWN:
-                criterion.setFoldsDown(DEFAULT_FOLDS);
+            case LESS_OR_EQUAL:
+                criterion.setUpperLimit(DEFAULT_VALUE);
                 break;
-            case UP_OR_DOWN:
-                criterion.setFoldsUp(DEFAULT_FOLDS);
-                criterion.setFoldsDown(DEFAULT_FOLDS);
+            case INSIDE_RANGE:
+                criterion.setLowerLimit(DEFAULT_VALUE);
+                criterion.setUpperLimit(DEFAULT_VALUE);
                 break;
-            case UNCHANGED:
-                criterion.setFoldsDown(DEFAULT_FOLDS_UNCHANGED_DOWN);
-                criterion.setFoldsUp(DEFAULT_FOLDS_UNCHANGED_UP);
+            case OUTSIDE_RANGE:
+                criterion.setLowerLimit(DEFAULT_VALUE);
+                criterion.setUpperLimit(DEFAULT_VALUE);
                 break;
             default:
                 break;
         }
     }
 
-    private SelectListParameter<String> createControlSampleSetParameter() {
-        OptionList<String> options = new OptionList<String>();
-        String platformNameToUse = null;
-        if (isStudyHasMultipleGeneExpressionPlatforms()) {
-            platformNameToUse = StringUtils.isBlank(criterion.getPlatformName()) 
-                    ? "UNKNOWN" : criterion.getPlatformName();
-        }
-        for (String name : study.getStudyConfiguration().getControlSampleSetNames(platformNameToUse)) {
-            options.addOption(name, name);
-        }
-        ValueSelectedHandler<String> handler = new ValueSelectedHandler<String>() {
-            public void valueSelected(String value) {
-                criterion.setControlSampleSetName(value);
+    private SelectListParameter<RangeTypeEnum> createRangeTypeParameter() {
+        OptionList<RangeTypeEnum> options = new OptionList<RangeTypeEnum>();
+        options.addOption(RangeTypeEnum.GREATER_OR_EQUAL.getValue(), RangeTypeEnum.GREATER_OR_EQUAL);
+        options.addOption(RangeTypeEnum.LESS_OR_EQUAL.getValue(), RangeTypeEnum.LESS_OR_EQUAL);
+        options.addOption(RangeTypeEnum.OUTSIDE_RANGE.getValue(), RangeTypeEnum.OUTSIDE_RANGE);
+        options.addOption(RangeTypeEnum.INSIDE_RANGE.getValue(), RangeTypeEnum.INSIDE_RANGE);
+        ValueSelectedHandler<RangeTypeEnum> handler = new ValueSelectedHandler<RangeTypeEnum>() {
+            public void valueSelected(RangeTypeEnum value) {
+                criterion.setRangeType(value);
+                setUpRangeParameters();
             }
         };
-        if (controlParameterIndex == null) {
-            controlParameterIndex = getParameters().size();
-        }
-        SelectListParameter<String> controlSampleSetNameParameter = 
-            new SelectListParameter<String>(controlParameterIndex, getRow().getRowIndex(), 
-                                            options, handler, criterion.getControlSampleSetName());
-        controlSampleSetNameParameter.setLabel(CONTROL_SAMPLE_SET_LABEL);
-        controlSampleSetNameParameter.setUpdateFormOnChange(false);
-        return controlSampleSetNameParameter;
-    }
-
-    private SelectListParameter<RegulationTypeEnum> createRegulationTypeParameter() {
-        OptionList<RegulationTypeEnum> options = new OptionList<RegulationTypeEnum>();
-        options.addOption(RegulationTypeEnum.UP.getValue(), RegulationTypeEnum.UP);
-        options.addOption(RegulationTypeEnum.DOWN.getValue(), RegulationTypeEnum.DOWN);
-        options.addOption(RegulationTypeEnum.UP_OR_DOWN.getValue(), RegulationTypeEnum.UP_OR_DOWN);
-        options.addOption(RegulationTypeEnum.UNCHANGED.getValue(), RegulationTypeEnum.UNCHANGED);
-        ValueSelectedHandler<RegulationTypeEnum> handler = new ValueSelectedHandler<RegulationTypeEnum>() {
-            public void valueSelected(RegulationTypeEnum value) {
-                criterion.setRegulationType(value);
-                setUpFoldsParameters();
-            }
-        };
-        SelectListParameter<RegulationTypeEnum> regulationTypeParameter = 
-            new SelectListParameter<RegulationTypeEnum>(getParameters().size(), getRow().getRowIndex(), 
-                                                        options, handler, criterion.getRegulationType());
-        regulationTypeParameter.setLabel(REGULATION_TYPE_LABEL);
-        regulationTypeParameter.setUpdateFormOnChange(true);
-        return regulationTypeParameter;
+        SelectListParameter<RangeTypeEnum> rangeTypeParameter = 
+            new SelectListParameter<RangeTypeEnum>(getParameters().size(), getRow().getRowIndex(), 
+                                                        options, handler, criterion.getRangeType());
+        rangeTypeParameter.setLabel(RANGE_TYPE_LABEL);
+        rangeTypeParameter.setUpdateFormOnChange(true);
+        return rangeTypeParameter;
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")   // anonymous inner class
-    private TextFieldParameter createFoldsDownParameter() {
+    private TextFieldParameter createLessOrEqualParameter() {
         final String label = 
-            RegulationTypeEnum.UNCHANGED.equals(criterion.getRegulationType()) 
-                ? "Folds between" : "Down-regulation folds";
-        TextFieldParameter foldsParameter = new TextFieldParameter(getParameters().size(), getRow().getRowIndex(), 
-                                                                   criterion.getFoldsDown().toString());
-        foldsParameter.setLabel(label);
-        ValueHandler foldsChangeHandler = new ValueHandlerAdapter() {
+            RangeTypeEnum.INSIDE_RANGE.equals(criterion.getRangeType()) 
+                ? "And" : "Expression level <=";
+        TextFieldParameter rangeParameter = new TextFieldParameter(getParameters().size(), getRow().getRowIndex(), 
+                                                                   criterion.getUpperLimit().toString());
+        rangeParameter.setLabel(label);
+        ValueHandler expressionHandler = new ValueHandlerAdapter() {
 
             public boolean isValid(String value) {
                 return NumberUtils.isNumber(value);
@@ -267,21 +225,22 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
             }
 
             public void valueChanged(String value) {
-                criterion.setFoldsDown(Float.valueOf(value));
+                criterion.setUpperLimit(Float.valueOf(value));
             }
         };
-        foldsParameter.setValueHandler(foldsChangeHandler);
-        return foldsParameter;
+        rangeParameter.setValueHandler(expressionHandler);
+        return rangeParameter;
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")   // anonymous inner class
-    private TextFieldParameter createFoldsUpParameter() {
+    private TextFieldParameter createGreaterOrEqualParameter() {
         final String label = 
-            RegulationTypeEnum.UNCHANGED.equals(criterion.getRegulationType()) ? "And" : "Up-regulation folds";
-        TextFieldParameter foldsParameter = new TextFieldParameter(getParameters().size(), getRow().getRowIndex(), 
-                                                                   criterion.getFoldsUp().toString());
-        foldsParameter.setLabel(label);
-        ValueHandler foldsChangeHandler = new ValueHandlerAdapter() {
+            RangeTypeEnum.INSIDE_RANGE.equals(criterion.getRangeType())
+                    ? "Expression level between" : "Expression level >=";
+        TextFieldParameter rangeParameter = new TextFieldParameter(getParameters().size(), getRow().getRowIndex(), 
+                                                                   criterion.getLowerLimit().toString());
+        rangeParameter.setLabel(label);
+        ValueHandler expressionHandler = new ValueHandlerAdapter() {
 
             public boolean isValid(String value) {
                 return NumberUtils.isNumber(value);
@@ -294,11 +253,11 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
             }
 
             public void valueChanged(String value) {
-                criterion.setFoldsUp(Float.valueOf(value));
+                criterion.setLowerLimit(Float.valueOf(value));
             }
         };
-        foldsParameter.setValueHandler(foldsChangeHandler);
-        return foldsParameter;
+        rangeParameter.setValueHandler(expressionHandler);
+        return rangeParameter;
     }
     
     /**
@@ -314,7 +273,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
      */
     @Override
     String getFieldName() {
-        return FOLD_CHANGE;
+        return EXPRESSION_LEVEL;
     }
 
     /**
@@ -322,7 +281,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
      */
     @Override
     CriterionTypeEnum getCriterionType() {
-        return CriterionTypeEnum.FOLD_CHANGE;
+        return CriterionTypeEnum.EXPRESSION_LEVEL;
     }
 
     /**
@@ -330,7 +289,13 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
      */
     @Override
     protected boolean platformParameterUpdateOnChange() {
-        return true;
+        return false;
+    }
+
+    @Override
+    protected void updateControlParameters() {
+        // no-op, no control parameters for expression level criterion.
+        
     }
 
 }

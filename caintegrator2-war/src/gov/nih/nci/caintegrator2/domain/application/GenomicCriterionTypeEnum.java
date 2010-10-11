@@ -2,7 +2,6 @@ package gov.nih.nci.caintegrator2.domain.application;
 
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -61,7 +60,7 @@ public enum GenomicCriterionTypeEnum {
      */
     public static GenomicCriterionTypeEnum getByValue(String value) {
         checkType(value);
-        return getValueToTypeMap().get(value.toLowerCase(Locale.getDefault()));
+        return getValueToTypeMap().get(value);
     }
 
     /**
@@ -70,7 +69,7 @@ public enum GenomicCriterionTypeEnum {
      * @param value the value to check;
      */
     public static void checkType(String value) {
-        if (value == null || !getValueToTypeMap().containsKey(value.toLowerCase(Locale.getDefault()))) {
+        if (value != null && !getValueToTypeMap().containsKey(value)) {
             throw new IllegalArgumentException("No matching type for " + value);
         }
     }

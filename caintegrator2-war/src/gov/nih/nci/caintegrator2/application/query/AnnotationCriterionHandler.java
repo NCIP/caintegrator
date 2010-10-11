@@ -218,8 +218,8 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
     }
 
     @Override
-    boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
-        return false;
+    GenomicCriteriaMatchTypeEnum getGenomicValueMatchCriterionType(Set<Gene> genes, Float value) {
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
 
     @Override
@@ -238,8 +238,8 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
     }
 
     @Override
-    boolean isSegmentValueMatchCriterion(Float value) {
-        return false;
+    GenomicCriteriaMatchTypeEnum getSegmentValueMatchCriterionType(Float value) {
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
 
 }

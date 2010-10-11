@@ -89,6 +89,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import gov.nih.nci.caintegrator2.application.query.GenomicCriteriaMatchTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
@@ -151,7 +152,7 @@ public class DisplayableCopyNumberQueryResultTest {
         GenomicDataResultValue genomicDataResultValue = new GenomicDataResultValue();
         genomicDataResultValue.setColumn(column);
         genomicDataResultValue.setValue(0.123F);
-        genomicDataResultValue.setMeetsCriterion(true);
+        genomicDataResultValue.setCriteriaMatchType(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE);
         return genomicDataResultValue;
     }
 

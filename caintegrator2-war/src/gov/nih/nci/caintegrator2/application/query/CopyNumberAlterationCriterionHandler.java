@@ -108,6 +108,7 @@ import java.util.Set;
 /**
  * 
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // Complex case statement to determine the match type.
 public final class CopyNumberAlterationCriterionHandler extends AbstractCriterionHandler {
     
     private static final int SEGMENT_BUFFER_SIZE = 500;
@@ -215,12 +216,13 @@ public final class CopyNumberAlterationCriterionHandler extends AbstractCriterio
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Complex case statement to determine the match type.
     @Override
-    boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
-        return false;
+    GenomicCriteriaMatchTypeEnum getGenomicValueMatchCriterionType(Set<Gene> genes, Float value) {
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
     
-    boolean isSegmentValueMatchCriterion(Float value) {
+    GenomicCriteriaMatchTypeEnum getSegmentValueMatchCriterionType(Float value) {
         boolean upperLimitValid = true;
         boolean lowerLimitValid = true;
         if (criterion.getUpperLimit() != null) {
@@ -229,9 +231,16 @@ public final class CopyNumberAlterationCriterionHandler extends AbstractCriterio
         if (criterion.getLowerLimit() != null) {
             lowerLimitValid = value >= criterion.getLowerLimit();
         }
-        
-        return criterion.isOutsideBoundaryType() 
-                ? upperLimitValid || lowerLimitValid : upperLimitValid && lowerLimitValid;
+        if (criterion.isOutsideBoundaryType()) { // For outside boundary type
+            if (upperLimitValid || lowerLimitValid) { // if it is upper limit valid or lower limit valid
+                return GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE;
+            }
+        } else { // Inside boundary type
+            if (upperLimitValid && lowerLimitValid) { // both upper limit and lower limit must be valid.
+                return GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE;
+            }
+        }
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
     
     boolean hasCriterionSpecifiedSegmentValues() {

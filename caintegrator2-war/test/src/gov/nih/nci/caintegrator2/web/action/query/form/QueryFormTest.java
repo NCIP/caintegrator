@@ -378,7 +378,7 @@ public class QueryFormTest {
         group.setCriterionTypeName(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
         group.addCriterion(subscription.getStudy());
         GeneExpressionCriterionRow criterionRow = (GeneExpressionCriterionRow) group.getRows().get(0);
-        assertEquals(1, criterionRow.getAvailableFieldNames().size());
+        assertEquals(2, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
         assertFalse(criterionRow.getAvailableFieldNames().contains("Fold Change"));
     }
@@ -525,7 +525,7 @@ public class QueryFormTest {
         assertEquals(2, group.getCompoundCriterion().getCriterionCollection().size());
         GeneExpressionCriterionRow criterionRow = (GeneExpressionCriterionRow) group.getRows().get(2);
         
-        assertEquals(2, criterionRow.getAvailableFieldNames().size());
+        assertEquals(3, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
         assertTrue(criterionRow.getAvailableFieldNames().contains("Fold Change"));
         
