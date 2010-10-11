@@ -189,21 +189,21 @@ public class CopyNumberAlterationCriterionHandlerTest {
         assertTrue(handler.isEntityMatchHandler());
         assertFalse(handler.isReporterMatchHandler());
         assertTrue(handler.hasCriterionSpecifiedSegmentValues());
-        assertTrue(handler.isSegmentValueMatchCriterion(2f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentValueMatchCriterionType(2f));
         
         criterion.setLowerLimit(1f);
-        assertTrue(handler.isSegmentValueMatchCriterion(2f));
-        assertFalse(handler.isSegmentValueMatchCriterion(.1f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentValueMatchCriterionType(2f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getSegmentValueMatchCriterionType(.1f));
         
         criterion.setLowerLimit(null);
         criterion.setUpperLimit(4f);
-        assertTrue(handler.isSegmentValueMatchCriterion(4f));
-        assertFalse(handler.isSegmentValueMatchCriterion(5f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentValueMatchCriterionType(4f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getSegmentValueMatchCriterionType(5f));
         
         criterion.setLowerLimit(2f);
-        assertTrue(handler.isSegmentValueMatchCriterion(2f));
-        assertFalse(handler.isSegmentValueMatchCriterion(1f));
-        assertFalse(handler.isSegmentValueMatchCriterion(5f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentValueMatchCriterionType(2f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getSegmentValueMatchCriterionType(1f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getSegmentValueMatchCriterionType(5f));
         
     }
     

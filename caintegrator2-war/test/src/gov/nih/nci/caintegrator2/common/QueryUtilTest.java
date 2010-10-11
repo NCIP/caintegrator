@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.ExpressionLevelCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
@@ -208,6 +209,10 @@ public class QueryUtilTest {
         geneNameCriterion.setGenomicCriterionType(GenomicCriterionTypeEnum.GENE_EXPRESSION);
         assertTrue(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
         
+        compoundCriterion1 = new CompoundCriterion();
+        compoundCriterion1.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion1.getCriterionCollection().add(new ExpressionLevelCriterion());
+        assertTrue(QueryUtil.isCompoundCriterionGeneExpression(compoundCriterion1));
     }
     
     @Test

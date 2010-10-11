@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.ExpressionLevelCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
@@ -294,7 +295,8 @@ public class CriteriaGroup {
     public boolean hasNoGeneExpressionCriterion() {
         for (AbstractCriterionRow row : getRows()) {
             if (row.getCriterion() instanceof GeneNameCriterion
-                    || row.getCriterion() instanceof FoldChangeCriterion) {
+                    || row.getCriterion() instanceof FoldChangeCriterion 
+                    || row.getCriterion() instanceof ExpressionLevelCriterion) {
                 return false;
             }
         }

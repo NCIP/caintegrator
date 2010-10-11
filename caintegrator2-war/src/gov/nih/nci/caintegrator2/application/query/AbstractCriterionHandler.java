@@ -185,12 +185,12 @@ abstract class AbstractCriterionHandler {
      * @param value is the value to match criterion against.
      * @return true if the given value matches the criterion.
      */
-    abstract boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value);
+    abstract GenomicCriteriaMatchTypeEnum getGenomicValueMatchCriterionType(Set<Gene> genes, Float value);
     
     /**
      * Determines if the value matches the criterion.
      * @param value is the value to match the criterion against.
      * @return true if the given value matches the criterion.
      */
-    abstract boolean isSegmentValueMatchCriterion(Float value);
+    abstract GenomicCriteriaMatchTypeEnum getSegmentValueMatchCriterionType(Float value);
 }

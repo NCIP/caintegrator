@@ -114,6 +114,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Handler that returns samples matching the given expression level criterion.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // Complex case statement to determine the match type.
 public final class ExpressionLevelCriterionHandler extends AbstractCriterionHandler {
 
     private final ExpressionLevelCriterion criterion;
@@ -165,33 +166,50 @@ public final class ExpressionLevelCriterionHandler extends AbstractCriterionHand
     private boolean hasExpressionLevelMatch(ArrayData arrayData, ArrayDataValues values) {
         for (AbstractReporter reporter : values.getReporters()) {
             Float expressionValue = values.getFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL);
-            if (isExpressionMatch(expressionValue)) {
+            if (getExpressionMatchType(expressionValue) != GenomicCriteriaMatchTypeEnum.NO_MATCH) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isExpressionMatch(Float expressionValue) {
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Complex case statement to determine the match type.
+    private GenomicCriteriaMatchTypeEnum getExpressionMatchType(Float expressionValue) {
         switch (criterion.getRangeType()) {
             case GREATER_OR_EQUAL:
-                return isExpressionGreaterMatch(expressionValue);
+                if (isExpressionGreaterMatch(expressionValue)) {
+                    return GenomicCriteriaMatchTypeEnum.OVER;
+                }
+                break;
             case LESS_OR_EQUAL:
-                return isExpressionLowerMatch(expressionValue);
+                if (isExpressionLowerMatch(expressionValue)) {
+                    return GenomicCriteriaMatchTypeEnum.UNDER;
+                }
+                break;
             case INSIDE_RANGE:
-                return isExpressionGreaterMatch(expressionValue) && isExpressionLowerMatch(expressionValue);
+                if (isExpressionGreaterMatch(expressionValue) && isExpressionLowerMatch(expressionValue)) {
+                    return GenomicCriteriaMatchTypeEnum.BETWEEN;
+                }
+                break;
             case OUTSIDE_RANGE:
-                return !(isExpressionGreaterMatch(expressionValue) && isExpressionLowerMatch(expressionValue));
+                if (!(isExpressionGreaterMatch(expressionValue) && isExpressionLowerMatch(expressionValue))) {
+                    if (expressionValue >= criterion.getUpperLimit()) {
+                        return GenomicCriteriaMatchTypeEnum.OVER;
+                    }
+                    return GenomicCriteriaMatchTypeEnum.UNDER;
+                }
+                break;
             default:
                 throw new IllegalStateException("Illegal regulation type: " + criterion.getRangeType());
         }
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
     
-    boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
-        if (isReporterMatch(genes) && isExpressionMatch(value)) {
-            return true;
+    GenomicCriteriaMatchTypeEnum getGenomicValueMatchCriterionType(Set<Gene> genes, Float value) {
+        if (isReporterMatch(genes)) {
+            return getExpressionMatchType(value);
         }
-        return false;
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
 
     private boolean isReporterMatch(Set<Gene> genes) {
@@ -311,8 +329,8 @@ public final class ExpressionLevelCriterionHandler extends AbstractCriterionHand
     }
 
     @Override
-    boolean isSegmentValueMatchCriterion(Float value) {
-        return false;
+    GenomicCriteriaMatchTypeEnum getSegmentValueMatchCriterionType(Float value) {
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
 
 

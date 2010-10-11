@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.ExpressionLevelCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
@@ -261,6 +262,8 @@ public final class QueryUtil {
                             ((GeneNameCriterion) abstractCriterion).getGenomicCriterionType()))) {
                 return true;
             } else if (abstractCriterion instanceof FoldChangeCriterion) {
+                return true;
+            } else if (abstractCriterion instanceof ExpressionLevelCriterion) {
                 return true;
             }
         }

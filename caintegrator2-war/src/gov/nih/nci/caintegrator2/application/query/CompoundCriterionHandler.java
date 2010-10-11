@@ -377,13 +377,14 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
 
 
     @Override
-    boolean isGenomicValueMatchCriterion(Set<Gene> genes, Float value) {
+    GenomicCriteriaMatchTypeEnum getGenomicValueMatchCriterionType(Set<Gene> genes, Float value) {
         for (AbstractCriterionHandler handler : handlers) {
-            if (handler.isGenomicValueMatchCriterion(genes, value)) {
-                return true;
+            GenomicCriteriaMatchTypeEnum matchType = handler.getGenomicValueMatchCriterionType(genes, value);
+            if (!GenomicCriteriaMatchTypeEnum.NO_MATCH.equals(matchType)) {
+                return matchType;
             }
         }
-        return false;
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
 
     @Override
@@ -409,12 +410,13 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
 
 
     @Override
-    boolean isSegmentValueMatchCriterion(Float value) {
+    GenomicCriteriaMatchTypeEnum getSegmentValueMatchCriterionType(Float value) {
         for (AbstractCriterionHandler handler : handlers) {
-            if (handler.isSegmentValueMatchCriterion(value)) {
-                return true;
+            GenomicCriteriaMatchTypeEnum matchType = handler.getSegmentValueMatchCriterionType(value);
+            if (!GenomicCriteriaMatchTypeEnum.NO_MATCH.equals(matchType)) {
+                return matchType;
             }
         }
-        return false;
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
 }

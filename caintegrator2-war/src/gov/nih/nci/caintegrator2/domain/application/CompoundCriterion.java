@@ -162,22 +162,38 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
     public void validateGeneExpressionCriterion() throws InvalidCriterionException {
         boolean isFoldChange = false;
         boolean isGeneName = false;
+        boolean isExpressionLevel = false;
         List<String> geneSymbols = new ArrayList<String>();
         for (AbstractCriterion criterion : getCriterionCollection()) {
             if (criterion instanceof FoldChangeCriterion) {
                 isFoldChange = true;
                 validateDuplicateGeneSymbol(geneSymbols, criterion);
-                validateMixedCriterion(isFoldChange, isGeneName);
+                validateMixedCriterion(isFoldChange, isGeneName, isExpressionLevel);
             } else if (criterion instanceof GeneNameCriterion) {
                 isGeneName = true;
-                validateMixedCriterion(isFoldChange, isGeneName);
+                validateMixedCriterion(isFoldChange, isGeneName, isExpressionLevel);
+            } else if (criterion instanceof ExpressionLevelCriterion) {
+                isExpressionLevel = true;
+                validateMixedCriterion(isFoldChange, isGeneName, isExpressionLevel);
             }
         }
     }
 
-    private void validateMixedCriterion(boolean isFoldChange, boolean isGeneName) throws InvalidCriterionException {
-        if (isFoldChange && isGeneName) {
-            throw new InvalidCriterionException("Gene name and Fold change criterion can't be mixed.");
+    private void validateMixedCriterion(boolean isFoldChange, boolean isGeneName, boolean isExpressionlevel) 
+        throws InvalidCriterionException {
+        int numMixedTypes = 0;
+        if (isFoldChange) {
+            numMixedTypes++;
+        }
+        if (isGeneName) {
+            numMixedTypes++;
+        }
+        if (isExpressionlevel) {
+            numMixedTypes++;
+        }
+        if (numMixedTypes > 1) {
+            throw new InvalidCriterionException(
+                    "Gene Name, Expression Level, and Fold change criterion can't be mixed.");
         }
     }
 
