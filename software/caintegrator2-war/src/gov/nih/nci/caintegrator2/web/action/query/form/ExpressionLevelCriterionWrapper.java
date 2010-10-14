@@ -208,6 +208,7 @@ class ExpressionLevelCriterionWrapper extends AbstractGenomicCriterionWrapper {
     private TextFieldParameter createLessOrEqualParameter() {
         final String label = 
             RangeTypeEnum.INSIDE_RANGE.equals(criterion.getRangeType()) 
+                || RangeTypeEnum.OUTSIDE_RANGE.equals(criterion.getRangeType())
                 ? "And" : "Expression level <=";
         TextFieldParameter rangeParameter = new TextFieldParameter(getParameters().size(), getRow().getRowIndex(), 
                                                                    criterion.getUpperLimit().toString());
@@ -234,9 +235,13 @@ class ExpressionLevelCriterionWrapper extends AbstractGenomicCriterionWrapper {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")   // anonymous inner class
     private TextFieldParameter createGreaterOrEqualParameter() {
-        final String label = 
-            RangeTypeEnum.INSIDE_RANGE.equals(criterion.getRangeType())
-                    ? "Expression level between" : "Expression level >=";
+        String possibleLabel = "Expression level >=";
+        if (RangeTypeEnum.INSIDE_RANGE.equals(criterion.getRangeType())) {
+            possibleLabel = "Expression level between";
+        } else if (RangeTypeEnum.OUTSIDE_RANGE.equals(criterion.getRangeType())) {
+            possibleLabel = "Expression level outside of";
+        }   
+        final String label = possibleLabel;
         TextFieldParameter rangeParameter = new TextFieldParameter(getParameters().size(), getRow().getRowIndex(), 
                                                                    criterion.getLowerLimit().toString());
         rangeParameter.setLabel(label);
