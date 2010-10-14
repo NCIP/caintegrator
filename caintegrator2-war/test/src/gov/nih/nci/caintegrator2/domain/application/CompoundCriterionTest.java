@@ -154,6 +154,49 @@ public class CompoundCriterionTest {
             getException = true;
         }
         assertTrue(getException);
-      
+        
+        // Test invalid expression level criterion
+        compoundCriterion = new CompoundCriterion();
+        ExpressionLevelCriterion expressionLevelCriterion = new ExpressionLevelCriterion();
+        compoundCriterion.getCriterionCollection().add(expressionLevelCriterion);
+        expressionLevelCriterion.setLowerLimit(2.0f);
+        expressionLevelCriterion.setUpperLimit(1.0f);
+        expressionLevelCriterion.setRangeType(RangeTypeEnum.INSIDE_RANGE);
+        getException = false;
+        try {
+            compoundCriterion.validateGeneExpressionCriterion();
+        } catch (InvalidCriterionException e) {
+            getException = true;
+        }
+        assertTrue(getException);
+        // Now try invalid outside range type.
+        expressionLevelCriterion.setRangeType(RangeTypeEnum.OUTSIDE_RANGE);
+        getException = false;
+        try {
+            compoundCriterion.validateGeneExpressionCriterion();
+        } catch (InvalidCriterionException e) {
+            getException = true;
+        }
+        assertTrue(getException);
+        // Valid greater or equal type
+        expressionLevelCriterion.setRangeType(RangeTypeEnum.GREATER_OR_EQUAL);
+        getException = false;
+        try {
+            compoundCriterion.validateGeneExpressionCriterion();
+        } catch (InvalidCriterionException e) {
+            getException = true;
+        }
+        assertFalse(getException);
+        // Valid outside range type.
+        getException = false;
+        expressionLevelCriterion.setLowerLimit(1.0f);
+        expressionLevelCriterion.setUpperLimit(2.0f);
+        expressionLevelCriterion.setRangeType(RangeTypeEnum.OUTSIDE_RANGE);
+        try {
+            compoundCriterion.validateGeneExpressionCriterion();
+        } catch (InvalidCriterionException e) {
+            getException = true;
+        }
+        assertFalse(getException);
     }
 }
