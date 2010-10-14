@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
+import gov.nih.nci.caintegrator2.application.analysis.ExpressionTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.KMGeneExpressionBasedParameters;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
@@ -118,6 +119,7 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
         super.prepare();
         setDisplayTab(GENE_EXPRESSION_TAB);
         retrieveFormValues();
+        checkForControlValues();
         platformsInStudy = new ArrayList<String>(
                 getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy()));
         Collections.sort(platformsInStudy);
@@ -125,18 +127,24 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
             getKmPlotParameters().setMultiplePlatformsInStudy(true);
         }
     }
+
+    private void checkForControlValues() {
+        if (!getStudy().getStudyConfiguration().hasControlSamples()) {
+            getForm().setNoControlsInStudy();
+        }
+    }
     
     private void retrieveFormValues() {
-        if (NumberUtils.isNumber(getForm().getOverexpressedNumber())
-            && Float.valueOf(getForm().getOverexpressedNumber()) >= 1) {
-            kmPlotParameters.setOverexpressedFoldChangeNumber(Float.valueOf(getForm().getOverexpressedNumber()));
+        if (NumberUtils.isNumber(getForm().getOverexpressedNumber())) {
+            kmPlotParameters.setOverValue(Float.valueOf(getForm().getOverexpressedNumber()));
         }
-        if (NumberUtils.isNumber(getForm().getUnderexpressedNumber()) 
-            && Float.valueOf(getForm().getUnderexpressedNumber()) >= 1) {
-            kmPlotParameters.setUnderexpressedFoldChangeNumber(Float.valueOf(getForm().getUnderexpressedNumber()));
+        if (NumberUtils.isNumber(getForm().getUnderexpressedNumber())) {
+            kmPlotParameters.setUnderValue(Float.valueOf(getForm().getUnderexpressedNumber()));
         }
         kmPlotParameters.setGeneSymbol(getForm().getGeneSymbol());
         kmPlotParameters.setControlSampleSetName(getForm().getControlSampleSetName());
+        kmPlotParameters.setExpressionType(ExpressionTypeEnum.getByValue(getForm().getExpressionType()));
+        kmPlotParameters.setPlatformName(getForm().getPlatformName());
     }
 
     /**
@@ -300,6 +308,38 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
     public List<String> getControlSampleSets() {
         return isStudyHasMultiplePlatforms() ? getForm().getControlSampleSets() 
                 : super.getControlSampleSets();
+    }
+    
+    /**
+     * 
+     * @return prefix on JSP.
+     */
+    public String getOverValueTextPrefix() {
+        return getForm().isFoldChangeType() ? "Overexpressed >= " : "Above Expression Level ";
+    }
+    
+    /**
+     * 
+     * @return prefix on JSP.
+     */
+    public String getUnderValueTextPrefix() {
+        return getForm().isFoldChangeType() ? "Underexpressed >= " : "Below Expression Level ";
+    }
+    
+    /**
+     * 
+     * @return suffix on JSP.
+     */
+    public String getValueSuffix() {
+        return getForm().isFoldChangeType() ? "fold" : "";
+    }
+    
+    /**
+     * 
+     * @return JSP value for display of controls.
+     */
+    public String getControlsDisplayStyle() {
+        return getForm().isFoldChangeType() ? "" : "display: none";
     }
 
 }

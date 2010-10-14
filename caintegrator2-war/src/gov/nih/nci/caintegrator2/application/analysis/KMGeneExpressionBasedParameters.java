@@ -95,13 +95,15 @@ import org.apache.commons.lang.StringUtils;
  */
 public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
 
-    private Float underexpressedFoldChangeNumber;
-    private Float overexpressedFoldChangeNumber;
+    private Float underValue;
+    private Float overValue;
     private String controlSampleSetName;
     private String geneSymbol;
     private final List<String> genesNotFound = new ArrayList<String>();
     private final List<String> genesFoundInStudy = new ArrayList<String>();
     private boolean multiplePlatformsInStudy = false;
+    private String platformName;
+    private ExpressionTypeEnum expressionType = ExpressionTypeEnum.FOLD_CHANGE;
 
     /**
      * {@inheritDoc}
@@ -113,23 +115,46 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
         isValid &= validateGeneName();
         isValid &= validateUnderexpressed();
         isValid &= validateOverexpressed();
+        isValid &= validateExpressionLevelValues();
+        isValid &= validatePlatformSelected();
         isValid &= validateControlSetSelected();
         isValid = validateSurvivalValueDefinition(isValid);
         return isValid;
     }
     
+    private boolean validatePlatformSelected() {
+        if (multiplePlatformsInStudy && StringUtils.isBlank(platformName)) {
+            getErrorMessages().add("There are multiple platforms in this study, select a platform first.");
+            return false;
+        }
+        return true;
+    }
+    
     private boolean validateControlSetSelected() {
-        if (StringUtils.isBlank(controlSampleSetName)) {
-            getErrorMessages().add("Must select a control sample set. "
-                    + "If there are multiple platforms in this study, select a platform first.");
+        if (isFoldChangeType() && StringUtils.isBlank(controlSampleSetName)) {
+            getErrorMessages().add("Must select a control sample set to create a Fold Change based plot.");
             return false;
         }
         return true;
     }
 
     private boolean validateOverexpressed() {
-        if (overexpressedFoldChangeNumber == null) {
-            getErrorMessages().add("Over Expressed Fold Change value is not a valid number, must be >= 1.");
+        String valueStringPrefix = isFoldChangeType() ? "Over Expressed Fold Change" : "Above Expression Level";
+        if (overValue == null) {
+            getErrorMessages().add(valueStringPrefix + " value cannot be null");
+            return false;
+        } 
+        if (isFoldChangeType() && overValue <= 0) {
+            getErrorMessages().add(valueStringPrefix + " value is not a valid number, must be > 0.");
+            return false;
+        } 
+        
+        return true;
+    }
+
+    private boolean validateExpressionLevelValues() {
+        if (!isFoldChangeType() && overValue != null && underValue != null && overValue <= underValue) {
+            getErrorMessages().add("Above Expression Level value must be greater than Below Expression Level value.");
             return false;
         }
         return true;
@@ -137,8 +162,13 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
 
 
     private boolean validateUnderexpressed() {
-        if (underexpressedFoldChangeNumber == null) {
-            getErrorMessages().add("Under Expressed Fold Change value is not a valid number, must be >= 1.");
+        String valueStringPrefix = isFoldChangeType() ? "Under Expressed Fold Change" : "Below Expression Level";
+        if (underValue == null) {
+            getErrorMessages().add(valueStringPrefix + " value cannot be null");
+            return false;
+        }
+        if (isFoldChangeType() && underValue <= 0) {
+            getErrorMessages().add(valueStringPrefix + " value is not a valid number, must be > 0.");
             return false;
         }
         return true;
@@ -154,43 +184,41 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
 
 
     /**
-     * @return the underexpressedFoldChangeNumber
+     * @return the underValue
      */
-    public Float getUnderexpressedFoldChangeNumber() {
-        return underexpressedFoldChangeNumber;
+    public Float getUnderValue() {
+        return underValue;
     }
-
 
     /**
-     * @param underexpressedFoldChangeNumber the underexpressedFoldChangeNumber to set
+     * @param underValue the underValue to set
      */
-    public void setUnderexpressedFoldChangeNumber(Float underexpressedFoldChangeNumber) {
-        this.underexpressedFoldChangeNumber = underexpressedFoldChangeNumber;
+    public void setUnderValue(Float underValue) {
+        this.underValue = underValue;
     }
-
 
     /**
-     * @return the overexpressedFoldChangeNumber
+     * @return the overValue
      */
-    public Float getOverexpressedFoldChangeNumber() {
-        return overexpressedFoldChangeNumber;
+    public Float getOverValue() {
+        return overValue;
     }
-
 
     /**
-     * @param overexpressedFoldChangeNumber the overexpressedFoldChangeNumber to set
+     * @param overValue the overValue to set
      */
-    public void setOverexpressedFoldChangeNumber(Float overexpressedFoldChangeNumber) {
-        this.overexpressedFoldChangeNumber = overexpressedFoldChangeNumber;
+    public void setOverValue(Float overValue) {
+        this.overValue = overValue;
     }
+
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void clear() {
-        underexpressedFoldChangeNumber = null;
-        overexpressedFoldChangeNumber = null;
+        underValue = null;
+        overValue = null;
         geneSymbol = null;
         
     }
@@ -255,5 +283,49 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
      */
     public void setMultiplePlatformsInStudy(boolean multiplePlatformsInStudy) {
         this.multiplePlatformsInStudy = multiplePlatformsInStudy;
+    }
+    
+    /**
+     * @return the expressionType
+     */
+    public ExpressionTypeEnum getExpressionType() {
+        return expressionType;
+    }
+
+    /**
+     * @param expressionType the expressionType to set
+     */
+    public void setExpressionType(ExpressionTypeEnum expressionType) {
+        this.expressionType = expressionType;
+    }
+    
+    /**
+     * @return the platformName
+     */
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    /**
+     * @param platformName the platformName to set
+     */
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
+    /**
+     * Used in the JSP's to retrieve the displayable string version of the Enum values. 
+     * @return HashMap of EnumeratedValue's String to Displayable String. 
+     */
+    public static List<String> getExpressionTypeValuesToDisplay() {
+        List<String> list = new ArrayList<String>();
+        for (ExpressionTypeEnum type : ExpressionTypeEnum.values()) {
+            list.add(type.getValue());
+        }
+        return list;
+    }
+    
+    private boolean isFoldChangeType() {
+        return ExpressionTypeEnum.FOLD_CHANGE.equals(expressionType);
     }
 }

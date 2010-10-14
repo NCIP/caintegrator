@@ -1,7 +1,6 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
- 
+
 <s:form name="kaplanMeierGeneExpressionInputForm" id="kaplanMeierGeneExpressionInputForm" theme="simple">
     <s:hidden name="createPlotSelected" value="false" />
     <s:hidden name="resetSelected" value="false" />
@@ -31,26 +30,42 @@
                 <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
                 2.)
                 </td>
-		        <td class="value_inline">
-                    Overexpressed >= <br>
+                <td class="value_inline" style="min-width: 5px; width: 120px;">
+                    Select Expression Type:
                 </td>
-                <td class="value_inline"><s:textfield name="kmPlotForm.geneExpressionBasedForm.overexpressedNumber" size="4" theme="simple"/> fold
+                <td class="value_inline">
+                    <s:radio name="kmPlotForm.geneExpressionBasedForm.expressionType"
+                    list="@gov.nih.nci.caintegrator2.application.analysis.KMGeneExpressionBasedParameters@getExpressionTypeValuesToDisplay()"
+                    onclick="selectGeneExpressionType()" disabled="kmPlotForm.geneExpressionBasedForm.disableExpressionTypeSelector"/>                
+                </td>
+                <td class="value_inline"></td>
+                <td class="value_inline"></td>
+            </tr>
+	        <tr>
+                <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
+                3.)
+                </td>
+		        <td class="value_inline">
+		          <span id="overValueTextPrefix"><s:property value="%{overValueTextPrefix}" /></span><br>
+                </td>
+                <td class="value_inline">
+                    <s:textfield id="overexpressedNumberTextField" name="kmPlotForm.geneExpressionBasedForm.overexpressedNumber" size="4" theme="simple"/> <span id="overValueTextSuffix"><s:property value="%{valueSuffix}" /></span>
                 </td> 
             </tr>
             <tr>
                 <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
-                3.)
+                4.)
                 </td>
                 <td class="value_inline">
-                    Underexpressed >= <br>
+                    <span id="underValueTextPrefix"><s:property value="%{underValueTextPrefix}" /></span><br>
                 </td>
                 <td class="value_inline">
-                    <s:textfield name="kmPlotForm.geneExpressionBasedForm.underexpressedNumber" size="4" theme="simple"/> fold
+                    <s:textfield id="underexpressedNumberTextField" name="kmPlotForm.geneExpressionBasedForm.underexpressedNumber" size="4" theme="simple"/> <span id="underValueTextSuffix"><s:property value="%{valueSuffix}" /></span>
                 </td>
             </tr>
             <tr>
                 <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
-                    4.)
+                    5.)
                 </td>
                 <td class="value_inline" style="min-width: 5px; width: 150px;">
                     Select Survival Value:<br>
@@ -65,7 +80,7 @@
             <s:if test="%{studyHasMultiplePlatforms}">
 	            <tr>
 	                <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
-	                5a.)
+	                6a.)
 	                </td>
 	                <td class="value_inline" colspan="4">
 	                    Select Platform:  
@@ -76,9 +91,10 @@
 	                </td>
 	            </tr>
             </s:if>
+            <tbody id="controlSampleTbody" style="<s:property value='%{controlsDisplayStyle}' />" />
             <tr>
                 <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
-                5.)
+                6.)
                 </td>
                 <td class="value_inline" style="min-width: 5px; width: 150px;">
                     Select Control Sample Set:<br>
@@ -88,6 +104,7 @@
                         list="controlSampleSets" theme="simple"/>
                 </td>
             </tr>
+            </tbody>
         </table>
         <br>
         <div>
@@ -119,5 +136,4 @@
             listenTopics="createGeneExpressionPlot" refreshOnShow="true" />
         
     </center>
-    
 </s:form>
