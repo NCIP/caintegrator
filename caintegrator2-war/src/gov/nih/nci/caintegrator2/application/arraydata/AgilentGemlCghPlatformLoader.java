@@ -95,7 +95,9 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -110,7 +112,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * Used to load Agilent CopyNumber array designs.
  */
-class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
+public class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
     
     private static final Logger LOGGER = Logger.getLogger(AgilentGemlCghPlatformLoader.class);
 
@@ -125,7 +127,11 @@ class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
 
     private final Map<String, Gene> symbolToGeneMap = new HashMap<String, Gene>();
 
-    AgilentGemlCghPlatformLoader(AbstractPlatformSource source) {
+    /**
+     * Constructor.
+     * @param source the platform source
+     */
+    public AgilentGemlCghPlatformLoader(AbstractPlatformSource source) {
         super(source);
         gemlSaxParser = new GemlSaxParser();
     }
@@ -134,7 +140,7 @@ class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
      * {@inheritDoc}
      */
     @Override
-    Platform load(CaIntegrator2Dao dao) throws PlatformLoadingException {
+    public Platform load(CaIntegrator2Dao dao) throws PlatformLoadingException {
         Platform platform = createPlatform(PlatformVendorEnum.AGILENT);
         loadAnnotationFiles(platform, dao);
         return platform;
@@ -242,6 +248,7 @@ class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
         private Platform myPlatform;
         private ReporterList reporterList;
         private DnaAnalysisReporter reporter;
+        private final Set<String> reporterNames = new HashSet<String>();
         
         /**
          * Parse the GEML XML file.
@@ -298,7 +305,8 @@ class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
         
         private void processReporterTag(Attributes attributes) {
             String reporterName = attributes.getValue(NAME_ATTRIBUTE);
-            if (reporterName.startsWith("A_")) {
+            if (reporterName.startsWith("A_") && !reporterNames.contains(reporterName)) {
+                reporterNames.add(reporterName);
                 reporter = new DnaAnalysisReporter();
                 reporterList.getReporters().add(reporter);
                 reporter.setReporterList(reporterList);

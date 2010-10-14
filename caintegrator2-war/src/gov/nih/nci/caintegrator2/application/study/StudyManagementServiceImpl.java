@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.AnnotationUtil;
 import gov.nih.nci.caintegrator2.common.DateUtil;
@@ -545,16 +546,16 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     public void loadGenomicSource(GenomicDataSourceConfiguration genomicSource) 
     throws ConnectionException, ExperimentNotFoundException {
-        if (genomicSource.isExpressionData()) {
-            handleLoadGeneExpression(genomicSource);
-        } else if (genomicSource.isCopyNumberData() || genomicSource.isSnpData()) {
-            handleLoadDnaAnalysis(genomicSource);
+        if (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())) {
+            loadSamples(genomicSource);
+        } else {
+            checkSupplementalFiles(genomicSource);
         }
         genomicSource.setStatus(Status.NOT_MAPPED);
         daoSave(genomicSource);
     }
 
-    private void handleLoadGeneExpression(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
+    private void loadSamples(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
             ExperimentNotFoundException {
         List<Sample> samples = getCaArrayFacade().getSamples(genomicSource.getExperimentIdentifier(), 
                 genomicSource.getServerProfile());
@@ -568,7 +569,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
     }
     
-    private void handleLoadDnaAnalysis(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
+    private void checkSupplementalFiles(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
     ExperimentNotFoundException {
         String errorMessage = 
             "No samples found for this caArray experiment (verify that sample data is accessible in caArray)";

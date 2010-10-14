@@ -157,6 +157,7 @@ public class TestArrayDesignFiles {
     public static final String AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_TEST_BAD_PATH = "/arraydesign/agilent/mskcc.org_TCGA_HG-CGH-244A_v081008_Test_Bad.ADF";
     public static final String AGILENT_014693_XML_ANNOTATION_FILE_PATH = "/arraydesign/agilent/014693_D_F_20080627.xml";
     public static final String AGILENT_014693_XML_ANNOTATION_FILE_TEST_PATH = "/arraydesign/agilent/014693_D_F_20080627_Test.xml";
+    public static final String AGILENT_22522_XML_ANNOTATION_FILE_PATH = "/arraydesign/agilent/Agilent-022522.xml";
     
     public static final File HUMAN_GENOME_CGH244A_ANNOTATION_FILE = getFile(HUMAN_GENOME_CGH244A_ANNOTATION_PATH);
     public static final File AGILENT_G4502A_07_01_TCGA_XML_ANNOTATION_TEST_FILE = getFile(AGILENT_G4502A_07_01_TCGA_XML_ANNOTATION_TEST_PATH);
@@ -168,6 +169,7 @@ public class TestArrayDesignFiles {
     public static final File AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_TEST_BAD_FILE = getFile(AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_TEST_BAD_PATH);
     public static final File AGILENT_014693_XML_ANNOTATION_FILE = getFile(AGILENT_014693_XML_ANNOTATION_FILE_PATH);
     public static final File AGILENT_014693_XML_ANNOTATION_TEST_FILE = getFile(AGILENT_014693_XML_ANNOTATION_FILE_TEST_PATH);
+    public static final File AGILENT_22522_XML_ANNOTATION_FILE = getFile(AGILENT_22522_XML_ANNOTATION_FILE_PATH);
     
     public static File getFile(String resourcePath) {
         return new File(TestArrayDesignFiles.class.getResource(resourcePath).getFile());

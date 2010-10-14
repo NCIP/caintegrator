@@ -116,11 +116,13 @@ import gov.nih.nci.caarray.services.external.v1_0.data.InconsistentDataSetsExcep
 import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
@@ -150,6 +152,8 @@ public class CaArrayFacadeTest {
     private CaArrayFacade caArrayFacade;
     private GeneExpressionReporter reporter1 = createTestReporter("A_probeSet1");
     private GeneExpressionReporter reporter2 = createTestReporter("A_probeSet2");
+    private DnaAnalysisReporter reporter3 = createDnaAnalysisTestReporter("A_probeSet1");
+    private DnaAnalysisReporter reporter4 = createDnaAnalysisTestReporter("A_probeSet2");
     
     @Before
     public void setUp() {
@@ -193,7 +197,7 @@ public class CaArrayFacadeTest {
             assertEquals((float) 2.2, (float) values.getFloatValue(arrayData, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
         }
     }
-    /*
+    
     @Test
     public void testAgilentRetrieveData() throws ConnectionException, DataRetrievalException {
         RetrieveDataDaoStub daoStub = new RetrieveDataDaoStub();
@@ -201,20 +205,19 @@ public class CaArrayFacadeTest {
         ((CaArrayFacadeImpl) caArrayFacade).setDao(daoStub);
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         genomicSource.setExperimentIdentifier("test-data");
-        genomicSource.setPlatformVendor(PlatformVendorEnum.AGILENT.getValue());
+        genomicSource.setPlatformName("test design");
+        genomicSource.setPlatformVendor(PlatformVendorEnum.AGILENT);
+        genomicSource.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
         genomicSource.setStudyConfiguration(new StudyConfiguration());
         Sample sample = new Sample();
         sample.setName("sample");
         genomicSource.getSamples().add(sample);
-        ArrayDataValues values = caArrayFacade.retrieveData(genomicSource);
-        assertNotNull(values);
-        assertEquals(1, values.getArrayDatas().size());
-        for (ArrayData arrayData : values.getArrayDatas()) {
-            assertEquals((float) 0.05, (float) values.getFloatValue(arrayData, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
-            assertEquals((float) -0.1234, (float) values.getFloatValue(arrayData, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
-        }
+        List<ArrayDataValues> valuesList = caArrayFacade.retrieveDnaAnalysisData(genomicSource);
+        assertEquals(1, valuesList.size());
+        ArrayDataValues arrayDataValues = valuesList.get(0);
+        assertEquals(2, arrayDataValues.getReporters().size());
     }
-    */
+    
     @Test
     public void testRetrieveFile() throws FileNotFoundException, ConnectionException {
         ((CaArrayFacadeImpl) caArrayFacade).setServiceFactory(new RetrieveDataServiceFactoryStub());
@@ -225,6 +228,12 @@ public class CaArrayFacadeTest {
 
     private GeneExpressionReporter createTestReporter(String name) {
         GeneExpressionReporter reporter = new GeneExpressionReporter();
+        reporter.setName(name);
+        return reporter;
+    }
+
+    private DnaAnalysisReporter createDnaAnalysisTestReporter(String name) {
+        DnaAnalysisReporter reporter = new DnaAnalysisReporter();
         reporter.setName(name);
         return reporter;
     }
@@ -246,6 +255,12 @@ public class CaArrayFacadeTest {
             reporters.getReporters().add(reporter2);
             reporter1.setReporterList(reporters);
             reporter2.setReporterList(reporters);
+            reporters = platform.addReporterList("reporterList2", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+            reporters.setId(2L);
+            reporters.getReporters().add(reporter3);
+            reporters.getReporters().add(reporter4);
+            reporter3.setReporterList(reporters);
+            reporter4.setReporterList(reporters);
             return  platform;
         }
         

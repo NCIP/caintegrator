@@ -9,6 +9,7 @@ import java.util.Map;
 /**
  * Possible data types for platform.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // Checking for all different types
 public enum ArrayDataLoadingTypeEnum {
 
     /**
@@ -78,6 +79,7 @@ public enum ArrayDataLoadingTypeEnum {
      * @param type the platform data type
      * @return List of all string values which represent the ENUM values.
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Checking for all different types
     public static List<String> getLoadingTypes(PlatformVendorEnum vendor, PlatformDataTypeEnum type) {
         List<String> list = new ArrayList<String>();
         if (PlatformVendorEnum.AFFYMETRIX.equals(vendor)) {
@@ -88,6 +90,9 @@ public enum ArrayDataLoadingTypeEnum {
             } else {
                 list.add(CHP.value);
             }
+        } else if (PlatformVendorEnum.AGILENT.equals(vendor)
+                && PlatformDataTypeEnum.COPY_NUMBER.equals(type)) {
+            list.add(PARSED_DATA.value);
         }
         list.add(SINGLE_SAMPLE_PER_FILE.value);
         list.add(MULTI_SAMPLE_PER_FILE.value);

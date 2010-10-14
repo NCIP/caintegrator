@@ -169,7 +169,7 @@ public class EditDnaAnalysisDataConfigurationActionTest extends AbstractSessionB
         genomicSource.setPlatformVendor(PlatformVendorEnum.AGILENT);
         action.setMappingFile(TestDataFiles.REMBRANDT_COPY_NUMBER_FILE);
         action.validate();
-        assertTrue(action.hasFieldErrors());
+        assertFalse(action.hasFieldErrors());
         action.clearErrorsAndMessages();
         action.setMappingFile(TestDataFiles.SHORT_AGILENT_COPY_NUMBER_FILE);
         action.validate();
