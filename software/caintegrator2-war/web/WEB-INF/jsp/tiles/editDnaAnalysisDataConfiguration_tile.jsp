@@ -65,7 +65,7 @@
                 <s:if test="%{studyConfiguration.hasLoadedClinicalDataSource()}">
                     <s:file name="mappingFile" label="Subject and Sample Mapping File" size="40"/><br>
                         <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
-                            <span class="wwlbl">(csv file with 6 column format)</span>
+                            <span class="wwlbl">(csv file with 2 column format for parsed data or 6 column format otherwise)</span>
                             <span class="wwctrl"></span>
                         </s:div>
                     <br/>

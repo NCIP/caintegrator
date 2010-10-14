@@ -118,11 +118,23 @@ public interface CaArrayFacade {
      * 
      * @param genomicSource retrieve data from this source.
      * @throws ConnectionException if the connection to the caArray server fails.
-     * @return the data values.
+     * @return the array data values.
      * @throws ConnectionException if the subsystem can't connect to the caArray server.
      * @throws DataRetrievalException if the data couldn't be retrieved from caArray.
      */
     ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) 
+    throws ConnectionException, DataRetrievalException;
+
+    /**
+     * Returns the data for the samples contained in the <code>GenomicDataSourceConfiguration</code>.
+     * 
+     * @param genomicSource retrieve data from this source.
+     * @throws ConnectionException if the connection to the caArray server fails.
+     * @return the list of array data values.
+     * @throws ConnectionException if the subsystem can't connect to the caArray server.
+     * @throws DataRetrievalException if the data couldn't be retrieved from caArray.
+     */
+    List<ArrayDataValues> retrieveDnaAnalysisData(GenomicDataSourceConfiguration genomicSource) 
     throws ConnectionException, DataRetrievalException;
 
     /**

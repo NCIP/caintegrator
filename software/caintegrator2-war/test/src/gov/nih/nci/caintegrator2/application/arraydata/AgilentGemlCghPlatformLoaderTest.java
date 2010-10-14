@@ -85,150 +85,45 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
-import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+import java.util.SortedSet;
+
+import org.junit.Test;
+
 
 /**
- * Interface to the subsystem used store and retrieve microarray data.
+ * 
  */
-public interface ArrayDataService {
-    
-    /**
-     * Stores the values of an <code>ArrayDataValues</code> for later search and retrieval.
-     * 
-     * @param values the data matrix values to store.
-     */
-    void save(ArrayDataValues values);
-    
-    /**
-     * Stores the list values of an <code>ArrayDataValues</code> for later search and retrieval.
-     * 
-     * @param valuesList the list of data matrix values to store.
-     */
-    void save(List<ArrayDataValues> valuesList);
+public class AgilentGemlCghPlatformLoaderTest {
 
-    /**
-     * Retrieves the requested array data.
-     * 
-     * @param request encapsulated retrieval configuration.
-     * @return the requested data.
-     */
-    ArrayDataValues getData(DataRetrievalRequest request);
+    private CaIntegrator2Dao dao = new CaIntegrator2DaoStub();
     
-    /**
-     * Retrieves the fold change values from the given arrays for the given reporters.
-     * 
-     * @param request encapsulated retrieval configuration.
-     * @param controlArrayValuesList compute fold change values compared to these arrays
-     * @param channelType the array data channel type.
-     * @return the fold change values.
-     */
-    ArrayDataValues getFoldChangeValues(DataRetrievalRequest request,
-            List<ArrayDataValues> controlArrayValuesList,
-            PlatformChannelTypeEnum channelType);
-    
-    /**
-     * Retrieves the fold change values from the given arrays for the given reporters.
-     * 
-     * @param request encapsulated retrieval configuration.
-     * @param query to get controlSampleSets.
-     * @return the fold change values.
-     */
-    ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Query query);
-    
-    /**
-     * Loads the given array design into the system.
-     * 
-     * @param platformConfiguration contains the platformSource necessary to load the design
-     * @param listener informed of status changes during deployment.
-     * @return updated PlatformConfiguration object.
-     */
-     PlatformConfiguration loadArrayDesign(PlatformConfiguration platformConfiguration,
-            PlatformDeploymentListener listener);
+    @Test
+    public void testLoad() throws PlatformLoadingException {
+        
+        AgilentCnPlatformSource agilentGemlCghPlatformSource = new AgilentCnPlatformSource (
+                TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_XML_ANNOTATION_TEST_FILE,
+                "Agilent_G4502A",
+                TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_XML_ANNOTATION_TEST_PATH);
 
-     /**
-      * Returns the platform of name.
-      * 
-      * @param name the platform name to get.
-      * @return the platform.
-      */
-     Platform getPlatform(String name);
+        AgilentGemlCghPlatformLoader xmlLoader = new AgilentGemlCghPlatformLoader(
+                agilentGemlCghPlatformSource);
+        
+        Platform platform = xmlLoader.load(dao);
+        assertTrue("Agilent-017804".equals(xmlLoader.getPlatformName()));
+        assertTrue("Agilent-017804".equals(platform.getName()));
+        SortedSet<ReporterList>reporterLists = platform.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        assertEquals(1, reporterLists.size());
+        ReporterList reporterList = reporterLists.iterator().next();
+        assertEquals(4, reporterList.getReporters().size());
+    }
 
-     /**
-      * Returns all platforms in alphabetical order.
-      * 
-      * @return the platforms.
-      */
-     List<Platform> getPlatforms();
-     
-     /**
-      * 
-      * @param study that the platforms exist in.
-      * @param sourceType to narrow down the platform type based on GeneExpression or CopyNumber.
-      * @return Platforms in the study matching the given source.
-      */
-     List<Platform> getPlatformsInStudy(Study study, PlatformDataTypeEnum sourceType);
-
-     /**
-      * Returns the PlatformConfiguration of name.
-      * 
-      * @param name the platformConfiguration name to get.
-      * @return the platformConfiguration.
-      */
-     PlatformConfiguration getPlatformConfiguration(String name);
-
-     /**
-      * Returns all PlatformConfigurations.
-      * 
-      * @return the platformConfigurations.
-      */
-     List<PlatformConfiguration> getPlatformConfigurations();
-
-     /**
-      * Delete the platform with given id.
-      * 
-      * @param platformConfigurationId the id of the platform configuration to delete.
-      */
-     void deletePlatform(Long platformConfigurationId);
-     
-     /**
-      * Saves platform configuration.
-      * @param platformConfiguration to save.
-      */
-     void savePlatformConfiguration(PlatformConfiguration platformConfiguration);
-     
-     /**
-      * Gets refreshed platformConfiguration from database.
-      * @param id of platformConfiguration.
-      * @return refreshed platformConfiguration.
-      */
-     PlatformConfiguration getRefreshedPlatformConfiguration(Long id);
-     
-     /**
-      * Deletes GisticAnalysis netCDF file.
-      * @param study that contains the Gistic job.
-      * @param reporterListId for gistic analysis.
-      */
-     void deleteGisticAnalysisNetCDFFile(Study study, Long reporterListId);
-     
-     /**
-      * Loads gene location file.
-      * @param geneLocationFile to load.
-      * @param genomeBuildVersion build version.
-      * @return the geneLocationConfiguration created from the file.
-      * @throws ValidationException if something is not valid.
-      * @throws IOException if problem opening file.
-      */
-     GeneLocationConfiguration loadGeneLocationFile(File geneLocationFile, GenomeBuildVersionEnum genomeBuildVersion) 
-     throws ValidationException, IOException;
-    
 }
