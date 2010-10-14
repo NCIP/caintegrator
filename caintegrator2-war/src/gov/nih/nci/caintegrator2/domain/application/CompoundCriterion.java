@@ -174,8 +174,20 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
                 validateMixedCriterion(isFoldChange, isGeneName, isExpressionLevel);
             } else if (criterion instanceof ExpressionLevelCriterion) {
                 isExpressionLevel = true;
+                validateExpressionLevelValues((ExpressionLevelCriterion) criterion);
                 validateMixedCriterion(isFoldChange, isGeneName, isExpressionLevel);
             }
+        }
+    }
+    
+    private void validateExpressionLevelValues(ExpressionLevelCriterion expressionLevelCriterion) 
+        throws InvalidCriterionException {
+        if ((RangeTypeEnum.INSIDE_RANGE.equals(expressionLevelCriterion.getRangeType()) || RangeTypeEnum.OUTSIDE_RANGE
+                .equals(expressionLevelCriterion.getRangeType()))
+                && (expressionLevelCriterion.getLowerLimit() > expressionLevelCriterion.getUpperLimit())) {
+            throw new InvalidCriterionException(
+                    "The expression level criterion values are invalid due to the lower limit"
+                            + " being greater than the upper limit.");
         }
     }
 
