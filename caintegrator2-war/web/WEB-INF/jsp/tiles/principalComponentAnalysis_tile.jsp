@@ -133,9 +133,12 @@
                 <s:select name="pcaParameters.clusterBy" label="Cluster By"
                     list="pcaParameters.clusterByOptions" required="true" />
                 -->
+            <br>
+            <br>
+            <br>
+            <br>
             </s:div>           
-            <br>
-            <br>
+            
             <s:div cssClass="wwgrp" cssStyle="display:inline-block">
                 <s:submit value="Perform Analysis" align="center"
                     onclick="this.form.selectedAction.value = 'execute'; return true;" theme="simple" />
