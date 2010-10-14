@@ -407,15 +407,24 @@ public class AnalysisServiceTest {
         subscription.setStudy(study);
         queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.GENE_EXPRESSION;
         KMGeneExpressionBasedParameters geneExpressionParameters = new KMGeneExpressionBasedParameters();
+        geneExpressionParameters.setExpressionType(ExpressionTypeEnum.FOLD_CHANGE);
         assertFalse(geneExpressionParameters.validate());
         geneExpressionParameters.setGeneSymbol("EGFR");
-        geneExpressionParameters.setOverexpressedFoldChangeNumber(2.0F);
-        geneExpressionParameters.setUnderexpressedFoldChangeNumber(2.0F);
+        geneExpressionParameters.setOverValue(2.0F);
+        geneExpressionParameters.setUnderValue(2.0F);
         geneExpressionParameters.setSurvivalValueDefinition(studyCreator.getSurvivalValueDefinition());
         geneExpressionParameters.setControlSampleSetName("name");
         assertTrue(geneExpressionParameters.validate());
         runKMPlotTest(studyCreator, subscription, geneExpressionParameters);
-        
+        studyCreator.createKMPlotStudy();
+        geneExpressionParameters.setExpressionType(ExpressionTypeEnum.EXPRESSION_LEVEL);
+        assertFalse(geneExpressionParameters.validate());
+        geneExpressionParameters.setOverValue(12.0F);
+        geneExpressionParameters.setUnderValue(2.0F);
+        geneExpressionParameters.setSurvivalValueDefinition(studyCreator.getSurvivalValueDefinition());
+        geneExpressionParameters.setControlSampleSetName(null);
+        assertTrue(geneExpressionParameters.validate());
+        runKMPlotTest(studyCreator, subscription, geneExpressionParameters);
     }
     
     @Test

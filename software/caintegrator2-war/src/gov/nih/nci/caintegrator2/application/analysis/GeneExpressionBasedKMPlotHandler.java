@@ -93,16 +93,17 @@ import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.ExpressionLevelCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.RangeTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
@@ -118,6 +119,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * KM Plot Handler for Gene Expression Based KM Plots.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // See getGroupName()
 class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
 
     private final KMGeneExpressionBasedParameters kmParameters;
@@ -155,40 +157,71 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
         throws InvalidCriterionException {
         Cai2Util.setColorPalette(3 * kmParameters.getGenesFoundInStudy().size());
         // Up Regulated
-        SubjectGroup upRegulatedGroup = retrieveGroup(geneSymbol, geneSymbol + " >= " 
-                                                                + kmParameters.getOverexpressedFoldChangeNumber() 
-                                                                + "-fold Overexpressed",
-                                                                RegulationTypeEnum.UP,
+        SubjectGroup upRegulatedGroup = retrieveGroup(geneSymbol, GeneExpressionGroupType.OVER_VALUE,
                                                                 subscription);
         subjectGroupCollection.add(upRegulatedGroup);
         upRegulatedGroup.setColor(Cai2Util.getColor(subjectGroupCollection.size()));
         
         // Down Regulated
-        SubjectGroup downRegulatedGroup = retrieveGroup(geneSymbol, geneSymbol + " >= " 
-                                                        + kmParameters.getUnderexpressedFoldChangeNumber() 
-                                                        + "-fold Underexpressed",
-                                                        RegulationTypeEnum.DOWN,
+        SubjectGroup downRegulatedGroup = retrieveGroup(geneSymbol, GeneExpressionGroupType.UNDER_VALUE,
                                                         subscription);
         subjectGroupCollection.add(downRegulatedGroup);
         downRegulatedGroup.setColor(Cai2Util.getColor(subjectGroupCollection.size()));
         
         // Intermediate
-        SubjectGroup intermediateGroup = retrieveGroup(geneSymbol, geneSymbol + " intermediate",
-                                                        RegulationTypeEnum.UNCHANGED,
+        SubjectGroup intermediateGroup = retrieveGroup(geneSymbol, GeneExpressionGroupType.BETWEEN_VALUES,
                                                         subscription);
         subjectGroupCollection.add(intermediateGroup);
         intermediateGroup.setColor(Cai2Util.getColor(subjectGroupCollection.size()));
     }
     
-    private SubjectGroup retrieveGroup(String geneSymbol, String groupName, RegulationTypeEnum regulationType, 
+    private SubjectGroup retrieveGroup(String geneSymbol, GeneExpressionGroupType groupType, 
                                        StudySubscription subscription) throws InvalidCriterionException {
         SubjectGroup group = new SubjectGroup();
-        group.setName(groupName);
-        Collection<FoldChangeCriterion> criterionCollection = new HashSet<FoldChangeCriterion>();
-        criterionCollection.add(retrieveFoldChangeCriterion(geneSymbol, regulationType));
-        Collection<ResultRow> rows = retrieveFoldChangeRows(subscription, criterionCollection);
+        group.setName(getGroupName(geneSymbol, groupType));
+        Collection<AbstractCriterion> criterionCollection = new HashSet<AbstractCriterion>();
+        if (isFoldChangeType()) {
+            criterionCollection.add(retrieveFoldChangeCriterion(geneSymbol, groupType.getFoldChangeType()));
+        } else if (isExpressionLevelType()) {
+            criterionCollection.add(retrieveExpressionLevelCriterion(geneSymbol, groupType.getExpressionLevelType()));
+        } else {
+            throw new InvalidCriterionException("Unknown gene expression type for KM Plot by Gene Expression.");
+        }
+        Collection<ResultRow> rows = retrieveRows(subscription, criterionCollection);
         assignRowsToGroup(group, rows);
         return group;
+    }
+    
+    @SuppressWarnings("PMD.CyclomaticComplexity") // complex case statement for the different group names.
+    private String getGroupName(String geneSymbol, GeneExpressionGroupType groupType) {
+        StringBuffer groupName = new StringBuffer(geneSymbol);
+        String comparator = ">= ";
+        String value = "";
+        String suffix = "";
+        switch (groupType) {
+        case OVER_VALUE:
+            value = String.valueOf(kmParameters.getOverValue());
+            if (isFoldChangeType()) {
+                suffix = "-fold Overexpressed";
+            }
+            break;
+        case BETWEEN_VALUES:
+            comparator = "";
+            suffix = " intermediate";
+            break;
+        case UNDER_VALUE:
+            value = String.valueOf(kmParameters.getUnderValue());
+            comparator = "<= ";
+            if (isFoldChangeType()) {
+                comparator = ">= ";
+                suffix = "-fold Underexpressed";
+            }
+            break;
+        default: 
+            break;
+        } 
+        groupName.append(comparator).append(value).append(suffix);
+        return groupName.toString();
     }
 
     private void assignRowsToGroup(SubjectGroup group, Collection<ResultRow> rows) {
@@ -204,28 +237,32 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
     private FoldChangeCriterion retrieveFoldChangeCriterion(String geneSymbol, RegulationTypeEnum regulationType) {
         FoldChangeCriterion criterion = new FoldChangeCriterion();
         criterion.setRegulationType(regulationType);
-        criterion.setFoldsUp(kmParameters.getOverexpressedFoldChangeNumber().floatValue());
-        criterion.setFoldsDown(kmParameters.getUnderexpressedFoldChangeNumber().floatValue());
+        criterion.setFoldsUp(kmParameters.getOverValue().floatValue());
+        criterion.setFoldsDown(kmParameters.getUnderValue().floatValue());
         criterion.setControlSampleSetName(kmParameters.getControlSampleSetName());
         if (kmParameters.isMultiplePlatformsInStudy()) {
-            criterion.setPlatformName(retrievePlatformName());
+            criterion.setPlatformName(kmParameters.getPlatformName());
         }
         criterion.setGeneSymbol(geneSymbol);
         return criterion;
     }
     
-    private String retrievePlatformName() {
-        for (GenomicDataSourceConfiguration genomicSource 
-                : getStudySubscription().getStudy().getStudyConfiguration().getGenomicDataSources()) {
-            if (genomicSource.getControlSampleSet(kmParameters.getControlSampleSetName()) != null) {
-                return genomicSource.getPlatformName();
-            }
+    private ExpressionLevelCriterion retrieveExpressionLevelCriterion(String geneSymbol, RangeTypeEnum rangeType) {
+        ExpressionLevelCriterion criterion = new ExpressionLevelCriterion();
+        criterion.setRangeType(rangeType);
+        criterion.setLowerLimit(RangeTypeEnum.INSIDE_RANGE.equals(rangeType) 
+                ? kmParameters.getUnderValue().floatValue() : kmParameters.getOverValue().floatValue());
+        criterion.setUpperLimit(RangeTypeEnum.INSIDE_RANGE.equals(rangeType) 
+                ? kmParameters.getOverValue().floatValue() : kmParameters.getUnderValue().floatValue());
+        if (kmParameters.isMultiplePlatformsInStudy()) {
+            criterion.setPlatformName(kmParameters.getPlatformName());
         }
-        return null;
+        criterion.setGeneSymbol(geneSymbol);
+        return criterion;
     }
     
-    private Collection<ResultRow> retrieveFoldChangeRows(StudySubscription subscription, 
-                                  Collection<FoldChangeCriterion> foldChangeCriterionCollection) 
+    private Collection<ResultRow> retrieveRows(StudySubscription subscription, 
+                                  Collection<AbstractCriterion> foldChangeCriterionCollection) 
                                   throws InvalidCriterionException {
         Query query = new Query();
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
@@ -253,5 +290,50 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
                     kmParameters.getGenesFoundInStudy()));
             kmParameters.getGenesFoundInStudy().removeAll(kmParameters.getGenesNotFound());
         }
+    }
+    
+    private boolean isFoldChangeType() {
+        return ExpressionTypeEnum.FOLD_CHANGE.
+                equals(kmParameters.getExpressionType());
+    }
+    
+    private boolean isExpressionLevelType() {
+        return ExpressionTypeEnum.EXPRESSION_LEVEL.
+                equals(kmParameters.getExpressionType());
+    }
+    
+    /**
+     * Enum for the expression group types.
+     */
+    private static enum GeneExpressionGroupType {
+        OVER_VALUE(RegulationTypeEnum.UP, RangeTypeEnum.GREATER_OR_EQUAL),
+        
+        BETWEEN_VALUES(RegulationTypeEnum.UNCHANGED, RangeTypeEnum.INSIDE_RANGE),
+        
+        UNDER_VALUE(RegulationTypeEnum.DOWN, RangeTypeEnum.LESS_OR_EQUAL);
+        
+        private RegulationTypeEnum foldChangeType;
+        private RangeTypeEnum expressionLevelType;
+        
+        private GeneExpressionGroupType(RegulationTypeEnum foldChangeType, RangeTypeEnum expressionLevelType) {
+            this.foldChangeType = foldChangeType;
+            this.expressionLevelType = expressionLevelType;
+        }
+
+        /**
+         * @return the foldChangeType
+         */
+        public RegulationTypeEnum getFoldChangeType() {
+            return foldChangeType;
+        }
+
+        /**
+         * @return the expressionLevelType
+         */
+        public RangeTypeEnum getExpressionLevelType() {
+            return expressionLevelType;
+        }
+        
+        
     }
 }
