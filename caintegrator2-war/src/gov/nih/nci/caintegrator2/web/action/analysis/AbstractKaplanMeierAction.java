@@ -142,8 +142,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
         refreshGenomicSources();
         retrieveAndRefreshSurvivalValueDefinition();
         populateSurvivalValueDefinitions();
-        if (!getCurrentStudy().getStudyConfiguration().hasExpressionData() 
-                || !getCurrentStudy().getStudyConfiguration().hasControlSamples()) {
+        if (!getCurrentStudy().getStudyConfiguration().hasExpressionData()) {
             showGeneExpressionTab = false;
         }
     }

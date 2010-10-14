@@ -265,8 +265,8 @@ public class KMPlotGeneExpressionBasedActionTest extends AbstractSessionBasedTes
 
     private void setupActionVariables() {
         action.getKmPlotParameters().setGeneSymbol("EGFR");
-        action.getKmPlotParameters().setOverexpressedFoldChangeNumber(2.0F);
-        action.getKmPlotParameters().setUnderexpressedFoldChangeNumber(2.0F);
+        action.getKmPlotParameters().setOverValue(2.0F);
+        action.getKmPlotParameters().setUnderValue(2.0F);
         action.getKmPlotForm().getGeneExpressionBasedForm().setGeneSymbol("EGFR");
         action.getKmPlotForm().getGeneExpressionBasedForm().setOverexpressedNumber("2.0");
         action.getKmPlotForm().getGeneExpressionBasedForm().setUnderexpressedNumber("2.0");
