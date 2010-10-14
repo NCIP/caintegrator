@@ -163,6 +163,43 @@ public class CaArrayFacadeStub implements CaArrayFacade {
     /**
      * {@inheritDoc}
      */
+    public List<ArrayDataValues> retrieveDnaAnalysisData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
+        retrieveDataCalled = true;
+        List<ArrayDataValues> valuesList = new ArrayList<ArrayDataValues>();
+        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
+        GeneExpressionReporter reporter = new GeneExpressionReporter();
+        reporters.add(reporter);
+        ArrayDataValues values = new ArrayDataValues(reporters);
+        Platform platform = new Platform();
+        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        reporter.setReporterList(reporterList);
+        reporterList.getReporters().addAll(reporters);
+        for (Sample sample : genomicSource.getSamples()) {
+            addDnaAnalysisArrayData(sample, platform, reporterList, values);
+        }
+        valuesList.add(values);
+        return valuesList;
+    }
+
+    private void addDnaAnalysisArrayData(Sample sample, Platform platform, ReporterList reporterList, ArrayDataValues values) {
+        Array array = new Array();
+        array.setPlatform(platform);
+        array.setName(sample.getName());
+        array.getSampleCollection().add(sample);
+        ArrayData arrayData = new ArrayData();
+        arrayData.setType(ArrayDataType.COPY_NUMBER);
+        arrayData.setArray(array);
+        array.getArrayDataCollection().add(arrayData);
+        arrayData.setSample(sample);
+        arrayData.getReporterLists().add(reporterList);
+        sample.getArrayCollection().add(array);
+        sample.getArrayDataCollection().add(arrayData);
+        values.setFloatValues(arrayData, reporterList.getReporters(), ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, new float[reporterList.getReporters().size()]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public byte[] retrieveFile(GenomicDataSourceConfiguration source, String filename) {
         return new byte[0];
     }

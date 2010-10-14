@@ -168,7 +168,26 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     throws ConnectionException, DataRetrievalException {
         AbstractDataRetrievalHelper dataRetrievalHelper = getDataRetrievalHelper(genomicSource);
         try {
-            return dataRetrievalHelper.retrieveData();
+            dataRetrievalHelper.retrieveData();
+            return ((ExpressionDataRetrievalHelper) dataRetrievalHelper).getArrayDataValues();
+        } catch (InvalidInputException e) {
+            throw new DataRetrievalException(ARRAY_DATA_RETRIEVAL_ERROR_MESSAGE, e);
+        } catch (InconsistentDataSetsException e) {
+            throw new DataRetrievalException(ARRAY_DATA_RETRIEVAL_ERROR_MESSAGE, e);
+        } catch (FileNotFoundException e) {
+            throw new DataRetrievalException("Couldn't retrieve the array data file", e);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<ArrayDataValues> retrieveDnaAnalysisData(GenomicDataSourceConfiguration genomicSource) 
+    throws ConnectionException, DataRetrievalException {
+        AbstractDataRetrievalHelper dataRetrievalHelper = getDataRetrievalHelper(genomicSource);
+        try {
+            dataRetrievalHelper.retrieveData();
+            return ((DnaAnalysisDataRetrievalHelper) dataRetrievalHelper).getArrayDataValuesList();
         } catch (InvalidInputException e) {
             throw new DataRetrievalException(ARRAY_DATA_RETRIEVAL_ERROR_MESSAGE, e);
         } catch (InconsistentDataSetsException e) {
@@ -183,11 +202,15 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
         SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
         DataService dataService = 
             getServiceFactory().createDataService(genomicSource.getServerProfile());
-        if (PlatformVendorEnum.AFFYMETRIX.equals(genomicSource.getPlatformVendor())) {
-            return new AffymetrixDataRetrievalHelper(genomicSource, dataService,
-                    searchService, dao);
+        if (PlatformVendorEnum.AFFYMETRIX.equals(genomicSource.getPlatformVendor())
+                && genomicSource.isExpressionData()) {
+            return new ExpressionDataRetrievalHelper(genomicSource, dataService, searchService, dao);
+        } else if (PlatformVendorEnum.AGILENT.equals(genomicSource.getPlatformVendor())
+                && genomicSource.isCopyNumberData()) {
+            return new DnaAnalysisDataRetrievalHelper(genomicSource, dataService, searchService, dao);
         }
-        throw new DataRetrievalException("Unsupport platform vendor: " + genomicSource.getPlatformVendor());
+        throw new DataRetrievalException("Unsupport platform vendor: " + genomicSource.getPlatformVendor()
+                + " and type " + genomicSource.getDataTypeString());
     }
 
     /**

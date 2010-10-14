@@ -161,6 +161,13 @@ public class ArrayDataServiceStub implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
+    public void save(List<ArrayDataValues> values) {
+        saveCalled = true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, List<ArrayDataValues> controlArrayValuesList,
             PlatformChannelTypeEnum channelType) {
         getFoldChangeValuesCalled = true;

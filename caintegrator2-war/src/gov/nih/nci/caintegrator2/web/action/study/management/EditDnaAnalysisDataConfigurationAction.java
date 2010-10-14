@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
@@ -225,7 +226,8 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
             reader = new CSVReader(new FileReader(mappingFile));
             String[] fields;
             int lineNum = 0;
-            int columnNumber = getGenomicSource().getPlatformVendor().getDnaAnalysisMappingColumns();
+            int columnNumber = (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(getGenomicSource().getLoadingType()))
+                ? 2 : getGenomicSource().getPlatformVendor().getDnaAnalysisMappingColumns();
             while ((fields = Cai2Util.readDataLine(reader)) != null) {
                 lineNum++;
                 if (fields.length < columnNumber) {

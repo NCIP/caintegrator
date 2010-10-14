@@ -165,7 +165,11 @@ class GenomicDataHelper {
     private void loadDnaAnalysisData(GenomicDataSourceConfiguration genomicSource)
     throws DataRetrievalException, ConnectionException, ValidationException, IOException {
         if (genomicSource.getDnaAnalysisDataConfiguration() != null) {
+            if (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())) {
+                handleParsedDnaAnalysisData(genomicSource);
+            } else {
                 handleDnaAnalysisData(genomicSource);
+            }
         }
     }
     
@@ -186,11 +190,24 @@ class GenomicDataHelper {
         }
     }
 
+    private void handleParsedDnaAnalysisData(GenomicDataSourceConfiguration genomicSource) 
+    throws DataRetrievalException, ConnectionException, ValidationException, IOException {
+        List<ArrayDataValues> arrayValuesList = caArrayFacade.retrieveDnaAnalysisData(genomicSource);
+        arrayDataService.save(arrayValuesList);
+        computeSegmentationData(genomicSource, arrayValuesList);
+    }
+
     private void handleDnaAnalysisData(GenomicDataSourceConfiguration genomicSource) 
     throws DataRetrievalException, ConnectionException, ValidationException, IOException {
         AbstractUnparsedSupplementalMappingFileHandler handler = 
             dnaAnalysisHandlerFactory.getHandler(genomicSource, caArrayFacade, arrayDataService, dao);
         List<ArrayDataValues> valuesList = handler.loadArrayData();
+        computeSegmentationData(genomicSource, valuesList);
+    }
+
+    private void computeSegmentationData(GenomicDataSourceConfiguration genomicSource, List<ArrayDataValues> valuesList)
+            throws ConnectionException, DataRetrievalException {
+        
         if (genomicSource.getDnaAnalysisDataConfiguration().isCaDNACopyConfiguration()) {
             for (ArrayDataValues values : valuesList) {
                 DnaAnalysisData dnaAnalysisData = createDnaAnalysisData(values);
