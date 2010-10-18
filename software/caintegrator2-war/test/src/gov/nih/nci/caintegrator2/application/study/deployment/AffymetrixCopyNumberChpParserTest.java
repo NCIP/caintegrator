@@ -90,7 +90,9 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.deployment.AffymetrixDnaAnalysisChpParser;
+import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
@@ -111,9 +113,17 @@ import affymetrix.fusion.chp.FusionCHPMultiDataData;
 
 public class AffymetrixCopyNumberChpParserTest {
     
+    private GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+    private CentralTendencyCalculator centralTendencyCalculator = new CentralTendencyCalculator(
+            genomicSource.getTechnicalReplicatesCentralTendency(), 
+            genomicSource.isUseHighVarianceCalculation(), 
+            genomicSource.getHighVarianceThreshold(), 
+            genomicSource.getHighVarianceCalculationType());
+    
     @Test
     public void testGetArrayDesignName() throws DataRetrievalException {
-        AffymetrixDnaAnalysisChpParser parser = new AffymetrixDnaAnalysisChpParser(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE);
+        AffymetrixDnaAnalysisChpParser parser = new AffymetrixDnaAnalysisChpParser(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE,
+                centralTendencyCalculator);
         assertEquals("Mapping50K_Hind240", parser.getArrayDesignName());
     }
 
@@ -122,12 +132,13 @@ public class AffymetrixCopyNumberChpParserTest {
         List<AbstractReporter> reporters = getReporters(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE);
         ArrayDataValues values = new ArrayDataValues(reporters);
         ArrayData arrayData = new ArrayData();
-        AffymetrixDnaAnalysisChpParser parser = new AffymetrixDnaAnalysisChpParser(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE);
+        AffymetrixDnaAnalysisChpParser parser = new AffymetrixDnaAnalysisChpParser(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE,
+                centralTendencyCalculator);
         parser.parse(values, arrayData, MultiDataType.CopyNumberMultiDataType);
         checkValues(reporters, values, arrayData);
         reporters = getReporters(TestDataFiles.XBA_COPY_NUMBER_CHP_FILE);
         values = new ArrayDataValues(reporters);
-        parser = new AffymetrixDnaAnalysisChpParser(TestDataFiles.XBA_COPY_NUMBER_CHP_FILE);
+        parser = new AffymetrixDnaAnalysisChpParser(TestDataFiles.XBA_COPY_NUMBER_CHP_FILE, centralTendencyCalculator);
         parser.parse(values, arrayData, MultiDataType.CopyNumberMultiDataType);
         checkValues(reporters, values, arrayData);
     }

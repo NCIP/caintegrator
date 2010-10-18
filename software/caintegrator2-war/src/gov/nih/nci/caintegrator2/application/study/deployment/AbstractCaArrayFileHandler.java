@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
@@ -105,12 +106,18 @@ public abstract class AbstractCaArrayFileHandler {
     private final CaArrayFacade caArrayFacade;
     private final ArrayDataService arrayDataService;
     private final GenomicDataSourceConfiguration genomicSource;
+    private final CentralTendencyCalculator centralTendencyCalculator;
     
     AbstractCaArrayFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService) {
         this.caArrayFacade = caArrayFacade;
         this.arrayDataService = arrayDataService;
         this.genomicSource = genomicSource;
+        this.centralTendencyCalculator = new CentralTendencyCalculator(
+                genomicSource.getTechnicalReplicatesCentralTendency(), 
+                genomicSource.isUseHighVarianceCalculation(), 
+                genomicSource.getHighVarianceThreshold(), 
+                genomicSource.getHighVarianceCalculationType());
     }
 
     /**
@@ -151,6 +158,13 @@ public abstract class AbstractCaArrayFileHandler {
      */
     public GenomicDataSourceConfiguration getGenomicSource() {
         return genomicSource;
+    }
+
+    /**
+     * @return the centralTendencyCalculator
+     */
+    protected CentralTendencyCalculator getCentralTendencyCalculator() {
+        return centralTendencyCalculator;
     }
 
 }

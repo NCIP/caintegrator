@@ -112,9 +112,9 @@ public class GenericUnparsedSupplementalFileSingleSampleHandlerTest {
             sampleNames.add("TCGA-13-0805-01A-01D-0357-04");
             GenericMultiSamplePerFileParser parser = new GenericMultiSamplePerFileParser(
                     dataFile, "ProbeID", "Hybridization Ref", sampleNames);
-            Map<String, Map<String, Float>> dataMap = new HashMap<String, Map<String, Float>>();
+            Map<String, Map<String, List<Float>>> dataMap = new HashMap<String, Map<String, List<Float>>>();
             parser.loadData(dataMap);
-            Map<String, Float> reporterMap = dataMap.values().iterator().next();
+            Map<String, List<Float>> reporterMap = dataMap.values().iterator().next();
             
             ReporterList reporterList = platform.addReporterList(reporterListName, ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
             for (String probeName : reporterMap.keySet()) {

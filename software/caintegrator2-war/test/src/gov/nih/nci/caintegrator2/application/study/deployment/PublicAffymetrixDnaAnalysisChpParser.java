@@ -86,7 +86,9 @@
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.deployment.AffymetrixDnaAnalysisChpParser;
+import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
@@ -99,8 +101,16 @@ import affymetrix.calvin.data.CHPMultiDataData.MultiDataType;
  */
 public class PublicAffymetrixDnaAnalysisChpParser extends AffymetrixDnaAnalysisChpParser {
 
+    
+    private static GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+    private static CentralTendencyCalculator centralTendencyCalculator = new CentralTendencyCalculator(
+            genomicSource.getTechnicalReplicatesCentralTendency(), 
+            genomicSource.isUseHighVarianceCalculation(), 
+            genomicSource.getHighVarianceThreshold(), 
+            genomicSource.getHighVarianceCalculationType());
+    
     public PublicAffymetrixDnaAnalysisChpParser(File dnaAnalysisChpFile) {
-        super(dnaAnalysisChpFile);
+        super(dnaAnalysisChpFile, centralTendencyCalculator);
     }
     
     @Override
