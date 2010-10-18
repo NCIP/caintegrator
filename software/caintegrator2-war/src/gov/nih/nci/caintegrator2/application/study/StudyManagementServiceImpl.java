@@ -546,9 +546,11 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     public void loadGenomicSource(GenomicDataSourceConfiguration genomicSource) 
     throws ConnectionException, ExperimentNotFoundException {
-        if (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())) {
+        if (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())
+                || genomicSource.isExpressionData()) {
             loadSamples(genomicSource);
-        } else {
+        }
+        if (!ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())) {
             checkSupplementalFiles(genomicSource);
         }
         genomicSource.setStatus(Status.NOT_MAPPED);
