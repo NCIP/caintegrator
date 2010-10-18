@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
@@ -112,6 +113,7 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
     private EditGenomicSourceAction action;
     private StudyManagmentServiceStubForGenomicSource studyManagementServiceStub;
     private CaArrayFacadeStubForAction caArrayFacadeStub;
+    private WorkspaceServiceStub workspaceServiceStub;
 
     @Before
     public void setUp() {
@@ -120,6 +122,8 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
         action = (EditGenomicSourceAction) context.getBean("editGenomicSourceAction");
         studyManagementServiceStub = new StudyManagmentServiceStubForGenomicSource();
         studyManagementServiceStub.clear();
+        workspaceServiceStub = (WorkspaceServiceStub) context.getBean("workspaceService");
+        workspaceServiceStub.clear();
         action.setStudyManagementService(studyManagementServiceStub);
         action.setUpdater(new GenomicDataSourceAjaxUpdaterStub());
         caArrayFacadeStub = new CaArrayFacadeStubForAction();
@@ -170,6 +174,7 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
     public void testSave() {
         action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
         assertEquals(Action.INPUT, action.save());
+        assertTrue(workspaceServiceStub.clearSessionCalled);
         action.getGenomicSource().setPlatformName("Platform name");
         assertEquals(Action.SUCCESS, action.save());
         GenomicDataSourceAjaxUpdaterStub updaterStub = (GenomicDataSourceAjaxUpdaterStub) action.getUpdater();

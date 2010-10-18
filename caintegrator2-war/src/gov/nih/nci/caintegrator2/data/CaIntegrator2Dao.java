@@ -132,6 +132,11 @@ public interface CaIntegrator2Dao {
     void refresh(Object persistentObject);
     
     /**
+     * Clears the current session.
+     */
+    void clearSession();
+    
+    /**
      * Saves the object given.
      * 
      * @param persistentObject the object to save.
