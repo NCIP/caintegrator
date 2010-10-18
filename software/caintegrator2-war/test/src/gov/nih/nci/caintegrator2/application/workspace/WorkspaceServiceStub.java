@@ -128,6 +128,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public boolean deleteAbstractListCalled;
     public boolean refreshWorkspaceStudiesCalled;
     public boolean getWorkspaceReadOnlyCalled;
+    public boolean clearSessionCalled;
     
     public void clear() {
         subscribeCalled = false;
@@ -147,6 +148,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
         deleteAbstractListCalled = false;
         refreshWorkspaceStudiesCalled = false;
         getWorkspaceReadOnlyCalled = false;
+        clearSessionCalled = false;
     }
     public UserWorkspace getWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
@@ -292,6 +294,11 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     public Set<Platform> retrievePlatformsInStudy(Study study) {
         return new HashSet<Platform>();
+    }
+
+    public void clearSession() {
+        clearSessionCalled = true;
+        
     }
 
 }

@@ -231,5 +231,10 @@ public interface WorkspaceService extends CaIntegrator2EntityRefresher {
      * @param abstractList to delete from the workspace.
      */
     void deleteAbstractList(StudySubscription subscription, AbstractList abstractList);
+    
+    /**
+     * Clears the current session.
+     */
+    void clearSession();
 
 }

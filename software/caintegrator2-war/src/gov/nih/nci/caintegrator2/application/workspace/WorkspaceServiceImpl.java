@@ -488,4 +488,10 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
         saveUserWorkspace(getWorkspace());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void clearSession() {
+        getDao().clearSession();
+    }
 }
