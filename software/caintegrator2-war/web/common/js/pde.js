@@ -23,6 +23,7 @@ pde={
 	linkParent:true,
 	init:function(){
 		pde.createClone();
+		pde.createOpenClone();
 		if(!document.getElementById || !document.createTextNode){return;}
 		var uls=document.getElementsByTagName('ul');
 		for(var i=0;i<uls.length;i++){
@@ -31,13 +32,32 @@ pde={
 			var inneruls=uls[i].getElementsByTagName('ul');
 			for(var j=0;j<inneruls.length;j++){
 				parentLI=inneruls[j].parentNode;
+				var isOpenNode = false;
 				if(parentLI.getElementsByTagName('strong')[0]){
 					pde.cssjs('add',parentLI,pde.currentClass);
-					if(pde.keepCurrentOpen === true){continue;}
+					if(pde.keepCurrentOpen === true){
+						isOpenNode = true;
+					}
+				}
+				// If there is no values in the last child of the list, then do not show the arrow.
+				// FireFox uses lastElementChild, IE uses lastChild.
+				var navigatorName = navigator.appName;
+				var lastChildHTML;
+				if (navigatorName.match(/explorer/i)) {
+					lastChildHTML = parentLI.lastChild.innerHTML; 
+				} else {
+					lastChildHTML = parentLI.lastElementChild.innerHTML.replace(/\s/g, "");
+				}
+				if (lastChildHTML == "") {
+					continue;
 				}
 				pde.cssjs('add',parentLI,pde.parentClass);
-				parentLI.insertBefore(pde.clone.cloneNode(true),parentLI.firstChild);
-				pde.cssjs('add',inneruls[j],pde.hideClass);
+				if (!isOpenNode) {
+					parentLI.insertBefore(pde.clone.cloneNode(true),parentLI.firstChild);
+					pde.cssjs('add',inneruls[j],pde.hideClass);
+				} else { // For openNodes, use the openclone and do not add the "hideClass" because it will be open. 
+					parentLI.insertBefore(pde.openclone.cloneNode(true),parentLI.firstChild);
+				}
 				pde.addEvent(parentLI.getElementsByTagName('a')[0],'click',pde.showhide,false);
 				parentLI.getElementsByTagName('a')[0].onclick=function(){return false;} // Safari hack
 				if(pde.linkParent){
@@ -76,6 +96,15 @@ pde={
 		pde.clone.getElementsByTagName('img')[0].src=pde.closedImage;
 		pde.clone.getElementsByTagName('img')[0].alt=pde.closedMessage;
 		pde.clone.getElementsByTagName('img')[0].title=pde.closedMessage;
+	},
+	createOpenClone:function(){
+		pde.openclone=document.createElement('a');
+		pde.openclone.setAttribute('href','#');
+		pde.openclone.setAttribute('class','parent_img');
+		pde.openclone.appendChild(document.createElement('img'));
+		pde.openclone.getElementsByTagName('img')[0].src=pde.openImage;
+		pde.openclone.getElementsByTagName('img')[0].alt=pde.openMessage;
+		pde.openclone.getElementsByTagName('img')[0].title=pde.openMessage;
 	},
 /* helper methods */
 	getTarget:function(e){
