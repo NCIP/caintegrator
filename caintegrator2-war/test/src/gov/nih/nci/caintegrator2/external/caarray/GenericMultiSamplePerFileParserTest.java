@@ -108,7 +108,7 @@ public class GenericMultiSamplePerFileParserTest {
     @Test
     public void testExtractData() throws DataRetrievalException, IOException {
         
-        Map<String, Map<String, Float>> dataMap =  new HashMap<String, Map<String, Float>>();
+        Map<String, Map<String, List<Float>>> dataMap =  new HashMap<String, Map<String, List<Float>>>();
         List<String> sampleList = new ArrayList<String>();
         sampleList.add(sample1);
         sampleList.add(sample2);
@@ -127,7 +127,7 @@ public class GenericMultiSamplePerFileParserTest {
                 "ProbeID", "Hybridization Ref", sampleList);
         parser.loadData(dataMap);
         assertEquals(2, dataMap.keySet().size());
-        for (Map<String, Float> reporterList : dataMap.values()) {
+        for (Map<String, List<Float>> reporterList : dataMap.values()) {
             assertTrue(reporterList.keySet().size() > 0);
         }
     }

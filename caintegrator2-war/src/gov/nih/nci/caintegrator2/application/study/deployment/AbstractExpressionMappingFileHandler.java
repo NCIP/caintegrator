@@ -85,16 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Set;
-
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -106,12 +101,15 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Set;
+
 /**
  * 
  */
 public abstract class AbstractExpressionMappingFileHandler extends AbstractSupplementalMappingFileHandler {
 
-    private final CentralTendencyCalculator centralTendencyCalculator;
     private static final String FILE_TYPE = "data";
     private final PlatformHelper platformHelper;
     private final Set<ReporterList> reporterLists;
@@ -124,11 +122,6 @@ public abstract class AbstractExpressionMappingFileHandler extends AbstractSuppl
         this.reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         this.arrayDataValues = 
             new ArrayDataValues(platformHelper.getAllReportersByType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET));
-        this.centralTendencyCalculator = new CentralTendencyCalculator(
-                genomicSource.getTechnicalReplicatesCentralTendency(), 
-                genomicSource.isUseHighVarianceCalculation(), 
-                genomicSource.getHighVarianceThreshold(), 
-                genomicSource.getHighVarianceCalculationType());
     }
     
     abstract ArrayDataValues loadArrayData() throws DataRetrievalException, ConnectionException, ValidationException;
@@ -172,13 +165,6 @@ public abstract class AbstractExpressionMappingFileHandler extends AbstractSuppl
      */
     protected void setArrayDataValues(ArrayDataValues arrayDataValues) {
         this.arrayDataValues = arrayDataValues;
-    }
-
-    /**
-     * @return the centralTendencyCalculator
-     */
-    protected CentralTendencyCalculator getCentralTendencyCalculator() {
-        return centralTendencyCalculator;
     }
 
     @Override

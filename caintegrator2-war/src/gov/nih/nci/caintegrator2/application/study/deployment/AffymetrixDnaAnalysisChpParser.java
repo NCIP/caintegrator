@@ -87,13 +87,16 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import affymetrix.calvin.data.GenericData;
@@ -118,12 +121,13 @@ import org.apache.log4j.Logger;
 class AffymetrixDnaAnalysisChpParser {
     private static final Logger LOGGER = Logger.getLogger(AffymetrixDnaAnalysisChpParser.class);
     
-    private static final String LO2_RATIO = "Log2Ratio";
+    private static final String LOG2_RATIO = "Log2Ratio";
     private static final String PARAM_CHIP_TYPE = "affymetrix-algorithm-param-ChipType1";
     private static final String PARAM_ARRAY_TYPE = "affymetrix-array-type";
     private final File chpFile;
     private FusionCHPMultiDataData chpData;
     private FusionCHPData fusionChpData;
+    private final CentralTendencyCalculator centralTendencyCalculator;
 
     private Map<String, AbstractReporter> reporterMap;
 
@@ -136,8 +140,9 @@ class AffymetrixDnaAnalysisChpParser {
      * 
      * @param chpFile the CNCHP file.
      */
-    AffymetrixDnaAnalysisChpParser(File chpFile) {
+    AffymetrixDnaAnalysisChpParser(File chpFile, CentralTendencyCalculator centralTendencyCalculator) {
         this.chpFile = chpFile;
+        this.centralTendencyCalculator = centralTendencyCalculator;
     }
 
     void parse(ArrayDataValues values, ArrayData arrayData, MultiDataType multiDataType) throws DataRetrievalException {
@@ -176,7 +181,7 @@ class AffymetrixDnaAnalysisChpParser {
                         values.setFloatValue(arrayData,
                                 reporter,
                                 ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO,
-                                getLog2Value(probeSetData));
+                                getLog2Value(probeSetData), centralTendencyCalculator);
         } else {
              LOGGER.error("Platform library does not contain this reporter: " + probeSetData.getName());
         }
@@ -188,7 +193,7 @@ class AffymetrixDnaAnalysisChpParser {
                         values.setFloatValue(arrayData,
                                 reporter, 
                                 ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 
-                                getLog2Value(probeSetData));
+                                getLog2Value(probeSetData), centralTendencyCalculator);
         } else {
             LOGGER.error("Platform library does not contain this reporter: " + probeSetData.getName());
         }
@@ -198,13 +203,14 @@ class AffymetrixDnaAnalysisChpParser {
         return reporterMap.get(name);
     }
 
-    private float getLog2Value(ProbeSetMultiDataBase probeSetData) {
+    private List<Float> getLog2Value(ProbeSetMultiDataBase probeSetData) {
+        List<Float> log2Values = new ArrayList<Float>();
         for (ParameterNameValue nameValue : probeSetData.getMetrics()) {
-            if (LO2_RATIO.equals(nameValue.getName())) {
-                return nameValue.getValueFloat();
+            if (LOG2_RATIO.equals(nameValue.getName())) {
+                log2Values.add(nameValue.getValueFloat());
             }
         }
-        return 0.0f;
+        return log2Values;
     }
 
     private FusionCHPMultiDataData getChpData() {
