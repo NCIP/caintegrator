@@ -193,6 +193,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      */
     public String save() {
         if (!validateSave()) {
+            getWorkspaceService().clearSession();
             return INPUT;
         }
         

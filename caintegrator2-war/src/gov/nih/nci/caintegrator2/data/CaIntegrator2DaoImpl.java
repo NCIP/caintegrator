@@ -189,7 +189,14 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public void refresh(Object persistentObject) {
         getHibernateTemplate().refresh(persistentObject);
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void clearSession() {
+        getCurrentSession().clear();
+    }
+    
     /**
      * {@inheritDoc}
      */

@@ -539,4 +539,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
     }
 
+    public void clearSession() {
+
+    }
+
 }
