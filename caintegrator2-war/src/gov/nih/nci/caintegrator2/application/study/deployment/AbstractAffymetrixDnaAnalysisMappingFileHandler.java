@@ -206,7 +206,8 @@ public abstract class AbstractAffymetrixDnaAnalysisMappingFileHandler
         List<AffymetrixDnaAnalysisChpParser> parsers = new ArrayList<AffymetrixDnaAnalysisChpParser>();
         Set<String> reporterListNames = new HashSet<String>();
         for (File chpFile : chpFiles) {
-            AffymetrixDnaAnalysisChpParser parser = new AffymetrixDnaAnalysisChpParser(chpFile);
+            AffymetrixDnaAnalysisChpParser parser = new AffymetrixDnaAnalysisChpParser(chpFile,
+                    getCentralTendencyCalculator());
             parsers.add(parser);
             reporterListNames.add(parser.getArrayDesignName());
         }

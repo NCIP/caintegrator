@@ -144,14 +144,14 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
         PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(
             getGenomicSource().getPlatformName()));
         Set<ReporterList> reporterLists = platformHelper.getReporterLists(getReporterType());
-        Map<String, Map<String, Float>> dataMap = extractData();
+        Map<String, Map<String, List<Float>>> dataMap = extractData();
         loadArrayData(arrayDataValuesList, platformHelper, reporterLists, dataMap);
         return arrayDataValuesList;
     }
 
-    private Map<String, Map<String, Float>> extractData()
+    private Map<String, Map<String, List<Float>>> extractData()
     throws DataRetrievalException, ConnectionException, ValidationException {
-        Map<String, Map<String, Float>> dataMap = new HashMap<String, Map<String, Float>>();
+        Map<String, Map<String, List<Float>>> dataMap = new HashMap<String, Map<String, List<Float>>>();
         for (SupplementalDataFile dataFile : dataFiles) {
             GenericMultiSamplePerFileParser parser = new GenericMultiSamplePerFileParser(
                     getDataFile(dataFile.getFileName()), dataFile.getProbeNameHeader(),
@@ -162,7 +162,7 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
         return dataMap;
     }
 
-    private void validateSampleMapping(Map<String, Map<String, Float>> dataMap, List<String> sampleList)
+    private void validateSampleMapping(Map<String, Map<String, List<Float>>> dataMap, List<String> sampleList)
     throws DataRetrievalException {
         StringBuffer errorMsg = new StringBuffer();
         for (String sampleName : sampleList) {
@@ -196,7 +196,7 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
     }
     
     private void loadArrayData(List<ArrayDataValues> arrayDataValuesList, PlatformHelper platformHelper,
-            Set<ReporterList> reporterLists, Map<String, Map<String, Float>> dataMap)
+            Set<ReporterList> reporterLists, Map<String, Map<String, List<Float>>> dataMap)
     throws DataRetrievalException {
         for (String sampleName : dataMap.keySet()) {
             LOGGER.info("Start LoadArrayData for : " + sampleName);
@@ -205,7 +205,7 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
             ArrayDataValues values = new ArrayDataValues(platformHelper
                     .getAllReportersByType(getReporterType()));
             arrayDataValuesList.add(values);
-            Map<String, Float> reporterMap = dataMap.get(sampleName);
+            Map<String, List<Float>> reporterMap = dataMap.get(sampleName);
             for (String probeName : reporterMap.keySet()) {
                 AbstractReporter reporter = platformHelper.getReporter(getReporterType(), probeName);
                 if (reporter == null) {
@@ -213,7 +213,7 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
                             + platformHelper.getPlatform().getName());
                 } else {
                     values.setFloatValue(arrayData, reporter, getDataValueType(), reporterMap
-                            .get(probeName).floatValue());
+                            .get(probeName), getCentralTendencyCalculator());
                 }
             }
             getArrayDataService().save(values);

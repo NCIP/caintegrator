@@ -139,7 +139,7 @@ public final class GenericMultiSamplePerFileParser {
      * @param dataMap the data mapping
      * @throws DataRetrievalException read data exception
      */
-    public void loadData(Map<String, Map<String, Float>> dataMap) throws DataRetrievalException {
+    public void loadData(Map<String, Map<String, List<Float>>> dataMap) throws DataRetrievalException {
         String[] fields;
         try {
             while ((fields = Cai2Util.readDataLine(dataFileReader)) != null) {
@@ -185,13 +185,17 @@ public final class GenericMultiSamplePerFileParser {
         }
     }
     
-    private void setReporterMap(Map<String, Map<String, Float>> dataMap, String sampleName,
+    private void setReporterMap(Map<String, Map<String, List<Float>>> dataMap, String sampleName,
             String probeName, Float log2Ratio) {
         if (!dataMap.containsKey(sampleName)) {
-            Map<String, Float> reporterMap = new HashMap<String, Float>();
+            Map<String, List<Float>> reporterMap = new HashMap<String, List<Float>>();
             dataMap.put(sampleName, reporterMap);
         }
-        dataMap.get(sampleName).put(probeName, log2Ratio);
+        Map<String, List<Float>> reporterMap = dataMap.get(sampleName);
+        if (!reporterMap.containsKey(probeName)) {
+            reporterMap.put(probeName, new ArrayList<Float>());
+        }
+        dataMap.get(sampleName).get(probeName).add(log2Ratio);
     }
     
     private void setMultiPointReporterMap(Map<String, Map<String, List<Float>>> dataMap, String sampleName,
