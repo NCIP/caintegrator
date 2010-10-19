@@ -372,12 +372,7 @@
 	                                </div>
 	                                <div style="float: right; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
 	                                    <s:a href="%{editGisticUrl}" onclick="showBusyDialog();" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;" title="Edit: %{name}">
-	                                        <s:if test="id == openQueryId">
-	                                            <strong><s:property value="name"/></strong>
-	                                        </s:if>
-	                                        <s:else>
 	                                            <s:property value="name"/>
-	                                        </s:else>
 	                                    </s:a>
 	                                </div>
 	                            </div>
