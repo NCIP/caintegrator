@@ -30,6 +30,7 @@
      -->
     <dependency org="openqa" name="selenium" rev="0.9.0" conf="test-selenium->master"/>
     <dependency org="junit" name="junit" rev="4.3.1" conf="test-junit,test-pmd->master"/>
+    <dependency org="javassist" name="javassist" rev="3.9.0.GA" conf="test-junit->default"/>
     <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9" conf="test-cobertura->master"/>  
     <dependency org="log4j" name="log4j" rev="1.2.9" conf="test-cobertura->master"/>  
     <dependency org="javancss" name="javancss" rev="29.50" conf="test-javancss->master"/>
