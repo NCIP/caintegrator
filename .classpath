@@ -37,7 +37,7 @@
 	<classpathentry kind="lib" path="software/lib/external-runtime/google-collections-1.0-rc1.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/cabio43-beans.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/cabio43-client-framework.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-dojo-plugin-2.1.8.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-dojo-plugin-2.2.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/spring-2.5.6.jar" sourcepath="software/lib/src/spring-2.5.6-sources.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/spring-beans-2.5.6.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/spring-context-2.5.6.jar"/>
@@ -131,9 +131,9 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ojdbc14-10.2.0.3.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/opencsv-1.8.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/axis2-saaj-1.1.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-core-2.1.8.jar" sourcepath="software/lib/src/struts-2.1.8-src.zip"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-spring-plugin-2.1.8.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-tiles-plugin-2.1.8.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-core-2.2.1.jar" sourcepath="software/lib/src/struts2-core-2.2.1-sources.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-spring-plugin-2.2.1.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-tiles-plugin-2.2.1.jar" />
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/tiles-api-2.0.6.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/tiles-core-2.0.6.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/tiles-jsp-2.0.6.jar"/>
@@ -144,7 +144,7 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xalan-2.7.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xercesImpl-2.6.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xmlsec-1.4.0.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xwork-core-2.1.6.jar" sourcepath="software/lib/src/xwork-2.1.6-src.zip"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xwork-core-2.2.1.jar" sourcepath="software/lib/src/xwork-core-2.2.1-sources.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/nci-commons-core-1.2.8.jar" sourcepath="software/lib/src/nci-commons-core-1.2.8-sources.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/NCIACoreService-client.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/NCIACoreService-common.jar"/>

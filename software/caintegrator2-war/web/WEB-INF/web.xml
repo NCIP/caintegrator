@@ -34,6 +34,10 @@
         <param-name>caintegrator2Builddate</param-name>
         <param-value>@caintegrator2.builddate@</param-value>
     </context-param>
+    <context-param>
+        <param-name>templatePath</param-name>
+        <param-value>template</param-value>
+    </context-param> 
     
     <security-constraint>
         <web-resource-collection>
