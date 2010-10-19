@@ -27,7 +27,7 @@ This is the definition of a virtual module called bda-download that has a depend
     <dependency org="junit" name="junit" rev="4.6" conf="test-junit->master"/>
     <dependency org="cobertura" name="cobertura" rev="1.9.1" conf="test-cobertura->runtime"/>
     <dependency org="javancss" name="javancss" rev="29.50" conf="test-javancss->runtime"/>
-    <dependency org="checkstyle" name="checkstyle" rev="4.6" conf="test-checkstyle->runtime"/>
+    <dependency org="com.puppycrawl.tools" name="checkstyle" rev="5.2" conf="test-checkstyle->runtime"/>
     <dependency org="pmd" name="pmd" rev="4.2.5" conf="test-pmd->runtime"/>
     <dependency org="ncicb" name="bda-utils" rev="${bda.version}" changing="true" conf="runtime"/>
   </dependencies>
