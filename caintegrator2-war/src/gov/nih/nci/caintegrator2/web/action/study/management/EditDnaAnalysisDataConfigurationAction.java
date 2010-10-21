@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJ
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
+import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
@@ -188,6 +189,7 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
         try {
             getStudyManagementService().saveDnaAnalysisMappingFile(getGenomicSource(), getMappingFile(), 
                     getMappingFileFileName());
+            getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
             getStudyManagementService().save(getStudyConfiguration());
             setStudyLastModifiedByCurrentUser(getGenomicSource(), 
                     LogEntry.getSystemLogSave(getGenomicSource()));

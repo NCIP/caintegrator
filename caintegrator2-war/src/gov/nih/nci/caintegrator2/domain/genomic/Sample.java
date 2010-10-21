@@ -148,5 +148,14 @@ public class Sample extends AbstractCaIntegrator2Object {
             sampleAcquisition = null;
         }
     }
+    
+    /**
+     * Remove all array data from this sample.
+     */
+    public void clearArrayData() {
+        arrayDataCollection.clear();
+        arrayCollection.clear();
+        reportersHighVariance.clear();
+    }
 
 }
