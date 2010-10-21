@@ -56,22 +56,18 @@
                     </s:else>
                     
                 <s:if test="%{studyConfiguration.hasLoadedClinicalDataSource()}">
-                    <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" readonly="true" cssClass="readonly" />
-                    <s:textfield label="caArray Server JNDI Port" name="genomicSource.serverProfile.port" readonly="true" cssClass="readonly" />
+                    <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" readonly="true" cssClass="readonly" size="35" />
+                    <s:textfield label="caArray Server JNDI Port" name="genomicSource.serverProfile.port" readonly="true" cssClass="readonly" size="35" />
                     <!-- NOTE - using custom struts theme to turn off autocomplete -->
-                    <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" readonly="true" cssClass="readonly" theme="cai2xhtml" />
+                    <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" readonly="true" cssClass="readonly" theme="cai2xhtml" size="35" />
                     <!--/NOTE -->       
-                    <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" cssClass="readonly" />
+                    <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" cssClass="readonly" size="35" />
+                    <s:textfield label="Loading Type" name="genomicSource.loadingTypeString" readonly="true" cssClass="readonly" size="35" />
                     <s:file id="sampleMappingFile" name="sampleMappingFile" label="Subject to Sample Mapping File" size="35" />
                     
                     <tr>
                         <td class="tdLabel">
-                            <s:if test="genomicSource.useSupplementalFiles">
-                                (For using CaArray supplemental file use 6 column format mapping file)
-                            </s:if>
-                            <s:else>
-                                (For parsed CaArray experiment use 2 column format mapping file)
-                            </s:else>            
+                            (csv file with 2 columns for using parsed data or 6 columns otherwise)
                         </td>
                     </tr>
                     <s:textfield label="Control Sample Set Name" name="controlSampleSetName" required="true" theme="cai2xhtml" size="35"/>
