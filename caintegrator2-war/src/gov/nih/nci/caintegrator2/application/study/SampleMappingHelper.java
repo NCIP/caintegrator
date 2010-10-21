@@ -116,13 +116,11 @@ class SampleMappingHelper {
         this.studyConfiguration = studyConfiguration;
         this.mappingFile = mappingFile;
         this.genomicSource = genomicSource;
-        
     }
 
     void mapSamples() throws ValidationException, IOException {
         CSVReader reader = new CSVReader(new FileReader(mappingFile));
         String[] values;
-        unmapSamples(); // First unmap the previous mappings.
         int columnNumber = (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType()))
             ? PARSED_DATA_SAMPLE_MAPPING_COLUMN
             : genomicSource.getPlatformVendor().getSampleMappingColumns();
@@ -153,12 +151,6 @@ class SampleMappingHelper {
         }
         if (sample == null) {
             throw new ValidationException("Sample not found '" + sampleName + "'");
-        }
-    }
-    
-    private void unmapSamples() {
-        for (Sample sample : genomicSource.getSamples()) {
-            sample.removeSampleAcquisitionAssociations();
         }
     }
 
