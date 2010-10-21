@@ -131,7 +131,9 @@ public class BioconductorServiceImpl implements BioconductorService {
             parameter.setEarlyStoppingCriterion(configuration.getEarlyStoppingCriterion());
             parameter.setPermutationReplicates(configuration.getPermutationReplicates());
             parameter.setRandomNumberSeed(configuration.getRandomNumberSeed());
+            LOGGER.info("Begin Retrieving segment from BioConductor");
             DerivedDNAcopySegment segment = client.getDerivedDNAcopySegment(assays, parameter);
+            LOGGER.info("End Retrieving segment from BioConductor");
             addSegmentationData(segment, dnaAnalysisData);
         } catch (RemoteException e) {
             LOGGER.error("Couldn't complete CaDNACopy job", e);
