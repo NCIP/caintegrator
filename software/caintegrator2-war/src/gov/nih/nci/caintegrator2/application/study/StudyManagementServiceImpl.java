@@ -448,7 +448,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                     getDao().delete(array);
                 }
             }
-            sample.getArrayCollection().clear();
+            sample.clearArrayData();
         }
         getDao().delete(genomicSource);
     }
@@ -496,19 +496,35 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     
     /**
      * {@inheritDoc}
-     * @throws ValidationException 
-     * @throws IOException 
      */
     @Transactional(rollbackFor = {ValidationException.class, IOException.class })
     public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile, 
             GenomicDataSourceConfiguration genomicSource)
         throws ValidationException, IOException {
+        unmapSamples(genomicSource);
         new SampleMappingHelper(studyConfiguration, mappingFile, genomicSource).mapSamples();
-        if (!Status.LOADED.equals(genomicSource.getStatus())) {
+        if (!Status.LOADED.equals(genomicSource.getStatus())
+                || !ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())) {
             genomicSource.setStatus(genomicSource.getMappedSamples().isEmpty()
                 ? Status.NOT_MAPPED : Status.READY_FOR_LOAD);
+            studyConfiguration.setStatus(Status.NOT_DEPLOYED);
         }
         save(studyConfiguration);
+    }
+    
+    private void unmapSamples(GenomicDataSourceConfiguration genomicSource) {
+        for (Sample sample : genomicSource.getSamples()) {
+            sample.removeSampleAcquisitionAssociations();
+            if (!ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLastModifiedDate())) {
+                for (Array array : sample.getArrayCollection()) {
+                    array.getSampleCollection().remove(sample);
+                    if (array.getSampleCollection().isEmpty()) {
+                        getDao().delete(array);
+                    }
+                }
+                sample.clearArrayData();
+            }
+        }
     }
 
     /**
@@ -1167,24 +1183,22 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
 
     /**
      * {@inheritDoc}
-     * 
-     * @throws IOException 
      */
-    public void saveDnaAnalysisMappingFile(GenomicDataSourceConfiguration source,
+    public void saveDnaAnalysisMappingFile(GenomicDataSourceConfiguration genomicSource,
             File mappingFile, String filename) throws IOException {
-        File savedFile = getFileManager().storeStudyFile(mappingFile, filename, source.getStudyConfiguration());
-        if (source.getDnaAnalysisDataConfiguration() == null) {
-            source.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
+        File savedFile = getFileManager().storeStudyFile(mappingFile, filename, genomicSource.getStudyConfiguration());
+        if (genomicSource.getDnaAnalysisDataConfiguration() == null) {
+            genomicSource.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
+        } else {
+            unmapSamples(genomicSource);
         }
-        source.getDnaAnalysisDataConfiguration().setMappingFilePath(savedFile.getAbsolutePath());
-        source.setStatus(Status.READY_FOR_LOAD);
-        daoSave(source);
+        genomicSource.getDnaAnalysisDataConfiguration().setMappingFilePath(savedFile.getAbsolutePath());
+        genomicSource.setStatus(Status.READY_FOR_LOAD);
+        daoSave(genomicSource);
     }
 
     /**
      * {@inheritDoc}
-     * 
-     * @throws IOException 
      */
     public void saveSampleMappingFile(GenomicDataSourceConfiguration source,
             File mappingFile, String filename) throws IOException {
