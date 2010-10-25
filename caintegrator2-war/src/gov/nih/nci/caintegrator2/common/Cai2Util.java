@@ -137,8 +137,17 @@ public final class Cai2Util {
     private static final double MAX_ANGLE_CONSTANT = 360;
     private static final Set<Color> COLOR_PALETTE = new HashSet<Color>();
     private static final double NATURAL_LOG_OF_2 = Math.log(2);
+    private static final Integer MAX_DESCRIPTION_LENGTH = 255;
     
     private Cai2Util() { }
+
+    /**
+     * @param statusDescription the string to trim
+     * @return trimmed string if too long, or full string if it isn't too long.
+     */
+    public static String trimDescription(String statusDescription) {
+        return trimStringIfTooLong(statusDescription, MAX_DESCRIPTION_LENGTH);
+    }
     
     /**
      * Trims string if it is greater than the maxCharacters to be '[trimmedString]...'.

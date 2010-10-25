@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCaIntegrator2StudyObject;
 import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
@@ -592,7 +593,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
      * @param statusDescription the statusDescription to set
      */
     public void setStatusDescription(String statusDescription) {
-        this.statusDescription = statusDescription;
+        this.statusDescription = Cai2Util.trimDescription(statusDescription);
     }
 
     /**

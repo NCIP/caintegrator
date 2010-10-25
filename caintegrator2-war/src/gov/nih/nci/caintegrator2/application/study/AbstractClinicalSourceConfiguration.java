@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
@@ -97,7 +98,7 @@ import java.util.List;
  * functionality to work with the configured sources.
  */
 public abstract class AbstractClinicalSourceConfiguration extends AbstractCaIntegrator2Object implements TimeStampable {
-    
+
     private StudyConfiguration studyConfiguration;
     private Date lastModifiedDate;
     private Status status = Status.NOT_LOADED;
@@ -195,7 +196,7 @@ public abstract class AbstractClinicalSourceConfiguration extends AbstractCaInte
      * @param statusDescription the statusDescription to set
      */
     public void setStatusDescription(String statusDescription) {
-        this.statusDescription = statusDescription;
+        this.statusDescription = Cai2Util.trimDescription(statusDescription);
     }
 
     /**

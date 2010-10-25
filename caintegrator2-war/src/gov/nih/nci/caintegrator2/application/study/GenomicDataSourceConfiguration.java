@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
@@ -540,7 +541,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      * @param statusDescription the statusDescription to set
      */
     public void setStatusDescription(String statusDescription) {
-        this.statusDescription = statusDescription;
+        this.statusDescription = Cai2Util.trimDescription(statusDescription);
     }
     
     /**
