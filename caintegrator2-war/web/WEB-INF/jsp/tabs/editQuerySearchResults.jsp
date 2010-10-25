@@ -400,6 +400,10 @@
                         <li><s:a href="#" cssClass="btn" onclick="submitForm('exportGenomicResults')">
                             <span class="btn_img"><span class="add">Export To CSV</span></span>
                         </s:a></li>
+                        <li><s:a href="#" cssClass="btn"
+                            onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='viewIGV';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+                            <span class="btn_img"><span class="externalsite">View IGV</span></span>
+                        </s:a></li>
                     </ul>
                 </del>
             </div>
@@ -415,6 +419,10 @@
                     <ul class="btnrow">
                         <li><s:a href="#" cssClass="btn" onclick="openExportLink(); return false;">
                             <span class="btn_img"><span class="export">Export To CSV</span></span>
+                        </s:a></li>
+                        <li><s:a href="#" cssClass="btn"
+                            onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='viewIGV';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+                            <span class="btn_img"><span class="externalsite">View IGV</span></span>
                         </s:a></li>
                     </ul>
                 </del>
@@ -432,6 +440,12 @@
                         <s:if test="queryResult.hasSubjects">
                             <li><s:a href="#" cssClass="btn" onclick="showSubjectListForm(); return false;">
                                 <span class="btn_img"><span class="save">Save Subject List</span></span>
+                            </s:a></li>
+                        </s:if>
+                        <s:if test="queryForm.hasGenomicDataSources()">
+                            <li><s:a href="#" cssClass="btn"
+                                onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='viewIGV';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+                                <span class="btn_img"><span class="externalsite">View IGV</span></span>
                             </s:a></li>
                         </s:if>
                         <s:if test="queryForm.hasImageDataSources()">

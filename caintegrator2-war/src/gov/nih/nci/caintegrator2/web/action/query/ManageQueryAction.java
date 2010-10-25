@@ -110,6 +110,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.DownloadableFile;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator2.web.action.query.form.AbstractCriterionRow;
 import gov.nih.nci.caintegrator2.web.action.query.form.CriterionRowTypeEnum;
@@ -153,6 +154,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     private QueryManagementService queryManagementService;
     private StudyManagementService studyManagementService;
     private NCIABasket nciaBasket;
+    private String viewIGVUrl;
     private String selectedAction = EXECUTE_QUERY;
     private String displayTab;
     private int rowNumber;
@@ -350,7 +352,10 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             returnValue = createNewQuery();    
         } else if ("forwardToNcia".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
-            returnValue = forwardToNciaBasket();
+            returnValue = forwardToNciaBasket(); 
+        } else if ("viewIGV".equals(selectedAction)) {
+            displayTab = RESULTS_TAB;
+            returnValue = viewIGV();
         } else if ("selectAll".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
             getDisplayableWorkspace().getQueryResult().setSelectAll(true);
@@ -549,6 +554,17 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     public String forwardToNciaBasket() {
         nciaBasket = queryManagementService.createNciaBasket(retrieveCheckedRows());
         return "nciaBasket";
+    }
+    
+    /**
+     * View IGV.
+     * @return the Struts result.
+     */
+    public String viewIGV() {
+        // TODO -- Call AnalysisService.executeeIgv(...)
+        setViewIGVUrl("Http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL="
+            + SessionHelper.getIgvSessionUrl() + "/igvSession.xml");
+        return "viewIGV";
     }
 
     /**
@@ -994,5 +1010,19 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
      */
     public StudyConfiguration getStudyConfiguration() {
         return getStudy().getStudyConfiguration();
+    }
+
+    /**
+     * @return the viewIGVUrl
+     */
+    public String getViewIGVUrl() {
+        return viewIGVUrl;
+    }
+
+    /**
+     * @param viewIGVUrl the viewIGVUrl to set
+     */
+    public void setViewIGVUrl(String viewIGVUrl) {
+        this.viewIGVUrl = viewIGVUrl;
     }
 }

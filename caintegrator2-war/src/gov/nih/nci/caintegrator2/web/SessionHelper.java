@@ -97,6 +97,10 @@ import gov.nih.nci.logging.api.util.StringUtils;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
+
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.util.ValueStack;
 
@@ -156,6 +160,18 @@ public final class SessionHelper {
             getDisplayableUserWorkspace().refresh(workspaceService, isStudyNeedRefresh);
             getValueStack().set(DISPLAYABLE_USER_WORKSPACE_VALUE_STACK_KEY, getDisplayableUserWorkspace());
         }
+    }
+
+    /**
+     * @return the session id
+     */
+    public static String getIgvSessionUrl() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        String requestUri = request.getRequestURI();
+        String requestUrl = request.getRequestURL().toString();
+        return requestUrl.substring(0, requestUrl.length() - requestUri.length())
+            + "/caintegrator2/igv/"
+            + request.getRequestedSessionId();
     }
 
     /**
