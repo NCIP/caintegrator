@@ -91,7 +91,6 @@ import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -111,7 +110,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional (propagation = Propagation.REQUIRED)
 public class DeploymentServiceImpl implements DeploymentService {
-    private static final Integer MAX_DESCRIPTION_LENGTH = 255;
     private static final Logger LOGGER = Logger.getLogger(DeploymentServiceImpl.class);
     
     private CaArrayFacade caArrayFacade;
@@ -156,8 +154,7 @@ public class DeploymentServiceImpl implements DeploymentService {
         LOGGER.error("Deployment of study " + studyConfiguration.getStudy().getShortTitleText()
                 + " failed.", e);
         studyConfiguration.setStatusDescription((e.getMessage() != null)
-                ? Cai2Util.trimStringIfTooLong(e.getMessage(), MAX_DESCRIPTION_LENGTH) 
-                : Cai2Util.trimStringIfTooLong(e.toString(), MAX_DESCRIPTION_LENGTH));
+                ? e.getMessage() : e.toString());
         studyConfiguration.setStatus(Status.ERROR);
         updateStatus(studyConfiguration, listener);
         return studyConfiguration.getStatus();

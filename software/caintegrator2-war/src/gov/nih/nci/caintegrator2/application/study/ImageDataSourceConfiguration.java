@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.TimeStampable;
@@ -103,6 +104,7 @@ public class ImageDataSourceConfiguration extends AbstractCaIntegrator2Object im
      * For the "Automatic" mapping.
      */
     public static final String AUTOMATIC_MAPPING = "Automatic";
+    
     private static final long serialVersionUID = 1L;
     private StudyConfiguration studyConfiguration;
     private ImageAnnotationConfiguration imageAnnotationConfiguration;
@@ -253,7 +255,7 @@ public class ImageDataSourceConfiguration extends AbstractCaIntegrator2Object im
      * @param statusDescription the statusDescription to set
      */
     public void setStatusDescription(String statusDescription) {
-        this.statusDescription = statusDescription;
+        this.statusDescription = Cai2Util.trimDescription(statusDescription);
     }
 
     /**
