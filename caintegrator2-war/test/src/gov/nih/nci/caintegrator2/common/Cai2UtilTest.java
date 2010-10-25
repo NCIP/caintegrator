@@ -124,6 +124,13 @@ public class Cai2UtilTest {
 
 
     @Test
+    public void testTrimDescription() {
+        String string = "This is my test string, it may or may not need to be trimmed.";
+        assertEquals(string, Cai2Util.trimDescription(string));
+    }
+
+
+    @Test
     public void testTrimStringIfTooLong() {
         String string = "This is my test string, it may or may not need to be trimmed.";
         try {
