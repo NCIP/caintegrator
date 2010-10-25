@@ -843,4 +843,12 @@ public class QueryFormTest {
         subscription.getStudy().getStudyConfiguration().getGenomicDataSources().clear();
         assertEquals(1, queryForm.getResultTypes().size());
     }
+    
+    @Test
+    public void testHasGenomicDataSource() {
+        queryForm.createQuery(subscription, null, null);
+        assertTrue(queryForm.hasGenomicDataSources());
+        queryForm.getQuery().getSubscription().getStudy().getStudyConfiguration().getGenomicDataSources().clear();
+        assertFalse(queryForm.hasGenomicDataSources());
+    }
 }
