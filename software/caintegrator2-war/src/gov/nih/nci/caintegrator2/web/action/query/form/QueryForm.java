@@ -353,6 +353,13 @@ public class QueryForm {
     }
     
     /**
+     * @return boolean of has genomic data source
+     */
+    public boolean hasGenomicDataSources() {
+        return query.getSubscription().getStudy().hasGenomicDataSources();
+    }
+    
+    /**
      * @return boolean of has image mapping data
      */
     public boolean hasImageDataSources() {
