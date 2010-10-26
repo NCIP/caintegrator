@@ -153,6 +153,11 @@
         <servlet-name>logoRenderingServlet</servlet-name>
         <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
     </servlet>
+    
+    <servlet>
+        <servlet-name>igvServlet</servlet-name>
+        <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
+    </servlet>
 
     <servlet>
     	<servlet-name>dwr</servlet-name>
@@ -178,6 +183,11 @@
     <servlet-mapping>
         <servlet-name>logoRenderingServlet</servlet-name>
         <url-pattern>/logo</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>igvServlet</servlet-name>
+        <url-pattern>/igv/*</url-pattern>
     </servlet-mapping>
 
     <mime-mapping>
