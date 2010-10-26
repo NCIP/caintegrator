@@ -108,7 +108,7 @@ public class IGVFileServletTest {
     
     @Test
     public void testHandleRequest() throws ServletException, IOException {
-        String sessionId = "Session Id";
+        String sessionId = "SessionId";
         IGVFileServlet igvFileServlet = new IGVFileServlet();
         IGVResultsManager resultsManager = new IGVResultsManager();
         igvFileServlet.setIgvResultsManager(resultsManager);
@@ -127,36 +127,52 @@ public class IGVFileServletTest {
         assertFalse(response.outputStreamWritten);
         
         // Invalid session and invalid file.
-        request.setRequestURI("/igv/invalidSession/invalidFile.xml");
+        request.setRequestURI("/igv/retrieveFile.do?JSESSIONID=invalid&file=invalidFile.xml");
+        request.setParameter("JSESSIONID", "invalid");
+        request.setParameter("file", "invalidFile.xml");
         igvFileServlet.handleRequest(request, response);
         assertFalse(response.outputStreamWritten);
         
         // Invalid file.
-        request.setRequestURI("/igv/Session Id/invalidFile.xml");
+        request.setRequestURI("/igv/retrieveFile.do?JSESSIONID=SessionId&file=invalidFile.xml");
+        request.setParameter("JSESSIONID", sessionId);
+        request.setParameter("file", "invalidFile.xml");
         igvFileServlet.handleRequest(request, response);
         assertFalse(response.outputStreamWritten);
         
         // Valid session, valid file format, file exists
-        request.setRequestURI("/igv/Session Id/" + IGVFileTypeEnum.SESSION.getFilename());
+        request.setRequestURI("/igv/retrieveFile.do?JSESSIONID=SessionId&file=" 
+                + IGVFileTypeEnum.SESSION.getFilename());
+        request.setParameter("JSESSIONID", sessionId);
+        request.setParameter("file", IGVFileTypeEnum.SESSION.getFilename());
         igvFileServlet.handleRequest(request, response);
         assertTrue(response.outputStreamWritten);
         
         // Valid session, valid file format, segmentation file doesn't exist.
         response.outputStreamWritten = false;
-        request.setRequestURI("/igv/Session Id/" + IGVFileTypeEnum.SEGMENTATION.getFilename());
+        request.setRequestURI("/igv/retrieveFile.do?JSESSIONID=SessionId&file=" 
+                + IGVFileTypeEnum.SEGMENTATION.getFilename());
+        request.setParameter("JSESSIONID", sessionId);
+        request.setParameter("file", IGVFileTypeEnum.SEGMENTATION.getFilename());
         igvFileServlet.handleRequest(request, response);
         assertFalse(response.outputStreamWritten);
         
         // Valid session, valid file format, expression file exists.
         response.outputStreamWritten = false;
-        request.setRequestURI("/igv/Session Id/" + IGVFileTypeEnum.GENE_EXPRESSION.getFilename());
+        request.setRequestURI("/igv//retrieveFile.do?JSESSIONID=SessionId&file=" 
+                + IGVFileTypeEnum.GENE_EXPRESSION.getFilename());
+        request.setParameter("JSESSIONID", sessionId);
+        request.setParameter("file", IGVFileTypeEnum.GENE_EXPRESSION.getFilename());
         igvFileServlet.handleRequest(request, response);
         assertTrue(response.outputStreamWritten);
         
         // Valid session, valid file format, but the job result is off the session.
         resultsManager.storeJobResult(sessionId, null);
         response.outputStreamWritten = false;
-        request.setRequestURI("/igv/Session Id/" + IGVFileTypeEnum.GENE_EXPRESSION.getFilename());
+        request.setRequestURI("/igv//retrieveFile.do?JSESSIONID=SessionId&file=" 
+                + IGVFileTypeEnum.GENE_EXPRESSION.getFilename());
+        request.setParameter("JSESSIONID", sessionId);
+        request.setParameter("file", IGVFileTypeEnum.GENE_EXPRESSION.getFilename());
         igvFileServlet.handleRequest(request, response);
         assertFalse(response.outputStreamWritten);
         
