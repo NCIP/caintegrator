@@ -142,6 +142,12 @@ class GenomicQueryHandler {
         ArrayDataValues values = getDataValues();
         return createGeneExpressionResult(values);
     }
+    
+    Collection<SegmentData> retrieveSegmentDataQuery() throws InvalidCriterionException {
+        Collection<ArrayData> arrayDatas = getMatchingArrayDatas();
+        return getMatchingSegmentDatas(arrayDatas);
+        
+    }
 
     private GenomicDataQueryResult createGeneExpressionResult(ArrayDataValues values) {
         GenomicDataQueryResult result = new GenomicDataQueryResult();

@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
@@ -98,6 +99,7 @@ import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -112,6 +114,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public boolean executeCalled;
     public QueryResult QR = new QueryResult();
     public boolean executeGenomicDataQueryCalled;
+    public boolean retrieveSegmentDataQueryCalled;
     public boolean createCsvFileFromGenomicResultCalled;
     private GenomicDataQueryResult expectedGenomicResult = new GenomicDataQueryResult();
     public boolean getRefreshedEntityCalled;
@@ -136,6 +139,12 @@ public class QueryManagementServiceStub implements QueryManagementService {
         return QR;
     }
 
+    @SuppressWarnings("unchecked")
+    public Collection<SegmentData> retrieveSegmentDataQuery(Query query) throws InvalidCriterionException {
+        retrieveSegmentDataQueryCalled = true;
+        return Collections.EMPTY_SET;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -148,6 +157,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
         saveCalled = false;
         executeCalled = false;
         executeGenomicDataQueryCalled = false;
+        retrieveSegmentDataQueryCalled = false;
         createCsvFileFromGenomicResultCalled = false;
         getRefreshedEntityCalled = false;
         throwGenesNotFoundException = false;

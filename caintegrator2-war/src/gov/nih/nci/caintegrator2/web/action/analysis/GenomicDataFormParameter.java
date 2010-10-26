@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
 import java.util.ArrayList;
@@ -188,7 +189,8 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
     public void configureForInvocation(StudySubscription studySubscription, 
                                        QueryManagementService queryManagementService) throws InvalidCriterionException {
         if (getSelectedQuery() == null) {
-            setSelectedQuery(QueryUtil.createAllGeneExpressionDataQuery(studySubscription, null, selectedPlatform));
+            setSelectedQuery(QueryUtil.createAllGenomicDataQuery(studySubscription, null, selectedPlatform,
+                    ResultTypeEnum.GENE_EXPRESSION));
         } else {
             refreshSelectedQuery(studySubscription);
         }

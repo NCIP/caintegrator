@@ -93,12 +93,14 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -124,6 +126,15 @@ public interface QueryManagementService extends CaIntegrator2EntityRefresher {
      * @throws InvalidCriterionException if criterion is invalid. 
      */
     GenomicDataQueryResult executeGenomicDataQuery(Query query) throws InvalidCriterionException;
+    
+    /**
+     * Executes a query that returns a list of segment data.
+     * 
+     * @param query the query to execute.
+     * @return the resulting data.
+     * @throws InvalidCriterionException if criterion is invalid. 
+     */
+    Collection<SegmentData> retrieveSegmentDataQuery(Query query) throws InvalidCriterionException;
     
     /**
      * Retrieves the geneExpression platforms that exist in a study.
