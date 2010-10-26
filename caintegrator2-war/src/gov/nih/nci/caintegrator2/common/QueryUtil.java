@@ -308,18 +308,21 @@ public final class QueryUtil {
     }
     
     /**
-     * Creates a query for all gene expression data in the study, and limits it to the given clinical queries (if any
-     * are given).
+     * Creates a query for all gene expression or copy number data in the study based on the input result type,
+     *   and limits it to the given clinical queries (if any are given).
      * @param studySubscription for querying.
      * @param clinicalQueries to limit gene expression data returned based.
      * @param platformName if this is not null, specifies the platform to use for the gene expression query.
+     * @param resultType the type for querying.
      * @return a Query which contains all gene expression data for all clinical queries given (if any).
      */
-    public static Query createAllGeneExpressionDataQuery(StudySubscription studySubscription,
-            Set<Query> clinicalQueries, String platformName) {
+    public static Query createAllGenomicDataQuery(StudySubscription studySubscription,
+            Set<Query> clinicalQueries, String platformName, ResultTypeEnum resultType) {
+        ReporterTypeEnum reporterType = (ResultTypeEnum.GENE_EXPRESSION.equals(resultType))
+            ? ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET : ReporterTypeEnum.DNA_ANALYSIS_REPORTER;
         Query query = createQuery(studySubscription);
-        query.setResultType(ResultTypeEnum.GENE_EXPRESSION);
-        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        query.setResultType(resultType);
+        query.setReporterType(reporterType);
         if (clinicalQueries != null && !clinicalQueries.isEmpty()) {
             CompoundCriterion clinicalCompoundCriterions = new CompoundCriterion();
             clinicalCompoundCriterions.setBooleanOperator(BooleanOperatorEnum.OR);
@@ -333,9 +336,11 @@ public final class QueryUtil {
             query.getCompoundCriterion().getCriterionCollection().add(clinicalCompoundCriterions);
         }
         if (StringUtils.isNotBlank(platformName)) {
+            GenomicCriterionTypeEnum criterionType = (ResultTypeEnum.GENE_EXPRESSION.equals(resultType))
+                ? GenomicCriterionTypeEnum.GENE_EXPRESSION : GenomicCriterionTypeEnum.COPY_NUMBER;
             GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
             geneNameCriterion.setPlatformName(platformName);
-            geneNameCriterion.setGenomicCriterionType(GenomicCriterionTypeEnum.GENE_EXPRESSION);
+            geneNameCriterion.setGenomicCriterionType(criterionType);
             query.getCompoundCriterion().getCriterionCollection().add(geneNameCriterion);
         }
         return query;

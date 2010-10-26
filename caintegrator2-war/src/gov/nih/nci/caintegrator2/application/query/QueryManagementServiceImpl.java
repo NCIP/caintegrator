@@ -105,6 +105,7 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -161,6 +162,15 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     public GenomicDataQueryResult executeGenomicDataQuery(Query query) throws InvalidCriterionException {
         return new GenomicQueryHandler(retrieveQueryToExecute(query), 
                 getDao(), arrayDataService).execute();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly = true)
+    public Collection<SegmentData> retrieveSegmentDataQuery(Query query) throws InvalidCriterionException {
+        return new GenomicQueryHandler(retrieveQueryToExecute(query), 
+                getDao(), arrayDataService).retrieveSegmentDataQuery();
     }
     
     private Query retrieveQueryToExecute(Query query) throws InvalidCriterionException {

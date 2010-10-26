@@ -98,13 +98,16 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -267,7 +270,8 @@ public final class GenePatternUtil {
     throws InvalidCriterionException {
         Set<Query> clinicalQuerySet = new HashSet<Query>(clinicalQueries);
         Query allGenomicDataQuery = 
-            QueryUtil.createAllGeneExpressionDataQuery(studySubscription, clinicalQuerySet, platformName);
+            QueryUtil.createAllGenomicDataQuery(studySubscription, clinicalQuerySet, platformName,
+                    ResultTypeEnum.GENE_EXPRESSION);
         GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
         genomicData.excludeSampleSet(excludedControlSampleSet);
         if (genomicData.getRowCollection().isEmpty()) {
@@ -278,6 +282,42 @@ public final class GenePatternUtil {
         return gctDataset;
     }
     
+    /**
+     * Creates the SEG dataset given the clinical queries (based on all genomic copy number data).
+     * @param studySubscription to run queries against.
+     * @param clinicalQueries to be turned into SegDataset.
+     * @param excludedControlSampleSet the samples to be excluded.
+     * @param queryManagementService to query database.
+     * @param platformName if this is not null, specifies the platform to use for the genomic query.
+     * @return SEG dataset for the queries.
+     * @throws InvalidCriterionException if criterion is not valid.
+     */
+    public static Collection<SegmentData> createSegmentDataSet(StudySubscription studySubscription,
+            Collection<Query> clinicalQueries, SampleSet excludedControlSampleSet,
+            QueryManagementService queryManagementService, String platformName)
+    throws InvalidCriterionException {
+        Set<Query> clinicalQuerySet = new HashSet<Query>(clinicalQueries);
+        Query allGenomicDataQuery = 
+            QueryUtil.createAllGenomicDataQuery(studySubscription, clinicalQuerySet, platformName,
+                    ResultTypeEnum.COPY_NUMBER);
+        Collection<SegmentData> results = queryManagementService.retrieveSegmentDataQuery(allGenomicDataQuery);
+        removeControlSample(results, excludedControlSampleSet);
+        if (results.isEmpty()) {
+            throw new InvalidCriterionException("Unable to create SEG file: No data found from selection.");
+        }
+        return results;
+    }
+    
+    private static void removeControlSample(Collection<SegmentData> results, SampleSet excludedControlSampleSet) {
+        Collection<SegmentData> excludeSegmentDatas = new ArrayList<SegmentData>();
+        for (SegmentData segmentData : results) {
+            if (excludedControlSampleSet.contains(segmentData.getArrayData().getSample())) {
+                excludeSegmentDatas.add(segmentData);
+            }
+        }
+        results.removeAll(excludeSegmentDatas);
+    }
+
     /**
      * Creates a parameter from given name/value pair.
      * @param name of parameter.
