@@ -92,8 +92,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -103,20 +101,20 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.web.HttpRequestHandler;
 
 /**
- * The request URI will be of the format /caintegrator2/igv/sessionid/igvSession.xml.
+ * The request URI will be of the format /caintegrator2/igv/retrieveFile.do?JSESSIONID=1234567&file=igvSession.xml
  * An example URL (one full line):
  * 
  * http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=
- *      http://localhost:8080/caintegrator2/igv/12345678/igvSession.xml
+ *      http://localhost:8080/caintegrator2/igv/retrieveFile.do%3FJSESSIONID%3D123456789%26file%3DigvSession.xml
  * 
  * Or instead of using broadinstitute.org could be:
  * 
- * http://localhost:60151/load?file=http://localhost:8080/caintegrator2/igv/12345678/igvSession.xml
+ * http://localhost:60151/load?file=
+ *      http://localhost:8080/caintegrator2/igv/retrieveFile.do%3FJSESSIONID%3D123456789%26file%3DigvSession.xml
  * 
  * These URLs assume a caintegrator host being on the localhost machine.
  */
 public class IGVFileServlet implements HttpRequestHandler {
-    private static final Pattern URL_PATTERN = Pattern.compile("igv/(.+)/(.+)");
     private IGVResultsManager igvResultsManager;
     
     /**
@@ -124,14 +122,11 @@ public class IGVFileServlet implements HttpRequestHandler {
      */
     public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
-        Matcher matcher = URL_PATTERN.matcher(request.getRequestURI());
-        if (matcher.find()) {
-            String sessionId = matcher.group(1);
-            String filename = matcher.group(2);
-            IGVFileTypeEnum fileType = IGVFileTypeEnum.getByFilename(filename);
-            if (fileType != null) {
-                streamIgvFile(response, sessionId, fileType);
-            }
+        String sessionId = request.getParameter("JSESSIONID");
+        String filename = request.getParameter("file");
+        IGVFileTypeEnum fileType = IGVFileTypeEnum.getByFilename(filename);
+        if (fileType != null) {
+            streamIgvFile(response, sessionId, fileType);
         }
     }
 
