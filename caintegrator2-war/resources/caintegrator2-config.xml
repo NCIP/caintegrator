@@ -1044,6 +1044,13 @@
         </property>
     </bean>
     
+    <bean id="igvServlet" 
+        class="gov.nih.nci.caintegrator2.web.IGVFileServlet">
+        <property name="igvResultsManager">
+            <ref local="igvResultsManager" />
+        </property>
+    </bean>
+    
     <bean id="securityManager" class="gov.nih.nci.caintegrator2.security.SecurityManagerImpl"> 
         <property name="authorizationManagerFactory">
             <ref local="authorizationManagerFactory" />
@@ -1051,6 +1058,8 @@
     </bean>
     
     <bean id="authorizationManagerFactory" class="gov.nih.nci.caintegrator2.security.AuthorizationManagerFactoryImpl"/>
+    
+    <bean id="igvResultsManager" scope="singleton" class="gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager" />
 
     <!-- ******************************************************************* -->
     <!-- ** SERVICES                                                      ** -->
