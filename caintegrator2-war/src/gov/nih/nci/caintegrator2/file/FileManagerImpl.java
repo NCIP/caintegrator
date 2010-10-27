@@ -90,17 +90,23 @@ import gov.nih.nci.caintegrator2.application.analysis.ClassificationsToClsConver
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.SegmentDatasetFileWriter;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVSessionFileWriter;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -153,6 +159,40 @@ public class FileManagerImpl implements FileManager {
                                                 dirName);
         newTemporaryDirectory.mkdirs();
         return newTemporaryDirectory;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File getIGVDirectory(String sessionId) {
+        if (StringUtils.isBlank(sessionId)) {
+            throw new IllegalArgumentException("Session ID is null or blank, unable to get the IGV directory.");
+        }
+        return getNewTemporaryDirectory("igv" + File.separator + sessionId);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File createIGVGctFile(GctDataset gctDataset, String sessionId) {
+        return GctDatasetFileWriter.writeAsGct(gctDataset, 
+                new File(getIGVDirectory(sessionId).getAbsolutePath()
+                       + File.separator + IGVFileTypeEnum.GENE_EXPRESSION.getFilename()).getAbsolutePath());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId) {
+        return SegmentDatasetFileWriter.writeAsSegFile(segmentDatas, new File(getIGVDirectory(sessionId)
+                .getAbsolutePath() + File.separator + IGVFileTypeEnum.SEGMENTATION.getFilename()).getAbsolutePath());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void createIGVSessionFile(String sessionId, String urlPrefix, IGVResult igvResult) {
+        IGVSessionFileWriter.writeSessionFile(getIGVDirectory(sessionId), urlPrefix, igvResult);
     }
     
     private File getStudyDirectory(StudyConfiguration studyConfiguration) {

@@ -170,8 +170,8 @@ public final class SessionHelper {
         String requestUri = request.getRequestURI();
         String requestUrl = request.getRequestURL().toString();
         return requestUrl.substring(0, requestUrl.length() - requestUri.length())
-            + "/caintegrator2/igv/retrieveFile.do%3FJESSESSIONID%3D"
-            + request.getRequestedSessionId() + "%26file%3DigvSession.xml";
+            + "/caintegrator2/igv/retrieveFile.do?" + IGVFileServlet.SESSION_PARAMETER + "="
+            + request.getRequestedSessionId() + "&" + IGVFileServlet.FILENAME_PARAMETER + "=";
     }
 
     /**
