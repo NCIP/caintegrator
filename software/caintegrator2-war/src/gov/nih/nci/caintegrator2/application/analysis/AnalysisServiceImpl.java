@@ -96,6 +96,9 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParamete
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticSamplesMarkers;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
@@ -113,6 +116,7 @@ import gov.nih.nci.caintegrator2.domain.analysis.GisticResultZipFileParser;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -126,6 +130,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
@@ -139,6 +144,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -153,8 +159,10 @@ import org.springframework.transaction.annotation.Transactional;
  * Implementation of the AnalysisService subsystem.
  */
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+@SuppressWarnings("PMD.ExcessiveClassLength") // This is the main class for running all analysis, consider refactor
 public class AnalysisServiceImpl extends CaIntegrator2BaseService implements AnalysisService {
-    
+    private static final String BROAD_HOSTED_IGV_URL = 
+        "http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=";
     private KMPlotService kmPlotService;
     private GeneExpressionPlotService gePlotService;
     private QueryManagementService queryManagementService;
@@ -162,6 +170,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     private GenePatternGridRunner genePatternGridRunner;
     private FileManager fileManager;
     private ArrayDataService arrayDataService;
+    private IGVResultsManager igvResultsManager;
     
     /**
      * {@inheritDoc}
@@ -417,6 +426,37 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         
         return gePlotHandler.createPlots(studySubscription);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String executeIGV(StudySubscription studySubscription, Query query, String sessionId, String urlPrefix) 
+    throws InvalidCriterionException {
+        IGVResult igvResult = new IGVResult();
+        Set<Query> queries = new HashSet<Query>();
+        queries.add(query);
+        if (studySubscription.getStudy().getStudyConfiguration().hasExpressionData()) {
+            GctDataset gctDataset = createGctDataset(studySubscription, queries, 
+                    query.getCompoundCriterion().getPlatformName(GenomicCriterionTypeEnum.GENE_EXPRESSION), null);
+            igvResult.setGeneExpressionFile(fileManager.createIGVGctFile(gctDataset, sessionId));
+        }
+        if (studySubscription.getStudy().getStudyConfiguration().hasCopyNumberData()) {
+            Collection<SegmentData> segmentDatas = createSegmentDataset(studySubscription, queries, 
+                    query.getCompoundCriterion().getPlatformName(GenomicCriterionTypeEnum.COPY_NUMBER), null);
+            igvResult.setSegmentationFile(fileManager.createIGVSegFile(segmentDatas, sessionId));
+        }
+        
+        fileManager.createIGVSessionFile(sessionId, urlPrefix, igvResult);
+        igvResultsManager.storeJobResult(sessionId, igvResult);
+        return BROAD_HOSTED_IGV_URL + encodeUrl(urlPrefix) + IGVFileTypeEnum.SESSION.getFilename();
+    }
+    
+    private String encodeUrl(String url) {
+        String encodedUrl = url.replaceAll("\\?", "%3F");
+        encodedUrl = encodedUrl.replaceAll("=", "%3D");
+        encodedUrl = encodedUrl.replaceAll("&", "%26");
+        return encodedUrl;
+    }
 
     /**
      * {@inheritDoc}
@@ -443,6 +483,13 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
             String platformName, SampleSet excludedSet) throws InvalidCriterionException {
         SampleSet refreshedExcludedSet = excludedSet == null ? null : getRefreshedEntity(excludedSet);
         return GenePatternUtil.createGctDataset(studySubscription, querySet,
+                refreshedExcludedSet, queryManagementService, platformName);
+    }
+    
+    private Collection<SegmentData> createSegmentDataset(StudySubscription studySubscription, 
+            Collection<Query> querySet, String platformName, SampleSet excludedSet) throws InvalidCriterionException {
+        SampleSet refreshedExcludedSet = excludedSet == null ? null : getRefreshedEntity(excludedSet);
+        return GenePatternUtil.createSegmentDataset(studySubscription, querySet,
                 refreshedExcludedSet, queryManagementService, platformName);
     }
     
@@ -597,5 +644,19 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
      */
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
+    }
+
+    /**
+     * @return the igvResultsManager
+     */
+    public IGVResultsManager getIgvResultsManager() {
+        return igvResultsManager;
+    }
+
+    /**
+     * @param igvResultsManager the igvResultsManager to set
+     */
+    public void setIgvResultsManager(IGVResultsManager igvResultsManager) {
+        this.igvResultsManager = igvResultsManager;
     }
 }

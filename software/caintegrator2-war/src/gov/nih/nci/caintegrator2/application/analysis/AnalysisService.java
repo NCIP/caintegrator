@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
@@ -233,4 +234,17 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @param gisticAnalysis to delete.
      */
     void deleteGisticAnalysis(GisticAnalysis gisticAnalysis);
+    
+    /**
+     * Executes IGV and returns the URL to start it.
+     * @param studySubscription study to run igv on.
+     * @param query run igv on the query.
+     * @param sessionId browser session id to store the files under (files tied to session id).
+     * @param urlPrefix of the format: 
+     *      http://caintegrator2.nci.nih.gov/caintegrator2/igv/retrieveFile.do?JSESSIONID=12345&file=
+     * @return full URL to forward user to.
+     * @throws InvalidCriterionException if invalid criterion in query.
+     */
+    String executeIGV(StudySubscription studySubscription, Query query, String sessionId, String urlPrefix) 
+    throws InvalidCriterionException;
 }

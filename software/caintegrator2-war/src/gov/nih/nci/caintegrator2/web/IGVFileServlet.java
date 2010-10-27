@@ -115,15 +115,25 @@ import org.springframework.web.HttpRequestHandler;
  * These URLs assume a caintegrator host being on the localhost machine.
  */
 public class IGVFileServlet implements HttpRequestHandler {
+    /**
+     * Session Parameter.
+     */
+    public static final String SESSION_PARAMETER = "JSESSIONID";
+    /**
+     * Filename parameter.
+     */
+    public static final String FILENAME_PARAMETER = "file";
+    
     private IGVResultsManager igvResultsManager;
+    
     
     /**
      * {@inheritDoc}
      */
     public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
-        String sessionId = request.getParameter("JSESSIONID");
-        String filename = request.getParameter("file");
+        String sessionId = request.getParameter(SESSION_PARAMETER);
+        String filename = request.getParameter(FILENAME_PARAMETER);
         IGVFileTypeEnum fileType = IGVFileTypeEnum.getByFilename(filename);
         if (fileType != null) {
             streamIgvFile(response, sessionId, fileType);
@@ -137,10 +147,6 @@ public class IGVFileServlet implements HttpRequestHandler {
             OutputStream outputStream = response.getOutputStream();
             FileInputStream inputStream = new FileInputStream(file);
             IOUtils.copy(inputStream, outputStream);
-            // As an example of the file, if you uncomment this it will use the glioma_session.xml 
-            // file and work without using an actual file.
-            // URL url = new URL("http://www.broadinstitute.org/tumorscape/textReader/IGV/glioma_session.xml");
-            // IOUtils.copy(url.openStream(), outputStream);
             outputStream.close();
         }
     }

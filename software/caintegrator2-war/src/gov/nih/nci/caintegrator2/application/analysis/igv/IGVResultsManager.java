@@ -114,8 +114,6 @@ public class IGVResultsManager {
     public File getJobResultFile(String sessionId, IGVFileTypeEnum fileType) {
         IGVResult result = igvResultMap.get(sessionId);
         if (result == null) {
-            // To test a local file, can uncomment this and will give an actual file.
-//            return new File("D:\\tandrews\\Desktop\\glioma_session.xml");
             return null;
         }
         switch (fileType) {

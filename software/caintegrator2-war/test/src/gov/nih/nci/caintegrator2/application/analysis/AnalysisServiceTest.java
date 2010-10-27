@@ -103,7 +103,9 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParamete
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticRefgeneFileEnum;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotServiceImpl;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
@@ -114,6 +116,8 @@ import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceForKMPlotStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -169,6 +173,7 @@ public class AnalysisServiceTest {
     private GenePatternGridRunnerStub genePatternGridRunnerStub = new GenePatternGridRunnerStub();
     private FileManagerStub fileManagerStub = new FileManagerStub();
     private ArrayDataServiceStub arrayDataServiceStub;
+    private IGVResultsManager igvResultsManager = new IGVResultsManager();
     
     @Before
     public void setUp() {
@@ -191,6 +196,7 @@ public class AnalysisServiceTest {
         arrayDataServiceStub = new ArrayDataServiceStub();
         serviceImpl.setArrayDataService(arrayDataServiceStub);
         arrayDataServiceStub.clear();
+        serviceImpl.setIgvResultsManager(igvResultsManager);
     }
 
     @Test
@@ -259,6 +265,42 @@ public class AnalysisServiceTest {
         public void updateStatus(AbstractPersistedAnalysisJob job) {
             statuses.add(job.getStatus());
         }
+    }
+    
+    @Test
+    public void testExecuteIGV() throws ConnectionException, InvalidCriterionException {
+        Query query = new Query();
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.setName("queryNameString");
+        
+        StudySubscription subscription = new StudySubscription();
+        Study study = new Study();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        study.setStudyConfiguration(studyConfiguration);
+        subscription.setStudy(study);
+        
+        String resultURL = service.executeIGV(subscription, query, "sessionId", 
+                "http://localhost:8080/caintegrator2/igv/runIgv.do?JSESSIONID=sessionId&file=");
+        assertEquals(
+                "http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=http://localhost:8080/caintegrator2/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
+                resultURL);
+        assertFalse(fileManagerStub.createIGVGctFileCalled);
+        assertFalse(fileManagerStub.createIGVGctFileCalled);
+        assertTrue(fileManagerStub.createIGVSessionFileCalled);
+        fileManagerStub.clear();
+        
+        GenomicDataSourceConfiguration genomicSource1 = new GenomicDataSourceConfiguration();
+        genomicSource1.setDataType(PlatformDataTypeEnum.EXPRESSION);
+        GenomicDataSourceConfiguration genomicSource2 = new GenomicDataSourceConfiguration();
+        genomicSource2.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
+        studyConfiguration.getGenomicDataSources().add(genomicSource1);
+        studyConfiguration.getGenomicDataSources().add(genomicSource2);
+        service.executeIGV(subscription, query, "sessionId", 
+            "http://localhost:8080/caintegrator2/igv/runIgv.do?JSESSIONID=sessionId&file=");
+        assertTrue(fileManagerStub.createIGVGctFileCalled);
+        assertTrue(fileManagerStub.createIGVGctFileCalled);
+        assertTrue(fileManagerStub.createIGVSessionFileCalled);
+        
     }
     
     @Test
