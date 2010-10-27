@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.query.GenomicDataResultRowComparator;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
@@ -129,6 +130,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 
@@ -153,6 +155,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     private Set<String> copyNumberPlatformsInStudy = new HashSet<String>();
     private QueryManagementService queryManagementService;
     private StudyManagementService studyManagementService;
+    private AnalysisService analysisService;
     private NCIABasket nciaBasket;
     private String viewIGVUrl;
     private String selectedAction = EXECUTE_QUERY;
@@ -561,9 +564,12 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
      * @return the Struts result.
      */
     public String viewIGV() {
-        // TODO -- Call AnalysisService.executeeIgv(...)
-        setViewIGVUrl("Http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL="
-            + SessionHelper.getIgvSessionUrl() + "/igvSession.xml");
+        try {
+            setViewIGVUrl(analysisService.executeIGV(getStudySubscription(), getQuery(), 
+                    ServletActionContext.getRequest().getRequestedSessionId(), SessionHelper.getIgvSessionUrl()));
+        } catch (Exception e) {
+            return ERROR;
+        }
         return "viewIGV";
     }
 
@@ -1024,5 +1030,19 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
      */
     public void setViewIGVUrl(String viewIGVUrl) {
         this.viewIGVUrl = viewIGVUrl;
+    }
+
+    /**
+     * @return the analysisService
+     */
+    public AnalysisService getAnalysisService() {
+        return analysisService;
+    }
+
+    /**
+     * @param analysisService the analysisService to set
+     */
+    public void setAnalysisService(AnalysisService analysisService) {
+        this.analysisService = analysisService;
     }
 }

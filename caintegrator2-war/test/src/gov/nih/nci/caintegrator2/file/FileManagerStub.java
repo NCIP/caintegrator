@@ -88,14 +88,17 @@ package gov.nih.nci.caintegrator2.file;
 import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 import org.genepattern.gistic.Marker;
 
@@ -109,6 +112,11 @@ public class FileManagerStub implements FileManager {
     public boolean createInputZipFileCalled;
     public boolean createMarkersFileCalled;
     public boolean createSamplesFileCalled;
+    public boolean getIGVDirectoryCalled;
+    public boolean createIGVGctFileCalled;
+    public boolean createIGVSegFileCalled;
+    public boolean createIGVSessionFileCalled;
+    
     
     public void clear() {
         storeStudyFileCalled = false;
@@ -119,6 +127,10 @@ public class FileManagerStub implements FileManager {
         createInputZipFileCalled = false;
         createMarkersFileCalled = false;
         createSamplesFileCalled = false;
+        getIGVDirectoryCalled = false;
+        createIGVGctFileCalled = false;
+        createIGVSegFileCalled = false;
+        createIGVSessionFileCalled = false;
     }
 
     public File storeStudyFile(File sourceFile, String filename, StudyConfiguration studyConfiguration) {
@@ -186,6 +198,25 @@ public class FileManagerStub implements FileManager {
             throws IOException {
         createSamplesFileCalled = true;
         return retrieveTmpFile();
+    }
+
+    public File getIGVDirectory(String sessionId) {
+        getIGVDirectoryCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public File createIGVGctFile(GctDataset gctDataset, String sessionId) {
+        createIGVGctFileCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId) {
+        createIGVSegFileCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public void createIGVSessionFile(String sessionId, String urlPrefix, IGVResult igvResult) {
+        createIGVSessionFileCalled = true;
     }
 
 }

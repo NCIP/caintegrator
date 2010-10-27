@@ -292,7 +292,7 @@ public final class GenePatternUtil {
      * @return SEG dataset for the queries.
      * @throws InvalidCriterionException if criterion is not valid.
      */
-    public static Collection<SegmentData> createSegmentDataSet(StudySubscription studySubscription,
+    public static Collection<SegmentData> createSegmentDataset(StudySubscription studySubscription,
             Collection<Query> clinicalQueries, SampleSet excludedControlSampleSet,
             QueryManagementService queryManagementService, String platformName)
     throws InvalidCriterionException {
@@ -301,7 +301,9 @@ public final class GenePatternUtil {
             QueryUtil.createAllGenomicDataQuery(studySubscription, clinicalQuerySet, platformName,
                     ResultTypeEnum.COPY_NUMBER);
         Collection<SegmentData> results = queryManagementService.retrieveSegmentDataQuery(allGenomicDataQuery);
-        removeControlSample(results, excludedControlSampleSet);
+        if (excludedControlSampleSet != null) {
+            removeControlSample(results, excludedControlSampleSet);
+        }
         if (results.isEmpty()) {
             throw new InvalidCriterionException("Unable to create SEG file: No data found from selection.");
         }

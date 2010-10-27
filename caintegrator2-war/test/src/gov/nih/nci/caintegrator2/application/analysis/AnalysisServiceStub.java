@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -224,5 +225,14 @@ public class AnalysisServiceStub implements AnalysisService {
 
     public boolean validateGenePatternConnection(ServerConnectionProfile server) {
         return isValidGenePatternConnection;
+    }
+
+    /* (non-Javadoc)
+     * @see gov.nih.nci.caintegrator2.application.analysis.AnalysisService#executeIGV(gov.nih.nci.caintegrator2.domain.application.StudySubscription, gov.nih.nci.caintegrator2.domain.application.Query, java.lang.String, java.lang.String)
+     */
+    public String executeIGV(StudySubscription studySubscription, Query query, String sessionId, String urlPrefix)
+            throws InvalidCriterionException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

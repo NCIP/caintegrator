@@ -88,14 +88,17 @@ package gov.nih.nci.caintegrator2.file;
 import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 import org.genepattern.gistic.Marker;
 
@@ -137,6 +140,37 @@ public interface FileManager {
      * @return the directory.
      */
     File getNewTemporaryDirectory(String dirName);
+    
+    /**
+     * Creates an igv directory for the session.
+     * @param sessionId to create directory for.
+     * @return igv directory.
+     */
+    File getIGVDirectory(String sessionId);
+    
+    /**
+     * Creates the IGV GCT File for the given gctDataset.
+     * @param gctDataset gct data.
+     * @param sessionId directory will be based on this.
+     * @return the file.
+     */
+    File createIGVGctFile(GctDataset gctDataset, String sessionId);
+    
+    /**
+     * Creates the IGV Segment Data file for the given segment datas.
+     * @param segmentDatas segment data.
+     * @param sessionId directory will be based on this.
+     * @return the file.
+     */
+    File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId);
+    
+    /**
+     * Creates the IGV Session file.
+     * @param sessionId directory will be based on this.
+     * @param urlPrefix url prefix is needed to write the data to the session file.
+     * @param igvResult results of the run.
+     */
+    void createIGVSessionFile(String sessionId, String urlPrefix, IGVResult igvResult);
     
     /**
      * Retrieves the directory for the study subscription's user.
