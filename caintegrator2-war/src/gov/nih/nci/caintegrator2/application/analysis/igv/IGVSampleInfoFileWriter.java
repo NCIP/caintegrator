@@ -83,150 +83,82 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.file;
+package gov.nih.nci.caintegrator2.application.analysis.igv;
 
-import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
-import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
-import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
-import org.genepattern.gistic.Marker;
+/**
+ * Writes a SegmentDataset to an IGV .SEG format file.
+ */
+public class IGVSampleInfoFileWriter {
 
-public class FileManagerStub implements FileManager {
+    private static final char TAB = '\t';
+    private static final char NEW_LINE = '\n';
+    private static final String TRACK_ID_HEADER = "TRACK_ID";
+    private static List<String> headers = new ArrayList<String>();
+
+    /**
+     * Writes a segmentDataset to the given file path.
+     * @param sampleValuesMap hashmap of sample -> annotation string -> value.
+     * @param columns the columns used in query.
+     * @param filePath path to write file.
+     * @return written classification file.
+     */
+    public File writeSampleInfoFile(Map<Sample, Map<String, ResultValue>> sampleValuesMap, 
+            Collection<ResultColumn> columns, String filePath) {
+        File sampleInfoFile = new File(filePath);
+        try {
+            FileWriter writer = new FileWriter(sampleInfoFile);
+            setupHeaders(columns);
+            writeHeaderLine(writer);
+            writeData(writer, sampleValuesMap);
+            writer.flush();
+            writer.close();
+            return sampleInfoFile;
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Couldn't write file at the path " + filePath, e);
+        }
+    }
+
+    private void setupHeaders(Collection<ResultColumn> columns) {
+        headers.clear();
+        for (ResultColumn column : columns) {
+            String displayName = column.getDisplayName();
+            headers.add(displayName);
+        }
+        
+    }
     
-    public boolean storeStudyFileCalled;
-    public boolean deleteStudyDirectoryCalled;
-    public boolean renameCnvFileCalled;
-    public boolean createClassificationFileCalled;
-    public boolean createGctFileCalled;
-    public boolean createInputZipFileCalled;
-    public boolean createMarkersFileCalled;
-    public boolean createSamplesFileCalled;
-    public boolean getIGVDirectoryCalled;
-    public boolean createIGVGctFileCalled;
-    public boolean createIGVSegFileCalled;
-    public boolean createIGVSessionFileCalled;
-    public boolean createIGVSampleClassificationFileCalled;
-    
-    
-    public void clear() {
-        storeStudyFileCalled = false;
-        deleteStudyDirectoryCalled = false;
-        renameCnvFileCalled = false;
-        createClassificationFileCalled = false;
-        createGctFileCalled = false;
-        createInputZipFileCalled = false;
-        createMarkersFileCalled = false;
-        createSamplesFileCalled = false;
-        getIGVDirectoryCalled = false;
-        createIGVGctFileCalled = false;
-        createIGVSegFileCalled = false;
-        createIGVSessionFileCalled = false;
-        createIGVSampleClassificationFileCalled = false;
+    private void writeHeaderLine(FileWriter writer) throws IOException {
+        writer.write(TRACK_ID_HEADER);
+        for (String header : headers) {
+            writer.write(TAB);
+            writer.write(header);
+        }
+        writer.write(NEW_LINE);
     }
 
-    public File storeStudyFile(File sourceFile, String filename, StudyConfiguration studyConfiguration) {
-        storeStudyFileCalled = true;
-        return sourceFile;
-    }
-    
-    public File getStudyDirectory(Study study) {
-        return new File(System.getProperty("java.io.tmpdir"));
-    }
-
-    public File getNewTemporaryDirectory(String dirName) {
-        return new File(System.getProperty("java.io.tmpdir"));
-    }
-
-    public File getUserDirectory(StudySubscription studySubscription) {
-        return new File(System.getProperty("java.io.tmpdir"));
-    }
-
-    public void deleteStudyDirectory(StudyConfiguration studyConfiguration) {
-        deleteStudyDirectoryCalled = true;
-    }
-
-    public File createNewStudySubscriptionFile(StudySubscription studySubscription, String filename) {
-        return retrieveTmpFile();
-    }
-
-    public File createClassificationFile(StudySubscription studySubscription,
-            SampleClassificationParameterValue sampleClassifications, String clsFilename) {
-        createClassificationFileCalled = true;
-        retrieveTmpFile();
-        return retrieveTmpFile();
-    }
-
-    public File retrieveTmpFile() {
-        File tmpFile = new File(System.getProperty("java.io.tmpdir") + File.separator + "tmpFile");
-        tmpFile.deleteOnExit();
-        return tmpFile;
-    }
-
-    public File renameCnvFile(File cnvFile) throws IOException {
-        renameCnvFileCalled = true;
-        return cnvFile;
-    }
-
-    public File createGctFile(StudySubscription studySubscription, GctDataset gctDataset, String filename) {
-        createGctFileCalled = true;
-        return retrieveTmpFile();
-    }
-
-    public ResultsZipFile createInputZipFile(StudySubscription studySubscription, AbstractPersistedAnalysisJob job,
-            String filename, File... files) {
-        createInputZipFileCalled = true;
-        ResultsZipFile zipFile = new ResultsZipFile();
-        zipFile.setPath(retrieveTmpFile().getAbsolutePath());
-        return zipFile;
-    }
-
-    public File createMarkersFile(StudySubscription studySubscription, Marker[] markers) throws IOException {
-        createMarkersFileCalled = true;
-        return retrieveTmpFile();
-    }
-
-    public File createSamplesFile(StudySubscription studySubscription, SampleWithChromosomalSegmentSet[] samples)
-            throws IOException {
-        createSamplesFileCalled = true;
-        return retrieveTmpFile();
-    }
-
-    public File getIGVDirectory(String sessionId) {
-        getIGVDirectoryCalled = true;
-        return retrieveTmpFile();
-    }
-
-    public File createIGVGctFile(GctDataset gctDataset, String sessionId) {
-        createIGVGctFileCalled = true;
-        return retrieveTmpFile();
-    }
-
-    public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId) {
-        createIGVSegFileCalled = true;
-        return retrieveTmpFile();
-    }
-
-    public void createIGVSessionFile(String sessionId, String urlPrefix, IGVResult igvResult) {
-        createIGVSessionFileCalled = true;
-    }
-
-    public File createIGVSampleClassificationFile(QueryResult queryResult, String sessionId,
-            Collection<ResultColumn> columns) {
-        createIGVSampleClassificationFileCalled = true;
-        return retrieveTmpFile();
+    private static void writeData(FileWriter writer, 
+            Map<Sample, Map<String, ResultValue>> sampleValuesMap) throws IOException {
+        for (Sample sample : sampleValuesMap.keySet()) {
+            writer.write(sample.getName());
+            for (String header : headers) {
+                writer.write(TAB);
+                ResultValue value = sampleValuesMap.get(sample).get(header);
+                writer.write(value == null ? "" : value.toString());
+            }
+            writer.write(NEW_LINE);
+        }
     }
 
 }
