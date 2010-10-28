@@ -116,10 +116,14 @@ import gov.nih.nci.caintegrator2.domain.analysis.GisticResultZipFileParser;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
@@ -445,10 +449,26 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
                     query.getCompoundCriterion().getPlatformName(GenomicCriterionTypeEnum.COPY_NUMBER), null);
             igvResult.setSegmentationFile(fileManager.createIGVSegFile(segmentDatas, sessionId));
         }
-        
+        if (!query.getColumnCollection().isEmpty()) { 
+            igvResult.setSampleInfoFile(fileManager.createIGVSampleClassificationFile(
+                    createAnnotationBasedQueryResultsForSamples(query), sessionId, query.getColumnCollection()));
+            
+        }
         fileManager.createIGVSessionFile(sessionId, urlPrefix, igvResult);
         igvResultsManager.storeJobResult(sessionId, igvResult);
         return BROAD_HOSTED_IGV_URL + encodeUrl(urlPrefix) + IGVFileTypeEnum.SESSION.getFilename();
+    }
+
+    private QueryResult createAnnotationBasedQueryResultsForSamples(Query query)
+            throws InvalidCriterionException {
+            ResultColumn sampleColumn = new ResultColumn();
+            sampleColumn.setEntityType(EntityTypeEnum.SAMPLE);
+            sampleColumn.setColumnIndex(1);
+            query.getColumnCollection().add(sampleColumn);
+            query.setResultType(ResultTypeEnum.CLINICAL);
+            QueryResult result = queryManagementService.execute(query);
+            query.getColumnCollection().remove(sampleColumn);
+            return result;
     }
     
     private String encodeUrl(String url) {

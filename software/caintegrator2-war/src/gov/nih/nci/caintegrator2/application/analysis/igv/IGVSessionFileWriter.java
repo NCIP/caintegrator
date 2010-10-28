@@ -122,6 +122,9 @@ public final class IGVSessionFileWriter {
             if (igvResult.getSegmentationFile() != null) {
                 writeDataFileLine(convertUrlAmpersand(urlPrefix), writer, IGVFileTypeEnum.SEGMENTATION);
             }
+            if (igvResult.getSampleInfoFile() != null) {
+                writeDataFileLine(convertUrlAmpersand(urlPrefix), writer, IGVFileTypeEnum.SAMPLE_CLASSIFICATION);
+            }
             writer.write(RESOURCES_TAG_END + NEW_LINE);
             writer.write(SESSION_TAG_END);
             writer.flush();

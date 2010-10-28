@@ -95,6 +95,8 @@ public class IGVResult {
     private File sessionFile;
     private File geneExpressionFile;
     private File segmentationFile;
+    private File sampleInfoFile;
+    
     
     /**
      * @return the sessionFile
@@ -136,5 +138,19 @@ public class IGVResult {
      */
     public void setSegmentationFile(File segmentationFile) {
         this.segmentationFile = segmentationFile;
+    }
+
+    /**
+     * @return the sampleInfoFile
+     */
+    public File getSampleInfoFile() {
+        return sampleInfoFile;
+    }
+
+    /**
+     * @param sampleInfoFile the sampleInfoFile to set
+     */
+    public void setSampleInfoFile(File sampleInfoFile) {
+        this.sampleInfoFile = sampleInfoFile;
     }
 }

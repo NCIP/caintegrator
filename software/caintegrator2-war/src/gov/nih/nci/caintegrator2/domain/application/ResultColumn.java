@@ -125,4 +125,12 @@ public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneab
     public int compareTo(ResultColumn o) {
         return getColumnIndex() - o.getColumnIndex();
     }
+    
+    /**
+     * Display name for the column.
+     * @return display name.
+     */
+    public String getDisplayName() {
+        return annotationFieldDescriptor.getDisplayName();
+    }
 }
