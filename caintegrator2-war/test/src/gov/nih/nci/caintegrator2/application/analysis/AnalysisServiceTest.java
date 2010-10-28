@@ -278,14 +278,14 @@ public class AnalysisServiceTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         study.setStudyConfiguration(studyConfiguration);
         subscription.setStudy(study);
-        
+        query.setSubscription(subscription);
         String resultURL = service.executeIGV(subscription, query, "sessionId", 
                 "http://localhost:8080/caintegrator2/igv/runIgv.do?JSESSIONID=sessionId&file=");
         assertEquals(
                 "http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=http://localhost:8080/caintegrator2/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
                 resultURL);
         assertFalse(fileManagerStub.createIGVGctFileCalled);
-        assertFalse(fileManagerStub.createIGVGctFileCalled);
+        assertFalse(fileManagerStub.createIGVSampleClassificationFileCalled);
         assertTrue(fileManagerStub.createIGVSessionFileCalled);
         fileManagerStub.clear();
         
@@ -295,10 +295,12 @@ public class AnalysisServiceTest {
         genomicSource2.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
         studyConfiguration.getGenomicDataSources().add(genomicSource1);
         studyConfiguration.getGenomicDataSources().add(genomicSource2);
+        query.getColumnCollection().add(new ResultColumn());
         service.executeIGV(subscription, query, "sessionId", 
             "http://localhost:8080/caintegrator2/igv/runIgv.do?JSESSIONID=sessionId&file=");
         assertTrue(fileManagerStub.createIGVGctFileCalled);
-        assertTrue(fileManagerStub.createIGVGctFileCalled);
+        assertTrue(fileManagerStub.createIGVSegFileCalled);
+        assertTrue(fileManagerStub.createIGVSampleClassificationFileCalled);
         assertTrue(fileManagerStub.createIGVSessionFileCalled);
         
     }

@@ -91,6 +91,8 @@ import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParame
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
@@ -163,6 +165,16 @@ public interface FileManager {
      * @return the file.
      */
     File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId);
+    
+    /**
+     * Creates the IGV Sample Classification File for the given query result.
+     * @param queryResult query result data to turn into sample classification file.
+     * @param sessionId directory will be based on this.
+     * @param columns the columns that are in the query results.
+     * @return the file.
+     */
+    File createIGVSampleClassificationFile(QueryResult queryResult, String sessionId, 
+            Collection<ResultColumn> columns);
     
     /**
      * Creates the IGV Session file.

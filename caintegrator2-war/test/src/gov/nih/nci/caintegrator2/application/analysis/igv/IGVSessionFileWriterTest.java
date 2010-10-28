@@ -83,155 +83,59 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis.igv;
 
-import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
-import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.domain.application.SubjectList;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import gov.nih.nci.caintegrator2.TestDataFiles;
+
+import java.io.BufferedReader;
 import java.io.File;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.FileReader;
+import java.io.IOException;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceForKMPlotStub extends QueryManagementServiceStub implements QueryManagementService {
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public PlotTypeEnum kmPlotType;
-    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
-    private CaIntegrator2DaoStub dao;
+/**
+ * 
+ */
+public class IGVSessionFileWriterTest {
 
-    public void save(Query query) {
-        saveCalled = true;
+    @Test
+    public void testWriteSessionFile() throws IOException {
+        String urlPrefix = "http://caintegrator2.nci.nih.gov/caintegrator2/igv/retrieveFile.do?JSESSIONID=12345&file=";
+        File tempDirectory = new File(System.getProperty("java.io.tmpdir") + File.separator + "igvTmp");
+        tempDirectory.mkdir();
+        IGVResult igvResult = new IGVResult();
+        igvResult.setGeneExpressionFile(TestDataFiles.VALID_FILE);
+        igvResult.setSegmentationFile(TestDataFiles.VALID_FILE);
+        igvResult.setSampleInfoFile(TestDataFiles.VALID_FILE);
+        IGVSessionFileWriter.writeSessionFile(tempDirectory, 
+                urlPrefix, igvResult);
+        File sessionFile = igvResult.getSessionFile();
+        assertTrue(sessionFile.exists());
+        BufferedReader reader = new BufferedReader(new FileReader(sessionFile));
+        assertEquals(reader.readLine(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        assertEquals(reader.readLine(), "<Session genome=\"hg18\" locus=\"All\" version=\"3\">");
+        assertEquals(reader.readLine(), "<Resources>");
+        assertEquals(
+                reader.readLine(),
+                "<Resource path=\"http://caintegrator2.nci.nih.gov/"
+                + "caintegrator2/igv/retrieveFile.do?JSESSIONID=12345&amp;file=igvGeneExpression.gct\"/>");
+        assertEquals(
+                reader.readLine(),
+                "<Resource path=\"http://caintegrator2.nci.nih.gov/"
+                + "caintegrator2/igv/retrieveFile.do?JSESSIONID=12345&amp;file=igvSegmentation.seg\"/>");
+        assertEquals(
+                reader.readLine(),
+                "<Resource path=\"http://caintegrator2.nci.nih.gov/"
+                + "caintegrator2/igv/retrieveFile.do?JSESSIONID=12345&amp;file=sampleInfo.txt\"/>");
+        assertEquals(reader.readLine(), "</Resources>");
+        assertEquals(reader.readLine(), "</Session>");
+        reader.close();
+        FileUtils.deleteDirectory(tempDirectory);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void delete(Query query) {
-        deleteCalled = true;
-    }
-    
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        if (kmPlotType == null) {
-            QR = creator.retrieveFakeQueryResults(query); 
-        } else {
-            switch (kmPlotType) {
-            case ANNOTATION_BASED:
-                QR = creator.retrieveQueryResultForAnnotationBased(query);
-                break;
-            case GENE_EXPRESSION:
-                QR = creator.retrieveFakeQueryResults(query);
-                break;
-            case QUERY_BASED:
-                QR = creator.retrieveFakeQueryResults(query);
-                break;
-            default:
-                return null;
-            }
-        }
-        QR.setQuery(query);
-        return QR;
-    }
-
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        GenomicDataQueryResult result = new GenomicDataQueryResult();
-        query.setGeneExpressionPlatform(dao.getPlatform("platformName"));
-        result.setQuery(query);
-        GenomicDataResultRow row = new GenomicDataResultRow();
-        GenomicDataResultValue value = new GenomicDataResultValue();
-        GenomicDataResultColumn column = result.addColumn();
-        SampleAcquisition sampleAcquisition = new SampleAcquisition();
-        StudySubjectAssignment assignment = new StudySubjectAssignment();
-        assignment.setId(Long.valueOf(1));
-        sampleAcquisition.setAssignment(assignment);
-        column.setSampleAcquisition(sampleAcquisition);
-        Sample sample = new Sample();
-        sample.setName("sample");
-        sampleAcquisition.setSample(sample);
-        value.setColumn(column);
-        value.setValue(1f);
-        GeneExpressionReporter reporter = new GeneExpressionReporter();
-        Gene gene = new Gene();
-        gene.setSymbol("EGFR");
-        reporter.getGenes().add(gene);
-        row.setReporter(reporter);
-        row.getValues().add(value);
-        result.getRowCollection().add(row);
-        return result;
-    }
-    
-    @Override
-    public Collection<SegmentData> retrieveSegmentDataQuery(Query query) throws InvalidCriterionException {
-        Set<SegmentData> segmentDatas = new HashSet<SegmentData>();
-        SegmentData segmentData = new SegmentData();
-        segmentData.setArrayData(new ArrayData());
-        segmentDatas.add(segmentData);
-        return segmentDatas;
-    }
-
-    public void clear() {
-        super.clear();
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-
-    public File createCsvFileFromGenomicResults(GenomicDataQueryResult result) {
-        return null;
-    }
-
-    public List<Query> createQueriesFromSubjectLists(Collection<SubjectList> subjectLists) {
-        return null;
-    }
-
-    /**
-     * @return the dao
-     */
-    public CaIntegrator2DaoStub getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(CaIntegrator2DaoStub dao) {
-        this.dao = dao;
-    }
-    
 }

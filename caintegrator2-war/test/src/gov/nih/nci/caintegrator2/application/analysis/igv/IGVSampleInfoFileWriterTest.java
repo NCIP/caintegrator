@@ -83,155 +83,114 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis.igv;
 
-import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
-import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
-import gov.nih.nci.caintegrator2.domain.application.Query;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.common.QueryUtil;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.domain.application.SubjectList;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceForKMPlotStub extends QueryManagementServiceStub implements QueryManagementService {
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public PlotTypeEnum kmPlotType;
-    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
-    private CaIntegrator2DaoStub dao;
+import au.com.bytecode.opencsv.CSVReader;
 
-    public void save(Query query) {
-        saveCalled = true;
-    }
+/**
+ * 
+ */
+public class IGVSampleInfoFileWriterTest {
+    private Collection<ResultColumn> columns = new HashSet<ResultColumn>();
+    
 
-    /**
-     * {@inheritDoc}
-     */
-    public void delete(Query query) {
-        deleteCalled = true;
+    @Test
+    public void testWriteSampleInfoFile() throws IOException {
+        File tempDirectory = new File(System.getProperty("java.io.tmpdir") + File.separator + "igvTmp");
+        tempDirectory.mkdir();
+        IGVSampleInfoFileWriter fileWriter = new IGVSampleInfoFileWriter();
+        
+        File sampleInfoFile = fileWriter.writeSampleInfoFile(QueryUtil.retrieveSampleValuesMap(setupQueryResult()),
+                columns, new File(tempDirectory.getAbsolutePath() + File.separator
+                        + IGVFileTypeEnum.SAMPLE_CLASSIFICATION.getFilename()).getAbsolutePath());
+        checkFile(sampleInfoFile);
+        FileUtils.deleteDirectory(tempDirectory);
     }
     
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        if (kmPlotType == null) {
-            QR = creator.retrieveFakeQueryResults(query); 
-        } else {
-            switch (kmPlotType) {
-            case ANNOTATION_BASED:
-                QR = creator.retrieveQueryResultForAnnotationBased(query);
-                break;
-            case GENE_EXPRESSION:
-                QR = creator.retrieveFakeQueryResults(query);
-                break;
-            case QUERY_BASED:
-                QR = creator.retrieveFakeQueryResults(query);
-                break;
-            default:
-                return null;
-            }
-        }
-        QR.setQuery(query);
-        return QR;
+    private QueryResult setupQueryResult() {
+        ResultValue resultValue1 = new ResultValue();
+        StringAnnotationValue stringValue1 = new StringAnnotationValue();
+        stringValue1.setStringValue("val1");
+        StringAnnotationValue stringValue2 = new StringAnnotationValue();
+        stringValue2.setStringValue("val2");
+        ResultValue resultValue2 = new ResultValue();
+        ResultColumn resultColumn1 = new ResultColumn();
+        columns.add(resultColumn1);
+        resultValue1.setColumn(resultColumn1);
+        resultValue1.setValue(stringValue1);
+        resultValue2.setColumn(resultColumn1);
+        resultValue2.setValue(stringValue2);
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        AnnotationDefinition ad = new AnnotationDefinition();
+        ad.setDisplayName("annotation");
+        resultColumn1.setAnnotationFieldDescriptor(afd);
+        afd.setDefinition(ad);
+        
+        QueryResult queryResult = new QueryResult();
+        queryResult.setRowCollection(new HashSet<ResultRow>());
+        ResultRow row1 = new ResultRow();
+        StudySubjectAssignment assignment1 = new StudySubjectAssignment();
+        row1.setSubjectAssignment(assignment1);
+        SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
+        Sample sample1 = new Sample();
+        sample1.setName("sample1");
+        sampleAcquisition1.setSample(sample1);
+        assignment1.getSampleAcquisitionCollection().add(sampleAcquisition1);
+        row1.setSampleAcquisition(sampleAcquisition1);
+        row1.setValueCollection(new ArrayList<ResultValue>());
+        row1.getValueCollection().add(resultValue1);
+        
+        ResultRow row2 = new ResultRow();
+        StudySubjectAssignment assignment2 = new StudySubjectAssignment();
+        row2.setSubjectAssignment(assignment2);
+        SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
+        Sample sample2 = new Sample();
+        sample2.setName("sample2");
+        sampleAcquisition2.setSample(sample2);
+        assignment2.getSampleAcquisitionCollection().add(sampleAcquisition2);
+        row2.setSampleAcquisition(sampleAcquisition2);
+        row2.setValueCollection(new ArrayList<ResultValue>());
+        row2.getValueCollection().add(resultValue2);
+        
+        queryResult.getRowCollection().add(row1);
+        queryResult.getRowCollection().add(row2);
+        return queryResult;
     }
 
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        GenomicDataQueryResult result = new GenomicDataQueryResult();
-        query.setGeneExpressionPlatform(dao.getPlatform("platformName"));
-        result.setQuery(query);
-        GenomicDataResultRow row = new GenomicDataResultRow();
-        GenomicDataResultValue value = new GenomicDataResultValue();
-        GenomicDataResultColumn column = result.addColumn();
-        SampleAcquisition sampleAcquisition = new SampleAcquisition();
-        StudySubjectAssignment assignment = new StudySubjectAssignment();
-        assignment.setId(Long.valueOf(1));
-        sampleAcquisition.setAssignment(assignment);
-        column.setSampleAcquisition(sampleAcquisition);
-        Sample sample = new Sample();
-        sample.setName("sample");
-        sampleAcquisition.setSample(sample);
-        value.setColumn(column);
-        value.setValue(1f);
-        GeneExpressionReporter reporter = new GeneExpressionReporter();
-        Gene gene = new Gene();
-        gene.setSymbol("EGFR");
-        reporter.getGenes().add(gene);
-        row.setReporter(reporter);
-        row.getValues().add(value);
-        result.getRowCollection().add(row);
-        return result;
-    }
-    
-    @Override
-    public Collection<SegmentData> retrieveSegmentDataQuery(Query query) throws InvalidCriterionException {
-        Set<SegmentData> segmentDatas = new HashSet<SegmentData>();
-        SegmentData segmentData = new SegmentData();
-        segmentData.setArrayData(new ArrayData());
-        segmentDatas.add(segmentData);
-        return segmentDatas;
+    private void checkFile(File sampleInfoFile) throws IOException {
+        assertTrue(sampleInfoFile.exists());
+        CSVReader reader = new CSVReader(new FileReader(sampleInfoFile), '\t');
+        checkLine(reader.readNext(), "TRACK_ID", "annotation");
+        checkLine(reader.readNext(), "sample2", "val2");
+        checkLine(reader.readNext(), "sample1", "val1");
+        reader.close();
     }
 
-    public void clear() {
-        super.clear();
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
+    private void checkLine(String[] line, String... expecteds) {
+        assertArrayEquals(expecteds, line);
     }
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-
-    public File createCsvFileFromGenomicResults(GenomicDataQueryResult result) {
-        return null;
-    }
-
-    public List<Query> createQueriesFromSubjectLists(Collection<SubjectList> subjectLists) {
-        return null;
-    }
-
-    /**
-     * @return the dao
-     */
-    public CaIntegrator2DaoStub getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(CaIntegrator2DaoStub dao) {
-        this.dao = dao;
-    }
-    
 }

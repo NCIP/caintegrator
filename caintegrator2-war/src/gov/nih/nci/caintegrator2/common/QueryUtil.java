@@ -99,15 +99,20 @@ import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -383,4 +388,26 @@ public final class QueryUtil {
             
         }
     }
+   
+   /**
+    * Converts a query result into a hashmap of Sample -> Column -> Value.  Used for the 
+    * <code>IGVSampleInfoFileWriter</code>.
+    * @param result query result to convert.
+    * @return the hashmap.
+    */
+   public static Map<Sample, Map<String, ResultValue>> retrieveSampleValuesMap(QueryResult result) {
+       Map<Sample, Map<String, ResultValue>> sampleValuesMap 
+           = new HashMap<Sample, Map<String, ResultValue>>();
+       for (ResultRow row : result.getRowCollection()) {
+           if (row.getSampleAcquisition() != null) {
+               Sample sample = row.getSampleAcquisition().getSample();
+               Map<String, ResultValue> columnToValueMap = new HashMap<String, ResultValue>();
+               for (ResultValue value : row.getValueCollection()) {
+                   columnToValueMap.put(value.getColumn().getDisplayName(), value);
+               }
+               sampleValuesMap.put(sample, columnToValueMap);
+           }
+       }
+       return sampleValuesMap;
+   }
 }

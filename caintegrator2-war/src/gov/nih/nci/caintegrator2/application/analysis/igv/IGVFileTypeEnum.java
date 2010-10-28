@@ -99,6 +99,11 @@ public enum IGVFileTypeEnum {
     SESSION("igvSession.xml"),
     
     /**
+     * Sample Classification.
+     */
+    SAMPLE_CLASSIFICATION("sampleInfo.txt"),
+    
+    /**
      * Expression.
      */
     GENE_EXPRESSION("igvGeneExpression.gct"),

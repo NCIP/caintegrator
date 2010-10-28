@@ -93,11 +93,15 @@ import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParame
 import gov.nih.nci.caintegrator2.application.analysis.SegmentDatasetFileWriter;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVSampleInfoFileWriter;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVSessionFileWriter;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
+import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
@@ -186,6 +190,16 @@ public class FileManagerImpl implements FileManager {
     public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId) {
         return SegmentDatasetFileWriter.writeAsSegFile(segmentDatas, new File(getIGVDirectory(sessionId)
                 .getAbsolutePath() + File.separator + IGVFileTypeEnum.SEGMENTATION.getFilename()).getAbsolutePath());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File createIGVSampleClassificationFile(QueryResult queryResult, String sessionId, 
+            Collection<ResultColumn> columns) {
+        return new IGVSampleInfoFileWriter().writeSampleInfoFile(QueryUtil.retrieveSampleValuesMap(queryResult),
+                columns, new File(getIGVDirectory(sessionId).getAbsolutePath()
+                        + File.separator + IGVFileTypeEnum.SAMPLE_CLASSIFICATION.getFilename()).getAbsolutePath());
     }
     
     /**

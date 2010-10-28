@@ -92,6 +92,7 @@ import java.util.Map;
 /**
  * Global singleton object that manages the results based on sessionId.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // switch statement.
 public class IGVResultsManager {
     
     private final Map<String, IGVResult> igvResultMap = new HashMap<String, IGVResult>();
@@ -111,6 +112,7 @@ public class IGVResultsManager {
      * @param fileType type of file.
      * @return IGV file.
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity") // switch statement.
     public File getJobResultFile(String sessionId, IGVFileTypeEnum fileType) {
         IGVResult result = igvResultMap.get(sessionId);
         if (result == null) {
@@ -123,6 +125,8 @@ public class IGVResultsManager {
             return result.getGeneExpressionFile();
         case SEGMENTATION:
             return result.getSegmentationFile();
+        case SAMPLE_CLASSIFICATION:
+            return result.getSampleInfoFile();
             default:
                 return null;
         }
