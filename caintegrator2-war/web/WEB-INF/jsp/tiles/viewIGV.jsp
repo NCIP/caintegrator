@@ -3,7 +3,7 @@
 
 <head/>
 
-<s:if test="actionErrors">
+<s:if test="hasActionErrors()">
     <s:actionerror/>
 </s:if>
 <s:else>
