@@ -54,10 +54,9 @@
         <session-timeout>1</session-timeout>
     </session-config>
 -->
-
     <filter>
         <filter-name>SessionTimeoutFilter</filter-name>
-        <filter-class>gov.nih.nci.caintegrator2.web.filter.SessionTimeoutFilter</filter-class>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
  
     <!-- Export Filter (for exporting data results) -->

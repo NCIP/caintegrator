@@ -151,6 +151,17 @@ public interface FileManager {
     File getIGVDirectory(String sessionId);
     
     /**
+     * Delete the igv directory.
+     */
+    void deleteAllIGVDirectory();
+    
+    /**
+     * Delete the igv directory for the session.
+     * @param sessionId to create directory for.
+     */
+    void deleteIGVDirectory(String sessionId);
+    
+    /**
      * Creates the IGV GCT File for the given gctDataset.
      * @param gctDataset gct data.
      * @param sessionId directory will be based on this.

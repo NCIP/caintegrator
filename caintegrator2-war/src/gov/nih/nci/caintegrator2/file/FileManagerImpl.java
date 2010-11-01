@@ -158,11 +158,13 @@ public class FileManagerImpl implements FileManager {
         if (StringUtils.isBlank(dirName)) {
             throw new IllegalArgumentException("Directory name is null or blank.");
         }
-        File newTemporaryDirectory = new File(getConfigurationHelper().
-                                                getString(ConfigurationParameter.TEMP_DOWNLOAD_STORAGE_DIRECTORY), 
-                                                dirName);
+        File newTemporaryDirectory = new File(getTempDirectory(), dirName);
         newTemporaryDirectory.mkdirs();
         return newTemporaryDirectory;
+    }
+    
+    private String getTempDirectory() {
+        return getConfigurationHelper().getString(ConfigurationParameter.TEMP_DOWNLOAD_STORAGE_DIRECTORY);
     }
     
     /**
@@ -173,6 +175,20 @@ public class FileManagerImpl implements FileManager {
             throw new IllegalArgumentException("Session ID is null or blank, unable to get the IGV directory.");
         }
         return getNewTemporaryDirectory("igv" + File.separator + sessionId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void deleteAllIGVDirectory() {
+        FileUtils.deleteQuietly(new File(getTempDirectory(), "igv"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void deleteIGVDirectory(String sessionId) {
+        FileUtils.deleteQuietly(getIGVDirectory(sessionId));
     }
     
     /**
@@ -338,10 +354,4 @@ public class FileManagerImpl implements FileManager {
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
     }
-
-
-
-
-
-
 }
