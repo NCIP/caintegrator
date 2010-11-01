@@ -82,6 +82,8 @@
  */
 package gov.nih.nci.caintegrator2.web.filter;
 
+import gov.nih.nci.caintegrator2.file.FileManager;
+
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -109,7 +111,9 @@ public class SessionTimeoutFilter implements Filter {
 
     private static final Logger LOGGER = Logger.getLogger(SessionTimeoutFilter.class);
 
-    private String timeoutPage = "sessionTimeout.action";
+    private static final String TIMEOUT_PAGE = "sessionTimeout.action";
+    private FileManager fileManager;
+    private static boolean firstTime = true;
 
     /**
      * {@inheritDoc}
@@ -124,6 +128,17 @@ public class SessionTimeoutFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
     throws IOException, ServletException {
 
+        if (firstTime) {
+            getFileManager().deleteAllIGVDirectory();
+            firstTime = false;
+        }
+        if (sessionExpired(request, response)) {
+            return;
+        }
+        filterChain.doFilter(request, response);
+    }
+
+    private boolean sessionExpired(ServletRequest request, ServletResponse response) throws IOException {
         if ((request instanceof HttpServletRequest) && (response instanceof HttpServletResponse)) {
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             HttpServletResponse httpServletResponse = (HttpServletResponse) response;
@@ -131,14 +146,14 @@ public class SessionTimeoutFilter implements Filter {
             // and is session invalid?
             if (isSessionControlRequiredForThisResource(httpServletRequest)
                     && isSessionInvalid(httpServletRequest)) {
-                String timeoutUrl = httpServletRequest.getContextPath() + "/" + getTimeoutPage();
+                String timeoutUrl = httpServletRequest.getContextPath() + "/" + TIMEOUT_PAGE;
                 LOGGER.debug("session is invalid! redirecting to timeoutpage : " + timeoutUrl);
-
+                getFileManager().deleteIGVDirectory(httpServletRequest.getRequestedSessionId());
                 httpServletResponse.sendRedirect(timeoutUrl);
-                return;
+                return true;
             }
         }
-        filterChain.doFilter(request, response);
+        return false;
     }
 
     /**
@@ -149,7 +164,7 @@ public class SessionTimeoutFilter implements Filter {
      */
     private boolean isSessionControlRequiredForThisResource(HttpServletRequest httpServletRequest) {
         String requestPath = httpServletRequest.getRequestURI();
-        boolean controlRequired = !StringUtils.contains(requestPath, getTimeoutPage())
+        boolean controlRequired = !StringUtils.contains(requestPath, TIMEOUT_PAGE)
             && !StringUtils.endsWithIgnoreCase(requestPath, "login.action");
 
         return controlRequired;
@@ -169,17 +184,17 @@ public class SessionTimeoutFilter implements Filter {
     }
 
     /**
-     * @return the timeoutPage
+     * @return the fileManager
      */
-    public String getTimeoutPage() {
-        return timeoutPage;
+    public FileManager getFileManager() {
+        return fileManager;
     }
 
     /**
-     * @param timeoutPage the timeoutPage to set
+     * @param fileManager the fileManager to set
      */
-    public void setTimeoutPage(String timeoutPage) {
-        this.timeoutPage = timeoutPage;
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
 }

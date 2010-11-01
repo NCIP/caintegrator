@@ -3,10 +3,14 @@
 
 <head/>
 
-<body onload="document.viewIGVForm.submit()">
-    View IGV URL = <s:property value="viewIGVUrl"/>
-    <s:url id="url" value="%{viewIGVUrl}" />
-    <form name="viewIGVForm" method="POST" action="${url}">
-    </form>
-
-</body>
+<s:if test="actionErrors">
+    <s:actionerror/>
+</s:if>
+<s:else>
+    <body onload="document.viewIGVForm.submit()">
+        View IGV URL = <s:property value="viewIGVUrl"/>
+        <s:url id="url" value="%{viewIGVUrl}" />
+        <form name="viewIGVForm" method="POST" action="${url}">
+        </form>
+    </body>
+</s:else>

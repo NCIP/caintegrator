@@ -88,6 +88,8 @@ package gov.nih.nci.caintegrator2.web.filter;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import gov.nih.nci.caintegrator2.file.FileManagerStub;
+
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
@@ -111,6 +113,7 @@ public class SessionTimeoutFilterTest {
         MockHttpServletResponse response = new MockHttpServletResponse();
         FilterChain chain = new FilterChainImpl();
         SessionTimeoutFilter stf = new SessionTimeoutFilter();
+        stf.setFileManager(new FileManagerStub());
         stf.init(null);
         request.setRequestedSessionIdValid(true);
         request.setRequestURI("/login.action");

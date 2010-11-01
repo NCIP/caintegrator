@@ -108,6 +108,8 @@ public class FileManagerStub implements FileManager {
     
     public boolean storeStudyFileCalled;
     public boolean deleteStudyDirectoryCalled;
+    public boolean deleteAllIGVDirectoryCalled;
+    public boolean deleteIGVDirectoryCalled;
     public boolean renameCnvFileCalled;
     public boolean createClassificationFileCalled;
     public boolean createGctFileCalled;
@@ -124,6 +126,8 @@ public class FileManagerStub implements FileManager {
     public void clear() {
         storeStudyFileCalled = false;
         deleteStudyDirectoryCalled = false;
+        deleteAllIGVDirectoryCalled = false;
+        deleteIGVDirectoryCalled = false;
         renameCnvFileCalled = false;
         createClassificationFileCalled = false;
         createGctFileCalled = false;
@@ -207,6 +211,16 @@ public class FileManagerStub implements FileManager {
     public File getIGVDirectory(String sessionId) {
         getIGVDirectoryCalled = true;
         return retrieveTmpFile();
+    }
+
+    public void deleteAllIGVDirectory() {
+        deleteAllIGVDirectoryCalled = true;
+        
+    }
+
+    public void deleteIGVDirectory(String sessionId) {
+        deleteIGVDirectoryCalled = true;
+        
     }
 
     public File createIGVGctFile(GctDataset gctDataset, String sessionId) {

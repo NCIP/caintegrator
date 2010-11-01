@@ -20,6 +20,14 @@
 
     <!-- Navigation -->
 
+    <bean id="SessionTimeoutFilter"
+        scope="singleton"
+        class="gov.nih.nci.caintegrator2.web.filter.SessionTimeoutFilter">
+        <property name="fileManager">
+            <ref local="fileManager"/>
+        </property>  
+    </bean>
+
     <bean id="emptyAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.EmptyAction">

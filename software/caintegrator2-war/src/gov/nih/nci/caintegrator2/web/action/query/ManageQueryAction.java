@@ -568,7 +568,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             setViewIGVUrl(analysisService.executeIGV(getStudySubscription(), getQuery(), 
                     ServletActionContext.getRequest().getRequestedSessionId(), SessionHelper.getIgvSessionUrl()));
         } catch (Exception e) {
-            return ERROR;
+            addActionError(getText("struts.messages.error.igv", getArgs(e.getMessage())));
+            return "viewIGV";
         }
         return "viewIGV";
     }
