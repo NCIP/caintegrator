@@ -194,6 +194,25 @@ public class FileManagerImpl implements FileManager {
             return;
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public File retrieveIGVFile(Study study, IGVFileTypeEnum fileType, String platformName) {
+        return new File(buildIGVFieName(study, fileType, platformName));
+    }
+
+    /**
+     * @param study
+     * @param fileType
+     * @param platformName
+     * @return
+     */
+    private String buildIGVFieName(Study study, IGVFileTypeEnum fileType, String platformName) {
+        String fileName = getStudyDirectory(study) + File.separator + "igv" + File.separator
+            + platformName + "_" + fileType.getFilename();
+        return fileName;
+    }
     
     /**
      * {@inheritDoc}
@@ -210,6 +229,22 @@ public class FileManagerImpl implements FileManager {
     public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId) {
         return SegmentDatasetFileWriter.writeAsSegFile(segmentDatas, new File(getIGVDirectory(sessionId)
                 .getAbsolutePath() + File.separator + IGVFileTypeEnum.SEGMENTATION.getFilename()).getAbsolutePath());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public File createIGVGctFile(GctDataset gctDataset, Study study, String platformName) {
+        return GctDatasetFileWriter.writeAsGct(gctDataset, 
+                new File(buildIGVFieName(study, IGVFileTypeEnum.GENE_EXPRESSION, platformName)).getAbsolutePath());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName) {
+        return SegmentDatasetFileWriter.writeAsSegFile(segmentDatas,
+                new File(buildIGVFieName(study, IGVFileTypeEnum.SEGMENTATION, platformName)).getAbsolutePath());
     }
     
     /**

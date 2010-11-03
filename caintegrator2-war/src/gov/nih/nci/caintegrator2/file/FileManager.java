@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.file;
 import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
@@ -162,6 +163,15 @@ public interface FileManager {
     void deleteIGVDirectory(String sessionId);
     
     /**
+     * Retrieves the IGV File for the study based on the file type and platform name.
+     * @param study the study.
+     * @param fileType the file type.
+     * @param platformName the platform name.
+     * @return the file or null if not found.
+     */
+    File retrieveIGVFile(Study study, IGVFileTypeEnum fileType, String platformName);
+    
+    /**
      * Creates the IGV GCT File for the given gctDataset.
      * @param gctDataset gct data.
      * @param sessionId directory will be based on this.
@@ -170,12 +180,30 @@ public interface FileManager {
     File createIGVGctFile(GctDataset gctDataset, String sessionId);
     
     /**
+     * Stores the IGV GCTFile for the study with platform name.
+     * @param gctDataset gct data.
+     * @param study the study.
+     * @param platformName the platform name.
+     * @return the file.
+     */
+    File createIGVGctFile(GctDataset gctDataset, Study study, String platformName);
+    
+    /**
      * Creates the IGV Segment Data file for the given segment datas.
      * @param segmentDatas segment data.
      * @param sessionId directory will be based on this.
      * @return the file.
      */
     File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId);
+    
+    /**
+     * Stores the IGV Segment Data File for the study with platform name.
+     * @param segmentDatas segment data.
+     * @param study the study.
+     * @param platformName the platform name.
+     * @return the file.
+     */
+    File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName);
     
     /**
      * Creates the IGV Sample Classification File for the given query result.

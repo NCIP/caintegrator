@@ -5,10 +5,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceTest;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelperStub;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
 import java.io.IOException;
@@ -94,6 +96,14 @@ public class FileManagerImplTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.getStudy().setId(1L);
         fileManager.storeStudyFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST, TEST_FILENAME, studyConfiguration);    
+    }
+    
+    @Test
+    public void testIGV() {
+        Study study = new Study();
+        study.setId(1L);
+        File file = fileManager.retrieveIGVFile(study, IGVFileTypeEnum.GENE_EXPRESSION, "Platform1");
+        assertEquals("Platform1_igvGeneExpression.gct", file.getName());
     }
 
 }
