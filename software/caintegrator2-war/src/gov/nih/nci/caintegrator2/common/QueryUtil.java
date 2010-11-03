@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
@@ -107,6 +108,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -314,31 +316,28 @@ public final class QueryUtil {
     
     /**
      * Creates a query for all gene expression or copy number data in the study based on the input result type,
-     *   and limits it to the given clinical queries (if any are given).
+     *   and limits it to the given queries (if any are given).
      * @param studySubscription for querying.
-     * @param clinicalQueries to limit gene expression data returned based.
+     * @param queries to limit gene expression data returned based.
      * @param platformName if this is not null, specifies the platform to use for the gene expression query.
      * @param resultType the type for querying.
      * @return a Query which contains all gene expression data for all clinical queries given (if any).
+     * @throws InvalidCriterionException if the queries passed in have different reporter types.
      */
     public static Query createAllGenomicDataQuery(StudySubscription studySubscription,
-            Set<Query> clinicalQueries, String platformName, ResultTypeEnum resultType) {
-        ReporterTypeEnum reporterType = (ResultTypeEnum.GENE_EXPRESSION.equals(resultType))
-            ? ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET : ReporterTypeEnum.DNA_ANALYSIS_REPORTER;
+            Set<Query> queries, String platformName, ResultTypeEnum resultType) throws InvalidCriterionException {
+        ReporterTypeEnum reporterType = getReporterTypeFromQueries(queries);
         Query query = createQuery(studySubscription);
+        query.setAllGenomicDataQuery(true);
         query.setResultType(resultType);
         query.setReporterType(reporterType);
-        if (clinicalQueries != null && !clinicalQueries.isEmpty()) {
-            CompoundCriterion clinicalCompoundCriterions = new CompoundCriterion();
-            clinicalCompoundCriterions.setBooleanOperator(BooleanOperatorEnum.OR);
-            for (Query clinicalQuery : clinicalQueries) {
-                CompoundCriterion clinicalCompoundCriterion = clinicalQuery.getCompoundCriterion();
-                if (isCompoundCriterionGeneExpression(clinicalCompoundCriterion)) {
-                    throw new IllegalArgumentException("Clinical query has gene expression criterion");
-                }
-                clinicalCompoundCriterions.getCriterionCollection().add(clinicalCompoundCriterion);
+        if (queries != null && !queries.isEmpty()) {
+            CompoundCriterion compoundCriterions = new CompoundCriterion();
+            compoundCriterions.setBooleanOperator(BooleanOperatorEnum.OR);
+            for (Query currentQuery : queries) {
+                compoundCriterions.getCriterionCollection().add(currentQuery.getCompoundCriterion());
             }
-            query.getCompoundCriterion().getCriterionCollection().add(clinicalCompoundCriterions);
+            query.getCompoundCriterion().getCriterionCollection().add(compoundCriterions);
         }
         if (StringUtils.isNotBlank(platformName)) {
             GenomicCriterionTypeEnum criterionType = (ResultTypeEnum.GENE_EXPRESSION.equals(resultType))
@@ -349,6 +348,24 @@ public final class QueryUtil {
             query.getCompoundCriterion().getCriterionCollection().add(geneNameCriterion);
         }
         return query;
+    }
+
+    private static ReporterTypeEnum getReporterTypeFromQueries(Set<Query> queries) throws InvalidCriterionException {
+        if (queries == null || queries.isEmpty()) {
+            return ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET;
+        }
+        ReporterTypeEnum reporterType = null;
+        for (Query query : queries) {
+            if (reporterType == null) {
+                reporterType = query.getReporterType();
+            } else {
+                if (reporterType != query.getReporterType()) {
+                    throw new InvalidCriterionException("Trying to create a combined genomic query where two of the "
+                            + "queries have different reporter types.");
+                }
+            }
+        }
+        return reporterType;
     }
 
     private static Query createQuery(StudySubscription studySubscription) {
@@ -395,17 +412,19 @@ public final class QueryUtil {
     * @param result query result to convert.
     * @return the hashmap.
     */
-   public static Map<Sample, Map<String, ResultValue>> retrieveSampleValuesMap(QueryResult result) {
-       Map<Sample, Map<String, ResultValue>> sampleValuesMap 
-           = new HashMap<Sample, Map<String, ResultValue>>();
+   public static Map<Sample, Map<String, String>> retrieveSampleValuesMap(QueryResult result) {
+       Map<Sample, Map<String, String>> sampleValuesMap 
+           = new HashMap<Sample, Map<String, String>>();
        for (ResultRow row : result.getRowCollection()) {
-           if (row.getSampleAcquisition() != null) {
-               Sample sample = row.getSampleAcquisition().getSample();
-               Map<String, ResultValue> columnToValueMap = new HashMap<String, ResultValue>();
-               for (ResultValue value : row.getValueCollection()) {
-                   columnToValueMap.put(value.getColumn().getDisplayName(), value);
+           for (SampleAcquisition sampleAcquisition : row.getSubjectAssignment().getSampleAcquisitionCollection()) {
+               Sample sample = sampleAcquisition.getSample();
+               if (sampleValuesMap.get(sample) == null) {
+                   Map<String, String> columnToValueMap = new HashMap<String, String>();
+                   for (ResultValue value : row.getValueCollection()) {
+                       columnToValueMap.put(value.getColumn().getDisplayName(), value == null ? "" : value.toString());
+                   }
+                   sampleValuesMap.put(sample, columnToValueMap);
                }
-               sampleValuesMap.put(sample, columnToValueMap);
            }
        }
        return sampleValuesMap;

@@ -449,11 +449,9 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
                     query.getCompoundCriterion().getPlatformName(GenomicCriterionTypeEnum.COPY_NUMBER), null);
             igvResult.setSegmentationFile(fileManager.createIGVSegFile(segmentDatas, sessionId));
         }
-        if (!query.getColumnCollection().isEmpty()) { 
-            igvResult.setSampleInfoFile(fileManager.createIGVSampleClassificationFile(
-                    createAnnotationBasedQueryResultsForSamples(query), sessionId, query.getColumnCollection()));
+        igvResult.setSampleInfoFile(fileManager.createIGVSampleClassificationFile(
+                createAnnotationBasedQueryResultsForSamples(query), sessionId, query.getColumnCollection()));
             
-        }
         fileManager.createIGVSessionFile(sessionId, urlPrefix, igvResult);
         igvResultsManager.storeJobResult(sessionId, igvResult);
         return BROAD_HOSTED_IGV_URL + encodeUrl(urlPrefix) + IGVFileTypeEnum.SESSION.getFilename();
@@ -465,8 +463,10 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
             sampleColumn.setEntityType(EntityTypeEnum.SAMPLE);
             sampleColumn.setColumnIndex(1);
             query.getColumnCollection().add(sampleColumn);
+            ResultTypeEnum resultType = query.getResultType();
             query.setResultType(ResultTypeEnum.CLINICAL);
             QueryResult result = queryManagementService.execute(query);
+            query.setResultType(resultType);
             query.getColumnCollection().remove(sampleColumn);
             return result;
     }

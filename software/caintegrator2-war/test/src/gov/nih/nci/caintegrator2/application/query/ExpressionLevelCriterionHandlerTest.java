@@ -199,9 +199,7 @@ public class ExpressionLevelCriterionHandlerTest {
         assertEquals(GenomicCriteriaMatchTypeEnum.UNDER, handler.getGenomicValueMatchCriterionType(genes, .9f));
         assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getGenomicValueMatchCriterionType(genes, 1f));
         
-        assertTrue(handler.hasEntityCriterion());
         assertTrue(handler.hasReporterCriterion());
-        assertTrue(handler.isEntityMatchHandler());
         assertTrue(handler.isReporterMatchHandler());
     }
 

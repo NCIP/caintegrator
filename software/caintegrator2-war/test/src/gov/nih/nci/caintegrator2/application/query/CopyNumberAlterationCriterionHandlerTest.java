@@ -184,9 +184,7 @@ public class CopyNumberAlterationCriterionHandlerTest {
         CopyNumberAlterationCriterion criterion = new CopyNumberAlterationCriterion();
         
         CopyNumberAlterationCriterionHandler handler = CopyNumberAlterationCriterionHandler.create(criterion);
-        assertTrue(handler.hasEntityCriterion());
         assertFalse(handler.hasReporterCriterion());
-        assertTrue(handler.isEntityMatchHandler());
         assertFalse(handler.isReporterMatchHandler());
         assertTrue(handler.hasCriterionSpecifiedSegmentValues());
         assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentValueMatchCriterionType(2f));

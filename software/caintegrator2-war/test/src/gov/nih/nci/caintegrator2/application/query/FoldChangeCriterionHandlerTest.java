@@ -203,9 +203,7 @@ public class FoldChangeCriterionHandlerTest {
         criterion.setRegulationType(RegulationTypeEnum.UP);
         criterion.setFoldsUp(1.0f);
         FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
-        assertTrue(handler.hasEntityCriterion());
         assertTrue(handler.hasReporterCriterion());
-        assertTrue(handler.isEntityMatchHandler());
         assertTrue(handler.isReporterMatchHandler());
     }
 
