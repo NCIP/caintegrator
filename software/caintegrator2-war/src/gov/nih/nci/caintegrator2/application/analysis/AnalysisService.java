@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
@@ -246,5 +247,18 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @throws InvalidCriterionException if invalid criterion in query.
      */
     String executeIGV(StudySubscription studySubscription, Query query, String sessionId, String urlPrefix) 
+    throws InvalidCriterionException;
+    
+    /**
+     * Executes IGV and returns the URL to start it.
+     * @param studySubscription study to run igv on.
+     * @param platform the platform to use.
+     * @param sessionId browser session id to store the files under (files tied to session id).
+     * @param urlPrefix of the format: 
+     *      http://caintegrator2.nci.nih.gov/caintegrator2/igv/retrieveFile.do?JSESSIONID=12345&file=
+     * @return full URL to forward user to.
+     * @throws InvalidCriterionException if invalid criterion in query.
+     */
+    String executeIGV(StudySubscription studySubscription, Platform platform, String sessionId, String urlPrefix) 
     throws InvalidCriterionException;
 }

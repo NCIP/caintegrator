@@ -397,7 +397,10 @@
                     <a href="${ gePlotUrl }">Gene Expression Plot</a></li>
                 <li>
                     <s:url id="genePatternAnalysisUrl" includeParams="none" action="genePatternAnalysisStatus" />
-                    <a href="${genePatternAnalysisUrl}">GenePattern Analysis</a>
+                    <a href="${genePatternAnalysisUrl}">GenePattern Analysis</a></li>
+                <li>
+                    <s:url id="igvViewerUrl" includeParams="none" action="viewAllIGV" />
+                    <a href="${igvViewerUrl}">View IGV</a>
                 </li>
             </ul>
         </li>

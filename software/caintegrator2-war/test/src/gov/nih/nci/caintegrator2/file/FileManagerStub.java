@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.file;
 import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
@@ -240,6 +241,20 @@ public class FileManagerStub implements FileManager {
     public File createIGVSampleClassificationFile(QueryResult queryResult, String sessionId,
             Collection<ResultColumn> columns) {
         createIGVSampleClassificationFileCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public File createIGVGctFile(GctDataset gctDataset, Study study, String platformName) {
+        createIGVGctFileCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName) {
+        createIGVSegFileCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public File retrieveIGVFile(Study study, IGVFileTypeEnum fileType, String platformName) {
         return retrieveTmpFile();
     }
 
