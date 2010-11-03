@@ -401,7 +401,10 @@
                             <span class="btn_img"><span class="add">Export To CSV</span></span>
                         </s:a></li>
                         <li><s:a href="#" cssClass="btn"
-                            onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='viewIGV';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+                            onclick="document.manageQueryForm.target='_blank';
+                            document.manageQueryForm.selectedAction.value='viewIGV';
+                            document.manageQueryForm.submit();
+                            document.manageQueryForm.target='_self'">
                             <span class="btn_img"><span class="externalsite">View IGV</span></span>
                         </s:a></li>
                     </ul>
@@ -421,7 +424,10 @@
                             <span class="btn_img"><span class="export">Export To CSV</span></span>
                         </s:a></li>
                         <li><s:a href="#" cssClass="btn"
-                            onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='viewIGV';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+                            onclick="document.manageQueryForm.target='_blank';
+                                document.manageQueryForm.selectedAction.value='viewIGV';
+                                document.manageQueryForm.submit();
+                                document.manageQueryForm.target='_self'">
                             <span class="btn_img"><span class="externalsite">View IGV</span></span>
                         </s:a></li>
                     </ul>

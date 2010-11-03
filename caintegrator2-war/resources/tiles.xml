@@ -239,6 +239,11 @@
     <!-- Analysis pages -->
     <!-- Analysis pages -->
     
+    <definition name="viewIGVSelector" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/viewIGVSelector_tile.jsp" />
+        <put-attribute name="subTitle" value="View IGV Selector" />
+    </definition>
+    
     <definition name="genePatternAnalysis" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/genePatternAnalysis_tile.jsp" />
         <put-attribute name="subTitle" value="GenePattern Analysis" />

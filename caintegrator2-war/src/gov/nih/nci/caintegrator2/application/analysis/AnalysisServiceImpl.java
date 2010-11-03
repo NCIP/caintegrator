@@ -130,6 +130,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
 import gov.nih.nci.caintegrator2.domain.genomic.GisticGenomicRegionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -452,6 +453,38 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         igvResult.setSampleInfoFile(fileManager.createIGVSampleClassificationFile(
                 createAnnotationBasedQueryResultsForSamples(query), sessionId, query.getColumnCollection()));
             
+        fileManager.createIGVSessionFile(sessionId, urlPrefix, igvResult);
+        igvResultsManager.storeJobResult(sessionId, igvResult);
+        return BROAD_HOSTED_IGV_URL + encodeUrl(urlPrefix) + IGVFileTypeEnum.SESSION.getFilename();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String executeIGV(StudySubscription studySubscription, Platform platform,
+            String sessionId, String urlPrefix) 
+    throws InvalidCriterionException {
+        IGVResult igvResult = new IGVResult();
+        if (platform.getPlatformConfiguration().getPlatformType().isGeneExpression()) {
+            File gctFile = fileManager.retrieveIGVFile(studySubscription.getStudy(),
+                    IGVFileTypeEnum.GENE_EXPRESSION, platform.getName());
+            if (!gctFile.exists()) {
+                GctDataset gctDataset = createGctDataset(studySubscription, new HashSet<Query>(),
+                        platform.getName(), null);
+                gctFile = fileManager.createIGVGctFile(gctDataset, studySubscription.getStudy(), platform.getName());
+            }
+            igvResult.setGeneExpressionFile(gctFile);
+        }
+        if (platform.getPlatformConfiguration().getPlatformType().isCopyNumber()) {
+            File segFile = fileManager.retrieveIGVFile(studySubscription.getStudy(),
+                    IGVFileTypeEnum.SEGMENTATION, platform.getName());
+            if (!segFile.exists()) {
+                Collection<SegmentData> segmentDatas = createSegmentDataset(studySubscription, new HashSet<Query>(),
+                        platform.getName(), null);
+                segFile = fileManager.createIGVSegFile(segmentDatas, studySubscription.getStudy(), platform.getName());
+            }
+            igvResult.setSegmentationFile(segFile);
+        }
         fileManager.createIGVSessionFile(sessionId, urlPrefix, igvResult);
         igvResultsManager.storeJobResult(sessionId, igvResult);
         return BROAD_HOSTED_IGV_URL + encodeUrl(urlPrefix) + IGVFileTypeEnum.SESSION.getFilename();

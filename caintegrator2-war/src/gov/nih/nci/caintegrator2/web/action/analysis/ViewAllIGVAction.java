@@ -83,58 +83,169 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.arraydata;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import org.junit.Test;
+import org.apache.struts2.ServletActionContext;
+
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
 /**
  * 
  */
-public class PlatformTypeEnumTest {
+public class ViewAllIGVAction extends AbstractDeployedStudyAction {
+    
+    private static final long serialVersionUID = 1L;
+    
+    private static final String VIEW_IGV = "viewIGV";
+    private static final String CANCEL_ACTION = "cancel";
+    private static final String HOME_PAGE = "homePage";
+    private String selectedAction;
+    private QueryManagementService queryManagementService;
+    private ArrayDataService arrayDataService;
+    private AnalysisService analysisService;
+    private List<String> platformsInStudy = new ArrayList<String>();
+    private String platformName;
+    private String viewIGVUrl;
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum#getValue()}.
+     * @return the viewIGVUrl
      */
-    @Test
-    public void testGetValue() {
+    public String getViewIGVUrl() {
+        return viewIGVUrl;
     }
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.arraydata.platformTypeEnum#getByValue(java.lang.String)}.
+     * @param viewIGVUrl the viewIGVUrl to set
      */
-    @Test
-    public void testGetByValue() {
-        assertEquals(PlatformTypeEnum.AFFYMETRIX_SNP, PlatformTypeEnum.getByValue(PlatformTypeEnum.AFFYMETRIX_SNP.getValue()));
-        assertEquals(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION, PlatformTypeEnum.getByValue(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue()));
-        assertEquals(PlatformTypeEnum.AGILENT_GENE_EXPRESSION, PlatformTypeEnum.getByValue(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue()));
-        assertEquals(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION, PlatformTypeEnum.getByValue(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue()));
-        assertEquals(PlatformTypeEnum.AGILENT_GENE_EXPRESSION, PlatformTypeEnum.getByValue(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue()));
+    public void setViewIGVUrl(String viewIGVUrl) {
+        this.viewIGVUrl = viewIGVUrl;
     }
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.arraydata.platformTypeEnum#checkType(java.lang.String)}.
+     * {@inheritDoc}
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testCheckType() {
-        PlatformTypeEnum.checkType("not found");
-        assertTrue(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.isGeneExpression());
-        assertTrue(PlatformTypeEnum.AGILENT_COPY_NUMBER.isCopyNumber());
+    public void prepare() {
+        super.prepare();
+        platformsInStudy = new ArrayList<String>();
+        platformsInStudy.addAll(getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy()));
+        platformsInStudy.addAll(getQueryManagementService().retrieveCopyNumberPlatformsForStudy(getStudy()));
+        Collections.sort(platformsInStudy);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String execute() {
+        if  (VIEW_IGV.equals(selectedAction)) {
+            return viewAllIGV();
+        } else if (CANCEL_ACTION.equals(selectedAction)) {
+            return HOME_PAGE;
+        }
+        return SUCCESS;
+    }
+
+    private String viewAllIGV() {
+        try {
+            Platform platform = getArrayDataService().getPlatform(platformName);
+            setViewIGVUrl(analysisService.executeIGV(getStudySubscription(), platform, 
+                    ServletActionContext.getRequest().getRequestedSessionId(), SessionHelper.getIgvSessionUrl()));
+        } catch (Exception e) {
+            addActionError(getText("struts.messages.error.igv", getArgs(e.getMessage())));
+            return VIEW_IGV;
+        }
+        return VIEW_IGV;
     }
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.arraydata.platformTypeEnum#getValueToDisplay()}.
+     * @return the selectedAction
      */
-    @Test
-    public void testGetValueToDisplay() {
-        assertFalse(PlatformTypeEnum.getValuesToDisplay().contains(PlatformTypeEnum.AFFYMETRIX_SNP.getValue()));
-        assertTrue(PlatformTypeEnum.getValuesToDisplay().contains(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue()));
-        assertTrue(PlatformTypeEnum.getValuesToDisplay().contains(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue()));
-        assertTrue(PlatformTypeEnum.getValuesToDisplay().contains(PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getValue()));
-        assertTrue(PlatformTypeEnum.getValuesToDisplay().contains(PlatformTypeEnum.AGILENT_COPY_NUMBER.getValue()));
+    public String getSelectedAction() {
+        return selectedAction;
     }
 
+    /**
+     * @param selectedAction the selectedAction to set
+     */
+    public void setSelectedAction(String selectedAction) {
+        this.selectedAction = selectedAction;
+    }
+
+    /**
+     * @return the queryManagementService
+     */
+    public QueryManagementService getQueryManagementService() {
+        return queryManagementService;
+    }
+
+    /**
+     * @param queryManagementService the queryManagementService to set
+     */
+    public void setQueryManagementService(QueryManagementService queryManagementService) {
+        this.queryManagementService = queryManagementService;
+    }
+
+    /**
+     * @return the platformsInStudy
+     */
+    public List<String> getPlatformsInStudy() {
+        return platformsInStudy;
+    }
+
+    /**
+     * @param platformsInStudy the platformsInStudy to set
+     */
+    public void setPlatformsInStudy(List<String> platformsInStudy) {
+        this.platformsInStudy = platformsInStudy;
+    }
+
+    /**
+     * @return the platformName
+     */
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    /**
+     * @param platformName the platformName to set
+     */
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
+    /**
+     * @return the analysisService
+     */
+    public AnalysisService getAnalysisService() {
+        return analysisService;
+    }
+
+    /**
+     * @param analysisService the analysisService to set
+     */
+    public void setAnalysisService(AnalysisService analysisService) {
+        this.analysisService = analysisService;
+    }
+
+    /**
+     * @return the arrayDataService
+     */
+    public ArrayDataService getArrayDataService() {
+        return arrayDataService;
+    }
+
+    /**
+     * @param arrayDataService the arrayDataService to set
+     */
+    public void setArrayDataService(ArrayDataService arrayDataService) {
+        this.arrayDataService = arrayDataService;
+    }
 }
