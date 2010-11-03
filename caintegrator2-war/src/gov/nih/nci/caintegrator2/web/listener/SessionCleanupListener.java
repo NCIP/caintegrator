@@ -83,61 +83,40 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis.igv;
+package gov.nih.nci.caintegrator2.web.listener;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager;
+import gov.nih.nci.caintegrator2.file.FileManager;
+
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
+
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
- * Global singleton object that manages the results based on sessionId.
+ * When a session is destroyed, this listener will remove things associated with the session.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") // switch statement.
-public class IGVResultsManager {
-    
-    private final Map<String, IGVResult> igvResultMap = new HashMap<String, IGVResult>();
-    
+public class SessionCleanupListener implements HttpSessionListener {
+
     /**
-     * Stores job based on session.
-     * @param sessionId to map result to.
-     * @param result to store.
+     * {@inheritDoc}
      */
-    public void storeJobResult(String sessionId, IGVResult result) {
-        igvResultMap.put(sessionId, result);
+    public void sessionCreated(HttpSessionEvent event) {
+        // Do nothing on session create.
     }
-    
+
     /**
-     * Given a sessionId and fileType, it retrieves the appropriate igv file.
-     * @param sessionId id of session to get file for.
-     * @param fileType type of file.
-     * @return IGV file.
+     * {@inheritDoc}
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity") // switch statement.
-    public File getJobResultFile(String sessionId, IGVFileTypeEnum fileType) {
-        IGVResult result = igvResultMap.get(sessionId);
-        if (result == null) {
-            return null;
-        }
-        switch (fileType) {
-        case SESSION:
-            return result.getSessionFile();
-        case GENE_EXPRESSION:
-            return result.getGeneExpressionFile();
-        case SEGMENTATION:
-            return result.getSegmentationFile();
-        case SAMPLE_CLASSIFICATION:
-            return result.getSampleInfoFile();
-            default:
-                return null;
-        }
-    }
-    
-    /**
-     * Removes the session from the results.
-     * @param session to remove.
-     */
-    public void removeSession(String session) {
-        igvResultMap.remove(session);
+    public void sessionDestroyed(HttpSessionEvent event) {
+        String sessionId = event.getSession().getId();
+        WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(
+                event.getSession().getServletContext());
+        IGVResultsManager igvResultsManager = (IGVResultsManager) context.getBean("igvResultsManager");
+        FileManager fileManager = (FileManager) context.getBean("fileManager");
+        igvResultsManager.removeSession(sessionId);
+        fileManager.deleteIGVDirectory(sessionId);
     }
 
 }
