@@ -189,27 +189,11 @@ public final class CopyNumberAlterationCriterionHandler extends AbstractCriterio
      * {@inheritDoc}
      */
     @Override
-    boolean hasEntityCriterion() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     boolean hasReporterCriterion() {
         return false;
     }
     
     boolean hasSegmentDataCriterion() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    boolean isEntityMatchHandler() {
         return true;
     }
 

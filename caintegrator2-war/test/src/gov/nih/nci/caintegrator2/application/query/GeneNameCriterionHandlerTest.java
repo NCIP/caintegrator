@@ -194,16 +194,6 @@ public class GeneNameCriterionHandlerTest {
     public void testIsReporterMatchHandler() {
         assertTrue(GeneNameCriterionHandler.create(null).isReporterMatchHandler());
     }
-
-    @Test
-    public void testIsEntityMatchHandler() {
-        assertTrue(GeneNameCriterionHandler.create(null).isEntityMatchHandler());
-    }
-
-    @Test
-    public void testHasEntityCriterion() {
-        assertTrue(GeneNameCriterionHandler.create(null).hasEntityCriterion());
-    }
     
     private class DaoStub extends CaIntegrator2DaoStub {
 

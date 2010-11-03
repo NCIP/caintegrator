@@ -104,15 +104,10 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -174,43 +169,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
     @Override
     Set<ResultRow> getMatches(CaIntegrator2Dao dao, ArrayDataService arrayDataService, Query query, 
             Set<EntityTypeEnum> entityTypes) throws InvalidCriterionException {
-        Study study = query.getSubscription().getStudy();
-        if (!hasEntityCriterion()) {
-            return getAllRows(study, entityTypes);
-        } else {
-            return getMatchingRows(dao, arrayDataService, entityTypes, query);
-        }
-    }
-
-    private Set<ResultRow> getAllRows(Study study, Set<EntityTypeEnum> entityTypes) {
-        ResultRowFactory rowFactory = new ResultRowFactory(entityTypes);
-        if (entityTypes.contains(EntityTypeEnum.SUBJECT)) {
-            return rowFactory.getSubjectRows(study.getAssignmentCollection());
-        } else if (entityTypes.contains(EntityTypeEnum.IMAGESERIES)) {
-            return rowFactory.getImageSeriesRows(getAllImageSeries(study));
-        } else if (entityTypes.contains(EntityTypeEnum.SAMPLE)) {
-            return rowFactory.getSampleRows(getAllSampleAcuisitions(study));
-        } else {
-            return Collections.emptySet();
-        }
-    }
-
-    private Collection<SampleAcquisition> getAllSampleAcuisitions(Study study) {
-        Set<SampleAcquisition> acquisitions = new HashSet<SampleAcquisition>();
-        for (StudySubjectAssignment assignment : study.getAssignmentCollection()) {
-            acquisitions.addAll(assignment.getSampleAcquisitionCollection());
-        }
-        return acquisitions;
-    }
-
-    private Collection<ImageSeries> getAllImageSeries(Study study) {
-        Set<ImageSeries> imageSeriesSet = new HashSet<ImageSeries>();
-        for (StudySubjectAssignment assignment : study.getAssignmentCollection()) {
-            for (ImageSeriesAcquisition imageSeriesAcquisition : assignment.getImageStudyCollection()) {
-                imageSeriesSet.addAll(imageSeriesAcquisition.getSeriesCollection());
-            }
-        }
-        return imageSeriesSet;
+        return getMatchingRows(dao, arrayDataService, entityTypes, query);
     }
 
     private Set<ResultRow> getMatchingRows(CaIntegrator2Dao dao, ArrayDataService arrayDataService,
@@ -218,9 +177,6 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         boolean rowsRetrieved = false;
         Set<ResultRow> allValidRows = new HashSet<ResultRow>();
         for (AbstractCriterionHandler handler : handlers) {
-            if (!handler.isEntityMatchHandler()) {
-                continue;
-            }
             Set<ResultRow> newRows = handler.getMatches(dao, arrayDataService, query, entityTypes);
             if (!rowsRetrieved) {
                 allValidRows = newRows;
@@ -333,25 +289,9 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         return segmentDatas;
     }
 
-
-    @Override
-    boolean isEntityMatchHandler() {
-        return true;
-    }
-
     @Override
     boolean isReporterMatchHandler() {
         return true;
-    }
-
-    @Override
-    boolean hasEntityCriterion() {
-        for (AbstractCriterionHandler handler : handlers) {
-            if (handler.hasEntityCriterion()) {
-                return true;
-            }
-        }
-        return false;
     }
 
 

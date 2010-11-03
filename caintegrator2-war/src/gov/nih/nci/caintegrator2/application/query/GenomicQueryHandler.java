@@ -107,9 +107,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -313,7 +311,7 @@ class GenomicQueryHandler {
         request.addReporters(reporters);
         request.addArrayDatas(arrayDatas);
         request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
-        if (QueryUtil.isFoldChangeQuery(query)) {
+        if (QueryUtil.isFoldChangeQuery(query) && !query.isAllGenomicDataQuery()) {
             return arrayDataService.getFoldChangeValues(request, query);
         } else {
             return arrayDataService.getData(request);
@@ -323,25 +321,11 @@ class GenomicQueryHandler {
     private Collection<ArrayData> getMatchingArrayDatas() throws InvalidCriterionException {
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(
                 query.getCompoundCriterion(), query.getResultType());
-        if (criterionHandler.hasEntityCriterion()) {
-            Set<EntityTypeEnum> samplesOnly = new HashSet<EntityTypeEnum>();
-            samplesOnly.add(EntityTypeEnum.SAMPLE);
-            Set<ResultRow> rows = criterionHandler.getMatches(dao, 
-                    arrayDataService, query, samplesOnly);
-            return getArrayDatas(rows);
-        } else {
-            return getAllArrayDatas();
-        }
-    }
-
-    private Set<ArrayData> getAllArrayDatas() {
-        Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
-        for (StudySubjectAssignment assignment : query.getSubscription().getStudy().getAssignmentCollection()) {
-            for (SampleAcquisition acquisition : assignment.getSampleAcquisitionCollection()) {
-                addMatchesFromArrayDatas(arrayDatas, acquisition.getSample().getArrayDataCollection());
-            }
-        }
-        return arrayDatas;
+        Set<EntityTypeEnum> samplesOnly = new HashSet<EntityTypeEnum>();
+        samplesOnly.add(EntityTypeEnum.SAMPLE);
+        Set<ResultRow> rows = criterionHandler.getMatches(dao, 
+                arrayDataService, query, samplesOnly);
+        return getArrayDatas(rows);
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
@@ -380,7 +364,7 @@ class GenomicQueryHandler {
                 query.getCompoundCriterion(), query.getResultType());
         if (arrayDatas.isEmpty()) {
             return Collections.emptySet();
-        } else if (criterionHandler.hasReporterCriterion()) {
+        } else if (criterionHandler.hasReporterCriterion() && !query.isAllGenomicDataQuery()) {
             return criterionHandler.getReporterMatches(dao, query.getSubscription().getStudy(), 
                     query.getReporterType(), query.getGeneExpressionPlatform());
         } else {
@@ -403,7 +387,7 @@ class GenomicQueryHandler {
                 query.getCompoundCriterion(), query.getResultType());
         if (arrayDatas.isEmpty()) {
             return Collections.emptySet();
-        } else if (criterionHandler.hasSegmentDataCriterion()) {
+        } else if (criterionHandler.hasSegmentDataCriterion() && !query.isAllGenomicDataQuery()) {
             return criterionHandler.getSegmentDataMatches(dao, query.getSubscription().getStudy(), 
                     query.getCopyNumberPlatform());
         } else {

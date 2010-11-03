@@ -32,6 +32,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
     private StudySubscription subscription;
     private CompoundCriterion compoundCriterion = new CompoundCriterion();
     private Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
+    private transient boolean allGenomicDataQuery = false;
     private transient boolean subjectListQuery = false;
     private transient Visibility subjectListVisibility = null;
     private transient List<String> geneSymbolsNotFound = new ArrayList<String>();
@@ -350,5 +351,19 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
      */
     public boolean isMultiplePlatformQuery() {
         return geneExpressionPlatform != null && copyNumberPlatform != null;
+    }
+
+    /**
+     * @return the allGenomicDataQuery
+     */
+    public boolean isAllGenomicDataQuery() {
+        return allGenomicDataQuery;
+    }
+
+    /**
+     * @param allGenomicDataQuery the allGenomicDataQuery to set
+     */
+    public void setAllGenomicDataQuery(boolean allGenomicDataQuery) {
+        this.allGenomicDataQuery = allGenomicDataQuery;
     }
 }

@@ -285,7 +285,7 @@ public class AnalysisServiceTest {
                 "http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=http://localhost:8080/caintegrator2/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
                 resultURL);
         assertFalse(fileManagerStub.createIGVGctFileCalled);
-        assertFalse(fileManagerStub.createIGVSampleClassificationFileCalled);
+        assertTrue(fileManagerStub.createIGVSampleClassificationFileCalled);
         assertTrue(fileManagerStub.createIGVSessionFileCalled);
         fileManagerStub.clear();
         
