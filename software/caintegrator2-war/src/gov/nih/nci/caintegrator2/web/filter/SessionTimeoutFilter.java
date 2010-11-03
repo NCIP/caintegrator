@@ -148,7 +148,6 @@ public class SessionTimeoutFilter implements Filter {
                     && isSessionInvalid(httpServletRequest)) {
                 String timeoutUrl = httpServletRequest.getContextPath() + "/" + TIMEOUT_PAGE;
                 LOGGER.debug("session is invalid! redirecting to timeoutpage : " + timeoutUrl);
-                getFileManager().deleteIGVDirectory(httpServletRequest.getRequestedSessionId());
                 httpServletResponse.sendRedirect(timeoutUrl);
                 return true;
             }

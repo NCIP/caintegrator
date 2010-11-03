@@ -188,7 +188,11 @@ public class FileManagerImpl implements FileManager {
      * {@inheritDoc}
      */
     public void deleteIGVDirectory(String sessionId) {
-        FileUtils.deleteQuietly(getIGVDirectory(sessionId));
+        try {
+            FileUtils.deleteDirectory(getIGVDirectory(sessionId));
+        } catch (IOException e) {
+            return;
+        }
     }
     
     /**
