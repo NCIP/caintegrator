@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.analysis.igv;
 
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
 import java.io.File;
@@ -105,6 +104,7 @@ public class IGVSampleInfoFileWriter {
     private static final char TAB = '\t';
     private static final char NEW_LINE = '\n';
     private static final String TRACK_ID_HEADER = "TRACK_ID";
+    private static final String SUBJECT_ID_HEADER = "SUBJECT_ID";
     private static List<String> headers = new ArrayList<String>();
 
     /**
@@ -114,7 +114,7 @@ public class IGVSampleInfoFileWriter {
      * @param filePath path to write file.
      * @return written classification file.
      */
-    public File writeSampleInfoFile(Map<Sample, Map<String, ResultValue>> sampleValuesMap, 
+    public File writeSampleInfoFile(Map<Sample, Map<String, String>> sampleValuesMap, 
             Collection<ResultColumn> columns, String filePath) {
         File sampleInfoFile = new File(filePath);
         try {
@@ -141,6 +141,8 @@ public class IGVSampleInfoFileWriter {
     
     private void writeHeaderLine(FileWriter writer) throws IOException {
         writer.write(TRACK_ID_HEADER);
+        writer.write(TAB);
+        writer.write(SUBJECT_ID_HEADER);
         for (String header : headers) {
             writer.write(TAB);
             writer.write(header);
@@ -149,13 +151,14 @@ public class IGVSampleInfoFileWriter {
     }
 
     private static void writeData(FileWriter writer, 
-            Map<Sample, Map<String, ResultValue>> sampleValuesMap) throws IOException {
+            Map<Sample, Map<String, String>> sampleValuesMap) throws IOException {
         for (Sample sample : sampleValuesMap.keySet()) {
             writer.write(sample.getName());
+            writer.write(TAB);
+            writer.write(sample.getSampleAcquisition().getAssignment().getIdentifier());
             for (String header : headers) {
                 writer.write(TAB);
-                ResultValue value = sampleValuesMap.get(sample).get(header);
-                writer.write(value == null ? "" : value.toString());
+                writer.write(sampleValuesMap.get(sample).get(header));
             }
             writer.write(NEW_LINE);
         }

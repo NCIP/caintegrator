@@ -280,23 +280,7 @@ public final class ExpressionLevelCriterionHandler extends AbstractCriterionHand
      * {@inheritDoc}
      */
     @Override
-    boolean hasEntityCriterion() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     boolean hasReporterCriterion() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    boolean isEntityMatchHandler() {
         return true;
     }
 

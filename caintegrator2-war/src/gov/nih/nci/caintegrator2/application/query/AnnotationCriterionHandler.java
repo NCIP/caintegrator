@@ -193,18 +193,8 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
     }
 
     @Override
-    boolean isEntityMatchHandler() {
-        return true;
-    }
-
-    @Override
     boolean isReporterMatchHandler() {
         return false;
-    }
-
-    @Override
-    boolean hasEntityCriterion() {
-        return true;
     }
     
     @Override

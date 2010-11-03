@@ -154,11 +154,14 @@ public class IGVSampleInfoFileWriterTest {
         queryResult.setRowCollection(new HashSet<ResultRow>());
         ResultRow row1 = new ResultRow();
         StudySubjectAssignment assignment1 = new StudySubjectAssignment();
+        assignment1.setIdentifier("assignment1");
         row1.setSubjectAssignment(assignment1);
         SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
         Sample sample1 = new Sample();
         sample1.setName("sample1");
         sampleAcquisition1.setSample(sample1);
+        sampleAcquisition1.setAssignment(assignment1);
+        sample1.setSampleAcquisition(sampleAcquisition1);
         assignment1.getSampleAcquisitionCollection().add(sampleAcquisition1);
         row1.setSampleAcquisition(sampleAcquisition1);
         row1.setValueCollection(new ArrayList<ResultValue>());
@@ -166,11 +169,14 @@ public class IGVSampleInfoFileWriterTest {
         
         ResultRow row2 = new ResultRow();
         StudySubjectAssignment assignment2 = new StudySubjectAssignment();
+        assignment2.setIdentifier("assignment2");
         row2.setSubjectAssignment(assignment2);
         SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
         Sample sample2 = new Sample();
         sample2.setName("sample2");
         sampleAcquisition2.setSample(sample2);
+        sampleAcquisition2.setAssignment(assignment2);
+        sample2.setSampleAcquisition(sampleAcquisition2);
         assignment2.getSampleAcquisitionCollection().add(sampleAcquisition2);
         row2.setSampleAcquisition(sampleAcquisition2);
         row2.setValueCollection(new ArrayList<ResultValue>());
@@ -184,10 +190,18 @@ public class IGVSampleInfoFileWriterTest {
     private void checkFile(File sampleInfoFile) throws IOException {
         assertTrue(sampleInfoFile.exists());
         CSVReader reader = new CSVReader(new FileReader(sampleInfoFile), '\t');
-        checkLine(reader.readNext(), "TRACK_ID", "annotation");
-        checkLine(reader.readNext(), "sample2", "val2");
-        checkLine(reader.readNext(), "sample1", "val1");
+        checkLine(reader.readNext(), "TRACK_ID", "SUBJECT_ID", "annotation");
+        checkSampleInfoLine(reader.readNext());       
+        checkSampleInfoLine(reader.readNext());       
         reader.close();
+    }
+
+    private void checkSampleInfoLine(String[] line) {
+        if ("sample1".equals(line[0])) {
+            checkLine(line, "sample1", "assignment1", "val1");
+        } else {
+            checkLine(line, "sample2", "assignment2", "val2");
+        }
     }
 
     private void checkLine(String[] line, String... expecteds) {

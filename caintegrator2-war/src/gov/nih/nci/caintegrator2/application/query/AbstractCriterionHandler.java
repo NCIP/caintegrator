@@ -154,14 +154,6 @@ abstract class AbstractCriterionHandler {
      * @return true if can match reporters.
      */
     abstract boolean isReporterMatchHandler();
-    /**
-     * Determines whether this handler provides entity matches.
-     * 
-     * @return true if can match entities.
-     */
-    abstract boolean isEntityMatchHandler();
-
-    abstract boolean hasEntityCriterion();
 
     abstract boolean hasReporterCriterion();
 

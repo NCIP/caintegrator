@@ -161,16 +161,6 @@ public class SubjectListCriterionHandlerTest {
     public void testIsReporterMatchHandler() {
         assertFalse(SubjectListCriterionHandler.create(null).isReporterMatchHandler());
     }
-
-    @Test
-    public void testIsEntityMatchHandler() {
-        assertTrue(SubjectListCriterionHandler.create(null).isEntityMatchHandler());
-    }
-
-    @Test
-    public void testHasEntityCriterion() {
-        assertTrue(SubjectListCriterionHandler.create(null).hasEntityCriterion());
-    }
     
     private class DaoStub extends CaIntegrator2DaoStub {
 

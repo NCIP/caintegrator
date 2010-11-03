@@ -157,25 +157,12 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
      * {@inheritDoc}
      */
     @Override
-    boolean isEntityMatchHandler() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     boolean isReporterMatchHandler() {
         return true;
     }
 
     public static GeneNameCriterionHandler create(GeneNameCriterion criterion) {
         return new GeneNameCriterionHandler(criterion);
-    }
-
-    @Override
-    boolean hasEntityCriterion() {
-        return true;
     }
 
     @Override

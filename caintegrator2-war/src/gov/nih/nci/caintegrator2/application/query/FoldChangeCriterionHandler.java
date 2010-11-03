@@ -301,23 +301,7 @@ public final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
      * {@inheritDoc}
      */
     @Override
-    boolean hasEntityCriterion() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     boolean hasReporterCriterion() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    boolean isEntityMatchHandler() {
         return true;
     }
 
