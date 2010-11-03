@@ -148,6 +148,10 @@
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
     
+    <listener>
+        <listener-class>gov.nih.nci.caintegrator2.web.listener.SessionCleanupListener</listener-class>
+    </listener>
+    
     <servlet>
         <servlet-name>logoRenderingServlet</servlet-name>
         <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
