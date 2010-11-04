@@ -110,13 +110,25 @@ public class GctDataset {
     private final List<String> columnSampleNames = new ArrayList<String>();
     private float[][] values;
     private final Set<String> subjectsNotFoundFromQueries = new HashSet<String>();
+    private final boolean addGenesToReporters;
+    
+    /**
+     * Creates a GctDataset from GenomicDataQueryResults.
+     * @param resultSet results to use.
+     * @param addGenesToReporters if necessary to add genes to the description column of gct dataset 
+     *                              (for performance reasons).
+     */
+    public GctDataset(GenomicDataQueryResult resultSet, boolean addGenesToReporters) {
+        this.addGenesToReporters = addGenesToReporters;
+        loadGenomicResultSet(resultSet);
+    }
     
     /**
      * Creates a GctDataset from GenomicDataQueryResults.
      * @param resultSet results to use.
      */
     public GctDataset(GenomicDataQueryResult resultSet) {
-        loadGenomicResultSet(resultSet);
+        this(resultSet, true);
     }
     
     /**
@@ -134,6 +146,7 @@ public class GctDataset {
             rowDescription.add(description == null ? NA_DESCRIPTION_STRING : description);
         }
         values = mbaGenerator.bioAssayArrayToFloat2D(bioAssay);
+        this.addGenesToReporters = true;
     }
 
     private void loadGenomicResultSet(GenomicDataQueryResult resultSet) {
@@ -151,7 +164,7 @@ public class GctDataset {
 
     private void addRowReporters(GenomicDataResultRow row, AbstractReporter rowReporter) {
         rowReporterNames.add(row.getReporter().getName());
-        if (!rowReporter.getGenes().isEmpty()) {
+        if (addGenesToReporters && !rowReporter.getGenes().isEmpty()) {
             StringBuffer sb = new StringBuffer();
             sb.append("Gene:");
             for (Gene gene : rowReporter.getGenes()) {
