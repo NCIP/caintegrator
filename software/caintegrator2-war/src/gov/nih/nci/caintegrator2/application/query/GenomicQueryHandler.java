@@ -243,16 +243,20 @@ class GenomicQueryHandler {
         GenomicDataResultColumn column = result.addColumn();
         column.setSampleAcquisition(arrayData.getSample().getSampleAcquisition());
         for (AbstractReporter reporter : values.getReporters()) {
-            HibernateUtil.loadCollection(reporter.getGenes());
-            HibernateUtil.loadCollection(reporter.getSamplesHighVariance());
+            if (query.isNeedsGenomicHighlighting()) {
+                HibernateUtil.loadCollection(reporter.getGenes());
+                HibernateUtil.loadCollection(reporter.getSamplesHighVariance());
+            }
             GenomicDataResultRow row = reporterToRowMap.get(reporter);
             GenomicDataResultValue value = new GenomicDataResultValue();
             value.setColumn(column);
             Float floatValue = values.getFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL);
             if (floatValue != null) {
                 value.setValue(Math.round(floatValue * DECIMAL_100) / DECIMAL_100);
-                checkMeetsGeneExpressionCriterion(result, criterionHandler, reporter, row, value);
-                checkHighVariance(result, arrayData, reporter, value);
+                if (query.isNeedsGenomicHighlighting()) {
+                    checkMeetsGeneExpressionCriterion(result, criterionHandler, reporter, row, value);
+                    checkHighVariance(result, arrayData, reporter, value);    
+                }
             }
             row.getValues().add(value);
         }

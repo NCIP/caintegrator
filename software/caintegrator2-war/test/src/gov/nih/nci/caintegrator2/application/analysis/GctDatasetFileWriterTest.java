@@ -28,16 +28,23 @@ public class GctDatasetFileWriterTest {
         String testFilePath = System.getProperty("java.io.tmpdir") + File.separator + "gctTest.gct";
         File gctFile = GctDatasetFileWriter.writeAsGct(new GctDataset(result), testFilePath);
         gctFile.deleteOnExit();
-        checkFile(gctFile, result);
+        checkFile(gctFile, result, true);
+        gctFile = GctDatasetFileWriter.writeAsGct(new GctDataset(result, false), testFilePath);
+        checkFile(gctFile, result, false);
     }
 
-    private void checkFile(File gctFile, GenomicDataQueryResult result) throws IOException {
+    private void checkFile(File gctFile, GenomicDataQueryResult result, boolean hasGenes) throws IOException {
         assertTrue(gctFile.exists());
         CSVReader reader = new CSVReader(new FileReader(gctFile), '\t');
         checkLine(reader.readNext(), "#1.2");
         checkLine(reader.readNext(), "2", "3");
         checkLine(reader.readNext(), "NAME", "Description", "SAMPLE1", "SAMPLE2", "SAMPLE3");
-        checkLine(reader.readNext(), "REPORTER1", "Gene: GENE1", "1.1", "2.2", "3.3");
+        if (hasGenes) {
+            checkLine(reader.readNext(), "REPORTER1", "Gene: GENE1", "1.1", "2.2", "3.3");
+        } else {
+            checkLine(reader.readNext(), "REPORTER1", "N/A", "1.1", "2.2", "3.3");
+        }
+        
         checkLine(reader.readNext(), "REPORTER2", "N/A", "4.4", "5.5", "6.6");
     }
 

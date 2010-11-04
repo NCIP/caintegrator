@@ -262,22 +262,27 @@ public final class GenePatternUtil {
      * @param excludedControlSampleSet the samples to be excluded.
      * @param queryManagementService to query database.
      * @param platformName if this is not null, specifies the platform to use for the genomic query.
+     * @param addGenesToReporters if necessary to add genes to the description column of gct dataset 
+     *                              (for performance reasons).
      * @return gct dataset for the queries.
      * @throws InvalidCriterionException if criterion is not valid.
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList") // All parameters are important here.
     public static GctDataset createGctDataset(StudySubscription studySubscription, Collection<Query> clinicalQueries, 
-            SampleSet excludedControlSampleSet, QueryManagementService queryManagementService, String platformName)
+            SampleSet excludedControlSampleSet, QueryManagementService queryManagementService, String platformName, 
+            boolean addGenesToReporters)
     throws InvalidCriterionException {
         Set<Query> clinicalQuerySet = new HashSet<Query>(clinicalQueries);
         Query allGenomicDataQuery = 
             QueryUtil.createAllGenomicDataQuery(studySubscription, clinicalQuerySet, platformName,
                     ResultTypeEnum.GENE_EXPRESSION);
+        allGenomicDataQuery.setNeedsGenomicHighlighting(false);
         GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
         genomicData.excludeSampleSet(excludedControlSampleSet);
         if (genomicData.getRowCollection().isEmpty()) {
             throw new InvalidCriterionException("Unable to create GCT file: No data found from selection.");
         }
-        GctDataset gctDataset = new GctDataset(genomicData);
+        GctDataset gctDataset = new GctDataset(genomicData, addGenesToReporters);
         gctDataset.getSubjectsNotFoundFromQueries().addAll(genomicData.getQuery().getSubjectIdsNotFound());
         return gctDataset;
     }
@@ -300,6 +305,7 @@ public final class GenePatternUtil {
         Query allGenomicDataQuery = 
             QueryUtil.createAllGenomicDataQuery(studySubscription, clinicalQuerySet, platformName,
                     ResultTypeEnum.COPY_NUMBER);
+        allGenomicDataQuery.setNeedsGenomicHighlighting(false);
         Collection<SegmentData> results = queryManagementService.retrieveSegmentDataQuery(allGenomicDataQuery);
         if (excludedControlSampleSet != null) {
             removeControlSample(results, excludedControlSampleSet);
