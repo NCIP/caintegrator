@@ -32,6 +32,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
     private StudySubscription subscription;
     private CompoundCriterion compoundCriterion = new CompoundCriterion();
     private Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
+    private transient boolean needsGenomicHighlighting = true;
     private transient boolean allGenomicDataQuery = false;
     private transient boolean subjectListQuery = false;
     private transient Visibility subjectListVisibility = null;
@@ -365,5 +366,19 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
      */
     public void setAllGenomicDataQuery(boolean allGenomicDataQuery) {
         this.allGenomicDataQuery = allGenomicDataQuery;
+    }
+
+    /**
+     * @return the needsGenomicHighlighting
+     */
+    public boolean isNeedsGenomicHighlighting() {
+        return needsGenomicHighlighting;
+    }
+
+    /**
+     * @param needsGenomicHighlighting the needsGenomicHighlighting to set
+     */
+    public void setNeedsGenomicHighlighting(boolean needsGenomicHighlighting) {
+        this.needsGenomicHighlighting = needsGenomicHighlighting;
     }
 }

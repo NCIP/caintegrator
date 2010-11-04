@@ -218,7 +218,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         PreprocessDatasetParameters preprocessParams = job.getForm().getPreprocessDatasetparameters();
         job.setSubscription(studySubscription);
         GctDataset gctDataset = createGctDataset(studySubscription, preprocessParams.getClinicalQueries(), 
-                preprocessParams.getPlatformName(), preprocessParams.getExcludedControlSampleSet());
+                preprocessParams.getPlatformName(), preprocessParams.getExcludedControlSampleSet(), true);
         File gctFile = createGctFile(gctDataset, studySubscription,
                 preprocessParams.getProcessedGctFilename());
         File clsFile = createClassificationFile(studySubscription, 
@@ -387,7 +387,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         job.setSubscription(studySubscription);
         PCAParameters parameters = job.getForm().getPcaParameters();
         GctDataset gctDataset = createGctDataset(studySubscription, parameters.getClinicalQueries(), 
-                parameters.getPlatformName(), parameters.getExcludedControlSampleSet());
+                parameters.getPlatformName(), parameters.getExcludedControlSampleSet(), true);
         File gctFile = createGctFile(gctDataset, studySubscription, parameters.getGctFileName());
         checkForMissingSubjects(job, gctDataset.getSubjectsNotFoundFromQueries());
         job.setInputZipFile(fileManager.createInputZipFile(studySubscription, job,
@@ -441,8 +441,8 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         Set<Query> queries = new HashSet<Query>();
         queries.add(query);
         if (studySubscription.getStudy().getStudyConfiguration().hasExpressionData()) {
-            GctDataset gctDataset = createGctDataset(studySubscription, queries, 
-                    query.getCompoundCriterion().getPlatformName(GenomicCriterionTypeEnum.GENE_EXPRESSION), null);
+            GctDataset gctDataset = createGctDataset(studySubscription, queries, query.getCompoundCriterion()
+                    .getPlatformName(GenomicCriterionTypeEnum.GENE_EXPRESSION), null, false);
             igvResult.setGeneExpressionFile(fileManager.createIGVGctFile(gctDataset, sessionId));
         }
         if (studySubscription.getStudy().getStudyConfiguration().hasCopyNumberData()) {
@@ -470,7 +470,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
                     IGVFileTypeEnum.GENE_EXPRESSION, platform.getName());
             if (!gctFile.exists()) {
                 GctDataset gctDataset = createGctDataset(studySubscription, new HashSet<Query>(),
-                        platform.getName(), null);
+                        platform.getName(), null, false);
                 gctFile = fileManager.createIGVGctFile(gctDataset, studySubscription.getStudy(), platform.getName());
             }
             igvResult.setGeneExpressionFile(gctFile);
@@ -495,7 +495,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
      */
     public void createIGVFile(StudySubscription studySubscription, Platform platform) throws InvalidCriterionException {
         GctDataset gctDataset = createGctDataset(studySubscription, new HashSet<Query>(),
-                platform.getName(), null);
+                platform.getName(), null, false);
         fileManager.createIGVGctFile(gctDataset, studySubscription.getStudy(), platform.getName());
     }
 
@@ -542,10 +542,10 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     }
 
     private GctDataset createGctDataset(StudySubscription studySubscription, Collection<Query> querySet,
-            String platformName, SampleSet excludedSet) throws InvalidCriterionException {
+            String platformName, SampleSet excludedSet, boolean addGenesToReporters) throws InvalidCriterionException {
         SampleSet refreshedExcludedSet = excludedSet == null ? null : getRefreshedEntity(excludedSet);
         return GenePatternUtil.createGctDataset(studySubscription, querySet,
-                refreshedExcludedSet, queryManagementService, platformName);
+                refreshedExcludedSet, queryManagementService, platformName, addGenesToReporters);
     }
     
     private Collection<SegmentData> createSegmentDataset(StudySubscription studySubscription, 
