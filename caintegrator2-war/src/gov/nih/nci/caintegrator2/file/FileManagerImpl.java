@@ -199,19 +199,19 @@ public class FileManagerImpl implements FileManager {
      * {@inheritDoc}
      */
     public File retrieveIGVFile(Study study, IGVFileTypeEnum fileType, String platformName) {
-        return new File(buildIGVFieName(study, fileType, platformName));
+        return new File(getIGVFileName(study, fileType, platformName));
     }
 
-    /**
-     * @param study
-     * @param fileType
-     * @param platformName
-     * @return
-     */
-    private String buildIGVFieName(Study study, IGVFileTypeEnum fileType, String platformName) {
-        String fileName = getStudyDirectory(study) + File.separator + "igv" + File.separator
+    private String getIGVFileName(Study study, IGVFileTypeEnum fileType, String platformName) {
+        String fileName = getStudyIGVDirectory(study) + File.separator
             + platformName + "_" + fileType.getFilename();
         return fileName;
+    }
+    
+    private String getStudyIGVDirectory(Study study) {
+        File file = new File(getStudyDirectory(study) + File.separator + "igv");
+        file.mkdir();
+        return file.getAbsolutePath();
     }
     
     /**
@@ -236,7 +236,7 @@ public class FileManagerImpl implements FileManager {
      */
     public File createIGVGctFile(GctDataset gctDataset, Study study, String platformName) {
         return GctDatasetFileWriter.writeAsGct(gctDataset, 
-                new File(buildIGVFieName(study, IGVFileTypeEnum.GENE_EXPRESSION, platformName)).getAbsolutePath());
+                getIGVFileName(study, IGVFileTypeEnum.GENE_EXPRESSION, platformName));
     }
 
     /**
@@ -244,7 +244,7 @@ public class FileManagerImpl implements FileManager {
      */
     public File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName) {
         return SegmentDatasetFileWriter.writeAsSegFile(segmentDatas,
-                new File(buildIGVFieName(study, IGVFileTypeEnum.SEGMENTATION, platformName)).getAbsolutePath());
+                getIGVFileName(study, IGVFileTypeEnum.SEGMENTATION, platformName));
     }
     
     /**
