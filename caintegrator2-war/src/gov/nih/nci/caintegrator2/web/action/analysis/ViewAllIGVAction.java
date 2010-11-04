@@ -89,6 +89,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
@@ -112,9 +113,12 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
     private QueryManagementService queryManagementService;
     private ArrayDataService arrayDataService;
     private AnalysisService analysisService;
-    private List<String> platformsInStudy = new ArrayList<String>();
-    private String platformName;
+    private List<String> expressionPlatformsInStudy;
+    private List<String> copyNumberPlatformsInStudy;
+    private String expressionPlatformName;
+    private String copyNumberPlatformName;
     private String viewIGVUrl;
+    private List<Platform> platforms;
 
     /**
      * @return the viewIGVUrl
@@ -135,12 +139,38 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
      */
     public void prepare() {
         super.prepare();
-        platformsInStudy = new ArrayList<String>();
-        platformsInStudy.addAll(getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy()));
-        platformsInStudy.addAll(getQueryManagementService().retrieveCopyNumberPlatformsForStudy(getStudy()));
-        Collections.sort(platformsInStudy);
+        expressionPlatformsInStudy = new ArrayList<String>();
+        expressionPlatformsInStudy.add("");
+        expressionPlatformsInStudy.addAll(
+                getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy()));
+        Collections.sort(expressionPlatformsInStudy);
+        copyNumberPlatformsInStudy = new ArrayList<String>();
+        copyNumberPlatformsInStudy.add("");
+                copyNumberPlatformsInStudy.addAll(
+                getQueryManagementService().retrieveCopyNumberPlatformsForStudy(getStudy()));
+        Collections.sort(copyNumberPlatformsInStudy);
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (VIEW_IGV.equals(selectedAction)) {
+            platforms = new ArrayList<Platform>();
+            if (!StringUtils.isEmpty(expressionPlatformName)) {
+                platforms.add(getArrayDataService().getPlatform(expressionPlatformName));
+            }
+            if (!StringUtils.isEmpty(copyNumberPlatformName)) {
+                platforms.add(getArrayDataService().getPlatform(copyNumberPlatformName));
+            }
+            if (platforms.isEmpty()) {
+                addActionError(getText("struts.messages.error.igv.no.platform"));
+            }
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -155,8 +185,7 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
 
     private String viewAllIGV() {
         try {
-            Platform platform = getArrayDataService().getPlatform(platformName);
-            setViewIGVUrl(analysisService.executeIGV(getStudySubscription(), platform, 
+            setViewIGVUrl(analysisService.executeIGV(getStudySubscription(), platforms, 
                     ServletActionContext.getRequest().getRequestedSessionId(), SessionHelper.getIgvSessionUrl()));
         } catch (Exception e) {
             addActionError(getText("struts.messages.error.igv", getArgs(e.getMessage())));
@@ -194,31 +223,59 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
     }
 
     /**
-     * @return the platformsInStudy
+     * @return the expressionPlatformsInStudy
      */
-    public List<String> getPlatformsInStudy() {
-        return platformsInStudy;
+    public List<String> getExpressionPlatformsInStudy() {
+        return expressionPlatformsInStudy;
     }
 
     /**
-     * @param platformsInStudy the platformsInStudy to set
+     * @param expressionPlatformsInStudy the expressionPlatformsInStudy to set
      */
-    public void setPlatformsInStudy(List<String> platformsInStudy) {
-        this.platformsInStudy = platformsInStudy;
+    public void setExpressionPlatformsInStudy(List<String> expressionPlatformsInStudy) {
+        this.expressionPlatformsInStudy = expressionPlatformsInStudy;
     }
 
     /**
-     * @return the platformName
+     * @return the copyNumberPlatformsInStudy
      */
-    public String getPlatformName() {
-        return platformName;
+    public List<String> getCopyNumberPlatformsInStudy() {
+        return copyNumberPlatformsInStudy;
     }
 
     /**
-     * @param platformName the platformName to set
+     * @param copyNumberPlatformsInStudy the copyNumberPlatformsInStudy to set
      */
-    public void setPlatformName(String platformName) {
-        this.platformName = platformName;
+    public void setCopyNumberPlatformsInStudy(List<String> copyNumberPlatformsInStudy) {
+        this.copyNumberPlatformsInStudy = copyNumberPlatformsInStudy;
+    }
+
+    /**
+     * @return the expressionPlatformName
+     */
+    public String getExpressionPlatformName() {
+        return expressionPlatformName;
+    }
+
+    /**
+     * @param expressionPlatformName the expressionPlatformName to set
+     */
+    public void setExpressionPlatformName(String expressionPlatformName) {
+        this.expressionPlatformName = expressionPlatformName;
+    }
+
+    /**
+     * @return the copyNumberPlatformName
+     */
+    public String getCopyNumberPlatformName() {
+        return copyNumberPlatformName;
+    }
+
+    /**
+     * @param copyNumberPlatformName the copyNumberPlatformName to set
+     */
+    public void setCopyNumberPlatformName(String copyNumberPlatformName) {
+        this.copyNumberPlatformName = copyNumberPlatformName;
     }
 
     /**

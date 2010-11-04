@@ -252,15 +252,15 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
     /**
      * Executes IGV and returns the URL to start it.
      * @param studySubscription study to run igv on.
-     * @param platform the platform to use.
+     * @param platforms the list of platforms to use.
      * @param sessionId browser session id to store the files under (files tied to session id).
      * @param urlPrefix of the format: 
      *      http://caintegrator2.nci.nih.gov/caintegrator2/igv/retrieveFile.do?JSESSIONID=12345&file=
      * @return full URL to forward user to.
      * @throws InvalidCriterionException if invalid criterion.
      */
-    String executeIGV(StudySubscription studySubscription, Platform platform, String sessionId, String urlPrefix) 
-    throws InvalidCriterionException;
+    String executeIGV(StudySubscription studySubscription, List<Platform> platforms,
+            String sessionId, String urlPrefix) throws InvalidCriterionException;
 
     /**
      * Creates and stores an IGV data file.
