@@ -118,6 +118,9 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public boolean createCsvFileFromGenomicResultCalled;
     private GenomicDataQueryResult expectedGenomicResult = new GenomicDataQueryResult();
     public boolean getRefreshedEntityCalled;
+    public boolean retrieveCopyNumberPlatformsForStudyCalled;
+    public boolean retrieveGeneExpressionPlatformsForStudyCalled;
+    
     public boolean throwGenesNotFoundException = false;
 
     public void save(Query query) {
@@ -161,6 +164,8 @@ public class QueryManagementServiceStub implements QueryManagementService {
         createCsvFileFromGenomicResultCalled = false;
         getRefreshedEntityCalled = false;
         throwGenesNotFoundException = false;
+        retrieveCopyNumberPlatformsForStudyCalled = false;
+        retrieveGeneExpressionPlatformsForStudyCalled = false;
         platformsForStudy.clear();
     }
 
@@ -227,10 +232,12 @@ public class QueryManagementServiceStub implements QueryManagementService {
     }
 
     public Set<String> retrieveGeneExpressionPlatformsForStudy(Study study) {
+        retrieveGeneExpressionPlatformsForStudyCalled = true;
         return platformsForStudy;
     }
 
     public Set<String> retrieveCopyNumberPlatformsForStudy(Study study) {
+        retrieveCopyNumberPlatformsForStudyCalled = true;
         return new HashSet<String>();
     }
 

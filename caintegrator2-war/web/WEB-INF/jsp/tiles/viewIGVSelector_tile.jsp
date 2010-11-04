@@ -29,7 +29,8 @@
                 <s:form id="igvViewerForm" name="igvViewerForm" method="post" enctype="multipart/form-data"
                     action="viewAllIGV" theme="css_xhtml">
                     <s:hidden name="selectedAction" />
-                    <s:select id="platformName" name="platformName" label="Platform" list="platformsInStudy"/>
+                    <s:select id="expressionPlatformName" name="expressionPlatformName" label="Gene Expression Platform" list="expressionPlatformsInStudy"/>
+                    <s:select id="copyNumberPlatformName" name="copyNumberPlatformName" label="Copy Number Platform" list="copyNumberPlatformsInStudy"/>
                     <br/>
                     <s:div cssClass="wwgrp">
                         <s:div cssClass="wwlbl"></s:div>
