@@ -122,6 +122,7 @@ public class AnalysisServiceStub implements AnalysisService {
     public boolean deleteGisticAnalysisCalled;
     public boolean isValidGenePatternConnection = true;
     public boolean executeIGVCalled;
+    public boolean createIGVFileCalled;
     
     public void clear() {
         createKMPlotCalled = false;
@@ -133,6 +134,7 @@ public class AnalysisServiceStub implements AnalysisService {
         deleteAnalysisJobCalled = false;
         deleteGisticAnalysisCalled = false;
         executeIGVCalled = false;
+        createIGVFileCalled = false;
     }
 
     /**
@@ -240,5 +242,10 @@ public class AnalysisServiceStub implements AnalysisService {
             throws InvalidCriterionException {
         executeIGVCalled = true;
         return null;
+    }
+
+    public void createIGVFile(StudySubscription studySubscription, Platform platform) throws InvalidCriterionException {
+        createIGVFileCalled = true;
+        return;
     }
 }

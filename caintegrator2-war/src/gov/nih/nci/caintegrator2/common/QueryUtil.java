@@ -326,7 +326,7 @@ public final class QueryUtil {
      */
     public static Query createAllGenomicDataQuery(StudySubscription studySubscription,
             Set<Query> queries, String platformName, ResultTypeEnum resultType) throws InvalidCriterionException {
-        ReporterTypeEnum reporterType = getReporterTypeFromQueries(queries);
+        ReporterTypeEnum reporterType = getReporterTypeFromQueries(queries, resultType);
         Query query = createQuery(studySubscription);
         query.setAllGenomicDataQuery(true);
         query.setResultType(resultType);
@@ -350,9 +350,11 @@ public final class QueryUtil {
         return query;
     }
 
-    private static ReporterTypeEnum getReporterTypeFromQueries(Set<Query> queries) throws InvalidCriterionException {
+    private static ReporterTypeEnum getReporterTypeFromQueries(Set<Query> queries, ResultTypeEnum resultType)
+    throws InvalidCriterionException {
         if (queries == null || queries.isEmpty()) {
-            return ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET;
+            return ResultTypeEnum.GENE_EXPRESSION.equals(resultType)
+                ? ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET : ReporterTypeEnum.DNA_ANALYSIS_REPORTER;
         }
         ReporterTypeEnum reporterType = null;
         for (Query query : queries) {

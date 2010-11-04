@@ -85,14 +85,18 @@
  */
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactory;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.bioconductor.BioconductorService;
@@ -115,6 +119,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     private CaArrayFacade caArrayFacade;
     private CaIntegrator2Dao dao;
     private ArrayDataService arrayDataService;
+    private AnalysisService analysisService;
     private BioconductorService bioconductorService;
     private DnaAnalysisHandlerFactory dnaAnalysisHandlerFactory = new DnaAnalysisHandlerFactoryImpl();
     private ExpressionHandlerFactory expressionHandlerFactory = new ExpressionHandlerFactoryImpl();
@@ -138,7 +143,7 @@ public class DeploymentServiceImpl implements DeploymentService {
      */
     @SuppressWarnings("PMD.AvoidReassigningParameters") // preferable in this instance for error handling.
     public Status performDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener)
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException {
             studyConfiguration = getDao().get(studyConfiguration.getId(), StudyConfiguration.class);
             if (!Status.PROCESSING.equals(studyConfiguration.getStatus())) {
                 startDeployment(studyConfiguration, listener);
@@ -168,13 +173,14 @@ public class DeploymentServiceImpl implements DeploymentService {
     }
 
     private Status doDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener) 
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException {
         if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
             GenomicDataHelper genomicDataHelper = new GenomicDataHelper(getCaArrayFacade(), 
                     getArrayDataService(), getDao(), getBioconductorService(), getDnaAnalysisHandlerFactory());
             genomicDataHelper.setExpressionHandlerFactory(getExpressionHandlerFactory());
             genomicDataHelper.setGenePatternClientFactory(getGenePatternClientFactory());
             genomicDataHelper.loadData(studyConfiguration);
+            generateIGVFiles(studyConfiguration);
         }
         studyConfiguration.setStatus(Status.DEPLOYED);
         studyConfiguration.setDeploymentFinishDate(new Date());
@@ -183,6 +189,16 @@ public class DeploymentServiceImpl implements DeploymentService {
                                                  studyConfiguration.getDeploymentFinishDate()));
         updateStatus(studyConfiguration, listener);
         return studyConfiguration.getStatus();
+    }
+
+    private void generateIGVFiles(StudyConfiguration studyConfiguration) throws InvalidCriterionException {
+        StudySubscription studySubscription = new StudySubscription();
+        studySubscription.setStudy(studyConfiguration.getStudy());
+        for (GenomicDataSourceConfiguration genomicDataSourceConfiguration
+                : studyConfiguration.getGenomicDataSources()) {
+            getAnalysisService().createIGVFile(studySubscription,
+                    getArrayDataService().getPlatform(genomicDataSourceConfiguration.getPlatformName()));
+        }
     }
 
     private Status startDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener) {
@@ -292,6 +308,20 @@ public class DeploymentServiceImpl implements DeploymentService {
      */
     public void setExpressionHandlerFactory(ExpressionHandlerFactory expressionHandlerFactory) {
         this.expressionHandlerFactory = expressionHandlerFactory;
+    }
+
+    /**
+     * @return the analysisService
+     */
+    public AnalysisService getAnalysisService() {
+        return analysisService;
+    }
+
+    /**
+     * @param analysisService the analysisService to set
+     */
+    public void setAnalysisService(AnalysisService analysisService) {
+        this.analysisService = analysisService;
     }
 
 }

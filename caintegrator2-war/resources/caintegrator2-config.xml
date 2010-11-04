@@ -862,6 +862,9 @@
         <property name="arrayDataService">
             <ref local="arrayDataService"/>
         </property>
+        <property name="analysisService">
+          <ref local="analysisService"/>
+        </property>
         <property name="bioconductorService">
             <ref local="bioconductorService"/>
         </property>
