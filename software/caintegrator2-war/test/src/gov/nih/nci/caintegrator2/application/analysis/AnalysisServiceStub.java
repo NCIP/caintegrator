@@ -238,7 +238,7 @@ public class AnalysisServiceStub implements AnalysisService {
         return null;
     }
 
-    public String executeIGV(StudySubscription studySubscription, Platform platform, String sessionId, String urlPrefix)
+    public String executeIGV(StudySubscription studySubscription, List<Platform> platforms, String sessionId, String urlPrefix)
             throws InvalidCriterionException {
         executeIGVCalled = true;
         return null;

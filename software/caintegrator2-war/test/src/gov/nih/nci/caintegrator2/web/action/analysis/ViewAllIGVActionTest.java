@@ -86,19 +86,71 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import com.opensymphony.xwork2.ActionContext;
 
 
 /**
  * 
  */
-public class ViewAllIGVActionTest {
+public class ViewAllIGVActionTest extends AbstractSessionBasedTest {
 
     ViewAllIGVAction viewAllIGVAction = new ViewAllIGVAction();
+    private StudySubscription subscription;
+    private QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
+
+    @Before
+    public void setUp() {
+        super.setUp();
+        subscription = new StudySubscription();
+        subscription.setId(Long.valueOf(1));
+        Study study = createFakeStudy();
+        subscription.setStudy(study);
+        SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
+        ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
+        WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
+        workspaceService.setSubscription(subscription);
+        viewAllIGVAction.setWorkspaceService(workspaceService);
+        viewAllIGVAction.setQueryManagementService(queryManagementService);
+    }
     
+    private Study createFakeStudy() {
+        Study study = new Study();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setStatus(Status.DEPLOYED);
+        study.setStudyConfiguration(studyConfiguration);
+        return study;
+    }
     @Test
     public void testAll() {
+        // Test validate
+        viewAllIGVAction.validate();
+        assertTrue(viewAllIGVAction.hasActionErrors());
+        viewAllIGVAction.clearActionErrors();
+        viewAllIGVAction.setExpressionPlatformName("expressionPlatform");
+        assertFalse(viewAllIGVAction.hasActionErrors());
+        viewAllIGVAction.setCopyNumberPlatformName("copyNumberPlatform");
+        assertFalse(viewAllIGVAction.hasActionErrors());
+        
+        // Test Prepare
+        viewAllIGVAction.prepare();
+        assertTrue(queryManagementService.retrieveCopyNumberPlatformsForStudyCalled);
+        assertTrue(queryManagementService.retrieveGeneExpressionPlatformsForStudyCalled);
+        
+        // Test execute
         assertEquals("success", viewAllIGVAction.execute());
         viewAllIGVAction.setSelectedAction("cancel");
         assertEquals("homePage", viewAllIGVAction.execute());
