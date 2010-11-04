@@ -90,6 +90,7 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -137,7 +138,7 @@ public class DeploymentServiceTest {
     }
     @Test
     public void testPerformDeployment()
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setId(1L);
         daoStub.studyConfiguration = studyConfiguration;

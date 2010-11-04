@@ -490,6 +490,15 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         return BROAD_HOSTED_IGV_URL + encodeUrl(urlPrefix) + IGVFileTypeEnum.SESSION.getFilename();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void createIGVFile(StudySubscription studySubscription, Platform platform) throws InvalidCriterionException {
+        GctDataset gctDataset = createGctDataset(studySubscription, new HashSet<Query>(),
+                platform.getName(), null);
+        fileManager.createIGVGctFile(gctDataset, studySubscription.getStudy(), platform.getName());
+    }
+
     private QueryResult createAnnotationBasedQueryResultsForSamples(Query query)
             throws InvalidCriterionException {
             ResultColumn sampleColumn = new ResultColumn();

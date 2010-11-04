@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import java.io.IOException;
 
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -118,9 +119,10 @@ public interface DeploymentService {
      * @throws DataRetrievalException dataretrieval exception
      * @throws ConnectionException connection exception
      * @throws IOException I/O exception
+     * @throws InvalidCriterionException invalid criterion when generating IGV files
      */
     Status performDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener)
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException;
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException;
     
     /**
      * Update the study configuration status. 
