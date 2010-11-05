@@ -8,7 +8,7 @@
 </s:if>
 <s:else>
     <body onload="document.viewIGVForm.submit()">
-        View IGV URL = <s:property value="viewIGVUrl"/>
+        View Integrative Genomics Viewer URL = <s:property value="viewIGVUrl"/>
         <s:url id="url" value="%{viewIGVUrl}" />
         <form name="viewIGVForm" method="POST" action="${url}">
         </form>

@@ -400,7 +400,7 @@
                     <a href="${genePatternAnalysisUrl}">GenePattern Analysis</a></li>
                 <li>
                     <s:url id="igvViewerUrl" includeParams="none" action="viewAllIGV" />
-                    <a href="${igvViewerUrl}">View IGV</a>
+                    <a href="${igvViewerUrl}">Integrative Genomics Viewer</a>
                 </li>
             </ul>
         </li>
