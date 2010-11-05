@@ -111,7 +111,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.DownloadableFile;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator2.web.action.query.form.AbstractCriterionRow;
 import gov.nih.nci.caintegrator2.web.action.query.form.CriterionRowTypeEnum;
@@ -130,7 +129,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 
@@ -358,7 +356,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             returnValue = forwardToNciaBasket(); 
         } else if ("viewIGV".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
-            returnValue = viewIGV();
+            returnValue = "viewIGV";
         } else if ("selectAll".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
             getDisplayableWorkspace().getQueryResult().setSelectAll(true);
@@ -559,21 +557,6 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         return "nciaBasket";
     }
     
-    /**
-     * View IGV.
-     * @return the Struts result.
-     */
-    public String viewIGV() {
-        try {
-            setViewIGVUrl(analysisService.executeIGV(getStudySubscription(), getQuery(), 
-                    ServletActionContext.getRequest().getRequestedSessionId(), SessionHelper.getIgvSessionUrl()));
-        } catch (Exception e) {
-            addActionError(getText("struts.messages.error.igv", getArgs(e.getMessage())));
-            return "viewIGV";
-        }
-        return "viewIGV";
-    }
-
     /**
      * Creates a dicom job and runs.
      * @return the Struts result.
