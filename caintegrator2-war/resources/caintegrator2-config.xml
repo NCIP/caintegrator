@@ -715,6 +715,14 @@
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
     
+    <bean id="igvAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.IGVAjaxUpdater">
+        <dwr:remote javascript="IGVAjaxUpdater" />
+        <property name="analysisService">
+          <ref local="analysisService"/>
+        </property>
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
+    
     <bean id="dataElementSearchAjaxUpdater" scope="session" class="gov.nih.nci.caintegrator2.web.ajax.DataElementSearchAjaxUpdater">
         <dwr:remote javascript="DataElementSearchAjaxUpdater" />
         <property name="studyManagementService">
