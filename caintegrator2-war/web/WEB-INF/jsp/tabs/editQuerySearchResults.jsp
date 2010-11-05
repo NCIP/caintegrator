@@ -405,7 +405,7 @@
                             document.manageQueryForm.selectedAction.value='viewIGV';
                             document.manageQueryForm.submit();
                             document.manageQueryForm.target='_self'">
-                            <span class="btn_img"><span class="externalsite">View IGV</span></span>
+                            <span class="btn_img"><span class="externalsite">View in Integrative Genomics Viewer</span></span>
                         </s:a></li>
                     </ul>
                 </del>
@@ -428,7 +428,7 @@
                                 document.manageQueryForm.selectedAction.value='viewIGV';
                                 document.manageQueryForm.submit();
                                 document.manageQueryForm.target='_self'">
-                            <span class="btn_img"><span class="externalsite">View IGV</span></span>
+                            <span class="btn_img"><span class="externalsite">View in Integrative Genomics Viewer</span></span>
                         </s:a></li>
                     </ul>
                 </del>
@@ -451,7 +451,7 @@
                         <s:if test="queryForm.hasGenomicDataSources()">
                             <li><s:a href="#" cssClass="btn"
                                 onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='viewIGV';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
-                                <span class="btn_img"><span class="externalsite">View IGV</span></span>
+                                <span class="btn_img"><span class="externalsite">View in Integrative Genomics Viewer</span></span>
                             </s:a></li>
                         </s:if>
                         <s:if test="queryForm.hasImageDataSources()">

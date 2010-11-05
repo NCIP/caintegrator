@@ -1,9 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
             
-<div id="content">                      
-
-    <h1 style="color: #FFFFFF; background: #263D6B; padding: 5px;">View IGV for: <strong><s:property value="studyConfiguration.study.shortTitleText" /></strong></h1>
+<div id="content">
     
     <!--Page Help-->
 
@@ -15,7 +13,7 @@
     
     <h1><s:property value="#subTitleText" /></h1>
     
-    <p>Enter IGV viewer parameters and click <strong>View</strong>.</p>
+    <p>Enter Integrative Genomics Viewer parameters and click <strong>View</strong>.</p>
     <div class="form_wrapper_outer">
  
     <table class="form_wrapper_table">
