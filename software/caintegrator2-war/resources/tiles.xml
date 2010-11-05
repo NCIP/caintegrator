@@ -138,6 +138,12 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/dicomJobAjax_tile.jsp" />
         <put-attribute name="subTitle" value="DICOM Retrieval" />
     </definition>
+    
+    <definition name="igvAjax" extends="cssBaseDef">
+        <put-attribute name="leftNavMenu" value=""/>
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/igvAjax_tile.jsp" />
+        <put-attribute name="subTitle" value="Integrative Genomics Viewer" />
+    </definition>
 
     <definition name="manageStudies" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageStudies_tile.jsp" />

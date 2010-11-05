@@ -130,7 +130,7 @@ public final class QueryUtil {
     
     /**
      * Used to see if a Set of ResultRow's contains a specific ResultRow (based on SubjectAssignments matching).
-     * This needs to be tweaked, not sure if the algorithm is correct.
+     * This needs to be tweaked, not sure if the algorithm is correct.  
      * @param rowSet - set of rows.
      * @param rowToTest - ResultRow item to test if it exists in set.
      * @param isMultiplePlatformQuery - if multiple platforms in query then we don't need to match sample acquisitions.
@@ -140,14 +140,46 @@ public final class QueryUtil {
                                                         ResultRow rowToTest,
                                                         boolean isMultiplePlatformQuery) {
         for (ResultRow curRow : rowSet) {
-            if (curRow.getSubjectAssignment() == rowToTest.getSubjectAssignment()
-                    && curRow.getImageSeries() == rowToTest.getImageSeries()
-                    && (isMultiplePlatformQuery 
-                            || curRow.getSampleAcquisition() == rowToTest.getSampleAcquisition())) {
+            if (checkSubjectAssignmentMatch(rowToTest, curRow)
+                    && checkImageSeriesMatch(rowToTest, curRow)
+                    && checkSampleMatch(isMultiplePlatformQuery, rowToTest, curRow)) {
                     return curRow;
                 }
             }
         return null;
+    }
+
+    private static boolean checkSampleMatch(boolean isMultiplePlatformQuery, ResultRow rowToTest, ResultRow curRow) {
+        if (isMultiplePlatformQuery) {
+            return true;
+        } 
+        if (curRow.getSampleAcquisition() == null && rowToTest.getSampleAcquisition() == null) { // both null
+            return true;
+        }
+        if (curRow.getSampleAcquisition() == null || rowToTest.getSampleAcquisition() == null) { // only one is null
+            return false;
+        }
+        return curRow.getSampleAcquisition() == rowToTest.getSampleAcquisition();
+        
+    }
+    private static boolean checkImageSeriesMatch(ResultRow rowToTest, ResultRow curRow) {
+        if (curRow.getImageSeries() == null && rowToTest.getImageSeries() == null) { // both null
+            return true;
+        }
+        if (curRow.getImageSeries() == null || rowToTest.getImageSeries() == null) { // only one is null
+            return false;
+        }
+        return curRow.getImageSeries().getIdentifier() == rowToTest.getImageSeries().getIdentifier();
+    }
+
+    private static boolean checkSubjectAssignmentMatch(ResultRow rowToTest, ResultRow curRow) {
+        if (curRow.getSubjectAssignment() == null && rowToTest.getSubjectAssignment() == null) { // both null
+            return true;
+        }
+        if (curRow.getSubjectAssignment() == null || rowToTest.getSubjectAssignment() == null) { // only one is null
+            return false;
+        }
+        return curRow.getSubjectAssignment().getIdentifier() == rowToTest.getSubjectAssignment().getIdentifier();
     }
 
     /**
