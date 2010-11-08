@@ -83,65 +83,92 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.ajax;
+package gov.nih.nci.caintegrator2.application.analysis.igv;
 
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
-import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 
-import org.apache.struts2.ServletActionContext;
-import org.directwebremoting.WebContextFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
-
-public class IGVAjaxUpdaterTest extends AbstractSessionBasedTest {
-
-    private IGVAjaxUpdater updater;
-    private AnalysisServiceStub analysisService;
-    private MockHttpSession session;
+/**
+ * Parameters used to run IGV.
+ */
+public class IGVParameters {
+    private StudySubscription studySubscription;
+    private Query query;
+    private String sessionId; 
+    private String urlPrefix;
+    private List<Platform> platforms = new ArrayList<Platform>();
     
-    @Before
-    public void setUp() {
-        super.setUp();
-        updater = new IGVAjaxUpdater();
-        analysisService = new AnalysisServiceStub();
-        updater.setAnalysisService(analysisService);
-        StudySubscription subscription = new StudySubscription();
-        subscription.setStudy(new Study());
-        subscription.getStudy().setStudyConfiguration(new StudyConfiguration());
-        Query query = new Query();
-        query.setSubscription(subscription);
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        session = new MockHttpSession();
-        request.setSession(session);
-        ServletActionContext.setRequest(request);
-        IGVParameters parameters = new IGVParameters();
-        parameters.setStudySubscription(subscription);
-        parameters.setQuery(query);
-        parameters.setSessionId("sessionId");
-        SessionHelper.getInstance().getDisplayableUserWorkspace().setIgvParameters(parameters);
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+    /**
+     * @return the studySubscription
+     */
+    public StudySubscription getStudySubscription() {
+        return studySubscription;
+    }
+    
+    /**
+     * @param studySubscription the studySubscription to set
+     */
+    public void setStudySubscription(StudySubscription studySubscription) {
+        this.studySubscription = studySubscription;
+    }
+    
+    /**
+     * @return the query
+     */
+    public Query getQuery() {
+        return query;
+    }
+    
+    /**
+     * @param query the query to set
+     */
+    public void setQuery(Query query) {
+        this.query = query;
+    }
+    
+    /**
+     * @return the sessionId
+     */
+    public String getSessionId() {
+        return sessionId;
+    }
+    
+    /**
+     * @param sessionId the sessionId to set
+     */
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+    
+    /**
+     * @return the urlPrefix
+     */
+    public String getUrlPrefix() {
+        return urlPrefix;
+    }
+    
+    /**
+     * @param urlPrefix the urlPrefix to set
+     */
+    public void setUrlPrefix(String urlPrefix) {
+        this.urlPrefix = urlPrefix;
     }
 
-    @Test
-    public void testRunIgvFromQuery() throws InterruptedException {
-        updater.runIGV();
-        Thread.sleep(2000);
-        assertTrue(analysisService.executeIGVCalled);
-        SessionHelper.getInstance().getDisplayableUserWorkspace().getIgvParameters().setQuery(null);
-        updater.runIGV();
-        Thread.sleep(2000);
-        assertTrue(analysisService.executeIGVGlobalCalled);
-
+    /**
+     * @return the platforms
+     */
+    public List<Platform> getPlatforms() {
+        return platforms;
     }
 
+    /**
+     * @param platforms the platforms to set
+     */
+    public void setPlatforms(List<Platform> platforms) {
+        this.platforms = platforms;
+    }
 }

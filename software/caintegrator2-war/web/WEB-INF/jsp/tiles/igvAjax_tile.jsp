@@ -20,7 +20,7 @@
     <div id="errorMessages" style="color: red;"> </div>
 	<script type="text/javascript">
 		dwr.engine.setActiveReverseAjax(true);
-		IGVAjaxUpdater.runIgvFromQuery();	
+		IGVAjaxUpdater.runIGV();	
 	</script>
 	
     <h2>Current Status:</h2> 
