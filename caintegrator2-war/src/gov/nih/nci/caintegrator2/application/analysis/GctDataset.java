@@ -192,15 +192,9 @@ public class GctDataset {
     /**
      * @return the values
      */
+    @SuppressWarnings("PMD.MethodReturnsInternalArray") // Cloning the array takes a lot of time and is unnecessary
     public float[][] getValues() {
-        return values.clone();
-    }
-    
-    /**
-     * @param values the values to set
-     */
-    public void setValues(float[][] values) {
-        this.values = values.clone();
+        return values;
     }
 
     /**
