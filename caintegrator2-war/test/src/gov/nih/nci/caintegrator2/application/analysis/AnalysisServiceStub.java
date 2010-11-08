@@ -122,6 +122,7 @@ public class AnalysisServiceStub implements AnalysisService {
     public boolean deleteGisticAnalysisCalled;
     public boolean isValidGenePatternConnection = true;
     public boolean executeIGVCalled;
+    public boolean executeIGVGlobalCalled;
     public boolean createIGVFileCalled;
     
     public void clear() {
@@ -134,6 +135,7 @@ public class AnalysisServiceStub implements AnalysisService {
         deleteAnalysisJobCalled = false;
         deleteGisticAnalysisCalled = false;
         executeIGVCalled = false;
+        executeIGVGlobalCalled = false;
         createIGVFileCalled = false;
     }
 
@@ -240,7 +242,7 @@ public class AnalysisServiceStub implements AnalysisService {
 
     public String executeIGV(StudySubscription studySubscription, List<Platform> platforms, String sessionId, String urlPrefix)
             throws InvalidCriterionException {
-        executeIGVCalled = true;
+        executeIGVGlobalCalled = true;
         return null;
     }
 

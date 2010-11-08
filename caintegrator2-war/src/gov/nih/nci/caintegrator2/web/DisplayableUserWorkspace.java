@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
@@ -108,8 +109,8 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
 import gov.nih.nci.caintegrator2.web.action.platform.form.PlatformForm;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableCopyNumberQueryResult;
+import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
 import gov.nih.nci.caintegrator2.web.action.study.management.DataElementSearchObject;
 
@@ -154,6 +155,7 @@ public class DisplayableUserWorkspace {
     private final QueryForm queryForm = new QueryForm();
     private final KMPlotForm kmPlotForm = new KMPlotForm();
     private final GEPlotForm gePlotForm = new GEPlotForm();
+    private IGVParameters igvParameters = new IGVParameters();
     private DisplayableQueryResult queryResult;
     private GenomicDataQueryResult genomicDataQueryResult;
     private DisplayableCopyNumberQueryResult copyNumberQueryResult;
@@ -667,6 +669,20 @@ public class DisplayableUserWorkspace {
     public void clearAnalysisCache() {
         gePlotForm.clear();
         kmPlotForm.clear();
+    }
+
+    /**
+     * @return the igvParameters
+     */
+    public IGVParameters getIgvParameters() {
+        return igvParameters;
+    }
+
+    /**
+     * @param igvParameters the igvParameters to set
+     */
+    public void setIgvParameters(IGVParameters igvParameters) {
+        this.igvParameters = igvParameters;
     }
 
 

@@ -87,9 +87,7 @@ package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
 
-import org.apache.struts2.ServletActionContext;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.directwebremoting.proxy.dwr.Util;
@@ -107,14 +105,12 @@ public class IGVAjaxUpdater implements IIGVAjaxUpdater {
     /**
      * {@inheritDoc}
      */
-    public void runIgvFromQuery() {
+    public void runIGV() {
         WebContext wctx = WebContextFactory.get();
         DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) 
             wctx.getSession().getAttribute("displayableWorkspace");
         utilThis = new Util(wctx.getScriptSession());
-        IGVAjaxRunner runner = new IGVAjaxRunner(this, workspace.getCurrentStudySubscriptionId(), 
-                workspace.getQueryForm().getQuery(), ServletActionContext.getRequest().getRequestedSessionId(),
-                SessionHelper.getIgvSessionUrl());
+        IGVAjaxRunner runner = new IGVAjaxRunner(this, workspace.getIgvParameters());
         new Thread(runner).start();
     }
     

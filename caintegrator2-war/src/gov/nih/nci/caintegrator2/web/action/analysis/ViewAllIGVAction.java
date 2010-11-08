@@ -93,6 +93,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -117,22 +118,7 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
     private List<String> copyNumberPlatformsInStudy;
     private String expressionPlatformName;
     private String copyNumberPlatformName;
-    private String viewIGVUrl;
     private List<Platform> platforms;
-
-    /**
-     * @return the viewIGVUrl
-     */
-    public String getViewIGVUrl() {
-        return viewIGVUrl;
-    }
-
-    /**
-     * @param viewIGVUrl the viewIGVUrl to set
-     */
-    public void setViewIGVUrl(String viewIGVUrl) {
-        this.viewIGVUrl = viewIGVUrl;
-    }
 
     /**
      * {@inheritDoc}
@@ -184,13 +170,12 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
     }
 
     private String viewAllIGV() {
-        try {
-            setViewIGVUrl(analysisService.executeIGV(getStudySubscription(), platforms, 
-                    ServletActionContext.getRequest().getRequestedSessionId(), SessionHelper.getIgvSessionUrl()));
-        } catch (Exception e) {
-            addActionError(getText("struts.messages.error.igv", getArgs(e.getMessage())));
-            return VIEW_IGV;
-        }
+        IGVParameters igvParameters = new IGVParameters();
+        igvParameters.setStudySubscription(getStudySubscription());
+        igvParameters.setSessionId(ServletActionContext.getRequest().getRequestedSessionId());
+        igvParameters.setUrlPrefix(SessionHelper.getIgvSessionUrl());
+        igvParameters.setPlatforms(platforms);
+        getDisplayableWorkspace().setIgvParameters(igvParameters);
         return VIEW_IGV;
     }
 
