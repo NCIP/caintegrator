@@ -91,9 +91,9 @@ package gov.nih.nci.caintegrator2.web.ajax;
 public interface IIGVAjaxUpdater {
     
     /**
-     * Retrieves the query from the session and creates a new IGVAjaxRunner thread and starts it.
+     * Retrieves the igv parameters from the session and creates a new IGVAjaxRunner thread and starts it.
      * This function is called directly from the igvAjax_tile.jsp page using DWR's reverse ajax mechanism.
      */
-    void runIgvFromQuery();
+    void runIGV();
 
 }

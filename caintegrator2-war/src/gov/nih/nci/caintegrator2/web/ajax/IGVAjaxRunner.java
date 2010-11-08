@@ -85,8 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
 /**
@@ -96,18 +96,11 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 public class IGVAjaxRunner implements Runnable {
 
     private final IGVAjaxUpdater updater;
-    private final Long studySubscriptionId;
-    private final String sessionId;
-    private final String igvSessionUrl;
-    private final Query query;
+    private final IGVParameters igvParameters;
     
-    IGVAjaxRunner(IGVAjaxUpdater updater, Long studySubscriptionId, 
-            Query query, String sessionId, String igvSessionUrl) {
+    IGVAjaxRunner(IGVAjaxUpdater updater, IGVParameters igvParameters) {
         this.updater = updater;
-        this.studySubscriptionId = studySubscriptionId;
-        this.query = query;
-        this.sessionId = sessionId;
-        this.igvSessionUrl = igvSessionUrl;
+        this.igvParameters = igvParameters;
      }
     
     /**
@@ -116,11 +109,18 @@ public class IGVAjaxRunner implements Runnable {
     public void run() {
         try {
             updater.updateCurrentStatus("Creating IGV Files.");
-            StudySubscription studySubscription = new StudySubscription();
-            studySubscription.setId(studySubscriptionId);
-            studySubscription = updater.getAnalysisService().getRefreshedStudySubscription(studySubscription);
-            updater.finish(updater.getAnalysisService().executeIGV(
-                                studySubscription, query, sessionId, igvSessionUrl));
+            StudySubscription studySubscription = 
+                updater.getAnalysisService().getRefreshedStudySubscription(igvParameters.getStudySubscription());
+            // Need to refactor this so that analysis service has one function that takes in IGV parameters, and
+            // the logic is inside there as to how it runs.  Can also refactor it so that there is another service
+            // that runs IGV logic and the analysis service calls on that service.
+            if (igvParameters.getQuery() == null) {
+                updater.finish(updater.getAnalysisService().executeIGV(studySubscription, igvParameters.getPlatforms(), 
+                        igvParameters.getSessionId(), igvParameters.getUrlPrefix()));
+            } else {
+                updater.finish(updater.getAnalysisService().executeIGV(studySubscription, igvParameters.getQuery(),
+                    igvParameters.getSessionId(), igvParameters.getUrlPrefix()));
+            }
         } catch (InvalidCriterionException e) {
             updater.addErrorMessage("Invalid Criterion: " 
                     + e.getMessage());

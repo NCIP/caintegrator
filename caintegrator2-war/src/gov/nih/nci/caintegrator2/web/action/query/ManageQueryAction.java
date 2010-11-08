@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.query.GenomicDataResultRowComparator;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
@@ -111,6 +112,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.DownloadableFile;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator2.web.action.query.form.AbstractCriterionRow;
 import gov.nih.nci.caintegrator2.web.action.query.form.CriterionRowTypeEnum;
@@ -129,6 +131,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 
@@ -155,7 +158,6 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     private StudyManagementService studyManagementService;
     private AnalysisService analysisService;
     private NCIABasket nciaBasket;
-    private String viewIGVUrl;
     private String selectedAction = EXECUTE_QUERY;
     private String displayTab;
     private int rowNumber;
@@ -356,7 +358,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             returnValue = forwardToNciaBasket(); 
         } else if ("viewIGV".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
-            returnValue = "viewIGV";
+            returnValue = viewIGV();
         } else if ("selectAll".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
             getDisplayableWorkspace().getQueryResult().setSelectAll(true);
@@ -557,6 +559,20 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         return "nciaBasket";
     }
     
+    /**
+     * View IGV.
+     * @return the Struts result.
+     */
+    public String viewIGV() {
+        IGVParameters igvParameters = new IGVParameters();
+        igvParameters.setQuery(getQuery());
+        igvParameters.setStudySubscription(getStudySubscription());
+        igvParameters.setSessionId(ServletActionContext.getRequest().getRequestedSessionId());
+        igvParameters.setUrlPrefix(SessionHelper.getIgvSessionUrl());
+        getDisplayableWorkspace().setIgvParameters(igvParameters);
+        return "viewIGV";
+    }
+
     /**
      * Creates a dicom job and runs.
      * @return the Struts result.
@@ -1000,20 +1016,6 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
      */
     public StudyConfiguration getStudyConfiguration() {
         return getStudy().getStudyConfiguration();
-    }
-
-    /**
-     * @return the viewIGVUrl
-     */
-    public String getViewIGVUrl() {
-        return viewIGVUrl;
-    }
-
-    /**
-     * @param viewIGVUrl the viewIGVUrl to set
-     */
-    public void setViewIGVUrl(String viewIGVUrl) {
-        this.viewIGVUrl = viewIGVUrl;
     }
 
     /**

@@ -831,7 +831,7 @@
         <action name="viewAllIGV" class="viewAllIGVAction">
             <result type="tiles">viewIGVSelector</result>
             <result name="input" type="tiles">viewIGVSelector</result>
-            <result name="viewIGV">/WEB-INF/jsp/tiles/viewIGV.jsp</result>
+            <result name="viewIGV" type="tiles">igvAjax</result>
             <result name="homePage" type="redirectAction">
                 <param name="actionName">workspace</param>
             </result>
