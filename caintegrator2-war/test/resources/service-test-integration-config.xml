@@ -47,6 +47,9 @@
         <property name="arrayDataService">
             <ref local="arrayDataService"/>
         </property>
+        <property name="analysisService">
+            <ref local="analysisService"/>
+        </property>
         <property name="bioconductorService">
             <ref local="bioconductorService"/>
         </property>
@@ -134,6 +137,67 @@
             <ref local="fileManager"/>
         </property>
     </bean>
+
+    <bean id="analysisService" 
+        class="gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceImpl">
+        <property name="genePatternClientFactory">
+            <ref local="genePatternClientFactory"/>
+        </property>
+        <property name="dao">
+            <ref local="caIntegrator2Dao"/>
+        </property>
+        <property name="kmPlotService">
+            <ref local="kmPlotService"/>
+        </property>
+        <property name="gePlotService">
+            <ref local="gePlotService"/>
+        </property>
+        <property name="queryManagementService">
+            <ref local="queryManagementService"/>
+        </property>
+        <property name="genePatternGridRunner">
+            <ref local="genePatternGridRunner"/>
+        </property>
+        <property name="fileManager">
+            <ref local="fileManager"/>
+        </property>
+        <property name="arrayDataService">
+            <ref local="arrayDataService"/>
+        </property>
+        <property name="igvResultsManager">
+            <ref local="igvResultsManager"/>
+        </property>
+    </bean>
+
+    <bean id="genePatternGridRunner"
+        class="gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunnerImpl">
+        <property name="genePatternGridClientFactory">
+            <ref local="genePatternGridClientFactory" />
+        </property>
+        <property name="fileManager">
+            <ref local="fileManager" />
+        </property>
+    </bean>
+    
+    <bean id="genePatternGridClientFactory" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryImpl" />
+    
+    
+    <bean id="kmPlotService" 
+         class="gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImpl">
+         <property name="caIntegratorPlotService">
+            <ref local="caIntegratorPlotService"/>
+        </property>
+    </bean>
+    
+    <bean id="caIntegratorPlotService" 
+         class="gov.nih.nci.caintegrator.plots.services.KMPlotServiceImpl">
+    </bean>
+    
+    <bean id="gePlotService" 
+         class="gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotServiceImpl">
+    </bean>
+    
+    <bean id="igvResultsManager" scope="singleton" class="gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager" />
     
     <bean id="caArrayServiceFactory" 
         class="gov.nih.nci.caintegrator2.external.caarray.CaArrayServiceFactoryImpl" />
