@@ -85,19 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import edu.columbia.geworkbench.cagrid.MageBioAssayGenerator;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.mageom.domain.bioassay.BioAssay;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -129,24 +125,6 @@ public class GctDataset {
      */
     public GctDataset(GenomicDataQueryResult resultSet) {
         this(resultSet, true);
-    }
-    
-    /**
-     * Creates a GctDataset from the bioAssay object.
-     * @param bioAssay contains genomic data.
-     * @param mbaGenerator retrieves data from bioAssay object.
-     * @param reporterGeneSymbols the reporterGeneSymbols map (since we don't get back description from bioAssays).
-     */
-    public GctDataset(BioAssay[] bioAssay, MageBioAssayGenerator mbaGenerator, 
-            Map<String, String> reporterGeneSymbols) {
-        rowReporterNames.addAll(Arrays.asList(mbaGenerator.getRowNamesFromBioAssays(bioAssay)));
-        columnSampleNames.addAll(Arrays.asList(mbaGenerator.getColNamesFromBioAssays(bioAssay)));
-        for (int i = 0; i < rowReporterNames.size(); i++) {
-            String description = reporterGeneSymbols.get(rowReporterNames.get(i));
-            rowDescription.add(description == null ? NA_DESCRIPTION_STRING : description);
-        }
-        values = mbaGenerator.bioAssayArrayToFloat2D(bioAssay);
-        this.addGenesToReporters = true;
     }
 
     private void loadGenomicResultSet(GenomicDataQueryResult resultSet) {
