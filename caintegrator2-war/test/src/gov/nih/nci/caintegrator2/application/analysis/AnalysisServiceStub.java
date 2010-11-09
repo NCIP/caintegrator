@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.analysis;
 
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
@@ -96,7 +97,6 @@ import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -135,7 +135,6 @@ public class AnalysisServiceStub implements AnalysisService {
         deleteAnalysisJobCalled = false;
         deleteGisticAnalysisCalled = false;
         executeIGVCalled = false;
-        executeIGVGlobalCalled = false;
         createIGVFileCalled = false;
     }
 
@@ -234,15 +233,9 @@ public class AnalysisServiceStub implements AnalysisService {
         return isValidGenePatternConnection;
     }
 
-    public String executeIGV(StudySubscription studySubscription, Query query, String sessionId, String urlPrefix)
+    public String executeIGV(StudySubscription studySubscription, IGVParameters igvParameters)
             throws InvalidCriterionException {
         executeIGVCalled = true;
-        return null;
-    }
-
-    public String executeIGV(StudySubscription studySubscription, List<Platform> platforms, String sessionId, String urlPrefix)
-            throws InvalidCriterionException {
-        executeIGVGlobalCalled = true;
         return null;
     }
 

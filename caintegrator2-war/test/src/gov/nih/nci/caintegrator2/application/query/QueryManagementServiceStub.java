@@ -120,6 +120,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public boolean getRefreshedEntityCalled;
     public boolean retrieveCopyNumberPlatformsForStudyCalled;
     public boolean retrieveGeneExpressionPlatformsForStudyCalled;
+    public boolean annotationForAllSamplesCalled;
     
     public boolean throwGenesNotFoundException = false;
 
@@ -135,6 +136,16 @@ public class QueryManagementServiceStub implements QueryManagementService {
     @SuppressWarnings("unchecked")
     public QueryResult execute(Query query) {
         executeCalled = true;
+        QR.setQuery(query);
+        if (QR.getRowCollection() == null) {
+            QR.setRowCollection(Collections.EMPTY_SET);
+        }
+        return QR;
+    }
+
+    @SuppressWarnings("unchecked")
+    public QueryResult getAnnotationForAllSamples(Query query) throws InvalidCriterionException {
+        annotationForAllSamplesCalled = true;
         QR.setQuery(query);
         if (QR.getRowCollection() == null) {
             QR.setRowCollection(Collections.EMPTY_SET);
@@ -166,6 +177,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
         throwGenesNotFoundException = false;
         retrieveCopyNumberPlatformsForStudyCalled = false;
         retrieveGeneExpressionPlatformsForStudyCalled = false;
+        annotationForAllSamplesCalled = false;
         platformsForStudy.clear();
     }
 

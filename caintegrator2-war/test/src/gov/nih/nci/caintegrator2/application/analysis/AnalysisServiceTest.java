@@ -103,6 +103,7 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParamete
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticRefgeneFileEnum;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
@@ -279,8 +280,11 @@ public class AnalysisServiceTest {
         study.setStudyConfiguration(studyConfiguration);
         subscription.setStudy(study);
         query.setSubscription(subscription);
-        String resultURL = service.executeIGV(subscription, query, "sessionId", 
-                "http://localhost:8080/caintegrator2/igv/runIgv.do?JSESSIONID=sessionId&file=");
+        IGVParameters igvParameters = new IGVParameters();
+        igvParameters.setUrlPrefix("http://localhost:8080/caintegrator2/igv/runIgv.do?JSESSIONID=sessionId&file=");
+        igvParameters.setSessionId("sessionId");
+        igvParameters.setQuery(query);
+        String resultURL = service.executeIGV(subscription, igvParameters);
         assertEquals(
                 "http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=http://localhost:8080/caintegrator2/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
                 resultURL);
@@ -296,8 +300,8 @@ public class AnalysisServiceTest {
         studyConfiguration.getGenomicDataSources().add(genomicSource1);
         studyConfiguration.getGenomicDataSources().add(genomicSource2);
         query.getColumnCollection().add(new ResultColumn());
-        service.executeIGV(subscription, query, "sessionId", 
-            "http://localhost:8080/caintegrator2/igv/runIgv.do?JSESSIONID=sessionId&file=");
+        igvParameters.setQuery(query);
+        service.executeIGV(subscription, igvParameters);
         assertTrue(fileManagerStub.createIGVGctFileCalled);
         assertTrue(fileManagerStub.createIGVSegFileCalled);
         assertTrue(fileManagerStub.createIGVSampleClassificationFileCalled);

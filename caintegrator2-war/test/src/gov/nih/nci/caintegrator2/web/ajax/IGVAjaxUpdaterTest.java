@@ -140,7 +140,7 @@ public class IGVAjaxUpdaterTest extends AbstractSessionBasedTest {
         SessionHelper.getInstance().getDisplayableUserWorkspace().getIgvParameters().setQuery(null);
         updater.runIGV();
         Thread.sleep(2000);
-        assertTrue(analysisService.executeIGVGlobalCalled);
+        assertTrue(analysisService.executeIGVCalled);
 
     }
 
