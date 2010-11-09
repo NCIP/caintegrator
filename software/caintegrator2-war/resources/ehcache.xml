@@ -646,5 +646,12 @@
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
+		
+    <cache name="gov.nih.nci.caintegrator2.domain.genomic.SegmentData"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
 			
 </ehcache>
