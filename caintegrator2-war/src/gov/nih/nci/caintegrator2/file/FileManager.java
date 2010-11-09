@@ -89,6 +89,7 @@ import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
@@ -217,11 +218,10 @@ public interface FileManager {
     
     /**
      * Creates the IGV Session file.
-     * @param sessionId directory will be based on this.
-     * @param urlPrefix url prefix is needed to write the data to the session file.
+     * @param igvParameters parameters used for running IGV.
      * @param igvResult results of the run.
      */
-    void createIGVSessionFile(String sessionId, String urlPrefix, IGVResult igvResult);
+    void createIGVSessionFile(IGVParameters igvParameters, IGVResult igvResult);
     
     /**
      * Retrieves the directory for the study subscription's user.

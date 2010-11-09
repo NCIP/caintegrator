@@ -154,7 +154,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         return new QueryTranslator(retrieveQueryToExecute(query), getDao(), 
                 arrayDataService, resultHandler).execute();
     }
-
+    
     /**
      * {@inheritDoc}
      */
@@ -182,7 +182,10 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
                 getDao(), arrayDataService).retrieveSegmentDataQuery();
     }
     
-    private Query retrieveQueryToExecute(Query query) throws InvalidCriterionException {
+    /**
+     * {@inheritDoc}
+     */
+    public Query retrieveQueryToExecute(Query query) throws InvalidCriterionException {
         try {
             query.getCompoundCriterion().validateGeneExpressionCriterion();
             if (QueryUtil.isQueryGenomic(query)) {

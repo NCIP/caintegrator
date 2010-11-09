@@ -89,6 +89,7 @@ import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
@@ -234,7 +235,7 @@ public class FileManagerStub implements FileManager {
         return retrieveTmpFile();
     }
 
-    public void createIGVSessionFile(String sessionId, String urlPrefix, IGVResult igvResult) {
+    public void createIGVSessionFile(IGVParameters igvParams, IGVResult igvResult) {
         createIGVSessionFileCalled = true;
     }
 

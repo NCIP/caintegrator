@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.SegmentDatasetFileWriter;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVSampleInfoFileWriter;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVSessionFileWriter;
@@ -260,8 +261,9 @@ public class FileManagerImpl implements FileManager {
     /**
      * {@inheritDoc}
      */
-    public void createIGVSessionFile(String sessionId, String urlPrefix, IGVResult igvResult) {
-        IGVSessionFileWriter.writeSessionFile(getIGVDirectory(sessionId), urlPrefix, igvResult);
+    public void createIGVSessionFile(IGVParameters igvParameters, IGVResult igvResult) {
+        IGVSessionFileWriter.writeSessionFile(getIGVDirectory(igvParameters.getSessionId()), 
+                igvParameters.getUrlPrefix(), igvResult, igvParameters.getPlatforms());
     }
     
     private File getStudyDirectory(StudyConfiguration studyConfiguration) {

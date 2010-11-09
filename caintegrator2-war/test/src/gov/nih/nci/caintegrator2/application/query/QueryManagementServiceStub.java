@@ -257,5 +257,9 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public Set<String> getAllSubjectsNotFoundInCriteria(Query query) throws InvalidCriterionException {
         return new HashSet<String>();
     }
+
+    public Query retrieveQueryToExecute(Query query) throws InvalidCriterionException {
+        return query;
+    }
     
 }
