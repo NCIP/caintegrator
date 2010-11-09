@@ -116,6 +116,8 @@ public class IGVAjaxRunner implements Runnable {
         } catch (InvalidCriterionException e) {
             updater.addErrorMessage("Invalid Criterion: " 
                     + e.getMessage());
+        } catch (Exception e) {
+            updater.addErrorMessage("Error: " + e.getMessage());
         }
             
     }
