@@ -440,37 +440,43 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     throws InvalidCriterionException {
         IGVResult igvResult = new IGVResult();
         if (igvParameters.isViewAllIGV()) {
+            List<Platform> refreshedPlatforms = new ArrayList<Platform>();
             for (Platform platform : igvParameters.getPlatforms()) {
                 createIGVFile(studySubscription, igvResult, platform);
+                refreshedPlatforms.add(getRefreshedEntity(platform));
             }
+            igvParameters.getPlatforms().clear();
+            igvParameters.getPlatforms().addAll(refreshedPlatforms);
         } else {
             igvResult =  runIGVForQueryResult(studySubscription, igvParameters);
         }
         igvResult.setSampleInfoFile(fileManager.createIGVSampleClassificationFile(
                 createAnnotationBasedQueryResultsForSamples(igvParameters),
                 igvParameters.getSessionId(), igvParameters.getQuery().getColumnCollection()));
-            
-        fileManager.createIGVSessionFile(igvParameters.getSessionId(), igvParameters.getUrlPrefix(), igvResult);
+        fileManager.createIGVSessionFile(igvParameters, igvResult);
         igvResultsManager.storeJobResult(igvParameters.getSessionId(), igvResult);
         return BROAD_HOSTED_IGV_URL + encodeUrl(igvParameters.getUrlPrefix()) + IGVFileTypeEnum.SESSION.getFilename();
     }
 
-    private IGVResult runIGVForQueryResult(StudySubscription studySubscription, IGVParameters igvParameters)
-    throws InvalidCriterionException {
+    private IGVResult runIGVForQueryResult(StudySubscription studySubscription, IGVParameters igvParameters) 
+        throws InvalidCriterionException {
         IGVResult igvResult = new IGVResult();
         Set<Query> queries = new HashSet<Query>();
         queries.add(igvParameters.getQuery());
+        Query queryToExecute = queryManagementService.retrieveQueryToExecute(igvParameters.getQuery());
         if (studySubscription.getStudy().getStudyConfiguration().hasExpressionData()) {
             GctDataset gctDataset = createGctDataset(studySubscription, queries,
                 igvParameters.getQuery().getCompoundCriterion().getPlatformName(
                         GenomicCriterionTypeEnum.GENE_EXPRESSION), null, false);
             igvResult.setGeneExpressionFile(fileManager.createIGVGctFile(gctDataset, igvParameters.getSessionId()));
+            igvParameters.getPlatforms().add(queryToExecute.getGeneExpressionPlatform());
         }
         if (studySubscription.getStudy().getStudyConfiguration().hasCopyNumberData()) {
             Collection<SegmentData> segmentDatas = createSegmentDataset(studySubscription, queries, 
                 igvParameters.getQuery().getCompoundCriterion().getPlatformName(
                         GenomicCriterionTypeEnum.COPY_NUMBER), null);
             igvResult.setSegmentationFile(fileManager.createIGVSegFile(segmentDatas, igvParameters.getSessionId()));
+            igvParameters.getPlatforms().add(queryToExecute.getCopyNumberPlatform());
         }
         return igvResult;
     }
