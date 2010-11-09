@@ -9,6 +9,19 @@
             document.igvViewerForm[item].checked = onOff;
         }
     }
+    
+    function submitView() {
+        if (document.igvViewerForm.expressionPlatformName.value == ""
+            && document.igvViewerForm.copyNumberPlatformName.value == "") {
+            alert("You must select at least 1 platform.");
+            return false;
+        }
+        document.igvViewerForm.target = '_blank';
+        document.igvViewerForm.selectedAction.value = 'viewIGV';
+        document.igvViewerForm.submit();
+        document.igvViewerForm.target = '_self';
+        return true;
+    }
 
 </script>
 
@@ -85,10 +98,7 @@
 
                                 document.igvViewerForm.submit();"> Cancel </button>
 
-                            <button type="button" onclick="document.igvViewerForm.target = '_blank';
-                                document.igvViewerForm.selectedAction.value = 'viewIGV';
-                                document.igvViewerForm.submit();
-                                document.igvViewerForm.target = '_self'"> View </button>
+                            <button type="button" onclick="submitView()"> View </button>
 
                         </s:div>
 
