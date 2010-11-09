@@ -101,7 +101,22 @@ public class IGVParameters {
     private String sessionId; 
     private String urlPrefix;
     private List<Platform> platforms = new ArrayList<Platform>();
+    private boolean viewAllIGV = false;
     
+    /**
+     * @return the viewAllIGV
+     */
+    public boolean isViewAllIGV() {
+        return viewAllIGV;
+    }
+
+    /**
+     * @param viewAllIGV the viewAllIGV to set
+     */
+    public void setViewAllIGV(boolean viewAllIGV) {
+        this.viewAllIGV = viewAllIGV;
+    }
+
     /**
      * @return the studySubscription
      */

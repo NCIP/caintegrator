@@ -138,12 +138,27 @@ class QueryTranslator {
             Set<ResultRow> resultsCollection = 
                 compoundCriterionHandler.getMatches(dao, arrayDataService, query, entityTypesInQuery);
             
-            
             return resultHandler.createResults(query, resultsCollection);
         } else {
             // Not sure what to return here if there's no compoundCriterion.
             // Maybe it should be EVERY row since there's no criterion?
             return new QueryResult();
         }
+    }
+    
+    /**
+     * Executes a query and returns the QueryResult.
+     * @return result of the query execution.
+     * @throws InvalidCriterionException if criterion is invalid.
+     */
+    QueryResult getAnnotationForAllSamples() throws InvalidCriterionException {
+        CompoundCriterionHandler compoundCriterionHandler = 
+            CompoundCriterionHandler.createAllSampleAnnotation();
+        Set<EntityTypeEnum> entityTypesInQuery = new HashSet<EntityTypeEnum>();
+        entityTypesInQuery.add(EntityTypeEnum.SAMPLE);
+        Set<ResultRow> resultsCollection = 
+            compoundCriterionHandler.getMatches(dao, arrayDataService, query, entityTypesInQuery);
+            
+        return resultHandler.createResults(query, resultsCollection);
     }
 }

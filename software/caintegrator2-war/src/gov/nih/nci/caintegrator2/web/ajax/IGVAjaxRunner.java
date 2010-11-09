@@ -111,16 +111,8 @@ public class IGVAjaxRunner implements Runnable {
             updater.updateCurrentStatus("Creating IGV Files.");
             StudySubscription studySubscription = 
                 updater.getAnalysisService().getRefreshedStudySubscription(igvParameters.getStudySubscription());
-            // Need to refactor this so that analysis service has one function that takes in IGV parameters, and
-            // the logic is inside there as to how it runs.  Can also refactor it so that there is another service
-            // that runs IGV logic and the analysis service calls on that service.
-            if (igvParameters.getQuery() == null) {
-                updater.finish(updater.getAnalysisService().executeIGV(studySubscription, igvParameters.getPlatforms(), 
-                        igvParameters.getSessionId(), igvParameters.getUrlPrefix()));
-            } else {
-                updater.finish(updater.getAnalysisService().executeIGV(studySubscription, igvParameters.getQuery(),
-                    igvParameters.getSessionId(), igvParameters.getUrlPrefix()));
-            }
+            updater.finish(updater.getAnalysisService().executeIGV(studySubscription, igvParameters));
+            
         } catch (InvalidCriterionException e) {
             updater.addErrorMessage("Invalid Criterion: " 
                     + e.getMessage());

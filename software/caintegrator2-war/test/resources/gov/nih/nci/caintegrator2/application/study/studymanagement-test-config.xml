@@ -41,6 +41,9 @@
         <property name="arrayDataService">
             <ref local="arrayDataServiceStub"/>
         </property>
+        <property name="analysisService">
+            <ref local="analysisServiceStub"/>
+        </property>
         <property name="dnaAnalysisHandlerFactory">
             <ref local="dnaAnalysisHandlerFactory" />
         </property>
@@ -74,6 +77,9 @@
 
     <bean id="arrayDataServiceStub"
         class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub" />
+
+    <bean id="analysisServiceStub"
+        class="gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub" />
         
     <bean id="workspaceServiceStub"
         class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub" />

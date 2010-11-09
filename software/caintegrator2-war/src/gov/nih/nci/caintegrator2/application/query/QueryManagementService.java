@@ -117,7 +117,15 @@ public interface QueryManagementService extends CaIntegrator2EntityRefresher {
      * @throws InvalidCriterionException if criterion is invalid.
      */
     QueryResult execute(Query query) throws InvalidCriterionException;
-    
+
+    /**
+     * Return annotation for all samples.
+     * @param query item to execute.
+     * @return - Result of the query being executed
+     * @throws InvalidCriterionException if criterion is invalid.
+     */
+    QueryResult getAnnotationForAllSamples(Query query) throws InvalidCriterionException;
+
     /**
      * Executes a query that returns a genomic data set.
      * 

@@ -154,6 +154,15 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         return new QueryTranslator(retrieveQueryToExecute(query), getDao(), 
                 arrayDataService, resultHandler).execute();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly = true)
+    public QueryResult getAnnotationForAllSamples(Query query) throws InvalidCriterionException {
+        return new QueryTranslator(query, getDao(), 
+                arrayDataService, resultHandler).getAnnotationForAllSamples();
+    }
     
     /**
      * {@inheritDoc}

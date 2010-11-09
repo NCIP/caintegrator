@@ -162,6 +162,14 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         }
         return new CompoundCriterionHandler(handlers, compoundCriterion, resultType);
     }
+    
+    static CompoundCriterionHandler createAllSampleAnnotation() {
+        Collection<AbstractCriterionHandler> handlers = new HashSet<AbstractCriterionHandler>();
+        AbstractAnnotationCriterion annotationCriterion = new AbstractAnnotationCriterion();
+        annotationCriterion.setEntityType(EntityTypeEnum.SAMPLE);
+        handlers.add(new AnnotationCriterionHandler(annotationCriterion));
+        return new CompoundCriterionHandler(handlers, null, ResultTypeEnum.CLINICAL);
+    }
 
     /**
      * {@inheritDoc}
