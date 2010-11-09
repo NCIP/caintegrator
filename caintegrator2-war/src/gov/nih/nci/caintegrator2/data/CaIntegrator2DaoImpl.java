@@ -476,12 +476,13 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * @param annotationValueRelationship - Relationship name that the above object has with AbstractAnnotationValue
      */
     private void createAnnotationValuesCriteria(AbstractAnnotationCriterion criterion,
-                                              Criteria mainAnnotationCriteria, 
-                                              String annotationValueRelationship) {
-        Criteria valuesCrit = mainAnnotationCriteria.createCriteria(annotationValueRelationship);
-        valuesCrit.add(Restrictions.eq(ANNOTATION_DEFINITION_ASSOCIATION, criterion.getAnnotationFieldDescriptor()
+            Criteria mainAnnotationCriteria, String annotationValueRelationship) {
+        if (criterion != null && criterion.getAnnotationFieldDescriptor() != null) {
+            Criteria valuesCrit = mainAnnotationCriteria.createCriteria(annotationValueRelationship);
+            valuesCrit.add(Restrictions.eq(ANNOTATION_DEFINITION_ASSOCIATION, criterion.getAnnotationFieldDescriptor()
                 .getDefinition()));
-        valuesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
+            valuesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
+        }
     }
     
     private void createStudySubjectAssignmentCriteria(Criteria studySubjectAssignmentCrit, Study study) {

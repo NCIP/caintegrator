@@ -85,13 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.ServletActionContext;
-
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
@@ -99,6 +92,13 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
 
 /**
  * 
@@ -114,8 +114,8 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
     private QueryManagementService queryManagementService;
     private ArrayDataService arrayDataService;
     private AnalysisService analysisService;
-    private List<String> expressionPlatformsInStudy;
-    private List<String> copyNumberPlatformsInStudy;
+    private Set<String> expressionPlatformsInStudy;
+    private Set<String> copyNumberPlatformsInStudy;
     private String expressionPlatformName;
     private String copyNumberPlatformName;
     private List<Platform> platforms;
@@ -125,16 +125,8 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
      */
     public void prepare() {
         super.prepare();
-        expressionPlatformsInStudy = new ArrayList<String>();
-        expressionPlatformsInStudy.add("");
-        expressionPlatformsInStudy.addAll(
-                getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy()));
-        Collections.sort(expressionPlatformsInStudy);
-        copyNumberPlatformsInStudy = new ArrayList<String>();
-        copyNumberPlatformsInStudy.add("");
-                copyNumberPlatformsInStudy.addAll(
-                getQueryManagementService().retrieveCopyNumberPlatformsForStudy(getStudy()));
-        Collections.sort(copyNumberPlatformsInStudy);
+        expressionPlatformsInStudy = getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy());
+        copyNumberPlatformsInStudy = getQueryManagementService().retrieveCopyNumberPlatformsForStudy(getStudy());
     }
 
     /**
@@ -166,6 +158,7 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
         } else if (CANCEL_ACTION.equals(selectedAction)) {
             return HOME_PAGE;
         }
+        getQueryForm().createQuery(getStudySubscription(), expressionPlatformsInStudy, copyNumberPlatformsInStudy);
         return SUCCESS;
     }
 
@@ -174,7 +167,9 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
         igvParameters.setStudySubscription(getStudySubscription());
         igvParameters.setSessionId(ServletActionContext.getRequest().getRequestedSessionId());
         igvParameters.setUrlPrefix(SessionHelper.getIgvSessionUrl());
+        igvParameters.setQuery(getQuery());
         igvParameters.setPlatforms(platforms);
+        igvParameters.setViewAllIGV(true);
         getDisplayableWorkspace().setIgvParameters(igvParameters);
         return VIEW_IGV;
     }
@@ -210,28 +205,28 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
     /**
      * @return the expressionPlatformsInStudy
      */
-    public List<String> getExpressionPlatformsInStudy() {
+    public Set<String> getExpressionPlatformsInStudy() {
         return expressionPlatformsInStudy;
     }
 
     /**
      * @param expressionPlatformsInStudy the expressionPlatformsInStudy to set
      */
-    public void setExpressionPlatformsInStudy(List<String> expressionPlatformsInStudy) {
+    public void setExpressionPlatformsInStudy(Set<String> expressionPlatformsInStudy) {
         this.expressionPlatformsInStudy = expressionPlatformsInStudy;
     }
 
     /**
      * @return the copyNumberPlatformsInStudy
      */
-    public List<String> getCopyNumberPlatformsInStudy() {
+    public Set<String> getCopyNumberPlatformsInStudy() {
         return copyNumberPlatformsInStudy;
     }
 
     /**
      * @param copyNumberPlatformsInStudy the copyNumberPlatformsInStudy to set
      */
-    public void setCopyNumberPlatformsInStudy(List<String> copyNumberPlatformsInStudy) {
+    public void setCopyNumberPlatformsInStudy(Set<String> copyNumberPlatformsInStudy) {
         this.copyNumberPlatformsInStudy = copyNumberPlatformsInStudy;
     }
 

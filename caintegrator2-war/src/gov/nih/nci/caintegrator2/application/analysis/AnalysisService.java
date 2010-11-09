@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.CaIntegrator2EntityRefresher;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
@@ -96,7 +97,6 @@ import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -239,28 +239,12 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
     /**
      * Executes IGV and returns the URL to start it.
      * @param studySubscription study to run igv on.
-     * @param query run igv on the query.
-     * @param sessionId browser session id to store the files under (files tied to session id).
-     * @param urlPrefix of the format: 
-     *      http://caintegrator2.nci.nih.gov/caintegrator2/igv/retrieveFile.do?JSESSIONID=12345&file=
+     * @param igvParameters the igv parameters to use.
      * @return full URL to forward user to.
      * @throws InvalidCriterionException if invalid criterion in query.
      */
-    String executeIGV(StudySubscription studySubscription, Query query, String sessionId, String urlPrefix) 
+    String executeIGV(StudySubscription studySubscription, IGVParameters igvParameters) 
     throws InvalidCriterionException;
-    
-    /**
-     * Executes IGV and returns the URL to start it.
-     * @param studySubscription study to run igv on.
-     * @param platforms the list of platforms to use.
-     * @param sessionId browser session id to store the files under (files tied to session id).
-     * @param urlPrefix of the format: 
-     *      http://caintegrator2.nci.nih.gov/caintegrator2/igv/retrieveFile.do?JSESSIONID=12345&file=
-     * @return full URL to forward user to.
-     * @throws InvalidCriterionException if invalid criterion.
-     */
-    String executeIGV(StudySubscription studySubscription, List<Platform> platforms,
-            String sessionId, String urlPrefix) throws InvalidCriterionException;
 
     /**
      * Creates and stores an IGV data file.
