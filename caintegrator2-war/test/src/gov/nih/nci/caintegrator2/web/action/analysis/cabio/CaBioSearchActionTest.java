@@ -129,6 +129,13 @@ public class CaBioSearchActionTest extends AbstractSessionBasedTest {
         action.setRunSearchSelected(true);
         assertEquals(CaBioSearchAction.INPUT, action.searchCaBio());
         
+        // If keywords is under 3 characters
+        action.setRunSearchSelected(true);
+        action.getSearchParams().setKeywords("aa");
+        assertEquals(CaBioSearchAction.INPUT, action.searchCaBio());
+        assertFalse(caBioFacade.retrieveGenesCalled);
+        assertFalse(action.isRunSearchSelected());
+        
         // If keywords exist but nothing is returned.
         action.setRunSearchSelected(true);
         action.getSearchParams().setKeywords("keywords");
