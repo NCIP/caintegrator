@@ -157,6 +157,10 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
                 addActionError(getText("struts.messages.error.must.enter.keywords"));
                 return INPUT;
             }
+            if (StringUtils.length(searchParams.getKeywords()) < 3) {
+                addActionError(getText("struts.messages.error.keywords.size.under.three.chars"));
+                return INPUT;
+            }
             return retrieveDisplayableValues();
         } else if (runCaBioGeneSearchFromPathways) {
             return runGeneSearchFromPathways();
