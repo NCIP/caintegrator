@@ -99,7 +99,7 @@ import org.apache.commons.lang.StringUtils;
 public class SearchGeneListAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
-    private static final int MAX_NUMBER_GENES_TO_DISPLAY = 500; 
+    private static final int MAX_NUMBER_GENES_TO_DISPLAY = 1000; 
         
     // JSP Form Hidden Variables
     private String geneSymbolElementId;
