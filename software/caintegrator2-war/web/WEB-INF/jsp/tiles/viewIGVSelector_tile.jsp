@@ -51,10 +51,10 @@
                 <s:actionerror/>
                     <s:hidden name="selectedAction" />
                     <s:select id="expressionPlatformName" name="expressionPlatformName"
-                        headerKey="" headerValue="-- Select Platform --"
+                        headerKey="" headerValue="%{expressionPlatformOption}"
                         label="Gene Expression Platform" list="expressionPlatformsInStudy"/>
                     <s:select id="copyNumberPlatformName" name="copyNumberPlatformName"
-                        headerKey="" headerValue="-- Select Platform --"
+                        headerKey="" headerValue="%{copyNumberPlatformOption}"
                         label="Copy Number Platform" list="copyNumberPlatformsInStudy"/>
                     <br/>
                 </td>

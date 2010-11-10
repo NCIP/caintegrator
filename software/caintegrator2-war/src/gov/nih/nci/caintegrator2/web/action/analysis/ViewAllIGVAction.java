@@ -110,6 +110,7 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
     private static final String VIEW_IGV = "viewIGV";
     private static final String CANCEL_ACTION = "cancel";
     private static final String HOME_PAGE = "homePage";
+    private static final String NONE = "-- None Available --";
     private String selectedAction;
     private QueryManagementService queryManagementService;
     private ArrayDataService arrayDataService;
@@ -159,6 +160,12 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
             return HOME_PAGE;
         }
         getQueryForm().createQuery(getStudySubscription(), expressionPlatformsInStudy, copyNumberPlatformsInStudy);
+        if (!expressionPlatformsInStudy.isEmpty()) {
+            expressionPlatformName = expressionPlatformsInStudy.iterator().next();
+        }
+        if (!copyNumberPlatformsInStudy.isEmpty()) {
+            copyNumberPlatformName = copyNumberPlatformsInStudy.iterator().next();
+        }
         return SUCCESS;
     }
 
@@ -284,5 +291,19 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
      */
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
+    }
+    
+    /**
+     * @return the option label for expression platform selector
+     */
+    public String getExpressionPlatformOption() {
+        return expressionPlatformsInStudy.isEmpty() ? NONE : "";
+    }
+    
+    /**
+     * @return the option label for copy number platform selector
+     */
+    public String getCopyNumberPlatformOption() {
+        return copyNumberPlatformsInStudy.isEmpty() ? NONE : "";
     }
 }
