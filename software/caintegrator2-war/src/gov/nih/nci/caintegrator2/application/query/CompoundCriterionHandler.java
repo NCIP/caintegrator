@@ -182,7 +182,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
     @Override
     Set<ResultRow> getMatches(CaIntegrator2Dao dao, ArrayDataService arrayDataService, Query query, 
             Set<EntityTypeEnum> entityTypes) throws InvalidCriterionException {
-        if (compoundCriterion.getCriterionCollection().isEmpty()) {
+        if (compoundCriterion == null || compoundCriterion.getCriterionCollection().isEmpty()) {
             return getAllRows(query.getSubscription().getStudy(), entityTypes);
         } else {
             return getMatchingRows(dao, arrayDataService, entityTypes, query);
