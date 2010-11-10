@@ -233,7 +233,7 @@ public class AnalysisServiceStub implements AnalysisService {
         return isValidGenePatternConnection;
     }
 
-    public String executeIGV(StudySubscription studySubscription, IGVParameters igvParameters)
+    public String executeIGV(IGVParameters igvParameters)
             throws InvalidCriterionException {
         executeIGVCalled = true;
         return null;

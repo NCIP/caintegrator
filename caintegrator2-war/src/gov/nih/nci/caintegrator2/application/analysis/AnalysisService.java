@@ -238,12 +238,11 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
     
     /**
      * Executes IGV and returns the URL to start it.
-     * @param studySubscription study to run igv on.
      * @param igvParameters the igv parameters to use.
      * @return full URL to forward user to.
      * @throws InvalidCriterionException if invalid criterion in query.
      */
-    String executeIGV(StudySubscription studySubscription, IGVParameters igvParameters) 
+    String executeIGV(IGVParameters igvParameters) 
     throws InvalidCriterionException;
 
     /**

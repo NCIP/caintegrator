@@ -284,7 +284,8 @@ public class AnalysisServiceTest {
         igvParameters.setUrlPrefix("http://localhost:8080/caintegrator2/igv/runIgv.do?JSESSIONID=sessionId&file=");
         igvParameters.setSessionId("sessionId");
         igvParameters.setQuery(query);
-        String resultURL = service.executeIGV(subscription, igvParameters);
+        igvParameters.setStudySubscription(subscription);
+        String resultURL = service.executeIGV(igvParameters);
         assertEquals(
                 "http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=http://localhost:8080/caintegrator2/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
                 resultURL);
@@ -301,7 +302,7 @@ public class AnalysisServiceTest {
         studyConfiguration.getGenomicDataSources().add(genomicSource2);
         query.getColumnCollection().add(new ResultColumn());
         igvParameters.setQuery(query);
-        service.executeIGV(subscription, igvParameters);
+        service.executeIGV(igvParameters);
         assertTrue(fileManagerStub.createIGVGctFileCalled);
         assertTrue(fileManagerStub.createIGVSegFileCalled);
         assertTrue(fileManagerStub.createIGVSampleClassificationFileCalled);

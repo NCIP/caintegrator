@@ -186,4 +186,13 @@ public class IGVParameters {
     public void setPlatforms(List<Platform> platforms) {
         this.platforms = platforms;
     }
+
+    /**
+     * @param platform to add if not null
+     */
+    public void addPlatform(Platform platform) {
+        if (platform != null) {
+            getPlatforms().add(platform);
+        }
+    }
 }
