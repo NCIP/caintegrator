@@ -159,15 +159,6 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     @Transactional(readOnly = true)
-    public QueryResult getAnnotationForAllSamples(Query query) throws InvalidCriterionException {
-        return new QueryTranslator(query, getDao(), 
-                arrayDataService, resultHandler).getAnnotationForAllSamples();
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional(readOnly = true)
     public GenomicDataQueryResult executeGenomicDataQuery(Query query) throws InvalidCriterionException {
         return new GenomicQueryHandler(retrieveQueryToExecute(query), 
                 getDao(), arrayDataService).execute();
