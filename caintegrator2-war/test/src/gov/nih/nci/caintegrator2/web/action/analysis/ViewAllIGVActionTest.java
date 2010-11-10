@@ -88,6 +88,10 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -154,5 +158,16 @@ public class ViewAllIGVActionTest extends AbstractSessionBasedTest {
         assertEquals("success", viewAllIGVAction.execute());
         viewAllIGVAction.setSelectedAction("cancel");
         assertEquals("homePage", viewAllIGVAction.execute());
+        
+        //Test get platform option
+        assertEquals("-- None Available --", viewAllIGVAction.getExpressionPlatformOption());
+        assertEquals("-- None Available --", viewAllIGVAction.getCopyNumberPlatformOption());
+        Set<String> platforms = new HashSet<String>();
+        platforms.add("Platform 1");
+        viewAllIGVAction.setExpressionPlatformsInStudy(platforms);
+        viewAllIGVAction.setCopyNumberPlatformsInStudy(platforms);
+        assertEquals("", viewAllIGVAction.getExpressionPlatformOption());
+        assertEquals("", viewAllIGVAction.getCopyNumberPlatformOption());
+        
     }
 }
