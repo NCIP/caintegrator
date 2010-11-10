@@ -113,6 +113,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public class CaBioFacadeImpl implements CaBioFacade {
 
+    private static final Integer GENE_ADDITIONAL_INFO_THRESHOLD = 1000;
     private CaBioApplicationServiceFactory caBioApplicationServiceFactory;
     private CaIntegrator2Dao dao;
     private String caBioUrl;
@@ -293,8 +294,13 @@ public class CaBioFacadeImpl implements CaBioFacade {
             CaBioSearchParameters searchParams, CaBioApplicationService caBioApplicationService)
     throws ApplicationException {
         List<CaBioDisplayableGene> genes = new ArrayList<CaBioDisplayableGene>();
+        boolean lookupAdditionalInfo = true;
+        if (geneResults.size() > GENE_ADDITIONAL_INFO_THRESHOLD) {
+            lookupAdditionalInfo = false;
+        }
         for (Object result : geneResults) {
-            CaBioDisplayableGene displayableGene = createDisplayableGene(result, caBioApplicationService);
+            CaBioDisplayableGene displayableGene = createDisplayableGene(result, caBioApplicationService, 
+                    lookupAdditionalInfo);
             genes.add(displayableGene);
         }
         if (searchParams.isFilterGenesOnStudy() && !genes.isEmpty()) {
@@ -331,7 +337,8 @@ public class CaBioFacadeImpl implements CaBioFacade {
         }
     }
 
-    private CaBioDisplayableGene createDisplayableGene(Object result, CaBioApplicationService caBioApplicationService)
+    private CaBioDisplayableGene createDisplayableGene(Object result, CaBioApplicationService caBioApplicationService, 
+            boolean lookupAdditionalInfo)
     throws ApplicationException {
         Object[] geneObject = (Object[]) result;
         CaBioDisplayableGene displayableGene = new CaBioDisplayableGene();
@@ -342,8 +349,10 @@ public class CaBioFacadeImpl implements CaBioFacade {
         displayableGene.setHugoSymbol((String) geneObject[4]);
         Gene gene = new Gene();
         gene.setId(displayableGene.getId());
-        displayableGene.setGeneAliases(getGeneAliases(gene, caBioApplicationService));
-        displayableGene.setDatabaseCrossReferences(getDatabaseCrossRefs(gene, caBioApplicationService));
+        if (lookupAdditionalInfo) {
+            displayableGene.setGeneAliases(getGeneAliases(gene, caBioApplicationService));
+            displayableGene.setDatabaseCrossReferences(getDatabaseCrossRefs(gene, caBioApplicationService));
+        }
         return displayableGene;
     }
 

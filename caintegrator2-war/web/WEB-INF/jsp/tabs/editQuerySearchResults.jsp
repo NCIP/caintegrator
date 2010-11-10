@@ -75,9 +75,9 @@
                     **Derived from technical replicates that exceed the correlation threshold as set by the study manager.  See the study summary page for the correlation threshold.  
                 </div>
             </s:if>
-           <s:if test="genomicDataQueryResult.filteredRowCollection.size() > 2000">
+           <s:if test="genomicDataQueryResult.filteredRowCollection.size() > 1000">
            <div style="color: red;">
-               Found more than 2000 results, please restrict your search or use the export option.
+               Found more than 1000 results, please restrict your search or use the export option.
            </div>
            </s:if> 
            <s:else> 
