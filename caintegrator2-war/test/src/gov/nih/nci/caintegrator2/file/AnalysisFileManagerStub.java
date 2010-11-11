@@ -83,35 +83,106 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis.igv;
+package gov.nih.nci.caintegrator2.file;
 
-import gov.nih.nci.caintegrator2.application.analysis.AbstractSampleAnnotationFileWriter;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.File;
+import java.util.Collection;
 
-/**
- * Writes a sample info file for IGV to an IGV .SEG format file.
- */
-public class IGVSampleInfoFileWriter extends AbstractSampleAnnotationFileWriter {
+public class AnalysisFileManagerStub implements AnalysisFileManager {
 
-    private static final String TRACK_ID_HEADER = "TRACK_ID";
-    private static final String SUBJECT_ID_HEADER = "SUBJECT_ID";
+    public boolean deleteAllIGVDirectoryCalled;
+    public boolean deleteIGVDirectoryCalled;
+    public boolean getIGVDirectoryCalled;
+    public boolean createIGVGctFileCalled;
+    public boolean createIGVSegFileCalled;
+    public boolean createIGVSessionFileCalled;
+    public boolean createIGVSampleClassificationFileCalled;
+    
+    
+    public void clear() {
+        deleteAllIGVDirectoryCalled = false;
+        deleteIGVDirectoryCalled = false;
+        getIGVDirectoryCalled = false;
+        createIGVGctFileCalled = false;
+        createIGVSegFileCalled = false;
+        createIGVSessionFileCalled = false;
+        createIGVSampleClassificationFileCalled = false;
+    }
 
-    @Override
-    protected void writeFirstHeaders(FileWriter writer) throws IOException {
-        writer.write(TRACK_ID_HEADER);
-        writer.write(TAB);
-        writer.write(SUBJECT_ID_HEADER);
+
+
+
+    public File getNewTemporaryDirectory(String dirName) {
+        return new File(System.getProperty("java.io.tmpdir"));
+    }
+
+    public File getUserDirectory(StudySubscription studySubscription) {
+        return new File(System.getProperty("java.io.tmpdir"));
+    }
+
+    public File retrieveTmpFile() {
+        File tmpFile = new File(System.getProperty("java.io.tmpdir") + File.separator + "tmpFile");
+        tmpFile.deleteOnExit();
+        return tmpFile;
+    }
+
+    public File getIGVDirectory(String sessionId) {
+        getIGVDirectoryCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public void deleteAllIGVDirectory() {
+        deleteAllIGVDirectoryCalled = true;
         
     }
 
-    @Override
-    protected void writerFirstData(FileWriter writer, Sample sample) throws IOException {
-        writer.write(sample.getName());
-        writer.write(TAB);
-        writer.write(sample.getSampleAcquisition().getAssignment().getIdentifier());
+    public void deleteIGVDirectory(String sessionId) {
+        deleteIGVDirectoryCalled = true;
+        
+    }
+
+    public File createIGVGctFile(GctDataset gctDataset, String sessionId) {
+        createIGVGctFileCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId) {
+        createIGVSegFileCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public void createIGVSessionFile(IGVParameters igvParams, IGVResult igvResult) {
+        createIGVSessionFileCalled = true;
+    }
+
+    public File createIGVSampleClassificationFile(QueryResult queryResult, String sessionId,
+            Collection<ResultColumn> columns) {
+        createIGVSampleClassificationFileCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public File createIGVGctFile(GctDataset gctDataset, Study study, String platformName) {
+        createIGVGctFileCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName) {
+        createIGVSegFileCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public File retrieveIGVFile(Study study, IGVFileTypeEnum fileType, String platformName) {
+        return retrieveTmpFile();
     }
 
 }

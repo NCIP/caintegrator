@@ -83,7 +83,7 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis.igv;
+package gov.nih.nci.caintegrator2.application.analysis.heatmap;
 
 import gov.nih.nci.caintegrator2.application.analysis.AbstractSampleAnnotationFileWriter;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -94,24 +94,19 @@ import java.io.IOException;
 /**
  * Writes a sample info file for IGV to an IGV .SEG format file.
  */
-public class IGVSampleInfoFileWriter extends AbstractSampleAnnotationFileWriter {
+public class HeatmapSampleAnnotationsFileWriter extends AbstractSampleAnnotationFileWriter {
 
-    private static final String TRACK_ID_HEADER = "TRACK_ID";
-    private static final String SUBJECT_ID_HEADER = "SUBJECT_ID";
+    private static final String SAMPLE_ID_HEADER = "SAMPLE_ID";
 
     @Override
     protected void writeFirstHeaders(FileWriter writer) throws IOException {
-        writer.write(TRACK_ID_HEADER);
-        writer.write(TAB);
-        writer.write(SUBJECT_ID_HEADER);
+        writer.write(SAMPLE_ID_HEADER);
         
     }
 
     @Override
     protected void writerFirstData(FileWriter writer, Sample sample) throws IOException {
         writer.write(sample.getName());
-        writer.write(TAB);
-        writer.write(sample.getSampleAcquisition().getAssignment().getIdentifier());
     }
 
 }

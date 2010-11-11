@@ -83,40 +83,102 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.listener;
+package gov.nih.nci.caintegrator2.file;
 
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager;
-import gov.nih.nci.caintegrator2.file.AnalysisFileManager;
+import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import java.io.File;
+import java.util.Collection;
 
 /**
- * When a session is destroyed, this listener will remove things associated with the session.
+ * 
  */
-public class SessionCleanupListener implements HttpSessionListener {
-
+public interface AnalysisFileManager {
+    
     /**
-     * {@inheritDoc}
+     * Creates an igv directory for the session.
+     * @param sessionId to create directory for.
+     * @return igv directory.
      */
-    public void sessionCreated(HttpSessionEvent event) {
-        // Do nothing on session create.
-    }
-
+    File getIGVDirectory(String sessionId);
+    
     /**
-     * {@inheritDoc}
+     * Delete the igv directory.
      */
-    public void sessionDestroyed(HttpSessionEvent event) {
-        String sessionId = event.getSession().getId();
-        WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(
-                event.getSession().getServletContext());
-        IGVResultsManager igvResultsManager = (IGVResultsManager) context.getBean("igvResultsManager");
-        AnalysisFileManager fileManager = (AnalysisFileManager) context.getBean("analysisFileManager");
-        igvResultsManager.removeSession(sessionId);
-        fileManager.deleteIGVDirectory(sessionId);
-    }
+    void deleteAllIGVDirectory();
+    
+    /**
+     * Delete the igv directory for the session.
+     * @param sessionId to create directory for.
+     */
+    void deleteIGVDirectory(String sessionId);
+    
+    /**
+     * Retrieves the IGV File for the study based on the file type and platform name.
+     * @param study the study.
+     * @param fileType the file type.
+     * @param platformName the platform name.
+     * @return the file or null if not found.
+     */
+    File retrieveIGVFile(Study study, IGVFileTypeEnum fileType, String platformName);
+    
+    /**
+     * Creates the IGV GCT File for the given gctDataset.
+     * @param gctDataset gct data.
+     * @param sessionId directory will be based on this.
+     * @return the file.
+     */
+    File createIGVGctFile(GctDataset gctDataset, String sessionId);
+    
+    /**
+     * Stores the IGV GCTFile for the study with platform name.
+     * @param gctDataset gct data.
+     * @param study the study.
+     * @param platformName the platform name.
+     * @return the file.
+     */
+    File createIGVGctFile(GctDataset gctDataset, Study study, String platformName);
+    
+    /**
+     * Creates the IGV Segment Data file for the given segment datas.
+     * @param segmentDatas segment data.
+     * @param sessionId directory will be based on this.
+     * @return the file.
+     */
+    File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId);
+    
+    /**
+     * Stores the IGV Segment Data File for the study with platform name.
+     * @param segmentDatas segment data.
+     * @param study the study.
+     * @param platformName the platform name.
+     * @return the file.
+     */
+    File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName);
+    
+    /**
+     * Creates the IGV Sample Classification File for the given query result.
+     * @param queryResult query result data to turn into sample classification file.
+     * @param sessionId directory will be based on this.
+     * @param columns the columns that are in the query results.
+     * @return the file.
+     */
+    File createIGVSampleClassificationFile(QueryResult queryResult, String sessionId, 
+            Collection<ResultColumn> columns);
+    
+    /**
+     * Creates the IGV Session file.
+     * @param igvParameters parameters used for running IGV.
+     * @param igvResult results of the run.
+     */
+    void createIGVSessionFile(IGVParameters igvParameters, IGVResult igvResult);
+
 
 }
