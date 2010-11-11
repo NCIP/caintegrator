@@ -143,6 +143,7 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.file.AnalysisFileManagerStub;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
 import java.io.IOException;
@@ -173,6 +174,7 @@ public class AnalysisServiceTest {
                         new QueryManagementServiceForKMPlotStub();
     private GenePatternGridRunnerStub genePatternGridRunnerStub = new GenePatternGridRunnerStub();
     private FileManagerStub fileManagerStub = new FileManagerStub();
+    private AnalysisFileManagerStub analysisFileManagerStub = new AnalysisFileManagerStub();
     private ArrayDataServiceStub arrayDataServiceStub;
     private IGVResultsManager igvResultsManager = new IGVResultsManager();
     
@@ -184,6 +186,7 @@ public class AnalysisServiceTest {
         GeneExpressionPlotServiceImpl gePlotService = new GeneExpressionPlotServiceImpl();
         caIntegratorPlotServiceStub.clear();
         fileManagerStub.clear();
+        analysisFileManagerStub.clear();
         serviceImpl.setGenePatternClientFactory(genePatternClientFactoryStub); 
         serviceImpl.setDao(daoStub);
         serviceImpl.setKmPlotService(kmPlotService);
@@ -191,6 +194,7 @@ public class AnalysisServiceTest {
         queryManagementServiceForKmPlotStub.setDao(daoStub);
         serviceImpl.setQueryManagementService(queryManagementServiceForKmPlotStub);
         serviceImpl.setFileManager(fileManagerStub);
+        serviceImpl.setAnalysisFileManager(analysisFileManagerStub);
         service = serviceImpl;
         genePatternGridRunnerStub.clear();
         serviceImpl.setGenePatternGridRunner(genePatternGridRunnerStub);
@@ -289,10 +293,10 @@ public class AnalysisServiceTest {
         assertEquals(
                 "http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=http://localhost:8080/caintegrator2/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
                 resultURL);
-        assertFalse(fileManagerStub.createIGVGctFileCalled);
-        assertTrue(fileManagerStub.createIGVSampleClassificationFileCalled);
-        assertTrue(fileManagerStub.createIGVSessionFileCalled);
-        fileManagerStub.clear();
+        assertFalse(analysisFileManagerStub.createIGVGctFileCalled);
+        assertTrue(analysisFileManagerStub.createIGVSampleClassificationFileCalled);
+        assertTrue(analysisFileManagerStub.createIGVSessionFileCalled);
+        analysisFileManagerStub.clear();
         
         GenomicDataSourceConfiguration genomicSource1 = new GenomicDataSourceConfiguration();
         genomicSource1.setDataType(PlatformDataTypeEnum.EXPRESSION);
@@ -303,10 +307,10 @@ public class AnalysisServiceTest {
         query.getColumnCollection().add(new ResultColumn());
         igvParameters.setQuery(query);
         service.executeIGV(igvParameters);
-        assertTrue(fileManagerStub.createIGVGctFileCalled);
-        assertTrue(fileManagerStub.createIGVSegFileCalled);
-        assertTrue(fileManagerStub.createIGVSampleClassificationFileCalled);
-        assertTrue(fileManagerStub.createIGVSessionFileCalled);
+        assertTrue(analysisFileManagerStub.createIGVGctFileCalled);
+        assertTrue(analysisFileManagerStub.createIGVSegFileCalled);
+        assertTrue(analysisFileManagerStub.createIGVSampleClassificationFileCalled);
+        assertTrue(analysisFileManagerStub.createIGVSessionFileCalled);
         
     }
     

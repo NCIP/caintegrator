@@ -83,40 +83,140 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.listener;
+package gov.nih.nci.caintegrator2.file;
 
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager;
-import gov.nih.nci.caintegrator2.file.AnalysisFileManager;
+import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
+import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
+import gov.nih.nci.caintegrator2.application.analysis.SegmentDatasetFileWriter;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVSampleInfoFileWriter;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVSessionFileWriter;
+import gov.nih.nci.caintegrator2.common.QueryUtil;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
 
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
- * When a session is destroyed, this listener will remove things associated with the session.
+ * 
  */
-public class SessionCleanupListener implements HttpSessionListener {
-
+public class AnalysisFileManagerImpl implements AnalysisFileManager {
+    private static final String IGV_DIRECTORY = "igv";
+    private FileManager fileManager;
+    
     /**
      * {@inheritDoc}
      */
-    public void sessionCreated(HttpSessionEvent event) {
-        // Do nothing on session create.
+    public File createIGVGctFile(GctDataset gctDataset, String sessionId) {
+        return GctDatasetFileWriter.writeAsGct(gctDataset, 
+                new File(getIGVDirectory(sessionId).getAbsolutePath()
+                       + File.separator + IGVFileTypeEnum.GENE_EXPRESSION.getFilename()).getAbsolutePath());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File createIGVGctFile(GctDataset gctDataset, Study study, String platformName) {
+        return GctDatasetFileWriter.writeAsGct(gctDataset, 
+                retrieveIGVFile(study, IGVFileTypeEnum.GENE_EXPRESSION, platformName).getAbsolutePath());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File createIGVSampleClassificationFile(QueryResult queryResult, String sessionId, 
+            Collection<ResultColumn> columns) {
+        return new IGVSampleInfoFileWriter().writeSampleInfoFile(QueryUtil.retrieveSampleValuesMap(queryResult),
+                columns, new File(getIGVDirectory(sessionId).getAbsolutePath()
+                        + File.separator + IGVFileTypeEnum.SAMPLE_CLASSIFICATION.getFilename()).getAbsolutePath());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId) {
+        return SegmentDatasetFileWriter.writeAsSegFile(segmentDatas, new File(getIGVDirectory(sessionId)
+                .getAbsolutePath() + File.separator + IGVFileTypeEnum.SEGMENTATION.getFilename()).getAbsolutePath());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void createIGVSessionFile(IGVParameters igvParameters, IGVResult igvResult) {
+        IGVSessionFileWriter.writeSessionFile(getIGVDirectory(igvParameters.getSessionId()), 
+                igvParameters.getUrlPrefix(), igvResult, igvParameters.getPlatforms());
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sessionDestroyed(HttpSessionEvent event) {
-        String sessionId = event.getSession().getId();
-        WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(
-                event.getSession().getServletContext());
-        IGVResultsManager igvResultsManager = (IGVResultsManager) context.getBean("igvResultsManager");
-        AnalysisFileManager fileManager = (AnalysisFileManager) context.getBean("analysisFileManager");
-        igvResultsManager.removeSession(sessionId);
-        fileManager.deleteIGVDirectory(sessionId);
+    public File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName) {
+        return SegmentDatasetFileWriter.writeAsSegFile(segmentDatas,
+                retrieveIGVFile(study, IGVFileTypeEnum.SEGMENTATION, platformName).getAbsolutePath());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void deleteIGVDirectory(String sessionId) {
+        try {
+            FileUtils.deleteDirectory(getIGVDirectory(sessionId));
+        } catch (IOException e) {
+            return;
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void deleteAllIGVDirectory() {
+        FileUtils.deleteQuietly(new File(fileManager.getTempDirectory(), IGV_DIRECTORY));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File getIGVDirectory(String sessionId) {
+        if (StringUtils.isBlank(sessionId)) {
+            throw new IllegalArgumentException("Session ID is null or blank, unable to get the IGV directory.");
+        }
+        return fileManager.getNewTemporaryDirectory(IGV_DIRECTORY + File.separator + sessionId);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File retrieveIGVFile(Study study, IGVFileTypeEnum fileType, String platformName) {
+        return new File(getStudyIGVDirectory(study) + File.separator
+                + platformName + "_" + fileType.getFilename());
+    }
+    
+    private String getStudyIGVDirectory(Study study) {
+        File file = new File(fileManager.getStudyDirectory(study) + File.separator + IGV_DIRECTORY);
+        file.mkdir();
+        return file.getAbsolutePath();
     }
 
+    /**
+     * @return the fileManager
+     */
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    /**
+     * @param fileManager the fileManager to set
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }
 }

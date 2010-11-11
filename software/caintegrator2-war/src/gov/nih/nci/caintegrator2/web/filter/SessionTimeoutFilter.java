@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.caintegrator2.web.filter;
 
-import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.caintegrator2.file.AnalysisFileManager;
 
 import java.io.IOException;
 
@@ -112,7 +112,7 @@ public class SessionTimeoutFilter implements Filter {
     private static final Logger LOGGER = Logger.getLogger(SessionTimeoutFilter.class);
 
     private static final String TIMEOUT_PAGE = "sessionTimeout.action";
-    private FileManager fileManager;
+    private AnalysisFileManager fileManager;
     private static boolean firstTime = true;
 
     /**
@@ -185,14 +185,14 @@ public class SessionTimeoutFilter implements Filter {
     /**
      * @return the fileManager
      */
-    public FileManager getFileManager() {
+    public AnalysisFileManager getFileManager() {
         return fileManager;
     }
 
     /**
      * @param fileManager the fileManager to set
      */
-    public void setFileManager(FileManager fileManager) {
+    public void setFileManager(AnalysisFileManager fileManager) {
         this.fileManager = fileManager;
     }
 

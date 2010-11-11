@@ -141,6 +141,7 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.file.AnalysisFileManager;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
@@ -174,6 +175,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     private GenePatternClientFactory genePatternClientFactory;
     private GenePatternGridRunner genePatternGridRunner;
     private FileManager fileManager;
+    private AnalysisFileManager analysisFileManager;
     private ArrayDataService arrayDataService;
     private IGVResultsManager igvResultsManager;
     
@@ -449,10 +451,10 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         } else {
             igvResult =  runIGVForQueryResult(igvParameters);
         }
-        igvResult.setSampleInfoFile(fileManager.createIGVSampleClassificationFile(
+        igvResult.setSampleInfoFile(analysisFileManager.createIGVSampleClassificationFile(
                 createAnnotationBasedQueryResultsForSamples(igvParameters),
                 igvParameters.getSessionId(), igvParameters.getQuery().getColumnCollection()));
-        fileManager.createIGVSessionFile(igvParameters, igvResult);
+        analysisFileManager.createIGVSessionFile(igvParameters, igvResult);
         igvResultsManager.storeJobResult(igvParameters.getSessionId(), igvResult);
         return BROAD_HOSTED_IGV_URL + encodeUrl(igvParameters.getUrlPrefix()) + IGVFileTypeEnum.SESSION.getFilename();
     }
@@ -466,13 +468,15 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         if (igvParameters.getStudySubscription().getStudy().getStudyConfiguration().hasExpressionData()) {
             GctDataset gctDataset = createGctDataset(igvParameters.getStudySubscription(), queries,
                 null, null, false);
-            igvResult.setGeneExpressionFile(fileManager.createIGVGctFile(gctDataset, igvParameters.getSessionId()));
+            igvResult.setGeneExpressionFile(analysisFileManager.createIGVGctFile(
+                    gctDataset, igvParameters.getSessionId()));
             igvParameters.addPlatform(queryToExecute.getGeneExpressionPlatform());
         }
         if (igvParameters.getStudySubscription().getStudy().getStudyConfiguration().hasCopyNumberData()) {
             Collection<SegmentData> segmentDatas = createSegmentDataset(igvParameters.getStudySubscription(), queries, 
                 null, null);
-            igvResult.setSegmentationFile(fileManager.createIGVSegFile(segmentDatas, igvParameters.getSessionId()));
+            igvResult.setSegmentationFile(analysisFileManager.createIGVSegFile(
+                    segmentDatas, igvParameters.getSessionId()));
             igvParameters.addPlatform(queryToExecute.getCopyNumberPlatform());
         }
         return igvResult;
@@ -481,22 +485,24 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     private void createIGVFile(StudySubscription studySubscription, IGVResult igvResult, Platform platform)
             throws InvalidCriterionException {
         if (platform.getPlatformConfiguration().getPlatformType().isGeneExpression()) {
-            File gctFile = fileManager.retrieveIGVFile(studySubscription.getStudy(),
+            File gctFile = analysisFileManager.retrieveIGVFile(studySubscription.getStudy(),
                     IGVFileTypeEnum.GENE_EXPRESSION, platform.getName());
             if (!gctFile.exists()) {
                 GctDataset gctDataset = createGctDataset(studySubscription, new HashSet<Query>(),
                         platform.getName(), null, false);
-                gctFile = fileManager.createIGVGctFile(gctDataset, studySubscription.getStudy(), platform.getName());
+                gctFile = analysisFileManager.createIGVGctFile(
+                        gctDataset, studySubscription.getStudy(), platform.getName());
             }
             igvResult.setGeneExpressionFile(gctFile);
         }
         if (platform.getPlatformConfiguration().getPlatformType().isCopyNumber()) {
-            File segFile = fileManager.retrieveIGVFile(studySubscription.getStudy(), IGVFileTypeEnum.SEGMENTATION,
+            File segFile = analysisFileManager.retrieveIGVFile(
+                    studySubscription.getStudy(), IGVFileTypeEnum.SEGMENTATION,
                     platform.getName());
             if (!segFile.exists()) {
                 Collection<SegmentData> segmentDatas = createSegmentDataset(studySubscription,
                         new HashSet<Query>(), platform.getName(), null);
-                segFile = fileManager.createIGVSegFile(segmentDatas, studySubscription.getStudy(),
+                segFile = analysisFileManager.createIGVSegFile(segmentDatas, studySubscription.getStudy(),
                         platform.getName());
             }
             igvResult.setSegmentationFile(segFile);
@@ -509,7 +515,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     public void createIGVFile(StudySubscription studySubscription, Platform platform) throws InvalidCriterionException {
         GctDataset gctDataset = createGctDataset(studySubscription, new HashSet<Query>(),
                 platform.getName(), null, false);
-        fileManager.createIGVGctFile(gctDataset, studySubscription.getStudy(), platform.getName());
+        analysisFileManager.createIGVGctFile(gctDataset, studySubscription.getStudy(), platform.getName());
     }
 
     private QueryResult createAnnotationBasedQueryResultsForSamples(IGVParameters igvParameters)
@@ -710,6 +716,20 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
      */
     public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;
+    }
+
+    /**
+     * @return the analysisFileManager
+     */
+    public AnalysisFileManager getAnalysisFileManager() {
+        return analysisFileManager;
+    }
+
+    /**
+     * @param analysisFileManager the analysisFileManager to set
+     */
+    public void setAnalysisFileManager(AnalysisFileManager analysisFileManager) {
+        this.analysisFileManager = analysisFileManager;
     }
 
     /**
