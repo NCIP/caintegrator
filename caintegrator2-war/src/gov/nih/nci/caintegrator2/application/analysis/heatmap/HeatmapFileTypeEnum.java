@@ -83,40 +83,68 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.listener;
+package gov.nih.nci.caintegrator2.application.analysis.heatmap;
 
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager;
-import gov.nih.nci.caintegrator2.file.AnalysisFileManager;
-
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * When a session is destroyed, this listener will remove things associated with the session.
+ * Enum for the heatmap file type.
  */
-public class SessionCleanupListener implements HttpSessionListener {
-
+public enum HeatmapFileTypeEnum {
+    
     /**
-     * {@inheritDoc}
+     * Launch File.
      */
-    public void sessionCreated(HttpSessionEvent event) {
-        // Do nothing on session create.
+    LAUNCH_FILE("heatmapLaunch.jnlp"),
+    
+    /**
+     * Copy Number.
+     */
+    COPY_NUMBER("heatmapCopyNumber.txt"),
+    
+    /**
+     * Layout.
+     */
+    LAYOUT("heatmapLayout.dat"),
+    
+    /**
+     * Annotations.
+     */
+    ANNOTATIONS("heatmapAnnotations.txt");
+    
+    private String filename;
+    private static Map<String, HeatmapFileTypeEnum> valueToTypeMap = new HashMap<String, HeatmapFileTypeEnum>();
+    
+    private HeatmapFileTypeEnum(String filename) {
+        this.filename = filename;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the value
      */
-    public void sessionDestroyed(HttpSessionEvent event) {
-        String sessionId = event.getSession().getId();
-        WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(
-                event.getSession().getServletContext());
-        IGVResultsManager igvResultsManager = (IGVResultsManager) context.getBean("igvResultsManager");
-        AnalysisFileManager fileManager = (AnalysisFileManager) context.getBean("analysisFileManager");
-        igvResultsManager.removeSession(sessionId);
-        fileManager.deleteIGVDirectory(sessionId);
+    public String getFilename() {
+        return filename;
     }
 
+
+    private static Map<String, HeatmapFileTypeEnum> getValueToTypeMap() {
+        if (valueToTypeMap.isEmpty()) {
+            for (HeatmapFileTypeEnum type : values()) {
+                valueToTypeMap.put(type.getFilename(), type);
+            }
+        }
+        return valueToTypeMap;
+    }
+    
+    /**
+     * Returns the <code>HeatmapFileTypeEnum</code> corresponding to the given value. Returns null
+     * for null value.
+     * 
+     * @param filename the value to match
+     * @return the matching type.
+     */
+    public static HeatmapFileTypeEnum getByFilename(String filename) {
+        return getValueToTypeMap().get(filename);
+    }
 }

@@ -88,21 +88,14 @@ package gov.nih.nci.caintegrator2.file;
 import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 
 import org.genepattern.gistic.Marker;
 
@@ -146,82 +139,11 @@ public interface FileManager {
     File getNewTemporaryDirectory(String dirName);
     
     /**
-     * Creates an igv directory for the session.
-     * @param sessionId to create directory for.
-     * @return igv directory.
+     * Gets temporary director.
+     * @return temporary directory.
      */
-    File getIGVDirectory(String sessionId);
+    String getTempDirectory();
     
-    /**
-     * Delete the igv directory.
-     */
-    void deleteAllIGVDirectory();
-    
-    /**
-     * Delete the igv directory for the session.
-     * @param sessionId to create directory for.
-     */
-    void deleteIGVDirectory(String sessionId);
-    
-    /**
-     * Retrieves the IGV File for the study based on the file type and platform name.
-     * @param study the study.
-     * @param fileType the file type.
-     * @param platformName the platform name.
-     * @return the file or null if not found.
-     */
-    File retrieveIGVFile(Study study, IGVFileTypeEnum fileType, String platformName);
-    
-    /**
-     * Creates the IGV GCT File for the given gctDataset.
-     * @param gctDataset gct data.
-     * @param sessionId directory will be based on this.
-     * @return the file.
-     */
-    File createIGVGctFile(GctDataset gctDataset, String sessionId);
-    
-    /**
-     * Stores the IGV GCTFile for the study with platform name.
-     * @param gctDataset gct data.
-     * @param study the study.
-     * @param platformName the platform name.
-     * @return the file.
-     */
-    File createIGVGctFile(GctDataset gctDataset, Study study, String platformName);
-    
-    /**
-     * Creates the IGV Segment Data file for the given segment datas.
-     * @param segmentDatas segment data.
-     * @param sessionId directory will be based on this.
-     * @return the file.
-     */
-    File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId);
-    
-    /**
-     * Stores the IGV Segment Data File for the study with platform name.
-     * @param segmentDatas segment data.
-     * @param study the study.
-     * @param platformName the platform name.
-     * @return the file.
-     */
-    File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName);
-    
-    /**
-     * Creates the IGV Sample Classification File for the given query result.
-     * @param queryResult query result data to turn into sample classification file.
-     * @param sessionId directory will be based on this.
-     * @param columns the columns that are in the query results.
-     * @return the file.
-     */
-    File createIGVSampleClassificationFile(QueryResult queryResult, String sessionId, 
-            Collection<ResultColumn> columns);
-    
-    /**
-     * Creates the IGV Session file.
-     * @param igvParameters parameters used for running IGV.
-     * @param igvResult results of the run.
-     */
-    void createIGVSessionFile(IGVParameters igvParameters, IGVResult igvResult);
     
     /**
      * Retrieves the directory for the study subscription's user.

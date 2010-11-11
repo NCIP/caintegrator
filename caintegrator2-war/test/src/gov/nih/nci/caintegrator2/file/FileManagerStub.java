@@ -88,21 +88,14 @@ package gov.nih.nci.caintegrator2.file;
 import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 
 import org.genepattern.gistic.Marker;
 
@@ -110,37 +103,23 @@ public class FileManagerStub implements FileManager {
     
     public boolean storeStudyFileCalled;
     public boolean deleteStudyDirectoryCalled;
-    public boolean deleteAllIGVDirectoryCalled;
-    public boolean deleteIGVDirectoryCalled;
     public boolean renameCnvFileCalled;
     public boolean createClassificationFileCalled;
     public boolean createGctFileCalled;
     public boolean createInputZipFileCalled;
     public boolean createMarkersFileCalled;
     public boolean createSamplesFileCalled;
-    public boolean getIGVDirectoryCalled;
-    public boolean createIGVGctFileCalled;
-    public boolean createIGVSegFileCalled;
-    public boolean createIGVSessionFileCalled;
-    public boolean createIGVSampleClassificationFileCalled;
     
     
     public void clear() {
         storeStudyFileCalled = false;
         deleteStudyDirectoryCalled = false;
-        deleteAllIGVDirectoryCalled = false;
-        deleteIGVDirectoryCalled = false;
         renameCnvFileCalled = false;
         createClassificationFileCalled = false;
         createGctFileCalled = false;
         createInputZipFileCalled = false;
         createMarkersFileCalled = false;
         createSamplesFileCalled = false;
-        getIGVDirectoryCalled = false;
-        createIGVGctFileCalled = false;
-        createIGVSegFileCalled = false;
-        createIGVSessionFileCalled = false;
-        createIGVSampleClassificationFileCalled = false;
     }
 
     public File storeStudyFile(File sourceFile, String filename, StudyConfiguration studyConfiguration) {
@@ -209,54 +188,9 @@ public class FileManagerStub implements FileManager {
         createSamplesFileCalled = true;
         return retrieveTmpFile();
     }
-
-    public File getIGVDirectory(String sessionId) {
-        getIGVDirectoryCalled = true;
-        return retrieveTmpFile();
-    }
-
-    public void deleteAllIGVDirectory() {
-        deleteAllIGVDirectoryCalled = true;
-        
-    }
-
-    public void deleteIGVDirectory(String sessionId) {
-        deleteIGVDirectoryCalled = true;
-        
-    }
-
-    public File createIGVGctFile(GctDataset gctDataset, String sessionId) {
-        createIGVGctFileCalled = true;
-        return retrieveTmpFile();
-    }
-
-    public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId) {
-        createIGVSegFileCalled = true;
-        return retrieveTmpFile();
-    }
-
-    public void createIGVSessionFile(IGVParameters igvParams, IGVResult igvResult) {
-        createIGVSessionFileCalled = true;
-    }
-
-    public File createIGVSampleClassificationFile(QueryResult queryResult, String sessionId,
-            Collection<ResultColumn> columns) {
-        createIGVSampleClassificationFileCalled = true;
-        return retrieveTmpFile();
-    }
-
-    public File createIGVGctFile(GctDataset gctDataset, Study study, String platformName) {
-        createIGVGctFileCalled = true;
-        return retrieveTmpFile();
-    }
-
-    public File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName) {
-        createIGVSegFileCalled = true;
-        return retrieveTmpFile();
-    }
-
-    public File retrieveIGVFile(Study study, IGVFileTypeEnum fileType, String platformName) {
-        return retrieveTmpFile();
+    
+    public String getTempDirectory() {
+        return retrieveTmpFile().getAbsolutePath();
     }
 
 }

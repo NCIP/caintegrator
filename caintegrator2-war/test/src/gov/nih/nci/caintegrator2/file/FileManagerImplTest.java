@@ -25,13 +25,16 @@ public class FileManagerImplTest {
     private static final String TEST_FILENAME = "testfile.csv";
     
     private FileManager fileManager;
+    private AnalysisFileManagerImpl analysisFileManager;
     private ConfigurationHelperStub configurationHelperStub;
 
     @Before
     public void setUp() throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class); 
-        fileManager = (FileManager) context.getBean("fileManager"); 
+        fileManager = (FileManager) context.getBean("fileManager");
+        analysisFileManager = new AnalysisFileManagerImpl();
         configurationHelperStub = (ConfigurationHelperStub) context.getBean("configurationHelperStub");
+        analysisFileManager.setFileManager(fileManager);
         configurationHelperStub.clear();                
     }
 
@@ -102,7 +105,7 @@ public class FileManagerImplTest {
     public void testIGV() {
         Study study = new Study();
         study.setId(1L);
-        File file = fileManager.retrieveIGVFile(study, IGVFileTypeEnum.GENE_EXPRESSION, "Platform1");
+        File file = analysisFileManager.retrieveIGVFile(study, IGVFileTypeEnum.GENE_EXPRESSION, "Platform1");
         assertEquals("Platform1_igvGeneExpression.gct", file.getName());
     }
 

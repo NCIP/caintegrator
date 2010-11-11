@@ -24,7 +24,7 @@
         scope="singleton"
         class="gov.nih.nci.caintegrator2.web.filter.SessionTimeoutFilter">
         <property name="fileManager">
-            <ref local="fileManager"/>
+            <ref local="analysisFileManager"/>
         </property>  
     </bean>
 
@@ -936,6 +936,9 @@
         <property name="fileManager">
             <ref local="fileManager"/>
         </property>
+        <property name="analysisFileManager">
+            <ref local="analysisFileManager"/>
+        </property>
         <property name="arrayDataService">
             <ref local="arrayDataService"/>
         </property>
@@ -1078,7 +1081,14 @@
     </bean>
     
     <bean id="genePatternGridClientFactory" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryImpl" />
-
+    
+    <bean id="analysisFileManager"
+        class="gov.nih.nci.caintegrator2.file.AnalysisFileManagerImpl">
+        <property name="fileManager">
+            <ref local="fileManager" />
+        </property>
+    </bean>
+    
     <bean id="fileManager"
         class="gov.nih.nci.caintegrator2.file.FileManagerImpl">
         <property name="configurationHelper">
