@@ -10,6 +10,8 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceTest;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelperStub;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
@@ -107,6 +109,58 @@ public class FileManagerImplTest {
         study.setId(1L);
         File file = analysisFileManager.retrieveIGVFile(study, IGVFileTypeEnum.GENE_EXPRESSION, "Platform1");
         assertEquals("Platform1_igvGeneExpression.gct", file.getName());
+        
+        // Test getIGVDirectory
+        boolean gotException = false;
+        try {
+            file = analysisFileManager.getIGVDirectory("");
+        } catch(Exception e) {
+            gotException = true;
+        }
+        assertTrue(gotException);
+        gotException = false;
+        try {
+            file = analysisFileManager.getIGVDirectory("12345");
+        } catch(Exception e) {
+            gotException = true;
+        }
+        assertFalse(gotException);
+        assertTrue(file.getName().equals("12345"));
+        
+        // Test deleteIGVDirectory
+        gotException = false;
+        try {
+            analysisFileManager.deleteIGVDirectory("12345");
+        } catch(Exception e) {
+            gotException = true;
+        }
+        assertFalse(gotException);
+        
+    }
+    
+    @Test
+    public void testGetUserDirectory() {
+        StudySubscription studySubscription = new StudySubscription();
+        File userDirectory = null;
+        boolean gotException = false;
+        try {
+            userDirectory = fileManager.getUserDirectory(studySubscription);
+        } catch(Exception e) {
+            gotException = true;
+        }
+        assertTrue(gotException);
+        
+        UserWorkspace userWorkspace = new UserWorkspace();
+        userWorkspace.setUsername("TestUser");
+        studySubscription.setUserWorkspace(userWorkspace);
+        gotException = false;
+        try {
+            userDirectory = fileManager.getUserDirectory(studySubscription);
+        } catch(Exception e) {
+            gotException = true;
+        }
+        assertFalse(gotException);
+        assertTrue(userDirectory.exists());
     }
 
 }

@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
@@ -119,6 +120,7 @@ public class AnalysisServiceStub implements AnalysisService {
     public boolean executePcaJobCalled;
     public boolean executeGisticJobCalled;
     public boolean deleteAnalysisJobCalled;
+    public boolean deleteIGVDirectoryCalled;
     public boolean deleteGisticAnalysisCalled;
     public boolean isValidGenePatternConnection = true;
     public boolean executeIGVCalled;
@@ -133,6 +135,7 @@ public class AnalysisServiceStub implements AnalysisService {
         executePcaJobCalled = false;
         executeGisticJobCalled = false;
         deleteAnalysisJobCalled = false;
+        deleteIGVDirectoryCalled = false;
         deleteGisticAnalysisCalled = false;
         executeIGVCalled = false;
         createIGVFileCalled = false;
@@ -210,6 +213,10 @@ public class AnalysisServiceStub implements AnalysisService {
 
     public void deleteAnalysisJob(Long jobId) {
         deleteAnalysisJobCalled = true;
+    }
+
+    public void deleteIGVDirectory(Study study) {
+        deleteIGVDirectoryCalled = true;
     }
 
     public <T> T getRefreshedEntity(T entity) {
