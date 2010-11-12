@@ -99,7 +99,6 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.Preprocess
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
@@ -177,7 +176,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     private FileManager fileManager;
     private AnalysisFileManager analysisFileManager;
     private ArrayDataService arrayDataService;
-    private IGVResultsManager igvResultsManager;
+    private SessionAnalysisResultsManager sessionAnalysisResultsManager;
     
     /**
      * {@inheritDoc}
@@ -461,7 +460,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
                 createAnnotationBasedQueryResultsForSamples(igvParameters),
                 igvParameters.getSessionId(), igvParameters.getQuery().getColumnCollection()));
         analysisFileManager.createIGVSessionFile(igvParameters, igvResult);
-        igvResultsManager.storeJobResult(igvParameters.getSessionId(), igvResult);
+        sessionAnalysisResultsManager.storeJobResult(igvParameters.getSessionId(), igvResult);
         return BROAD_HOSTED_IGV_URL + encodeUrl(igvParameters.getUrlPrefix()) + IGVFileTypeEnum.SESSION.getFilename();
     }
 
@@ -778,14 +777,14 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * @return the igvResultsManager
      */
-    public IGVResultsManager getIgvResultsManager() {
-        return igvResultsManager;
+    public SessionAnalysisResultsManager getIgvResultsManager() {
+        return sessionAnalysisResultsManager;
     }
 
     /**
      * @param igvResultsManager the igvResultsManager to set
      */
-    public void setIgvResultsManager(IGVResultsManager igvResultsManager) {
-        this.igvResultsManager = igvResultsManager;
+    public void setIgvResultsManager(SessionAnalysisResultsManager igvResultsManager) {
+        this.sessionAnalysisResultsManager = igvResultsManager;
     }
 }

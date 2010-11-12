@@ -104,7 +104,6 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticRefgeneF
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
@@ -176,7 +175,7 @@ public class AnalysisServiceTest {
     private FileManagerStub fileManagerStub = new FileManagerStub();
     private AnalysisFileManagerStub analysisFileManagerStub = new AnalysisFileManagerStub();
     private ArrayDataServiceStub arrayDataServiceStub;
-    private IGVResultsManager igvResultsManager = new IGVResultsManager();
+    private SessionAnalysisResultsManager igvResultsManager = new SessionAnalysisResultsManager();
     
     @Before
     public void setUp() {
