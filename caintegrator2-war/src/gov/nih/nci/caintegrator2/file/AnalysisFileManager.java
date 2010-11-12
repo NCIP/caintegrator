@@ -116,9 +116,15 @@ public interface AnalysisFileManager {
     
     /**
      * Delete the igv directory for the session.
-     * @param sessionId to create directory for.
+     * @param sessionId to delete directory for.
      */
     void deleteIGVDirectory(String sessionId);
+    
+    /**
+     * Delete the igv directory for the study.
+     * @param study to delete directory for.
+     */
+    void deleteIGVDirectory(Study study);
     
     /**
      * Retrieves the IGV File for the study based on the file type and platform name.

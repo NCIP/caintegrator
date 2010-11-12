@@ -146,9 +146,12 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
         
     }
 
+    public void deleteIGVDirectory(Study study) {
+        deleteIGVDirectoryCalled = true;
+    }
+
     public void deleteIGVDirectory(String sessionId) {
         deleteIGVDirectoryCalled = true;
-        
     }
 
     public File createIGVGctFile(GctDataset gctDataset, String sessionId) {

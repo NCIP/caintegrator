@@ -194,6 +194,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     private void generateIGVFiles(StudyConfiguration studyConfiguration) throws InvalidCriterionException {
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(studyConfiguration.getStudy());
+        getAnalysisService().deleteIGVDirectory(studyConfiguration.getStudy());
         for (GenomicDataSourceConfiguration genomicDataSourceConfiguration
                 : studyConfiguration.getGenomicDataSources()) {
             getAnalysisService().createIGVFile(studySubscription,

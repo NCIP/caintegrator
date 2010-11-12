@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
@@ -212,7 +213,13 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @param jobId the id of the analysis job to delete.
      */
     void deleteAnalysisJob(Long jobId);
-    
+
+    /**
+     * Delete the IGV directory with given study.
+     * 
+     * @param study the study IGV directory to delete.
+     */
+    void deleteIGVDirectory(Study study);
     /**
      * Validates the gene symbols and returns all symbols that exist in the study.
      * @param studySubscription to check gene symbols against.
