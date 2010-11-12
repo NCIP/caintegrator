@@ -88,6 +88,11 @@
 </tr>
 <!--//begin create identifier-->
 <tr>
+	<td>waitForElementPresent</td>
+	<td>//a//span[text()='Edit Annotations']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>//a//span[text()='Edit Annotations']</td>
 	<td></td>
