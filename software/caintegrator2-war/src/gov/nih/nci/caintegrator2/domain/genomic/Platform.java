@@ -115,6 +115,13 @@ public class Platform extends AbstractCaIntegrator2Object implements Comparable<
     }
     
     /**
+     * @param reporterList to add.
+     */
+    public void addReporterList(ReporterList reporterList) {
+        this.getReporterListsInternal().add(reporterList);
+    }
+    
+    /**
      * @return the reporterLists
      */
     public String getReporterListListing() {

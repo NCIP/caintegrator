@@ -54,7 +54,7 @@ public class ReporterList extends AbstractCaIntegrator2Object implements Compara
     /**
      * @param platform the platform to set
      */
-    void setPlatform(Platform platform) {
+    public void setPlatform(Platform platform) {
         this.platform = platform;
     }
 

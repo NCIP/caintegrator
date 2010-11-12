@@ -89,11 +89,13 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -137,16 +139,32 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
     public void validate() {
         super.validate();
         if (VIEW_IGV.equals(selectedAction)) {
+            Set<GenomeBuildVersionEnum> genomeBuild = new HashSet<GenomeBuildVersionEnum>();
             platforms = new ArrayList<Platform>();
-            if (!StringUtils.isEmpty(expressionPlatformName)) {
-                platforms.add(getArrayDataService().getPlatform(expressionPlatformName));
-            }
-            if (!StringUtils.isEmpty(copyNumberPlatformName)) {
-                platforms.add(getArrayDataService().getPlatform(copyNumberPlatformName));
-            }
+            addPlatform(genomeBuild);
             if (platforms.isEmpty()) {
                 addActionError(getText("struts.messages.error.igv.no.platform"));
             }
+            if (genomeBuild.size() > 1) {
+                addActionError(getText("struts.messages.error.igv.mix.genome"));
+            }
+        }
+    }
+
+    /**
+     * @param genomeBuild
+     */
+    private void addPlatform(Set<GenomeBuildVersionEnum> genomeBuild) {
+        Platform platform;
+        if (!StringUtils.isEmpty(expressionPlatformName)) {
+            platform = getArrayDataService().getPlatform(expressionPlatformName);
+            platforms.add(platform);
+            genomeBuild.add(platform.getGenomeVersion());
+        }
+        if (!StringUtils.isEmpty(copyNumberPlatformName)) {
+            platform = getArrayDataService().getPlatform(copyNumberPlatformName);
+            platforms.add(platform);
+            genomeBuild.add(platform.getGenomeVersion());
         }
     }
 
