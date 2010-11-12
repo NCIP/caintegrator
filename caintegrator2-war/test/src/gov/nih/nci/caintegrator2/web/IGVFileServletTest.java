@@ -88,8 +88,8 @@ package gov.nih.nci.caintegrator2.web;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.analysis.SessionAnalysisResultsManager;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 
 import java.io.IOException;
@@ -110,7 +110,7 @@ public class IGVFileServletTest {
     public void testHandleRequest() throws ServletException, IOException {
         String sessionId = "SessionId";
         IGVFileServlet igvFileServlet = new IGVFileServlet();
-        IGVResultsManager resultsManager = new IGVResultsManager();
+        SessionAnalysisResultsManager resultsManager = new SessionAnalysisResultsManager();
         igvFileServlet.setIgvResultsManager(resultsManager);
         IGVResult result = new IGVResult();
         result.setGeneExpressionFile(TestDataFiles.VALID_FILE);
@@ -167,7 +167,8 @@ public class IGVFileServletTest {
         assertTrue(response.outputStreamWritten);
         
         // Valid session, valid file format, but the job result is off the session.
-        resultsManager.storeJobResult(sessionId, null);
+        IGVResult igvResult = null;
+        resultsManager.storeJobResult(sessionId, igvResult);
         response.outputStreamWritten = false;
         request.setRequestURI("/igv//retrieveFile.do?JSESSIONID=SessionId&file=" 
                 + IGVFileTypeEnum.GENE_EXPRESSION.getFilename());

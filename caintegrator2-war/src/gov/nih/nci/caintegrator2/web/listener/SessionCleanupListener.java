@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.listener;
 
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager;
+import gov.nih.nci.caintegrator2.application.analysis.SessionAnalysisResultsManager;
 import gov.nih.nci.caintegrator2.file.AnalysisFileManager;
 
 import javax.servlet.http.HttpSessionEvent;
@@ -113,7 +113,8 @@ public class SessionCleanupListener implements HttpSessionListener {
         String sessionId = event.getSession().getId();
         WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(
                 event.getSession().getServletContext());
-        IGVResultsManager igvResultsManager = (IGVResultsManager) context.getBean("igvResultsManager");
+        SessionAnalysisResultsManager igvResultsManager =
+            (SessionAnalysisResultsManager) context.getBean("sessionAnalysisResultsManager");
         AnalysisFileManager fileManager = (AnalysisFileManager) context.getBean("analysisFileManager");
         igvResultsManager.removeSession(sessionId);
         fileManager.deleteIGVDirectory(sessionId);
