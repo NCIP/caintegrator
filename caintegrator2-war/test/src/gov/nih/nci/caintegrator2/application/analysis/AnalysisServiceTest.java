@@ -289,13 +289,12 @@ public class AnalysisServiceTest {
         igvParameters.setSessionId("sessionId");
         igvParameters.setQuery(query);
         igvParameters.setStudySubscription(subscription);
-        String resultURL = service.executeIGV(igvParameters);
-        assertEquals(
-                "http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=http://localhost:8080/caintegrator2/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
-                resultURL);
+        try {
+            service.executeIGV(igvParameters);
+        } catch (Exception e) {
+            assertEquals("Unable to create IGV viewer: No data found from selection.", e.getMessage());
+        }
         assertFalse(analysisFileManagerStub.createIGVGctFileCalled);
-        assertTrue(analysisFileManagerStub.createIGVSampleClassificationFileCalled);
-        assertTrue(analysisFileManagerStub.createIGVSessionFileCalled);
         analysisFileManagerStub.clear();
         
         GenomicDataSourceConfiguration genomicSource1 = new GenomicDataSourceConfiguration();
@@ -306,11 +305,14 @@ public class AnalysisServiceTest {
         studyConfiguration.getGenomicDataSources().add(genomicSource2);
         query.getColumnCollection().add(new ResultColumn());
         igvParameters.setQuery(query);
-        service.executeIGV(igvParameters);
+        String resultURL = service.executeIGV(igvParameters);
         assertTrue(analysisFileManagerStub.createIGVGctFileCalled);
         assertTrue(analysisFileManagerStub.createIGVSegFileCalled);
         assertTrue(analysisFileManagerStub.createIGVSampleClassificationFileCalled);
         assertTrue(analysisFileManagerStub.createIGVSessionFileCalled);
+        assertEquals(
+                "http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=http://localhost:8080/caintegrator2/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
+                resultURL);
         
     }
     

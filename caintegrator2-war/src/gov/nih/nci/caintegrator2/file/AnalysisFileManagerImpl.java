@@ -117,7 +117,7 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
      * {@inheritDoc}
      */
     public File createIGVGctFile(GctDataset gctDataset, String sessionId) {
-        return GctDatasetFileWriter.writeAsGct(gctDataset, 
+        return gctDataset == null ? null : GctDatasetFileWriter.writeAsGct(gctDataset, 
                 new File(getIGVDirectory(sessionId).getAbsolutePath()
                        + File.separator + IGVFileTypeEnum.GENE_EXPRESSION.getFilename()).getAbsolutePath());
     }
@@ -126,7 +126,7 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
      * {@inheritDoc}
      */
     public File createIGVGctFile(GctDataset gctDataset, Study study, String platformName) {
-        return GctDatasetFileWriter.writeAsGct(gctDataset, 
+        return gctDataset == null ? null : GctDatasetFileWriter.writeAsGct(gctDataset, 
                 retrieveIGVFile(study, IGVFileTypeEnum.GENE_EXPRESSION, platformName).getAbsolutePath());
     }
     
@@ -144,8 +144,17 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
      * {@inheritDoc}
      */
     public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId) {
-        return SegmentDatasetFileWriter.writeAsSegFile(segmentDatas, new File(getIGVDirectory(sessionId)
-                .getAbsolutePath() + File.separator + IGVFileTypeEnum.SEGMENTATION.getFilename()).getAbsolutePath());
+        return segmentDatas.isEmpty() ? null : SegmentDatasetFileWriter.writeAsSegFile(segmentDatas,
+                new File(getIGVDirectory(sessionId).getAbsolutePath() + File.separator
+                        + IGVFileTypeEnum.SEGMENTATION.getFilename()).getAbsolutePath());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName) {
+        return segmentDatas.isEmpty() ? null : SegmentDatasetFileWriter.writeAsSegFile(segmentDatas,
+                retrieveIGVFile(study, IGVFileTypeEnum.SEGMENTATION, platformName).getAbsolutePath());
     }
     
     /**
@@ -159,9 +168,12 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
     /**
      * {@inheritDoc}
      */
-    public File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName) {
-        return SegmentDatasetFileWriter.writeAsSegFile(segmentDatas,
-                retrieveIGVFile(study, IGVFileTypeEnum.SEGMENTATION, platformName).getAbsolutePath());
+    public void deleteIGVDirectory(Study study) {
+        try {
+            FileUtils.deleteDirectory(getStudyIGVDirectory(study));
+        } catch (IOException e) {
+            return;
+        }
     }
     
     /**
@@ -200,10 +212,10 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
                 + platformName + "_" + fileType.getFilename());
     }
     
-    private String getStudyIGVDirectory(Study study) {
+    private File getStudyIGVDirectory(Study study) {
         File file = new File(fileManager.getStudyDirectory(study) + File.separator + IGV_DIRECTORY);
         file.mkdir();
-        return file.getAbsolutePath();
+        return file;
     }
 
     /**
