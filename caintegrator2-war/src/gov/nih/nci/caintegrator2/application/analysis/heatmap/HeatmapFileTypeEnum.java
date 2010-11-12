@@ -99,9 +99,9 @@ public enum HeatmapFileTypeEnum {
     LAUNCH_FILE("heatmapLaunch.jnlp"),
     
     /**
-     * Copy Number.
+     * Genomic Data.
      */
-    COPY_NUMBER("heatmapCopyNumber.txt"),
+    GENOMIC_DATA("heatmapGenomicData.txt"),
     
     /**
      * Layout.

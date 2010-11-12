@@ -85,19 +85,73 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.heatmap;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
+import java.io.File;
 
 /**
  * 
  */
-public class HeatmapFileTypeEnumTest {
+public class HeatmapResult {
     
-    @Test
-    public void testGetByFilename() {
-        assertEquals(HeatmapFileTypeEnum.GENOMIC_DATA, HeatmapFileTypeEnum.getByFilename(HeatmapFileTypeEnum.GENOMIC_DATA.getFilename()));
-        assertEquals(null, HeatmapFileTypeEnum.getByFilename("fake"));
+    private File jnlpFile;
+    private File genomicDataFile;
+    private File layoutFile;
+    private File sampleAnnotationFile;
+
+
+    /**
+     * @return the jnlpFile
+     */
+    public File getJnlpFile() {
+        return jnlpFile;
     }
+
+    /**
+     * @param jnlpFile the jnlpFile to set
+     */
+    public void setJnlpFile(File jnlpFile) {
+        this.jnlpFile = jnlpFile;
+    }
+
+    /**
+     * @return the genomicDataFile
+     */
+    public File getGenomicDataFile() {
+        return genomicDataFile;
+    }
+
+    /**
+     * @param genomicDataFile the genomicDataFile to set
+     */
+    public void setGenomicDataFile(File genomicDataFile) {
+        this.genomicDataFile = genomicDataFile;
+    }
+
+    /**
+     * @return the layoutFile
+     */
+    public File getLayoutFile() {
+        return layoutFile;
+    }
+
+    /**
+     * @param layoutFile the layoutFile to set
+     */
+    public void setLayoutFile(File layoutFile) {
+        this.layoutFile = layoutFile;
+    }
+
+    /**
+     * @return the sampleAnnotationFile
+     */
+    public File getSampleAnnotationFile() {
+        return sampleAnnotationFile;
+    }
+
+    /**
+     * @param sampleAnnotationFile the sampleAnnotationFile to set
+     */
+    public void setSampleAnnotationFile(File sampleAnnotationFile) {
+        this.sampleAnnotationFile = sampleAnnotationFile;
+    }
+    
 }
