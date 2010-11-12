@@ -92,11 +92,15 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
 import java.util.Set;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
@@ -115,6 +119,7 @@ public class ViewAllIGVActionTest extends AbstractSessionBasedTest {
     ViewAllIGVAction viewAllIGVAction = new ViewAllIGVAction();
     private StudySubscription subscription;
     private QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
+    private MyArrayDataServiceStub arrayDataService = new MyArrayDataServiceStub();
 
     @Before
     public void setUp() {
@@ -129,6 +134,7 @@ public class ViewAllIGVActionTest extends AbstractSessionBasedTest {
         workspaceService.setSubscription(subscription);
         viewAllIGVAction.setWorkspaceService(workspaceService);
         viewAllIGVAction.setQueryManagementService(queryManagementService);
+        viewAllIGVAction.setArrayDataService(arrayDataService);
     }
     
     private Study createFakeStudy() {
@@ -138,17 +144,30 @@ public class ViewAllIGVActionTest extends AbstractSessionBasedTest {
         study.setStudyConfiguration(studyConfiguration);
         return study;
     }
+    
     @Test
-    public void testAll() {
+    public void testValidate() {
+        
+        // Test Prepare
+        viewAllIGVAction.prepare();
+        assertTrue(queryManagementService.retrieveCopyNumberPlatformsForStudyCalled);
+        assertTrue(queryManagementService.retrieveGeneExpressionPlatformsForStudyCalled);
+        
         // Test validate
         viewAllIGVAction.validate();
+        assertFalse(viewAllIGVAction.hasActionErrors());
+        viewAllIGVAction.setSelectedAction("viewIGV");
+        viewAllIGVAction.setExpressionPlatformName("hg18");
+        viewAllIGVAction.validate();
+        assertFalse(viewAllIGVAction.hasActionErrors());
+        viewAllIGVAction.setCopyNumberPlatformName("hg17");
+        viewAllIGVAction.validate();
         assertTrue(viewAllIGVAction.hasActionErrors());
-        viewAllIGVAction.clearActionErrors();
-        viewAllIGVAction.setExpressionPlatformName("expressionPlatform");
-        assertFalse(viewAllIGVAction.hasActionErrors());
-        viewAllIGVAction.setCopyNumberPlatformName("copyNumberPlatform");
-        assertFalse(viewAllIGVAction.hasActionErrors());
-        
+    }
+    
+    @Test
+    public void testExecute() {
+
         // Test Prepare
         viewAllIGVAction.prepare();
         assertTrue(queryManagementService.retrieveCopyNumberPlatformsForStudyCalled);
@@ -169,5 +188,17 @@ public class ViewAllIGVActionTest extends AbstractSessionBasedTest {
         assertEquals("", viewAllIGVAction.getExpressionPlatformOption());
         assertEquals("", viewAllIGVAction.getCopyNumberPlatformOption());
         
+    }
+    
+    class MyArrayDataServiceStub extends ArrayDataServiceStub {
+        public Platform getPlatform(String platformName) {
+            Platform platform = new Platform();
+            platform.setName(platformName);
+            ReporterList reporterList = new ReporterList("reporterName", ReporterTypeEnum.GENE_EXPRESSION_GENE);
+            reporterList.setGenomeVersion(platformName);
+            reporterList.setPlatform(platform);
+            platform.addReporterList(reporterList);
+            return platform;
+        }
     }
 }
