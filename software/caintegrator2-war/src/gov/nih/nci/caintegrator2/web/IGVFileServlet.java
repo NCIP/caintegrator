@@ -85,8 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
+import gov.nih.nci.caintegrator2.application.analysis.SessionAnalysisResultsManager;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -124,7 +124,7 @@ public class IGVFileServlet implements HttpRequestHandler {
      */
     public static final String FILENAME_PARAMETER = "file";
     
-    private IGVResultsManager igvResultsManager;
+    private SessionAnalysisResultsManager sessionAnalysisResultsManager;
     
     
     /**
@@ -142,7 +142,7 @@ public class IGVFileServlet implements HttpRequestHandler {
 
     private void streamIgvFile(HttpServletResponse response, String sessionId, IGVFileTypeEnum fileType)
             throws IOException {
-        File file = igvResultsManager.getJobResultFile(sessionId, fileType);
+        File file = sessionAnalysisResultsManager.getJobResultFile(sessionId, fileType);
         if (file != null) {
             OutputStream outputStream = response.getOutputStream();
             FileInputStream inputStream = new FileInputStream(file);
@@ -154,15 +154,15 @@ public class IGVFileServlet implements HttpRequestHandler {
     /**
      * @return the igvResultsManager
      */
-    public IGVResultsManager getIgvResultsManager() {
-        return igvResultsManager;
+    public SessionAnalysisResultsManager getIgvResultsManager() {
+        return sessionAnalysisResultsManager;
     }
 
     /**
      * @param igvResultsManager the igvResultsManager to set
      */
-    public void setIgvResultsManager(IGVResultsManager igvResultsManager) {
-        this.igvResultsManager = igvResultsManager;
+    public void setIgvResultsManager(SessionAnalysisResultsManager igvResultsManager) {
+        this.sessionAnalysisResultsManager = igvResultsManager;
     }
 
 

@@ -942,8 +942,8 @@
         <property name="arrayDataService">
             <ref local="arrayDataService"/>
         </property>
-        <property name="igvResultsManager">
-            <ref local="igvResultsManager"/>
+        <property name="sessionAnalysisResultsManager">
+            <ref local="sessionAnalysisResultsManager"/>
         </property>
     </bean>
 
@@ -1098,8 +1098,8 @@
     
     <bean id="igvServlet" 
         class="gov.nih.nci.caintegrator2.web.IGVFileServlet">
-        <property name="igvResultsManager">
-            <ref local="igvResultsManager" />
+        <property name="sessionAnalysisResultsManager">
+            <ref local="sessionAnalysisResultsManager" />
         </property>
     </bean>
     
@@ -1111,7 +1111,7 @@
     
     <bean id="authorizationManagerFactory" class="gov.nih.nci.caintegrator2.security.AuthorizationManagerFactoryImpl"/>
     
-    <bean id="igvResultsManager" scope="singleton" class="gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager" />
+    <bean id="sessionAnalysisResultsManager" scope="singleton" class="gov.nih.nci.caintegrator2.application.analysis.SessionAnalysisResultsManager" />
 
     <!-- ******************************************************************* -->
     <!-- ** SERVICES                                                      ** -->
