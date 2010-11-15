@@ -53,8 +53,10 @@
 	<classpathentry kind="lib" path="software/lib/external-runtime/AIMDataServiceJaxB-stubs.jar" sourcepath="software/lib/src/aim-jaxb-src.zip"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/jsr173_1.0_api.jar"/>
 	<classpathentry kind="lib" path="software/lib/test-junit/javassist-3.9.0.GA.jar"/>
+	<classpathentry kind="lib" path="software/cbs-to-heatmap-jar/lib/compile/commons-cli-1.2.jar"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/src"/>
 	<classpathentry kind="src" path="software/genepattern-service-jar/src"/>
+	<classpathentry kind="src" path="software/cbs-to-heatmap-jar/src"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/GenePattern-3.2.1.jar" sourcepath="software/lib/src/GenePattern-3.2.1-src.zip"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/src"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/resources"/>
