@@ -1096,8 +1096,8 @@
         </property>
     </bean>
     
-    <bean id="igvServlet" 
-        class="gov.nih.nci.caintegrator2.web.IGVFileServlet">
+    <bean id="viewerServlet" 
+        class="gov.nih.nci.caintegrator2.web.AnalysisViewerFileServlet">
         <property name="sessionAnalysisResultsManager">
             <ref local="sessionAnalysisResultsManager" />
         </property>
