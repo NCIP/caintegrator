@@ -1,0 +1,109 @@
+<!-- *********************************************************************** -->
+<!-- ** PROJECT:   caIntegrator 2                                         ** -->
+<!-- *********************************************************************** -->
+
+<project name="cbs-to-heatmap-jar" default="build" basedir="." 
+	xmlns:ivy="antlib:org.apache.ivy.ant"
+	xmlns="antlib:org.apache.tools.ant"
+	xmlns:cs="antlib:com.puppycrawl.tools.checkstyle"
+	>
+
+    <!-- ******************************************************************* -->
+    <!-- ** PROPERTIES / PATHS                                            ** -->
+    <!-- ******************************************************************* -->
+
+    <!-- Main -->
+    <property name="software.dir" location=".." />
+    <property name="build.dir" location="${basedir}" />
+    <property name="lib.dir" location="${basedir}/lib" />
+    <property name="build.lib.dir" location="${software.dir}/lib" />
+    <property name="common.dir" value="${software.dir}/common"/>
+
+    <!-- ******************************************************************* -->
+    <!-- ** IVY TARGETS AND DEPENDENCY PATHS                              ** -->
+    <!-- ******************************************************************* -->
+
+    <property name="ivy.jar" location="${build.lib.dir}/ivy-2.0.0.jar" />
+    <get src="https://ncisvn.nci.nih.gov/svn/maven-mirror/trunk/org/apache/ivy/ivy/2.0.0/ivy-2.0.0.jar"
+                        dest="${ivy.jar}" usetimestamp="true"/>
+    <property name="ivy.settings.file" location="${common.dir}/ivysettings.xml" />
+    <property name="ivy.def.file" location="ivy-heatmap.xml" />
+    <property name="local.repo.dir" location="${software.dir}/local-ivy-repo" />
+
+    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${ivy.jar}" />
+
+    <property name="cbs-to-heatmap.jar.compile.lib.dir" location="${lib.dir}/compile"/>
+
+    <target name="ivy:init">
+        <property name="ivy.dep.file" value="${ivy.def.file}"/>
+        <ivy:settings file="${ivy.settings.file}" />
+    </target>
+    
+    <target name="ivy:clean" depends="clean:dependencies" description="Clean">
+        <ivy:settings file="${ivy.settings.file}" />
+        <ivy:cleancache />
+    </target>
+    
+    <target name="clean:dependencies">
+        <delete dir="${cbs-to-heatmap.jar.compile.lib.dir}" />
+    </target>
+
+    <target name="ivy:setup" depends="ivy:setup-compile" 
+        description="Updates the local ivy repository for all build and test dependencies."/>
+
+    <target name="ivy:setup-compile" depends="ivy:init">
+        <ivy:resolve refresh="true" conf="compile" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="compile" />
+    </target>
+            
+
+    <!-- ******************************************************************* -->
+    <!-- ** MAIN TARGETS                                                  ** -->
+    <!-- ******************************************************************* -->
+
+    <target name="clean" 
+        depends="clean:cbs-to-heatmap.jar"
+        description="Removes all generated artifacts from the working directory." />
+
+    <target name="build" 
+        depends="cbs-to-heatmap.jar"
+        description="Compiles all production source code and assembles artifacts." />
+
+    <!-- ******************************************************************* -->
+    <!-- ** CAINTEGRATOR2.WAR                                             ** -->
+    <!-- ******************************************************************* -->
+
+    <property name="cbs-to-heatmap.jar.dir" location="${software.dir}/cbs-to-heatmap-jar" />
+    <property name="cbs-to-heatmap.jar.java.src.dir" location="${cbs-to-heatmap.jar.dir}/src" />
+    <property name="cbs-to-heatmap.jar.resources.src.dir" location="${cbs-to-heatmap.jar.dir}/resources" />
+    <property name="cbs-to-heatmap.jar.target.dir" location="${cbs-to-heatmap.jar.dir}/target" />
+    <property name="cbs-to-heatmap.jar.java.classes.dir" location="${cbs-to-heatmap.jar.target.dir}/classes" />
+    <property name="cbs-to-heatmap.jar" location="${cbs-to-heatmap.jar.target.dir}/cbs-to-heatmap.jar" />
+
+    <target name="path:cbs-to-heatmap.jar.dependencies" depends="ivy:setup-compile">
+        <path id="cbs-to-heatmap.jar.dependencies.path">
+            <pathelement location="${cbs-to-heatmap.jar.java.classes.dir}" />
+            <fileset dir="${cbs-to-heatmap.jar.compile.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+    </target>
+    
+    <target name="clean:cbs-to-heatmap.jar">
+        <delete dir="${cbs-to-heatmap.jar.target.dir}" />
+    </target>
+
+    <target name="cbs-to-heatmap.jar" depends="compile:cbs-to-heatmap.jar">
+        <jar destfile="${cbs-to-heatmap.jar}" basedir="${cbs-to-heatmap.jar.java.classes.dir}" />
+    </target>
+
+    <target name="compile:cbs-to-heatmap.jar" depends="path:cbs-to-heatmap.jar.dependencies">
+        <mkdir dir="${cbs-to-heatmap.jar.java.classes.dir}" />
+        <javac srcdir="${cbs-to-heatmap.jar.java.src.dir}" 
+            destdir="${cbs-to-heatmap.jar.java.classes.dir}" 
+                classpathref="cbs-to-heatmap.jar.dependencies.path" 
+                    debug="true" />
+    </target>
+
+
+</project>
