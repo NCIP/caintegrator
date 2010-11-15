@@ -85,110 +85,92 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.analysis.SessionAnalysisResultsManager;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
-import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Test;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import org.apache.commons.io.IOUtils;
+import org.springframework.web.HttpRequestHandler;
 
 /**
+ * The request URI will be of the format /caintegrator2/igv/retrieveFile.do?JSESSIONID=1234567&file=igvSession.xml
+ * An example URL (one full line):
  * 
+ * http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=
+ *      http://localhost:8080/caintegrator2/igv/retrieveFile.do%3FJSESSIONID%3D123456789%26file%3DigvSession.xml
+ * 
+ * Or instead of using broadinstitute.org could be:
+ * 
+ * http://localhost:60151/load?file=
+ *      http://localhost:8080/caintegrator2/igv/retrieveFile.do%3FJSESSIONID%3D123456789%26file%3DigvSession.xml
+ * 
+ * These URLs assume a caintegrator host being on the localhost machine.
  */
-public class IGVFileServletTest {
+public class AnalysisViewerFileServlet implements HttpRequestHandler {
+    /**
+     * Session Parameter.
+     */
+    public static final String SESSION_PARAMETER = "JSESSIONID";
+    /**
+     * Filename parameter.
+     */
+    public static final String FILENAME_PARAMETER = "file";
+    /**
+     * ViewerType parameter.
+     */
+    public static final String VIEWERTYPE_PARAMETER = "viewer";
     
-    @Test
-    public void testHandleRequest() throws ServletException, IOException {
-        String sessionId = "SessionId";
-        IGVFileServlet igvFileServlet = new IGVFileServlet();
-        SessionAnalysisResultsManager resultsManager = new SessionAnalysisResultsManager();
-        igvFileServlet.setSessionAnalysisResultsManager(resultsManager);
-        IGVResult result = new IGVResult();
-        result.setGeneExpressionFile(TestDataFiles.VALID_FILE);
-        result.setSessionFile(TestDataFiles.VALID_FILE);
-        
-        resultsManager.storeJobResult(sessionId, result);
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        IGVMockHttpServletResponse response = new IGVMockHttpServletResponse();
-        
-        // Invalid URI format
-        request.setRequestURI("/invalid");
-        assertFalse(response.outputStreamWritten);
-        igvFileServlet.handleRequest(request, response);
-        assertFalse(response.outputStreamWritten);
-        
-        // Invalid session and invalid file.
-        request.setRequestURI("/igv/retrieveFile.do?JSESSIONID=invalid&file=invalidFile.xml");
-        request.setParameter("JSESSIONID", "invalid");
-        request.setParameter("file", "invalidFile.xml");
-        igvFileServlet.handleRequest(request, response);
-        assertFalse(response.outputStreamWritten);
-        
-        // Invalid file.
-        request.setRequestURI("/igv/retrieveFile.do?JSESSIONID=SessionId&file=invalidFile.xml");
-        request.setParameter("JSESSIONID", sessionId);
-        request.setParameter("file", "invalidFile.xml");
-        igvFileServlet.handleRequest(request, response);
-        assertFalse(response.outputStreamWritten);
-        
-        // Valid session, valid file format, file exists
-        request.setRequestURI("/igv/retrieveFile.do?JSESSIONID=SessionId&file=" 
-                + IGVFileTypeEnum.SESSION.getFilename());
-        request.setParameter("JSESSIONID", sessionId);
-        request.setParameter("file", IGVFileTypeEnum.SESSION.getFilename());
-        igvFileServlet.handleRequest(request, response);
-        assertTrue(response.outputStreamWritten);
-        
-        // Valid session, valid file format, segmentation file doesn't exist.
-        response.outputStreamWritten = false;
-        request.setRequestURI("/igv/retrieveFile.do?JSESSIONID=SessionId&file=" 
-                + IGVFileTypeEnum.SEGMENTATION.getFilename());
-        request.setParameter("JSESSIONID", sessionId);
-        request.setParameter("file", IGVFileTypeEnum.SEGMENTATION.getFilename());
-        igvFileServlet.handleRequest(request, response);
-        assertFalse(response.outputStreamWritten);
-        
-        // Valid session, valid file format, expression file exists.
-        response.outputStreamWritten = false;
-        request.setRequestURI("/igv//retrieveFile.do?JSESSIONID=SessionId&file=" 
-                + IGVFileTypeEnum.GENE_EXPRESSION.getFilename());
-        request.setParameter("JSESSIONID", sessionId);
-        request.setParameter("file", IGVFileTypeEnum.GENE_EXPRESSION.getFilename());
-        igvFileServlet.handleRequest(request, response);
-        assertTrue(response.outputStreamWritten);
-        
-        // Valid session, valid file format, but the job result is off the session.
-        IGVResult igvResult = null;
-        resultsManager.storeJobResult(sessionId, igvResult);
-        response.outputStreamWritten = false;
-        request.setRequestURI("/igv//retrieveFile.do?JSESSIONID=SessionId&file=" 
-                + IGVFileTypeEnum.GENE_EXPRESSION.getFilename());
-        request.setParameter("JSESSIONID", sessionId);
-        request.setParameter("file", IGVFileTypeEnum.GENE_EXPRESSION.getFilename());
-        igvFileServlet.handleRequest(request, response);
-        assertFalse(response.outputStreamWritten);
-        
-        
-    }
+    private SessionAnalysisResultsManager sessionAnalysisResultsManager;
     
-    private static class IGVMockHttpServletResponse extends MockHttpServletResponse {
-        
-        public boolean outputStreamWritten = false;
-        
-        @Override
-        public ServletOutputStream getOutputStream() {
-            outputStreamWritten = true;
-            return super.getOutputStream();
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException {
+        String sessionId = request.getParameter(SESSION_PARAMETER);
+        String filename = request.getParameter(FILENAME_PARAMETER);
+        String viewerType = request.getParameter(VIEWERTYPE_PARAMETER);
+        if ("igv".equalsIgnoreCase(viewerType)) {
+            IGVFileTypeEnum fileType = IGVFileTypeEnum.getByFilename(filename);
+            if (fileType != null) {
+                streamIgvFile(response, sessionId, fileType);
+            }
         }
     }
+
+    private void streamIgvFile(HttpServletResponse response, String sessionId, IGVFileTypeEnum fileType)
+            throws IOException {
+        File file = sessionAnalysisResultsManager.getJobResultFile(sessionId, fileType);
+        if (file != null) {
+            OutputStream outputStream = response.getOutputStream();
+            FileInputStream inputStream = new FileInputStream(file);
+            IOUtils.copy(inputStream, outputStream);
+            outputStream.close();
+        }
+    }
+
+    /**
+     * @return the sessionAnalysisResultsManager
+     */
+    public SessionAnalysisResultsManager getSessionAnalysisResultsManager() {
+        return sessionAnalysisResultsManager;
+    }
+
+    /**
+     * @param sessionAnalysisResultsManager the sessionAnalysisResultsManager to set
+     */
+    public void setSessionAnalysisResultsManager(SessionAnalysisResultsManager sessionAnalysisResultsManager) {
+        this.sessionAnalysisResultsManager = sessionAnalysisResultsManager;
+    }
+
 
 }

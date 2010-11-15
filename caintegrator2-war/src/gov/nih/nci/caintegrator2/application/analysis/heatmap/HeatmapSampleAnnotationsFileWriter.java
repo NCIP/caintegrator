@@ -92,7 +92,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Writes a sample info file for IGV to an IGV .SEG format file.
+ * Writes a sample info file for HeatMap to a heatmap sample annotation format file.
  */
 public class HeatmapSampleAnnotationsFileWriter extends AbstractSampleAnnotationFileWriter {
 
