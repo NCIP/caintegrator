@@ -775,16 +775,16 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     }
 
     /**
-     * @return the igvResultsManager
+     * @return the sessionAnalysisResultsManager
      */
-    public SessionAnalysisResultsManager getIgvResultsManager() {
+    public SessionAnalysisResultsManager getSessionAnalysisResultsManager() {
         return sessionAnalysisResultsManager;
     }
 
     /**
-     * @param igvResultsManager the igvResultsManager to set
+     * @param sessionAnalysisResultsManager the sessionAnalysisResultsManager to set
      */
-    public void setIgvResultsManager(SessionAnalysisResultsManager igvResultsManager) {
-        this.sessionAnalysisResultsManager = igvResultsManager;
+    public void setSessionAnalysisResultsManager(SessionAnalysisResultsManager sessionAnalysisResultsManager) {
+        this.sessionAnalysisResultsManager = sessionAnalysisResultsManager;
     }
 }

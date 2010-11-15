@@ -118,6 +118,9 @@
     
     <bean id="analysisFileManager"
         class="gov.nih.nci.caintegrator2.file.AnalysisFileManagerImpl">
+        <property name="fileManager">
+            <ref local="fileManager" />
+        </property>
     </bean>
         
     <bean id="configurationHelper" class="gov.nih.nci.caintegrator2.common.ConfigurationHelperStub" />
@@ -171,8 +174,8 @@
         <property name="arrayDataService">
             <ref local="arrayDataService"/>
         </property>
-        <property name="igvResultsManager">
-            <ref local="igvResultsManager"/>
+        <property name="sessionAnalysisResultsManager">
+            <ref local="sessionAnalysisResultsManager"/>
         </property>
     </bean>
 
@@ -204,7 +207,7 @@
          class="gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotServiceImpl">
     </bean>
     
-    <bean id="igvResultsManager" scope="singleton" class="gov.nih.nci.caintegrator2.application.analysis.igv.IGVResultsManager" />
+    <bean id="sessionAnalysisResultsManager" scope="singleton" class="gov.nih.nci.caintegrator2.application.analysis.SessionAnalysisResultsManager" />
     
     <bean id="caArrayServiceFactory" 
         class="gov.nih.nci.caintegrator2.external.caarray.CaArrayServiceFactoryImpl" />
