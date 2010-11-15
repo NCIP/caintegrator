@@ -175,7 +175,7 @@ public class AnalysisServiceTest {
     private FileManagerStub fileManagerStub = new FileManagerStub();
     private AnalysisFileManagerStub analysisFileManagerStub = new AnalysisFileManagerStub();
     private ArrayDataServiceStub arrayDataServiceStub;
-    private SessionAnalysisResultsManager igvResultsManager = new SessionAnalysisResultsManager();
+    private SessionAnalysisResultsManager sessionAnalysisResultsManager = new SessionAnalysisResultsManager();
     
     @Before
     public void setUp() {
@@ -200,7 +200,7 @@ public class AnalysisServiceTest {
         arrayDataServiceStub = new ArrayDataServiceStub();
         serviceImpl.setArrayDataService(arrayDataServiceStub);
         arrayDataServiceStub.clear();
-        serviceImpl.setIgvResultsManager(igvResultsManager);
+        serviceImpl.setSessionAnalysisResultsManager(sessionAnalysisResultsManager);
     }
 
     @Test

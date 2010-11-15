@@ -111,7 +111,7 @@ public class IGVFileServletTest {
         String sessionId = "SessionId";
         IGVFileServlet igvFileServlet = new IGVFileServlet();
         SessionAnalysisResultsManager resultsManager = new SessionAnalysisResultsManager();
-        igvFileServlet.setIgvResultsManager(resultsManager);
+        igvFileServlet.setSessionAnalysisResultsManager(resultsManager);
         IGVResult result = new IGVResult();
         result.setGeneExpressionFile(TestDataFiles.VALID_FILE);
         result.setSessionFile(TestDataFiles.VALID_FILE);
