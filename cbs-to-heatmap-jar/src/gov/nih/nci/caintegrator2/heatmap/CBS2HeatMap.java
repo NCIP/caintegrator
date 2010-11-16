@@ -8,9 +8,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -100,100 +102,62 @@ public class CBS2HeatMap {
     // exclude very small segments: they are far more likely to be germline copy number variation loci
 
     @SuppressWarnings("unchecked")
-    public void main(HeatMapArgs HMA) {
+    public void runCBSToHeatmap(HeatMapArgs hma) {
         for (int i = 0; i <= 23; i++) {
             chr_order.put(chr_order_arr[i], new Integer(i));
         }
 
-        if (HMA.scale == null) {
+        if (hma.getScale() == null) {
             scale = default_scale;
         } else {
-            scale = HMA.scale;
+            scale = hma.getScale();
         }
         makeScale(scale, 2.0);
 
-        readBinFile(HMA.big_bin_f, bins, "big");
-        readBinFile(HMA.small_bin_f, bins, "small");
+        readBinFile(hma.getBigBinFile(), bins, "big");
+        readBinFile(hma.getSmallBinFile(), bins, "small");
         big2small = crossMapBins((HashMap<String, Object>) bins.get("big"), (HashMap<String, Object>) bins.get("small"));
 
-        if (HMA.gender_f != null) {
-            readGenderFile(HMA.gender_f);
+        if (hma.getGenderFile() != null) {
+            readGenderFile(hma.getGenderFile());
         }
-        readRefFlatFile(HMA.refFlat_f, (HashMap) bins.get("big"));
-        if (HMA.sample_f != null) {
-            readSampleFile(HMA.sample_f);
+        // This will be conditional, if the gene locations aren't already supplied from parsed data and file isn't null
+        List<GeneLocationWrapper> geneLocations = retrieveGeneLocationDataFromFile(hma.getRefGenesFile());
+        loadGeneLocations(geneLocations, (HashMap) bins.get("big"));
+        if (hma.getSampleFile() != null) {
+            readSampleFile(hma.getSampleFile());
         }
-        
-        readSeg(HMA.seg_f, 1, HMA);
-        readSeg(HMA.seg_f, 2, HMA);
+        // This will be conditional, if the segmentDatas aren't supplied already from parsed data and file isn't null.
+        List<SegmentDataWrapper> segmentDatas = retrieveSegmentDataFromFile(hma.getSegmentFile()); 
+        loadSegmentationData(segmentDatas, 1, hma);
+        loadSegmentationData(segmentDatas, 2, hma);
 
-        if (HMA.gene_out_f != null) {
-            geneOutput(HMA);
+        if (hma.getGeneOutFile() != null) {
+            geneOutput(hma);
         }
-        if (HMA.genome_out_f != null) {
-            genomeOutput(HMA);
+        if (hma.getGenomeOutFile() != null) {
+            genomeOutput(hma);
         }
     }
-
-    // ######################################################################
-    @SuppressWarnings("unchecked")
-    private void readRefFlatFile(String FileName, HashMap<String, Object> bins) {
-        // ## assume we have already chosen one location for each gene
-        HashMap<String, Integer> chr_bins = (HashMap) bins.get("chr_bins");
-        HashMap<Integer, HashMap> bin2gene = (HashMap) bins.get("bin2gene");
-        HashMap<String, Segment> gene2seg = (HashMap) bins.get("gene2seg");
-        Integer BIN_SIZE = (Integer) bins.get("BIN_SIZE");
-
-        HashMap<String, Object> chr2gene_start = new HashMap<String, Object>();
-
+    
+    private List<GeneLocationWrapper> retrieveGeneLocationDataFromFile(String filename) {
+        List<GeneLocationWrapper> geneLocations = new ArrayList<GeneLocationWrapper>();
         String line = null;
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader(FileName));
+            br = new BufferedReader(new FileReader(filename));
             while ((line = br.readLine()) != null) {
-
-                String[] line_pieces = line.split("	");
+                GeneLocationWrapper geneLocation = new GeneLocationWrapper();
+                String[] line_pieces = line.split("\t");
                 String gene = line_pieces[0];
                 String chr = line_pieces[1];
                 Integer start = Integer.parseInt(line_pieces[2]);
                 Integer stop = Integer.parseInt(line_pieces[3]);
-
-                if (chr_bins.get("start" + chr) == null) {
-                    System.out.println("##bad chromosome: " + chr);
-                    continue;
-                }
-
-                Integer start_bin = (Integer) (chr_bins.get("start" + chr) + start / BIN_SIZE);
-                if (start_bin > chr_bins.get("stop" + chr)) {
-                    System.out.println("##bad bin	" + chr + "	" + start);
-                    continue;
-                }
-                Integer stop_bin = (Integer) (chr_bins.get("start" + chr) + stop / BIN_SIZE);
-                if (stop_bin > chr_bins.get("stop" + chr)) {
-                    System.out.println("##bad bin	" + chr + "	" + stop);
-                    continue;
-                }
-                Segment seg = new Segment(chr, start, stop, gene);
-                gene2seg.put(gene + "," + chr + "," + start, seg);
-                start_bin = (Integer) (chr_bins.get("start" + chr) + start / BIN_SIZE);
-                stop_bin = (Integer) (chr_bins.get("start" + chr) + stop / BIN_SIZE);
-                for (int b = start_bin; b <= stop_bin; b++) {
-                    if (bin2gene.get(b) == null) {
-                        bin2gene.put(b, new HashMap<String, Integer>());
-                    }
-                    (bin2gene.get(b)).put(gene + "," + chr + "," + start, 1);
-                }
-
-                // push @{ $chr2gene_start{$chr}{$start} }, $gene;
-                if (!chr2gene_start.containsKey(chr)) {
-                    chr2gene_start.put(chr, new TreeMap<String, StringArrayAndCounter>());
-                }
-                if (!((TreeMap) chr2gene_start.get(chr)).containsKey(start)) {
-                    ((TreeMap) chr2gene_start.get(chr)).put(start, new StringArrayAndCounter(5));
-                }
-                StringArrayAndCounter chr2gene_start_array = (StringArrayAndCounter) ((TreeMap) chr2gene_start.get(chr))
-                        .get(start);
-                chr2gene_start_array.push(gene);
+                geneLocation.setChromosome(chr);
+                geneLocation.setGeneSymbol(gene);
+                geneLocation.setStartPosition(start);
+                geneLocation.setEndPosition(stop);
+                geneLocations.add(geneLocation);
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
@@ -209,7 +173,65 @@ public class CBS2HeatMap {
                 ex.printStackTrace();
             }
         }
+        return geneLocations;
+    }
 
+    // ######################################################################
+    @SuppressWarnings("unchecked")
+    private void loadGeneLocations(List<GeneLocationWrapper> geneLocations, HashMap<String, Object> bins) {
+        // ## assume we have already chosen one location for each gene
+        HashMap<String, Integer> chr_bins = (HashMap) bins.get("chr_bins");
+        HashMap<Integer, HashMap> bin2gene = (HashMap) bins.get("bin2gene");
+        HashMap<String, Segment> gene2seg = (HashMap) bins.get("gene2seg");
+        Integer BIN_SIZE = (Integer) bins.get("BIN_SIZE");
+
+        HashMap<String, Object> chr2gene_start = new HashMap<String, Object>();
+
+        
+        
+        for(GeneLocationWrapper geneLocation : geneLocations) {
+            String gene = geneLocation.getGeneSymbol();
+            String chr = geneLocation.getChromosome();
+            Integer start = geneLocation.getStartPosition();
+            Integer stop = geneLocation.getEndPosition();
+
+            if (chr_bins.get("start" + chr) == null) {
+                System.out.println("##bad chromosome: " + chr);
+                continue;
+            }
+
+            Integer start_bin = (Integer) (chr_bins.get("start" + chr) + start / BIN_SIZE);
+            if (start_bin > chr_bins.get("stop" + chr)) {
+                System.out.println("##bad bin	" + chr + "	" + start);
+                continue;
+            }
+            Integer stop_bin = (Integer) (chr_bins.get("start" + chr) + stop / BIN_SIZE);
+            if (stop_bin > chr_bins.get("stop" + chr)) {
+                System.out.println("##bad bin	" + chr + "	" + stop);
+                continue;
+            }
+            Segment seg = new Segment(chr, start, stop, gene);
+            gene2seg.put(gene + "," + chr + "," + start, seg);
+            start_bin = (Integer) (chr_bins.get("start" + chr) + start / BIN_SIZE);
+            stop_bin = (Integer) (chr_bins.get("start" + chr) + stop / BIN_SIZE);
+            for (int b = start_bin; b <= stop_bin; b++) {
+                if (bin2gene.get(b) == null) {
+                    bin2gene.put(b, new HashMap<String, Integer>());
+                }
+                (bin2gene.get(b)).put(gene + "," + chr + "," + start, 1);
+            }
+
+            // push @{ $chr2gene_start{$chr}{$start} }, $gene;
+            if (!chr2gene_start.containsKey(chr)) {
+                chr2gene_start.put(chr, new TreeMap<String, StringArrayAndCounter>());
+            }
+            if (!((TreeMap) chr2gene_start.get(chr)).containsKey(start)) {
+                ((TreeMap) chr2gene_start.get(chr)).put(start, new StringArrayAndCounter(5));
+            }
+            StringArrayAndCounter chr2gene_start_array = (StringArrayAndCounter) ((TreeMap) chr2gene_start.get(chr))
+                    .get(start);
+            chr2gene_start_array.push(gene);
+        }
         for (int i = 0; i < chr_order_arr.length; i++) {
             String chr = chr_order_arr[i];
             Set set = ((TreeMap) chr2gene_start.get(chr)).entrySet();
@@ -288,34 +310,19 @@ public class CBS2HeatMap {
         }
     }
 
-    // ######################################################################
-    @SuppressWarnings("unchecked")
-    private void readSeg(String FileName, Integer round, HeatMapArgs HMA) {
-        HashMap<String, Integer> chr_bins;
-        Integer BIN_SIZE;
-        
-        HashMap<String, Object> bins_small = (HashMap<String, Object>) bins.get("small");
-        chr_bins = (HashMap<String, Integer>) bins_small.get("chr_bins");
-        BIN_SIZE = (Integer) bins_small.get("BIN_SIZE");
-
-        HashMap<String, Byte> amp_cache = new HashMap<String, Byte>();
-        HashMap<String, Byte> del_cache = new HashMap<String, Byte>();
-
-        StringTokenizer st;
-        String line = null;
+    private List<SegmentDataWrapper> retrieveSegmentDataFromFile(String fileName) {
         BufferedReader br = null;
-
+        List<SegmentDataWrapper> segmentDatas = new ArrayList<SegmentDataWrapper>();
         try {
-            br = new BufferedReader(new FileReader(FileName));
+            String line;
+            br = new BufferedReader(new FileReader(fileName));
             while ((line = br.readLine()) != null) {
                 // s/[\r\n]+//;
                 // # MJF: some files have a barcode as the first column, the files in RefNorm do not
-
                 String barcode = "", chr;
-                Integer start, stop;
-                String meanString;
-                Double mean = 0.0;
-                st = new StringTokenizer(line);
+                Integer start, stop, mean;
+                StringTokenizer st = new StringTokenizer(line);
+                SegmentDataWrapper segmentData = new SegmentDataWrapper();
                 if (st.countTokens() == 5) {
                     barcode = "";
                     chr = (String) st.nextElement();
@@ -324,7 +331,7 @@ public class CBS2HeatMap {
                     } // the files in RefNorm have a header line
                     start = Integer.parseInt((String) st.nextElement());
                     stop = Integer.parseInt((String) st.nextElement());
-                    meanString = (String) st.nextElement();
+                    mean = Integer.parseInt((String) st.nextElement());
                 } else {
                     barcode = (String) st.nextElement();
                     if (barcode.equals("barcode")) {
@@ -333,134 +340,14 @@ public class CBS2HeatMap {
                     chr = (String) st.nextElement();
                     start = Integer.parseInt((String) st.nextElement());
                     stop = Integer.parseInt((String) st.nextElement());
-                    meanString = (String) st.nextElement();
+                    mean = Integer.parseInt((String) st.nextElement());
                 }
-
-                // if ( barcode.length() > 20) { barcode = barcode.substring(0, 20); }
-                if (HMA.sample_f != null && keep.get(barcode) == null) {
-                    System.out.println("discarding barcode" + barcode);
-                    continue;
-                }
-                live_barcodes.put(barcode, 1);
-
-                if (chr.equals("23")) {
-                    chr = "X";
-                } else if (chr.equals("24")) {
-                    chr = "Y";
-                }
-
-                if (chr_order.get(chr) == null) {
-                    System.out.println("bad chromosome " + chr);
-                    continue;
-                }
-
-                Integer start_bin = chr_bins.get("start" + chr) + (Integer) (start / BIN_SIZE);
-                Integer stop_bin = chr_bins.get("start" + chr) + (Integer) (stop / BIN_SIZE);
-
-                Integer seg_length = stop - start + 1;
-
-                if (seg_length < HMA.min_seg_length) {
-                    System.out.println("short segment " + chr + ":" + (start - stop) + " for " + barcode);
-                    continue;
-                }
-
-                // note: could check on the conversion of meanString above, but doing it here to preserve flow of
-                // computation as in Perl code
-                try {
-                    mean = Double.parseDouble(meanString);
-                } catch (NumberFormatException ex) {
-                    System.out.println("bad mean " + meanString);
-                    continue;
-                }
-                Double v0 = Math.pow(HMA.BASE, mean);
-                Double v = v0 * 2;
-
-                if (round == 1) {
-                    if (chr.equals("X")) {
-                        if (xsum.get(barcode) == null) {
-                            xsum.put(barcode, 0.0);
-                            xn.put(barcode, 0);
-                        }
-                        xsum.put(barcode, xsum.get(barcode) + seg_length * v);
-                        xn.put(barcode, xn.get(barcode) + seg_length);
-                        continue; // don't pick based on amps/dels in X, Y
-                    } else if (chr.equals("Y")) {
-                        if (ysum.get(barcode) == null) {
-                            ysum.put(barcode, 0.0);
-                            yn.put(barcode, 0);
-                        }
-                        ysum.put(barcode, ysum.get(barcode) + seg_length * v);
-                        yn.put(barcode, yn.get(barcode) + seg_length);
-                        continue; // don't pick based on amps/dels in X, Y
-                    }
-                }
-
-                Integer sv = 0;
-                if (round == 1) {
-                    sv = scaleValue(v);
-                } else if (round == 2) {
-                    sv = scaleValue(correctForGender(barcode, chr, v));
-                }
-
-                // do the genes
-                if (round == 2) {
-                    assignValueToGene(barcode, chr, start, stop, sv);
-                }
-
-                HashMap<String, Integer> barcode_to_index = new HashMap<String, Integer>();
-                Integer barcode_index = 0;
-                for (int bin = start_bin; bin <= stop_bin; bin++) {
-                    // next line commented out in Perl version
-                    // # if ( overlap < BIN_SIZE/2) { next; }
-
-                    if (round == 2) {
-                        if (picked.get(bin) != null) {
-                            if (cn.get(barcode) == null) {
-                                HashMap<String, Object> bins_big = (HashMap<String, Object>) bins.get("big");
-                                HashMap<String, Integer> chr_bins_big = (HashMap<String, Integer>) bins_big
-                                        .get("chr_bins");
-
-                                Integer last_bin = chr_bins_big.get("stop" + "Y");
-                                Integer[] cn_bins = new Integer[last_bin + 1];
-                                for (int b = 1; b <= last_bin; b++) {
-                                    cn_bins[b] = NO_VALUE;
-                                }
-                                cn.put(barcode, cn_bins);
-                            }
-                            Integer big_bin = picked.get(bin);
-                            Integer old_value = cn.get(barcode)[big_bin];
-                            // ## let the last non-normal value win
-                            if (old_value == NO_VALUE || old_value == 0) {
-                                cn.get(barcode)[big_bin] = sv;
-                            }
-                        }
-                    } else if (round == 1) {
-                        // ## this is just for selecting interesting bins
-                        // ## tally max of one amp and one del per barcode per bin
-                        if (!barcode_to_index.containsKey(barcode)) {
-                            barcode_to_index.put(barcode, barcode_index++);
-                        }
-                        if (sv > 0) {
-                            if (!amp_cache.containsKey(barcode_to_index.get(barcode) + "SEP" + bin)) {
-                                amp_cache.put(barcode_to_index.get(barcode) + "SEP" + bin, (byte) 1);
-                                if (bin2amp.containsKey(bin)) {
-                                    bin2amp.put(bin, bin2amp.get(bin) + 1);
-                                } else {
-                                    bin2amp.put(bin, 1);
-                                }
-                            }
-                        } else if (sv < 0) {
-                            if (!del_cache.containsKey(barcode_to_index.get(barcode) + "SEP" + bin)) {
-                                del_cache.put(barcode_to_index.get(barcode) + "SEP" + bin, (byte) 1);
-                                if (bin2del.containsKey(bin)) {
-                                    bin2del.put(bin, bin2del.get(bin) + 1);
-                                } else {
-                                    bin2del.put(bin, 1);
-                                }
-                            }
-                        }
-                    }
-                }
+                segmentData.setChromosome(chr);
+                segmentData.setSampleIdentifier(barcode);
+                segmentData.setNumberOfMarkers(mean);
+                segmentData.setStartPosition(start);
+                segmentData.setStopPosition(stop);
+                segmentDatas.add(segmentData);
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
@@ -476,9 +363,153 @@ public class CBS2HeatMap {
                 ex.printStackTrace();
             }
         }
+        return segmentDatas;
+    }
+    
+    // ######################################################################
+    @SuppressWarnings("unchecked")
+    private void loadSegmentationData(List<SegmentDataWrapper> segmentDatas, Integer round, HeatMapArgs hma) {
+        HashMap<String, Integer> chr_bins;
+        Integer BIN_SIZE;
+        
+        HashMap<String, Object> bins_small = (HashMap<String, Object>) bins.get("small");
+        chr_bins = (HashMap<String, Integer>) bins_small.get("chr_bins");
+        BIN_SIZE = (Integer) bins_small.get("BIN_SIZE");
+
+        HashMap<String, Byte> amp_cache = new HashMap<String, Byte>();
+        HashMap<String, Byte> del_cache = new HashMap<String, Byte>();
+
+        for (SegmentDataWrapper segmentData : segmentDatas) {
+            // s/[\r\n]+//;
+            // # MJF: some files have a barcode as the first column, the files in RefNorm do not
+
+            String barcode = segmentData.getSampleIdentifier();
+            String chr = segmentData.getChromosome();
+            Integer start = segmentData.getStartPosition();
+            Integer stop = segmentData.getStopPosition();
+            Integer mean = segmentData.getNumberOfMarkers();
+
+            // if ( barcode.length() > 20) { barcode = barcode.substring(0, 20); }
+            if (hma.getSampleFile() != null && keep.get(barcode) == null) {
+                System.out.println("discarding barcode" + barcode);
+                continue;
+            }
+            live_barcodes.put(barcode, 1);
+
+            if (chr.equals("23")) {
+                chr = "X";
+            } else if (chr.equals("24")) {
+                chr = "Y";
+            }
+
+            if (chr_order.get(chr) == null) {
+                System.out.println("bad chromosome " + chr);
+                continue;
+            }
+
+            Integer start_bin = chr_bins.get("start" + chr) + (Integer) (start / BIN_SIZE);
+            Integer stop_bin = chr_bins.get("start" + chr) + (Integer) (stop / BIN_SIZE);
+
+            Integer seg_length = stop - start + 1;
+
+            if (seg_length < hma.getMinSegLength()) {
+                System.out.println("short segment " + chr + ":" + (start - stop) + " for " + barcode);
+                continue;
+            }
+
+            Double v0 = Math.pow(hma.getBase(), mean);
+            Double v = v0 * 2;
+
+            if (round == 1) {
+                if (chr.equals("X")) {
+                    if (xsum.get(barcode) == null) {
+                        xsum.put(barcode, 0.0);
+                        xn.put(barcode, 0);
+                    }
+                    xsum.put(barcode, xsum.get(barcode) + seg_length * v);
+                    xn.put(barcode, xn.get(barcode) + seg_length);
+                    continue; // don't pick based on amps/dels in X, Y
+                } else if (chr.equals("Y")) {
+                    if (ysum.get(barcode) == null) {
+                        ysum.put(barcode, 0.0);
+                        yn.put(barcode, 0);
+                    }
+                    ysum.put(barcode, ysum.get(barcode) + seg_length * v);
+                    yn.put(barcode, yn.get(barcode) + seg_length);
+                    continue; // don't pick based on amps/dels in X, Y
+                }
+            }
+
+            Integer sv = 0;
+            if (round == 1) {
+                sv = scaleValue(v);
+            } else if (round == 2) {
+                sv = scaleValue(correctForGender(barcode, chr, v));
+            }
+
+            // do the genes
+            if (round == 2) {
+                assignValueToGene(barcode, chr, start, stop, sv);
+            }
+
+            HashMap<String, Integer> barcode_to_index = new HashMap<String, Integer>();
+            Integer barcode_index = 0;
+            for (int bin = start_bin; bin <= stop_bin; bin++) {
+                // next line commented out in Perl version
+                // # if ( overlap < BIN_SIZE/2) { next; }
+
+                if (round == 2) {
+                    if (picked.get(bin) != null) {
+                        if (cn.get(barcode) == null) {
+                            HashMap<String, Object> bins_big = (HashMap<String, Object>) bins.get("big");
+                            HashMap<String, Integer> chr_bins_big = (HashMap<String, Integer>) bins_big
+                                    .get("chr_bins");
+
+                            Integer last_bin = chr_bins_big.get("stop" + "Y");
+                            Integer[] cn_bins = new Integer[last_bin + 1];
+                            for (int b = 1; b <= last_bin; b++) {
+                                cn_bins[b] = NO_VALUE;
+                            }
+                            cn.put(barcode, cn_bins);
+                        }
+                        Integer big_bin = picked.get(bin);
+                        Integer old_value = cn.get(barcode)[big_bin];
+                        // ## let the last non-normal value win
+                        if (old_value == NO_VALUE || old_value == 0) {
+                            cn.get(barcode)[big_bin] = sv;
+                        }
+                    }
+                } else if (round == 1) {
+                    // ## this is just for selecting interesting bins
+                    // ## tally max of one amp and one del per barcode per bin
+                    if (!barcode_to_index.containsKey(barcode)) {
+                        barcode_to_index.put(barcode, barcode_index++);
+                    }
+                    if (sv > 0) {
+                        if (!amp_cache.containsKey(barcode_to_index.get(barcode) + "SEP" + bin)) {
+                            amp_cache.put(barcode_to_index.get(barcode) + "SEP" + bin, (byte) 1);
+                            if (bin2amp.containsKey(bin)) {
+                                bin2amp.put(bin, bin2amp.get(bin) + 1);
+                            } else {
+                                bin2amp.put(bin, 1);
+                            }
+                        }
+                    } else if (sv < 0) {
+                        if (!del_cache.containsKey(barcode_to_index.get(barcode) + "SEP" + bin)) {
+                            del_cache.put(barcode_to_index.get(barcode) + "SEP" + bin, (byte) 1);
+                            if (bin2del.containsKey(bin)) {
+                                bin2del.put(bin, bin2del.get(bin) + 1);
+                            } else {
+                                bin2del.put(bin, 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         if (round == 1) {
-            computeXYMeans(HMA);
+            computeXYMeans(hma);
             // Integer last_bin = ( ( bins.get( "big" ) ).get( "chr_bins" ) ).get( "stop" + "Y" );
             HashMap<String, Object> big_local = (HashMap) bins.get("big");
             HashMap<String, Integer> chr_bins_local = (HashMap) big_local.get("chr_bins");
@@ -513,7 +544,7 @@ public class CBS2HeatMap {
         }
     }
 
-    private ComputeGenderReturn computeGender(String barcode, Double xmean, Double ymean, HeatMapArgs HMA) {
+    private ComputeGenderReturn computeGender(String barcode, Double xmean, Double ymean, HeatMapArgs hma) {
         String gender_annotation_local = "";
         if (barcode.length() >= 12) {
             String patient = barcode.substring(0, 12);
@@ -574,7 +605,7 @@ public class CBS2HeatMap {
 
         // apply the gender-by-annotation after the computations
 
-        if (HMA.protocol.equals("matched")) {
+        if (hma.getProtocol() != null && hma.getProtocol().equals("matched")) {
             x_treatment = 0;
             y_treatment = 0;
         }
@@ -591,20 +622,20 @@ public class CBS2HeatMap {
 
     // ######################################################################
     private void geneHeader(Writer output, HashMap<String, Object> bindefs, HashMap<String, Integer> picked,
-            HeatMapArgs HMA) {
+            HeatMapArgs hma) {
         try {
-            if (HMA.project != null) {
-                output.write("#project=" + HMA.project + "\n");
+            if (hma.getProject() != null) {
+                output.write("#project=" + hma.getProject() + "\n");
             }
-            output.write("#title=Gene " + HMA.title + "\n");
+            output.write("#title=Gene " + hma.getTitle() + "\n");
             output.write("#genome=off\n");
             output.write("#total_histogram=off\n");
             output.write("#up_down_histogram=on\n");
             output.write("#high_label=Amplification\n");
             output.write("#low_label=Deletion\n");
-            output.write("#platform=" + HMA.platform + "\n");
-            output.write("#submitter=" + HMA.submitter + "\n");
-            output.write("#local_contact=" + HMA.contact + "\n");
+            output.write("#platform=" + hma.getPlatform() + "\n");
+            output.write("#submitter=" + hma.getSubmitter() + "\n");
+            output.write("#local_contact=" + hma.getContact() + "\n");
             output.write("#neutral=0,0\n");
             output.write("#data_type=copy number\n");
             if (scale_lines != null) {
@@ -658,21 +689,21 @@ public class CBS2HeatMap {
 
     // ######################################################################
     @SuppressWarnings("unchecked")
-    private void GenomeHeader(Writer output, HashMap<String, Object> bindefs, HeatMapArgs HMA) {
+    private void genomeHeader(Writer output, HashMap<String, Object> bindefs, HeatMapArgs hma) {
         try {
-            if (HMA.project != null) {
-                output.write("#project=" + HMA.project + "\n");
+            if (hma.getProject() != null) {
+                output.write("#project=" + hma.getProject() + "\n");
             }
-            output.write("#title=Genome " + HMA.title + "\n");
+            output.write("#title=Genome " + hma.getTitle() + "\n");
             output.write("#genome=on\n");
             output.write("#total_histogram=off\n");
             output.write("#up_down_histogram=on\n");
             output.write("#high_label=Amplification\n");
             output.write("#low_label=Deletion\n");
             output.write("#neutral=0,0\n");
-            output.write("#platform=" + HMA.platform + "\n");
-            output.write("#submitter=" + HMA.submitter + "\n");
-            output.write("#local_contact=" + HMA.contact + "\n");
+            output.write("#platform=" + hma.getPlatform() + "\n");
+            output.write("#submitter=" + hma.getSubmitter() + "\n");
+            output.write("#local_contact=" + hma.getContact() + "\n");
             output.write("#data_type=copy number\n");
             if (scale_lines != null) {
                 output.write(scale_lines.array[0] + "\n");
@@ -686,11 +717,11 @@ public class CBS2HeatMap {
             // # output.write( "#brightness=30\n" );
             // # output.write( "#tooltip_bin_label=sample:sample_id region:bin_value\n"
 
-            if (HMA.cnv_track != null) {
+            if (hma.getCnvTrack() != null) {
                 BufferedReader cnv = null;
                 String line = null;
                 try {
-                    cnv = new BufferedReader(new FileReader(HMA.cnv_track));
+                    cnv = new BufferedReader(new FileReader(hma.getCnvTrack()));
                     while ((line = cnv.readLine()) != null) {
                         output.write(line + "\n");
                     }
@@ -868,7 +899,7 @@ public class CBS2HeatMap {
 
     // ######################################################################
     @SuppressWarnings("unchecked")
-    private void geneOutput(HeatMapArgs HMA) {
+    private void geneOutput(HeatMapArgs hma) {
         HashMap<String, Integer> picked = new HashMap<String, Integer>();
 
         // Set set = gene_value.entrySet();
@@ -887,9 +918,9 @@ public class CBS2HeatMap {
         // }
 
         try {
-            Writer output = new BufferedWriter(new FileWriter(HMA.gene_out_f));
+            Writer output = new BufferedWriter(new FileWriter(hma.getGeneOutFile()));
 
-            geneHeader(output, (HashMap) bins.get("big"), picked, HMA);
+            geneHeader(output, (HashMap) bins.get("big"), picked, hma);
 
             Set set = live_barcodes.entrySet();
             Iterator iter = set.iterator();
@@ -924,7 +955,7 @@ public class CBS2HeatMap {
 
     // ######################################################################
     @SuppressWarnings("unchecked")
-    private void genomeOutput(HeatMapArgs HMA) {
+    private void genomeOutput(HeatMapArgs hma) {
         HashMap<String, Object> bins_big = (HashMap<String, Object>) bins.get("big");
         HashMap<String, Integer> chr_bins_big = (HashMap<String, Integer>) bins_big.get("chr_bins");
         Integer last_bin = chr_bins_big.get("stop" + "Y");
@@ -932,9 +963,9 @@ public class CBS2HeatMap {
         String[] bin2chr = (String[]) (bins_big.get("bin2chr"));
 
         try {
-            Writer output = new BufferedWriter(new FileWriter(HMA.genome_out_f));
+            Writer output = new BufferedWriter(new FileWriter(hma.getGenomeOutFile()));
 
-            GenomeHeader(output, (HashMap) bins.get("big"), HMA);
+            genomeHeader(output, (HashMap) bins.get("big"), hma);
 
             Set set = live_barcodes.entrySet();
             Iterator iter = set.iterator();
@@ -1058,7 +1089,7 @@ public class CBS2HeatMap {
 
     // ######################################################################
     @SuppressWarnings("unchecked")
-    private void computeXYMeans(HeatMapArgs HMA) {
+    private void computeXYMeans(HeatMapArgs hma) {
 
         Set set = xn.entrySet();
         Iterator iter = set.iterator();
@@ -1116,7 +1147,7 @@ public class CBS2HeatMap {
                 xmean_local = NO_VALUE_D;
             }
 
-            ComputeGenderReturn cgr = computeGender(barcode, xmean.get(barcode), ymean.get(barcode), HMA);
+            ComputeGenderReturn cgr = computeGender(barcode, xmean.get(barcode), ymean.get(barcode), hma);
             gender_local = cgr.getGender();
             x_treatment_local = cgr.getX_treatment();
             y_treatment_local = cgr.getY_treatment();
@@ -1197,82 +1228,84 @@ public class CBS2HeatMap {
             last_domain = domain;
         }
     }
-}
+    
+    class IntegerArrayAndCounter {
+        Integer[] array;
 
-class IntegerArrayAndCounter {
-    Integer[] array;
+        Integer counter;
 
-    Integer counter;
+        Integer current_length;
 
-    Integer current_length;
-
-    public IntegerArrayAndCounter(Integer initial_length) {
-        this.array = new Integer[initial_length];
-        this.counter = 0;
-        this.current_length = initial_length;
-    }
-
-    public void push(Integer value) {
-        if (counter + 2 > current_length) {
-            current_length = current_length + 16;
-            Integer[] new_array = new Integer[current_length];
-            for (int i = 0; i < counter; i++) {
-                new_array[i] = array[i];
-            }
-            array = new_array;
+        public IntegerArrayAndCounter(Integer initial_length) {
+            this.array = new Integer[initial_length];
+            this.counter = 0;
+            this.current_length = initial_length;
         }
-        array[counter++] = value;
-    }
-}
 
-class StringArrayAndCounter {
-    String[] array;
-
-    Integer counter;
-
-    Integer current_length;
-
-    public StringArrayAndCounter(Integer initial_length) {
-        this.array = new String[initial_length];
-        this.counter = 0;
-        this.current_length = initial_length;
-    }
-
-    public void push(String value) {
-        if (counter + 2 > current_length) {
-            current_length = current_length + 16;
-            String[] new_array = new String[current_length];
-            for (int i = 0; i < counter; i++) {
-                new_array[i] = array[i];
+        public void push(Integer value) {
+            if (counter + 2 > current_length) {
+                current_length = current_length + 16;
+                Integer[] new_array = new Integer[current_length];
+                for (int i = 0; i < counter; i++) {
+                    new_array[i] = array[i];
+                }
+                array = new_array;
             }
-            array = new_array;
+            array[counter++] = value;
         }
-        array[counter++] = value;
+    }
+
+    class StringArrayAndCounter {
+        String[] array;
+
+        Integer counter;
+
+        Integer current_length;
+
+        public StringArrayAndCounter(Integer initial_length) {
+            this.array = new String[initial_length];
+            this.counter = 0;
+            this.current_length = initial_length;
+        }
+
+        public void push(String value) {
+            if (counter + 2 > current_length) {
+                current_length = current_length + 16;
+                String[] new_array = new String[current_length];
+                for (int i = 0; i < counter; i++) {
+                    new_array[i] = array[i];
+                }
+                array = new_array;
+            }
+            array[counter++] = value;
+        }
+    }
+
+    class ComputeGenderReturn {
+        private String gender;
+
+        private Integer x_treatment;
+
+        private Integer y_treatment;
+
+        public ComputeGenderReturn(String gender, Integer x_treatment, Integer y_treatment) {
+            this.gender = gender;
+            this.x_treatment = x_treatment;
+            this.y_treatment = y_treatment;
+        }
+
+        public String getGender() {
+            return gender;
+        }
+
+        public Integer getX_treatment() {
+            return x_treatment;
+        }
+
+        public Integer getY_treatment() {
+            return y_treatment;
+        }
     }
 }
 
-class ComputeGenderReturn {
-    private String gender;
 
-    private Integer x_treatment;
-
-    private Integer y_treatment;
-
-    public ComputeGenderReturn(String gender, Integer x_treatment, Integer y_treatment) {
-        this.gender = gender;
-        this.x_treatment = x_treatment;
-        this.y_treatment = y_treatment;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public Integer getX_treatment() {
-        return x_treatment;
-    }
-
-    public Integer getY_treatment() {
-        return y_treatment;
-    }
-}

@@ -16,34 +16,34 @@ public class invokeCBS2HeatMap {
     // static String platform = null, submitter = null, contact = null, cnv_track = null, project = null;
 
     public static void main(String[] args) {
-        HeatMapArgs HMA = new HeatMapArgs();
-        ReadOptions(args, HMA);
+        HeatMapArgs hma = new HeatMapArgs();
+        ReadOptions(args, hma);
 
-        if ((HMA.genome_out_f == null) && (HMA.gene_out_f == null)) {
+        if ((hma.getGenomeOutFile() == null) && (hma.getGeneOutFile() == null)) {
             System.out.println("must specify at least one (gene or genome) output file");
             System.exit(-1);
         }
-        if (HMA.big_bin_f == null) {
+        if (hma.getBigBinFile() == null) {
             System.out.println("must specify big bin file");
             System.exit(-1);
         }
-        if (HMA.small_bin_f == null) {
+        if (hma.getSmallBinFile() == null) {
             System.out.println("must specify small bin file");
             System.exit(-1);
         }
-        if (HMA.seg_f == null) {
+        if (hma.getSegmentFile() == null) {
             System.out.println("must specify segmented data file");
             System.exit(-1);
         }
-        if (HMA.refFlat_f == null) {
+        if (hma.getRefGenesFile() == null) {
             System.out.println("must specify RefSeq gene flat file");
             System.exit(-1);
         }
         CBS2HeatMap CBS2HM = new CBS2HeatMap();
-        CBS2HM.main(HMA);
+        CBS2HM.runCBSToHeatmap(hma);
     }
 
-    public static void ReadOptions(String[] args, HeatMapArgs HMA) {
+    public static void ReadOptions(String[] args, HeatMapArgs hma) {
         try {
             Options opt = new Options();
 
@@ -78,58 +78,58 @@ public class invokeCBS2HeatMap {
                 System.exit(0);
             } else {
                 if (cl.hasOption("small_bins")) {
-                    HMA.small_bin_f = cl.getOptionValue("small_bins");
+                    hma.setSmallBinFile(cl.getOptionValue("small_bins"));
                 }
                 if (cl.hasOption("big_bins")) {
-                    HMA.big_bin_f = cl.getOptionValue("big_bins");
+                    hma.setBigBinFile(cl.getOptionValue("big_bins"));
                 }
                 if (cl.hasOption("seg")) {
-                    HMA.seg_f = cl.getOptionValue("seg");
+                    hma.setSegmentFile(cl.getOptionValue("seg"));
                 }
                 if (cl.hasOption("samples")) {
-                    HMA.sample_f = cl.getOptionValue("samples");
+                    hma.setSampleFile(cl.getOptionValue("samples"));
                 }
                 if (cl.hasOption("genomeout")) {
-                    HMA.genome_out_f = cl.getOptionValue("genomeout");
+                    hma.setGenomeOutFile(cl.getOptionValue("genomeout"));
                 }
                 if (cl.hasOption("geneout")) {
-                    HMA.gene_out_f = cl.getOptionValue("geneout");
+                    hma.setGeneOutFile(cl.getOptionValue("geneout"));
                 }
                 if (cl.hasOption("title")) {
-                    HMA.title = cl.getOptionValue("title");
+                    hma.setTitle(cl.getOptionValue("title"));
                 }
                 if (cl.hasOption("genes")) {
-                    HMA.refFlat_f = cl.getOptionValue("genes");
+                    hma.setRefGenesFile(cl.getOptionValue("genes"));
                 }
                 if (cl.hasOption("gender")) {
-                    HMA.gender_f = cl.getOptionValue("gender");
+                    hma.setGenderFile(cl.getOptionValue("gender"));
                 }
                 if (cl.hasOption("protocol")) {
-                    HMA.protocol = cl.getOptionValue("protocol");
+                    hma.setProtocol(cl.getOptionValue("protocol"));
                 }
                 if (cl.hasOption("scale")) {
-                    HMA.scale = cl.getOptionValue("scale");
+                    hma.setScale(cl.getOptionValue("scale"));
                 }
                 if (cl.hasOption("minseg")) {
-                    HMA.min_seg_length = Integer.parseInt(cl.getOptionValue("minseg"));
+                    hma.setMinSegLength(Integer.parseInt(cl.getOptionValue("minseg")));
                 }
                 if (cl.hasOption("platform")) {
-                    HMA.platform = cl.getOptionValue("platform");
+                    hma.setPlatform(cl.getOptionValue("platform"));
                 }
                 if (cl.hasOption("submitter")) {
-                    HMA.submitter = cl.getOptionValue("submitter");
+                    hma.setSubmitter(cl.getOptionValue("submitter"));
                 }
                 if (cl.hasOption("contact")) {
-                    HMA.contact = cl.getOptionValue("contact");
+                    hma.setContact(cl.getOptionValue("contact"));
                 }
                 if (cl.hasOption("cnv_track")) {
-                    HMA.cnv_track = cl.getOptionValue("cnv_track");
+                    hma.setCnvTrack(cl.getOptionValue("cnv_track"));
                 }
                 if (cl.hasOption("project")) {
-                    HMA.project = cl.getOptionValue("project");
+                    hma.setProject(cl.getOptionValue("project"));
                 }
                 if (cl.hasOption("base")) {
-                    HMA.BASE = Integer.parseInt(cl.getOptionValue("base"));
+                    hma.setBase(Integer.parseInt(cl.getOptionValue("base")));
                 }
             }
         } catch (ParseException e) {
