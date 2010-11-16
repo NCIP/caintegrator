@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.CaIntegrator2EntityRefresher;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
@@ -259,4 +260,13 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @throws InvalidCriterionException if invalid criterion.
      */
     void createIGVFile(StudySubscription studySubscription, Platform platform) throws InvalidCriterionException;
+
+    /**
+     * Creates and stores a Heatmap data file.
+     * @param heatmapParameters the heatmap parameters to use.
+     * @return full URL to forward user to.
+     * @throws InvalidCriterionException if invalid criterion in query.
+     */
+    String executeHeatmap(HeatmapParameters heatmapParameters)
+    throws InvalidCriterionException;
 }

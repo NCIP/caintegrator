@@ -83,13 +83,45 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis.igv;
+package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.application.analysis.AbstractViewerParameters;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
 /**
- * Parameters used to run IGV.
+ * This is what calls the analysis service to run IGV, it is 
+ * thread based, so it is asynchronous and started via the HeatmapAjaxUpdater.
  */
-public class IGVParameters extends AbstractViewerParameters {
+public class HeatmapAjaxRunner implements Runnable {
+
+    private final HeatmapAjaxUpdater updater;
+    private final HeatmapParameters heatmapParameters;
     
+    HeatmapAjaxRunner(HeatmapAjaxUpdater updater, HeatmapParameters heatmapParameters) {
+        this.updater = updater;
+        this.heatmapParameters = heatmapParameters;
+     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void run() {
+        try {
+            updater.updateCurrentStatus("Creating Heat Map Files.");
+            StudySubscription studySubscription = 
+                updater.getAnalysisService().getRefreshedStudySubscription(heatmapParameters.getStudySubscription());
+            heatmapParameters.setStudySubscription(studySubscription);
+            heatmapParameters.getQuery().setSubscription(studySubscription);
+            updater.finish(updater.getAnalysisService().executeHeatmap(heatmapParameters));
+            
+        } catch (InvalidCriterionException e) {
+            updater.addErrorMessage("Invalid Criterion: " 
+                    + e.getMessage());
+        } catch (Exception e) {
+            updater.addErrorMessage("Error: " + e.getMessage());
+        }
+            
+    }
+
 }

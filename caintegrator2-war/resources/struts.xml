@@ -836,6 +836,15 @@
                 <param name="actionName">workspace</param>
             </result>
         </action>
+        
+        <action name="viewAllHeatmap" class="viewAllHeatmapAction">
+            <result type="tiles">viewHeatmapSelector</result>
+            <result name="input" type="tiles">viewHeatmapSelector</result>
+            <result name="viewHeatmap" type="tiles">heatmapAjax</result>
+            <result name="homePage" type="redirectAction">
+                <param name="actionName">workspace</param>
+            </result>
+        </action>
    
         <action name="selectAnalysis" class="selectAnalysisAction">
             <result name="genePatternModules" type="redirectAction">

@@ -83,13 +83,116 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis.igv;
+package gov.nih.nci.caintegrator2.application.analysis;
 
-import gov.nih.nci.caintegrator2.application.analysis.AbstractViewerParameters;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Parameters used to run IGV.
+ * Parameters used to run viewer.
  */
-public class IGVParameters extends AbstractViewerParameters {
+public abstract class AbstractViewerParameters {
+    private StudySubscription studySubscription;
+    private Query query;
+    private String sessionId; 
+    private String urlPrefix;
+    private List<Platform> platforms = new ArrayList<Platform>();
+    private boolean viewAllData = false;
     
+    /**
+     * @return the viewAllIGV
+     */
+    public boolean isViewAllData() {
+        return viewAllData;
+    }
+
+    /**
+     * @param viewAllData the viewAlldata to set
+     */
+    public void setViewAllData(boolean viewAllData) {
+        this.viewAllData = viewAllData;
+    }
+
+    /**
+     * @return the studySubscription
+     */
+    public StudySubscription getStudySubscription() {
+        return studySubscription;
+    }
+    
+    /**
+     * @param studySubscription the studySubscription to set
+     */
+    public void setStudySubscription(StudySubscription studySubscription) {
+        this.studySubscription = studySubscription;
+    }
+    
+    /**
+     * @return the query
+     */
+    public Query getQuery() {
+        return query;
+    }
+    
+    /**
+     * @param query the query to set
+     */
+    public void setQuery(Query query) {
+        this.query = query;
+    }
+    
+    /**
+     * @return the sessionId
+     */
+    public String getSessionId() {
+        return sessionId;
+    }
+    
+    /**
+     * @param sessionId the sessionId to set
+     */
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+    
+    /**
+     * @return the urlPrefix
+     */
+    public String getUrlPrefix() {
+        return urlPrefix;
+    }
+    
+    /**
+     * @param urlPrefix the urlPrefix to set
+     */
+    public void setUrlPrefix(String urlPrefix) {
+        this.urlPrefix = urlPrefix;
+    }
+
+    /**
+     * @return the platforms
+     */
+    public List<Platform> getPlatforms() {
+        return platforms;
+    }
+
+    /**
+     * @param platforms the platforms to set
+     */
+    public void setPlatforms(List<Platform> platforms) {
+        this.platforms = platforms;
+    }
+
+    /**
+     * @param platform to add if not null
+     */
+    public void addPlatform(Platform platform) {
+        if (platform != null) {
+            getPlatforms().add(platform);
+        }
+    }
 }

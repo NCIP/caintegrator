@@ -83,13 +83,17 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis.igv;
-
-import gov.nih.nci.caintegrator2.application.analysis.AbstractViewerParameters;
+package gov.nih.nci.caintegrator2.web.ajax;
 
 /**
- * Parameters used to run IGV.
+ * This interface is to allow DWR to javascript remote the methods using Spring. 
  */
-public class IGVParameters extends AbstractViewerParameters {
+public interface IViewerAjaxUpdater {
     
+    /**
+     * Retrieves the viewer parameters from the session and creates a new ViewerAjaxRunner thread and starts it.
+     * This function is called directly from the igvAjax_tile.jsp page using DWR's reverse ajax mechanism.
+     */
+    void runViewer();
+
 }

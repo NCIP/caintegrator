@@ -493,6 +493,23 @@
         </property>
     </bean>
     
+    <bean id="viewAllHeatmapAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.analysis.ViewAllHeatmapAction">
+        <property name="queryManagementService">
+            <ref local="queryManagementService"/>
+        </property>
+        <property name="arrayDataService">
+            <ref local="arrayDataService"/>
+        </property>
+        <property name="analysisService">
+            <ref local="analysisService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
+    
     <bean id="selectAnalysisAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.SelectAnalysisAction">
@@ -717,6 +734,14 @@
     
     <bean id="igvAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.IGVAjaxUpdater">
         <dwr:remote javascript="IGVAjaxUpdater" />
+        <property name="analysisService">
+          <ref local="analysisService"/>
+        </property>
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
+    
+    <bean id="heatmapAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.HeatmapAjaxUpdater">
+        <dwr:remote javascript="HeatmapAjaxUpdater" />
         <property name="analysisService">
           <ref local="analysisService"/>
         </property>
