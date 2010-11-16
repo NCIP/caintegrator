@@ -6,20 +6,19 @@
     function setGroupAnnotations(onOff, size, checkboxListNum){
         for(i=1;i<=size;i++){
             var item = 'queryForm.resultConfiguration.columnSelectionLists[' + checkboxListNum +'].values-' + i;
-            document.igvViewerForm[item].checked = onOff;
+            document.heatmapViewerForm[item].checked = onOff;
         }
     }
     
     function submitView() {
-        if (document.igvViewerForm.expressionPlatformName.value == ""
-            && document.igvViewerForm.copyNumberPlatformName.value == "") {
+        if (document.heatmapViewerForm.copyNumberPlatformName.value == "") {
             alert("You must select at least 1 platform.");
             return false;
         }
-        document.igvViewerForm.target = '_blank';
-        document.igvViewerForm.selectedAction.value = 'viewAll';
-        document.igvViewerForm.submit();
-        document.igvViewerForm.target = '_self';
+        document.heatmapViewerForm.target = '_blank';
+        document.heatmapViewerForm.selectedAction.value = 'viewAll';
+        document.heatmapViewerForm.submit();
+        document.heatmapViewerForm.target = '_self';
         return true;
     }
 
@@ -37,11 +36,11 @@
     
     <h1><s:property value="#subTitleText" /></h1>
     
-    <p>Enter Integrative Genomics Viewer parameters and click <strong>View</strong>.</p>
+    <p>Enter Heat Map Viewer parameters and click <strong>View</strong>.</p>
     <div class="form_wrapper_outer">
  
-    <s:form id="igvViewerForm" name="igvViewerForm" method="post" enctype="multipart/form-data"
-        action="viewAllIGV" theme="css_xhtml">
+    <s:form id="heatmapViewerForm" name="heatmapViewerForm" method="post" enctype="multipart/form-data"
+        action="viewAllHeatmap" theme="css_xhtml">
         <table class="form_wrapper_table">
             <tr>
                 <th class="title" style="height: 2.5em;">Platform</th>
@@ -50,9 +49,6 @@
             <tr><td colspan="2" style="padding: 5px;">    
                 <s:actionerror/>
                     <s:hidden name="selectedAction" />
-                    <s:select id="expressionPlatformName" name="expressionPlatformName"
-                        headerKey="" headerValue="%{expressionPlatformOption}"
-                        label="Gene Expression Platform" list="expressionPlatformsInStudy"/>
                     <s:select id="copyNumberPlatformName" name="copyNumberPlatformName"
                         headerKey="" headerValue="%{copyNumberPlatformOption}"
                         label="Copy Number Platform" list="copyNumberPlatformsInStudy"/>
@@ -94,9 +90,9 @@
 
                         <s:div cssClass="wwctrl">
 
-                            <button type="button" onclick="document.igvViewerForm.selectedAction.value = 'cancel';
+                            <button type="button" onclick="document.heatmapViewerForm.selectedAction.value = 'cancel';
 
-                                document.igvViewerForm.submit();"> Cancel </button>
+                                document.heatmapViewerForm.submit();"> Cancel </button>
 
                             <button type="button" onclick="submitView()"> View </button>
 

@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParamete
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticSamplesMarkers;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
@@ -439,7 +440,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     public String executeIGV(IGVParameters igvParameters) 
     throws InvalidCriterionException {
         IGVResult igvResult = new IGVResult();
-        if (igvParameters.isViewAllIGV()) {
+        if (igvParameters.isViewAllData()) {
             List<Platform> refreshedPlatforms = new ArrayList<Platform>();
             for (Platform platform : igvParameters.getPlatforms()) {
                 igvResult.setGeneExpressionFile(
@@ -549,7 +550,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
             ResultTypeEnum resultType = igvParameters.getQuery().getResultType();
             igvParameters.getQuery().setResultType(ResultTypeEnum.CLINICAL);
             QueryResult result;
-            if (igvParameters.isViewAllIGV()) {
+            if (igvParameters.isViewAllData()) {
                 result = queryManagementService.execute(igvParameters.getQuery());
             } else {
                 result = queryManagementService.execute(igvParameters.getQuery());
@@ -557,6 +558,14 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
             igvParameters.getQuery().setResultType(resultType);
             igvParameters.getQuery().getColumnCollection().remove(sampleColumn);
             return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String executeHeatmap(HeatmapParameters heatmapParameters) throws InvalidCriterionException {
+        // TODO Auto-generated method stub
+        return "The URL for heatmap viewer...";
     }
     
     private String encodeUrl(String url) {

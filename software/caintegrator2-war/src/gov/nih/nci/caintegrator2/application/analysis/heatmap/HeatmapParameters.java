@@ -85,102 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.heatmap;
 
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.application.analysis.AbstractViewerParameters;
 
 /**
  * Parameters used to run Heatmap.
  */
-public class HeatmapParameters {
-    private StudySubscription studySubscription;
-    private Query query;
-    private String sessionId; 
-    private String urlPrefix;
-    private Platform platform;
-    private boolean viewAllData = false;
-
-    /**
-     * @return the studySubscription
-     */
-    public StudySubscription getStudySubscription() {
-        return studySubscription;
-    }
+public class HeatmapParameters extends AbstractViewerParameters {
     
-    /**
-     * @param studySubscription the studySubscription to set
-     */
-    public void setStudySubscription(StudySubscription studySubscription) {
-        this.studySubscription = studySubscription;
-    }
-    
-    /**
-     * @return the query
-     */
-    public Query getQuery() {
-        return query;
-    }
-    
-    /**
-     * @param query the query to set
-     */
-    public void setQuery(Query query) {
-        this.query = query;
-    }
-    
-    /**
-     * @return the sessionId
-     */
-    public String getSessionId() {
-        return sessionId;
-    }
-    
-    /**
-     * @param sessionId the sessionId to set
-     */
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-    
-    /**
-     * @return the urlPrefix
-     */
-    public String getUrlPrefix() {
-        return urlPrefix;
-    }
-    
-    /**
-     * @param urlPrefix the urlPrefix to set
-     */
-    public void setUrlPrefix(String urlPrefix) {
-        this.urlPrefix = urlPrefix;
-    }
-
-    /**
-     * @return the platform
-     */
-    public Platform getPlatform() {
-        return platform;
-    }
-
-    /**
-     * @param platform the platform to set
-     */
-    public void setPlatform(Platform platform) {
-        this.platform = platform;
-    }
-
-    /**
-     * @return the viewAllData
-     */
-    public boolean isViewAllData() {
-        return viewAllData;
-    }
-
-    /**
-     * @param viewAllData the viewAllData to set
-     */
-    public void setViewAllData(boolean viewAllData) {
-        this.viewAllData = viewAllData;
-    }
 }

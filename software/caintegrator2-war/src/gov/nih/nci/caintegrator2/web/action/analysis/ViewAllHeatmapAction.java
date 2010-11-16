@@ -83,13 +83,62 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis.igv;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import gov.nih.nci.caintegrator2.application.analysis.AbstractViewerParameters;
+import java.util.Set;
+
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
+import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
 
 /**
- * Parameters used to run IGV.
+ * 
  */
-public class IGVParameters extends AbstractViewerParameters {
+public class ViewAllHeatmapAction extends AbstractViewAllAction {
     
+    private static final long serialVersionUID = 1L;
+    
+    private static final String VIEW_HEATMAP = "viewHeatmap";
+
+    /**
+     * {@inheritDoc}
+     */
+    protected String viewAll() {
+        HeatmapParameters heatmapParameters = new HeatmapParameters();
+        heatmapParameters.setStudySubscription(getStudySubscription());
+        heatmapParameters.setSessionId(ServletActionContext.getRequest().getRequestedSessionId());
+        heatmapParameters.setUrlPrefix(SessionHelper.getIgvSessionUrl());
+        heatmapParameters.setQuery(getQuery());
+        heatmapParameters.setPlatforms(getPlatforms());
+        heatmapParameters.setViewAllData(true);
+        getDisplayableWorkspace().setHeatmapParameters(heatmapParameters);
+        return VIEW_HEATMAP;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void addPlatform(Set<GenomeBuildVersionEnum> genomeBuild) {
+        if (!StringUtils.isEmpty(getCopyNumberPlatformName())) {
+            Platform platform = getArrayDataService().getPlatform(getCopyNumberPlatformName());
+            getPlatforms().add(platform);
+            genomeBuild.add(platform.getGenomeVersion());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void init() {
+        getQueryForm().createQuery(getStudySubscription(), null, getCopyNumberPlatformsInStudy());
+        if (!getCopyNumberPlatformsInStudy().isEmpty()) {
+            setCopyNumberPlatformName(getCopyNumberPlatformsInStudy().iterator().next());
+        }
+    }
 }

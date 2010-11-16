@@ -85,19 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import java.util.Set;
+
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
-import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
@@ -105,23 +98,13 @@ import org.apache.struts2.ServletActionContext;
 /**
  * 
  */
-public class ViewAllIGVAction extends AbstractDeployedStudyAction {
+public class ViewAllIGVAction extends AbstractViewAllAction {
     
     private static final long serialVersionUID = 1L;
-    
+
     private static final String VIEW_IGV = "viewIGV";
-    private static final String CANCEL_ACTION = "cancel";
-    private static final String HOME_PAGE = "homePage";
-    private static final String NONE = "-- None Available --";
-    private String selectedAction;
-    private QueryManagementService queryManagementService;
-    private ArrayDataService arrayDataService;
-    private AnalysisService analysisService;
     private Set<String> expressionPlatformsInStudy;
-    private Set<String> copyNumberPlatformsInStudy;
     private String expressionPlatformName;
-    private String copyNumberPlatformName;
-    private List<Platform> platforms;
 
     /**
      * {@inheritDoc}
@@ -129,102 +112,52 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
     public void prepare() {
         super.prepare();
         expressionPlatformsInStudy = getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy());
-        copyNumberPlatformsInStudy = getQueryManagementService().retrieveCopyNumberPlatformsForStudy(getStudy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected String viewAll() {
+        IGVParameters igvParameters = new IGVParameters();
+        igvParameters.setStudySubscription(getStudySubscription());
+        igvParameters.setSessionId(ServletActionContext.getRequest().getRequestedSessionId());
+        igvParameters.setUrlPrefix(SessionHelper.getIgvSessionUrl());
+        igvParameters.setQuery(getQuery());
+        igvParameters.setPlatforms(getPlatforms());
+        igvParameters.setViewAllData(true);
+        getDisplayableWorkspace().setIgvParameters(igvParameters);
+        return VIEW_IGV;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void validate() {
-        super.validate();
-        if (VIEW_IGV.equals(selectedAction)) {
-            Set<GenomeBuildVersionEnum> genomeBuild = new HashSet<GenomeBuildVersionEnum>();
-            platforms = new ArrayList<Platform>();
-            addPlatform(genomeBuild);
-            if (platforms.isEmpty()) {
-                addActionError(getText("struts.messages.error.igv.no.platform"));
-            }
-            if (genomeBuild.size() > 1) {
-                addActionError(getText("struts.messages.error.igv.mix.genome"));
-            }
-        }
-    }
-
-    /**
-     * @param genomeBuild
-     */
-    private void addPlatform(Set<GenomeBuildVersionEnum> genomeBuild) {
-        Platform platform;
-        if (!StringUtils.isEmpty(expressionPlatformName)) {
-            platform = getArrayDataService().getPlatform(expressionPlatformName);
-            platforms.add(platform);
-            genomeBuild.add(platform.getGenomeVersion());
-        }
-        if (!StringUtils.isEmpty(copyNumberPlatformName)) {
-            platform = getArrayDataService().getPlatform(copyNumberPlatformName);
-            platforms.add(platform);
-            genomeBuild.add(platform.getGenomeVersion());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String execute() {
-        if  (VIEW_IGV.equals(selectedAction)) {
-            return viewAllIGV();
-        } else if (CANCEL_ACTION.equals(selectedAction)) {
-            return HOME_PAGE;
-        }
-        getQueryForm().createQuery(getStudySubscription(), expressionPlatformsInStudy, copyNumberPlatformsInStudy);
+    void init() {
+        getQueryForm().createQuery(getStudySubscription(), expressionPlatformsInStudy, getCopyNumberPlatformsInStudy());
         if (!expressionPlatformsInStudy.isEmpty()) {
             expressionPlatformName = expressionPlatformsInStudy.iterator().next();
         }
-        if (!copyNumberPlatformsInStudy.isEmpty()) {
-            copyNumberPlatformName = copyNumberPlatformsInStudy.iterator().next();
+        if (!getCopyNumberPlatformsInStudy().isEmpty()) {
+            setCopyNumberPlatformName(getCopyNumberPlatformsInStudy().iterator().next());
         }
-        return SUCCESS;
-    }
-
-    private String viewAllIGV() {
-        IGVParameters igvParameters = new IGVParameters();
-        igvParameters.setStudySubscription(getStudySubscription());
-        igvParameters.setSessionId(ServletActionContext.getRequest().getRequestedSessionId());
-        igvParameters.setUrlPrefix(SessionHelper.getIgvSessionUrl());
-        igvParameters.setQuery(getQuery());
-        igvParameters.setPlatforms(platforms);
-        igvParameters.setViewAllIGV(true);
-        getDisplayableWorkspace().setIgvParameters(igvParameters);
-        return VIEW_IGV;
     }
 
     /**
-     * @return the selectedAction
+     * @param genomeBuild capture all distinct genomeBuild.
      */
-    public String getSelectedAction() {
-        return selectedAction;
-    }
-
-    /**
-     * @param selectedAction the selectedAction to set
-     */
-    public void setSelectedAction(String selectedAction) {
-        this.selectedAction = selectedAction;
-    }
-
-    /**
-     * @return the queryManagementService
-     */
-    public QueryManagementService getQueryManagementService() {
-        return queryManagementService;
-    }
-
-    /**
-     * @param queryManagementService the queryManagementService to set
-     */
-    public void setQueryManagementService(QueryManagementService queryManagementService) {
-        this.queryManagementService = queryManagementService;
+    protected void addPlatform(Set<GenomeBuildVersionEnum> genomeBuild) {
+        Platform platform;
+        if (!StringUtils.isEmpty(expressionPlatformName)) {
+            platform = getArrayDataService().getPlatform(expressionPlatformName);
+            getPlatforms().add(platform);
+            genomeBuild.add(platform.getGenomeVersion());
+        }
+        if (!StringUtils.isEmpty(getCopyNumberPlatformName())) {
+            platform = getArrayDataService().getPlatform(getCopyNumberPlatformName());
+            getPlatforms().add(platform);
+            genomeBuild.add(platform.getGenomeVersion());
+        }
     }
 
     /**
@@ -240,19 +173,12 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
     public void setExpressionPlatformsInStudy(Set<String> expressionPlatformsInStudy) {
         this.expressionPlatformsInStudy = expressionPlatformsInStudy;
     }
-
+    
     /**
-     * @return the copyNumberPlatformsInStudy
+     * @return the option label for expression platform selector
      */
-    public Set<String> getCopyNumberPlatformsInStudy() {
-        return copyNumberPlatformsInStudy;
-    }
-
-    /**
-     * @param copyNumberPlatformsInStudy the copyNumberPlatformsInStudy to set
-     */
-    public void setCopyNumberPlatformsInStudy(Set<String> copyNumberPlatformsInStudy) {
-        this.copyNumberPlatformsInStudy = copyNumberPlatformsInStudy;
+    public String getExpressionPlatformOption() {
+        return expressionPlatformsInStudy.isEmpty() ? NONE : "";
     }
 
     /**
@@ -267,61 +193,5 @@ public class ViewAllIGVAction extends AbstractDeployedStudyAction {
      */
     public void setExpressionPlatformName(String expressionPlatformName) {
         this.expressionPlatformName = expressionPlatformName;
-    }
-
-    /**
-     * @return the copyNumberPlatformName
-     */
-    public String getCopyNumberPlatformName() {
-        return copyNumberPlatformName;
-    }
-
-    /**
-     * @param copyNumberPlatformName the copyNumberPlatformName to set
-     */
-    public void setCopyNumberPlatformName(String copyNumberPlatformName) {
-        this.copyNumberPlatformName = copyNumberPlatformName;
-    }
-
-    /**
-     * @return the analysisService
-     */
-    public AnalysisService getAnalysisService() {
-        return analysisService;
-    }
-
-    /**
-     * @param analysisService the analysisService to set
-     */
-    public void setAnalysisService(AnalysisService analysisService) {
-        this.analysisService = analysisService;
-    }
-
-    /**
-     * @return the arrayDataService
-     */
-    public ArrayDataService getArrayDataService() {
-        return arrayDataService;
-    }
-
-    /**
-     * @param arrayDataService the arrayDataService to set
-     */
-    public void setArrayDataService(ArrayDataService arrayDataService) {
-        this.arrayDataService = arrayDataService;
-    }
-    
-    /**
-     * @return the option label for expression platform selector
-     */
-    public String getExpressionPlatformOption() {
-        return expressionPlatformsInStudy.isEmpty() ? NONE : "";
-    }
-    
-    /**
-     * @return the option label for copy number platform selector
-     */
-    public String getCopyNumberPlatformOption() {
-        return copyNumberPlatformsInStudy.isEmpty() ? NONE : "";
     }
 }
