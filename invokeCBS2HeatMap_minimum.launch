@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/caintegrator2/software/cbs-to-heatmap-jar/src/gov/nih/nci/caintegrator2/heatmap/invokeCBS2HeatMap.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="gov.nih.nci.caintegrator2.heatmap.invokeCBS2HeatMap"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-big_bins software/cbs-to-heatmap-jar/resources/bins200K.dat -small_bins software/cbs-to-heatmap-jar/resources/bins10K.dat -genes software/cbs-to-heatmap-jar/resources/genome2gene.dat -seg software/cbs-to-heatmap-jar/resources/mskcc-two-samples.txt -geneout software/cbs-to-heatmap-jar/resources/samples-genome.txt -genomeout software/cbs-to-heatmap-jar/resources/samples-gene.txt"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="caintegrator2"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx200m"/>
+</launchConfiguration>
