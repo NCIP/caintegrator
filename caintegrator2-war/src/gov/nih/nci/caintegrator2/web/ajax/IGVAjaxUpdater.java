@@ -85,41 +85,22 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
-
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
-import org.directwebremoting.proxy.dwr.Util;
 
 /**
  * This is an object which is turned into an AJAX javascript file using the DWR framework.  The whole purpose
  * is to update the jsp page with information based on the IGV status updates.  It
  * uses the reverse-ajax technology of DWR to achieve this.
  */
-public class IGVAjaxUpdater implements IIGVAjaxUpdater { 
-    private Util utilThis;
-    private AnalysisService analysisService;
-    
+public class IGVAjaxUpdater extends AbstractViewerAjaxUpdater implements IViewerAjaxUpdater { 
 
     /**
      * {@inheritDoc}
      */
-    public void runIGV() {
-        WebContext wctx = WebContextFactory.get();
-        DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) 
-            wctx.getSession().getAttribute("displayableWorkspace");
-        utilThis = new Util(wctx.getScriptSession());
+    @Override
+    void run(DisplayableUserWorkspace workspace) {
         IGVAjaxRunner runner = new IGVAjaxRunner(this, workspace.getIgvParameters());
         new Thread(runner).start();
-    }
-    
-    /**
-     * 
-     * @param currentStatus sets status on JSP page.
-     */
-    public void updateCurrentStatus(String currentStatus) {
-        utilThis.setValue("currentStatus", currentStatus);
     }
     
     /**
@@ -130,34 +111,7 @@ public class IGVAjaxUpdater implements IIGVAjaxUpdater {
         completeJob();
         String finalizedText = "<b> Job Finished </b> <br>" 
                                + "<a href=\"" + igvUrl + "\">Launch Integrative Genomics Viewer</a>";
-        utilThis.setValue("finalizedText", finalizedText, false);
-    }
-    
-    /**
-     * Dynamically adds an error message to the page.
-     * @param message error message to add.
-     */
-    public void addErrorMessage(String message) {
-        completeJob();
-        utilThis.setValue("errorMessages", message);
-    }
-
-    private void completeJob() {
-        utilThis.setValue("overallStatusDiv", "");
-    }
-    
-    /**
-     * @return the analysisService
-     */
-    public AnalysisService getAnalysisService() {
-        return analysisService;
-    }
-
-    /**
-     * @param analysisService the analysisService to set
-     */
-    public void setAnalysisService(AnalysisService analysisService) {
-        this.analysisService = analysisService;
+        getUtilThis().setValue("finalizedText", finalizedText, false);
     }
 
 }

@@ -114,9 +114,9 @@ import com.opensymphony.xwork2.ActionContext;
 /**
  * 
  */
-public class ViewAllIGVActionTest extends AbstractSessionBasedTest {
+public class ViewAllHeatmapActionTest extends AbstractSessionBasedTest {
 
-    ViewAllIGVAction viewAllIGVAction = new ViewAllIGVAction();
+    ViewAllHeatmapAction viewAllHeatmapAction = new ViewAllHeatmapAction();
     private StudySubscription subscription;
     private QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
     private MyArrayDataServiceStub arrayDataService = new MyArrayDataServiceStub();
@@ -132,9 +132,9 @@ public class ViewAllIGVActionTest extends AbstractSessionBasedTest {
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
         workspaceService.setSubscription(subscription);
-        viewAllIGVAction.setWorkspaceService(workspaceService);
-        viewAllIGVAction.setQueryManagementService(queryManagementService);
-        viewAllIGVAction.setArrayDataService(arrayDataService);
+        viewAllHeatmapAction.setWorkspaceService(workspaceService);
+        viewAllHeatmapAction.setQueryManagementService(queryManagementService);
+        viewAllHeatmapAction.setArrayDataService(arrayDataService);
     }
     
     private Study createFakeStudy() {
@@ -149,44 +149,39 @@ public class ViewAllIGVActionTest extends AbstractSessionBasedTest {
     public void testValidate() {
         
         // Test Prepare
-        viewAllIGVAction.prepare();
+        viewAllHeatmapAction.prepare();
         assertTrue(queryManagementService.retrieveCopyNumberPlatformsForStudyCalled);
-        assertTrue(queryManagementService.retrieveGeneExpressionPlatformsForStudyCalled);
         
         // Test validate
-        viewAllIGVAction.validate();
-        assertFalse(viewAllIGVAction.hasActionErrors());
-        viewAllIGVAction.setSelectedAction("viewAll");
-        viewAllIGVAction.setExpressionPlatformName("hg18");
-        viewAllIGVAction.validate();
-        assertFalse(viewAllIGVAction.hasActionErrors());
-        viewAllIGVAction.setCopyNumberPlatformName("hg17");
-        viewAllIGVAction.validate();
-        assertTrue(viewAllIGVAction.hasActionErrors());
+        viewAllHeatmapAction.validate();
+        assertFalse(viewAllHeatmapAction.hasActionErrors());
+        viewAllHeatmapAction.setSelectedAction("viewAll");
+        viewAllHeatmapAction.validate();
+        assertTrue(viewAllHeatmapAction.hasActionErrors());
+        viewAllHeatmapAction.clearActionErrors();
+        viewAllHeatmapAction.setCopyNumberPlatformName("hg17");
+        viewAllHeatmapAction.validate();
+        assertFalse(viewAllHeatmapAction.hasActionErrors());
     }
     
     @Test
     public void testExecute() {
 
         // Test Prepare
-        viewAllIGVAction.prepare();
+        viewAllHeatmapAction.prepare();
         assertTrue(queryManagementService.retrieveCopyNumberPlatformsForStudyCalled);
-        assertTrue(queryManagementService.retrieveGeneExpressionPlatformsForStudyCalled);
         
         // Test execute
-        assertEquals("success", viewAllIGVAction.execute());
-        viewAllIGVAction.setSelectedAction("cancel");
-        assertEquals("homePage", viewAllIGVAction.execute());
+        assertEquals("success", viewAllHeatmapAction.execute());
+        viewAllHeatmapAction.setSelectedAction("cancel");
+        assertEquals("homePage", viewAllHeatmapAction.execute());
         
         //Test get platform option
-        assertEquals("-- None Available --", viewAllIGVAction.getExpressionPlatformOption());
-        assertEquals("-- None Available --", viewAllIGVAction.getCopyNumberPlatformOption());
+        assertEquals("-- None Available --", viewAllHeatmapAction.getCopyNumberPlatformOption());
         Set<String> platforms = new HashSet<String>();
         platforms.add("Platform 1");
-        viewAllIGVAction.setExpressionPlatformsInStudy(platforms);
-        viewAllIGVAction.setCopyNumberPlatformsInStudy(platforms);
-        assertEquals("", viewAllIGVAction.getExpressionPlatformOption());
-        assertEquals("", viewAllIGVAction.getCopyNumberPlatformOption());
+        viewAllHeatmapAction.setCopyNumberPlatformsInStudy(platforms);
+        assertEquals("", viewAllHeatmapAction.getCopyNumberPlatformOption());
         
     }
     

@@ -402,6 +402,10 @@
                     <s:url id="igvViewerUrl" includeParams="none" action="viewAllIGV" />
                     <a href="${igvViewerUrl}">Integrative Genomics Viewer</a>
                 </li>
+                <li>
+                    <s:url id="heatmapViewerUrl" includeParams="none" action="viewAllHeatmap" />
+                    <a href="${heatmapViewerUrl}">Heat Map Viewer</a>
+                </li>
             </ul>
         </li>
         <s:if test = "%{!currentStudy.studyConfiguration.externalLinkLists.isEmpty()}" >

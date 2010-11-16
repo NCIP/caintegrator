@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<script type='text/javascript' src='dwr/interface/IGVAjaxUpdater.js'></script>
+<script type='text/javascript' src='dwr/interface/HeatmapAjaxUpdater.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
 
@@ -9,7 +9,7 @@
 
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('IGV_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('Heatmap_help')" class="help">
    &nbsp;</a>
     </div>
 
@@ -20,7 +20,7 @@
     <div id="errorMessages" style="color: red;"> </div>
 	<script type="text/javascript">
 		dwr.engine.setActiveReverseAjax(true);
-		IGVAjaxUpdater.runViewer();	
+		HeatmapAjaxUpdater.runViewer();	
 	</script>
 	
     <h2>Current Status:</h2> 

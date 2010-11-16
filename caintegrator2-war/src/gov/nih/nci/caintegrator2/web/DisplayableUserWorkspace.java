@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -156,6 +157,7 @@ public class DisplayableUserWorkspace {
     private final KMPlotForm kmPlotForm = new KMPlotForm();
     private final GEPlotForm gePlotForm = new GEPlotForm();
     private IGVParameters igvParameters = new IGVParameters();
+    private HeatmapParameters heatmapParameters = new HeatmapParameters();
     private DisplayableQueryResult queryResult;
     private GenomicDataQueryResult genomicDataQueryResult;
     private DisplayableCopyNumberQueryResult copyNumberQueryResult;
@@ -683,6 +685,20 @@ public class DisplayableUserWorkspace {
      */
     public void setIgvParameters(IGVParameters igvParameters) {
         this.igvParameters = igvParameters;
+    }
+
+    /**
+     * @return the igvParameters
+     */
+    public HeatmapParameters getHeatmapParameters() {
+        return heatmapParameters;
+    }
+
+    /**
+     * @param heatmapParameters the heatmapParameters to set
+     */
+    public void setHeatmapParameters(HeatmapParameters heatmapParameters) {
+        this.heatmapParameters = heatmapParameters;
     }
 
 

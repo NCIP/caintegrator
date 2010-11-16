@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.analysis;
 
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
@@ -124,6 +125,7 @@ public class AnalysisServiceStub implements AnalysisService {
     public boolean deleteGisticAnalysisCalled;
     public boolean isValidGenePatternConnection = true;
     public boolean executeIGVCalled;
+    public boolean executeHeatmapCalled;
     public boolean executeIGVGlobalCalled;
     public boolean createIGVFileCalled;
     
@@ -138,6 +140,7 @@ public class AnalysisServiceStub implements AnalysisService {
         deleteIGVDirectoryCalled = false;
         deleteGisticAnalysisCalled = false;
         executeIGVCalled = false;
+        executeHeatmapCalled = false;
         createIGVFileCalled = false;
     }
 
@@ -249,5 +252,11 @@ public class AnalysisServiceStub implements AnalysisService {
     public void createIGVFile(StudySubscription studySubscription, Platform platform) throws InvalidCriterionException {
         createIGVFileCalled = true;
         return;
+    }
+
+    public String executeHeatmap(HeatmapParameters heatmapParameters)
+            throws InvalidCriterionException {
+        executeHeatmapCalled = true;
+        return null;
     }
 }

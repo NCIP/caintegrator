@@ -144,6 +144,12 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/igvAjax_tile.jsp" />
         <put-attribute name="subTitle" value="Integrative Genomics Viewer" />
     </definition>
+    
+    <definition name="heatmapAjax" extends="cssBaseDef">
+        <put-attribute name="leftNavMenu" value=""/>
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/heatmapAjax_tile.jsp" />
+        <put-attribute name="subTitle" value="Haet Map Viewer" />
+    </definition>
 
     <definition name="manageStudies" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageStudies_tile.jsp" />
@@ -248,6 +254,11 @@
     <definition name="viewIGVSelector" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/viewIGVSelector_tile.jsp" />
         <put-attribute name="subTitle" value="View IGV Selector" />
+    </definition>
+    
+    <definition name="viewHeatmapSelector" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/viewHeatmapSelector_tile.jsp" />
+        <put-attribute name="subTitle" value="View Heat Map Selector" />
     </definition>
     
     <definition name="genePatternAnalysis" extends="cssBaseDef">
