@@ -2,7 +2,6 @@ package gov.nih.nci.caintegrator2.heatmap;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,7 +17,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
-public class CBS2HeatMap {
+public class CBS2HeatMap implements CBSToHeatmap {
 
     private HashMap<String, Object> bins = new HashMap<String, Object>() {
         {
@@ -102,7 +101,7 @@ public class CBS2HeatMap {
     // exclude very small segments: they are far more likely to be germline copy number variation loci
 
     @SuppressWarnings("unchecked")
-    public void runCBSToHeatmap(HeatMapArgs hma) {
+    public void runCBSToHeatmap(HeatMapArgs hma) throws IOException {
         for (int i = 0; i <= 23; i++) {
             chr_order.put(chr_order_arr[i], new Integer(i));
         }
@@ -121,14 +120,15 @@ public class CBS2HeatMap {
         if (hma.getGenderFile() != null) {
             readGenderFile(hma.getGenderFile());
         }
-        // This will be conditional, if the gene locations aren't already supplied from parsed data and file isn't null
-        List<GeneLocationWrapper> geneLocations = retrieveGeneLocationDataFromFile(hma.getRefGenesFile());
+
+        List<GeneLocationWrapper> geneLocations = hma.getRefGenesFile() == null ? hma.getGeneLocations()
+                : retrieveGeneLocationDataFromFile(hma.getRefGenesFile());
         loadGeneLocations(geneLocations, (HashMap) bins.get("big"));
         if (hma.getSampleFile() != null) {
             readSampleFile(hma.getSampleFile());
         }
-        // This will be conditional, if the segmentDatas aren't supplied already from parsed data and file isn't null.
-        List<SegmentDataWrapper> segmentDatas = retrieveSegmentDataFromFile(hma.getSegmentFile()); 
+        List<SegmentDataWrapper> segmentDatas = hma.getSegmentFile() == null ? hma.getSegmentDatas() 
+                : retrieveSegmentDataFromFile(hma.getSegmentFile()); 
         loadSegmentationData(segmentDatas, 1, hma);
         loadSegmentationData(segmentDatas, 2, hma);
 
@@ -140,7 +140,7 @@ public class CBS2HeatMap {
         }
     }
     
-    private List<GeneLocationWrapper> retrieveGeneLocationDataFromFile(String filename) {
+    private List<GeneLocationWrapper> retrieveGeneLocationDataFromFile(String filename) throws IOException {
         List<GeneLocationWrapper> geneLocations = new ArrayList<GeneLocationWrapper>();
         String line = null;
         BufferedReader br = null;
@@ -159,18 +159,10 @@ public class CBS2HeatMap {
                 geneLocation.setEndPosition(stop);
                 geneLocations.add(geneLocation);
             }
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
         } finally {
             // Close the BufferedReader
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            if (br != null) {
+                br.close();
             }
         }
         return geneLocations;
@@ -196,18 +188,18 @@ public class CBS2HeatMap {
             Integer stop = geneLocation.getEndPosition();
 
             if (chr_bins.get("start" + chr) == null) {
-                System.out.println("##bad chromosome: " + chr);
+//                System.out.println("##bad chromosome: " + chr);
                 continue;
             }
 
             Integer start_bin = (Integer) (chr_bins.get("start" + chr) + start / BIN_SIZE);
             if (start_bin > chr_bins.get("stop" + chr)) {
-                System.out.println("##bad bin	" + chr + "	" + start);
+//                System.out.println("##bad bin	" + chr + "	" + start);
                 continue;
             }
             Integer stop_bin = (Integer) (chr_bins.get("start" + chr) + stop / BIN_SIZE);
             if (stop_bin > chr_bins.get("stop" + chr)) {
-                System.out.println("##bad bin	" + chr + "	" + stop);
+//                System.out.println("##bad bin	" + chr + "	" + stop);
                 continue;
             }
             Segment seg = new Segment(chr, start, stop, gene);
@@ -310,7 +302,7 @@ public class CBS2HeatMap {
         }
     }
 
-    private List<SegmentDataWrapper> retrieveSegmentDataFromFile(String fileName) {
+    private List<SegmentDataWrapper> retrieveSegmentDataFromFile(String fileName) throws NumberFormatException, IOException {
         BufferedReader br = null;
         List<SegmentDataWrapper> segmentDatas = new ArrayList<SegmentDataWrapper>();
         try {
@@ -349,18 +341,10 @@ public class CBS2HeatMap {
                 segmentData.setStopPosition(stop);
                 segmentDatas.add(segmentData);
             }
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
         } finally {
             // Close the BufferedReader
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            if (br != null) {
+                br.close();
             }
         }
         return segmentDatas;
@@ -391,7 +375,7 @@ public class CBS2HeatMap {
 
             // if ( barcode.length() > 20) { barcode = barcode.substring(0, 20); }
             if (hma.getSampleFile() != null && keep.get(barcode) == null) {
-                System.out.println("discarding barcode" + barcode);
+//                System.out.println("discarding barcode" + barcode);
                 continue;
             }
             live_barcodes.put(barcode, 1);
@@ -403,7 +387,7 @@ public class CBS2HeatMap {
             }
 
             if (chr_order.get(chr) == null) {
-                System.out.println("bad chromosome " + chr);
+//                System.out.println("bad chromosome " + chr);
                 continue;
             }
 
@@ -413,7 +397,7 @@ public class CBS2HeatMap {
             Integer seg_length = stop - start + 1;
 
             if (seg_length < hma.getMinSegLength()) {
-                System.out.println("short segment " + chr + ":" + (start - stop) + " for " + barcode);
+//                System.out.println("short segment " + chr + ":" + (start - stop) + " for " + barcode);
                 continue;
             }
 
@@ -622,181 +606,165 @@ public class CBS2HeatMap {
 
     // ######################################################################
     private void geneHeader(Writer output, HashMap<String, Object> bindefs, HashMap<String, Integer> picked,
-            HeatMapArgs hma) {
-        try {
-            if (hma.getProject() != null) {
-                output.write("#project=" + hma.getProject() + "\n");
+            HeatMapArgs hma) throws IOException {
+        if (hma.getProject() != null) {
+            output.write("#project=" + hma.getProject() + "\n");
+        }
+        output.write("#title=Gene " + hma.getTitle() + "\n");
+        output.write("#genome=off\n");
+        output.write("#total_histogram=off\n");
+        output.write("#up_down_histogram=on\n");
+        output.write("#high_label=Amplification\n");
+        output.write("#low_label=Deletion\n");
+        output.write("#platform=" + hma.getPlatform() + "\n");
+        output.write("#submitter=" + hma.getSubmitter() + "\n");
+        output.write("#local_contact=" + hma.getContact() + "\n");
+        output.write("#neutral=0,0\n");
+        output.write("#data_type=copy number\n");
+        if (scale_lines != null) {
+            output.write(scale_lines.array[0] + "\n");
+            for (int i = 1; i < scale_lines.counter; i++) {
+                output.write("" + scale_lines.array[i] + "\n");
             }
-            output.write("#title=Gene " + hma.getTitle() + "\n");
-            output.write("#genome=off\n");
-            output.write("#total_histogram=off\n");
-            output.write("#up_down_histogram=on\n");
-            output.write("#high_label=Amplification\n");
-            output.write("#low_label=Deletion\n");
-            output.write("#platform=" + hma.getPlatform() + "\n");
-            output.write("#submitter=" + hma.getSubmitter() + "\n");
-            output.write("#local_contact=" + hma.getContact() + "\n");
-            output.write("#neutral=0,0\n");
-            output.write("#data_type=copy number\n");
-            if (scale_lines != null) {
-                output.write(scale_lines.array[0] + "\n");
-                for (int i = 1; i < scale_lines.counter; i++) {
-                    output.write("" + scale_lines.array[i] + "\n");
-                }
-            }
-            // following lines are commented out in the perl code as well
-            // # output.write( "#scale=1,2,3,4\n" );
-            // # output.write( "#scale=1,2\n" );
-            // # output.write( "#brightness=30\n" );
-            // # output.write( "#tooltip_bin_label=sample:sample_id region:bin_value\n"
+        }
+        // following lines are commented out in the perl code as well
+        // # output.write( "#scale=1,2,3,4\n" );
+        // # output.write( "#scale=1,2\n" );
+        // # output.write( "#brightness=30\n" );
+        // # output.write( "#tooltip_bin_label=sample:sample_id region:bin_value\n"
 
-            StringArrayAndCounter temp = new StringArrayAndCounter(5);
-            temp.push("");
-            HashMap<String, Integer> locations = new HashMap<String, Integer>();
-            for (int i = 0; i < gene_order.counter; i++) {
-                String gene_copy = gene_order.array[i];
-                String[] line_pieces = gene_copy.split(",");
-                String gene = line_pieces[0];
-                if (!locations.containsKey(gene)) {
-                    locations.put(gene, 0);
-                }
-                locations.put(gene, locations.get(gene) + 1);
+        StringArrayAndCounter temp = new StringArrayAndCounter(5);
+        temp.push("");
+        HashMap<String, Integer> locations = new HashMap<String, Integer>();
+        for (int i = 0; i < gene_order.counter; i++) {
+            String gene_copy = gene_order.array[i];
+            String[] line_pieces = gene_copy.split(",");
+            String gene = line_pieces[0];
+            if (!locations.containsKey(gene)) {
+                locations.put(gene, 0);
             }
-            for (int i = 0; i < gene_order.counter; i++) {
-                String gene_copy = gene_order.array[i];
-                String[] line_pieces = gene_copy.split(",");
-                String gene = line_pieces[0];
-                String chr = line_pieces[1];
-                Integer start = Integer.parseInt(line_pieces[2]);
-                if (locations.get(gene) > 1) {
-                    temp.push(gene + " " + chr + ":" + start);
-                } else {
-                    temp.push(gene);
-                }
+            locations.put(gene, locations.get(gene) + 1);
+        }
+        for (int i = 0; i < gene_order.counter; i++) {
+            String gene_copy = gene_order.array[i];
+            String[] line_pieces = gene_copy.split(",");
+            String gene = line_pieces[0];
+            String chr = line_pieces[1];
+            Integer start = Integer.parseInt(line_pieces[2]);
+            if (locations.get(gene) > 1) {
+                temp.push(gene + " " + chr + ":" + start);
+            } else {
+                temp.push(gene);
             }
-            for (int i = 0; i < temp.counter; i++) {
-                output.write(temp.array[i]);
-                if (i < temp.counter - 1) {
-                    output.write("\t");
-                } else {
-                    output.write("\n");
-                }
+        }
+        for (int i = 0; i < temp.counter; i++) {
+            output.write(temp.array[i]);
+            if (i < temp.counter - 1) {
+                output.write("\t");
+            } else {
+                output.write("\n");
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
         }
     }
 
     // ######################################################################
     @SuppressWarnings("unchecked")
-    private void genomeHeader(Writer output, HashMap<String, Object> bindefs, HeatMapArgs hma) {
-        try {
-            if (hma.getProject() != null) {
-                output.write("#project=" + hma.getProject() + "\n");
+    private void genomeHeader(Writer output, HashMap<String, Object> bindefs, HeatMapArgs hma) throws IOException {
+        if (hma.getProject() != null) {
+            output.write("#project=" + hma.getProject() + "\n");
+        }
+        output.write("#title=Genome " + hma.getTitle() + "\n");
+        output.write("#genome=on\n");
+        output.write("#total_histogram=off\n");
+        output.write("#up_down_histogram=on\n");
+        output.write("#high_label=Amplification\n");
+        output.write("#low_label=Deletion\n");
+        output.write("#neutral=0,0\n");
+        output.write("#platform=" + hma.getPlatform() + "\n");
+        output.write("#submitter=" + hma.getSubmitter() + "\n");
+        output.write("#local_contact=" + hma.getContact() + "\n");
+        output.write("#data_type=copy number\n");
+        if (scale_lines != null) {
+            output.write(scale_lines.array[0] + "\n");
+            for (int i = 1; i < scale_lines.counter; i++) {
+                output.write("" + scale_lines.array[i] + "\n");
             }
-            output.write("#title=Genome " + hma.getTitle() + "\n");
-            output.write("#genome=on\n");
-            output.write("#total_histogram=off\n");
-            output.write("#up_down_histogram=on\n");
-            output.write("#high_label=Amplification\n");
-            output.write("#low_label=Deletion\n");
-            output.write("#neutral=0,0\n");
-            output.write("#platform=" + hma.getPlatform() + "\n");
-            output.write("#submitter=" + hma.getSubmitter() + "\n");
-            output.write("#local_contact=" + hma.getContact() + "\n");
-            output.write("#data_type=copy number\n");
-            if (scale_lines != null) {
-                output.write(scale_lines.array[0] + "\n");
-                for (int i = 1; i < scale_lines.counter; i++) {
-                    output.write("" + scale_lines.array[i] + "\n");
-                }
-            }
-            // following lines are commented out in the perl code as well
-            // # output.write( "#scale=1,2,3,4\n" );
-            // # output.write( "#scale=1,2\n" );
-            // # output.write( "#brightness=30\n" );
-            // # output.write( "#tooltip_bin_label=sample:sample_id region:bin_value\n"
+        }
+        // following lines are commented out in the perl code as well
+        // # output.write( "#scale=1,2,3,4\n" );
+        // # output.write( "#scale=1,2\n" );
+        // # output.write( "#brightness=30\n" );
+        // # output.write( "#tooltip_bin_label=sample:sample_id region:bin_value\n"
 
-            if (hma.getCnvTrack() != null) {
-                BufferedReader cnv = null;
-                String line = null;
-                try {
-                    cnv = new BufferedReader(new FileReader(hma.getCnvTrack()));
-                    while ((line = cnv.readLine()) != null) {
-                        output.write(line + "\n");
-                    }
-                } catch (FileNotFoundException ex) {
-                    ex.printStackTrace();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                } finally {
-                    // Close the BufferedReader
-                    try {
-                        if (cnv != null) {
-                            cnv.close();
-                        }
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
+        if (hma.getCnvTrack() != null) {
+            BufferedReader cnv = null;
+            String line = null;
+            try {
+                cnv = new BufferedReader(new FileReader(hma.getCnvTrack()));
+                while ((line = cnv.readLine()) != null) {
+                    output.write(line + "\n");
+                }
+            } finally {
+                // Close the BufferedReader
+                if (cnv != null) {
+                    cnv.close();
                 }
             }
+        }
 
-            HashMap<String, Integer> chr_bins = (HashMap<String, Integer>) bindefs.get("chr_bins");
-            Integer last_bin = chr_bins.get("stop" + "Y");
-            Integer[] bin2start = (Integer[]) bindefs.get("bin2start");
-            Integer[] bin2stop = (Integer[]) bindefs.get("bin2stop");
-            String[] bin2chr = (String[]) bindefs.get("bin2chr");
-            HashMap<Integer, HashMap> bin2gene = (HashMap) bindefs.get("bin2gene");
-            // Integer BIN_SIZE = (Integer) bindefs.get( "BIN_SIZE" );
+        HashMap<String, Integer> chr_bins = (HashMap<String, Integer>) bindefs.get("chr_bins");
+        Integer last_bin = chr_bins.get("stop" + "Y");
+        Integer[] bin2start = (Integer[]) bindefs.get("bin2start");
+        Integer[] bin2stop = (Integer[]) bindefs.get("bin2stop");
+        String[] bin2chr = (String[]) bindefs.get("bin2chr");
+        HashMap<Integer, HashMap> bin2gene = (HashMap) bindefs.get("bin2gene");
+        // Integer BIN_SIZE = (Integer) bindefs.get( "BIN_SIZE" );
 
-            StringArrayAndCounter temp = new StringArrayAndCounter(5);
-            temp.push("");
-            for (int bin = 1; bin <= last_bin; bin++) {
-                String label = "";
-                StringArrayAndCounter gene_temp = new StringArrayAndCounter(5);
-                if (bin2gene.get(bin) != null) {
-                    Set set = bin2gene.get(bin).entrySet();
-                    Iterator iter = set.iterator();
-                    while (iter.hasNext()) {
-                        Map.Entry me = (Map.Entry) iter.next();
-                        String g = (String) me.getKey();
-                        String[] line_pieces = g.split(",");
-                        String gene = line_pieces[0];
-                        gene_temp.push(gene);
-                    }
-                }
-                if (gene_temp.counter != 0) {
-                    Arrays.sort(gene_temp.array, 0, gene_temp.counter);
-                    for (int i = 0; i < gene_temp.counter; i++) {
-                        label = label + gene_temp.array[i];
-                        if (i < gene_temp.counter - 1) {
-                            label = label + ",";
-                        }
-                    }
-                } else {
-                    DecimalFormat myFormatter = new DecimalFormat("0.0");
-                    label = "chr" + bin2chr[bin] + ":";
-                    label = label + myFormatter.format(bin2start[bin] / 1000000.0) + "-";
-                    label = label + myFormatter.format(bin2stop[bin] / 1000000.0) + "Mb";
-                }
-                temp.push(label);
-            }
-            for (int i = 0; i < temp.counter; i++) {
-                output.write(temp.array[i]);
-                if (i < temp.counter - 1) {
-                    output.write("\t");
-                } else {
-                    output.write("\n");
+        StringArrayAndCounter temp = new StringArrayAndCounter(5);
+        temp.push("");
+        for (int bin = 1; bin <= last_bin; bin++) {
+            String label = "";
+            StringArrayAndCounter gene_temp = new StringArrayAndCounter(5);
+            if (bin2gene.get(bin) != null) {
+                Set set = bin2gene.get(bin).entrySet();
+                Iterator iter = set.iterator();
+                while (iter.hasNext()) {
+                    Map.Entry me = (Map.Entry) iter.next();
+                    String g = (String) me.getKey();
+                    String[] line_pieces = g.split(",");
+                    String gene = line_pieces[0];
+                    gene_temp.push(gene);
                 }
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
+            if (gene_temp.counter != 0) {
+                Arrays.sort(gene_temp.array, 0, gene_temp.counter);
+                for (int i = 0; i < gene_temp.counter; i++) {
+                    label = label + gene_temp.array[i];
+                    if (i < gene_temp.counter - 1) {
+                        label = label + ",";
+                    }
+                }
+            } else {
+                DecimalFormat myFormatter = new DecimalFormat("0.0");
+                label = "chr" + bin2chr[bin] + ":";
+                label = label + myFormatter.format(bin2start[bin] / 1000000.0) + "-";
+                label = label + myFormatter.format(bin2stop[bin] / 1000000.0) + "Mb";
+            }
+            temp.push(label);
+        }
+        for (int i = 0; i < temp.counter; i++) {
+            output.write(temp.array[i]);
+            if (i < temp.counter - 1) {
+                output.write("\t");
+            } else {
+                output.write("\n");
+            }
         }
     }
 
     // ######################################################################
     @SuppressWarnings("unchecked")
-    private void readBinFile(String FileName, HashMap bins, String id) {
+    private void readBinFile(String FileName, HashMap bins, String id) throws IOException {
         HashMap<String, Integer> chr_bins = new HashMap<String, Integer>();
         Integer numBins = 1000000;
         String[] bin2chr = new String[numBins];
@@ -836,18 +804,10 @@ public class CBS2HeatMap {
                     bin2mid[bin] = (Integer) ((start + stop) / 2);
                 }
             }
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
         } finally {
             // Close the BufferedReader
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            if (br != null) {
+                br.close();
             }
         }
 
@@ -864,7 +824,7 @@ public class CBS2HeatMap {
     }
 
     // ######################################################################
-    private void readGenderFile(String FileName) {
+    private void readGenderFile(String FileName) throws IOException {
         StringTokenizer st;
         String line = null;
         BufferedReader br = null;
@@ -881,25 +841,17 @@ public class CBS2HeatMap {
                 // tokens[ 0 ] is patient, tokens[ 1 ] is gender
                 gender_annotation.put(tokens[0], tokens[1]);
             }
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
         } finally {
             // Close the BufferedReader
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            if (br != null) {
+                br.close();
             }
         }
     }
 
     // ######################################################################
     @SuppressWarnings("unchecked")
-    private void geneOutput(HeatMapArgs hma) {
+    private void geneOutput(HeatMapArgs hma) throws IOException {
         HashMap<String, Integer> picked = new HashMap<String, Integer>();
 
         // Set set = gene_value.entrySet();
@@ -917,96 +869,86 @@ public class CBS2HeatMap {
         // }
         // }
 
-        try {
-            Writer output = new BufferedWriter(new FileWriter(hma.getGeneOutFile()));
+        Writer output = new BufferedWriter(new FileWriter(hma.getGeneOutFile()));
 
-            geneHeader(output, (HashMap) bins.get("big"), picked, hma);
+        geneHeader(output, (HashMap) bins.get("big"), picked, hma);
 
-            Set set = live_barcodes.entrySet();
-            Iterator iter = set.iterator();
-            while (iter.hasNext()) {
-                Map.Entry me = (Map.Entry) iter.next(); // barcode is key
-                String barcode = (String) me.getKey();
-                String label = barcode.substring(0, Math.min(barcode.length(), 30));
-                IntegerArrayAndCounter line = new IntegerArrayAndCounter(5);
-                HashMap<String, Integer> gene_value_barcode = (HashMap) gene_value.get(barcode);
+        Set set = live_barcodes.entrySet();
+        Iterator iter = set.iterator();
+        while (iter.hasNext()) {
+            Map.Entry me = (Map.Entry) iter.next(); // barcode is key
+            String barcode = (String) me.getKey();
+            String label = barcode.substring(0, Math.min(barcode.length(), 30));
+            IntegerArrayAndCounter line = new IntegerArrayAndCounter(5);
+            HashMap<String, Integer> gene_value_barcode = (HashMap) gene_value.get(barcode);
 
-                for (int i = 0; i < gene_order.counter; i++) {
-                    String gene_copy = gene_order.array[i];
-                    if (gene_value_barcode.get(gene_copy) != null) {
-                        Integer v = gene_value_barcode.get(gene_copy);
-                        line.push(v);
-                    } else {
-                        line.push(0);
-                    }
+            for (int i = 0; i < gene_order.counter; i++) {
+                String gene_copy = gene_order.array[i];
+                if (gene_value_barcode.get(gene_copy) != null) {
+                    Integer v = gene_value_barcode.get(gene_copy);
+                    line.push(v);
+                } else {
+                    line.push(0);
                 }
-                output.write(label);
-                for (int i = 0; i < line.counter; i++) {
-                    output.write("\t" + line.array[i]);
-                }
-                output.write("\n");
             }
-            output.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.exit(-1);
+            output.write(label);
+            for (int i = 0; i < line.counter; i++) {
+                output.write("\t" + line.array[i]);
+            }
+            output.write("\n");
         }
+        output.close();
     }
 
     // ######################################################################
     @SuppressWarnings("unchecked")
-    private void genomeOutput(HeatMapArgs hma) {
+    private void genomeOutput(HeatMapArgs hma) throws IOException {
         HashMap<String, Object> bins_big = (HashMap<String, Object>) bins.get("big");
         HashMap<String, Integer> chr_bins_big = (HashMap<String, Integer>) bins_big.get("chr_bins");
         Integer last_bin = chr_bins_big.get("stop" + "Y");
 
         String[] bin2chr = (String[]) (bins_big.get("bin2chr"));
 
-        try {
-            Writer output = new BufferedWriter(new FileWriter(hma.getGenomeOutFile()));
+        Writer output = new BufferedWriter(new FileWriter(hma.getGenomeOutFile()));
 
-            genomeHeader(output, (HashMap) bins.get("big"), hma);
+        genomeHeader(output, (HashMap) bins.get("big"), hma);
 
-            Set set = live_barcodes.entrySet();
-            Iterator iter = set.iterator();
-            while (iter.hasNext()) {
-                Map.Entry me = (Map.Entry) iter.next(); // barcode is key
-                String barcode = (String) me.getKey();
-                // for now, print the complete portion...
-                // my $label = substr($barcode, 0, 12);
-                String label = barcode.substring(0, Math.min(barcode.length(), 30));
-                Integer[] temp;
-                if (!cn.containsKey(barcode)) {
-                    temp = new Integer[last_bin + 1];
-                    for (int bin = 1; bin <= last_bin; bin++) {
-                        temp[bin] = NO_VALUE;
-                    }
-                } else {
-                    temp = cn.get(barcode);
-                }
-
-                IntegerArrayAndCounter line = new IntegerArrayAndCounter(5);
+        Set set = live_barcodes.entrySet();
+        Iterator iter = set.iterator();
+        while (iter.hasNext()) {
+            Map.Entry me = (Map.Entry) iter.next(); // barcode is key
+            String barcode = (String) me.getKey();
+            // for now, print the complete portion...
+            // my $label = substr($barcode, 0, 12);
+            String label = barcode.substring(0, Math.min(barcode.length(), 30));
+            Integer[] temp;
+            if (!cn.containsKey(barcode)) {
+                temp = new Integer[last_bin + 1];
                 for (int bin = 1; bin <= last_bin; bin++) {
-                    String chr = bin2chr[bin];
-                    if (chr.equals("Y") && (y_treatment.get(barcode) == NO_VALUE)) {
-                        line.push(NO_VALUE);
-                    } else if (temp[bin] == NO_VALUE) {
-                        line.push(0); // i.e., normal, after subtracting 2
-                    } else {
-                        line.push(temp[bin]);
-                    }
+                    temp[bin] = NO_VALUE;
                 }
-                output.write(label);
-                for (int i = 0; i < line.counter; i++) {
-                    output.write("\t" + line.array[i]);
-                }
-                output.write("\n");
+            } else {
+                temp = cn.get(barcode);
             }
-            output.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.exit(-1);
+
+            IntegerArrayAndCounter line = new IntegerArrayAndCounter(5);
+            for (int bin = 1; bin <= last_bin; bin++) {
+                String chr = bin2chr[bin];
+                if (chr.equals("Y") && (y_treatment.get(barcode) == NO_VALUE)) {
+                    line.push(NO_VALUE);
+                } else if (temp[bin] == NO_VALUE) {
+                    line.push(0); // i.e., normal, after subtracting 2
+                } else {
+                    line.push(temp[bin]);
+                }
+            }
+            output.write(label);
+            for (int i = 0; i < line.counter; i++) {
+                output.write("\t" + line.array[i]);
+            }
+            output.write("\n");
         }
+        output.close();
     }
 
     // ######################################################################
@@ -1033,7 +975,7 @@ public class CBS2HeatMap {
     }
 
     // ######################################################################
-    private void readSampleFile(String FileName) {
+    private void readSampleFile(String FileName) throws IOException {
         BufferedReader br = null;
         String line;
 
@@ -1042,18 +984,10 @@ public class CBS2HeatMap {
             while ((line = br.readLine()) != null) {
                 keep.put(line, 1);
             }
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
         } finally {
             // Close the BufferedReader
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            if (br != null) {
+                br.close();
             }
         }
     }

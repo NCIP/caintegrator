@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisViewerTypeEnum;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
@@ -166,13 +167,37 @@ public final class SessionHelper {
      * @return the session id
      */
     public static String getIgvSessionUrl() {
+        return getAnalysisViewerUrl(AnalysisViewerTypeEnum.IGV.getValue());
+    }
+    
+    /**
+     * 
+     * @return the heatmap session url.
+     */
+    public static String getHeatmapSessionUrl() {
+        return getAnalysisViewerUrl(AnalysisViewerTypeEnum.HEATMAP.getValue());
+    }
+
+
+    private static String getAnalysisViewerUrl(String analysisViewerType) {
         HttpServletRequest request = ServletActionContext.getRequest();
+        return getRequestBaseUrl(request)
+            + "/caintegrator2/viewer/retrieveFile.do?" + AnalysisViewerFileServlet.SESSION_PARAMETER + "="
+            + request.getRequestedSessionId() + "&" + AnalysisViewerFileServlet.VIEWERTYPE_PARAMETER + "=" 
+            + analysisViewerType + "&" + AnalysisViewerFileServlet.FILENAME_PARAMETER + "=";
+    }
+    
+    /**
+     * @return URL for the "/catingrator2/common" directory.
+     */
+    public static String getCaIntegratorCommonUrl() {
+        return getRequestBaseUrl(ServletActionContext.getRequest()) + "/caintegrator2/common/";
+    }
+
+    private static String getRequestBaseUrl(HttpServletRequest request) {
         String requestUri = request.getRequestURI();
         String requestUrl = request.getRequestURL().toString();
-        return requestUrl.substring(0, requestUrl.length() - requestUri.length())
-            + "/caintegrator2/viewer/retrieveFile.do?" + AnalysisViewerFileServlet.SESSION_PARAMETER + "="
-            + request.getRequestedSessionId() + "&" + AnalysisViewerFileServlet.VIEWERTYPE_PARAMETER + "=igv"
-            + "&" + AnalysisViewerFileServlet.FILENAME_PARAMETER + "=";
+        return requestUrl.substring(0, requestUrl.length() - requestUri.length());
     }
 
     /**

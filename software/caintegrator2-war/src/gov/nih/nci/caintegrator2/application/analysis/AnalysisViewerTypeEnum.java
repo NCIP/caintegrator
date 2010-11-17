@@ -83,78 +83,58 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis.heatmap;
+package gov.nih.nci.caintegrator2.application.analysis;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Enum for the heatmap file type.
+ * Enum for the analysis viewer type.
  */
-public enum HeatmapFileTypeEnum {
+public enum AnalysisViewerTypeEnum {
     
     /**
-     * Launch File.
+     * Heatmap.
      */
-    LAUNCH_FILE("heatmapLaunch.jnlp"),
+    HEATMAP("heatmap"),
     
     /**
-     * Genomic Data.
+     * IGV.
      */
-    GENOMIC_DATA("heatmapGenomicData.txt"),
+    IGV("igv");
     
-    /**
-     * Layout.
-     */
-    LAYOUT("chr2genecount.dat"),
+    private String value;
+    private static Map<String, AnalysisViewerTypeEnum> valueToTypeMap = new HashMap<String, AnalysisViewerTypeEnum>();
     
-    /**
-     * Annotations.
-     */
-    ANNOTATIONS("heatmapAnnotations.txt"),
-    
-    /**
-     * Small Bins.
-     */
-    SMALL_BINS_FILE("bins10K.dat"),
-    
-    /**
-     * Large Bins.
-     */
-    LARGE_BINS_FILE("bins200K.dat");
-    
-    private String filename;
-    private static Map<String, HeatmapFileTypeEnum> valueToTypeMap = new HashMap<String, HeatmapFileTypeEnum>();
-    
-    private HeatmapFileTypeEnum(String filename) {
-        this.filename = filename;
+    private AnalysisViewerTypeEnum(String value) {
+        this.value = value;
     }
 
     /**
      * @return the value
      */
-    public String getFilename() {
-        return filename;
+    public String getValue() {
+        return value;
     }
 
 
-    private static Map<String, HeatmapFileTypeEnum> getValueToTypeMap() {
+    private static Map<String, AnalysisViewerTypeEnum> getValueToTypeMap() {
         if (valueToTypeMap.isEmpty()) {
-            for (HeatmapFileTypeEnum type : values()) {
-                valueToTypeMap.put(type.getFilename(), type);
+            for (AnalysisViewerTypeEnum type : values()) {
+                valueToTypeMap.put(type.getValue(), type);
             }
         }
         return valueToTypeMap;
     }
     
     /**
-     * Returns the <code>HeatmapFileTypeEnum</code> corresponding to the given value. Returns null
+     * Returns the <code>AnalysisViewerTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
      * 
-     * @param filename the value to match
+     * @param value the value to match
      * @return the matching type.
      */
-    public static HeatmapFileTypeEnum getByFilename(String filename) {
-        return getValueToTypeMap().get(filename);
+    public static AnalysisViewerTypeEnum getByValue(String value) {
+        return getValueToTypeMap().get(value);
     }
 }

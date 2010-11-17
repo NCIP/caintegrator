@@ -117,7 +117,7 @@ public class SessionCleanupListener implements HttpSessionListener {
             (SessionAnalysisResultsManager) context.getBean("sessionAnalysisResultsManager");
         AnalysisFileManager fileManager = (AnalysisFileManager) context.getBean("analysisFileManager");
         sessionAnalysisResultsManager.removeSession(sessionId);
-        fileManager.deleteIGVDirectory(sessionId);
+        fileManager.deleteSessionDirectories(sessionId);
     }
 
 }

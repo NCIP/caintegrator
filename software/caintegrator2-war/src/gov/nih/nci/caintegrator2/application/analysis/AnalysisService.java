@@ -252,6 +252,15 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      */
     String executeIGV(IGVParameters igvParameters) 
     throws InvalidCriterionException;
+    
+    /**
+     * Executes Heatmap and returns the URL to start it.
+     * @param heatmapParameters the heatmap parameters to use.
+     * @return full URL to forward user to.
+     * @throws InvalidCriterionException if invalid criterion in query.
+     * @throws IOException if unable to write or read files.
+     */
+    String executeHeatmap(HeatmapParameters heatmapParameters) throws InvalidCriterionException, IOException;
 
     /**
      * Creates and stores an IGV data file.
@@ -260,13 +269,4 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @throws InvalidCriterionException if invalid criterion.
      */
     void createIGVFile(StudySubscription studySubscription, Platform platform) throws InvalidCriterionException;
-
-    /**
-     * Creates and stores a Heatmap data file.
-     * @param heatmapParameters the heatmap parameters to use.
-     * @return full URL to forward user to.
-     * @throws InvalidCriterionException if invalid criterion in query.
-     */
-    String executeHeatmap(HeatmapParameters heatmapParameters)
-    throws InvalidCriterionException;
 }

@@ -1,9 +1,16 @@
 package gov.nih.nci.caintegrator2.heatmap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HeatMapArgs {
     // These two are optional, it will either be a file, or it will be from pre-parsed data.
     private String segmentFile;
     private String refGenesFile;
+    
+    // If previous 2 files are null, then these 2 need to be filled.
+    private List<SegmentDataWrapper> segmentDatas = new ArrayList<SegmentDataWrapper>();
+    private List<GeneLocationWrapper> geneLocations = new ArrayList<GeneLocationWrapper>();
     
     // These are required files
     private String smallBinFile;
@@ -242,5 +249,29 @@ public class HeatMapArgs {
      */
     public void setProject(String project) {
         this.project = project;
+    }
+    /**
+     * @return the segmentDatas
+     */
+    public List<SegmentDataWrapper> getSegmentDatas() {
+        return segmentDatas;
+    }
+    /**
+     * @param segmentDatas the segmentDatas to set
+     */
+    public void setSegmentDatas(List<SegmentDataWrapper> segmentDatas) {
+        this.segmentDatas = segmentDatas;
+    }
+    /**
+     * @return the geneLocations
+     */
+    public List<GeneLocationWrapper> getGeneLocations() {
+        return geneLocations;
+    }
+    /**
+     * @param geneLocations the geneLocations to set
+     */
+    public void setGeneLocations(List<GeneLocationWrapper> geneLocations) {
+        this.geneLocations = geneLocations;
     }
 }

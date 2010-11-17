@@ -85,7 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisViewerTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.SessionAnalysisResultsManager;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 
 import java.io.File;
@@ -139,10 +141,15 @@ public class AnalysisViewerFileServlet implements HttpRequestHandler {
         String sessionId = request.getParameter(SESSION_PARAMETER);
         String filename = request.getParameter(FILENAME_PARAMETER);
         String viewerType = request.getParameter(VIEWERTYPE_PARAMETER);
-        if ("igv".equalsIgnoreCase(viewerType)) {
+        if (AnalysisViewerTypeEnum.IGV.getValue().equalsIgnoreCase(viewerType)) {
             IGVFileTypeEnum fileType = IGVFileTypeEnum.getByFilename(filename);
             if (fileType != null) {
                 streamIgvFile(response, sessionId, fileType);
+            }
+        } else if (AnalysisViewerTypeEnum.HEATMAP.getValue().equalsIgnoreCase(viewerType)) {
+            HeatmapFileTypeEnum fileType = HeatmapFileTypeEnum.getByFilename(filename);
+            if (fileType != null) {
+                streamHeatmapFile(response, sessionId, fileType);
             }
         }
     }
@@ -151,6 +158,20 @@ public class AnalysisViewerFileServlet implements HttpRequestHandler {
             throws IOException {
         File file = sessionAnalysisResultsManager.getJobResultFile(sessionId, fileType);
         if (file != null) {
+            OutputStream outputStream = response.getOutputStream();
+            FileInputStream inputStream = new FileInputStream(file);
+            IOUtils.copy(inputStream, outputStream);
+            outputStream.close();
+        }
+    }
+    
+    private void streamHeatmapFile(HttpServletResponse response, String sessionId, HeatmapFileTypeEnum fileType)
+    throws IOException {
+        File file = sessionAnalysisResultsManager.getJobResultFile(sessionId, fileType);
+        if (file != null) {
+            if (HeatmapFileTypeEnum.LAUNCH_FILE.equals(fileType)) {
+                response.setContentType("application/x-java-jnlp-file");
+            }
             OutputStream outputStream = response.getOutputStream();
             FileInputStream inputStream = new FileInputStream(file);
             IOUtils.copy(inputStream, outputStream);
