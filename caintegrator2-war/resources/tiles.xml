@@ -148,7 +148,7 @@
     <definition name="heatmapAjax" extends="cssBaseDef">
         <put-attribute name="leftNavMenu" value=""/>
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/heatmapAjax_tile.jsp" />
-        <put-attribute name="subTitle" value="Haet Map Viewer" />
+        <put-attribute name="subTitle" value="Heat Map Viewer" />
     </definition>
 
     <definition name="manageStudies" extends="cssBaseDef">

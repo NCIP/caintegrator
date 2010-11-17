@@ -129,7 +129,7 @@ public class SessionTimeoutFilter implements Filter {
     throws IOException, ServletException {
 
         if (firstTime) {
-            getFileManager().deleteAllIGVDirectory();
+            getFileManager().deleteAllTempAnalysisDirectories();
             firstTime = false;
         }
         if (sessionExpired(request, response)) {

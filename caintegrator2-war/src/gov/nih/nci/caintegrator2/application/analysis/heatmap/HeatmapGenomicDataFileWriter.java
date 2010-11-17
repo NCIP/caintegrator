@@ -85,76 +85,43 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.heatmap;
 
-import java.util.HashMap;
-import java.util.Map;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
+import gov.nih.nci.caintegrator2.heatmap.CBSToHeatmap;
+import gov.nih.nci.caintegrator2.heatmap.HeatMapArgs;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+
 
 /**
- * Enum for the heatmap file type.
+ * Calls cbs2heatmap algorithm to write the data file for the input segment datas.
  */
-public enum HeatmapFileTypeEnum {
+public final class HeatmapGenomicDataFileWriter {
+    
+    private HeatmapGenomicDataFileWriter() { }
     
     /**
-     * Launch File.
+     * Writes genomic data file.
+     * @param filePath to write data file to.
+     * @param segmentDatas the segment data to run cbs to heatmap algorithm on.
+     * @param geneLocationConfiguration to look up gene chromosome locations.
+     * @param parameters for heatmap.
+     * @param cbsToHeatmap the object which runs cbs to heatmap algorithm.
+     * @return Genomic data file.
+     * @throws IOException if unable to write file.
      */
-    LAUNCH_FILE("heatmapLaunch.jnlp"),
-    
-    /**
-     * Genomic Data.
-     */
-    GENOMIC_DATA("heatmapGenomicData.txt"),
-    
-    /**
-     * Layout.
-     */
-    LAYOUT("chr2genecount.dat"),
-    
-    /**
-     * Annotations.
-     */
-    ANNOTATIONS("heatmapAnnotations.txt"),
-    
-    /**
-     * Small Bins.
-     */
-    SMALL_BINS_FILE("bins10K.dat"),
-    
-    /**
-     * Large Bins.
-     */
-    LARGE_BINS_FILE("bins200K.dat");
-    
-    private String filename;
-    private static Map<String, HeatmapFileTypeEnum> valueToTypeMap = new HashMap<String, HeatmapFileTypeEnum>();
-    
-    private HeatmapFileTypeEnum(String filename) {
-        this.filename = filename;
-    }
-
-    /**
-     * @return the value
-     */
-    public String getFilename() {
-        return filename;
-    }
-
-
-    private static Map<String, HeatmapFileTypeEnum> getValueToTypeMap() {
-        if (valueToTypeMap.isEmpty()) {
-            for (HeatmapFileTypeEnum type : values()) {
-                valueToTypeMap.put(type.getFilename(), type);
-            }
-        }
-        return valueToTypeMap;
-    }
-    
-    /**
-     * Returns the <code>HeatmapFileTypeEnum</code> corresponding to the given value. Returns null
-     * for null value.
-     * 
-     * @param filename the value to match
-     * @return the matching type.
-     */
-    public static HeatmapFileTypeEnum getByFilename(String filename) {
-        return getValueToTypeMap().get(filename);
+    public static File writeGenomicDataFile(String filePath, Collection<SegmentData> segmentDatas,
+            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
+            CBSToHeatmap cbsToHeatmap) throws IOException {
+        HeatMapArgs hma = new HeatMapArgs();
+        hma.setBigBinFile(parameters.getLargeBinsFile());
+        hma.setSmallBinFile(parameters.getSmallBinsFile());
+        hma.setGeneOutFile(filePath); // If we want to do gene based.
+        hma.getGeneLocations().addAll(HeatmapUtil.convertGeneLocations(geneLocationConfiguration.getGeneLocations()));
+        hma.getSegmentDatas().addAll(HeatmapUtil.convertSegmentDatas(segmentDatas));
+        cbsToHeatmap.runCBSToHeatmap(hma);
+        return new File(filePath);
     }
 }

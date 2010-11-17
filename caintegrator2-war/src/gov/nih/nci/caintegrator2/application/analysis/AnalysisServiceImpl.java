@@ -96,7 +96,9 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParamete
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticSamplesMarkers;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapResult;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
@@ -129,6 +131,8 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
+import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.GisticGenomicRegionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
@@ -143,6 +147,7 @@ import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.file.AnalysisFileManager;
 import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.caintegrator2.heatmap.CBSToHeatmap;
 
 import java.io.File;
 import java.io.IOException;
@@ -178,6 +183,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     private AnalysisFileManager analysisFileManager;
     private ArrayDataService arrayDataService;
     private SessionAnalysisResultsManager sessionAnalysisResultsManager;
+    private CBSToHeatmap cbsToHeatmap;
     
     /**
      * {@inheritDoc}
@@ -493,6 +499,47 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         }
         return igvResult;
     }
+    
+    /**
+     * {@inheritDoc}
+     * @throws IOException 
+     */
+    public String executeHeatmap(HeatmapParameters heatmapParameters) 
+    throws InvalidCriterionException, IOException {
+        HeatmapResult heatmapResult = new HeatmapResult();
+        if (heatmapParameters.isViewAllData()) {
+            Platform platform = heatmapParameters.getPlatform();
+            StudySubscription studySubscription = heatmapParameters.getStudySubscription();
+            File genomicDataFile = analysisFileManager.retrieveHeatmapFile(studySubscription.getStudy(),
+                    HeatmapFileTypeEnum.GENOMIC_DATA, platform.getName());
+            if (!genomicDataFile.exists()) {
+                genomicDataFile = analysisFileManager.createHeatmapGenomicFile(studySubscription.getStudy(), 
+                    platform.getName(), createSegmentDataset(studySubscription, new HashSet<Query>(),
+                    platform.getName(), null), getGeneLocationsForPlatform(platform), heatmapParameters, cbsToHeatmap);
+            }
+            heatmapResult.setGenomicDataFile(genomicDataFile);
+        } else {
+            // Query Based.
+            heatmapResult.setGenomicDataFile(null);
+        }
+        if (!heatmapParameters.getQuery().getColumnCollection().isEmpty()) {
+            heatmapResult.setSampleAnnotationFile(analysisFileManager.createHeatmapSampleClassificationFile(
+                createAnnotationBasedQueryResultsForSamples(heatmapParameters),
+                heatmapParameters.getSessionId(), heatmapParameters.getQuery().getColumnCollection()));
+        }
+        heatmapResult.setLayoutFile(heatmapParameters.getLayoutFile());
+        analysisFileManager.createHeatmapJnlpFile(heatmapParameters, heatmapResult);
+        sessionAnalysisResultsManager.storeJobResult(heatmapParameters.getSessionId(), heatmapResult);
+        return heatmapParameters.getUrlPrefix() + HeatmapFileTypeEnum.LAUNCH_FILE.getFilename();
+    }
+
+    private GeneLocationConfiguration getGeneLocationsForPlatform(Platform platform) {
+            GenomeBuildVersionEnum genomeBuildVersion = platform.getGenomeVersion();
+            if (genomeBuildVersion == null || !getDao().isGenomeVersionMapped(genomeBuildVersion)) {
+                genomeBuildVersion = GenomeBuildVersionEnum.HG18; // Default build.
+            }
+            return getDao().getGeneLocationConfiguration(genomeBuildVersion);  
+        }
 
     private File createGeneExpressionFile(StudySubscription studySubscription, Platform platform) {
         File gctFile = null;
@@ -541,31 +588,23 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         createSegmentationFile(studySubscription, platform);
     }
 
-    private QueryResult createAnnotationBasedQueryResultsForSamples(IGVParameters igvParameters)
+    private QueryResult createAnnotationBasedQueryResultsForSamples(AbstractViewerParameters parameters)
             throws InvalidCriterionException {
             ResultColumn sampleColumn = new ResultColumn();
             sampleColumn.setEntityType(EntityTypeEnum.SAMPLE);
             sampleColumn.setColumnIndex(1);
-            igvParameters.getQuery().getColumnCollection().add(sampleColumn);
-            ResultTypeEnum resultType = igvParameters.getQuery().getResultType();
-            igvParameters.getQuery().setResultType(ResultTypeEnum.CLINICAL);
+            parameters.getQuery().getColumnCollection().add(sampleColumn);
+            ResultTypeEnum resultType = parameters.getQuery().getResultType();
+            parameters.getQuery().setResultType(ResultTypeEnum.CLINICAL);
             QueryResult result;
-            if (igvParameters.isViewAllData()) {
-                result = queryManagementService.execute(igvParameters.getQuery());
+            if (parameters.isViewAllData()) {
+                result = queryManagementService.execute(parameters.getQuery());
             } else {
-                result = queryManagementService.execute(igvParameters.getQuery());
+                result = queryManagementService.execute(parameters.getQuery());
             }
-            igvParameters.getQuery().setResultType(resultType);
-            igvParameters.getQuery().getColumnCollection().remove(sampleColumn);
+            parameters.getQuery().setResultType(resultType);
+            parameters.getQuery().getColumnCollection().remove(sampleColumn);
             return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String executeHeatmap(HeatmapParameters heatmapParameters) throws InvalidCriterionException {
-        // TODO Auto-generated method stub
-        return "The URL for heatmap viewer...";
     }
     
     private String encodeUrl(String url) {
@@ -795,5 +834,19 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
      */
     public void setSessionAnalysisResultsManager(SessionAnalysisResultsManager sessionAnalysisResultsManager) {
         this.sessionAnalysisResultsManager = sessionAnalysisResultsManager;
+    }
+
+    /**
+     * @return the cbsToHeatmap
+     */
+    public CBSToHeatmap getCbsToHeatmap() {
+        return cbsToHeatmap;
+    }
+
+    /**
+     * @param cbsToHeatmap the cbsToHeatmap to set
+     */
+    public void setCbsToHeatmap(CBSToHeatmap cbsToHeatmap) {
+        this.cbsToHeatmap = cbsToHeatmap;
     }
 }

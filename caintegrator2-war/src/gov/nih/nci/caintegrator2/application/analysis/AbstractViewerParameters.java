@@ -87,10 +87,6 @@ package gov.nih.nci.caintegrator2.application.analysis;
 
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Parameters used to run viewer.
@@ -100,7 +96,6 @@ public abstract class AbstractViewerParameters {
     private Query query;
     private String sessionId; 
     private String urlPrefix;
-    private List<Platform> platforms = new ArrayList<Platform>();
     private boolean viewAllData = false;
     
     /**
@@ -171,28 +166,5 @@ public abstract class AbstractViewerParameters {
      */
     public void setUrlPrefix(String urlPrefix) {
         this.urlPrefix = urlPrefix;
-    }
-
-    /**
-     * @return the platforms
-     */
-    public List<Platform> getPlatforms() {
-        return platforms;
-    }
-
-    /**
-     * @param platforms the platforms to set
-     */
-    public void setPlatforms(List<Platform> platforms) {
-        this.platforms = platforms;
-    }
-
-    /**
-     * @param platform to add if not null
-     */
-    public void addPlatform(Platform platform) {
-        if (platform != null) {
-            getPlatforms().add(platform);
-        }
     }
 }

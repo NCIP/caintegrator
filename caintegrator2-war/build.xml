@@ -344,6 +344,12 @@
     <property name="kaplan-meier.jar" location="${kaplan-meier.jar.target.dir}/kaplan-meier.jar" />
     <property name="kaplan-meier.jar.compile.lib.dir" location="${kaplan-meier.jar.dir}/lib/compile"/>    
     
+    <property name="cbs-to-heatmap.jar.dir" location="${software.dir}/cbs-to-heatmap-jar" />
+    <property name="cbs-to-heatmap.jar.resources.bins.dir" location="${cbs-to-heatmap.jar.dir}/resources/bins" />
+    <property name="cbs-to-heatmap.jar.target.dir" location="${cbs-to-heatmap.jar.dir}/target" />
+    <property name="cbs-to-heatmap.jar" location="${cbs-to-heatmap.jar.target.dir}/cbs-to-heatmap.jar" />
+    <property name="cbs-to-heatmap.jar.compile.lib.dir" location="${cbs-to-heatmap.jar.dir}/lib/compile"/>    
+    
 
     <!-- ******************************************************************* -->
     <!-- ** CAINTEGRATOR2.WAR                                             ** -->
@@ -368,6 +374,7 @@
             <pathelement location="${caintegrator2.war.java.classes.dir}" />
             <pathelement location="${genepattern-service.jar}" />
             <pathelement location="${kaplan-meier.jar}" />
+            <pathelement location="${cbs-to-heatmap.jar}" />
             <fileset dir="${caintegrator2.war.compile.lib.dir}">
                 <include name="*.jar" />
                 <exclude name="log4j*.jar" />
@@ -379,6 +386,9 @@
                 <include name="*.jar" />
             </fileset>
             <fileset dir="${kaplan-meier.jar.compile.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+            <fileset dir="${cbs-to-heatmap.jar.compile.lib.dir}">
                 <include name="*.jar" />
             </fileset>
         </path>
@@ -429,12 +439,14 @@
             <lib dir="${kaplan-meier.jar.compile.lib.dir}" includes="*.jar"> 
                 <exclude name="log4j*.jar"/>
             </lib>
+            <lib dir="${cbs-to-heatmap.jar.target.dir}" includes="*.jar"/>
             <lib dir="${external.runtime.lib.dir}" includes="*.jar"/>
             <classes dir="${caintegrator2.war.java.classes.dir}" />
             <classes dir="${caintegrator2.war.resources.src.dir}">
                 <exclude name="*hibernate.cfg.xml" />
                 <exclude name="struts.properties" />
             </classes>
+            <classes dir="${cbs-to-heatmap.jar.resources.bins.dir}" />
             
             <webinf dir="${caintegrator2.war.resources.src.dir}">
                 <include name="tiles.xml"/>

@@ -86,14 +86,19 @@
 package gov.nih.nci.caintegrator2.file;
 
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapFileTypeEnum;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapResult;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.heatmap.CBSToHeatmap;
 
 import java.io.File;
 import java.util.Collection;
@@ -107,7 +112,9 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
     public boolean createIGVSegFileCalled;
     public boolean createIGVSessionFileCalled;
     public boolean createIGVSampleClassificationFileCalled;
-    
+    public boolean createHeatmapGenomicFileCalled;
+    public boolean createHeatmapJnlpFileCalled;
+    public boolean createHeatmapSampleClassificationFileCalled;
     
     public void clear() {
         deleteAllIGVDirectoryCalled = false;
@@ -117,6 +124,9 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
         createIGVSegFileCalled = false;
         createIGVSessionFileCalled = false;
         createIGVSampleClassificationFileCalled = false;
+        createHeatmapGenomicFileCalled = false;
+        createHeatmapJnlpFileCalled = false;
+        createHeatmapSampleClassificationFileCalled = false;
     }
 
 
@@ -141,7 +151,7 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
         return retrieveTmpFile();
     }
 
-    public void deleteAllIGVDirectory() {
+    public void deleteAllTempAnalysisDirectories() {
         deleteAllIGVDirectoryCalled = true;
         
     }
@@ -150,7 +160,7 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
         deleteIGVDirectoryCalled = true;
     }
 
-    public void deleteIGVDirectory(String sessionId) {
+    public void deleteSessionDirectories(String sessionId) {
         deleteIGVDirectoryCalled = true;
     }
 
@@ -185,6 +195,32 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
     }
 
     public File retrieveIGVFile(Study study, IGVFileTypeEnum fileType, String platformName) {
+        return retrieveTmpFile();
+    }
+
+    public File createHeatmapGenomicFile(String sessionId, Collection<SegmentData> segmentDatas,
+            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, CBSToHeatmap cbsToHeatmap) {
+        createHeatmapGenomicFileCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public File createHeatmapGenomicFile(Study study, String platformName, Collection<SegmentData> segmentDatas,
+            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, CBSToHeatmap cbsToHeatmap) {
+        createHeatmapGenomicFileCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public void createHeatmapJnlpFile(HeatmapParameters heatmapParameters, HeatmapResult heatmapResult) {
+        createHeatmapJnlpFileCalled = true;
+    }
+
+    public File createHeatmapSampleClassificationFile(QueryResult queryResult, String sessionId,
+            Collection<ResultColumn> columns) {
+        createHeatmapSampleClassificationFileCalled = true;
+        return retrieveTmpFile();
+    }
+
+    public File retrieveHeatmapFile(Study study, HeatmapFileTypeEnum fileType, String platformName) {
         return retrieveTmpFile();
     }
 

@@ -85,76 +85,57 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.heatmap;
 
-import java.util.HashMap;
-import java.util.Map;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneChromosomalLocation;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
+import gov.nih.nci.caintegrator2.heatmap.GeneLocationWrapper;
+import gov.nih.nci.caintegrator2.heatmap.SegmentDataWrapper;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
- * Enum for the heatmap file type.
+ * This is a static utility class which is used by CaIntegrator2 objects for hibernate. 
  */
-public enum HeatmapFileTypeEnum {
+public final class HeatmapUtil {
+    
+    private HeatmapUtil() { }
     
     /**
-     * Launch File.
+     * Converts CaIntegrator SegmentDatas to CBSToHeatmap SegmentDataWrapper objects.
+     * @param segmentDatas cai objects.
+     * @return CBSToHeatmap objects.
      */
-    LAUNCH_FILE("heatmapLaunch.jnlp"),
-    
-    /**
-     * Genomic Data.
-     */
-    GENOMIC_DATA("heatmapGenomicData.txt"),
-    
-    /**
-     * Layout.
-     */
-    LAYOUT("chr2genecount.dat"),
-    
-    /**
-     * Annotations.
-     */
-    ANNOTATIONS("heatmapAnnotations.txt"),
-    
-    /**
-     * Small Bins.
-     */
-    SMALL_BINS_FILE("bins10K.dat"),
-    
-    /**
-     * Large Bins.
-     */
-    LARGE_BINS_FILE("bins200K.dat");
-    
-    private String filename;
-    private static Map<String, HeatmapFileTypeEnum> valueToTypeMap = new HashMap<String, HeatmapFileTypeEnum>();
-    
-    private HeatmapFileTypeEnum(String filename) {
-        this.filename = filename;
-    }
-
-    /**
-     * @return the value
-     */
-    public String getFilename() {
-        return filename;
-    }
-
-
-    private static Map<String, HeatmapFileTypeEnum> getValueToTypeMap() {
-        if (valueToTypeMap.isEmpty()) {
-            for (HeatmapFileTypeEnum type : values()) {
-                valueToTypeMap.put(type.getFilename(), type);
-            }
+    public static List<SegmentDataWrapper> convertSegmentDatas(Collection<SegmentData> segmentDatas) {
+        List<SegmentDataWrapper> segmentDataWrappers = new ArrayList<SegmentDataWrapper>();
+        for (SegmentData segmentData : segmentDatas) {
+            SegmentDataWrapper segmentDataWrapper = new SegmentDataWrapper();
+            segmentDataWrapper.setChromosome(segmentData.getLocation().getChromosome());
+            segmentDataWrapper.setNumberOfMarkers(segmentData.getNumberOfMarkers());
+            segmentDataWrapper.setSampleIdentifier(segmentData.getArrayData().getSample().getName());
+            segmentDataWrapper.setSegmentValue(segmentData.getSegmentValue());
+            segmentDataWrapper.setStartPosition(segmentData.getLocation().getStartPosition());
+            segmentDataWrapper.setStopPosition(segmentData.getLocation().getEndPosition());
+            segmentDataWrappers.add(segmentDataWrapper);
         }
-        return valueToTypeMap;
+        return segmentDataWrappers;
     }
-    
+
     /**
-     * Returns the <code>HeatmapFileTypeEnum</code> corresponding to the given value. Returns null
-     * for null value.
-     * 
-     * @param filename the value to match
-     * @return the matching type.
+     * Converts CaIntegrator GeneChromosomalLocation to CBSToHeatmap GeneLocationWrapper objects.
+     * @param geneLocations cai objects.
+     * @return CBSToHeatmap objects.
      */
-    public static HeatmapFileTypeEnum getByFilename(String filename) {
-        return getValueToTypeMap().get(filename);
+    public static List<GeneLocationWrapper> convertGeneLocations(Collection<GeneChromosomalLocation> geneLocations) {
+        List<GeneLocationWrapper> geneLocationWrappers = new ArrayList<GeneLocationWrapper>();
+        for (GeneChromosomalLocation geneLocation : geneLocations) {
+            GeneLocationWrapper geneLocationWrapper = new GeneLocationWrapper();
+            geneLocationWrapper.setChromosome(geneLocation.getLocation().getChromosome());
+            geneLocationWrapper.setEndPosition(geneLocation.getLocation().getEndPosition());
+            geneLocationWrapper.setStartPosition(geneLocation.getLocation().getStartPosition());
+            geneLocationWrapper.setGeneSymbol(geneLocation.getGeneSymbol());
+            geneLocationWrappers.add(geneLocationWrapper);
+        }
+        return geneLocationWrappers;
     }
 }

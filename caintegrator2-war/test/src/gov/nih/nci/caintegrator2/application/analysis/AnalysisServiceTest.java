@@ -103,9 +103,11 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParamete
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticRefgeneFileEnum;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotServiceImpl;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
@@ -134,6 +136,8 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
@@ -311,6 +315,63 @@ public class AnalysisServiceTest {
         assertTrue(analysisFileManagerStub.createIGVSessionFileCalled);
         assertEquals(
                 "http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=http://localhost:8080/caintegrator2/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
+                resultURL);
+        
+        // Now test the All Platforms way.
+        Platform platform1 = new Platform();
+        platform1.setId(1l);
+        PlatformConfiguration platformConfiguration1 = new PlatformConfiguration();
+        platform1.setPlatformConfiguration(platformConfiguration1);
+        platformConfiguration1.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
+        
+        Platform platform2 = new Platform();
+        platform2.setId(2l);
+        PlatformConfiguration platformConfiguration2 = new PlatformConfiguration();
+        platform2.setPlatformConfiguration(platformConfiguration2);
+        platformConfiguration2.setPlatformType(PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER);
+        analysisFileManagerStub.clear();
+        igvParameters.setViewAllData(true);
+        igvParameters.getPlatforms().add(platform1);
+        igvParameters.getPlatforms().add(platform2);
+        resultURL = service.executeIGV(igvParameters);
+        assertTrue(analysisFileManagerStub.createIGVGctFileCalled);
+        assertTrue(analysisFileManagerStub.createIGVSegFileCalled);
+        assertTrue(analysisFileManagerStub.createIGVSampleClassificationFileCalled);
+        assertTrue(analysisFileManagerStub.createIGVSessionFileCalled);
+    }
+    
+    @Test
+    public void testExecuteHeatmap() throws ConnectionException, InvalidCriterionException, IOException {
+        Query query = new Query();
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.setName("queryNameString");
+        
+        StudySubscription subscription = new StudySubscription();
+        Study study = new Study();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        study.setStudyConfiguration(studyConfiguration);
+        subscription.setStudy(study);
+        query.setSubscription(subscription);
+        HeatmapParameters heatmapParameters = new HeatmapParameters();
+        heatmapParameters.setUrlPrefix("http://localhost:8080/caintegrator2/viewer/runViewer.do?JSESSIONID=sessionId&file=");
+        heatmapParameters.setSessionId("sessionId");
+        heatmapParameters.setQuery(query);
+        heatmapParameters.setStudySubscription(subscription);
+        heatmapParameters.setViewAllData(true);
+        heatmapParameters.setPlatform(new Platform());
+        analysisFileManagerStub.clear();
+        
+        GenomicDataSourceConfiguration genomicSource2 = new GenomicDataSourceConfiguration();
+        genomicSource2.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
+        studyConfiguration.getGenomicDataSources().add(genomicSource2);
+        query.getColumnCollection().add(new ResultColumn());
+        heatmapParameters.setQuery(query);
+        String resultURL = service.executeHeatmap(heatmapParameters);
+        assertTrue(analysisFileManagerStub.createHeatmapGenomicFileCalled);
+        assertTrue(analysisFileManagerStub.createHeatmapSampleClassificationFileCalled);
+        assertTrue(analysisFileManagerStub.createHeatmapJnlpFileCalled);
+        assertEquals(
+                "http://localhost:8080/caintegrator2/viewer/runViewer.do?JSESSIONID=sessionId&file=heatmapLaunch.jnlp",
                 resultURL);
         
     }

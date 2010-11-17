@@ -86,15 +86,21 @@
 package gov.nih.nci.caintegrator2.file;
 
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapFileTypeEnum;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapResult;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.heatmap.CBSToHeatmap;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -112,13 +118,13 @@ public interface AnalysisFileManager {
     /**
      * Delete the igv directory.
      */
-    void deleteAllIGVDirectory();
+    void deleteAllTempAnalysisDirectories();
     
     /**
      * Delete the igv directory for the session.
      * @param sessionId to delete directory for.
      */
-    void deleteIGVDirectory(String sessionId);
+    void deleteSessionDirectories(String sessionId);
     
     /**
      * Delete the igv directory for the study.
@@ -134,6 +140,15 @@ public interface AnalysisFileManager {
      * @return the file or null if not found.
      */
     File retrieveIGVFile(Study study, IGVFileTypeEnum fileType, String platformName);
+    
+    /**
+     * Retrieves the Heatmap File for the study based on the file type and platform name.
+     * @param study the study.
+     * @param fileType the file type.
+     * @param platformName the platform name.
+     * @return the file or null if not found.
+     */
+    File retrieveHeatmapFile(Study study, HeatmapFileTypeEnum fileType, String platformName);
     
     /**
      * Creates the IGV GCT File for the given gctDataset.
@@ -180,11 +195,58 @@ public interface AnalysisFileManager {
             Collection<ResultColumn> columns);
     
     /**
+     * Creates the Heatmap JNLP file.
+     * @param heatmapParameters parameters used for running heatmap.
+     * @param heatmapResult results of the run.
+     */
+    void createHeatmapJnlpFile(HeatmapParameters heatmapParameters, HeatmapResult heatmapResult);
+    
+    /**
      * Creates the IGV Session file.
      * @param igvParameters parameters used for running IGV.
      * @param igvResult results of the run.
      */
     void createIGVSessionFile(IGVParameters igvParameters, IGVResult igvResult);
+    
+    /**
+     * Creates the Heatmap genomic file.
+     * @param sessionId directory will be based on this id.
+     * @param segmentDatas for genomic data to be calculated.
+     * @param geneLocationConfiguration for gene chromosomal locations.
+     * @param parameters heatmap params.
+     * @param cbsToHeatmap object that runs cbsToHeatmap algorithm.
+     * @return genomic file.
+     * @throws IOException 
+     */
+    File createHeatmapGenomicFile(String sessionId, Collection<SegmentData> segmentDatas,
+            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
+            CBSToHeatmap cbsToHeatmap) throws IOException;
+    
+    /**
+     * Creates the Heatmap genomic file.
+     * @param study to put in this studies directory.
+     * @param platformName to associate with in the study directory.
+     * @param segmentDatas for genomic data to be calculated.
+     * @param geneLocationConfiguration for gene chromosomal locations.
+     * @param parameters heatmap params.
+     * @param cbsToHeatmap object that runs cbsToHeatmap algorithm.
+     * @return genomic file.
+     * @throws IOException 
+     */
+    @SuppressWarnings("PMD.ExcessiveParameterList") // All parameters are needed.
+    File createHeatmapGenomicFile(Study study, String platformName, Collection<SegmentData> segmentDatas,
+            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
+            CBSToHeatmap cbsToHeatmap) throws IOException;
+    
+    /**
+     * Creates the Heatmap Sample Classification File for the given query result.
+     * @param queryResult query result data to turn into sample classification file.
+     * @param sessionId directory will be based on this.
+     * @param columns the columns that are in the query results.
+     * @return the file.
+     */
+    File createHeatmapSampleClassificationFile(QueryResult queryResult, String sessionId, 
+            Collection<ResultColumn> columns);
 
 
 }
