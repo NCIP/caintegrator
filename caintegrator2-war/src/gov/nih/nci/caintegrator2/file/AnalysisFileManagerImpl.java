@@ -85,9 +85,16 @@
  */
 package gov.nih.nci.caintegrator2.file;
 
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisViewerTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
 import gov.nih.nci.caintegrator2.application.analysis.SegmentDatasetFileWriter;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapFileTypeEnum;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapGenomicDataFileWriter;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapJnlpFileWriter;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapResult;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapSampleAnnotationsFileWriter;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
@@ -96,8 +103,10 @@ import gov.nih.nci.caintegrator2.application.analysis.igv.IGVSessionFileWriter;
 import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.heatmap.CBSToHeatmap;
 
 import java.io.File;
 import java.io.IOException;
@@ -110,7 +119,6 @@ import org.apache.commons.lang.StringUtils;
  * 
  */
 public class AnalysisFileManagerImpl implements AnalysisFileManager {
-    private static final String IGV_DIRECTORY = "igv";
     private FileManager fileManager;
     
     /**
@@ -143,6 +151,16 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
     /**
      * {@inheritDoc}
      */
+    public File createHeatmapSampleClassificationFile(QueryResult queryResult, String sessionId, 
+            Collection<ResultColumn> columns) {
+        return new HeatmapSampleAnnotationsFileWriter().writeSampleInfoFile(QueryUtil.
+            retrieveSampleValuesMap(queryResult), columns, new File(getHeatmapDirectory(sessionId).getAbsolutePath()
+                + File.separator + HeatmapFileTypeEnum.ANNOTATIONS.getFilename()).getAbsolutePath());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId) {
         return segmentDatas.isEmpty() ? null : SegmentDatasetFileWriter.writeAsSegFile(segmentDatas,
                 new File(getIGVDirectory(sessionId).getAbsolutePath() + File.separator
@@ -155,6 +173,43 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
     public File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName) {
         return segmentDatas.isEmpty() ? null : SegmentDatasetFileWriter.writeAsSegFile(segmentDatas,
                 retrieveIGVFile(study, IGVFileTypeEnum.SEGMENTATION, platformName).getAbsolutePath());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File createHeatmapGenomicFile(String sessionId, Collection<SegmentData> segmentDatas,
+            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
+            CBSToHeatmap cbsToHeatmap) throws IOException {
+        return createHeatmapGenomicFile(new File(getHeatmapDirectory(sessionId).getAbsolutePath() + File.separator
+                + HeatmapFileTypeEnum.GENOMIC_DATA.getFilename()), 
+                segmentDatas, geneLocationConfiguration, parameters, cbsToHeatmap);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("PMD.ExcessiveParameterList") // All parameters are needed.
+    public File createHeatmapGenomicFile(Study study, String platformName, Collection<SegmentData> segmentDatas,
+            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
+            CBSToHeatmap cbsToHeatmap) throws IOException {
+        return createHeatmapGenomicFile(retrieveHeatmapFile(study, HeatmapFileTypeEnum.GENOMIC_DATA, platformName), 
+                segmentDatas, geneLocationConfiguration, parameters, cbsToHeatmap);
+    }
+    
+    private File createHeatmapGenomicFile(File file, Collection<SegmentData> segmentDatas,
+            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
+            CBSToHeatmap cbsToHeatmap) throws IOException {
+        return segmentDatas.isEmpty() ? null : HeatmapGenomicDataFileWriter.writeGenomicDataFile(
+                file.getAbsolutePath(), segmentDatas, geneLocationConfiguration, parameters, cbsToHeatmap);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void createHeatmapJnlpFile(HeatmapParameters heatmapParameters, HeatmapResult heatmapResult) {
+        HeatmapJnlpFileWriter.writeJnlpFile(getHeatmapDirectory(heatmapParameters.getSessionId()), 
+                heatmapParameters.getUrlPrefix(), heatmapParameters.getHeatmapJarUrlPrefix(), heatmapResult);
     }
     
     /**
@@ -179,9 +234,10 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
     /**
      * {@inheritDoc}
      */
-    public void deleteIGVDirectory(String sessionId) {
+    public void deleteSessionDirectories(String sessionId) {
         try {
             FileUtils.deleteDirectory(getIGVDirectory(sessionId));
+            FileUtils.deleteDirectory(getHeatmapDirectory(sessionId));
         } catch (IOException e) {
             return;
         }
@@ -190,8 +246,9 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
     /**
      * {@inheritDoc}
      */
-    public void deleteAllIGVDirectory() {
-        FileUtils.deleteQuietly(new File(fileManager.getTempDirectory(), IGV_DIRECTORY));
+    public void deleteAllTempAnalysisDirectories() {
+        FileUtils.deleteQuietly(new File(fileManager.getTempDirectory(), AnalysisViewerTypeEnum.IGV.getValue()));
+        FileUtils.deleteQuietly(new File(fileManager.getTempDirectory(), AnalysisViewerTypeEnum.HEATMAP.getValue()));
     }
     
     /**
@@ -201,7 +258,7 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
         if (StringUtils.isBlank(sessionId)) {
             throw new IllegalArgumentException("Session ID is null or blank, unable to get the IGV directory.");
         }
-        return fileManager.getNewTemporaryDirectory(IGV_DIRECTORY + File.separator + sessionId);
+        return fileManager.getNewTemporaryDirectory(AnalysisViewerTypeEnum.IGV.getValue() + File.separator + sessionId);
     }
     
     /**
@@ -213,7 +270,34 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
     }
     
     private File getStudyIGVDirectory(Study study) {
-        File file = new File(fileManager.getStudyDirectory(study) + File.separator + IGV_DIRECTORY);
+        File file = new File(fileManager.getStudyDirectory(study) + File.separator
+                + AnalysisViewerTypeEnum.IGV.getValue());
+        file.mkdir();
+        return file;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File getHeatmapDirectory(String sessionId) {
+        if (StringUtils.isBlank(sessionId)) {
+            throw new IllegalArgumentException("Session ID is null or blank, unable to get the heatmap directory.");
+        }
+        return fileManager.getNewTemporaryDirectory(AnalysisViewerTypeEnum.HEATMAP.getValue() + File.separator
+                + sessionId);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File retrieveHeatmapFile(Study study, HeatmapFileTypeEnum fileType, String platformName) {
+        return new File(getStudyHeatmapDirectory(study) + File.separator
+                + platformName + "_" + fileType.getFilename());
+    }
+    
+    private File getStudyHeatmapDirectory(Study study) {
+        File file = new File(fileManager.getStudyDirectory(study) + File.separator
+                + AnalysisViewerTypeEnum.HEATMAP.getValue());
         file.mkdir();
         return file;
     }

@@ -102,6 +102,7 @@ import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
@@ -286,6 +287,13 @@ public interface CaIntegrator2Dao {
      * @return T/F value determining if it was mapped or not.
      */
     boolean isGenomeVersionMapped(GenomeBuildVersionEnum genomeVersion);
+    
+    /**
+     * Gets geneLocationConfiguration from the build version.
+     * @param genomeVersion to get gene location configuration for.
+     * @return gene location configuration for the version.
+     */
+    GeneLocationConfiguration getGeneLocationConfiguration(GenomeBuildVersionEnum genomeVersion);
     
     /**
      * Returns the definitions that matches the name given (if one exists).

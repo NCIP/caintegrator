@@ -72,16 +72,19 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
     <property name="caintegrator2-war.base.dir" value="${software.dir}/caintegrator2-war" />
     <property name="genepattern-service-jar.base.dir" value="${software.dir}/genepattern-service-jar" />
     <property name="kaplan-meier-jar.base.dir" value="${software.dir}/kaplan-meier-jar" />
+    <property name="cbs-to-heatmap-jar.base.dir" value="${software.dir}/cbs-to-heatmap-jar" />
 
 	<!-- Build file names relative working dir above, if the software.dir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
     <property name="caintegrator2-war.build.file" value="build.xml" />
     <property name="genepattern-service-jar.build.file" value="build.xml" />
     <property name="kaplan-meier-jar.build.file" value="build.xml" />
+    <property name="cbs-to-heatmap-jar.build.file" value="build.xml" />
 
 	<!-- The target name that should be called from the sub-project build file -->
     <property name="caintegrator2-war.build.target" value="build" />
     <property name="genepattern-service-jar.build.target" value="build" />
     <property name="kaplan-meier-jar.build.target" value="build" />
+    <property name="cbs-to-heatmap-jar.build.target" value="build" />
 
 	<!-- Distribution Structure properties, used to copy files into the distribution area.
        		Use project.propertie relative dir names becasue they are used by install also-->
@@ -198,6 +201,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
         <ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="clean" dir="${caintegrator2-war.base.dir}" />
         <ant inheritAll="false" inheritRefs="false" antfile="${genepattern-service-jar.build.file}" target="clean" dir="${genepattern-service-jar.base.dir}" />
         <ant inheritAll="false" inheritRefs="false" antfile="${kaplan-meier-jar.build.file}" target="clean" dir="${kaplan-meier-jar.base.dir}" />
+	    <ant inheritAll="false" inheritRefs="false" antfile="${cbs-to-heatmap-jar.build.file}" target="clean" dir="${cbs-to-heatmap-jar.base.dir}" />
 	</target>
 
 	<target name="init">
@@ -224,6 +228,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="ivy:clean" dir="${caintegrator2-war.base.dir}" />
 		<ant inheritAll="false" inheritRefs="false" antfile="${genepattern-service-jar.build.file}" target="ivy:clean" dir="${genepattern-service-jar.base.dir}" />
 	    <ant inheritAll="false" inheritRefs="false" antfile="${kaplan-meier-jar.build.file}" target="ivy:clean" dir="${kaplan-meier-jar.base.dir}" />
+	    <ant inheritAll="false" inheritRefs="false" antfile="${cbs-to-heatmap-jar.build.file}" target="ivy:clean" dir="${cbs-to-heatmap-jar.base.dir}" />
 	</target>
     
     <target name="report:ivy:cai2" description="Runs ivy reports on all dependencies in the ivy defnintion file, also produces dependency diagrams" >
@@ -248,12 +253,13 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		clean,
 		init,
         build:kaplan-meier.jar,
+	    build:cbs-to-heatmap.jar,
         build:genepattern-service.jar,
         build:caintegrator2.war,
 	    test:selenium:copy-tests
 		" />
 
-    <target name="build:caintegrator2.war" depends="init, build:genepattern-service.jar, build:kaplan-meier.jar">
+    <target name="build:caintegrator2.war" depends="init, build:genepattern-service.jar, build:kaplan-meier.jar, build:cbs-to-heatmap.jar">
         <ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="${caintegrator2-war.build.target}" dir="${caintegrator2-war.base.dir}">
             <property name="caintegrator2.war" value="${caintegrator2-war.dist.dir}/caintegrator2.war" />
         </ant>
@@ -269,6 +275,12 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
         <ant inheritAll="false" inheritRefs="false" antfile="${kaplan-meier-jar.build.file}" target="${kaplan-meier-jar.build.target}" dir="${kaplan-meier-jar.base.dir}">
             <property name="kaplan-meier.jar" value="${kaplan-meier-jar.base.dir}/target/kaplan-meier.jar" />
         </ant>
+    </target>
+    
+    <target name="build:cbs-to-heatmap.jar" depends="init">
+            <ant inheritAll="false" inheritRefs="false" antfile="${cbs-to-heatmap-jar.build.file}" target="${cbs-to-heatmap-jar.build.target}" dir="${cbs-to-heatmap-jar.base.dir}">
+                <property name="cbs-to-heatmap.jar" value="${cbs-to-heatmap-jar.base.dir}/target/cbs-to-heatmap.jar" />
+            </ant>
     </target>
 
 	<!-- Produces all distributions: installer, upgrader and source -->

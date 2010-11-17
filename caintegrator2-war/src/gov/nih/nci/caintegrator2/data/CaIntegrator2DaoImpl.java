@@ -424,6 +424,17 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
+    public GeneLocationConfiguration getGeneLocationConfiguration(GenomeBuildVersionEnum genomeVersion) {
+        List<GeneLocationConfiguration> geneLocationConfigurations = 
+            getCurrentSession().createCriteria(GeneLocationConfiguration.class).
+                add(Restrictions.eq("genomeBuildVersion", genomeVersion)).list();
+        return geneLocationConfigurations.isEmpty() ? null : geneLocationConfigurations.get(0);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
     public List<Gene> findGenesByLocation(String chromosome, Integer startPosition, Integer endPosition, 
             GenomeBuildVersionEnum genomeBuildVersion) {
         String locStartPosition = "location.startPosition";

@@ -1,5 +1,7 @@
 package gov.nih.nci.caintegrator2.heatmap;
 
+import java.io.IOException;
+
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -39,8 +41,14 @@ public class invokeCBS2HeatMap {
             System.out.println("must specify RefSeq gene flat file");
             System.exit(-1);
         }
-        CBS2HeatMap CBS2HM = new CBS2HeatMap();
-        CBS2HM.runCBSToHeatmap(hma);
+        CBSToHeatmap CBS2HM = new CBS2HeatMap();
+        try {
+            CBS2HM.runCBSToHeatmap(hma);
+            System.out.println("Completed successfully, the output file(s) are here: " 
+                    + hma.getGeneOutFile() + ", " + hma.getGenomeOutFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void ReadOptions(String[] args, HeatMapArgs hma) {

@@ -130,7 +130,7 @@ public class FileManagerImplTest {
         // Test deleteIGVDirectory
         gotException = false;
         try {
-            analysisFileManager.deleteIGVDirectory("12345");
+            analysisFileManager.deleteSessionDirectories("12345");
         } catch(Exception e) {
             gotException = true;
         }

@@ -83,78 +83,15 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis.heatmap;
+package gov.nih.nci.caintegrator2.heatmap;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 
 /**
- * Enum for the heatmap file type.
+ * Inteface for running CBSToHeatmap algorithm.
  */
-public enum HeatmapFileTypeEnum {
-    
-    /**
-     * Launch File.
-     */
-    LAUNCH_FILE("heatmapLaunch.jnlp"),
-    
-    /**
-     * Genomic Data.
-     */
-    GENOMIC_DATA("heatmapGenomicData.txt"),
-    
-    /**
-     * Layout.
-     */
-    LAYOUT("chr2genecount.dat"),
-    
-    /**
-     * Annotations.
-     */
-    ANNOTATIONS("heatmapAnnotations.txt"),
-    
-    /**
-     * Small Bins.
-     */
-    SMALL_BINS_FILE("bins10K.dat"),
-    
-    /**
-     * Large Bins.
-     */
-    LARGE_BINS_FILE("bins200K.dat");
-    
-    private String filename;
-    private static Map<String, HeatmapFileTypeEnum> valueToTypeMap = new HashMap<String, HeatmapFileTypeEnum>();
-    
-    private HeatmapFileTypeEnum(String filename) {
-        this.filename = filename;
-    }
+public interface CBSToHeatmap {
 
-    /**
-     * @return the value
-     */
-    public String getFilename() {
-        return filename;
-    }
+    void runCBSToHeatmap(HeatMapArgs hma) throws IOException;
 
-
-    private static Map<String, HeatmapFileTypeEnum> getValueToTypeMap() {
-        if (valueToTypeMap.isEmpty()) {
-            for (HeatmapFileTypeEnum type : values()) {
-                valueToTypeMap.put(type.getFilename(), type);
-            }
-        }
-        return valueToTypeMap;
-    }
-    
-    /**
-     * Returns the <code>HeatmapFileTypeEnum</code> corresponding to the given value. Returns null
-     * for null value.
-     * 
-     * @param filename the value to match
-     * @return the matching type.
-     */
-    public static HeatmapFileTypeEnum getByFilename(String filename) {
-        return getValueToTypeMap().get(filename);
-    }
 }

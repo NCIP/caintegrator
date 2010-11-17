@@ -97,7 +97,7 @@ public final class HeatmapJnlpFileWriter {
     private static final String REPLACEMENT_STRING = "REPLACMENT_STRING_TEXT";
     private static final String JNLP_START_TAG = "<jnlp spec=\"1.5+\" codebase=\"" + REPLACEMENT_STRING + "\">";
     private static final String APPLICATION_DESC_START_TAG = "<application-desc main-class=\"TCGA.Heatmap6\">";
-    private static final String APPLICATION_DESC_END_TAG = "<application-desc>";
+    private static final String APPLICATION_DESC_END_TAG = "</application-desc>";
     private static final String JNPL_END_TAG = "</jnlp>";
     private static final Character NEW_LINE = '\n';
     
