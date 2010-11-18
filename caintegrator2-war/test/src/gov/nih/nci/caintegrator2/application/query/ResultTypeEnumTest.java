@@ -98,6 +98,8 @@ public class ResultTypeEnumTest {
         assertEquals(ResultTypeEnum.CLINICAL, ResultTypeEnum.getByValue(ResultTypeEnum.CLINICAL.getValue()));
         assertEquals(ResultTypeEnum.GENE_EXPRESSION, ResultTypeEnum.getByValue(ResultTypeEnum.GENE_EXPRESSION.getValue()));
         assertEquals(ResultTypeEnum.COPY_NUMBER, ResultTypeEnum.getByValue(ResultTypeEnum.COPY_NUMBER.getValue()));
+        assertEquals(ResultTypeEnum.IGV_VIEWER, ResultTypeEnum.getByValue(ResultTypeEnum.IGV_VIEWER.getValue()));
+        assertEquals(ResultTypeEnum.HEATMAP_VIEWER, ResultTypeEnum.getByValue(ResultTypeEnum.HEATMAP_VIEWER.getValue()));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -110,6 +112,8 @@ public class ResultTypeEnumTest {
         assertEquals("Annotation", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.CLINICAL.getValue()));
         assertEquals("Gene Expression", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.GENE_EXPRESSION.getValue()));
         assertEquals("Copy Number", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.COPY_NUMBER.getValue()));
+        assertEquals("Integrative Genomics Viewer", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.IGV_VIEWER.getValue()));
+        assertEquals("Heat Map Viewer", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.HEATMAP_VIEWER.getValue()));
     }
     
     @Test

@@ -107,10 +107,13 @@ import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
+import org.apache.struts2.ServletActionContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpSession;
 
 import com.opensymphony.xwork2.Action;
 
@@ -118,6 +121,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
 
     private ManageQueryAction manageQueryAction;
     private SessionHelper sessionHelper;
+    private MockHttpSession session;
     
     // Study objects
     private final QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
@@ -144,6 +148,11 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         
         sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().clear();
         sessionHelper.getDisplayableUserWorkspace().setCurrentStudySubscription(createStudySubscription(1L));
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        session = new MockHttpSession();
+        request.setSession(session);
+        ServletActionContext.setRequest(request);
     }
 
     private StudySubscription createStudySubscription(long id) {
@@ -248,6 +257,11 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.setRowNumber("0");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         
+        // test selectSearchTab
+        manageQueryAction.setSelectedAction("selectedTabSearchResults");
+        manageQueryAction.prepare();
+        assertEquals("searchResults", manageQueryAction.getDisplayTab());
+        
         // test save query
         manageQueryAction.setSelectedAction("saveQuery");
         manageQueryAction.prepare();
@@ -258,6 +272,10 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.getQueryForm().getQuery().setName("query name");
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
+        manageQueryAction.setSelectedAction("selectedTabSearchResults");
+        manageQueryAction.validate();
+        assertFalse(manageQueryAction.hasErrors());
+        manageQueryAction.setSelectedAction("saveQuery");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertTrue(queryManagementService.saveCalled);
         queryManagementService.saveCalled = false;
@@ -347,6 +365,13 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertFalse(manageQueryAction.acceptableParameterName("d-12345-p"));
         assertFalse(manageQueryAction.acceptableParameterName("12345f678"));
         assertTrue(manageQueryAction.acceptableParameterName("NewQuery"));
+        
+        // test viewer
+        manageQueryAction.setSelectedAction("viewIGV");
+        assertEquals("viewIGV", manageQueryAction.execute());
+        manageQueryAction.setSelectedAction("viewHeatmap");
+        assertEquals("viewHeatmap", manageQueryAction.execute());
+        
     }
 
     @Test

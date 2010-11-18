@@ -804,6 +804,7 @@
             <result name="error" type="tiles">manageQuery</result>
             <result name="nciaBasket">/WEB-INF/jsp/tiles/nciaBasket.jsp</result>
             <result name="viewIGV" type="tiles">igvAjax</result>
+            <result name="viewHeatmap" type="tiles">heatmapAjax</result>
             <result name="export" type="tiles">exportSearchResults</result>
             <result name="dicomJobAjax" type="tiles">dicomJobAjax</result>
             <result name="dicomJobCurrentlyRunning" type="tiles">genericError</result>
