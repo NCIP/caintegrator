@@ -182,7 +182,7 @@ public final class SessionHelper {
     private static String getAnalysisViewerUrl(String analysisViewerType) {
         HttpServletRequest request = ServletActionContext.getRequest();
         return getRequestBaseUrl(request)
-            + "/caintegrator2/viewer/retrieveFile.do?" + AnalysisViewerFileServlet.SESSION_PARAMETER + "="
+            + "/caintegrator2/viewer/retrieveFile.jnlp?" + AnalysisViewerFileServlet.SESSION_PARAMETER + "="
             + request.getRequestedSessionId() + "&" + AnalysisViewerFileServlet.VIEWERTYPE_PARAMETER + "=" 
             + analysisViewerType + "&" + AnalysisViewerFileServlet.FILENAME_PARAMETER + "=";
     }
