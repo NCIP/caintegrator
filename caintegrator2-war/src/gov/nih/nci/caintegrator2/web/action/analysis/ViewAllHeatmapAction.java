@@ -133,7 +133,9 @@ public class ViewAllHeatmapAction extends AbstractViewAllAction implements Servl
         if (!StringUtils.isEmpty(getCopyNumberPlatformName())) {
             Platform platform = getArrayDataService().getPlatform(getCopyNumberPlatformName());
             getPlatforms().add(platform);
-            genomeBuild.add(platform.getGenomeVersion());
+            if (platform.getGenomeVersion() != null) {
+                genomeBuild.add(platform.getGenomeVersion());
+            }
         }
     }
 

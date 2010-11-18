@@ -147,15 +147,18 @@ public class ViewAllIGVAction extends AbstractViewAllAction {
      * @param genomeBuild capture all distinct genomeBuild.
      */
     protected void addPlatform(Set<GenomeBuildVersionEnum> genomeBuild) {
-        Platform platform;
         if (!StringUtils.isEmpty(expressionPlatformName)) {
-            platform = getArrayDataService().getPlatform(expressionPlatformName);
-            getPlatforms().add(platform);
-            genomeBuild.add(platform.getGenomeVersion());
+            retrieveAndAddPlatform(genomeBuild, expressionPlatformName);
         }
         if (!StringUtils.isEmpty(getCopyNumberPlatformName())) {
-            platform = getArrayDataService().getPlatform(getCopyNumberPlatformName());
-            getPlatforms().add(platform);
+            retrieveAndAddPlatform(genomeBuild, getCopyNumberPlatformName());
+        }
+    }
+    
+    private void retrieveAndAddPlatform(Set<GenomeBuildVersionEnum> genomeBuild, String platformName) {
+        Platform platform = getArrayDataService().getPlatform(platformName);
+        getPlatforms().add(platform);
+        if (platform.getGenomeVersion() != null) {
             genomeBuild.add(platform.getGenomeVersion());
         }
     }
