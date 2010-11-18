@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.query.GenomicDataResultRowComparator;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
@@ -359,6 +360,9 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         } else if ("viewIGV".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
             returnValue = viewIGV();
+        } else if ("viewHeatmap".equals(selectedAction)) {
+            displayTab = RESULTS_TAB;
+            returnValue = viewHeatmap();
         } else if ("selectAll".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
             getDisplayableWorkspace().getQueryResult().setSelectAll(true);
@@ -571,6 +575,20 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         igvParameters.setUrlPrefix(SessionHelper.getIgvSessionUrl());
         getDisplayableWorkspace().setIgvParameters(igvParameters);
         return "viewIGV";
+    }
+    
+    /**
+     * View IGV.
+     * @return the Struts result.
+     */
+    public String viewHeatmap() {
+        HeatmapParameters heatmapParameters = new HeatmapParameters();
+        heatmapParameters.setQuery(getQuery());
+        heatmapParameters.setStudySubscription(getStudySubscription());
+        heatmapParameters.setSessionId(ServletActionContext.getRequest().getRequestedSessionId());
+        heatmapParameters.setUrlPrefix(SessionHelper.getIgvSessionUrl());
+        getDisplayableWorkspace().setHeatmapParameters(heatmapParameters);
+        return "viewHeatmap";
     }
 
     /**

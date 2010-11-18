@@ -835,13 +835,13 @@ public class QueryFormTest {
     @Test
     public void testResultTypes() {
         queryForm.createQuery(subscription, null, null);
-        assertEquals(2, queryForm.getResultTypes().size());
+        assertEquals(3, queryForm.getResultTypes().size());
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         subscription.getStudy().getStudyConfiguration().getGenomicDataSources().add(genomicSource);
         genomicSource.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
-        assertEquals(3, queryForm.getResultTypes().size());
+        assertEquals(5, queryForm.getResultTypes().size());
         subscription.getStudy().getStudyConfiguration().getGenomicDataSources().clear();
-        assertEquals(1, queryForm.getResultTypes().size());
+        assertEquals(2, queryForm.getResultTypes().size());
     }
     
     @Test
