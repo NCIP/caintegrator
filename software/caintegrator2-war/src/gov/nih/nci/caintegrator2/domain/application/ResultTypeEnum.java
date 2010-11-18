@@ -5,6 +5,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -78,7 +79,7 @@ public enum ResultTypeEnum {
      * @return HashMap of EnumeratedValue's String to Displayable String. 
      */
     public static Map<String, String> getValueToDisplayableMap() {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new LinkedHashMap<String, String>();
         map.put(ResultTypeEnum.CLINICAL.getValue(), "Annotation");
         map.put(ResultTypeEnum.GENE_EXPRESSION.getValue(), "Gene Expression");
         map.put(ResultTypeEnum.COPY_NUMBER.getValue(), "Copy Number");
