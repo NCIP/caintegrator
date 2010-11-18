@@ -312,7 +312,8 @@ public class CBS2HeatMap implements CBSToHeatmap {
                 // s/[\r\n]+//;
                 // # MJF: some files have a barcode as the first column, the files in RefNorm do not
                 String barcode = "", chr;
-                Integer start, stop, mean;
+                Integer start, stop, markers;
+                Float mean;
                 StringTokenizer st = new StringTokenizer(line);
                 SegmentDataWrapper segmentData = new SegmentDataWrapper();
                 if (st.countTokens() == 5) {
@@ -323,7 +324,14 @@ public class CBS2HeatMap implements CBSToHeatmap {
                     } // the files in RefNorm have a header line
                     start = Integer.parseInt((String) st.nextElement());
                     stop = Integer.parseInt((String) st.nextElement());
-                    mean = Integer.parseInt((String) st.nextElement());
+                    markers = Integer.parseInt((String) st.nextElement());
+                    String meanString = (String) st.nextElement();
+                    try {
+                        mean = Float.parseFloat(meanString);
+                    } catch ( NumberFormatException ex ) {
+                        System.out.println( "Bad Mean " + meanString );
+                        continue;
+                    }
                 } else {
                     barcode = (String) st.nextElement();
                     if (barcode.equals("barcode")) {
@@ -332,11 +340,19 @@ public class CBS2HeatMap implements CBSToHeatmap {
                     chr = (String) st.nextElement();
                     start = Integer.parseInt((String) st.nextElement());
                     stop = Integer.parseInt((String) st.nextElement());
-                    mean = Integer.parseInt((String) st.nextElement());
+                    markers = Integer.parseInt((String) st.nextElement());
+                    String meanString = (String) st.nextElement();
+                    try {
+                        mean = Float.parseFloat(meanString);
+                    } catch ( NumberFormatException ex ) {
+                        System.out.println( "Bad Mean " + meanString );
+                        continue;
+                    }
                 }
                 segmentData.setChromosome(chr);
                 segmentData.setSampleIdentifier(barcode);
-                segmentData.setNumberOfMarkers(mean);
+                segmentData.setNumberOfMarkers(markers);
+                segmentData.setSegmentValue(mean);
                 segmentData.setStartPosition(start);
                 segmentData.setStopPosition(stop);
                 segmentDatas.add(segmentData);
@@ -371,7 +387,7 @@ public class CBS2HeatMap implements CBSToHeatmap {
             String chr = segmentData.getChromosome();
             Integer start = segmentData.getStartPosition();
             Integer stop = segmentData.getStopPosition();
-            Integer mean = segmentData.getNumberOfMarkers();
+            Float mean = segmentData.getSegmentValue();
 
             // if ( barcode.length() > 20) { barcode = barcode.substring(0, 20); }
             if (hma.getSampleFile() != null && keep.get(barcode) == null) {
