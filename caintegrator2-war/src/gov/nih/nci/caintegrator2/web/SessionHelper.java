@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisViewerTypeEnum;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
@@ -96,8 +97,10 @@ import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotMapper;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotMapper;
 import gov.nih.nci.logging.api.util.StringUtils;
 
+import java.io.File;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
@@ -116,6 +119,7 @@ public final class SessionHelper {
     private static final String GE_PLOT_SESSION_KEY = "gePlot";
     private static final String ANONYMOUS_USER_WORKSPACE_SESSION_KEY = "anonymousUserWorkspace";
     private static final String IS_AUTHORIZED_PAGE = "isAuthorizedPage";
+    private static final String WEBINF_CLASSES_DIR = "WEB-INF" + File.separator + "classes" + File.separator;
     private Boolean studyManager = null;
     private Boolean platformManager = null;
     private Boolean invalidDataBeingAccessed = false;
@@ -185,6 +189,33 @@ public final class SessionHelper {
             + "/caintegrator2/viewer/retrieveFile.jnlp?" + AnalysisViewerFileServlet.SESSION_PARAMETER + "="
             + request.getRequestedSessionId() + "&" + AnalysisViewerFileServlet.VIEWERTYPE_PARAMETER + "=" 
             + analysisViewerType + "&" + AnalysisViewerFileServlet.FILENAME_PARAMETER + "=";
+    }
+    
+    /**
+     * 
+     * @param context servlet context.
+     * @return heatmap large bins file path.
+     */
+    public static String getHeatmapLargeBinsFile(ServletContext context) {
+        return context.getRealPath(WEBINF_CLASSES_DIR + HeatmapFileTypeEnum.LARGE_BINS_FILE.getFilename());
+    }
+    
+    /**
+     * 
+     * @param context servlet context.
+     * @return heatmap small bins file path.
+     */
+    public static String getHeatmapSmallBinsFile(ServletContext context) {
+        return context.getRealPath(WEBINF_CLASSES_DIR + HeatmapFileTypeEnum.SMALL_BINS_FILE.getFilename());
+    }
+    
+    /**
+     * 
+     * @param context servlet context.
+     * @return heatmap layout file.
+     */
+    public static File getHeatmapLayoutFile(ServletContext context) {
+        return new File(context.getRealPath(WEBINF_CLASSES_DIR + HeatmapFileTypeEnum.LAYOUT.getFilename()));
     }
     
     /**

@@ -85,13 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
-import java.io.File;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -106,7 +104,6 @@ import org.apache.struts2.util.ServletContextAware;
 public class ViewAllHeatmapAction extends AbstractViewAllAction implements ServletContextAware {
     private static final long serialVersionUID = 1L;
     private static final String VIEW_HEATMAP = "viewHeatmap";
-    private static final String WEBINF_CLASSES_DIR = "WEB-INF" + File.separator + "classes" + File.separator;
     private ServletContext context;
     
     /**
@@ -118,12 +115,9 @@ public class ViewAllHeatmapAction extends AbstractViewAllAction implements Servl
         heatmapParameters.setSessionId(ServletActionContext.getRequest().getRequestedSessionId());
         heatmapParameters.setUrlPrefix(SessionHelper.getHeatmapSessionUrl());
         heatmapParameters.setHeatmapJarUrlPrefix(SessionHelper.getCaIntegratorCommonUrl());
-        heatmapParameters.setLargeBinsFile(
-                context.getRealPath(WEBINF_CLASSES_DIR + HeatmapFileTypeEnum.LARGE_BINS_FILE.getFilename()));
-        heatmapParameters.setSmallBinsFile(
-                context.getRealPath(WEBINF_CLASSES_DIR + HeatmapFileTypeEnum.SMALL_BINS_FILE.getFilename()));
-        heatmapParameters.setLayoutFile(
-                new File(context.getRealPath(WEBINF_CLASSES_DIR + HeatmapFileTypeEnum.LAYOUT.getFilename())));
+        heatmapParameters.setLargeBinsFile(SessionHelper.getHeatmapLargeBinsFile(context));
+        heatmapParameters.setSmallBinsFile(SessionHelper.getHeatmapSmallBinsFile(context));
+        heatmapParameters.setLayoutFile(SessionHelper.getHeatmapLayoutFile(context));
         heatmapParameters.setQuery(getQuery());
         heatmapParameters.setPlatform(getPlatforms().get(0));
         heatmapParameters.setViewAllData(true);
