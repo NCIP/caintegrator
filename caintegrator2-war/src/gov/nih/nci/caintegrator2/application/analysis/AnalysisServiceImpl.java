@@ -507,20 +507,11 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     public String executeHeatmap(HeatmapParameters heatmapParameters) 
     throws InvalidCriterionException, IOException {
         HeatmapResult heatmapResult = new HeatmapResult();
+        StudySubscription studySubscription = heatmapParameters.getStudySubscription();
         if (heatmapParameters.isViewAllData()) {
-            Platform platform = heatmapParameters.getPlatform();
-            StudySubscription studySubscription = heatmapParameters.getStudySubscription();
-            File genomicDataFile = analysisFileManager.retrieveHeatmapFile(studySubscription.getStudy(),
-                    HeatmapFileTypeEnum.GENOMIC_DATA, platform.getName());
-            if (!genomicDataFile.exists()) {
-                genomicDataFile = analysisFileManager.createHeatmapGenomicFile(studySubscription.getStudy(), 
-                    platform.getName(), createSegmentDataset(studySubscription, new HashSet<Query>(),
-                    platform.getName(), null), getGeneLocationsForPlatform(platform), heatmapParameters, cbsToHeatmap);
-            }
-            heatmapResult.setGenomicDataFile(genomicDataFile);
+            generateHeatmapGenomicFileAllData(heatmapParameters, heatmapResult, studySubscription);
         } else {
-            // Query Based.
-            heatmapResult.setGenomicDataFile(null);
+            generateHeatmapGenomicFileForQuery(heatmapParameters, heatmapResult, studySubscription);
         }
         if (!heatmapParameters.getQuery().getColumnCollection().isEmpty()) {
             heatmapResult.setSampleAnnotationFile(analysisFileManager.createHeatmapSampleClassificationFile(
@@ -531,6 +522,32 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         analysisFileManager.createHeatmapJnlpFile(heatmapParameters, heatmapResult);
         sessionAnalysisResultsManager.storeJobResult(heatmapParameters.getSessionId(), heatmapResult);
         return heatmapParameters.getUrlPrefix() + HeatmapFileTypeEnum.LAUNCH_FILE.getFilename();
+    }
+
+    private void generateHeatmapGenomicFileForQuery(HeatmapParameters heatmapParameters, HeatmapResult heatmapResult,
+            StudySubscription studySubscription) throws InvalidCriterionException, IOException {
+        heatmapParameters.getQuery().setResultType(ResultTypeEnum.COPY_NUMBER);
+        Set<Query> queries = new HashSet<Query>();
+        queries.add(heatmapParameters.getQuery());
+        Query queryToExecute = queryManagementService.retrieveQueryToExecute(heatmapParameters.getQuery());
+        Platform platform = queryToExecute.getCopyNumberPlatform();
+        heatmapResult.setGenomicDataFile(
+                analysisFileManager.createHeatmapGenomicFile(heatmapParameters.getSessionId(), 
+                        createSegmentDataset(studySubscription, queries,
+                null, null), getGeneLocationsForPlatform(platform), heatmapParameters, cbsToHeatmap));
+    }
+
+    private void generateHeatmapGenomicFileAllData(HeatmapParameters heatmapParameters, HeatmapResult heatmapResult,
+            StudySubscription studySubscription) throws IOException, InvalidCriterionException {
+        Platform platform = heatmapParameters.getPlatform();
+        File genomicDataFile = analysisFileManager.retrieveHeatmapFile(studySubscription.getStudy(),
+                HeatmapFileTypeEnum.GENOMIC_DATA, platform.getName());
+        if (!genomicDataFile.exists()) {
+            genomicDataFile = analysisFileManager.createHeatmapGenomicFile(studySubscription.getStudy(), 
+                platform.getName(), createSegmentDataset(studySubscription, new HashSet<Query>(),
+                platform.getName(), null), getGeneLocationsForPlatform(platform), heatmapParameters, cbsToHeatmap);
+        }
+        heatmapResult.setGenomicDataFile(genomicDataFile);
     }
 
     private GeneLocationConfiguration getGeneLocationsForPlatform(Platform platform) {
