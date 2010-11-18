@@ -131,8 +131,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.util.ServletContextAware;
 
 import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 
@@ -142,7 +145,7 @@ import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength",
     "PMD.TooManyFields" }) // see execute method
 
-public class ManageQueryAction extends AbstractDeployedStudyAction implements ParameterNameAware {
+public class ManageQueryAction extends AbstractDeployedStudyAction implements ParameterNameAware, ServletContextAware {
 
     private static final long serialVersionUID = 1L;
 
@@ -170,6 +173,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     private boolean subjectListVisibleToOthers = false;
     private String genomicSortingType;
     private String genomicSortingIndex;
+    private ServletContext context;
 
     /**
      * @return the genomicSortingType
@@ -586,7 +590,11 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         heatmapParameters.setQuery(getQuery());
         heatmapParameters.setStudySubscription(getStudySubscription());
         heatmapParameters.setSessionId(ServletActionContext.getRequest().getRequestedSessionId());
-        heatmapParameters.setUrlPrefix(SessionHelper.getIgvSessionUrl());
+        heatmapParameters.setUrlPrefix(SessionHelper.getHeatmapSessionUrl());
+        heatmapParameters.setHeatmapJarUrlPrefix(SessionHelper.getCaIntegratorCommonUrl());
+        heatmapParameters.setLargeBinsFile(SessionHelper.getHeatmapLargeBinsFile(context));
+        heatmapParameters.setSmallBinsFile(SessionHelper.getHeatmapSmallBinsFile(context));
+        heatmapParameters.setLayoutFile(SessionHelper.getHeatmapLayoutFile(context));
         getDisplayableWorkspace().setHeatmapParameters(heatmapParameters);
         return "viewHeatmap";
     }
@@ -1048,5 +1056,13 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
      */
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setServletContext(ServletContext servletContext) {
+        this.context = servletContext;
+        
     }
 }

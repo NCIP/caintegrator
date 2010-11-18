@@ -89,6 +89,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -114,6 +115,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockServletContext;
 
 import com.opensymphony.xwork2.Action;
 
@@ -370,6 +372,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.setSelectedAction("viewIGV");
         assertEquals("viewIGV", manageQueryAction.execute());
         manageQueryAction.setSelectedAction("viewHeatmap");
+        manageQueryAction.setServletContext(new ServletContextStub());
         assertEquals("viewHeatmap", manageQueryAction.execute());
         
     }
@@ -435,6 +438,14 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertTrue(manageQueryAction.acceptableParameterName("ABC"));
         assertFalse(manageQueryAction.acceptableParameterName("123"));
         assertFalse(manageQueryAction.acceptableParameterName("d-123-e"));
+    }
+    
+    private class ServletContextStub extends MockServletContext {
+        
+        @Override
+        public String getRealPath(String path) {
+            return TestDataFiles.VALID_FILE.getAbsolutePath();
+        }
     }
     
 }
