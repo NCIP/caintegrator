@@ -111,7 +111,7 @@ public class IGVSessionFileWriterTest {
 
     @Test
     public void testWriteSessionFile() throws IOException {
-        String urlPrefix = "http://caintegrator2.nci.nih.gov/caintegrator2/igv/retrieveFile.do?JSESSIONID=12345&file=";
+        String urlPrefix = "http://caintegrator2.nci.nih.gov/caintegrator2/igv/retrieveFile.jnlp?JSESSIONID=12345&file=";
         File tempDirectory = new File(System.getProperty("java.io.tmpdir") + File.separator + "igvTmp");
         tempDirectory.mkdir();
         IGVResult igvResult = new IGVResult();
@@ -162,15 +162,15 @@ public class IGVSessionFileWriterTest {
         assertEquals(
                 reader.readLine(),
                 "<Resource path=\"http://caintegrator2.nci.nih.gov/"
-                + "caintegrator2/igv/retrieveFile.do?JSESSIONID=12345&amp;file=igvGeneExpression.gct\"/>");
+                + "caintegrator2/igv/retrieveFile.jnlp?JSESSIONID=12345&amp;file=igvGeneExpression.gct\"/>");
         assertEquals(
                 reader.readLine(),
                 "<Resource path=\"http://caintegrator2.nci.nih.gov/"
-                + "caintegrator2/igv/retrieveFile.do?JSESSIONID=12345&amp;file=igvSegmentation.seg\"/>");
+                + "caintegrator2/igv/retrieveFile.jnlp?JSESSIONID=12345&amp;file=igvSegmentation.seg\"/>");
         assertEquals(
                 reader.readLine(),
                 "<Resource path=\"http://caintegrator2.nci.nih.gov/"
-                + "caintegrator2/igv/retrieveFile.do?JSESSIONID=12345&amp;file=sampleInfo.txt\"/>");
+                + "caintegrator2/igv/retrieveFile.jnlp?JSESSIONID=12345&amp;file=sampleInfo.txt\"/>");
         assertEquals(reader.readLine(), "</Resources>");
         assertEquals(reader.readLine(), "</Session>");
         reader.close();
