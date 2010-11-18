@@ -28,7 +28,17 @@ public enum ResultTypeEnum {
      * Copy Number.
      */
      COPY_NUMBER("copyNumber", ReporterTypeEnum.DNA_ANALYSIS_REPORTER, 
-             ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER);
+             ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER),
+    
+    /**
+     * IGV viewer.
+     */
+    IGV_VIEWER("igvViewer"),
+    
+    /**
+     * Heat Map viewer.
+     */
+    HEATMAP_VIEWER("heatmapViewer");
     
     private static Map<String, ResultTypeEnum> valueToTypeMap = new HashMap<String, ResultTypeEnum>();
 
@@ -72,6 +82,8 @@ public enum ResultTypeEnum {
         map.put(ResultTypeEnum.CLINICAL.getValue(), "Annotation");
         map.put(ResultTypeEnum.GENE_EXPRESSION.getValue(), "Gene Expression");
         map.put(ResultTypeEnum.COPY_NUMBER.getValue(), "Copy Number");
+        map.put(ResultTypeEnum.IGV_VIEWER.getValue(), "Integrative Genomics Viewer");
+        map.put(ResultTypeEnum.HEATMAP_VIEWER.getValue(), "Heat Map Viewer");
         return map;
     }
     

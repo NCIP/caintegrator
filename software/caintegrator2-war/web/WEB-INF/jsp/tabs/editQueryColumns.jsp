@@ -67,7 +67,9 @@
     </s:elseif>
     </div>
     
-    <s:if test="queryForm.resultConfiguration.resultType == 'clinical'">
+    <s:if test="queryForm.resultConfiguration.resultType == 'clinical' ||
+                queryForm.resultConfiguration.resultType == 'igvViewer' ||
+                queryForm.resultConfiguration.resultType == 'heatmapViewer'">
         <div style="margin-top: 10px;">
         <h2>Select Columns for Results</h2>
         
@@ -113,10 +115,24 @@
     <div class="actionsrow">
     <del class="btnwrapper">
     <ul class="btnrow">
-        <li><s:a href="#" cssClass="btn"
-            onclick="runSearch()">
-            <span class="btn_img"><span class="search">Run Query</span></span>
-        </s:a></li>
+        <s:if test="queryForm.resultConfiguration.resultType == 'heatmapViewer'">
+            <li><s:a href="#" cssClass="btn"
+                onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='viewHeatmap';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+                <span class="btn_img"><span class="search">View in Heat Map Viewer</span></span>
+            </s:a></li>
+        </s:if>
+        <s:elseif test="queryForm.resultConfiguration.resultType == 'igvViewer'">
+            <li><s:a href="#" cssClass="btn"
+                onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='viewIGV';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+                <span class="btn_img"><span class="search">View in Integrative Genomics Viewer</span></span>
+            </s:a></li>
+        </s:elseif>
+        <s:else>
+            <li><s:a href="#" cssClass="btn"
+                onclick="runSearch()">
+                <span class="btn_img"><span class="search">Run Query</span></span>
+            </s:a></li>
+        </s:else>
     </ul>
     </del>
     </div>
