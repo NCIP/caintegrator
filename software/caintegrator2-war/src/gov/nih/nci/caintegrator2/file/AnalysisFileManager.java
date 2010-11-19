@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.file;
 
+import gov.nih.nci.caintegrator2.application.analysis.CBSToHeatmapFactory;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
@@ -97,7 +98,6 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.heatmap.CBSToHeatmap;
 
 import java.io.File;
 import java.io.IOException;
@@ -214,13 +214,13 @@ public interface AnalysisFileManager {
      * @param segmentDatas for genomic data to be calculated.
      * @param geneLocationConfiguration for gene chromosomal locations.
      * @param parameters heatmap params.
-     * @param cbsToHeatmap object that runs cbsToHeatmap algorithm.
+     * @param cbsToHeatmapFactory factory that creates CBSToHeatmap object, which runs cbsToHeatmap algorithm.
      * @return genomic file.
      * @throws IOException 
      */
     File createHeatmapGenomicFile(String sessionId, Collection<SegmentData> segmentDatas,
             GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
-            CBSToHeatmap cbsToHeatmap) throws IOException;
+            CBSToHeatmapFactory cbsToHeatmapFactory) throws IOException;
     
     /**
      * Creates the Heatmap genomic file.
@@ -229,14 +229,14 @@ public interface AnalysisFileManager {
      * @param segmentDatas for genomic data to be calculated.
      * @param geneLocationConfiguration for gene chromosomal locations.
      * @param parameters heatmap params.
-     * @param cbsToHeatmap object that runs cbsToHeatmap algorithm.
+     * @param cbsToHeatmapFactory factory that creates CBSToHeatmap object, which runs cbsToHeatmap algorithm.
      * @return genomic file.
      * @throws IOException 
      */
     @SuppressWarnings("PMD.ExcessiveParameterList") // All parameters are needed.
     File createHeatmapGenomicFile(Study study, String platformName, Collection<SegmentData> segmentDatas,
             GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
-            CBSToHeatmap cbsToHeatmap) throws IOException;
+            CBSToHeatmapFactory cbsToHeatmapFactory) throws IOException;
     
     /**
      * Creates the Heatmap Sample Classification File for the given query result.

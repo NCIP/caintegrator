@@ -970,8 +970,8 @@
         <property name="sessionAnalysisResultsManager">
             <ref local="sessionAnalysisResultsManager"/>
         </property>
-        <property name="cbsToHeatmap">
-            <ref local="cbsToHeatmap" />
+        <property name="cbsToHeatmapFactory">
+            <ref local="cbsToHeatmapFactory" />
         </property>
     </bean>
 
@@ -1145,7 +1145,7 @@
     <!-- ** SERVICES                                                      ** -->
     <!-- ******************************************************************* -->
 
-    <bean id="cbsToHeatmap" class="gov.nih.nci.caintegrator2.heatmap.CBS2HeatMap" />
+    <bean id="cbsToHeatmapFactory" class="gov.nih.nci.caintegrator2.application.analysis.CBSToHeatmapFactoryImpl" />
     
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory">

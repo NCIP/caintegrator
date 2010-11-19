@@ -83,45 +83,21 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis.heatmap;
+package gov.nih.nci.caintegrator2.application.analysis;
 
-import gov.nih.nci.caintegrator2.application.analysis.CBSToHeatmapFactory;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
-import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
-import gov.nih.nci.caintegrator2.heatmap.HeatMapArgs;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-
+import gov.nih.nci.caintegrator2.heatmap.CBS2HeatMap;
+import gov.nih.nci.caintegrator2.heatmap.CBSToHeatmap;
 
 /**
- * Calls cbs2heatmap algorithm to write the data file for the input segment datas.
+ * 
  */
-public final class HeatmapGenomicDataFileWriter {
-    
-    private HeatmapGenomicDataFileWriter() { }
-    
+public class CBSToHeatmapFactoryImpl implements CBSToHeatmapFactory {
+
     /**
-     * Writes genomic data file.
-     * @param filePath to write data file to.
-     * @param segmentDatas the segment data to run cbs to heatmap algorithm on.
-     * @param geneLocationConfiguration to look up gene chromosome locations.
-     * @param parameters for heatmap.
-     * @param cbsToHeatmapFactory factory that creates CBSToHeatmap object, which runs cbsToHeatmap algorithm.
-     * @return Genomic data file.
-     * @throws IOException if unable to write file.
+     * {@inheritDoc}
      */
-    public static File writeGenomicDataFile(String filePath, Collection<SegmentData> segmentDatas,
-            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
-            CBSToHeatmapFactory cbsToHeatmapFactory) throws IOException {
-        HeatMapArgs hma = new HeatMapArgs();
-        hma.setBigBinFile(parameters.getLargeBinsFile());
-        hma.setSmallBinFile(parameters.getSmallBinsFile());
-        hma.setGeneOutFile(filePath); // If we want to do gene based.
-        hma.getGeneLocations().addAll(HeatmapUtil.convertGeneLocations(geneLocationConfiguration.getGeneLocations()));
-        hma.getSegmentDatas().addAll(HeatmapUtil.convertSegmentDatas(segmentDatas));
-        cbsToHeatmapFactory.getCbsToHeatmap().runCBSToHeatmap(hma);
-        return new File(filePath);
+    public CBSToHeatmap getCbsToHeatmap() {
+        return new CBS2HeatMap();
     }
+
 }

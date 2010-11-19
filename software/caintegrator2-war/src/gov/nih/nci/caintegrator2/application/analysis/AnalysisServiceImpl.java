@@ -147,7 +147,6 @@ import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.file.AnalysisFileManager;
 import gov.nih.nci.caintegrator2.file.FileManager;
-import gov.nih.nci.caintegrator2.heatmap.CBSToHeatmap;
 
 import java.io.File;
 import java.io.IOException;
@@ -183,7 +182,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     private AnalysisFileManager analysisFileManager;
     private ArrayDataService arrayDataService;
     private SessionAnalysisResultsManager sessionAnalysisResultsManager;
-    private CBSToHeatmap cbsToHeatmap;
+    private CBSToHeatmapFactory cbsToHeatmapFactory;
     
     /**
      * {@inheritDoc}
@@ -541,7 +540,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         heatmapResult.setGenomicDataFile(
                 analysisFileManager.createHeatmapGenomicFile(heatmapParameters.getSessionId(), 
                         createSegmentDataset(studySubscription, queries,
-                null, null), getGeneLocationsForPlatform(platform), heatmapParameters, cbsToHeatmap));
+                null, null), getGeneLocationsForPlatform(platform), heatmapParameters, cbsToHeatmapFactory));
     }
 
     private void generateHeatmapGenomicFileAllData(HeatmapParameters heatmapParameters, HeatmapResult heatmapResult,
@@ -552,7 +551,8 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         if (!genomicDataFile.exists()) {
             genomicDataFile = analysisFileManager.createHeatmapGenomicFile(studySubscription.getStudy(), 
                 platform.getName(), createSegmentDataset(studySubscription, new HashSet<Query>(),
-                platform.getName(), null), getGeneLocationsForPlatform(platform), heatmapParameters, cbsToHeatmap);
+                platform.getName(), null), getGeneLocationsForPlatform(platform), heatmapParameters, 
+                cbsToHeatmapFactory);
         }
         heatmapResult.setGenomicDataFile(genomicDataFile);
     }
@@ -857,16 +857,16 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     }
 
     /**
-     * @return the cbsToHeatmap
+     * @return the cbsToHeatmapFactory
      */
-    public CBSToHeatmap getCbsToHeatmap() {
-        return cbsToHeatmap;
+    public CBSToHeatmapFactory getCbsToHeatmapFactory() {
+        return cbsToHeatmapFactory;
     }
 
     /**
-     * @param cbsToHeatmap the cbsToHeatmap to set
+     * @param cbsToHeatmapFactory the cbsToHeatmapFactory to set
      */
-    public void setCbsToHeatmap(CBSToHeatmap cbsToHeatmap) {
-        this.cbsToHeatmap = cbsToHeatmap;
+    public void setCbsToHeatmapFactory(CBSToHeatmapFactory cbsToHeatmapFactory) {
+        this.cbsToHeatmapFactory = cbsToHeatmapFactory;
     }
 }
