@@ -178,30 +178,30 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
     /**
      * {@inheritDoc}
      */
-    public File createHeatmapGenomicFile(String sessionId, Collection<SegmentData> segmentDatas,
-            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
-            CBSToHeatmapFactory cbsToHeatmapFactory) throws IOException {
-        return createHeatmapGenomicFile(new File(getHeatmapDirectory(sessionId).getAbsolutePath() + File.separator
-                + HeatmapFileTypeEnum.GENOMIC_DATA.getFilename()), 
-                segmentDatas, geneLocationConfiguration, parameters, cbsToHeatmapFactory);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
     @SuppressWarnings("PMD.ExcessiveParameterList") // All parameters are needed.
-    public File createHeatmapGenomicFile(Study study, String platformName, Collection<SegmentData> segmentDatas,
-            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
+    public void createHeatmapGenomicFile(HeatmapParameters parameters, HeatmapResult result, 
+            Collection<SegmentData> segmentDatas, GeneLocationConfiguration geneLocationConfiguration, 
             CBSToHeatmapFactory cbsToHeatmapFactory) throws IOException {
-        return createHeatmapGenomicFile(retrieveHeatmapFile(study, HeatmapFileTypeEnum.GENOMIC_DATA, platformName), 
-                segmentDatas, geneLocationConfiguration, parameters, cbsToHeatmapFactory);
-    }
-    
-    private File createHeatmapGenomicFile(File file, Collection<SegmentData> segmentDatas,
-            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
-            CBSToHeatmapFactory cbsToHeatmapFactory) throws IOException {
-        return segmentDatas.isEmpty() ? null : HeatmapGenomicDataFileWriter.writeGenomicDataFile(
-                file.getAbsolutePath(), segmentDatas, geneLocationConfiguration, parameters, cbsToHeatmapFactory);
+        File genomicDataFile = null;
+        File layoutFile = null;
+        if (parameters.isViewAllData()) {
+            genomicDataFile = retrieveHeatmapFile(parameters.getStudySubscription().getStudy(), 
+                    HeatmapFileTypeEnum.GENOMIC_DATA, parameters.getPlatform().getName());
+            layoutFile = retrieveHeatmapFile(parameters.getStudySubscription().getStudy(), 
+                    HeatmapFileTypeEnum.LAYOUT, parameters.getPlatform().getName());
+        } else { 
+            File sessionDirectory = new File(getHeatmapDirectory(parameters.getSessionId()) + File.separator); 
+            genomicDataFile = new File(sessionDirectory, HeatmapFileTypeEnum.GENOMIC_DATA.getFilename());
+            layoutFile = new File(sessionDirectory, HeatmapFileTypeEnum.LAYOUT.getFilename());
+        }
+        if (!segmentDatas.isEmpty()) {
+            HeatmapGenomicDataFileWriter fileWriter = new HeatmapGenomicDataFileWriter(segmentDatas,
+                    geneLocationConfiguration, parameters, cbsToHeatmapFactory);
+            fileWriter.writeGenomicDataFiles(
+                genomicDataFile.getAbsolutePath(), layoutFile.getAbsolutePath());
+        }
+        result.setGenomicDataFile(genomicDataFile);
+        result.setLayoutFile(layoutFile);
     }
     
     /**

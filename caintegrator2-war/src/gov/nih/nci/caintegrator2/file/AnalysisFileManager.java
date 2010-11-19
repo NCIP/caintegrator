@@ -210,32 +210,15 @@ public interface AnalysisFileManager {
     
     /**
      * Creates the Heatmap genomic file.
-     * @param sessionId directory will be based on this id.
+     * @param parameters heatmap params.
+     * @param result heatmap result.
      * @param segmentDatas for genomic data to be calculated.
      * @param geneLocationConfiguration for gene chromosomal locations.
-     * @param parameters heatmap params.
      * @param cbsToHeatmapFactory factory that creates CBSToHeatmap object, which runs cbsToHeatmap algorithm.
-     * @return genomic file.
      * @throws IOException 
      */
-    File createHeatmapGenomicFile(String sessionId, Collection<SegmentData> segmentDatas,
-            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
-            CBSToHeatmapFactory cbsToHeatmapFactory) throws IOException;
-    
-    /**
-     * Creates the Heatmap genomic file.
-     * @param study to put in this studies directory.
-     * @param platformName to associate with in the study directory.
-     * @param segmentDatas for genomic data to be calculated.
-     * @param geneLocationConfiguration for gene chromosomal locations.
-     * @param parameters heatmap params.
-     * @param cbsToHeatmapFactory factory that creates CBSToHeatmap object, which runs cbsToHeatmap algorithm.
-     * @return genomic file.
-     * @throws IOException 
-     */
-    @SuppressWarnings("PMD.ExcessiveParameterList") // All parameters are needed.
-    File createHeatmapGenomicFile(Study study, String platformName, Collection<SegmentData> segmentDatas,
-            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
+    void createHeatmapGenomicFile(HeatmapParameters parameters, HeatmapResult result, 
+            Collection<SegmentData> segmentDatas, GeneLocationConfiguration geneLocationConfiguration, 
             CBSToHeatmapFactory cbsToHeatmapFactory) throws IOException;
     
     /**

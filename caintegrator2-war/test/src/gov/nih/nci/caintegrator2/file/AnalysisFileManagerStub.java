@@ -101,6 +101,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 
 public class AnalysisFileManagerStub implements AnalysisFileManager {
@@ -198,18 +199,6 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
         return retrieveTmpFile();
     }
 
-    public File createHeatmapGenomicFile(String sessionId, Collection<SegmentData> segmentDatas,
-            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, CBSToHeatmapFactory cbsToHeatmapFactory) {
-        createHeatmapGenomicFileCalled = true;
-        return retrieveTmpFile();
-    }
-
-    public File createHeatmapGenomicFile(Study study, String platformName, Collection<SegmentData> segmentDatas,
-            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, CBSToHeatmapFactory cbsToHeatmapFactory) {
-        createHeatmapGenomicFileCalled = true;
-        return retrieveTmpFile();
-    }
-
     public void createHeatmapJnlpFile(HeatmapParameters heatmapParameters, HeatmapResult heatmapResult) {
         createHeatmapJnlpFileCalled = true;
     }
@@ -222,6 +211,12 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
 
     public File retrieveHeatmapFile(Study study, HeatmapFileTypeEnum fileType, String platformName) {
         return retrieveTmpFile();
+    }
+
+    public void createHeatmapGenomicFile(HeatmapParameters parameters, HeatmapResult result,
+            Collection<SegmentData> segmentDatas, GeneLocationConfiguration geneLocationConfiguration,
+            CBSToHeatmapFactory cbsToHeatmapFactory) throws IOException {
+        createHeatmapGenomicFileCalled = true;
     }
 
 }
