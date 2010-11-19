@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.file;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisViewerTypeEnum;
+import gov.nih.nci.caintegrator2.application.analysis.CBSToHeatmapFactory;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
 import gov.nih.nci.caintegrator2.application.analysis.SegmentDatasetFileWriter;
@@ -106,7 +107,6 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.heatmap.CBSToHeatmap;
 
 import java.io.File;
 import java.io.IOException;
@@ -180,10 +180,10 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
      */
     public File createHeatmapGenomicFile(String sessionId, Collection<SegmentData> segmentDatas,
             GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
-            CBSToHeatmap cbsToHeatmap) throws IOException {
+            CBSToHeatmapFactory cbsToHeatmapFactory) throws IOException {
         return createHeatmapGenomicFile(new File(getHeatmapDirectory(sessionId).getAbsolutePath() + File.separator
                 + HeatmapFileTypeEnum.GENOMIC_DATA.getFilename()), 
-                segmentDatas, geneLocationConfiguration, parameters, cbsToHeatmap);
+                segmentDatas, geneLocationConfiguration, parameters, cbsToHeatmapFactory);
     }
     
     /**
@@ -192,16 +192,16 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
     @SuppressWarnings("PMD.ExcessiveParameterList") // All parameters are needed.
     public File createHeatmapGenomicFile(Study study, String platformName, Collection<SegmentData> segmentDatas,
             GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
-            CBSToHeatmap cbsToHeatmap) throws IOException {
+            CBSToHeatmapFactory cbsToHeatmapFactory) throws IOException {
         return createHeatmapGenomicFile(retrieveHeatmapFile(study, HeatmapFileTypeEnum.GENOMIC_DATA, platformName), 
-                segmentDatas, geneLocationConfiguration, parameters, cbsToHeatmap);
+                segmentDatas, geneLocationConfiguration, parameters, cbsToHeatmapFactory);
     }
     
     private File createHeatmapGenomicFile(File file, Collection<SegmentData> segmentDatas,
             GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
-            CBSToHeatmap cbsToHeatmap) throws IOException {
+            CBSToHeatmapFactory cbsToHeatmapFactory) throws IOException {
         return segmentDatas.isEmpty() ? null : HeatmapGenomicDataFileWriter.writeGenomicDataFile(
-                file.getAbsolutePath(), segmentDatas, geneLocationConfiguration, parameters, cbsToHeatmap);
+                file.getAbsolutePath(), segmentDatas, geneLocationConfiguration, parameters, cbsToHeatmapFactory);
     }
     
     /**

@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.file;
 
+import gov.nih.nci.caintegrator2.application.analysis.CBSToHeatmapFactory;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
@@ -98,7 +99,6 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.heatmap.CBSToHeatmap;
 
 import java.io.File;
 import java.util.Collection;
@@ -199,13 +199,13 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
     }
 
     public File createHeatmapGenomicFile(String sessionId, Collection<SegmentData> segmentDatas,
-            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, CBSToHeatmap cbsToHeatmap) {
+            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, CBSToHeatmapFactory cbsToHeatmapFactory) {
         createHeatmapGenomicFileCalled = true;
         return retrieveTmpFile();
     }
 
     public File createHeatmapGenomicFile(Study study, String platformName, Collection<SegmentData> segmentDatas,
-            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, CBSToHeatmap cbsToHeatmap) {
+            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, CBSToHeatmapFactory cbsToHeatmapFactory) {
         createHeatmapGenomicFileCalled = true;
         return retrieveTmpFile();
     }
