@@ -65,7 +65,7 @@
             <s:select name="currentPrincipalComponentAnalysisJob.pcaUrl"
                 list="pcaServices" label="Principal Component Analysis Server"
                 required="true" theme="css_xhtml"
-                title="Principle Component Analysis Server is a server which hosts the grid-enabled Gene Pattern Principle Component Analysis module.  Select one from the list and caIntegrator2 will use the selected server for this portion of the processing."
+                title="Principle Component Analysis Server is a server which hosts the grid-enabled Gene Pattern Principle Component Analysis module.  Select one from the list and caIntegrator will use the selected server for this portion of the processing."
                 cssClass="editable-select"/>
             <br />
             <s:div name="commentdiv" cssClass="inlinehelp_form_top" cssStyle="margin-left: 0px;height:130px;width:100%">

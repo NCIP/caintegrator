@@ -30,7 +30,7 @@
 	     "My
 	    </s:else> 
     Studies" drop down menu.</b></font></p>
-    <s:if test="anonymousUser"><p style="padding: 0.25em 0pt 1em 2em; max-width: 800px;">Some features that allow a user to customize caIntegrator2 require a login.  <b>You are currently not logged in.</b></p></s:if>
+    <s:if test="anonymousUser"><p style="padding: 0.25em 0pt 1em 2em; max-width: 800px;">Some features that allow a user to customize caIntegrator require a login.  <b>You are currently not logged in.</b></p></s:if>
     </div>
     
     <!-- For unauthenticated or anonymous users, have a login form. -->
