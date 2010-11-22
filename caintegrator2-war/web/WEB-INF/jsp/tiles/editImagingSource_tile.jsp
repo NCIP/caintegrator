@@ -229,7 +229,7 @@
                         <tr>
                             <th>NBIA Image Series Acquisition Identifier</th>
                             <th>NBIA Subject Identifier</th>
-                            <th>caIntegrator2 Subject Identifier</th>
+                            <th>caIntegrator Subject Identifier</th>
                         </tr>
                         <s:iterator value="imageSourceConfiguration.mappedImageSeriesAcquisitions" status="status">
                             <s:if test="#status.odd == true">
