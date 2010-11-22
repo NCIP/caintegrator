@@ -216,11 +216,11 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
     void deleteAnalysisJob(Long jobId);
 
     /**
-     * Delete the IGV directory with given study.
+     * Delete the Viewer directory with given study.
      * 
-     * @param study the study IGV directory to delete.
+     * @param study the study viewer directory to delete.
      */
-    void deleteIGVDirectory(Study study);
+    void deleteViewerDirectory(Study study);
     /**
      * Validates the gene symbols and returns all symbols that exist in the study.
      * @param studySubscription to check gene symbols against.
@@ -258,15 +258,18 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @param heatmapParameters the heatmap parameters to use.
      * @return full URL to forward user to.
      * @throws InvalidCriterionException if invalid criterion in query.
-     * @throws IOException if unable to write or read files.
      */
-    String executeHeatmap(HeatmapParameters heatmapParameters) throws InvalidCriterionException, IOException;
+    String executeHeatmap(HeatmapParameters heatmapParameters) throws InvalidCriterionException;
 
     /**
-     * Creates and stores an IGV data file.
-     * @param studySubscription study to create IGV file.
+     * Creates and stores an viewer data file.
+     * @param studySubscription study to create viewer file.
+     * @param heatmapParameters use to create data files
      * @param platform the platform to use
      * @throws InvalidCriterionException if invalid criterion.
+     * @throws IOException if unable to write or read files.
      */
-    void createIGVFile(StudySubscription studySubscription, Platform platform) throws InvalidCriterionException;
+    void createViewerFiles(StudySubscription studySubscription, HeatmapParameters heatmapParameters,
+            Platform platform)
+    throws InvalidCriterionException, IOException;
 }

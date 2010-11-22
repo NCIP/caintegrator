@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentService;
@@ -169,8 +170,9 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     /**
      * {@inheritDoc}
      */
-    public void runJob(StudyConfiguration studyConfiguration) {
-        Thread studyConfigurationRunner = new Thread(new StudyDeploymentAjaxRunner(this, studyConfiguration));
+    public void runJob(StudyConfiguration studyConfiguration, HeatmapParameters heatmapParameters) {
+        Thread studyConfigurationRunner = new Thread(new StudyDeploymentAjaxRunner(
+                this, studyConfiguration, heatmapParameters));
         studyConfigurationRunner.start();
     }
     

@@ -85,18 +85,25 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentService;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.ajax.IStudyDeploymentAjaxUpdater;
+
+import javax.servlet.ServletContext;
+
+import org.apache.struts2.util.ServletContextAware;
 
 /**
  * Action that deploys a study.
  */
-public class DeployStudyAction extends SaveStudyAction {
+public class DeployStudyAction extends SaveStudyAction implements ServletContextAware {
 
     private static final long serialVersionUID = 1L;
     private IStudyDeploymentAjaxUpdater ajaxUpdater;
     private DeploymentService deploymentService;
+    private ServletContext context;
 
     /**
      * {@inheritDoc}
@@ -105,10 +112,18 @@ public class DeployStudyAction extends SaveStudyAction {
     public String execute() {
         setStudyLastModifiedByCurrentUser(null, LogEntry.getSystemLogDeploy(getStudyConfiguration().getStudy()));
         getDeploymentService().prepareForDeployment(getStudyConfiguration(), null);
-        ajaxUpdater.runJob(getStudyConfiguration());
+        ajaxUpdater.runJob(getStudyConfiguration(), createHeatmapParameters());
         return SUCCESS;
     }
     
+    private HeatmapParameters createHeatmapParameters() {
+        HeatmapParameters heatmapParameters = new HeatmapParameters();
+        heatmapParameters.setViewAllData(true);
+        heatmapParameters.setLargeBinsFile(SessionHelper.getHeatmapLargeBinsFile(context));
+        heatmapParameters.setSmallBinsFile(SessionHelper.getHeatmapSmallBinsFile(context));
+        return heatmapParameters;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -144,6 +159,14 @@ public class DeployStudyAction extends SaveStudyAction {
      */
     public void setDeploymentService(DeploymentService deploymentService) {
         this.deploymentService = deploymentService;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setServletContext(ServletContext servletContext) {
+        this.context = servletContext;
+        
     }
     
 }

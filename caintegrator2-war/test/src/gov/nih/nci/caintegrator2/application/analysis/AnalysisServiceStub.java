@@ -121,13 +121,14 @@ public class AnalysisServiceStub implements AnalysisService {
     public boolean executePcaJobCalled;
     public boolean executeGisticJobCalled;
     public boolean deleteAnalysisJobCalled;
-    public boolean deleteIGVDirectoryCalled;
+    public boolean deleteViewerDirectoryCalled;
     public boolean deleteGisticAnalysisCalled;
     public boolean isValidGenePatternConnection = true;
     public boolean executeIGVCalled;
     public boolean executeHeatmapCalled;
     public boolean executeIGVGlobalCalled;
-    public boolean createIGVFileCalled;
+    public boolean createViewerFilesCalled;
+    public boolean createHeatmapFileCalled;
     
     public void clear() {
         createKMPlotCalled = false;
@@ -137,11 +138,12 @@ public class AnalysisServiceStub implements AnalysisService {
         executePcaJobCalled = false;
         executeGisticJobCalled = false;
         deleteAnalysisJobCalled = false;
-        deleteIGVDirectoryCalled = false;
+        deleteViewerDirectoryCalled = false;
         deleteGisticAnalysisCalled = false;
         executeIGVCalled = false;
         executeHeatmapCalled = false;
-        createIGVFileCalled = false;
+        createViewerFilesCalled = false;
+        createHeatmapFileCalled = false;
     }
 
     /**
@@ -218,8 +220,8 @@ public class AnalysisServiceStub implements AnalysisService {
         deleteAnalysisJobCalled = true;
     }
 
-    public void deleteIGVDirectory(Study study) {
-        deleteIGVDirectoryCalled = true;
+    public void deleteViewerDirectory(Study study) {
+        deleteViewerDirectoryCalled = true;
     }
 
     public <T> T getRefreshedEntity(T entity) {
@@ -249,14 +251,21 @@ public class AnalysisServiceStub implements AnalysisService {
         return null;
     }
 
-    public void createIGVFile(StudySubscription studySubscription, Platform platform) throws InvalidCriterionException {
-        createIGVFileCalled = true;
-        return;
-    }
-
     public String executeHeatmap(HeatmapParameters heatmapParameters)
             throws InvalidCriterionException {
         executeHeatmapCalled = true;
         return null;
+    }
+    
+    public void createHeatmapFile(StudySubscription studySubscription, Platform platform)
+            throws InvalidCriterionException {
+        createHeatmapFileCalled = true;
+        return;
+    }
+
+    public void createViewerFiles(StudySubscription studySubscription, HeatmapParameters heatmapParameters,
+            Platform platform) throws InvalidCriterionException {
+        createViewerFilesCalled = true;
+        return;
     }
 }

@@ -127,10 +127,10 @@ public interface AnalysisFileManager {
     void deleteSessionDirectories(String sessionId);
     
     /**
-     * Delete the igv directory for the study.
+     * Delete the viewer directory for the study.
      * @param study to delete directory for.
      */
-    void deleteIGVDirectory(Study study);
+    void deleteViewerDirectory(Study study);
     
     /**
      * Retrieves the IGV File for the study based on the file type and platform name.

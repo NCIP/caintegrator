@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 
 
@@ -102,7 +103,8 @@ public interface IStudyDeploymentAjaxUpdater {
     /**
      * Used to run the StudyDeploymentJob.
      * @param studyConfiguration study configuration to deploy.
+     * @param heatmapParameters use to create data files.
      */
-    void runJob(StudyConfiguration studyConfiguration);
+    void runJob(StudyConfiguration studyConfiguration, HeatmapParameters heatmapParameters);
 
 }
