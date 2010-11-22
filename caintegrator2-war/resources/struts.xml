@@ -35,15 +35,21 @@
                 <interceptor-ref name="params">
                      <!--
                         Excludes:
-                        All dojo parameters 
-                        checkbox type parameters which begin with _ 
-                        the Displaytag d-#-X parameter(s) 
-                        all parameters that contain only numbers (kmPlot page has this)
-                        .*\\.*,.*\(.*,.*\).*,.*@.*  these are for an exploitation described here (can remove after upgrading struts): 
-                                                        http://blog.o0o.nu/2010/07/cve-2010-1870-struts2xwork-remote.html
+                        *All dojo parameters 
+                        *checkbox type parameters which begin with _ 
+                        *the Displaytag d-#-X parameter(s) 
+                        *all parameters that contain only numbers (kmPlot page has this), 
+                            with the optional "f" because displaytag has a parameter like this for exporting: 6578706f7274
                      -->
                      <param name="excludeParams">
-                        dojo\..*,^struts\..*,_.*,d-\d+?-[sop],^\d+$
+                        dojo\..*,^struts\..*,_.*,d-\d+?-[sop],^\d+(f?\d+)?$
+                     </param>
+                     <!--
+                        The new version of struts is ignoring all "-"'s, so have to add this to the accepted list so we know it is trying to export.
+                        The string "[a-zA-Z0-9\.\]\[\(\)_'\s]+" is the default accept params in the ParametersInterceptor. 
+                     -->
+                     <param name="acceptParamNames">
+                        [a-zA-Z0-9\.\]\[\(\)_'\s]+,d-\d+?-e
                      </param>
                  </interceptor-ref>
                 <interceptor-ref name="servletConfig"/>
@@ -60,15 +66,17 @@
                 <interceptor-ref name="params">
                      <!--
                         Excludes:
-                        All dojo parameters 
-                        checkbox type parameters which begin with _ 
-                        the Displaytag d-#-X parameter(s) 
-                        all parameters that contain only numbers (kmPlot page has this)
-                        .*\\.*,.*\(.*,.*\).*,.*@.* these are for an exploitation described here (can remove after upgrading struts): 
-                                                        http://blog.o0o.nu/2010/07/cve-2010-1870-struts2xwork-remote.html
+                        *All dojo parameters 
+                        *checkbox type parameters which begin with _ 
+                        *the Displaytag d-#-X parameter(s) 
+                        *all parameters that contain only numbers (kmPlot page has this), 
+                            with the optional "f" because displaytag has a parameter like this for exporting: 6578706f7274
                      -->
                      <param name="excludeParams">
-                        dojo\..*,^struts\..*,_.*,d-\d+?-[sop],^\d+$
+                        dojo\..*,^struts\..*,_.*,d-\d+?-[sope],^\d+(f?\d+)?$
+                     </param>
+                     <param name="acceptParamNames">
+                        [a-zA-Z0-9\.\]\[\(\)_'\s]+
                      </param>
                  </interceptor-ref>
                 <interceptor-ref name="conversionError"/>
