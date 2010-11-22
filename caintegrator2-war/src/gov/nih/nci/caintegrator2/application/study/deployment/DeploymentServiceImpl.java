@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactory;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
@@ -142,13 +143,14 @@ public class DeploymentServiceImpl implements DeploymentService {
      * {@inheritDoc}
      */
     @SuppressWarnings("PMD.AvoidReassigningParameters") // preferable in this instance for error handling.
-    public Status performDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener)
+    public Status performDeployment(StudyConfiguration studyConfiguration, HeatmapParameters heatmapParameters,
+            DeploymentListener listener)
     throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException {
             studyConfiguration = getDao().get(studyConfiguration.getId(), StudyConfiguration.class);
             if (!Status.PROCESSING.equals(studyConfiguration.getStatus())) {
                 startDeployment(studyConfiguration, listener);
             }
-            return doDeployment(studyConfiguration, listener);
+            return doDeployment(studyConfiguration, heatmapParameters, listener);
     }
 
     /**
@@ -172,7 +174,8 @@ public class DeploymentServiceImpl implements DeploymentService {
         }
     }
 
-    private Status doDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener) 
+    private Status doDeployment(StudyConfiguration studyConfiguration, HeatmapParameters heatmapParameters,
+            DeploymentListener listener) 
     throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException {
         if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
             GenomicDataHelper genomicDataHelper = new GenomicDataHelper(getCaArrayFacade(), 
@@ -180,7 +183,7 @@ public class DeploymentServiceImpl implements DeploymentService {
             genomicDataHelper.setExpressionHandlerFactory(getExpressionHandlerFactory());
             genomicDataHelper.setGenePatternClientFactory(getGenePatternClientFactory());
             genomicDataHelper.loadData(studyConfiguration);
-            generateIGVFiles(studyConfiguration);
+            generateViewerFiles(studyConfiguration, heatmapParameters);
         }
         studyConfiguration.setStatus(Status.DEPLOYED);
         studyConfiguration.setDeploymentFinishDate(new Date());
@@ -191,13 +194,15 @@ public class DeploymentServiceImpl implements DeploymentService {
         return studyConfiguration.getStatus();
     }
 
-    private void generateIGVFiles(StudyConfiguration studyConfiguration) throws InvalidCriterionException {
+    private void generateViewerFiles(StudyConfiguration studyConfiguration, HeatmapParameters heatmapParameters)
+    throws InvalidCriterionException, IOException {
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(studyConfiguration.getStudy());
-        getAnalysisService().deleteIGVDirectory(studyConfiguration.getStudy());
+        getAnalysisService().deleteViewerDirectory(studyConfiguration.getStudy());
+        heatmapParameters.setStudySubscription(studySubscription);
         for (GenomicDataSourceConfiguration genomicDataSourceConfiguration
                 : studyConfiguration.getGenomicDataSources()) {
-            getAnalysisService().createIGVFile(studySubscription,
+            getAnalysisService().createViewerFiles(studySubscription, heatmapParameters,
                     getArrayDataService().getPlatform(genomicDataSourceConfiguration.getPlatformName()));
         }
     }

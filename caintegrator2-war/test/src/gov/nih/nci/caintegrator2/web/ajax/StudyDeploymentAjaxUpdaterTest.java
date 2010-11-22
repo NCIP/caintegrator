@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.ajax;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
@@ -139,7 +140,7 @@ public class StudyDeploymentAjaxUpdaterTest extends AbstractSessionBasedTest {
         studyConfiguration.setUserWorkspace(workspaceService.getWorkspace());
         studyConfiguration.setLastModifiedBy(workspaceService.getWorkspace());
         deploymentServiceStub.refreshedStudyConfiguration = studyConfiguration;
-        updater.runJob(studyConfiguration);
+        updater.runJob(studyConfiguration, new HeatmapParameters());
         Thread.sleep(500);
         assertTrue(deploymentServiceStub.performDeploymentCalled);
     }

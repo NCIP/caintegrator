@@ -88,8 +88,6 @@ package gov.nih.nci.caintegrator2.application.analysis.heatmap;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractViewerParameters;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 
-import java.io.File;
-
 /**
  * Parameters used to run Heatmap.
  */
@@ -98,7 +96,6 @@ public class HeatmapParameters extends AbstractViewerParameters {
     private Platform platform;
     private String smallBinsFile;
     private String largeBinsFile;
-    private File layoutFile;
 
     /**
      * @return the platform
@@ -140,20 +137,6 @@ public class HeatmapParameters extends AbstractViewerParameters {
      */
     public void setLargeBinsFile(String largeBinsFile) {
         this.largeBinsFile = largeBinsFile;
-    }
-
-    /**
-     * @return the layoutFile
-     */
-    public File getLayoutFile() {
-        return layoutFile;
-    }
-
-    /**
-     * @param layoutFile the layoutFile to set
-     */
-    public void setLayoutFile(File layoutFile) {
-        this.layoutFile = layoutFile;
     }
 
     /**

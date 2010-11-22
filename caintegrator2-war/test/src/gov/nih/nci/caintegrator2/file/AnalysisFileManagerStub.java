@@ -106,8 +106,8 @@ import java.util.Collection;
 
 public class AnalysisFileManagerStub implements AnalysisFileManager {
 
-    public boolean deleteAllIGVDirectoryCalled;
-    public boolean deleteIGVDirectoryCalled;
+    public boolean deleteAllViewerDirectoryCalled;
+    public boolean deleteViewerDirectoryCalled;
     public boolean getIGVDirectoryCalled;
     public boolean createIGVGctFileCalled;
     public boolean createIGVSegFileCalled;
@@ -118,8 +118,8 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
     public boolean createHeatmapSampleClassificationFileCalled;
     
     public void clear() {
-        deleteAllIGVDirectoryCalled = false;
-        deleteIGVDirectoryCalled = false;
+        deleteAllViewerDirectoryCalled = false;
+        deleteViewerDirectoryCalled = false;
         getIGVDirectoryCalled = false;
         createIGVGctFileCalled = false;
         createIGVSegFileCalled = false;
@@ -153,16 +153,16 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
     }
 
     public void deleteAllTempAnalysisDirectories() {
-        deleteAllIGVDirectoryCalled = true;
+        deleteAllViewerDirectoryCalled = true;
         
     }
 
-    public void deleteIGVDirectory(Study study) {
-        deleteIGVDirectoryCalled = true;
+    public void deleteViewerDirectory(Study study) {
+        deleteViewerDirectoryCalled = true;
     }
 
     public void deleteSessionDirectories(String sessionId) {
-        deleteIGVDirectoryCalled = true;
+        deleteViewerDirectoryCalled = true;
     }
 
     public File createIGVGctFile(GctDataset gctDataset, String sessionId) {
@@ -216,6 +216,7 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
     public void createHeatmapGenomicFile(HeatmapParameters parameters, HeatmapResult result,
             Collection<SegmentData> segmentDatas, GeneLocationConfiguration geneLocationConfiguration,
             CBSToHeatmapFactory cbsToHeatmapFactory) throws IOException {
+        result.setGenomicDataFile(new File("Dummy"));
         createHeatmapGenomicFileCalled = true;
     }
 

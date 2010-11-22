@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import java.io.IOException;
 
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
 import gov.nih.nci.caintegrator2.application.study.Status;
@@ -113,6 +114,7 @@ public interface DeploymentService {
      * Performs the deployment and notifies clients of the results.
      * 
      * @param studyConfiguration the study configuration to deploy
+     * @param heatmapParameters use to create data files
      * @param listener informed of status changes during deployment
      * @return the resulting status.
      * @throws ValidationException validation exception
@@ -121,7 +123,8 @@ public interface DeploymentService {
      * @throws IOException I/O exception
      * @throws InvalidCriterionException invalid criterion when generating IGV files
      */
-    Status performDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener)
+    Status performDeployment(StudyConfiguration studyConfiguration, HeatmapParameters heatmapParameters,
+            DeploymentListener listener)
     throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException;
     
     /**

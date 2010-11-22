@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixSnpPlatformSource;
@@ -526,7 +527,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         logStart();
         service.setStudyLastModifiedByCurrentUser(studyConfiguration, userWorkspace, null, LogEntry.getSystemLogDeploy(studyConfiguration.getStudy()));
         deploymentService.prepareForDeployment(studyConfiguration, null);
-        Status status = deploymentService.performDeployment(studyConfiguration, null);
+        Status status = deploymentService.performDeployment(studyConfiguration, new HeatmapParameters(), null);
         logEnd();
         if (status.equals(Status.ERROR)) {
             fail(studyConfiguration.getStatusDescription());

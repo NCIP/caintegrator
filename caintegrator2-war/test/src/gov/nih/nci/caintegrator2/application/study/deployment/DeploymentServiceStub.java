@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -95,7 +96,8 @@ public class DeploymentServiceStub implements DeploymentService {
     public boolean performDeploymentCalled;
     public boolean prepareForDeploymentCalled;
 
-    public Status performDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener) {
+    public Status performDeployment(StudyConfiguration studyConfiguration, HeatmapParameters heatmapParameters,
+            DeploymentListener listener) {
         performDeploymentCalled = true;
         return Status.PROCESSING;
     }

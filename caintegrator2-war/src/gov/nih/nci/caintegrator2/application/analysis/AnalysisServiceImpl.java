@@ -188,7 +188,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
      * {@inheritDoc}
      */
     public List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server)
-            throws WebServiceException {
+    throws WebServiceException {
         return new GenePatternHelper(retrieveClient(server)).getMethods();
     }
 
@@ -220,7 +220,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
      */
     public File executeGridPreprocessComparativeMarker(StatusUpdateListener updater,
             ComparativeMarkerSelectionAnalysisJob job) 
-        throws ConnectionException, InvalidCriterionException {
+    throws ConnectionException, InvalidCriterionException {
         StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class);
         PreprocessDatasetParameters preprocessParams = job.getForm().getPreprocessDatasetparameters();
         job.setSubscription(studySubscription);
@@ -241,11 +241,10 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     
     /**
      * {@inheritDoc}
-     * @throws DataRetrievalException 
      */
     @Transactional(readOnly = false)
     public File executeGridGistic(StatusUpdateListener updater, GisticAnalysisJob job) 
-        throws ConnectionException, InvalidCriterionException, ParameterException, IOException,
+    throws ConnectionException, InvalidCriterionException, ParameterException, IOException,
             DataRetrievalException {
         File resultsZipFile = null;
         StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class); 
@@ -469,7 +468,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
                     createGeneExpressionFile(igvParameters.getStudySubscription(), platform));
             } else if (platform.getPlatformConfiguration().getPlatformType().isCopyNumber()) {
                 igvResult.setSegmentationFile(
-                    createSegmentationFile(igvParameters.getStudySubscription(), platform));
+                    createIGVSegmentationFile(igvParameters.getStudySubscription(), platform));
             }
             refreshedPlatforms.add(getRefreshedEntity(platform));
         }
@@ -508,15 +507,17 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     
     /**
      * {@inheritDoc}
-     * @throws IOException 
      */
     public String executeHeatmap(HeatmapParameters heatmapParameters) 
-    throws InvalidCriterionException, IOException {
+    throws InvalidCriterionException {
         HeatmapResult heatmapResult = new HeatmapResult();
         if (heatmapParameters.isViewAllData()) {
             generateHeatmapGenomicFileAllData(heatmapParameters, heatmapResult);
         } else {
             generateHeatmapGenomicFileForQuery(heatmapParameters, heatmapResult);
+        }
+        if (heatmapResult.getGenomicDataFile() == null) {
+            throw new InvalidCriterionException("Unable to create Heat Map viewer: No data found from selection.");
         }
         if (!heatmapParameters.getQuery().getColumnCollection().isEmpty()) {
             heatmapResult.setSampleAnnotationFile(analysisFileManager.createHeatmapSampleClassificationFile(
@@ -529,19 +530,16 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     }
 
     private void generateHeatmapGenomicFileForQuery(HeatmapParameters heatmapParameters, HeatmapResult heatmapResult) 
-    throws InvalidCriterionException, IOException {
+    throws InvalidCriterionException {
         heatmapParameters.getQuery().setResultType(ResultTypeEnum.COPY_NUMBER);
         Set<Query> queries = new HashSet<Query>();
         queries.add(heatmapParameters.getQuery());
         Query queryToExecute = queryManagementService.retrieveQueryToExecute(heatmapParameters.getQuery());
         Platform platform = queryToExecute.getCopyNumberPlatform();
-        analysisFileManager.createHeatmapGenomicFile(heatmapParameters, heatmapResult,
-                createSegmentDataset(heatmapParameters.getStudySubscription(), queries,
-        null, null), getGeneLocationsForPlatform(platform), cbsToHeatmapFactory);
+        createHeatmapDataFiles(heatmapParameters, heatmapResult, queries, platform);
     }
 
-    private void generateHeatmapGenomicFileAllData(HeatmapParameters heatmapParameters, HeatmapResult heatmapResult) 
-    throws IOException, InvalidCriterionException {
+    private void generateHeatmapGenomicFileAllData(HeatmapParameters heatmapParameters, HeatmapResult heatmapResult) {
         Platform platform = heatmapParameters.getPlatform();
         StudySubscription studySubscription = heatmapParameters.getStudySubscription();
         File genomicDataFile = analysisFileManager.retrieveHeatmapFile(studySubscription.getStudy(),
@@ -549,12 +547,23 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         File layoutFile = analysisFileManager.retrieveHeatmapFile(studySubscription.getStudy(), 
                 HeatmapFileTypeEnum.LAYOUT, platform.getName());
         if (!genomicDataFile.exists() || !layoutFile.exists()) {
-            analysisFileManager.createHeatmapGenomicFile(heatmapParameters, heatmapResult,
-                createSegmentDataset(studySubscription, new HashSet<Query>(),
-                platform.getName(), null), getGeneLocationsForPlatform(platform), cbsToHeatmapFactory);
+            createHeatmapDataFiles(heatmapParameters, heatmapResult, new HashSet<Query>(), platform);
         } else {
             heatmapResult.setGenomicDataFile(genomicDataFile);
             heatmapResult.setLayoutFile(layoutFile);
+        }
+    }
+
+    private void createHeatmapDataFiles(HeatmapParameters heatmapParameters, HeatmapResult heatmapResult,
+            Set<Query> queries, Platform platform) {
+        String platformName = queries.isEmpty() ? platform.getName() : null;
+        try {
+            analysisFileManager.createHeatmapGenomicFile(heatmapParameters, heatmapResult,
+                    createSegmentDataset(heatmapParameters.getStudySubscription(), queries,
+                            platformName, null), getGeneLocationsForPlatform(platform), cbsToHeatmapFactory);
+        } catch (Exception e) {
+            heatmapResult.setGenomicDataFile(null);
+            heatmapResult.setLayoutFile(null);
         }
     }
 
@@ -572,10 +581,10 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
                 IGVFileTypeEnum.GENE_EXPRESSION, platform.getName());
         if (!gctFile.exists()) {
             try {
-                gctFile = analysisFileManager.createIGVGctFile(
-                    createGctDataset(studySubscription, new HashSet<Query>(),
-                            platform.getName(), null, false),
-                    studySubscription.getStudy(), platform.getName());
+            gctFile = analysisFileManager.createIGVGctFile(
+                createGctDataset(studySubscription, new HashSet<Query>(),
+                        platform.getName(), null, false),
+                studySubscription.getStudy(), platform.getName());
             } catch (InvalidCriterionException e) {
                 return null;
             }
@@ -583,9 +592,9 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         return gctFile;
     }
 
-    private File createSegmentationFile(StudySubscription studySubscription, Platform platform) {
+    private File createIGVSegmentationFile(StudySubscription studySubscription, Platform platform) {
         File segFile = null;
-    segFile = analysisFileManager.retrieveIGVFile(
+        segFile = analysisFileManager.retrieveIGVFile(
                 studySubscription.getStudy(), IGVFileTypeEnum.SEGMENTATION,
                 platform.getName());
         if (!segFile.exists()) {
@@ -604,28 +613,36 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * {@inheritDoc}
      */
-    public void createIGVFile(StudySubscription studySubscription, Platform platform) {
-        createGeneExpressionFile(studySubscription, platform);
-        createSegmentationFile(studySubscription, platform);
+    public void createViewerFiles(StudySubscription studySubscription, HeatmapParameters heatmapParameters,
+            Platform platform)
+    throws InvalidCriterionException, IOException {
+        if (platform.getPlatformConfiguration().getPlatformType().isGeneExpression()) {
+            createGeneExpressionFile(studySubscription, platform);
+        }
+        if (platform.getPlatformConfiguration().getPlatformType().isCopyNumber()) {
+            createIGVSegmentationFile(studySubscription, platform);
+            heatmapParameters.setPlatform(platform);
+            generateHeatmapGenomicFileAllData(heatmapParameters, new HeatmapResult());
+        }
     }
 
     private QueryResult createAnnotationBasedQueryResultsForSamples(AbstractViewerParameters parameters)
-            throws InvalidCriterionException {
-            ResultColumn sampleColumn = new ResultColumn();
-            sampleColumn.setEntityType(EntityTypeEnum.SAMPLE);
-            sampleColumn.setColumnIndex(1);
-            parameters.getQuery().getColumnCollection().add(sampleColumn);
-            ResultTypeEnum resultType = parameters.getQuery().getResultType();
-            parameters.getQuery().setResultType(ResultTypeEnum.CLINICAL);
-            QueryResult result;
-            if (parameters.isViewAllData()) {
-                result = queryManagementService.execute(parameters.getQuery());
-            } else {
-                result = queryManagementService.execute(parameters.getQuery());
-            }
-            parameters.getQuery().setResultType(resultType);
-            parameters.getQuery().getColumnCollection().remove(sampleColumn);
-            return result;
+    throws InvalidCriterionException {
+        ResultColumn sampleColumn = new ResultColumn();
+        sampleColumn.setEntityType(EntityTypeEnum.SAMPLE);
+        sampleColumn.setColumnIndex(1);
+        parameters.getQuery().getColumnCollection().add(sampleColumn);
+        ResultTypeEnum resultType = parameters.getQuery().getResultType();
+        parameters.getQuery().setResultType(ResultTypeEnum.CLINICAL);
+        QueryResult result;
+        if (parameters.isViewAllData()) {
+            result = queryManagementService.execute(parameters.getQuery());
+        } else {
+            result = queryManagementService.execute(parameters.getQuery());
+        }
+        parameters.getQuery().setResultType(resultType);
+        parameters.getQuery().getColumnCollection().remove(sampleColumn);
+        return result;
     }
     
     private String encodeUrl(String url) {
@@ -639,7 +656,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
      * {@inheritDoc}
      */
     public List<String> validateGeneSymbols(StudySubscription studySubscription, List<String> geneSymbols)
-            throws GenesNotFoundInStudyException {
+    throws GenesNotFoundInStudyException {
         return queryManagementService.validateGeneSymbols(studySubscription, geneSymbols);
     }
     
@@ -762,8 +779,8 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * {@inheritDoc}
      */
-    public void deleteIGVDirectory(Study study) {
-        analysisFileManager.deleteIGVDirectory(study);
+    public void deleteViewerDirectory(Study study) {
+        analysisFileManager.deleteViewerDirectory(study);
     }
     
     private void deleteFiles(AbstractPersistedAnalysisJob job) {
