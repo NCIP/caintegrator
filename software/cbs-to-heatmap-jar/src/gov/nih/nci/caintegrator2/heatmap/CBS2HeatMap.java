@@ -20,6 +20,8 @@ import java.util.TreeMap;
 public class CBS2HeatMap implements CBSToHeatmap {
 
     private HashMap<String, Object> bins = new HashMap<String, Object>() {
+        private static final long serialVersionUID = 1L;
+
         {
             put("big", new HashMap<String, Object>());
             put("small", new HashMap<String, Object>());

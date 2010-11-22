@@ -117,7 +117,6 @@ public class ViewAllHeatmapAction extends AbstractViewAllAction implements Servl
         heatmapParameters.setHeatmapJarUrlPrefix(SessionHelper.getCaIntegratorCommonUrl());
         heatmapParameters.setLargeBinsFile(SessionHelper.getHeatmapLargeBinsFile(context));
         heatmapParameters.setSmallBinsFile(SessionHelper.getHeatmapSmallBinsFile(context));
-        heatmapParameters.setLayoutFile(SessionHelper.getHeatmapLayoutFile(context));
         heatmapParameters.setQuery(getQuery());
         heatmapParameters.setPlatform(getPlatforms().get(0));
         heatmapParameters.setViewAllData(true);

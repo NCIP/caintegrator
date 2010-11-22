@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
@@ -143,7 +144,7 @@ public class DeploymentServiceTest {
         studyConfiguration.setId(1L);
         daoStub.studyConfiguration = studyConfiguration;
         TestListener listener = new TestListener();
-        deploymentServiceImpl.performDeployment(studyConfiguration, listener);
+        deploymentServiceImpl.performDeployment(studyConfiguration, new HeatmapParameters(), listener);
         assertTrue(listener.statuses.contains(Status.DEPLOYED));
         assertEquals(Status.DEPLOYED, listener.configuration.getStatus());
         assertTrue(daoStub.saveCalled);
@@ -162,7 +163,7 @@ public class DeploymentServiceTest {
         studyConfiguration.getGenomicDataSources().add(genomicSource);
         boolean cautghException = false;
         try {
-            deploymentServiceImpl.performDeployment(studyConfiguration, listener);
+            deploymentServiceImpl.performDeployment(studyConfiguration, new HeatmapParameters(), listener);
         } catch (Exception e) {
             cautghException = true;
         }

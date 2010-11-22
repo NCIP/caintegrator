@@ -184,7 +184,7 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
             CBSToHeatmapFactory cbsToHeatmapFactory) throws IOException {
         File genomicDataFile = null;
         File layoutFile = null;
-        if (parameters.isViewAllData()) {
+        if (!parameters.isViewAllData()) {
             genomicDataFile = retrieveHeatmapFile(parameters.getStudySubscription().getStudy(), 
                     HeatmapFileTypeEnum.GENOMIC_DATA, parameters.getPlatform().getName());
             layoutFile = retrieveHeatmapFile(parameters.getStudySubscription().getStudy(), 
@@ -223,9 +223,10 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
     /**
      * {@inheritDoc}
      */
-    public void deleteIGVDirectory(Study study) {
+    public void deleteViewerDirectory(Study study) {
         try {
             FileUtils.deleteDirectory(getStudyIGVDirectory(study));
+            FileUtils.deleteDirectory(getStudyHeatmapDirectory(study));
         } catch (IOException e) {
             return;
         }

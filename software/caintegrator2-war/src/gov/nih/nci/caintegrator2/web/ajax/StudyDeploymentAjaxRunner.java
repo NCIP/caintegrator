@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -96,10 +97,13 @@ public class StudyDeploymentAjaxRunner implements Runnable, DeploymentListener {
         
     private final StudyDeploymentAjaxUpdater updater;
     private final StudyConfiguration job;
+    private final HeatmapParameters heatmapParameters;
     private String username;
     
-    StudyDeploymentAjaxRunner(StudyDeploymentAjaxUpdater updater, StudyConfiguration studyConfiguration) {
+    StudyDeploymentAjaxRunner(StudyDeploymentAjaxUpdater updater, StudyConfiguration studyConfiguration,
+            HeatmapParameters heatmapParameters) {
         this.updater = updater;
+        this.heatmapParameters = heatmapParameters;
         job = studyConfiguration;
     }
 
@@ -109,7 +113,7 @@ public class StudyDeploymentAjaxRunner implements Runnable, DeploymentListener {
     public void run() {
         username = job.getLastModifiedBy().getUsername();
             try {
-                updater.getDeploymentService().performDeployment(job, this);
+                updater.getDeploymentService().performDeployment(job, heatmapParameters, this);
             } catch (Exception e) {
                 updater.getDeploymentService().handleDeploymentFailure(job, this, e);
             } catch (Error e) {

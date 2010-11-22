@@ -594,7 +594,6 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         heatmapParameters.setHeatmapJarUrlPrefix(SessionHelper.getCaIntegratorCommonUrl());
         heatmapParameters.setLargeBinsFile(SessionHelper.getHeatmapLargeBinsFile(context));
         heatmapParameters.setSmallBinsFile(SessionHelper.getHeatmapSmallBinsFile(context));
-        heatmapParameters.setLayoutFile(SessionHelper.getHeatmapLayoutFile(context));
         getDisplayableWorkspace().setHeatmapParameters(heatmapParameters);
         return "viewHeatmap";
     }
