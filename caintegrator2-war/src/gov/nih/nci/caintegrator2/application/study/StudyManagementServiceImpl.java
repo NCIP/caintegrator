@@ -1184,13 +1184,17 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Transactional(rollbackFor = {IOException.class, ValidationException.class })
     public void saveDnaAnalysisMappingFile(GenomicDataSourceConfiguration genomicSource,
-            File mappingFile, String filename) throws IOException {
+            File mappingFile, String filename) throws IOException, ValidationException {
         File savedFile = getFileManager().storeStudyFile(mappingFile, filename, genomicSource.getStudyConfiguration());
         if (genomicSource.getDnaAnalysisDataConfiguration() == null) {
             genomicSource.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
         } else {
             unmapSamples(genomicSource);
+        }
+        if (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())) {
+            mapSamples(genomicSource.getStudyConfiguration(), mappingFile, genomicSource);
         }
         genomicSource.getDnaAnalysisDataConfiguration().setMappingFilePath(savedFile.getAbsolutePath());
         genomicSource.setStatus(Status.READY_FOR_LOAD);

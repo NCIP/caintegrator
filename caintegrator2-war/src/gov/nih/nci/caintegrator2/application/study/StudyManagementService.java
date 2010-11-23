@@ -527,9 +527,10 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @param mappingFile the file containing the mapping of subjects to samples to copy number files.
      * @param filename the filename to save the file as. 
      * @throws IOException if the file couldn't be saved.
+     * @throws ValidationException if unable to map the samples.
      */
     void saveDnaAnalysisMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration, 
-            File mappingFile, String filename) throws IOException;
+            File mappingFile, String filename) throws IOException, ValidationException;
 
     /**
      * Associates a sample mapping file to the given genomic data source.
