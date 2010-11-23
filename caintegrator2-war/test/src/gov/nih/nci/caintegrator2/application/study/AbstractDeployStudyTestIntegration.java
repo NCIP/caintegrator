@@ -200,7 +200,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         checkQueries();
     }
 
-    private void loadCopyNumberMappingFile() throws ConnectionException, ExperimentNotFoundException, IOException {
+    private void loadCopyNumberMappingFile() throws ConnectionException, ExperimentNotFoundException, IOException, ValidationException {
         if (getCopyNumberFile() != null) {
             GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
             genomicSource.getServerProfile().setHostname(getCopyNumberCaArrayHostname());
