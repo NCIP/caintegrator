@@ -229,9 +229,6 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
         if (StringUtils.isBlank(getCurrentGisticAnalysisJob().getName())) {
             addFieldError("currentGisticAnalysisJob.name", 
                     getText("struts.messages.error.name.required", getArgs("Job")));
-        } else if (getStudySubscription().getGisticAnalysisNames().contains(getCurrentGisticAnalysisJob().getName())) {
-            addFieldError("currentGisticAnalysisJob.name", getText(
-                    "struts.messages.error.duplicate.name", getArgs("Job", getCurrentGisticAnalysisJob().getName())));
         }
     }
 

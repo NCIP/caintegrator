@@ -440,5 +440,9 @@
         <comment>Add new criterion, EXPRESSION_LEVEL_CRITERION.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.3/upgrade-1.3.04.sql"/>
     </changeSet>   
+     <changeSet id="1.3.05" author="tandrews">
+        <comment>Add creation date to the abstract_copy_number_analysis.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.3/upgrade-1.3.05.sql"/>
+    </changeSet>   
     
 </databaseChangeLog>
