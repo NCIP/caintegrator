@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis.copynumber;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
@@ -228,5 +229,13 @@ public class EditGisticAnalysisAction extends AbstractCaIntegrator2Action {
      */
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
+    }
+    
+    /**
+     * 
+     * @return creationDate.
+     */
+    public String getCreationDate() {
+        return DateUtil.getDisplayableTimeStamp(gisticAnalysis.getCreationDate());
     }
 }
