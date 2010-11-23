@@ -42,6 +42,14 @@
                             <s:hidden name="gisticAnalysis.id" />
                             <s:textfield name="gisticAnalysis.name" label="Gistic Analysis Name"
                                 theme="css_xhtml" size="50" /><br>
+                                <div class="wwgrp" >
+                                <div class="wwlbl" >
+                                    <label class="label" >Creation Date:</label>
+                                </div> 
+                                <div class="wwctrl">
+                                    <s:property value="creationDate" /><br>
+                                </div> 
+                            </div> <br/>
                             <div class="wwgrp" >
                                 <div class="wwlbl" >
                                     <label class="label" >GISTIC URL used:</label>

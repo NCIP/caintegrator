@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -101,6 +102,7 @@ public abstract class AbstractCopyNumberAnalysis extends AbstractCaIntegrator2Ob
     private Set<Sample> samplesUsedForCalculation = new HashSet<Sample>();
     private String name;
     private StudySubscription studySubscription;
+    private Date creationDate;
 
     /**
      * @return the samplesUsedForCalculation
@@ -143,6 +145,20 @@ public abstract class AbstractCopyNumberAnalysis extends AbstractCaIntegrator2Ob
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @return the creationDate
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * @param creationDate the creationDate to set
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
     
 }

@@ -366,7 +366,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
 
         ReporterList reporterList = new ReporterList("GISTIC result", ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER);
         gisticAnalysis.setReporterList(reporterList);
-
+        gisticAnalysis.setCreationDate(job.getCreationDate());
         return gisticAnalysis;
     }
     

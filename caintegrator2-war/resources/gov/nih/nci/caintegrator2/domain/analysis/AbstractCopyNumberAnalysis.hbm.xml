@@ -13,7 +13,7 @@
             <key column="COPY_NUMBER_ANALYSIS_ID" />
             <many-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Sample" column="SAMPLE_ID"/>
         </set>
-        
+        <property name="creationDate" type="java.util.Date" column="CREATION_DATE"/>
         <many-to-one name="studySubscription" class="gov.nih.nci.caintegrator2.domain.application.StudySubscription"
             column="STUDY_SUBSCRIPTION_ID" lazy="proxy" cascade="save-update,merge" />
 
