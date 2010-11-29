@@ -38,8 +38,9 @@
                 document.getElementById("fieldDescriptorType").value = '<s:property value="fieldDescriptorType"/>';
                 return;
             }
+        } else {
+            document.fieldDescriptorTypeForm.submit();
         }
-        document.fieldDescriptorTypeForm.submit();
     }
     </script>
 
