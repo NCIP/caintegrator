@@ -399,7 +399,7 @@
             <pathelement location="${caintegrator2.war.test.classes.dir}" />
             <path refid="caintegrator2.war.dependencies.path" />
             <pathelement location="${caintegrator2.war.resources.src.dir}" />        
-            <pathelement location="${caintegrator2.war.resources.test.dir}" />
+            <pathelement location="${caintegrator2.war.resources.test.dir}" />  
             <path refid="junit.classpath" />
         </path>        
         <property name="caintegrator2.war.test.dependencies.path" refid="caintegrator2.war.test.dependencies.path" />
@@ -563,7 +563,11 @@
      </target>
 
     <target name="test:compile:caintegrator2.war.test.classes" depends="compile:caintegrator2.war,path:caintegrator2.war.test.dependencies">
-        <mkdir dir="${caintegrator2.war.test.classes.dir}" />
+        <mkdir dir="${caintegrator2.war.test.classes.dir}" /> 
+        <copy todir="${caintegrator2.war.test.classes.dir}">
+            <filterset refid="caintegrator2.filterset" />
+            <fileset dir="${cbs-to-heatmap.jar.resources.bins.dir}" includes="*.dat" />
+        </copy>
         <javac srcdir="${caintegrator2.war.test.src.dir}" destdir="${caintegrator2.war.test.classes.dir}" classpathref="caintegrator2.war.test.dependencies.path" debug="true" />
     </target>
     
@@ -692,7 +696,7 @@
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.3/upgrade-1.3.01.sql" />      
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.3/upgrade-1.3.02.sql" />      
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.3/upgrade-1.3.03.sql" />
-        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.3/upgrade-1.3.04.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.3/upgrade-1.3.04.sql" />   
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.3/upgrade-1.3.05.sql" />      
     </target>
 

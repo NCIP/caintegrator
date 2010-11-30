@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixSnpPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
@@ -104,6 +105,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.File;
@@ -123,9 +125,9 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     private final static Logger LOGGER = Logger.getLogger(DeployStudyRembrandtWithCopyNumberDataTestIntegration.class);
 
     @Test
-    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException, CSException {
-//        deployStudy();
-//        checkCopyNumberData();
+    public void testDeployStudy() throws Exception {
+        deployStudy();
+        checkCopyNumberData();
     }
 
     @Override
@@ -203,6 +205,11 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     protected File getCopyNumberFile() {
         return TestDataFiles.REMBRANDT_COPY_NUMBER_FILE;
     }
+
+    @Override
+    protected String getCopyNumberPlatformName() {
+        return "GeneChip Human Mapping 100K Set";
+    }
     
     @Override
     protected AbstractPlatformSource[] getAdditionalPlatformSources() {
@@ -210,7 +217,7 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
         files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
         files.add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
         return new AbstractPlatformSource[] {
-                new AffymetrixSnpPlatformSource(files, "GeneChip Human Mapping 100K Set")
+                new AffymetrixSnpPlatformSource(files, getCopyNumberPlatformName())
         };
     }
     
