@@ -19,7 +19,7 @@
     
     <s:url id="notYetImplementedUrl" includeParams="none" action="notYetImplemented" />
     
-    <s:url id="tutorialsUrl" includeParams="none" action="/caintegrator2/tutorials" />
+    <s:url id="tutorialsUrl" includeParams="none" action="tutorials" />
     
     <s:set name="sessionHelper" value="#session['sessionHelper']" />
 
