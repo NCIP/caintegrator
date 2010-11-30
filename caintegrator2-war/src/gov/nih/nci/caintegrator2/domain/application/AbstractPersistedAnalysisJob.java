@@ -299,7 +299,7 @@ public abstract class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2
         sb.append("Job ID: ").append(getId()).append(nl);
         sb.append("Date: ").append(DateUtil.formatDate(new Date(), DateUtil.PATTERN_ASCTIME)).append(nl);
         if (getSubscription() != null && getSubscription().getStudy() != null) {
-            sb.append("Study Name: ").append(getSubscription().getStudy().getLongTitleText()).append(nl);
+            sb.append("Study Name: ").append(getSubscription().getStudy().getShortTitleText()).append(nl);
         }
         return sb.toString();
     }
