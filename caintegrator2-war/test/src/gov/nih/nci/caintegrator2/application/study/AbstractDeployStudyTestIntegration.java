@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
@@ -209,12 +210,17 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.getServerProfile().setPassword(getCaArrayPassword());
             genomicSource.setExperimentIdentifier(getCopyNumberCaArrayId());
             genomicSource.setPlatformVendor(getPlatformVendor());
+            genomicSource.setPlatformName(getCopyNumberPlatformName());
             genomicSource.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
             genomicSource.setLoadingType(getLoadingType());
             service.addGenomicSource(studyConfiguration, genomicSource);
             getService().saveDnaAnalysisMappingFile(genomicSource, getCopyNumberFile(), getCopyNumberFile().getName());
             configureSegmentationDataCalcuation(genomicSource.getDnaAnalysisDataConfiguration());
         }
+    }
+
+    protected String getCopyNumberPlatformName() {
+        return null;
     }
 
     protected ArrayDataLoadingTypeEnum getLoadingType() {
@@ -527,11 +533,19 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         logStart();
         service.setStudyLastModifiedByCurrentUser(studyConfiguration, userWorkspace, null, LogEntry.getSystemLogDeploy(studyConfiguration.getStudy()));
         deploymentService.prepareForDeployment(studyConfiguration, null);
-        Status status = deploymentService.performDeployment(studyConfiguration, new HeatmapParameters(), null);
+        Status status = deploymentService.performDeployment(studyConfiguration, getHeatmapParameters(), null);
         logEnd();
         if (status.equals(Status.ERROR)) {
             fail(studyConfiguration.getStatusDescription());
         }
+    }
+
+    protected HeatmapParameters getHeatmapParameters() {
+        HeatmapParameters heatmapParameters = new HeatmapParameters();
+        heatmapParameters.setViewAllData(true);
+        heatmapParameters.setLargeBinsFile(TestDataFiles.HEATMAP_LARGE_BINS_FILE.getAbsolutePath());
+        heatmapParameters.setSmallBinsFile(TestDataFiles.HEATMAP_SMALL_BINS_FILE.getAbsolutePath());
+        return heatmapParameters;
     }
 
     private void loadClinicalData()

@@ -264,6 +264,12 @@ public class TestDataFiles {
     public static final String GISTIC_RESULT_FILE_PATH = "/GISTIC_RESULTS.zip";
     public static final File GISTIC_RESULT_FILE = getFile(GISTIC_RESULT_FILE_PATH);
     
+    // Heat Map
+    public static final String HEATMAP_SMALL_BINS_FILE_PATH = "/bins10K.dat";
+    public static final String HEATMAP_LARGE_BINS_FILE_PATH = "/bins200K.dat";
+    public static final File HEATMAP_SMALL_BINS_FILE = getFile(HEATMAP_SMALL_BINS_FILE_PATH);
+    public static final File HEATMAP_LARGE_BINS_FILE = getFile(HEATMAP_LARGE_BINS_FILE_PATH);
+    
     // Platform data files
     public static File getAffymetrixDataFile(String filename) {
         return getFile(AFFYMETRIX_DATA_FILE_DIRECTORY_PATH + "/" + filename);

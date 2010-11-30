@@ -40,6 +40,8 @@ public class PlatformConfiguration extends AbstractCaIntegrator2Object {
     public PlatformConfiguration(AbstractPlatformSource platformSource) {
         this.deploymentStartDate = new Date();
         this.platformSource = platformSource;
+        this.platformType = platformSource.getPlatformType();
+        this.platformChannelType = platformSource.getPlatformChannelType();
     }
     
     /**

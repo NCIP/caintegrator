@@ -118,6 +118,7 @@ public class ArrayDataServiceTest {
         platform.setId(1l);
         PlatformConfiguration platformConfiguration = new PlatformConfiguration();
         platform.setPlatformConfiguration(platformConfiguration);
+        platformConfiguration.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
         platformConfiguration.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
         ((ArrayDataServiceImpl) service).setFileManager(new FileManagerStub());
         ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);

@@ -237,6 +237,8 @@ public class ArrayDataServiceStub implements ArrayDataService {
         PlatformConfiguration config1 = new PlatformConfiguration();
         config1.setId(1l);
         config1.setName("name");
+        config1.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
+        config1.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
         config1.setStatus(Status.PROCESSING);
         config1.setDeploymentStartDate(new Date());
         PlatformConfiguration config2 = new PlatformConfiguration();
@@ -244,12 +246,12 @@ public class ArrayDataServiceStub implements ArrayDataService {
         config2.setName("name2");
         config2.setStatus(Status.LOADED);
         config2.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
+        config2.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
         config2.setDeploymentStartDate(new Date());
         Platform platform = new Platform();
         platform.setName("name2");
         platform.setVendor(PlatformVendorEnum.AFFYMETRIX);
         config2.setPlatform(platform);
-        config2.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
         platformConfigurations.add(config1);
         platformConfigurations.add(config2);
         return platformConfigurations;
@@ -261,6 +263,8 @@ public class ArrayDataServiceStub implements ArrayDataService {
         PlatformConfiguration config = new PlatformConfiguration();
         config.setId(1l);
         config.setName("name");
+        config.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
+        config.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
         config.setStatus(Status.PROCESSING);
         config.setDeploymentStartDate(new Date());
         return config;
