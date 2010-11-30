@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
@@ -324,6 +325,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         getPlatformConfigurationCalled = true;
         PlatformConfiguration platformConfiguration = new PlatformConfiguration();
         platformConfiguration.setName(name);
+        platform.getPlatformConfiguration().setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
+        platform.getPlatformConfiguration().setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
         return platformConfiguration;
     }
 
@@ -334,6 +337,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         getPlatformCalled = true;
         platform.setName(name);
         platform.setPlatformConfiguration(new PlatformConfiguration());
+        platform.getPlatformConfiguration().setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
         platform.getPlatformConfiguration().setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
         return platform;
     }

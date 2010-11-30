@@ -210,15 +210,6 @@ public final class SessionHelper {
     }
     
     /**
-     * 
-     * @param context servlet context.
-     * @return heatmap layout file.
-     */
-    public static File getHeatmapLayoutFile(ServletContext context) {
-        return new File(context.getRealPath(WEBINF_CLASSES_DIR + HeatmapFileTypeEnum.LAYOUT.getFilename()));
-    }
-    
-    /**
      * @return URL for the "/catingrator2/common" directory.
      */
     public static String getCaIntegratorCommonUrl() {

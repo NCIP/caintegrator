@@ -106,6 +106,7 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.Preprocess
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
@@ -323,12 +324,14 @@ public class AnalysisServiceTest {
         PlatformConfiguration platformConfiguration1 = new PlatformConfiguration();
         platform1.setPlatformConfiguration(platformConfiguration1);
         platformConfiguration1.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
+        platformConfiguration1.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
         
         Platform platform2 = new Platform();
         platform2.setId(2l);
         PlatformConfiguration platformConfiguration2 = new PlatformConfiguration();
         platform2.setPlatformConfiguration(platformConfiguration2);
         platformConfiguration2.setPlatformType(PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER);
+        platformConfiguration2.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
         analysisFileManagerStub.clear();
         igvParameters.setViewAllData(true);
         igvParameters.getPlatforms().add(platform1);

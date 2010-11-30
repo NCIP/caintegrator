@@ -208,6 +208,11 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     protected File getCopyNumberFile() {
         return TestDataFiles.SHORT_COPY_NUMBER_FILE;
     }
+
+    @Override
+    protected String getCopyNumberPlatformName() {
+        return "GeneChip Human Mapping 100K Set";
+    }
     
     @Override
     protected AbstractPlatformSource[] getAdditionalPlatformSources() {
@@ -215,7 +220,7 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
         files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
         files.add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
         return new AbstractPlatformSource[] {
-                new AffymetrixSnpPlatformSource(files, "GeneChip Human Mapping 100K Set")
+                new AffymetrixSnpPlatformSource(files, getCopyNumberPlatformName())
         };
     }
     
