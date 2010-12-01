@@ -288,14 +288,17 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * @throws InvalidFieldDescriptorException 
      */
     @Transactional(rollbackFor = ValidationException.class)
-    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
-            AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
+    public DelimitedTextClinicalSourceConfiguration loadClinicalAnnotation(Long studyConfigurationId,
+            Long clinicalSourceId)
         throws ValidationException, InvalidFieldDescriptorException {
-        save(studyConfiguration); // without saving first it was throwing an error upon second save below.
+        StudyConfiguration studyConfiguration = getRefreshedStudyConfiguration(studyConfigurationId);
+        DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration 
+                                                    = studyConfiguration.getClinicalSource(clinicalSourceId);
         if (validateAnnotationFieldDescriptors(studyConfiguration, 
                 clinicalSourceConfiguration.getAnnotationDescriptors(), EntityTypeEnum.SUBJECT)) {
             clinicalSourceConfiguration.loadAnnotation();
             save(studyConfiguration);
+            return clinicalSourceConfiguration;
         } else {
             throw new InvalidFieldDescriptorException(
                 "Unable to load clinical source due to invalid values being loaded.  " 
@@ -352,8 +355,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public void reLoadClinicalAnnotation(StudyConfiguration studyConfiguration) throws ValidationException {
-        save(studyConfiguration); // without saving first it was throwing an error upon second save below.
+    public StudyConfiguration reLoadClinicalAnnotation(Long studyConfigurationId) throws ValidationException {
+        StudyConfiguration studyConfiguration = getRefreshedStudyConfiguration(studyConfigurationId);
         deleteClinicalAnnotation(studyConfiguration);
         for (AbstractClinicalSourceConfiguration configuration 
                 : studyConfiguration.getClinicalConfigurationCollection()) {
@@ -361,6 +364,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
         getDao().removeObjects(studyConfiguration.removeObsoleteSubjectAssignment());
         save(studyConfiguration);
+        return studyConfiguration;
     }
 
     /**
@@ -428,11 +432,16 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public void delete(StudyConfiguration studyConfiguration,
-            AbstractClinicalSourceConfiguration clinicalSource) throws ValidationException {
-        studyConfiguration.getClinicalConfigurationCollection().remove(clinicalSource);
-        getDao().delete(clinicalSource);
-        reLoadClinicalAnnotation(studyConfiguration);
+    public StudyConfiguration deleteClinicalSource(Long studyConfigurationId,
+            Long clinicalSourceId) throws ValidationException {
+        StudyConfiguration studyConfiguration = getRefreshedStudyConfiguration(studyConfigurationId);
+        DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration 
+                                                    = studyConfiguration.getClinicalSource(clinicalSourceId);
+        studyConfiguration.setStatus(Status.NOT_DEPLOYED);
+        studyConfiguration.getClinicalConfigurationCollection().remove(clinicalSourceConfiguration);
+        getDao().delete(clinicalSourceConfiguration);
+        save(studyConfiguration);
+        return reLoadClinicalAnnotation(studyConfiguration.getId());
     }
     
     /**
@@ -720,7 +729,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             throw new IllegalArgumentException("Data Type for the Annotation Definition is unknown.");
         }
         Set<Object> valueObjects = new HashSet<Object>();
-        for (FileColumn fileColumn : getDao().getFileColumnsUsingAnnotationFieldDescriptor(fieldDescriptor)) {
+        List<FileColumn> fileColumns = getDao().getFileColumnsUsingAnnotationFieldDescriptor(fieldDescriptor);
+        for (FileColumn fileColumn : fileColumns) {
             valueObjects.addAll(retrieveAndValidateValuesForFileColumn(study, entityType, annotationDefinition, 
                     annotationType, fileColumn));
         }

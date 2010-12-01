@@ -149,13 +149,13 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
     /**
      * Deletes a clinical source.
      * 
-     * @param studyConfiguration study configuration of the clinical source
-     * @param clinicalSource clinical source to delete
+     * @param studyConfigurationId study configuration of the clinical source
+     * @param clinicalSourceId clinical source to delete
+     * @return the study configuration.
      * @throws ValidationException fail to reload
      */
-    void delete(StudyConfiguration studyConfiguration,
-            AbstractClinicalSourceConfiguration clinicalSource)
-        throws ValidationException;
+    StudyConfiguration deleteClinicalSource(Long studyConfigurationId,
+            Long clinicalSourceId) throws ValidationException;
     
     /**
      * Deletes a genomic source.
@@ -221,22 +221,24 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
     /**
      * Loads a specific clinical annotation from study configuration.
      * 
-     * @param studyConfiguration study configuration to load
-     * @param clinicalSourceConfiguration clinical source configuration to load
+     * @param studyConfigurationId study configuration to load
+     * @param clinicalSourceId clinical source configuration to load
+     * @return the clinical source that is loaded.
      * @throws ValidationException fail to load
      * @throws InvalidFieldDescriptorException  if field descriptors are invalid.
      */
-    void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
-            AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
+    DelimitedTextClinicalSourceConfiguration loadClinicalAnnotation(Long studyConfigurationId,
+            Long clinicalSourceId)
         throws ValidationException, InvalidFieldDescriptorException;
 
     /**
      * ReLoads clinical annotations for study configuration.
      * 
-     * @param studyConfiguration study configuration to load
+     * @param studyConfigurationId study configuration to load
+     * @return studyConfiguration the study configuration.
      * @throws ValidationException fail to load
      */
-    void reLoadClinicalAnnotation(StudyConfiguration studyConfiguration)
+    StudyConfiguration reLoadClinicalAnnotation(Long studyConfigurationId)
         throws ValidationException;
 
     /**

@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -107,7 +106,6 @@ public class SubjectDataSourceAjaxRunner implements Runnable {
     private final Long studyConfigurationId;
     private final JobType jobType;
     private DelimitedTextClinicalSourceConfiguration subjectSource;
-    private StudyConfiguration studyConfiguration;
     private String username;
     
     SubjectDataSourceAjaxRunner(SubjectDataSourceAjaxUpdater updater,
@@ -130,17 +128,16 @@ public class SubjectDataSourceAjaxRunner implements Runnable {
             StudyManagementService studyManagementService = updater.getStudyManagementService();
             switch (jobType) {
             case LOAD:
-                studyManagementService.loadClinicalAnnotation(studyConfiguration, subjectSource);
-                updater.updateJobStatus(username, subjectSource);
+                updater.updateJobStatus(username, 
+                        studyManagementService.loadClinicalAnnotation(studyConfigurationId, subjectSourceId));
                 break;
             case RELOAD:
-                studyManagementService.reLoadClinicalAnnotation(studyConfiguration);
-                updater.updateJobStatus(username, subjectSource);
+                updater.reinitializeDynamicTable(username, 
+                        studyManagementService.reLoadClinicalAnnotation(studyConfigurationId));
                 break;
             case DELETE:
-                studyConfiguration.setStatus(Status.NOT_DEPLOYED);
-                studyManagementService.delete(studyConfiguration, subjectSource);
-                updater.reinitializeDynamicTable(username, studyConfiguration);
+                updater.reinitializeDynamicTable(username, 
+                        studyManagementService.deleteClinicalSource(studyConfigurationId, subjectSourceId));
                 break;
             default:
                 throw new IllegalStateException("Unknown job type.");
@@ -153,14 +150,10 @@ public class SubjectDataSourceAjaxRunner implements Runnable {
     }
 
     private void setupSession() {
-        studyConfiguration = updater.getStudyManagementService().getRefreshedStudyConfiguration(studyConfigurationId);
-        for (AbstractClinicalSourceConfiguration source : studyConfiguration.getClinicalConfigurationCollection()) {
-            if (source.getId().equals(subjectSourceId)) {
-                subjectSource = (DelimitedTextClinicalSourceConfiguration) source;
-                break;
-            }
-        }
-        username = subjectSource.getStudyConfiguration().getLastModifiedBy().getUsername();
+        StudyConfiguration studyConfiguration = 
+            updater.getStudyManagementService().getRefreshedStudyConfiguration(studyConfigurationId);
+        subjectSource = studyConfiguration.getClinicalSource(subjectSourceId);
+        username = studyConfiguration.getLastModifiedBy().getUsername();
     }
 
     private void addError(String message, Throwable e) {
