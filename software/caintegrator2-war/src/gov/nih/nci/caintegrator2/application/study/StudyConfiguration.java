@@ -705,6 +705,20 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
         }
         return null;
     }
+    
+    /**
+     * Return the clinical source from the given ID.
+     * @param clinicalSourceId id of the source.
+     * @return clinical source.
+     */
+    public DelimitedTextClinicalSourceConfiguration getClinicalSource(Long clinicalSourceId) {
+        for (AbstractClinicalSourceConfiguration source : clinicalConfigurationCollection) {
+            if (source.getId().equals(clinicalSourceId)) {
+                return (DelimitedTextClinicalSourceConfiguration) source;
+            }
+        }
+        return null;
+    }
 
     /**
      * @return the logEntries

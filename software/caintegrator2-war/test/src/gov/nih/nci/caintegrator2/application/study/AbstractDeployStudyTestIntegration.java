@@ -558,7 +558,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
         }
         assertTrue(sourceConfiguration.isLoadable());
-        service.loadClinicalAnnotation(studyConfiguration, sourceConfiguration);
+        sourceConfiguration = service.loadClinicalAnnotation(studyConfiguration.getId(), sourceConfiguration.getId());
         assertTrue(sourceConfiguration.isCurrentlyLoaded());
         logEnd();
     }

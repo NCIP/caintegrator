@@ -166,22 +166,24 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public StudyConfiguration refreshedStudyConfiguration = new StudyConfiguration();
 
 
-    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
-            AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
+    public DelimitedTextClinicalSourceConfiguration loadClinicalAnnotation(Long studyConfigurationId,
+            Long clinicalSourceConfigurationId)
         throws ValidationException {
         loadClinicalAnnotationCalled = true;
-        if (studyConfiguration.getStudy().getShortTitleText().equalsIgnoreCase("Invalid")) {
+        if (refreshedStudyConfiguration.getStudy().getShortTitleText().equalsIgnoreCase("Invalid")) {
             throw new ValidationException(new ValidationResult());
         }
-        clinicalSourceConfiguration.setStatus(Status.LOADED);
+        refreshedClinicalSource.setStatus(Status.LOADED);
+        return refreshedClinicalSource;
     }
 
-    public void reLoadClinicalAnnotation(StudyConfiguration studyConfiguration)
+    public StudyConfiguration reLoadClinicalAnnotation(Long studyConfigurationId)
         throws ValidationException {
         reLoadClinicalAnnotationCalled = true;
-        if (studyConfiguration.getStudy().getShortTitleText().equalsIgnoreCase("Invalid")) {
+        if (refreshedStudyConfiguration.getStudy().getShortTitleText().equalsIgnoreCase("Invalid")) {
             throw new ValidationException(new ValidationResult());
         }
+        return refreshedStudyConfiguration;
     }
 
     public void save(StudyConfiguration studyConfiguration) {
@@ -192,12 +194,13 @@ public class StudyManagementServiceStub implements StudyManagementService {
         deleteCalled = true;
     }
 
-    public void delete(StudyConfiguration studyConfiguration,
-            AbstractClinicalSourceConfiguration clinicalSource) throws ValidationException {
+    public StudyConfiguration deleteClinicalSource(Long studyConfigurationId,
+            Long clinicalSourceId) throws ValidationException {
         deleteCalled = true;
-        if (studyConfiguration.getStudy().getShortTitleText().equalsIgnoreCase("Invalid")) {
+        if (refreshedStudyConfiguration.getStudy().getShortTitleText().equalsIgnoreCase("Invalid")) {
             throw new ValidationException(new ValidationResult());
         }
+        return refreshedStudyConfiguration;
     }
 
     public void delete(Collection<PermissibleValue> abstractPermissibleValues) {

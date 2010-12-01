@@ -182,8 +182,8 @@ public class StudyManagementServiceTest {
         configTest.setStudy(study);
         UserWorkspace userWorkspace = new UserWorkspace();
         configTest.setUserWorkspace(userWorkspace);
-        DelimitedTextClinicalSourceConfiguration clinicalSource = new DelimitedTextClinicalSourceConfiguration();
-        studyManagementService.delete(configTest, clinicalSource);
+        studyManagementService.deleteClinicalSource(1l,
+                2l);
         assertTrue(daoStub.deleteCalled);
         daoStub.deleteCalled = false;
         GenomicDataSourceConfiguration genomicSource = configTest.getGenomicDataSources().get(0);
@@ -245,11 +245,16 @@ public class StudyManagementServiceTest {
     
     @Test
     public void testLoadClinicalAnnotation() throws ValidationException, IOException, InvalidFieldDescriptorException {
+        CaIntegrator2DaoForStudyManagementStub dao = new CaIntegrator2DaoForStudyManagementStub();
+        studyManagementService.setDao(dao);
         StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setId(1l);
         studyManagementService.save(studyConfiguration);
         DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
             studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
                     false);
+        sourceConfiguration.setId(2l);
+        dao.studyConfiguration = studyConfiguration;
         sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
         AnnotationDefinition definition = new AnnotationDefinition();
         definition.setDataType(AnnotationTypeEnum.NUMERIC);
@@ -267,8 +272,8 @@ public class StudyManagementServiceTest {
         definition = new AnnotationDefinition();
         definition.setDataType(AnnotationTypeEnum.DATE);
         sourceConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
-        studyManagementService.loadClinicalAnnotation(studyConfiguration, sourceConfiguration); 
-        studyManagementService.reLoadClinicalAnnotation(studyConfiguration); 
+        studyManagementService.loadClinicalAnnotation(studyConfiguration.getId(), sourceConfiguration.getId()); 
+        studyManagementService.reLoadClinicalAnnotation(studyConfiguration.getId()); 
         assertFalse(sourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().isHasValidationErrors());
     }
     
@@ -288,11 +293,16 @@ public class StudyManagementServiceTest {
     
     @Test(expected=InvalidFieldDescriptorException.class)
     public void testLoadInvalidClinicalAnnotation() throws ValidationException, IOException, InvalidFieldDescriptorException {
+        CaIntegrator2DaoForStudyManagementStub dao = new CaIntegrator2DaoForStudyManagementStub();
+        studyManagementService.setDao(dao);
         StudyConfiguration studyConfiguration = new StudyConfiguration();
+        dao.studyConfiguration = studyConfiguration;
+        studyConfiguration.setId(1l);
         studyManagementService.save(studyConfiguration);
         DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
             studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
                     false);
+        sourceConfiguration.setId(2l);
         sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
         AnnotationDefinition definition = new AnnotationDefinition();
         definition.setDataType(AnnotationTypeEnum.NUMERIC);
@@ -307,11 +317,11 @@ public class StudyManagementServiceTest {
         definition.getPermissibleValueCollection().add(pv);
         sourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
         definition = new AnnotationDefinition();
-        daoStub.fileColumns.add(sourceConfiguration.getAnnotationFile().getColumns().get(3));
+        dao.fileColumns.add(sourceConfiguration.getAnnotationFile().getColumns().get(3));
         definition.setDataType(AnnotationTypeEnum.DATE);
         sourceConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
-        studyManagementService.loadClinicalAnnotation(studyConfiguration, sourceConfiguration);
-        studyManagementService.reLoadClinicalAnnotation(studyConfiguration); 
+        studyManagementService.loadClinicalAnnotation(studyConfiguration.getId(), sourceConfiguration.getId());
+        studyManagementService.reLoadClinicalAnnotation(studyConfiguration.getId()); 
     }
     
     @Test 
@@ -960,6 +970,18 @@ public class StudyManagementServiceTest {
             List<ResultColumn> columns = new ArrayList<ResultColumn>();
             columns.add(resultColumn);
             return columns;
+        }
+    }
+    
+    private class CaIntegrator2DaoForStudyManagementStub extends CaIntegrator2DaoStub {
+        public StudyConfiguration studyConfiguration;
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> T get(Long id, Class<T> objectClass) {
+            if (objectClass == StudyConfiguration.class) {
+                return (T) studyConfiguration;
+            } 
+            return super.get(id, objectClass);
         }
     }
 }
