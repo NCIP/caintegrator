@@ -212,7 +212,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.setPlatformVendor(getPlatformVendor());
             genomicSource.setPlatformName(getCopyNumberPlatformName());
             genomicSource.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
-            genomicSource.setLoadingType(getLoadingType());
+            genomicSource.setLoadingType(getCopyNumberLoadingType());
             service.addGenomicSource(studyConfiguration, genomicSource);
             getService().saveDnaAnalysisMappingFile(genomicSource, getCopyNumberFile(), getCopyNumberFile().getName());
             configureSegmentationDataCalcuation(genomicSource.getDnaAnalysisDataConfiguration());
@@ -225,6 +225,10 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
 
     protected ArrayDataLoadingTypeEnum getLoadingType() {
         return ArrayDataLoadingTypeEnum.PARSED_DATA;
+    }
+
+    protected ArrayDataLoadingTypeEnum getCopyNumberLoadingType() {
+        return ArrayDataLoadingTypeEnum.SINGLE_SAMPLE_PER_FILE;
     }
 
     protected int getCopyNumberCaArrayPort() {

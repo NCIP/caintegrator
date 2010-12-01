@@ -255,6 +255,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                 EntityTypeEnum.SUBJECT, createNewAnnotationDefinition);
         DelimitedTextClinicalSourceConfiguration clinicalSourceConfig = 
             new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfiguration);
+        daoSave(clinicalSourceConfig);
         daoSave(studyConfiguration);
         return clinicalSourceConfig;
     }

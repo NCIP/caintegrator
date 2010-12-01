@@ -123,9 +123,14 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     private final static Logger LOGGER = Logger.getLogger(DeploySmallCopyNumberDataTestIntegration.class);
 
     @Test
-    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException, CSException {
-//        deployStudy();
-//        checkCopyNumberData();
+    public void testDeployStudy() throws Exception {
+        deployStudy();
+        checkCopyNumberData();
+    }
+
+    @Override
+    protected ArrayDataLoadingTypeEnum getCopyNumberLoadingType() {
+        return ArrayDataLoadingTypeEnum.CNCHP;
     }
 
     @Override
@@ -211,7 +216,7 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
 
     @Override
     protected String getCopyNumberPlatformName() {
-        return "GeneChip Human Mapping 100K Set";
+       return "GeneChip Human Mapping 100K Set";
     }
     
     @Override
@@ -302,7 +307,7 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
 
     @Override
     protected ArrayDataLoadingTypeEnum getLoadingType() {
-        return ArrayDataLoadingTypeEnum.CNCHP;
+        return ArrayDataLoadingTypeEnum.PARSED_DATA;
     }
 
 }

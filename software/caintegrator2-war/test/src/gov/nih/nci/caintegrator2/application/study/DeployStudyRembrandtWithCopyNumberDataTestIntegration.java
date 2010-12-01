@@ -162,6 +162,11 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     }
 
     @Override
+    protected ArrayDataLoadingTypeEnum getCopyNumberLoadingType() {
+        return ArrayDataLoadingTypeEnum.CNCHP;
+    }
+
+    @Override
     protected boolean getLoadDesign() {
         return true;
     }
