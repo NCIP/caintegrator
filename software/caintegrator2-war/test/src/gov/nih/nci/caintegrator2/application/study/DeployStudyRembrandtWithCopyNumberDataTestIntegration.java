@@ -208,7 +208,7 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     
     @Override
     protected File getCopyNumberFile() {
-        return TestDataFiles.REMBRANDT_COPY_NUMBER_FILE;
+        return TestDataFiles.REMBRANDT_COPY_NUMBER_5SAMPLES_FILE;
     }
 
     @Override
