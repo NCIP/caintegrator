@@ -368,7 +368,7 @@
 	                            <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
 	                                <div style="float: left; white-space: nowrap; width: 32px;">
 	                                    <s:a href="%{editGisticUrl}" cssClass="queryAction" cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
-	                                        title="Edit query: %{name}">&nbsp;</s:a>
+	                                        title="Edit: %{name}">&nbsp;</s:a>
 	                                </div>
 	                                <div style="float: right; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
 	                                    <s:a href="%{editGisticUrl}" onclick="showBusyDialog();" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;" title="Edit: %{name}">
