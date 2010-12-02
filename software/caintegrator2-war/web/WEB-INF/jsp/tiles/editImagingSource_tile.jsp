@@ -201,10 +201,10 @@
                 
                     <table class="data">
                         <tr>
-                            <th colspan="2">Unmapped Image Series Acquisitions</th>
+                            <th colspan="2">Unmapped Image Studies</th>
                         </tr>
                         <tr>
-                            <th>NBIA Image Series Acquisition Identifier</th>
+                            <th>NBIA Study Instance UID</th>
                             <th>NBIA Subject Identifier</th>
                         </tr>
                         <s:iterator value="imageSourceConfiguration.unmappedImageSeriesAcquisitions" status="status">
@@ -224,10 +224,10 @@
                     
                     <table class="data">
                         <tr>
-                            <th colspan="3">Mapped Image Series Acquisitions</th>
+                            <th colspan="3">Mapped Image Studies</th>
                         </tr>
                         <tr>
-                            <th>NBIA Image Series Acquisition Identifier</th>
+                            <th>NBIA Study Instance UID</th>
                             <th>NBIA Subject Identifier</th>
                             <th>caIntegrator Subject Identifier</th>
                         </tr>
