@@ -215,6 +215,9 @@ public class TestDataFiles {
     public static final String REMBRANDT_COPY_NUMBER_FILE_PATH = "/rembrandt_copy_number_mapping.csv";
     public static final File REMBRANDT_COPY_NUMBER_FILE = getFile(REMBRANDT_COPY_NUMBER_FILE_PATH);
 
+    public static final String REMBRANDT_COPY_NUMBER_5SAMPLES_FILE_PATH = "/rembrandt_copy_number_mapping_5samples.csv";
+    public static final File REMBRANDT_COPY_NUMBER_5SAMPLES_FILE = getFile(REMBRANDT_COPY_NUMBER_5SAMPLES_FILE_PATH);
+
     public static final String REMBRANDT_COPY_NUMBER_SINGLE_FILE_PATH = "/rembrandt_copy_number_mapping_Agilent-0244A.csv";
     public static final File REMBRANDT_COPY_NUMBER_SINGLE_FILE = getFile(REMBRANDT_COPY_NUMBER_SINGLE_FILE_PATH);
 
