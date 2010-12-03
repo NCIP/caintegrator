@@ -103,16 +103,16 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.web.HttpRequestHandler;
 
 /**
- * The request URI will be of the format /caintegrator2/igv/retrieveFile.do?JSESSIONID=1234567&file=igvSession.xml
+ * The request URI will be of the format /caintegrator/igv/retrieveFile.do?JSESSIONID=1234567&file=igvSession.xml
  * An example URL (one full line):
  * 
  * http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=
- *      http://localhost:8080/caintegrator2/igv/retrieveFile.do%3FJSESSIONID%3D123456789%26file%3DigvSession.xml
+ *      http://localhost:8080/caintegrator/igv/retrieveFile.do%3FJSESSIONID%3D123456789%26file%3DigvSession.xml
  * 
  * Or instead of using broadinstitute.org could be:
  * 
  * http://localhost:60151/load?file=
- *      http://localhost:8080/caintegrator2/igv/retrieveFile.do%3FJSESSIONID%3D123456789%26file%3DigvSession.xml
+ *      http://localhost:8080/caintegrator/igv/retrieveFile.do%3FJSESSIONID%3D123456789%26file%3DigvSession.xml
  * 
  * These URLs assume a caintegrator host being on the localhost machine.
  */

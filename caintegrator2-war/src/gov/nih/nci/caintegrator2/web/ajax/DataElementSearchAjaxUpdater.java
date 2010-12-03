@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -114,6 +115,7 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
     private static final String AJAX_LOADING_GIF = "<img src=\"images/ajax-loader.gif\"/>";
     private static final String ANNOTATION_DEFINITION_TABLE = "annotationDefinitionTable";
     private static final String CADSR_TABLE = "cadsrTable";
+    private static final String ACTION_PREFIX = "/" + SessionHelper.WAR_CONTEXT_NAME;
     private Long lastRunSearch;
     private Util utilThis;
     private StudyManagementService studyManagementService;
@@ -423,14 +425,13 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
          * @return return URL.
          */
         public String getDefinitionReturnUrl() {
-            String actionPrefix = "/caintegrator2";
             switch (this) {
             case CLINICAL_SOURCE:
-                return actionPrefix + "/selectClinicalDefinition.action?";
+                return ACTION_PREFIX + "/selectClinicalDefinition.action?";
             case IMAGING_SOURCE:
-                return actionPrefix + "/selectImagingDefinition.action?";
+                return ACTION_PREFIX + "/selectImagingDefinition.action?";
             case GROUP_SOURCE:
-                return actionPrefix + "/selectGroupDefinition.action?";
+                return ACTION_PREFIX + "/selectGroupDefinition.action?";
             default:
                 return null;
             } 
@@ -441,14 +442,13 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
          * @return return URL.
          */
         public String getDataElementReturnUrl() {
-            String actionPrefix = "/caintegrator2";
             switch (this) {
             case CLINICAL_SOURCE:
-                return actionPrefix + "/selectClinicalDataElement.action?";
+                return ACTION_PREFIX + "/selectClinicalDataElement.action?";
             case IMAGING_SOURCE:
-                return actionPrefix + "/selectImagingDataElement.action?";
+                return ACTION_PREFIX + "/selectImagingDataElement.action?";
             case GROUP_SOURCE:
-                return actionPrefix + "/selectGroupDataElement.action?";
+                return ACTION_PREFIX + "/selectGroupDataElement.action?";
             default:
                 return null;
             } 

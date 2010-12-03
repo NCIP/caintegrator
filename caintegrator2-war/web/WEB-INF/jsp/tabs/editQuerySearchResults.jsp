@@ -130,7 +130,7 @@
                             <td style="white-space:nowrap;"><b><s:property value="reporter.geneSymbols" /></b>
                                 <a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP"
                                     title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
-                                    <img src="/caintegrator2/images/ico_info.gif" border="none"/>
+                                    <img src="/caintegrator/images/ico_info.gif" border="none"/>
                                 </a>
                             </td>
                             <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
@@ -159,7 +159,7 @@
                             <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
                                 <b><s:property value="reporter.geneSymbols" /></b>&nbsp;
                                 <a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
-                                    <img src="/caintegrator2/images/ico_info.gif" border="none"/>
+                                    <img src="/caintegrator/images/ico_info.gif" border="none"/>
                                 </a>
                             </s:if>
                             <s:else>
@@ -169,7 +169,7 @@
                                     <b><s:property value="reporter.geneSymbols" /></b>&nbsp;
                                 </a>
                                 <a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
-                                    <img src="/caintegrator2/images/ico_info.gif" border="none"/>
+                                    <img src="/caintegrator/images/ico_info.gif" border="none"/>
                                 </a>
                             </s:else>
                             </td>
@@ -356,7 +356,7 @@
                     <display:column title="View in NBIA" sortable="false" media="html">
                         <s:if test="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).imageSeries != null}">
                             <a href='<s:property value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).nciaLink}" escape="false"/>'
-                                target="_"><img src="/caintegrator2/images/ico_nbia.gif" border="none" title="View Image in NBIA"/></a>
+                                target="_"><img src="/caintegrator/images/ico_nbia.gif" border="none" title="View Image in NBIA"/></a>
                         </s:if>
                     </display:column>
                 </s:if>

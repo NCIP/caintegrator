@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 /**
  * Represents a gif/jpg logo image.
@@ -93,7 +94,7 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 public class StudyLogo extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
-    private static final String LOGO_SERVLET_URL = "/caintegrator2/logo?";
+    private static final String LOGO_SERVLET_URL = "/" + SessionHelper.WAR_CONTEXT_NAME + "/logo?";
     private String fileName;
     private String path;
     private String fileType;

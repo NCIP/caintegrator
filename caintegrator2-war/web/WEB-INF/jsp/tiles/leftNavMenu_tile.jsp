@@ -66,11 +66,11 @@
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
                                             <div style="float: left; white-space: nowrap; width: 38px;">
                                                 <s:a href="%{runGeneListQueryUrl}" onclick="showBusyDialog();" cssClass="searches"
-                                                    cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    cssStyle="background:transparent url('/caintegrator/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Run query: %{name}">&nbsp;</s:a>
                                                 <s:if test="%{studyManager}">
                                                     <s:a href="%{editGeneListUrl}" cssClass="queryAction"
-                                                        cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                        cssStyle="background:transparent url('/caintegrator/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                         title="Rename List: %{name}">&nbsp;</s:a>
                                                 </s:if>
                                             </div>
@@ -108,11 +108,11 @@
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
                                             <div style="float: left; white-space: nowrap; width: 38px;">
                                                 <s:a href="%{runSubjectListQueryUrl}" onclick="showBusyDialog();" cssClass="searches"
-                                                    cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    cssStyle="background:transparent url('/caintegrator/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Run query: %{name}">&nbsp;</s:a>
                                                 <s:if test="%{studyManager}">
                                                     <s:a href="%{editSubjectListUrl}" cssClass="queryAction"
-                                                        cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                        cssStyle="background:transparent url('/caintegrator/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                         title="Rename List: %{name}">&nbsp;</s:a>
                                                 </s:if>
                                             </div>
@@ -162,9 +162,9 @@
                                     <li style="padding: 0px 0px 2px 0px">
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
                                             <div style="float: left; white-space: nowrap; width: 32px;">
-                                                <s:a href="%{runQueryUrl}" onclick="showBusyDialog();" cssClass="searches" cssStyle="background:transparent url('/caintegrator2/images/ico_search.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                <s:a href="%{runQueryUrl}" onclick="showBusyDialog();" cssClass="searches" cssStyle="background:transparent url('/caintegrator/images/ico_search.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Run query: %{name}">&nbsp;</s:a>
-                                                <s:a href="%{editQueryUrl}" cssClass="queryAction" cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                <s:a href="%{editQueryUrl}" cssClass="queryAction" cssStyle="background:transparent url('/caintegrator/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Edit query: %{name}">&nbsp;</s:a>
                                             </div>
                                             <div style="float: right; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
@@ -206,11 +206,11 @@
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
                                             <div style="float: left; white-space: nowrap; width: 38px;">
                                                 <s:a href="%{runGeneListQueryUrl}" onclick="showBusyDialog();" cssClass="searches"
-                                                    cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    cssStyle="background:transparent url('/caintegrator/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Run query: %{name}">&nbsp;</s:a>
                                                 <s:if test="%{studyManager}">
                                                     <s:a href="%{editGeneListUrl}" cssClass="queryAction"
-                                                        cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                        cssStyle="background:transparent url('/caintegrator/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                         title="Rename List: %{name}">&nbsp;</s:a>
                                                 </s:if>
                                             </div>
@@ -246,11 +246,11 @@
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
                                             <div style="float: left; white-space: nowrap; width: 38px;">
                                                 <s:a href="%{runSubjectListQueryUrl}" onclick="showBusyDialog();" cssClass="searches"
-                                                    cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    cssStyle="background:transparent url('/caintegrator/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Run query: %{name}">&nbsp;</s:a>
                                                 <s:if test="%{studyManager}">
                                                     <s:a href="%{editSubjectListUrl}" cssClass="queryAction"
-                                                        cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                        cssStyle="background:transparent url('/caintegrator/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                         title="Rename List: %{name}">&nbsp;</s:a>
                                                 </s:if>
                                             </div>
@@ -290,10 +290,10 @@
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
                                             <div style="float: left; white-space: nowrap; width: 38px;">
                                                 <s:a href="%{runGeneListQueryUrl}" onclick="showBusyDialog();" cssClass="searches"
-                                                    cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    cssStyle="background:transparent url('/caintegrator/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Run query: %{name}">&nbsp;</s:a>
                                                 <s:a href="%{editGeneListUrl}" cssClass="queryAction"
-                                                    cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    cssStyle="background:transparent url('/caintegrator/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Rename List: %{name}">&nbsp;</s:a>
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
@@ -328,10 +328,10 @@
                                         <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
                                             <div style="float: left; white-space: nowrap; width: 38px;">
                                                 <s:a href="%{runSubjectListQueryUrl}" onclick="showBusyDialog();" cssClass="searches"
-                                                    cssStyle="background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    cssStyle="background:transparent url('/caintegrator/images/ico_list.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Run query: %{name}">&nbsp;</s:a>
                                                 <s:a href="%{editSubjectListUrl}" cssClass="queryAction"
-                                                    cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    cssStyle="background:transparent url('/caintegrator/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
                                                     title="Rename List: %{name}">&nbsp;</s:a>
                                             </div>
                                             <div style="float: left; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
@@ -367,7 +367,7 @@
 	                        <li style="padding: 0px 0px 2px 0px">
 	                            <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
 	                                <div style="float: left; white-space: nowrap; width: 32px;">
-	                                    <s:a href="%{editGisticUrl}" cssClass="queryAction" cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+	                                    <s:a href="%{editGisticUrl}" cssClass="queryAction" cssStyle="background:transparent url('/caintegrator/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
 	                                        title="Edit: %{name}">&nbsp;</s:a>
 	                                </div>
 	                                <div style="float: right; width: 110px; white-space: normal; padding: 4px 0px 0px 0px;">
@@ -453,12 +453,12 @@
         <li class="stdnavforinvestigator" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator Menu</div>
             <ul>
                 <s:if test="#sessionHelper.anonymousUser">
-                    <li><a href="/caintegrator2/logout.jsp">Login</a></li>
-                    <li><a href="/caintegrator2/registration/input.action">Register</a></li>
+                    <li><a href="/caintegrator/logout.jsp">Login</a></li>
+                    <li><a href="/caintegrator/registration/input.action">Register</a></li>
                 </s:if>
                 <s:if test="!#sessionHelper.authenticated">
-                    <li><a href="/caintegrator2/registration/input.action">Register</a></li>
-                    <li><a href="/caintegrator2/workspace.action">Browse Public Studies</a></li>
+                    <li><a href="/caintegrator/registration/input.action">Register</a></li>
+                    <li><a href="/caintegrator/workspace.action">Browse Public Studies</a></li>
                 </s:if>
                 <li><a href="javascript:openHelpWindowWithNavigation('app_support_help')">Support</a></li>
                 <li><a href="${tutorialsUrl}">Tutorials</a></li>

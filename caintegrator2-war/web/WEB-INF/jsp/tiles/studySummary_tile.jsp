@@ -1,8 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<script type="text/javascript" src="/caintegrator2/common/js/jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="/caintegrator2/common/js/jTruncate.js"></script>
+<script type="text/javascript" src="/caintegrator/common/js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="/caintegrator/common/js/jTruncate.js"></script>
 <script type="text/javascript">
 
     jQuery.noConflict();
@@ -186,7 +186,7 @@
             </tr>
             <tr>
                 <td align="right">Host type:</td>
-                <td> <img src="/caintegrator2/images/caArray.gif" border="none"/></td>
+                <td> <img src="/caintegrator/images/caArray.gif" border="none"/></td>
                 <td />
                 <td />
             </tr>            

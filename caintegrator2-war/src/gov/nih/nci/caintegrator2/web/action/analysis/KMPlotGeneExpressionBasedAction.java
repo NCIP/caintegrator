@@ -106,7 +106,8 @@ import org.apache.commons.lang.math.NumberUtils;
 public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
     
     private static final long serialVersionUID = 1L;
-    private static final String GENE_EXPRESSION_PLOT_URL = "/caintegrator2/retrieveGeneExpressionKMPlot.action?";
+    private static final String GENE_EXPRESSION_PLOT_URL = "/" + SessionHelper.WAR_CONTEXT_NAME 
+            + "/retrieveGeneExpressionKMPlot.action?";
     private KMGeneExpressionBasedParameters kmPlotParameters = new KMGeneExpressionBasedParameters();
     private List<String> platformsInStudy = new ArrayList<String>();
 
