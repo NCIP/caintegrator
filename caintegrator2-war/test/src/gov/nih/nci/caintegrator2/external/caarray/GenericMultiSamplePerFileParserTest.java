@@ -133,6 +133,23 @@ public class GenericMultiSamplePerFileParserTest {
     }
     
     @Test
+    public void testExtractDataFileWithOneHeaderLine() throws DataRetrievalException, IOException {
+        
+        Map<String, Map<String, List<Float>>> dataMap =  new HashMap<String, Map<String, List<Float>>>();
+        List<String> sampleList = new ArrayList<String>();
+        sampleList.add(sample1);
+        sampleList.add(sample2);
+
+        parser = new GenericMultiSamplePerFileParser(TestDataFiles.TCGA_LEVEL_2_DATA_FILE_ONE_HEADER,
+                "ProbeID", "ProbeID", sampleList);
+        parser.loadData(dataMap);
+        assertEquals(2, dataMap.keySet().size());
+        for (Map<String, List<Float>> reporterList : dataMap.values()) {
+            assertTrue(reporterList.keySet().size() > 0);
+        }
+    }
+    
+    @Test
     public void testExtractMultiDataPoint() throws DataRetrievalException, IOException {
         
         Map<String, Map<String, List<Float>>> dataMap =  new HashMap<String, Map<String, List<Float>>>();
