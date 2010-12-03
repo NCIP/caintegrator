@@ -9,10 +9,10 @@
 <!-- caBio Inputs -->
 <s:div cssClass="TB_ajaxWindowTitle"/>
 <s:div cssClass="TB_closeAjaxWindow">
-        <s:a href="" title="Click to close." onclick="hideCaBioInputForm()" cssStyle="cursor: pointer;"><img src="/caintegrator2/images/close.gif" border="none" align="center"/>&nbsp;</s:a>
+        <s:a href="" title="Click to close." onclick="hideCaBioInputForm()" cssStyle="cursor: pointer;"><img src="/caintegrator/images/close.gif" border="none" align="center"/>&nbsp;</s:a>
 </s:div>
 
-<h2><img style="vertical-align: middle" src="/caintegrator2/images/cabiologo.gif"> caBIO Gene Search</h2>
+<h2><img style="vertical-align: middle" src="/caintegrator/images/cabiologo.gif"> caBIO Gene Search</h2>
 
 <s:div cssStyle="padding: 1px 0px 0px 5px;">
     <tr><s:actionerror /></tr>

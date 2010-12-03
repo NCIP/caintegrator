@@ -111,7 +111,7 @@ public final class IGVSessionFileWriter {
      * Writes the session file to the directory.
      * @param sessionDirectory to store the session file.
      * @param urlPrefix should be of the form 
-     *      "http://caintegrator2.nci.nih.gov/caintegrator2/igv/retrieveFile.do?JSESSIONID=12345&file=".
+     *      "http://caintegrator.nci.nih.gov/caintegrator/igv/retrieveFile.do?JSESSIONID=12345&file=".
      * @param igvResult the result.
      * @param platforms the platforms to retrieve the genome build version from.
      */

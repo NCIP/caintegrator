@@ -3,7 +3,7 @@
 // link to the online help.
 // 
 // help constants
-var contextPath = "/caintegrator2/";
+var contextPath = "/caintegrator/";
 var helpURL = "/help/index.html";
 var helpContext = "caIntegrator2";
 var usersguideURL = "/help/users_guide/caIntegrator2_Users_Guide.pdf";

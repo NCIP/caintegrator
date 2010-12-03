@@ -6,11 +6,11 @@
             
 <div id="nciheader">        
     <div id="ncilogo"><a href="http://www.cancer.gov"><img
-        src="/caintegrator2/images/logotype.gif" width="283" height="37"
+        src="/caintegrator/images/logotype.gif" width="283" height="37"
         alt="Logo: National Cancer Institute" /></a>
     </div>
     <div id="nihtag"><a href="http://www.cancer.gov"><img
-        src="/caintegrator2/images/tagline.gif" width="295" height="37"
+        src="/caintegrator/images/tagline.gif" width="295" height="37"
         alt="Logo: U.S. National Institutes of Health | www.cancer.gov" /></a>
     </div>
 
@@ -24,7 +24,7 @@
 
     <div id="mainlogo">
         <div>
-            <a href="index.jsp"><img src="/caintegrator2/images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a>
+            <a href="index.jsp"><img src="/caintegrator/images/logo_caintegrator2.gif" alt="Logo: caIntegrator" /></a>
         </div>
         <s:set name="holdsvnurl" value="#application['svnUrl']"/>
         <s:set name="holdsvntag" value="#application['caintegrator2Svntag']"/>
@@ -43,10 +43,10 @@
         </s:if>
         <div id="user">
 	        <s:if test="anonymousUser"> 
-	        Currently not logged in | <a href="/caintegrator2/logout.jsp">Login</a>
+	        Currently not logged in | <a href="/caintegrator/logout.jsp">Login</a>
 	        </s:if>
 	        <s:else>
-	        Welcome, <s:property value="#sessionHelper.username"/> | <a href="/caintegrator2/logout.jsp">Logout</a>
+	        Welcome, <s:property value="#sessionHelper.username"/> | <a href="/caintegrator/logout.jsp">Logout</a>
 	        </s:else>
         </div>
         <div id="mystudies">

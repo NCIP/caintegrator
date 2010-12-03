@@ -19,17 +19,17 @@
 		<link rel="address bar icon" href="favicon.ico" />
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-		<link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/caintegrator2.css" />
-		<link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/cai2modal.css" />
+		<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/caintegrator2.css" />
+		<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/cai2modal.css" />
         <sx:head parseContent="true"/>
-        <script type="text/javascript" src="/caintegrator2/common/js/pde.js"></script>
-        <script type="text/javascript" src="/caintegrator2/common/js/prototype.js"></script>
-        <script type="text/javascript" src="/caintegrator2/common/js/scriptaculous.js"></script>
-        <script type="text/javascript" src="/caintegrator2/common/js/effects.js"></script>
-        <script type="text/javascript" src="/caintegrator2/common/js/caintegrator2.js"></script>
-        <script type="text/javascript" src="/caintegrator2/common/js/cai2modal.js"></script>
-        <script type="text/javascript" src="/caintegrator2/common/js/onlinehelp.js"></script>
-        <script type="text/javascript" src="/caintegrator2/struts/optiontransferselect.js"></script>
+        <script type="text/javascript" src="/caintegrator/common/js/pde.js"></script>
+        <script type="text/javascript" src="/caintegrator/common/js/prototype.js"></script>
+        <script type="text/javascript" src="/caintegrator/common/js/scriptaculous.js"></script>
+        <script type="text/javascript" src="/caintegrator/common/js/effects.js"></script>
+        <script type="text/javascript" src="/caintegrator/common/js/caintegrator2.js"></script>
+        <script type="text/javascript" src="/caintegrator/common/js/cai2modal.js"></script>
+        <script type="text/javascript" src="/caintegrator/common/js/onlinehelp.js"></script>
+        <script type="text/javascript" src="/caintegrator/struts/optiontransferselect.js"></script>
 	</head>
 	
 	
@@ -50,7 +50,7 @@
                 <sx:div id="TB_overlay" cssClass="TB_overlayBG"/>
                 <!-- Begin hidden busyDialogDiv -->
                 <s:div id="busyDialogDiv">
-                <img id="busyDialogProcessingImage" src="/caintegrator2/images/ajax-loader-snake.gif" /><br></br> Please wait for action to complete ...
+                <img id="busyDialogProcessingImage" src="/caintegrator/images/ajax-loader-snake.gif" /><br></br> Please wait for action to complete ...
                 </s:div>
                 <!-- End busyDialogDiv -->
                 

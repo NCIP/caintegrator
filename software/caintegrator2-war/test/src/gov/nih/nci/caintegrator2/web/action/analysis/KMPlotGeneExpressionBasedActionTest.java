@@ -251,7 +251,7 @@ public class KMPlotGeneExpressionBasedActionTest extends AbstractSessionBasedTes
     
     @Test
     public void testGetPlotUrl() {
-        assertEquals("/caintegrator2/retrieveGeneExpressionKMPlot.action?", action.getPlotUrl());
+        assertEquals("/caintegrator/retrieveGeneExpressionKMPlot.action?", action.getPlotUrl());
     }
     
     private SubjectGroup createGroup() {

@@ -261,7 +261,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
     <target name="build:caintegrator2.war" depends="init, build:genepattern-service.jar, build:kaplan-meier.jar, build:cbs-to-heatmap.jar">
         <ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="${caintegrator2-war.build.target}" dir="${caintegrator2-war.base.dir}">
-            <property name="caintegrator2.war" value="${caintegrator2-war.dist.dir}/caintegrator2.war" />
+            <property name="caintegrator2.war" value="${caintegrator2-war.dist.dir}/caintegrator.war" />
         </ant>
     </target>
 
@@ -528,9 +528,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			/>
 	    
         <!-- Test basic http request to the application to confirm it is running -->
-        <echo message="Checking if base url of application is running at http://${jboss.server.hostname}:${jboss.server.port}/caintegrator2/login.action"/>
+        <echo message="Checking if base url of application is running at http://${jboss.server.hostname}:${jboss.server.port}/caintegrator/login.action"/>
         <condition property="port.listening">
-                <http url="http://${jboss.server.hostname}:${jboss.server.port}/caintegrator2/login.action" />      
+                <http url="http://${jboss.server.hostname}:${jboss.server.port}/caintegrator/login.action" />      
         </condition>
         <if>
                 <isset property="port.listening"/>
@@ -553,9 +553,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<remote-ssh remotesshcommand=". .bash_profile;cd ${ssh.dir.temp}; ant -Dproperties.file=${properties.file.name} -Dforce.reinstall=true ${install.target}" />
         
         <!-- Test basic http request to the application to confirm it is running -->
-        <echo message="Checking if base url of application is running at http://${jboss.server.hostname}:${jboss.server.port}/caintegrator2/login.action"/>
+        <echo message="Checking if base url of application is running at http://${jboss.server.hostname}:${jboss.server.port}/caintegrator/login.action"/>
         <condition property="port.listening">
-                <http url="http://${jboss.server.hostname}:${jboss.server.port}/caintegrator2/login.action" />      
+                <http url="http://${jboss.server.hostname}:${jboss.server.port}/caintegrator/login.action" />      
         </condition>
         <if>
                 <isset property="port.listening"/>
@@ -578,9 +578,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<remote-ssh remotesshcommand=". .bash_profile;cd ${ssh.dir.temp}; ant -Dproperties.file=${properties.file.name} -Dforce.reinstall=true ${upgrade.target}" />
         
         <!-- Test basic http request to the application to confirm it is running -->
-        <echo message="Checking if base url of application is running at http://${jboss.server.hostname}:${jboss.server.port}/caintegrator2/login.action"/>
+        <echo message="Checking if base url of application is running at http://${jboss.server.hostname}:${jboss.server.port}/caintegrator/login.action"/>
         <condition property="port.listening">
-                <http url="http://${jboss.server.hostname}:${jboss.server.port}/caintegrator2/login.action" />      
+                <http url="http://${jboss.server.hostname}:${jboss.server.port}/caintegrator/login.action" />      
         </condition>
         <if>
                 <isset property="port.listening"/>

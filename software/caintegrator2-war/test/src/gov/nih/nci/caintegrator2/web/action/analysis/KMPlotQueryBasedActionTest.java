@@ -247,7 +247,7 @@ public class KMPlotQueryBasedActionTest extends AbstractSessionBasedTest {
     
     @Test
     public void testGetPlotUrl() {
-        assertEquals("/caintegrator2/retrieveQueryKMPlot.action?", action.getPlotUrl());
+        assertEquals("/caintegrator/retrieveQueryKMPlot.action?", action.getPlotUrl());
     }
     
     private SubjectGroup createGroup() {

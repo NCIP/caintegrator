@@ -109,7 +109,8 @@ import org.apache.commons.lang.StringUtils;
 public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
 
     private static final long serialVersionUID = 1L;
-    private static final String ANNOTATION_PLOT_URL = "/caintegrator2/retrieveAnnotationKMPlot.action?";
+    private static final String ANNOTATION_PLOT_URL = "/" + SessionHelper.WAR_CONTEXT_NAME
+            + "/retrieveAnnotationKMPlot.action?";
     private KMAnnotationBasedParameters kmPlotParameters = new KMAnnotationBasedParameters();
     
 

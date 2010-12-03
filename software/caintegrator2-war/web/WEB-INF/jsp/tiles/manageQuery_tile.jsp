@@ -6,8 +6,8 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
-<script type="text/javascript" src="/caintegrator2/common/js/jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="/caintegrator2/common/js/jTruncate.js"></script>
+<script type="text/javascript" src="/caintegrator/common/js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="/caintegrator/common/js/jTruncate.js"></script>
 <script language="javascript">
 
     jQuery.noConflict();
@@ -143,7 +143,7 @@
         </s:url>
         
         <s:form action="manageQuery" name="manageQueryForm" id="manageQueryForm" theme="simple">
-            <link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/TabContainer.css" />
+            <link rel="stylesheet" type="text/css" href="/caintegrator/common/css/TabContainer.css" />
 
             <sx:tabbedpanel id="mainTabPanel" selectedTab="%{displayTab}"
                 templateCssPath="/common/css/TabContainer.css">
@@ -165,7 +165,7 @@
 <s:div id="subjectlistdiv" cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:465px;max-height: 150px; overflow:auto;">
     <s:div cssClass="TB_ajaxWindowTitle"/>
     <s:div cssClass="TB_closeAjaxWindow">
-        <s:a href="" title="Click to close." onclick="hideSubjectListForm()" cssStyle="cursor: pointer;"><img src="/caintegrator2/images/close.gif" border="none" align="center"/>&nbsp;</s:a>
+        <s:a href="" title="Click to close." onclick="hideSubjectListForm()" cssStyle="cursor: pointer;"><img src="/caintegrator/images/close.gif" border="none" align="center"/>&nbsp;</s:a>
     </s:div>
     <h2>Save Subject List</h2>
     <s:form id="myform">

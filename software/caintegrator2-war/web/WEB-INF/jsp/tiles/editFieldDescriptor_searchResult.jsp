@@ -45,7 +45,7 @@
         
         <table class="data">
             <tr>
-                <th colspan="6"><img style="vertical-align: middle" src="/caintegrator2/images/cadsrlogo.gif"> Matching Annotation Definitions from caDSR</th>
+                <th colspan="6"><img style="vertical-align: middle" src="/caintegrator/images/cadsrlogo.gif"> Matching Annotation Definitions from caDSR</th>
             </tr>
             <tr>
                 <th>Name</th>

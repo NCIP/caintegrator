@@ -38,7 +38,7 @@
     }   
 </script>
 
-<link rel="stylesheet" type="text/css" href="/caintegrator2/common/css/TabContainer.css" />
+<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/TabContainer.css" />
 <div id="content">
         <!--Page Help-->
 
