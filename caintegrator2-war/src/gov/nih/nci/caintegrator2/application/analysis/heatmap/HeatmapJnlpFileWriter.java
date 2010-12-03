@@ -107,9 +107,9 @@ public final class HeatmapJnlpFileWriter {
      * Writes the jnlp file to the directory.
      * @param sessionDirectory to store the session file.
      * @param urlPrefix should be of the form 
-     *      "http://caintegrator2.nci.nih.gov/caintegrator2/heatmap/retrieveFile.do?JSESSIONID=12345&file=".
+     *      "http://caintegrator.nci.nih.gov/caintegrator/heatmap/retrieveFile.do?JSESSIONID=12345&file=".
      * @param heatmapDirectoryUrl should be of the form
-     *      "http://caintegrator2.nci.nih.gov/caintegrator2/common/"
+     *      "http://caintegrator.nci.nih.gov/caintegrator/common/"
      * @param heatmapResult the result.
      */
     public static void writeJnlpFile(File sessionDirectory, String urlPrefix, String heatmapDirectoryUrl, 

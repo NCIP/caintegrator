@@ -112,6 +112,10 @@ import com.opensymphony.xwork2.util.ValueStack;
  * Stores helper variables to our session.
  */
 public final class SessionHelper {
+    /**
+     * .war file context name.
+     */
+    public static final String WAR_CONTEXT_NAME = "caintegrator";
     private static final String SESSION_HELPER_SESSION_KEY = "sessionHelper"; 
     private static final String DISPLAYABLE_USER_WORKSPACE_SESSION_KEY = "displayableWorkspace";
     private static final String DISPLAYABLE_USER_WORKSPACE_VALUE_STACK_KEY = "displayableWorkspace";
@@ -186,7 +190,7 @@ public final class SessionHelper {
     private static String getAnalysisViewerUrl(String analysisViewerType) {
         HttpServletRequest request = ServletActionContext.getRequest();
         return getRequestBaseUrl(request)
-            + "/caintegrator2/viewer/retrieveFile.jnlp?" + AnalysisViewerFileServlet.SESSION_PARAMETER + "="
+            + "/" + WAR_CONTEXT_NAME +  "/viewer/retrieveFile.jnlp?" + AnalysisViewerFileServlet.SESSION_PARAMETER + "="
             + request.getRequestedSessionId() + "&" + AnalysisViewerFileServlet.VIEWERTYPE_PARAMETER + "=" 
             + analysisViewerType + "&" + AnalysisViewerFileServlet.FILENAME_PARAMETER + "=";
     }
@@ -213,7 +217,7 @@ public final class SessionHelper {
      * @return URL for the "/catingrator2/common" directory.
      */
     public static String getCaIntegratorCommonUrl() {
-        return getRequestBaseUrl(ServletActionContext.getRequest()) + "/caintegrator2/common/";
+        return getRequestBaseUrl(ServletActionContext.getRequest()) + "/" + WAR_CONTEXT_NAME +  "/common/";
     }
 
     private static String getRequestBaseUrl(HttpServletRequest request) {

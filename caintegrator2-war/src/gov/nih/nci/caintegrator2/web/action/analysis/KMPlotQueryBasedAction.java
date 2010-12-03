@@ -107,7 +107,7 @@ import java.util.TreeMap;
 public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
 
     private static final long serialVersionUID = 1L;
-    private static final String QUERY_PLOT_URL = "/caintegrator2/retrieveQueryKMPlot.action?";
+    private static final String QUERY_PLOT_URL = "/" + SessionHelper.WAR_CONTEXT_NAME + "/retrieveQueryKMPlot.action?";
     private KMQueryBasedParameters kmPlotParameters = new KMQueryBasedParameters();
     
     /**

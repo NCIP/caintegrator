@@ -135,16 +135,16 @@ LEGEND INPUT, LEGEND SELECT
 .pagehelp
 { float:right;  margin-top:1.4em; width:7em; text-align:right; margin-right:50px }
 .pagehelp A.help, SPAN.help
-{ text-decoration:none; background:url("/caintegrator2/images/ico_help.gif") no-repeat; line-height:1.5em; padding:0 10px 4px 19px; }
+{ text-decoration:none; background:url("/caintegrator/images/ico_help.gif") no-repeat; line-height:1.5em; padding:0 10px 4px 19px; }
 .tutorials
 { height:6em; width:70em; text-align:left; padding:0 27px; }
 .tutorials A.video
-{ text-decoration:none; background:url("/caintegrator2/images/video_icon.jpg") no-repeat;
+{ text-decoration:none; background:url("/caintegrator/images/video_icon.jpg") no-repeat;
     line-height:4em; padding:10px 0px 12px 50px; font-size:140% }
 .tabhelp
 { float:right;  margin-top:-1.4em; width:7em; text-align:right; margin-right:50px }
 .tabhelp A.help, SPAN.help
-{ text-decoration:none; background:url("/caintegrator2/images/ico_help.gif") no-repeat;
+{ text-decoration:none; background:url("/caintegrator/images/ico_help.gif") no-repeat;
     line-height:1.5em; padding:0 10px 4px 19px; }
 
 
@@ -860,15 +860,15 @@ TABLE.data TBODY#studyDeploymentJobStatusTable TR TD#dwrCellID_3
 
 /** style for picking gene list **/
 A.geneListIcon
-{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/ico_list.gif') no-repeat scroll center top; padding:1px 12px 4px 12px;}
+{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator/images/ico_list.gif') no-repeat scroll center top; padding:1px 12px 4px 12px;}
 
 /** style for link to CGAP site **/
 A.cgapLogo
-{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cgaplogo.gif') no-repeat scroll center top; padding:1px 35px 1px 35px;}
+{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator/images/cgaplogo.gif') no-repeat scroll center top; padding:1px 35px 1px 35px;}
 
 /** style for link to caBio site **/
 A.caBioLogo
-{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cabiologo.gif') no-repeat scroll center top; padding:8px 10px 18px 10px;}
+{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator/images/cabiologo.gif') no-repeat scroll center top; padding:8px 10px 18px 10px;}
 /** Styles when using struts css_xhtml theme **/
 .wwgrp
 {position: relative; white-space: nowrap; min-width: 600px; margin-top: 10px; margin-bottom: 10px; display:inline;}
@@ -884,7 +884,7 @@ A.caBioLogo
 /* ----------------------------------------------------------------------------------------------------------------*/
 
 input.editable-select {
-  background: #FFF url(/caintegrator2/images/arrow-down.gif) right center no-repeat;
+  background: #FFF url(/caintegrator/images/arrow-down.gif) right center no-repeat;
   padding-right: 13px;
 }
 .editable-select-options {

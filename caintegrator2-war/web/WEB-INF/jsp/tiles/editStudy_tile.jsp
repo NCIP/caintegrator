@@ -473,13 +473,13 @@
             <ul class="btnrow">
             <s:if test="%{studyConfiguration.id != null}">
                 <s:if test="%{studyConfiguration.deployable}">
-                    <li><input type="image" src="images/btn_deploy.gif" alt="Deploy Study" name="action:deployStudy" id="editStudy_deployStudy" onClick="document.getElementById('studyDeploymentForm').action='/caintegrator2/deployStudy.action'; document.getElementById('studyDeploymentForm').submit()"/></li>
+                    <li><input type="image" src="images/btn_deploy.gif" alt="Deploy Study" name="action:deployStudy" id="editStudy_deployStudy" onClick="document.getElementById('studyDeploymentForm').action='/caintegrator/deployStudy.action'; document.getElementById('studyDeploymentForm').submit()"/></li>
                 </s:if>
                 <s:else>
                     <li><img alt="deploy disabled" src="images/btn_deploy_disabled.gif"/></li>
                 </s:else>
             </s:if>
-            <li><input type="image" src="images/btn_save.gif" alt="Save" name="action:saveStudy" id="editStudy_saveStudy" onClick="document.getElementById('studyDeploymentForm').action='/caintegrator2/saveStudy.action'; document.getElementById('studyDeploymentForm').submit()"/></li>
+            <li><input type="image" src="images/btn_save.gif" alt="Save" name="action:saveStudy" id="editStudy_saveStudy" onClick="document.getElementById('studyDeploymentForm').action='/caintegrator/saveStudy.action'; document.getElementById('studyDeploymentForm').submit()"/></li>
             <li> <s:url id="manageStudiesUrl" includeParams="none" action="manageStudies" />
             <s:a href="%{manageStudiesUrl}" cssClass="btn" cssStyle="margin:0 5px;"><span class="btn_img"><span class="cancel">Cancel</span></span></s:a></li>
             

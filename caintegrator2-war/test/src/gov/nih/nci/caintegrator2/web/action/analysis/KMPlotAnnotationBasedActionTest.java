@@ -305,7 +305,7 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
     
     @Test
     public void testGetPlotUrl() {
-        assertEquals("/caintegrator2/retrieveAnnotationKMPlot.action?", action.getPlotUrl());
+        assertEquals("/caintegrator/retrieveAnnotationKMPlot.action?", action.getPlotUrl());
     }
     
     private SubjectGroup createGroup() {
