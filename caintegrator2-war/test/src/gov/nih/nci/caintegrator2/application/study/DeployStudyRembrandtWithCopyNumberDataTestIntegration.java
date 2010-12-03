@@ -138,7 +138,7 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
 
     private void checkCopyNumberData() {
         Set<ArrayData> arrayDatas = getStudyConfiguration().getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, null);
-        assertEquals(17, arrayDatas.size());
+        assertEquals(5, arrayDatas.size());
         for (ArrayData arrayData : arrayDatas) {
             checkCopyNumberData(arrayData);
         }
