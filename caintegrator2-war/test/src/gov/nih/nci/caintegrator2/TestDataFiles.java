@@ -236,6 +236,9 @@ public class TestDataFiles {
     public static final String TCGA_LEVEL_2_DATA_FILE_PATH = "/arraydata/agilent/tcga_level_2_test_data.txt";
     public static final File TCGA_LEVEL_2_DATA_FILE = getFile(TCGA_LEVEL_2_DATA_FILE_PATH);
     
+    public static final String TCGA_LEVEL_2_DATA_FILE_ONE_HEADER_PATH = "/arraydata/agilent/tcga_level_2_test_data_one_header.txt";
+    public static final File TCGA_LEVEL_2_DATA_FILE_ONE_HEADER = getFile(TCGA_LEVEL_2_DATA_FILE_ONE_HEADER_PATH);
+    
     public static final String TCGA_LEVEL_2_DATA_SINGLE_SAMPLE_FILE_PATH = "/arraydata/agilent/tcga_level_2_single_sample_test_data.txt";
     public static final File TCGA_LEVEL_2_DATA_SINGLE_SAMPLE_FILE = getFile(TCGA_LEVEL_2_DATA_SINGLE_SAMPLE_FILE_PATH);
     
