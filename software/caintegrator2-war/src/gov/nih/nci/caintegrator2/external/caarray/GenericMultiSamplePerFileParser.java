@@ -221,8 +221,10 @@ public final class GenericMultiSamplePerFileParser {
         fields = Cai2Util.readDataLine(dataFileReader);
         checkHeadersLine(fields, sampleHeader);
         loadSampleHeaders(fields, sampleList);
-        fields = Cai2Util.readDataLine(dataFileReader);
-        checkHeadersLine(fields, probeHeader);
+        if (!probeHeader.equalsIgnoreCase(sampleHeader)) {
+            fields = Cai2Util.readDataLine(dataFileReader);
+            checkHeadersLine(fields, probeHeader);
+        }
     }
 
     private void loadSampleHeaders(String[] headers, List<String> sampleList) {
