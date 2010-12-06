@@ -180,10 +180,24 @@ public class ManageListAction extends AbstractDeployedStudyAction {
             setInvalidDataBeingAccessed(true);
         }
         if (CREATE_LIST_ACTION.equalsIgnoreCase(selectedAction)) {
-            validateListName();
-            validateListData();
+            validateForCreate();
         } else {
             super.validate();
+        }
+    }
+
+    private void validateForCreate() {
+        validateListName();
+        validateFileType();
+        if (!hasActionErrors() && !hasFieldErrors()) {
+            validateListData();
+        }
+    }
+    
+    private void validateFileType() {
+        if (StringUtils.isNotBlank(listFileContentType) && !listFileContentType.startsWith("text/")) {
+            addFieldError(LIST_FILE, getText("struts.messages.error.content.type.not.allowed", 
+                    getArgs("", "", "", listFileContentType)));
         }
     }
     
@@ -239,6 +253,12 @@ public class ManageListAction extends AbstractDeployedStudyAction {
                 String[] elements;
                 while ((elements = reader.readNext()) != null) {
                     for (String element : elements) {
+                        String trimmedElement = element.trim();
+                        if (trimmedElement.contains("\t")) {
+                            addFieldError(LIST_FILE, getText("struts.messages.error.file.tab.should.be.comma", 
+                                    getArgs("")));
+                            return;
+                        }
                         elementList.add(element.trim()); 
                     }
                 }
