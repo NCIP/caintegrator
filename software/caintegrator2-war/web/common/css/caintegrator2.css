@@ -729,6 +729,8 @@ A.btn SPAN.externalsite
 { background:url("../../images/ico_externalsite.gif") no-repeat; }
 A.btn SPAN.download
 { background:url("../../images/arrow_down.gif") no-repeat; }
+A.btn SPAN.igv
+{ background:url("../../images/ico_igv.gif") no-repeat; }
 
 /* Check List - Columns Tabs */
 
