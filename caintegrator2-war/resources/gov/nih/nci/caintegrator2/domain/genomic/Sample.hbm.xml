@@ -16,7 +16,7 @@
             insert="false" 
             update="false" />
 
-        <set name="arrayCollection" table="MICROARRAY_SAMPLES" lazy="true" cascade="save-update,merge" >
+        <set name="arrayCollection" table="MICROARRAY_SAMPLES" lazy="true" cascade="all-delete-orphan" >
             <cache usage="read-write" />
             <key column="SAMPLE_ID" />
             <many-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Array" column="MICROARRAY_ID" />
