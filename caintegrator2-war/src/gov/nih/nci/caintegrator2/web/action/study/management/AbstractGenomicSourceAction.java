@@ -89,12 +89,13 @@ import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 /**
  * Base class for actions that require retrieval of persistent <code>GenomicDataSourceConfigurations</code>.
  */
 public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
-    
+
     private GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
 
     /**
@@ -120,6 +121,30 @@ public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
      */
     public void setGenomicSource(GenomicDataSourceConfiguration genomicSource) {
         this.genomicSource = genomicSource;
+    }
+
+    /**
+     * @return a copy of the genomicDataSourceConfiguration
+     */
+    protected GenomicDataSourceConfiguration createNewGenomicSource() {
+        GenomicDataSourceConfiguration configuration = new GenomicDataSourceConfiguration();
+        ServerConnectionProfile newProfile = configuration.getServerProfile();
+        ServerConnectionProfile oldProfile = getGenomicSource().getServerProfile();
+        newProfile.setUrl(oldProfile.getUrl());
+        newProfile.setHostname(oldProfile.getHostname());
+        newProfile.setPort(oldProfile.getPort());
+        newProfile.setUsername(oldProfile.getUsername());
+        newProfile.setPassword(oldProfile.getPassword());
+        configuration.setExperimentIdentifier(getGenomicSource().getExperimentIdentifier());
+        configuration.setPlatformVendor(getGenomicSource().getPlatformVendor());
+        configuration.setPlatformName(getGenomicSource().getPlatformName());
+        configuration.setDataType(getGenomicSource().getDataType());
+        configuration.setLoadingType(getGenomicSource().getLoadingType());
+        configuration.setTechnicalReplicatesCentralTendency(getGenomicSource().getTechnicalReplicatesCentralTendency());
+        configuration.setUseHighVarianceCalculation(getGenomicSource().isUseHighVarianceCalculation());
+        configuration.setHighVarianceThreshold(getGenomicSource().getHighVarianceThreshold());
+        configuration.setHighVarianceCalculationType(getGenomicSource().getHighVarianceCalculationType());
+        return configuration;
     }
     
     /**
