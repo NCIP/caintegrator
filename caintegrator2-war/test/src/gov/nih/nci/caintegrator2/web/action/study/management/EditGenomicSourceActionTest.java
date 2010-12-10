@@ -133,20 +133,20 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
     @Test
     public void testAddNew() {
         action.addNew();
-        assertEquals(PlatformVendorEnum.AFFYMETRIX.getValue(), action.getGenomicSource().getPlatformVendor().getValue());
-        assertEquals(PlatformDataTypeEnum.EXPRESSION, action.getGenomicSource().getDataType());
+        assertEquals(PlatformVendorEnum.AFFYMETRIX.getValue(), action.getTempGenomicSource().getPlatformVendor().getValue());
+        assertEquals(PlatformDataTypeEnum.EXPRESSION, action.getTempGenomicSource().getDataType());
     }
 
     @Test
     public void testGetAgilentPlatformNames() {
-        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
-        action.getGenomicSource().setDataType(PlatformDataTypeEnum.EXPRESSION);
+        action.getTempGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
+        action.getTempGenomicSource().setDataType(PlatformDataTypeEnum.EXPRESSION);
         assertEquals(1, action.getFilterPlatformNames().size());
-        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
-        action.getGenomicSource().setDataType(PlatformDataTypeEnum.SNP);
+        action.getTempGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
+        action.getTempGenomicSource().setDataType(PlatformDataTypeEnum.SNP);
         assertEquals(0, action.getFilterPlatformNames().size());
-        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AGILENT);
-        action.getGenomicSource().setDataType(PlatformDataTypeEnum.EXPRESSION);
+        action.getTempGenomicSource().setPlatformVendor(PlatformVendorEnum.AGILENT);
+        action.getTempGenomicSource().setDataType(PlatformDataTypeEnum.EXPRESSION);
         assertEquals(0, action.getFilterPlatformNames().size());
     }
 
@@ -160,18 +160,19 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
     @Test
     public void testRefresh() {
         assertEquals(Action.SUCCESS, action.refresh());
-        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
+        action.getTempGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
         assertEquals(Action.SUCCESS, action.refresh());
     }
 
     @Test
     public void testGetDataType() {
-        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
+        action.getTempGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
         assertEquals(2, action.getDataTypes().size());
     }
     
     @Test
     public void testSave() {
+        action.setTempGenomicSource(action.getGenomicSource());
         action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
         assertEquals(Action.INPUT, action.save());
         assertTrue(workspaceServiceStub.clearSessionCalled);

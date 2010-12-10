@@ -85,18 +85,17 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.web.ajax.IGenomicDataSourceAjaxUpdater;
@@ -119,15 +118,17 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     private ArrayDataService arrayDataService;
     private CaArrayFacade caArrayFacade;
     private ConfigurationHelper configurationHelper;
+    private GenomicDataSourceConfiguration tempGenomicSource = new GenomicDataSourceConfiguration();
     
     /**
      * {@inheritDoc}
      */
     @Override
     public String execute() {
+        tempGenomicSource = createNewGenomicSource();
         return checkEmptyPlatformTypes();
     }
-    
+
     private String checkEmptyPlatformTypes() {
         for (PlatformConfiguration platformConfiguration : getArrayDataService().getPlatformConfigurations()) {
             if (Status.LOADED.equals(platformConfiguration.getStatus())
@@ -145,14 +146,14 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      * @return struts string.
      */
     public String addNew() {
-        getGenomicSource().setPlatformName("");
-        getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
-        getGenomicSource().setDataType(PlatformDataTypeEnum.EXPRESSION);
-        getGenomicSource().getServerProfile().setHostname(
+        getTempGenomicSource().setPlatformName("");
+        getTempGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
+        getTempGenomicSource().setDataType(PlatformDataTypeEnum.EXPRESSION);
+        getTempGenomicSource().getServerProfile().setHostname(
                 getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_HOST));
-        getGenomicSource().getServerProfile().setPort(
+        getTempGenomicSource().getServerProfile().setPort(
             Integer.valueOf(getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_PORT)));
-        getGenomicSource().getServerProfile().setUrl(
+        getTempGenomicSource().getServerProfile().setUrl(
                 getConfigurationHelper().getString(ConfigurationParameter.CAARRAY_URL));
         return checkEmptyPlatformTypes();
     }
@@ -199,47 +200,25 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         
         getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
         if (getGenomicSource().getId() == null) {
-            runAsynchronousGenomicDataRetrieval(getGenomicSource());
+            runAsynchronousGenomicDataRetrieval(getTempGenomicSource());
         } else { // Need to create a new source, delete the old one, and load the new one
-            GenomicDataSourceConfiguration newGenomicSource = createNewGenomicSource();
             delete();
-            runAsynchronousGenomicDataRetrieval(newGenomicSource);
+            runAsynchronousGenomicDataRetrieval(tempGenomicSource);
         }
         return SUCCESS;
-    }
-
-    private GenomicDataSourceConfiguration createNewGenomicSource() {
-        GenomicDataSourceConfiguration configuration = new GenomicDataSourceConfiguration();
-        ServerConnectionProfile newProfile = configuration.getServerProfile();
-        ServerConnectionProfile oldProfile = getGenomicSource().getServerProfile();
-        newProfile.setUrl(oldProfile.getUrl());
-        newProfile.setHostname(oldProfile.getHostname());
-        newProfile.setPort(oldProfile.getPort());
-        newProfile.setUsername(oldProfile.getUsername());
-        newProfile.setPassword(oldProfile.getPassword());
-        configuration.setExperimentIdentifier(getGenomicSource().getExperimentIdentifier());
-        configuration.setPlatformVendor(getGenomicSource().getPlatformVendor());
-        configuration.setPlatformName(getGenomicSource().getPlatformName());
-        configuration.setDataType(getGenomicSource().getDataType());
-        configuration.setLoadingType(getGenomicSource().getLoadingType());
-        configuration.setTechnicalReplicatesCentralTendency(getGenomicSource().getTechnicalReplicatesCentralTendency());
-        configuration.setUseHighVarianceCalculation(getGenomicSource().isUseHighVarianceCalculation());
-        configuration.setHighVarianceThreshold(getGenomicSource().getHighVarianceThreshold());
-        configuration.setHighVarianceCalculationType(getGenomicSource().getHighVarianceCalculationType());
-        return configuration;
     }
 
     private void runAsynchronousGenomicDataRetrieval(GenomicDataSourceConfiguration genomicSource) {
         getDisplayableWorkspace().setCurrentStudyConfiguration(getStudyConfiguration());
         genomicSource.setStatus(Status.PROCESSING);
         getStudyManagementService().addGenomicSourceToStudy(getStudyConfiguration(), genomicSource);
-        setStudyLastModifiedByCurrentUser(genomicSource, LogEntry.getSystemLogLoad(getGenomicSource()));
+        setStudyLastModifiedByCurrentUser(genomicSource, LogEntry.getSystemLogLoad(genomicSource));
         updater.runJob(genomicSource.getId());
     }
 
     private boolean validateSave() {
-        if (StringUtils.isEmpty(getGenomicSource().getPlatformName())) {
-            addFieldError("genomicSource.platformName", 
+        if (StringUtils.isEmpty(getTempGenomicSource().getPlatformName())) {
+            addFieldError("tempGenomicSource.platformName", 
                     getText("struts.messages.error.caarray.platform.name.required"));
             return false;
         }
@@ -254,12 +233,13 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
 
     private boolean validateGenomicSourceConnection() {
         try {
-            caArrayFacade.validateGenomicSourceConnection(getGenomicSource());
+            caArrayFacade.validateGenomicSourceConnection(getTempGenomicSource());
         } catch (ConnectionException e) {
-            addFieldError("genomicSource.serverProfile.hostname", getText("struts.messages.error.unable.to.connect"));
+            addFieldError("tempGenomicSource.serverProfile.hostname",
+                    getText("struts.messages.error.unable.to.connect"));
             return false;
         } catch (ExperimentNotFoundException e) {
-            addFieldError("genomicSource.experimentIdentifier", 
+            addFieldError("tempGenomicSource.experimentIdentifier", 
                     getText("struts.messages.error.caarray.experiment.not.found"));
             return false;
         }
@@ -267,10 +247,10 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     }
     
     private boolean validateHighVarianceParameters() {
-        if (getGenomicSource().isUseHighVarianceCalculation()
-                && (getGenomicSource().getHighVarianceThreshold() == null || getGenomicSource()
-                        .getHighVarianceThreshold() <= 0)) {
-            addFieldError("genomicSource.highVarianceThreshold", 
+        if (getTempGenomicSource().isUseHighVarianceCalculation()
+                && (getTempGenomicSource().getHighVarianceThreshold() == null
+                        || getTempGenomicSource().getHighVarianceThreshold() <= 0)) {
+            addFieldError("tempGenomicSource.highVarianceThreshold", 
                     getText("struts.messages.error.caarray.high.variance.threshold.invalid"));
             return false;
         }
@@ -285,9 +265,9 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         for (PlatformConfiguration platformConfiguration : getArrayDataService().getPlatformConfigurations()) {
             if (Status.LOADED.equals(platformConfiguration.getStatus())
                     && platformConfiguration.getPlatform().getVendor().equals(
-                        getGenomicSource().getPlatformVendor())
+                            getTempGenomicSource().getPlatformVendor())
                     && platformConfiguration.getPlatformType().getDataType().equals(
-                        getGenomicSource().getDataTypeString())) {
+                            getTempGenomicSource().getDataTypeString())) {
                 platformNames.add(platformConfiguration.getPlatform().getName());
             }
         }
@@ -299,7 +279,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      */
     public List<String> getLoadingTypes() {
         return ArrayDataLoadingTypeEnum.getLoadingTypes(
-                getGenomicSource().getPlatformVendor(), getGenomicSource().getDataType());
+                getTempGenomicSource().getPlatformVendor(), getTempGenomicSource().getDataType());
     }
     
     /**
@@ -307,7 +287,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      * @return a list of data types based on the platform vendor.
      */
     public List<String> getDataTypes() {
-        if (PlatformVendorEnum.AFFYMETRIX.getValue().equals(getGenomicSource().getPlatformVendor())) {
+        if (PlatformVendorEnum.AFFYMETRIX.getValue().equals(getTempGenomicSource().getPlatformVendor())) {
             return PlatformDataTypeEnum.getStringValues();
         }
         List<String> dataTypes = PlatformDataTypeEnum.getStringValues();
@@ -376,8 +356,22 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      * @return css style value.
      */
     public String getVarianceInputCssStyle() {
-        return getGenomicSource().isUseHighVarianceCalculation() 
+        return getTempGenomicSource().isUseHighVarianceCalculation() 
             ? "display: block;" : "display: none;";
+    }
+
+    /**
+     * @return the tempGenomicSource
+     */
+    public GenomicDataSourceConfiguration getTempGenomicSource() {
+        return tempGenomicSource;
+    }
+
+    /**
+     * @param tempGenomicSource the tempGenomicSource to set
+     */
+    public void setTempGenomicSource(GenomicDataSourceConfiguration tempGenomicSource) {
+        this.tempGenomicSource = tempGenomicSource;
     }
        
 }

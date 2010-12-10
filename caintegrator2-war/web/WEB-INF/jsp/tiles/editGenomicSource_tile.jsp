@@ -77,55 +77,55 @@
                 <s:form id="genomicSourceForm" name="genomicSourceForm" action="saveGenomicSource" theme="css_xhtml">
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="genomicSource.id" id="genomicSourceId"/>
-                    <s:if test="genomicSource.statusDescription != null && genomicSource.statusDescription.length() > 0">
+                    <s:if test="tempGenomicSource.statusDescription != null && tempGenomicSource.statusDescription.length() > 0">
             	        <s:div cssStyle="padding: 1em 0 0 0;">
                             <s:div cssClass="wwlbl">
                             	<label class="label">Status Description: </label></s:div>
 	                        <s:div>
-	                            <s:property value="genomicSource.statusDescription"/>
+	                            <s:property value="tempGenomicSource.statusDescription"/>
 	                        </s:div>
 	                    </s:div>
 	                    <br />
                     </s:if>
-                    <s:textfield label="caArray Web URL" name="genomicSource.serverProfile.url" id="caArrayUrl" />
+                    <s:textfield label="caArray Web URL" name="tempGenomicSource.serverProfile.url" id="caArrayUrl" />
                     <br/>
-                    <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" id="caArrayHost" />
+                    <s:textfield label="caArray Server Hostname" name="tempGenomicSource.serverProfile.hostname" id="caArrayHost" />
                     <br/>
                     <s:div cssClass="wwlbl">
                     	<label class="label">(Note:  caArray v 2.3 or newer is required) </label>
                     </s:div>
                     <br />
-                    <s:textfield label="caArray Server JNDI Port" name="genomicSource.serverProfile.port" id="caArrayPort" />
+                    <s:textfield label="caArray Server JNDI Port" name="tempGenomicSource.serverProfile.port" id="caArrayPort" />
                     <br/>
                     <!-- NOTE - using custom struts theme to turn off autocomplete -->
-                    <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" id="caArrayUsername" theme="cai2_css_xhtml" />
+                    <s:textfield label="caArray Username" name="tempGenomicSource.serverProfile.username" id="caArrayUsername" theme="cai2_css_xhtml" />
                     <br/>
-                    <s:password showPassword="true" label="caArray Password" name="genomicSource.serverProfile.password" id="caArrayPassword" theme="cai2_css_xhtml"/>
+                    <s:password showPassword="true" label="caArray Password" name="tempGenomicSource.serverProfile.password" id="caArrayPassword" theme="cai2_css_xhtml"/>
                     <br/>
                     <!--/NOTE --> 
-                    <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" id="experimentId" />
+                    <s:textfield label="caArray Experiment Id" name="tempGenomicSource.experimentIdentifier" id="experimentId" />
                     <br/>
-                    <s:select id="platformVendor" name="genomicSource.platformVendorString" label="Vendor"
+                    <s:select id="platformVendor" name="tempGenomicSource.platformVendorString" label="Vendor"
                         list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum@getValuesToDisplay()"
                         onchange="document.genomicSourceForm.action = 'refreshGenomicSource.action';
                                 document.genomicSourceForm.submit();"/>
                     <br/>
-                    <s:select id="dataType" name="genomicSource.dataTypeString" label="Data Type"
+                    <s:select id="dataType" name="tempGenomicSource.dataTypeString" label="Data Type"
                         list="dataTypes"
                         onchange="document.genomicSourceForm.action = 'refreshGenomicSource.action';
                                 document.genomicSourceForm.submit();"/>
                     <br/>
                     <s:select id="platformName" 
-                        name="genomicSource.platformName" 
+                        name="tempGenomicSource.platformName" 
                         label="Platform"
                         list="filterPlatformNames"/>
                     <br/>
                     <s:select id="loadingType" 
-                        name="genomicSource.loadingTypeString" 
+                        name="tempGenomicSource.loadingTypeString" 
                         label="Array Data Loading Type"
                         list="loadingTypes"/>
                     <br/>
-                    <s:select id="technicalReplicatesCentralTendency" name="genomicSource.technicalReplicatesCentralTendencyString" label="Central Tendency for Technical Replicates"
+                    <s:select id="technicalReplicatesCentralTendency" name="tempGenomicSource.technicalReplicatesCentralTendencyString" label="Central Tendency for Technical Replicates"
                         list="@gov.nih.nci.caintegrator2.application.study.CentralTendencyTypeEnum@getStringValues()"
                         />
                     <br/>    
@@ -133,7 +133,7 @@
                         <div class="wwlbl" id="wwlbl_isUseHighVarianceCalculation">
                             <label class="checkboxLabel" for="isUseHighVarianceCalculation">Indicate if Technical Replicates have statistical variability:</label>
                             <s:checkbox id="isUseHighVarianceCalculation" 
-                                        name="genomicSource.useHighVarianceCalculation"
+                                        name="tempGenomicSource.useHighVarianceCalculation"
                                         onclick="checkVarianceInputParams(this);"
                                         theme="simple"
                                         title="Denote in the search results if a sample has high statistical variability among technical replicates"
@@ -142,10 +142,10 @@
                         </div> 
                     </div>
                     <s:div id="varianceInputParams" cssStyle="%{varianceInputCssStyle}">
-                    <s:select id="highVarianceCalculationType" name="genomicSource.highVarianceCalculationTypeString" label="Standard Deviation Type" 
+                    <s:select id="highVarianceCalculationType" name="tempGenomicSource.highVarianceCalculationTypeString" label="Standard Deviation Type" 
                         list="@gov.nih.nci.caintegrator2.application.study.HighVarianceCalculationTypeEnum@getStringValues()"/>
                     <br/>
-                    <s:textfield label="Standard Deviation Threshold" name="genomicSource.highVarianceThreshold" id="highVarianceThreshold" />
+                    <s:textfield label="Standard Deviation Threshold" name="tempGenomicSource.highVarianceThreshold" id="highVarianceThreshold" />
                     <br/>
                     </s:div>
                     <br/>
