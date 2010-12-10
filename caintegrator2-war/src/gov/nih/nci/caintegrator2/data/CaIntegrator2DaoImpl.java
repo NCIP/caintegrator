@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.application.study.MatchScoreComparator;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
@@ -894,6 +895,17 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             return sourceList.get(0);
         }
         return null;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")      // hibernate operation not parameterized
+    public Set<GisticAnalysis> getGisticAnalysisUsingGenomicSource(
+            GenomicDataSourceConfiguration genomicSource) {
+        return new HashSet<GisticAnalysis>(getCurrentSession().createCriteria(GisticAnalysis.class).
+                createCriteria("samplesUsedForCalculation").
+                add(Restrictions.eq("genomicDataSource", genomicSource)).list());
     }
     
     private void secureCurrentSession(String username) {

@@ -307,8 +307,13 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
             String linkDisplay, String linkCssClass, boolean isDelete) {
         String deleteString = "";
         if (isDelete) {
-            deleteString = "onclick=\"return confirm('The Genomic Data Source " 
-                            + genomicSource.getExperimentIdentifier() + " will be permanently deleted.')\"";
+            StringBuffer messageString = new StringBuffer("The Genomic Data Source " 
+                + genomicSource.getExperimentIdentifier() + " will be permanently deleted.");
+            if (genomicSource.isCopyNumberData()) {
+                messageString.append(
+                    "  Any copy number analysis jobs associated with samples in this source will also be deleted.");
+            }
+            deleteString = "onclick=\"return confirm('" + messageString.toString() + "')\"";
         }
 
         return "<a style=\"margin: 0pt;\" class=\"btn\" href=\"" + actionName + ".action?studyConfiguration.id=" 

@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
@@ -493,5 +494,13 @@ public interface CaIntegrator2Dao {
      * @return list of criterion matching.
      */
     List<AbstractAnnotationCriterion> getCriteriaUsingAnnotation(AnnotationFieldDescriptor fieldDescriptor);
+    
+    /**
+     * Retrieves gistic analysis associated with the given samples.
+     * @param genomicSource genomic source for gistic analysis.
+     * @return matching gistic analysis.
+     */
+    Set<GisticAnalysis> getGisticAnalysisUsingGenomicSource(
+            GenomicDataSourceConfiguration genomicSource);
     
 }
