@@ -86,12 +86,14 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.AnnotationUtil;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
@@ -165,6 +167,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     private CaArrayFacade caArrayFacade;
     private WorkspaceService workspaceService;
     private SecurityManager securityManager;
+    private AnalysisService analysisService;
 
     /**
      * {@inheritDoc}
@@ -450,6 +453,13 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     public void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
         studyConfiguration.getGenomicDataSources().remove(genomicSource);
+        if (genomicSource.isCopyNumberData()) {
+            Set<GisticAnalysis> gisticAnalysisCollection = 
+                getDao().getGisticAnalysisUsingGenomicSource(genomicSource);
+            for (GisticAnalysis gisticAnalysis : gisticAnalysisCollection) {
+                analysisService.deleteGisticAnalysis(gisticAnalysis);
+            }
+        }
         for (Sample sample : genomicSource.getSamples()) {
             sample.removeSampleAcquisitionAssociations();
             for (Array array : sample.getArrayCollection()) {
@@ -1418,5 +1428,19 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     public void daoSave(Object persistentObject) {
         getDao().save(persistentObject);
+    }
+
+    /**
+     * @return the analysisService
+     */
+    public AnalysisService getAnalysisService() {
+        return analysisService;
+    }
+
+    /**
+     * @param analysisService the analysisService to set
+     */
+    public void setAnalysisService(AnalysisService analysisService) {
+        this.analysisService = analysisService;
     }
 }

@@ -882,6 +882,9 @@
         <property name="aimFacade">
             <ref local="aimFacade" />
         </property>
+        <property name="analysisService">
+            <ref local="analysisService" />
+        </property>
     </bean>
 
     <bean id="deploymentService" 

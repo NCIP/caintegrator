@@ -26,9 +26,15 @@
         function saveGenomicSource() {
             if (document.genomicSourceForm.genomicSourceId.value != null
                     && document.genomicSourceForm.genomicSourceId.value != "") {
-                if (confirm("You are about to update the configuration information for this data source.  "
-                        + "Doing so will require you to remap your samples. "
-                        + "Please click OK to update the data source or click Cancel to go back.")) {
+                var confirmationMessage = "You are about to update the configuration information for this data source.  "
+                    + "Doing so will require you to remap your samples. "
+                    + "Please click OK to update the data source or click Cancel to go back.";
+                 if (document.genomicSourceForm.dataType.value == "Copy Number") {
+                	 confirmationMessage = "You are about to update the configuration information for this data source.  "
+                         + "Doing so will require you to remap your samples. Any copy number analysis jobs associated with samples in this source will also be deleted.  "
+                         + "Please click OK to update the data source or click Cancel to go back.";
+                 }
+                if (confirm(confirmationMessage)) {
                 	    showBusyDialog();
                         document.genomicSourceForm.submit();
                 }
