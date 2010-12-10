@@ -554,7 +554,9 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     }
 
     public Set<GisticAnalysis> getGisticAnalysisUsingGenomicSource(GenomicDataSourceConfiguration genomicSource) {
-        return null;
+        Set<GisticAnalysis> gisticAnalysisSet = new HashSet<GisticAnalysis>();
+        gisticAnalysisSet.add(new GisticAnalysis());
+        return gisticAnalysisSet;
     }
 
 }

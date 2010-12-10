@@ -91,7 +91,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
@@ -147,7 +149,7 @@ public class StudyManagementServiceTest {
     private FileManagerStub fileManagerStub;
     private WorkspaceServiceStub workspaceServiceStub;
     private SecurityManagerStub securityManagerStub;
-    
+    private AnalysisServiceStub analysisServiceStub;
     private static final String CONTROL_SAMPLE_SET_NAME = "Control Sample Set 1";
 
     @Before
@@ -164,6 +166,9 @@ public class StudyManagementServiceTest {
         workspaceServiceStub.clear();
         securityManagerStub = (SecurityManagerStub) context.getBean("securityManagerStub");
         securityManagerStub.clear();
+        analysisServiceStub = new AnalysisServiceStub();
+        studyManagementService.setAnalysisService(analysisServiceStub);
+        analysisServiceStub.clear();
     }
 
     @Test
@@ -189,6 +194,13 @@ public class StudyManagementServiceTest {
         GenomicDataSourceConfiguration genomicSource = configTest.getGenomicDataSources().get(0);
         studyManagementService.delete(configTest, genomicSource);
         assertTrue(daoStub.deleteCalled);
+        assertFalse(analysisServiceStub.deleteGisticAnalysisCalled);
+        daoStub.deleteCalled = false;
+        
+        genomicSource.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
+        studyManagementService.delete(configTest, genomicSource);
+        assertTrue(daoStub.deleteCalled);
+        assertTrue(analysisServiceStub.deleteGisticAnalysisCalled);
         deleteImageDataSource(study, configTest);
         daoStub.deleteCalled = false;
         
