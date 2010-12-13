@@ -462,6 +462,10 @@ public class QueryForm {
         if (!query.getSubscription().getStudy().hasExpressionData()) {
             resultTypes.remove(ResultTypeEnum.GENE_EXPRESSION.getValue());
         }
+        if (!query.getSubscription().getStudy().hasCopyNumberData()
+                && !query.getSubscription().getStudy().hasExpressionData()) {
+            resultTypes.remove(ResultTypeEnum.IGV_VIEWER.getValue());
+        }
         return resultTypes;
     }
 }
