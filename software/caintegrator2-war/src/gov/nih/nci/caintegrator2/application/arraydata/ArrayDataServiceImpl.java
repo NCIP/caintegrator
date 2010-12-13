@@ -159,14 +159,12 @@ public class ArrayDataServiceImpl implements ArrayDataService {
      * {@inheritDoc}
      */
     @SuppressWarnings("PMD.AvoidReassigningParameters") // preferable in this instance for error handling.
-    public PlatformConfiguration loadArrayDesign(PlatformConfiguration platformConfiguration, 
-            PlatformDeploymentListener listener) {
+    public PlatformConfiguration loadArrayDesign(PlatformConfiguration platformConfiguration) {
         AbstractPlatformSource platformSource = platformConfiguration.getPlatformSource();
         platformConfiguration = getRefreshedPlatformConfiguration(platformConfiguration.getId());
         try {
             LOGGER.info("Platform named " + platformConfiguration.getName() + " has started to load.");
             getDao().setFlushMode(HibernateAccessor.FLUSH_COMMIT);
-            String platformName = platformSource.getPlatformName();
             Platform platform = platformSource.getLoader().load(getDao());
             LOGGER.info("Completed loading design from " + platformSource.toString());
             platformConfiguration.setPlatform(platform);
@@ -179,12 +177,12 @@ public class ArrayDataServiceImpl implements ArrayDataService {
             } else {
                 platformConfiguration.setStatusDescription("Load time: Unknown");
             }
-            saveAndUpdateDeploymentStatus(platformConfiguration, listener);
-            LOGGER.info("Platform named " + platformName + " has been deployed.");
+            dao.save(platformConfiguration);
+            LOGGER.info("Platform named " + platformConfiguration.getName() + " has been deployed.");
         } catch (Exception e) {
-            handlePlatformException(platformConfiguration, listener, e);
+            handlePlatformException(platformConfiguration, e);
         } catch (Error e) {
-            handlePlatformException(platformConfiguration, listener, e);
+            handlePlatformException(platformConfiguration, e);
         }
         return platformConfiguration;
         
@@ -198,19 +196,11 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     }
 
     private void handlePlatformException(PlatformConfiguration platformConfiguration,
-            PlatformDeploymentListener listener, Throwable e) {
+            Throwable e) {
         LOGGER.error("Deployment of platform " + platformConfiguration.getName() + " failed.", e);
         platformConfiguration.setStatus(Status.ERROR);
         platformConfiguration.setStatusDescription(e.getMessage());
-        saveAndUpdateDeploymentStatus(platformConfiguration, listener);
-    }
-    
-    private void saveAndUpdateDeploymentStatus(PlatformConfiguration platformConfiguration, 
-                        PlatformDeploymentListener listener) {
         dao.save(platformConfiguration);
-        if (listener != null) {
-            listener.statusUpdated(platformConfiguration);
-        }
     }
     
     /**
