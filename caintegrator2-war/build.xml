@@ -1002,7 +1002,7 @@
     <target name="deploy:jsp" description="Copies all current JSP code to the deployed application for quick update">
         <for param="toDir">
             <path>
-                <dirset dir="${jboss.deploy.dir}/../tmp/deploy" includes="tmp*caintegrator2-exp.war" />
+                <dirset dir="${jboss.deploy.dir}/../tmp/deploy" includes="tmp*caintegrator-exp.war" />
             </path>
             <sequential>
                 <copy todir="@{toDir}">
