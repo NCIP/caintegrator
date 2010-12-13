@@ -146,7 +146,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public PlatformConfiguration loadArrayDesign(PlatformConfiguration platformConfiguration, PlatformDeploymentListener listener) {
+    public PlatformConfiguration loadArrayDesign(PlatformConfiguration platformConfiguration) {
         loadArrayDesignCalled = true;
         return new PlatformConfiguration();
     }

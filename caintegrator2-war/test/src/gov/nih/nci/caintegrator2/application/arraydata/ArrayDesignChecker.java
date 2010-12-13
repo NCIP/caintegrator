@@ -148,7 +148,7 @@ public class ArrayDesignChecker {
         PlatformConfiguration configuration = new PlatformConfiguration(source);
         configuration.setDeploymentStartDate(new Date());
         service.savePlatformConfiguration(configuration);
-        return service.loadArrayDesign(configuration, null).getPlatform();
+        return service.loadArrayDesign(configuration).getPlatform();
 
     }
 

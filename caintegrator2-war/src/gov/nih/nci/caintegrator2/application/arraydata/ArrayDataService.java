@@ -149,11 +149,9 @@ public interface ArrayDataService {
      * Loads the given array design into the system.
      * 
      * @param platformConfiguration contains the platformSource necessary to load the design
-     * @param listener informed of status changes during deployment.
      * @return updated PlatformConfiguration object.
      */
-     PlatformConfiguration loadArrayDesign(PlatformConfiguration platformConfiguration,
-            PlatformDeploymentListener listener);
+     PlatformConfiguration loadArrayDesign(PlatformConfiguration platformConfiguration);
 
      /**
       * Returns the platform of name.
