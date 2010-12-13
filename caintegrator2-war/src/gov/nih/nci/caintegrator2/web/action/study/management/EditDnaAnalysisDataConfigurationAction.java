@@ -192,7 +192,7 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
             getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
             getStudyManagementService().save(getStudyConfiguration());
             setStudyLastModifiedByCurrentUser(getGenomicSource(), 
-                    LogEntry.getSystemLogSave(getGenomicSource()));
+                    LogEntry.getSystemLogAddCopyNumberMapping(getGenomicSource(), getMappingFileFileName()));
             return SUCCESS;
         } catch (Exception e) {
             addActionError(getText("struts.messages.exception.unexpected", getArgs(e.getMessage())));

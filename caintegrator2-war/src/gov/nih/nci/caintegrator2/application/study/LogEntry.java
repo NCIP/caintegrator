@@ -122,6 +122,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
     private static final String ADD_EXTERNAL_LINKS = "Add External Links: ";
     private static final String ADD_SAMPLE_MAPPING_FILE = "Add Sample Mapping File: ";
     private static final String ADD_CONTROL_SAMPLE_MAPPING_FILE = "Add Control Sample Mapping File: ";
+    private static final String ADD_COPY_NUMBER_MAPPING_FILE = "Add Copy Number Mapping File: ";
     
     
     private static final String LOAD_SUBJECT_ANNOTATION_FILE = "Load Subject Annotation File: ";
@@ -131,7 +132,6 @@ public class LogEntry extends AbstractCaIntegrator2Object {
     private static final String SAVE_ANNOTATION_GROUP = "Save Annotation Group: ";
     private static final String SAVE_SURVIVAL_VALUE_DEFINITION = "Save Survival Value Definition: ";
     private static final String SAVE_SUBJECT_ANNOTATION_SOURCE = "Save Subject Annotation Source: ";
-    private static final String SAVE_GENOMIC_SOURCE = "Save Genomic Source: ";
     private static final String SAVE_IMAGING_SOURCE = "Save Imaging Source: ";
     
     private static final String DELETE_ANNOTATION_GROUP = "Delete Annotation Group: ";
@@ -351,14 +351,14 @@ public class LogEntry extends AbstractCaIntegrator2Object {
     /**
      * 
      * @param genomicSource to get system log message for.
+     * @param fileName to get system log message for.
      * @return System log message
      */
-    public static String getSystemLogSave(GenomicDataSourceConfiguration genomicSource) {
-        return SAVE_GENOMIC_SOURCE 
-            + SERVER_INFORMATION + QUOTE + genomicSource.getServerProfile().toString() + QUOTE + COMMA
+    public static String getSystemLogAddCopyNumberMapping(
+            GenomicDataSourceConfiguration genomicSource, String fileName) {
+        return ADD_COPY_NUMBER_MAPPING_FILE 
             + EXPERIMENT_IDENTIFIER + QUOTE + genomicSource.getExperimentIdentifier() + QUOTE + COMMA
-            + "Data Type = " + QUOTE + genomicSource.getDataTypeString() + QUOTE + COMMA
-            + "Platform Name = " + QUOTE + genomicSource.getPlatformName() + QUOTE;
+            + FILENAME + QUOTE + fileName + QUOTE;
     }
     
     /**
