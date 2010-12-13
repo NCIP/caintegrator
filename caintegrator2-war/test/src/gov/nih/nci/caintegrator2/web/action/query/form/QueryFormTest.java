@@ -841,7 +841,7 @@ public class QueryFormTest {
         genomicSource.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
         assertEquals(5, queryForm.getResultTypes().size());
         subscription.getStudy().getStudyConfiguration().getGenomicDataSources().clear();
-        assertEquals(2, queryForm.getResultTypes().size());
+        assertEquals(1, queryForm.getResultTypes().size());
     }
     
     @Test
