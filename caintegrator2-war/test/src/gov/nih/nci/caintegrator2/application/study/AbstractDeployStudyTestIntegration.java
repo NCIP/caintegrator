@@ -283,7 +283,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             configuration.setPlatformType(platformSource.getPlatformType());
             configuration.setPlatformChannelType(platformSource.getPlatformChannelType());
             arrayDataService.savePlatformConfiguration(configuration);
-            platform = arrayDataService.loadArrayDesign(configuration, null).getPlatform();
+            platform = arrayDataService.loadArrayDesign(configuration).getPlatform();
             platform.setPlatformConfiguration(configuration);
         }
         return platform;

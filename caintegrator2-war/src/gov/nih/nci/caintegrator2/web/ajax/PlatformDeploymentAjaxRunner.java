@@ -112,7 +112,7 @@ public class PlatformDeploymentAjaxRunner implements Runnable, PlatformDeploymen
      * {@inheritDoc}
      */
     public void run() {
-        updater.getArrayDataService().loadArrayDesign(platformConfiguration, this);
+        statusUpdated(updater.getArrayDataService().loadArrayDesign(platformConfiguration));
     }
 
     /**

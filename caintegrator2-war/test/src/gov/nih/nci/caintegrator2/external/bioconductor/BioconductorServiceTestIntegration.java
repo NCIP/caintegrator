@@ -89,7 +89,7 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
             AffymetrixSnpPlatformSource source = new AffymetrixSnpPlatformSource(files, "Mapping50K_Hind240");
             PlatformConfiguration configuration = new PlatformConfiguration(source);
             getArrayDataService().savePlatformConfiguration(configuration);
-            platform = getArrayDataService().loadArrayDesign(configuration, null).getPlatform();
+            platform = getArrayDataService().loadArrayDesign(configuration).getPlatform();
         }
         return platform;
     }
