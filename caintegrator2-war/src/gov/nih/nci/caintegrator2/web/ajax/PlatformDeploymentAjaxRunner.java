@@ -85,14 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformDeploymentListener;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 
 /**
  * Asynchronous thread that runs Study Deployment jobs and updates the status of those jobs. 
  */
-public class PlatformDeploymentAjaxRunner implements Runnable, PlatformDeploymentListener {
+public class PlatformDeploymentAjaxRunner implements Runnable {
     
     private final PlatformDeploymentAjaxUpdater updater;
     private final PlatformConfiguration platformConfiguration;

@@ -86,14 +86,13 @@
 package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
-import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 
 /**
  * Asynchronous thread that runs Study Deployment jobs and updates the status of those jobs. 
  */
-public class StudyDeploymentAjaxRunner implements Runnable, DeploymentListener {
+public class StudyDeploymentAjaxRunner implements Runnable {
         
     private final StudyDeploymentAjaxUpdater updater;
     private final StudyConfiguration job;
@@ -112,13 +111,7 @@ public class StudyDeploymentAjaxRunner implements Runnable, DeploymentListener {
      */
     public void run() {
         username = job.getLastModifiedBy().getUsername();
-            try {
-                updater.getDeploymentService().performDeployment(job, heatmapParameters, this);
-            } catch (Exception e) {
-                updater.getDeploymentService().handleDeploymentFailure(job, this, e);
-            } catch (Error e) {
-                updater.getDeploymentService().handleDeploymentFailure(job, this, e);
-            }
+        statusUpdated(updater.getDeploymentService().performDeployment(job, heatmapParameters));
     }
 
     /**
