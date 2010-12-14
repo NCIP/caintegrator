@@ -55,15 +55,15 @@
     <cache name="gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter.genes"
         maxElementsInMemory="100000"
         eternal="false"
-        timeToIdleSeconds="100000"
-        timeToLiveSeconds="100000"
+        timeToIdleSeconds="7200"
+        timeToLiveSeconds="86400"
         overflowToDisk="true"/>
 
     <cache name="gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter.samplesHighVariance"
         maxElementsInMemory="100000"
         eternal="false"
-        timeToIdleSeconds="100000"
-        timeToLiveSeconds="100000"
+        timeToIdleSeconds="7200"
+        timeToLiveSeconds="86400"
         overflowToDisk="true"/>
         		
 	<cache name="gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion"
