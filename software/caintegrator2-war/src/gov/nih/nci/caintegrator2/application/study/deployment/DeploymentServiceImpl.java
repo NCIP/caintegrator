@@ -90,7 +90,6 @@ import gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactory;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -130,12 +129,12 @@ public class DeploymentServiceImpl implements DeploymentService {
      * {@inheritDoc}
      */
     @SuppressWarnings("PMD.AvoidReassigningParameters") // preferable in this instance for error handling.
-    public Status prepareForDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener) {
+    public void prepareForDeployment(StudyConfiguration studyConfiguration) {
         try {
             studyConfiguration = getDao().get(studyConfiguration.getId(), StudyConfiguration.class);
-            return startDeployment(studyConfiguration, listener);
+            startDeployment(studyConfiguration);
         } catch (Exception e) {
-            return handleDeploymentFailure(studyConfiguration, listener, e);
+            handleDeploymentFailure(studyConfiguration, e);
         }
     }
 
@@ -143,39 +142,35 @@ public class DeploymentServiceImpl implements DeploymentService {
      * {@inheritDoc}
      */
     @SuppressWarnings("PMD.AvoidReassigningParameters") // preferable in this instance for error handling.
-    public Status performDeployment(StudyConfiguration studyConfiguration, HeatmapParameters heatmapParameters,
-            DeploymentListener listener)
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException {
+    public StudyConfiguration performDeployment(StudyConfiguration studyConfiguration, 
+            HeatmapParameters heatmapParameters) {
+        try {
             studyConfiguration = getDao().get(studyConfiguration.getId(), StudyConfiguration.class);
             if (!Status.PROCESSING.equals(studyConfiguration.getStatus())) {
-                startDeployment(studyConfiguration, listener);
+                startDeployment(studyConfiguration);
             }
-            return doDeployment(studyConfiguration, heatmapParameters, listener);
+            return doDeployment(studyConfiguration, heatmapParameters);
+        } catch (Exception e) {
+            handleDeploymentFailure(studyConfiguration, e);
+        } catch (Error e) {
+            handleDeploymentFailure(studyConfiguration, e);
+        }
+        return studyConfiguration;
     }
 
     /**
      * {@inheritDoc}
      */
-    public Status handleDeploymentFailure(StudyConfiguration studyConfiguration,
-            DeploymentListener listener, Throwable e) {
+    public void handleDeploymentFailure(StudyConfiguration studyConfiguration, Throwable e) {
         LOGGER.error("Deployment of study " + studyConfiguration.getStudy().getShortTitleText()
                 + " failed.", e);
         studyConfiguration.setStatusDescription((e.getMessage() != null)
                 ? e.getMessage() : e.toString());
         studyConfiguration.setStatus(Status.ERROR);
-        updateStatus(studyConfiguration, listener);
-        return studyConfiguration.getStatus();
-    }
-
-    private void updateStatus(StudyConfiguration studyConfiguration, DeploymentListener listener) {
         getDao().save(studyConfiguration);
-        if (listener != null) {
-            listener.statusUpdated(studyConfiguration);
-        }
     }
 
-    private Status doDeployment(StudyConfiguration studyConfiguration, HeatmapParameters heatmapParameters,
-            DeploymentListener listener) 
+    private StudyConfiguration doDeployment(StudyConfiguration studyConfiguration, HeatmapParameters heatmapParameters) 
     throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException {
         if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
             GenomicDataHelper genomicDataHelper = new GenomicDataHelper(getCaArrayFacade(), 
@@ -190,8 +185,8 @@ public class DeploymentServiceImpl implements DeploymentService {
         studyConfiguration.setStatusDescription("Minutes for deployment (approx):  " 
                 + DateUtil.compareDatesInMinutes(studyConfiguration.getDeploymentStartDate(), 
                                                  studyConfiguration.getDeploymentFinishDate()));
-        updateStatus(studyConfiguration, listener);
-        return studyConfiguration.getStatus();
+        getDao().save(studyConfiguration);
+        return studyConfiguration;
     }
 
     private void generateViewerFiles(StudyConfiguration studyConfiguration, HeatmapParameters heatmapParameters)
@@ -207,15 +202,14 @@ public class DeploymentServiceImpl implements DeploymentService {
         }
     }
 
-    private Status startDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener) {
+    private void startDeployment(StudyConfiguration studyConfiguration) {
         LOGGER.info("Deployment of study " + studyConfiguration.getStudy().getShortTitleText()
                 + " has started.");
         studyConfiguration.setDeploymentStartDate(new Date());
         studyConfiguration.setDeploymentFinishDate(null);
         studyConfiguration.setStatusDescription(null);
         studyConfiguration.setStatus(Status.PROCESSING);
-        updateStatus(studyConfiguration, listener);
-        return studyConfiguration.getStatus();
+        getDao().save(studyConfiguration);
     }
 
     /**

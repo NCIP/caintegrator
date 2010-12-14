@@ -536,8 +536,8 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException {
         logStart();
         service.setStudyLastModifiedByCurrentUser(studyConfiguration, userWorkspace, null, LogEntry.getSystemLogDeploy(studyConfiguration.getStudy()));
-        deploymentService.prepareForDeployment(studyConfiguration, null);
-        Status status = deploymentService.performDeployment(studyConfiguration, getHeatmapParameters(), null);
+        deploymentService.prepareForDeployment(studyConfiguration);
+        Status status = deploymentService.performDeployment(studyConfiguration, getHeatmapParameters()).getStatus();
         logEnd();
         if (status.equals(Status.ERROR)) {
             fail(studyConfiguration.getStatusDescription());

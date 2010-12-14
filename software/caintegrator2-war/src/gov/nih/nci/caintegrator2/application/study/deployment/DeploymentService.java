@@ -85,16 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
-import java.io.IOException;
-
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
-import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
-import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
 /**
  * Service responsible for study deployment.
@@ -105,37 +97,24 @@ public interface DeploymentService {
      * Marks the study as having started deployment and notifies clients.
      * 
      * @param studyConfiguration the study configuration to deploy
-     * @param listener informed of status changes during deployment
-     * @return the resulting status.
      */
-    Status prepareForDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener);
+    void prepareForDeployment(StudyConfiguration studyConfiguration);
     
     /**
      * Performs the deployment and notifies clients of the results.
      * 
      * @param studyConfiguration the study configuration to deploy
      * @param heatmapParameters use to create data files
-     * @param listener informed of status changes during deployment
-     * @return the resulting status.
-     * @throws ValidationException validation exception
-     * @throws DataRetrievalException dataretrieval exception
-     * @throws ConnectionException connection exception
-     * @throws IOException I/O exception
-     * @throws InvalidCriterionException invalid criterion when generating IGV files
+     * @return the study configuration.
      */
-    Status performDeployment(StudyConfiguration studyConfiguration, HeatmapParameters heatmapParameters,
-            DeploymentListener listener)
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException;
+    StudyConfiguration performDeployment(StudyConfiguration studyConfiguration, HeatmapParameters heatmapParameters);
     
     /**
      * Update the study configuration status. 
      * 
      * @param studyConfiguration the study configuration to deploy
-     * @param listener informed of status changes during deployment
      * @param e throwable exception
-     * @return the resulting status
      */
-    Status handleDeploymentFailure(StudyConfiguration studyConfiguration,
-            DeploymentListener listener, Throwable e);
+    void handleDeploymentFailure(StudyConfiguration studyConfiguration, Throwable e);
 
 }

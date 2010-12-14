@@ -338,7 +338,11 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
         return jobStatus.getValue();
     }
     
-    private Util getDwrUtil(String username) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override 
+    protected Util getDwrUtil(String username) {
         return getDwrUtilFactory().retrieveAnalysisJobUtil(username);
     }
 

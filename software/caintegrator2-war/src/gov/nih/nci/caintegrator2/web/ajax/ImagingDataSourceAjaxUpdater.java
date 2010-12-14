@@ -181,10 +181,10 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
     
 
     /**
-     * @param username
-     * @return
+     * {@inheritDoc}
      */
-    private Util getDwrUtil(String username) {
+    @Override 
+    protected Util getDwrUtil(String username) {
         return getDwrUtilFactory().retrieveImagingDataSourceUtil(username);
     }
     
