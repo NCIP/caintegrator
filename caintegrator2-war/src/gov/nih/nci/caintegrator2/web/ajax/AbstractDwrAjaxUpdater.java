@@ -175,6 +175,16 @@ public abstract class AbstractDwrAjaxUpdater {
     protected String getDateString(Date date) {
         return date == null ? null : new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(date);
     }
+    
+    /**
+     * @param username for dwr util.
+     * @return dwr util.
+     */
+    protected abstract Util getDwrUtil(String username);
+    
+    void refreshJsp(String username) {
+        getDwrUtil(username).addFunctionCall("location.reload(true)");
+    }
 
     /**
      * @return the workspaceService

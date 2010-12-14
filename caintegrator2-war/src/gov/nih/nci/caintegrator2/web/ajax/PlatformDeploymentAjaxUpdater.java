@@ -195,10 +195,10 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     }
 
     /**
-     * @param username
-     * @return
+     * {@inheritDoc}
      */
-    private Util getDwrUtil(String username) {
+    @Override 
+    protected Util getDwrUtil(String username) {
         return getDwrUtilFactory().retrievePlatformConfigurationUtil(username);
     }
 

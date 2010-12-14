@@ -92,7 +92,6 @@ import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
@@ -104,8 +103,6 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -131,10 +128,8 @@ public class DeploymentServiceTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setId(1L);
         daoStub.studyConfiguration = studyConfiguration;
-        TestListener listener = new TestListener();
-        deploymentServiceImpl.prepareForDeployment(studyConfiguration, listener);
-        assertTrue(listener.statuses.contains(Status.PROCESSING));
-        assertEquals(Status.PROCESSING, listener.configuration.getStatus());
+        deploymentServiceImpl.prepareForDeployment(studyConfiguration);
+        assertEquals(Status.PROCESSING, studyConfiguration.getStatus());
         assertTrue(daoStub.saveCalled);
     }
     @Test
@@ -143,17 +138,15 @@ public class DeploymentServiceTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setId(1L);
         daoStub.studyConfiguration = studyConfiguration;
-        TestListener listener = new TestListener();
-        deploymentServiceImpl.performDeployment(studyConfiguration, new HeatmapParameters(), listener);
-        assertTrue(listener.statuses.contains(Status.DEPLOYED));
-        assertEquals(Status.DEPLOYED, listener.configuration.getStatus());
+        StudyConfiguration studyConfiguration2 = 
+            deploymentServiceImpl.performDeployment(studyConfiguration, new HeatmapParameters());
+        assertEquals(Status.DEPLOYED, studyConfiguration2.getStatus());
         assertTrue(daoStub.saveCalled);
     }
 
     @Test
     public void testPerformDeploymentWithError() {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        TestListener listener = new TestListener();
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         genomicSource.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
         genomicSource.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
@@ -161,13 +154,8 @@ public class DeploymentServiceTest {
         genomicSource.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
         daoStub.studyConfiguration = studyConfiguration;
         studyConfiguration.getGenomicDataSources().add(genomicSource);
-        boolean cautghException = false;
-        try {
-            deploymentServiceImpl.performDeployment(studyConfiguration, new HeatmapParameters(), listener);
-        } catch (Exception e) {
-            cautghException = true;
-        }
-        assertTrue(cautghException);
+        deploymentServiceImpl.performDeployment(studyConfiguration, new HeatmapParameters());
+        assertEquals(Status.ERROR, studyConfiguration.getStatus());
     }
     public static class DeploymentDaoStub extends CaIntegrator2DaoStub {
         private StudyConfiguration studyConfiguration;
@@ -175,15 +163,6 @@ public class DeploymentServiceTest {
         @Override
         public <T> T get(Long id, Class<T> objectClass) {
             return (T) studyConfiguration;
-        }
-    }
-    
-    private static class TestListener implements DeploymentListener {
-        private Set<Status> statuses = new HashSet<Status>();
-        private StudyConfiguration configuration;
-        public void statusUpdated(StudyConfiguration configuration) {
-            this.configuration = configuration;
-            statuses.add(configuration.getStatus());
         }
     }
     
