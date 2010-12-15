@@ -444,6 +444,9 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     public String executeIGV(IGVParameters igvParameters) 
     throws InvalidCriterionException {
         IGVResult igvResult = new IGVResult();
+        StudySubscription studySubscription = getRefreshedEntity(igvParameters.getStudySubscription());
+        igvParameters.setStudySubscription(studySubscription);
+        igvParameters.getQuery().setSubscription(studySubscription);
         if (igvParameters.isViewAllData()) {
             runIGVForAllData(igvParameters, igvResult);
         } else {
