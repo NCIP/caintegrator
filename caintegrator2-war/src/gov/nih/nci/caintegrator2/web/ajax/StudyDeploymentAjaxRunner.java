@@ -122,5 +122,8 @@ public class StudyDeploymentAjaxRunner implements Runnable {
             updater.addError(configuration.getStatusDescription(), configuration);
         }
         updater.updateJobStatus(username, configuration);
+        if (Status.DEPLOYED.equals(configuration.getStatus())) {
+            updater.refreshJsp(username);
+        }
     }
 }
