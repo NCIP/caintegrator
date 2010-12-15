@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
 /**
  * This is what calls the analysis service to run IGV, it is 
@@ -109,10 +108,6 @@ public class IGVAjaxRunner implements Runnable {
     public void run() {
         try {
             updater.updateCurrentStatus("Creating IGV Files.");
-            StudySubscription studySubscription = 
-                updater.getAnalysisService().getRefreshedStudySubscription(igvParameters.getStudySubscription());
-            igvParameters.setStudySubscription(studySubscription);
-            igvParameters.getQuery().setSubscription(studySubscription);
             updater.finish(updater.getAnalysisService().executeIGV(igvParameters));
             
         } catch (InvalidCriterionException e) {
