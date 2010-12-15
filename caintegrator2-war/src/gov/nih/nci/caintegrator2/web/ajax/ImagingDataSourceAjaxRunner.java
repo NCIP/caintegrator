@@ -159,6 +159,7 @@ public class ImagingDataSourceAjaxRunner implements Runnable {
                 addSource();
             }
             mapSource();
+            updater.refreshJsp(username);
         } catch (ConnectionException e) {
             addError("The configured server couldn't be reached. Please check the configuration settings.", e);
         } catch (Exception e) {

@@ -142,6 +142,7 @@ public class SubjectDataSourceAjaxRunner implements Runnable {
             default:
                 throw new IllegalStateException("Unknown job type.");
             }
+            updater.refreshJsp(username);
         } catch (ValidationException e) {
             addError(e.getResult().getInvalidMessage(), e);
         } catch (Throwable e) {
