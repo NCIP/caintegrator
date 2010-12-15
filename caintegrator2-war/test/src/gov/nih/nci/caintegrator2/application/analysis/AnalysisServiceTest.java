@@ -283,11 +283,7 @@ public class AnalysisServiceTest {
         query.setName("queryNameString");
         
         StudySubscription subscription = new StudySubscription();
-        Study study = new Study();
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        study.setStudyConfiguration(studyConfiguration);
-        subscription.setStudy(study);
-        query.setSubscription(subscription);
+        subscription.setId(1L);
         IGVParameters igvParameters = new IGVParameters();
         igvParameters.setUrlPrefix("http://localhost:8080/caintegrator2/igv/runIgv.do?JSESSIONID=sessionId&file=");
         igvParameters.setSessionId("sessionId");
@@ -301,12 +297,7 @@ public class AnalysisServiceTest {
         assertFalse(analysisFileManagerStub.createIGVGctFileCalled);
         analysisFileManagerStub.clear();
         
-        GenomicDataSourceConfiguration genomicSource1 = new GenomicDataSourceConfiguration();
-        genomicSource1.setDataType(PlatformDataTypeEnum.EXPRESSION);
-        GenomicDataSourceConfiguration genomicSource2 = new GenomicDataSourceConfiguration();
-        genomicSource2.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
-        studyConfiguration.getGenomicDataSources().add(genomicSource1);
-        studyConfiguration.getGenomicDataSources().add(genomicSource2);
+        igvParameters.getStudySubscription().setId(2L);
         query.getColumnCollection().add(new ResultColumn());
         igvParameters.setQuery(query);
         String resultURL = service.executeIGV(igvParameters);
@@ -804,7 +795,18 @@ public class AnalysisServiceTest {
             if (objectClass.equals(StudySubscription.class)) {
                 if (subscription == null) {
                      subscription = new StudySubscription();
-                     subscription.setStudy(new Study());
+                     Study study = new Study();
+                     StudyConfiguration studyConfiguration = new StudyConfiguration();
+                     study.setStudyConfiguration(studyConfiguration);
+                     subscription.setStudy(study);
+                }
+                if (Long.valueOf(2).equals(id)) {
+                    GenomicDataSourceConfiguration genomicSource1 = new GenomicDataSourceConfiguration();
+                    genomicSource1.setDataType(PlatformDataTypeEnum.EXPRESSION);
+                    GenomicDataSourceConfiguration genomicSource2 = new GenomicDataSourceConfiguration();
+                    genomicSource2.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
+                    subscription.getStudy().getStudyConfiguration().getGenomicDataSources().add(genomicSource1);
+                    subscription.getStudy().getStudyConfiguration().getGenomicDataSources().add(genomicSource2);
                 }
                  return (T) subscription;
             } else {
