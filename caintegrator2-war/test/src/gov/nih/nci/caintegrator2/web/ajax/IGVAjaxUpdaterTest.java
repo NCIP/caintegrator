@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
@@ -142,8 +141,7 @@ public class IGVAjaxUpdaterTest extends AbstractSessionBasedTest {
         SessionHelper.getInstance().getDisplayableUserWorkspace().getIgvParameters().setQuery(null);
         updater.runViewer();
         Thread.sleep(2000);
-        assertFalse(analysisService.executeIGVCalled);
-
+        assertTrue(analysisService.executeIGVCalled);
     }
 
 }
