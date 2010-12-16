@@ -18,10 +18,19 @@
       );
       document.getElementById("caDnaCopyUrl").value = document.dnaAnalysisDataConfigurationForm.serverProfileUrl.value;
     });
-
+    
     function saveDatasource() {
-    	document.dnaAnalysisDataConfigurationForm.serverProfileUrl.value = document.getElementById("caDnaCopyUrl").value; // The value isn't set without doing this.
-    	document.dnaAnalysisDataConfigurationForm.submit();
+        document.dnaAnalysisDataConfigurationForm.serverProfileUrl.value = document.getElementById("caDnaCopyUrl").value; // The value isn't set without doing this.
+        if (document.getElementById("loadStatus").value == "Loaded") {
+            if (confirm("You are adding a new sample mapping file."
+                        + " All previous sample mappings will be deleted and re-mapped based on the new file."
+                        + " All GISTIC jobs will be deleted and the study will be marked not-deployed."
+                        + " Please click OK or Cancel.")) {
+                document.dnaAnalysisDataConfigurationForm.submit();
+            }
+        } else {
+            document.dnaAnalysisDataConfigurationForm.submit();
+        }
     }
 
 </script>   
@@ -60,7 +69,7 @@
                     <s:hidden name="useGlad" value="false"/>
                     <s:hidden name="formAction" />
                     <s:hidden name="dnaAnalysisDataConfiguration.segmentationService.url" id="serverProfileUrl" />
-                    
+                    <s:hidden name="genomicSource.status.value" id="loadStatus"/>
                     
                 <s:if test="%{studyConfiguration.hasLoadedClinicalDataSource()}">
                     <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" readonly="true" cssClass="readonly" size="35" />
@@ -82,11 +91,9 @@
                     <tr>
                         <td></td>
                         <td><br>
-                            
-                            <s:submit type="button" value="Save Segmentation Data Calculation Configuration" 
-                                align="center" theme="simple" onclick="saveDatasource();" disabled="%{genomicSource.status.value == 'Loaded'}"/>
+                            <button type="button" onclick="saveDatasource();">Save Segmentation Data Calculation Configuration</button>
                             <s:submit type="button" value="Cancel"
-                                onclick="document.dnaAnalysisDataConfigurationForm.action = 'cancelGenomicSource.action';
+                                onclick="document.dnaAnalysisDataConfigurationForm.action = 'cancelDnaAnalysisDataConfiguration.action';
                                     document.dnaAnalysisDataConfigurationForm.submit();"  theme="simple"/>
                         </td>
                     </tr><br>

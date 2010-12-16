@@ -167,29 +167,6 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     }
     
     /**
-     * Cancels the creation of a genomic source to return back to study screen.
-     * @return struts string.
-     */
-    public String cancel() {
-        return SUCCESS;
-    }
-    
-    /**
-     * Delete a genomic source file.
-     * @return struts string.
-     */
-    public String delete() {
-        if (getGenomicSource() == null 
-           || !getStudyConfiguration().getGenomicDataSources().contains(getGenomicSource())) {
-            return SUCCESS;
-        }
-        setStudyLastModifiedByCurrentUser(getGenomicSource(), 
-                LogEntry.getSystemLogDelete(getGenomicSource()));
-        getStudyManagementService().delete(getStudyConfiguration(), getGenomicSource());
-        return SUCCESS;
-    }
-    
-    /**
      * {@inheritDoc}
      */
     public String save() {
