@@ -15,13 +15,10 @@
     <!--ADD CONTENT HERE-->
     
     <h1><s:property value="externalLinkList.name" /></h1>
-    <strong>Description:  </strong>
         <s:if test="externalLinkList.description != null && externalLinkList.description != ''" >
+            <strong>Description:  </strong>
             <s:property value="externalLinkList.description" />
         </s:if>
-        <s:else>
-            N/A
-        </s:else>
     <br/> <br/>
     <div class="form_wrapper_outer">
         <s:iterator value="externalLinkList.linksByCategory" >
