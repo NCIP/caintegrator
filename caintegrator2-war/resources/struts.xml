@@ -583,6 +583,13 @@
             <result type="tiles">editStudy</result>
             <result name="input" type="tiles">editDnaAnalysisDataConfiguration</result>
         </action>
+        
+        <action name="cancelDnaAnalysisDataConfiguration" method="cancel" class="editDnaAnalysisDataConfigurationAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
                 
         <action name="addImagingSource" class="editImagingSourceAction">
             <result type="tiles">editImagingSource</result>

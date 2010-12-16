@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
@@ -187,6 +188,9 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
      */
     public String save() {
         try {
+            if (Status.LOADED.equals(getGenomicSource().getStatus())) {
+                recreateGenomicSource();
+            }
             getStudyManagementService().saveDnaAnalysisMappingFile(getGenomicSource(), getMappingFile(), 
                     getMappingFileFileName());
             getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
@@ -198,6 +202,17 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
             addActionError(getText("struts.messages.exception.unexpected", getArgs(e.getMessage())));
             return INPUT;
         } 
+    }
+
+    /**
+     * 
+     */
+    private void recreateGenomicSource() {
+        GenomicDataSourceConfiguration genomicSource = createNewGenomicSource();
+        delete();
+        getStudyManagementService().addGenomicSourceToStudy(getStudyConfiguration(), genomicSource);
+        setStudyLastModifiedByCurrentUser(genomicSource, LogEntry.getSystemLogLoad(genomicSource));
+        setGenomicSource(genomicSource);
     }
     
     /**

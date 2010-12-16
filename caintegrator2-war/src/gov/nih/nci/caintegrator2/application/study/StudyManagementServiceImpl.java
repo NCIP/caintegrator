@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.application.CaIntegrator2BaseService;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.AnnotationUtil;
 import gov.nih.nci.caintegrator2.common.DateUtil;
@@ -535,7 +536,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     private void unmapSamples(GenomicDataSourceConfiguration genomicSource) {
         for (Sample sample : genomicSource.getSamples()) {
             sample.removeSampleAcquisitionAssociations();
-            if (!ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLastModifiedDate())) {
+            if (!ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())
+                    || PlatformDataTypeEnum.COPY_NUMBER.equals(genomicSource.getDataType())) {
                 for (Array array : sample.getArrayCollection()) {
                     array.getSampleCollection().remove(sample);
                     if (array.getSampleCollection().isEmpty()) {
