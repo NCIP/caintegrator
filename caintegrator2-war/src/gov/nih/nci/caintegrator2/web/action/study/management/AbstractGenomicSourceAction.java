@@ -87,7 +87,9 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
@@ -97,7 +99,7 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
 
     private GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
-
+    
     /**
      * {@inheritDoc}
      */
@@ -107,6 +109,14 @@ public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
             setGenomicSource(getStudyManagementService().getRefreshedEntity(getGenomicSource()));
             HibernateUtil.loadGenomicSource(getGenomicSource());
         }
+    }
+    
+    /**
+     * Cancels the creation of a genomic source to return back to study screen.
+     * @return struts string.
+     */
+    public String cancel() {
+        return SUCCESS;
     }
 
     /**
@@ -122,6 +132,21 @@ public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
     public void setGenomicSource(GenomicDataSourceConfiguration genomicSource) {
         this.genomicSource = genomicSource;
     }
+    
+    /**
+     * Delete a genomic source file.
+     * @return struts string.
+     */
+    public String delete() {
+        if (getGenomicSource() == null 
+           || !getStudyConfiguration().getGenomicDataSources().contains(getGenomicSource())) {
+            return SUCCESS;
+        }
+        setStudyLastModifiedByCurrentUser(getGenomicSource(), 
+                LogEntry.getSystemLogDelete(getGenomicSource()));
+        getStudyManagementService().delete(getStudyConfiguration(), getGenomicSource());
+        return SUCCESS;
+    }
 
     /**
      * @return a copy of the genomicDataSourceConfiguration
@@ -136,15 +161,46 @@ public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
         newProfile.setUsername(oldProfile.getUsername());
         newProfile.setPassword(oldProfile.getPassword());
         configuration.setExperimentIdentifier(getGenomicSource().getExperimentIdentifier());
+        configuration.setDataType(getGenomicSource().getDataType());
         configuration.setPlatformVendor(getGenomicSource().getPlatformVendor());
         configuration.setPlatformName(getGenomicSource().getPlatformName());
-        configuration.setDataType(getGenomicSource().getDataType());
+        configuration.setSampleMappingFileName(getGenomicSource().getSampleMappingFileName());
+        configuration.setSampleMappingFilePath(getGenomicSource().getSampleMappingFilePath());
         configuration.setLoadingType(getGenomicSource().getLoadingType());
+
+        if (getGenomicSource().getDnaAnalysisDataConfiguration() != null) {
+            copyDnaConfiguration(configuration);
+        }
+        
         configuration.setTechnicalReplicatesCentralTendency(getGenomicSource().getTechnicalReplicatesCentralTendency());
         configuration.setUseHighVarianceCalculation(getGenomicSource().isUseHighVarianceCalculation());
-        configuration.setHighVarianceThreshold(getGenomicSource().getHighVarianceThreshold());
         configuration.setHighVarianceCalculationType(getGenomicSource().getHighVarianceCalculationType());
+        configuration.setHighVarianceThreshold(getGenomicSource().getHighVarianceThreshold());
         return configuration;
+    }
+
+    /**
+     * @param configuration
+     */
+    private void copyDnaConfiguration(GenomicDataSourceConfiguration configuration) {
+        DnaAnalysisDataConfiguration newDnaConfiguration = new DnaAnalysisDataConfiguration();
+        DnaAnalysisDataConfiguration oldDnaConfiguration = getGenomicSource().getDnaAnalysisDataConfiguration();
+        configuration.setDnaAnalysisDataConfiguration(newDnaConfiguration);
+        newDnaConfiguration.setMappingFilePath(oldDnaConfiguration.getMappingFilePath());
+        newDnaConfiguration.setChangePointSignificanceLevel(oldDnaConfiguration.getChangePointSignificanceLevel());
+        newDnaConfiguration.setEarlyStoppingCriterion(oldDnaConfiguration.getEarlyStoppingCriterion());
+        newDnaConfiguration.setPermutationReplicates(oldDnaConfiguration.getPermutationReplicates());
+        newDnaConfiguration.setRandomNumberSeed(oldDnaConfiguration.getRandomNumberSeed());
+
+        ServerConnectionProfile newSegmentProfile = configuration.getDnaAnalysisDataConfiguration()
+                .getSegmentationService();
+        ServerConnectionProfile oldSegmentProfile = getGenomicSource().getDnaAnalysisDataConfiguration()
+                .getSegmentationService();
+        newSegmentProfile.setUrl(oldSegmentProfile.getUrl());
+        newSegmentProfile.setHostname(oldSegmentProfile.getHostname());
+        newSegmentProfile.setPort(oldSegmentProfile.getPort());
+        newSegmentProfile.setUsername(oldSegmentProfile.getUsername());
+        newSegmentProfile.setPassword(oldSegmentProfile.getPassword());
     }
     
     /**

@@ -131,18 +131,25 @@ public abstract class AbstractUnparsedSupplementalMappingFileHandler extends Abs
     throws FileNotFoundException, ValidationException {
         Sample sample = getGenomicSource().getSample(sampleName);
         if (sample == null) {
-            StudySubjectAssignment assignment = getSubjectAssignment(subjectIdentifier);
             sample = new Sample();
             sample.setName(sampleName);
-            SampleAcquisition acquisition = new SampleAcquisition();
-            acquisition.setAssignment(assignment);
-            acquisition.setSample(sample);
-            sample.setSampleAcquisition(acquisition);
-            assignment.getSampleAcquisitionCollection().add(acquisition);
             getGenomicSource().getSamples().add(sample);
-            getDao().save(sample);
+            addSampleAcquisition(subjectIdentifier, sample);
+        } else if (sample.getSampleAcquisition() == null) {
+            addSampleAcquisition(subjectIdentifier, sample);
         }
         return sample;
+    }
+
+    private void addSampleAcquisition(String subjectIdentifier, Sample sample) throws ValidationException,
+            FileNotFoundException {
+        StudySubjectAssignment assignment = getSubjectAssignment(subjectIdentifier);
+        SampleAcquisition acquisition = new SampleAcquisition();
+        acquisition.setAssignment(assignment);
+        acquisition.setSample(sample);
+        sample.setSampleAcquisition(acquisition);
+        assignment.getSampleAcquisitionCollection().add(acquisition);
+        getDao().save(sample);
     }
 
     /**

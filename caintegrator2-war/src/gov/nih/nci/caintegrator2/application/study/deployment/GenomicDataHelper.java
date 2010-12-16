@@ -150,8 +150,7 @@ class GenomicDataHelper {
     void loadData(StudyConfiguration studyConfiguration) 
     throws ConnectionException, DataRetrievalException, ValidationException, IOException {
         for (GenomicDataSourceConfiguration genomicSource : studyConfiguration.getGenomicDataSources()) {
-            if (!Status.LOADED.equals(genomicSource.getStatus())
-                    || !ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())) {
+            if (!Status.LOADED.equals(genomicSource.getStatus())) {
                 if (genomicSource.isExpressionData()) {
                     loadExpressionData(genomicSource);
                 } else {
