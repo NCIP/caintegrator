@@ -372,6 +372,13 @@ public class QueryForm {
     public boolean hasCopyNumberData() {
         return query.getSubscription().getStudy().hasCopyNumberData();
     }
+    
+    /**
+     * @return boolean of has image mapping data
+     */
+    public boolean hasExpressionData() {
+        return query.getSubscription().getStudy().hasExpressionData();
+    }
 
     /**
      * @return the controlSamplesInStudy
@@ -455,15 +462,14 @@ public class QueryForm {
      */
     public Map<String, String> getResultTypes() {
         Map<String, String> resultTypes = ResultTypeEnum.getValueToDisplayableMap();
-        if (!query.getSubscription().getStudy().hasCopyNumberData()) {
+        if (!hasCopyNumberData()) {
             resultTypes.remove(ResultTypeEnum.COPY_NUMBER.getValue());
             resultTypes.remove(ResultTypeEnum.HEATMAP_VIEWER.getValue());
         }
-        if (!query.getSubscription().getStudy().hasExpressionData()) {
+        if (!hasExpressionData()) {
             resultTypes.remove(ResultTypeEnum.GENE_EXPRESSION.getValue());
         }
-        if (!query.getSubscription().getStudy().hasCopyNumberData()
-                && !query.getSubscription().getStudy().hasExpressionData()) {
+        if (!hasCopyNumberData() && !hasExpressionData()) {
             resultTypes.remove(ResultTypeEnum.IGV_VIEWER.getValue());
         }
         return resultTypes;
