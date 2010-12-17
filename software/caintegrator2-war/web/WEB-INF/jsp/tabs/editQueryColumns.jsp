@@ -17,9 +17,22 @@
             listKey="key"
             listValue="value"/><br>
         
-        <div class="selectorNote">Gene Expression result type - will display a gene expression data matrix.<br>
-                Copy Number result type - will display segmentation data with Chromosome position.<br>
-                Annotation result type - will display tabular data, including column selection.</div>
+        <div class="selectorNote">
+                Annotation result type - will display tabular data, including column selection.
+                <s:if test="queryForm.hasExpressionData()">
+                    <br>Gene Expression result type - will display a gene expression data matrix.
+                </s:if>
+                <s:if test="queryForm.hasCopyNumberData()">
+                    <br>Copy Number result type - will display segmentation data with Chromosome position.
+                </s:if>
+                <s:if test="queryForm.hasCopyNumberData()">
+                    <br>Integration Genomics Viewer - will display a link to the IGV Viewer.<br>
+                    HeatMap Viewer - will display a link to the Heat Map Viewer.
+                </s:if>
+                <s:elseif test="queryForm.hasExpressionData">
+                    <br>Integration Genomics Viewer - will display a link to the IGV Viewer.
+                </s:elseif>
+        </div>
     <s:if test="queryForm.resultConfiguration.resultType == 'geneExpression'">
         <br>
         <div class="reporterTypeSelector">
