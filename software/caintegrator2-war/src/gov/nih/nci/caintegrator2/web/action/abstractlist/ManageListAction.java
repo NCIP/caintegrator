@@ -195,12 +195,13 @@ public class ManageListAction extends AbstractDeployedStudyAction {
     }
     
     private void validateFileType() {
-        if (StringUtils.isNotBlank(listFileContentType) && !listFileContentType.startsWith("text/")) {
+        if (StringUtils.isNotBlank(listFileContentType) && !listFileContentType.startsWith("text/")
+                && !getListFileFileName().endsWith(".csv")) {
             addFieldError(LIST_FILE, getText("struts.messages.error.content.type.not.allowed", 
                     getArgs("", "", "", listFileContentType)));
         }
     }
-    
+
     private void validateListName() {
         if (StringUtils.isEmpty(getListName())) {
             addFieldError(LIST_NAME, getText("struts.messages.error.name.required", getArgs("List")));
