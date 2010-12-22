@@ -150,6 +150,10 @@ public class ManageListActionTest extends AbstractSessionBasedTest {
         action.setGeneInputElements("brac,emd");
         action.validate();
         assertEquals(6, action.getElementList().size());
+        action.setListFileFileName(TestDataFiles.GENE_LIST_SAMPLES_FILE_PATH);
+        action.setListFileContentType("application/vnd.ms-excel");
+        action.validate();
+        assertEquals(6, action.getElementList().size());
         
         // Test execute
         action.setDescription("Test description");
