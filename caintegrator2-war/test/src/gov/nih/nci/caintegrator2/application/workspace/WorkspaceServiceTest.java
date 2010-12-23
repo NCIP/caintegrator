@@ -215,6 +215,7 @@ public class WorkspaceServiceTest {
         DisplayableGenomicSource genomicSource = genomicSources.get(0);
         assertEquals(2, genomicSource.getPlatforms().size());
         assertEquals(2, genomicSource.getNumberSamples());
+        assertEquals(0, genomicSource.getNumberMappedSamples());
         assertEquals(0, genomicSource.getNumberControlSamples());
         assertFalse(genomicSource.isControlSamplesSet());
         assertEquals("experimentIdentifier", genomicSource.getExperimentName());
