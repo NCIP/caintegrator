@@ -275,4 +275,12 @@ public class DisplayableGenomicSource {
         }
         return returnString.toString();
     }
+
+    /**
+     * Number of samples associated with this source.
+     * @return number of samples.
+     */
+    public int getNumberMappedSamples() {
+        return genomicDataSourceConfiguration.getMappedSamples().size();
+    }
 }
