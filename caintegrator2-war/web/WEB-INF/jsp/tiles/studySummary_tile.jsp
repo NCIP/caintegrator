@@ -199,12 +199,15 @@
                                 <s:property value="experimentName"/>
                             </a>
                         </s:if>
+                        <s:else>
+                            <s:property value="experimentName"/>
+                        </s:else>
                         </b>
                     <br>
-                    Array Platforms: 
-                        <s:iterator value="%{platforms}" status="platformStatus">
-                            <b><s:property value="name"/> </b>
-                        </s:iterator>
+                    <s:iterator value="%{platforms}" status="platformStatus">
+                        Array Platforms: <b><s:property value="name"/> </b>
+                        Genome Build: <b><s:property value="genomeVersion.value"/> </b>
+                    </s:iterator>
                 </td>
                 <td />
                 <td />
