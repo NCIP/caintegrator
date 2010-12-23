@@ -252,6 +252,12 @@
                         <td />
                     </tr>
                     <tr>
+                        <td align="right">Number of Samples Mapped to Subjects: </td>
+                        <td><b><s:property value="numberMappedSamples" /> </b></td>
+                        <td />
+                        <td />
+                    </tr>                     
+                    <tr>
                         <td align="right">Control Samples Set: </td>
                         <td><b> <s:if test="%{numberControlSamples > 0}">
                             <a href="${viewControlSamplesUrl}">
@@ -271,6 +277,12 @@
                         <td />
                         <td />
                     </tr>
+                    <tr>
+                        <td align="right">Number of Samples Mapped to Subjects: </td>
+                        <td><b><s:property value="numberMappedSamples" /> </b></td>
+                        <td />
+                        <td />
+                    </tr>                     
                 </s:elseif>
                 <s:elseif test="snpData">
                     <tr>
@@ -279,7 +291,13 @@
                         <td />
                         <td />
                     </tr>
-                </s:elseif>
+                    <tr>
+                        <td align="right">Number of Samples Mapped to Subjects: </td>
+                        <td><b><s:property value="numberMappedSamples" /> </b></td>
+                        <td />
+                        <td />
+                    </tr>                     
+                </s:elseif>            
                 <s:if test="!#genomicDataSourceStatus.last">
                     <tr>
                     <td colspan="4">
