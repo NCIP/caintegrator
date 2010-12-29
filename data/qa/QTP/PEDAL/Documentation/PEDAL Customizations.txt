@@ -1,0 +1,16 @@
+PEDAL customizations
+
+IN ST_Driver
+CHange environment names in the switch (environment) statement to match customers environment names
+
+
+IN proj_func_lib - start_app function
+Change the app and environment names in the switch (toupper(environment)) statement to coincide with the names in ST_Driver.
+Within each case, change the url in the web_browser_invoke command to open the correct page for each environment (add/delete environment cases as needed.
+
+
+If running tests from TD
+Change function TDConnection in ST_util_lib to connect to the project's TD project
+Change function getEnvironment in proj_func_lib to translate between the TD test set names and the project's environment names
+
+

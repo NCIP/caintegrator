@@ -1,0 +1,7 @@
+Function Name,Function Description,ProjFunc_CAI_Login,ProjFunc_CAI_LoginVerify,ProjFunc_CAI_Logout,ProjFunc_CAI_LogoutVerify,ProjFunc_CAI_selectAstudy,ProjFunc_CAI_ManageStudies
+ProjFunc_CAI_Login,Login to app,none,none,none,none,none,Edit
+ProjFunc_CAI_LoginVerify,Verify Login,none,none,none,none,none,Delete
+ProjFunc_CAI_Logout,Logout of app,,,,,,
+ProjFunc_CAI_LogoutVerify,Verify logout,,,,,,
+ProjFunc_CAI_selectAstudy,selects a study from mystudies dropdown,,,,,,
+ProjFunc_CAI_ManageStudies,Select a study for editing or deleting,,,,,,
