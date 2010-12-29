@@ -1,0 +1,151 @@
+SPECIAL INSTRUCTIONS FOR DEPLOYING CAINTEGRATOR2_BL_98_I2 to TRAINING TIER 
+..............................................................................
+
+ 
+Goal: to get UPT 4.2 to work with CaIntegrator2; to have CSM database installed with proper provisioning for a user to edit CSM roles on the application.
+ 
+1. Update the Ant Hill Pro properties file (or, make sure that it's already updated) as follows:
+
+#####################
+# Struts properties
+#####################
+# DevMode allows reloading of configuration and validation related files.  Set to true during development.
+struts.devMode=false
+# enable the Struts internal caching of Freemarker templates. This property is set to false by default.
+struts.freemarker.templatesCache=true
+
+
+########################
+###  MAIL  SETTINGS  ###
+########################
+mail.smtp.host=mailfwd.nih.gov
+mail.smtp.port=25
+mail.smtp.auth=false
+mail.smtp.starttls.enable=false
+mail.user=blank
+mail.password=blank
+ 
+#######
+# UPT
+#######
+user.admin.email.address.from=xxxxx@mail.nih.gov
+user.admin.email.address.to=xxxxx@mail.nih.gov
+#upt.url=
+ 
+Note that the values for user.admin.email.address.from and user.admin.email.address.to should be changed to reflect the email addresses of the persons who are going to be handling the registration messages.
+
+Also note that with the current configuration, upt.url is not used.  So any value for that property will be ignored or the property can be removed entirely. You can comment it out for now.
+
+2. After deployment, check to see that the JBoss 'mail-service.xml' file looks as follows (correct if needed):
+
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+    <mbean code="org.jboss.mail.MailService" name="jboss:service=Mail">
+        <attribute name="JNDIName">java:/Mail</attribute>
+        <attribute name="User">blank</attribute>
+        <attribute name="Password">blank</attribute>
+        <attribute name="Configuration">
+            <configuration>
+               <!-- Set the protocol for your mail server -->
+                <property name="mail.transport.protocol" value="smtp"/>
+
+                <!-- Configure the SMTP gateway server -->
+                <property name="mail.smtp.host" value="mailfwd.nih.gov"/>
+                <property name="mail.smtp.port" value="25"/>
+                
+                <!-- Configure the SMTP Authentication -->
+				<property name="mail.smtp.auth" value="false"/>
+				<property name="mail.smtp.starttls.enable" value="false"/>
+				<property name="mail.debug" value="false"/>
+            </configuration>
+        </attribute>
+    </mbean>
+</server>
+
+Notice the <property name="mail.smtp.host" and <property name="mail.smtp.port" value="25"/> host and port values.  They should have been set in the properties files.
+
+3. Copy the two files 'ApplicationSecurityConfig.xml' and  'caintegrator2.csm.new.hibernate.cfg.xml' (attached to the deployment request email) into /local/content/cai2/ . They can also be found at 
+L:\NCICB\QA\CAI2\Deployment_docs\UPT_4.2_Installation_Instructions_for_caI2\Customized_files_for_caIn2-PROD\final\ApplicationSecurityConfig.xml
+and
+L:\NCICB\QA\CAI2\Deployment_docs\UPT_4.2_Installation_Instructions_for_caI2\Customized_files_for_caIn2-PROD\final\caintegrator2.csm.new.hibernate.cfg.xml
+
+4. Note that Line 41 of 'ApplicationSecurityConfig.xml' sets the following value for 'hibernate-config-file': 
+'/local/content/cai2/caintegrator2.csm.new.hibernate.cfg.xml'.
+
+N.B.: if this is an incorrect file path, please edit it and correct it.
+
+5. Add the following to the 'properties-service.xml' file (presumably it's in /usr/local/jboss-4.0.5.GA/server/ncicb-19080/deploy/).
+ 
+<attribute name="Properties">
+	gov.nih.nci.security.configFile=//local/content/cai2/ApplicationSecurityConfig.xml
+</attribute>
+
+N.B.: if this is an incorrect file path, please edit it and correct it.
+ 
+6. Add the following to the 'login-config.xml' file (presumably it's in '/usr/local/jboss-4.0.5.GA/server/ncicb-19080/conf/')
+
+PLEASE MAKE THE NECESSARY CHANGES TO THE <DATABASE HOST>, <DB PORT>, <DB USID>, <DB PW>
+
+N.B.: https://gforge.nci.nih.gov/plugins/wiki/index.php?Tiered%20Environment%20Set%20Up%20Instructions&id=507&type=g
+further describes the login config.
+
+<application-policy name="csmupt">
+	<authentication>
+		<login-module code="gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule" flag="sufficient">
+			<module-option name="driver">com.mysql.jdbc.Driver</module-option>
+			<module-option name="url">jdbc:mysql://<DATABASE HOST>:<DB PORT>/caintegrator2</module-option>
+			<module-option name="user"><DB USID></module-option>
+			<module-option name="passwd"><DB PW></module-option>
+			<module-option name="query">SELECT * FROM csm_user WHERE login_name=? and password=?</module-option>
+			<module-option name="encryption-enabled">YES</module-option>
+		</login-module>
+	</authentication>
+</application-policy>
+
+<application-policy name="caintegrator2">
+        <authentication>
+                <login-module code = "gov.nih.nci.security.authentication.loginmodules.LDAPLoginModule" flag = "sufficient" >
+                        <module-option name="ldapHost">ldaps://ncids4a.nci.nih.gov:636</module-option>
+                        <module-option name="ldapSearchableBase">ou=nci,o=nih</module-option>
+                        <module-option name="ldapUserIdLabel">cn</module-option>
+                </login-module>
+                <login-module code="gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule" flag="required"> 
+                        <module-option name="driver">com.mysql.jdbc.Driver</module-option>
+                        <module-option name="url">jdbc:mysql://<DATABASE HOST>:<DB PORT>/caintegrator2</module-option>
+                        <module-option name="user"><DB USID></module-option>
+                        <module-option name="passwd"><DB PW></module-option>
+                        <module-option name="query">SELECT * FROM CSM_USER WHERE LOGIN_NAME=? and PASSWORD=?  </module-option>
+                        <module-option name="encryption-enabled">YES </module-option>
+                </login-module>
+        </authentication>
+</application-policy>
+
+7. Copy uptEAR.ear file (located at L:\NCICB\QA\CAI2\Deployment_docs\UPT_4.2_Installation_Instructions_for_caI2\jboss_files\uptEAR.ear) to the /usr/local/jboss-4.0.5.GA/server/ncicb-19080/deploy/ directory.
+
+8. Copy the upt-ds.xml file (attached to the deployment request email) to /usr/local/jboss-4.0.5.GA/server/ncicb-19080/deploy/ . The 'upt-ds.xml' file can also be downloaded from L:\NCICB\QA\CAI2\Deployment_docs\UPT_4.2_Installation_Instructions_for_caI2\jboss_files\upt-ds.xml
+
+9. Now edit the 'upt-ds.xml' file you just uploaded:
+
+PLEASE MAKE THE NECESSARY CHANGES TO THE <DATABASE HOST>, <DB PORT>, <DB USID>, <DB PW>
+
+<datasources>
+	<local-tx-datasource>
+		<jndi-name>csmupt</jndi-name>
+		<driver-class>org.gjt.mm.mysql.Driver</driver-class>
+		<connection-url>jdbc:mysql://<DATABASE HOST>:<DB PORT>/caintegrator2</connection-url>
+		<user-name><DB USID></user-name>
+		<password><DB PW></password>
+	</local-tx-datasource>
+</datasources>
+
+10.  Copy 'clm-4.1.jar' file (located at L:\NCICB\QA\CAI2\Deployment_docs\UPT_4.2_Installation_Instructions_for_caI2\jboss_files\clm-4.1.jar) to the '/usr/local/jboss-4.0.5.GA/server/ncicb-19080/deploy/lib' directory.
+
+11. Delete the 'clm-3.2.jar' file from the /usr/local/jboss-4.0.5.GA/server/ncicb-19080/deploy/lib directory.
+
+12.  Start JBoss up and login with the username/password and application name that you are provisioning.
+    a) For us, it is http://localhost:8080/uptlogin 
+    b) Login ID: cai2admin 
+       Password: cai2@dmin
+       Application Name: caintegrator2
+    c) You should see the Welcome screen, and now you're able to provision users, protection elements, privileges,
+       etc.  These changes will exist only in your CSM local database.

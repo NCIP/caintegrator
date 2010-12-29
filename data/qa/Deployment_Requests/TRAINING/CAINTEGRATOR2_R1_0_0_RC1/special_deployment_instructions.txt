@@ -1,0 +1,68 @@
+SPECIAL INSTRUCTIONS FOR DEPLOYING CAINTEGRATOR2_R1_0_0_RC1 to TRAINING TIER 
+....................................................................
+
+Goal: to get UPT 4.2 to work with CaIntegrator2; to have CSM database installed with proper provisioning for a user to edit CSM roles on the application.
+ 
+1. On the STAGE server, create a directory for storing task files, e.g., {jboss-home}/server/default/uptconf
+
+2. Copy the two files 'ApplicationSecurityConfig.xml' and  'caintegrator2.csm.new.hibernate.cfg.xml' (attached to the deployment request email) into {jboss-home}/server/default/uptconf . They can also be found at 
+L:\NCICB\QA\CAI2\Deployment_docs\UPT_4.2_Installation_Instructions_for_caI2\Customized_files_for_caIn2-STAGE\final\ApplicationSecurityConfig.xml
+and
+L:\NCICB\QA\CAI2\Deployment_docs\UPT_4.2_Installation_Instructions_for_caI2\Customized_files_for_caIn2-STAGE\final\caintegrator2.csm.new.hibernate.cfg.xml
+
+3. Note that Line 41 of 'ApplicationSecurityConfig.xml' sets the following value for 'hibernate-config-file': 'usr/local/jboss-4.0.5.GA/server/ncicb-19080/uptconf/caintegrator2.csm.new.hibernate.cfg.xml'.
+
+N.B.: if this is an incorrect file path, please edit it and correct it.
+
+4. Add the following to the 'properties-service.xml' file (presumably it's in /usr/local/jboss-4.0.5.GA/server/ncicb-19080/deploy/).
+ 
+<attribute name="Properties">
+	gov.nih.nci.security.configFile=/usr/local/jboss-4.0.5.GA/server/ncicb-19080/uptconf/ApplicationSecurityConfig.xml
+</attribute>
+
+N.B.: if this is an incorrect file path, please edit it and correct it.
+ 
+5. Add the following to the 'login-config.xml' file (presumably it's in '/usr/local/jboss-4.0.5.GA/server/ncicb-19080/conf/')
+
+PLEASE MAKE THE NECESSARY CHANGES TO THE <DATABASE HOST>, <DB PORT>, <DB USID>, <DB PW>
+
+<application-policy name="csmupt">
+	<authentication>
+		<login-module code="gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule" flag="sufficient">
+			<module-option name="driver">com.mysql.jdbc.Driver</module-option>
+			<module-option name="url">jdbc:mysql://<DATABASE HOST>:<DB PORT>/caintegrator2</module-option>
+			<module-option name="user"><DB USID></module-option>
+			<module-option name="passwd"><DB PW</module-option>
+			<module-option name="query">SELECT * FROM csm_user WHERE login_name=? and password=?</module-option>
+			<module-option name="encryption-enabled">YES</module-option>
+		</login-module>
+	</authentication>
+</application-policy>
+
+6. Copy uptEAR.ear file (located at L:\NCICB\QA\CAI2\Deployment_docs\UPT_4.2_Installation_Instructions_for_caI2\jboss_files\uptEAR.ear) to the /usr/local/jboss-4.0.5.GA/server/ncicb-19080/deploy/ directory.
+
+7. Copy the upt-ds.xml file (attached to the deployment request email) to /usr/local/jboss-4.0.5.GA/server/ncicb-19080/deploy/ . The 'upt-ds.xml' file can also be downloaded from L:\NCICB\QA\CAI2\Deployment_docs\UPT_4.2_Installation_Instructions_for_caI2\jboss_files\upt-ds.xml
+
+8. Now edit the 'upt-ds.xml' file you just uploaded:
+
+PLEASE MAKE THE NECESSARY CHANGES TO THE <DATABASE HOST>, <DB PORT>, <DB USID>, <DB PW>
+
+<datasources>
+	<local-tx-datasource>
+		<jndi-name>csmupt</jndi-name>
+		<driver-class>org.gjt.mm.mysql.Driver</driver-class>
+		<connection-url>jdbc:mysql://<DATABASE HOST>:<DB PORT>/caintegrator2</connection-url>
+		<user-name><DB USID></user-name>
+		<password><DB PW></password>
+	</local-tx-datasource>
+</datasources>
+
+9.  Copy 'clm-4.1.jar' file (located at L:\NCICB\QA\CAI2\Deployment_docs\UPT_4.2_Installation_Instructions_for_caI2\jboss_files\clm-4.1.jar) to the /usr/local/jboss-4.0.5.GA/server/ncicb-19080/deploy/lib directory.
+
+10.  Start JBoss up and login with the username/password and application name that you are provisioning.
+    a) For us, it is http://localhost:8080/uptlogin 
+    b) Login ID: cai2admin 
+       Password: cai2@dmin
+       Application Name: caintegrator2
+    c) You should see the Welcome screen, and now you're able to provision users, protection elements, privileges,
+       etc.  These changes will exist only in your CSM local database.

@@ -1,0 +1,16 @@
+SPECIAL INSTRUCTIONS FOR DEPLOYING CAINTEGRATOR2_R1_0_1_GA to PRODUCTION TIER 
+..............................................................................
+
+ 
+ 
+1. Update the Ant Hill Pro properties file (or, make sure that it's already updated) as follows:
+
+#####################
+# Struts properties
+#####################
+# DevMode allows reloading of configuration and validation related files.  Set to true during development.
+struts.devMode=false
+# enable the Struts internal caching of Freemarker templates. This property is set to false by default.
+struts.freemarker.templatesCache=true
+
+

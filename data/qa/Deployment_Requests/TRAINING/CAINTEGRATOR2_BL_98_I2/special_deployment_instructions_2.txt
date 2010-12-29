@@ -1,0 +1,17 @@
+SPECIAL INSTRUCTIONS FOR DEPLOYING CAINTEGRATOR2_BL_98_I2 to TRAINING TIER 
+....................................................................
+
+1. Please append the following to the qa-upgrade.properties file:
+
+
+#####################
+# Struts properties
+#####################
+# DevMode allows reloading of configuration and validation related files.  Set to true during development.
+struts.devMode=false
+# enable the Struts internal caching of Freemarker templates. This property is set to false by default.
+struts.freemarker.templatesCache=true
+
+
+
+2. Please delete "clm-3.2.jar" file  from the "/usr/local/jboss-4.0.5.GA/server/ncicb-19080/deploy/lib" directory.
