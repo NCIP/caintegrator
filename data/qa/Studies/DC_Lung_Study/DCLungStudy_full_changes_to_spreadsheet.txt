@@ -1,0 +1,20 @@
+1. Removed BlindedIDs
+
+2. Removed Stratagene
+
+3. Add ENROLLMENT_DATE start as 1/1/1996 +1 for each row
+
+4. Add LAST_CLINICAL_ASSESSMENT_DATE = ENROLLMENT_DATE + (MTHS_TO_LAST_CLINICAL_ASSESSMENT*30)
+
+5. Add LAST_CONTACT_DATE = P2+(T2*30)  ENROLLMENT_DATE + MONTHS_TO_LAST_CONTACT_OR_DEATH *30
+
+6. Add DEATH_DATE = =IF(L2="Dead",S2," ")i.e. If VITAL_STATUS="Dead",then LAST_CONTACT_DATE else " "
+
+7. Removed rows CL2004113027AA CL2005060359 CL2004111099AA CL20041110101AA CL20041110106AA CL20041119188AA CL20041119189AA as there were no patient Id's
+
+8. Removed rows NCI_Control10_U133A ,NCI_control8_U133A,NCI_control7_U133A,NCI_control13_U133A,Moff Strat3,NCI_Control6_U133A
+NCI_Control5_U133A,NCI_Control11_U133A,Moff , Strat6,NCI_control15_U133A,NCI_Control12_U133A,NCI_control9_U133A,
+NCI_control18_U133,Moff Strat5,NCI_control17_U133,NCI_control14_U133A, NCI_control16_U133A,Moff Strat1,NCI_control19_U133A,
+ as there were no patient Id's
+
+9. On the DCLungStudy_full_array_mapping_load.csv, any PatientId where IN_DC_STUDY=0 (since there were no array data).

@@ -1,0 +1,21 @@
+Source Name	Sample Name	Extract Name	Labeled Extract Name	Label	Hybridization Name	Array Design REF	Derived Array Data File
+Source_Exp_1a	Sample_Exp_1a	Extract _Exp_1a	Labeled_Extract _Exp_1a	biotin	Hyb_Extract _Exp_1a	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Affy_FC_Test.TXT
+Source_Exp_2a	Sample_Exp_2a	Extract _Exp_2a	Labeled_Extract _Exp_2a	biotin	Hyb_Extract _Exp_2a	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Affy_FC_Test.TXT
+Source_Exp_3a	Sample_Exp_3a	Extract _Exp_3a	Labeled_Extract _Exp_3a	biotin	Hyb_Extract _Exp_3a	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Affy_FC_Test.TXT
+Source_Exp_4a	Sample_Exp_4a	Extract _Exp_4a	Labeled_Extract _Exp_4a	biotin	Hyb_Extract _Exp_4a	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Affy_FC_Test.TXT
+Source_Exp_5a	Sample_Exp_5a	Extract _Exp_5a	Labeled_Extract _Exp_5a	biotin	Hyb_Extract _Exp_5a	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Affy_FC_Test.TXT
+Source_Control_1a	Sample_Control_1a	Extract _Control_1a	Labeled_Extract _Control_1a	biotin	Hyb_Extract _Control_1a	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Affy_FC_Test.TXT
+Source_Control_2a	Sample_Control_2a	Extract _Control_2a	Labeled_Extract _Control_2a	biotin	Hyb_Extract _Control_2a	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Affy_FC_Test.TXT
+Source_Control_3a	Sample_Control_3a	Extract _Control_3a	Labeled_Extract _Control_3a	biotin	Hyb_Extract _Control_3a	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Affy_FC_Test.TXT
+Source_Control_4a	Sample_Control_4a	Extract _Control_4a	Labeled_Extract _Control_4a	biotin	Hyb_Extract _Control_4a	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Affy_FC_Test.TXT
+Source_Control_5a	Sample_Control_5a	Extract _Control_5a	Labeled_Extract _Control_5a	biotin	Hyb_Extract _Control_5a	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Affy_FC_Test.TXT
+Source_Exp_1	Sample_Exp_1	Extract _Exp_1	Labeled_Extract _Exp_1	biotin	Hyb_Extract _Exp_1a	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Tech_Rep_Test.TXT
+Source_Exp_1	Sample_Exp_1	Extract _Exp_1	Labeled_Extract _Exp_1	biotin	Hyb_Extract _Exp_1b	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Tech_Rep_Test.TXT
+Source_Exp_2	Sample_Exp_2	Extract _Exp_2a	Labeled_Extract _Exp_2a	biotin	Hyb_Extract _Exp_2a	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Tech_Rep_Test.TXT
+Source_Exp_2	Sample_Exp_2	Extract _Exp_2b	Labeled_Extract _Exp_2b	biotin	Hyb_Extract _Exp_2b	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Tech_Rep_Test.TXT
+Source_Exp_2	Sample_Exp_2	Extract _Exp_2c	Labeled_Extract _Exp_2c	biotin	Hyb_Extract _Exp_2c	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Tech_Rep_Test.TXT
+Source_Exp_3	Sample_Exp_3	Extract _Exp_3	Labeled_Extract _Exp_3	biotin	Hyb_Extract _Exp_3	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Tech_Rep_Test.TXT
+Source_Exp_4	Sample_Exp_4	Extract _Exp_4	Labeled_Extract _Exp_4	biotin	Hyb_Extract _Exp_4	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Tech_Rep_Test.TXT
+Source_Control_1	Sample_Control_1	Extract _Control_1	Labeled_Extract _Control_1	biotin	Hyb_Extract _Control_1	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Tech_Rep_Test.TXT
+Source_Control_1	Sample_Control_1	Extract _Control_1	Labeled_Extract _Control_1	biotin	Hyb_Extract _Control_1	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Tech_Rep_Test.TXT
+Source_Control_2	Sample_Control_2	Extract _Control_2	Labeled_Extract _Control_2	biotin	Hyb_Extract _Control_2	Affymetrix.com:PhysicalArrayDesign:HG-U133_Plus_2	Tech_Rep_Test.TXT

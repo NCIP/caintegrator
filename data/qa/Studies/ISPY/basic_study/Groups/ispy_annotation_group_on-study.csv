@@ -1,0 +1,17 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+MENOSTATUS,annotation,subject,,,Menopausal Status,string,yes,Yes
+SENTINELNODESAMPLE,annotation,subject,,,Was Sentinel node sampling performed pre-treatment,string,yes,yes
+SENTINELNODERESULT,annotation,subject,,,Sentinel Node Biopsy Results pre-treatment,string,yes,yes
+HISTTYPEINVOS,annotation,subject,,,Histologic Type of Invasive Tumor ,string,yes,yes
+HISTOLOGICGRADEOS,annotation,subject,,,Combined Histologic Grade - On-study,string,yes,yes
+ER_TS,annotation,subject,,,Estrogen Receptor Status - Total Score,string,yes,yes
+PGR_TS,annotation,subject,,,Progesterone Receptor Status - Total Score,string,yes,yes
+ERPOS,annotation,subject,,,Estrogen Receptor Status ,string,yes,yes
+PGRPOS,annotation,subject,,,Progesterone Receptor Status ,string,yes,yes
+HER2COMMUNITYPOS,annotation,subject,,,Her2 Summary as measured in the  Community,string,yes,yes
+HER2COMMUNITYMETHOD,annotation,subject,,,Her2 Summary method as measured in the Community,string,yes,yes
+FINENEEDLE,annotation,subject,,,Surgical Procedure - Fine Needle Aspiration,string,yes,yes
+CORENEEDLE,annotation,subject,,,Surgical Procedure - Core Needle,string,yes,yes
+INCISIONAL,annotation,subject,,,Surgical Procedure - Incisional,string,yes,yes
+BILATERALCA,annotation,subject,,,Does the patient have bilateral breast cancer,string,yes,yes
+LATERALITY,annotation,subject,,,Tumor Laterality,string,yes,yes

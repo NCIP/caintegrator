@@ -1,0 +1,44 @@
+I. Changes to Subject Annotation file:
+
+1. For GENDER column:
+	replaced Male --> MALE
+	replaced Female --> FEMALE
+	replaced "" --> UNKNOWN
+
+2. For RACE column:
+	replaced Asian(05) --> Asian
+	replaced Black or African American(03) --> Black or African American
+	replaced Native Hawaiian or Other Pacific Islander(04) --> Native Hawaiian or other Pacific Islander
+	replaced Not Reported(98) --> Not Reported
+	replaced Unknown(99) --> Unknown
+	replaced White(01) --> White
+
+3. For PATHOLOGIC_N_STAGE column:
+	removed ", ACCORDING TO AJCC CRITERIA"
+
+4. For PATHOLOGIC_T_STAGE column:
+	removed ", ACCORDING TO AJCC CRITERIA"
+
+5. For SURGICAL_MARGINS column
+	replaced ALL MARGINS PATHOLOGICALLY NEGATIVE --> R0
+	replaced  MICROSCOPICALLY POSITIVE MARGINS OR MICROSCOPIC RESIDUAL DISEASE  --> R1
+
+
+
+
+II. Used CDE, but does not clearly match up with field header:
+
+1. ADJUVANT_CHEMO = Systemic Adjuvant Chemotherapy Indicator
+
+2. PATHOLOGIC_N_STAGE = American Joint Committee on Cancer Lung N Stage Code  
+
+3. PATHOLOGIC_T_STAGE = American Joint Committee on Cancer Lung T Stage Code 
+
+
+
+
+III. Could not use CDE due to permissible values not matching:
+
+1. First Disease Progression or Relapse Indicator (2190407) --> does not have "Unknown"
+
+

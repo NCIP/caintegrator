@@ -1,0 +1,8 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+AGECAT,annotation,subject,,,AgeCat,string,yes,Yes
+AGE,annotation,subject,,,Age,numeric,no,yes
+RACE_ID,annotation,subject,,,Race_id,string,yes,yes
+SSTAT,annotation,subject,,,Sstat,string,yes,yes
+SURVDTD,annotation,subject,,,SurvDtD,numeric,no,yes
+DFS,annotation,subject,,,DFS,numeric,no,yes
+DFS_IND,annotation,subject,,,DFS_ind,numeric,no,yes

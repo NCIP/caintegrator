@@ -1,0 +1,15 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+BCR_PATIENT_BARCODE,identifier,subject,,,BCRPATIENTBARCODE,string,yes,yes
+Subtype,annotation,subject,,,Subtype,string,yes,yes
+sil_width,annotation,subject,,,sil_width,numeric,no,yes
+CORE_sample,annotation,subject,,,CORE_sample,string,yes,yes
+TUMORTISSUESITE,annotation,subject,,,TUMORTISSUESITE,string,yes,yes
+GENDER,annotation,subject,,,GENDER,string,yes,yes
+VITALSTATUS,annotation,subject,,,VITALSTATUS,string,yes,yes
+KarnScore,annotation,subject,,,KarnScore,numeric,no,yes
+AgeAtFirstDiagnosis,annotation,subject,,,AgeAtFirstDiagnosis,numeric,no,yes
+Secondary or Recurrent,annotation,subject,,,Secondary or Recurrent,string,yes,yes
+Survival (days),annotation,subject,,,Survival (days),numeric,no,yes
+MGMT_methylated,annotation,subject,,,MGMT_methylated,string,yes,yes
+% Tumor Nuclei,annotation,subject,,,% Tumor Nuclei,numeric,no,yes
+% Necrosis,annotation,subject,,,% Necrosis,numeric,no,yes

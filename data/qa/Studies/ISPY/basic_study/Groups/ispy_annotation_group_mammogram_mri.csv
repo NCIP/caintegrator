@@ -1,0 +1,17 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+LES_T1,annotation,subject,,,LES_T1,string,yes,Yes
+LES_T2,annotation,subject,,,LES_T2,string,yes,yes
+LES_T3,annotation,subject,,,LES_T3,string,yes,yes
+LES_T4,annotation,subject,,,LES_T4,string,yes,yes
+LD_T1,annotation,subject,,,LD_T1,numeric,no,yes
+LD_T2,annotation,subject,,,LD_T2,numeric,no,yes
+LD_T3,annotation,subject,,,LD_T3,numeric,no,yes
+LD_T4,annotation,subject,,,LD_T4,numeric,no,yes
+LD_T1_T2_PERCT,annotation,subject,,,LD_T1_T2_PERCT,numeric,no,yes
+LD_T1_T3_PERCT,annotation,subject,,,LD_T1_T3_PERCT,numeric,no,yes
+LD_T1_T4_PERCT,annotation,subject,,,LD_T1_T4_PERCT,numeric,no,yes
+LD_T2_T3_PERCT,annotation,subject,,,LD_T2_T3_PERCT,numeric,no,yes
+LD_T2_T4_PERCT,annotation,subject,,,LD_T2_T4_PERCT,numeric,no,yes
+LD_T3_T4_PERCT,annotation,subject,,,LD_T3_T4_PERCT,numeric,no,yes
+MRI_PATTERN_CODE,annotation,subject,,,MRI_PATTERN_CODE,string,yes,yes
+MRI_PATTERN_DESC,annotation,subject,,,MRI_PATTERN_DESC,string,yes,yes

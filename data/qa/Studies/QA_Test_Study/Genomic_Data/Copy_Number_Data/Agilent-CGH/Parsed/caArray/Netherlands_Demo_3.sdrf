@@ -1,0 +1,4 @@
+Source Name	Sample Name	Extract Name	Labeled Extract Name	Hybridization Name	Array Design REF	Derived Array Data Matrix File
+Source_1	Sample_1	Extract _1	Labeled_Extract _1	US22502676_252252210154_S01_CGH_105_Dec08_1_1	URN:LSID:Agilent.com:PhysicalArrayDesign:022522_D_F_20090107	US22502676_252252210154_S01_CGH_105_Dec08_1_1__GCN_V3.mage-tab_out.txt
+Source_2	Sample_2	Extract _2	Labeled_Extract _2	US22502676_252252210154_S01_CGH_105_Dec08_1_2	URN:LSID:Agilent.com:PhysicalArrayDesign:022522_D_F_20090107	US22502676_252252210154_S01_CGH_105_Dec08_1_2__GCN_V3.mage-tab_out.txt
+Source_3	Sample_3	Extract _3	Labeled_Extract _3	US22502676_252252210154_S01_CGH_105_Dec08_1_3	URN:LSID:Agilent.com:PhysicalArrayDesign:022522_D_F_20090107	US22502676_252252210154_S01_CGH_105_Dec08_1_3__GCN_V3.mage-tab_out.txt

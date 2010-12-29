@@ -1,0 +1,34 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+SURGERYLUMPECTOMY,annotation,subject,,,Surgery Procedure Performed was partial mastectomy/lumpectomy/excisional biopsy,string,yes,Yes
+SURGERYMASTECTOMY,annotation,subject,,,"Surgery Procedure Performed was Mastectomy, NOS",string,yes,yes
+INITLUMP_FUPMAST,annotation,subject,,,Initial Lumpectomy Surgery followed by Mastectomy Surgery at a later date,string,yes,yes
+SURGERY,annotation,subject,,,Did patient have extensive Primary Surgery immediately following chemotherapy,string,yes,yes
+DCISONLY,annotation,subject,,,DCIS only thing left following surgery ,string,yes,yes
+PTUMOR1SZCM_MICRO_1,annotation,subject,,,Primary Tumor Pathological Tumor Size ,string,yes,yes
+HISTOLOGICTYPEPS,annotation,subject,,,Histologic Type of Primary Tumor (Post-Surgery),string,yes,yes
+HISTOLOGICGRADEPS,annotation,subject,,,Combined Histologic Grade -Post-Surgery,string,yes,yes
+NUMPOSNODES,annotation,subject,,,"Total Number positive Axillary + Sentinel (post) Nodes, post-chemotherapy",string,yes,yes
+NODESEXAMINED,annotation,subject,,,"Total Number of Axillary + Sentinel (post) nodes Examined, post-chemotherapy",string,yes,yes
+PATHOLOGYSTAGE,annotation,subject,,,Pathology Assessment Staging,string,yes,yes
+REASONNOSURG,annotation,subject,,,Principal Reason Breast Conserving Surgery Not Performed,string,yes,yes
+INSITUDZ,annotation,subject,,,In situ disease present in surgical specimen,string,yes,yes
+INSITUHISTO,annotation,subject,,,Histologic of In Situ disease if present in surgical specimen,string,yes,yes
+INSITUSPAN,annotation,subject,,,Longest diameter span (in cm) of In Situ Disease if present in surgical specimen:,string,yes,yes
+PERCT_INSITU,annotation,subject,,,"% of the overall tumor, identified within the surgical specimen, that is In Situ disease",string,yes,yes
+INSITUGRADE,annotation,subject,,,Nuclear grade of In Situ disease in surgical specimen:,string,yes,yes
+INVDZ,annotation,subject,,,Invasive disease present in the breast surgical specimen,string,yes,yes
+INVDZHISTO,annotation,subject,,,Histologic type of Invasive disease present in surgical specimen,string,yes,yes
+LVI,annotation,subject,,,Lymphovascular invasion present (tumor cells within spaces lined by endothelium),string,yes,yes
+INVDZMULTIFOC,annotation,subject,,,Is Invasive component in surgical specimen multi-focal,string,yes,yes
+INVDZCELLULARITY,annotation,subject,,,% of the span of tumor in surgical specimen that is cellular (as opposed to stromal) tissue,string,yes,yes
+SURGMARGINS,annotation,subject,,,Surgical margins (includes true margin if separately submitted margins),string,yes,yes
+METSZLN,annotation,subject,,,Size in cm of largest positive lymph node metastasis (axillary or sentinel node),string,yes,yes
+YT,annotation,subject,,,Pathologic Tumor stage (y indicates this stage is assigned post neoadjuvant chemo),string,yes,yes
+YN,annotation,subject,,,Pathologic Nodal stage (y indicates this stage is assigned post neoadjuvant chemo),string,yes,yes
+YM,annotation,subject,,,Pathologic Mestastasis stage (y indicates this stage is assigned post neoadjuvant chemo),string,yes,yes
+PCR,annotation,subject,,,Pathologic Complete Response (no residual invasive disease; presence of only in situ disease are considered disease free),string,yes,yes
+RCBINDEX,annotation,subject,,,Residual Cancer Burden Index,string,yes,yes
+RCBCLASS,annotation,subject,,,Residual Cancer Burden class,string,yes,yes
+RCBPATHSZ_1,annotation,subject,,,Longest diameter (in cm) of cellularity of residual disease measured,string,yes,yes
+RCBPATHSZ_2,annotation,subject,,,"Longest diameter (in cm) of cellularity of residual disease measured, perpendicular to RCB_PathSz_1",string,yes,yes
+PTUMOR1SZCM_MICRO_2,annotation,subject,,,"Primary Tumor Pathological Tumor Size, Microscopic in cm, perpendicular to PTumor1Szcm_Micro",string,yes,yes

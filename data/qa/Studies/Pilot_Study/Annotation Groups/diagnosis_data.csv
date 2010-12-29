@@ -1,0 +1,13 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+KARNOFSKYPERFORMANCESCORE,annotation,subject,2939570,,KARNOFSKYPERFORMANCESCORE,,,
+PRIORGLIOMA,annotation,subject,,,PRIORGLIOMA,string,yes,yes
+ANATOMICORGANSUBDIVISION,annotation,subject,,,ANATOMICORGANSUBDIVISION,string,yes,yes
+INITIALPATHOLOGICDIAGNOSISMETHOD,annotation,subject,,,INITIALPATHOLOGICDIAGNOSISMETHOD,string,yes,yes
+PRETREATMENTHISTORY,annotation,subject,,,PRETREATMENTHISTORY,string,yes,yes
+WBC_AT_DIAGNOSIS,annotation,subject,,,WBC_AT_DIAGNOSIS,string,yes,yes
+CNS_STATUS_AT_DIAGNOSIS,annotation,subject,,,CNS_STATUS_AT_DIAGNOSIS,string,yes,Yes
+TESTICULAR_INVOLVEMENT,annotation,subject,,,TESTICULAR_INVOLVEMENT,string,yes,Yes
+MLL_STATUS,annotation,subject,,,MLL_STATUS,string,yes,Yes
+E2A_PBX1_STATUS,annotation,subject,,,E2A_PBX1_STATUS,string,yes,Yes
+BCR_ABL_STATUS,annotation,subject,,,BCR_ABL_STATUS,string,yes,Yes
+aCGH profile,annotation,subject,,,aCGH profile,string,yes,Yes

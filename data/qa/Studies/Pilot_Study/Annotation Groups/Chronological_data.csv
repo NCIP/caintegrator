@@ -1,0 +1,15 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+DAYSTOBIRTH,annotation,subject,,,DAYSTOBIRTH,numeric,no,Yes
+DAYSTODEATH,annotation,subject,,,DAYSTODEATH,numeric,no,yes
+DAYSTOLASTFOLLOWUP,annotation,subject,,,DAYSTOLASTFOLLOWUP,numeric,no,yes
+SURVIVAL_START_DATE,annotation,subject,,,SURVIVAL_START_DATE,date,no,yes
+DEATH_DATE,annotation,subject,,,DEATH_DATE,date,no,yes
+LAST_FOLLOWUP_DATE,annotation,subject,,,LAST_FOLLOWUP_DATE,date,no,yes
+DAYSTOTUMORPROGRESSION,annotation,subject,,,DAYSTOTUMORPROGRESSION,numeric,no,Yes
+DAYSTOTUMORRECURRENCE,annotation,subject,,,DAYSTOTUMORRECURRENCE,numeric,no,Yes
+date aCGH,annotation,subject,,,date aCGH,date,no,Yes
+MNTHS_TO_FIRST_PROGRESSION,annotation,subject,,,MNTHS_TO_FIRST_PROGRESSION,numeric,no,Yes
+MNTHS_TO_LAST_CLINICAL_ASSESSMENT,annotation,subject,,,MNTHS_TO_LAST_CLINICAL_ASSESSMENT,numeric,no,Yes
+AGEATINITIALPATHOLOGICDIAGNOSIS,annotation,subject,,,AGEATINITIALPATHOLOGICDIAGNOSIS,numeric,no,Yes
+DAYSTORADIATIONTREATMENTSTART,annotation,subject,,,DAYSTORADIATIONTREATMENTSTART,numeric,no,Yes
+DAYSTORADIATIONTREATMENTEND,annotation,subject,,,DAYSTORADIATIONTREATMENTEND,numeric,no,Yes

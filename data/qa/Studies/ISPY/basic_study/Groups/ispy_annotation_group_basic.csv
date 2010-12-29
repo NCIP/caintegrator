@@ -1,0 +1,7 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+ISPY_ID,identifier,subject,,,I-SPY identifier uniquely corresponds 1 to 1 to the CALGB patient identifier,string,no,Yes
+DATAEXTRACTDT,annotation,subject,,,DataExtractDt,date,yes,yes
+INST_ID,annotation,subject,,,Registering Institution,string,yes,yes
+HEIGHT,annotation,subject,,,Height in cm,numeric,no,yes
+WEIGHT,annotation,subject,,,Weight in kg,numeric,no,yes
+BSA,annotation,subject,,,Body Surface Area in m2,numeric,no,yes

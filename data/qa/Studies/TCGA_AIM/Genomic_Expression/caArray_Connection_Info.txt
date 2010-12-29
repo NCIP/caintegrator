@@ -1,0 +1,22 @@
+Genomic Data for TCGA Study with AIM Data
+Clinical Data = 
+
+Platform = 
+	HT_HG-U133A
+
+Genomic Data Origination = 
+	
+Genomic Data Source (Expression) = 
+	
+	https://array.nci.nih.gov/caarray
+	array.nci.nih.gov
+	8080
+ 	meyer-00180
+	Affymetrix 
+	Expression
+	HT_HG-U133A
+	Do not check Use Supplemental Files
+
+Genomic Sample Mapping/Control (Expression) = 
+	TCGA_AIM_Array_mappings.csv
+	

@@ -1,0 +1,222 @@
+ISPY_ID,DATAEXTRACTDT,INST_ID,HEIGHT,WEIGHT,BSA,AGECAT,AGE,RACE_ID,SSTAT,SURVDTD,DFS,DFS_IND,RTBRTD
+1001,4/1/2009,508=U Ca at San Francisco,0,0,,2= >30-40,38.73,1=Caucasian,8=Dead,1270,569.00,1,0.00
+1002,4/1/2009,508=U Ca at San Francisco,0,66,,2= >30-40,37.79,1=Caucasian,8=Dead,1156,857.00,1,4500.00
+1003,4/1/2009,508=U Ca at San Francisco,0,47,,3= >40-50,49.83,1=Caucasian,7=Alive,2086,1902.00,0,0.00
+1004,4/1/2009,939=U Penn,0,0,,3= >40-50,48.28,1=Caucasian,7=Alive,2074,1959.00,0,0.00
+1005,4/1/2009,939=U Penn,0,0,,3= >40-50,45.8,1=Caucasian,7=Alive,2226,2028.00,0,0.00
+1007,4/1/2009,372=U North Carolina at Chapel Hill,166,86,1.94,3= >40-50,46.38,1=Caucasian,7=Alive,2247,2149.00,0,
+1008,4/1/2009,508=U Ca at San Francisco,0,0,,5= >60-70,64.51,1=Caucasian,7=Alive,1966,1800.00,0,4860.00
+1009,4/1/2009,508=U Ca at San Francisco,0,0,,3= >40-50,40.66,4=Asian,7=Alive,2010,1816.00,0,5580.00
+1010,4/1/2009,508=U Ca at San Francisco,0,71,,3= >40-50,41.53,1=Caucasian,7=Alive,2151,1983.00,0,4680.00
+1011,4/1/2009,508=U Ca at San Francisco,0,0,,3= >40-50,40.82,4=Asian,7=Alive,1981,1855.00,0,5040.00
+1012,4/1/2009,508=U Ca at San Francisco,0,0,,4= >50-60,53.78,3=African American,7=Alive,1856,1654.00,0,5040.00
+1013,4/1/2009,508=U Ca at San Francisco,0,0,,3= >40-50,49.36,1=Caucasian,7=Alive,2019,1836.00,0,0.00
+1015,4/1/2009,508=U Ca at San Francisco,0,0,,3= >40-50,42.16,1=Caucasian,7=Alive,2040,1864.00,0,
+1016,4/1/2009,939=U Penn,0,0,,2= >30-40,35.52,1=Caucasian,7=Alive,2189,577.00,1,0.00
+1017,4/1/2009,508=U Ca at San Francisco,0,63,,5= >60-70,68.31,1=Caucasian,8=Dead,918,715.00,1,6040.00
+1018,4/1/2009,372=U North Carolina at Chapel Hill,0,0,,4= >50-60,57.44,1=Caucasian,7=Alive,1885,1765.00,0,4600.00
+1019,4/1/2009,939=U Penn,0,0,,4= >50-60,52.24,3=African American,7=Alive,2190,2022.00,0,0.00
+1021,4/1/2009,508=U Ca at San Francisco,0,0,,3= >40-50,48.43,1=Caucasian,7=Alive,2058,491.00,1,
+1022,4/1/2009,2647=U Alabama (Birmingham),0,0,,4= >50-60,51.41,1=Caucasian,7=Alive,1931,1733.00,0,
+1024,4/1/2009,372=U North Carolina at Chapel Hill,178,72,1.89,4= >50-60,52.56,1=Caucasian,7=Alive,1951,1103.00,1,0.00
+1025,4/1/2009,508=U Ca at San Francisco,0,85,,4= >50-60,52.35,1=Caucasian,8=Dead,718,,,
+1026,4/1/2009,939=U Penn,0,0,,3= >40-50,44.41,1=Caucasian,7=Alive,2162,1953.00,0,0.00
+1027,4/1/2009,2647=U Alabama (Birmingham),0,0,,2= >30-40,38.22,3=African American,7=Alive,2009,998.00,1,0.00
+1028,4/1/2009,372=U North Carolina at Chapel Hill,0,0,,4= >50-60,50.95,1=Caucasian,8=Dead,289,117.00,1,0.00
+1029,4/1/2009,508=U Ca at San Francisco,0,0,,5= >60-70,63.63,1=Caucasian,7=Alive,2023,1843.00,0,5580.00
+1030,4/1/2009,508=U Ca at San Francisco,0,0,,4= >50-60,52.46,4=Asian,7=Alive,1846,1660.00,0,4500.00
+1031,4/1/2009,508=U Ca at San Francisco,0,0,,4= >50-60,54.16,1=Caucasian,7=Alive,2121,1969.00,0,4500.00
+1032,4/1/2009,508=U Ca at San Francisco,0,0,,2= >30-40,37.58,4=Asian,7=Alive,1387,1246.00,0,5040.00
+1033,4/1/2009,372=U North Carolina at Chapel Hill,162,88,1.93,4= >50-60,59.05,1=Caucasian,7=Alive,1943,1824.00,0,0.00
+1034,4/1/2009,939=U Penn,0,0,,3= >40-50,46.57,1=Caucasian,8=Dead,555,286.00,1,0.00
+1035,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,170,71,1.82,3= >40-50,40.82,1=Caucasian,7=Alive,2134,,,
+1036,4/1/2009,508=U Ca at San Francisco,0,0,,2= >30-40,38.27,1=Caucasian,8=Dead,1045,254.00,1,4500.00
+1037,4/1/2009,2647=U Alabama (Birmingham),157,74,1.75,4= >50-60,51.14,1=Caucasian,7=Alive,1810,1613.00,0,
+1038,4/1/2009,2647=U Alabama (Birmingham),161,90,1.94,2= >30-40,37.81,3=African American,7=Alive,1844,1658.00,0,5040.00
+1039,4/1/2009,372=U North Carolina at Chapel Hill,0,0,,2= >30-40,30.99,3=African American,7=Alive,2043,1892.00,0,
+1040,4/1/2009,540=Georgetown,0,0,,4= >50-60,56.46,1=Caucasian,8=Dead,462,227.00,1,0.00
+1041,4/1/2009,508=U Ca at San Francisco,0,0,,3= >40-50,46.64,1=Caucasian,8=Dead,1679,1507.00,1,5040.00
+1042,4/1/2009,939=U Penn,0,0,,4= >50-60,58.07,1=Caucasian,7=Alive,1928,1722.00,0,0.00
+1043,4/1/2009,939=U Penn,0,0,,2= >30-40,38.88,1=Caucasian,8=Dead,746,18.00,1,
+1044,4/1/2009,2647=U Alabama (Birmingham),165,93,2,4= >50-60,58.84,3=African American,8=Dead,456,134.00,1,0.00
+1045,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,3= >40-50,49.58,3=African American,8=Dead,538,342.00,1,5040.00
+1046,4/1/2009,372=U North Carolina at Chapel Hill,0,0,,3= >40-50,42.79,1=Caucasian,7=Alive,1993,1884.00,0,
+1047,4/1/2009,939=U Penn,0,0,,1=  18-30,26.69,1=Caucasian,7=Alive,1806,1602.00,0,0.00
+1048,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,4= >50-60,52.32,1=Caucasian,7=Alive,1696,1562.00,0,0.00
+1049,4/1/2009,2647=U Alabama (Birmingham),164,58,1.63,4= >50-60,50.43,1=Caucasian,8=Dead,361,165.00,1,
+1050,4/1/2009,2647=U Alabama (Birmingham),170,73,1.84,5= >60-70,63.17,1=Caucasian,8=Dead,669,490.00,1,4500.00
+1051,4/1/2009,508=U Ca at San Francisco,0,0,,3= >40-50,48.8,1=Caucasian,9=Lost,912,724.00,0,0.00
+1053,4/1/2009,372=U North Carolina at Chapel Hill,0,0,,5= >60-70,62.4,1=Caucasian,7=Alive,1993,1896.00,0,5000.00
+1054,4/1/2009,2647=U Alabama (Birmingham),168,118,2.24,3= >40-50,42.76,3=African American,8=Dead,616,112.00,1,0.00
+1055,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,4= >50-60,52.82,1=Caucasian,7=Alive,1743,1617.00,0,0.00
+1056,4/1/2009,508=U Ca at San Francisco,0,71,,2= >30-40,35.37,1=Caucasian,8=Dead,215,21.00,1,
+1057,4/1/2009,939=U Penn,0,0,,3= >40-50,44.24,1=Caucasian,8=Dead,313,55.00,1,
+1058,4/1/2009,2647=U Alabama (Birmingham),176,77,1.93,4= >50-60,54.72,1=Caucasian,7=Alive,1659,1480.00,0,50.40
+1059,4/1/2009,372=U North Carolina at Chapel Hill,0,0,,4= >50-60,54.81,1=Caucasian,7=Alive,1775,1608.00,0,4600.00
+1060,4/1/2009,2527=U Texas SW Med Ctr,171,84,1.96,5= >60-70,67.18,3=African American,7=Alive,1622,1434.00,0,5040.00
+1061,4/1/2009,508=U Ca at San Francisco,168,73,1.83,4= >50-60,54.19,1=Caucasian,8=Dead,659,351.00,1,5040.00
+1062,4/1/2009,508=U Ca at San Francisco,175,66,1.8,2= >30-40,34.61,1=Caucasian,8=Dead,869,42.00,1,
+1063,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,176,77,1.93,4= >50-60,52.17,1=Caucasian,7=Alive,1679,1553.00,0,0.00
+1064,4/1/2009,508=U Ca at San Francisco,170,89,2,5= >60-70,60.11,1=Caucasian,7=Alive,1860,,,
+1065,4/1/2009,2527=U Texas SW Med Ctr,68,118,1.16,4= >50-60,55.22,3=African American,7=Alive,1274,1098.00,0,5040.00
+1066,4/1/2009,2647=U Alabama (Birmingham),160,73,1.76,4= >50-60,57.42,1=Caucasian,7=Alive,1670,1501.00,0,45.00
+1067,4/1/2009,2647=U Alabama (Birmingham),168,61,1.69,4= >50-60,58.43,1=Caucasian,8=Dead,1049,,,5040.00
+1068,4/1/2009,372=U North Carolina at Chapel Hill,0,0,,4= >50-60,53.22,1=Caucasian,7=Alive,1880,1741.00,0,5000.00
+1069,4/1/2009,508=U Ca at San Francisco,0,0,,4= >50-60,57.18,1=Caucasian,7=Alive,1771,1590.00,0,5040.00
+1070,4/1/2009,508=U Ca at San Francisco,165,92,1.99,2= >30-40,36.78,,7=Alive,1607,1407.00,0,5040.00
+1071,4/1/2009,372=U North Carolina at Chapel Hill,157,84,1.85,2= >30-40,38.53,3=African American,7=Alive,1724,1602.00,0,6040.00
+1072,4/1/2009,372=U North Carolina at Chapel Hill,162,77,1.82,4= >50-60,55.86,1=Caucasian,7=Alive,1862,1725.00,0,4500.00
+1073,4/1/2009,2647=U Alabama (Birmingham),163,66,1.71,3= >40-50,49.24,1=Caucasian,7=Alive,1732,1548.00,0,0.00
+1074,4/1/2009,939=U Penn,0,0,,2= >30-40,36.51,1=Caucasian,7=Alive,1542,1417.00,0,0.00
+1075,4/1/2009,508=U Ca at San Francisco,166,75,1.83,2= >30-40,33.47,1=Caucasian,7=Alive,1737,1408.00,0,5040.00
+1077,4/1/2009,508=U Ca at San Francisco,175,93,2.09,3= >40-50,41.65,1=Caucasian,7=Alive,1757,1568.00,0,5040.00
+1078,4/1/2009,508=U Ca at San Francisco,158,69,1.71,2= >30-40,31.33,5=Native Hawaiian/Pacific Islander,7=Alive,1760,1564.00,0,0.00
+1081,4/1/2009,540=Georgetown,0,0,,5= >60-70,64.09,50=Multiple race,7=Alive,1790,1632.00,0,0.00
+1082,4/1/2009,372=U North Carolina at Chapel Hill,0,0,,3= >40-50,46.58,1=Caucasian,7=Alive,1816,1691.00,0,0.00
+1083,4/1/2009,2647=U Alabama (Birmingham),170,61,1.71,4= >50-60,51.89,1=Caucasian,7=Alive,1564,1392.00,0,0.00
+1084,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,2= >30-40,34.53,1=Caucasian,7=Alive,1779,1645.00,0,0.00
+1085,4/1/2009,540=Georgetown,0,0,,3= >40-50,43.93,1=Caucasian,7=Alive,1771,1599.00,0,0.00
+1086,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,3= >40-50,41.51,3=African American,7=Alive,1480,1266.00,0,0.00
+1087,4/1/2009,2647=U Alabama (Birmingham),0,0,,3= >40-50,43.01,1=Caucasian,7=Alive,1517,1330.00,0,0.00
+1088,4/1/2009,508=U Ca at San Francisco,168,71,1.81,4= >50-60,53.05,1=Caucasian,7=Alive,1790,1610.00,0,5040.00
+1089,4/1/2009,2790=ECOG,0,0,,5= >60-70,60.95,3=African American,7=Alive,1520,1307.00,0,0.00
+1090,4/1/2009,372=U North Carolina at Chapel Hill,167,86,1.95,4= >50-60,51.54,1=Caucasian,7=Alive,1589,666.00,1,0.00
+1091,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,4= >50-60,54.64,4=Asian,8=Dead,1395,1264.00,1,0.00
+1092,4/1/2009,508=U Ca at San Francisco,163,76,1.82,3= >40-50,44.13,1=Caucasian,7=Alive,1789,1603.00,0,5040.00
+1093,4/1/2009,508=U Ca at San Francisco,169,66,1.76,4= >50-60,55.46,1=Caucasian,7=Alive,1568,1375.00,0,0.00
+1094,4/1/2009,508=U Ca at San Francisco,165,58,1.63,3= >40-50,49.95,1=Caucasian,7=Alive,1611,1396.00,0,4800.00
+1095,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,3= >40-50,43.57,1=Caucasian,7=Alive,1553,1459.00,0,0.00
+1096,4/1/2009,939=U Penn,0,0,,3= >40-50,42.99,1=Caucasian,8=Dead,1128,735.00,1,0.00
+1097,4/1/2009,939=U Penn,0,0,,3= >40-50,44.5,1=Caucasian,7=Alive,1605,1463.00,0,4500.00
+1098,4/1/2009,2527=U Texas SW Med Ctr,50,50,0.65,5= >60-70,62.29,1=Caucasian,8=Dead,1401,1213.00,1,5040.00
+1099,4/1/2009,508=U Ca at San Francisco,183,62,1.81,4= >50-60,50.35,1=Caucasian,7=Alive,1586,1455.00,0,4860.00
+1100,4/1/2009,508=U Ca at San Francisco,167,78,1.87,5= >60-70,63.32,1=Caucasian,7=Alive,1710,1535.00,0,4860.00
+1101,4/1/2009,508=U Ca at San Francisco,0,81,,3= >40-50,42.84,3=African American,8=Dead,946,339.00,1,
+1102,4/1/2009,2647=U Alabama (Birmingham),165,109,2.14,4= >50-60,57.46,3=African American,8=Dead,328,94.00,1,
+1103,4/1/2009,372=U North Carolina at Chapel Hill,164,61,1.66,4= >50-60,50.15,1=Caucasian,7=Alive,1453,1249.00,0,
+1104,4/1/2009,2527=U Texas SW Med Ctr,0,0,,4= >50-60,51.18,3=African American,7=Alive,1477,1290.00,0,4860.00
+1106,4/1/2009,2527=U Texas SW Med Ctr,0,0,,4= >50-60,50.41,,8=Dead,1210,491.00,1,0.00
+1107,4/1/2009,2647=U Alabama (Birmingham),165,96,2.03,4= >50-60,58.37,1=Caucasian,7=Alive,1431,1238.00,0,
+1109,4/1/2009,2647=U Alabama (Birmingham),165,91,1.98,4= >50-60,52.53,1=Caucasian,7=Alive,1359,1162.00,0,
+1110,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,4= >50-60,56.94,1=Caucasian,7=Alive,1415,1288.00,0,4680.00
+1111,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,4= >50-60,50.59,1=Caucasian,7=Alive,1343,1202.00,0,0.00
+1112,4/1/2009,2647=U Alabama (Birmingham),165,75,1.82,3= >40-50,46.06,1=Caucasian,7=Alive,1513,1330.00,0,
+1113,4/1/2009,2647=U Alabama (Birmingham),157,50,1.48,4= >50-60,53.49,1=Caucasian,7=Alive,1447,1252.00,0,
+1114,4/1/2009,372=U North Carolina at Chapel Hill,166,62,1.69,3= >40-50,44.82,3=African American,7=Alive,1468,1263.00,0,0.00
+1115,4/1/2009,939=U Penn,0,0,,4= >50-60,51.84,1=Caucasian,7=Alive,1655,1468.00,0,5000.00
+1116,4/1/2009,2647=U Alabama (Birmingham),165,58,1.63,2= >30-40,34.57,1=Caucasian,7=Alive,1440,1250.00,0,0.00
+1117,4/1/2009,508=U Ca at San Francisco,0,0,,3= >40-50,49.01,3=African American,7=Alive,1630,1435.00,0,4860.00
+1118,4/1/2009,2647=U Alabama (Birmingham),165,71,1.78,2= >30-40,39.23,1=Caucasian,7=Alive,1524,1337.00,0,
+1120,4/1/2009,508=U Ca at San Francisco,139,58,1.44,3= >40-50,41.09,3=African American,9=Lost,540,,,
+1121,4/1/2009,2647=U Alabama (Birmingham),168,62,1.7,3= >40-50,41.51,1=Caucasian,7=Alive,1509,1317.00,0,
+1122,4/1/2009,2647=U Alabama (Birmingham),157,61,1.61,4= >50-60,59.7,1=Caucasian,7=Alive,1485,1313.00,0,
+1123,4/1/2009,2647=U Alabama (Birmingham),165,89,1.96,5= >60-70,61.86,1=Caucasian,7=Alive,1424,1221.00,0,
+1124,4/1/2009,2527=U Texas SW Med Ctr,0,0,,3= >40-50,47.6,1=Caucasian,7=Alive,1575,685.00,1,0.00
+1125,4/1/2009,2527=U Texas SW Med Ctr,0,0,,3= >40-50,44.85,50=Multiple race,7=Alive,1630,1483.00,0,5040.00
+1126,4/1/2009,2051=U Wash,169,86,1.97,5= >60-70,62.95,1=Caucasian,7=Alive,536,410.00,0,0.00
+1127,4/1/2009,508=U Ca at San Francisco,160,62,1.64,3= >40-50,47.61,4=Asian,9=Lost,575,424.00,0,5000.00
+1128,4/1/2009,508=U Ca at San Francisco,175,57,1.69,2= >30-40,33.18,1=Caucasian,7=Alive,1508,1329.00,0,
+1129,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,4= >50-60,52.45,3=African American,8=Dead,619,360.00,1,0.00
+1130,4/1/2009,2647=U Alabama (Birmingham),165,68,1.75,2= >30-40,39.08,1=Caucasian,7=Alive,1380,1180.00,0,
+1132,4/1/2009,508=U Ca at San Francisco,170,99,2.1,4= >50-60,51.42,1=Caucasian,7=Alive,1527,1375.00,0,4860.00
+1134,4/1/2009,508=U Ca at San Francisco,168,77,1.87,3= >40-50,43.06,1=Caucasian,7=Alive,1602,1472.00,0,4860.00
+1135,4/1/2009,508=U Ca at San Francisco,168,70,1.79,4= >50-60,58.89,1=Caucasian,7=Alive,1599,1409.00,0,5400.00
+1136,4/1/2009,2647=U Alabama (Birmingham),163,0,,5= >60-70,60.03,3=African American,8=Dead,497,199.00,1,0.00
+1137,4/1/2009,508=U Ca at San Francisco,170,65,1.75,1=  18-30,29.38,1=Caucasian,7=Alive,1585,1374.00,0,0.00
+1138,4/1/2009,2647=U Alabama (Birmingham),168,79,1.89,2= >30-40,35.13,3=African American,7=Alive,1335,1148.00,0,0.00
+1139,4/1/2009,939=U Penn,0,0,,3= >40-50,46.26,1=Caucasian,7=Alive,1488,1349.00,0,6040.00
+1140,4/1/2009,508=U Ca at San Francisco,165,68,1.75,2= >30-40,35.12,1=Caucasian,7=Alive,1607,1453.00,0,0.00
+1141,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,3= >40-50,49.15,3=African American,7=Alive,1491,1371.00,0,0.00
+1142,4/1/2009,2647=U Alabama (Birmingham),0,0,,1=  18-30,28.76,1=Caucasian,8=Dead,1015,546.00,1,
+1143,4/1/2009,540=Georgetown,0,0,,4= >50-60,55.35,1=Caucasian,7=Alive,1382,744.00,1,5040.00
+1144,4/1/2009,2647=U Alabama (Birmingham),175,103,2.18,4= >50-60,56.28,1=Caucasian,7=Alive,1262,1081.00,0,0.00
+1145,4/1/2009,2647=U Alabama (Birmingham),172,117,2.27,2= >30-40,39.37,3=African American,7=Alive,377,181.00,0,45.00
+1146,4/1/2009,2647=U Alabama (Birmingham),0,0,,4= >50-60,50.15,1=Caucasian,7=Alive,223,0.00,0,
+1147,4/1/2009,508=U Ca at San Francisco,166,65,1.72,4= >50-60,59.3,1=Caucasian,7=Alive,1406,1279.00,0,6380.00
+1148,4/1/2009,939=U Penn,0,0,,4= >50-60,50.81,1=Caucasian,7=Alive,1442,1302.00,0,5040.00
+1149,4/1/2009,939=U Penn,0,0,,4= >50-60,59.18,1=Caucasian,7=Alive,1470,1337.00,0,0.00
+1150,4/1/2009,939=U Penn,0,0,,4= >50-60,51.49,1=Caucasian,7=Alive,1439,1304.00,0,1620.00
+1151,4/1/2009,939=U Penn,0,0,,4= >50-60,50.15,3=African American,7=Alive,1378,1253.00,0,5040.00
+1152,4/1/2009,508=U Ca at San Francisco,168,80,1.9,4= >50-60,51.29,1=Caucasian,7=Alive,1288,1120.00,0,1200.00
+1154,4/1/2009,2647=U Alabama (Birmingham),160,80,1.83,5= >60-70,65.45,1=Caucasian,7=Alive,1190,984.00,0,
+1155,4/1/2009,939=U Penn,0,0,,3= >40-50,42.65,1=Caucasian,7=Alive,1420,1224.00,0,0.00
+1156,4/1/2009,372=U North Carolina at Chapel Hill,170,90,2.01,5= >60-70,65.39,1=Caucasian,8=Dead,704,219.00,1,0.00
+1157,4/1/2009,508=U Ca at San Francisco,173,89,2.03,3= >40-50,41.39,1=Caucasian,7=Alive,1352,1163.00,0,4860.00
+1158,4/1/2009,508=U Ca at San Francisco,162,93,1.97,5= >60-70,61.79,1=Caucasian,7=Alive,1450,1261.00,0,5000.00
+1159,4/1/2009,939=U Penn,0,0,,4= >50-60,55.95,3=African American,8=Dead,574,233.00,1,0.00
+1160,4/1/2009,2051=U Wash,159,103,2.03,4= >50-60,55.65,1=Caucasian,7=Alive,328,208.00,0,0.00
+1161,4/1/2009,2647=U Alabama (Birmingham),150,97,1.9,4= >50-60,56.83,1=Caucasian,7=Alive,1192,1018.00,0,
+1162,4/1/2009,939=U Penn,0,0,,4= >50-60,56.44,3=African American,7=Alive,1470,1316.00,0,0.00
+1163,4/1/2009,2647=U Alabama (Birmingham),163,74,1.8,2= >30-40,38.85,1=Caucasian,7=Alive,1296,1113.00,0,
+1164,4/1/2009,939=U Penn,0,0,,5= >60-70,60.11,1=Caucasian,7=Alive,1413,1239.00,0,1104.00
+1165,4/1/2009,2527=U Texas SW Med Ctr,146,60,1.52,2= >30-40,39.66,1=Caucasian,7=Alive,1339,1179.00,0,0.00
+1166,4/1/2009,2647=U Alabama (Birmingham),158,97,1.97,4= >50-60,54.43,1=Caucasian,7=Alive,1231,1049.00,0,45.00
+1167,4/1/2009,2051=U Wash,171,97,2.09,4= >50-60,50.63,1=Caucasian,7=Alive,348,147.00,0,
+1168,4/1/2009,508=U Ca at San Francisco,168,68,1.77,3= >40-50,44.59,1=Caucasian,8=Dead,347,184.00,1,0.00
+1169,4/1/2009,372=U North Carolina at Chapel Hill,159,68,1.7,3= >40-50,44.15,1=Caucasian,8=Dead,762,191.00,1,0.00
+1170,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,3= >40-50,44.35,1=Caucasian,7=Alive,1194,1076.00,0,0.00
+1171,4/1/2009,508=U Ca at San Francisco,160,64,1.67,4= >50-60,50.98,1=Caucasian,7=Alive,1358,1231.00,0,4860.00
+1172,4/1/2009,2647=U Alabama (Birmingham),170,66,1.77,3= >40-50,44.59,1=Caucasian,7=Alive,334,147.00,0,45.00
+1173,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,3= >40-50,43.96,3=African American,7=Alive,1204,1072.00,0,
+1174,4/1/2009,2647=U Alabama (Birmingham),159,81,1.83,3= >40-50,49.1,1=Caucasian,8=Dead,509,183.00,1,0.00
+1175,4/1/2009,939=U Penn,0,0,,5= >60-70,64.33,1=Caucasian,7=Alive,1347,1206.00,0,0.00
+1176,4/1/2009,2647=U Alabama (Birmingham),163,68,1.73,3= >40-50,47.58,1=Caucasian,7=Alive,678,444.00,0,0.00
+1177,4/1/2009,508=U Ca at San Francisco,178,74,1.92,3= >40-50,40.79,1=Caucasian,7=Alive,1297,1175.00,0,5040.00
+1179,4/1/2009,372=U North Carolina at Chapel Hill,169,69,1.79,3= >40-50,49.61,1=Caucasian,7=Alive,1198,1060.00,0,9200.00
+1180,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,2= >30-40,31.45,1=Caucasian,7=Alive,1230,1103.00,0,0.00
+1181,4/1/2009,939=U Penn,0,0,,2= >30-40,34.71,1=Caucasian,7=Alive,1152,1011.00,0,0.00
+1182,4/1/2009,2051=U Wash,175,107,2.21,3= >40-50,42.24,1=Caucasian,7=Alive,224,8.00,0,
+1183,4/1/2009,372=U North Carolina at Chapel Hill,165,58,1.63,4= >50-60,53.78,1=Caucasian,7=Alive,1287,1155.00,0,0.00
+1184,4/1/2009,2527=U Texas SW Med Ctr,0,0,,3= >40-50,49.1,1=Caucasian,7=Alive,936,806.00,0,0.00
+1185,4/1/2009,508=U Ca at San Francisco,173,62,1.74,3= >40-50,49.79,1=Caucasian,7=Alive,1322,1176.00,0,0.00
+1187,4/1/2009,372=U North Carolina at Chapel Hill,0,78,,3= >40-50,47.06,3=African American,7=Alive,1244,1124.00,0,0.00
+1188,4/1/2009,2647=U Alabama (Birmingham),175,100,2.15,2= >30-40,38.26,3=African American,7=Alive,740,541.00,0,0.00
+1189,4/1/2009,508=U Ca at San Francisco,155,49,1.45,5= >60-70,68.82,4=Asian,7=Alive,1316,1149.00,0,5000.00
+1191,4/1/2009,2647=U Alabama (Birmingham),155,63,1.62,3= >40-50,45.88,1=Caucasian,7=Alive,747,554.00,0,0.00
+1192,4/1/2009,2647=U Alabama (Birmingham),165,66,1.73,2= >30-40,31.26,3=African American,7=Alive,722,533.00,0,45.00
+1193,4/1/2009,939=U Penn,0,0,,4= >50-60,59.6,1=Caucasian,7=Alive,1233,1077.00,0,5040.00
+1194,4/1/2009,443=Chicago,0,0,,2= >30-40,33.83,1=Caucasian,8=Dead,811,497.00,1,0.00
+1196,4/1/2009,2647=U Alabama (Birmingham),170,66,1.77,2= >30-40,35.44,1=Caucasian,7=Alive,1002,819.00,0,0.00
+1197,4/1/2009,2647=U Alabama (Birmingham),163,108,2.11,3= >40-50,44.73,1=Caucasian,7=Alive,1060,932.00,0,0.00
+1198,4/1/2009,2647=U Alabama (Birmingham),170,98,2.09,4= >50-60,59.54,3=African American,7=Alive,951,721.00,0,0.00
+1199,4/1/2009,939=U Penn,0,0,,2= >30-40,37.68,1=Caucasian,8=Dead,476,140.00,1,
+1200,4/1/2009,939=U Penn,0,0,,3= >40-50,43.79,1=Caucasian,7=Alive,1113,939.00,0,0.00
+1201,4/1/2009,372=U North Carolina at Chapel Hill,160,85,1.88,4= >50-60,50.12,1=Caucasian,7=Alive,1072,938.00,0,0.00
+1202,4/1/2009,372=U North Carolina at Chapel Hill,156,48,1.45,4= >50-60,53.45,1=Caucasian,7=Alive,1168,1038.00,0,0.00
+1203,4/1/2009,939=U Penn,0,0,,3= >40-50,42.34,1=Caucasian,7=Alive,1224,1078.00,0,4600.00
+1204,4/1/2009,508=U Ca at San Francisco,157,75,1.76,2= >30-40,39.27,1=Caucasian,7=Alive,1161,979.00,0,
+1205,4/1/2009,2527=U Texas SW Med Ctr,0,0,,3= >40-50,42.56,3=African American,9=Lost,191,,,
+1206,4/1/2009,530=Mem Sloan-Kettering Cancer Ctr,0,0,,3= >40-50,43.03,1=Caucasian,8=Dead,481,353.00,1,0.00
+1207,4/1/2009,508=U Ca at San Francisco,175,69,1.84,2= >30-40,36.27,1=Caucasian,7=Alive,1188,995.00,0,
+1208,4/1/2009,939=U Penn,0,0,,3= >40-50,42.07,1=Caucasian,7=Alive,1195,1057.00,0,0.00
+1209,4/1/2009,2647=U Alabama (Birmingham),155,56,1.54,3= >40-50,43.44,1=Caucasian,7=Alive,984,787.00,0,0.00
+1210,4/1/2009,939=U Penn,0,0,,3= >40-50,40.58,1=Caucasian,7=Alive,1085,956.00,0,0.00
+1211,4/1/2009,443=Chicago,161,58,1.61,3= >40-50,48.11,1=Caucasian,7=Alive,1159,1019.00,0,
+1212,4/1/2009,2527=U Texas SW Med Ctr,0,0,,4= >50-60,52.13,3=African American,7=Alive,964,743.00,0,5040.00
+1213,4/1/2009,2051=U Wash,150,57,1.51,2= >30-40,38.05,4=Asian,7=Alive,192,0.00,0,
+1214,4/1/2009,508=U Ca at San Francisco,163,67,1.72,3= >40-50,47.02,3=African American,7=Alive,1160,945.00,0,
+1215,4/1/2009,2527=U Texas SW Med Ctr,0,0,,3= >40-50,49.2,1=Caucasian,7=Alive,844,599.00,0,0.00
+1216,4/1/2009,508=U Ca at San Francisco,66,170,1.33,2= >30-40,34.43,1=Caucasian,7=Alive,414,288.00,0,4860.00
+1217,4/1/2009,2647=U Alabama (Birmingham),165,69,1.76,4= >50-60,50.09,1=Caucasian,7=Alive,854,598.00,0,
+1218,4/1/2009,372=U North Carolina at Chapel Hill,169,109,2.18,3= >40-50,47.82,3=African American,7=Alive,1191,1071.00,0,0.00
+1219,4/1/2009,939=U Penn,0,0,,3= >40-50,45.98,1=Caucasian,7=Alive,1167,1064.00,0,4500.00
+1220,4/1/2009,508=U Ca at San Francisco,164,73,1.79,3= >40-50,43.12,1=Caucasian,7=Alive,1055,869.00,0,0.00
+1221,4/1/2009,939=U Penn,0,0,,4= >50-60,52.54,1=Caucasian,7=Alive,1059,911.00,0,
+1222,4/1/2009,508=U Ca at San Francisco,170,61,1.71,4= >50-60,55.52,1=Caucasian,7=Alive,1152,978.00,0,4860.00
+1223,4/1/2009,508=U Ca at San Francisco,168,78,1.88,4= >50-60,59.82,1=Caucasian,7=Alive,1141,987.00,0,4860.00
+1224,4/1/2009,372=U North Carolina at Chapel Hill,0,77,,5= >60-70,61.13,3=African American,7=Alive,1057,867.00,0,5040.00
+1225,4/1/2009,939=U Penn,0,0,,3= >40-50,47.84,1=Caucasian,7=Alive,1126,982.00,0,4500.00
+1226,4/1/2009,508=U Ca at San Francisco,165,57,1.62,3= >40-50,42.08,1=Caucasian,7=Alive,1080,954.00,0,
+1227,4/1/2009,508=U Ca at San Francisco,160,52,1.53,3= >40-50,42.46,1=Caucasian,7=Alive,1114,962.00,0,4860.00
+1228,4/1/2009,2051=U Wash,159,93,1.95,4= >50-60,53.25,3=African American,7=Alive,548,309.00,0,0.00
+1229,4/1/2009,508=U Ca at San Francisco,173,67,1.8,4= >50-60,50.79,1=Caucasian,7=Alive,1008,881.00,0,5040.00
+1230,4/1/2009,372=U North Carolina at Chapel Hill,152,86,1.82,4= >50-60,53.45,3=African American,8=Dead,190,13.00,1,
+1231,4/1/2009,508=U Ca at San Francisco,163,73,1.79,3= >40-50,45.5,1=Caucasian,7=Alive,1077,944.00,0,0.00
+1232,4/1/2009,939=U Penn,0,0,,3= >40-50,49.97,1=Caucasian,7=Alive,1015,868.00,0,0.00
+1233,4/1/2009,372=U North Carolina at Chapel Hill,166,81,1.89,1=  18-30,27.85,3=African American,7=Alive,1090,961.00,0,4500.00
+1234,4/1/2009,2647=U Alabama (Birmingham),169,61,1.7,2= >30-40,38.1,1=Caucasian,7=Alive,700,499.00,0,0.00
+1235,4/1/2009,372=U North Carolina at Chapel Hill,159,70,1.72,5= >60-70,64.06,1=Caucasian,7=Alive,1027,844.00,0,5000.00
+1236,4/1/2009,372=U North Carolina at Chapel Hill,168,71,1.81,2= >30-40,38.61,3=African American,8=Dead,839,377.00,1,5000.00
+1237,4/1/2009,372=U North Carolina at Chapel Hill,156,65,1.65,3= >40-50,46.46,1=Caucasian,7=Alive,1037,844.00,0,0.00
+1238,4/1/2009,939=U Penn,0,0,,4= >50-60,59.05,3=African American,7=Alive,255,164.00,0,0.00
+1239,4/1/2009,508=U Ca at San Francisco,168,64,1.73,3= >40-50,48.57,4=Asian,7=Alive,987,798.00,0,5040.00

@@ -1,0 +1,7 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+CHEMO,annotation,subject,,,Neo-Adjuvant Chemotherapy Regimen,string,yes,Yes
+CHEMOCAT,annotation,subject,,,Chemotherapy Group Category ,string,yes,yes
+DOSEDENSEANTHRA,annotation,subject,,,Dose Dense Anthracycline Therapy,string,yes,yes
+DOSEDENSETAXANE,annotation,subject,,,Dose Dense Taxane Therapy,string,yes,yes
+TAM,annotation,subject,,,Tamoxifen received,string,yes,yes
+HERCEPTIN,annotation,subject,,,Herceptin received,string,yes,yes

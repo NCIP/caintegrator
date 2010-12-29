@@ -1,0 +1,16 @@
+	Experiment								Control						
+	Sample_Exp_1	Sample_Exp_2	Sample_Exp_3	Sample_Exp_4	Sample_Exp_5				Sample_Control_1	Sample_Control_2	Sample_Control_3	Sample_Control_4	Sample_Control_5		
+	A1	A2	A3	A4	A5				C1	C2	C3	C4	C5		
+BRCA2	A	B	C	D	E	Median	Mean		F	G	H	I	J	Median	Mean
+208368_s_at	1	2	3	4	5	3	3		6	7	8	9	10	8	8
+214727_at	2	4	6	8	10	6	6		1	2	3	4	5	3	3
+															
+EGFR	A	B	C	D	E				F	G	H	I	J		
+1565483_at	0	0.5	1	2	4	1	1.5		0	0.5	1	2	4	1	1.5
+1565484_x_at 	1	1	1	1	1	1	1		2	2	2	2	2	2	2
+201983_s_at 	1	2	3	4	5	3	3		6	7	8	9	10	8	8
+201984_s_at 	1	2	3	4	5	3	3		1	1	1	1	1	1	1
+210984_x_at 	1	1	1	1	1	1	1		1	2	3	4	5	3	3
+211550_at 	0	0	0	0	0	0	0		1	1	1	1	1	1	1
+211551_at 	1	1	1	1	1	1	1		0	0	0	0	0	0	0
+211607_x_at 	0	1	2	3	5	2	2.2		0	1	2	3	5	2	2.2

@@ -1,0 +1,43 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+Sample Name,annotation,subject,,,Sample Name,string,no,yes
+Patient ID,identifier,subject,,,Patient ID from original study,string,no,yes
+Gender,annotation,subject,,,Gender,string,yes,yes
+Treatment arm,annotation,subject,,,Treatment arm,string,yes,yes
+Age,annotation,subject,,,Age,numeric,no,yes
+"Best response according to RECIST, 1st line",annotation,subject,,,"Best response according to RECIST, 1st line",string,yes,yes
+PFS1,annotation,subject,,,PFS1,numeric,no,yes
+PFS1event,annotation,subject,,,PFS1event,string,yes,yes
+"Best response according to RECIST, 2nd line",annotation,subject,,,"Best response according to RECIST, 2nd line",string,yes,yes
+PFS2,annotation,subject,,,PFS2,numeric,no,yes
+PFS2event,annotation,subject,,,PFS2event,string,yes,yes
+"Best response according to RECIST, 3rd line",annotation,subject,,,"Best response according to RECIST, 3rd line",string,yes,yes
+PFS3,annotation,subject,,,PFS3,numeric,no,yes
+PFS3event,annotation,subject,,,PFS3event,string,yes,yes
+Overall survival,annotation,subject,,,Overall survival,numeric,no,yes
+Osevent,annotation,subject,,,Osevent,string,yes,yes
+Cause of death,annotation,subject,,,Cause of death,string,yes,yes
+LDH: normal or abnormal,annotation,subject,,,LDH: normal or abnormal,string,yes,yes
+Site of primary tumor,annotation,subject,,,Site of primary tumor,string,yes,yes
+Location metastases,annotation,subject,,,Location metastases,string,yes,yes
+Metachronous or synchronous metastases,annotation,subject,,,Metachronous or synchronous metastases,string,yes,yes
+WHO performance status,annotation,subject,,,WHO performance status,string,yes,yes
+Previous adjuvant therapy,annotation,subject,,,Previous adjuvant therapy,string,yes,yes
+T,annotation,subject,,,T,string,yes,yes
+N,annotation,subject,,,N,string,yes,yes
+Histopathology of the primary tumor,annotation,subject,,,Histopathology of the primary tumor,string,yes,yes
+Differentiation,annotation,subject,,,Differentiation,string,yes,yes
+Number of sites involved,annotation,subject,,,Number of sites involved,numeric,no,yes
+MSI,annotation,subject,,,MSI,string,yes,yes
+Ncycles_Line1,annotation,subject,,,Ncycles_Line1,string,yes,yes
+Ncycles_Line2,annotation,subject,,,Ncycles_Line2,string,yes,yes
+Ncycles_Line3,annotation,subject,,,Ncycles_Line3,string,yes,yes
+Ineligible,annotation,subject,,,Ineligible,string,yes,yes
+Radiotherapy,annotation,subject,,,Radiotherapy,string,yes,yes
+Metastases Liver,annotation,subject,,,Metastases Liver,string,yes,yes
+A1,annotation,subject,,,A1,string,yes,yes
+A2,annotation,subject,,,A2,string,yes,yes
+A3,annotation,subject,,,A3,string,yes,yes
+B1,annotation,subject,,,B1,string,yes,yes
+B2,annotation,subject,,,B2,string,yes,yes
+Death,annotation,subject,,,Death,string,yes,yes
+Long Survivor,annotation,subject,,,Long Survivor,string,yes,yes

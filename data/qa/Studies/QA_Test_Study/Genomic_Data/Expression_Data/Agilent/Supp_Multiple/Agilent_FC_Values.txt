@@ -1,0 +1,11 @@
+	Experiment							Control						
+	Sample_Exp_1	Sample_Exp_2	Sample_Exp_3	Sample_Exp_4	Sample_Exp_5			Sample_Control_1	Sample_Control_2	Sample_Control_3	Sample_Control_4	Sample_Control_5		
+	A1	A2	A3	A4	A5			C1	C2	C3	C4	C5		
+EGFR						Median	Mean						Median	Mean
+A_23_P215790	-2	-1	0	1	2			1	1	1	1	1		
+A_23_P215791	1	1	1	1	1			-2	-1	0	1	2		
+														
+IL8	A	B	C	D	E			F	G	H	I	J		
+A_23_P81000	-4	-2	0	2	4			1	1	1	1	1		
+A_23_P81006	-2	-1	0	1	2			0	0	0	0	0		
+A_32_P87013	1	2	3	4	5			5	5	3	2	-2		

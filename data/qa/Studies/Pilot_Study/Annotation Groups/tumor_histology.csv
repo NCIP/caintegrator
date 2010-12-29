@@ -1,0 +1,8 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+HISTOLOGICALTYPE,annotation,subject,,,HISTOLOGICALTYPE,string,yes,Yes
+Histologic grade,annotation,subject,,,Histologic grade,string,yes,yes
+LONGESTDIMENSION,annotation,subject,,,LONGESTDIMENSION,string,yes,yes
+INTERMEDIATEDIMENSION,annotation,subject,,,INTERMEDIATEDIMENSION,string,yes,yes
+SHORTESTDIMENSION,annotation,subject,,,SHORTESTDIMENSION,string,yes,yes
+PATHOLOGIC_N_STAGE,annotation,subject,,,PATHOLOGIC_N_STAGE,string,yes,yes
+PATHOLOGIC_T_STAGE,annotation,subject,,,PATHOLOGIC_T_STAGE,string,yes,Yes

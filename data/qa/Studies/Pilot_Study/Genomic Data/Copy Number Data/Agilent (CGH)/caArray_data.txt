@@ -1,0 +1,7 @@
+caArray Web URL: http://cbwapp-p1001.nci.nih.gov:38080/caarray
+hostname:  	 cbwapp-p1001.nci.nih.gov
+caArray Server JNDI Port: 31099
+Experiment: 	Name: admin-00006
+Array Platforms: Agilent-022522 		
+Data Type: 	Copy Number 		
+Copy Number Samples: 	20

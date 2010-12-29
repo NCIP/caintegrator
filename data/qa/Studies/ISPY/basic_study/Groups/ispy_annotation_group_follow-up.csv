@@ -1,0 +1,31 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+RTTHERAPY,annotation,subject,,,Has patient received adjuvant radiation therapy (prior to treatment failure or second primary cancer),string,yes,Yes
+RTBR,annotation,subject,,,Radiation to Breast,string,yes,yes
+RTBO,annotation,subject,,,Radiation Boost,string,yes,yes
+RTAX,annotation,subject,,,Radiation to Axilla,string,yes,yes
+RTSN,annotation,subject,,,Radiation to Supraclavicular node,string,yes,yes
+RTIM,annotation,subject,,,Radiation to Internal Mammary node,string,yes,yes
+RTCW,annotation,subject,,,Radiation to Chest Wall,string,yes,yes
+RTOT,annotation,subject,,,Radiation to Other Site,string,yes,yes
+RTBRTD,annotation,subject,,,Radiation to Breast - Total Dose,numeric,no,yes
+RTBOTD,annotation,subject,,,Radiation Boost - Total Dose,numeric,no,yes
+RTAXTD,annotation,subject,,,Radiation to Axilla - Total Dose,numeric,no,yes
+RTSNTD,annotation,subject,,,Radiation to Supraclavicular node - Total Dose,numeric,no,yes
+RTIMTD,annotation,subject,,,Radiation to Internal Mammary node  - Total Dose,numeric,no,yes
+RTCWTD,annotation,subject,,,Radiation to Chest Wall - Total Dose,numeric,no,yes
+RTOTTD,annotation,subject,,,Radiation to Other Site - Total Dose,numeric,no,yes
+LOCALPROGRESS,annotation,subject,,,Local Progression following surgery,string,yes,yes
+DISTPROGRESS,annotation,subject,,,Distant Progression following surgery,string,yes,yes
+AROMATASEI,annotation,subject,,,Aromatase inhibitor,string,yes,yes
+OVARIANABL,annotation,subject,,,Ovarian ablation,string,yes,yes
+OVARIANSUP,annotation,subject,,,Ovarian suppression,string,yes,yes
+LOCALSITEIPBREAST,annotation,subject,,,Site of first local-regional progression - IP Breast,string,yes,yes
+LOCALSITEAXILLARYNODE,annotation,subject,,,Site of first local-regional progression - Axillary Node,string,yes,yes
+LOCALSITESUPRANODE,annotation,subject,,,Site of first local-regional progression - Supra Node,string,yes,yes
+LOCALSITECHESTW,annotation,subject,,,Site of first local-regional progression - Chest W,string,yes,yes
+LOCALSITEIMAMMARYN,annotation,subject,,,Site of first local-regional progression - I Mammary N,string,yes,yes
+LOCALSITEINFRNODES,annotation,subject,,,Site of first local-regional progression - Infr Nodes,string,yes,yes
+LOCALSITEAXILLA,annotation,subject,,,Site of first local-regional progression - Axilla,string,yes,yes
+DISTSITE,annotation,subject,,,Site(s) of first distant progression,string,yes,yes
+LOCALPROGTIMED,annotation,subject,,,Time interval from surgery until first local-regional progression (time unit is days),numeric,no,yes
+DISTPROGTIMED,annotation,subject,,,Time interval from surgery until first distant progression (time unit is days),numeric,no,yes

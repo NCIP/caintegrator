@@ -1,0 +1,23 @@
+Genomic Data for DC Lung Study
+
+Clinical Data = 
+
+Platform = 
+	HG-U133A
+
+Genomic Data Origination = Gene expression-based survival prediction in lung adenocarcinoma: a multi-site, blinded validation study
+	
+Genomic Data Source (Expression) = 
+	
+	https://array-stage.nci.nih.gov/caarray
+	array-stage.nci.nih.gov
+	8080
+ 	jacob-00182 
+	Affymetrix 
+	Expression
+	HG-U133A
+	Do not check Use Supplemental Files
+
+Genomic Sample Mapping/Control (Expression) = 
+	caBIG_DCLung_mapping_patientID_microarray_kakv2_20samples_090210_csv.csv
+	caBIG_DCLung_controls_patientID_microarray_kakv2_10samples_090210_csv.csv

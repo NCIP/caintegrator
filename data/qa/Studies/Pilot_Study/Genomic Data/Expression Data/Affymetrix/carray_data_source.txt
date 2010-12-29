@@ -1,0 +1,12 @@
+caArray Web URL: http://cbwapp-p1001.nci.nih.gov:38080/caarray/
+caArray Server Hostname: cbwapp-p1001.nci.nih.gov
+caArray Server JNDI Port: 31099
+
+Username and password not needed as this a publicly accessible study
+
+caArray Experiment Id: admin-00010
+Vendor: Affymetrix 
+Data Type: Expression
+
+Platform: HG_U95Av2 
+

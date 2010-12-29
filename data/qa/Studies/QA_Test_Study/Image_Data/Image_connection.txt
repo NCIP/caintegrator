@@ -1,0 +1,4 @@
+Image Data Source = 
+	http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService
+	NCRI
+	By Image Series

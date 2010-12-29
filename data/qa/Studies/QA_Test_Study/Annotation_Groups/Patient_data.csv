@@ -1,0 +1,11 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+GENDER,annotation,subject,62,6,,,,Yes
+AGE at DIAGNOSIS,annotation,subject,2006657,,,,,YES
+RACE,annotation,subject,106,5.1,,,,yes
+ADJUVANT_CHEMO,annotation,subject,2190226,,,,,yes
+ETHNICITY,annotation,subject,,,ethnicity,string,YES,yes
+SMOKING_HISTORY,annotation,subject,2183382,1,,,,yes
+VITALSTATUS,annotation,subject,,,VitalStatus,string,yes,yes
+Id,identifier,subject,,,PATIENTBARCODE,string,No,Yes
+tEsT 0123!#_&*><?|*&(_,annotation,subject,,,TeSt 0123!#_&*><?|*&(_,string,YeS,Yes
+Test not Visible,annotation,subject,,,Test visible,string,YES,no

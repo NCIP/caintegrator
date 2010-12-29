@@ -1,0 +1,30 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+TSIZECLINICAL,annotation,subject,,,Size of Primary Tumor  (cm) - Clinical Assessment at Baseline,numeric,no,Yes
+NSIZECLINICAL,annotation,subject,,,Size of Largest Palpable Node (cm) - Clinical Assessment at Baseline,numeric,no,yes
+STAGETE,annotation,subject,,,Pretreatment Disease Stage T (Baseline),string,yes,yes
+STAGENE,annotation,subject,,,Pretreatment Disease Stage N (Baseline),string,yes,yes
+STAGEME,annotation,subject,,,Pretreatment Disease Stage M (Baseline),string,yes,yes
+CLINICALSTAGE,annotation,subject,,,Clinical Staging at Baseline,string,yes,yes
+CLINRESPT1_T2,annotation,subject,,,Clinical Response - Baseline to Early Treatment,string,yes,yes
+CLINRESPT1_T3,annotation,subject,,,Clinical Response - Baseline to Inter-Regimen,string,yes,yes
+CLINRESPT1_T4,annotation,subject,,,Clinical Response - Baseline to Pre-Surgery,string,yes,yes
+T4BASELINE,annotation,subject,,,T4 tumor status at Baseline,string,yes,yes
+T4EARLY,annotation,subject,,,T4 tumor status at Early Treatment,string,yes,yes
+T4INT,annotation,subject,,,T4 tumor status at Inter-Regimen,string,yes,yes
+T4PRES,annotation,subject,,,T4 tumor status at Pre-Surgery,string,yes,yes
+BASEAXILLARY,annotation,subject,,,Axillary lymph node involvement at Baseline,string,yes,yes
+EARLYAXILLARY,annotation,subject,,,Axillary lymph node involvement at Early Treatment,string,yes,yes
+INTAXILLARY,annotation,subject,,,Axillary lymph node involvement at Inter-regimen,string,yes,yes
+PRESAXILLARY,annotation,subject,,,Axillary lymph node involvement at Pre-surgery,string,yes,yes
+BASEINTERNALM,annotation,subject,,,Internal Mammary lymph node involvement at Baseline,string,yes,yes
+EARLYINTERNALM,annotation,subject,,,Internal Mammary lymph node involvement at Early Treatment,string,yes,yes
+INTINTERNALM,annotation,subject,,,Internal Mammary lymph node involvement at Inter-regimen,string,yes,yes
+PRESINTERNALM,annotation,subject,,,Internal Mammary lymph node involvement at Pre-surgery,string,yes,yes
+BASESUPRA,annotation,subject,,,Supraclavicular lymph node involvement at Baseline,string,yes,yes
+EARLYSUPRA,annotation,subject,,,Supraclavicular lymph node involvement at Early Treatment,string,yes,yes
+INTSUPRA,annotation,subject,,,Supraclavicular lymph node involvement at Inter-regimen,string,yes,yes
+PRESSUPRA,annotation,subject,,,Supraclavicular lymph node involvement at Pre-surgery,string,yes,yes
+BASEINFRA,annotation,subject,,,Infraclavicular lymph node involvement at Baseline,string,yes,yes
+EARLYINFRA,annotation,subject,,,Infraclavicular lymph node involvement at Early Treatment,string,yes,yes
+INTINFRA,annotation,subject,,,Infraclavicular lymph node involvement at Inter-regimen,string,yes,yes
+PRESINFRA,annotation,subject,,,Infraclavicular lymph node involvement at Pre-surgery,string,yes,yes

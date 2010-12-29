@@ -1,0 +1,6 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+DAYSTOPROCEDURE1,annotation,subject,,,DAYSTOPROCEDURE1,numeric,no,Yes
+PROCEDURETYPE1,annotation,subject,,,PROCEDURETYPE1,string,yes,yes
+DAYSTOPROCEDURE2,annotation,subject,,,DAYSTOPROCEDURE2,numeric,no,yes
+PROCEDURETYPE2,annotation,subject,,,PROCEDURETYPE2,string,yes,yes
+SURGICAL_MARGINS,annotation,subject,,,SURGICAL_MARGINS,string,yes,Yes

@@ -1,0 +1,9 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+GENDER,annotation,subject,62,,,,,Yes
+RACE,annotation,subject,,,RACE,string,yes,
+ETHNICITY,annotation,subject,,,ETHNICITY,string,yes,yes
+SMOKING_HISTORY,annotation,subject,,,SMOKING_HISTORY,string,yes,yes
+VITALSTATUS,annotation,subject,,,VITALSTATUS,string,yes,yes
+INFORMEDCONSENTVERIFIED,annotation,subject,,,INFORMEDCONSENTVERIFIED,string,yes,yes
+PATIENTBARCODE,identifier,subject,,,PATIENTBARCODE,string,no,Yes
+PERSONNEOPLASMCANCERSTATUS,annotation,subject,,,PERSONNEOPLASMCANCERSTATUS,string,yes,Yes

@@ -1,0 +1,479 @@
+SJ_PATIENT_ID,SJ_DC_STUDY_ID,SJ_MICROARRAY,SJ_RACE,SJ_ADJUVANT_CHEMO,SJ_ENROLLMENT_DATE,SJ_MONTHS_TO_FIRST_PROGRESSION,SJ_MTHS_TO_LAST_CLINICAL_ASSESSMENT,SJ_SMOKING_HISTORY,SJ_Histologic grade
+151,B-NCI_U133A_1L.CHP,NCI_U133A_1L,White(01),Yes,1/1/1996,8,15,Currently smoking,POORLY DIFFERENTIATED
+152,B-NCI_U133A_2L.CHP,NCI_U133A_2L,White(01),Yes,1/2/1996,3,72,Smoked in the past,Moderate Differentiation
+153,B-NCI_U133A_3L.CHP,NCI_U133A_3L,White(01),No,1/3/1996,,47,Smoked in the past,Moderate Differentiation
+154,B-NCI_U133A_4L.CHP,NCI_U133A_4L,White(01),No,1/4/1996,50,52,Smoked in the past,POORLY DIFFERENTIATED
+155,B-NCI_U133A_5L.CHP,NCI_U133A_5L,White(01),Yes,1/5/1996,14,28,Currently smoking,POORLY DIFFERENTIATED
+156,B-NCI_U133A_6L.CHP,NCI_U133A_6L,White(01),No,1/6/1996,,66,Smoked in the past,Moderate Differentiation
+157,B-NCI_U133A_7L.CHP,NCI_U133A_7L,White(01),No,1/7/1996,,44,Never smoked,Moderate Differentiation
+158,B-NCI_U133A_8L.CHP,NCI_U133A_8L,White(01),No,1/8/1996,,70,Smoked in the past,WELL DIFFERENTIATED
+159,B-NCI_U133A_9L.CHP,NCI_U133A_9L,White(01),No,1/9/1996,,74,Never smoked,Moderate Differentiation
+160,B-NCI_U133A_10L.CHP,NCI_U133A_10L,White(01),No,1/10/1996,37,92,Currently smoking,Moderate Differentiation
+161,B-NCI_U133A_11L.CHP,NCI_U133A_11L,White(01),No,1/11/1996,,65,Smoked in the past,
+162,B-NCI_U133A_12L.CHP,NCI_U133A_12L,White(01),Yes,1/12/1996,13,43,Smoked in the past,POORLY DIFFERENTIATED
+163,B-NCI_U133A_13L.CHP,NCI_U133A_13L,White(01),No,1/13/1996,,4,Currently smoking,POORLY DIFFERENTIATED
+164,B-NCI_U133A_14L.CHP,NCI_U133A_14L,White(01),No,1/14/1996,23,33,Smoked in the past,POORLY DIFFERENTIATED
+165,B-NCI_U133A_15L.CHP,NCI_U133A_15L,White(01),No,1/15/1996,,21,Never smoked,POORLY DIFFERENTIATED
+166,B-NCI_U133A_16L.CHP,NCI_U133A_16L,White(01),Yes,1/16/1996,6,26,Smoked in the past,POORLY DIFFERENTIATED
+167,B-NCI_U133A_17L.CHP,NCI_U133A_17L,White(01),Yes,1/17/1996,10,26,Smoked in the past,POORLY DIFFERENTIATED
+168,B-NCI_U133A_18L.CHP,NCI_U133A_18L,White(01),No,1/18/1996,37,73,Smoked in the past,POORLY DIFFERENTIATED
+169,B-NCI_U133A_19L.CHP,NCI_U133A_19L,White(01),No,1/19/1996,1,2,Smoked in the past,POORLY DIFFERENTIATED
+170,B-NCI_U133A_20L.CHP,NCI_U133A_20L,White(01),No,1/20/1996,37,66,Smoked in the past,Moderate Differentiation
+171,B-NCI_U133A_21L.CHP,NCI_U133A_21L,White(01),Yes,1/21/1996,8,8,Currently smoking,POORLY DIFFERENTIATED
+172,B-NCI_U133A_22L.CHP,NCI_U133A_22L,White(01),No,1/22/1996,,33,Smoked in the past,Moderate Differentiation
+173,B-NCI_U133A_23L.CHP,NCI_U133A_23L,White(01),No,1/23/1996,,85,Currently smoking,POORLY DIFFERENTIATED
+174,B-NCI_U133A_24L.CHP,NCI_U133A_24L,Black or African American(03),No,1/24/1996,35,66,Smoked in the past,WELL DIFFERENTIATED
+175,B-NCI_U133A_25L.CHP,NCI_U133A_25L,White(01),No,1/25/1996,,15,Currently smoking,Moderate Differentiation
+176,B-NCI_U133A_26L.CHP,NCI_U133A_26L,Asian(05),No,1/26/1996,,91,Currently smoking,POORLY DIFFERENTIATED
+177,B-NCI_U133A_27L.CHP,NCI_U133A_27L,White(01),Yes,1/27/1996,39,67,Smoked in the past,Moderate Differentiation
+178,B-NCI_U133A_28L.CHP,NCI_U133A_28L,White(01),No,1/28/1996,,33,Smoked in the past,
+179,B-NCI_U133A_29L.CHP,NCI_U133A_29L,White(01),Yes,1/29/1996,8,24,Smoked in the past,POORLY DIFFERENTIATED
+180,B-NCI_U133A_30L.CHP,NCI_U133A_30L,White(01),No,1/30/1996,,62,Smoked in the past,Moderate Differentiation
+181,B-NCI_U133A_31L.CHP,NCI_U133A_31L,White(01),Yes,1/31/1996,1,114,Smoked in the past,POORLY DIFFERENTIATED
+182,B-NCI_U133A_32L.CHP,NCI_U133A_32L,White(01),No,2/1/1996,,4,Smoked in the past,POORLY DIFFERENTIATED
+183,B-NCI_U133A_33L.CHP,NCI_U133A_33L,White(01),Yes,2/2/1996,13,20,Smoked in the past,Moderate Differentiation
+184,B-NCI_U133A_34L.CHP,NCI_U133A_34L,White(01),Yes,2/3/1996,23,50,Smoked in the past,
+185,B-NCI_U133A_35L.CHP,NCI_U133A_35L,White(01),Yes,2/4/1996,,93,Smoked in the past,Moderate Differentiation
+186,B-NCI_U133A_36L.CHP,NCI_U133A_36L,White(01),No,2/5/1996,,51,Smoked in the past,Moderate Differentiation
+187,B-NCI_U133A_37L_Rep,NCI_U133A_37L_Rep,White(01),No,2/6/1996,,12,Currently smoking,POORLY DIFFERENTIATED
+188,B-NCI_U133A_38L.CHP,NCI_U133A_38L,White(01),Yes,2/7/1996,19,37,Never smoked,POORLY DIFFERENTIATED
+189,B-NCI_U133A_39L.CHP,NCI_U133A_39L,White(01),No,2/8/1996,,32,Smoked in the past,WELL DIFFERENTIATED
+190,B-NCI_U133A_40L.CHP,NCI_U133A_40L,White(01),Yes,2/9/1996,21,31,Never smoked,Moderate Differentiation
+191,B-NCI_U133A_41L.CHP,NCI_U133A_41L,White(01),No,2/10/1996,,60,Smoked in the past,Moderate Differentiation
+192,B-NCI_U133A_42L.CHP,NCI_U133A_42L,White(01),No,2/11/1996,,50,Smoked in the past,Moderate Differentiation
+193,B-NCI_U133A_43L.CHP,NCI_U133A_43L,Black or African American(03),No,2/12/1996,7,13,Smoked in the past,POORLY DIFFERENTIATED
+194,B-NCI_U133A_44L.CHP,NCI_U133A_44L,White(01),No,2/13/1996,,37,Never smoked,Moderate Differentiation
+195,B-NCI_U133A_45L.CHP,NCI_U133A_45L,White(01),No,2/14/1996,,54,Smoked in the past,WELL DIFFERENTIATED
+196,B-NCI_U133A_46L.CHP,NCI_U133A_46L,White(01),No,2/15/1996,,31,Smoked in the past,Moderate Differentiation
+197,B-NCI_U133A_47L.CHP,NCI_U133A_47L,White(01),No,2/16/1996,,38,Currently smoking,
+198,B-NCI_U133A_48L.CHP,NCI_U133A_48L,White(01),No,2/17/1996,,90,Never smoked,Moderate Differentiation
+199,B-NCI_U133A_49L.CHP,NCI_U133A_49L,White(01),No,2/18/1996,10,34,Smoked in the past,Moderate Differentiation
+200,B-NCI_U133A_50L.CHP,NCI_U133A_50L,White(01),Yes,2/19/1996,,44,Smoked in the past,POORLY DIFFERENTIATED
+201,B-NCI_U133A_51L.CHP,NCI_U133A_51L,White(01),Yes,2/20/1996,9,17,Smoked in the past,WELL DIFFERENTIATED
+202,B-NCI_U133A_52L.CHP,NCI_U133A_52L,White(01),No,2/21/1996,,90,Smoked in the past,Moderate Differentiation
+203,B-NCI_U133A_53L.CHP,NCI_U133A_53L,Asian(05),No,2/22/1996,,65,Smoked in the past,POORLY DIFFERENTIATED
+204,B-NCI_U133A_54L.CHP,NCI_U133A_54L,White(01),No,2/23/1996,,50,Never smoked,Moderate Differentiation
+205,B-NCI_U133A_55L.CHP,NCI_U133A_55L,White(01),No,2/24/1996,,80,Smoked in the past,POORLY DIFFERENTIATED
+206,B-NCI_U133A_56L.CHP,NCI_U133A_56L,White(01),Yes,2/25/1996,27,34,Smoked in the past,POORLY DIFFERENTIATED
+207,B-NCI_U133A_57L.CHP,NCI_U133A_57L,White(01),No,2/26/1996,,60,Smoked in the past,POORLY DIFFERENTIATED
+208,B-NCI_U133A_58L.CHP,NCI_U133A_58L,White(01),No,2/27/1996,,26,Currently smoking,Moderate Differentiation
+209,B-NCI_U133A_59L.CHP,NCI_U133A_59L,White(01),No,2/28/1996,55,62,Smoked in the past,POORLY DIFFERENTIATED
+210,B-NCI_U133A_60L.CHP,NCI_U133A_60L,White(01),No,2/29/1996,,22,Smoked in the past,POORLY DIFFERENTIATED
+211,B-NCI_U133A_61L.CHP,NCI_U133A_61L,White(01),No,3/1/1996,,63,Smoked in the past,WELL DIFFERENTIATED
+212,B-NCI_U133A_62L.CHP,NCI_U133A_62L,White(01),No,3/2/1996,,68,Smoked in the past,POORLY DIFFERENTIATED
+213,B-NCI_U133A_63L.CHP,NCI_U133A_63L,White(01),No,3/3/1996,,7,Smoked in the past,POORLY DIFFERENTIATED
+214,B-NCI_U133A_64L.CHP,NCI_U133A_64L,White(01),Yes,3/4/1996,19,52,Never smoked,POORLY DIFFERENTIATED
+215,B-NCI_U133A_65L.CHP,NCI_U133A_65L,White(01),No,3/5/1996,,36,Never smoked,Moderate Differentiation
+216,B-NCI_U133A_66L.CHP,NCI_U133A_66L,White(01),No,3/6/1996,5,15,Smoked in the past,POORLY DIFFERENTIATED
+217,B-NCI_U133A_67L.CHP,NCI_U133A_67L,White(01),No,3/7/1996,13,19,Smoked in the past,POORLY DIFFERENTIATED
+218,B-NCI_U133A_68L.CHP,NCI_U133A_68L,White(01),No,3/8/1996,26,41,Smoked in the past,Moderate Differentiation
+219,B-NCI_U133A_69L.CHP,NCI_U133A_69L,White(01),Yes,3/9/1996,10,24,Unknown,Moderate Differentiation
+220,B-NCI_U133A_70L.CHP,NCI_U133A_70L,White(01),No,3/10/1996,,42,Currently smoking,POORLY DIFFERENTIATED
+221,B-NCI_U133A_71L.CHP,NCI_U133A_71L,White(01),Yes,3/11/1996,29,46,Smoked in the past,Moderate Differentiation
+222,B-NCI_U133A_72L.CHP,NCI_U133A_72L,White(01),No,3/12/1996,,50,Currently smoking,Moderate Differentiation
+223,B-NCI_U133A_73L.CHP,NCI_U133A_73L,Black or African American(03),Yes,3/13/1996,5,55,Smoked in the past,Moderate Differentiation
+224,B-NCI_U133A_74L.CHP,NCI_U133A_74L,White(01),Yes,3/14/1996,7,13,Currently smoking,POORLY DIFFERENTIATED
+225,B-NCI_U133A_75L.CHP,NCI_U133A_75L,White(01),Yes,3/15/1996,11,78,Smoked in the past,WELL DIFFERENTIATED
+226,B-NCI_U133A_76L.CHP,NCI_U133A_76L,White(01),No,3/16/1996,,48,Smoked in the past,Moderate Differentiation
+227,B-NCI_U133A_77L.CHP,NCI_U133A_77L,White(01),No,3/17/1996,,29,Smoked in the past,Moderate Differentiation
+228,B-NCI_U133A_78L.CHP,NCI_U133A_78L,White(01),No,3/18/1996,,37,Smoked in the past,POORLY DIFFERENTIATED
+229,B-NCI_U133A_79L.CHP,NCI_U133A_79L,White(01),Yes,3/19/1996,15,16,Smoked in the past,WELL DIFFERENTIATED
+230,B-NCI_U133A_80L.CHP,NCI_U133A_80L,White(01),No,3/20/1996,,24,Smoked in the past,POORLY DIFFERENTIATED
+231,B-NCI_U133A_81L.CHP,NCI_U133A_81L,White(01),No,3/21/1996,,44,Never smoked,Moderate Differentiation
+232,B-NCI_U133A_82L.CHP,NCI_U133A_82L,White(01),No,3/22/1996,,30,Smoked in the past,Moderate Differentiation
+233,B-NCI_U133A_83L.CHP,NCI_U133A_83L,White(01),Yes,3/23/1996,26,50,Never smoked,Moderate Differentiation
+234,B-NCI_U133A_84L.CHP,NCI_U133A_84L,White(01),No,3/24/1996,,88,Smoked in the past,POORLY DIFFERENTIATED
+235,B-NCI_U133A_85L.CHP,NCI_U133A_85L,White(01),No,3/25/1996,16,42,Smoked in the past,POORLY DIFFERENTIATED
+236,B-NCI_U133A_86L.CHP,NCI_U133A_86L,White(01),No,3/26/1996,,46,Unknown,Moderate Differentiation
+237,B-NCI_U133A_87L.CHP,NCI_U133A_87L,White(01),No,3/27/1996,,56,Smoked in the past,WELL DIFFERENTIATED
+238,B-NCI_U133A_88L.CHP,NCI_U133A_88L,White(01),No,3/28/1996,,40,Smoked in the past,WELL DIFFERENTIATED
+239,B-NCI_U133A_89L.CHP,NCI_U133A_89L,White(01),No,3/29/1996,,38,Never smoked,POORLY DIFFERENTIATED
+240,B-NCI_U133A_90L.CHP,NCI_U133A_90L,White(01),No,3/30/1996,,43,Smoked in the past,POORLY DIFFERENTIATED
+241,B-NCI_U133A_91L.CHP,NCI_U133A_91L,White(01),No,3/31/1996,,55,Smoked in the past,WELL DIFFERENTIATED
+242,B-NCI_U133A_92L.CHP,NCI_U133A_92L,White(01),Yes,4/1/1996,7,11,Never smoked,POORLY DIFFERENTIATED
+243,B-NCI_U133A_93L.CHP,NCI_U133A_93L,White(01),No,4/2/1996,,36,Never smoked,Moderate Differentiation
+244,B-NCI_U133A_94L_Rep,NCI_U133A_94L_Rep,White(01),No,4/3/1996,6,10,Never smoked,POORLY DIFFERENTIATED
+245,B-NCI_U133A_95L.CHP,NCI_U133A_95L,White(01),Yes,4/4/1996,21,23,Never smoked,POORLY DIFFERENTIATED
+246,B-NCI_U133A_96L.CHP,NCI_U133A_96L,White(01),No,4/5/1996,,62,Smoked in the past,Moderate Differentiation
+247,B-NCI_U133A_98L.CHP,NCI_U133A_98L,White(01),Yes,4/6/1996,36,85,Smoked in the past,Moderate Differentiation
+248,B-NCI_U133A_99L.CHP,NCI_U133A_99L,White(01),Yes,4/7/1996,11,47,Smoked in the past,POORLY DIFFERENTIATED
+249,B-NCI_U133A_100L.CH,NCI_U133A_100L,White(01),No,4/8/1996,11,48,Smoked in the past,WELL DIFFERENTIATED
+250,B-NCI_U133A_101L.CH,NCI_U133A_101L,White(01),Yes,4/9/1996,31,57,Smoked in the past,Moderate Differentiation
+251,B-NCI_U133A_102L.CH,NCI_U133A_102L,Unknown(99),No,4/10/1996,,43,Smoked in the past,Moderate Differentiation
+252,B-NCI_U133A_103L.CH,NCI_U133A_103L,White(01),No,4/11/1996,,41,Smoked in the past,WELL DIFFERENTIATED
+253,B-NCI_U133A_104L.CH,NCI_U133A_104L,White(01),No,4/12/1996,,34,Never smoked,POORLY DIFFERENTIATED
+254,B-NCI_U133A_105L.CH,NCI_U133A_105L,White(01),No,4/13/1996,,24,Currently smoking,POORLY DIFFERENTIATED
+255,B-NCI_U133A_106L.CH,NCI_U133A_106L,White(01),No,4/14/1996,,43,Never smoked,POORLY DIFFERENTIATED
+256,B-NCI_U133A_107L.CH,NCI_U133A_107L,White(01),No,4/15/1996,,32,Smoked in the past,POORLY DIFFERENTIATED
+257,B-NCI_U133A_97L.CHP,NCI_U133A_97L,White(01),No,4/16/1996,,64,Never smoked,Moderate Differentiation
+301,D030,CL2004111013AA,Unknown(99),No,4/17/1996,,107,Smoked in the past,WELL DIFFERENTIATED
+302,D050,CL2004111022AA,Unknown(99),No,4/18/1996,14,24,Smoked in the past,WELL DIFFERENTIATED
+303,D096,CL2004111042AA,Unknown(99),No,4/19/1996,,96,Smoked in the past,POORLY DIFFERENTIATED
+304,D008,CL2004111002AA,Unknown(99),No,4/20/1996,2,98,Smoked in the past,POORLY DIFFERENTIATED
+305,D097,CL2004111043AA,Unknown(99),No,4/21/1996,17,34,Currently smoking,POORLY DIFFERENTIATED
+306,D104,CL2005060326AA,Unknown(99),Yes,4/22/1996,,90,Smoked in the past,Moderate Differentiation
+307,D130,CL2005060345AA,White(01),No,4/23/1996,11,40,Smoked in the past,POORLY DIFFERENTIATED
+308,D100,CL2004111046AA,Unknown(99),Yes,4/24/1996,58,71,Smoked in the past,WELL DIFFERENTIATED
+309,D211,CL20041116136AA,Unknown(99),Yes,4/25/1996,3,9,Smoked in the past,WELL DIFFERENTIATED
+310,D009B,CL2004111003AA,Unknown(99),Yes,4/26/1996,,110,Smoked in the past,Moderate Differentiation
+311,D024B,CL2004110909AA,Unknown(99),No,4/27/1996,,110,Smoked in the past,POORLY DIFFERENTIATED
+312,D036,CL2004111017AA,Unknown(99),Yes,4/28/1996,3,2.96,Never smoked,POORLY DIFFERENTIATED
+313,D070B,CL2004111033AA,Unknown(99),Yes,4/29/1996,77,90,Smoked in the past,POORLY DIFFERENTIATED
+314,D094,CL2004111040AA,Unknown(99),Yes,4/30/1996,35,35.36,Smoked in the past,Moderate Differentiation
+315,D120,CL2005060338AA,Unknown(99),No,5/1/1996,5,7,Smoked in the past,POORLY DIFFERENTIATED
+316,D098,CL2004111044AA,Unknown(99),No,5/2/1996,,87,Smoked in the past,Moderate Differentiation
+317,D201,CL20041116127AA,Unknown(99),No,5/3/1996,,88,Smoked in the past,WELL DIFFERENTIATED
+318,D102,CL2004111048AA,Unknown(99),No,5/4/1996,,74,Smoked in the past,Moderate Differentiation
+319,D105,CL2005060327AA,Unknown(99),Yes,5/5/1996,6,,Smoked in the past,Moderate Differentiation
+320,D250,CL20041119167AA,White(01),Yes,5/6/1996,44,59,Smoked in the past,WELL DIFFERENTIATED
+321,D129,CL2005060344AA,Unknown(99),Yes,5/7/1996,,55,Smoked in the past,POORLY DIFFERENTIATED
+322,D131,CL2005060346AA,White(01),No,5/8/1996,,36,Smoked in the past,POORLY DIFFERENTIATED
+323,D095,CL2004111041AA,Unknown(99),Yes,5/9/1996,7,,Smoked in the past,Moderate Differentiation
+324,D200,CL20041116126AA,Unknown(99),Yes,5/10/1996,,85,Never smoked,POORLY DIFFERENTIATED
+325,D209,CL20041116134AA,Unknown(99),No,5/11/1996,6,7,Smoked in the past,POORLY DIFFERENTIATED
+326,D124,CL2005060341AA,Native Hawaiian or Other Pacific Islander(04),No,5/12/1996,4,,Smoked in the past,POORLY DIFFERENTIATED
+327,D026,CL2004111010AA,Unknown(99),Yes,5/13/1996,13,71,Smoked in the past,POORLY DIFFERENTIATED
+328,D037,CL2004111018AA,Unknown(99),No,5/14/1996,,105,Smoked in the past,Moderate Differentiation
+329,D121,CL2005060339AA,Unknown(99),Yes,5/15/1996,,97,Smoked in the past,POORLY DIFFERENTIATED
+330,D110,CL2005060332AA,Unknown(99),No,5/16/1996,4,4,Smoked in the past,POORLY DIFFERENTIATED
+331,D114,CL2005060334AA,Unknown(99),Yes,5/17/1996,16,35,Smoked in the past,WELL DIFFERENTIATED
+332,D128,CL2005060343AA,White(01),No,5/18/1996,25,43,Never smoked,WELL DIFFERENTIATED
+333,D060B,CL20041119175AA,Unknown(99),No,5/19/1996,,63,Smoked in the past,POORLY DIFFERENTIATED
+334,D099,CL2004111045AA,Unknown(99),Yes,5/20/1996,4,12,Smoked in the past,POORLY DIFFERENTIATED
+335,D106,CL2005060328AA,Unknown(99),Yes,5/21/1996,,90,Smoked in the past,POORLY DIFFERENTIATED
+336,D107,CL2005060329AA,Unknown(99),Yes,5/22/1996,,85,Smoked in the past,WELL DIFFERENTIATED
+337,D111,CL2005060333AA,Unknown(99),Yes,5/23/1996,69,70,Smoked in the past,POORLY DIFFERENTIATED
+338,D118,CL2005060337AA,Unknown(99),Yes,5/24/1996,29,60,Smoked in the past,Moderate Differentiation
+339,D117,CL2005060336AA,Unknown(99),Yes,5/25/1996,,60,Smoked in the past,POORLY DIFFERENTIATED
+340,D123,CL2005060340AA,White(01),Yes,5/26/1996,,68,Smoked in the past,POORLY DIFFERENTIATED
+341,D236,CL20041116156AA,White(01),Yes,5/27/1996,,64,Smoked in the past,WELL DIFFERENTIATED
+342,D126,CL2005060342AA,White(01),No,5/28/1996,,63,Unknown,WELL DIFFERENTIATED
+343,D091,CL2004111038AA,Unknown(99),Yes,5/29/1996,11,11,Smoked in the past,Moderate Differentiation
+344,D134,CL2005060348AA,Not Reported(98),Unknown,5/30/1996,,95,Smoked in the past,POORLY DIFFERENTIATED
+345,D135,CL2005060349AA,Not Reported(98),Unknown,5/31/1996,,74,Smoked in the past,POORLY DIFFERENTIATED
+346,D136,CL2005060350AA,Not Reported(98),Unknown,6/1/1996,56,57,Smoked in the past,Moderate Differentiation
+347,D138,CL2005060351AA,Not Reported(98),Unknown,6/2/1996,17,56,Smoked in the past,Moderate Differentiation
+348,D141,CL2005060352AA,Not Reported(98),Unknown,6/3/1996,,48,Smoked in the past,POORLY DIFFERENTIATED
+349,D143,CL2005060353AA,Not Reported(98),Unknown,6/4/1996,44,49,Never smoked,Moderate Differentiation
+350,D147,CL2005060354AA,Not Reported(98),No,6/5/1996,,28,Smoked in the past,Moderate Differentiation
+351,D148,CL2005060355AA,Not Reported(98),No,6/6/1996,,36,Smoked in the past,Moderate Differentiation
+352,D149,CL2005060356AA,Not Reported(98),Yes,6/7/1996,12,40,Unknown,Moderate Differentiation
+353,D151,CL2005060357AA,Not Reported(98),No,6/8/1996,,37,Smoked in the past,Moderate Differentiation
+354,D153,CL2005060358AA,Not Reported(98),No,6/9/1996,,40,Unknown,WELL DIFFERENTIATED
+355,D164,CL2005060360AA,Not Reported(98),Unknown,6/10/1996,,23,Smoked in the past,Moderate Differentiation
+356,D165,CL2004111097AA,Not Reported(98),Unknown,6/11/1996,,76,Currently smoking,Moderate Differentiation
+357,D166,CL2004111098AA,Not Reported(98),Unknown,6/12/1996,28,34,Smoked in the past,Moderate Differentiation
+358,D169,CL20041110100AA,Not Reported(98),Unknown,6/13/1996,,66,Never smoked,POORLY DIFFERENTIATED
+359,D171,CL20041110102AA,Not Reported(98),Unknown,6/14/1996,17,29,Currently smoking,POORLY DIFFERENTIATED
+360,D172,CL20041110103AA,Not Reported(98),Unknown,6/15/1996,5,7,Never smoked,POORLY DIFFERENTIATED
+361,D173,CL20041110104AA,Not Reported(98),Unknown,6/16/1996,,53,Currently smoking,WELL DIFFERENTIATED
+362,D179,CL20041110107AA,Not Reported(98),Unknown,6/17/1996,,63,Unknown,
+363,D180,CL20041110108AA,Not Reported(98),Unknown,6/18/1996,,23,Smoked in the past,Moderate Differentiation
+364,D181,CL20041110109AA,Not Reported(98),Unknown,6/19/1996,,62,Currently smoking,POORLY DIFFERENTIATED
+365,D182,CL20041110110AA,Not Reported(98),Unknown,6/20/1996,5,7,Never smoked,POORLY DIFFERENTIATED
+366,D183,CL20041110111AA,Not Reported(98),Unknown,6/21/1996,,26,Smoked in the past,Moderate Differentiation
+367,D184,CL20041116112AA,Not Reported(98),Unknown,6/22/1996,,40,Currently smoking,Moderate Differentiation
+368,D185,CL20041116113AA,Not Reported(98),Unknown,6/23/1996,10,30,Smoked in the past,POORLY DIFFERENTIATED
+369,D186,CL20041116114AA,Not Reported(98),Unknown,6/24/1996,,40,Smoked in the past,Moderate Differentiation
+370,D252,CL20041119179AA,Not Reported(98),Unknown,6/25/1996,75,84,Never smoked,Moderate Differentiation
+371,D253,CL20041119180AA,Not Reported(98),Unknown,6/26/1996,,18,Currently smoking,Moderate Differentiation
+372,D254,CL20041119181AA,Not Reported(98),Unknown,6/27/1996,12,25,Smoked in the past,POORLY DIFFERENTIATED
+373,D255,CL20041119182AA,Not Reported(98),Unknown,6/28/1996,,80,Smoked in the past,Moderate Differentiation
+374,D257,CL20041119183AA,Not Reported(98),Unknown,6/29/1996,7,12,Smoked in the past,POORLY DIFFERENTIATED
+375,D259,CL20041119184AA,Not Reported(98),Unknown,6/30/1996,,32,Never smoked,Moderate Differentiation
+376,D260,CL20041119185AA,Not Reported(98),Unknown,7/1/1996,84,105,Smoked in the past,POORLY DIFFERENTIATED
+377,D261,CL20041119186AA,Not Reported(98),Unknown,7/2/1996,,81,Smoked in the past,POORLY DIFFERENTIATED
+378,D262,CL20041119187AA,Not Reported(98),Unknown,7/3/1996,,75,Smoked in the past,Moderate Differentiation
+379,D266,CL20041119190AA,Not Reported(98),Unknown,7/4/1996,,97,Smoked in the past,Moderate Differentiation
+380,D269,CL20041119191AA,Not Reported(98),Unknown,7/5/1996,17,18,Never smoked,Moderate Differentiation
+381,D270,CL20041119192AA,Not Reported(98),Unknown,7/6/1996,12,32,Smoked in the past,POORLY DIFFERENTIATED
+382,D272,CL20041119194AA,Not Reported(98),Unknown,7/7/1996,5,10,Smoked in the past,POORLY DIFFERENTIATED
+1,A1,NCI_Lung_1_U133A,White(01),No,7/15/1996,,105.57,Smoked in the past,Moderate Differentiation
+2,A3,NCI_Lung_3_U133A,White(01),No,7/16/1996,,25.2,Smoked in the past,WELL DIFFERENTIATED
+3,A4,NCI_Lung_4_U133A,White(01),No,7/17/1996,,64.77,Smoked in the past,WELL DIFFERENTIATED
+4,A5,NCI_Lung_5_U133A,Unknown(99),No,7/18/1996,,69.2,Never smoked,WELL DIFFERENTIATED
+5,A6,NCI_Lung_6_U133A,White(01),No,7/19/1996,6.6,33.87,Never smoked,Moderate Differentiation
+6,A7,NCI_Lung_7_U133A,White(01),No,7/20/1996,42.5,83,Smoked in the past,WELL DIFFERENTIATED
+7,A8,NCI_Lung_8_U133A,White(01),No,7/21/1996,30,69.2,Smoked in the past,WELL DIFFERENTIATED
+8,A9,NCI_Lung_9a_U133A,White(01),Yes,7/22/1996,1,27.97,Smoked in the past,POORLY DIFFERENTIATED
+9,A10,NCI_Lung_10_U133A,White(01),No,7/23/1996,3,27.1,Smoked in the past,WELL DIFFERENTIATED
+10,A11,NCI_Lung_11_U133A,White(01),No,7/24/1996,5.67,5.8,Smoked in the past,Moderate Differentiation
+11,A12,NCI_Lung_12_U133A,White(01),No,7/25/1996,,50.2,Smoked in the past,Moderate Differentiation
+12,A13,NCI_Lung_13_U133A,Unknown(99),No,7/26/1996,56.97,73,Smoked in the past,POORLY DIFFERENTIATED
+13,A14,NCI_Lung_14_U133A,White(01),No,7/27/1996,25,,Smoked in the past,POORLY DIFFERENTIATED
+14,A15,NCI_Lung_15_U133A,White(01),No,7/28/1996,,27.6,Smoked in the past,Moderate Differentiation
+15,A16,NCI_Lung_16_U133A,White(01),No,7/29/1996,36,48.77,Smoked in the past,POORLY DIFFERENTIATED
+16,A17,NCI_Lung_17_U133A,Asian(05),Yes,7/30/1996,9,66.6,Never smoked,Moderate Differentiation
+17,A18,NCI_Lung_18_U133A,White(01),No,7/31/1996,5.3,9,Smoked in the past,Moderate Differentiation
+18,A19,NCI_Lung_19_U133A,White(01),Yes,8/1/1996,1,,Smoked in the past,POORLY DIFFERENTIATED
+19,A20,NCI_Lung_20_U133A,White(01),No,8/2/1996,43,61.17,Smoked in the past,Moderate Differentiation
+20,A21,NCI_Lung_21_U133A,White(01),No,8/3/1996,,132.2,Smoked in the past,POORLY DIFFERENTIATED
+21,A22,NCI_Lung_22_U133A,White(01),No,8/4/1996,,128.8,Smoked in the past,Moderate Differentiation
+22,A23,NCI_Lung_23_U133A,White(01),No,8/5/1996,,42.8,Smoked in the past,WELL DIFFERENTIATED
+23,A24,NCI_Lung_24_U133A,White(01),No,8/6/1996,28,18.7,Smoked in the past,POORLY DIFFERENTIATED
+24,A25,NCI_Lung_25_U133A,White(01),No,8/7/1996,,5.9,Smoked in the past,POORLY DIFFERENTIATED
+25,A26,NCI_Lung_26_U133A,White(01),No,8/8/1996,,1.4,Smoked in the past,Moderate Differentiation
+26,A27,NCI_Lung_27_U133A,White(01),Yes,8/9/1996,9,15.6,Smoked in the past,POORLY DIFFERENTIATED
+27,A28,NCI_Lung_28_U133A,Unknown(99),Yes,8/10/1996,4,16.3,Smoked in the past,Moderate Differentiation
+28,A29,NCI_Lung_29_U133A,White(01),Yes,8/11/1996,24,27.6,Smoked in the past,POORLY DIFFERENTIATED
+29,A30,NCI_Lung_30_U133A,White(01),No,8/12/1996,,81.17,Smoked in the past,POORLY DIFFERENTIATED
+30,A31,NCI_Lung31_U133A,White(01),No,8/13/1996,,59,Smoked in the past,Moderate Differentiation
+31,A32,NCI_Lung32_U133A,White(01),No,8/14/1996,,92.6,Smoked in the past,Moderate Differentiation
+32,A33,NCI_Lung33_U133A,White(01),No,8/15/1996,3,3.97,Smoked in the past,POORLY DIFFERENTIATED
+33,A34,NCI_Lung34_U133A,White(01),Yes,8/16/1996,,16.77,Smoked in the past,POORLY DIFFERENTIATED
+34,A35,NCI_Lung35_U133A,White(01),No,8/17/1996,,62,Smoked in the past,Moderate Differentiation
+35,A36,NCI_Lung36_U133A,White(01),Yes,8/18/1996,,62.3,Smoked in the past,POORLY DIFFERENTIATED
+36,A37,NCI_Lung37_U133A,White(01),No,8/19/1996,,71.8,Smoked in the past,POORLY DIFFERENTIATED
+37,A38,NCI_Lung38_U133A,Black or African American(03),No,8/20/1996,,84,Smoked in the past,POORLY DIFFERENTIATED
+38,A39,NCI_Lung39_U133A,White(01),No,8/21/1996,,18.6,Smoked in the past,WELL DIFFERENTIATED
+39,A40,NCI_Lung40_U133A,White(01),No,8/22/1996,,45.77,Unknown,POORLY DIFFERENTIATED
+40,A41,NCI_Lung41_U133A,Unknown(99),Yes,8/23/1996,5,20.6,Smoked in the past,Moderate Differentiation
+41,A42,NCI_Lung42_U133A,White(01),No,8/24/1996,,110.5,Smoked in the past,POORLY DIFFERENTIATED
+42,A43,NCI_Lung43_U133A,White(01),No,8/25/1996,51,133.6,Smoked in the past,Moderate Differentiation
+43,A44,NCI_Lung44_U133A,White(01),No,8/26/1996,30,70.5,Smoked in the past,Moderate Differentiation
+44,A45,NCI_Lung45_U133A,White(01),No,8/27/1996,,52.1,Smoked in the past,WELL DIFFERENTIATED
+45,A46,NCI_Lung46_U133A,Asian(05),No,8/28/1996,,17.6,Never smoked,Moderate Differentiation
+46,A47,NCI_Lung47_U133A,Black or African American(03),No,8/29/1996,4,16.87,Smoked in the past,Moderate Differentiation
+47,A48,NCI_Lung48_U133A,White(01),No,8/30/1996,,86.8,Smoked in the past,WELL DIFFERENTIATED
+48,A49,NCI_Lung49_U133A,Unknown(99),No,8/31/1996,102,103.4,Smoked in the past,Moderate Differentiation
+49,A50,NCI_Lung50_U133A,White(01),Yes,9/1/1996,,117.6,Never smoked,Moderate Differentiation
+50,A51,NCI_Lung51_U133A,White(01),Yes,9/2/1996,34,115.8,Smoked in the past,Moderate Differentiation
+51,A52,NCI_Lung52_U133A,White(01),No,9/3/1996,,19,Smoked in the past,Moderate Differentiation
+52,A53,NCI_Lung53_U133A,White(01),Yes,9/4/1996,79,84.1,Smoked in the past,Moderate Differentiation
+53,A54,NCI_Lung54_U133A,White(01),No,9/5/1996,,153.3,Smoked in the past,POORLY DIFFERENTIATED
+54,A55,NCI_Lung55_U133A,White(01),No,9/6/1996,,153.9,Unknown,Moderate Differentiation
+55,A56,NCI_Lung56_U133A,White(01),No,9/7/1996,,162.6,Smoked in the past,WELL DIFFERENTIATED
+56,A57,NCI_Lung57_U133A,White(01),No,9/8/1996,,63.8,Smoked in the past,POORLY DIFFERENTIATED
+57,A58,NCI_Lung58_U133A,White(01),Yes,9/9/1996,94,,Smoked in the past,Moderate Differentiation
+58,A59,NCI_Lung_59_U133A,White(01),No,9/10/1996,,130.8,,POORLY DIFFERENTIATED
+59,A60,NCI_Lung_60_U133A,Black or African American(03),No,9/11/1996,,159.6,Smoked in the past,Moderate Differentiation
+60,A61,NCI_Lung_61_U133A,White(01),No,9/12/1996,,157.7,Never smoked,POORLY DIFFERENTIATED
+61,A62,NCI_Lung_62_U133A,White(01),No,9/13/1996,,76.3,Smoked in the past,Moderate Differentiation
+62,A63,NCI_Lung_63_U133A,White(01),No,9/14/1996,,105.9,Smoked in the past,Moderate Differentiation
+63,A64,NCI_Lung_64_U133A,Not Reported(98),No,9/15/1996,,28.17,Smoked in the past,Moderate Differentiation
+64,A65,NCI_Lung_65_U133A,White(01),No,9/16/1996,5,7.2,Smoked in the past,Moderate Differentiation
+65,A66,NCI_Lung_66_U133A,White(01),No,9/17/1996,,79.47,Smoked in the past,Moderate Differentiation
+66,A67,NCI_Lung_67_U133A,White(01),No,9/18/1996,50,82.3,Smoked in the past,Moderate Differentiation
+67,A68,NCI_Lung_68_U133A,White(01),No,9/19/1996,,101.2,Smoked in the past,Moderate Differentiation
+68,A69,NCI_Lung_69_U133A,Asian(05),No,9/20/1996,,168.1,Smoked in the past,POORLY DIFFERENTIATED
+69,A70,NCI_Lung_70_U133A,White(01),Unknown,9/21/1996,,14.87,Smoked in the past,Moderate Differentiation
+70,A71,NCI_Lung_71_U133A,White(01),No,9/22/1996,7,9.57,Smoked in the past,Moderate Differentiation
+71,A72,NCI_Lung_72_U133A,White(01),No,9/23/1996,,95,Smoked in the past,Moderate Differentiation
+72,A73,NCI_Lung_73_U133A,White(01),No,9/24/1996,,62.4,Smoked in the past,Moderate Differentiation
+73,A74,NCI_Lung_74_U133A,Black or African American(03),No,9/25/1996,,20.9,Smoked in the past,Moderate Differentiation
+74,A75,NCI_Lung_75_U133A,White(01),No,9/26/1996,,20.87,Smoked in the past,WELL DIFFERENTIATED
+75,A76,NCI_Lung_76_U133A,White(01),No,9/27/1996,22,22.3,Smoked in the past,Moderate Differentiation
+76,A77,NCI_Lung_77_U133A,White(01),No,9/28/1996,12,67.9,Smoked in the past,WELL DIFFERENTIATED
+77,A78,NCI_Lung_78_U133A,White(01),No,9/29/1996,,36.3,Smoked in the past,Moderate Differentiation
+78,A79,NCI_Lung_79_U133A,White(01),Yes,9/30/1996,14,22.67,Smoked in the past,POORLY DIFFERENTIATED
+79,A80,NCI_Lung_80_U133A,Not Reported(98),Yes,10/1/1996,,32.9,Never smoked,Moderate Differentiation
+80,A81,NCI_Lung_81_U133A,Not Reported(98),No,10/2/1996,,38.1,Never smoked,POORLY DIFFERENTIATED
+81,A82,NCI_Lung_82_U133A,Not Reported(98),Yes,10/3/1996,27,54.2,Never smoked,Moderate Differentiation
+82,A83,NCI_Lung_83_U133A,White(01),Yes,10/4/1996,52,,Smoked in the past,Moderate Differentiation
+83,A84,NCI_Lung_84_U133A,White(01),No,10/5/1996,10,53.2,Smoked in the past,Moderate Differentiation
+84,A85,NCI_Lung_85_U133A,White(01),No,10/6/1996,,12.47,Smoked in the past,WELL DIFFERENTIATED
+85,A86,NCI_Lung_86_U133A,Not Reported(98),No,10/7/1996,,29.5,Smoked in the past,WELL DIFFERENTIATED
+86,A88,NCI_Lung_88_U133A,White(01),Yes,10/8/1996,15,36.97,Smoked in the past,Moderate Differentiation
+87,A89,NCI_Lung_89_U133A,White(01),No,10/9/1996,,107.5,Smoked in the past,POORLY DIFFERENTIATED
+88,A90,NCI_Lung_90_U133A,White(01),No,10/10/1996,,53.7,Smoked in the past,POORLY DIFFERENTIATED
+89,A91,NCI_Lung_91_U133A,White(01),No,10/11/1996,,21.8,Smoked in the past,WELL DIFFERENTIATED
+90,A92,NCI_Lung_92_U133A,White(01),No,10/12/1996,,55.8,Smoked in the past,POORLY DIFFERENTIATED
+91,A93,NCI_Lung_93_U133A,White(01),No,10/13/1996,,,Smoked in the past,Moderate Differentiation
+92,A94,NCI_Lung_94_U133A,White(01),No,10/14/1996,,56.67,Never smoked,POORLY DIFFERENTIATED
+93,A95,NCI_Lung_95_U133A,White(01),No,10/15/1996,,,Smoked in the past,Moderate Differentiation
+94,A96,NCI_Lung_96_U133A,White(01),No,10/16/1996,,159.9,Unknown,Moderate Differentiation
+95,A97,NCI_Lung_97_U133A,White(01),No,10/17/1996,,60.8,Smoked in the past,Moderate Differentiation
+96,A98,NCI_Lung_98_U133A,White(01),No,10/18/1996,8,21.17,Never smoked,WELL DIFFERENTIATED
+97,A99,NCI_Lung_99_U133A,White(01),Yes,10/19/1996,46,53.6,Never smoked,WELL DIFFERENTIATED
+98,A100,NCI_Lung_100_U133A,White(01),No,10/20/1996,,23.2,Smoked in the past,Moderate Differentiation
+99,A201,NCI_lung201_U133A,White(01),Unknown,10/21/1996,,47.27,Unknown,POORLY DIFFERENTIATED
+100,A202,NCI_lung202_U133A,White(01),Unknown,10/22/1996,,59.11,Unknown,Moderate Differentiation
+101,A203,NCI_lung203_U133A,White(01),Unknown,10/23/1996,,51.58,Unknown,POORLY DIFFERENTIATED
+102,A204,NCI_lung204_U133A,White(01),Unknown,10/24/1996,19,36.25,Unknown,Moderate Differentiation
+103,A205,NCI_lung205_U133A,White(01),Unknown,10/25/1996,,6.6,Unknown,Moderate Differentiation
+104,A206,NCI_lung206_U133A,White(01),Unknown,10/26/1996,9.6,54.93,Unknown,Moderate Differentiation
+105,A207,NCI_lung207_U133A,White(01),Unknown,10/27/1996,,9.74,Unknown,WELL DIFFERENTIATED
+106,A208,NCI_lung208 _U133A,White(01),Unknown,10/28/1996,,58.88,Unknown,Moderate Differentiation
+107,A209,NCI_lung209_U133A,Black or African American(03),Unknown,10/29/1996,,51.81,Unknown,Moderate Differentiation
+108,A210,NCI_lung210_U133A,White(01),Unknown,10/30/1996,19.5,21.48,Unknown,Moderate Differentiation
+109,A212,NCI_lung212_U133A,White(01),Unknown,10/31/1996,,6.38,Unknown,Moderate Differentiation
+110,A213,NCI_lung213_U133A,Black or African American(03),Unknown,11/1/1996,25,69.01,Unknown,Moderate Differentiation
+111,A214,NCI_lung214_U133A,White(01),Unknown,11/2/1996,64.14,64.14,Unknown,Moderate Differentiation
+112,A215,NCI_lung215_U133A,White(01),Unknown,11/3/1996,12,32.24,Unknown,POORLY DIFFERENTIATED
+113,A216,NCI_lung216_U133A,White(01),Unknown,11/4/1996,,,Unknown,POORLY DIFFERENTIATED
+114,A218,NCI_lung218_U133A,White(01),Unknown,11/5/1996,,56.35,Unknown,POORLY DIFFERENTIATED
+115,A219,NCI_lung219_U133A,White(01),Unknown,11/6/1996,,69.05,Unknown,Moderate Differentiation
+116,A220,NCI_lung220_U133A,White(01),Unknown,11/7/1996,29,56.32,Unknown,POORLY DIFFERENTIATED
+117,A221,NCI_lung221_U133A,White(01),Unknown,11/8/1996,,61.25,Unknown,POORLY DIFFERENTIATED
+118,A222,NCI_lung222_U133A,White(01),Unknown,11/9/1996,,50.43,Unknown,WELL DIFFERENTIATED
+119,A224,NCI_lung224_U133A,White(01),Unknown,11/10/1996,,73.36,Unknown,POORLY DIFFERENTIATED
+120,A227,NCI_lung227_U133A,White(01),Unknown,11/11/1996,,66.74,Unknown,Moderate Differentiation
+121,A228,NCI_lung228_U133A,White(01),Unknown,11/12/1996,,72.8,Unknown,Moderate Differentiation
+122,A229,NCI_lung229_U133A,White(01),Unknown,11/13/1996,,19.9,Unknown,Moderate Differentiation
+123,A230,NCI_lung230_U133A,White(01),Unknown,11/14/1996,14.3,31.28,Unknown,POORLY DIFFERENTIATED
+124,A231,NCI_lung231_U133A,White(01),Unknown,11/15/1996,,45.33,Unknown,Moderate Differentiation
+125,A232,NCI_lung232_U133A,White(01),Unknown,11/16/1996,,28.68,Unknown,Moderate Differentiation
+126,A234,NCI_lung234_U133A,White(01),Unknown,11/17/1996,,83.95,Unknown,POORLY DIFFERENTIATED
+127,A235,NCI_lung235_U133A,White(01),Unknown,11/18/1996,,12.63,Unknown,POORLY DIFFERENTIATED
+128,A236,NCI_lung236_U133A,White(01),Unknown,11/19/1996,,77.89,Unknown,POORLY DIFFERENTIATED
+129,A237,NCI_lung237_U133A,White(01),Unknown,11/20/1996,9.6,11.18,Unknown,POORLY DIFFERENTIATED
+130,A238,NCI_lung238_U133A,White(01),Unknown,11/21/1996,,30.53,Unknown,WELL DIFFERENTIATED
+131,A239,NCI_lung239_U133A,White(01),Unknown,11/22/1996,32,73.59,Unknown,Moderate Differentiation
+132,A240,NCI_lung240_U133A,White(01),Unknown,11/23/1996,6.2,11.68,Unknown,Moderate Differentiation
+133,A245,NCI_lung245_U133A,White(01),Unknown,11/24/1996,,52.01,Unknown,Moderate Differentiation
+134,A246,NCI_lung246_U133A,White(01),Unknown,11/25/1996,,74.61,Unknown,POORLY DIFFERENTIATED
+135,A247,NCI_lung247_U133A,White(01),Unknown,11/26/1996,15,31.94,Unknown,WELL DIFFERENTIATED
+136,A248,NCI_lung248_U133A,White(01),Unknown,11/27/1996,,59.9,Unknown,
+137,A249,NCI_lung249_U133A,White(01),Unknown,11/28/1996,,2.24,Unknown,Moderate Differentiation
+138,A250,NCI_lung250_U133A,White(01),Unknown,11/29/1996,1,73.22,Unknown,WELL DIFFERENTIATED
+139,A257,NCI_lung257_U133A,Black or African American(03),Unknown,11/30/1996,,79.05,Unknown,Moderate Differentiation
+140,A258,NCI_lung258_U133A,White(01),Unknown,12/1/1996,,8.85,Unknown,POORLY DIFFERENTIATED
+141,A259,NCI_lung259_U133A,White(01),Unknown,12/2/1996,,92.2,Unknown,POORLY DIFFERENTIATED
+142,A263,NCI_lung263_U133A,Not Reported(98),Unknown,12/3/1996,7,90.07,Unknown,WELL DIFFERENTIATED
+143,A267,NCI_lung267_U133A,White(01),Unknown,12/4/1996,,24.97,Unknown,POORLY DIFFERENTIATED
+144,A268,NCI_lung268_U133A,White(01),Unknown,12/5/1996,41,42.04,Unknown,Moderate Differentiation
+145,A269,NCI_lung269_U133A,Unknown(99),Unknown,12/6/1996,,12.17,Unknown,POORLY DIFFERENTIATED
+146,A270,NCI_lung270_U133A,Unknown(99),Unknown,12/7/1996,,2.7,Unknown,POORLY DIFFERENTIATED
+147,A271,NCI_lung271_U133A,Unknown(99),Unknown,12/8/1996,,95.97,Unknown,Moderate Differentiation
+148,A272,NCI_lung272_U133A,Unknown(99),Unknown,12/9/1996,,66.07,Unknown,Moderate Differentiation
+149,A273,NCI_lung273_U133A,Unknown(99),Unknown,12/10/1996,,68.6,Unknown,POORLY DIFFERENTIATED
+150,A274,NCI_lung274_U133A,Unknown(99),Unknown,12/11/1996,,48,Unknown,Moderate Differentiation
+451,C0130D,Moff 0130D,Black or African American(03),No,12/12/1996,2.79,44.94,Smoked in the past,POORLY DIFFERENTIATED
+452,C0184A,Moff 0184A,White(01),No,12/13/1996,13.54,26.38,Smoked in the past,Moderate Differentiation
+453,C0272C,Moff 0272C,White(01),No,12/14/1996,,22.74,Smoked in the past,
+454,C0404A,Moff 0404A,White(01),No,12/15/1996,17.35,12.25,Smoked in the past,Moderate Differentiation
+455,C0480I,Moff 0480I,White(01),Yes,12/16/1996,0.46,3.94,Smoked in the past,POORLY DIFFERENTIATED
+456,C0516E,Moff 0516E,White(01),No,12/17/1996,,,Currently smoking,Moderate Differentiation
+457,C0604H,Moff 0604H,White(01),No,12/18/1996,27.14,37.16,Smoked in the past,Moderate Differentiation
+458,C0683H,Moff 0683H,White(01),Yes,12/19/1996,17.44,106.58,Smoked in the past,
+459,C0686G,Moff 0686G,White(01),No,12/20/1996,,123.3,Smoked in the past,Moderate Differentiation
+460,C0711B,Moff 0711B,White(01),No,12/21/1996,,16.59,Smoked in the past,WELL DIFFERENTIATED
+461,C0757N,Moff 0757N,White(01),No,12/22/1996,22.77,30.72,Smoked in the past,
+462,C0770K,Moff 0770K,White(01),No,12/23/1996,,30.12,Smoked in the past,POORLY DIFFERENTIATED
+463,C0895B,Moff 0895B,White(01),No,12/24/1996,5.65,31.83,Smoked in the past,Moderate Differentiation
+464,C0928E1,Moff 0928E,White(01),No,12/25/1996,12.1,13.33,Never smoked,
+465,C0936G1,Moff 0936G,White(01),No,12/26/1996,,91.01,Never smoked,Moderate Differentiation
+466,C1221F,Moff 1221F,White(01),No,12/27/1996,35.19,42.68,Smoked in the past,Moderate Differentiation
+467,C1276H,Moff 1276H,White(01),Yes,12/28/1996,19.06,9.92,Smoked in the past,POORLY DIFFERENTIATED
+468,C1300F,Moff 1300F,White(01),Yes,12/29/1996,26.71,27.63,Smoked in the past,Moderate Differentiation
+469,C1343G,Moff 1343G,White(01),No,12/30/1996,,69.65,Smoked in the past,Moderate Differentiation
+470,C1400H,Moff 1400H,White(01),No,12/31/1996,,39.13,Never smoked,Moderate Differentiation
+471,C1466E,Moff 1466E,White(01),No,1/1/1997,,,Smoked in the past,
+472,C1473F,Moff 1473F,White(01),No,1/2/1997,9.72,41.33,Smoked in the past,Moderate Differentiation
+473,C1477G,Moff 1477G,White(01),No,1/3/1997,,5.65,Smoked in the past,WELL DIFFERENTIATED
+474,C1487F,Moff 1487F,White(01),No,1/4/1997,,0.2,Smoked in the past,Moderate Differentiation
+475,C1514K,Moff 1514K,White(01),Yes,1/5/1997,,14,Currently smoking,Moderate Differentiation
+476,C1576F,Moff 1576F,White(01),No,1/6/1997,,61.2,Smoked in the past,WELL DIFFERENTIATED
+477,C1734M,Moff 1734M,White(01),No,1/7/1997,,104.47,Smoked in the past,Moderate Differentiation
+478,C1835I1,Moff 1835I,White(01),No,1/8/1997,70.27,70.6,Smoked in the past,Moderate Differentiation
+479,C1864H,Moff 1864H,White(01),No,1/9/1997,,3.52,Smoked in the past,Moderate Differentiation
+480,C1883G,Moff 1883G,White(01),No,1/10/1997,2.53,16.59,Smoked in the past,Moderate Differentiation
+481,C1888E1,Moff 1888E,White(01),No,1/11/1997,25.43,27.56,Smoked in the past,Moderate Differentiation
+482,C1903E1,Moff 1903E,White(01),No,1/12/1997,8.44,16.16,Currently smoking,POORLY DIFFERENTIATED
+483,C2072G,Moff 2072G,White(01),No,1/13/1997,,77.7,Never smoked,Moderate Differentiation
+484,C2186B,Moff 2186B,Black or African American(03),No,1/14/1997,25.17,94.16,Smoked in the past,Moderate Differentiation
+485,C2199G,Moff 2199G,White(01),No,1/15/1997,,56.15,Smoked in the past,POORLY DIFFERENTIATED
+486,C2219F,Moff 2219F,White(01),Yes,1/16/1997,17.77,45.17,Smoked in the past,POORLY DIFFERENTIATED
+487,C2296D,Moff 2296D,White(01),No,1/17/1997,,0.03,Smoked in the past,Moderate Differentiation
+488,C2310K,Moff 2310K,White(01),No,1/18/1997,55.62,75.2,Never smoked,WELL DIFFERENTIATED
+489,C2323F,Moff 2323F,White(01),No,1/19/1997,,,Smoked in the past,
+490,C2325E,Moff 2325E,White(01),No,1/20/1997,21.39,21.39,Smoked in the past,Moderate Differentiation
+491,C2333J,Moff 2333J,White(01),Yes,1/21/1997,39.69,65.11,Smoked in the past,Moderate Differentiation
+492,C2352G,Moff 2352G,White(01),Yes,1/22/1997,,2.27,Smoked in the past,Moderate Differentiation
+493,C2362A,Moff 2362A,White(01),No,1/23/1997,,84.44,Smoked in the past,Moderate Differentiation
+494,C2366C,Moff 2366C,White(01),No,1/24/1997,11.04,42.18,Currently smoking,POORLY DIFFERENTIATED
+495,C2373H,Moff 2373H,White(01),No,1/25/1997,,83.87,Smoked in the past,Moderate Differentiation
+496,C2401B,Moff 2401B,White(01),Yes,1/26/1997,88.77,92.52,Smoked in the past,Moderate Differentiation
+497,C2463A,Moff 2463A,White(01),No,1/27/1997,13.63,38.93,Smoked in the past,Moderate Differentiation
+498,C2470G,Moff 2470G,White(01),No,1/28/1997,,82.5,Currently smoking,Moderate Differentiation
+499,C2472B,Moff 2472B,White(01),Yes,1/29/1997,22.21,31.7,Smoked in the past,POORLY DIFFERENTIATED
+500,C2497D,Moff 2497D,White(01),Unknown,1/30/1997,,42.02,Smoked in the past,Moderate Differentiation
+501,C2517G1,Moff 2517G1,White(01),Unknown,1/31/1997,4.17,1.18,Smoked in the past,WELL DIFFERENTIATED
+502,C2550F,Moff 2550F,White(01),Yes,2/1/1997,3.22,6.67,Currently smoking,Moderate Differentiation
+503,C2595A,Moff 2595A,White(01),No,2/2/1997,,0.79,Smoked in the past,Moderate Differentiation
+504,C2603I,Moff 2603I,White(01),No,2/3/1997,,6.9,Smoked in the past,Moderate Differentiation
+505,C2629F,Moff 2629F,White(01),No,2/4/1997,,81.54,Smoked in the past,Moderate Differentiation
+506,C2634G,Moff 2634G,White(01),No,2/5/1997,22.18,24.05,Smoked in the past,Moderate Differentiation
+507,C2658C,Moff 2658C,White(01),No,2/6/1997,,0.72,Smoked in the past,Moderate Differentiation
+508,C2663F,Moff 2663F,White(01),No,2/7/1997,7.92,0.99,Smoked in the past,POORLY DIFFERENTIATED
+509,C2690H,Moff 2690H,White(01),No,2/8/1997,,36.14,Never smoked,WELL DIFFERENTIATED
+510,C2727H,Moff 2727H,White(01),No,2/9/1997,,11.33,Currently smoking,Moderate Differentiation
+511,C2886F,Moff 2886F,White(01),No,2/10/1997,,66.69,Currently smoking,WELL DIFFERENTIATED
+512,C2905B,Moff 2905B,White(01),No,2/11/1997,,7.79,Smoked in the past,POORLY DIFFERENTIATED
+513,C2955B,Moff 2955B,White(01),No,2/12/1997,,13.31,Smoked in the past,POORLY DIFFERENTIATED
+514,C2958D,Moff 2958D,White(01),No,2/13/1997,,76.12,Smoked in the past,Moderate Differentiation
+515,C2996G,Moff 2996G,White(01),No,2/14/1997,37.16,37.16,Smoked in the past,Moderate Differentiation
+516,C3003G,Moff 3003G,White(01),No,2/15/1997,9.26,11.99,Smoked in the past,Moderate Differentiation
+517,C3009D,Moff 3009D,White(01),No,2/16/1997,4.24,6.24,Smoked in the past,Moderate Differentiation
+518,C3021E,Moff 3021E,White(01),No,2/17/1997,,32,Smoked in the past,
+519,C3053B,Moff 3053B,White(01),No,2/18/1997,6.83,8.71,Smoked in the past,Moderate Differentiation
+520,C3105L,Moff 3105L,,,2/19/1997,,,,
+521,C3191I,Moff 3191I,White(01),No,2/20/1997,4.67,78.85,Smoked in the past,POORLY DIFFERENTIATED
+522,C3227G,Moff 3227G,White(01),No,2/21/1997,,,Smoked in the past,
+523,C3265E,Moff 3265E,White(01),Yes,2/22/1997,,,Currently smoking,
+524,C3266F1,Moff 3266F,White(01),Yes,2/23/1997,,,Never smoked,
+525,C3274K,Moff 3274K,White(01),No,2/24/1997,,72.05,Smoked in the past,Moderate Differentiation
+526,C3298E,Moff 3298E,Asian(05),No,2/25/1997,17.25,27.4,Currently smoking,Moderate Differentiation
+527,C3401F,Moff 3401F,White(01),No,2/26/1997,53.19,53.39,Never smoked,Moderate Differentiation
+528,C3632H,Moff 3632H,White(01),No,2/27/1997,,70.37,Smoked in the past,Moderate Differentiation
+529,C3730B,Moff 3730B,White(01),No,2/28/1997,,23.26,Never smoked,WELL DIFFERENTIATED
+530,C3775F,Moff 3775F,White(01),No,3/1/1997,,,Smoked in the past,
+531,C4094F,Moff 4094F,White(01),No,3/2/1997,,49.64,Smoked in the past,Moderate Differentiation
+532,C4096E,Moff 4096E,White(01),No,3/3/1997,,65.77,Smoked in the past,POORLY DIFFERENTIATED
+533,C4112G,Moff 4112G,White(01),No,3/4/1997,13.14,13.83,Currently smoking,POORLY DIFFERENTIATED
+534,C4163D,Moff 4163D,White(01),No,3/5/1997,,,Smoked in the past,
+535,C4172B,Moff 4172B,White(01),No,3/6/1997,11.3,27.26,Currently smoking,POORLY DIFFERENTIATED
+536,C4217B,Moff 4217B,White(01),Yes,3/7/1997,23.13,28.19,Smoked in the past,Moderate Differentiation
+537,C3510G,Moff 3510G,White(01),No,3/8/1997,,12.02,Smoked in the past,POORLY DIFFERENTIATED
+538,C142C,Moff 0142C,White(01),No,3/9/1997,,150.18,Smoked in the past,POORLY DIFFERENTIATED
+539,C291A,Moff 0291A,Black or African American(03),No,3/10/1997,11.24,15.28,Smoked in the past,POORLY DIFFERENTIATED
+540,C298B,Moff 0298B,White(01),Yes,3/11/1997,20.57,24.74,Smoked in the past,Moderate Differentiation
+541,C344B,Moff 0344B,White(01),No,3/12/1997,3.48,4.14,Smoked in the past,POORLY DIFFERENTIATED
+542,C542F,Moff 0542F,White(01),Yes,3/13/1997,5.62,14.69,Currently smoking,Moderate Differentiation
+543,C1817G1,Moff 1817G1,White(01),Yes,3/14/1997,2.53,8.08,Smoked in the past,Moderate Differentiation
+544,C1940G,Moff 1940G,White(01),No,3/15/1997,23.49,23.49,Smoked in the past,Moderate Differentiation
+545,C170D,Moff 0170D,White(01),No,3/16/1997,16.23,10.87,Smoked in the past,POORLY DIFFERENTIATED
+546,C438A,Moff 0438A,White(01),No,3/17/1997,,12.88,Smoked in the past,POORLY DIFFERENTIATED
+547,C459F,Moff 0459F,White(01),No,3/18/1997,1.51,2.73,Smoked in the past,POORLY DIFFERENTIATED
+548,C978B,Moff 0978B,White(01),Yes,3/19/1997,69.32,77.34,Never smoked,Moderate Differentiation
+549,C1123B,Moff 1123B,White(01),Yes,3/20/1997,38.54,56.83,Smoked in the past,POORLY DIFFERENTIATED
+550,C1763G,Moff 1763G,White(01),No,3/21/1997,,,Smoked in the past,
+551,C3354B,Moff 3354B,White(01),No,3/22/1997,3.12,3.12,Never smoked,POORLY DIFFERENTIATED
+601,A275,NCI_lung275_U133A,Unknown(99),Unknown,3/23/1997,,30.7,Unknown,WELL DIFFERENTIATED
+602,A276,NCI_lung276_U133A,Unknown(99),Unknown,3/24/1997,,80.9,Unknown,POORLY DIFFERENTIATED
+603,A277,NCI_lung277_U133A,Unknown(99),Unknown,3/25/1997,,11.67,,Moderate Differentiation
+604,A278,NCI_lung278_U133A,Unknown(99),Unknown,3/26/1997,,33.2,Unknown,Moderate Differentiation
+605,A280,NCI_lung280_U133A,Unknown(99),Unknown,3/27/1997,,42.5,Unknown,Moderate Differentiation
+606,A281,NCI_lung281_U133,Unknown(99),Unknown,3/28/1997,,122.4,Unknown,POORLY DIFFERENTIATED
+607,A282,NCI_lung282_U133,Unknown(99),Unknown,3/29/1997,,30.17,Unknown,POORLY DIFFERENTIATED
+608,A283,NCI_lung283_U133,Unknown(99),Unknown,3/30/1997,,78.47,Unknown,POORLY DIFFERENTIATED
+609,A285,NCI_lung285_U133,Unknown(99),Unknown,3/31/1997,,73.17,Unknown,WELL DIFFERENTIATED
+610,A286,NCI_lung286_U133,Unknown(99),Unknown,4/2/1997,,65.17,Unknown,Moderate Differentiation
+611,A288,NCI_lung288 _U133,Unknown(99),Unknown,4/3/1997,,145.77,Unknown,POORLY DIFFERENTIATED
+612,A289,NCI_lung289_U133,Unknown(99),Unknown,4/4/1997,,73.7,Unknown,Moderate Differentiation
+613,A290,NCI_lung290_U133,Unknown(99),Unknown,4/5/1997,,3.27,Unknown,POORLY DIFFERENTIATED
+614,A291,NCI_lung291_U133,Unknown(99),Unknown,4/6/1997,,19.5,Unknown,Moderate Differentiation
+615,A292,NCI_lung292_U133,Unknown(99),Unknown,4/7/1997,,8.4,Unknown,POORLY DIFFERENTIATED
+616,A293,NCI_lung293_U133,Unknown(99),Unknown,4/8/1997,,26.9,Unknown,Moderate Differentiation
+617,A294,NCI_lung294_U133,Unknown(99),Unknown,4/9/1997,,129.8,Unknown,POORLY DIFFERENTIATED
+618,A295,NCI_lung295_U133,Unknown(99),Unknown,4/10/1997,,19.6,Unknown,POORLY DIFFERENTIATED
+619,A296,NCI_Lung296_U133,Unknown(99),Unknown,4/11/1997,,105.37,Unknown,Moderate Differentiation
+620,A297,NCI_Lung297_U133,Unknown(99),Unknown,4/12/1997,,157.5,Unknown,POORLY DIFFERENTIATED
+621,A298,NCI_Lung298_U133,Unknown(99),Unknown,4/13/1997,,120.47,Unknown,POORLY DIFFERENTIATED
+622,A299,NCI_Lung299_U133,Unknown(99),Unknown,4/14/1997,,47.8,Unknown,WELL DIFFERENTIATED
+623,A300,NCI_Lung300_U133,Unknown(99),Unknown,4/15/1997,,129.97,Unknown,POORLY DIFFERENTIATED
+624,A304,NCI_Lung304_U133,Unknown(99),Unknown,4/16/1997,,52.3,Unknown,Moderate Differentiation
+625,A305,NCI_Lung305_U133,Unknown(99),Unknown,4/17/1997,,69.4,Unknown,Moderate Differentiation
+626,A306,NCI_Lung306_U133,Unknown(99),Unknown,4/18/1997,,25.95,Unknown,POORLY DIFFERENTIATED
+627,A307,NCI_Lung307_U133,Unknown(99),Unknown,4/19/1997,,121.77,Unknown,Moderate Differentiation
+628,A309,NCI_Lung309_U133,Unknown(99),Unknown,4/20/1997,,32.57,Unknown,POORLY DIFFERENTIATED
+629,A310,NCI_Lung310_U133,Unknown(99),Unknown,4/21/1997,,40.2,Unknown,Moderate Differentiation
+630,A311,NCI_Lung311_U133,Unknown(99),Unknown,4/22/1997,,14.47,Unknown,POORLY DIFFERENTIATED
+631,A312,NCI_Lung312_U133,Unknown(99),Unknown,4/23/1997,,9.17,Unknown,POORLY DIFFERENTIATED
+632,A313,NCI_Lung313_U133,Unknown(99),Unknown,4/24/1997,,19,Unknown,POORLY DIFFERENTIATED
+633,A314,NCI_Lung314_U133A,Unknown(99),Unknown,4/25/1997,,121.2,Unknown,Moderate Differentiation
+634,A315,NCI_Lung315_U133A,Unknown(99),Unknown,4/26/1997,,11.6,Unknown,POORLY DIFFERENTIATED
+635,A318,NCI_Lung318_U133A,Unknown(99),Unknown,4/27/1997,,9,Unknown,POORLY DIFFERENTIATED
+636,A319,NCI_Lung319_U133A,Unknown(99),Unknown,4/28/1997,,90.7,Unknown,POORLY DIFFERENTIATED
+637,A320,NCI_Lung320_U133A,Unknown(99),Unknown,4/29/1997,,175.9,Unknown,Moderate Differentiation
+638,A321,NCI_Lung321_U133A,Unknown(99),Unknown,4/30/1997,,45.3,Unknown,POORLY DIFFERENTIATED

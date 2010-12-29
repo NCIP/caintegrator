@@ -1,0 +1,25 @@
+Agilent_Gene_Ex_Test:
+
+Clinical Data = clinical.csv
+
+Platform = AgilentG4502A_07_3 
+	
+
+Genomic Data = Mock Data for EGFR and IL8 see Agilent_FC_Values.txt
+
+Genomic Data Source = 
+	
+	
+	http://cbwapp-p1001.nci.nih.gov:38080/caarray 
+	cbwapp-p1001.nci.nih.gov
+	31099
+
+
+	admin-00017
+	Agilent
+	Expression
+
+
+Genomic Sample Mapping = 
+	Mapping: Genomic_Data_Mapping_Agilent_FC_Test.csv
+	Control: Genomic_Data_Controls_Agilent_FC_Test.csv

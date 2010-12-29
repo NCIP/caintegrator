@@ -1,0 +1,4 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+GENDER,annotation,subject,62,6,,,,Yes
+VITALSTATUS,annotation,subject,,,VitalStatus,string,yes,yes
+PATIENTBARCODE,identifier,subject,,,PATIENTBARCODE,string,No,Yes

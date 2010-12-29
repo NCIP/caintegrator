@@ -1,0 +1,7 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+PATIENT_ID,identifier,subject,,,PATIENT_ID,string,no,yes
+DC_STUDY_ID,annotation,subject,,,DC_STUDY_ID,string,no,yes
+MICROARRAY,annotation,subject,,,MICROARRAY,string,no,yes
+SITE,annotation,subject,,,SITE,string,yes,yes
+IN_DC_STUDY,annotation,subject,,,IN_DC_STUDY,string,yes,yes
+GENDER,annotation,subject,62,,,,,

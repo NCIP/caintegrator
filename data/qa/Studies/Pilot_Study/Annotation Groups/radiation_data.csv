@@ -1,0 +1,8 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+RADIATIONTYPE,annotation,subject,,,RADIATIONTYPE,string,yes,Yes
+RADIATIONDOSAGE,annotation,subject,,,RADIATIONDOSAGE,numeric,no,yes
+UNITS,annotation,subject,,,UNITS,string,yes,yes
+NUMFRACTIONS,annotation,subject,,,NUMFRACTIONS,numeric,no,yes
+ANATOMICTREATMENTSITE,annotation,subject,,,ANATOMICTREATMENTSITE,string,yes,yes
+REGIMENINDICATION,annotation,subject,,,REGIMENINDICATION,string,yes,yes
+RADIATIONTREATMENTONGOING,annotation,subject,,,RADIATIONTREATMENTONGOING,string,yes,Yes

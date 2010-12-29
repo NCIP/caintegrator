@@ -1,0 +1,24 @@
+SNP6 Test:
+
+Clinical Data = 
+
+Platform = 
+	
+Genomic Data = 
+
+Genomic Data Source = 
+	
+	
+	http://ncicbcaqa-1.nci.nih.gov:38080/caarray 
+	ncicbcaqa-1.nci.nih.gov
+	31099
+
+
+	admin-00001 
+	Affymetrix 
+	CopyNumber
+
+
+Genomic Sample Mapping = 
+	Mapping: CopyNumber_Data_Mapping.csv
+	

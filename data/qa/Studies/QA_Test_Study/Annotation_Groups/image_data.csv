@@ -1,0 +1,11 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+IMAGESERIESID,identifier,subject,,,IMAGESERIESID,string,no,Yes
+EXAMNUMBER,annotation,subject,,,EXAMNUMBER,numeric,no,yes
+RADIOLOGIST,annotation,subject,,,RADIOLOGIST,string,yes,yes
+COMMENTS,annotation,subject,,,COMMENTS,string,yes,yes
+TUMORLOCATION,annotation,subject,,,TUMORLOCATION,string,yes,yes
+SIDEOFTUMOR,annotation,subject,,,SIDEOFTUMOR,string,yes,yes
+ELOQUENTCORTEX,annotation,subject,,,ELOQUENTCORTEX,string,yes,Yes
+RESOLUTION,annotation,subject,,,RESOLUTION,string,yes,yes
+COLOR,annotation,subject,,,COLOR,string,yes,Yes
+DATOFEXAM,annotation,subject,,,DATOFEXAM,date,no,yes

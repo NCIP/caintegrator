@@ -1,0 +1,12 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+RADIATIONTHERAPY,annotation,subject,,,RADIATIONTHERAPY,string,yes,Yes
+CHEMOTHERAPY,annotation,subject,,,CHEMOTHERAPY,string,yes,yes
+IMMUNOTHERAPY,annotation,subject,,,IMMUNOTHERAPY,string,yes,yes
+HORMONALTHERAPY,annotation,subject,,,HORMONALTHERAPY,string,yes,yes
+TARGETEDMOLECULARTHERAPY,annotation,subject,,,TARGETEDMOLECULARTHERAPY,string,yes,yes
+ADDITIONALRADIATIONTHERAPY,annotation,subject,,,ADDITIONALRADIATIONTHERAPY,string,yes,yes
+ADDITIONALCHEMOTHERAPY,annotation,subject,,,ADDITIONALCHEMOTHERAPY,string,yes,Yes
+ADDITIONALIMMUNOTHERAPY,annotation,subject,,,ADDITIONALIMMUNOTHERAPY,string,yes,Yes
+ADDITIONALHORMONETHERAPY,annotation,subject,,,ADDITIONALHORMONETHERAPY,string,yes,Yes
+ADDITIONALDRUGTHERAPY,annotation,subject,,,ADDITIONALDRUGTHERAPY,string,yes,Yes
+ADJUVANT_CHEMO,annotation,subject,,,ADJUVANT_CHEMO,string,yes,Yes

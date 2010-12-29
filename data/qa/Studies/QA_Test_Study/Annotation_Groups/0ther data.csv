@@ -1,0 +1,12 @@
+File Column Name,Field Type,Entity Type,CDE ID,CDE Version,Annotation Def Name,Data Type,Permissible,Visible
+SURVIVAL_START_DATE,annotation,subject,,,SURVIVAL_START_DATE,date,no,yes
+ADJUVANT_RT,annotation,subject,2769,3,,,,no
+DEATH_DATE,annotation,subject,,,DEATH_DATE,date,no,yes
+LAST_FOLLOWUP_DATE,annotation,subject,,,LAST_FOLLOWUP_DATE,date,no,yes
+Duration Days,annotation,subject,,,Duration Days,numeric,no,Yes
+Duration Months,annotation,subject,,,Duration Months,numeric,no,Yes
+Duration Years,annotation,subject,,,Duration Years,numeric,no,Yes
+PATHOLOGIC_N_STAGE,annotation,subject,2008091,2,,,,yes
+PATHOLOGIC_T_STAGE,annotation,subject,2008092,2,,,,yes
+Test Number,annotation,subject,,,Test Number,numeric,yes,yes
+Extra Column,annotation,subject,,,Extra Column,string,no,yes
