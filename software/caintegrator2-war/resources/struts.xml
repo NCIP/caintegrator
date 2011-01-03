@@ -918,7 +918,9 @@
         </action>
         
         <action name="deleteGenePatternAnalysis" class="genePatternAnalysisAction" method="deleteAnalysisJob">
-            <result type="tiles">genePatternAnalysisStatus</result>
+            <result type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
         </action>
         
         <action name="genePatternAnalysisStatus" class="genePatternAnalysisAction" method="showStatusPage">

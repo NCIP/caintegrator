@@ -194,7 +194,7 @@ public class PersistedAnalysisJobAjaxUpdaterTest extends AbstractSessionBasedTes
         updater.runJob(gisticJob);
         Thread.sleep(500);
         assertTrue(analysisService.executeGisticJobCalled);
-        assertTrue(AnalysisJobStatusEnum.COMPLETED.equals(gisticJob.getStatus()));
+        assertTrue(AnalysisJobStatusEnum.PROCESSING_LOCALLY.equals(gisticJob.getStatus()));
 
     }
     
