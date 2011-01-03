@@ -246,7 +246,6 @@ public class AnalysisServiceTest {
         assertEquals(1, subscription.getCopyNumberAnalysisCollection().size());
         assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.PROCESSING_LOCALLY));
         assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.PROCESSING_REMOTELY));
-        assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.COMPLETED));
         assertTrue(fileManagerStub.createMarkersFileCalled);
         assertTrue(fileManagerStub.createSamplesFileCalled);
         

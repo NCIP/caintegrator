@@ -145,7 +145,6 @@ public class GisticAjaxRunner implements Runnable {
     private void process() throws ConnectionException, InvalidCriterionException, ParameterException,
             IOException, DataRetrievalException {
         File resultFile = updater.getAnalysisService().executeGridGistic(updater, job);
-        job.setStatus(AnalysisJobStatusEnum.COMPLETED);
         if (resultFile != null) {
             ResultsZipFile resultZipFile = new ResultsZipFile();
             resultZipFile.setPath(resultFile.getAbsolutePath());

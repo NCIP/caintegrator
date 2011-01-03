@@ -255,13 +255,14 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         checkForMissingSubjects(job, queryManagementService.getAllSubjectsNotFoundInCriteria(job
                 .getGisticAnalysisForm().getGisticParameters().getClinicalQuery()));
         resultsZipFile = runGistic(updater, job, studySubscription, gisticSamplesMarkers);
-        GisticAnalysis gisticAnalysis = createGisticAnalysis(job, gisticSamplesMarkers.getUsedSamples());
-        Map<String, Map<GisticGenomicRegionReporter, Float>> gisticData = parseGisticResults(
-                gisticAnalysis.getReporterList(), resultsZipFile);
-        getDao().save(studySubscription);
-        createArrayData(studySubscription.getStudy(), gisticAnalysis, gisticData);
-        job.setStatus(AnalysisJobStatusEnum.COMPLETED);
-        updater.updateStatus(job);
+        if (!job.getStatus().isErrorState()) {
+            GisticAnalysis gisticAnalysis = createGisticAnalysis(job, gisticSamplesMarkers.getUsedSamples());
+            Map<String, Map<GisticGenomicRegionReporter, Float>> gisticData = parseGisticResults(
+                    gisticAnalysis.getReporterList(), resultsZipFile);
+            getDao().save(studySubscription);
+            createArrayData(studySubscription.getStudy(), gisticAnalysis, gisticData);
+            job.setStatus(AnalysisJobStatusEnum.COMPLETED);
+        }
         return resultsZipFile;
     }
 
