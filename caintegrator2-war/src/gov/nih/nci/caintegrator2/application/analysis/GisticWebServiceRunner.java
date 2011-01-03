@@ -139,7 +139,9 @@ class GisticWebServiceRunner {
     private void updateStatus(StatusUpdateListener updater,
             AbstractPersistedAnalysisJob job, AnalysisJobStatusEnum status) {
         job.setStatus(status);
-        updater.updateStatus(job);
+        if (!status.isDeletable()) { // Don't want user to be able to delete it until it is finished running.
+            updater.updateStatus(job);
+        }
     }
 
     private File handleResult(StatusUpdateListener updater, GisticAnalysisJob job, JobInfo jobInfo) 

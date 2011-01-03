@@ -12,52 +12,54 @@ public enum AnalysisJobStatusEnum {
     /**
      * Not yet submitted, still in creation state.
      */
-    NOT_SUBMITTED("Not Submitted", true),
+    NOT_SUBMITTED("Not Submitted", true, false),
     
     /**
      * Submitted and validated, ready to be run.
      */
-    SUBMITTED("Submitted", false),
+    SUBMITTED("Submitted", false, false),
 
     /**
      * Processing Locally.
      */
-    PROCESSING_LOCALLY("Processing Locally", false),
+    PROCESSING_LOCALLY("Processing Locally", false, false),
     
     /**
      * Processing Remotely.
      */
-    PROCESSING_REMOTELY("Processing Remotely", false),
+    PROCESSING_REMOTELY("Processing Remotely", false, false),
     
     /**
      * Error Connecting.
      */
-    ERROR_CONNECTING("Error Connecting", true),
+    ERROR_CONNECTING("Error Connecting", true, true),
     
     /**
      * Error Connecting.
      */
-    INVALID_PARAMETER("Invalid Parameter", true),
+    INVALID_PARAMETER("Invalid Parameter", true, true),
     
     /**
      * Local Error.
      */
-    LOCAL_ERROR("Local Error", true),
+    LOCAL_ERROR("Local Error", true, true),
     
     /**
      * Completed.
      */
-    COMPLETED("Completed", true);
+    COMPLETED("Completed", true, false);
     
     private static Map<String, AnalysisJobStatusEnum> valueToTypeMap = 
                     new HashMap<String, AnalysisJobStatusEnum>();
 
     private String value;
     private boolean deletable;
+    private boolean errorState;
     
-    private AnalysisJobStatusEnum(String value, boolean deletable) {
+    private AnalysisJobStatusEnum(String value, boolean deletable, boolean errorState) {
         this.value = value;
         this.deletable = deletable;
+        this.errorState = errorState;
     }
 
     /**
@@ -80,12 +82,13 @@ public enum AnalysisJobStatusEnum {
     public boolean isDeletable() {
         return deletable;
     }
-
+    
     /**
-     * @param deletable the deletable to set
+     * 
+     * @return if the status is in an error state.
      */
-    public void setDeletable(boolean deletable) {
-        this.deletable = deletable;
+    public boolean isErrorState() {
+        return errorState;
     }
 
 
