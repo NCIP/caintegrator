@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -123,6 +124,7 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
     private final List<SupplementalDataFile> dataFiles = new ArrayList<SupplementalDataFile>();
     
     private static final Logger LOGGER = Logger.getLogger(GenericSupplementalMultiSamplePerFileHandler.class);
+    private static final int FIVE_HUNDRED = 5000;
     
     GenericSupplementalMultiSamplePerFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
@@ -140,22 +142,53 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
 
     List<ArrayDataValues> loadArrayDataValue() 
     throws ConnectionException, DataRetrievalException, ValidationException {
-        List<ArrayDataValues> arrayDataValuesList = new ArrayList<ArrayDataValues>();
         PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(
             getGenomicSource().getPlatformName()));
         Set<ReporterList> reporterLists = platformHelper.getReporterLists(getReporterType());
-        Map<String, Map<String, List<Float>>> dataMap = extractData();
-        loadArrayData(arrayDataValuesList, platformHelper, reporterLists, dataMap);
+        
+        return createArrayDataByBucket(platformHelper, reporterLists);
+    }
+
+    private List<ArrayDataValues> createArrayDataByBucket(PlatformHelper platformHelper,
+            Set<ReporterList> reporterLists) throws DataRetrievalException, ConnectionException, ValidationException {
+        List<ArrayDataValues> arrayDataValuesList = new ArrayList<ArrayDataValues>();
+        for (List<String> sampleBucket : createSampleBuckets(reporterLists, getSampleList())) {
+            Map<String, Map<String, List<Float>>> dataMap = extractData(sampleBucket);
+            loadArrayData(arrayDataValuesList, platformHelper, reporterLists, dataMap);
+        }
         return arrayDataValuesList;
     }
 
-    private Map<String, Map<String, List<Float>>> extractData()
+    private List<List<String>> createSampleBuckets(Set<ReporterList> reporterLists, List<String> sampleList) {
+        List<List<String>> sampleBuckets = new ArrayList<List<String>>();
+        long sampleBucketSize = computeBucketSize(reporterLists);
+        int sampleCount = 0;
+        List<String> sampleBucket = new ArrayList<String>();
+        for (String sample : sampleList) {
+            if (sampleCount++ % sampleBucketSize == 0) {
+                sampleBucket = new ArrayList<String>();
+                sampleBuckets.add(sampleBucket);
+            }
+            sampleBucket.add(sample);
+        }
+        return sampleBuckets;
+    }
+
+    private long computeBucketSize(Set<ReporterList> reporterLists) {
+        int numReporters = 0;
+        for (ReporterList reporterList : reporterLists) {
+            numReporters += reporterList.getReporters().size();
+        }
+        return (FIVE_HUNDRED * Cai2Util.getHeapSizeMB()) / numReporters;
+    }
+
+    private Map<String, Map<String, List<Float>>> extractData(List<String> mappedSampleBucket)
     throws DataRetrievalException, ConnectionException, ValidationException {
         Map<String, Map<String, List<Float>>> dataMap = new HashMap<String, Map<String, List<Float>>>();
         for (SupplementalDataFile dataFile : dataFiles) {
             GenericMultiSamplePerFileParser parser = new GenericMultiSamplePerFileParser(
                     getDataFile(dataFile.getFileName()), dataFile.getProbeNameHeader(),
-                    dataFile.getSampleHeader(), getSampleList());
+                    dataFile.getSampleHeader(), mappedSampleBucket);
             parser.loadData(dataMap);
         }
         validateSampleMapping(dataMap, getSampleList());

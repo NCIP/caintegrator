@@ -379,4 +379,10 @@ public class Cai2UtilTest {
         assertEquals("Y", Cai2Util.getAlternateChromosome("24"));
     }
     
+    @Test
+    public void testGetHeapSize() {
+        long heapSize = Cai2Util.getHeapSizeMB();
+        System.out.println("Heap size = " + heapSize);
+    }
+    
 }

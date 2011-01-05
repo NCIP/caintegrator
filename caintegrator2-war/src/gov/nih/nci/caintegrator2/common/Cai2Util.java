@@ -127,7 +127,7 @@ import au.com.bytecode.opencsv.CSVReader;
 /**
  * This is a static utility class used by different caIntegrator2 objects. 
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") // See method retrieveValueFromRowColumn
+@SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" }) // See method retrieveValueFromRowColumn
 public final class Cai2Util {
     private static final Integer BUFFER_SIZE = 4096;
     private static final String ZIP_FILE_SUFFIX = ".zip";
@@ -138,6 +138,7 @@ public final class Cai2Util {
     private static final Set<Color> COLOR_PALETTE = new HashSet<Color>();
     private static final double NATURAL_LOG_OF_2 = Math.log(2);
     private static final Integer MAX_DESCRIPTION_LENGTH = 255;
+    private static final int ONE_MILLION = 1000000;
     
     private Cai2Util() { }
 
@@ -610,6 +611,7 @@ public final class Cai2Util {
         }
         return false;
     }
+    
     /**
      * Read the next data line.
      * @param reader the CSVReader
@@ -625,5 +627,12 @@ public final class Cai2Util {
             }
         }
         return fields;
+    }
+    
+    /**
+     * @return the jvm heap size in MB.
+     */
+    public static long getHeapSizeMB() {
+        return Runtime.getRuntime().totalMemory() / ONE_MILLION;
     }
 }
