@@ -96,6 +96,11 @@ public class SegmentData extends AbstractCaIntegrator2Object implements Comparab
     
     private Integer numberOfMarkers;
     private Float segmentValue;
+    private Float callsValue;
+    private Float probabilityAmplification;
+    private Float probabilityGain;
+    private Float probabilityLoss;
+    private Float probabilityNormal;
     private ChromosomalLocation location;
     private ArrayData arrayData;
 
@@ -138,6 +143,76 @@ public class SegmentData extends AbstractCaIntegrator2Object implements Comparab
      */
     public void setSegmentValue(Float segmentValue) {
         this.segmentValue = segmentValue;
+    }
+
+    /**
+     * @return the callsValue
+     */
+    public Float getCallsValue() {
+        return callsValue;
+    }
+
+    /**
+     * @param callsValue the callsValue to set
+     */
+    public void setCallsValue(Float callsValue) {
+        this.callsValue = callsValue;
+    }
+
+    /**
+     * @return the probabilityAmplification
+     */
+    public Float getProbabilityAmplification() {
+        return probabilityAmplification;
+    }
+
+    /**
+     * @param probabilityAmplification the probabilityAmplification to set
+     */
+    public void setProbabilityAmplification(Float probabilityAmplification) {
+        this.probabilityAmplification = probabilityAmplification;
+    }
+
+    /**
+     * @return the probabilityGain
+     */
+    public Float getProbabilityGain() {
+        return probabilityGain;
+    }
+
+    /**
+     * @param probabilityGain the probabilityGain to set
+     */
+    public void setProbabilityGain(Float probabilityGain) {
+        this.probabilityGain = probabilityGain;
+    }
+
+    /**
+     * @return the probabilityLoss
+     */
+    public Float getProbabilityLoss() {
+        return probabilityLoss;
+    }
+
+    /**
+     * @param probabilityLoss the probabilityLoss to set
+     */
+    public void setProbabilityLoss(Float probabilityLoss) {
+        this.probabilityLoss = probabilityLoss;
+    }
+
+    /**
+     * @return the probabilityNormal
+     */
+    public Float getProbabilityNormal() {
+        return probabilityNormal;
+    }
+
+    /**
+     * @param probabilityNormal the probabilityNormal to set
+     */
+    public void setProbabilityNormal(Float probabilityNormal) {
+        this.probabilityNormal = probabilityNormal;
     }
 
     /**
