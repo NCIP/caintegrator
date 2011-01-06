@@ -142,7 +142,7 @@ abstract class AbstractGenericSupplementalMappingFileHandler extends AbstractUnp
     throws ConnectionException, DataRetrievalException, ValidationException;
 
     abstract void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile)
-    throws FileNotFoundException, ValidationException;
+    throws FileNotFoundException, ValidationException, ConnectionException, DataRetrievalException;
     
     /**
      * Mapping data.
