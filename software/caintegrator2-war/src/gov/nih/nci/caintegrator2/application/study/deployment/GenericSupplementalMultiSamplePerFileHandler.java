@@ -102,6 +102,7 @@ import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.GenericMultiSamplePerFileParser;
 import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -120,8 +121,8 @@ import org.springframework.transaction.annotation.Transactional;
 class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupplementalMappingFileHandler {
     
     private final List<Sample> samples = new ArrayList<Sample>();
-    private final List<String> dataFileNames = new ArrayList<String>();
-    private final List<SupplementalDataFile> dataFiles = new ArrayList<SupplementalDataFile>();
+    private final Map<String, SupplementalDataFile> supplementalDataFiles = new HashMap<String, SupplementalDataFile>();
+    private final Map<String, File> dataFiles = new HashMap<String, File>();
     
     private static final Logger LOGGER = Logger.getLogger(GenericSupplementalMultiSamplePerFileHandler.class);
     private static final int FIVE_THOUSAND = 5000;
@@ -132,16 +133,15 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
     }
 
     void mappingSample(String subjectIdentifier, String sampleName, SupplementalDataFile supplementalDataFile)
-    throws FileNotFoundException, ValidationException {
+    throws FileNotFoundException, ValidationException, ConnectionException, DataRetrievalException {
         samples.add(getSample(sampleName, subjectIdentifier));
-        if (!dataFileNames.contains(supplementalDataFile.getFileName())) {
-            dataFileNames.add(supplementalDataFile.getFileName());
-            dataFiles.add(supplementalDataFile);
+        if (!supplementalDataFiles.containsKey(supplementalDataFile.getFileName())) {
+            supplementalDataFiles.put(supplementalDataFile.getFileName(), supplementalDataFile);
+            dataFiles.put(supplementalDataFile.getFileName(), getDataFile(supplementalDataFile.getFileName()));
         }
     }
 
-    List<ArrayDataValues> loadArrayDataValue() 
-    throws ConnectionException, DataRetrievalException, ValidationException {
+    List<ArrayDataValues> loadArrayDataValue() throws DataRetrievalException {
         PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(
             getGenomicSource().getPlatformName()));
         Set<ReporterList> reporterLists = platformHelper.getReporterLists(getReporterType());
@@ -150,7 +150,7 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
     }
 
     private List<ArrayDataValues> createArrayDataByBucket(PlatformHelper platformHelper,
-            Set<ReporterList> reporterLists) throws DataRetrievalException, ConnectionException, ValidationException {
+            Set<ReporterList> reporterLists) throws DataRetrievalException {
         List<ArrayDataValues> arrayDataValuesList = new ArrayList<ArrayDataValues>();
         for (List<String> sampleBucket : createSampleBuckets(reporterLists, getSampleList())) {
             Map<String, Map<String, List<Float>>> dataMap = extractData(sampleBucket);
@@ -183,15 +183,15 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
     }
 
     private Map<String, Map<String, List<Float>>> extractData(List<String> mappedSampleBucket)
-    throws DataRetrievalException, ConnectionException, ValidationException {
+    throws DataRetrievalException {
         Map<String, Map<String, List<Float>>> dataMap = new HashMap<String, Map<String, List<Float>>>();
-        for (SupplementalDataFile dataFile : dataFiles) {
+        for (SupplementalDataFile dataFile : supplementalDataFiles.values()) {
             GenericMultiSamplePerFileParser parser = new GenericMultiSamplePerFileParser(
-                    getDataFile(dataFile.getFileName()), dataFile.getProbeNameHeader(),
+                    dataFiles.get(dataFile.getFileName()), dataFile.getProbeNameHeader(),
                     dataFile.getSampleHeader(), mappedSampleBucket);
             parser.loadData(dataMap);
         }
-        validateSampleMapping(dataMap, getSampleList());
+        validateSampleMapping(dataMap, mappedSampleBucket);
         return dataMap;
     }
 
