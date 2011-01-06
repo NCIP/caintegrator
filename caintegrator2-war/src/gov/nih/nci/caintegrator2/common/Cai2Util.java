@@ -633,6 +633,6 @@ public final class Cai2Util {
      * @return the jvm heap size in MB.
      */
     public static long getHeapSizeMB() {
-        return Runtime.getRuntime().totalMemory() / ONE_MILLION;
+        return Runtime.getRuntime().maxMemory() / ONE_MILLION;
     }
 }
