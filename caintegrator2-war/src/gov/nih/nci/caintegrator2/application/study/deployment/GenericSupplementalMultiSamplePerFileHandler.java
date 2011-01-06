@@ -125,7 +125,7 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
     private final Map<String, File> dataFiles = new HashMap<String, File>();
     
     private static final Logger LOGGER = Logger.getLogger(GenericSupplementalMultiSamplePerFileHandler.class);
-    private static final int FIVE_THOUSAND = 5000;
+    private static final int ONE_THOUSAND = 1000;
     
     GenericSupplementalMultiSamplePerFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
@@ -179,7 +179,7 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
         for (ReporterList reporterList : reporterLists) {
             numReporters += reporterList.getReporters().size();
         }
-        return (FIVE_THOUSAND * Cai2Util.getHeapSizeMB()) / numReporters;
+        return (ONE_THOUSAND * Cai2Util.getHeapSizeMB()) / numReporters;
     }
 
     private Map<String, Map<String, List<Float>>> extractData(List<String> mappedSampleBucket)
