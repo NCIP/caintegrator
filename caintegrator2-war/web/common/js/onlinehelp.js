@@ -7,9 +7,9 @@ var contextPath = "/caintegrator/";
 var helpURL = "/help/index.html";
 var helpContext = "caIntegrator2";
 var usersguideURL = "/help/users_guide/caIntegrator2_Users_Guide.pdf";
-var overviewTutorialURL = "https://gforge.nci.nih.gov/svnroot/caintegrator2/trunk/docs/project_management/external_meetings/overview_screencast/overview_screencast.html";
-var deployStudyTutorialURL = "https://gforge.nci.nih.gov/svnroot/caintegrator2/trunk/docs/project_management/external_meetings/deploy_study_screencast/deploy_study_screencast.html";
-var useStudyTutorialURL = "https://gforge.nci.nih.gov/svnroot/caintegrator2/trunk/docs/project_management/external_meetings/use_study_screencast/use_study.html";
+var overviewTutorialURL = "https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/docs/project_management/external_meetings/overview_screencast/overview_screencast.html";
+var deployStudyTutorialURL = "https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/docs/project_management/external_meetings/deploy_study_screencast/deploy_study_screencast.html";
+var useStudyTutorialURL = "https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/docs/project_management/external_meetings/use_study_screencast/use_study.html";
 // method to create the full URL, minus the topic
 // optional boolean includeNav sets left navigation ON (single=true) if includeNav is true
 // if includeNav is not set, no left navigation is set
