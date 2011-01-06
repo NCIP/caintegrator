@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.SupplementalDataFile;
@@ -127,12 +128,14 @@ public abstract class AbstractSupplementalMappingFileHandler extends AbstractCaA
             throw new DataRetrievalException("Sample mapping file not found: ", e);
         } catch (IOException e) {
             throw new DataRetrievalException("Couldn't read sample mapping file: ", e);
+        } catch (ConnectionException e) {
+            throw new DataRetrievalException("Couldn't connect to caArray: ", e);
         }
         
     }
 
     private void processMappingData(String[] fields)
-    throws FileNotFoundException, ValidationException {
+    throws FileNotFoundException, ValidationException, ConnectionException, DataRetrievalException {
         if (fields.length > 1 && !fields[0].startsWith("#")) {
             String subjectId = fields[0].trim();
             String sampleName = fields[1].trim();
@@ -148,7 +151,7 @@ public abstract class AbstractSupplementalMappingFileHandler extends AbstractCaA
     abstract File getMappingFile() throws FileNotFoundException;
     
     abstract void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile) 
-    throws ValidationException, FileNotFoundException;
+    throws FileNotFoundException, ValidationException, ConnectionException, DataRetrievalException;
 
     /**
      * @return the dao
