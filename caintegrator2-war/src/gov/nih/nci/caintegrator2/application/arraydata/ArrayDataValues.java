@@ -107,7 +107,7 @@ public class ArrayDataValues {
     
     private final List<AbstractReporter> reporters;
     private Set<ReporterList> reporterLists;
-    private final Map<AbstractReporter, Integer> reporterIndexMap = new HashMap<AbstractReporter, Integer>();
+    private final Map<String, Integer> reporterIndexMap = new HashMap<String, Integer>();
     private final Map<ArrayDataValueType, TypeValues> typeValuesMap = new HashMap<ArrayDataValueType, TypeValues>();
 
     /**
@@ -119,10 +119,17 @@ public class ArrayDataValues {
         this.reporters = reporters;
         loadReporterIndexMap();
     }
+    
+    /**
+     * Need to clear the map to free the memory.
+     */
+    public void clearMaps() {
+        reporterIndexMap.clear();
+    }
 
     private void loadReporterIndexMap() {
         for (int i = 0; i < reporters.size(); i++) {
-            reporterIndexMap.put(reporters.get(i), i);
+            reporterIndexMap.put(reporters.get(i).getName(), i);
         }
     }
 
@@ -245,7 +252,7 @@ public class ArrayDataValues {
         if (reporter == null) {
             throw new IllegalArgumentException("reporter was null");
         }
-        return reporterIndexMap.get(reporter);
+        return reporterIndexMap.get(reporter.getName());
     }
     
     /**

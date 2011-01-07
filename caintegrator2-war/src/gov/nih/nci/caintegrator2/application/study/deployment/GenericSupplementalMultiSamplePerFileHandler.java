@@ -152,9 +152,12 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
     private List<ArrayDataValues> createArrayDataByBucket(PlatformHelper platformHelper,
             Set<ReporterList> reporterLists) throws DataRetrievalException {
         List<ArrayDataValues> arrayDataValuesList = new ArrayList<ArrayDataValues>();
-        for (List<String> sampleBucket : createSampleBuckets(reporterLists, getSampleList())) {
-            Map<String, Map<String, List<Float>>> dataMap = extractData(sampleBucket);
-            loadArrayData(arrayDataValuesList, platformHelper, reporterLists, dataMap);
+        int bucketNum = 0;
+        List<List<String>> sampleBuckets = createSampleBuckets(reporterLists, getSampleList());
+        for (List<String> sampleBucket : sampleBuckets) {
+            LOGGER.info("Starting an extract data on samples of size " + sampleBucket.size() 
+                    + ", for bucket number " + ++bucketNum + "/" + sampleBuckets.size());
+            loadArrayData(arrayDataValuesList, platformHelper, reporterLists, extractData(sampleBucket));
         }
         return arrayDataValuesList;
     }
@@ -250,7 +253,9 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
                 }
             }
             getArrayDataService().save(values);
+            values.clearMaps(); // Fixes a memory leak where the maps never got garbage collected.
             LOGGER.info("Done LoadArrayData for : " + sampleName);
+
         }
     }
 
