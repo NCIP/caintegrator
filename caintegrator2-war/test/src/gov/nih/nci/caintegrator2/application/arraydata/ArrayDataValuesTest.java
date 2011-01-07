@@ -121,8 +121,9 @@ public class ArrayDataValuesTest {
     public void testSetFloatValue() {
         ArrayDataValues values = createValues();
         AbstractReporter reporter1 = values.getReporters().get(0);
+        reporter1.setName("reporter1");
         AbstractReporter reporter2 = values.getReporters().get(1);
-
+        reporter2.setName("reporter2");
         ArrayData arrayData1 = new ArrayData();
         ArrayData arrayData2 = new ArrayData();
         values.setFloatValue(arrayData1, reporter1, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO, 1.1f);
@@ -148,7 +149,9 @@ public class ArrayDataValuesTest {
     private ArrayDataValues createValues() {
         List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
+        reporter1.setName("reporter1");
         GeneExpressionReporter reporter2 = new GeneExpressionReporter();
+        reporter2.setName("reporter2");
         reporters.add(reporter1);
         reporters.add(reporter2);
         ArrayDataValues values = new ArrayDataValues(reporters);
