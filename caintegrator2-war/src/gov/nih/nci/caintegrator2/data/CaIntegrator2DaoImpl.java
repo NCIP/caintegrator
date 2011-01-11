@@ -924,7 +924,14 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public void setFlushMode(int mode) {
         getHibernateTemplate().setFlushMode(mode);
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void runSessionKeepAlive() {
+        getCurrentSession().createSQLQuery("select 1").list();
+    }
+    
     /**
      * @return the securityManager
      */

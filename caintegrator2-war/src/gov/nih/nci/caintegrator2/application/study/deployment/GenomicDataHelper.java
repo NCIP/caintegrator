@@ -207,7 +207,6 @@ class GenomicDataHelper {
 
     private void computeSegmentationData(GenomicDataSourceConfiguration genomicSource, List<ArrayDataValues> valuesList)
             throws ConnectionException, DataRetrievalException {
-        
         if (genomicSource.getDnaAnalysisDataConfiguration().isCaDNACopyConfiguration()) {
             for (ArrayDataValues values : valuesList) {
                 DnaAnalysisData dnaAnalysisData = createDnaAnalysisData(values);
@@ -248,6 +247,7 @@ class GenomicDataHelper {
 
     private void retrieveSegmentationData(DnaAnalysisData dnaAnalysisData,
             DnaAnalysisDataConfiguration configuration) throws ConnectionException, DataRetrievalException {
+        dao.runSessionKeepAlive();
         if (configuration.isCaDNACopyConfiguration()) {
             bioconductorService.addSegmentationData(dnaAnalysisData, configuration);
         } else {

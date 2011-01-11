@@ -114,10 +114,7 @@ public class StudyDeploymentAjaxRunner implements Runnable {
         statusUpdated(updater.getDeploymentService().performDeployment(job, heatmapParameters));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void statusUpdated(StudyConfiguration configuration) {
+    private void statusUpdated(StudyConfiguration configuration) {
         if (Status.ERROR.equals(configuration.getStatus())) {
             updater.addError(configuration.getStatusDescription(), configuration);
         }
