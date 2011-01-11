@@ -21,7 +21,7 @@
 
    
     <logger name="org.hibernate">  <!-- Log everything -->
-      <level value="all" />
+      <level value="off" />
       <appender-ref ref="appenderFile" />
     </logger>
     
