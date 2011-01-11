@@ -559,4 +559,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return gisticAnalysisSet;
     }
 
+    public void runSessionKeepAlive() {
+        
+    }
+
 }

@@ -503,4 +503,9 @@ public interface CaIntegrator2Dao {
     Set<GisticAnalysis> getGisticAnalysisUsingGenomicSource(
             GenomicDataSourceConfiguration genomicSource);
     
+    /**
+     * This is used for long running transactions with no database activity, will send a small query to the database
+     * so the database doesn't think it is an idle thread and kill it.
+     */
+    void runSessionKeepAlive();
 }
