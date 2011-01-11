@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+   <appender name="appenderConsole" class="org.apache.log4j.ConsoleAppender">
+
+     <layout class="org.apache.log4j.SimpleLayout"/>
+   </appender>
+
+
+   <appender name="appenderFile" class="org.apache.log4j.RollingFileAppender">
+     <param name="File" value="../server/default/log/hibernate.log"/>
+     <param name="Append" value="true"/>
+     <param name="MaxFileSize" value="500KB"/>
+     <param name="MaxBackupIndex" value="1"/>
+     <layout class="org.apache.log4j.PatternLayout">
+       <param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
+     </layout>
+   </appender>
+
+   
+    <logger name="org.hibernate">  <!-- Log everything -->
+      <level value="all" />
+      <appender-ref ref="appenderFile" />
+    </logger>
+    
+    <logger name="org.hibernate.SQL">  <!-- Log all SQL DML statements as they are executed -->
+      <level value="off" />
+      <appender-ref ref="appenderFile" />
+    </logger>
+    
+    <logger name="org.hibernate.type">  <!-- Log all JDBC parameters -->
+      <level value="off" />
+      <appender-ref ref="appenderFile" />
+    </logger>
+    
+    <logger name="org.hibernate.tool.hbm2ddl">  <!-- Log all SQL DDL statements as they are executed -->
+      <level value="off" />
+      <appender-ref ref="appenderFile" />
+    </logger>
+    
+    <logger name="org.hibernate.pretty">  <!-- Log the state of all entities (max 20 entities) associated with the session at flush time -->
+      <level value="off" />
+      <appender-ref ref="appenderFile" />
+    </logger>
+    
+    <logger name="org.hibernate.cache">  <!-- Log all second-level cache activity -->
+      <level value="off" />
+      <appender-ref ref="appenderFile" />
+    </logger>
+    
+    <logger name="org.hibernate.transaction">  <!-- Log transaction related activity -->
+      <level value="off" />
+      <appender-ref ref="appenderFile" />
+    </logger>
+   
+    <logger name="org.hibernate.jdbc">  <!-- Log all JDBC resource acquisition -->
+      <level value="off" />
+      <appender-ref ref="appenderFile" />
+    </logger>
+   
+    <logger name="org.hibernate.hql.ast.AST">  <!-- Log HQL and SQL ASTs during query parsing -->
+      <level value="off" />
+      <appender-ref ref="appenderFile" />
+    </logger>
+   
+    <logger name="org.hibernate.secure">  <!-- Log all JAAS authorization requests -->
+      <level value="off" />
+      <appender-ref ref="appenderFile" />
+    </logger>
+   
+   <root>
+        <level value="info"/>
+       <appender-ref ref="appenderConsole" />
+   </root>
+
+</log4j:configuration>
