@@ -108,7 +108,7 @@ public final class DateUtil {
     private static final Long MILLISECONDS_PER_SECOND = 1000L;
     private static final Long SECONDS_PER_MINUTE = 60L;
     private static DecimalFormat twoDigit = new DecimalFormat("00");
-    private static final int TWELVE_HOURS = 12;
+    private static final int TWENTY_FOUR_HOURS = 24;
     
     private DateUtil() {
         
@@ -120,7 +120,7 @@ public final class DateUtil {
      * @return boolean
      */
     public static boolean isTimeout(Date date) {
-        return DateUtils.addHours(date, TWELVE_HOURS).before(new Date());
+        return DateUtils.addHours(date, TWENTY_FOUR_HOURS).before(new Date());
     }
     
     /**
