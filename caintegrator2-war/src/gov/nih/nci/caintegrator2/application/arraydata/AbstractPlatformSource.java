@@ -94,6 +94,11 @@ import java.util.List;
  * Base class for platform source specifications.
  */
 public abstract class AbstractPlatformSource implements Serializable {
+    
+    /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
 
     private boolean deleteFileOnCompletion;
     private final List<File> annotationFiles = new ArrayList<File>();

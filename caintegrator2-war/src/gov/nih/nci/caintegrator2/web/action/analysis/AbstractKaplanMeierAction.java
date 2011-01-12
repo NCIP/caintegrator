@@ -111,6 +111,11 @@ import org.apache.commons.lang.StringUtils;
  * Abstract Action dealing with Kaplan-Meier plotting.
  */
 public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAction {
+    
+    /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Annotation Tab.
