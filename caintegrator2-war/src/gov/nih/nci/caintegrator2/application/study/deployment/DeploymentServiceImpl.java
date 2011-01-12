@@ -178,6 +178,7 @@ public class DeploymentServiceImpl implements DeploymentService {
             genomicDataHelper.setExpressionHandlerFactory(getExpressionHandlerFactory());
             genomicDataHelper.setGenePatternClientFactory(getGenePatternClientFactory());
             genomicDataHelper.loadData(studyConfiguration);
+            dao.runSessionKeepAlive();
             generateViewerFiles(studyConfiguration, heatmapParameters);
         }
         studyConfiguration.setStatus(Status.DEPLOYED);
@@ -193,6 +194,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     throws InvalidCriterionException, IOException {
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(studyConfiguration.getStudy());
+        dao.runSessionKeepAlive();
         getAnalysisService().deleteViewerDirectory(studyConfiguration.getStudy());
         heatmapParameters.setStudySubscription(studySubscription);
         for (GenomicDataSourceConfiguration genomicDataSourceConfiguration
