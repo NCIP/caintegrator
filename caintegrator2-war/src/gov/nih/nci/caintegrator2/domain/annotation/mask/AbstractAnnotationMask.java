@@ -95,6 +95,11 @@ public abstract class AbstractAnnotationMask extends AbstractCaIntegrator2Object
         Comparable<AbstractAnnotationMask> {
     
     /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
+    
+    /**
      * The order with which to apply the mask.
      * @return sort order.
      */

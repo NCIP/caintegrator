@@ -97,6 +97,11 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
  * Base class for actions that require retrieval of persistent <code>GenomicDataSourceConfigurations</code>.
  */
 public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
+    
+    /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
 
     private GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
     

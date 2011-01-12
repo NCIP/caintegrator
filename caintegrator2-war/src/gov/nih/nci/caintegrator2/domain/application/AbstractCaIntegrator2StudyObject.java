@@ -97,6 +97,11 @@ import java.util.Set;
  */
 public abstract class AbstractCaIntegrator2StudyObject extends AbstractCaIntegrator2Object {
     
+    /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
+    
     private Set<AbstractList> listCollection = new HashSet<AbstractList>();
     
     /**

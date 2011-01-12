@@ -102,6 +102,11 @@ import java.util.List;
  * Abstract Action dealing with GeneExpression plotting.
  */
 public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudyAction {
+    
+    /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Annotation Tab.

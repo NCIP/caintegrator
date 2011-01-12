@@ -103,7 +103,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.stat.SessionStatistics;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class HibernateSessionStub implements Session {
 
     private static final long serialVersionUID = 1L;

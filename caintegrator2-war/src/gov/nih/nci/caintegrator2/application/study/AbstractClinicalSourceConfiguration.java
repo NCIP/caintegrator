@@ -98,6 +98,11 @@ import java.util.List;
  * functionality to work with the configured sources.
  */
 public abstract class AbstractClinicalSourceConfiguration extends AbstractCaIntegrator2Object implements TimeStampable {
+    
+    /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
 
     private StudyConfiguration studyConfiguration;
     private Date lastModifiedDate;

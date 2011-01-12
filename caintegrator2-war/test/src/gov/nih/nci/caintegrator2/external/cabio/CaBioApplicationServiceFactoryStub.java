@@ -101,7 +101,7 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class CaBioApplicationServiceFactoryStub implements CaBioApplicationServiceFactory {
     
     ApplicationServiceStub applicationServiceStub = new ApplicationServiceStub();
@@ -243,7 +243,6 @@ public class CaBioApplicationServiceFactoryStub implements CaBioApplicationServi
                 throws ApplicationException {
             return null;
         }
-
 
         public List<Object> search(Class targetClass, List<?> objList) throws ApplicationException {
             return null;

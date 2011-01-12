@@ -101,7 +101,7 @@ import org.hibernate.criterion.DetachedCriteria;
 /**
  * 
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class CaDSRApplicationServiceFactoryStub implements CaDSRApplicationServiceFactory {
 
     public ApplicationService retrieveCaDsrApplicationService(String caDsrUrl) throws IllegalStateException {
@@ -151,7 +151,6 @@ public class CaDSRApplicationServiceFactoryStub implements CaDSRApplicationServi
                 throws ApplicationException {
             return null;
         }
-
 
         public List<Object> search(Class targetClass, List<?> objList) throws ApplicationException {
             return null;

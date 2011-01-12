@@ -94,6 +94,11 @@ import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 public abstract class AbstractCai2ManagementAction extends AbstractCaIntegrator2Action {
     
     /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
+    
+    /**
      * {@inheritDoc}
      */
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")     // PMD mistakenly flagging as empty method
