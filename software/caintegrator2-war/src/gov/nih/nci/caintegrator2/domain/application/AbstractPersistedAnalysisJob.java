@@ -100,6 +100,11 @@ import org.apache.commons.httpclient.util.DateUtil;
 public abstract class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2Object 
     implements Comparable<AbstractPersistedAnalysisJob> {
     
+    /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
+    
     private String name;
     private AnalysisJobStatusEnum status = AnalysisJobStatusEnum.NOT_SUBMITTED;
     private Date creationDate;

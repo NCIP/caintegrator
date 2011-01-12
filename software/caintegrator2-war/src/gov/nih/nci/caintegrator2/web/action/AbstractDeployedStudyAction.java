@@ -91,10 +91,12 @@ import java.util.List;
  * Base class for all Struts 2 <code>Actions</code> in the application, provides context set up
  * for the current request.
  */
-/**
- * 
- */
 public abstract class AbstractDeployedStudyAction extends AbstractCaIntegrator2Action {
+    
+    /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
     
     /**
      * {@inheritDoc}

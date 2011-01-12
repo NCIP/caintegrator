@@ -126,6 +126,11 @@ import com.opensymphony.xwork2.Preparable;
 @SuppressWarnings("PMD.ExcessiveClassLength")  // A lot of methods
 public abstract class AbstractCaIntegrator2Action extends ActionSupport implements Preparable {
     
+    /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
+    
     private WorkspaceService workspaceService;
     private String openGeneListName = "";
     private String openSubjectListName = "";

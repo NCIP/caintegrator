@@ -92,6 +92,11 @@ import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
  * Base class for actions that require retrieval of persistent <code>ImageAnnotationConfigurations</code>.
  */
 public abstract class AbstractImagingSourceAction extends AbstractStudyAction {
+    
+    /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
 
     private ImageDataSourceConfiguration imageSourceConfiguration = new ImageDataSourceConfiguration();
     private boolean cancelAction = false;

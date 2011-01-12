@@ -92,6 +92,11 @@ import java.io.Serializable;
  */
 public abstract class AbstractParameterValue implements Serializable, Cloneable {
     
+    /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
+    
     private AnalysisParameter parameter;
 
     /**

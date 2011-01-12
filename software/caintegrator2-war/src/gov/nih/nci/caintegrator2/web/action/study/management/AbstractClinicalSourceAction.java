@@ -92,6 +92,11 @@ import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceCo
  */
 public abstract class AbstractClinicalSourceAction extends AbstractStudyAction {
     
+    /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
+    
     private DelimitedTextClinicalSourceConfiguration clinicalSource = new DelimitedTextClinicalSourceConfiguration();
 
     /**

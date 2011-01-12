@@ -172,7 +172,7 @@ public interface CaIntegrator2Dao {
      * Deletes all given objects from the database.
      * @param objects - persistent objects to be removed.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     void removeObjects(Collection objects);
     
     /**

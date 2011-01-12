@@ -100,6 +100,11 @@ import com.opensymphony.xwork2.ModelDriven;
 public abstract class AbstractStudyAction extends AbstractCai2ManagementAction 
 implements ModelDriven<StudyConfiguration> {
     
+    /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
+    
     private StudyConfiguration studyConfiguration = new StudyConfiguration();
     private StudyManagementService studyManagementService;
     

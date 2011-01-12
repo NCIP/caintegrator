@@ -92,6 +92,11 @@ import java.util.Comparator;
  * Base class for all domain objects.
  */
 public abstract class AbstractCaIntegrator2Object implements Serializable, Cloneable {
+    
+    /**
+     * Default serialize.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Comparator that orders objects by id.
