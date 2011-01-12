@@ -232,22 +232,23 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
      */
     public byte[] retrieveFile(GenomicDataSourceConfiguration genomicSource, String filename) 
     throws FileNotFoundException, ConnectionException {
-        File dataFile = getFile(genomicSource, filename);
+        File dataFile = getFile(genomicSource, filename);       
         CaArrayEntityReference fileRef = dataFile.getReference();
         DataService dataService = getServiceFactory().createDataService(genomicSource.getServerProfile());
         return CaArrayUtils.retrieveFile(dataService, fileRef);
     }
-
+    
     private File getFile(GenomicDataSourceConfiguration genomicSource, String filename) 
     throws ConnectionException, FileNotFoundException {
         List<File> results = retrieveFilesForGenomicSource(genomicSource);
+
         for (File file : results) {
             if (filename.equals(file.getMetadata().getName())) {
                 return file;
             }
         }
         throw new FileNotFoundException("The experiment did not contain a file named " + filename);
-    }
+    }   
 
     /**
      * {@inheritDoc}
@@ -260,13 +261,13 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
             Experiment experiment = CaArrayUtils.getExperiment(genomicSource.getExperimentIdentifier(), searchService);
             FileSearchCriteria criteria = new FileSearchCriteria();
             criteria.setExperiment(experiment.getReference());
-            return searchService.searchForFiles(criteria, null).getResults();
+            return CaArrayUtils.getFiles(searchService, criteria);
         } catch (InvalidInputException e) {
             throw new FileNotFoundException(e.getMessage());
         } catch (ExperimentNotFoundException e) {
             throw new FileNotFoundException(e.getMessage());
         }
-    }
+    }   
     
     /**
      * {@inheritDoc}

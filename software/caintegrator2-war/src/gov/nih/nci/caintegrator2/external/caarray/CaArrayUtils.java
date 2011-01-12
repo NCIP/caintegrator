@@ -86,9 +86,11 @@
 package gov.nih.nci.caintegrator2.external.caarray;
 
 import gov.nih.nci.caarray.external.v1_0.CaArrayEntityReference;
+import gov.nih.nci.caarray.external.v1_0.data.File;
 import gov.nih.nci.caarray.external.v1_0.experiment.Experiment;
 import gov.nih.nci.caarray.external.v1_0.query.BiomaterialSearchCriteria;
 import gov.nih.nci.caarray.external.v1_0.query.ExperimentSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.FileSearchCriteria;
 import gov.nih.nci.caarray.external.v1_0.query.SearchResult;
 import gov.nih.nci.caarray.external.v1_0.sample.Biomaterial;
 import gov.nih.nci.caarray.external.v1_0.sample.BiomaterialType;
@@ -100,6 +102,8 @@ import gov.nih.nci.caarray.services.external.v1_0.data.JavaDataApiUtils;
 import gov.nih.nci.caarray.services.external.v1_0.search.JavaSearchApiUtils;
 import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+
+//import org.apache.log4j.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -175,5 +179,10 @@ final class CaArrayUtils {
     private static String getExperimentNotFoundMessage(String experimentIdentifier) {
         return "Experiment '" + experimentIdentifier + "' could not be found";
     }
+    
+    static List<File> getFiles(SearchService searchService, FileSearchCriteria criteria)
+        throws InvalidInputException {
+        return new JavaSearchApiUtils(searchService).filesByCriteria(criteria).list();
+    }    
 
 }
