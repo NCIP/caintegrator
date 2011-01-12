@@ -109,6 +109,7 @@ public class DnaAnalysisDataConfiguration implements Serializable {
     private Integer permutationReplicates = DEFAULT_PERMUTATION_REPLICATES;
     private Integer randomNumberSeed = 0;
     private ServerConnectionProfile segmentationService = new ServerConnectionProfile();
+    private Boolean useCghCall = false;
 
     /**
      * @return the mappingFilePath
@@ -213,5 +214,19 @@ public class DnaAnalysisDataConfiguration implements Serializable {
      */
     public boolean isCaDNACopyConfiguration() {
         return getSegmentationService().getUrl() != null && getSegmentationService().getUrl().endsWith("/CaDNAcopy");
+    }
+
+    /**
+     * @return the useCghCall
+     */
+    public Boolean isUseCghCall() {
+        return useCghCall;
+    }
+
+    /**
+     * @param useCghCall the useCghCall to set
+     */
+    public void setUseCghCall(Boolean useCghCall) {
+        this.useCghCall = useCghCall;
     }
 }
