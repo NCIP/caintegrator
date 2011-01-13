@@ -187,6 +187,8 @@ public class DeploymentServiceImpl implements DeploymentService {
                 + DateUtil.compareDatesInMinutes(studyConfiguration.getDeploymentStartDate(), 
                                                  studyConfiguration.getDeploymentFinishDate()));
         getDao().save(studyConfiguration);
+        LOGGER.info("Deployment of study " + studyConfiguration.getStudy().getShortTitleText()
+                + " has been completed.");
         return studyConfiguration;
     }
 
