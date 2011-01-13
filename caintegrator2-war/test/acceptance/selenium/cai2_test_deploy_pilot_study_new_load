@@ -189,7 +189,7 @@
 <tr>
 	<td>select</td>
 	<td>platformName</td>
-	<td>label=AgilentG4502A_07_3</td>
+	<td>label=AgilentG4502A_07_01</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>

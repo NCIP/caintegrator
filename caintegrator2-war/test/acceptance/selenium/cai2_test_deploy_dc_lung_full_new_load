@@ -105,6 +105,11 @@
 </tr>
 <!--//begin create identifier-->
 <tr>
+	<td>waitForElementPresent</td>
+	<td>//a//span[contains(text(),'Edit Annotations')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>//a//span[contains(text(),'Edit Annotations')]</td>
 	<td></td>
@@ -149,7 +154,7 @@
 <!--// begin add genomic-->
 <tr>
 	<td>open</td>
-	<td>/caintegrator2/</td>
+	<td>/caintegrator/</td>
 	<td></td>
 </tr>
 <tr>
