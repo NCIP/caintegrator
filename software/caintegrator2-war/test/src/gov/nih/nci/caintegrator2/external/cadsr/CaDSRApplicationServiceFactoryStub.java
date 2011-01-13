@@ -101,7 +101,7 @@ import org.hibernate.criterion.DetachedCriteria;
 /**
  * 
  */
-@SuppressWarnings("rawtypes")
+@SuppressWarnings("unchecked")
 public class CaDSRApplicationServiceFactoryStub implements CaDSRApplicationServiceFactory {
 
     public ApplicationService retrieveCaDsrApplicationService(String caDsrUrl) throws IllegalStateException {
