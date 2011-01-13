@@ -134,7 +134,6 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.zip.GZIPOutputStream;

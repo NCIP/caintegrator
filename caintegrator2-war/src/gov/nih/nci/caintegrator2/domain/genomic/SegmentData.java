@@ -96,7 +96,7 @@ public class SegmentData extends AbstractCaIntegrator2Object implements Comparab
     
     private Integer numberOfMarkers;
     private Float segmentValue;
-    private Float callsValue;
+    private Integer callsValue;
     private Float probabilityAmplification;
     private Float probabilityGain;
     private Float probabilityLoss;
@@ -148,14 +148,14 @@ public class SegmentData extends AbstractCaIntegrator2Object implements Comparab
     /**
      * @return the callsValue
      */
-    public Float getCallsValue() {
+    public Integer getCallsValue() {
         return callsValue;
     }
 
     /**
      * @param callsValue the callsValue to set
      */
-    public void setCallsValue(Float callsValue) {
+    public void setCallsValue(Integer callsValue) {
         this.callsValue = callsValue;
     }
 

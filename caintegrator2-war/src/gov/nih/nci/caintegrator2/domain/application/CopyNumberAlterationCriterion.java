@@ -1,7 +1,9 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -11,10 +13,12 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
 
     private static final long serialVersionUID = 1L;
     
-    private Float upperLimit;
-    private Float lowerLimit;
+    private Float upperLimit; // For segment value.
+    private Float lowerLimit; // For segment value.
+    private Set<Integer> callsValues = new HashSet<Integer>();
     private SegmentBoundaryTypeEnum segmentBoundaryType = SegmentBoundaryTypeEnum.ONE_OR_MORE;
     private GenomicIntervalTypeEnum genomicIntervalType = GenomicIntervalTypeEnum.GENE_NAME;
+    private CopyNumberCriterionTypeEnum copyNumberCriterionType = CopyNumberCriterionTypeEnum.SEGMENT_VALUE;
     private Integer chromosomeCoordinateHigh;
     private Integer chromosomeCoordinateLow;
     private String chromosomeNumber = "1";
@@ -60,6 +64,20 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
     public void setLowerLimit(Float lowerLimit) {
         this.lowerLimit = lowerLimit;
     }
+    
+    /**
+     * @return the callValues
+     */
+    public Set<Integer> getCallsValues() {
+        return callsValues;
+    }
+
+    /**
+     * @param callsValues the callsValues to set
+     */
+    public void setCallsValues(Set<Integer> callsValues) {
+        this.callsValues = callsValues;
+    }
 
     /**
      * @return the segmentBoundaryType
@@ -89,6 +107,20 @@ public class CopyNumberAlterationCriterion extends AbstractGenomicCriterion impl
         this.genomicIntervalType = genomicIntervalType;
     }
 
+
+    /**
+     * @return the copyNumberCriterionType
+     */
+    public CopyNumberCriterionTypeEnum getCopyNumberCriterionType() {
+        return copyNumberCriterionType;
+    }
+
+    /**
+     * @param copyNumberCriterionType the copyNumberCriterionType to set
+     */
+    public void setCopyNumberCriterionType(CopyNumberCriterionTypeEnum copyNumberCriterionType) {
+        this.copyNumberCriterionType = copyNumberCriterionType;
+    }
 
     /**
      * @return the chromosomeCoordinateHigh
