@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -121,9 +122,20 @@ public class CopyNumberAlterationCriterionConverter {
         Criteria arrayDataCrit = segmentDataCrit.createCriteria("arrayData");
         arrayDataCrit.createCriteria("reporterLists").add(Restrictions.eq("platform", platform));
         arrayDataCrit.add(Restrictions.eq("study", study));
-        addSegmentValueCriterion(segmentDataCrit);
+        if (CopyNumberCriterionTypeEnum.SEGMENT_VALUE.equals(copyNumberCriterion.getCopyNumberCriterionType())) {
+            addSegmentValueCriterion(segmentDataCrit);    
+        } else { // Calls type...
+            addCallsValueCriterion(segmentDataCrit);
+        }
+        
         addGenomicIntervalTypeToCriteria(segmentDataCrit, currentSession, platform.getGenomeVersion());
         return segmentDataCrit;
+    }
+    
+    private void addCallsValueCriterion(Criteria segmentDataCrit) {
+        if (!copyNumberCriterion.getCallsValues().isEmpty()) {
+            segmentDataCrit.add(Restrictions.in("callsValue", copyNumberCriterion.getCallsValues()));
+        }
     }
     
     @SuppressWarnings("PMD.CyclomaticComplexity") // There are 5 different cases of segment value criteria.
