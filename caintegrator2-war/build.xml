@@ -471,7 +471,7 @@
     </target>
 
     <target name="test:unit:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,test:instrument:unit:caintegrator2.war,test:unpack-test-data">
-        <run-junit-tests-increased-memory test.src.dir="${caintegrator2.war.test.src.dir}" 
+        <run-junit-tests-increased-memory test.src.dir="${caintegrator2.war.test.src.dir}"
             xml.output.dir="${caintegrator2.war.target.dir}/junit" 
             instrumented.classes="${caintegrator2.war.instrumented.unit.classes.dir}" 
             classpath="${caintegrator2.war.test.dependencies.path}" />
@@ -1181,6 +1181,8 @@
         <attribute name="xml.output.dir" />
         <attribute name="classpath" default="" />
         <attribute name="instrumented.classes" default="" />
+        <attribute name="includedTestFiles" default="**/*Test.java" />
+        <attribute name="excludedTestFiles" default="**/Abstract*Test.java" />
 
         <sequential>
             <mkdir dir="@{xml.output.dir}" />
@@ -1190,7 +1192,9 @@
                 <sysproperty key="server.port" value="${jboss.server.port}" />
                 <sysproperty key="server.jndi.port" value="${jboss.server.jndi.port}" />
                 <sysproperty key="selenium.server.port" value="${selenium.server.port}" />
-
+                <!--
+                <jvmarg value="-d64" />
+                -->
                 <classpath>
                     <pathelement path="@{instrumented.classes}" />
                     <pathelement path="@{classpath}" />
@@ -1199,8 +1203,8 @@
                 <formatter type="xml" />
                 <batchtest todir="@{xml.output.dir}">
                     <fileset dir="@{test.src.dir}">
-                        <include name="**/*Test.java" />
-                        <exclude name="**/Abstract*Test.java" />
+                        <include name="@{includedTestFiles}" />
+                        <exclude name="@{excludedTestFiles}" />
                     </fileset>
                 </batchtest>
             </junit>
