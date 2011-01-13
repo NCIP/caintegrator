@@ -19,7 +19,7 @@ import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.stat.Statistics;
 
-@SuppressWarnings("rawtypes")
+@SuppressWarnings("unchecked")
 public class SessionFactoryStub implements SessionFactory {
 
     private static final long serialVersionUID = 1L;
