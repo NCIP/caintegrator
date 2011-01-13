@@ -9,7 +9,7 @@
 		<!-- Attributes mapping for the ArrayData class -->
         <property name="numberOfMarkers" column="NUMBER_OF_MARKERS" type="integer" />
         <property name="segmentValue" column="SEGMENT_VALUE" type="float" />
-        <property name="callsValue" column="CALLS_VALUE" type="float" />
+        <property name="callsValue" column="CALLS_VALUE" type="integer" />
         <property name="probabilityAmplification" column="PROBABILITY_AMPLIFICATION" type="float" />
         <property name="probabilityGain" column="PROBABILITY_GAIN" type="float" />
         <property name="probabilityLoss" column="PROBABILITY_LOSS" type="float" />

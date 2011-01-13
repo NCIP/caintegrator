@@ -32,6 +32,9 @@
     <typedef name="SegmentBoundaryTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
         <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.SegmentBoundaryTypeEnum</param> 
     </typedef> 
+    <typedef name="CopyNumberCriterionTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+        <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum</param> 
+    </typedef> 
     
     <class name="AbstractCriterion" table="ABSTRACT_CRITERION" lazy="false" polymorphism="explicit">
         <cache usage="read-write" />
@@ -128,6 +131,12 @@
                 <property name="segmentBoundaryType" type="SegmentBoundaryTypeEnum" column="SEGMENT_BOUNDARY_TYPE"/>
                 <property name="lowerLimit" type="float" column="LOWER_LIMIT"/>
                 <property name="upperLimit" type="float" column="UPPER_LIMIT"/>
+                <property name="copyNumberCriterionType" type="CopyNumberCriterionTypeEnum" column="COPY_NUMBER_CRITERION_TYPE" />
+                <set name="callsValues" lazy="true" cascade="all" table="CALLS_VALUES_FOR_CRITERION">
+	                <cache usage="read-write" />
+	                <key column="COPY_NUMBER_ALTERATION_ID" />
+	                <element column="CALLS_VALUE" type = "integer" />
+                </set>
             </joined-subclass>
         </joined-subclass>
         <joined-subclass name="SubjectListCriterion" table="SUBJECT_LIST_CRITERION" lazy="false">

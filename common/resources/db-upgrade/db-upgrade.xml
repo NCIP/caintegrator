@@ -456,5 +456,9 @@
         <comment>Adding attributes to GENOMIC_DATA_SOURCE_CONFIGURATION for CGHcall.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.3/upgrade-1.3.08.sql"/>
     </changeSet>   
+    <changeSet id="1.3.09" author="tandrews">
+        <comment>Modifying CALLS_VALUE to be an INTEGER.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.3/upgrade-1.3.09.sql"/>
+    </changeSet>   
     
 </databaseChangeLog>
