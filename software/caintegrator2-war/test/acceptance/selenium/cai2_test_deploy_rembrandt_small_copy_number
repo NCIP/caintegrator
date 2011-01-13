@@ -41,7 +41,7 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>/caintegrator2/createStudy.action</td>
+	<td>/caintegrator/createStudy.action</td>
 	<td></td>
 </tr>
 <tr>
