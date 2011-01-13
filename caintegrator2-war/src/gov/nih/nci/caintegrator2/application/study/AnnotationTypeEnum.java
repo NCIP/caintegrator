@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Annotation of allowed values for <code>AnnotationDefintion.type</code>.
  */
-@SuppressWarnings("rawtypes") // For the "Class" operations.
+@SuppressWarnings("unchecked") // For the "Class" operations.
 public enum AnnotationTypeEnum  {
 
     /**

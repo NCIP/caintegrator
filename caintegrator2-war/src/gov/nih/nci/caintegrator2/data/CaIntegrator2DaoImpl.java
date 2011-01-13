@@ -167,14 +167,13 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     private static final String GENES_ASSOCIATION = "genes";
     private static final String NAME_ATTRIBUTE = "name";
     private static final String SYMBOL_ATTRIBUTE = "symbol";
-    private static final String RAWTYPES = "rawtypes";
     private SecurityManager securityManager;
     
     /**
      * {@inheritDoc}
      */
     public UserWorkspace getWorkspace(String username) {
-        @SuppressWarnings(RAWTYPES)
+        @SuppressWarnings(UNCHECKED)
         List results = getCurrentSession().
                         createCriteria(UserWorkspace.class).
                         add(Restrictions.eq("username", username)).list();
@@ -235,7 +234,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings(RAWTYPES)
+    @SuppressWarnings(UNCHECKED)
     public void removeObjects(Collection objects) {
         if (objects != null) {
             getHibernateTemplate().deleteAll(objects);
@@ -564,7 +563,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     public Gene getGene(String symbol) {
-        @SuppressWarnings(RAWTYPES)  // Hibernate operations are untyped
+        @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
         List values = getHibernateTemplate().findByNamedParam("from Gene where symbol = :symbol", 
                 SYMBOL_ATTRIBUTE, symbol.toUpperCase(Locale.getDefault()));
         if (values.isEmpty()) {
@@ -590,7 +589,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     public Platform getPlatform(String name) {
-        @SuppressWarnings(RAWTYPES)  // Hibernate operations are untyped
+        @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
         List values = getHibernateTemplate().findByNamedParam("from Platform where name = :name", 
                 NAME_ATTRIBUTE, name);
         if (values.isEmpty()) {
@@ -604,7 +603,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     public PlatformConfiguration getPlatformConfiguration(String name) {
-        @SuppressWarnings(RAWTYPES)  // Hibernate operations are untyped
+        @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
         List values = getHibernateTemplate().findByNamedParam("from PlatformConfiguration where name = :name", 
                 NAME_ATTRIBUTE, name);
         if (values.isEmpty()) {
@@ -642,7 +641,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings(RAWTYPES)  // Hibernate operations are untyped
+    @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public ReporterList getReporterList(String name) {
         List values = getHibernateTemplate().findByNamedParam("from ReporterList where name = :name", 
                 NAME_ATTRIBUTE, name);

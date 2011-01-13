@@ -101,7 +101,7 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 
-@SuppressWarnings("rawtypes")
+@SuppressWarnings("unchecked")
 public class CaBioApplicationServiceFactoryStub implements CaBioApplicationServiceFactory {
     
     ApplicationServiceStub applicationServiceStub = new ApplicationServiceStub();
