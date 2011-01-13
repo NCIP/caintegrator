@@ -543,6 +543,7 @@ public class StudyHelper {
         segmentData.setArrayData(arrayData);
         segmentData.setNumberOfMarkers(7813);
         segmentData.setSegmentValue(Float.valueOf(sampleNum) / 100f);
+        segmentData.setCallsValue((sampleNum % 4) - 1);
         ChromosomalLocation location = new ChromosomalLocation();
         location.setChromosome(String.valueOf(sampleNum));
         location.setStartPosition(10000 * sampleNum);

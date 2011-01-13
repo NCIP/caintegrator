@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicIntervalTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
@@ -569,7 +570,9 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         Study study = studyHelper.populateAndRetrieveStudy().getStudy();
         dao.save(study);
         
+        // Segment Data type
         CopyNumberAlterationCriterion copyNumberCriterion = new CopyNumberAlterationCriterion();
+        copyNumberCriterion.setCopyNumberCriterionType(CopyNumberCriterionTypeEnum.SEGMENT_VALUE);
         copyNumberCriterion.setLowerLimit(.02f);
         copyNumberCriterion.setUpperLimit(50f);
         copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES);
@@ -615,6 +618,19 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         copyNumberCriterion.setSegmentBoundaryType(SegmentBoundaryTypeEnum.ONE_OR_MORE);
         copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES);
         copyNumberCriterion.setChromosomeNumber("2");
+        segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
+        assertEquals(1, segmentDatas.size());
+        
+        // Calls type
+        copyNumberCriterion = new CopyNumberAlterationCriterion();
+        copyNumberCriterion.setCopyNumberCriterionType(CopyNumberCriterionTypeEnum.CALLS_VALUE);
+        copyNumberCriterion.setGenomicIntervalType(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES);
+        copyNumberCriterion.setChromosomeNumber("4");
+        copyNumberCriterion.getCallsValues().add(0);
+        segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
+        assertEquals(0, segmentDatas.size());
+        
+        copyNumberCriterion.getCallsValues().add(-1);
         segmentDatas = dao.findMatchingSegmentDatas(copyNumberCriterion, study, platform);
         assertEquals(1, segmentDatas.size());
     }
