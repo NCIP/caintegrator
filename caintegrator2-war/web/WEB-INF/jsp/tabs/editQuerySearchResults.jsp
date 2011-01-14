@@ -430,6 +430,10 @@
                                 document.manageQueryForm.target='_self'">
                             <span class="btn_img"><span class="igv">View in Integrative Genomics Viewer</span></span>
                         </s:a></li>
+                        <li><s:a href="#" cssClass="btn"
+                            onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='viewHeatmap';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+                            <span class="btn_img"><span class="externalsite">View in Heat Map Viewer</span></span>
+                        </s:a></li>
                     </ul>
                 </del>
            </div>
