@@ -87,36 +87,41 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
-
-import com.opensymphony.xwork2.ValidationAware;
+import java.util.List;
 
 /**
  * Wraps access to a single <code>CopyNumberAlterationCriterion</code>.
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity",
     "PMD.ConstructorCallsOverridableMethod" })  // bogus error; mistakenly thinks isValid is called
-public class SegmentCriterionWrapper extends AbstractCopyNumberCoordinateWrapper {
+public class CallsValueCriterionWrapper extends AbstractCopyNumberCoordinateWrapper {
 
     /**
      * The gene name label.
      */
-    public static final String FIELD_NAME = "Segmentation";
+    public static final String FIELD_NAME = "Calls";
 
-    SegmentCriterionWrapper(AbstractCriterionRow row) {
+//    private static final String PMD_COMPLEXITY = "PMD.CyclomaticComplexity";
+//    private static final String NUMERIC_VALUE_REQUIRED = "Numeric value required or blank for ";
+
+    CallsValueCriterionWrapper(AbstractCriterionRow row) {
         this(new CopyNumberAlterationCriterion(), row);
     }
 
-    SegmentCriterionWrapper(CopyNumberAlterationCriterion criterion, AbstractCriterionRow row) {
+    CallsValueCriterionWrapper(CopyNumberAlterationCriterion criterion, AbstractCriterionRow row) {
         super(row, criterion);
-        setMinNumberParameters(2);
-        if (isStudyHasMultipleCopyNumberPlatforms()) {
-            getParameters().add(createPlatformNameParameter(getCopyNumberPlatformNames()));
-            setMinNumberParameters(3);
+        setMinNumberParameters(1);
+        if (isStudyHasMultipleCopyNumberPlatformsWithCghCall()) {
+            getParameters().add(createPlatformNameParameter(getCopyNumberPlatformNamesWithCghCall()));
+            setMinNumberParameters(2);
         }
-        getParameters().add(createUpperLimitParameter());
-        getParameters().add(createLowerLimitParameter());
+        getParameters().add(createCallsValueParameter());
+/*        
+        getParameters().add(createProbabilityLossParameter());
+        getParameters().add(createProbabilityNormalParameter());
+        getParameters().add(createProbabilityGainParameter());
+        getParameters().add(createProbabilityAmplificationParameter());
+*/
         getParameters().add(createIntervalTypeParameter());
         setIntervalParameters();
     }
@@ -134,7 +139,7 @@ public class SegmentCriterionWrapper extends AbstractCopyNumberCoordinateWrapper
      */
     @Override
     CriterionTypeEnum getCriterionType() {
-        return CriterionTypeEnum.SEGMENTATION;
+        return CriterionTypeEnum.CGHCALL;
     }
 
     /**
@@ -152,12 +157,31 @@ public class SegmentCriterionWrapper extends AbstractCopyNumberCoordinateWrapper
     protected boolean platformParameterUpdateOnChange() {
         return false;
     }
-    
-    @SuppressWarnings("PMD.CyclomaticComplexity")
-    private TextFieldParameter createUpperLimitParameter() {
-        final String label = "Segment Mean Value <=";
+
+    private MultiSelectParameter<Integer> createCallsValueParameter() {
+        OptionList<Integer> options = new OptionList<Integer>();
+        options.addOption("-1", -1);
+        options.addOption("0", 0);
+        options.addOption("1", 1);
+        options.addOption("2", 2);
+        ValuesSelectedHandler<Integer> handler = new ValuesSelectedHandler<Integer>() {
+            public void valuesSelected(List<Integer> values) {
+                getCopyNumberAlterationCriterion().getCallsValues().clear();
+                getCopyNumberAlterationCriterion().getCallsValues().addAll(values);
+            }
+        };
+        MultiSelectParameter<Integer> callsValueParameter = 
+            new MultiSelectParameter<Integer>(getParameters().size(), getRow().getRowIndex(), 
+                    options, handler, getCopyNumberAlterationCriterion().getCallsValues());
+        callsValueParameter.setLabel("Calls Value in");
+        return callsValueParameter;
+    }
+/*
+    @SuppressWarnings(PMD_COMPLEXITY)
+    private TextFieldParameter createProbabilityLossParameter() {
+        final String label = "Probability Loss >=";
         TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
-                getRow().getRowIndex(), getCopyNumberAlterationCriterion().getDisplayUpperLimit());
+                getRow().getRowIndex(), criterion.getDisplayUpperLimit());
         textParameter.setLabel(label);
         ValueHandler valueChangeHandler = new ValueHandlerAdapter() {
 
@@ -167,15 +191,15 @@ public class SegmentCriterionWrapper extends AbstractCopyNumberCoordinateWrapper
 
             public void validate(String formFieldName, String value, ValidationAware action) {
                 if (!isValid(value)) {
-                    action.addActionError("Numeric value required or blank for " + label);
+                    action.addActionError(NUMERIC_VALUE_REQUIRED + label);
                 }
             }
 
             public void valueChanged(String value) {
                 if (StringUtils.isBlank(value)) {
-                    getCopyNumberAlterationCriterion().setUpperLimit(null);
+                    criterion.setUpperLimit(null);
                 } else {
-                    getCopyNumberAlterationCriterion().setUpperLimit(Float.valueOf(value));
+                    criterion.setUpperLimit(Float.valueOf(value));
                 }
             }
         };
@@ -183,11 +207,11 @@ public class SegmentCriterionWrapper extends AbstractCopyNumberCoordinateWrapper
         return textParameter;
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
-    private TextFieldParameter createLowerLimitParameter() {
-        final String label = "Segment Mean Value >=";
+    @SuppressWarnings(PMD_COMPLEXITY)
+    private TextFieldParameter createProbabilityNormalParameter() {
+        final String label = "Probability Normal >=";
         TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
-                getRow().getRowIndex(), getCopyNumberAlterationCriterion().getDisplayLowerLimit());
+                getRow().getRowIndex(), criterion.getDisplayLowerLimit());
         textParameter.setLabel(label);
         ValueHandler valueChangeHandler = new ValueHandlerAdapter() {
 
@@ -197,20 +221,81 @@ public class SegmentCriterionWrapper extends AbstractCopyNumberCoordinateWrapper
 
             public void validate(String formFieldName, String value, ValidationAware action) {
                 if (!isValid(value)) {
-                    action.addActionError("Numeric value required or blank for " + label);
+                    action.addActionError(NUMERIC_VALUE_REQUIRED + label);
                 }
             }
 
             public void valueChanged(String value) {
                 if (StringUtils.isBlank(value)) {
-                    getCopyNumberAlterationCriterion().setLowerLimit(null);
+                    criterion.setLowerLimit(null);
                 } else {
-                    getCopyNumberAlterationCriterion().setLowerLimit(Float.valueOf(value));
+                    criterion.setLowerLimit(Float.valueOf(value));
                 }
             }
         };
         textParameter.setValueHandler(valueChangeHandler);
         return textParameter;
     }
+
+    @SuppressWarnings(PMD_COMPLEXITY)
+    private TextFieldParameter createProbabilityGainParameter() {
+        final String label = "Probability Gain >=";
+        TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
+                getRow().getRowIndex(), criterion.getDisplayLowerLimit());
+        textParameter.setLabel(label);
+        ValueHandler valueChangeHandler = new ValueHandlerAdapter() {
+
+            public boolean isValid(String value) {
+                return StringUtils.isBlank(value) || NumberUtils.isNumber(value);
+            }
+
+            public void validate(String formFieldName, String value, ValidationAware action) {
+                if (!isValid(value)) {
+                    action.addActionError(NUMERIC_VALUE_REQUIRED + label);
+                }
+            }
+
+            public void valueChanged(String value) {
+                if (StringUtils.isBlank(value)) {
+                    criterion.setLowerLimit(null);
+                } else {
+                    criterion.setLowerLimit(Float.valueOf(value));
+                }
+            }
+        };
+        textParameter.setValueHandler(valueChangeHandler);
+        return textParameter;
+    }
+
+    @SuppressWarnings(PMD_COMPLEXITY)
+    private TextFieldParameter createProbabilityAmplificationParameter() {
+        final String label = "Probability Amplification >=";
+        TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
+                getRow().getRowIndex(), criterion.getDisplayLowerLimit());
+        textParameter.setLabel(label);
+        ValueHandler valueChangeHandler = new ValueHandlerAdapter() {
+
+            public boolean isValid(String value) {
+                return StringUtils.isBlank(value) || NumberUtils.isNumber(value);
+            }
+
+            public void validate(String formFieldName, String value, ValidationAware action) {
+                if (!isValid(value)) {
+                    action.addActionError(NUMERIC_VALUE_REQUIRED + label);
+                }
+            }
+
+            public void valueChanged(String value) {
+                if (StringUtils.isBlank(value)) {
+                    criterion.setLowerLimit(null);
+                } else {
+                    criterion.setLowerLimit(Float.valueOf(value));
+                }
+            }
+        };
+        textParameter.setValueHandler(valueChangeHandler);
+        return textParameter;
+    }
+*/
 
 }

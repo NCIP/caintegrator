@@ -676,6 +676,18 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
     }
 
     /**
+     * @return the boolean of whether the study has Copy Number Data
+     */
+    public boolean hasCghCalls() {
+        for (GenomicDataSourceConfiguration genomicDataSourceConfiguration : genomicDataSources) {
+            if (genomicDataSourceConfiguration.isUseCghCall()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @return the boolean of whether the study has SNP Data
      */
     public boolean hasSnpData() {

@@ -158,6 +158,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     private static final String EXECUTE_QUERY = "executeQuery";
     private Set<String> geneExpressionPlatformsInStudy = new HashSet<String>();
     private Set<String> copyNumberPlatformsInStudy = new HashSet<String>();
+    private Set<String> copyNumberPlatformsWithCghCallInStudy = new HashSet<String>();
     private QueryManagementService queryManagementService;
     private StudyManagementService studyManagementService;
     private AnalysisService analysisService;
@@ -234,6 +235,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             retrieveGeneExpressionPlatformsForStudy(getStudy());
         copyNumberPlatformsInStudy = getQueryManagementService().
             retrieveCopyNumberPlatformsForStudy(getStudy());
+        copyNumberPlatformsWithCghCallInStudy = getQueryManagementService().
+            retrieveCopyNumberPlatformsWithCghCallForStudy(getStudy());
         if ("selectedTabSearchResults".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
         } else {
@@ -253,7 +256,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             return;
         } else if ("loadQuery".equals(selectedAction)
                 || "loadExecute".equals(selectedAction)) {
-            getQueryForm().setQuery(null, geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy);
+            getQueryForm().setQuery(null, geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy,
+                    copyNumberPlatformsWithCghCallInStudy);
             validateExecuteQuery(); 
         } else if (EXECUTE_QUERY.equals(selectedAction)) {
             validateExecuteQuery(); 
@@ -428,7 +432,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     }
 
     private String createNewQuery() {
-        getQueryForm().createQuery(getStudySubscription(), geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy);
+        getQueryForm().createQuery(getStudySubscription(), geneExpressionPlatformsInStudy,
+                copyNumberPlatformsInStudy, copyNumberPlatformsWithCghCallInStudy);
         resetQueryResult();
         return SUCCESS;
     }
@@ -709,7 +714,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
 
     private void ensureQueryIsLoaded() {
         if (getQueryForm().getQuery() == null) {
-            getQueryForm().setQuery(getQueryById(), geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy);
+            getQueryForm().setQuery(getQueryById(), geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy,
+                    copyNumberPlatformsWithCghCallInStudy);
             getQueryForm().setOrgQueryName(getQueryForm().getQuery().getName());
         }
     }
@@ -764,7 +770,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         setQueryId(query.getId());
         getStudySubscription().getQueryCollection().add(query);
         getWorkspaceService().saveUserWorkspace(getWorkspace());
-        getQueryForm().setQuery(getQueryById(), geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy);
+        getQueryForm().setQuery(getQueryById(), geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy,
+                copyNumberPlatformsWithCghCallInStudy);
         getQueryForm().setOrgQueryName(getQueryForm().getQuery().getName());
         return SUCCESS;
     }
@@ -779,7 +786,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         getStudySubscription().getQueryCollection().remove(query);
         queryManagementService.delete(query);
         getWorkspaceService().saveUserWorkspace(getWorkspace());
-        getQueryForm().createQuery(getStudySubscription(), geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy);
+        getQueryForm().createQuery(getStudySubscription(), geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy,
+                copyNumberPlatformsWithCghCallInStudy);
         resetQueryResult();
         return SUCCESS;
     }

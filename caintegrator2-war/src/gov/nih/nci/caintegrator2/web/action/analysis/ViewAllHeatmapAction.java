@@ -143,7 +143,7 @@ public class ViewAllHeatmapAction extends AbstractViewAllAction implements Servl
      */
     @Override
     void init() {
-        getQueryForm().createQuery(getStudySubscription(), null, getCopyNumberPlatformsInStudy());
+        getQueryForm().createQuery(getStudySubscription(), null, getCopyNumberPlatformsInStudy(), null);
         if (!getCopyNumberPlatformsInStudy().isEmpty()) {
             setCopyNumberPlatformName(getCopyNumberPlatformsInStudy().iterator().next());
         }

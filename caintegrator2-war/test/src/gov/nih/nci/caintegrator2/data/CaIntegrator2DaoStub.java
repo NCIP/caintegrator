@@ -346,7 +346,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public void removeObjects(Collection objects) {
         removeObjectsCalled = true;
     }
@@ -364,7 +364,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return new StudyLogo();
     }
 
-    @SuppressWarnings({"PMD", "unchecked", "rawtypes"})
+    @SuppressWarnings({"PMD", "unchecked"})
     public <T> List<T> retrieveUniqueValuesForStudyAnnotation(Study study, AnnotationDefinition definition,
             EntityTypeEnum entityType, Class<T> objectClass) {
         List values = new ArrayList();

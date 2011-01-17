@@ -99,6 +99,7 @@ enum CriterionTypeEnum {
     GENE_NAME,
     EXPRESSION_LEVEL,
     FOLD_CHANGE,
-    SEGMENTATION;
+    SEGMENTATION,
+    CGHCALL;
 
 }
