@@ -171,18 +171,20 @@ public interface AnalysisFileManager {
      * Creates the IGV Segment Data file for the given segment datas.
      * @param segmentDatas segment data.
      * @param sessionId directory will be based on this.
+     * @param isUseCGHCall whether or not to use CGH call for the segmentation file.
      * @return the file.
      */
-    File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId);
+    File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId, boolean isUseCGHCall);
     
     /**
      * Stores the IGV Segment Data File for the study with platform name.
      * @param segmentDatas segment data.
      * @param study the study.
      * @param platformName the platform name.
+     * @param isUseCGHCall whether or not to use CGH call for the segmentation file.
      * @return the file.
      */
-    File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName);
+    File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName, boolean isUseCGHCall);
     
     /**
      * Creates the IGV Sample Classification File for the given query result.

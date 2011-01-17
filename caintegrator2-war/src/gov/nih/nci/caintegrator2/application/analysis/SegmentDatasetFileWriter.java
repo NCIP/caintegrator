@@ -111,14 +111,15 @@ public final class SegmentDatasetFileWriter {
      * Writes a segmentDataset to the given file path.
      * @param dataset object representing the list of segment data.
      * @param segFilePath path to write file.
+     * @param isUseCGHCall whether or not to use CGH call for the segmentation file.
      * @return written SEG file.
      */
-    public static File writeAsSegFile(Collection<SegmentData> dataset, String segFilePath) {
+    public static File writeAsSegFile(Collection<SegmentData> dataset, String segFilePath, boolean isUseCGHCall) {
         File segFile = new File(segFilePath);
         try {
             FileWriter writer = new FileWriter(segFile);
             writer.write(IGV_SEG_HEADER);
-            writeData(writer, dataset);
+            writeData(writer, dataset, isUseCGHCall);
             writer.flush();
             writer.close();
             return segFile;
@@ -127,7 +128,8 @@ public final class SegmentDatasetFileWriter {
         }
     }
 
-    private static void writeData(FileWriter writer, Collection<SegmentData> dataset) throws IOException {
+    private static void writeData(FileWriter writer, Collection<SegmentData> dataset, 
+            boolean isUseCGHCall) throws IOException {
         for (SegmentData segmentData : dataset) {
             writer.write(segmentData.getArrayData().getSample().getName());
             writer.write(TAB);
@@ -137,7 +139,11 @@ public final class SegmentDatasetFileWriter {
             writer.write(TAB);
             writer.write(segmentData.getLocation().getEndPosition().toString());
             writer.write(TAB);
-            writer.write(segmentData.getSegmentValue().toString());
+            if (isUseCGHCall) {
+                writer.write(segmentData.getCallsValue());
+            } else {
+                writer.write(segmentData.getSegmentValue().toString());
+            }
             writer.write(NEW_LINE);
         }
     }

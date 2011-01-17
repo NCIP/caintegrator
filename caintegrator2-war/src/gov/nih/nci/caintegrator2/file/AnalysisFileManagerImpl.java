@@ -161,18 +161,19 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
     /**
      * {@inheritDoc}
      */
-    public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId) {
+    public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId, boolean isUseCGHCall) {
         return segmentDatas.isEmpty() ? null : SegmentDatasetFileWriter.writeAsSegFile(segmentDatas,
                 new File(getIGVDirectory(sessionId).getAbsolutePath() + File.separator
-                        + IGVFileTypeEnum.SEGMENTATION.getFilename()).getAbsolutePath());
+                        + IGVFileTypeEnum.SEGMENTATION.getFilename()).getAbsolutePath(), isUseCGHCall);
     }
 
     /**
      * {@inheritDoc}
      */
-    public File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName) {
+    public File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName, 
+            boolean isUseCGHCall) {
         return segmentDatas.isEmpty() ? null : SegmentDatasetFileWriter.writeAsSegFile(segmentDatas,
-                retrieveIGVFile(study, IGVFileTypeEnum.SEGMENTATION, platformName).getAbsolutePath());
+                retrieveIGVFile(study, IGVFileTypeEnum.SEGMENTATION, platformName).getAbsolutePath(), isUseCGHCall);
     }
     
     /**
