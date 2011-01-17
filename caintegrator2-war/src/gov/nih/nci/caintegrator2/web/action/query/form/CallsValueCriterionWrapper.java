@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 
 import java.util.List;
 
@@ -110,6 +111,7 @@ public class CallsValueCriterionWrapper extends AbstractCopyNumberCoordinateWrap
 
     CallsValueCriterionWrapper(CopyNumberAlterationCriterion criterion, AbstractCriterionRow row) {
         super(row, criterion);
+        criterion.setCopyNumberCriterionType(CopyNumberCriterionTypeEnum.CALLS_VALUE);
         setMinNumberParameters(1);
         if (isStudyHasMultipleCopyNumberPlatformsWithCghCall()) {
             getParameters().add(createPlatformNameParameter(getCopyNumberPlatformNamesWithCghCall()));

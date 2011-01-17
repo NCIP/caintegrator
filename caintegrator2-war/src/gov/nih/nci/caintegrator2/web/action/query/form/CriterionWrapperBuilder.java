@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.DateComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.ExpressionLevelCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
@@ -147,7 +148,11 @@ public final class CriterionWrapperBuilder {
             GeneNameCriterion geneNameCriterion = (GeneNameCriterion) criterion;
             return new GeneNameCriterionWrapper(geneNameCriterion, row);
         } else if (criterion instanceof CopyNumberAlterationCriterion) {
-            return new SegmentCriterionWrapper((CopyNumberAlterationCriterion) criterion, row);
+            if (CopyNumberCriterionTypeEnum.SEGMENT_VALUE.equals(
+                    ((CopyNumberAlterationCriterion) criterion).getCopyNumberCriterionType())) {
+                return new SegmentCriterionWrapper((CopyNumberAlterationCriterion) criterion, row);
+            }
+            return new CallsValueCriterionWrapper((CopyNumberAlterationCriterion) criterion, row);
         } else {
             throw new IllegalArgumentException("Illegal criterion type " + criterion.getClass());
         }

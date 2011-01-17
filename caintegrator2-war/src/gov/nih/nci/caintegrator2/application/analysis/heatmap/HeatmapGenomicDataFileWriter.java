@@ -198,7 +198,13 @@ public class HeatmapGenomicDataFileWriter {
             segmentDataWrapper.setChromosome(segmentData.getLocation().getChromosome());
             segmentDataWrapper.setNumberOfMarkers(segmentData.getNumberOfMarkers());
             segmentDataWrapper.setSampleIdentifier(segmentData.getArrayData().getSample().getName());
-            segmentDataWrapper.setSegmentValue(segmentData.getSegmentValue());
+            if (parameters.isUseCGHCall()) {
+                if (segmentData.getCallsValue() != null) {
+                    segmentDataWrapper.setSegmentValue(Float.valueOf(segmentData.getCallsValue()));
+                }
+            } else {
+                segmentDataWrapper.setSegmentValue(segmentData.getSegmentValue());
+            }
             segmentDataWrapper.setStartPosition(segmentData.getLocation().getStartPosition());
             segmentDataWrapper.setStopPosition(segmentData.getLocation().getEndPosition());
             segmentDataWrappers.add(segmentDataWrapper);
