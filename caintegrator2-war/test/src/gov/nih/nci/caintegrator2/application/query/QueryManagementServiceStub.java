@@ -261,5 +261,10 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public Query retrieveQueryToExecute(Query query) throws InvalidCriterionException {
         return query;
     }
+
+    public Set<String> retrieveCopyNumberPlatformsWithCghCallForStudy(Study study) {
+        retrieveCopyNumberPlatformsForStudyCalled = true;
+        return new HashSet<String>();
+    }
     
 }

@@ -281,7 +281,7 @@ public class DisplayableUserWorkspace {
             setQueryResult(null);
             setGenomicDataQueryResult(null);
             setCopyNumberQueryResult(null);
-            getQueryForm().setQuery(null, null, null);
+            getQueryForm().setQuery(null, null, null, null);
         }
         this.currentStudySubscriptionId = currentStudySubscriptionId;
         putCurrentStudyOnValueStack();

@@ -253,6 +253,23 @@ public class ArrayDataServiceImpl implements ArrayDataService {
         }
         return allPlatforms;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<Platform> getPlatformsWithCghCallInStudy(Study study, PlatformDataTypeEnum sourceType) {
+        List<Platform> allPlatforms = new ArrayList<Platform>();
+        for (GenomicDataSourceConfiguration genomicSource : study.getStudyConfiguration().getGenomicDataSources()) {
+            if (sourceType.equals(genomicSource.getDataType())
+                    && genomicSource.isUseCghCall()) {
+                allPlatforms.addAll(dao.retrievePlatformsForGenomicSource(genomicSource));    
+            }
+        }
+        if (allPlatforms.size() > 1) {
+            Collections.sort(allPlatforms);
+        }
+        return allPlatforms;
+    }
      
     /**
      * {@inheritDoc}

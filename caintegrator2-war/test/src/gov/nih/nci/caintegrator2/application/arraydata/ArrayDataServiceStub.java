@@ -295,4 +295,15 @@ public class ArrayDataServiceStub implements ArrayDataService {
         return new GeneLocationConfiguration();
     }
 
+    public List<Platform> getPlatformsWithCghCallInStudy(Study study, PlatformDataTypeEnum sourceType) {
+        List<Platform> platforms = new ArrayList<Platform>();
+        for (int x = 0; x < numberPlatformsInStudy; x++) {
+            Platform platform = new Platform();
+            platform.setName(String.valueOf(x));
+            platforms.add(platform);
+            
+        }
+        return platforms;
+    }
+
 }

@@ -85,7 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicIntervalTypeEnum;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -97,67 +99,98 @@ import com.opensymphony.xwork2.ValidationAware;
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity",
     "PMD.ConstructorCallsOverridableMethod" })  // bogus error; mistakenly thinks isValid is called
-public class SegmentCriterionWrapper extends AbstractCopyNumberCoordinateWrapper {
+abstract class AbstractCopyNumberCoordinateWrapper extends AbstractGenomicCriterionWrapper {
+
+    private int minNumberParameters;
+
+    private final CopyNumberAlterationCriterion criterion;
 
     /**
-     * The gene name label.
+     * {@inheritDoc}
      */
-    public static final String FIELD_NAME = "Segmentation";
-
-    SegmentCriterionWrapper(AbstractCriterionRow row) {
-        this(new CopyNumberAlterationCriterion(), row);
+    @Override
+    AbstractGenomicCriterion getAbstractGenomicCriterion() {
+        return criterion;
     }
 
-    SegmentCriterionWrapper(CopyNumberAlterationCriterion criterion, AbstractCriterionRow row) {
-        super(row, criterion);
-        setMinNumberParameters(2);
-        if (isStudyHasMultipleCopyNumberPlatforms()) {
-            getParameters().add(createPlatformNameParameter(getCopyNumberPlatformNames()));
-            setMinNumberParameters(3);
+    /**
+     * @return the minNumberParameters
+     */
+    protected int getMinNumberParameters() {
+        return minNumberParameters;
+    }
+
+    /**
+     * @param minNumberParameters the minNumberParameters to set
+     */
+    protected void setMinNumberParameters(int minNumberParameters) {
+        this.minNumberParameters = minNumberParameters;
+    }
+
+    /**
+     * @param row
+     */
+    AbstractCopyNumberCoordinateWrapper(AbstractCriterionRow row, CopyNumberAlterationCriterion criterion) {
+        super(row);
+        this.criterion = criterion;
+    }
+
+    abstract String getFieldName();
+    abstract CriterionTypeEnum getCriterionType();
+
+    protected SelectListParameter<GenomicIntervalTypeEnum> createIntervalTypeParameter() {
+        OptionList<GenomicIntervalTypeEnum> options = new OptionList<GenomicIntervalTypeEnum>();
+        options.addOption(GenomicIntervalTypeEnum.GENE_NAME.getValue(), GenomicIntervalTypeEnum.GENE_NAME);
+        options.addOption(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES.getValue(),
+                GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES);
+        ValueSelectedHandler<GenomicIntervalTypeEnum> handler = new ValueSelectedHandler<GenomicIntervalTypeEnum>() {
+            public void valueSelected(GenomicIntervalTypeEnum value) {
+                criterion.setGenomicIntervalType(value);
+                setIntervalParameters();
+            }
+        };
+        SelectListParameter<GenomicIntervalTypeEnum> intervalTypeParameter = 
+            new SelectListParameter<GenomicIntervalTypeEnum>(getParameters().size(), getRow().getRowIndex(), 
+                    options, handler, criterion.getGenomicIntervalType());
+        intervalTypeParameter.setLabel("Genome Interval");
+        intervalTypeParameter.setUpdateFormOnChange(true);
+        return intervalTypeParameter;
+    }
+
+    protected void setIntervalParameters() {
+        removeExistingIntervalParameters();
+        addIntervalParameters();
+    }
+
+    private void removeExistingIntervalParameters() {
+        int paramLastIndex = getParameters().size() - 1;
+        for (int i = paramLastIndex; i > getMinNumberParameters(); i--) {
+            getParameters().remove(i);
         }
-        getParameters().add(createUpperLimitParameter());
-        getParameters().add(createLowerLimitParameter());
-        getParameters().add(createIntervalTypeParameter());
-        setIntervalParameters();
+    }
+
+    private void addIntervalParameters() {
+        switch (criterion.getGenomicIntervalType()) {
+        case GENE_NAME:
+            getParameters().add(createGeneSymbolParameter());
+            break;
+        case CHROMOSOME_COORDINATES:
+            getParameters().add(createChromosomeNumberParameter());
+            getParameters().add(createFromCoordinateParameter());
+            getParameters().add(createToCoordinateParameter());
+            break;
+        default:
+            return;    
+        }
     }
 
     /**
-     * {@inheritDoc}
+     * @return
      */
-    @Override
-    String getFieldName() {
-        return FIELD_NAME;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    CriterionTypeEnum getCriterionType() {
-        return CriterionTypeEnum.SEGMENTATION;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void updateControlParameters() {
-        // no-op, no control parameters for segmentation criterion.
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected boolean platformParameterUpdateOnChange() {
-        return false;
-    }
-    
-    @SuppressWarnings("PMD.CyclomaticComplexity")
-    private TextFieldParameter createUpperLimitParameter() {
-        final String label = "Segment Mean Value <=";
+    private AbstractCriterionParameter createToCoordinateParameter() {
+        final String label = "To";
         TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
-                getRow().getRowIndex(), getCopyNumberAlterationCriterion().getDisplayUpperLimit());
+                getRow().getRowIndex(), criterion.getDisplayChromosomeCoordinateHigh());
         textParameter.setLabel(label);
         ValueHandler valueChangeHandler = new ValueHandlerAdapter() {
 
@@ -167,15 +200,15 @@ public class SegmentCriterionWrapper extends AbstractCopyNumberCoordinateWrapper
 
             public void validate(String formFieldName, String value, ValidationAware action) {
                 if (!isValid(value)) {
-                    action.addActionError("Numeric value required or blank for " + label);
+                    action.addActionError("Numeric value required for " + label);
                 }
             }
 
             public void valueChanged(String value) {
                 if (StringUtils.isBlank(value)) {
-                    getCopyNumberAlterationCriterion().setUpperLimit(null);
+                    criterion.setChromosomeCoordinateHigh(null);
                 } else {
-                    getCopyNumberAlterationCriterion().setUpperLimit(Float.valueOf(value));
+                    criterion.setChromosomeCoordinateHigh(Integer.valueOf(value));
                 }
             }
         };
@@ -183,11 +216,13 @@ public class SegmentCriterionWrapper extends AbstractCopyNumberCoordinateWrapper
         return textParameter;
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
-    private TextFieldParameter createLowerLimitParameter() {
-        final String label = "Segment Mean Value >=";
+    /**
+     * @return
+     */
+    private AbstractCriterionParameter createFromCoordinateParameter() {
+        final String label = "From";
         TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
-                getRow().getRowIndex(), getCopyNumberAlterationCriterion().getDisplayLowerLimit());
+                getRow().getRowIndex(), criterion.getDisplayChromosomeCoordinateLow());
         textParameter.setLabel(label);
         ValueHandler valueChangeHandler = new ValueHandlerAdapter() {
 
@@ -197,20 +232,55 @@ public class SegmentCriterionWrapper extends AbstractCopyNumberCoordinateWrapper
 
             public void validate(String formFieldName, String value, ValidationAware action) {
                 if (!isValid(value)) {
-                    action.addActionError("Numeric value required or blank for " + label);
+                    action.addActionError("Numeric value required for " + label);
                 }
             }
 
             public void valueChanged(String value) {
                 if (StringUtils.isBlank(value)) {
-                    getCopyNumberAlterationCriterion().setLowerLimit(null);
+                    criterion.setChromosomeCoordinateLow(null);
                 } else {
-                    getCopyNumberAlterationCriterion().setLowerLimit(Float.valueOf(value));
+                    criterion.setChromosomeCoordinateLow(Integer.valueOf(value));
                 }
             }
         };
         textParameter.setValueHandler(valueChangeHandler);
         return textParameter;
+    }
+
+    /**
+     * @return
+     */
+    private AbstractCriterionParameter createChromosomeNumberParameter() {
+        final String label = "Chromosome Number";
+        TextFieldParameter textParameter = new TextFieldParameter(getParameters().size(),
+                getRow().getRowIndex(), criterion.getChromosomeNumber());
+        textParameter.setLabel(label);
+        ValueHandler valueChangeHandler = new ValueHandlerAdapter() {
+
+            public boolean isValid(String value) {
+                return !StringUtils.isBlank(value);
+            }
+
+            public void validate(String formFieldName, String value, ValidationAware action) {
+                if (!isValid(value)) {
+                    action.addActionError("Chromosome number value required for " + label);
+                }
+            }
+
+            public void valueChanged(String value) {
+                criterion.setChromosomeNumber(value);
+            }
+        };
+        textParameter.setValueHandler(valueChangeHandler);
+        return textParameter;
+    }
+
+    /**
+     * @return the criterion
+     */
+    protected CopyNumberAlterationCriterion getCopyNumberAlterationCriterion() {
+        return criterion;
     }
 
 }

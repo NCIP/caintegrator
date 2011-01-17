@@ -134,7 +134,8 @@ public class ViewAllIGVAction extends AbstractViewAllAction {
      */
     @Override
     void init() {
-        getQueryForm().createQuery(getStudySubscription(), expressionPlatformsInStudy, getCopyNumberPlatformsInStudy());
+        getQueryForm().createQuery(getStudySubscription(), expressionPlatformsInStudy, getCopyNumberPlatformsInStudy(),
+                null);
         if (!expressionPlatformsInStudy.isEmpty()) {
             expressionPlatformName = expressionPlatformsInStudy.iterator().next();
         }

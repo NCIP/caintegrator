@@ -85,110 +85,78 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.DateComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.DateComparisonOperatorEnum;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * Contains and manages a gene expression criterion.
+ * 
  */
-public class CopyNumberCriterionRow extends AbstractCriterionRow {
+public class DateComparisonCriterionWrapperTest {
 
-    private AbstractGenomicCriterionWrapper genomicCriterionWrapper;
-    private final Study study;
+    DateComparisonCriterionWrapper wrapper;
 
-    CopyNumberCriterionRow(Study study, CriteriaGroup criteriaGroup) {
-        super(criteriaGroup);
-        this.study = study;
+    @Before
+    public void setUp() {
+        DateComparisonCriterion criterion = new DateComparisonCriterion();
+        QueryForm queryForm = new QueryForm();
+        Query query = new Query();
+        query.setSubscription(new StudySubscription());
+        query.getSubscription().setStudy(new Study());
+        query.getSubscription().getStudy().setStudyConfiguration(new StudyConfiguration());
+        queryForm.setQuery(query, null, null, null);
+        queryForm.getQuery().setCompoundCriterion(new CompoundCriterion());
+        AnnotationCriterionRow row = new AnnotationCriterionRow(new CriteriaGroup(queryForm), "testGroup");
+        wrapper = new DateComparisonCriterionWrapper(criterion, row);
+    }
+    
+    /**
+     * Test method for {@link gov.nih.nci.caintegrator2.web.action.query.form.DateComparisonCriterionWrapper#getCriterionType()}.
+     */
+    @Test
+    public void testGetCriterionType() {
+        assertEquals(CriterionTypeEnum.DATE_COMPARISON, wrapper.getCriterionType());
     }
 
     /**
-     * {@inheritDoc}
+     * Test method for {@link gov.nih.nci.caintegrator2.web.action.query.form.DateComparisonCriterionWrapper#getAbstractAnnotationCriterion()}.
      */
-    @Override
-    public List<String> getAvailableFieldNames() {
-        List<String> fieldNames = new ArrayList<String>();
-        fieldNames.add(GeneNameCriterionWrapper.FIELD_NAME);
-        fieldNames.add(SegmentCriterionWrapper.FIELD_NAME);
-        if (study.hasCghCalls()) {
-            fieldNames.add(CallsValueCriterionWrapper.FIELD_NAME);
-        }
-        return fieldNames;
+    @Test
+    public void testGetAbstractAnnotationCriterion() {
+        assertTrue(wrapper.getAbstractAnnotationCriterion() instanceof DateComparisonCriterion);
     }
 
     /**
-     * {@inheritDoc}
+     * Test method for {@link gov.nih.nci.caintegrator2.web.action.query.form.DateComparisonCriterionWrapper#getAvailableOperators()}.
      */
-    @Override
-    public AbstractCriterion getCriterion() {
-        if (getGenomicCriterionWrapper() != null) {
-            return getGenomicCriterionWrapper().getCriterion();
-        } else {
-            return null;
-        }
+    @Test
+    public void testGetAvailableOperators() {
+        assertEquals(5, wrapper.getAvailableOperators().length);
     }
 
     /**
-     * {@inheritDoc}
+     * Test method for {@link gov.nih.nci.caintegrator2.web.action.query.form.DateComparisonCriterionWrapper#getOperator()}.
      */
-    @Override
-    public String getFieldName() {
-        if (getGenomicCriterionWrapper() != null) {
-            return getGenomicCriterionWrapper().getFieldName();
-        } else {
-            return null;
-        }
-    }
-
-    void handleFieldNameChange(String fieldName) {
-        if (StringUtils.isBlank(fieldName)) {
-            setGenomicCriterionWrapper(null);
-        } else if (fieldName.equals(GeneNameCriterionWrapper.FIELD_NAME)) {
-            setGenomicCriterionWrapper(new GeneNameCriterionWrapper(this, GenomicCriterionTypeEnum.COPY_NUMBER));
-        } else if (fieldName.equals(SegmentCriterionWrapper.FIELD_NAME)) {
-            setGenomicCriterionWrapper(new SegmentCriterionWrapper(this));
-        } else if (fieldName.equals(CallsValueCriterionWrapper.FIELD_NAME)) {
-            setGenomicCriterionWrapper(new CallsValueCriterionWrapper(this));
-        } else {
-            throw new IllegalArgumentException("Unsupported genomic field name " + fieldName);
-        }
-    }
-
-    private AbstractGenomicCriterionWrapper getGenomicCriterionWrapper() {
-        return genomicCriterionWrapper;
-    }
-
-    private void setGenomicCriterionWrapper(AbstractGenomicCriterionWrapper genomicCriterionWrapper) {
-        if (this.genomicCriterionWrapper != null) {
-            removeCriterionFromQuery();
-        }
-        this.genomicCriterionWrapper = genomicCriterionWrapper;
-        if (genomicCriterionWrapper != null) {
-            addCriterionToQuery();
-        }
-    }
-
-    @Override
-    AbstractCriterionWrapper getCriterionWrapper() {
-        return getGenomicCriterionWrapper();
-    }
-
-    @Override
-    void setCriterion(AbstractCriterion criterion) {
-        this.genomicCriterionWrapper = CriterionWrapperBuilder.createGenomicCriterionWrapper(criterion, this, study);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getRowType() {
-        return CriterionRowTypeEnum.COPY_NUMBER.getValue();
+    @Test
+    public void testGetOperator() {
+        assertNull(wrapper.getOperator());
+        wrapper.operatorChanged(null, null);
+        DateComparisonCriterion criterion = (DateComparisonCriterion) wrapper.getCriterion();
+        assertNull(criterion.getDateComparisonOperator());
+        criterion.setDateComparisonOperator(DateComparisonOperatorEnum.EQUAL);
+        assertEquals(CriterionOperatorEnum.EQUALS, wrapper.getOperator());
+        wrapper.operatorChanged(null, CriterionOperatorEnum.LESS_THAN);
+        assertEquals(CriterionOperatorEnum.LESS_THAN, wrapper.getOperator());
     }
 
 }

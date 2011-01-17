@@ -727,4 +727,11 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     public void setHighVarianceThreshold(Double highVarianceThreshold) {
         this.highVarianceThreshold = highVarianceThreshold;
     }
+    
+    /**
+     * @return isUseCghCall
+     */
+    public boolean isUseCghCall() {
+        return isCopyNumberData() && dnaAnalysisDataConfiguration.isUseCghCall();
+    }
 }

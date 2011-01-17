@@ -246,6 +246,14 @@ public class Study extends AbstractCaIntegrator2Object {
     }
 
     /**
+     * @return the boolean of whether the study has Copy Number data
+     */
+    public boolean hasCghCalls() {
+        return studyConfiguration != null
+            && studyConfiguration.hasCghCalls();
+    }
+
+    /**
      * @return the boolean of whether the study has SNP data
      */
     public boolean hasSnpData() {
