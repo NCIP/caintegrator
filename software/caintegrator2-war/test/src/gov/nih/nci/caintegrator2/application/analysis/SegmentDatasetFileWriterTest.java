@@ -112,7 +112,7 @@ public class SegmentDatasetFileWriterTest {
     public void testWriteAsSegFile() throws IOException {
         List<SegmentData> result = createTestResult();
         String testFilePath = System.getProperty("java.io.tmpdir") + File.separator + "segTest.seg";
-        File segFile = SegmentDatasetFileWriter.writeAsSegFile(result, testFilePath);
+        File segFile = SegmentDatasetFileWriter.writeAsSegFile(result, testFilePath, false);
         segFile.deleteOnExit();
         checkFile(segFile, result);
     }

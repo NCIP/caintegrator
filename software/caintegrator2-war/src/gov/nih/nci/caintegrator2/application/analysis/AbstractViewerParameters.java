@@ -97,6 +97,7 @@ public abstract class AbstractViewerParameters {
     private String sessionId; 
     private String urlPrefix;
     private boolean viewAllData = false;
+    private boolean useCGHCall = false;
     
     /**
      * @return the viewAllIGV
@@ -110,6 +111,20 @@ public abstract class AbstractViewerParameters {
      */
     public void setViewAllData(boolean viewAllData) {
         this.viewAllData = viewAllData;
+    }
+
+    /**
+     * @return the useCGHCall
+     */
+    public boolean isUseCGHCall() {
+        return useCGHCall;
+    }
+
+    /**
+     * @param useCGHCall the useCGHCall to set
+     */
+    public void setUseCGHCall(boolean useCGHCall) {
+        this.useCGHCall = useCGHCall;
     }
 
     /**

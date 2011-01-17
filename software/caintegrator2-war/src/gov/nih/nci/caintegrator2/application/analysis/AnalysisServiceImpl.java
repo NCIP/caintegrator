@@ -472,7 +472,8 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
                     createGeneExpressionFile(igvParameters.getStudySubscription(), platform));
             } else if (platform.getPlatformConfiguration().getPlatformType().isCopyNumber()) {
                 igvResult.setSegmentationFile(
-                    createIGVSegmentationFile(igvParameters.getStudySubscription(), platform));
+                    createIGVSegmentationFile(igvParameters.getStudySubscription(), platform, 
+                            igvParameters.isUseCGHCall()));
             }
             refreshedPlatforms.add(getRefreshedEntity(platform));
         }
@@ -500,7 +501,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
             try {
                 igvResult.setSegmentationFile(analysisFileManager.createIGVSegFile(
                     createSegmentDataset(igvParameters.getStudySubscription(), queries, null, null),
-                    igvParameters.getSessionId()));
+                    igvParameters.getSessionId(), igvParameters.isUseCGHCall()));
                 igvParameters.addPlatform(queryToExecute.getCopyNumberPlatform());
             } catch (InvalidCriterionException e) {
                 igvResult.setSegmentationFile(null);
@@ -596,7 +597,8 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         return gctFile;
     }
 
-    private File createIGVSegmentationFile(StudySubscription studySubscription, Platform platform) {
+    private File createIGVSegmentationFile(StudySubscription studySubscription, Platform platform, 
+            boolean isUseCGHCall) {
         File segFile = null;
         segFile = analysisFileManager.retrieveIGVFile(
                 studySubscription.getStudy(), IGVFileTypeEnum.SEGMENTATION,
@@ -606,7 +608,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
                 segFile = analysisFileManager.createIGVSegFile(
                     createSegmentDataset(studySubscription, new HashSet<Query>(),
                             platform.getName(), null),
-                    studySubscription.getStudy(), platform.getName());
+                    studySubscription.getStudy(), platform.getName(), isUseCGHCall);
             } catch (InvalidCriterionException e) {
                 return null;
             }
@@ -624,7 +626,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
             createGeneExpressionFile(studySubscription, platform);
         }
         if (platform.getPlatformConfiguration().getPlatformType().isCopyNumber()) {
-            createIGVSegmentationFile(studySubscription, platform);
+            createIGVSegmentationFile(studySubscription, platform, false);
             heatmapParameters.setPlatform(platform);
             generateHeatmapGenomicFileAllData(heatmapParameters, new HeatmapResult());
         }

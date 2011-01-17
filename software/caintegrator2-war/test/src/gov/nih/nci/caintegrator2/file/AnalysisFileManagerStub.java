@@ -170,7 +170,7 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
         return retrieveTmpFile();
     }
 
-    public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId) {
+    public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId, boolean isUseCGHCall) {
         createIGVSegFileCalled = true;
         return retrieveTmpFile();
     }
@@ -190,7 +190,7 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
         return retrieveTmpFile();
     }
 
-    public File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName) {
+    public File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName, boolean isUseCGHCall) {
         createIGVSegFileCalled = true;
         return retrieveTmpFile();
     }
