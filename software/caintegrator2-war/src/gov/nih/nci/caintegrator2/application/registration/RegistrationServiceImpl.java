@@ -178,7 +178,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         return ldapContextParams;
     }
     
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "unchecked" })
     private XMLLoginConfigImpl retrieveConfigFile() {
         try {
             XMLLoginConfigImpl config = (XMLLoginConfigImpl) java.security.AccessController

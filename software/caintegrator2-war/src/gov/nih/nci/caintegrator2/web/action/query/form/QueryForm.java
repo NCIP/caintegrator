@@ -110,6 +110,7 @@ import com.opensymphony.xwork2.ValidationAware;
 /**
  * Top-level UI element for query management.
  */
+@SuppressWarnings("PMD.TooManyFields")
 public class QueryForm {
     
     private Query query;
@@ -117,6 +118,7 @@ public class QueryForm {
     private final List<String> annotationGroupNames = new ArrayList<String>();
     private final List<String> geneExpressionPlatformNames = new ArrayList<String>();
     private final List<String> copyNumberPlatformNames = new ArrayList<String>();
+    private final List<String> copyNumberPlatformNamesWithCghCall = new ArrayList<String>();
     private final Map<String, AnnotationFieldDescriptorList> annotationGroupMap = 
         new HashMap<String, AnnotationFieldDescriptorList>();
     private CriteriaGroup criteriaGroup;
@@ -126,6 +128,7 @@ public class QueryForm {
     private boolean studyHasSavedLists = false;
     private boolean studyHasMultipleGeneExpressionPlatforms = false;
     private boolean studyHasMultipleCopyNumberPlatforms = false;
+    private boolean studyHasMultipleCopyNumberPlatformsWithCghCall = false;
     
     private String genomicPreviousSorting;
     private int genomicSortingOrder = -1;
@@ -136,9 +139,11 @@ public class QueryForm {
      * @param subscription query belongs to this subscription
      * @param geneExpressionPlatformsInStudy the gene expression platforms in the study (null if unknown)
      * @param copyNumberPlatformsInStudy the copy number platforms in the study (null if unknown)
+     * @param copyNumberPlatformsWithCghCallInStudy the copy number platforms with CghCall in the study
+     *           (null if unknown)
      */
     public void createQuery(StudySubscription subscription, Set<String> geneExpressionPlatformsInStudy,
-            Set<String> copyNumberPlatformsInStudy) {
+            Set<String> copyNumberPlatformsInStudy, Set<String> copyNumberPlatformsWithCghCallInStudy) {
         query = new Query();
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
@@ -146,19 +151,23 @@ public class QueryForm {
         query.setColumnCollection(new HashSet<ResultColumn>());
         query.setSubscription(subscription);
         query.setResultType(ResultTypeEnum.CLINICAL);
-        setQuery(query, geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy);
+        setQuery(query, geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy,
+                copyNumberPlatformsWithCghCallInStudy);
         setResultConfiguration(new ResultConfiguration(this));
     }
 
-    private void initialize(Set<String> geneExpressionPlatformsInStudy, Set<String> copyNumberPlatformsInStudy) {
+    private void initialize(Set<String> geneExpressionPlatformsInStudy, Set<String> copyNumberPlatformsInStudy,
+            Set<String> copyNumberPlatformsWithCghCallInStudy) {
         studyHasMultipleGeneExpressionPlatforms = false;
         studyHasMultipleCopyNumberPlatforms = false;
+        studyHasMultipleCopyNumberPlatformsWithCghCall = false;
         geneExpressionPlatformNames.clear();
         copyNumberPlatformNames.clear();
         if (query != null) {
             Study study = getQuery().getSubscription().getStudy();
             initializeAnnotationGroups(study);
-            setupPlatforms(geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy); 
+            setupPlatforms(geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy,
+                    copyNumberPlatformsWithCghCallInStudy); 
             criteriaGroup = new CriteriaGroup(this);
             resultConfiguration = new ResultConfiguration(this);
             controlSamplesInStudy = study.getStudyConfiguration().hasControlSamples();
@@ -173,25 +182,35 @@ public class QueryForm {
         orgQueryName = "";
     }
 
-    private void setupPlatforms(Set<String> geneExpressionPlatformsInStudy, Set<String> copyNumberPlatformsInStudy) {
-        if (geneExpressionPlatformsInStudy != null && geneExpressionPlatformsInStudy.size() > 1) {
-            setupGeneExpressionPlatforms(geneExpressionPlatformsInStudy);
-        }
-        if (copyNumberPlatformsInStudy != null && copyNumberPlatformsInStudy.size() > 1) {
-            setupCopyNumberPlatforms(copyNumberPlatformsInStudy);
-        }
+    private void setupPlatforms(Set<String> geneExpressionPlatformsInStudy, Set<String> copyNumberPlatformsInStudy,
+            Set<String> copyNumberPlatformsWithCghCallInStudy) {
+        setupGeneExpressionPlatforms(geneExpressionPlatformsInStudy);
+        setupCopyNumberPlatforms(copyNumberPlatformsInStudy);
+        setupCopyNumberPlatformsWithCghCall(copyNumberPlatformsWithCghCallInStudy);
     }
 
     private void setupGeneExpressionPlatforms(Set<String> geneExpressionPlatformsInStudy) {
-        studyHasMultipleGeneExpressionPlatforms = true;
-        geneExpressionPlatformNames.addAll(geneExpressionPlatformsInStudy);
-        Collections.sort(geneExpressionPlatformNames);
+        if (geneExpressionPlatformsInStudy != null && geneExpressionPlatformsInStudy.size() > 1) {
+            studyHasMultipleGeneExpressionPlatforms = true;
+            geneExpressionPlatformNames.addAll(geneExpressionPlatformsInStudy);
+            Collections.sort(geneExpressionPlatformNames);
+        }
     }
 
     private void setupCopyNumberPlatforms(Set<String> copyNumberPlatformsInStudy) {
-        studyHasMultipleCopyNumberPlatforms = true;
-        copyNumberPlatformNames.addAll(copyNumberPlatformsInStudy);
-        Collections.sort(copyNumberPlatformNames);
+        if (copyNumberPlatformsInStudy != null && copyNumberPlatformsInStudy.size() > 1) {
+            studyHasMultipleCopyNumberPlatforms = true;
+            copyNumberPlatformNames.addAll(copyNumberPlatformsInStudy);
+            Collections.sort(copyNumberPlatformNames);
+        }
+    }
+
+    private void setupCopyNumberPlatformsWithCghCall(Set<String> copyNumberPlatformsWithCghCallInStudy) {
+        if (copyNumberPlatformsWithCghCallInStudy != null && copyNumberPlatformsWithCghCallInStudy.size() > 1) {
+            studyHasMultipleCopyNumberPlatformsWithCghCall = true;
+            copyNumberPlatformNamesWithCghCall.addAll(copyNumberPlatformsWithCghCallInStudy);
+            Collections.sort(copyNumberPlatformNamesWithCghCall);
+        }
     }
     
     private void initializeAnnotationGroups(Study study) {
@@ -226,11 +245,13 @@ public class QueryForm {
      * @param q the query for the form
      * @param geneExpressionPlatformsInStudy the gene expression platforms in the study (null if unknown)
      * @param copyNumberPlatformsInStudy the copy number platforms in the study (null if unknown)
+     * @param copyNumberPlatformsWithCghCallInStudy the copy number platforms with CghCallin the study (null if unknown)
      */
     public void setQuery(Query q, Set<String> geneExpressionPlatformsInStudy,
-            Set<String> copyNumberPlatformsInStudy) {
+            Set<String> copyNumberPlatformsInStudy, Set<String> copyNumberPlatformsWithCghCallInStudy) {
         this.query = q;
-        initialize(geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy);
+        initialize(geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy,
+                copyNumberPlatformsWithCghCallInStudy);
     }
     
     AnnotationFieldDescriptorList getAnnotations(String groupName) {
@@ -444,6 +465,13 @@ public class QueryForm {
     }
 
     /**
+     * @return the studyHasMultipleCopyNumberPlatforms
+     */
+    public boolean isStudyHasMultipleCopyNumberPlatformsWithCghCall() {
+        return studyHasMultipleCopyNumberPlatformsWithCghCall;
+    }
+
+    /**
      * @return the geneExpressionPlatformNames
      */
     public List<String> getGeneExpressionPlatformNames() {
@@ -455,6 +483,13 @@ public class QueryForm {
      */
     public List<String> getCopyNumberPlatformNames() {
         return copyNumberPlatformNames;
+    }
+
+    /**
+     * @return the copyNumberPlatformNames
+     */
+    public List<String> getCopyNumberPlatformNamesWithCghCall() {
+        return copyNumberPlatformNamesWithCghCall;
     }
 
     /**

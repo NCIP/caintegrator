@@ -175,6 +175,14 @@ public interface ArrayDataService {
       * @return Platforms in the study matching the given source.
       */
      List<Platform> getPlatformsInStudy(Study study, PlatformDataTypeEnum sourceType);
+     
+     /**
+      * 
+      * @param study that the platforms exist in.
+      * @param sourceType to narrow down the platform type based on GeneExpression or CopyNumber.
+      * @return Platforms in the study matching the given source with cghCall.
+      */
+     List<Platform> getPlatformsWithCghCallInStudy(Study study, PlatformDataTypeEnum sourceType);
 
      /**
       * Returns the PlatformConfiguration of name.

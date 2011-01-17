@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
@@ -230,7 +231,7 @@ public class QueryFormTest {
 
     @Test
     public void testCreateQuery() {
-        queryForm.createQuery(subscription, null, null);
+        queryForm.createQuery(subscription, null, null, null);
         assertNotNull(queryForm.getQuery());
         assertNotNull(queryForm.getCriteriaGroup());
         assertEquals(subscription, queryForm.getQuery().getSubscription());
@@ -259,7 +260,7 @@ public class QueryFormTest {
 
     @Test
     public void testValidation() {
-        queryForm.createQuery(subscription, null, null);
+        queryForm.createQuery(subscription, null, null, null);
         CriteriaGroup group = queryForm.getCriteriaGroup();
         group.setCriterionTypeName("subjects");
         group.addCriterion(subscription.getStudy());
@@ -278,7 +279,7 @@ public class QueryFormTest {
     
     @Test
     public void testCriteriaGroup() {
-        queryForm.createQuery(subscription, null, null);
+        queryForm.createQuery(subscription, null, null, null);
         CriteriaGroup group = queryForm.getCriteriaGroup();
         assertEquals(BooleanOperatorEnum.AND.getValue(), group.getBooleanOperator());
         group.setBooleanOperator("or");
@@ -298,7 +299,7 @@ public class QueryFormTest {
         sampleSet1.setName("ControlSampleSet1");
         sampleSet1.getSamples().add(new Sample());
         getFirstGenomicSource(subscription).getControlSampleSetCollection().add(sampleSet1);
-        queryForm.createQuery(subscription, null, null);
+        queryForm.createQuery(subscription, null, null, null);
         CriteriaGroup group = queryForm.getCriteriaGroup();
         group.setCriterionTypeName("subjects");
         group.addCriterion(subscription.getStudy());
@@ -322,7 +323,7 @@ public class QueryFormTest {
     
     @Test
     public void testSubjectListRow() {
-        queryForm.createQuery(subscription, null, null);
+        queryForm.createQuery(subscription, null, null, null);
         CriteriaGroup group = queryForm.getCriteriaGroup();
         group.setCriterionTypeName(CriterionRowTypeEnum.SAVED_LIST.getValue());
         group.addCriterion(subscription.getStudy());
@@ -333,7 +334,7 @@ public class QueryFormTest {
     
     @Test
     public void testIdentifierRow() {
-        queryForm.createQuery(subscription, null, null);
+        queryForm.createQuery(subscription, null, null, null);
         CriteriaGroup group = queryForm.getCriteriaGroup();
         group.setCriterionTypeName(CriterionRowTypeEnum.UNIQUE_IDENTIIFER.getValue());
         group.addCriterion(subscription.getStudy());
@@ -358,7 +359,7 @@ public class QueryFormTest {
     @Test
     public void testCriterionRowNoSubjectLists() {
         subscription.getListCollection().clear();
-        queryForm.createQuery(subscription, null, null);
+        queryForm.createQuery(subscription, null, null, null);
         CriteriaGroup group = queryForm.getCriteriaGroup();
         group.setCriterionTypeName("subjects");
         group.addCriterion(subscription.getStudy());
@@ -373,7 +374,7 @@ public class QueryFormTest {
     @Test
     public void testCriterionRowNoControlSamples() {
         getFirstGenomicSource(subscription).getControlSampleSetCollection().clear();
-        queryForm.createQuery(subscription, null, null);
+        queryForm.createQuery(subscription, null, null, null);
         CriteriaGroup group = queryForm.getCriteriaGroup();
         group.setCriterionTypeName(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
         group.addCriterion(subscription.getStudy());
@@ -489,6 +490,14 @@ public class QueryFormTest {
         assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
         assertTrue(criterionRow.getAvailableFieldNames().contains("Segmentation"));
         
+        getFirstGenomicSource(subscription).setDataType(PlatformDataTypeEnum.COPY_NUMBER);
+        getFirstGenomicSource(subscription).setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
+        getFirstGenomicSource(subscription).getDnaAnalysisDataConfiguration().setUseCghCall(true);
+        
+        assertEquals(3, criterionRow.getAvailableFieldNames().size());
+        assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
+        assertTrue(criterionRow.getAvailableFieldNames().contains("Calls"));
+        
         assertEquals(group, criterionRow.getGroup());
         setFieldName(criterionRow, "Gene Name");
         assertEquals(4, group.getCompoundCriterion().getCriterionCollection().size());
@@ -513,6 +522,24 @@ public class QueryFormTest {
         ((TextFieldParameter) criterionRow.getParameters().get(4)).setValue("1");
         assertEquals("1", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getChromosomeNumber().toString());
         ((TextFieldParameter) criterionRow.getParameters().get(5)).setValue("2");
+        assertEquals("2", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getChromosomeCoordinateHigh().toString());
+
+        setFieldName(criterionRow, "Calls");
+        assertEquals(4, group.getCompoundCriterion().getCriterionCollection().size());
+        assertEquals("Calls", criterionRow.getFieldName());
+        assertTrue(criterionRow.getCriterion() instanceof CopyNumberAlterationCriterion);
+        ((TextFieldParameter) criterionRow.getParameters().get(2)).setValue("EGFR");
+        assertEquals("EGFR", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getGeneSymbol());
+
+        setFieldName(criterionRow, "Calls");
+        ((SelectListParameter<GenomicIntervalTypeEnum>) criterionRow.getParameters().get(1)).setValue(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES.getValue());
+        queryForm.processCriteriaChanges();
+        assertEquals(4, group.getCompoundCriterion().getCriterionCollection().size());
+        assertEquals("Calls", criterionRow.getFieldName());
+        assertTrue(criterionRow.getCriterion() instanceof CopyNumberAlterationCriterion);
+        ((TextFieldParameter) criterionRow.getParameters().get(3)).setValue("1");
+        assertEquals("1", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getChromosomeNumber().toString());
+        ((TextFieldParameter) criterionRow.getParameters().get(4)).setValue("2");
         assertEquals("2", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getChromosomeCoordinateHigh().toString());
         
     }
@@ -738,7 +765,7 @@ public class QueryFormTest {
         imageSeriesColumn.setColumnIndex(0);
         query.getColumnCollection().add(imageSeriesColumn);
         
-        queryForm.setQuery(query, null, null);
+        queryForm.setQuery(query, null, null, null);
         assertNotNull(queryForm.getQuery());
         CriteriaGroup group = queryForm.getCriteriaGroup();
         assertNotNull(group);
@@ -820,7 +847,7 @@ public class QueryFormTest {
     @Test
     public void testIsPotentialLargeQuery() {
         assertFalse(queryForm.isPotentiallyLargeQuery());
-        queryForm.createQuery(subscription, null, null);
+        queryForm.createQuery(subscription, null, null, null);
         assertFalse(queryForm.isPotentiallyLargeQuery());
         queryForm.getQuery().setResultType(ResultTypeEnum.GENE_EXPRESSION);
         assertTrue(queryForm.isPotentiallyLargeQuery());
@@ -834,7 +861,7 @@ public class QueryFormTest {
     
     @Test
     public void testResultTypes() {
-        queryForm.createQuery(subscription, null, null);
+        queryForm.createQuery(subscription, null, null, null);
         assertEquals(3, queryForm.getResultTypes().size());
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         subscription.getStudy().getStudyConfiguration().getGenomicDataSources().add(genomicSource);
@@ -846,7 +873,7 @@ public class QueryFormTest {
     
     @Test
     public void testHasGenomicDataSource() {
-        queryForm.createQuery(subscription, null, null);
+        queryForm.createQuery(subscription, null, null, null);
         assertTrue(queryForm.hasGenomicDataSources());
         queryForm.getQuery().getSubscription().getStudy().getStudyConfiguration().getGenomicDataSources().clear();
         assertFalse(queryForm.hasGenomicDataSources());

@@ -341,6 +341,18 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
         return platformsInStudy;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Set<String> retrieveCopyNumberPlatformsWithCghCallForStudy(Study study) {
+        Set<String> platformsInStudy = new HashSet<String>();
+        for (Platform platform : arrayDataService.getPlatformsWithCghCallInStudy(
+                study, PlatformDataTypeEnum.COPY_NUMBER)) {
+            platformsInStudy.add(platform.getName());
+        }
+        return platformsInStudy;
+    }
 
     /**
      * {@inheritDoc}

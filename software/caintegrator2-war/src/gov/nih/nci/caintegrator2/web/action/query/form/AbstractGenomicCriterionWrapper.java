@@ -183,11 +183,19 @@ abstract class AbstractGenomicCriterionWrapper extends AbstractCriterionWrapper 
         return getRow().getGroup().getForm().isStudyHasMultipleCopyNumberPlatforms();
     }
     
+    protected Boolean isStudyHasMultipleCopyNumberPlatformsWithCghCall() {
+        return getRow().getGroup().getForm().isStudyHasMultipleCopyNumberPlatformsWithCghCall();
+    }
+    
     protected List<String> getGeneExpressionPlatformNames() {
         return getRow().getGroup().getForm().getGeneExpressionPlatformNames();
     }
     
     protected List<String> getCopyNumberPlatformNames() {
+        return getRow().getGroup().getForm().getCopyNumberPlatformNames();
+    }
+    
+    protected List<String> getCopyNumberPlatformNamesWithCghCall() {
         return getRow().getGroup().getForm().getCopyNumberPlatformNames();
     }
 
