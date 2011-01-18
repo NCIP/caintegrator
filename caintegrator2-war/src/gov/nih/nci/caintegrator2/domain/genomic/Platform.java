@@ -218,4 +218,12 @@ public class Platform extends AbstractCaIntegrator2Object implements Comparable<
         }
         return null;
     }
+    
+    /**
+     * @return the display string of the genome version.
+     */
+    public String getDisplayGenomeVersion() {
+        GenomeBuildVersionEnum versionEnum = getGenomeVersion();
+        return versionEnum == null ? "N/A" : versionEnum.getValue();
+    }
 }

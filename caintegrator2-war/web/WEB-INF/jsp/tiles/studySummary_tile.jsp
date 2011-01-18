@@ -206,7 +206,7 @@
                     <br>
                     <s:iterator value="%{platforms}" status="platformStatus">
                         Array Platforms: <b><s:property value="name"/> </b>
-                        Genome Build: <b><s:property value="genomeVersion.value"/> </b>
+                        Genome Build: <b><s:property value="displayGenomeVersion"/> </b>
                     </s:iterator>
                 </td>
                 <td />
