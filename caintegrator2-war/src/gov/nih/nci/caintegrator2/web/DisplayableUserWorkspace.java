@@ -434,7 +434,7 @@ public class DisplayableUserWorkspace {
     }
     
     /**
-     * @return the user's queries, ordered by name.
+     * @return the user's GISTIC analysis jobs, ordered by name.
      */
     public List<GisticAnalysis> getUserGisticAnalysisList() {
         List<GisticAnalysis> gisticAnalysisList = new ArrayList<GisticAnalysis>();
