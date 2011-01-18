@@ -78,6 +78,17 @@
         <div class="selectorNote">Samples in Columns - will display a matrix of samples versus segments.<br>
                 Samples in Rows - will display the samples along the side.</div>    
     </s:elseif>
+    <s:elseif test="study.hasCghCalls()
+                        && (queryForm.resultConfiguration.resultType == 'igvViewer' 
+                            || queryForm.resultConfiguration.resultType == 'heatmapViewer')">
+        <br>
+        <div class="reporterTypeSelector">
+        <b>Preferred Copy Number Method: </b> 
+            <s:select name="displayableCopyNumberType" 
+                list="@gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum@getDisplayableValues()"
+                />
+        </div>  
+    </s:elseif>
     </div>
     
     <s:if test="queryForm.resultConfiguration.resultType == 'clinical' ||

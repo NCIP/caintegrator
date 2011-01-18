@@ -1,7 +1,9 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,6 +43,17 @@ public enum CopyNumberCriterionTypeEnum {
      */
     public void setValue(String value) {
         this.value = value;
+    }
+    
+    /**
+     * Used in the JSP's to retrieve the displayable string version of the Enum values.
+     * @return List of Displayable Strings for this enum.
+     */
+    public static List<String> getDisplayableValues() {
+        List<String> list = new ArrayList<String>();
+        list.add(CopyNumberCriterionTypeEnum.SEGMENT_VALUE.getValue());
+        list.add(CopyNumberCriterionTypeEnum.CALLS_VALUE.getValue());
+        return list;
     }
 
 

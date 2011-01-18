@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.application.study.Visibility;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
@@ -175,6 +176,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     private String genomicSortingType;
     private String genomicSortingIndex;
     private ServletContext context;
+    private CopyNumberCriterionTypeEnum copyNumberType = CopyNumberCriterionTypeEnum.SEGMENT_VALUE;
 
     /**
      * @return the genomicSortingType
@@ -582,6 +584,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         igvParameters.setStudySubscription(getStudySubscription());
         igvParameters.setSessionId(ServletActionContext.getRequest().getRequestedSessionId());
         igvParameters.setUrlPrefix(SessionHelper.getIgvSessionUrl());
+        igvParameters.setUseCGHCall(CopyNumberCriterionTypeEnum.CALLS_VALUE.equals(getCopyNumberType()));
         getDisplayableWorkspace().setIgvParameters(igvParameters);
         return "viewIGV";
     }
@@ -599,6 +602,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         heatmapParameters.setHeatmapJarUrlPrefix(SessionHelper.getCaIntegratorCommonUrl());
         heatmapParameters.setLargeBinsFile(SessionHelper.getHeatmapLargeBinsFile(context));
         heatmapParameters.setSmallBinsFile(SessionHelper.getHeatmapSmallBinsFile(context));
+        heatmapParameters.setUseCGHCall(CopyNumberCriterionTypeEnum.CALLS_VALUE.equals(getCopyNumberType()));
         getDisplayableWorkspace().setHeatmapParameters(heatmapParameters);
         return "viewHeatmap";
     }
@@ -1071,5 +1075,33 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     public void setServletContext(ServletContext servletContext) {
         this.context = servletContext;
         
+    }
+
+    /**
+     * @return the copyNumberType
+     */
+    public CopyNumberCriterionTypeEnum getCopyNumberType() {
+        return copyNumberType;
+    }
+
+    /**
+     * @param copyNumberType the copyNumberType to set
+     */
+    public void setCopyNumberType(CopyNumberCriterionTypeEnum copyNumberType) {
+        this.copyNumberType = copyNumberType;
+    }
+    
+    /**
+     * @return the displayableCopyNumberType
+     */
+    public String getDisplayableCopyNumberType() {
+        return copyNumberType.getValue();
+    }
+    
+    /**
+     * @param copyNumberTypeString the copyNumberTypeString to set
+     */
+    public void setDisplayableCopyNumberType(String copyNumberTypeString) {
+        this.copyNumberType = CopyNumberCriterionTypeEnum.getByValue(copyNumberTypeString);
     }
 }

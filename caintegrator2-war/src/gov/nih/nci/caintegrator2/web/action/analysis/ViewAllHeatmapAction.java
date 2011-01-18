@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
@@ -120,6 +121,7 @@ public class ViewAllHeatmapAction extends AbstractViewAllAction implements Servl
         heatmapParameters.setQuery(getQuery());
         heatmapParameters.setPlatform(getPlatforms().get(0));
         heatmapParameters.setViewAllData(true);
+        heatmapParameters.setUseCGHCall(CopyNumberCriterionTypeEnum.CALLS_VALUE.equals(getCopyNumberType()));
         getDisplayableWorkspace().setHeatmapParameters(heatmapParameters);
         return VIEW_HEATMAP;
     }
