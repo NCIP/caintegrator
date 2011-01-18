@@ -324,6 +324,7 @@ public class AnalysisServiceTest {
         platformConfiguration2.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
         analysisFileManagerStub.clear();
         igvParameters.setViewAllData(true);
+        igvParameters.setUseCGHCall(true);
         igvParameters.getPlatforms().add(platform1);
         igvParameters.getPlatforms().add(platform2);
         resultURL = service.executeIGV(igvParameters);
@@ -367,6 +368,11 @@ public class AnalysisServiceTest {
                 "http://localhost:8080/caintegrator2/viewer/runViewer.do?JSESSIONID=sessionId&file=heatmapLaunch.jnlp",
                 resultURL);
         
+        heatmapParameters.setUseCGHCall(true);
+        resultURL = service.executeHeatmap(heatmapParameters);
+        assertTrue(analysisFileManagerStub.createHeatmapGenomicFileCalled);
+        assertTrue(analysisFileManagerStub.createHeatmapSampleClassificationFileCalled);
+        assertTrue(analysisFileManagerStub.createHeatmapJnlpFileCalled);
     }
     
     @Test

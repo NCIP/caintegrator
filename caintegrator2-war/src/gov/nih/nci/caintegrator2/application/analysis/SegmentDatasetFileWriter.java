@@ -140,7 +140,7 @@ public final class SegmentDatasetFileWriter {
             writer.write(segmentData.getLocation().getEndPosition().toString());
             writer.write(TAB);
             if (isUseCGHCall) {
-                writer.write(segmentData.getCallsValue());
+                writer.write(segmentData.getCallsValue() == null ? "" : segmentData.getCallsValue().toString());
             } else {
                 writer.write(segmentData.getSegmentValue().toString());
             }

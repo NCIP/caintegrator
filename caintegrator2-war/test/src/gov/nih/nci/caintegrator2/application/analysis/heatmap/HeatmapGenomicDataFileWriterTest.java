@@ -86,15 +86,13 @@
 package gov.nih.nci.caintegrator2.application.analysis.heatmap;
 
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.analysis.CBSToHeatmapFactory;
+import gov.nih.nci.caintegrator2.application.analysis.CBSToHeatmapFactoryStub;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
-import gov.nih.nci.caintegrator2.heatmap.CBSToHeatmap;
-import gov.nih.nci.caintegrator2.heatmap.HeatMapArgs;
 
 import java.io.File;
 import java.io.IOException;
@@ -163,23 +161,5 @@ public class HeatmapGenomicDataFileWriterTest {
         }
         return configuration;
     }
-    
-    private class CBSToHeatmapFactoryStub implements CBSToHeatmapFactory {
-        public boolean runCBSToHeatmapCalled = false;
-        
-        public CBSToHeatmap getCbsToHeatmap() {
-            return new CBSToHeatmapStub();
-        }
-        
-        private class CBSToHeatmapStub implements CBSToHeatmap {
-
-            public void runCBSToHeatmap(HeatMapArgs hma) throws IOException {
-                runCBSToHeatmapCalled = true;
-            }
-            
-        }
-        
-    }
-    
     
 }

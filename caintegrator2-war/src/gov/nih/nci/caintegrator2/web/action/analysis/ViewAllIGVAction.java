@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import java.util.Set;
 
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
@@ -125,6 +126,7 @@ public class ViewAllIGVAction extends AbstractViewAllAction {
         igvParameters.setQuery(getQuery());
         igvParameters.setPlatforms(getPlatforms());
         igvParameters.setViewAllData(true);
+        igvParameters.setUseCGHCall(CopyNumberCriterionTypeEnum.CALLS_VALUE.equals(getCopyNumberType()));
         getDisplayableWorkspace().setIgvParameters(igvParameters);
         return VIEW_IGV;
     }

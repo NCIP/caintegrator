@@ -5,6 +5,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.analysis.CBSToHeatmapFactoryStub;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapFileTypeEnum;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapResult;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceTest;
@@ -12,10 +16,15 @@ import gov.nih.nci.caintegrator2.common.ConfigurationHelperStub;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -136,6 +145,50 @@ public class FileManagerImplTest {
         }
         assertFalse(gotException);
         
+    }
+    
+    @Test
+    public void testHeatmap() throws IOException {
+        Study study = new Study();
+        study.setId(1L);
+        StudySubscription studySubscription = new StudySubscription();
+        studySubscription.setStudy(study);
+        Platform platform = new Platform();
+        platform.setName("platformName");
+        
+        File file = analysisFileManager.retrieveHeatmapFile(study, HeatmapFileTypeEnum.CALLS_DATA, "Platform1");
+        assertEquals("Platform1_heatmapCallsData.txt", file.getName());
+        
+        HeatmapParameters parameters = new HeatmapParameters();
+        parameters.setPlatform(platform);
+        parameters.setSessionId("12345");
+        parameters.setStudySubscription(studySubscription);
+        HeatmapResult result = new HeatmapResult();
+        Set<SegmentData> segmentDatas = new HashSet<SegmentData>();
+        GeneLocationConfiguration geneLocationConfiguration = new GeneLocationConfiguration();
+        CBSToHeatmapFactoryStub cbsToHeatmapFactory = new CBSToHeatmapFactoryStub();
+        analysisFileManager.createHeatmapGenomicFile(parameters, result, segmentDatas, geneLocationConfiguration, cbsToHeatmapFactory);
+        
+        assertEquals("heatmapGenomicData.txt", result.getGenomicDataFile().getName());
+        assertEquals("chr2genecount.dat", result.getLayoutFile().getName());
+        
+        parameters.setUseCGHCall(true);
+        analysisFileManager.createHeatmapGenomicFile(parameters, result, segmentDatas, geneLocationConfiguration, cbsToHeatmapFactory);
+        assertEquals("heatmapCallsData.txt", result.getGenomicDataFile().getName());
+        assertEquals("chr2genecount.dat", result.getLayoutFile().getName());
+        
+        
+        parameters.setViewAllData(true);
+        parameters.setUseCGHCall(false);
+        analysisFileManager.createHeatmapGenomicFile(parameters, result, segmentDatas, geneLocationConfiguration, cbsToHeatmapFactory);
+        assertEquals("platformName_heatmapGenomicData.txt", result.getGenomicDataFile().getName());
+        assertEquals("platformName_chr2genecount.dat", result.getLayoutFile().getName());
+        
+        parameters.setViewAllData(true);
+        parameters.setUseCGHCall(true);
+        analysisFileManager.createHeatmapGenomicFile(parameters, result, segmentDatas, geneLocationConfiguration, cbsToHeatmapFactory);
+        assertEquals("platformName_heatmapCallsData.txt", result.getGenomicDataFile().getName());
+        assertEquals("platformName_chr2genecount.dat", result.getLayoutFile().getName());
     }
     
     @Test

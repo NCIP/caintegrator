@@ -548,7 +548,8 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         Platform platform = heatmapParameters.getPlatform();
         StudySubscription studySubscription = heatmapParameters.getStudySubscription();
         File genomicDataFile = analysisFileManager.retrieveHeatmapFile(studySubscription.getStudy(),
-                HeatmapFileTypeEnum.GENOMIC_DATA, platform.getName());
+                heatmapParameters.isUseCGHCall() ? HeatmapFileTypeEnum.CALLS_DATA 
+                    : HeatmapFileTypeEnum.GENOMIC_DATA, platform.getName());
         File layoutFile = analysisFileManager.retrieveHeatmapFile(studySubscription.getStudy(), 
                 HeatmapFileTypeEnum.LAYOUT, platform.getName());
         if (!genomicDataFile.exists() || !layoutFile.exists()) {
@@ -601,7 +602,8 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
             boolean isUseCGHCall) {
         File segFile = null;
         segFile = analysisFileManager.retrieveIGVFile(
-                studySubscription.getStudy(), IGVFileTypeEnum.SEGMENTATION,
+                studySubscription.getStudy(), 
+                isUseCGHCall ? IGVFileTypeEnum.SEGMENTATION_CALLS : IGVFileTypeEnum.SEGMENTATION,
                 platform.getName());
         if (!segFile.exists()) {
             try {

@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
@@ -118,6 +119,7 @@ public abstract class AbstractViewAllAction extends AbstractDeployedStudyAction 
     private Set<String> copyNumberPlatformsInStudy;
     private String copyNumberPlatformName;
     private List<Platform> platforms;
+    private CopyNumberCriterionTypeEnum copyNumberType = CopyNumberCriterionTypeEnum.SEGMENT_VALUE;
 
     /**
      * {@inheritDoc}
@@ -268,5 +270,33 @@ public abstract class AbstractViewAllAction extends AbstractDeployedStudyAction 
      */
     protected void setPlatforms(List<Platform> platforms) {
         this.platforms = platforms;
+    }
+
+    /**
+     * @return the copyNumberType
+     */
+    public CopyNumberCriterionTypeEnum getCopyNumberType() {
+        return copyNumberType;
+    }
+
+    /**
+     * @param copyNumberType the copyNumberType to set
+     */
+    public void setCopyNumberType(CopyNumberCriterionTypeEnum copyNumberType) {
+        this.copyNumberType = copyNumberType;
+    }
+    
+    /**
+     * @return the displayableCopyNumberType
+     */
+    public String getDisplayableCopyNumberType() {
+        return copyNumberType.getValue();
+    }
+    
+    /**
+     * @param copyNumberTypeString the copyNumberTypeString to set
+     */
+    public void setDisplayableCopyNumberType(String copyNumberTypeString) {
+        this.copyNumberType = CopyNumberCriterionTypeEnum.getByValue(copyNumberTypeString);
     }
 }
