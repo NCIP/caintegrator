@@ -136,7 +136,8 @@ public class CaBioFacadeImplTestIntegration {
         params.setSearchType(CaBioSearchTypeEnum.DATABASE_CROSS_REF);
         params.setFilterGenesOnStudy(false);
         List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenes(params);
-        assertTrue(checkSymbolExists("BRIP1", genes));
+        assertTrue(checkSymbolExists("LIMD2", genes));
+        assertTrue(checkSymbolExists("TCERG1", genes));
     }
 
     @Test
@@ -151,7 +152,7 @@ public class CaBioFacadeImplTestIntegration {
         assertTrue(checkSymbolExists("HAND1", genes));
         assertTrue(checkSymbolExists("HAND2", genes));
         assertTrue(checkSymbolExists("LBH", genes));
-        assertTrue(checkSymbolExists("LOC128102", genes));
+        assertTrue(checkSymbolExists("HRTRT1", genes));
         
         params.setTaxon("mouse");
         genes = caBioFacade.retrieveGenes(params);
@@ -171,7 +172,7 @@ public class CaBioFacadeImplTestIntegration {
         params.setSearchType(CaBioSearchTypeEnum.PATHWAYS);
         List<CaBioDisplayablePathway> pathways = caBioFacade.retrievePathways(params);
         assertEquals(1, pathways.size());
-        assertEquals("9226", pathways.get(0).getId());
+        assertEquals("7829", pathways.get(0).getId());
     }
     
     @Test
