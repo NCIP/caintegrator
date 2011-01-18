@@ -354,7 +354,7 @@
                     </li>
                 </ul>
                 </li>
-                <s:if test="currentStudy.studyConfiguration.hasCopyNumberData()">
+                <s:if test="!displayableWorkspace.userGisticAnalysisList.isEmpty()">
                 <!-- BEGIN - Saved Copy Number Analysis -->
                 <li style="max-height: 150px; overflow-x:hidden; overflow-y: auto;"><a href="#">Saved Copy Number Analysis</a>
                     <ul style="padding: 3px 0px 10px 10px;">                  
