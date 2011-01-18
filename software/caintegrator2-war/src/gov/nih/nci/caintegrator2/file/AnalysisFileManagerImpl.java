@@ -164,7 +164,8 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
     public File createIGVSegFile(Collection<SegmentData> segmentDatas, String sessionId, boolean isUseCGHCall) {
         return segmentDatas.isEmpty() ? null : SegmentDatasetFileWriter.writeAsSegFile(segmentDatas,
                 new File(getIGVDirectory(sessionId).getAbsolutePath() + File.separator
-                        + IGVFileTypeEnum.SEGMENTATION.getFilename()).getAbsolutePath(), isUseCGHCall);
+                        + (isUseCGHCall ? IGVFileTypeEnum.SEGMENTATION_CALLS.getFilename()
+                                : IGVFileTypeEnum.SEGMENTATION.getFilename())).getAbsolutePath(), isUseCGHCall);
     }
 
     /**
@@ -173,7 +174,9 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
     public File createIGVSegFile(Collection<SegmentData> segmentDatas, Study study, String platformName, 
             boolean isUseCGHCall) {
         return segmentDatas.isEmpty() ? null : SegmentDatasetFileWriter.writeAsSegFile(segmentDatas,
-                retrieveIGVFile(study, IGVFileTypeEnum.SEGMENTATION, platformName).getAbsolutePath(), isUseCGHCall);
+                retrieveIGVFile(study, 
+                        isUseCGHCall ? IGVFileTypeEnum.SEGMENTATION_CALLS 
+                                : IGVFileTypeEnum.SEGMENTATION, platformName).getAbsolutePath(), isUseCGHCall);
     }
     
     /**
@@ -187,12 +190,15 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
         File layoutFile = null;
         if (parameters.isViewAllData()) {
             genomicDataFile = retrieveHeatmapFile(parameters.getStudySubscription().getStudy(), 
-                    HeatmapFileTypeEnum.GENOMIC_DATA, parameters.getPlatform().getName());
+                    parameters.isUseCGHCall() ? HeatmapFileTypeEnum.CALLS_DATA 
+                    : HeatmapFileTypeEnum.GENOMIC_DATA, parameters.getPlatform().getName());
             layoutFile = retrieveHeatmapFile(parameters.getStudySubscription().getStudy(), 
                     HeatmapFileTypeEnum.LAYOUT, parameters.getPlatform().getName());
         } else { 
             File sessionDirectory = new File(getHeatmapDirectory(parameters.getSessionId()) + File.separator); 
-            genomicDataFile = new File(sessionDirectory, HeatmapFileTypeEnum.GENOMIC_DATA.getFilename());
+            genomicDataFile = new File(sessionDirectory, 
+                    parameters.isUseCGHCall() ? HeatmapFileTypeEnum.CALLS_DATA.getFilename()
+                    : HeatmapFileTypeEnum.GENOMIC_DATA.getFilename());
             layoutFile = new File(sessionDirectory, HeatmapFileTypeEnum.LAYOUT.getFilename());
         }
         if (!segmentDatas.isEmpty()) {

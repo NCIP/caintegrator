@@ -111,7 +111,12 @@ public enum IGVFileTypeEnum {
     /**
      * Segmentation.
      */
-    SEGMENTATION("igvSegmentation.seg");
+    SEGMENTATION("igvSegmentation.seg"),
+    
+    /**
+     * Segmentation using calls.
+     */
+    SEGMENTATION_CALLS("igvSegmentation_calls.seg");
     
     private String filename;
     private static Map<String, IGVFileTypeEnum> valueToTypeMap = new HashMap<String, IGVFileTypeEnum>();
