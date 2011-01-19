@@ -497,16 +497,35 @@ public class QueryForm {
      */
     public Map<String, String> getResultTypes() {
         Map<String, String> resultTypes = ResultTypeEnum.getValueToDisplayableMap();
+        checkHasCopyNumberData(resultTypes);
+        checkHasExpressionData(resultTypes);
+        checkHasGenomicData(resultTypes);
+        checkHasCghCalls(resultTypes);
+        return resultTypes;
+    }
+
+    private void checkHasGenomicData(Map<String, String> resultTypes) {
+        if (!hasCopyNumberData() && !hasExpressionData()) {
+            resultTypes.remove(ResultTypeEnum.IGV_VIEWER.getValue());
+        }
+    }
+
+    private void checkHasExpressionData(Map<String, String> resultTypes) {
+        if (!hasExpressionData()) {
+            resultTypes.remove(ResultTypeEnum.GENE_EXPRESSION.getValue());
+        }
+    }
+
+    private void checkHasCopyNumberData(Map<String, String> resultTypes) {
         if (!hasCopyNumberData()) {
             resultTypes.remove(ResultTypeEnum.COPY_NUMBER.getValue());
             resultTypes.remove(ResultTypeEnum.HEATMAP_VIEWER.getValue());
         }
-        if (!hasExpressionData()) {
-            resultTypes.remove(ResultTypeEnum.GENE_EXPRESSION.getValue());
+    }
+
+    private void checkHasCghCalls(Map<String, String> resultTypes) {
+        if (query.getSubscription().getStudy().hasCghCalls()) {
+            resultTypes.remove(ResultTypeEnum.HEATMAP_VIEWER.getValue());
         }
-        if (!hasCopyNumberData() && !hasExpressionData()) {
-            resultTypes.remove(ResultTypeEnum.IGV_VIEWER.getValue());
-        }
-        return resultTypes;
     }
 }

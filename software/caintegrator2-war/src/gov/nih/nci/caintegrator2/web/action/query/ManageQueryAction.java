@@ -176,7 +176,6 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     private String genomicSortingType;
     private String genomicSortingIndex;
     private ServletContext context;
-    private CopyNumberCriterionTypeEnum copyNumberType = CopyNumberCriterionTypeEnum.SEGMENT_VALUE;
 
     /**
      * @return the genomicSortingType
@@ -584,7 +583,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         igvParameters.setStudySubscription(getStudySubscription());
         igvParameters.setSessionId(ServletActionContext.getRequest().getRequestedSessionId());
         igvParameters.setUrlPrefix(SessionHelper.getIgvSessionUrl());
-        igvParameters.setUseCGHCall(CopyNumberCriterionTypeEnum.CALLS_VALUE.equals(getCopyNumberType()));
+        igvParameters.setUseCGHCall(CopyNumberCriterionTypeEnum.CALLS_VALUE.equals(
+                getQuery().getCopyNumberCriterionType()));
         getDisplayableWorkspace().setIgvParameters(igvParameters);
         return "viewIGV";
     }
@@ -602,7 +602,8 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         heatmapParameters.setHeatmapJarUrlPrefix(SessionHelper.getCaIntegratorCommonUrl());
         heatmapParameters.setLargeBinsFile(SessionHelper.getHeatmapLargeBinsFile(context));
         heatmapParameters.setSmallBinsFile(SessionHelper.getHeatmapSmallBinsFile(context));
-        heatmapParameters.setUseCGHCall(CopyNumberCriterionTypeEnum.CALLS_VALUE.equals(getCopyNumberType()));
+        heatmapParameters.setUseCGHCall(CopyNumberCriterionTypeEnum.CALLS_VALUE.equals(
+                getQuery().getCopyNumberCriterionType()));
         getDisplayableWorkspace().setHeatmapParameters(heatmapParameters);
         return "viewHeatmap";
     }
@@ -1075,33 +1076,5 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     public void setServletContext(ServletContext servletContext) {
         this.context = servletContext;
         
-    }
-
-    /**
-     * @return the copyNumberType
-     */
-    public CopyNumberCriterionTypeEnum getCopyNumberType() {
-        return copyNumberType;
-    }
-
-    /**
-     * @param copyNumberType the copyNumberType to set
-     */
-    public void setCopyNumberType(CopyNumberCriterionTypeEnum copyNumberType) {
-        this.copyNumberType = copyNumberType;
-    }
-    
-    /**
-     * @return the displayableCopyNumberType
-     */
-    public String getDisplayableCopyNumberType() {
-        return copyNumberType.getValue();
-    }
-    
-    /**
-     * @param copyNumberTypeString the copyNumberTypeString to set
-     */
-    public void setDisplayableCopyNumberType(String copyNumberTypeString) {
-        this.copyNumberType = CopyNumberCriterionTypeEnum.getByValue(copyNumberTypeString);
     }
 }

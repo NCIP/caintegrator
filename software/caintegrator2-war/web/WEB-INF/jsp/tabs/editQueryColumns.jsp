@@ -25,13 +25,12 @@
                 <s:if test="queryForm.hasCopyNumberData()">
                     <br>Copy Number result type - will display segmentation data with Chromosome position.
                 </s:if>
-                <s:if test="queryForm.hasCopyNumberData()">
-                    <br>Integration Genomics Viewer - will display a link to the IGV Viewer.<br>
-                    HeatMap Viewer - will display a link to the Heat Map Viewer.
-                </s:if>
-                <s:elseif test="queryForm.hasExpressionData">
+                <s:if test="queryForm.hasCopyNumberData() || queryForm.hasExpressionData ">
                     <br>Integration Genomics Viewer - will display a link to the IGV Viewer.
-                </s:elseif>
+                </s:if>
+                <s:if test="queryForm.hasCopyNumberData() && !study.hasCghCalls()">
+                    <br>HeatMap Viewer - will display a link to the Heat Map Viewer.
+                </s:if>
         </div>
     <s:if test="queryForm.resultConfiguration.resultType == 'geneExpression'">
         <br>
@@ -84,7 +83,7 @@
         <br>
         <div class="reporterTypeSelector">
         <b>Preferred Copy Number Method: </b> 
-            <s:select name="displayableCopyNumberType" 
+            <s:select name="queryForm.resultConfiguration.copyNumberType" 
                 list="@gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum@getDisplayableValues()"
                 />
         </div>  

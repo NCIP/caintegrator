@@ -41,8 +41,9 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
     private transient boolean hasMaskedValues = false;
     private transient Platform geneExpressionPlatform;
     private transient Platform copyNumberPlatform;
+    private CopyNumberCriterionTypeEnum copyNumberCriterionType = CopyNumberCriterionTypeEnum.SEGMENT_VALUE;
     
-    
+
     /**
      * @return the description
      */
@@ -380,5 +381,20 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
      */
     public void setNeedsGenomicHighlighting(boolean needsGenomicHighlighting) {
         this.needsGenomicHighlighting = needsGenomicHighlighting;
+    }
+
+    
+    /**
+     * @return the copyNumberCriterionType
+     */
+    public CopyNumberCriterionTypeEnum getCopyNumberCriterionType() {
+        return copyNumberCriterionType;
+    }
+
+    /**
+     * @param copyNumberCriterionType the copyNumberCriterionType to set
+     */
+    public void setCopyNumberCriterionType(CopyNumberCriterionTypeEnum copyNumberCriterionType) {
+        this.copyNumberCriterionType = copyNumberCriterionType;
     }
 }
