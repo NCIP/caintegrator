@@ -189,6 +189,11 @@ class GenomicQueryHandler {
                 Float floatValue = segmentData.getSegmentValue();
                 if (floatValue != null) {
                     value.setValue(Math.round(floatValue * DECIMAL_100) / DECIMAL_100);
+                    value.setCallsValue(segmentData.getCallsValue());
+                    value.setProbabilityAmplification(segmentData.getProbabilityAmplification());
+                    value.setProbabilityGain(segmentData.getProbabilityGain());
+                    value.setProbabilityLoss(segmentData.getProbabilityLoss());
+                    value.setProbabilityNormal(segmentData.getProbabilityNormal());
                     checkMeetsCopyNumberCriterion(result, criterionHandler, row, value);
                 }
                 row.getValues().add(value);
