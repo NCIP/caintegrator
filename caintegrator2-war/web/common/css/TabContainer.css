@@ -7,6 +7,7 @@
 	_zoom: 1; /* force IE6 layout mode so top border doesnt disappear */
 	display: block;
 	clear: both;
+	min-width: 1000px; /* lower resolution browsers cut off important things in the tabs without a min-width */
 }
 
 .dojoTabLabels-top {
