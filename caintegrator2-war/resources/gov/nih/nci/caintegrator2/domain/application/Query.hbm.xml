@@ -10,6 +10,9 @@
     <typedef name="ResultTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
        <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum</param> 
     </typedef> 
+    <typedef name="CopyNumberCriterionTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+        <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum</param> 
+    </typedef> 
 	<class name="Query" table="QUERY" lazy="false" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="ID">
@@ -23,6 +26,7 @@
         <property name="orientation" type="ResultsOrientationEnum" column="ORIENTATION"/>
 		<property name="visibility" type="string" column="VISIBILITY"/>
 		<property name="lastModifiedDate" type="java.util.Date" column="LAST_MODIFIED_DATE"/>
+		<property name="copyNumberCriterionType" type="CopyNumberCriterionTypeEnum" column="COPY_NUMBER_CRITERION_TYPE" />
 		
 		<!-- Associations mapping for the Query class -->
 		<many-to-one name="compoundCriterion" class="gov.nih.nci.caintegrator2.domain.application.CompoundCriterion" column="COMPOUND_CRITERION_ID" unique="true" lazy="proxy" cascade="all"/>

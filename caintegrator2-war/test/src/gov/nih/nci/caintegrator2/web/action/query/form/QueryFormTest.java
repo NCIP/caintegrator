@@ -864,9 +864,14 @@ public class QueryFormTest {
         queryForm.createQuery(subscription, null, null, null);
         assertEquals(3, queryForm.getResultTypes().size());
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+        DnaAnalysisDataConfiguration dnaAnalysisConfiguration = new DnaAnalysisDataConfiguration();
+        genomicSource.setDnaAnalysisDataConfiguration(dnaAnalysisConfiguration);
+        dnaAnalysisConfiguration.setUseCghCall(false);
         subscription.getStudy().getStudyConfiguration().getGenomicDataSources().add(genomicSource);
         genomicSource.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
         assertEquals(5, queryForm.getResultTypes().size());
+        dnaAnalysisConfiguration.setUseCghCall(true);
+        assertEquals(4, queryForm.getResultTypes().size());
         subscription.getStudy().getStudyConfiguration().getGenomicDataSources().clear();
         assertEquals(1, queryForm.getResultTypes().size());
     }

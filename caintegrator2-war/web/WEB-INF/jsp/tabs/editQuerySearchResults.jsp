@@ -326,13 +326,13 @@
                     </s:if>
                     <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.displayableValue}" />
                     <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.meetsCriterion}" />
-                    <s:if test="#meetsCriterion">
-                        <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.highlightColor}" />
-                        <display:column title="Value" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" style="background-color:${highlightColor};color:white">${curValue}</display:column>
-                    </s:if>
-                    <s:else>
-                        <display:column title="Value" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" style="">${curValue}</display:column>
-                    </s:else>
+                        <s:if test="#meetsCriterion">
+                            <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.highlightColor}" />
+                            <display:column title="Value" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" style="background-color:${highlightColor};color:white">${curValue}</display:column>
+                        </s:if>
+                        <s:else>
+                            <display:column title="Value" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" style="">${curValue}</display:column>
+                        </s:else>
                 </display:table>
             </s:else>
             <SCRIPT LANGUAGE="JavaScript" TYPE="TEXT/JAVASCRIPT">
@@ -453,10 +453,12 @@
                                 document.manageQueryForm.target='_self'">
                             <span class="btn_img"><span class="igv">View in Integrative Genomics Viewer</span></span>
                         </s:a></li>
+                        <s:if test="!study.hasCghCalls()">
                         <li><s:a href="#" cssClass="btn"
                             onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='viewHeatmap';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
                             <span class="btn_img"><span class="externalsite">View in Heat Map Viewer</span></span>
                         </s:a></li>
+                        </s:if>
                     </ul>
                 </del>
            </div>
@@ -481,7 +483,7 @@
                                 <span class="btn_img"><span class="igv">View in Integrative Genomics Viewer</span></span>
                             </s:a></li>
                         </s:if>
-                        <s:if test="queryForm.hasCopyNumberData()">
+                        <s:if test="queryForm.hasCopyNumberData() && !study.hasCghCalls()">
                             <li><s:a href="#" cssClass="btn"
                                 onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='viewHeatmap';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
                                 <span class="btn_img"><span class="externalsite">View in Heat Map Viewer</span></span>
