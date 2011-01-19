@@ -301,15 +301,38 @@
                     <display:column title="End Position" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
                         <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).endPosition}" />
                     </display:column>
-                    <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.displayableValue}" />
-                    <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.meetsCriterion}" />
-                        <s:if test="#meetsCriterion">
-                            <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.highlightColor}" />
-                            <display:column title="Value" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" style="background-color:${highlightColor};color:white">${curValue}</display:column>
+                    <s:if test="%{query.subscription.study.hasCghCalls()}">
+                        <s:set id="curCalls" name="curCalls" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.callsValue}" />
+                        <s:set id="colorCalls" name="colorCalls" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.colorCalls}" />
+                        <s:if test="#colorCalls">
+                            <s:set id="highlightColorCalls" name="highlightColorCalls" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.highlightColorCalls}" />
+                            <display:column title="Calls" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" style="background-color:${highlightColorCalls};color:white">${curCalls}</display:column>
                         </s:if>
                         <s:else>
-                            <display:column title="Value" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" style="">${curValue}</display:column>
+                            <display:column title="Calls" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" style="">${curCalls}</display:column>
                         </s:else>
+                        <display:column title="Probability Loss" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
+                            <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.probabilityLoss}" />
+                        </display:column>
+                        <display:column title="Probability Normal" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
+                            <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.probabilityNormal}" />
+                        </display:column>
+                        <display:column title="Probability Gain" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
+                            <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.probabilityGain}" />
+                        </display:column>
+                        <display:column title="Probability Amplification" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">
+                            <s:property value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.probabilityAmplification}" />
+                        </display:column>
+                    </s:if>
+                    <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.displayableValue}" />
+                    <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.meetsCriterion}" />
+                    <s:if test="#meetsCriterion">
+                        <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.sampleRows.get(#attr.copyNumberQueryResultRows_rowNum - 1).value.highlightColor}" />
+                        <display:column title="Value" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" style="background-color:${highlightColor};color:white">${curValue}</display:column>
+                    </s:if>
+                    <s:else>
+                        <display:column title="Value" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" style="">${curValue}</display:column>
+                    </s:else>
                 </display:table>
             </s:else>
             <SCRIPT LANGUAGE="JavaScript" TYPE="TEXT/JAVASCRIPT">
