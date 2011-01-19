@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
@@ -149,6 +150,29 @@ public class ResultConfiguration {
             if (StringUtils.isBlank(getReporterType())) {
                 setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
             }
+        }
+    }
+    
+    /**
+     * @return the copyNumberType.
+     */
+    public String getCopyNumberType() {
+        if (getQuery().getCopyNumberCriterionType() == null) {
+            return "";
+        } else {
+            return getQuery().getCopyNumberCriterionType().getValue();
+        }
+    }
+    
+    /**
+     * 
+     * @param copyNumberType the copyNumberType to set.
+     */
+    public void setCopyNumberType(String copyNumberType) {
+        if (StringUtils.isBlank(copyNumberType)) {
+            getQuery().setCopyNumberCriterionType(null);
+        } else {
+            getQuery().setCopyNumberCriterionType(CopyNumberCriterionTypeEnum.getByValue(copyNumberType));
         }
     }
 

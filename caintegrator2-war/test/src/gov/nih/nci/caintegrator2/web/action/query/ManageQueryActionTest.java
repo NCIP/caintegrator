@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -212,6 +213,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertTrue(queryManagementService.executeCalled);
         manageQueryAction.getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENE_EXPRESSION.getValue());
+        manageQueryAction.getQueryForm().getResultConfiguration().setCopyNumberType(CopyNumberCriterionTypeEnum.SEGMENT_VALUE.getValue());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertTrue(queryManagementService.executeGenomicDataQueryCalled);
         
