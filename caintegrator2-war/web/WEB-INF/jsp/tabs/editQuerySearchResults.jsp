@@ -261,14 +261,27 @@
                     </display:column>
                 
                     <s:iterator value="copyNumberQueryResult.sampleHeaders" status="status" id="column">
-                        <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).displayableValue}" />
-                        <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).meetsCriterion}" />
-                        <s:if test="#meetsCriterion">
-                            <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).highlightColor}" />
-                            <display:column title="${column}" sortable="true" style="background-color:${highlightColor};color:white" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">${curValue}</display:column>
+                        <s:if test="%{query.subscription.study.hasCghCalls()}">
+	                        <s:set id="curCalls" name="curCalls" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).callsValue}" />
+	                        <s:set id="colorCalls" name="colorCalls" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).colorCalls}" />
+	                        <s:if test="#colorCalls">
+	                            <s:set id="highlightColorCalls" name="highlightColorCalls" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).highlightColorCalls}" />
+	                            <display:column title="${column}" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" style="background-color:${highlightColorCalls};color:white">${curCalls}</display:column>
+	                        </s:if>
+	                        <s:else>
+	                            <display:column title="${column}" sortable="true" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator" style="">${curCalls}</display:column>
+	                        </s:else>
                         </s:if>
                         <s:else>
-                            <display:column title="${column}" sortable="true" style="" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">${curValue}</display:column>
+	                        <s:set id="curValue" name="curValue" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).displayableValue}" />
+	                        <s:set id="meetsCriterion" name="meetsCriterion" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).meetsCriterion}" />
+	                        <s:if test="#meetsCriterion">
+	                            <s:set id="highlightColor" name="highlightColor" value="%{copyNumberQueryResult.rows.get(#attr.copyNumberQueryResultRows_rowNum - 1).values.get(#status.count - 1).highlightColor}" />
+	                            <display:column title="${column}" sortable="true" style="background-color:${highlightColor};color:white" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">${curValue}</display:column>
+	                        </s:if>
+	                        <s:else>
+	                            <display:column title="${column}" sortable="true" style="" comparator="gov.nih.nci.caintegrator2.web.action.query.NumericColumnDisplayTagComparator">${curValue}</display:column>
+	                        </s:else>
                         </s:else>
                     </s:iterator>
                 </display:table>
