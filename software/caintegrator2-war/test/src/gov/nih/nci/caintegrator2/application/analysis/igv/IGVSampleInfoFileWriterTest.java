@@ -87,10 +87,13 @@ package gov.nih.nci.caintegrator2.application.analysis.igv;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
@@ -126,12 +129,20 @@ public class IGVSampleInfoFileWriterTest {
         
         File sampleInfoFile = fileWriter.writeSampleInfoFile(QueryUtil.retrieveSampleValuesMap(setupQueryResult()),
                 columns, new File(tempDirectory.getAbsolutePath() + File.separator
-                        + IGVFileTypeEnum.SAMPLE_CLASSIFICATION.getFilename()).getAbsolutePath());
-        checkFile(sampleInfoFile);
+                        + IGVFileTypeEnum.SAMPLE_CLASSIFICATION.getFilename()).getAbsolutePath(), null);
+        checkFile(sampleInfoFile, null);
+        
+        sampleInfoFile = fileWriter.writeSampleInfoFile(QueryUtil.retrieveSampleValuesMap(setupQueryResult()),
+                columns, new File(tempDirectory.getAbsolutePath() + File.separator
+                        + IGVFileTypeEnum.SAMPLE_CLASSIFICATION.getFilename()).getAbsolutePath(), CopyNumberCriterionTypeEnum.SEGMENT_VALUE);
         FileUtils.deleteDirectory(tempDirectory);
     }
     
     private QueryResult setupQueryResult() {
+        GenomicDataSourceConfiguration genomicSource1 = new GenomicDataSourceConfiguration();
+        genomicSource1.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
+        GenomicDataSourceConfiguration genomicSource2 = new GenomicDataSourceConfiguration();
+        genomicSource2.setDataType(PlatformDataTypeEnum.EXPRESSION);
         ResultValue resultValue1 = new ResultValue();
         StringAnnotationValue stringValue1 = new StringAnnotationValue();
         stringValue1.setStringValue("val1");
@@ -159,6 +170,7 @@ public class IGVSampleInfoFileWriterTest {
         SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
         Sample sample1 = new Sample();
         sample1.setName("sample1");
+        sample1.setGenomicDataSource(genomicSource1);
         sampleAcquisition1.setSample(sample1);
         sampleAcquisition1.setAssignment(assignment1);
         sample1.setSampleAcquisition(sampleAcquisition1);
@@ -174,6 +186,7 @@ public class IGVSampleInfoFileWriterTest {
         SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
         Sample sample2 = new Sample();
         sample2.setName("sample2");
+        sample2.setGenomicDataSource(genomicSource2);
         sampleAcquisition2.setSample(sample2);
         sampleAcquisition2.setAssignment(assignment2);
         sample2.setSampleAcquisition(sampleAcquisition2);
@@ -186,21 +199,34 @@ public class IGVSampleInfoFileWriterTest {
         queryResult.getRowCollection().add(row2);
         return queryResult;
     }
-
-    private void checkFile(File sampleInfoFile) throws IOException {
+    
+        private void checkFile(File sampleInfoFile, CopyNumberCriterionTypeEnum copyNumberType) throws IOException {
         assertTrue(sampleInfoFile.exists());
         CSVReader reader = new CSVReader(new FileReader(sampleInfoFile), '\t');
-        checkLine(reader.readNext(), "TRACK_ID", "SUBJECT_ID", "annotation");
-        checkSampleInfoLine(reader.readNext());       
-        checkSampleInfoLine(reader.readNext());       
+        if (copyNumberType == null) {
+            checkLine(reader.readNext(), "TRACK_ID", "SUBJECT_ID", "annotation");
+        } else {
+            checkLine(reader.readNext(), "TRACK_ID", "SUBJECT_ID", "COPYNUMBER_SUBTYPE", "annotation");    
+        }
+        
+        checkSampleInfoLine(reader.readNext(), copyNumberType);       
+        checkSampleInfoLine(reader.readNext(), copyNumberType);       
         reader.close();
     }
 
-    private void checkSampleInfoLine(String[] line) {
+    private void checkSampleInfoLine(String[] line, CopyNumberCriterionTypeEnum copyNumberType) {
         if ("sample1".equals(line[0])) {
-            checkLine(line, "sample1", "assignment1", "val1");
+            if (copyNumberType == null) {
+                checkLine(line, "sample1", "assignment1", "val1");
+            } else {
+                checkLine(line, "sample1", "assignment1", copyNumberType.getValue(), "val1");
+            }
         } else {
-            checkLine(line, "sample2", "assignment2", "val2");
+            if (copyNumberType == null) {
+                checkLine(line, "sample2", "assignment2", "val2");
+            } else {
+                checkLine(line, "sample2", "assignment2", "NA", "val2");
+            }
         }
     }
 
