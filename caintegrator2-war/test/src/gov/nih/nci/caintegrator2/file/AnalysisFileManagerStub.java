@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapResult;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -180,7 +181,7 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
     }
 
     public File createIGVSampleClassificationFile(QueryResult queryResult, String sessionId,
-            Collection<ResultColumn> columns) {
+            Collection<ResultColumn> columns, CopyNumberCriterionTypeEnum copyNumberSubType) {
         createIGVSampleClassificationFileCalled = true;
         return retrieveTmpFile();
     }

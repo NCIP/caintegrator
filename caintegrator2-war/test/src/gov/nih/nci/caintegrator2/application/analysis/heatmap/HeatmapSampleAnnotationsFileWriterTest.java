@@ -127,7 +127,7 @@ private Collection<ResultColumn> columns = new HashSet<ResultColumn>();
         
         File sampleInfoFile = fileWriter.writeSampleInfoFile(QueryUtil.retrieveSampleValuesMap(setupQueryResult()),
                 columns, new File(tempDirectory.getAbsolutePath() + File.separator
-                        + HeatmapFileTypeEnum.ANNOTATIONS.getFilename()).getAbsolutePath());
+                        + HeatmapFileTypeEnum.ANNOTATIONS.getFilename()).getAbsolutePath(), null);
         checkFile(sampleInfoFile);
         FileUtils.deleteDirectory(tempDirectory);
     }

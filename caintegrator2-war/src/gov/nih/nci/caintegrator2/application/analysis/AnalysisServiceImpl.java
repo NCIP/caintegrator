@@ -119,6 +119,7 @@ import gov.nih.nci.caintegrator2.domain.analysis.GisticResultZipFileParser;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
@@ -456,12 +457,23 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         if (igvResult.getGeneExpressionFile() == null && igvResult.getSegmentationFile() == null) {
             throw new InvalidCriterionException("Unable to create IGV viewer: No data found from selection.");
         }
+        CopyNumberCriterionTypeEnum copyNumberSubType = retrieveCopyNumberSubtypeForIGV(igvParameters, igvResult);
         igvResult.setSampleInfoFile(analysisFileManager.createIGVSampleClassificationFile(
                 createAnnotationBasedQueryResultsForSamples(igvParameters),
-                igvParameters.getSessionId(), igvParameters.getQuery().getColumnCollection()));
+                igvParameters.getSessionId(), igvParameters.getQuery().getColumnCollection(), copyNumberSubType));
         analysisFileManager.createIGVSessionFile(igvParameters, igvResult);
         sessionAnalysisResultsManager.storeJobResult(igvParameters.getSessionId(), igvResult);
         return BROAD_HOSTED_IGV_URL + encodeUrl(igvParameters.getUrlPrefix()) + IGVFileTypeEnum.SESSION.getFilename();
+    }
+
+    private CopyNumberCriterionTypeEnum retrieveCopyNumberSubtypeForIGV(
+            IGVParameters igvParameters, IGVResult igvResult) {
+        CopyNumberCriterionTypeEnum copyNumberSubType = null;
+        if (igvResult.getSegmentationFile() != null) {
+            copyNumberSubType = igvParameters.isUseCGHCall() 
+                    ? CopyNumberCriterionTypeEnum.CALLS_VALUE : CopyNumberCriterionTypeEnum.SEGMENT_VALUE;
+        }
+        return copyNumberSubType;
     }
 
     private void runIGVForAllData(IGVParameters igvParameters, IGVResult igvResult) {

@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.analysis.igv;
 
 import gov.nih.nci.caintegrator2.application.analysis.AbstractSampleAnnotationFileWriter;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
 import java.io.FileWriter;
@@ -98,20 +99,31 @@ public class IGVSampleInfoFileWriter extends AbstractSampleAnnotationFileWriter 
 
     private static final String TRACK_ID_HEADER = "TRACK_ID";
     private static final String SUBJECT_ID_HEADER = "SUBJECT_ID";
+    private static final String COPY_NUMBER_SUBTYPE_HEADER = "COPYNUMBER_SUBTYPE";
 
     @Override
-    protected void writeFirstHeaders(FileWriter writer) throws IOException {
+    protected void writeFirstHeaders(FileWriter writer, 
+            CopyNumberCriterionTypeEnum copyNumberSubType) throws IOException {
         writer.write(TRACK_ID_HEADER);
         writer.write(TAB);
         writer.write(SUBJECT_ID_HEADER);
+        if (copyNumberSubType != null) {
+            writer.write(TAB);
+            writer.write(COPY_NUMBER_SUBTYPE_HEADER);
+        }
         
     }
 
     @Override
-    protected void writerFirstData(FileWriter writer, Sample sample) throws IOException {
+    protected void writerFirstData(FileWriter writer, Sample sample, 
+            CopyNumberCriterionTypeEnum copyNumberSubType) throws IOException {
         writer.write(sample.getName());
         writer.write(TAB);
         writer.write(sample.getSampleAcquisition().getAssignment().getIdentifier());
+        if (copyNumberSubType != null) {
+            writer.write(TAB);
+            writer.write(sample.getGenomicDataSource().isCopyNumberData() ? copyNumberSubType.getValue() : "NA");
+        }
     }
 
 }

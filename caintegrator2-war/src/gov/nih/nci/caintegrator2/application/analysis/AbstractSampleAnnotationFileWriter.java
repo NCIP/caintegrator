@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
@@ -115,16 +116,18 @@ public abstract class AbstractSampleAnnotationFileWriter {
      * @param sampleValuesMap hashmap of sample -> annotation string -> value.
      * @param columns the columns used in query.
      * @param filePath path to write file.
+     * @param copyNumberSubType subtype for copynumber data (null if no copy number exists).
      * @return written classification file.
      */
     public File writeSampleInfoFile(Map<Sample, Map<String, String>> sampleValuesMap, 
-            Collection<ResultColumn> columns, String filePath) {
+            Collection<ResultColumn> columns, String filePath,
+            CopyNumberCriterionTypeEnum copyNumberSubType) {
         File sampleInfoFile = new File(filePath);
         try {
             FileWriter writer = new FileWriter(sampleInfoFile);
             setupHeaders(columns);
-            writeHeaderLine(writer);
-            writeData(writer, sampleValuesMap);
+            writeHeaderLine(writer, copyNumberSubType);
+            writeData(writer, sampleValuesMap, copyNumberSubType);
             writer.flush();
             writer.close();
             return sampleInfoFile;
@@ -142,8 +145,8 @@ public abstract class AbstractSampleAnnotationFileWriter {
         
     }
     
-    private void writeHeaderLine(FileWriter writer) throws IOException {
-        writeFirstHeaders(writer);
+    private void writeHeaderLine(FileWriter writer, CopyNumberCriterionTypeEnum copyNumberSubType) throws IOException {
+        writeFirstHeaders(writer, copyNumberSubType);
         for (String header : headers) {
             writer.write(TAB);
             writer.write(header);
@@ -151,10 +154,10 @@ public abstract class AbstractSampleAnnotationFileWriter {
         writer.write(NEW_LINE);
     }
 
-    private void writeData(FileWriter writer, 
-            Map<Sample, Map<String, String>> sampleValuesMap) throws IOException {
+    private void writeData(FileWriter writer, Map<Sample, Map<String, String>> sampleValuesMap, 
+            CopyNumberCriterionTypeEnum copyNumberSubType) throws IOException {
         for (Sample sample : sampleValuesMap.keySet()) {
-            writerFirstData(writer, sample);
+            writerFirstData(writer, sample, copyNumberSubType);
             for (String header : headers) {
                 writer.write(TAB);
                 writer.write(sampleValuesMap.get(sample).get(header));
@@ -166,16 +169,20 @@ public abstract class AbstractSampleAnnotationFileWriter {
     /**
      * Writes the headers dynamic to the subclass.
      * @param writer to write to file.
+     * @param copyNumberSubType subtype for copynumber data (null if no copy number exists).
      * @throws IOException if unable to write.
      */
-    protected abstract void writeFirstHeaders(FileWriter writer) throws IOException;
+    protected abstract void writeFirstHeaders(FileWriter writer, CopyNumberCriterionTypeEnum copyNumberSubType)
+        throws IOException;
     
     /**
      * Writes the first data belonging to the first headers dynamic to the subclass.
      * @param writer to write to file.
      * @param sample belonging to the current row of data to write.
+     * @param copyNumberSubType subtype for copynumber data (null if no copy number exists).
      * @throws IOException if unable to write.
      */
-    protected abstract void writerFirstData(FileWriter writer, Sample sample) throws IOException;
+    protected abstract void writerFirstData(FileWriter writer, Sample sample, 
+            CopyNumberCriterionTypeEnum copyNumberSubType) throws IOException;
 
 }
