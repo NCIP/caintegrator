@@ -102,6 +102,7 @@ import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVSampleInfoFileWriter;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVSessionFileWriter;
 import gov.nih.nci.caintegrator2.common.QueryUtil;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
@@ -142,10 +143,11 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
      * {@inheritDoc}
      */
     public File createIGVSampleClassificationFile(QueryResult queryResult, String sessionId, 
-            Collection<ResultColumn> columns) {
+            Collection<ResultColumn> columns, CopyNumberCriterionTypeEnum copyNumberSubType) {
         return new IGVSampleInfoFileWriter().writeSampleInfoFile(QueryUtil.retrieveSampleValuesMap(queryResult),
                 columns, new File(getIGVDirectory(sessionId).getAbsolutePath()
-                        + File.separator + IGVFileTypeEnum.SAMPLE_CLASSIFICATION.getFilename()).getAbsolutePath());
+                        + File.separator + IGVFileTypeEnum.SAMPLE_CLASSIFICATION.getFilename()).getAbsolutePath(), 
+                        copyNumberSubType);
     }
     
     /**
@@ -155,7 +157,7 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
             Collection<ResultColumn> columns) {
         return new HeatmapSampleAnnotationsFileWriter().writeSampleInfoFile(QueryUtil.
             retrieveSampleValuesMap(queryResult), columns, new File(getHeatmapDirectory(sessionId).getAbsolutePath()
-                + File.separator + HeatmapFileTypeEnum.ANNOTATIONS.getFilename()).getAbsolutePath());
+                + File.separator + HeatmapFileTypeEnum.ANNOTATIONS.getFilename()).getAbsolutePath(), null);
     }
     
     /**

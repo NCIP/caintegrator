@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.analysis.heatmap;
 
 import gov.nih.nci.caintegrator2.application.analysis.AbstractSampleAnnotationFileWriter;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
 import java.io.FileWriter;
@@ -99,13 +100,15 @@ public class HeatmapSampleAnnotationsFileWriter extends AbstractSampleAnnotation
     private static final String SAMPLE_ID_HEADER = "SAMPLE_ID";
 
     @Override
-    protected void writeFirstHeaders(FileWriter writer) throws IOException {
+    protected void writeFirstHeaders(FileWriter writer,
+            CopyNumberCriterionTypeEnum copyNumberSubType) throws IOException {
         writer.write(SAMPLE_ID_HEADER);
         
     }
 
     @Override
-    protected void writerFirstData(FileWriter writer, Sample sample) throws IOException {
+    protected void writerFirstData(FileWriter writer, Sample sample, 
+            CopyNumberCriterionTypeEnum copyNumberSubType) throws IOException {
         writer.write(sample.getName());
     }
 

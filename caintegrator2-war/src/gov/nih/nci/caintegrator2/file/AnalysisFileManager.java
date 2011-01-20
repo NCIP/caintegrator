@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapResult;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
@@ -191,10 +192,11 @@ public interface AnalysisFileManager {
      * @param queryResult query result data to turn into sample classification file.
      * @param sessionId directory will be based on this.
      * @param columns the columns that are in the query results.
+     * @param copyNumberSubType subtype for copynumber data (null if no copy number exists).
      * @return the file.
      */
     File createIGVSampleClassificationFile(QueryResult queryResult, String sessionId, 
-            Collection<ResultColumn> columns);
+            Collection<ResultColumn> columns, CopyNumberCriterionTypeEnum copyNumberSubType);
     
     /**
      * Creates the Heatmap JNLP file.
