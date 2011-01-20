@@ -186,19 +186,20 @@ class GenomicQueryHandler {
                 GenomicDataResultRow row = segmentDataToRowMap.get(segmentData);
                 GenomicDataResultValue value = new GenomicDataResultValue();
                 value.setColumn(column);
-                Float floatValue = segmentData.getSegmentValue();
-                if (floatValue != null) {
-                    value.setValue(Math.round(floatValue * DECIMAL_100) / DECIMAL_100);
-                    value.setCallsValue(segmentData.getCallsValue());
-                    value.setProbabilityAmplification(segmentData.getProbabilityAmplification());
-                    value.setProbabilityGain(segmentData.getProbabilityGain());
-                    value.setProbabilityLoss(segmentData.getProbabilityLoss());
-                    value.setProbabilityNormal(segmentData.getProbabilityNormal());
-                    checkMeetsCopyNumberCriterion(result, criterionHandler, row, value);
-                }
+                value.setValue(twoDecimalPoint(segmentData.getSegmentValue()));
+                value.setCallsValue(segmentData.getCallsValue());
+                value.setProbabilityAmplification(twoDecimalPoint(segmentData.getProbabilityAmplification()));
+                value.setProbabilityGain(twoDecimalPoint(segmentData.getProbabilityGain()));
+                value.setProbabilityLoss(twoDecimalPoint(segmentData.getProbabilityLoss()));
+                value.setProbabilityNormal(twoDecimalPoint(segmentData.getProbabilityNormal()));
+                checkMeetsCopyNumberCriterion(result, criterionHandler, row, value);
                 row.getValues().add(value);
             }
         }
+    }
+
+    private Float twoDecimalPoint(Float floatValue) {
+        return floatValue == null ? null : Math.round(floatValue * DECIMAL_100) / DECIMAL_100;
     }
 
     private Map<SegmentData, GenomicDataResultRow> createCopyNumberResultRows(
@@ -257,7 +258,7 @@ class GenomicQueryHandler {
             value.setColumn(column);
             Float floatValue = values.getFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL);
             if (floatValue != null) {
-                value.setValue(Math.round(floatValue * DECIMAL_100) / DECIMAL_100);
+                value.setValue(twoDecimalPoint(floatValue));
                 if (query.isNeedsGenomicHighlighting()) {
                     checkMeetsGeneExpressionCriterion(result, criterionHandler, reporter, row, value);
                     checkHighVariance(result, arrayData, reporter, value);    
