@@ -10,7 +10,7 @@
 
 
    <appender name="appenderFile" class="org.apache.log4j.RollingFileAppender">
-     <param name="File" value="../server/default/log/hibernate.log"/>
+     <param name="File" value="${jboss.server.home.dir}/log/hibernate.log"/>
      <param name="Append" value="true"/>
      <param name="MaxFileSize" value="500KB"/>
      <param name="MaxBackupIndex" value="1"/>
