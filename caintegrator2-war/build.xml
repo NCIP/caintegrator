@@ -1152,6 +1152,8 @@
         <attribute name="xml.output.dir" />
         <attribute name="classpath" default="" />
         <attribute name="instrumented.classes" default="" />
+        <attribute name="includedTestFiles" default="**/*TestIntegration.java" />
+        <attribute name="excludedTestFiles" default="**/Abstract*TestIntegration.java" />
 
         <sequential>
             <mkdir dir="@{xml.output.dir}" />
@@ -1170,8 +1172,8 @@
                 <formatter type="xml" />
                 <batchtest todir="@{xml.output.dir}">
                     <fileset dir="@{test.src.dir}">
-                        <include name="**/*TestIntegration.java" />
-                        <exclude name="**/Abstract*TestIntegration.java" />
+                        <include name="@{includedTestFiles}" />
+                        <exclude name="@{excludedTestFiles}" />
                     </fileset>
                 </batchtest>
             </junit>
