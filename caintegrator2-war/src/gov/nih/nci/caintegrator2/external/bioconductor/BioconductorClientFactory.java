@@ -89,6 +89,7 @@ import java.rmi.RemoteException;
 
 import org.apache.axis.types.URI.MalformedURIException;
 import org.bioconductor.packages.caDNAcopy.common.CaDNAcopyI;
+import org.bioconductor.packages.caCGHcall.common.CaCGHcallI;
 
 /**
  * Creates Bioconductor grid client instances.
@@ -104,5 +105,15 @@ public interface BioconductorClientFactory {
      * @throws MalformedURIException if the URL is incorrect.
      */
     CaDNAcopyI getCaDNAcopyI(String url) throws MalformedURIException, RemoteException;
+    
+    /**
+     * Returns a <code>CaCGHcallI</code> for the grid URL given.
+     *
+     * @param url location of the service.
+     * @return the service instance.
+     * @throws RemoteException if the service connection failed.
+     * @throws MalformedURIException if the URL is incorrect.
+     */
+    CaCGHcallI getCaCGHcallI(String url) throws MalformedURIException, RemoteException;    
 
 }
