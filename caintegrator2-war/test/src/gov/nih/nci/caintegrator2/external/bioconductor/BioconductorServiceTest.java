@@ -18,11 +18,19 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.axis.types.URI.MalformedURIException;
+
 import org.bioconductor.cagrid.cadnacopy.DNAcopyAssays;
 import org.bioconductor.cagrid.cadnacopy.DNAcopyParameter;
-import org.bioconductor.cagrid.cadnacopy.DerivedDNAcopySegment;
 import org.bioconductor.cagrid.cadnacopy.ExpressionData;
+import org.bioconductor.cagrid.cadnacopy.DerivedDNAcopySegment;
 import org.bioconductor.packages.caDNAcopy.common.CaDNAcopyI;
+
+import org.bioconductor.cagrid.cacghcall.CGHcallAssays;
+import org.bioconductor.cagrid.cacghcall.CGHcallParameter;
+import org.bioconductor.cagrid.cacghcall.CGHcallExpressionData;
+import org.bioconductor.cagrid.cacghcall.DerivedCGHcallSegment;
+import org.bioconductor.packages.caCGHcall.common.CaCGHcallI;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse;
@@ -59,8 +67,12 @@ public class BioconductorServiceTest {
         configuration.setEarlyStoppingCriterion(0.0);
         configuration.setPermutationReplicates(0);
         configuration.setRandomNumberSeed(0);
+        configuration.setUseCghCall(true);
         service.addSegmentationData(dnaAnalysisData, configuration);
-        checkArrayDatas(dnaAnalysisData);
+        checkArrayDatasCGHcall(dnaAnalysisData);
+        configuration.setUseCghCall(false);
+        service.addSegmentationData(dnaAnalysisData, configuration);
+        checkArrayDatasDNAcopy(dnaAnalysisData);
     }
 
     private DnaAnalysisReporter createReporter(String chromosome, int start) {
@@ -70,19 +82,37 @@ public class BioconductorServiceTest {
         return reporter;
     }
 
-    private void checkArrayDatas(DnaAnalysisData dnaAnalysisData) {
+    private void checkArrayDatasDNAcopy(DnaAnalysisData dnaAnalysisData) {
         ArrayData arrayData1 = getArrayData(dnaAnalysisData, 0);
         assertEquals(2, arrayData1.getSegmentDatas().size());
         Iterator<SegmentData> iterator = arrayData1.getSegmentDatas().iterator();
-        checkSegmentData(arrayData1, iterator.next(), 5, 1.1F, "1", 0, 9);
-        checkSegmentData(arrayData1, iterator.next(), 10, 2.2F, "1", 10, 19);
+        checkSegmentDataDNAcopy(arrayData1, iterator.next(), 5, 1.1F, "1", 0, 9);
+        checkSegmentDataDNAcopy(arrayData1, iterator.next(), 10, 2.2F, "1", 10, 19);
         ArrayData arrayData2 = getArrayData(dnaAnalysisData, 1);
         assertEquals(1, arrayData2.getSegmentDatas().size());
         iterator = arrayData2.getSegmentDatas().iterator();
-        checkSegmentData(arrayData2, iterator.next(), 15, 3.3F, "2", 20, 29);
+        checkSegmentDataDNAcopy(arrayData2, iterator.next(), 15, 3.3F, "2", 20, 29);
     }
+    
+    private void checkArrayDatasCGHcall(DnaAnalysisData dnaAnalysisData) {
+        ArrayData arrayData1 = getArrayData(dnaAnalysisData, 0);
+        assertEquals(2, arrayData1.getSegmentDatas().size());
+        Iterator<SegmentData> iterator = arrayData1.getSegmentDatas().iterator();
+        checkSegmentDataCGHcall(arrayData1, iterator.next(), 5, 1.1F, "1", 0, 9, -1, 0.1F, 0.1F, 0.1F, 0.1F);
+        checkSegmentDataCGHcall(arrayData1, iterator.next(), 10, 2.2F, "1", 10, 19, 0, 0.2F, 0.2F, 0.2F, 0.2F);
+        ArrayData arrayData2 = getArrayData(dnaAnalysisData, 1);
+        assertEquals(1, arrayData2.getSegmentDatas().size());
+        iterator = arrayData2.getSegmentDatas().iterator();
+        checkSegmentDataCGHcall(arrayData2, iterator.next(), 15, 3.3F, "2", 20, 29, 1, 0.3F, 0.3F, 0.3F, 0.3F);
+    }    
 
-    private void checkSegmentData(ArrayData arrayData1, SegmentData segmentData1, int markers, float value, String chromosome, int start, int end) {
+    private void checkSegmentDataDNAcopy(ArrayData arrayData1,
+                                            SegmentData segmentData1,
+                                            int markers,
+                                            float value,
+                                            String chromosome,
+                                            int start,
+                                            int end) {
         assertEquals(arrayData1, segmentData1.getArrayData());
         assertEquals(markers, (int) segmentData1.getNumberOfMarkers());
         assertEquals(value, (float) segmentData1.getSegmentValue(), 0.0000001);
@@ -90,6 +120,31 @@ public class BioconductorServiceTest {
         assertEquals(start, (int) segmentData1.getLocation().getStartPosition());
         assertEquals(end, (int) segmentData1.getLocation().getEndPosition());
     }
+    
+    private void checkSegmentDataCGHcall(ArrayData arrayData1,
+                                            SegmentData segmentData1,
+                                            int markers,
+                                            float value,
+                                            String chromosome,
+                                            int start,
+                                            int end,
+                                            int calls,
+                                            float probLoss,
+                                            float probNorm,
+                                            float probGain,
+                                            float probAmp) {
+        assertEquals(arrayData1, segmentData1.getArrayData());
+        assertEquals(markers, (int) segmentData1.getNumberOfMarkers());
+        assertEquals(value, (float) segmentData1.getSegmentValue(), 0.0000001);
+        assertEquals(chromosome, segmentData1.getLocation().getChromosome());
+        assertEquals(start, (int) segmentData1.getLocation().getStartPosition());
+        assertEquals(end, (int) segmentData1.getLocation().getEndPosition());
+        assertEquals(calls, (int) segmentData1.getCallsValue());
+        assertEquals(probLoss, (float) segmentData1.getProbabilityLoss(), 0.0000001);
+        assertEquals(probNorm, (float) segmentData1.getProbabilityNormal(), 0.0000001);
+        assertEquals(probGain, (float) segmentData1.getProbabilityGain(), 0.0000001);
+        assertEquals(probAmp, (float) segmentData1.getProbabilityAmplification(), 0.0000001);
+    }    
 
     private ArrayData getArrayData(DnaAnalysisData dnaAnalysisData, long id) {
         for (ArrayData arrayData : dnaAnalysisData.getArrayDatas()) {
@@ -100,14 +155,21 @@ public class BioconductorServiceTest {
         return null;
     }
 
-    private static void checkAssays(DNAcopyAssays assays) {
+    private static void checkAssaysCGHcall(CGHcallAssays assays) {
         compareIntArrays(new int[] {1, 1, 2}, assays.getChromsomeId());
         compareLongArrays(new long[] {0, 5, 0}, assays.getMapLocation());
-        compareDoubleArrays(new double[] {1.1, 2.2, 3.3}, getExpressionData(assays, 0).getLogRatioValues());
-        compareDoubleArrays(new double[] {4.4, 5.5, 6.6}, getExpressionData(assays, 1).getLogRatioValues());
+        compareDoubleArrays(new double[] {1.1, 2.2, 3.3}, getExpressionDataCGHcall(assays, 0).getLogRatioValues());
+        compareDoubleArrays(new double[] {4.4, 5.5, 6.6}, getExpressionDataCGHcall(assays, 1).getLogRatioValues());
     }
+    
+    private static void checkAssaysDNAcopy(DNAcopyAssays assays) {
+        compareIntArrays(new int[] {1, 1, 2}, assays.getChromsomeId());
+        compareLongArrays(new long[] {0, 5, 0}, assays.getMapLocation());
+        compareDoubleArrays(new double[] {1.1, 2.2, 3.3}, getExpressionDataDNAcopy(assays, 0).getLogRatioValues());
+        compareDoubleArrays(new double[] {4.4, 5.5, 6.6}, getExpressionDataDNAcopy(assays, 1).getLogRatioValues());
+    }      
 
-    private static ExpressionData getExpressionData(DNAcopyAssays assays, int id) {
+    private static ExpressionData getExpressionDataDNAcopy(DNAcopyAssays assays, int id) {
         for (ExpressionData data : assays.getExpressionDataCollection()) {
             if (data.getSampleId().equals(String.valueOf(id))) {
                 return data;
@@ -115,6 +177,15 @@ public class BioconductorServiceTest {
         }
         return null;
     }
+    
+    private static CGHcallExpressionData getExpressionDataCGHcall(CGHcallAssays assays, int id) {
+        for (CGHcallExpressionData data : assays.getExpressionDataCollection()) {
+            if (data.getSampleId().equals(String.valueOf(id))) {
+                return data;
+            }
+        }
+        return null;
+    }    
 
     private static void compareIntArrays(int[] expecteds, int[] actuals) {
         assertEquals(expecteds.length, actuals.length);
@@ -136,7 +207,7 @@ public class BioconductorServiceTest {
         }
     }
 
-    private static DerivedDNAcopySegment createTestSegment() {
+    private static DerivedDNAcopySegment createDNAcopyTestSegment() {
         DerivedDNAcopySegment segment = new DerivedDNAcopySegment();
         segment.setAverageSegmentValue(new double[] {1.1, 2.2, 3.3});
         segment.setChromosomeIndex(new String[] {"1", "1", "2"});
@@ -146,17 +217,27 @@ public class BioconductorServiceTest {
         segment.setStartMapPosition(new long[] {0, 10, 20});
         return segment;
     }
+    
+    private static DerivedCGHcallSegment createCGHcallTestSegment() {
+        DerivedCGHcallSegment segment = new DerivedCGHcallSegment();
+        segment.setAverageSegmentValue(new double[] {1.1, 2.2, 3.3});
+        segment.setChromosomeIndex(new String[] {"1", "1", "2"});
+        segment.setEndMapPosition(new long[] {9, 19, 29});
+        segment.setMarkersPerSegment(new int[] {5, 10, 15});
+        segment.setSampleId(new String[] {"0", "0", "1"});
+        segment.setStartMapPosition(new long[] {0, 10, 20});
+        segment.setCalls(new int[] {-1, 0, 1});
+        segment.setProbLoss(new double[] {0.1, 0.2, 0.3});
+        segment.setProbNorm(new double[] {0.1, 0.2, 0.3});
+        segment.setProbGain(new double[] {0.1, 0.2, 0.3});
+        segment.setProbAmp(new double[] {0.1, 0.2, 0.3});
+        return segment;
+    }    
 
     private static class TestClientFactory implements BioconductorClientFactory {
 
         public CaDNAcopyI getCaDNAcopyI(String url) throws MalformedURIException, RemoteException {
             return new CaDNAcopyI() {
-
-                public DerivedDNAcopySegment getDerivedDNAcopySegment(DNAcopyAssays assays,
-                        DNAcopyParameter acopyParameter) throws RemoteException {
-                    checkAssays(assays);
-                    return createTestSegment();
-                }
 
                 public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(
                         GetMultipleResourceProperties_Element params) throws RemoteException {
@@ -171,6 +252,46 @@ public class BioconductorServiceTest {
                         throws RemoteException {
                     return null;
                 }
+
+				public DerivedDNAcopySegment getDerivedDNAcopySegment(
+				        DNAcopyAssays dNAcopyAssays,
+				        DNAcopyParameter dNAcopyParameter)
+						throws RemoteException {
+				    checkAssaysDNAcopy(dNAcopyAssays);
+                    return createDNAcopyTestSegment();
+				}
+                
+            };
+        }
+
+		/* (non-Javadoc)
+		 * @see gov.nih.nci.caintegrator2.external.bioconductor.BioconductorClientFactory#getCaCGHcallI(java.lang.String)
+		 */
+		public CaCGHcallI getCaCGHcallI(String url)
+				throws MalformedURIException, RemoteException {
+            return new CaCGHcallI() {
+
+                public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(
+                        GetMultipleResourceProperties_Element params) throws RemoteException {
+                    return null;
+                }
+
+                public GetResourcePropertyResponse getResourceProperty(QName arg0) throws RemoteException {
+                    return null;
+                }
+
+                public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element arg0)
+                        throws RemoteException {
+                    return null;
+                }
+
+				public DerivedCGHcallSegment getDerivedCGHcallSegment(
+						CGHcallAssays dNAcopyAssays,
+						CGHcallParameter dNAcopyParameter)
+						throws RemoteException {
+                    checkAssaysCGHcall(dNAcopyAssays);
+                    return createCGHcallTestSegment();
+				}
                 
             };
         }
