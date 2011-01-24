@@ -192,8 +192,7 @@ class GenomicDataHelper {
 
     private void handleParsedDnaAnalysisData(GenomicDataSourceConfiguration genomicSource) 
     throws DataRetrievalException, ConnectionException, ValidationException, IOException {
-        List<ArrayDataValues> arrayValuesList = caArrayFacade.retrieveDnaAnalysisData(genomicSource);
-        arrayDataService.save(arrayValuesList);
+        List<ArrayDataValues> arrayValuesList = caArrayFacade.retrieveDnaAnalysisData(genomicSource, arrayDataService);
         computeSegmentationData(genomicSource, arrayValuesList);
     }
 

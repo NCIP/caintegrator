@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.external.caarray;
 
 import gov.nih.nci.caarray.external.v1_0.data.File;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -129,12 +130,14 @@ public interface CaArrayFacade {
      * Returns the data for the samples contained in the <code>GenomicDataSourceConfiguration</code>.
      * 
      * @param genomicSource retrieve data from this source.
+     * @param arrayDataService to save array data to.
      * @throws ConnectionException if the connection to the caArray server fails.
      * @return the list of array data values.
      * @throws ConnectionException if the subsystem can't connect to the caArray server.
      * @throws DataRetrievalException if the data couldn't be retrieved from caArray.
      */
-    List<ArrayDataValues> retrieveDnaAnalysisData(GenomicDataSourceConfiguration genomicSource) 
+    List<ArrayDataValues> retrieveDnaAnalysisData(GenomicDataSourceConfiguration genomicSource, 
+            ArrayDataService arrayDataService) 
     throws ConnectionException, DataRetrievalException;
 
     /**

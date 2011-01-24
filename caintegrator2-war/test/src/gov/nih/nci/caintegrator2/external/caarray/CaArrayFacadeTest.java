@@ -114,6 +114,7 @@ import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
 import gov.nih.nci.caarray.services.external.v1_0.data.DataTransferException;
 import gov.nih.nci.caarray.services.external.v1_0.data.InconsistentDataSetsException;
 import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
@@ -211,7 +212,7 @@ public class CaArrayFacadeTest {
         Sample sample = new Sample();
         sample.setName("sample");
         genomicSource.getSamples().add(sample);
-        List<ArrayDataValues> valuesList = caArrayFacade.retrieveDnaAnalysisData(genomicSource);
+        List<ArrayDataValues> valuesList = caArrayFacade.retrieveDnaAnalysisData(genomicSource, new ArrayDataServiceStub());
         assertEquals(1, valuesList.size());
         ArrayDataValues arrayDataValues = valuesList.get(0);
         assertEquals(2, arrayDataValues.getReporters().size());
