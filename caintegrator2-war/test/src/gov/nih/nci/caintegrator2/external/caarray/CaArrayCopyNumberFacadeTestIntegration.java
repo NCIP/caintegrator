@@ -90,6 +90,7 @@ import static org.junit.Assert.assertFalse;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.AgilentCnPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AgilentGemlCghPlatformLoader;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
@@ -166,7 +167,7 @@ public class CaArrayCopyNumberFacadeTestIntegration {
         genomicSource.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
         genomicSource.getSamples().addAll(caArrayFacade.getSamples(EXPERIMENT, genomicSource.getServerProfile()));
         genomicSource.setStudyConfiguration(StudyConfigurationFactory.createNewStudyConfiguration());
-        List<ArrayDataValues> valuesList = caArrayFacade.retrieveDnaAnalysisData(genomicSource);
+        List<ArrayDataValues> valuesList = caArrayFacade.retrieveDnaAnalysisData(genomicSource, new ArrayDataServiceStub());
         assertEquals(3, valuesList.size());
         assertEquals(174341, valuesList.iterator().next().getReporters().size());
     }

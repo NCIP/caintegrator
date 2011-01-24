@@ -94,6 +94,7 @@ import gov.nih.nci.caarray.services.external.v1_0.InvalidInputException;
 import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
 import gov.nih.nci.caarray.services.external.v1_0.data.InconsistentDataSetsException;
 import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -166,7 +167,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
      */
     public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) 
     throws ConnectionException, DataRetrievalException {
-        AbstractDataRetrievalHelper dataRetrievalHelper = getDataRetrievalHelper(genomicSource);
+        AbstractDataRetrievalHelper dataRetrievalHelper = getDataRetrievalHelper(genomicSource, null);
         try {
             dataRetrievalHelper.retrieveData();
             return ((ExpressionDataRetrievalHelper) dataRetrievalHelper).getArrayDataValues();
@@ -182,9 +183,10 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     /**
      * {@inheritDoc}
      */
-    public List<ArrayDataValues> retrieveDnaAnalysisData(GenomicDataSourceConfiguration genomicSource) 
+    public List<ArrayDataValues> retrieveDnaAnalysisData(GenomicDataSourceConfiguration genomicSource,
+            ArrayDataService arrayDataService) 
     throws ConnectionException, DataRetrievalException {
-        AbstractDataRetrievalHelper dataRetrievalHelper = getDataRetrievalHelper(genomicSource);
+        AbstractDataRetrievalHelper dataRetrievalHelper = getDataRetrievalHelper(genomicSource, arrayDataService);
         try {
             dataRetrievalHelper.retrieveData();
             return ((DnaAnalysisDataRetrievalHelper) dataRetrievalHelper).getArrayDataValuesList();
@@ -197,17 +199,19 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
         }
     }
 
-    private AbstractDataRetrievalHelper getDataRetrievalHelper(GenomicDataSourceConfiguration genomicSource) 
+    private AbstractDataRetrievalHelper getDataRetrievalHelper(GenomicDataSourceConfiguration genomicSource,
+            ArrayDataService arrayDataService) 
     throws ConnectionException, DataRetrievalException {
         SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
         DataService dataService = 
             getServiceFactory().createDataService(genomicSource.getServerProfile());
         if (PlatformVendorEnum.AFFYMETRIX.equals(genomicSource.getPlatformVendor())
                 && genomicSource.isExpressionData()) {
-            return new ExpressionDataRetrievalHelper(genomicSource, dataService, searchService, dao);
+            return new ExpressionDataRetrievalHelper(genomicSource, dataService, searchService, dao, arrayDataService);
         } else if (PlatformVendorEnum.AGILENT.equals(genomicSource.getPlatformVendor())
                 && genomicSource.isCopyNumberData()) {
-            return new DnaAnalysisDataRetrievalHelper(genomicSource, dataService, searchService, dao);
+            return new DnaAnalysisDataRetrievalHelper(genomicSource, dataService, searchService, dao, 
+                    arrayDataService);
         }
         throw new DataRetrievalException("Unsupport platform vendor: " + genomicSource.getPlatformVendor()
                 + " and type " + genomicSource.getDataTypeString());

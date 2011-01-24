@@ -149,15 +149,6 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public void save(List<ArrayDataValues> valuesList) {
-        for (ArrayDataValues arrayDataValues : valuesList) {
-            save(arrayDataValues);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @SuppressWarnings("PMD.AvoidReassigningParameters") // preferable in this instance for error handling.
     public PlatformConfiguration loadArrayDesign(PlatformConfiguration platformConfiguration) {
         AbstractPlatformSource platformSource = platformConfiguration.getPlatformSource();

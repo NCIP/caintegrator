@@ -108,13 +108,6 @@ public interface ArrayDataService {
      * @param values the data matrix values to store.
      */
     void save(ArrayDataValues values);
-    
-    /**
-     * Stores the list values of an <code>ArrayDataValues</code> for later search and retrieval.
-     * 
-     * @param valuesList the list of data matrix values to store.
-     */
-    void save(List<ArrayDataValues> valuesList);
 
     /**
      * Retrieves the requested array data.
