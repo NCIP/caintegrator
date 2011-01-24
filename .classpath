@@ -181,5 +181,8 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/antlr-2.7.7.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/google-collections-1.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/CaCGHcall-client.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/CaCGHcall-common.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/CaCGHcall-stubs.jar" sourcepath="software/lib/external-runtime/CaCGHcall-stubs.jar"/>
 	<classpathentry kind="output" path="software/caintegrator2-war/target/classes"/>
 </classpath>
