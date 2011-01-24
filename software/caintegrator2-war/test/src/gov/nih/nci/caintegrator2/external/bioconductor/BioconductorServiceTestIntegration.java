@@ -54,12 +54,14 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
         dnaAnalysisData.addDnaAnalysisData(arrayData, getValues(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE, reporters));
         DnaAnalysisDataConfiguration configuration = new DnaAnalysisDataConfiguration();
         ServerConnectionProfile server = new ServerConnectionProfile();
-        server.setUrl("http://bioconductor.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
+        //server.setUrl("http://bioconductor.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
+        server.setUrl("http://ncias-s412.nci.nih.gov:8080/wsrf/services/cagrid/CaCGHcall");
         configuration.setSegmentationService(server);
         configuration.setChangePointSignificanceLevel(0.0);
         configuration.setEarlyStoppingCriterion(0.0);
         configuration.setPermutationReplicates(0);
         configuration.setRandomNumberSeed(0);
+        configuration.setUseCghCall(true);
         service.addSegmentationData(dnaAnalysisData, configuration);
         assertEquals(23, arrayData.getSegmentDatas().size());
     }

@@ -97,8 +97,8 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 public interface BioconductorService {
     
     /**
-     * Retrieves segementation data from Bioconductor's caDNAcopy service and associates it 
-     * (via <code>SegmentData</code> objects) to the array datas passed in.
+     * Retrieves segmentation data from Bioconductor's caDNAcopy or caCGHcall service
+     * and associates it (via <code>SegmentData</code> objects) to the array datas passed in.
      * 
      * @param dnaAnalysisData retrieve segmentation data 
      * @param configuration include service to connect to.
@@ -107,6 +107,7 @@ public interface BioconductorService {
      */
     void addSegmentationData(DnaAnalysisData dnaAnalysisData,
             DnaAnalysisDataConfiguration configuration)
-    throws ConnectionException, DataRetrievalException;
+    throws ConnectionException, DataRetrievalException;    
+    
 
 }

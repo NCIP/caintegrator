@@ -101,11 +101,19 @@ import java.util.Map;
 
 import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.log4j.Logger;
+
 import org.bioconductor.cagrid.cadnacopy.DNAcopyAssays;
 import org.bioconductor.cagrid.cadnacopy.DNAcopyParameter;
-import org.bioconductor.cagrid.cadnacopy.DerivedDNAcopySegment;
 import org.bioconductor.cagrid.cadnacopy.ExpressionData;
+import org.bioconductor.cagrid.cadnacopy.DerivedDNAcopySegment;
 import org.bioconductor.packages.caDNAcopy.common.CaDNAcopyI;
+
+import org.bioconductor.cagrid.cacghcall.CGHcallAssays;
+import org.bioconductor.cagrid.cacghcall.CGHcallParameter;
+import org.bioconductor.cagrid.cacghcall.CGHcallExpressionData;
+import org.bioconductor.cagrid.cacghcall.DerivedCGHcallSegment;
+import org.bioconductor.packages.caCGHcall.common.CaCGHcallI;
+
 
 /**
  * Implementation that uses Bioconductor grid services.
@@ -114,36 +122,76 @@ public class BioconductorServiceImpl implements BioconductorService {
     
     private static final Logger LOGGER = Logger.getLogger(BioconductorServiceImpl.class);
     private BioconductorClientFactory clientFactory = new BioconductorClientFactoryImpl();
-
+    
     /**
      * {@inheritDoc}
+     * @throws ConnectionException 
      * @throws DataRetrievalException 
      */
     public void addSegmentationData(DnaAnalysisData dnaAnalysisData,
             DnaAnalysisDataConfiguration configuration) 
     throws ConnectionException, DataRetrievalException {
-        String url = configuration.getSegmentationService().getUrl();
+        String segmentationServiceUrl = configuration.getSegmentationService().getUrl();
         try {
-            CaDNAcopyI client = getClient(url);
-            DNAcopyAssays assays = buildAssays(dnaAnalysisData);
-            DNAcopyParameter parameter = new DNAcopyParameter();
-            parameter.setChangePointSignificanceLevel(configuration.getChangePointSignificanceLevel());
-            parameter.setEarlyStoppingCriterion(configuration.getEarlyStoppingCriterion());
-            parameter.setPermutationReplicates(configuration.getPermutationReplicates());
-            parameter.setRandomNumberSeed(configuration.getRandomNumberSeed());
             LOGGER.info("Begin Retrieving segment from BioConductor: "
                       + configuration.getSegmentationService().getUrl());
-            DerivedDNAcopySegment segment = client.getDerivedDNAcopySegment(assays, parameter);
-            LOGGER.info("End Retrieving segment from BioConductor: "
-                      + configuration.getSegmentationService().getUrl());
-            addSegmentationData(segment, dnaAnalysisData);
+            if (configuration.isUseCghCall()) {
+                addCGHcallSegmentationData(dnaAnalysisData, configuration, segmentationServiceUrl);
+            } else {
+                addDNAcopySegmentationData(dnaAnalysisData, configuration, segmentationServiceUrl);
+            }
         } catch (RemoteException e) {
-            LOGGER.error("Couldn't complete CaDNACopy job", e);
-            throw new DataRetrievalException("Couldn't complete CaDNACopy job: " + e.getMessage(), e);
+            LOGGER.error("Couldn't complete segmentation job", e);
+            throw new DataRetrievalException("Couldn't complete segmentation job: " + e.getMessage(), e);
         }
-    }
+    }    
 
-    private CaDNAcopyI getClient(String url) throws ConnectionException {
+    /**
+     * {@inheritDoc}
+     * @param segmentationServiceUrl 
+     * @throws DataRetrievalException 
+     * @throws RemoteException 
+     */
+    public void addCGHcallSegmentationData(DnaAnalysisData dnaAnalysisData,
+            DnaAnalysisDataConfiguration configuration, String segmentationServiceUrl) 
+    throws ConnectionException, DataRetrievalException, RemoteException {
+        CGHcallAssays assays = buildCGHcallAssays(dnaAnalysisData);
+        CGHcallParameter parameter = new CGHcallParameter();
+        parameter.setChangePointSignificanceLevel(configuration.getChangePointSignificanceLevel());
+        parameter.setEarlyStoppingCriterion(configuration.getEarlyStoppingCriterion());
+        parameter.setPermutationReplicates(configuration.getPermutationReplicates());
+        parameter.setRandomNumberSeed(configuration.getRandomNumberSeed());
+        parameter.setNumberLevels(4);
+        CaCGHcallI client = getCGHcallClient(segmentationServiceUrl);
+        DerivedCGHcallSegment segment = client.getDerivedCGHcallSegment(assays, parameter);
+        LOGGER.info("End Retrieving segment from BioConductor: "
+                + configuration.getSegmentationService().getUrl());
+        addCGHcallSegmentationData(segment, dnaAnalysisData);
+    }    
+    
+    /**
+     * {@inheritDoc}
+     * @param segmentationServiceUrl 
+     * @throws DataRetrievalException 
+     * @throws RemoteException 
+     */
+    public void addDNAcopySegmentationData(DnaAnalysisData dnaAnalysisData,
+            DnaAnalysisDataConfiguration configuration, String segmentationServiceUrl) 
+    throws ConnectionException, DataRetrievalException, RemoteException {
+      DNAcopyAssays assays = buildDNAcopyAssays(dnaAnalysisData);
+      DNAcopyParameter parameter = new DNAcopyParameter();
+      parameter.setChangePointSignificanceLevel(configuration.getChangePointSignificanceLevel());
+      parameter.setEarlyStoppingCriterion(configuration.getEarlyStoppingCriterion());
+      parameter.setPermutationReplicates(configuration.getPermutationReplicates());
+      parameter.setRandomNumberSeed(configuration.getRandomNumberSeed());
+      CaDNAcopyI client = getDNAcopyClient(segmentationServiceUrl);
+      DerivedDNAcopySegment segment = client.getDerivedDNAcopySegment(assays, parameter);
+      LOGGER.info("End Retrieving segment from BioConductor: "
+              + configuration.getSegmentationService().getUrl());
+      addDNAcopySegmentationData(segment, dnaAnalysisData);
+    }
+    
+    private CaDNAcopyI getDNAcopyClient(String url) throws ConnectionException {
         try {
             return getClientFactory().getCaDNAcopyI(url);
         } catch (MalformedURIException e) {
@@ -153,18 +201,39 @@ public class BioconductorServiceImpl implements BioconductorService {
             throw new ConnectionException("Couldn't connect to " + url + ": " + e.getMessage(), e);
         }
     }
+    
+    private CaCGHcallI getCGHcallClient(String url) throws ConnectionException {
+        try {
+            return getClientFactory().getCaCGHcallI(url);
+        } catch (MalformedURIException e) {
+            throw new ConnectionException("Invalid URL: " + url, e);
+        } catch (RemoteException e) {
+            LOGGER.error("Couldn't connect to caCGHcallI service", e);
+            throw new ConnectionException("Couldn't connect to " + url + ": " + e.getMessage(), e);
+        }
+    }    
 
-    private void addSegmentationData(DerivedDNAcopySegment segment, DnaAnalysisData dnaAnalysisData) {
+    private void addDNAcopySegmentationData(DerivedDNAcopySegment segment, DnaAnalysisData dnaAnalysisData) {
         Map<String, ArrayData> arrayDataMap = getArrayDataMap(dnaAnalysisData);
         for (int segmentIndex = 0;  segmentIndex < segment.getSampleId().length; segmentIndex++) {
-            ArrayData arrayData = arrayDataMap.get(arrayDataKey(segment, segmentIndex));
-            SegmentData segmentData = createSegmentData(segment, segmentIndex);
+            ArrayData arrayData = arrayDataMap.get(getDNAcopyArrayDataKey(segment, segmentIndex));
+            SegmentData segmentData = createDNAcopySegmentData(segment, segmentIndex);
             segmentData.setArrayData(arrayData);
             arrayData.getSegmentDatas().add(segmentData);
         }
-    }
+    }   
+    
+    private void addCGHcallSegmentationData(DerivedCGHcallSegment segment, DnaAnalysisData dnaAnalysisData) {
+        Map<String, ArrayData> arrayDataMap = getArrayDataMap(dnaAnalysisData);
+        for (int segmentIndex = 0;  segmentIndex < segment.getSampleId().length; segmentIndex++) {
+            ArrayData arrayData = arrayDataMap.get(getCGHcallArrayDataKey(segment, segmentIndex));
+            SegmentData segmentData = createCGHcallSegmentData(segment, segmentIndex);
+            segmentData.setArrayData(arrayData);
+            arrayData.getSegmentDatas().add(segmentData);
+        }
+    }    
 
-    private String arrayDataKey(DerivedDNAcopySegment segment, int segmentIndex) {
+    private String getDNAcopyArrayDataKey(DerivedDNAcopySegment segment, int segmentIndex) {
         String sampleId = segment.getSampleId(segmentIndex);
         if (sampleId.charAt(0) == 'X') {
             return sampleId.substring(1);
@@ -172,8 +241,17 @@ public class BioconductorServiceImpl implements BioconductorService {
             return sampleId;
         }
     }
+    
+    private String getCGHcallArrayDataKey(DerivedCGHcallSegment segment, int segmentIndex) {
+        String sampleId = segment.getSampleId(segmentIndex);
+        if (sampleId.charAt(0) == 'X') {
+            return sampleId.substring(1);
+        } else {
+            return sampleId;
+        }
+    }    
 
-    private SegmentData createSegmentData(DerivedDNAcopySegment segment, int segmentIndex) {
+    private SegmentData createDNAcopySegmentData(DerivedDNAcopySegment segment, int segmentIndex) {
         SegmentData segmentData = new SegmentData();
         segmentData.setLocation(new ChromosomalLocation());
         segmentData.setNumberOfMarkers(segment.getMarkersPerSegment(segmentIndex));
@@ -183,6 +261,22 @@ public class BioconductorServiceImpl implements BioconductorService {
         segmentData.getLocation().setEndPosition((int) segment.getEndMapPosition(segmentIndex));
         return segmentData;
     }
+    
+    private SegmentData createCGHcallSegmentData(DerivedCGHcallSegment segment, int segmentIndex) {
+        SegmentData segmentData = new SegmentData();
+        segmentData.setLocation(new ChromosomalLocation());
+        segmentData.setNumberOfMarkers(segment.getMarkersPerSegment(segmentIndex));
+        segmentData.setSegmentValue((float) segment.getAverageSegmentValue(segmentIndex));
+        segmentData.getLocation().setChromosome(segment.getChromosomeIndex(segmentIndex));
+        segmentData.getLocation().setStartPosition((int) segment.getStartMapPosition(segmentIndex));
+        segmentData.getLocation().setEndPosition((int) segment.getEndMapPosition(segmentIndex));
+        segmentData.setCallsValue((int) segment.getCalls(segmentIndex));
+        segmentData.setProbabilityLoss((float) segment.getProbLoss(segmentIndex));
+        segmentData.setProbabilityNormal((float) segment.getProbNorm(segmentIndex));
+        segmentData.setProbabilityGain((float) segment.getProbGain(segmentIndex));
+        segmentData.setProbabilityAmplification((float) segment.getProbAmp(segmentIndex));
+        return segmentData;
+    }    
 
     private Map<String, ArrayData> getArrayDataMap(DnaAnalysisData dnaAnalysisData) {
         Map<String, ArrayData> arrayDataMap = new HashMap<String, ArrayData>();
@@ -192,10 +286,10 @@ public class BioconductorServiceImpl implements BioconductorService {
         return arrayDataMap;
     }
 
-    private DNAcopyAssays buildAssays(DnaAnalysisData dnaAnalysisData) {
+    private DNAcopyAssays buildDNAcopyAssays(DnaAnalysisData dnaAnalysisData) {
         DNAcopyAssays assays = new DNAcopyAssays();
         int reporterCount = getReporterCount(dnaAnalysisData.getReporters());
-        configureMapInformation(dnaAnalysisData, assays, reporterCount);
+        configureMapInformationDNAcopy(dnaAnalysisData, assays, reporterCount);
         assays.setExpressionDataCollection(new ExpressionData[dnaAnalysisData.getArrayDatas().size()]);
         int index = 0;
         for (ArrayData arrayData : dnaAnalysisData.getArrayDatas()) {
@@ -204,6 +298,20 @@ public class BioconductorServiceImpl implements BioconductorService {
         }
         return assays;
     }
+    
+    private CGHcallAssays buildCGHcallAssays(DnaAnalysisData dnaAnalysisData) {
+        CGHcallAssays assays = new CGHcallAssays();
+        int reporterCount = getReporterCount(dnaAnalysisData.getReporters());
+        configureMapInformationCGHcall(dnaAnalysisData, assays, reporterCount);
+        assays.setExpressionDataCollection(new CGHcallExpressionData[dnaAnalysisData.getArrayDatas().size()]);
+        int index = 0;
+        for (ArrayData arrayData : dnaAnalysisData.getArrayDatas()) {
+            assays.setExpressionDataCollection(index,
+                buildExpressionDataCGHcall(dnaAnalysisData, arrayData, reporterCount));
+            index++;
+        }
+        return assays;
+    }    
 
     private ExpressionData buildExpressionData(DnaAnalysisData dnaAnalysisData,
             ArrayData arrayData, int reporterCount) {
@@ -220,8 +328,25 @@ public class BioconductorServiceImpl implements BioconductorService {
         data.setLogRatioValues(values);
         return data;
     }
+    
+    private CGHcallExpressionData buildExpressionDataCGHcall(DnaAnalysisData dnaAnalysisData,
+            ArrayData arrayData, int reporterCount) {
+        CGHcallExpressionData data = new CGHcallExpressionData();
+        data.setSampleId(String.valueOf(arrayData.getId()));
+        double[] values = new double[reporterCount];
+        int index = 0;
+        for (int i = 0; i < dnaAnalysisData.getReporters().size(); i++) {
+            DnaAnalysisReporter reporter = dnaAnalysisData.getReporters().get(i);
+            if (reporter.hasValidLocation()) {
+                values[index++] = dnaAnalysisData.getValues(arrayData)[i];
+            }
+        }
+        data.setLogRatioValues(values);
+        return data;
+    }    
 
-    private void configureMapInformation(DnaAnalysisData dnaAnalysisData, DNAcopyAssays assays, int reporterCount) {
+    private void configureMapInformationDNAcopy(DnaAnalysisData dnaAnalysisData,
+            DNAcopyAssays assays, int reporterCount) {
         assays.setChromsomeId(new int[reporterCount]);
         assays.setMapLocation(new long[reporterCount]);
         int index = 0;
@@ -232,6 +357,19 @@ public class BioconductorServiceImpl implements BioconductorService {
             }
         }
     }
+    
+    private void configureMapInformationCGHcall(DnaAnalysisData dnaAnalysisData,
+            CGHcallAssays assays, int reporterCount) {
+        assays.setChromsomeId(new int[reporterCount]);
+        assays.setMapLocation(new long[reporterCount]);
+        int index = 0;
+        for (DnaAnalysisReporter reporter : dnaAnalysisData.getReporters()) {
+            if (reporter.hasValidLocation()) {
+                assays.setChromsomeId(index, reporter.getChromosomeAsInt());
+                assays.setMapLocation(index++, reporter.getPosition());
+            }
+        }
+    }    
 
     private int getReporterCount(List<DnaAnalysisReporter> reporters) {
        int reporterCount = 0;
