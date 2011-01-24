@@ -96,6 +96,7 @@ import gov.nih.nci.caarray.services.external.v1_0.InvalidInputException;
 import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
 import gov.nih.nci.caarray.services.external.v1_0.data.InconsistentDataSetsException;
 import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
@@ -126,8 +127,9 @@ class DnaAnalysisDataRetrievalHelper extends AbstractDataRetrievalHelper {
     private List<ArrayDataValues> arrayDataValuesList;
     
     DnaAnalysisDataRetrievalHelper(GenomicDataSourceConfiguration genomicSource,
-            DataService dataService, SearchService searchService, CaIntegrator2Dao dao) {
-        super(genomicSource, dataService, searchService, dao);
+            DataService dataService, SearchService searchService, CaIntegrator2Dao dao, 
+            ArrayDataService arrayDataService) {
+        super(genomicSource, dataService, searchService, dao, arrayDataService);
     }
 
     @Override
@@ -179,11 +181,13 @@ class DnaAnalysisDataRetrievalHelper extends AbstractDataRetrievalHelper {
                     getPlatformHelper().getAllReportersByType(REPORTER_TYPE));
             arrayDataValuesList.add(arrayDataValues);
             
-            buildArrayDataValues(dataSet, sample, arrayData, arrayDataValues);
+            storeArrayDataValues(dataSet, sample, arrayData, arrayDataValues);
+            getArrayDataService().save(arrayDataValues);
+            arrayDataValues.clearMaps();
         }
     }
 
-    private void buildArrayDataValues(DataSet dataSet, Sample sample, ArrayData arrayData,
+    private void storeArrayDataValues(DataSet dataSet, Sample sample, ArrayData arrayData,
             ArrayDataValues arrayDataValues) {
         List<DesignElement> probeSets = dataSet.getDesignElements();
         List<HybridizationData> hybridizationDatas = getSampleToHybridizationDataMap().get(sample);

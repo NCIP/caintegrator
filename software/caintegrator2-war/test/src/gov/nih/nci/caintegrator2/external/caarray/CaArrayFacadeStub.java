@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.external.caarray;
 
 import gov.nih.nci.caarray.external.v1_0.data.File;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -163,7 +164,8 @@ public class CaArrayFacadeStub implements CaArrayFacade {
     /**
      * {@inheritDoc}
      */
-    public List<ArrayDataValues> retrieveDnaAnalysisData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
+    public List<ArrayDataValues> retrieveDnaAnalysisData(GenomicDataSourceConfiguration genomicSource, ArrayDataService arrayDataService) 
+    throws ConnectionException {
         retrieveDataCalled = true;
         List<ArrayDataValues> valuesList = new ArrayList<ArrayDataValues>();
         List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();

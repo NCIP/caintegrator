@@ -102,6 +102,7 @@ import gov.nih.nci.caarray.services.external.v1_0.UnsupportedCategoryException;
 import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
 import gov.nih.nci.caarray.services.external.v1_0.data.InconsistentDataSetsException;
 import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.common.CentralTendencyCalculator;
@@ -134,6 +135,7 @@ abstract class AbstractDataRetrievalHelper {
     private final SearchService searchService;
     private final CaIntegrator2Dao dao;
     private final CentralTendencyCalculator centralTendencyCalculator;
+    private final ArrayDataService arrayDataService;
     private Map<Hybridization, Sample> hybridizationToSampleMap;
     private Map<String, Biomaterial> nameToCaArraySampleMap;
     private Map<String, Hybridization> idToHybridizationMap;
@@ -142,11 +144,13 @@ abstract class AbstractDataRetrievalHelper {
         new HashMap<Sample, List<HybridizationData>>();
     
     AbstractDataRetrievalHelper(GenomicDataSourceConfiguration genomicSource,
-            DataService dataService, SearchService searchService, CaIntegrator2Dao dao) {
+            DataService dataService, SearchService searchService, CaIntegrator2Dao dao, 
+            ArrayDataService arrayDataService) {
                 this.genomicSource = genomicSource;
                 this.dataService = dataService;
                 this.searchService = searchService;
                 this.dao = dao;
+                this.arrayDataService = arrayDataService;
                 this.centralTendencyCalculator = new CentralTendencyCalculator(
                         genomicSource.getTechnicalReplicatesCentralTendency(), 
                         genomicSource.isUseHighVarianceCalculation(), 
@@ -226,6 +230,13 @@ abstract class AbstractDataRetrievalHelper {
      */
     public CaIntegrator2Dao getDao() {
         return dao;
+    }
+
+    /**
+     * @return the arrayDataService
+     */
+    public ArrayDataService getArrayDataService() {
+        return arrayDataService;
     }
 
     Map<Hybridization, Sample> getHybridizationToSampleMap() 
