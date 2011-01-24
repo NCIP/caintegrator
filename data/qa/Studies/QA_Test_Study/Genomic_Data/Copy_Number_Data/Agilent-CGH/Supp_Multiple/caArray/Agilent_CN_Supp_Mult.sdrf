@@ -1,6 +1,0 @@
-Source Name	Sample Name	Extract Name	Labeled Extract Name	Hybridization Name	Array Design REF	Derived Array Data File
-Source_Exp_1	Sample_Exp_1	Extract _Exp_1	Labeled_Extract _Exp_1	Hyb_Extract _Exp_1	URN:LSID:Agilent.com:PhysicalArrayDesign:Agilent-022522	Data_Matrix.txt
-Source_Exp_2	Sample_Exp_2	Extract _Exp_2	Labeled_Extract _Exp_2	Hyb_Extract _Exp_2	URN:LSID:Agilent.com:PhysicalArrayDesign:Agilent-022522	Data_Matrix.txt
-Source_Exp_3	Sample_Exp_3	Extract _Exp_3	Labeled_Extract _Exp_3	Hyb_Extract _Exp_3	URN:LSID:Agilent.com:PhysicalArrayDesign:Agilent-022522	Data_Matrix.txt
-Source_Exp_4	Sample_Exp_4	Extract _Exp_4	Labeled_Extract _Exp_4	Hyb_Extract _Exp_4	URN:LSID:Agilent.com:PhysicalArrayDesign:Agilent-022522	Data_Matrix.txt
-Source_Exp_5	Sample_Exp_5	Extract _Exp_5	Labeled_Extract _Exp_5	Hyb_Extract _Exp_5	URN:LSID:Agilent.com:PhysicalArrayDesign:Agilent-022522	Data_Matrix.txt
