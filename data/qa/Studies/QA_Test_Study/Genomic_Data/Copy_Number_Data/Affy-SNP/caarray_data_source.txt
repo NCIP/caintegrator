@@ -1,8 +1,0 @@
-caArray Server Hostname: array-qa.nci.nih.gov
-caArray Server JNDI Port: 8080 
-
-Discard username and password as this a publicly accessible study
-
-caArray Experiment Id: liu-00252
-Vendor: Affymetrix 
-Data Type: Copy Number	
