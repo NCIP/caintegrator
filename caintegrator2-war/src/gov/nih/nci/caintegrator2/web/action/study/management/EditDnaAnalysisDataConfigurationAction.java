@@ -127,6 +127,10 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
     private String mappingFileContentType;
     private String mappingFileFileName;
     private boolean useGlad = false;
+    private String caCghCallUrl;
+    private String caDnaCopyUrl;
+    private Integer numberLevelCall = 3;
+
     private ConfigurationHelper configurationHelper;
     private static final String MAPPING_FILE = "mappingFile";
     
@@ -191,6 +195,7 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
             if (Status.LOADED.equals(getGenomicSource().getStatus())) {
                 recreateGenomicSource();
             }
+            setParams();
             getStudyManagementService().saveDnaAnalysisMappingFile(getGenomicSource(), getMappingFile(), 
                     getMappingFileFileName());
             getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
@@ -202,6 +207,15 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
             addActionError(getText("struts.messages.exception.unexpected", getArgs(e.getMessage())));
             return INPUT;
         } 
+    }
+
+    private void setParams() {
+        if (getDnaAnalysisDataConfiguration().isUseCghCall()) {
+            getDnaAnalysisDataConfiguration().getSegmentationService().setUrl(getCaCghCallUrl());
+        } else {
+            getDnaAnalysisDataConfiguration().getSegmentationService().setUrl(getCaDnaCopyUrl());
+        }
+        getDnaAnalysisDataConfiguration().setNumberLevelCall(getNumberLevelCall());
     }
 
     /**
@@ -342,6 +356,13 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
     }
 
     /**
+     * @return available PCA services.
+     */
+    public Map<String, String> getCaCghCallServices() {
+        return GridDiscoveryServiceJob.getGridCGHCallServices();
+    }
+
+    /**
      * @return the useGlad
      */
     public boolean getUseGlad() {
@@ -367,5 +388,47 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
      */
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
+    }
+    
+    /**
+     * @return the caCghCallUrl
+     */
+    public String getCaCghCallUrl() {
+        return caCghCallUrl;
+    }
+
+    /**
+     * @param caCghCallUrl the caCghCallUrl to set
+     */
+    public void setCaCghCallUrl(String caCghCallUrl) {
+        this.caCghCallUrl = caCghCallUrl;
+    }
+
+    /**
+     * @return the caDnaCopyUrl
+     */
+    public String getCaDnaCopyUrl() {
+        return caDnaCopyUrl;
+    }
+
+    /**
+     * @param caDnaCopyUrl the caDnaCopyUrl to set
+     */
+    public void setCaDnaCopyUrl(String caDnaCopyUrl) {
+        this.caDnaCopyUrl = caDnaCopyUrl;
+    }
+    
+    /**
+     * @return the numberLevelCall
+     */
+    public Integer getNumberLevelCall() {
+        return numberLevelCall;
+    }
+
+    /**
+     * @param numberLevelCall the numberLevelCall to set
+     */
+    public void setNumberLevelCall(Integer numberLevelCall) {
+        this.numberLevelCall = numberLevelCall;
     }
 }

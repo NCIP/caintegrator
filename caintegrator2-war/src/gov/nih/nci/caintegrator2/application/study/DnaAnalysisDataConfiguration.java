@@ -110,6 +110,7 @@ public class DnaAnalysisDataConfiguration implements Serializable {
     private Integer randomNumberSeed = 0;
     private ServerConnectionProfile segmentationService = new ServerConnectionProfile();
     private Boolean useCghCall = false;
+    private Integer numberLevelCall = 3;
 
     /**
      * @return the mappingFilePath
@@ -217,9 +218,23 @@ public class DnaAnalysisDataConfiguration implements Serializable {
     }
 
     /**
+     * @return true if configured to use CaDNACopy.
+     */
+    public boolean isCaCGHCallConfiguration() {
+        return getSegmentationService().getUrl() != null && getSegmentationService().getUrl().endsWith("/CaCGHcall");
+    }
+
+    /**
      * @return the useCghCall
      */
     public Boolean isUseCghCall() {
+        return useCghCall;
+    }
+
+    /**
+     * @return the useCghCall
+     */
+    public Boolean getUseCghCall() {
         return useCghCall;
     }
 
@@ -228,5 +243,19 @@ public class DnaAnalysisDataConfiguration implements Serializable {
      */
     public void setUseCghCall(Boolean useCghCall) {
         this.useCghCall = useCghCall;
+    }
+
+    /**
+     * @return the numberLevelCall
+     */
+    public Integer getNumberLevelCall() {
+        return numberLevelCall;
+    }
+
+    /**
+     * @param numberLevelCall the numberLevelCall to set
+     */
+    public void setNumberLevelCall(Integer numberLevelCall) {
+        this.numberLevelCall = numberLevelCall;
     }
 }
