@@ -132,9 +132,14 @@ public class EditDnaAnalysisDataConfigurationActionTest extends AbstractSessionB
     @Test
     public void testSave() {
         action.prepare();
-        action.getDnaAnalysisDataConfiguration().getSegmentationService().setUrl("caDnaCopyUrl");
+        action.setCaDnaCopyUrl("caDnaCopyUrl");
+        action.setCaCghCallUrl("caCghCallUrl");
+        action.getDnaAnalysisDataConfiguration().setUseCghCall(false);
         action.save();
         assertEquals("caDnaCopyUrl", action.getDnaAnalysisDataConfiguration().getSegmentationService().getUrl());
+        action.getDnaAnalysisDataConfiguration().setUseCghCall(true);
+        action.save();
+        assertEquals("caCghCallUrl", action.getDnaAnalysisDataConfiguration().getSegmentationService().getUrl());
         assertTrue(studyManagementServiceStub.saveDnaAnalysisMappingFileCalled);
         assertTrue(studyManagementServiceStub.saveCalled);
     }

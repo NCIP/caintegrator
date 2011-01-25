@@ -146,13 +146,7 @@ public class BioconductorServiceImpl implements BioconductorService {
         }
     }    
 
-    /**
-     * {@inheritDoc}
-     * @param segmentationServiceUrl 
-     * @throws DataRetrievalException 
-     * @throws RemoteException 
-     */
-    public void addCGHcallSegmentationData(DnaAnalysisData dnaAnalysisData,
+    private void addCGHcallSegmentationData(DnaAnalysisData dnaAnalysisData,
             DnaAnalysisDataConfiguration configuration, String segmentationServiceUrl) 
     throws ConnectionException, DataRetrievalException, RemoteException {
         CGHcallAssays assays = buildCGHcallAssays(dnaAnalysisData);
@@ -161,7 +155,7 @@ public class BioconductorServiceImpl implements BioconductorService {
         parameter.setEarlyStoppingCriterion(configuration.getEarlyStoppingCriterion());
         parameter.setPermutationReplicates(configuration.getPermutationReplicates());
         parameter.setRandomNumberSeed(configuration.getRandomNumberSeed());
-        parameter.setNumberLevels(4);
+        parameter.setNumberLevels(configuration.getNumberLevelCall());
         CaCGHcallI client = getCGHcallClient(segmentationServiceUrl);
         DerivedCGHcallSegment segment = client.getDerivedCGHcallSegment(assays, parameter);
         LOGGER.info("End Retrieving segment from BioConductor: "
@@ -169,13 +163,7 @@ public class BioconductorServiceImpl implements BioconductorService {
         addCGHcallSegmentationData(segment, dnaAnalysisData);
     }    
     
-    /**
-     * {@inheritDoc}
-     * @param segmentationServiceUrl 
-     * @throws DataRetrievalException 
-     * @throws RemoteException 
-     */
-    public void addDNAcopySegmentationData(DnaAnalysisData dnaAnalysisData,
+    private void addDNAcopySegmentationData(DnaAnalysisData dnaAnalysisData,
             DnaAnalysisDataConfiguration configuration, String segmentationServiceUrl) 
     throws ConnectionException, DataRetrievalException, RemoteException {
       DNAcopyAssays assays = buildDNAcopyAssays(dnaAnalysisData);

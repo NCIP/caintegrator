@@ -247,7 +247,7 @@ class GenomicDataHelper {
     private void retrieveSegmentationData(DnaAnalysisData dnaAnalysisData,
             DnaAnalysisDataConfiguration configuration) throws ConnectionException, DataRetrievalException {
         dao.runSessionKeepAlive();
-        if (configuration.isCaDNACopyConfiguration()) {
+        if (configuration.isCaDNACopyConfiguration() || configuration.isCaCGHCallConfiguration()) {
             bioconductorService.addSegmentationData(dnaAnalysisData, configuration);
         } else {
             CaIntegrator2GPClient client;

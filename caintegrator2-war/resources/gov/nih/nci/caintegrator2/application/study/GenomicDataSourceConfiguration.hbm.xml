@@ -84,6 +84,7 @@
             <property name="permutationReplicates" type="integer" column="DNA_ANALYSIS_PERMUTATION_REPLICATES" />
             <property name="randomNumberSeed" type="integer" column="DNA_ANALYSIS_RANDOM_NUMBER_SEED" />
             <property name="useCghCall" type="boolean" column="DNA_ANALYSIS_USE_CGH_CALL" />
+            <property name="numberLevelCall" type="integer" column="DNA_ANALYSIS_NUMBER_LEVEL_CALL" />
             <many-to-one name="segmentationService" cascade="all" column="SEGMENTATION_SERVICE_ID" />
         </component>
         

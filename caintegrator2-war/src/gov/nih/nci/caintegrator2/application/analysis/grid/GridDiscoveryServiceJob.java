@@ -120,6 +120,8 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         = Collections.synchronizedMap(new HashMap<String, String>());
     private static Map<String, String> gridCaDnaCopyServices 
         = Collections.synchronizedMap(new HashMap<String, String>());
+    private static Map<String, String> gridCaCGHCallServices 
+        = Collections.synchronizedMap(new HashMap<String, String>());
     private static Map<String, String> gridGisticServices 
         = Collections.synchronizedMap(new HashMap<String, String>());
     private static Map<String, String> gridAimServices 
@@ -171,6 +173,7 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         gridCmsServices.clear();
         gridPcaServices.clear();
         gridCaDnaCopyServices.clear();
+        gridCaCGHCallServices.clear();
         gridGisticServices.clear();
         gridAimServices.clear();
     }
@@ -181,6 +184,7 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         setDefaultCmsService();
         setDefaultPcaService();
         setDefaultCaDnaCopyService();
+        setDefaultCaCghCallService();
         setDefaultGisticService();
         setDefaultAimService();
     }
@@ -220,6 +224,13 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         }
     }
     
+    private static void setDefaultCaCghCallService() {
+        if (gridCaCGHCallServices.isEmpty()) {
+            String defaultUrl = configurationHelper.getString(ConfigurationParameter.CA_CGH_CALLS_URL);
+            gridCaCGHCallServices.put(defaultUrl, "Default CGHCalls service - " + defaultUrl);
+        }
+    }
+    
     private static void setDefaultGisticService() {
         if (gridGisticServices.isEmpty()) {
             String defaultUrl = configurationHelper.getString(ConfigurationParameter.GISTIC_URL);
@@ -242,6 +253,8 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
             gridPcaServices.put(url, buildDisplayName(hostingCenter, url));
         } else if (shouldAdd(url, "CaDNAcopy", gridCaDnaCopyServices)) {
             gridCaDnaCopyServices.put(url, buildDisplayName(hostingCenter, url));
+        } else if (shouldAdd(url, "CaCGHcall", gridCaDnaCopyServices)) {
+            gridCaCGHCallServices.put(url, buildDisplayName(hostingCenter, url));
         } else if (shouldAdd(url, "Gistic", gridGisticServices)) {
             gridGisticServices.put(url, buildDisplayName(hostingCenter, url));
         } else if (shouldAdd(url, "AIM", gridAimServices)) {
@@ -317,6 +330,16 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
             setDefaultCaDnaCopyService();
         }
         return gridCaDnaCopyServices;
+    }
+
+    /**
+     * @return the getCGHCallServices
+     */
+    public static Map<String, String> getGridCGHCallServices() {
+        if (gridCaCGHCallServices.isEmpty()) {
+            setDefaultCaCghCallService();
+        }
+        return gridCaCGHCallServices;
     }
 
     /**

@@ -20,7 +20,6 @@
     });
     
     function saveDatasource() {
-        document.dnaAnalysisDataConfigurationForm.serverProfileUrl.value = document.getElementById("caDnaCopyUrl").value; // The value isn't set without doing this.
         if (document.getElementById("loadStatus").value == "Loaded") {
             if (confirm("You are adding a new sample mapping file."
                         + " All previous sample mappings will be deleted and re-mapped based on the new file."
@@ -81,8 +80,25 @@
                             <span class="wwctrl"></span>
                         </s:div>
                     <br/>
-                    <s:select id="caDnaCopyUrl" name="dnaAnalysisDataConfiguration.segmentationService.url"
-                            list="caDnaCopyServices" label="CaDNACopy Service URL" required="true" cssClass="editable-select"/><br>
+                    
+                    <s:div cssStyle="padding: 1em 0 0 0;">
+                        <s:div cssClass="wwlbl"><label class="label">Bioconductor Service Type:&nbsp;</label></s:div>
+                        <s:div>
+                            <s:radio theme="css_xhtml" name="dnaAnalysisDataConfiguration.useCghCall" list="#{false:'Use CaDNACopy Service'}" />
+                            <s:radio theme="css_xhtml" name="dnaAnalysisDataConfiguration.useCghCall" list="#{true:'Use CGHCalls Service'}" />
+                        </s:div>
+                    </s:div>
+                    <br/>
+                    <s:select id="caCghCallUrl" name="caCghCallUrl" cssStyle="width=531px"
+                        list="caCghCallServices" label="CaCGHCall Service URL" required="true" cssClass="editable-select"/><br>
+                    <s:div cssClass="wwlbl"><label class="label">Call Level:&nbsp;</label></s:div>
+                    <s:div>
+                        <s:radio theme="css_xhtml" name="numberLevelCall" list="#{3:'Use 3 level calls'}"  />
+                        <s:radio theme="css_xhtml" name="numberLevelCall" list="#{4:'Use 4 level calls'}"  />
+                    </s:div>
+                    
+                    <s:select id="caDnaCopyUrl" name="caDnaCopyUrl" cssStyle="width=531px"
+                        list="caDnaCopyServices" label="CaDNACopy Service URL" required="true" cssClass="editable-select"/><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.changePointSignificanceLevel" label="Change Point Significance Level" /><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.earlyStoppingCriterion" label="Early Stopping Criterion" /><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.permutationReplicates" label="Permutation Replicates" /><br>

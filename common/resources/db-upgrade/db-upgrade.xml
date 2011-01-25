@@ -464,5 +464,9 @@
         <comment>Modifying query to have copy number results type.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.3/upgrade-1.3.10.sql"/>
     </changeSet>   
+    <changeSet id="1.3.11" author="nguyennh">
+        <comment>Adding attributes to GENOMIC_DATA_SOURCE_CONFIGURATION for number of CGHcall level.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.3/upgrade-1.3.11.sql"/>
+    </changeSet>   
     
 </databaseChangeLog>
