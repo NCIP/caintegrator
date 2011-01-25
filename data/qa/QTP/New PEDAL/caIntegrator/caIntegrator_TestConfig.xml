@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<component>
+- <TestConfig Project="caIntegrator">
+		<TD AUT="caIntegrator" TestCase="CAI_TST03.xls" AbortOnFailure="Y" Uname="qa3manag" Pword="4d1b5a0fcc9f54215885558f1846cd06f7cf7f6674f1"/> 
+	- <AppEnv>
+			<AppRootPath AUTRoot="C:\CAI2\QTP"/>
+		</AppEnv>
+	- <TestEnv>
+			<Browser type="ie" LoadAjaxAddIn="N" LoadCustomAddIn="N" timeout="20" ContinueOnError="N"/>
+			<!--<Browser type="ff" LoadAjaxAddIn="Y" LoadCustomAddIn="Y" timeout="20" ContinueOnError="Y" />-->
+		</TestEnv>
+	- <WebEnv>
+			<URL env="QA" url="https://caintegrator-qa.nci.nih.gov/caintegrator/workspace.action"/>
+			<!--<URLSTAGE env = "Stage" url="http://ncim-qa.nci.nih.gov" />-->
+		</WebEnv>
+	</TestConfig>
+</component>
