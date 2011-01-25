@@ -1,0 +1,138 @@
+Recipe for QA Test Study - Affymetrix
+
+0. Login, Create New Study
+
+1. Upload Study Logo:  https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/Test_Study_Logo.JPG
+
+2. Add Annotation Groups by loading the following files:
+	a. https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/Annotation_Groups/0ther%20data.csv
+	b. https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/Annotation_Groups/Patient_data.csv
+
+3. Add Subject Annotation Data by loading the following file:
+	https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/Subject_Data/Subject_data.csv
+
+4. Configure Survival Values:
+	a. By Date: 	
+			Survival Length Units = Days
+			Survival Start Date = SURVIVAL_START_DATE
+			Death Date = DEATH_DATE
+			Last Followup Date = LAST_FOLLOWUP_DATE
+	b. By Length of time in study:
+			Survival Length Units = Days
+			Survival Length = Duration Days
+			Censored Status = VITALSTATUS
+			Value for Censored = LIVING
+
+5. Add Genomic Data Source: Affymetrix Gene Expression Parsed
+	caArray Web URL = http://ncicbcaqa-1.nci.nih.gov:38080/caarray
+	caArray Server Hostname = ncicbcaqa-1.nci.nih.gov
+	caArray Server JNDI Port = 31099
+	caArray Username = 
+	caArray Password = 
+	caArray Experiment Id = EXP-1
+	Vendor = Affymetrix
+	Data Type = Expression
+	Platform = HG_U95Av2
+	Array Data Loading Type = Parsed Data
+	Data Mapping file: https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/Genomic_Data/Expression_Data/Affymetrix/Parsed/Data_Mapping_SEL.csv
+	Control Samples File: https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/Genomic_Data/Expression_Data/Affymetrix/Parsed/Controls_SEL.csv
+
+		
+6. Add Genomic Data Source: Affymetrix Copy Number (Rembrandt 100K SNP Copy Number)
+	caArray Web URL = http://ncicbcaqa-1.nci.nih.gov:38080/caarray
+	caArray Server Hostname = ncicbcaqa-1.nci.nih.gov
+	caArray Server JNDI Port = 31099
+	caArray Username = 
+	caArray Password = 
+	caArray Experiment Id = EXP-3
+	Vendor = Affymetrix
+	Data Type = Copy Number
+	Platform = Mapping 100K 
+	Array Data Loading Type = Supplemental CNCHP file
+	Data Mapping file: https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/Genomic_Data/Copy_Number_Data/Affy-SNP/CopyNumber_Data_Mapping_SEL.csv
+	
+
+7. Add Image Data Source: NCRI
+	NBIA Server Grid URL = http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService
+	NBIA Web URL = https://imaging.nci.nih.gov/ncia
+	NBIA Username = 
+	NBIA Password = 
+	Collection Name = NCRI
+	Select Mapping File Type = Auto
+
+8. Add External Links by loading the following file:
+	https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/External_Links/External_Links.csv
+
+9. Deploy Study
+
+
+=====================================================================================================
+
+
+Recipe for QA Test Study - Agilent
+
+0. Login, Create New Study
+
+1. Upload Study Logo:  https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/Test_Study_Logo.JPG
+
+2. Add Annotation Groups by loading the following files:
+	a. https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/Annotation_Groups/0ther%20data.csv
+	b. https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/Annotation_Groups/Patient_data.csv
+
+3. Add Subject Annotation Data by loading the following file:
+	https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/Subject_Data/Subject_data.csv
+
+4. Configure Survival Values:
+	a. By Date: 	
+			Survival Length Units = Days
+			Survival Start Date = SURVIVAL_START_DATE
+			Death Date = DEATH_DATE
+			Last Followup Date = LAST_FOLLOWUP_DATE
+	b. By Length of time in study:
+			Survival Length Units = Days
+			Survival Length = Duration Days
+			Censored Status = VITALSTATUS
+			Value for Censored = LIVING
+
+
+5. Add Genomic Data Source: Agilent Gene Expression Supplemental Single Hyb (topal-ooo47)
+	caArray Web URL = https://array.nci.nih.gov/caarray
+	caArray Server Hostname = array.nci.nih.gov
+	caArray Server JNDI Port = 8080
+	caArray Username = 
+	caArray Password = 
+	caArray Experiment Id = topal-00047
+	Vendor = Agilent
+	Data Type = Expression
+	Platform = AgilentG4502A_07_1
+	Array Data Loading Type = Supplemental Single Sample Per File
+	Data Mapping file: https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/Genomic_Data/Expression_Data/Agilent/Supp_Single/topal-00047/Data_Mapping_SEL.csv
+	Control Samples File: https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/Genomic_Data/Expression_Data/Agilent/Supp_Single/topal-00047/Controls_SEL.csv
+		
+
+6. Add Genomic Data Source: Agilent Copy Number Supplemental Multiple Samples Per File
+	caArray Web URL = http://ncicbcaqa-1.nci.nih.gov:38080/caarray
+	caArray Server Hostname = ncicbcaqa-1.nci.nih.gov
+	caArray Server JNDI Port = 31099
+	caArray Username = 
+	caArray Password = 
+	caArray Experiment Id = EXP-4
+	Vendor = Agilent
+	Data Type = Copy Number
+	Platform = Agilent-022522
+	Array Data Loading Type = Supplemental Multiple Samples Per File
+	Data Mapping file: https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/Genomic_Data/Copy_Number_Data/Agilent-CGH/Supp_Multiple/Data_mapping_5samples.csv
+
+7. Add Image Data Source: NCRI
+	NBIA Server Grid URL = http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService
+	NBIA Web URL = https://imaging.nci.nih.gov/ncia
+	NBIA Username = 
+	NBIA Password = 
+	Collection Name = NCRI
+	Select Mapping File Type = Auto
+
+8. Add External Links by loading the following file:
+	https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/data/qa/Studies/QA_Test_Study/External_Links/External_Links.csv
+
+9. Deploy Study
+
