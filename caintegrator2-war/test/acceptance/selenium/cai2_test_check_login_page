@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://${jboss.server.hostname}:${jboss.server.port}/caintegrator2" />
+<link rel="selenium.base" href="http://localhost:47210/caintegrator" />
 <title>cai2_test_check_login_page</title>
 </head>
 <body>
@@ -16,17 +16,12 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>/caintegrator2/login.action</td>
+	<td>/caintegrator/login.action</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertTitle</td>
-	<td>caIntegrator2</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Login</td>
+	<td>caIntegrator</td>
 	<td></td>
 </tr>
 <tr>
@@ -39,7 +34,6 @@
 	<td>exact:Password:</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 </body>
 </html>
