@@ -791,7 +791,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 	<target name="test:seleniumrc:stop">
 		<get taskname="selenium-shutdown"
-			src="http://localhost:${selenium.proxy.port}/selenium-server/driver/?cmd=shutDown"
+			src="http://localhost:${selenium.proxy.port}/selenium-server/driver/?cmd=shutDownSeleniumServer"
 			dest="${temp.dir}/result.txt" ignoreerrors="true"/>
 	</target>
 
@@ -826,7 +826,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
     </target>
 
     <target name="test:selenium:init" depends="test:selenium:copy-tests">
-		<property name="selenium.jar" value="${lib.dir}/test-selenium/selenium-server-1.0-beta-1.jar"/>
+		<property name="selenium.jar" value="${lib.dir}/test-selenium/selenium-server-1.0.3.jar"/>
         
         <!-- the following are options for telling selenium which browser to use.  Set selenium.browser
              as a property in local.properties with a value similar to one of the following:
@@ -852,6 +852,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<property name="selenium.report.file" value="selenium-rpt.html"/>
         <property name="selenium.testcase.timeout" value="900"/>
 		<property name="selenium.url" value="http://${jboss.server.hostname}:${jboss.server.port}"/>
+        <property name="selenium.error.on.failures" value="true"/>
         
         <echo message="selenium:init: selenium server running on port ${selenium.proxy.port}."/>
         <echo message="selenium:init: selenium test case timeout is ${selenium.testcase.timeout} seconds."/>
@@ -880,8 +881,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		/>
 
 	<target name="test:selenium:run">
-
-		<java jar="${selenium.jar}" fork="true">
+	    
+		<java jar="${selenium.jar}" fork="true" resultproperty="selenium.test.failures">
 		    <arg line=" -port ${selenium.proxy.port}"/>
 			<arg line=" -htmlSuite &quot;${selenium.browser}&quot;"/>
 			<arg line=" &quot;${selenium.url}&quot;"/>
@@ -890,7 +891,19 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			<arg line=" -timeout ${selenium.testcase.timeout}"/>
 			<arg line=" -log ${temp.dir}/selenium-debug.log"/>
 		</java> 
-
+	    <echo message="Finished selenium tests ${selenium.test.failures} failures/exceptions" level="info" />
+	    
+        <fail message="Selenium test failures/exceptions: ${selenium.test.failures}">
+            <condition>
+                <and>
+                    <equals arg1="${selenium.error.on.failures}" arg2="true"/>
+                    <not>
+                        <equals arg1="${selenium.test.failures}" arg2="0" />
+                    </not>
+                </and>
+            </condition>
+        </fail>
+	                    
 		<osfamily property="os.family"/>
 		<if>
 			<equals arg1="${os.family}" arg2="unix"/>

@@ -8,8 +8,6 @@
 <tr><td><b>Test Suite</b></td></tr>
 <tr><td><a href="cai2_test_check_login_page">Check Login Page</a></td></tr>
 <tr><td><a href="cai2_test_authenticate_user">Authenticate User</a></td></tr>
-<tr><td><a href="cai2_test_load_platforms">Manage cai2 - Load platforms</a></td></tr>
-<tr><td><a href="cai2_test_deploy_rembrandt_ncri">Manage Studies - Load Rembrandt with NCRI images</a></td></tr>
 </tbody></table>
 </body>
 </html>
