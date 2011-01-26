@@ -1,0 +1,129 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://${jboss.server.hostname}:${jboss.server.port}/caintegrator" />
+<title>Manage Cai2 - Load platforms</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Manage Cai2 - Load platforms</td></tr>
+</thead><tbody>
+<tr>
+	<td>setTimeout</td>
+	<td>3600000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>${selenium.test.affymetrix.design.dir}</td>
+	<td>testResourcesDesignsAffyDirectory</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>${selenium.test.agilent.design.dir}</td>
+	<td>testResourcesDesignsAgilentDirectory</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>platformType</td>
+	<td>label=Agilent Gene Expression</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>platformName</td>
+	<td>AgilentG4502A_07_1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>platformFile</td>
+	<td>${testResourcesDesignsAgilentDirectory}AgilentG4502A_07_1.tcga.adf</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>managePlatformForm_createPlatform</td>
+	<td></td>
+</tr>
+<!--// add Affymetrix copy number platforms-->
+<tr>
+	<td>open</td>
+	<td>/caintegrator/managePlatforms.action</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>platformType</td>
+	<td>label=Affymetrix Copy Number</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>platformName</td>
+	<td>GeneChip Human Mapping 100K Set</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>platformFile</td>
+	<td>${testResourcesDesignsAffyDirectory}Mapping50K_Hind240.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addFileButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>platformFile</td>
+	<td>${testResourcesDesignsAffyDirectory}Mapping50K_Xba240.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>platformFile</td>
+	<td>${testResourcesDesignsAffyDirectory}HG_U95Av2.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>managePlatformForm_createPlatform</td>
+	<td></td>
+</tr>
+
+<!--// add agilent copy number platforms-->
+<!--// add Agilent-022522-->
+<tr>
+	<td>open</td>
+	<td>/caintegrator/managePlatforms.action</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>platformType</td>
+	<td>label=Agilent Copy Number</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>platformName</td>
+	<td>Agilent-022522</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>platformFile</td>
+	<td>${testResourcesDesignsAgilentDirectory}Agilent-022522.xml</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>managePlatformForm_createPlatform</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
