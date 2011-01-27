@@ -229,6 +229,9 @@ public class ImagingDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater impleme
         }
         fileDescriptionString.append("<br><i>Mapping File: </i>");
         fileDescriptionString.append(imagingSource.getMappingFileName());
+        fileDescriptionString.append(" (");
+        fileDescriptionString.append(imagingSource.getMappedImageSeriesAcquisitions().size());
+        fileDescriptionString.append(" mapped images)");
         utilThis.setValue(JOB_FILE_DESCRIPTION + imagingSourceId, fileDescriptionString.toString());
     }
 
