@@ -876,8 +876,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             new ImageAnnotationConfiguration(annotationFile, imageDataSourceConfiguration);
         imageAnnotationConfiguration.setImageDataSourceConfiguration(imageDataSourceConfiguration);
         imageDataSourceConfiguration.setImageAnnotationConfiguration(imageAnnotationConfiguration);
-        imageDataSourceConfiguration.setStatus(retrieveImageSourceStatus(imageDataSourceConfiguration
-                .getImageAnnotationConfiguration()));
+        imageDataSourceConfiguration.setStatus(retrieveImageSourceStatus(imageDataSourceConfiguration));
         daoSave(imageDataSourceConfiguration.getStudyConfiguration());
         return imageAnnotationConfiguration;
     }
@@ -892,7 +891,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         annotationConfiguration.setAimServerProfile(aimConnection);
         annotationConfiguration.setImageDataSourceConfiguration(imageSource);
         imageSource.setImageAnnotationConfiguration(annotationConfiguration);
-        imageSource.setStatus(retrieveImageSourceStatus(annotationConfiguration));
+        imageSource.setStatus(retrieveImageSourceStatus(imageSource));
         daoSave(imageSource.getStudyConfiguration());
         return annotationConfiguration;
     }
@@ -976,7 +975,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         for (ImageSeriesAcquisition acquisition : acquisitions) {
             acquisition.setImageDataSource(imageSource);
         }
-        imageSource.setStatus(Status.LOADED);
+        imageSource.setStatus(imageSource.getMappedImageSeriesAcquisitions().isEmpty()
+                ? Status.NOT_MAPPED : Status.LOADED);
         daoSave(imageSource);
     }
 
@@ -988,7 +988,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         if (validateAnnotationFieldDescriptors(imageDataSource.getStudyConfiguration(), 
                 imageAnnotationConfiguration.getAnnotationDescriptors(), EntityTypeEnum.IMAGESERIES)) {
             imageAnnotationConfiguration.loadAnnontation();
-            imageDataSource.setStatus(retrieveImageSourceStatus(imageAnnotationConfiguration));
+            imageDataSource.setStatus(retrieveImageSourceStatus(imageDataSource));
             daoSave(imageDataSource);
         } else {
             throw new ValidationException("Unable to load image source due to invalid values being loaded.  " 
@@ -1004,7 +1004,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         throws ValidationException, IOException {
         new ImageSeriesAcquisitionMappingHelper(studyConfiguration, mappingFile, 
                 mappingType, imageSource).mapImageSeries();
-        imageSource.setStatus(retrieveImageSourceStatus(imageSource.getImageAnnotationConfiguration()));
+        imageSource.setStatus(retrieveImageSourceStatus(imageSource));
         daoSave(imageSource);
     }
     
@@ -1016,7 +1016,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             if (Status.PROCESSING.equals(imageSource.getStatus())) {
                 continue;
             }
-            Status status = retrieveImageSourceStatus(imageSource.getImageAnnotationConfiguration());
+            Status status = retrieveImageSourceStatus(imageSource);
             if (imageSource.getStatus() != status) {
                 imageSource.setStatus(status);
                 daoSave(imageSource);
@@ -1024,7 +1024,11 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
     }
 
-    private Status retrieveImageSourceStatus(ImageAnnotationConfiguration annotationConfiguration) {
+    private Status retrieveImageSourceStatus(ImageDataSourceConfiguration imageSource) {
+        if (imageSource.getMappedImageSeriesAcquisitions().isEmpty()) {
+            return Status.NOT_MAPPED;
+        }
+        ImageAnnotationConfiguration annotationConfiguration = imageSource.getImageAnnotationConfiguration();
         if (annotationConfiguration != null) {
             if (annotationConfiguration.isLoadable() 
                  && !annotationConfiguration.isCurrentlyLoaded()) {
