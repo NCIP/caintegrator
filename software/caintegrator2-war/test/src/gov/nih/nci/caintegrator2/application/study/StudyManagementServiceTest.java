@@ -942,9 +942,30 @@ public class StudyManagementServiceTest {
         assertEquals("Log Message2", studyConfiguration.getLogEntries().get(1).getSystemLogMessage());
         assertEquals("username", studyConfiguration.getLogEntries().get(1).getUsername());
         
+    }
+    @Test
+    public void testUpdateImageDataSourceStatus() {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
+        imageDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
+        studyConfiguration.getImageDataSources().add(imageDataSourceConfiguration);
         
+        studyManagementService.updateImageDataSourceStatus(studyConfiguration);
+        assertTrue(Status.NOT_MAPPED.equals(imageDataSourceConfiguration.getStatus()));
         
+        imageDataSourceConfiguration.setStatus(Status.PROCESSING);
+        studyManagementService.updateImageDataSourceStatus(studyConfiguration);
+        assertTrue(Status.PROCESSING.equals(imageDataSourceConfiguration.getStatus()));
         
+        imageDataSourceConfiguration.setStatus(Status.NOT_LOADED);
+        studyManagementService.updateImageDataSourceStatus(studyConfiguration);
+        assertTrue(Status.NOT_MAPPED.equals(imageDataSourceConfiguration.getStatus()));
+        
+        ImageSeriesAcquisition imageSeriesAcquisition = new ImageSeriesAcquisition();
+        imageSeriesAcquisition.setAssignment(new StudySubjectAssignment());
+        imageDataSourceConfiguration.getImageSeriesAcquisitions().add(imageSeriesAcquisition);
+        studyManagementService.updateImageDataSourceStatus(studyConfiguration);
+        assertTrue(Status.LOADED.equals(imageDataSourceConfiguration.getStatus()));
     }
     
     private static class SecureDaoStub extends CaIntegrator2DaoStub {
