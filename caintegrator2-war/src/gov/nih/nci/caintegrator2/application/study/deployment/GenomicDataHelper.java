@@ -206,7 +206,8 @@ class GenomicDataHelper {
 
     private void computeSegmentationData(GenomicDataSourceConfiguration genomicSource, List<ArrayDataValues> valuesList)
             throws ConnectionException, DataRetrievalException {
-        if (genomicSource.getDnaAnalysisDataConfiguration().isCaDNACopyConfiguration()) {
+        if (genomicSource.getDnaAnalysisDataConfiguration().isCaDNACopyConfiguration()
+                || genomicSource.getDnaAnalysisDataConfiguration().isCaCGHCallConfiguration()) {
             for (ArrayDataValues values : valuesList) {
                 DnaAnalysisData dnaAnalysisData = createDnaAnalysisData(values);
                 retrieveSegmentationData(dnaAnalysisData, genomicSource.getDnaAnalysisDataConfiguration());
