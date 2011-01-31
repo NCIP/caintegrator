@@ -158,7 +158,7 @@ public class BioconductorServiceImpl implements BioconductorService {
         parameter.setNumberLevels(configuration.getNumberLevelCall());
         CaCGHcallI client = getCGHcallClient(segmentationServiceUrl);
         DerivedCGHcallSegment segment = client.getDerivedCGHcallSegment(assays, parameter);
-        LOGGER.info("End Retrieving segment from BioConductor: "
+        LOGGER.info("End Retrieving segment from BioConductor caCGHcall: "
                 + configuration.getSegmentationService().getUrl());
         addCGHcallSegmentationData(segment, dnaAnalysisData);
     }    
@@ -174,7 +174,7 @@ public class BioconductorServiceImpl implements BioconductorService {
       parameter.setRandomNumberSeed(configuration.getRandomNumberSeed());
       CaDNAcopyI client = getDNAcopyClient(segmentationServiceUrl);
       DerivedDNAcopySegment segment = client.getDerivedDNAcopySegment(assays, parameter);
-      LOGGER.info("End Retrieving segment from BioConductor: "
+      LOGGER.info("End Retrieving segment from caDNAcopy: "
               + configuration.getSegmentationService().getUrl());
       addDNAcopySegmentationData(segment, dnaAnalysisData);
     }
