@@ -201,11 +201,13 @@ public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
                 .getSegmentationService();
         ServerConnectionProfile oldSegmentProfile = getGenomicSource().getDnaAnalysisDataConfiguration()
                 .getSegmentationService();
-        newSegmentProfile.setUrl(oldSegmentProfile.getUrl());
-        newSegmentProfile.setHostname(oldSegmentProfile.getHostname());
-        newSegmentProfile.setPort(oldSegmentProfile.getPort());
-        newSegmentProfile.setUsername(oldSegmentProfile.getUsername());
-        newSegmentProfile.setPassword(oldSegmentProfile.getPassword());
+        if (oldSegmentProfile != null) {
+            newSegmentProfile.setUrl(oldSegmentProfile.getUrl());
+            newSegmentProfile.setHostname(oldSegmentProfile.getHostname());
+            newSegmentProfile.setPort(oldSegmentProfile.getPort());
+            newSegmentProfile.setUsername(oldSegmentProfile.getUsername());
+            newSegmentProfile.setPassword(oldSegmentProfile.getPassword());
+        }
     }
     
     /**
