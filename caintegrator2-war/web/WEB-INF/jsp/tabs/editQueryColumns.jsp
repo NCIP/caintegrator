@@ -26,7 +26,7 @@
                     <br>Copy Number result type - will display segmentation data with Chromosome position.
                 </s:if>
                 <s:if test="queryForm.hasCopyNumberData() || queryForm.hasExpressionData ">
-                    <br>Integration Genomics Viewer - will display a link to the IGV Viewer.
+                    <br>Integrative Genomics Viewer - will display a link to the IGV Viewer.
                 </s:if>
                 <s:if test="queryForm.hasCopyNumberData() && !study.hasCghCalls()">
                     <br>HeatMap Viewer - will display a link to the Heat Map Viewer.
