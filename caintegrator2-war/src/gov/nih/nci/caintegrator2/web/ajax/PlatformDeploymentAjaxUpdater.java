@@ -150,7 +150,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     
     private void checkTimeout(PlatformConfiguration platformConfiguration) {
         if (Status.PROCESSING.equals(platformConfiguration.getStatus())
-                && DateUtil.isTimeout(platformConfiguration.getDeploymentStartDate())) {
+                && DateUtil.isTimeout(platformConfiguration.getDeploymentStartDate(), DateUtil.TWENTY_FOUR_HOURS)) {
             platformConfiguration.setStatus(Status.ERROR);
             platformConfiguration.setStatusDescription("Time out after 12 hours");
             arrayDataService.savePlatformConfiguration(platformConfiguration);

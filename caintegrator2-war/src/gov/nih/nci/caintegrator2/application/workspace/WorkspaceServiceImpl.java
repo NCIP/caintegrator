@@ -263,9 +263,10 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
     private void updateStatus(Set<StudyConfiguration> studsyConfigurations) {
         for (StudyConfiguration studyConfiguration : studsyConfigurations) {
             if (Status.PROCESSING.equals(studyConfiguration.getStatus())
-                    && DateUtil.isTimeout(studyConfiguration.getDeploymentStartDate())) {
+                    && DateUtil.isTimeout(studyConfiguration.getDeploymentStartDate(), DateUtil.FOURTY_EIGHT_HOURS)) {
                 studyConfiguration.setStatus(Status.ERROR);
-                studyConfiguration.setStatusDescription("Timeout after 12 hours");
+                studyConfiguration.setStatusDescription("Timeout after "
+                        + DateUtil.FOURTY_EIGHT_HOURS + " hours.");
                 getDao().save(studyConfiguration);
             }
         }
