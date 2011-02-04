@@ -101,9 +101,9 @@ public class DateUtilTest {
     @Test
     public void testItimeout() throws ParseException {
         Date startDate = new Date();
-        assertFalse(DateUtil.isTimeout(startDate));
+        assertFalse(DateUtil.isTimeout(startDate, DateUtil.TWENTY_FOUR_HOURS));
         startDate = DateUtil.createDate("01/14/2010");
-        assertTrue(DateUtil.isTimeout(startDate));
+        assertTrue(DateUtil.isTimeout(startDate, DateUtil.TWENTY_FOUR_HOURS));
     }
     
     @Test
