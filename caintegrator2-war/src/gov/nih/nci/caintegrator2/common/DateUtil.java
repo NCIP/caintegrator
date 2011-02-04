@@ -104,23 +104,32 @@ public final class DateUtil {
      * String for timestamp if it is null.
      */
     public static final String TIMESTAMP_UNAVAILABLE_STRING = "Unavailable";
+    /**
+     * Int constant for 24 hours.
+     */
+    public static final int TWENTY_FOUR_HOURS = 24;
+    /**
+     * Int constant for 48 hours.
+     */
+    public static final int FOURTY_EIGHT_HOURS = 48;    
     private static final String TIMESTAMP_FORMAT = "MM/dd/yyyy HH:mm:ss";
     private static final Long MILLISECONDS_PER_SECOND = 1000L;
     private static final Long SECONDS_PER_MINUTE = 60L;
     private static DecimalFormat twoDigit = new DecimalFormat("00");
-    private static final int TWENTY_FOUR_HOURS = 24;
     
     private DateUtil() {
         
     }
 
     /**
-     * Check for timeout based on the date against current time.
-     * @param date the date to check for timeout
+     * Check for timeout.  Tests if the provided date occurred the provided number
+     * of hours before now.
+     * @param date the date to check for timeout.
+     * @param numHours the number of hours until timeout occurs.
      * @return boolean
      */
-    public static boolean isTimeout(Date date) {
-        return DateUtils.addHours(date, TWENTY_FOUR_HOURS).before(new Date());
+    public static boolean isTimeout(Date date, int numHours) {
+        return DateUtils.addHours(date, numHours).before(new Date());
     }
     
     /**
