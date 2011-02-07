@@ -212,6 +212,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.setPlatformVendor(getPlatformVendor());
             genomicSource.setPlatformName(getCopyNumberPlatformName());
             genomicSource.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
+            genomicSource.setLoadingType(ArrayDataLoadingTypeEnum.CNCHP);
             genomicSource.setLoadingType(getCopyNumberLoadingType());
             service.addGenomicSource(studyConfiguration, genomicSource);
             getService().saveDnaAnalysisMappingFile(genomicSource, getCopyNumberFile(), getCopyNumberFile().getName());
