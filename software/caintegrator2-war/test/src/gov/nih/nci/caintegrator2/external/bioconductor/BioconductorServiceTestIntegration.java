@@ -62,6 +62,7 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
         configuration.setPermutationReplicates(0);
         configuration.setRandomNumberSeed(0);
         configuration.setUseCghCall(true);
+        configuration.setNumberLevelCall(4);
         service.addSegmentationData(dnaAnalysisData, configuration);
         assertEquals(23, arrayData.getSegmentDatas().size());
     }
