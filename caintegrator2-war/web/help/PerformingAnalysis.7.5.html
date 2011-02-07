@@ -32,7 +32,7 @@
     <hr align="left" />
     <blockquote>
       <div class="Heading2"><a name="1080238">K-M Plot for Gene Expression</a></div>
-      <div class="Body_Text"><a name="1080255">caIntegrator2 allows you to compare </a>expression levels for one given gene in different representative groups. The relative expression level is referred to as “fold change”. Fold change is the ratio of the measured gene expression value in an experimental sample as determined by a reporter to a reference value calculated for that reporter against all control samples. The reference value is calculated by taking the mean of the log<span style="vertical-align: sub;">2</span> of the expression values for all control samples for the reporter in question. The log<span style="vertical-align: sub;">2</span> mean value (n) is then converted back to a comparable expression signal by returning 2 to the exponent <span style="font-style: italic;">n</span>. </div>
+      <div class="Body_Text"><a name="1080255">caIntegrator allows you to compare expression levels for one given gene in different </a>representative groups. The relative expression level is referred to as “fold change”. Fold change is the ratio of the measured gene expression value in an experimental sample as determined by a reporter to a reference value calculated for that reporter against all control samples. The reference value is calculated by taking the mean of the log<span style="vertical-align: sub;">2</span> of the expression values for all control samples for the reporter in question. The log<span style="vertical-align: sub;">2</span> mean value (n) is then converted back to a comparable expression signal by returning 2 to the exponent <span style="font-style: italic;">n</span>. </div>
       <div class="Body_Text"><a name="1080253">To create a K-M plot illustrating gene expression values, follow these steps:</a></div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080320">
@@ -41,7 +41,7 @@
               <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1080320">Select the study whose data you want to analyze in the upper right portion of </a>the caIntegrator2 page. You must select a study with gene expression data. </div>
+              <div class="Numbered_List_1_inner"><a name="1080320">Select the study whose data you want to analyze in the upper right portion of </a>the caIntegrator page. You must select a study with gene expression data. </div>
             </td>
           </tr>
         </table>
@@ -82,7 +82,7 @@
           </tr>
         </table>
       </div>
-      <div class="Body_Text_Indent"><a name="1113499">caIntegrator2 provides three methods whereby you can obtain gene names for </a>calculating a KM plot. For details about these methods, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'hidden%20topics.9.1.html#1126041', '');">Finding Gene Names</a></span>.</div>
+      <div class="Body_Text_Indent_2"><a name="1113499">caIntegrator provides three methods whereby you can obtain gene symbols for </a>calculating a KM plot for gene expression. For more information, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.7.16.html#1136516', '');">Choosing Genes</a></span></div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1113398">
           <tr style="vertical-align: baseline;">
@@ -90,7 +90,31 @@
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">5.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><span style="font-weight: bold;"><a name="1113398">Over-expressed</a></span>/<span style="font-weight: bold;">Under-expressed</span> – Define the over- and under-expression criteria, expressed in terms of fold-change. Fold change is the ratio of the measured gene expression value for an experimental sample to the expression value for the control sample.</div>
+              <div class="Numbered_List_inner"><span class="Bold" style="font-weight: normal;"><a name="1113398">Select </a></span><span class="Bold">By Fold Change </span><span class="Bold" style="font-weight: normal;">or </span><span class="Bold">By Expression Level</span><span class="Bold" style="font-weight: normal;">.</span></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1145383">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1145383">Fold Change: Over-expressed</a></span>/<span style="font-weight: bold;">Under-expressed</span> – Define the over- and under-expression criteria, expressed in terms of fold-change. Fold change is the ratio of the measured gene expression value for an experimental sample to the expression value for the control sample.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1145407">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1145407">Expression Level: </a></span>This option allows you to run a KM gene expression plot when there is no control group nor reference data set. Enter values <span style="font-weight: bold;">Above</span> or <span style="font-weight: bold;">Below Expression Level</span>.</div>
             </td>
           </tr>
         </table>
@@ -102,7 +126,7 @@
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">6.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><span style="font-weight: bold;"><a name="1113629">Survival value</a></span> – The length of time the patient lived. For <span style="font-weight: bold;">Survival Value</span>, select the survival measure which is the unit of measurement for the survival value to be used for the plot.</div>
+              <div class="Numbered_List_inner"><span style="font-weight: bold;"><a name="1113629">Survival value</a></span> – This field is required for both expression types. The length of time the patient lived. For <span style="font-weight: bold;">Survival Value</span>, select the survival measure which is the unit of measurement for the survival value to be used for the plot.</div>
             </td>
           </tr>
         </table>
@@ -114,7 +138,7 @@
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">7.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><span style="font-weight: bold;"><a name="1113638">Control Sample Sets</a></span> – One or more are created by the study manager when a study is deployed. Select the <span style="font-weight: bold;">Control Sample Set</span> you would like to use to calculate fold-change. </div>
+              <div class="Numbered_List_inner"><span style="font-weight: bold;"><a name="1113638">Control Sample Sets</a></span> – This field is required only for fold change data. One or more control sets are created by the study manager when a study is deployed. Select the <span style="font-weight: bold;">Control Sample Set</span> you would like to use to calculate fold-change. </div>
             </td>
           </tr>
         </table>
@@ -135,19 +159,7 @@
           </tr>
         </table>
       </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080552">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">8.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1080552">Click the </a><span style="font-weight: bold;">Create Plot</span> button. caIntegrator2 generates the plot which then displays below the plot criteria.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text"><a name="1136098">See </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.7.6.html#1136100', '');">KM Plot from Gene Expression Data Display</a></span>.</div>
+      <div class="Body_Text"><a name="1152465">Click the </a><span style="font-weight: bold;">Create Plot</span> button. caIntegrator generates the plot which then displays below the plot criteria.See <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.7.6.html#1152467', '');">KM Plot from Gene Expression Data Display</a></span>.</div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics

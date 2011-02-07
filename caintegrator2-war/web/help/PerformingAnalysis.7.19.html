@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Principal Component Analysis (PCA)</title>
+    <title>Comparative Marker Selection (CMS) Analysis</title>
     <link rel="StyleSheet" href="css/PerformingAnalysis.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,243 +28,274 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="PerformingAnalysis.7.1.html#1084723">Analyzing Studies</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="PerformingAnalysis.7.16.html#1084723">Analyzing Data with GenePattern</a> &gt; Principal Component Analysis (PCA)</div>
+      <a class="WebWorks_Breadcrumb_Link" href="PerformingAnalysis.7.1.html#1084490">Analyzing Studies</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="PerformingAnalysis.7.17.html#1084490">Analyzing Data with GenePattern</a> &gt; Comparative Marker Selection (CMS) Analysis</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading2"><a name="1084723">Principal Component Analysis (PCA)</a></div>
-      <div class="Body_Text"><a name="1086355">Principal Component Analysis is typically used to transform a collection of correlated </a>variables into a smaller number of uncorrelated variables, or components.  Those components are typically sorted so that the first one captures most of the underlying variability and each succeeding component captures as much of the remaining variability as possible.</div>
-      <div class="Body_Text"><a name="1092498">You can configure GenePattern grid parameters for preprocessing the dataset in </a>addition to PCA module parameters. For more information, see the GenePattern website: <span class="HTTP"><a href="http://www.broad.mit.edu/cgi-bin/cancer/software/genepattern/modules/gp_modules.cgi" target="_window">http://www.broadinstitute.org/cgi-bin/cancer/software/genepattern/modules/gp_modules.cgi</a></span>.</div>
-      <div class="Body_Text"><a name="1087844">To perform a PCA analysis, follow these steps:</a></div>
+      <div class="Heading2"><a name="1084490">Comparative Marker Selection (CMS) Analysis</a></div>
+      <div class="Body_Text"><a name="1090810">The Comparative Marker Selection (CMS) module implements several methods to look </a>for expression values that correlate with the differences between classes of samples.  Given two classes of samples, CMS finds expression values that correlate with the difference between those two classes.  If there are more than two classes, CMS can perform one-vs-all or all-pairs comparisons, depending on which option is chosen.</div>
+      <div class="Body_Text"><a name="1086222">For more information, see the GenePattern website: </a><span class="HTTP"><a href="http://www.broad.mit.edu/cgi-bin/cancer/software/genepattern/modules/gp_modules.cgi" target="_window">http://www.broadinstitute.org/cgi-bin/cancer/software/genepattern/modules/gp_modules.cgi</a></span>.</div>
+      <div class="Body_Text"><a name="1086388">To perform a CMS analysis, follow these steps:</a></div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1087842">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1086326">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1087842">Select the study whose data you want to analyze in the upper right portion of </a>the caIntegrator2 page. You must select a study with gene expression data.</div>
+              <div class="Numbered_List_1_inner"><a name="1086326">Select the study whose data you want to analyze in the upper right portion of </a>the caIntegrator page. You must select a study saved as a subject annotation study, but which has genomic data.</div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1094077">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1094072">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1094077">Click </a><span style="font-weight: bold;">GenePattern Analysis</span> in the left sidebar of caIntegrator2. This opens the GenePattern Analysis Status page. </div>
+              <div class="Numbered_List_inner"><a name="1094072">Click </a><span style="font-weight: bold;">GenePattern Analysis</span> in the left sidebar of caIntegrator. This opens the GenePattern Analysis Status page. </div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1088264">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1088256">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1088264">In the GenePattern Analysis Status page, select </a><span style="font-weight: bold;">Principal Component </span><span style="font-weight: bold;">Analysis (Grid Service)</span> from the drop down list and click <span style="font-weight: bold;">New Analysis Job</span>. This opens the Principal Component Analysis page.</div>
+              <div class="Numbered_List_inner"><a name="1088256">In the GenePattern Analysis Status page, select </a><span style="font-weight: bold;">Comparative Marker </span><span style="font-weight: bold;">Selection (Grid Service)</span> from the drop down list and click <span style="font-weight: bold;">New Analysis Job</span>. This opens the Comparative Marker Selection Analysis page. </div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1091217">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1089787">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">4.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1091217">Select or define PCA analysis parameters, described in </a>the following table. You must enter a job name and select an annotation query, but you can accept the other default settings.. </div>
+              <div class="Numbered_List_inner"><a name="1089787">Select or define CMS analysis parameters, described in </a>the following table. An asterisk indicates required fields. The default settings are valid; they should provide valid results.</div>
             </td>
           </tr>
         </table>
       </div>
-      <table id="1084757" class="Table_-_List" style="text-align: left;" cellspacing="2">
+      <table id="1084531" class="Table_-_List" style="text-align: left;" cellspacing="2">
         <caption></caption>
         <tr>
-          <td id="tc1084759" style="background-color: WhiteSmoke; border-bottom-color: Black; border-bottom-style: solid; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 4pt; padding-left: 6pt; padding-right: 4pt; padding-top: 4pt; vertical-align: middle; width: 138.73176pt;">
-            <div class="Table_Header"><a name="1084759">PCA Parameters</a></div>
+          <td id="tc1086771" style="background-color: WhiteSmoke; border-bottom-color: Black; border-bottom-style: solid; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 4pt; padding-left: 6pt; padding-right: 4pt; padding-top: 4pt; vertical-align: middle; width: 110.232pt;">
+            <div class="Table_Header"><a name="1086771">CMS Parameter</a></div>
           </td>
-          <td id="tc1084761" style="background-color: WhiteSmoke; border-bottom-color: Black; border-bottom-style: solid; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 4pt; padding-left: 6pt; padding-right: 4pt; padding-top: 4pt; vertical-align: middle; width: 280.584pt;">
-            <div class="Table_Header"><a name="1084761">Description</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1084763" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1084763">Job Name*</a></span></div>
-          </td>
-          <td id="tc1084765" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1084765">Assign a unique name to the analysis you are configuring.</a></div>
+          <td id="tc1086773" style="background-color: WhiteSmoke; border-bottom-color: Black; border-bottom-style: solid; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 4pt; padding-left: 6pt; padding-right: 4pt; padding-top: 4pt; vertical-align: middle; width: 312.83424pt;">
+            <div class="Table_Header"><a name="1086773">Description</a></div>
           </td>
         </tr>
         <tr>
-          <td id="tc1084767" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1084767">Principal Component </a></span><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;">Analysis Server*</span></div>
+          <td id="tc1086775" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086775">Job Name*</a></span></div>
           </td>
-          <td id="tc1084769" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1084769">A server which hosts the grid-enabled data GenePattern </a>Principal Component Analysis module. Select one from the list and caIntegrator2 will use the selected server for this portion of the processing.</div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1084771" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1084771">Annotation Q</a>ueries*</div>
-          </td>
-          <td id="tc1084773" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1084773">All </a>annotation queries display in this list.  Select one or more of these queries to define which samples are analyzed using PCA.  If you select more than one query, then the union of the samples returned by the multiple queries is analyzed.</div>
+          <td id="tc1086777" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086777">Assign a unique name to the analysis you are configuring.</a></div>
           </td>
         </tr>
         <tr>
-          <td id="tc1084775" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1084775">Cluster By*</a></span></div>
+          <td id="tc1086779" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086779">Preprocess Server*</a></span></div>
           </td>
-          <td id="tc1084777" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1084777">Selecting rows looks for principal components across all </a>expression values, and selecting columns looks for principal components across all samples.</div>
+          <td id="tc1086781" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086781">A server which hosts the grid-enabled data GenePattern PreProcess </a>Dataset module. Select one from the list and caIntegrator will use the selected server for this portion of the processing.</div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086783" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086783">Comparative Server*</a></span></div>
+          </td>
+          <td id="tc1086785" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086785">A server which hosts the grid-enabled data GenePattern </a>Comparative Marker Selection module. Select one from the list and caIntegrator will use the selected server for this portion of the processing.</div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086787" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086787">Annotation Queries </a></span><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;">and Lists*</span></div>
+          </td>
+          <td id="tc1128254" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1128250">All subject annotation queries and gene lists with appropriate data for </a>the analysis are listed. Select and move two or more queries from the <span style="font-weight: bold;">All Available Queries</span> panel to the <span style="font-weight: bold;">Selected Queries</span> panel using the <span style="font-weight: bold;">Add &gt;</span> and<span style="font-weight: bold;"> Remove &lt;</span> buttons.</div>
+            <div class="Table_Text"><span style="font-weight: bold;"><a name="1128254">Note: </a></span>The [SL] and [Q] prefixes to list names indicate “Subject Lists” or “Saved Queries”. A “G” in the prefix indicates the list is Global. For more information, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'View%20Search%20Results.6.7.html#1206136', '');">Creating a Gene or Subject List</a></span>.</div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086791" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086791">Filter Flag</a></span></div>
+          </td>
+          <td id="tc1086793" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086793">Variation filter and thresholding flag</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086795" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086795">Preprocessing Flag*</a></span></div>
+          </td>
+          <td id="tc1086797" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086797">Discretization and normalization flag</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086799" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086799">Min Change*</a></span></div>
+          </td>
+          <td id="tc1086801" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086801">Minimum fold change for filter</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086803" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086803">Min Delta*</a></span></div>
+          </td>
+          <td id="tc1086805" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086805">Minimum delta for filter</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086807" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086807">Threshold*</a></span></div>
+          </td>
+          <td id="tc1086809" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086809">Value for threshold</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086811" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086811">Ceiling*</a></span></div>
+          </td>
+          <td id="tc1086813" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086813">Value for ceiling</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086820" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086820">Max Sigma Binning*</a></span></div>
+          </td>
+          <td id="tc1086822" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086822">Maximum sigma for binning</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086824" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086824">Probability </a></span><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;">Threshold*</span></div>
+          </td>
+          <td id="tc1086826" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086826">Value for uniform probability threshold filter</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086828" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086828">Num Exclude*</a></span></div>
+          </td>
+          <td id="tc1086830" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086830">Number of experiments to exclude (max &amp; min) before applying </a>variation filter</div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086832" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086832">Log Base Two</a></span></div>
+          </td>
+          <td id="tc1086834" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086834">Whether to take the log base two after thresholding; default setting is </a>“Yes”.</div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086836" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086836">Number of Columns </a></span><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;">Above Threshold*</span></div>
+          </td>
+          <td id="tc1128570" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1128576">Remove row if n columns are not &gt;= than the given threshold</a></div>
+            <div class="Table_Text"><a name="1128570">In other words, the module can remove rows in which the given </a>number of columns does not contain a value greater or equal to a user defined threshold.</div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086840" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086840">Test Direction*</a></span></div>
+          </td>
+          <td id="tc1086842" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086842">The test to perform (up-regulated for class0; up-regulated for class1, </a>two sided). By default, Comparative Marker Selection performs the two-sided test.</div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086844" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086844">Test Statistic*</a></span></div>
+          </td>
+          <td id="tc1086846" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086846">Select the statistic to use.</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086848" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086848">Min Std*</a></span></div>
+          </td>
+          <td id="tc1086850" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086850">The minimum standard deviation if test statistic includes the min std </a>option. Used only if test statistic includes the min std option.  </div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086852" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086852">Number of </a></span><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;">Permutations*</span></div>
+          </td>
+          <td id="tc1086856" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086854">The number of permutations to perform. (Use 0 to calculate </a>asymptotic P-values.) The number of permutations you specify depends on the number of hypotheses being tested and the significance level that you want to achieve (3). The greater the number of permutations, the more accurate the P-value.</div>
+            <div class="Table_Text"><span style="font-weight: bold;"><a name="1086855">Complete</a></span> – Perform all possible permutations. By default, complete is set to <span style="font-weight: bold;">No</span> and Number of Permutations determines the number of permutations performed. If you have a small number of samples, you might want to perform all possible permutations.  </div>
+            <div class="Table_Text"><span style="font-weight: bold;"><a name="1086856">Balanced</a></span> – Perform balanced permutations</div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086858" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086858">Random Seed*</a></span></div>
+          </td>
+          <td id="tc1086860" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086860">The seed for the random number generator.</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086862" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086862">Smooth P-values</a></span></div>
+          </td>
+          <td id="tc1086864" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086864">Whether to smooth P-values by using the Laplace’s Rule of </a>Succession. By default, Smooth P-values is set to <span style="font-weight: bold;">Yes</span>, which means P-values are always less than 1.0 and greater than 0.0.</div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1086866" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1086866">Phenotype Test*</a></span></div>
+          </td>
+          <td id="tc1086978" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1086868">Tests to perform when class membership has more than 2 classes: </a>one versus-all, all pairs. </div>
+            <div class="Table_Text"><span style="font-weight: bold;"><a name="1086978">Note</a></span>: The P-values obtained from the one-versus-all comparison are not fully corrected for multiple hypothesis testing.</div>
           </td>
         </tr>
       </table>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1087916">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1087907">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">5.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1087916">If you want to preprocess the data set, click</a><span style="font-weight: bold;"> Enable the Preprocess Dataset</span>. This opens an additional set of parameters, discussed in the following table   The preprocessing is executed prior to running the PCA.</div>
+              <div class="Numbered_List_inner"><a name="1087907">When you have completed the form, click </a><span style="font-weight: bold;">Perform Analysis</span>.</div>
             </td>
           </tr>
         </table>
       </div>
-      <table id="1090871" class="Table_-_List" style="text-align: left;" cellspacing="2">
-        <caption></caption>
-        <tr>
-          <td id="tc1090873" style="background-color: WhiteSmoke; border-bottom-color: Black; border-bottom-style: solid; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 4pt; padding-left: 6pt; padding-right: 4pt; padding-top: 4pt; vertical-align: middle; width: 138.73176pt;">
-            <div class="Table_Header"><a name="1090873">PCA Preprocessing </a>Parameters</div>
-          </td>
-          <td id="tc1090875" style="background-color: WhiteSmoke; border-bottom-color: Black; border-bottom-style: solid; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 4pt; padding-left: 6pt; padding-right: 4pt; padding-top: 4pt; vertical-align: middle; width: 280.584pt;">
-            <div class="Table_Header"><a name="1090875">Description</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1091052" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1091052">Preprocess Server*</a></span></div>
-          </td>
-          <td id="tc1091054" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1091054">A server which hosts the grid-enabled data GenePattern </a>PreProcess Dataset module. Select one from the list and caIntegrator2 will use the selected server for this portion of the processing.</div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090877" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090877">Filter Flag</a></span></div>
-          </td>
-          <td id="tc1091019" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1091019">Variation filter and thresholding flag</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090881" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090881">Preprocessing Flag</a></span></div>
-          </td>
-          <td id="tc1091021" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1091021">Discretization and normalization flag</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090885" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090885">Min Change</a></span></div>
-          </td>
-          <td id="tc1091023" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1091023">Minimum fold change for filter</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090889" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090889">Min Delta</a></span></div>
-          </td>
-          <td id="tc1091025" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1091025">Minimum delta for filter</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090939" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090939">Threshold</a></span></div>
-          </td>
-          <td id="tc1091027" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1091027">Value for threshold</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090935" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090935">Ceiling</a></span></div>
-          </td>
-          <td id="tc1091029" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1091029">Value for ceiling</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090931" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090931">Max Sigma Binning</a></span></div>
-          </td>
-          <td id="tc1091031" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1091031">Maximum sigma for binning</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090927" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090927">Probability Threshold</a></span></div>
-          </td>
-          <td id="tc1091033" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1091033">Value for uniform probability threshold filter</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090923" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090923">Num Exclude</a></span></div>
-          </td>
-          <td id="tc1091035" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1091035">Number of experiments to exclude (max &amp; min) before </a>applying variation filter</div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090919" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090919">Log Base Two</a></span></div>
-          </td>
-          <td id="tc1091037" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1091037">Whether to take the log base two after thresholding</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090915" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090915">Number of Columns Above </a></span><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;">Threshold</span></div>
-          </td>
-          <td id="tc1091039" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1091039">Remove row if n columns no &gt;= than the given threshold</a></div>
-          </td>
-        </tr>
-      </table>
+      <div class="Body_Text_Indent_2"><a name="1088047">caIntegrator takes you to the JobStatus/Launch page where you will see the job </a>and its status in the Status column of the list. </div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1090901">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1088124">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">6.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1090901">When you have completed the form, click </a><span style="font-weight: bold;">Perform Analysis</span>.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1108197">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">7.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1108197">When the job is complete, the system displays a completion date on the </a>GenePattern Analysis status page. Click the <span style="font-weight: bold;">Download</span> link. This downloads zipped result files to your local work station. The number of files and their file type will vary according to the processing. The results format is compatible with GenePattern visualizers and can be uploaded within GenePattern. </div>
+              <div class="Numbered_List_inner"><a name="1088124">When the job is complete, the system displays a completion date on the </a>GenePattern Analysis status page. Click the <span style="font-weight: bold;">Download</span> link. This downloads zipped result files to your local work station. The number of files and their file type will vary according to the processing. The results format is compatible with GenePattern visualizers and can be uploaded within GenePattern. </div>
             </td>
           </tr>
         </table>
@@ -277,10 +308,10 @@
 
           // Add related topics
           //
-          WWHAddRelatedTopic("Analyzing Data with GenePattern", "caIntegrator2", "PerformingAnalysis.7.16.html#1077363");
-          WWHAddRelatedTopic("GenePattern Modules", "caIntegrator2", "PerformingAnalysis.7.17.html#1084841");
-          WWHAddRelatedTopic("Comparative Marker Selection (CMS) Analysis", "caIntegrator2", "PerformingAnalysis.7.18.html#1084490");
-          WWHAddRelatedTopic("GISTIC-Supported Analysis", "caIntegrator2", "PerformingAnalysis.7.20.html#1084744");
+          WWHAddRelatedTopic("Analyzing Data with GenePattern", "caIntegrator2", "PerformingAnalysis.7.17.html#1077363");
+          WWHAddRelatedTopic("GenePattern Modules", "caIntegrator2", "PerformingAnalysis.7.18.html#1084841");
+          WWHAddRelatedTopic("Principal Component Analysis (PCA)", "caIntegrator2", "PerformingAnalysis.7.20.html#1084723");
+          WWHAddRelatedTopic("GISTIC-Supported Analysis", "caIntegrator2", "PerformingAnalysis.7.21.html#1084744");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->
