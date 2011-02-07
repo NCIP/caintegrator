@@ -136,7 +136,11 @@ public class EditGisticAnalysisActionTest extends AbstractSessionBasedTest {
         action.setGisticAnalysis(new GisticAnalysis());
         action.getGisticAnalysis().setId(1l);
         action.prepare();
+        assertEquals(0, action.getAmplifiedGenes().size());
+        assertEquals(0, action.getDeletedGenes().size());
         assertTrue(workspaceService.getRefreshedEntityCalled);
+        action.getGisticAnalysis().setId(null);
+        action.prepare();
     }
     
     @Test
