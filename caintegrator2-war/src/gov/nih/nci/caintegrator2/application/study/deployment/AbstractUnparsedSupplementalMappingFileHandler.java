@@ -180,8 +180,16 @@ public abstract class AbstractUnparsedSupplementalMappingFileHandler extends Abs
             platforms.add(reporterList.getPlatform());
         }
         if (platforms.size() > 1) {
+            String platformNamesInErrorMsg = "";
+            for (Platform platform : platforms) {
+                platformNamesInErrorMsg = platformNamesInErrorMsg.concat(platform.getName());
+                platformNamesInErrorMsg = platformNamesInErrorMsg.concat(" , ");
+            }
+            
             throw new ValidationException(
-                    "DNA analysis data files for a single sample are mapped to multiple platforms.");
+                    "DNA analysis data files for a single sample are mapped to the following platforms:"
+                    + platformNamesInErrorMsg + " instead of one platform.  Confirm that "
+                    + "reporter names are used in only one platform.");
         }
         return platforms.iterator().next();
     }
