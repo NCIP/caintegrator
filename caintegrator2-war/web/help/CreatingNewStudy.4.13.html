@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Adding/Editing Genomic Data</title>
+    <title>Defining Survival Values</title>
     <link rel="StyleSheet" href="css/CreatingNewStudy.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,279 +28,184 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.1.html#1076975">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.6.html#1076975">Working with Annotations – An Overview</a> &gt; Adding/Editing Genomic Data</div>
+      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.1.html#1077698">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.6.html#1077698">Working with Annotations – An Overview</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.10.html#1077698"> Define Fields Page for Editing Annotations</a> &gt; Defining Survival Values</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading2"><a name="1076975">A</a>dding/Editing Genomic Data</div>
-      <div class="Note_Main_Body_outer" style="margin-left: 13px;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1090800">
+      <div class="Heading3"><a name="1077698">Defining Survival Values</a></div>
+      <div class="Body_Text"><a name="1077702">Survival value is the length of time a patient lived. If you plan to analyze your </a>caIntegrator data to create a Kaplan-Meier (K-M) Plot, then during the Annotation Definition process described  in <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.4.11.html#1125074', '');">Assigning An Identifier or Annotation</a></span>, you must make sure that you have defined at least three fields set to the “date” Data Type. These will be matched to the following three properties during Survival Value definition. </div>
+      <div class="Bullet_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1085103">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Note_Main_Body_inner" style="width: 15px; white-space: nowrap;">
-                <span style="left: -20px; position: relative; top: 15px;">
-                  <img src="note_NCI.gif" alt="*" id="bullet1090800" border="0" width="30" height="30" />
-                </span>
-              </div>
+              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Note_Main_Body_inner"><a name="1090800">Genomic data must be parsed and stored in caArray to be able to </a>analyze it in caIntegrator2.</div>
+              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1085103">Survival Start Date</a></span> </div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text"><a name="1090798">Once you have loaded </a>subject annotation data and identified patient IDs, you can add either one or more sets of array genomic sample data from caArray, which caIntegrator2 maps by sample IDs to the patient IDs in the subject annotation data, covered in this section, or you can load imaging files from NBIA, also mapped by IDs to the patient data, covered in <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.4.17.html#1075831', '');">Adding Imaging Data</a></span>. You can also edit genomic data information that you have already added to the study. Genomic sample data and imaging data are independent of each other, so neither is required before loading the other.</div>
-      <div class="Body_Text"><a name="1081008">It is essential that you are well acquainted with the data you are working with--the </a>subject annotation data, and the corresponding array data in caArray.</div>
-      <div class="Body_Text"><a name="1080137">caIntegrator2 supports a limited number of array platforms. For more information, see </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.4.21.html#1078043', '');">Managing Platforms</a></span>.</div>
-      <div class="Body_Text"><a name="1077960">To add genomic data to your caIntegrator2 study, follow these steps:</a></div>
+      <div class="Bullet_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1085104">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1085104">Death Date</a></span> </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1085100">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1085100">Last Followup Date</a></span> </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Note_Main_Body_outer" style="margin-left: 13px;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080422">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Note_Main_Body_inner" style="width: 15px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1080422" border="0" width="30" height="30" />
+                </span>
+              </div>
+            </td>
+            <td width="100%">
+              <div class="Note_Main_Body_inner"><a name="1080422">Setting survival values is optional if you do not plan to use the K-M plot analysis </a>feature or if you do not have this kind of data (survival values) in the file. </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text"><a name="1085129">For some applications, such as REMBRANDT and I-SPY, survival values are pre-</a>defined in the databases when you load the data. In caIntegrator, however, you can review and define survival value ranges in a data set you are uploading to a study. To be able to do so, you need to understand the kind of data that can comprise the survival values.  </div>
+      <div class="Body_Text"><a name="1077727">To set up survival values, follow these steps:</a></div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1074448">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1078368">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1074448">On the Edit Study page where you have selected and added the </a>subject annotation data, click the <span style="font-weight: bold;">Add</span> <span style="font-weight: bold;">New</span> button under Genomic Data Sources. You can upload genomic data only from caArray.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text_Indent_2"><a name="1075918">This opens the Edit Genomic Data Source dialog box</a>. Enter the appropriate information in the fields. </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;vertical-align: baseline;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1091140">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner" style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;"><a name="1091140">caArray Web URL</a><span style="font-weight: normal;"> </span><span style="font-weight: normal;">–</span> <span style="font-weight: normal;">Enter the URL for the caArray to be used for the </span><span style="font-weight: normal;">genomic data sources. This will enable a user to link to the referenced </span><span style="font-weight: normal;">caArray experiment from the study summary page. </span></div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1131932">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1131932">caArray Host Name</a></span> – Enter the hostname for your local installation or for the CBIIT installation of caArray, <span class="HTTP">array.nci.nih.gov.</span> If you misspell it, you will receive an error message.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1077831">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1077831">caArray JNDI Port</a></span> – Enter the appropriate server port. See your administrator for more information. <span style="font-style: italic;">Example</span>: For the CBIIT installation of caArray, enter <span style="font-style: italic; font-weight: bold;">8080</span>.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1077838">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1077838">caArray Username</a></span> and <span style="font-weight: bold;">caArray</span> <span style="font-weight: bold;">Password</span> – If the data is private, you must enter your caArray account user name and password; you must have  permissions in caArray for the experiment. If the data is public, you can leave these fields blank. </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1079605">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1079605">caArray Experiment ID</a></span> – Enter the caArray Experiment ID which you know corresponds with the subject annotation data you uploaded. <span style="font-style: italic;">Example</span>: Public experiment “beer-00196” on the CBIIT installation of caArray (<span class="HTTP">array.nci.nih.gov</span>). If you misspell your entry, you will receive an error message.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1090365">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1090365">Vendor</a></span> – Select either <span style="font-weight: bold;">Agilent</span> or <span style="font-weight: bold;">Affymetrix</span></div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1090369">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1090369">Data Type</a></span> – Select <span style="font-weight: bold;">Expression</span> or <span style="font-weight: bold;">Copy Number</span>.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;vertical-align: baseline;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1090380">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner" style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;"><span style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090380">Platform (needed only for Agilent)  </a></span><span style="font-weight: normal;">–</span><span style="font-weight: normal;"> If appropriate, select the </span>Agilent<span style="font-weight: normal;"> </span><span style="font-weight: normal;">platform.</span></div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Note_Indent_outer" style="margin-left: 50.25pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1134079">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Note_Indent_inner" style="width: 25px; white-space: nowrap;">
-                <span style="left: -20px; position: relative; top: 15px;">
-                  <img src="note_NCI.gif" alt="*" id="bullet1134079" border="0" width="30" height="30" />
-                </span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Note_Indent_inner"><a name="1134079">Because you can add more than one set of genomic data to a study, a </a>study can also have multiple platforms, one for each set of genomic data.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1139581">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1139581">Central Tendency for Technical Replicate</a></span><span style="font-weight: bold;">s</span> – If more than one hybridization is found for the reporter, the hybridizations will be represented by this method.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1139583">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1139583">Indicate if technical replicates have high statistical variability</a></span>  – If more than one hybridization is found, checking this box will display a ** in the genomic search results when a reporter value has high statistical variability.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1139519">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1139519">Standard Deviation Type</a></span> - When the checkbox for indicating if technical replicates have high statistical variability is checked, this parameter becomes available. Select in the drop-down the calculation to be used to determine whether or not to display a ** (see previous bullet point).  </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1139872">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_2_inner"><a name="1139872"> </a><span style="font-weight: bold;">R</span><span style="font-weight: bold;">elative</span>, which calculates the Relative Standard Deviation in percentage value </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1139890">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_2_inner"><span style="font-weight: bold;"><a name="1139890">N</a></span><span style="font-weight: bold;">ormal</span>, which calculates the Standard Deviation in numeric value</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1139466">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1139466">Standard Deviation Threshold</a></span> – When the checkbox for indicating if technical replicates have high statistical variability is checked, this parameter becomes available. This is the threshold at which the Standard Deviation Type is exceeded and the reporter is marked with a **.</div>
+              <div class="Numbered_List_1_inner"><a name="1078368">On the Edit Study page, click </a><span style="font-weight: bold;">Edit Survival Values</span>. This opens the Survival Value Definitions dialog box.</div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1090381">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1091124">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1090381">Click </a><span style="font-weight: bold;">Save</span>. </div>
+              <div class="Numbered_List_inner"><a name="1091124">Click </a><span style="font-weight: bold;">New</span> to enter new survival value definitions.</div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text_Indent_2"><a name="1108860">caIntegrator2 goes to caArray, validates the information you have entered here, </a>finds the experiment and retrieves all the sample IDs in the experiment. Once this finishes, the experiment information displays on the Edit Study page under the Genomic Data Sources section. </div>
+      <div class="Body_Text_Indent_2"><a name="1079453">- OR -</a></div>
+      <div class="Body_Text_Indent_2"><a name="1079457">Click </a><span style="font-weight: bold;">Edit</span> to edit existing survival value definitions.</div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1131936">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1078404">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1131936">If you want to redefine the caArray experiment information, you can edit it. Click </a>the <span style="font-weight: bold;">Edit</span> link corresponding to the Experiment ID. The Edit Genomic Data Source dialog box reopens, allowing you to edit the information.</div>
+              <div class="Numbered_List_inner"><a name="1078404">The dialog box extends, now displaying radio buttons and three drop-down lists </a>that show column headers for date metadata in the spreadsheet you have uploaded. </div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Note_Main_Body_outer" style="margin-left: 13px;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1131937">
+      <div class="Body_Text_Indent_2"><a name="1091132">Survival values can be defined by Date or by Length of time in study.</a><span style="font-family: Tahoma; font-size: 10.0pt;"> </span>Select the radio button for the category that defines your survival data.</div>
+      <div class="Body_Text_Indent_2"><a name="1134068">In the drop-down lists, select the appropriate survival value definitions for each </a>field listed. You might want to refer to the column headers in the data file itself. Dates covered by the definitions are already in the data set. You cannot enter specific dates.</div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;vertical-align: baseline;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1078851">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Note_Main_Body_inner" style="width: 15px; white-space: nowrap;">
-                <span style="left: -20px; position: relative; top: 15px;">
-                  <img src="note_NCI.gif" alt="*" id="bullet1131937" border="0" width="30" height="30" />
-                </span>
-              </div>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;">•</div>
             </td>
             <td width="100%">
-              <div class="Note_Main_Body_inner"><a name="1131937">At any point in the process of working within a study, you can create a gene list. For </a>more information, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'View%20Search%20Results.6.6.html#1182721', '');">Creating a Gene List</a></span>.</div>
+              <div class="Bullet_Indent_inner" style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;"><span style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1078851">Survival Definition Type </a></span><span style="font-weight: normal;">–</span><span style="font-weight: normal;"> Select whether the survival time is defined by </span><span style="font-weight: normal;">dates or length of time subject was in the study. </span></div>
             </td>
           </tr>
         </table>
       </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1146253">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1146253">Name</a></span> – Enter a unique name that adequately describes the survival values you are defining here. <span style="font-style: italic;">Example</span>: Survival from Enrollment Date or Survival from Treatment Start. The name you enter displays later when you are selecting survivals to create the K-M plot. </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;vertical-align: baseline;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080893">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner" style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;"><span style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1080893">Survival Length Units </a></span><span style="font-weight: normal;">–</span><span style="font-weight: normal;"> Select the appropriate units for this data.</span></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;vertical-align: baseline;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1146224">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner" style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;"><span style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1146224">Survival Start Date </a></span><span style="font-weight: normal;">–</span><span style="font-weight: normal;"> Select the column header for this data.</span></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;vertical-align: baseline;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080894">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner" style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;"><span style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1080894">Death Date </a></span><span style="font-weight: normal;">–</span><span style="font-weight: normal;"> Select the column header for this data.</span></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;vertical-align: baseline;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080895">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner" style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none;"><span style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1080895">Last Followup Date </a></span><span style="font-weight: normal;">–</span><span style="font-weight: normal;"> Select the column header for this data.</span></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text"><a name="1092141">See also </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'PerformingAnalysis.7.3.html#1084273', '');">Creating Kaplan-Meier Plots</a></span>.</div>
+      <div class="Body_Text"><a name="1134034">Updated the Edit Survival Value Definitions page, now has a radio button and 2 </a>different types of ways to define survival values.</div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
           //
           WWHClearRelatedTopics();
-
-          // Add related topics
-          //
-          WWHAddRelatedTopic("Mapping Genomic Data to Subject Annotation Data", "caIntegrator2", "CreatingNewStudy.4.14.html#1081247");
-          WWHAddRelatedTopic("Uploading Control Samples", "caIntegrator2", "CreatingNewStudy.4.15.html#1080249");
-          WWHAddRelatedTopic("Configuring Copy Number Data", "caIntegrator2", "CreatingNewStudy.4.16.html#1089873");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

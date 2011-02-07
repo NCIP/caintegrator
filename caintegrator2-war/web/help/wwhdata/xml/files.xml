@@ -39,151 +39,158 @@
   </ScoringPrefs>
   <DocumentInfo>
     <Document title="Welcome to caIntegrator Online Help" href="Welcome.1.1.html" />
-    <Document title="Getting Started with caIntegrator" href="Getting_Started.2.1.html" />
-    <Document title="About caIntegrator" href="Getting_Started.2.2.html" />
-    <Document title="Registering as a New caIntegrator User" href="Getting_Started.2.3.html" />
-    <Document title="Welcome to the caIntegrator Workspace" href="Getting_Started.2.4.html" />
-    <Document title="caIntegrator Functions" href="Getting_Started.2.5.html" />
-    <Document title="Viewing Existing Studies" href="Getting_Started.2.6.html" />
-    <Document title="Data Dictionary" href="Getting_Started.2.7.html" />
-    <Document title="Study Log" href="Getting_Started.2.8.html" />
-    <Document title="Using Online Help" href="Getting_Started.2.9.html" />
-    <Document title="Logging Out" href="Getting_Started.2.10.html" />
-    <Document title="Application Support" href="Getting_Started.2.11.html" />
-    <Document title="Creating a New Study" href="CreatingNewStudy.3.1.html" />
-    <Document title="Creating a Study – Overview" href="CreatingNewStudy.3.2.html" />
-    <Document title="Configuring and Deploying a Study" href="CreatingNewStudy.3.3.html" />
-    <Document title="Creating/Editing a Study" href="CreatingNewStudy.3.4.html" />
-    <Document title="Viewing/Editing a Log" href="CreatingNewStudy.3.5.html" />
-    <Document title="Working with Annotations – An Overview" href="CreatingNewStudy.3.6.html" />
-    <Document title="Adding An Annotation Group" href="CreatingNewStudy.3.7.html" />
-    <Document title="Editing an Annotation Group" href="CreatingNewStudy.3.8.html" />
-    <Document title="Adding Subject Annotation Data" href="CreatingNewStudy.3.9.html" />
-    <Document title="Define Fields Page for Editing Annotations" href="CreatingNewStudy.3.10.html" />
-    <Document title="Assigning An Identifier or Annotation" href="CreatingNewStudy.3.11.html" />
-    <Document title="Searching for Annotation Definitions" href="CreatingNewStudy.3.12.html" />
-    <Document title="Defining Survival Values" href="CreatingNewStudy.3.13.html" />
-    <Document title="Adding/Editing Genomic Data" href="CreatingNewStudy.3.14.html" />
-    <Document title="Mapping Genomic Data to Subject Annotation Data" href="CreatingNewStudy.3.15.html" />
-    <Document title="Uploading Control Samples" href="CreatingNewStudy.3.16.html" />
-    <Document title="Configuring Copy Number Data" href="CreatingNewStudy.3.17.html" />
-    <Document title="Working with Imaging Data" href="CreatingNewStudy.3.18.html" />
-    <Document title="Adding or Editing Imaging Files from NBIA" href="CreatingNewStudy.3.19.html" />
-    <Document title="Adding or Editing Image Annotations" href="CreatingNewStudy.3.20.html" />
-    <Document title="Adding External Links" href="CreatingNewStudy.3.21.html" />
-    <Document title="Deploying the Study" href="CreatingNewStudy.3.22.html" />
-    <Document title="Managing a Study" href="CreatingNewStudy.3.23.html" />
-    <Document title="Managing Platforms" href="CreatingNewStudy.3.24.html" />
-    <Document title="Searching a caIntegrator Study" href="SearchingWithinAStudy.4.1.html" />
-    <Document title="Search Overview" href="SearchingWithinAStudy.4.2.html" />
-    <Document title="Searching a Study" href="SearchingWithinAStudy.4.3.html" />
-    <Document title="Annotation and Image Data Searches" href="SearchingWithinAStudy.4.4.html" />
-    <Document title="Gene Expression Data Searches" href="SearchingWithinAStudy.4.5.html" />
-    <Document title="Copy Number Searches" href="SearchingWithinAStudy.4.6.html" />
-    <Document title="Choosing Genes" href="SearchingWithinAStudy.4.7.html" />
-    <Document title="Query Results" href="SearchingWithinAStudy.4.8.html" />
-    <Document title="Results Type Tab" href="SearchingWithinAStudy.4.9.html" />
-    <Document title="Sorting Tab" href="SearchingWithinAStudy.4.10.html" />
-    <Document title="Managing Queries" href="SearchingWithinAStudy.4.11.html" />
-    <Document title="Saving a Query" href="SearchingWithinAStudy.4.12.html" />
-    <Document title="Editing a Query" href="SearchingWithinAStudy.4.13.html" />
-    <Document title="Exporting Query Results" href="SearchingWithinAStudy.4.14.html" />
-    <Document title="Viewing Query Results" href="View%20Search%20Results.5.1.html" />
-    <Document title="Query Results Overview" href="View%20Search%20Results.5.2.html" />
-    <Document title="Browsing Query Results" href="View%20Search%20Results.5.3.html" />
-    <Document title="Subject Annotation and Imaging Data" href="View%20Search%20Results.5.4.html" />
-    <Document title="Gene Expression Data" href="View%20Search%20Results.5.5.html" />
-    <Document title="Copy Number Data" href="View%20Search%20Results.5.6.html" />
-    <Document title="Creating a Gene or Subject List" href="View%20Search%20Results.5.7.html" />
-    <Document title="Choosing Genes" href="View%20Search%20Results.5.8.html" />
-    <Document title="Editing a Gene or Subject List" href="View%20Search%20Results.5.9.html" />
-    <Document title="Editing a GISTIC Analysis" href="View%20Search%20Results.5.10.html" />
-    <Document title="Expanding Imaging Data Results" href="View%20Search%20Results.5.11.html" />
-    <Document title="caIntegrator and NBIA" href="View%20Search%20Results.5.12.html" />
-    <Document title="Retrieving DICOM Images" href="View%20Search%20Results.5.13.html" />
-    <Document title="Example of Retrieving Images:" href="View%20Search%20Results.5.14.html" />
-    <Document title="Relationship of Patient to Study to Series to Images" href="View%20Search%20Results.5.15.html" />
-    <Document title="Exporting Data" href="View%20Search%20Results.5.16.html" />
-    <Document title="Analyzing Studies" href="PerformingAnalysis.6.1.html" />
-    <Document title="Data Analysis Overview" href="PerformingAnalysis.6.2.html" />
-    <Document title="Creating Kaplan-Meier Plots" href="PerformingAnalysis.6.3.html" />
-    <Document title="K-M Plot for Annotations" href="PerformingAnalysis.6.4.html" />
-    <Document title="K-M Plot for Gene Expression" href="PerformingAnalysis.6.5.html" />
-    <Document title="KM Plot from Gene Expression Data Display" href="PerformingAnalysis.6.6.html" />
-    <Document title="K-M Plot for Queries and Saved Lists" href="PerformingAnalysis.6.7.html" />
-    <Document title="K-M Plot for Queries Display" href="PerformingAnalysis.6.8.html" />
-    <Document title="Creating Gene Expression Plots" href="PerformingAnalysis.6.9.html" />
-    <Document title="Gene Expression Value Plot for Annotation" href="PerformingAnalysis.6.10.html" />
-    <Document title="Gene Expression Plot for Annotation Display" href="PerformingAnalysis.6.11.html" />
-    <Document title="Gene Expression Value Plot for Genomic Queries" href="PerformingAnalysis.6.12.html" />
-    <Document title="Gene Expression Value Plot for Annotation and Saved List Queries" href="PerformingAnalysis.6.13.html" />
-    <Document title="Gene Expression Plot for Saved Queries Display" href="PerformingAnalysis.6.14.html" />
-    <Document title="Understanding a Gene Expression Plot" href="PerformingAnalysis.6.15.html" />
-    <Document title="Choosing Genes" href="PerformingAnalysis.6.16.html" />
-    <Document title="Analyzing Data with GenePattern" href="PerformingAnalysis.6.17.html" />
-    <Document title="GenePattern Modules" href="PerformingAnalysis.6.18.html" />
-    <Document title="Comparative Marker Selection (CMS) Analysis" href="PerformingAnalysis.6.19.html" />
-    <Document title="Principal Component Analysis (PCA)" href="PerformingAnalysis.6.20.html" />
-    <Document title="GISTIC-Supported Analysis" href="PerformingAnalysis.6.21.html" />
-    <Document title="Administering User Accounts" href="User%20Admin.7.1.html" />
-    <Document title="Administering caIntegrator User Accounts Using UPT" href="User%20Admin.7.2.html" />
-    <Document title="Steps for Creating User Access to caIntegrator" href="User%20Admin.7.3.html" />
-    <Document title="Creating a New caIntegrator User" href="User%20Admin.7.4.html" />
-    <Document title="Creating a New User Group" href="User%20Admin.7.5.html" />
-    <Document title="Creating a New Protection Group" href="User%20Admin.7.6.html" />
-    <Document title="Assigning a User Group to a Protection Group" href="User%20Admin.7.7.html" />
-    <Document title="Adding a User to a User Group" href="User%20Admin.7.8.html" />
-    <Document title="Changing a User Password" href="User%20Admin.7.9.html" />
-    <Document title="Data Import Configurations" href="appdx%20data%20import.8.1.html" />
-    <Document title="Subject Annotation Data Configuration" href="appdx%20data%20import.8.2.html" />
-    <Document title="Delimited-Text Annotation Import" href="appdx%20data%20import.8.3.html" />
-    <Document title="Annotation Field Configuration" href="appdx%20data%20import.8.4.html" />
-    <Document title="Sample Data Configuration" href="appdx%20data%20import.8.5.html" />
-    <Document title="Genomic Data Configuration" href="appdx%20data%20import.8.6.html" />
-    <Document title="Supplemental Files Configuration" href="appdx%20data%20import.8.7.html" />
-    <Document title="Single Sample Format" href="appdx%20data%20import.8.8.html" />
-    <Document title="Multiple Sample Format" href="appdx%20data%20import.8.9.html" />
-    <Document title="Imaging Data Configuration" href="appdx%20data%20import.8.10.html" />
-    <Document title="Online Help Tips" href="OnlineHelpBoilerplate.9.1.html" />
-    <Document title="NCICB Application Support" href="Application%20Support.10.1.html" />
+    <Document title="Online Help Tips" href="OnlineHelpBoilerplate.2.1.html" />
+    <Document title="Getting Started with caIntegrator" href="Getting_Started.3.1.html" />
+    <Document title="About caIntegrator" href="Getting_Started.3.2.html" />
+    <Document title="Registering as a New caIntegrator User" href="Getting_Started.3.3.html" />
+    <Document title="Welcome to the caIntegrator Workspace" href="Getting_Started.3.4.html" />
+    <Document title="caIntegrator Functions" href="Getting_Started.3.5.html" />
+    <Document title="Viewing Existing Studies" href="Getting_Started.3.6.html" />
+    <Document title="Data Dictionary" href="Getting_Started.3.7.html" />
+    <Document title="Study Log" href="Getting_Started.3.8.html" />
+    <Document title="Using Online Help" href="Getting_Started.3.9.html" />
+    <Document title="Logging Out" href="Getting_Started.3.10.html" />
+    <Document title="Application Support" href="Getting_Started.3.11.html" />
+    <Document title="Creating a New Study" href="CreatingNewStudy.4.1.html" />
+    <Document title="Creating a Study – Overview" href="CreatingNewStudy.4.2.html" />
+    <Document title="Configuring and Deploying a Study" href="CreatingNewStudy.4.3.html" />
+    <Document title="Creating/Editing a Study" href="CreatingNewStudy.4.4.html" />
+    <Document title="Viewing/Editing a Log" href="CreatingNewStudy.4.5.html" />
+    <Document title="Working with Annotations – An Overview" href="CreatingNewStudy.4.6.html" />
+    <Document title="Adding An Annotation Group" href="CreatingNewStudy.4.7.html" />
+    <Document title="Editing an Annotation Group" href="CreatingNewStudy.4.8.html" />
+    <Document title="Adding Subject Annotation Data" href="CreatingNewStudy.4.9.html" />
+    <Document title="Define Fields Page for Editing Annotations" href="CreatingNewStudy.4.10.html" />
+    <Document title="Assigning An Identifier or Annotation" href="CreatingNewStudy.4.11.html" />
+    <Document title="Searching for Annotation Definitions" href="CreatingNewStudy.4.12.html" />
+    <Document title="Defining Survival Values" href="CreatingNewStudy.4.13.html" />
+    <Document title="Adding/Editing Genomic Data" href="CreatingNewStudy.4.14.html" />
+    <Document title="Mapping Genomic Data to Subject Annotation Data" href="CreatingNewStudy.4.15.html" />
+    <Document title="Creating a Mapping File" href="CreatingNewStudy.4.16.html" />
+    <Document title="Steps for Mapping Genomic Data" href="CreatingNewStudy.4.17.html" />
+    <Document title="Uploading Control Samples" href="CreatingNewStudy.4.18.html" />
+    <Document title="Configuring Copy Number Data" href="CreatingNewStudy.4.19.html" />
+    <Document title="Remapping Copy Number Data in a Deployed Study" href="CreatingNewStudy.4.20.html" />
+    <Document title="Working with Imaging Data" href="CreatingNewStudy.4.21.html" />
+    <Document title="Adding or Editing Imaging Data Files from NBIA" href="CreatingNewStudy.4.22.html" />
+    <Document title="Adding or Editing Image Annotations" href="CreatingNewStudy.4.23.html" />
+    <Document title="Adding External Links" href="CreatingNewStudy.4.24.html" />
+    <Document title="Deploying the Study" href="CreatingNewStudy.4.25.html" />
+    <Document title="Managing a Study" href="CreatingNewStudy.4.26.html" />
+    <Document title="Managing Platforms" href="CreatingNewStudy.4.27.html" />
+    <Document title="Searching a caIntegrator Study" href="SearchingWithinAStudy.5.1.html" />
+    <Document title="Search Overview" href="SearchingWithinAStudy.5.2.html" />
+    <Document title="Searching a Study" href="SearchingWithinAStudy.5.3.html" />
+    <Document title="Annotation and Image Data Searches" href="SearchingWithinAStudy.5.4.html" />
+    <Document title="Gene Expression Data Searches" href="SearchingWithinAStudy.5.5.html" />
+    <Document title="Copy Number Searches" href="SearchingWithinAStudy.5.6.html" />
+    <Document title="Choosing Genes" href="SearchingWithinAStudy.5.7.html" />
+    <Document title="Query Results" href="SearchingWithinAStudy.5.8.html" />
+    <Document title="Results Type Tab" href="SearchingWithinAStudy.5.9.html" />
+    <Document title="Sorting Tab" href="SearchingWithinAStudy.5.10.html" />
+    <Document title="Managing Queries" href="SearchingWithinAStudy.5.11.html" />
+    <Document title="Saving a Query" href="SearchingWithinAStudy.5.12.html" />
+    <Document title="Editing a Query" href="SearchingWithinAStudy.5.13.html" />
+    <Document title="Exporting Query Results" href="SearchingWithinAStudy.5.14.html" />
+    <Document title="Viewing Query Results" href="View%20Search%20Results.6.1.html" />
+    <Document title="Query Results Overview" href="View%20Search%20Results.6.2.html" />
+    <Document title="Browsing Query Results" href="View%20Search%20Results.6.3.html" />
+    <Document title="Subject Annotation and Imaging Data" href="View%20Search%20Results.6.4.html" />
+    <Document title="Gene Expression Data" href="View%20Search%20Results.6.5.html" />
+    <Document title="Copy Number Data" href="View%20Search%20Results.6.6.html" />
+    <Document title="Creating a Gene or Subject List" href="View%20Search%20Results.6.7.html" />
+    <Document title="Choosing Genes" href="View%20Search%20Results.6.8.html" />
+    <Document title="Editing a Gene or Subject List" href="View%20Search%20Results.6.9.html" />
+    <Document title="Editing a GISTIC Analysis" href="View%20Search%20Results.6.10.html" />
+    <Document title="Expanding Imaging Data Results" href="View%20Search%20Results.6.11.html" />
+    <Document title="caIntegrator and NBIA" href="View%20Search%20Results.6.12.html" />
+    <Document title="Retrieving DICOM Images" href="View%20Search%20Results.6.13.html" />
+    <Document title="Example of Retrieving Images:" href="View%20Search%20Results.6.14.html" />
+    <Document title="Relationship of Patient to Study to Series to Images" href="View%20Search%20Results.6.15.html" />
+    <Document title="Exporting Data" href="View%20Search%20Results.6.16.html" />
+    <Document title="Analyzing Studies" href="PerformingAnalysis.7.1.html" />
+    <Document title="Data Analysis Overview" href="PerformingAnalysis.7.2.html" />
+    <Document title="Creating Kaplan-Meier Plots" href="PerformingAnalysis.7.3.html" />
+    <Document title="K-M Plot for Annotations" href="PerformingAnalysis.7.4.html" />
+    <Document title="K-M Plot for Gene Expression" href="PerformingAnalysis.7.5.html" />
+    <Document title="KM Plot from Gene Expression Data Display" href="PerformingAnalysis.7.6.html" />
+    <Document title="K-M Plot for Queries and Saved Lists" href="PerformingAnalysis.7.7.html" />
+    <Document title="K-M Plot for Queries Display" href="PerformingAnalysis.7.8.html" />
+    <Document title="Creating Gene Expression Plots" href="PerformingAnalysis.7.9.html" />
+    <Document title="Gene Expression Value Plot for Annotation" href="PerformingAnalysis.7.10.html" />
+    <Document title="Gene Expression Plot for Annotation Display" href="PerformingAnalysis.7.11.html" />
+    <Document title="Gene Expression Value Plot for Genomic Queries" href="PerformingAnalysis.7.12.html" />
+    <Document title="Gene Expression Value Plot for Annotation and Saved List Queries" href="PerformingAnalysis.7.13.html" />
+    <Document title="Gene Expression Plot for Saved Queries Display" href="PerformingAnalysis.7.14.html" />
+    <Document title="Understanding a Gene Expression Plot" href="PerformingAnalysis.7.15.html" />
+    <Document title="Choosing Genes" href="PerformingAnalysis.7.16.html" />
+    <Document title="Analyzing Data with GenePattern" href="PerformingAnalysis.7.17.html" />
+    <Document title="GenePattern Modules" href="PerformingAnalysis.7.18.html" />
+    <Document title="Comparative Marker Selection (CMS) Analysis" href="PerformingAnalysis.7.19.html" />
+    <Document title="Principal Component Analysis (PCA)" href="PerformingAnalysis.7.20.html" />
+    <Document title="GISTIC-Supported Analysis" href="PerformingAnalysis.7.21.html" />
+    <Document title="Viewing Data with the Integrative Genomics Viewer" href="PerformingAnalysis.7.22.html" />
+    <Document title="Viewing Data with Heat Map Viewer" href="PerformingAnalysis.7.23.html" />
+    <Document title="Java for IGV and Heat Map Viewer" href="PerformingAnalysis.7.24.html" />
+    <Document title="Administering User Accounts" href="User%20Admin.8.1.html" />
+    <Document title="Administering caIntegrator User Accounts Using UPT" href="User%20Admin.8.2.html" />
+    <Document title="Steps for Creating User Access to caIntegrator" href="User%20Admin.8.3.html" />
+    <Document title="Creating a New caIntegrator User" href="User%20Admin.8.4.html" />
+    <Document title="Creating a New User Group" href="User%20Admin.8.5.html" />
+    <Document title="Creating a New Protection Group" href="User%20Admin.8.6.html" />
+    <Document title="Assigning a User Group to a Protection Group" href="User%20Admin.8.7.html" />
+    <Document title="Adding a User to a User Group" href="User%20Admin.8.8.html" />
+    <Document title="Changing a User Password" href="User%20Admin.8.9.html" />
+    <Document title="Data Import Configurations" href="appdx%20data%20import.9.1.html" />
+    <Document title="Subject Annotation Data Configuration" href="appdx%20data%20import.9.2.html" />
+    <Document title="Delimited-Text Annotation Import" href="appdx%20data%20import.9.3.html" />
+    <Document title="Annotation Field Configuration" href="appdx%20data%20import.9.4.html" />
+    <Document title="Sample Data Configuration" href="appdx%20data%20import.9.5.html" />
+    <Document title="Genomic Data Configuration" href="appdx%20data%20import.9.6.html" />
+    <Document title="Supplemental Files Configuration" href="appdx%20data%20import.9.7.html" />
+    <Document title="Single Sample Format" href="appdx%20data%20import.9.8.html" />
+    <Document title="Multiple Sample Format" href="appdx%20data%20import.9.9.html" />
+    <Document title="Imaging Data Configuration" href="appdx%20data%20import.9.10.html" />
+    <Document title="Glossary" href="Glossary.10.1.html" />
+    <Document title="NCICB Application Support" href="Application%20Support.11.1.html" />
   </DocumentInfo>
   <TopicMap>
-    <Topic name="register_user_help" href="Getting_Started.2.3.html#1141097" />
-    <Topic name="welcome_help" href="Getting_Started.2.4.html#1127723" />
-    <Topic name="study_summary_help" href="Getting_Started.2.6.html#1151722" />
-    <Topic name="data_dictionary_help" href="Getting_Started.2.7.html#1152306" />
-    <Topic name="logging_out" href="Getting_Started.2.10.html#1128246" />
-    <Topic name="edit_study_help" href="CreatingNewStudy.3.4.html#1073921" />
-    <Topic name="view_log_help" href="CreatingNewStudy.3.5.html#1134337" />
-    <Topic name="add_annotation_group_help" href="CreatingNewStudy.3.7.html#1131246" />
-    <Topic name="edit_annotation_group_help" href="CreatingNewStudy.3.8.html#1127752" />
-    <Topic name="define_fields_help" href="CreatingNewStudy.3.10.html#1134706" />
-    <Topic name="assign_annotations_help" href="CreatingNewStudy.3.11.html#1125074" />
-    <Topic name="search_annotation_definitions_help" href="CreatingNewStudy.3.12.html#1082197" />
-    <Topic name="survival_values_help" href="CreatingNewStudy.3.13.html#1077698" />
-    <Topic name="edit_genomic_data_help" href="CreatingNewStudy.3.14.html#1076975" />
-    <Topic name="edit_sample_mappings_help" href="CreatingNewStudy.3.15.html#1081247" />
-    <Topic name="configure_copy_number_help" href="CreatingNewStudy.3.17.html#1089873" />
-    <Topic name="edit_imaging_data_help" href="CreatingNewStudy.3.19.html#1150641" />
-    <Topic name="manage_study_help" href="CreatingNewStudy.3.23.html#1076280" />
-    <Topic name="manage_platforms_help" href="CreatingNewStudy.3.24.html#1078043" />
-    <Topic name="search_criteria_help" href="SearchingWithinAStudy.4.3.html#1074305" />
-    <Topic name="results_type_tab_help" href="SearchingWithinAStudy.4.9.html#1089375" />
-    <Topic name="sorting_tab_help" href="SearchingWithinAStudy.4.10.html#1089355" />
-    <Topic name="save_query_help" href="SearchingWithinAStudy.4.12.html#1075754" />
-    <Topic name="query_results_help" href="View%20Search%20Results.5.2.html#1167812" />
-    <Topic name="create_gene_list_help" href="View%20Search%20Results.5.7.html#1194912" />
-    <Topic name="edit_gene_list_help" href="View%20Search%20Results.5.9.html#1183103" />
-    <Topic name="edit_GISTIC_help" href="View%20Search%20Results.5.10.html#1193608" />
-    <Topic name="DICOM_retrieval_help" href="View%20Search%20Results.5.13.html#1170682" />
-    <Topic name="K-M_plot_help" href="PerformingAnalysis.6.3.html#1084273" />
-    <Topic name="KM_annotation_help" href="PerformingAnalysis.6.4.html#1073490" />
-    <Topic name="KM_queries_help" href="PerformingAnalysis.6.7.html#1073776" />
-    <Topic name="GE_plot_annotation_help" href="PerformingAnalysis.6.10.html#1084201" />
-    <Topic name="GE_plot_gen_queries_help" href="PerformingAnalysis.6.12.html#1083368" />
-    <Topic name="GE_plot_clin_queries_help" href="PerformingAnalysis.6.13.html#1077378" />
-    <Topic name="KM_gene-expression_help" href="PerformingAnalysis.6.13.html#1114584" />
-    <Topic name="gene_pattern_help" href="PerformingAnalysis.6.17.html#1077363" />
-    <Topic name="app_support_help" href="Application%20Support.10.1.html#1069426" />
+    <Topic name="register_user_help" href="Getting_Started.3.3.html#1141097" />
+    <Topic name="welcome_help" href="Getting_Started.3.4.html#1127723" />
+    <Topic name="study_summary_help" href="Getting_Started.3.6.html#1151722" />
+    <Topic name="data_dictionary_help" href="Getting_Started.3.7.html#1152306" />
+    <Topic name="logging_out" href="Getting_Started.3.10.html#1128246" />
+    <Topic name="edit_study_help" href="CreatingNewStudy.4.4.html#1073921" />
+    <Topic name="view_log_help" href="CreatingNewStudy.4.5.html#1134337" />
+    <Topic name="add_annotation_group_help" href="CreatingNewStudy.4.7.html#1131246" />
+    <Topic name="edit_annotation_group_help" href="CreatingNewStudy.4.8.html#1127752" />
+    <Topic name="define_fields_help" href="CreatingNewStudy.4.10.html#1134706" />
+    <Topic name="assign_annotations_help" href="CreatingNewStudy.4.11.html#1125074" />
+    <Topic name="search_annotation_definitions_help" href="CreatingNewStudy.4.12.html#1082197" />
+    <Topic name="survival_values_help" href="CreatingNewStudy.4.13.html#1077698" />
+    <Topic name="edit_genomic_data_help" href="CreatingNewStudy.4.14.html#1076975" />
+    <Topic name="edit_sample_mappings_help" href="CreatingNewStudy.4.15.html#1081247" />
+    <Topic name="configure_copy_number_help" href="CreatingNewStudy.4.19.html#1089873" />
+    <Topic name="edit_imaging_data_help" href="CreatingNewStudy.4.22.html#1150641" />
+    <Topic name="manage_study_help" href="CreatingNewStudy.4.26.html#1076280" />
+    <Topic name="manage_platforms_help" href="CreatingNewStudy.4.27.html#1078043" />
+    <Topic name="search_criteria_help" href="SearchingWithinAStudy.5.3.html#1074305" />
+    <Topic name="results_type_tab_help" href="SearchingWithinAStudy.5.9.html#1089375" />
+    <Topic name="sorting_tab_help" href="SearchingWithinAStudy.5.10.html#1089355" />
+    <Topic name="save_query_help" href="SearchingWithinAStudy.5.12.html#1075754" />
+    <Topic name="query_results_help" href="View%20Search%20Results.6.2.html#1167812" />
+    <Topic name="create_gene_list_help" href="View%20Search%20Results.6.7.html#1206136" />
+    <Topic name="edit_gene_list_help" href="View%20Search%20Results.6.9.html#1183103" />
+    <Topic name="edit_GISTIC_help" href="View%20Search%20Results.6.10.html#1209910" />
+    <Topic name="DICOM_retrieval_help" href="View%20Search%20Results.6.13.html#1170682" />
+    <Topic name="K-M_plot_help" href="PerformingAnalysis.7.3.html#1084273" />
+    <Topic name="KM_annotation_help" href="PerformingAnalysis.7.4.html#1073490" />
+    <Topic name="KM_queries_help" href="PerformingAnalysis.7.7.html#1073776" />
+    <Topic name="GE_plot_annotation_help" href="PerformingAnalysis.7.10.html#1084201" />
+    <Topic name="GE_plot_gen_queries_help" href="PerformingAnalysis.7.12.html#1083368" />
+    <Topic name="GE_plot_clin_queries_help" href="PerformingAnalysis.7.13.html#1077378" />
+    <Topic name="KM_gene-expression_help" href="PerformingAnalysis.7.13.html#1114584" />
+    <Topic name="gene_pattern_help" href="PerformingAnalysis.7.17.html#1077363" />
+    <Topic name="app_support_help" href="Application%20Support.11.1.html#1069426" />
   </TopicMap>
 </WebWorksHelpBook>

@@ -1,140 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WebWorksHelpTOC version="5.0" xmlns="urn:WebWorks-Help-TOC-Schema">
   <i t="Welcome to caIntegrator Online Help" l="0" />
-  <i t="Getting Started with caIntegrator" l="1">
-    <i t="About caIntegrator" l="2" />
-    <i t="Registering as a New caIntegrator User" l="3" />
-    <i t="Welcome to the caIntegrator Workspace" l="4">
-      <i t="caIntegrator Functions" l="5" />
+  <i t="Online Help Tips" l="1" />
+  <i t="Getting Started with caIntegrator" l="2">
+    <i t="About caIntegrator" l="3" />
+    <i t="Registering as a New caIntegrator User" l="4" />
+    <i t="Welcome to the caIntegrator Workspace" l="5">
+      <i t="caIntegrator Functions" l="6" />
     </i>
-    <i t="Viewing Existing Studies" l="6">
-      <i t="Data Dictionary" l="7" />
-      <i t="Study Log" l="8" />
+    <i t="Viewing Existing Studies" l="7">
+      <i t="Data Dictionary" l="8" />
+      <i t="Study Log" l="9" />
     </i>
-    <i t="Using Online Help" l="9" />
-    <i t="Logging Out" l="10" />
-    <i t="Application Support" l="11" />
+    <i t="Using Online Help" l="10" />
+    <i t="Logging Out" l="11" />
+    <i t="Application Support" l="12" />
   </i>
-  <i t="Creating a New Study" l="12">
-    <i t="Creating a Study – Overview" l="13" />
-    <i t="Configuring and Deploying a Study" l="14">
-      <i t="Creating/Editing a Study" l="15" />
-      <i t="Viewing/Editing a Log" l="16" />
+  <i t="Creating a New Study" l="13">
+    <i t="Creating a Study – Overview" l="14" />
+    <i t="Configuring and Deploying a Study" l="15">
+      <i t="Creating/Editing a Study" l="16" />
+      <i t="Viewing/Editing a Log" l="17" />
     </i>
-    <i t="Working with Annotations – An Overview" l="17">
-      <i t="Adding An Annotation Group" l="18" />
-      <i t="Editing an Annotation Group" l="19" />
-      <i t="Adding Subject Annotation Data" l="20" />
-      <i t="Define Fields Page for Editing Annotations" l="21">
-        <i t="Assigning An Identifier or Annotation" l="22" />
-        <i t="Searching for Annotation Definitions" l="23" />
-        <i t="Defining Survival Values" l="24" />
+    <i t="Working with Annotations – An Overview" l="18">
+      <i t="Adding An Annotation Group" l="19" />
+      <i t="Editing an Annotation Group" l="20" />
+      <i t="Adding Subject Annotation Data" l="21" />
+      <i t="Define Fields Page for Editing Annotations" l="22">
+        <i t="Assigning An Identifier or Annotation" l="23" />
+        <i t="Searching for Annotation Definitions" l="24" />
+        <i t="Defining Survival Values" l="25" />
       </i>
     </i>
-    <i t="Adding/Editing Genomic Data" l="25">
-      <i t="Mapping Genomic Data to Subject Annotation Data" l="26" />
-      <i t="Uploading Control Samples" l="27" />
-      <i t="Configuring Copy Number Data" l="28" />
-    </i>
-    <i t="Working with Imaging Data" l="29">
-      <i t="Adding or Editing Imaging Files from NBIA" l="30" />
-      <i t="Adding or Editing Image Annotations" l="31" />
-    </i>
-    <i t="Adding External Links" l="32" />
-    <i t="Deploying the Study" l="33" />
-    <i t="Managing a Study" l="34">
-      <i t="Managing Platforms" l="35" />
-    </i>
-  </i>
-  <i t="Searching a caIntegrator Study" l="36">
-    <i t="Search Overview" l="37" />
-    <i t="Searching a Study" l="38">
-      <i t="Annotation and Image Data Searches" l="39" />
-      <i t="Gene Expression Data Searches" l="40" />
-      <i t="Copy Number Searches" l="41" />
-      <i t="Choosing Genes" l="42" />
-      <i t="Query Results" l="43" />
-      <i t="Results Type Tab" l="44" />
-      <i t="Sorting Tab" l="45" />
-    </i>
-    <i t="Managing Queries" l="46">
-      <i t="Saving a Query" l="47" />
-      <i t="Editing a Query" l="48" />
-      <i t="Exporting Query Results" l="49" />
-    </i>
-  </i>
-  <i t="Viewing Query Results" l="50">
-    <i t="Query Results Overview" l="51" />
-    <i t="Browsing Query Results" l="52">
-      <i t="Subject Annotation and Imaging Data" l="53" />
-      <i t="Gene Expression Data" l="54">
-        <i t="Copy Number Data" l="55" />
-        <i t="Creating a Gene or Subject List" l="56" />
-        <i t="Choosing Genes" l="57" />
-        <i t="Editing a Gene or Subject List" l="58" />
-        <i t="Editing a GISTIC Analysis" l="59" />
+    <i t="Adding/Editing Genomic Data" l="26">
+      <i t="Mapping Genomic Data to Subject Annotation Data" l="27">
+        <i t="Creating a Mapping File" l="28" />
+        <i t="Steps for Mapping Genomic Data" l="29" />
       </i>
-      <i t="Expanding Imaging Data Results" l="60">
-        <i t="caIntegrator and NBIA" l="61" />
-        <i t="Retrieving DICOM Images" l="62" />
-        <i t="Example of Retrieving Images:" l="63" />
-        <i t="Relationship of Patient to Study to Series to Images" l="64" />
-      </i>
-      <i t="Exporting Data" l="65" />
-    </i>
-  </i>
-  <i t="Analyzing Studies" l="66">
-    <i t="Data Analysis Overview" l="67" />
-    <i t="Creating Kaplan-Meier Plots" l="68">
-      <i t="K-M Plot for Annotations" l="69" />
-      <i t="K-M Plot for Gene Expression" l="70">
-        <i t="KM Plot from Gene Expression Data Display" l="71" />
-      </i>
-      <i t="K-M Plot for Queries and Saved Lists" l="72">
-        <i t="K-M Plot for Queries Display" l="73" />
+      <i t="Uploading Control Samples" l="30" />
+      <i t="Configuring Copy Number Data" l="31">
+        <i t="Remapping Copy Number Data in a Deployed Study" l="32" />
       </i>
     </i>
-    <i t="Creating Gene Expression Plots" l="74">
-      <i t="Gene Expression Value Plot for Annotation" l="75">
-        <i t="Gene Expression Plot for Annotation Display" l="76" />
+    <i t="Working with Imaging Data" l="33">
+      <i t="Adding or Editing Imaging Data Files from NBIA" l="34" />
+      <i t="Adding or Editing Image Annotations" l="35" />
+    </i>
+    <i t="Adding External Links" l="36" />
+    <i t="Deploying the Study" l="37" />
+    <i t="Managing a Study" l="38">
+      <i t="Managing Platforms" l="39" />
+    </i>
+  </i>
+  <i t="Searching a caIntegrator Study" l="40">
+    <i t="Search Overview" l="41" />
+    <i t="Searching a Study" l="42">
+      <i t="Annotation and Image Data Searches" l="43" />
+      <i t="Gene Expression Data Searches" l="44" />
+      <i t="Copy Number Searches" l="45" />
+      <i t="Choosing Genes" l="46" />
+      <i t="Query Results" l="47" />
+      <i t="Results Type Tab" l="48" />
+      <i t="Sorting Tab" l="49" />
+    </i>
+    <i t="Managing Queries" l="50">
+      <i t="Saving a Query" l="51" />
+      <i t="Editing a Query" l="52" />
+      <i t="Exporting Query Results" l="53" />
+    </i>
+  </i>
+  <i t="Viewing Query Results" l="54">
+    <i t="Query Results Overview" l="55" />
+    <i t="Browsing Query Results" l="56">
+      <i t="Subject Annotation and Imaging Data" l="57" />
+      <i t="Gene Expression Data" l="58">
+        <i t="Copy Number Data" l="59" />
+        <i t="Creating a Gene or Subject List" l="60" />
+        <i t="Choosing Genes" l="61" />
+        <i t="Editing a Gene or Subject List" l="62" />
+        <i t="Editing a GISTIC Analysis" l="63" />
       </i>
-      <i t="Gene Expression Value Plot for Genomic Queries" l="77" />
-      <i t="Gene Expression Value Plot for Annotation and Saved List Queries" l="78">
-        <i t="Gene Expression Plot for Saved Queries Display" l="79" />
+      <i t="Expanding Imaging Data Results" l="64">
+        <i t="caIntegrator and NBIA" l="65" />
+        <i t="Retrieving DICOM Images" l="66" />
+        <i t="Example of Retrieving Images:" l="67" />
+        <i t="Relationship of Patient to Study to Series to Images" l="68" />
       </i>
-      <i t="Understanding a Gene Expression Plot" l="80" />
-      <i t="Choosing Genes" l="81" />
-    </i>
-    <i t="Analyzing Data with GenePattern" l="82">
-      <i t="GenePattern Modules" l="83" />
-      <i t="Comparative Marker Selection (CMS) Analysis" l="84" />
-      <i t="Principal Component Analysis (PCA)" l="85" />
-      <i t="GISTIC-Supported Analysis" l="86" />
+      <i t="Exporting Data" l="69" />
     </i>
   </i>
-  <i t="Administering User Accounts" l="87">
-    <i t="Administering caIntegrator User Accounts Using UPT" l="88">
-      <i t="Steps for Creating User Access to caIntegrator" l="89" />
-      <i t="Creating a New caIntegrator User" l="90" />
-      <i t="Creating a New User Group" l="91" />
-      <i t="Creating a New Protection Group" l="92" />
-      <i t="Assigning a User Group to a Protection Group" l="93" />
-      <i t="Adding a User to a User Group" l="94" />
-      <i t="Changing a User Password" l="95" />
+  <i t="Analyzing Studies" l="70">
+    <i t="Data Analysis Overview" l="71" />
+    <i t="Creating Kaplan-Meier Plots" l="72">
+      <i t="K-M Plot for Annotations" l="73" />
+      <i t="K-M Plot for Gene Expression" l="74">
+        <i t="KM Plot from Gene Expression Data Display" l="75" />
+      </i>
+      <i t="K-M Plot for Queries and Saved Lists" l="76">
+        <i t="K-M Plot for Queries Display" l="77" />
+      </i>
+    </i>
+    <i t="Creating Gene Expression Plots" l="78">
+      <i t="Gene Expression Value Plot for Annotation" l="79">
+        <i t="Gene Expression Plot for Annotation Display" l="80" />
+      </i>
+      <i t="Gene Expression Value Plot for Genomic Queries" l="81" />
+      <i t="Gene Expression Value Plot for Annotation and Saved List Queries" l="82">
+        <i t="Gene Expression Plot for Saved Queries Display" l="83" />
+      </i>
+      <i t="Understanding a Gene Expression Plot" l="84" />
+      <i t="Choosing Genes" l="85" />
+    </i>
+    <i t="Analyzing Data with GenePattern" l="86">
+      <i t="GenePattern Modules" l="87" />
+      <i t="Comparative Marker Selection (CMS) Analysis" l="88" />
+      <i t="Principal Component Analysis (PCA)" l="89" />
+      <i t="GISTIC-Supported Analysis" l="90" />
+    </i>
+    <i t="Viewing Data with the Integrative Genomics Viewer" l="91" />
+    <i t="Viewing Data with Heat Map Viewer" l="92">
+      <i t="Java for IGV and Heat Map Viewer" l="93" />
     </i>
   </i>
-  <i t="Data Import Configurations" l="96">
-    <i t="Subject Annotation Data Configuration" l="97" />
-    <i t="Delimited-Text Annotation Import" l="98" />
-    <i t="Annotation Field Configuration" l="99" />
-    <i t="Sample Data Configuration" l="100" />
-    <i t="Genomic Data Configuration" l="101" />
-    <i t="Supplemental Files Configuration" l="102">
-      <i t="Single Sample Format" l="103" />
-      <i t="Multiple Sample Format" l="104" />
+  <i t="Administering User Accounts" l="94">
+    <i t="Administering caIntegrator User Accounts Using UPT" l="95">
+      <i t="Steps for Creating User Access to caIntegrator" l="96" />
+      <i t="Creating a New caIntegrator User" l="97" />
+      <i t="Creating a New User Group" l="98" />
+      <i t="Creating a New Protection Group" l="99" />
+      <i t="Assigning a User Group to a Protection Group" l="100" />
+      <i t="Adding a User to a User Group" l="101" />
+      <i t="Changing a User Password" l="102" />
     </i>
-    <i t="Imaging Data Configuration" l="105" />
   </i>
-  <i t="Online Help Tips" l="106" />
-  <i t="NCICB Application Support" l="107" />
+  <i t="Data Import Configurations" l="103">
+    <i t="Subject Annotation Data Configuration" l="104" />
+    <i t="Delimited-Text Annotation Import" l="105" />
+    <i t="Annotation Field Configuration" l="106" />
+    <i t="Sample Data Configuration" l="107" />
+    <i t="Genomic Data Configuration" l="108" />
+    <i t="Supplemental Files Configuration" l="109">
+      <i t="Single Sample Format" l="110" />
+      <i t="Multiple Sample Format" l="111" />
+    </i>
+    <i t="Imaging Data Configuration" l="112" />
+  </i>
+  <i t="Glossary" l="113" />
+  <i t="NCICB Application Support" l="114" />
 </WebWorksHelpTOC>
