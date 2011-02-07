@@ -28,11 +28,11 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="SearchingWithinAStudy.5.1.html#1074226">Searching a caIntegrator2 Study</a> &gt; Search Overview</div>
+      <a class="WebWorks_Breadcrumb_Link" href="SearchingWithinAStudy.5.1.html#1074226">Searching a caIntegrator Study</a> &gt; Search Overview</div>
     <hr align="left" />
     <blockquote>
       <div class="Heading1"><a name="1074226">Search Overview</a></div>
-      <div class="Body_Text"><a name="1077420">The search and browse functions in caIntegrator2 allow you to search for </a>subject annotation data, genomic data or imaging data that were uploaded into the application as part of a study. When gene expression and imaging data are uploaded into a caIntegrator2 study, mapping files that correlate the data in those files to patient IDs in the subject annotation data file must also be uploaded. When you launch a search, caIntegrator2 finds and integrates the subject annotation, genomic and imaging data based on the mapping files and the criteria that you define in the search query.</div>
+      <div class="Body_Text"><a name="1077420">The search and browse functions in caIntegrator allow you to search for subject </a>annotation data, genomic data or imaging data that were uploaded into the application as part of a study. When gene expression and imaging data are uploaded into a caIntegrator study, mapping files that correlate sample IDs in those files to subject IDs (patient IDs) in the subject annotation data file must also be uploaded. When you launch a search, caIntegrator finds and integrates the subject annotation, genomic and imaging data based on the mapping files and the criteria that you define in the search query.</div>
       <div class="Body_Text"><a name="1076900">In a search query, you can specify criteria for just one of the data types, or configure </a>complex search criteria that join two or three data types. The available criteria for the query were defined when the study was deployed.</div>
       <div class="Body_Text"><a name="1076905">The basic workflow for a study search follows these steps:</a></div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
@@ -60,13 +60,13 @@
         </table>
       </div>
       <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1076935">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1095346">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1076935">Annotations</a></span> – Searches one or more uploaded CSV files for data identifiers or annotations (column headers) specified when the study was created</div>
+              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1095346">[Annotations]</a></span> – Annotation data can be labeled ‘default’ or given the annotation ‘group’ name when annotation groups are specified by the manager, for example, chronologic, therapy, diagnosis, patient, or other annotation group types. This selection searches one or more uploaded CSV files for data identifiers or annotations (column headers) specified during study creation.</div>
             </td>
           </tr>
         </table>
@@ -78,7 +78,7 @@
               <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1076938">Genomic</a></span> – Searches caArray experiments samples uploaded in the study for gene expression data by gene name or reporter ID. </div>
+              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1076938">[Genomic]</a></span> – Genomic data can be gene expression or copy number data. This selection searches caArray experiments samples uploaded in the study for gene expression or copy number data by gene name, reporter ID, chromosome number, chromosome coordinates and/or segmentation values representing amplification or deletion. </div>
             </td>
           </tr>
         </table>
@@ -90,7 +90,7 @@
               <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1076939">Image Series</a></span> – Searches NBIA files uploaded in the study for image annotations or links to images, identified by subject identifiers or image series IDs.</div>
+              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1076939">Image Data</a></span> – Searches NBIA imaging files uploaded in the study for image annotations or links to images, identified by subject identifiers or image series IDs.</div>
             </td>
           </tr>
         </table>
@@ -126,7 +126,7 @@
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">5.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1077034">Specify whether you want </a>subject/imaging annotations to display or genomic data to display.</div>
+              <div class="Numbered_List_inner"><a name="1077034">Specify whether you want subject/imaging annotations to display or genomic </a>data to display.</div>
             </td>
           </tr>
         </table>
@@ -174,7 +174,7 @@
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">9.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1077032">Follow</a> links to NBIA in the search results to view or download images located in the search.</div>
+              <div class="Numbered_List_inner"><a name="1077032">Follow links to NBIA in the search results to view or download images located in </a>the search.</div>
             </td>
           </tr>
         </table>
@@ -188,7 +188,7 @@
           // Add related topics
           //
           WWHAddRelatedTopic("Searching a Study", "caIntegrator2", "SearchingWithinAStudy.5.3.html#1074305");
-          WWHAddRelatedTopic("Managing Queries", "caIntegrator2", "SearchingWithinAStudy.5.8.html#1077751");
+          WWHAddRelatedTopic("Managing Queries", "caIntegrator2", "SearchingWithinAStudy.5.11.html#1077751");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Uploading Control Samples</title>
+    <title>Mapping Genomic Data to Subject Annotation Data</title>
     <link rel="StyleSheet" href="css/CreatingNewStudy.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,65 +28,11 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.1.html#1080249">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.6.html#1080249">Working with Annotations – An Overview</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.13.html#1080249">Adding/Editing Genomic Data</a> &gt; Uploading Control Samples </div>
+      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.1.html#1081247">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.14.html#1081247">Adding/Editing Genomic Data</a> &gt; Mapping Genomic Data to Subject Annotation Data</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading3"><a name="1080249">Uploading Control Samples </a></div>
-      <div class="Body_Text"><a name="1081202">A Control Samples file is used to calculate fold change data, which compares “tumor” </a>sample gene expression in the caArray experiment to the control samples to identify those that exhibit up or down gene regulation. Control samples can be the “normal” samples, but that is not necessarily the case.</div>
-      <div class="Body_Text"><a name="1081271">To upload the control samples, follow these steps:</a></div>
-      <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081324">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1081324">On the Edit Sample Mappings page, click the </a><span style="font-weight: bold;">Map Samples</span> link.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1091190">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1091190">Click </a><span style="font-weight: bold;">Browse</span> to navigate for the control samples file, and click the <span style="font-weight: bold;">Upload </span><span style="font-weight: bold;">Control Samples</span> File button. The control sets display at the top of the page once they have been uploaded . </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text_Indent_2"><a name="1091182">The control samples now display toward the bottom of the page.</a></div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1079626">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1079626">This information will be used when performing other tasks in caIntegrator2, to </a>be described in other sections.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Note_Main_Body_outer" style="margin-left: 13px;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1132244">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Note_Main_Body_inner" style="width: 15px; white-space: nowrap;">
-                <span style="left: -20px; position: relative; top: 15px;">
-                  <img src="note_NCI.gif" alt="*" id="bullet1132244" border="0" width="30" height="30" />
-                </span>
-              </div>
-            </td>
-            <td width="100%">
-              <div class="Note_Main_Body_inner"><a name="1132244">If a Control Set is to be used in Gene Expression For Annotation, or Gene Expression </a>plots for Annotation Query, then the control set should be composed of only samples which are mapped to subjects.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
+      <div class="Heading2"><a name="1081247">Mapping Genomic Data to Subject Annotation Data</a></div>
+      <div class="Body_Text"><a name="1082153">Because the goal of caIntegrator is to integrate data from subject annotation, genomic </a>and imaging data sources, data from uploaded source files must be mapped to each other. Mapping files can map to caArray genomic data of two types: “imported and parsed” and that stored in supplemental files.</div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
@@ -95,9 +41,10 @@
 
           // Add related topics
           //
-          WWHAddRelatedTopic("Adding Subject Annotation Data", "caIntegrator2", "CreatingNewStudy.4.9.html#1134706");
-          WWHAddRelatedTopic("Adding Imaging Data", "caIntegrator2", "CreatingNewStudy.4.17.html#1075831");
-          WWHAddRelatedTopic("Managing Platforms", "caIntegrator2", "CreatingNewStudy.4.21.html#1078043");
+          WWHAddRelatedTopic("Creating a Mapping File", "caIntegrator2", "CreatingNewStudy.4.16.html#1167373");
+          WWHAddRelatedTopic("Steps for Mapping Genomic Data", "caIntegrator2", "CreatingNewStudy.4.17.html#1167595");
+          WWHAddRelatedTopic("Uploading Control Samples", "caIntegrator2", "CreatingNewStudy.4.18.html#1080249");
+          WWHAddRelatedTopic("Configuring Copy Number Data ", "caIntegrator2", "CreatingNewStudy.4.19.html#1089873");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

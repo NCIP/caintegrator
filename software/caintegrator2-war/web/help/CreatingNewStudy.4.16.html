@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Configuring Copy Number Data</title>
+    <title>Creating a Mapping File</title>
     <link rel="StyleSheet" href="css/CreatingNewStudy.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,160 +28,230 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.1.html#1089873">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.6.html#1089873">Working with Annotations – An Overview</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.13.html#1089873">Adding/Editing Genomic Data</a> &gt; Configuring Copy Number Data</div>
+      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.1.html#1167373">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.14.html#1167373">Adding/Editing Genomic Data</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.4.15.html#1167373">Mapping Genomic Data to Subject Annotation Data</a> &gt; Creating a Mapping File</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading3"><a name="1089873">Configuring Copy Number Data</a></div>
-      <div class="Body_Text"><a name="1119394">You can add copy number data for a genomic data source by uploading the mapping </a>file. This allows you to configure parameters to be used when segmentation data is being configured.</div>
-      <div class="Body_Text"><a name="1119396">The name specified in the third column of the mapping file is specific for each array </a>manufacturer as follows: </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1119367">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><a name="1119367">Affymetrix </a>– The third column of the mapping file must contain filenames that end in .cnchp. The corresponding experiment in caArray must have these files and the extensions must match .cnchp.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1119378">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><a name="1119378">Agilent </a>– The third column must name a file which contains level 2 copy number data. Level one copy number will not work. This file name is repeated for each line in the mapping file.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text"><a name="1119277">To add copy number data relating to the genomic data you are adding, follow these </a>steps:</div>
+      <div class="Heading3"><a name="1167373">Creating a Mapping File</a></div>
+      <div class="Body_Text"><a name="1167346">You, as the caIntegrator study manager, must create a Subject to Sample mapping file </a>before following the actual mapping steps. This file provides caIntegrator with the information for mapping patients to caArray samples. </div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1089976">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167402">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1. </div>
+              <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1089976">In the Genomic Data Sources section, for the data you have already added, </a>click <span style="font-weight: bold;">Configure Copy Number Data </span>button. </div>
+              <div class="Numbered_List_1_inner"><a name="1167402">Start with the 6-column mapping file template, described as follows:</a></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167499">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><span style="font-style: italic;"><a name="1167499">All platforms</a></span> – Raw (level 1) data cannot be mapped; only normalized, processed (level 2) data is acceptable. </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167527">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><a name="1167527">The required six-column file format uses the following columns:</a></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167500">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_2_inner"><a name="1167500"> </a><span style="font-weight: bold;">Subject ID</span></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167501">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_2_inner"><a name="1167501"> </a><span style="font-weight: bold;">Sample ID</span></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167502">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_2_inner"><a name="1167502"> </a><span style="font-weight: bold;">Name of supplemental file</span> (if appropriate, as attached to the experiment in caArray)</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167503">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_2_inner"><a name="1167503"> </a><span style="font-weight: bold;">Probe Header</span> – Name of column header (in the supplemental file) which contains the  probe IDs.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167504">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_2_inner"><span style="font-weight: bold;"><a name="1167504">Value Header</a></span> –  Name of column header (in the supplemental file) which holds the level 2 data. </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167505">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_2_inner"><span style="font-weight: bold;"><a name="1167505">Sample Header</a></span> – Name of column header (in the supplemental file) which holds the level 2 data. </div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Note_Indent_outer" style="margin-left: 50.25pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1094410">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167506">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Note_Indent_inner" style="width: 25px; white-space: nowrap;">
                 <span style="left: -20px; position: relative; top: 15px;">
-                  <img src="note_NCI.gif" alt="*" id="bullet1094410" border="0" width="30" height="30" />
+                  <img src="note_NCI.gif" alt="*" id="bullet1167506" border="0" width="30" height="30" />
                 </span>
               </div>
             </td>
             <td width="100%">
-              <div class="Note_Indent_inner"><a name="1094410">This link is available only if you have uploaded copy number data and </a>you are configuring a Copy Number data type (as indicated by the Data Type column on the Edit Study page).</div>
+              <div class="Note_Indent_inner"><a name="1167506">Only one of the last 2 columns is used: a single sample per file uses the </a>Value Header column; multiple samples per file used Sample Header column. Unused columns are blank.</div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text_Indent_2"><a name="1094406">The Edit Copy Number page opens. </a></div>
+      <div class="Body_Text_Indent_3"><a name="1167635">The following figure</a> shows an example multiple sample mapping file in CSV format.<img id="1167640" class="Default" src="images/multiple%20sample%20mapping.gif" width="567" height="230" style="display: block; float: none; left: 0.0; text-align: left; top: 0.0;" alt="Screen shot of an example mapping file with multiple samples. The file is described in the text." /></div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1089953">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167660">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1089953">Browse for and enter appropriate information to identify the copy number </a>mapping file. The fields are described in the following table. . An asterisk* indicates a required field.</div>
+              <div class="Numbered_List_inner"><a name="1167660">When you use the mapping file, make sure you use the patient ID for mapping.</a></div>
             </td>
           </tr>
         </table>
       </div>
-      <table id="1090095" class="Table_-_List" style="text-align: left;" cellspacing="2">
-        <caption></caption>
-        <tr>
-          <td id="tc1090097" style="background-color: WhiteSmoke; border-bottom-color: Black; border-bottom-style: solid; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 4pt; padding-left: 6pt; padding-right: 4pt; padding-top: 4pt; vertical-align: middle; width: 110.232pt;">
-            <div class="Table_Header"><a name="1090097">Field</a></div>
-          </td>
-          <td id="tc1090099" style="background-color: WhiteSmoke; border-bottom-color: Black; border-bottom-style: solid; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 4pt; padding-left: 6pt; padding-right: 4pt; padding-top: 4pt; vertical-align: middle; width: 280.584pt;">
-            <div class="Table_Header"><a name="1090099">Description</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090101" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090101">Subject and Sample </a></span>Mapping File</div>
-          </td>
-          <td id="tc1090103" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1090103">Browse for the appropriate CN mapping file</a>. <br />The file must be a CSV file with 3 column format for mapping single data file and 5 column format for mapping 1 data file per sample.</div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090105" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090105">caDNACopy Service </a></span><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;">URL*</span></div>
-          </td>
-          <td id="tc1090107" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1090107">Control for selecting the URL which hosts the caDNACopy </a>grid service</div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090109" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090109">Change Point </a></span><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;">Significance Level</span></div>
-          </td>
-          <td id="tc1090111" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1090111">Significance levels for the test to accept change-points</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090113" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090113">Early Stopping </a></span><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;">Criteria</span></div>
-          </td>
-          <td id="tc1090115" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1090115">The sequential boundary used to stop and declare a change</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090117" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090117">Permutation </a></span><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;">Replicates</span></div>
-          </td>
-          <td id="tc1090119" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1090119">The number of permutations used for p-value computation</a></div>
-          </td>
-        </tr>
-        <tr>
-          <td id="tc1090121" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1090121">Random Number </a></span><span style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;">Seed </span></div>
-          </td>
-          <td id="tc1090123" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
-            <div class="Table_Text"><a name="1090123">The segmentation procedure uses a permutation reference </a>distribution. This should be used if you plan to reproduce the results.</div>
-          </td>
-        </tr>
-      </table>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1090004">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167348">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1090004">Click </a><span style="font-weight: bold;">Save Segmentation Data Calculation Configuration</span> for a genomic data source. On the screen upload a copy number mapping file (format: subject id, sample id, file name) and configure the parameters to be sent when computing segmentation data.</div>
+              <div class="Numbered_List_inner"><a name="1167348">Determine whether your data in caArray is "imported and parsed" or </a>"supplemental". Fill in the 6-column mapping file according to the following standard:</div>
             </td>
           </tr>
         </table>
       </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167350">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><a name="1167350">Imported and parsed </a>– Complete only the first two columns of the 6-column mapping file as described above. You can ignore the remaining columns.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167351">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><a name="1167351">Supplemental </a>– Supplemental data comes in two flavors: "single sample per file" and "multiple samples per file".  Only one of the last two columns is used. If the supplemental data format is:</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167353">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_2_inner"><a name="1167353">Single sample per file </a>– the column named "Sample_Header" can be left empty.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_2_outer" style="margin-left: 54pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1167291">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_2_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_2_inner"><a name="1167291">Multiple samples per file </a>– the column named "Value_Header" can be left empty.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Note_Main_Body_outer" style="margin-left: 13px;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1148282">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Note_Main_Body_inner" style="width: 15px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1148282" border="0" width="30" height="30" />
+                </span>
+              </div>
+            </td>
+            <td width="100%">
+              <div class="Note_Main_Body_inner"><span style="font-family: &quot;Times New Roman&quot;; font-size: 12.0pt;"><a name="1148282"> </a></span>Supplemental files from caArray for mapping data must be configured appropriately. For information, see <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'appdx%20data%20import.9.7.html#1078519', '');">Supplemental Files Configuration</a></span>. </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text"><a name="1089445">The steps </a>described in <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.4.17.html#1167595', '');">Steps for Mapping Genomic Data</a></span> use data of either type.</div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
           //
           WWHClearRelatedTopics();
-
-          // Add related topics
-          //
-          WWHAddRelatedTopic("Adding/Editing Genomic Data", "caIntegrator2", "CreatingNewStudy.4.13.html#1076975");
-          WWHAddRelatedTopic("Uploading Control Samples", "caIntegrator2", "CreatingNewStudy.4.15.html#1080249");
-          WWHAddRelatedTopic("Configuring Copy Number Data", "caIntegrator2", "CreatingNewStudy.4.16.html#1089873");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

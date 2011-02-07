@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Imaging Data Configuration</title>
+    <title>Supplemental Files Configuration</title>
     <link rel="StyleSheet" href="css/appdx%20data%20import.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,97 +28,19 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="appdx%20data%20import.9.1.html#1073264">Data Import Configurations</a> &gt; Imaging Data Configuration</div>
+      <a class="WebWorks_Breadcrumb_Link" href="appdx%20data%20import.9.1.html#1078519">Data Import Configurations</a> &gt; Supplemental Files Configuration</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading1"><a name="1073264">Imaging Data Configuration</a></div>
-      <div class="Body_Text"><a name="1073265">The following imaging data configuration information is collected:</a></div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073266">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><a name="1073266">NBIA grid server hostname (defaults to NCICB instance)</a></div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073267">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><a name="1073267">NBIA grid server port (defaults to NCICB instance port)</a></div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073268">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><a name="1073268">Protocol Id</a></div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073269">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><a name="1073269">Mapping of NBIA Patients to subjects imported from </a>subject annotation data source. This may be specified by a comma-separated list in the format “subject identifier”, “NBIA patient identifier” or by a regular-expression based mapping formula.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073270">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><a name="1073270">Which annotation fields to import from NBIA.</a></div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073271">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
-            </td>
-            <td width="100%">
-              <div class="Bullet_inner"><a name="1073271">The system will enable the Study Manager to navigate easily to the selected </a>caArray 2 instance.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text"><a name="1073169">Additional annotation for either images or image series may be imported using the </a>delimited-text import functionality.</div>
-      <div class="Body_Text"><a name="1075580">&nbsp;</a></div>
+      <div class="Heading1"><a name="1078519">Supplemental Files Configuration</a></div>
+      <div class="Body_Text"><a name="1078641">This section describes the format that must be used when creating supplemental files </a>for use by caIntegrator. The supplemental files described here are to be added to an experiment in caArray prior to configuring a study in caIntegrator.</div>
+      <div class="Body_Text"><a name="1078643">The file itself is a tab-delimited text file. The file extension can be anything, though </a>users typically use <span class="Code">.txt</span>. The name of each supplemental file must be unique within a caArray experiment.</div>
+      <div class="Body_Text"><a name="1078549">Inside the file, each row in the file contains the data from one reporter. Each column in </a>the file must have a unique header name, that is, you cannot give two different columns the same column name.</div>
+      <div class="Body_Text"><a name="1078551">There are two supported formats for these files: </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'appdx%20data%20import.9.8.html#1078553', '');">Single Sample Format</a></span> and <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'appdx%20data%20import.9.9.html#1078571', '');">Multiple Sample Format</a></span>.</div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
           //
           WWHClearRelatedTopics();
-
-          // Add related topics
-          //
-          WWHAddRelatedTopic("Delimited-Text Annotation Import", "caIntegrator2", "appdx%20data%20import.9.3.html#1073225");
-          WWHAddRelatedTopic("Annotation Field Configuration", "caIntegrator2", "appdx%20data%20import.9.4.html#1073232");
-          WWHAddRelatedTopic("Sample Data Configuration", "caIntegrator2", "appdx%20data%20import.9.5.html#1073242");
-          WWHAddRelatedTopic("Genomic Data Configuration", "caIntegrator2", "appdx%20data%20import.9.6.html#1073252");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->
