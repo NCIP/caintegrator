@@ -23,6 +23,7 @@ import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Set;
 
@@ -38,7 +39,7 @@ import affymetrix.fusion.chp.FusionCHPMultiDataData;
 public class AffymetrixCopyNumberMappingFileHandlerTest {
 
     @Test
-    public void testLoadCopyNumberData() throws DataRetrievalException, ConnectionException, ValidationException {
+    public void testLoadCopyNumberData() throws DataRetrievalException, ConnectionException, ValidationException, FileNotFoundException {
         CaArrayFacade caArrayFacade = new LocalCaArrayFacadeStub();
         ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub();
         CaIntegrator2DaoStub dao = new LocalCaIntegrator2DaoStub();
@@ -49,14 +50,39 @@ public class AffymetrixCopyNumberMappingFileHandlerTest {
         source.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
         source.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
         source.getDnaAnalysisDataConfiguration().setMappingFilePath(TestDataFiles.SHORT_COPY_NUMBER_FILE.getAbsolutePath());
-        AbstractAffymetrixDnaAnalysisMappingFileHandler handler = new AffymetrixCopyNumberMappingFileHandler(source, caArrayFacade, arrayDataService, dao);
-        handler.loadArrayData();
+        try {
+            AbstractAffymetrixDnaAnalysisMappingFileHandler handler = new AffymetrixCopyNumberMappingFileHandler(source, caArrayFacade, arrayDataService, dao);
+            handler.loadArrayData();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
         Set<ArrayData> arrayDatas = studyConfiguration.getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, null);
         assertEquals(1, arrayDatas.size());
         for (ArrayData arrayData : arrayDatas) {
             checkArrayData(arrayData);
         }
     }
+    
+    @Test(expected=FileNotFoundException.class)
+    public void testLoadCopyNumberDataNoFile() throws DataRetrievalException, ConnectionException, ValidationException, FileNotFoundException {
+        CaArrayFacade caArrayFacade = new LocalCaArrayFacadeStub();
+        ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub();
+        CaIntegrator2DaoStub dao = new LocalCaIntegrator2DaoStub();
+        GenomicDataSourceConfiguration source = new GenomicDataSourceConfiguration();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.getOrCreateSubjectAssignment("E09176");
+        source.setStudyConfiguration(studyConfiguration);
+        source.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
+        source.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
+        // test if file not found
+        source.getDnaAnalysisDataConfiguration().setMappingFilePath(TestDataFiles.INVALID_FILE_DOESNT_EXIST.getAbsolutePath());
+        try {
+            AbstractAffymetrixDnaAnalysisMappingFileHandler handler = new AffymetrixCopyNumberMappingFileHandler(source, caArrayFacade, arrayDataService, dao);
+            handler.loadArrayData();
+        } catch (Exception e) {
+            throw new FileNotFoundException();
+        }
+    }      
 
     private void checkArrayData(ArrayData arrayData) {
         assertNotNull(arrayData.getArray());
