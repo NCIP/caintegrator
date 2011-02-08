@@ -220,7 +220,7 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         assertFalse(action.hasFieldErrors());
         action.clearErrorsAndMessages();
 
-        // test invalid file extension
+        // test for invalid file extensions
         action.setSelectedAction("addAnnotationFile");
         action.setPlatformFile(TestArrayDesignFiles.HG_U133A_CDF_FILE);
         action.setPlatformFileFileName(TestArrayDesignFiles.HG_U133A_CDF_PATH);
@@ -235,6 +235,14 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         action.setPlatformFileFileName(TestArrayDesignFiles.HG_U133A_CDF_PATH);
         action.validate();
         assertTrue(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
+        action.setSelectedAction("addAnnotationFile");
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getValue());
+        action.setPlatformFile(TestArrayDesignFiles.HG_U133A_CDF_FILE);
+        action.setPlatformFileFileName("abc.cdf");
+        action.validate();
+        assertTrue(action.hasFieldErrors());        
         
         //action.clearErrorsAndMessages();
         //action.setSelectedAction("addAnnotationFile");
