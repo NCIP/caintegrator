@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.external.bioconductor;
 
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisData;
@@ -269,7 +270,7 @@ public class BioconductorServiceImpl implements BioconductorService {
     private Map<String, ArrayData> getArrayDataMap(DnaAnalysisData dnaAnalysisData) {
         Map<String, ArrayData> arrayDataMap = new HashMap<String, ArrayData>();
         for (ArrayData arrayData : dnaAnalysisData.getArrayDatas()) {
-            arrayDataMap.put(String.valueOf(arrayData.getId()), arrayData);
+            arrayDataMap.put(makeIdForSegmentation(arrayData), arrayData);
         }
         return arrayDataMap;
     }
@@ -303,8 +304,9 @@ public class BioconductorServiceImpl implements BioconductorService {
 
     private ExpressionData buildExpressionData(DnaAnalysisData dnaAnalysisData,
             ArrayData arrayData, int reporterCount) {
+        String sampleName = makeIdForSegmentation(arrayData);
         ExpressionData data = new ExpressionData();
-        data.setSampleId(String.valueOf(arrayData.getId()));
+        data.setSampleId(sampleName);
         double[] values = new double[reporterCount];
         int index = 0;
         for (int i = 0; i < dnaAnalysisData.getReporters().size(); i++) {
@@ -319,8 +321,9 @@ public class BioconductorServiceImpl implements BioconductorService {
     
     private CGHcallExpressionData buildExpressionDataCGHcall(DnaAnalysisData dnaAnalysisData,
             ArrayData arrayData, int reporterCount) {
+        String sampleName = makeIdForSegmentation(arrayData);
         CGHcallExpressionData data = new CGHcallExpressionData();
-        data.setSampleId(String.valueOf(arrayData.getId()));
+        data.setSampleId(sampleName);
         double[] values = new double[reporterCount];
         int index = 0;
         for (int i = 0; i < dnaAnalysisData.getReporters().size(); i++) {
@@ -382,5 +385,33 @@ public class BioconductorServiceImpl implements BioconductorService {
     public void setClientFactory(BioconductorClientFactory clientFactory) {
         this.clientFactory = clientFactory;
     }
+    
+    /**
+     * @param arrayData the arrayData element for which an identifier will be created.
+     */
+    private String makeIdForSegmentation(ArrayData arrayData) {
+
+        String studyName = "";
+        String sampleName = "";
+        String date = "";
+        
+        studyName = arrayData.getStudy().getShortTitleText();
+        sampleName = arrayData.getSample().getName();
+        date = DateUtil.getFilenameTimeStamp(arrayData.getStudy().getStudyConfiguration().getDeploymentStartDate());
+        
+        return String.valueOf(makeId(studyName, sampleName, date));
+    }
+    
+    /**
+     * @param studyName the study name string.
+     * @param sampleName the sample name string.
+     * @param date the date string.
+     * @return single formatted string.
+     */
+    public String makeId(String studyName, String sampleName, String date) {
+        String hold = String.valueOf(studyName + "_" + sampleName + "_" + date);
+        hold = hold.replaceAll("[^a-zA-Z0-9]", ".");
+        return String.valueOf(hold);
+    }    
 
 }

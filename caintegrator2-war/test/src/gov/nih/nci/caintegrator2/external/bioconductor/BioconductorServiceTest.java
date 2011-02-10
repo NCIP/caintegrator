@@ -2,16 +2,21 @@ package gov.nih.nci.caintegrator2.external.bioconductor;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,7 +46,11 @@ import org.oasis.wsrf.properties.QueryResourceProperties_Element;
 
 public class BioconductorServiceTest {
 
-    private BioconductorServiceImpl service = new BioconductorServiceImpl();
+    private static BioconductorServiceImpl service = new BioconductorServiceImpl();
+    private static String STUDY_NAME = "UnitTestStudyName";
+    private static Date STUDY_DEPLOYMENT_START_DATE = new Date();
+    private static String SAMPLE_1_NAME = "UnitTestSample10000";
+    private static String SAMPLE_2_NAME = "UnitTestSample20000";
     
     @Before
     public void setUp() {
@@ -56,10 +65,26 @@ public class BioconductorServiceTest {
         reporters.add(createReporter("2", 0));
         DnaAnalysisData dnaAnalysisData = new DnaAnalysisData(reporters);
         ArrayData arrayData1 = new ArrayData();
+        // create study for access to study name and deployment date
+        Study study = new Study();
+        study.setShortTitleText(STUDY_NAME);
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setDeploymentStartDate(STUDY_DEPLOYMENT_START_DATE);
+        study.setStudyConfiguration(studyConfiguration);
+        // create sample for access to sample name        
+        Sample sample1 = new Sample();
+        sample1.setName(SAMPLE_1_NAME);
         arrayData1.setId(0L);
+        arrayData1.setSample(sample1);
+        arrayData1.setStudy(study);
         dnaAnalysisData.addDnaAnalysisData(arrayData1, new float[] {(float) 1.1, (float) 2.2, (float) 3.3});
+        //
         ArrayData arrayData2 = new ArrayData();
+        Sample sample2 = new Sample();
+        sample2.setName(SAMPLE_2_NAME);
         arrayData2.setId(1L);
+        arrayData2.setSample(sample2);
+        arrayData2.setStudy(study);
         dnaAnalysisData.addDnaAnalysisData(arrayData2, new float[] {(float) 4.4, (float) 5.5, (float) 6.6});
         DnaAnalysisDataConfiguration configuration = new DnaAnalysisDataConfiguration();
         configuration.setSegmentationService(new ServerConnectionProfile());
@@ -158,18 +183,22 @@ public class BioconductorServiceTest {
     private static void checkAssaysCGHcall(CGHcallAssays assays) {
         compareIntArrays(new int[] {1, 1, 2}, assays.getChromsomeId());
         compareLongArrays(new long[] {0, 5, 0}, assays.getMapLocation());
-        compareDoubleArrays(new double[] {1.1, 2.2, 3.3}, getExpressionDataCGHcall(assays, 0).getLogRatioValues());
-        compareDoubleArrays(new double[] {4.4, 5.5, 6.6}, getExpressionDataCGHcall(assays, 1).getLogRatioValues());
+        String sampleName1 = service.makeId(STUDY_NAME,SAMPLE_1_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        String sampleName2 = service.makeId(STUDY_NAME,SAMPLE_2_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        compareDoubleArrays(new double[] {1.1, 2.2, 3.3}, getExpressionDataCGHcall(assays, sampleName1).getLogRatioValues());
+        compareDoubleArrays(new double[] {4.4, 5.5, 6.6}, getExpressionDataCGHcall(assays, sampleName2).getLogRatioValues());
     }
     
     private static void checkAssaysDNAcopy(DNAcopyAssays assays) {
         compareIntArrays(new int[] {1, 1, 2}, assays.getChromsomeId());
         compareLongArrays(new long[] {0, 5, 0}, assays.getMapLocation());
-        compareDoubleArrays(new double[] {1.1, 2.2, 3.3}, getExpressionDataDNAcopy(assays, 0).getLogRatioValues());
-        compareDoubleArrays(new double[] {4.4, 5.5, 6.6}, getExpressionDataDNAcopy(assays, 1).getLogRatioValues());
+        String sampleName1 = service.makeId(STUDY_NAME,SAMPLE_1_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        String sampleName2 = service.makeId(STUDY_NAME,SAMPLE_2_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        compareDoubleArrays(new double[] {1.1, 2.2, 3.3}, getExpressionDataDNAcopy(assays, sampleName1).getLogRatioValues());
+        compareDoubleArrays(new double[] {4.4, 5.5, 6.6}, getExpressionDataDNAcopy(assays, sampleName2).getLogRatioValues());
     }      
 
-    private static ExpressionData getExpressionDataDNAcopy(DNAcopyAssays assays, int id) {
+    private static ExpressionData getExpressionDataDNAcopy(DNAcopyAssays assays, String id) {
         for (ExpressionData data : assays.getExpressionDataCollection()) {
             if (data.getSampleId().equals(String.valueOf(id))) {
                 return data;
@@ -178,7 +207,7 @@ public class BioconductorServiceTest {
         return null;
     }
     
-    private static CGHcallExpressionData getExpressionDataCGHcall(CGHcallAssays assays, int id) {
+    private static CGHcallExpressionData getExpressionDataCGHcall(CGHcallAssays assays, String id) {
         for (CGHcallExpressionData data : assays.getExpressionDataCollection()) {
             if (data.getSampleId().equals(String.valueOf(id))) {
                 return data;
@@ -213,7 +242,9 @@ public class BioconductorServiceTest {
         segment.setChromosomeIndex(new String[] {"1", "1", "2"});
         segment.setEndMapPosition(new long[] {9, 19, 29});
         segment.setMarkersPerSegment(new int[] {5, 10, 15});
-        segment.setSampleId(new String[] {"0", "0", "1"});
+        String sampleName1 = service.makeId(STUDY_NAME,SAMPLE_1_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        String sampleName2 = service.makeId(STUDY_NAME,SAMPLE_2_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        segment.setSampleId(new String[] {sampleName1, sampleName1, sampleName2});
         segment.setStartMapPosition(new long[] {0, 10, 20});
         return segment;
     }
@@ -224,7 +255,9 @@ public class BioconductorServiceTest {
         segment.setChromosomeIndex(new String[] {"1", "1", "2"});
         segment.setEndMapPosition(new long[] {9, 19, 29});
         segment.setMarkersPerSegment(new int[] {5, 10, 15});
-        segment.setSampleId(new String[] {"0", "0", "1"});
+        String sampleName1 = service.makeId(STUDY_NAME,SAMPLE_1_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        String sampleName2 = service.makeId(STUDY_NAME,SAMPLE_2_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        segment.setSampleId(new String[] {sampleName1, sampleName1, sampleName2});
         segment.setStartMapPosition(new long[] {0, 10, 20});
         segment.setCalls(new int[] {-1, 0, 1});
         segment.setProbLoss(new double[] {0.1, 0.2, 0.3});
