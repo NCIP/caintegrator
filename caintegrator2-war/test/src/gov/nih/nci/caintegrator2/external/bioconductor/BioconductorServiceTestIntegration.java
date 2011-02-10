@@ -2,6 +2,7 @@ package gov.nih.nci.caintegrator2.external.bioconductor;
 
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixCnPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixSnpPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
@@ -9,6 +10,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.deployment.PublicAffymetrixDnaAnalysisChpParser;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -17,12 +19,15 @@ import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -50,19 +55,36 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
         List<DnaAnalysisReporter> reporters = getReporters(platform);
         DnaAnalysisData dnaAnalysisData = new DnaAnalysisData(reporters);
         ArrayData arrayData = new ArrayData();
+        // create study for access to study name and deployment date
+        Study study = new Study();
+        study.setShortTitleText("Integration Test-StudyName");
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setDeploymentStartDate(new Date());
+        study.setStudyConfiguration(studyConfiguration);
+        // create sample for access to sample name
+        Sample sample = new Sample();
+        sample.setName("E10003");
         arrayData.setId(0L);
+        arrayData.setSample(sample);
+        arrayData.setStudy(study);
         dnaAnalysisData.addDnaAnalysisData(arrayData, getValues(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE, reporters));
         DnaAnalysisDataConfiguration configuration = new DnaAnalysisDataConfiguration();
         ServerConnectionProfile server = new ServerConnectionProfile();
-        //server.setUrl("http://bioconductor.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
-        server.setUrl("http://ncias-s412.nci.nih.gov:8080/wsrf/services/cagrid/CaCGHcall");
-        configuration.setSegmentationService(server);
         configuration.setChangePointSignificanceLevel(0.0);
         configuration.setEarlyStoppingCriterion(0.0);
         configuration.setPermutationReplicates(0);
         configuration.setRandomNumberSeed(0);
-        configuration.setUseCghCall(true);
         configuration.setNumberLevelCall(4);
+        // test caDNAcopy segmentation service
+        server.setUrl("http://bioconductor.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
+        configuration.setSegmentationService(server);
+        configuration.setUseCghCall(false);
+        service.addSegmentationData(dnaAnalysisData, configuration);
+        assertEquals(23, arrayData.getSegmentDatas().size());
+        // test caCGHcall segmentation service
+        server.setUrl("http://ncias-s412.nci.nih.gov:8080/wsrf/services/cagrid/CaCGHcall");
+        configuration.setSegmentationService(server);
+        configuration.setUseCghCall(true);
         service.addSegmentationData(dnaAnalysisData, configuration);
         assertEquals(23, arrayData.getSegmentDatas().size());
     }
@@ -89,7 +111,7 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
         if (platform == null) {
             List<File> files = new ArrayList<File>();
             files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
-            AffymetrixSnpPlatformSource source = new AffymetrixSnpPlatformSource(files, "Mapping50K_Hind240");
+            AffymetrixCnPlatformSource source = new AffymetrixCnPlatformSource(files, "Mapping50K_Hind240");
             PlatformConfiguration configuration = new PlatformConfiguration(source);
             getArrayDataService().savePlatformConfiguration(configuration);
             platform = getArrayDataService().loadArrayDesign(configuration).getPlatform();

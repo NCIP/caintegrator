@@ -113,6 +113,7 @@ public final class DateUtil {
      */
     public static final int FOURTY_EIGHT_HOURS = 48;    
     private static final String TIMESTAMP_FORMAT = "MM/dd/yyyy HH:mm:ss";
+    private static final String TIMESTAMP_FORMAT_FILENAME = "yyyyMMddHHmmssS";
     private static final Long MILLISECONDS_PER_SECOND = 1000L;
     private static final Long SECONDS_PER_MINUTE = 60L;
     private static DecimalFormat twoDigit = new DecimalFormat("00");
@@ -224,4 +225,14 @@ public final class DateUtil {
         return timeStamp == null ? TIMESTAMP_UNAVAILABLE_STRING 
                 : new SimpleDateFormat(TIMESTAMP_FORMAT, Locale.US).format(timeStamp);
     }
+    
+    /**
+     * Used for time stamps in filenames.
+     * @param timeStamp Date object to format to a displayable string.
+     * @return displayable timestamp string.
+     */
+    public static String getFilenameTimeStamp(Date timeStamp) {
+        return timeStamp == null ? TIMESTAMP_UNAVAILABLE_STRING 
+                : new SimpleDateFormat(TIMESTAMP_FORMAT_FILENAME, Locale.US).format(timeStamp);
+    }   
 }
