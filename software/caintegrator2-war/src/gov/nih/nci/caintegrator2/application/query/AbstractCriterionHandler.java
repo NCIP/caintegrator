@@ -170,8 +170,8 @@ abstract class AbstractCriterionHandler {
     abstract boolean hasCriterionSpecifiedSegmentValues();
     
     /**
-     * Determines if the handler has segment values which are narrowed down by the criterion.
-     * @return true if has criterion specified criterion values (copy number alteration criterion, for example).
+     * Determines if the handler has segment Calls values which are narrowed down by the criterion.
+     * @return true if has criterion specified values (copy number alteration criterion, for example).
      */
     abstract boolean hasCriterionSpecifiedSegmentCallsValues();    
     
