@@ -155,7 +155,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  */
 @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" }) // Until we refactor into multiple DAOs
 public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaIntegrator2Dao  {
-    
+
     private static final String UNCHECKED = "unchecked";
     private static final String ANNOTATION_DEFINITION_ASSOCIATION = "annotationDefinition";
     private static final String ANNOTATION_VALUE_ASSOCIATION = "annotationValue";

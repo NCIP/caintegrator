@@ -414,6 +414,15 @@ public class QueryManagementServiceImplTest {
         segmentData2.setLocation(location);
         result = queryManagementService.executeGenomicDataQuery(query);
         assertEquals(2, result.getFilteredRowCollection().size());
+        // test copy number - calls value 
+        query.getCompoundCriterion().getCriterionCollection().clear();
+        Set<Integer> callsValues = new HashSet<Integer>();
+        callsValues.add(Integer.decode("1"));
+        copyNumberCriterion.setCallsValues(callsValues);
+        query.getCompoundCriterion().getCriterionCollection().add(copyNumberCriterion);
+        result = queryManagementService.executeGenomicDataQuery(query);
+        assertEquals(2, result.getFilteredRowCollection().size());
+
     }
 
     

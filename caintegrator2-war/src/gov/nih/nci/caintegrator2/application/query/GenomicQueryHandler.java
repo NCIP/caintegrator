@@ -201,7 +201,7 @@ class GenomicQueryHandler {
     private Float twoDecimalPoint(Float floatValue) {
         return floatValue == null ? null : Math.round(floatValue * DECIMAL_100) / DECIMAL_100;
     }
-
+    
     private Map<SegmentData, GenomicDataResultRow> createCopyNumberResultRows(
             GenomicDataQueryResult result, Collection<ArrayData> arrayDatas,
             Collection<SegmentData> segmentDatas) {
@@ -280,9 +280,15 @@ class GenomicQueryHandler {
     
     private void checkMeetsCopyNumberCriterion(GenomicDataQueryResult result, CompoundCriterionHandler criterionHandler,
             GenomicDataResultRow row, GenomicDataResultValue value) {
-        if (result.isHasCriterionSpecifiedValues()) {
-            value.setCriteriaMatchType(criterionHandler.
-                    getSegmentValueMatchCriterionType(value.getValue()));
+        if (result.isHasCriterionSpecifiedValues()) { 
+            if (criterionHandler.hasCriterionSpecifiedSegmentValues()
+                    && !criterionHandler.hasCriterionSpecifiedSegmentCallsValues()) {
+                value.setCriteriaMatchType(criterionHandler.
+                        getSegmentValueMatchCriterionType(value.getValue()));
+            } else {
+                value.setCriteriaMatchType(criterionHandler.
+                        getSegmentCallsValueMatchCriterionType(value.getCallsValue()));                
+            }
             row.setHasMatchingValues(row.isHasMatchingValues() || value.isMeetsCriterion());
         }
     }

@@ -311,9 +311,19 @@ public final class ExpressionLevelCriterionHandler extends AbstractCriterionHand
     boolean hasCriterionSpecifiedSegmentValues() {
         return false;
     }
+    
+    @Override
+    boolean hasCriterionSpecifiedSegmentCallsValues() {
+        return false;
+    }
 
     @Override
     GenomicCriteriaMatchTypeEnum getSegmentValueMatchCriterionType(Float value) {
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
+    }
+
+    @Override
+    GenomicCriteriaMatchTypeEnum getSegmentCallsValueMatchCriterionType(Integer callsValue) {
         return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
 

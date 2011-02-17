@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
@@ -162,6 +163,12 @@ public class AnnotationCriterionHandlerTest {
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SUBJECT);
         annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingSubjectsCalled);
+        
+        // negative testing of copy number criterion
+        assertFalse(annotationCriterionHandler.hasCriterionSpecifiedSegmentValues());
+        assertFalse(annotationCriterionHandler.hasCriterionSpecifiedSegmentCallsValues());
+        assertTrue(GenomicCriteriaMatchTypeEnum.NO_MATCH.equals(annotationCriterionHandler.getSegmentValueMatchCriterionType(1F)));
+        assertTrue(GenomicCriteriaMatchTypeEnum.NO_MATCH.equals(annotationCriterionHandler.getSegmentCallsValueMatchCriterionType(1)));
     }
 
 }
