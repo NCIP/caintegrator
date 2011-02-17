@@ -395,12 +395,39 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         }
         return false;
     }
+    
+
+    @Override
+    boolean hasCriterionSpecifiedSegmentCallsValues() {
+        for (AbstractCriterionHandler handler : handlers) {
+            if (handler.hasCriterionSpecifiedSegmentCallsValues()) {
+                return true;
+            }
+        }
+        return false;
+    }    
 
 
     @Override
     GenomicCriteriaMatchTypeEnum getSegmentValueMatchCriterionType(Float value) {
         for (AbstractCriterionHandler handler : handlers) {
             GenomicCriteriaMatchTypeEnum matchType = handler.getSegmentValueMatchCriterionType(value);
+            if (!GenomicCriteriaMatchTypeEnum.NO_MATCH.equals(matchType)) {
+                return matchType;
+            }
+        }
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
+    }
+
+
+    /**
+     * @param callsValue
+     * @return
+     */
+    public GenomicCriteriaMatchTypeEnum getSegmentCallsValueMatchCriterionType(
+            Integer callsValue) {
+        for (AbstractCriterionHandler handler : handlers) {
+            GenomicCriteriaMatchTypeEnum matchType = handler.getSegmentCallsValueMatchCriterionType(callsValue);
             if (!GenomicCriteriaMatchTypeEnum.NO_MATCH.equals(matchType)) {
                 return matchType;
             }

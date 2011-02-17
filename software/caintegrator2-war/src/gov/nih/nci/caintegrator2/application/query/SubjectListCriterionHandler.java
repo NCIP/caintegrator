@@ -179,8 +179,18 @@ class SubjectListCriterionHandler extends AbstractCriterionHandler {
     }
 
     @Override
+    boolean hasCriterionSpecifiedSegmentCallsValues() {
+        return false;
+    }    
+    
+    @Override
     GenomicCriteriaMatchTypeEnum getSegmentValueMatchCriterionType(Float value) {
         return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
+    
+    @Override
+    GenomicCriteriaMatchTypeEnum getSegmentCallsValueMatchCriterionType(Integer callsValue) {
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
+    } 
 
 }
