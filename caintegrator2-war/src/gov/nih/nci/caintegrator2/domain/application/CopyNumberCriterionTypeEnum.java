@@ -17,7 +17,7 @@ public enum CopyNumberCriterionTypeEnum {
     SEGMENT_VALUE("Segment Value"),
     
     /**
-     * Chromosome Coordinates.
+     * CGHcall Calls value.
      */
     CALLS_VALUE("Calls Value");
     

@@ -93,7 +93,9 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -109,6 +111,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -181,12 +184,15 @@ public class CopyNumberAlterationCriterionHandlerTest {
     
     @Test
     public void testGetters() {
+        String platformName = "Test Platform";
         CopyNumberAlterationCriterion criterion = new CopyNumberAlterationCriterion();
+        criterion.setPlatformName(platformName);
         
         CopyNumberAlterationCriterionHandler handler = CopyNumberAlterationCriterionHandler.create(criterion);
         assertFalse(handler.hasReporterCriterion());
         assertFalse(handler.isReporterMatchHandler());
         assertTrue(handler.hasCriterionSpecifiedSegmentValues());
+        assertFalse(handler.hasCriterionSpecifiedReporterValues());
         assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentValueMatchCriterionType(2f));
         
         criterion.setLowerLimit(1f);
@@ -203,6 +209,43 @@ public class CopyNumberAlterationCriterionHandlerTest {
         assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getSegmentValueMatchCriterionType(1f));
         assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getSegmentValueMatchCriterionType(5f));
         
+        criterion.setCopyNumberCriterionType(CopyNumberCriterionTypeEnum.CALLS_VALUE);
+        Set<Integer> callsValues = new HashSet<Integer>();
+        callsValues.add(Integer.decode("1"));
+        criterion.setCallsValues(callsValues);
+        assertTrue(handler.hasCriterionSpecifiedSegmentValues());
+        assertTrue(handler.hasCriterionSpecifiedSegmentCallsValues());
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentCallsValueMatchCriterionType(1));
+        assertFalse(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE.equals(handler.getSegmentCallsValueMatchCriterionType(2)));
+        
+        // test for various upper and lower limits
+        criterion.setLowerLimit(2f);
+        assertEquals(String.valueOf(2f),criterion.getDisplayLowerLimit());
+        criterion.setUpperLimit(1f);
+        assertEquals(String.valueOf(1f),criterion.getDisplayUpperLimit());
+        assertFalse(criterion.isInsideBoundaryType());
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentValueMatchCriterionType(2f));
+        criterion.setLowerLimit(1f);
+        criterion.setUpperLimit(2f);
+        assertTrue(criterion.isInsideBoundaryType());
+        assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getSegmentValueMatchCriterionType(3f));
+        criterion.setLowerLimit(3f);
+        criterion.setUpperLimit(1f);
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentValueMatchCriterionType(4f));
+        // test rest of criterion value possibilities
+        criterion.setLowerLimit(1f);
+        criterion.setUpperLimit(3f);
+        assertEquals("",criterion.getDisplayChromosomeCoordinateHigh());
+        criterion.setChromosomeCoordinateHigh(Integer.valueOf("2000"));
+        assertEquals("2000",criterion.getDisplayChromosomeCoordinateHigh());
+        assertEquals("",criterion.getDisplayChromosomeCoordinateLow());
+        criterion.setChromosomeCoordinateLow(Integer.valueOf("2"));
+        assertEquals("2",criterion.getDisplayChromosomeCoordinateLow());
+        criterion.setChromosomeNumber("13");
+        assertEquals("13",criterion.getChromosomeNumber());
+        // test for platform name
+        assertEquals(platformName,criterion.getPlatformName(GenomicCriterionTypeEnum.COPY_NUMBER));
+        assertEquals(null,criterion.getPlatformName(GenomicCriterionTypeEnum.GENE_EXPRESSION));
     }
     
     private class DaoStub extends CaIntegrator2DaoStub {

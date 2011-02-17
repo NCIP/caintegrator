@@ -170,6 +170,12 @@ abstract class AbstractCriterionHandler {
     abstract boolean hasCriterionSpecifiedSegmentValues();
     
     /**
+     * Determines if the handler has segment values which are narrowed down by the criterion.
+     * @return true if has criterion specified criterion values (copy number alteration criterion, for example).
+     */
+    abstract boolean hasCriterionSpecifiedSegmentCallsValues();    
+    
+    /**
      * Determines if the value matches the criterion specified for the genes, 
      * at the current time only foldChangeCriterion would use this, but if we ever do 
      * copy number data or other genomic criterion, that would as well.
@@ -185,4 +191,12 @@ abstract class AbstractCriterionHandler {
      * @return true if the given value matches the criterion.
      */
     abstract GenomicCriteriaMatchTypeEnum getSegmentValueMatchCriterionType(Float value);
+
+    /**
+     * Determines if the Calls value matches the criterion.
+     * @param callsValue
+     * @return true if the given value matches the criterion.
+     */
+    abstract GenomicCriteriaMatchTypeEnum getSegmentCallsValueMatchCriterionType(Integer callsValue);
+
 }

@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.query;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
@@ -110,7 +111,7 @@ import java.util.Set;
  */
 @SuppressWarnings("PMD.CyclomaticComplexity") // Complex case statement to determine the match type.
 public final class CopyNumberAlterationCriterionHandler extends AbstractCriterionHandler {
-    
+
     private static final int SEGMENT_BUFFER_SIZE = 500;
     private final CopyNumberAlterationCriterion criterion;
 
@@ -136,6 +137,7 @@ public final class CopyNumberAlterationCriterionHandler extends AbstractCriterio
         Study study = query.getSubscription().getStudy();
         Platform platform = query.getCopyNumberPlatform();
         List<SegmentData> segmentDatas = dao.findMatchingSegmentDatas(criterion, study, platform);
+        
         return getRows(segmentDatas, entityTypes);
     }
     
@@ -230,6 +232,14 @@ public final class CopyNumberAlterationCriterionHandler extends AbstractCriterio
     boolean hasCriterionSpecifiedSegmentValues() {
         return true;
     }
+    
+    @Override
+    boolean hasCriterionSpecifiedSegmentCallsValues() {
+        if (criterion.getCopyNumberCriterionType().equals(CopyNumberCriterionTypeEnum.CALLS_VALUE)) {
+            return true;
+        }
+        return false;
+    }    
 
     /**
      * {@inheritDoc}
@@ -237,6 +247,18 @@ public final class CopyNumberAlterationCriterionHandler extends AbstractCriterio
     @Override
     boolean isReporterMatchHandler() {
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    GenomicCriteriaMatchTypeEnum getSegmentCallsValueMatchCriterionType(
+            Integer callsValue) {
+        if (criterion.getCallsValues().contains(callsValue)) {
+            return GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE;
+        }
+        return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
     
 }
