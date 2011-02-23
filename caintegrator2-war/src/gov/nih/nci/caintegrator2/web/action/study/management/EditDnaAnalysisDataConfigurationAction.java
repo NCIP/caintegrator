@@ -431,4 +431,12 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
     public void setNumberLevelCall(Integer numberLevelCall) {
         this.numberLevelCall = numberLevelCall;
     }
+    
+    /**
+     * Retrieve the default css for the bioconductor service.
+     * @return css to control the display of bioconductor parameters.
+     */
+    public String getDefaultBioconductorSelectCss() {
+        return (getDnaAnalysisDataConfiguration().isUseCghCall()) ? "display: block;" : "display: none;";
+    }    
 }

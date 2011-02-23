@@ -3,13 +3,9 @@
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  *
- * Version: 1.3.1
+ * Version: 1.3.2
  *
  * Demo and documentation: http://coffeescripter.com/code/editable-select/
- * 
- * Note:  This is modified by TJ Andrews by adding the following to line 263
- * 		&& list_item.text() != ""
- * The reason it is there is so that if the user presses tab or enter, if it isn't found in the list it will not set it to blank
  */
 (function($) {
   var instances = [];
@@ -27,7 +23,7 @@
     var instance = false;
     $(this).each(function() {
       var i = instances.length;
-      if(typeof $(this).data('editable-selecter') == 'undefined') {
+      if($(this).data('editable-selecter') !== null) {
         instances[i] = new EditableSelect(this, settings);
         $(this).data('editable-selecter', i);
       };
@@ -37,7 +33,7 @@
   $.fn.editableSelectInstances = function() {
     var ret = [];
     $(this).each(function() {
-      if(typeof $(this).data('editable-selecter') != 'undefined') {
+      if($(this).data('editable-selecter') !== null) {
         ret[ret.length] = instances[$(this).data('editable-selecter')];
       };
     });
@@ -51,6 +47,7 @@
     settings: false,
     text: false,
     select: false,
+    select_width: 0,
     wrapper: false,
     list_item_height: 20,
     list_height: 0,
@@ -60,6 +57,8 @@
     current_value: '',
     init: function(select, settings) {
       this.settings = settings;
+      this.wrapper = $(document.createElement('div'));
+      this.wrapper.addClass('editable-select-options');
       this.select = $(select);
       this.text = $('<input type="text">');
       this.text.attr('name', this.select.attr('name'));
@@ -67,6 +66,7 @@
       // Because we don't want the value of the select when the form
       // is submitted
       this.select.attr('disabled', 'disabled');
+      this.text[0].className = this.select[0].className;
       var id = this.select.attr('id');
       if(!id) {
         id = 'editable-select'+ instances.length;
@@ -75,21 +75,35 @@
       this.text.attr('autocomplete', 'off');
       this.text.addClass('editable-select');
       this.select.attr('id', id +'_hidden_select');
+      this.select.after(this.text);
+      if(this.select.css('display') == 'none') {
+        this.text.css('display', 'none');
+      }
+      if(this.select.css('visibility') == 'hidden') {
+        this.text.css('visibility', 'visibility');
+      }
+      // Set to hidden, because we want to call .show()
+      // on it to get it's width but not having it display
+      // on the screen
+      this.select.css('visibility', 'hidden');
+      this.select.hide();
       this.initInputEvents(this.text);
       this.duplicateOptions();
-      this.positionElements();
       this.setWidths();
+      $(document.body).append(this.wrapper);
 
       if(this.settings.bg_iframe) {
         this.createBackgroundIframe();
       };
     },
+    /**
+     * Take the select lists options and
+     * populate an unordered list with them
+     */
     duplicateOptions: function() {
       var context = this;
-      var wrapper = $(document.createElement('div'));
-      wrapper.addClass('editable-select-options');
       var option_list = $(document.createElement('ul'));
-      wrapper.append(option_list);
+      this.wrapper.append(option_list);
       var options = this.select.find('option');
       options.each(function() {
         if($(this).attr('selected')) {
@@ -100,9 +114,11 @@
         context.initListItemEvents(li);
         option_list.append(li);
       });
-      this.wrapper = wrapper;
       this.checkScroll();
     },
+    /**
+     * Check if the list has enough items to display a scroll
+     */
     checkScroll: function() {
       var options = this.wrapper.find('li');
       if(options.length > this.settings.items_then_scroll) {
@@ -123,6 +139,9 @@
       this.setWidths();
       this.checkScroll();
     },
+    /**
+     * Init the different events on the input element
+     */
     initInputEvents: function(text) {
       var context = this;
       var timer = false;
@@ -260,8 +279,13 @@
     clearSelectedListItem: function() {
       this.wrapper.find('li.selected').removeClass('selected');
     },
+    /**
+     * The difference between this method and selectListItem
+     * is that this method also changes the text field and
+     * then hides the list
+     */
     pickListItem: function(list_item) {
-      if(list_item.length && list_item.text() != "") {    	
+      if(list_item.length) {
         this.text.val(list_item.text());
         this.current_value = this.text.val();
       };
@@ -274,6 +298,8 @@
       return this.list_is_visible;
     },
     showList: function() {
+      this.positionElements();
+      this.setWidths();
       this.wrapper.show();
       this.hideOtherLists();
       this.list_is_visible = true;
@@ -345,12 +371,10 @@
       };
     },
     positionElements: function() {
-      var offset = this.select.offset();
-      offset.top += this.select[0].offsetHeight;
-      this.select.after(this.text);
-      this.select.hide();
+      var offset = this.text.offset();
+      offset = { top: offset.top, left: offset.left };
+      offset.top += this.text[0].offsetHeight;
       this.wrapper.css({top: offset.top +'px', left: offset.left +'px'});
-      $(document.body).append(this.wrapper);
       // Need to do this in order to get the list item height
       this.wrapper.css('visibility', 'hidden');
       this.wrapper.show();
@@ -361,7 +385,9 @@
     setWidths: function() {
       // The text input has a right margin because of the background arrow image
       // so we need to remove that from the width
+      this.select.show();
       var width = this.select.width() + 2;
+      this.select.hide();
       var padding_right = parseInt(this.text.css('padding-right').replace(/px/, ''), 10);
       this.text.width(width - padding_right);
       this.wrapper.width(width + 2);
