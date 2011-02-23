@@ -32,6 +32,27 @@
         }
     }
 
+    // This function is called at body onload.
+    function initializeJsp() {
+    	val = document.getElementsByName('dnaAnalysisDataConfiguration.useCghCall')[0].value;//first radio button
+        if (val == 'true') {
+            selectService('DNAcopy');
+        } else {
+        	selectService('CGHcall');
+        } 
+    }
+
+    
+    function selectService(service) {
+        if (service == "CGHcall") {
+            document.getElementById('dnaCopyInputParams').style.display = 'none';
+            document.getElementById('cghCallInputParams').style.display = 'block';
+        } else {
+            document.getElementById('cghCallInputParams').style.display = 'none';
+            document.getElementById('dnaCopyInputParams').style.display = 'block';
+        } 
+    }    
+
 </script>   
             
 <div id="content">                      
@@ -83,12 +104,13 @@
                     
                     <s:div cssStyle="padding: 1em 0 0 0;">
                         <s:div cssClass="wwlbl"><label class="label">Bioconductor Service Type:&nbsp;</label></s:div>
-                        <s:div>
-                            <s:radio theme="css_xhtml" name="dnaAnalysisDataConfiguration.useCghCall" list="#{false:'Use CaDNACopy Service'}" />
-                            <s:radio theme="css_xhtml" name="dnaAnalysisDataConfiguration.useCghCall" list="#{true:'Use CGHCalls Service'}" />
+                        <s:div id="bioconductorSelector">
+                            <s:radio theme="css_xhtml" name="dnaAnalysisDataConfiguration.useCghCall" list="#{false:'Use CaDNACopy Service'}" onclick="selectService('DNAcopy');" />
+                            <s:radio theme="css_xhtml" name="dnaAnalysisDataConfiguration.useCghCall" list="#{true:'Use caCGHCall Service'}" onclick="selectService('CGHcall');" />
                         </s:div>
                     </s:div>
                     <br/>
+                    <s:div id="cghCallInputParams" cssStyle="%{defaultBioconductorSelectCss}">
                     <s:select id="caCghCallUrl" name="caCghCallUrl" cssStyle="width=531px"
                         list="caCghCallServices" label="CaCGHCall Service URL" required="true" cssClass="editable-select"/><br>
                     <s:div cssClass="wwlbl"><label class="label">Call Level:&nbsp;</label></s:div>
@@ -96,9 +118,11 @@
                         <s:radio theme="css_xhtml" name="numberLevelCall" list="#{3:'Use 3 level calls'}"  />
                         <s:radio theme="css_xhtml" name="numberLevelCall" list="#{4:'Use 4 level calls'}"  />
                     </s:div>
-                    
+                    </s:div>
+                    <s:div id="dnaCopyInputParams">
                     <s:select id="caDnaCopyUrl" name="caDnaCopyUrl" cssStyle="width=531px"
                         list="caDnaCopyServices" label="CaDNACopy Service URL" required="true" cssClass="editable-select"/><br>
+                    </s:div>  
                     <s:textfield name="dnaAnalysisDataConfiguration.changePointSignificanceLevel" label="Change Point Significance Level" /><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.earlyStoppingCriterion" label="Early Stopping Criterion" /><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.permutationReplicates" label="Permutation Replicates" /><br>
