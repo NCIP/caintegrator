@@ -1,0 +1,4 @@
+Sample Name,Patient ID,Treatment arm
+Cairo 2 T vs N,2,Sequential chemotherapy (Arm A)
+Cairo 5 T vs N,5,Combination chemotherapy (Arm B)
+Cairo 9 T vs N,9,Combination chemotherapy (Arm B)
