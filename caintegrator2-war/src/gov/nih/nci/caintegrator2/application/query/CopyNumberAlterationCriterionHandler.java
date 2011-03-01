@@ -145,7 +145,9 @@ public final class CopyNumberAlterationCriterionHandler extends AbstractCriterio
         ResultRowFactory rowFactory = new ResultRowFactory(entityTypes);
         Set<SampleAcquisition> sampleAcquisitions = new HashSet<SampleAcquisition>();
         for (SegmentData segmentData : segmentDatas) {
-            sampleAcquisitions.add(segmentData.getArrayData().getSample().getSampleAcquisition());
+            if (segmentData.getArrayData().getSample().getSampleAcquisition() != null) {
+                sampleAcquisitions.add(segmentData.getArrayData().getSample().getSampleAcquisition());
+            }
         }
         return rowFactory.getSampleRows(sampleAcquisitions);
     }
