@@ -105,6 +105,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      */
     private static final long serialVersionUID = 1L;
     
+    private static final String BR = "<br>";
     private static final String QUOTE = "'";
     private static final String COMMA = ", ";
     private static final String NAME = "Name = ";
@@ -112,6 +113,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
     private static final String SERVER_INFORMATION = "Server Information = ";
     private static final String EXPERIMENT_IDENTIFIER = "Experiment Identifier = ";
     private static final String COLLECTION_NAME = "Collection Name = ";
+    private static final String URL = "URL = ";
     
     private static final String CREATE_STUDY = "Create Study: ";
     private static final String SAVE_STUDY = "Save Study: ";
@@ -123,7 +125,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
     private static final String ADD_SAMPLE_MAPPING_FILE = "Add Sample Mapping File: ";
     private static final String ADD_CONTROL_SAMPLE_MAPPING_FILE = "Add Control Sample Mapping File: ";
     private static final String ADD_COPY_NUMBER_MAPPING_FILE = "Add Copy Number Mapping File: ";
-    
+    private static final String UPDATE_SEGMENTATION_SERVICE = "Update Segmentation Service Parameters: ";    
     
     private static final String LOAD_SUBJECT_ANNOTATION_FILE = "Load Subject Annotation File: ";
     private static final String LOAD_GENOMIC_SOURCE = "Load Genomic Source: ";
@@ -358,7 +360,11 @@ public class LogEntry extends AbstractCaIntegrator2Object {
             GenomicDataSourceConfiguration genomicSource, String fileName) {
         return ADD_COPY_NUMBER_MAPPING_FILE 
             + EXPERIMENT_IDENTIFIER + QUOTE + genomicSource.getExperimentIdentifier() + QUOTE + COMMA
-            + FILENAME + QUOTE + fileName + QUOTE;
+            + FILENAME + QUOTE + fileName + QUOTE + COMMA
+            + BR
+            + UPDATE_SEGMENTATION_SERVICE + URL + QUOTE
+            + genomicSource.getDnaAnalysisDataConfiguration().getSegmentationService().getUrl()
+            + QUOTE;
     }
     
     /**

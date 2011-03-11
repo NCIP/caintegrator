@@ -888,6 +888,8 @@ A.caBioLogo
 input.editable-select {
   background: #FFF url(/caintegrator/images/arrow-down.gif) right center no-repeat;
   padding-right: 13px;
+  /** the following width is set for a bug in jquery.editable-select.js **/
+  width: 500px;
 }
 .editable-select-options {
   position: absolute;
