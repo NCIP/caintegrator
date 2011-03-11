@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://localhost:47210/caintegrator" />
+<link rel="selenium.base" href="http://${jboss.server.hostname}:${jboss.server.port}/caintegrator" />
 <title>Check Authentication</title>
 </head>
 <body>
@@ -17,6 +17,11 @@
 <tr>
 	<td>assertTitle</td>
 	<td>caIntegrator</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>exact:Username:</td>
 	<td></td>
 </tr>
 <tr>
@@ -44,6 +49,7 @@
 	<td>j_acegi_security_check_0</td>
 	<td></td>
 </tr>
+
 </tbody></table>
 </body>
 </html>

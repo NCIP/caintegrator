@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://caintegrator2-dev.nci.nih.gov/" />
+<link rel="selenium.base" href="http://caintegrator-dev.nci.nih.gov/" />
 <title>Manage Studies - Load Rembrandt / VASARI</title>
 </head>
 <body>
@@ -21,7 +21,7 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>/caintegrator2/createStudy.action</td>
+	<td>/caintegrator/createStudy.action</td>
 	<td></td>
 </tr>
 <tr>
@@ -1164,7 +1164,7 @@
 <!--// the following command is done to recover from a server timeout that occurs after saving the genomic source-->
 <tr>
 	<td>open</td>
-	<td>/caintegrator2/index.jsp</td>
+	<td>/caintegrator/index.jsp</td>
 	<td></td>
 </tr>
 <tr>

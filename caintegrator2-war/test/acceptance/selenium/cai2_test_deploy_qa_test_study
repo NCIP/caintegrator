@@ -2,12 +2,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://caintegrator-dev.nci.nih.gov/" />
-<title>Manage Studies - Deploy Pilot Study</title>
+<title>Manage Studies - Deploy QA Test Study</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Manage Studies - Deploy Rembrandt with Small Copy Number</td></tr>
+<tr><td rowspan="1" colspan="3">Manage Studies - Deploy QA Test Study</td></tr>
 </thead><tbody>
 <tr>
 	<td>setTimeout</td>
@@ -21,12 +21,12 @@
 </tr>
 <tr>
     <td>store</td>
-    <td>${selenium.test.resources.dir}Pilot Study/</td>
+    <td>${selenium.test.resources.dir}QA_Test_Study/</td>
     <td>testResourcesDirectory</td>
 </tr>
 <tr>
 	<td>store</td>
-	<td>Pilot Study</td>
+	<td>QA Test - Affymetrix</td>
 	<td>Cai2StudyName</td>
 </tr>
 <tr>
@@ -53,7 +53,7 @@
 <tr>
 	<td>type</td>
 	<td>addStudyLogo_studyLogoFile</td>
-	<td>${testResourcesDirectory}pilot.JPG</td>
+	<td>${testResourcesDirectory}Test_Study_Logo.JPG</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -61,6 +61,11 @@
 	<td></td>
 </tr>
 <!--// add clinical data-->
+<tr>
+	<td>store</td>
+	<td>Subject_data.csv</td>
+	<td>annotationFileName</td>
+</tr>
 <tr>
 	<td>click</td>
 	<td>//a[@id='addClinicalFile_clinicalFile']/span/span</td>
@@ -74,7 +79,7 @@
 <tr>
 	<td>type</td>
 	<td>clinicalFile</td>
-	<td>${testResourcesDirectory}Subject Data/clinical_data.csv</td>
+	<td>${testResourcesDirectory}Subject_Data/Subject_data.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -104,7 +109,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[contains(text(),'Change Assignment')]</td>
+	<td>//form[@id='subjectAnnotationsForm']/table[2]/tbody/tr[3]/td[3]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -130,6 +135,11 @@
 <!--// begin Load Clinical-->
 <tr>
 	<td>waitForElementPresent</td>
+	<td>//*[@id=&quot;subjectSourceJobStatusTable&quot;]//span[text()='${annotationFileName}']/parent::td/parent::tr//td//span[text()='Not Loaded']</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
 	<td>//a//span[text()='Load Subject Annotation Source']</td>
 	<td></td>
 </tr>
@@ -137,6 +147,11 @@
 	<td>clickAndWait</td>
 	<td>//a//span[text()='Load Subject Annotation Source']</td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//*[@id=&quot;subjectSourceJobStatusTable&quot;]//span[text()='${annotationFileName}']/parent::td/parent::tr//td//span[text()='Loaded']</td>
+	<td>true</td>
 </tr>
 <!--// begin add genomic-->
 <tr>
@@ -154,22 +169,22 @@
 <tr>
 	<td>type</td>
 	<td>caArrayUrl</td>
-	<td>http://array-qa-vm.nci.nih.gov</td>
+	<td>http://ncicbcaqa-1.nci.nih.gov:38080/caarray</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>caArrayHost</td>
-	<td>array-qa-vm.nci.nih.gov</td>
+	<td>ncicbcaqa-1.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>caArrayPort</td>
-	<td>8080</td>
+	<td>31099</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>experimentId</td>
-	<td>EXP-476</td>
+	<td>EXP-1</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -182,19 +197,39 @@
 	<td></td>
 </tr>
 <tr>
-	<td>select</td>
+	<td>selectAndWait</td>
 	<td>platformVendor</td>
 	<td>label=Agilent</td>
 </tr>
 <tr>
 	<td>selectAndWait</td>
+	<td>platformVendor</td>
+	<td>label=Affymetrix</td>
+</tr>
+<tr>
+	<td>select</td>
 	<td>dataType</td>
 	<td>label=Expression</td>
 </tr>
 <tr>
 	<td>select</td>
 	<td>platformName</td>
-	<td>label=AgilentG4502A_07_01</td>
+	<td>label=HG_U95Av2</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>loadingType</td>
+	<td>label=Parsed Data</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>loadingType</td>
+	<td>label=Supplemental Single Sample Per File</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>loadingType</td>
+	<td>label=Parsed Data</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -214,7 +249,7 @@
 <tr>
 	<td>type</td>
 	<td>sampleMappingFile</td>
-	<td>${testResourcesDirectory}Genomic Data/Expression Data/Agilent/data_mapping-37samples_6_col.csv</td>
+	<td>${testResourcesDirectory}Genomic_Data/Expression_Data/Affymetrix/Parsed/Data_Mapping.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -240,7 +275,7 @@
 <tr>
 	<td>type</td>
 	<td>controlSampleFile</td>
-	<td>${testResourcesDirectory}Genomic Data/Expression Data/Agilent/controls-1.csv</td>
+	<td>${testResourcesDirectory}Genomic_Data/Expression_Data/Affymetrix/Parsed/Controls.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -251,7 +286,7 @@
 <!--// begin add copy number-->
 <tr>
 	<td>store</td>
-	<td>liu-00252</td>
+	<td>EXP-3</td>
 	<td>caarrayExperimentNameCopyNumber</td>
 </tr>
 <tr>
@@ -266,13 +301,18 @@
 </tr>
 <tr>
 	<td>type</td>
+	<td>caArrayUrl</td>
+	<td>http://ncicbcaqa-1.nci.nih.gov:38080/caarray</td>
+</tr>
+<tr>
+	<td>type</td>
 	<td>caArrayHost</td>
-	<td>array.nci.nih.gov</td>
+	<td>ncicbcaqa-1.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>caArrayPort</td>
-	<td>8080</td>
+	<td>31099</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -300,6 +340,11 @@
 	<td>label=Copy Number</td>
 </tr>
 <tr>
+	<td>select</td>
+	<td>platformName</td>
+	<td>label=GeneChip Human Mapping 100K Set</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>//button[@type='button' and @onclick='saveGenomicSource()']</td>
 	<td></td>
@@ -318,7 +363,7 @@
 <tr>
 	<td>type</td>
 	<td>mappingFile</td>
-	<td>${testResourcesDirectory}Genomic Data/Copy Number Data/Affy (SNP)/CopyNumber_Data_Mapping.csv</td>
+	<td>${testResourcesDirectory}Genomic_Data/Copy_Number_Data/Affy-SNP/CopyNumber_Data_Mapping.csv</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -347,17 +392,114 @@
 </tr>
 <!--// end add copy number-->
 <!--// begin add imaging data source-->
+<tr>
+	<td>store</td>
+	<td>NCRI</td>
+	<td>nbiaCollectionUsedInThisStudy</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//th[text()='Imaging Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//th[text()='Imaging Data Sources']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>nbiaUrl</td>
+	<td>http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>nbiaWebUrl</td>
+	<td>https://imaging.nci.nih.gov/ncia</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>nbiaUsername</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>nbiaPassword</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>nbiaCollectionName</td>
+	<td>${nbiaCollectionUsedInThisStudy}</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>imagingSourceForm_mappingTypeAuto (No File Required)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='button' and @onclick='saveDatasource()']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//*[@id=&quot;imagingSourceJobStatusTable&quot;]//span[text()='${nbiaCollectionUsedInThisStudy}']/parent::td/parent::tr//td//span[text()='Loaded']</td>
+	<td>true</td>
+</tr>
 <!--// end add imaging data source-->
 <!--// begin assign imaging annotation-->
 <!--// end assign imaging annotation-->
 <!--// begin load imaging-->
 <!--// endload imaging-->
+<!--// add external links-->
+<tr>
+	<td>store</td>
+	<td>Links to Other Resources</td>
+	<td>externalLinksName</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//th[text()='External Links']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//th[text()='External Links']//following-sibling::th//descendant::span[text()='Add New']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addExternalLinks_externalLinkList_name</td>
+	<td>${externalLinksName}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addExternalLinks_externalLinkList_description</td>
+	<td>This is a list of external links which are pertinent to this study.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>externalLinksFile</td>
+	<td>${testResourcesDirectory}External_Links/External_Links.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addExternalLinks_addExternalLinks</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//td[text()='${externalLinksName}']</td>
+	<td>true</td>
+</tr>
 <!--// begin Save and Deploy-->
 <tr>
 	<td>clickAndWait</td>
 	<td>deployButton</td>
 	<td></td>
 </tr>
+<!--// scratch -  delete the rest when done-->
 </tbody></table>
 </body>
 </html>
