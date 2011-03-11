@@ -16,7 +16,6 @@
           items_then_scroll: 10 // If there are more than 10 items, display a scrollbar
         }
       );
-      document.getElementById("caDnaCopyUrl").value = document.dnaAnalysisDataConfigurationForm.serverProfileUrl.value;
     });
     
     function saveDatasource() {
@@ -34,11 +33,15 @@
 
     // This function is called at body onload.
     function initializeJsp() {
-    	val = document.getElementsByName('dnaAnalysisDataConfiguration.useCghCall')[0].value;//first radio button
-        if (val == 'true') {
+        val1 = document.getElementsByName('dnaAnalysisDataConfiguration.useCghCall')[0].checked;//first radio button
+        val2 = document.getElementsByName('dnaAnalysisDataConfiguration.useCghCall')[1].checked;
+
+        if (val1 == true) {
             selectService('DNAcopy');
+        } else if (val2 == true) {
+            selectService('CGHcall');
         } else {
-        	selectService('CGHcall');
+        	selectService('DNAcopy');
         } 
     }
 
@@ -105,13 +108,13 @@
                     <s:div cssStyle="padding: 1em 0 0 0;">
                         <s:div cssClass="wwlbl"><label class="label">Bioconductor Service Type:&nbsp;</label></s:div>
                         <s:div id="bioconductorSelector">
-                            <s:radio theme="css_xhtml" name="dnaAnalysisDataConfiguration.useCghCall" list="#{false:'Use CaDNACopy Service'}" onclick="selectService('DNAcopy');" />
+                            <s:radio theme="css_xhtml" name="dnaAnalysisDataConfiguration.useCghCall" list="#{false:'Use caDNACopy Service'}" onclick="selectService('DNAcopy');" />
                             <s:radio theme="css_xhtml" name="dnaAnalysisDataConfiguration.useCghCall" list="#{true:'Use caCGHCall Service'}" onclick="selectService('CGHcall');" />
                         </s:div>
                     </s:div>
                     <br/>
-                    <s:div id="cghCallInputParams" cssStyle="%{defaultBioconductorSelectCss}">
-                    <s:select id="caCghCallUrl" name="caCghCallUrl" cssStyle="width=531px"
+                    <s:div id="cghCallInputParams" cssStyle="%{defaultBioconductorSelectCss};">
+                    <s:select id="caCghCallUrl" name="caCghCallUrl" cssStyle="width=531px;"
                         list="caCghCallServices" label="CaCGHCall Service URL" required="true" cssClass="editable-select"/><br>
                     <s:div cssClass="wwlbl"><label class="label">Call Level:&nbsp;</label></s:div>
                     <s:div>

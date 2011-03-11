@@ -140,7 +140,8 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
     @Override
     public void prepare() {
         super.prepare();
-        if (getDnaAnalysisDataConfiguration().isCaDNACopyConfiguration()) {
+        if (getDnaAnalysisDataConfiguration().isCaDNACopyConfiguration()
+                || getDnaAnalysisDataConfiguration().isCaCGHCallConfiguration()) {
             setUseGlad(false);
         } else {
             setUseGlad(true);
@@ -192,10 +193,10 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
      */
     public String save() {
         try {
+            setParams();
             if (Status.LOADED.equals(getGenomicSource().getStatus())) {
                 recreateGenomicSource();
             }
-            setParams();
             getStudyManagementService().saveDnaAnalysisMappingFile(getGenomicSource(), getMappingFile(), 
                     getMappingFileFileName());
             getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);

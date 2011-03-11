@@ -196,6 +196,7 @@ public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
         newDnaConfiguration.setEarlyStoppingCriterion(oldDnaConfiguration.getEarlyStoppingCriterion());
         newDnaConfiguration.setPermutationReplicates(oldDnaConfiguration.getPermutationReplicates());
         newDnaConfiguration.setRandomNumberSeed(oldDnaConfiguration.getRandomNumberSeed());
+        newDnaConfiguration.setUseCghCall(oldDnaConfiguration.getUseCghCall());
 
         ServerConnectionProfile newSegmentProfile = configuration.getDnaAnalysisDataConfiguration()
                 .getSegmentationService();
@@ -208,6 +209,7 @@ public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
             newSegmentProfile.setUsername(oldSegmentProfile.getUsername());
             newSegmentProfile.setPassword(oldSegmentProfile.getPassword());
         }
+        newDnaConfiguration.setSegmentationService(newSegmentProfile);
     }
     
     /**

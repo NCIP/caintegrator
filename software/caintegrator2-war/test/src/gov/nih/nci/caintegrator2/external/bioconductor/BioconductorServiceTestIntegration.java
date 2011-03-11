@@ -3,7 +3,6 @@ package gov.nih.nci.caintegrator2.external.bioconductor;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixCnPlatformSource;
-import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixSnpPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
