@@ -2,7 +2,7 @@
 
         <table class="data">
             <tr>
-                <th colspan="5">Matching Annotation Definitions from caintegrator2</th>
+                <th colspan="5">Matching Annotation Definitions from caIntegrator</th>
             </tr>
             <tr>
                 <th>Name</th>
