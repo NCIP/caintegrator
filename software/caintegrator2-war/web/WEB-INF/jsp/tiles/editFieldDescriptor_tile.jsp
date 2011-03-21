@@ -26,6 +26,9 @@
     function initializeJsp() {
         dwr.engine.setActiveReverseAjax(true);
         DataElementSearchAjaxUpdater.initializeJsp("/WEB-INF/jsp/tiles/editFieldDescriptor_searchResult.jsp");
+        // Initialize mask values.
+        obj = document.getElementsByName('fieldDescriptor.definition.commonDataElement.valueDomain.dataTypeString')[0];
+        initializeMask(obj);
     }
     
     function changeFieldDescriptorType() {
@@ -40,6 +43,26 @@
             }
         } else {
             document.fieldDescriptorTypeForm.submit();
+        }
+    }
+
+    // Initialize the mask related form elements according to datatype.
+    function initializeMask(obj) {
+        if (obj.value == 'numeric') {
+            document.getElementsByName('maskForm.hasMaxNumberMask')[0].disabled=false;
+            document.getElementsByName('maskForm.maxNumberMask.maxNumber')[0].disabled=false;
+            document.getElementsByName('maskForm.hasNumericRangeMask')[0].disabled=false;
+            document.getElementsByName('maskForm.numericRangeMask.numericRange')[0].disabled=false;
+        } else {
+            document.getElementsByName('maskForm.hasMaxNumberMask')[0].checked=false;
+            document.getElementsByName('maskForm.maxNumberMask.maxNumber')[0].value="";
+            document.getElementsByName('maskForm.hasMaxNumberMask')[0].disabled=true;
+            document.getElementsByName('maskForm.maxNumberMask.maxNumber')[0].disabled=true;
+            //
+            document.getElementsByName('maskForm.hasNumericRangeMask')[0].checked=false;
+            document.getElementsByName('maskForm.numericRangeMask.numericRange')[0].value="";
+            document.getElementsByName('maskForm.hasNumericRangeMask')[0].disabled=true;
+            document.getElementsByName('maskForm.numericRangeMask.numericRange')[0].disabled=true; 
         }
     }
     </script>
@@ -98,6 +121,7 @@
             	            <s:select label="Data Type" 
             	            name="fieldDescriptor.definition.commonDataElement.valueDomain.dataTypeString" 
             	            list="annotationDataTypes" 
+            	            onchange="initializeMask(this)"
             	            disabled="%{readOnly}" />
 
             	            <tr>
