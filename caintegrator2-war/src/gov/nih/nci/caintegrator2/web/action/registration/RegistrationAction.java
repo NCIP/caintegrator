@@ -120,6 +120,7 @@ public class RegistrationAction extends ActionSupport implements Preparable {
     private RegistrationRequest registrationRequest = new RegistrationRequest();
     private Boolean ldapAuthenticate;
     private String password;
+    private String selectedPage;
     
     /**
      * {@inheritDoc}
@@ -292,4 +293,17 @@ public class RegistrationAction extends ActionSupport implements Preparable {
         this.configurationHelper = configurationHelper;
     }
 
+    /**
+     * @return the selectedPage
+     */
+    public String getSelectedPage() {
+        return selectedPage;
+    }
+
+    /**
+     * @param selectedPage the selectedPage to set
+     */
+    public void setSelectedPage(String selectedPage) {
+        this.selectedPage = selectedPage;
+    }
 }

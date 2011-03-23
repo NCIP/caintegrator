@@ -97,6 +97,7 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
     private boolean registrationSuccess = false;
     private boolean invalidAccess = false;
     private boolean sessionTimeout = false;
+    private String selectedPage;
     
     /**
      * Opens the current user's workspace.
@@ -210,5 +211,18 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
     public void setSessionTimeout(boolean sessionTimeout) {
         this.sessionTimeout = sessionTimeout;
     }
+    
+    /**
+     * @return the selectedPage
+     */
+    public String getSelectedPage() {
+        return selectedPage;
+    }
 
+    /**
+     * @param selectedPage the selectedPage to set
+     */
+    public void setSelectedPage(String selectedPage) {
+        this.selectedPage = selectedPage;
+    }
 }
