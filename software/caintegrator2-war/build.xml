@@ -1210,7 +1210,8 @@
                 <batchtest todir="@{xml.output.dir}">
                     <fileset dir="@{test.src.dir}">
                         <include name="@{includedTestFiles}" />
-                        <exclude name="@{excludedTestFiles},**/NCIASearchServiceTestIntegration.java" />
+                        <exclude name="@{excludedTestFiles}" />
+                        <exclude name="**/NCIASearchServiceTestIntegration.java" />
                     </fileset>
                 </batchtest>
             </junit>
