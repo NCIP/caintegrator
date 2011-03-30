@@ -1174,7 +1174,7 @@
                 <batchtest todir="@{xml.output.dir}">
                     <fileset dir="@{test.src.dir}">
                         <include name="@{includedTestFiles}" />
-                        <exclude name="@{excludedTestFiles}" />
+                        <exclude name="@{excludedTestFiles},**/NCIASearchServiceTestIntegration.java" />
                     </fileset>
                 </batchtest>
             </junit>
@@ -1209,7 +1209,7 @@
                 <batchtest todir="@{xml.output.dir}">
                     <fileset dir="@{test.src.dir}">
                         <include name="@{includedTestFiles}" />
-                        <exclude name="@{excludedTestFiles}" />
+                        <exclude name="@{excludedTestFiles},**/NCIASearchServiceTestIntegration.java" />
                     </fileset>
                 </batchtest>
             </junit>
