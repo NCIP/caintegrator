@@ -451,15 +451,34 @@
         </ul>
     </s:if>
     
+	<s:url id="registrationUrl" action="input" namespace="registration" includeParams="all">
+	    <s:param name="selectedPage" value="%{'register'}" />
+	</s:url>
+	<s:url id="loginUrl" namespace="/caintegrator/registration" value="../logout.jsp" includeParams="all">
+        <s:param name="selectedPage" value="%{'login'}" />
+    </s:url>
+    <s:url id="loginUrl2" value="/logout.jsp" includeParams="all">
+        <s:param name="selectedPage" value="%{'login'}" />
+    </s:url>
     <ul class="menu">
         <li class="stdnavforinvestigator" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator Menu</div>
             <ul>
                 <s:if test="#sessionHelper.anonymousUser">
-                    <li><a href="/caintegrator/logout.jsp">Login</a></li>
-                    <li><a href="/caintegrator/registration/input.action">Register</a></li>
+                    <s:if test="%{selectedPage!='login'}">
+                    <li><a href="${loginUrl2}">Login</a></li>
+                    </s:if>
+                    <li><a href="${registrationUrl}">Register</a></li>
+                    <s:if test="%{selectedPage=='login'}">
+                    <li><a href="${registrationUrl}">Register</a></li>
+                    </s:if>
                 </s:if>
                 <s:if test="!#sessionHelper.authenticated">
-                    <li><a href="/caintegrator/registration/input.action">Register</a></li>
+	                <s:if test="%{selectedPage=='login'}">
+	                    <li><a href="${registrationUrl}">Register</a></li>
+	                </s:if>
+	                <s:if test="%{selectedPage!='login'}">
+	                    <li><a href="${loginUrl}">Login</a></li>
+	                </s:if>                  
                     <li><a href="/caintegrator/workspace.action">Browse Public Studies</a></li>
                 </s:if>
                 <li><a href="javascript:openHelpWindowWithNavigation('app_support_help')">Support</a></li>
@@ -468,7 +487,7 @@
             </ul>
         </li>
     </ul>
-    
+
     <!--/Menu-->
                 
 </div>

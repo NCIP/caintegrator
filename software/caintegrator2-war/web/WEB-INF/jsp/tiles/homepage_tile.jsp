@@ -46,7 +46,7 @@
 	       <s:textfield label="Username" name="j_username" />
 	       <s:password label="Password" name="j_password" />
 	       <s:submit value="Login" />
-	       <tr><td><s:a href="registration/input.action">Register Now</s:a></td></tr>
+	       <tr><td><s:a href="registration/input.action?selectedPage=register">Register Now</s:a></td></tr>
 	       
 	    </s:form>
 	    <script language="javascript">

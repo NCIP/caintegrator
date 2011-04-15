@@ -59,4 +59,8 @@
        <property name="url" value="http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService" />
     </bean>
     
+    <bean id="nciaQaServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
+       <property name="url" value="http://imaging-qa.nci.nih.gov/wsrf/services/cagrid/NCIACoreService" />
+    </bean>    
+   
 </beans>

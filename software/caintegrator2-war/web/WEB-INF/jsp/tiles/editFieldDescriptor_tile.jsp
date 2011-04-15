@@ -120,7 +120,7 @@
             	            <s:textfield label="Keywords" name="fieldDescriptor.definition.keywords" disabled="%{fromCadsr}" size="38" />
             	            <s:select label="Data Type" 
             	            name="fieldDescriptor.definition.commonDataElement.valueDomain.dataTypeString" 
-            	            list="annotationDataTypes" 
+            	            list="annotationDataTypes"
             	            onchange="initializeMask(this)"
             	            disabled="%{readOnly}" />
 
