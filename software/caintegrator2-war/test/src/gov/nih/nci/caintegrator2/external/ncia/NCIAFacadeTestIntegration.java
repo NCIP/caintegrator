@@ -134,7 +134,8 @@ public class NCIAFacadeTestIntegration {
 
     @Test
     public void testRetrieveDicomFiles() throws ConnectionException, IOException {
-        String seriesInstanceUID = "2.16.124.113543.6003.2770482660.6726.18091.1680495542";
+        //String seriesInstanceUID = "2.16.124.113543.6003.2770482660.6726.18091.1680495542";
+        String seriesInstanceUID = "1.3.6.1.4.1.9328.50.45.271121120485314117150046084494551250041";
         String studyInstanceUID = "2.16.124.113543.6003.1.857.80828.1120.9007593.726.1";
         NCIADicomJob job = new NCIADicomJob();
         job.getImageSeriesIDs().add(seriesInstanceUID);
