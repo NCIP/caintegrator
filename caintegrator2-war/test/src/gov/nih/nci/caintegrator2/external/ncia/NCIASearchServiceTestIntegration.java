@@ -96,7 +96,6 @@ import gov.nih.nci.ncia.domain.Patient;
 import gov.nih.nci.ncia.domain.Series;
 import gov.nih.nci.ncia.domain.Study;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -159,29 +158,29 @@ public class NCIASearchServiceTestIntegration {
         assertTrue(searchService.validate(series.get(0)));
     }
     
-    @Test
-    public void testRetrieveRealObjectsIdentifiersAnalytic() throws ConnectionException {
-        assertNotNull(searchService.retrieveAllCollectionNameProjects());
-
-        List<String> patients = searchService.retrievePatientCollectionIdsFromCollectionNameProject("NCRI");
-        assertNotNull(patients);
-        
-        List<String> studies = searchService.retrieveStudyCollectionIdsFromPatient(patients.get(0));
-        assertNotNull(studies);
-        
-        List<String> series = searchService.retrieveImageSeriesCollectionIdsFromStudy(studies.get(0));
-        assertNotNull(series);
-
-        //List<String> images = searchService.retrieveImageCollectionIdsFromSeries("1.3.6.1.4.1.21767.172.16.10.81.1194988596.2.0.7");
-        String[] results = searchService.getSOPInstanceUIDsFromSeriesInstanceUIDNew(series.get(0));
-        List<String> images = Arrays.asList(results);
-        assertNotNull(images);
-
-        Image image = searchService.retrieveRepresentativeImageBySeries(series.get(0));
-        String imageId = image.getSopInstanceUID();
-        assertTrue(images.contains(imageId));
-        assertTrue(searchService.validate(series.get(0)));
-    }
+//    @Test
+//    public void testRetrieveRealObjectsIdentifiersAnalytic() throws ConnectionException {
+//        assertNotNull(searchService.retrieveAllCollectionNameProjects());
+//
+//        List<String> patients = searchService.retrievePatientCollectionIdsFromCollectionNameProject("NCRI");
+//        assertNotNull(patients);
+//        
+//        List<String> studies = searchService.retrieveStudyCollectionIdsFromPatient(patients.get(0));
+//        assertNotNull(studies);
+//        
+//        List<String> series = searchService.retrieveImageSeriesCollectionIdsFromStudy(studies.get(0));
+//        assertNotNull(series);
+//
+//        //List<String> images = searchService.retrieveImageCollectionIdsFromSeries("1.3.6.1.4.1.21767.172.16.10.81.1194988596.2.0.7");
+//        String[] results = searchService.getSOPInstanceUIDsFromSeriesInstanceUIDNew(series.get(0));
+//        List<String> images = Arrays.asList(results);
+//        assertNotNull(images);
+//
+//        Image image = searchService.retrieveRepresentativeImageBySeries(series.get(0));
+//        String imageId = image.getSopInstanceUID();
+//        assertTrue(images.contains(imageId));
+//        assertTrue(searchService.validate(series.get(0)));
+//    }
     @Test
     public void testRetrieveRealObjectsIdentifiersMany() throws ConnectionException {
         // This methods tests retrieval of a large number of
