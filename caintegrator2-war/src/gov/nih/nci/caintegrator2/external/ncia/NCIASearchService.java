@@ -186,12 +186,4 @@ public interface NCIASearchService {
      * @throws ConnectionException if there's a problem connecting to the NCIA server.
      */
     boolean validate(String seriesInstanceUID) throws ConnectionException;
-
-    /**
-     * Given a seriesInstanceUID, return all SopInstanceUID identifiers for that seriesInstanceUID. 
-     * @param seriesInstanceUID as a string
-     * @return String array of SopInstanceUID identifiers
-     * @throws ConnectionException 
-     */
-    String[] getSOPInstanceUIDsFromSeriesInstanceUIDNew(String string) throws ConnectionException;
 }

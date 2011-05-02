@@ -302,13 +302,4 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
         return queryModifier;
     }
 
-    @Override
-    public String[] getSOPInstanceUIDsFromSeriesInstanceUIDNew(String string) throws ConnectionException {
-        try {
-            return getClient().getSOPInstanceUIDsFromSeriesInstanceUID(string);
-        } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
-        }
-    }
-
 }

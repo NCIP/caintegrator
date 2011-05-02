@@ -49,6 +49,10 @@
     <bean id="nciaServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
        <property name="url" value="http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService" />
     </bean>
+ 
+     <bean id="nciaProdGridServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
+       <property name="url" value="http://nciavgridprod5004.nci.nih.gov:39280/wsrf/services/cagrid/NCIACoreService" />
+    </bean>   
     
     <bean id="nciaDevServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
        <!--  Note, the dev url below can only be used when behind NCI's VPN  -->
@@ -59,4 +63,12 @@
        <property name="url" value="http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService" />
     </bean>
     
+    <bean id="nciaQaServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
+       <property name="url" value="http://imaging-qa.nci.nih.gov/wsrf/services/cagrid/NCIACoreService" />
+    </bean>   
+     
+    <bean id="nciaNiamsServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
+       <property name="url" value="http://ncias-s202-v.nci.nih.gov:39280/wsrf/services/cagrid/NCIACoreService" />
+    </bean>    
+   
 </beans>
