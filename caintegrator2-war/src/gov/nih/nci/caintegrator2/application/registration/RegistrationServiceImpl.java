@@ -111,10 +111,10 @@ import org.jboss.security.auth.login.XMLLoginConfigImpl;
 @SuppressWarnings("PMD.ReplaceHashtableWithMap") // LDAPHelper.authenticate uses a Hashtable.
 public class RegistrationServiceImpl implements RegistrationService {
     
-    private static final String REG_EMAIL_SUBJECT = "caIntegrator2 Registration";
-    private static final String CONFIRM_EMAIL_SUBJECT = "caIntegrator2 Registration Confirmation";
+    private static final String REG_EMAIL_SUBJECT = "caIntegrator Registration";
+    private static final String CONFIRM_EMAIL_SUBJECT = "caIntegrator Registration Confirmation";
     private static final String CONFIRM_EMAIL_CONTENT = "Dear NCICB User\n\nThank you for your submission concerning"
-            + " caIntegrator2 registration request.  You will receive a followup call or email shortly.\n\nThank you,"
+            + " caIntegrator registration request.  You will receive a followup call or email shortly.\n\nThank you,"
             + "\n\nNCICB Application Support Group";
     
     private ConfigurationHelper configurationHelper;
