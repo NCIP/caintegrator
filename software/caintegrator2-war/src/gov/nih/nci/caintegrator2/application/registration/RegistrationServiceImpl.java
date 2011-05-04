@@ -136,7 +136,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private void sendRegistrationRequestToAdmin(RegistrationRequest registrationRequest) throws MessagingException {
         String admin = configurationHelper.getString(ConfigurationParameter.REGISTRATION_EMAIL_TO);
-        EmailUtil.sendMail(Collections.singletonList(admin), registrationRequest.getEmail(), REG_EMAIL_SUBJECT,
+        String emailFrom = configurationHelper.getString(ConfigurationParameter.REGISTRATION_EMAIL_FROM);
+        EmailUtil.sendMail(Collections.singletonList(admin), emailFrom, REG_EMAIL_SUBJECT,
                 registrationRequest.getMailBody());
     }
 
