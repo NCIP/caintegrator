@@ -1175,7 +1175,6 @@
                     <fileset dir="@{test.src.dir}">
                         <include name="@{includedTestFiles}" />
                         <exclude name="@{excludedTestFiles}" />
-                        <exclude name="**/NCIASearchServiceTestIntegration.java" />
                     </fileset>
                 </batchtest>
             </junit>
@@ -1211,7 +1210,6 @@
                     <fileset dir="@{test.src.dir}">
                         <include name="@{includedTestFiles}" />
                         <exclude name="@{excludedTestFiles}" />
-                        <exclude name="**/NCIASearchServiceTestIntegration.java" />
                     </fileset>
                 </batchtest>
             </junit>
