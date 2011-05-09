@@ -181,26 +181,26 @@ public class NCIASearchServiceTestIntegration {
 //        assertTrue(images.contains(imageId));
 //        assertTrue(searchService.validate(series.get(0)));
 //    }
-    @Test
-    public void testRetrieveRealObjectsIdentifiersMany() throws ConnectionException {
-        // This methods tests retrieval of a large number of
-        // image identifiers using a NIAMS NBIA server which has a lot of images.
-        Boolean test=Boolean.FALSE;
-        
-        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIASearchServiceTestIntegration.class); 
-        ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaNiamsServerConnectionProfile");
-        NCIAServiceFactoryImpl nciaServiceClient = (NCIAServiceFactoryImpl) context.getBean("nciaServiceFactoryIntegration");
-        searchService = nciaServiceClient.createNCIASearchService(profile);
-        
-        assertNotNull(searchService.retrieveAllCollectionNameProjects());
-
-        List<String> images = searchService.retrieveImageCollectionIdsFromSeries("1.3.6.1.4.1.21767.172.16.10.81.1194988596.2.0.7");
-        assertNotNull(images);
-        if(images.size() > 0) {
-            test=Boolean.TRUE;
-        }
-                
-        assertTrue(test);
-    }    
+//    @Test
+//    public void testRetrieveRealObjectsIdentifiersMany() throws ConnectionException {
+//        // This methods tests retrieval of a large number of
+//        // image identifiers using a NIAMS NBIA server which has a lot of images.
+//        Boolean test=Boolean.FALSE;
+//        
+//        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIASearchServiceTestIntegration.class); 
+//        ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaNiamsServerConnectionProfile");
+//        NCIAServiceFactoryImpl nciaServiceClient = (NCIAServiceFactoryImpl) context.getBean("nciaServiceFactoryIntegration");
+//        searchService = nciaServiceClient.createNCIASearchService(profile);
+//        
+//        assertNotNull(searchService.retrieveAllCollectionNameProjects());
+//
+//        List<String> images = searchService.retrieveImageCollectionIdsFromSeries("1.3.6.1.4.1.21767.172.16.10.81.1194988596.2.0.7");
+//        assertNotNull(images);
+//        if(images.size() > 0) {
+//            test=Boolean.TRUE;
+//        }
+//                
+//        assertTrue(test);
+//    }    
 
 }
