@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.analysis.grid.preprocess;
 
 import gov.nih.nci.cagrid.common.ZipUtilities;
 import gov.nih.nci.caintegrator2.common.CaGridUtil;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
@@ -183,16 +184,23 @@ public class PreprocessDatasetGridRunner {
     private File downloadResult(File gctFile, PreprocessDatasetMAGEServiceContextClient analysisClient) 
     throws ConnectionException, InterruptedException, IOException {
         TransferServiceContextReference tscr = null;
+        String hostInfo = "N/A";
         int callCount = 0;
+        hostInfo = analysisClient.getEndpointReference().getAddress().getHost().toString()
+             + ":"
+             + analysisClient.getEndpointReference().getAddress().getPort()
+             + analysisClient.getEndpointReference().getAddress().getPath();
         while (tscr == null) {
             try {
                 callCount++;
                 tscr = analysisClient.getResult();
             } catch (AnalysisNotComplete e) {
-                LOGGER.info("Preprocess - " + callCount + " - Analysis not complete");
+                LOGGER.info("Preprocess - Attempt # " + callCount + " to host:"
+                        + hostInfo + " - Analysis not complete");
                 checkTimeout(callCount);
             } catch (CannotLocateResource e) {
-                LOGGER.info("Preprocess - " + callCount + " - Cannot locate resource");
+                LOGGER.info("Preprocess - Attempt # " + callCount + " to host:"
+                        + hostInfo + " - Cannot locate resource");
                 checkTimeout(callCount);
             } catch (RemoteException e) {
                 throw new ConnectionException("Unable to connect to server to download result.", e);
@@ -204,11 +212,26 @@ public class PreprocessDatasetGridRunner {
     }
 
     private File replaceGctFileWithPreprocessed(File gctFile, File zipFile) throws IOException {
-        File zipFileDirectory = new File(zipFile.getParent(), "tempPreprocessedZipDir");
+        File zipFileDirectory = new File(zipFile.getParent().concat("/tempPreprocessedZipDir"));
         FileUtils.deleteDirectory(zipFileDirectory);
+        FileUtils.forceMkdir(zipFileDirectory);
+        FileUtils.waitFor(zipFileDirectory, TIMEOUT_SECONDS);        
+        Cai2Util.isValidZipFile(zipFile);
         ZipUtilities.unzip(zipFile, zipFileDirectory);
-        if (zipFileDirectory.list().length != 1) {
-            throw new IllegalStateException("The zip file returned from PreprocessDataset should have exactly 1 file.");
+        FileUtils.waitFor(zipFileDirectory, TIMEOUT_SECONDS);
+        Cai2Util.printDirContents(zipFileDirectory);
+        if (zipFileDirectory.list() != null) {
+            if (zipFileDirectory.list().length != 1) {
+                int dirListlength = zipFileDirectory.list().length;
+                FileUtils.deleteDirectory(zipFileDirectory);
+                throw new IllegalStateException("The zip file returned from PreprocessDataset"
+                      + " should have exactly 1 file instead of " + dirListlength);
+            }
+        } else {
+            String zipFileDirectoryPath = zipFileDirectory.getAbsolutePath();
+            FileUtils.deleteDirectory(zipFileDirectory);
+            throw new IllegalStateException("The zip file directory list at path: "
+                    + zipFileDirectoryPath + "is null.");               
         }
         String[] files = zipFileDirectory.list();
         File preprocessedFile = new File(zipFileDirectory, files[0]);
@@ -224,4 +247,5 @@ public class PreprocessDatasetGridRunner {
             throw new ConnectionException("Timed out trying to download preprocess dataset results");
         }
     }
+    
 }

@@ -185,15 +185,21 @@ public class ComparativeMarkerSelectionGridRunner {
                 + System.currentTimeMillis() + ".zip").getAbsolutePath();
         TransferServiceContextReference tscr = null;
         int callCount = 0;
+        String hostInfo = analysisClient.getEndpointReference().getAddress().getHost().toString()
+        + ":"
+        + analysisClient.getEndpointReference().getAddress().getPort()
+        + analysisClient.getEndpointReference().getAddress().getPath();
         while (tscr == null) {
             try {
                 callCount++;
                 tscr = analysisClient.getResult();
             } catch (AnalysisNotComplete e) {
-                LOGGER.info("CMS - " + callCount + " - Analysis not complete");
+                LOGGER.info("CMS - Attempt # " + callCount + " to host: " + hostInfo
+                        + "- Analysis not complete");
                 checkTimeout(callCount);
             } catch (CannotLocateResource e) {
-                LOGGER.info("CMS - " + callCount + " - Cannot locate resource");
+                LOGGER.info("CMS - Attempt # " + callCount + " to host: " + hostInfo
+                        + "- Cannot locate resource");
                 checkTimeout(callCount);
             } catch (RemoteException e) {
                 throw new ConnectionException("Unable to connect to server to download result.", e);
