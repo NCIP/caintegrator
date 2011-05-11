@@ -282,13 +282,20 @@ public class GenePatternGridRunnerImplTestIntegration {
         zipFile = genePatternGridRunner.runGistic(updater, job, samplesFile, markersFile, cnvFile);
         assertNotNull(zipFile);
         List<String> filenames = ZipUtils.extractFromZip(zipFile.getAbsolutePath());
+        // if ZIP contains 3 files or less, this typically means the GP module failed to complete.
+        boolean isNumFilesGreaterThan3 = Boolean.FALSE;
+        if (filenames.size() > 3) isNumFilesGreaterThan3 = Boolean.TRUE;
+        String holdStr = new String("ZIP archive from GISTIC contains too few files: ");
+        holdStr = holdStr.concat(Integer.toString(filenames.size()));
+        assertTrue(holdStr, isNumFilesGreaterThan3);
+        // If ZIP contains 9 files, this is the expected output from the GISTIC module.
         assertEquals(9, filenames.size());
         zipFile.deleteOnExit();
         FileUtils.deleteQuietly(fileManager.getUserDirectory(subscription));
     }
     
     private void checkGctFile(File gctFile, int numSamples, int numReporters, String value) throws IOException {
-        assertTrue(gctFile.exists());
+        assertTrue("GCT file does not exist.",gctFile.exists());
         CSVReader reader = new CSVReader(new FileReader(gctFile), '\t');
         checkLine(reader.readNext(), "#1.2");
         checkLine(reader.readNext(), String.valueOf(numSamples), String.valueOf(numReporters));

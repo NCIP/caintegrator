@@ -169,9 +169,12 @@ public class Cai2UtilTest {
             
         }
         assertTrue(tempDirectory.exists());
+        Cai2Util.printDirContents(tempDirectory);
         File zippedDirectory = Cai2Util.zipAndDeleteDirectory(tempDirectory.getCanonicalPath());
         assertEquals("cai2UtilTest.zip", zippedDirectory.getName());
+        assertTrue(Cai2Util.isValidZipFile(zippedDirectory));
         assertFalse(tempDirectory.exists());
+        Cai2Util.printDirContents(tempDirectory);
         zippedDirectory.deleteOnExit();
         
         File tempDirectory2 = fileManager.getNewTemporaryDirectory("cai2UtilTest2");
@@ -189,6 +192,19 @@ public class Cai2UtilTest {
         }
         
     }
+
+    @Test
+    public void testZipFileValidation() throws IOException {
+        FileManagerImpl fileManager = new FileManagerImpl();
+        fileManager.setConfigurationHelper(new ConfigurationHelperStub());
+        File tempDirectory = fileManager.getNewTemporaryDirectory("cai2UtilTest");
+        File destFile = new File(tempDirectory, "tempFile");
+        File nullZipFile = Cai2Util.zipAndDeleteDirectory(tempDirectory.getCanonicalPath());
+        assertNull(nullZipFile);
+        assertFalse(Cai2Util.isValidZipFile(nullZipFile));
+        // test if input is not a ZIP file
+        assertFalse(Cai2Util.isValidZipFile(destFile));
+    }    
     
     @Test
     public void testByteArrayToFile() throws IOException {
