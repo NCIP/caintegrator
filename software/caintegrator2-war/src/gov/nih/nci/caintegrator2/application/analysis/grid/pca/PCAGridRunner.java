@@ -184,10 +184,10 @@ public class PCAGridRunner {
                 callCount++;
                 tscr = analysisClient.getResult();
             } catch (AnalysisNotComplete e) {
-                LOGGER.info("PCA - " + callCount + " - Analysis not complete");
+                LOGGER.info("PCA - Attempt # " + callCount + " - Analysis not complete");
                 checkTimeout(callCount);
             } catch (CannotLocateResource e) {
-                LOGGER.info("PCA - " + callCount + " - Cannot locate resource");
+                LOGGER.info("PCA - Attempt # " + callCount + " - Cannot locate resource");
                 checkTimeout(callCount);
             } catch (RemoteException e) {
                 throw new ConnectionException("Unable to connect to server to download result.", e);
