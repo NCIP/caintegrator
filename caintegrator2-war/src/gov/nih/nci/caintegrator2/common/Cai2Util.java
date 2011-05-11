@@ -1,5 +1,5 @@
 /**
- * The software subject to this notice and license includes both human readable
+{} * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
@@ -117,10 +117,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
 import java.util.zip.ZipOutputStream;
+import java.util.zip.ZipFile;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -139,6 +142,8 @@ public final class Cai2Util {
     private static final double NATURAL_LOG_OF_2 = Math.log(2);
     private static final Integer MAX_DESCRIPTION_LENGTH = 255;
     private static final int ONE_MILLION = 1000000;
+    
+    private static final Logger LOGGER = Logger.getLogger(Cai2Util.class);
     
     private Cai2Util() { }
 
@@ -237,6 +242,7 @@ public final class Cai2Util {
             throw new IllegalArgumentException("The zipfile isn't a .zip type.");
         }
         for (File file : files) {
+            LOGGER.info("File name is  " + file.getName());
             ZipUtilities.insertEntry(sourceZipfile, file.getName(), streamFile(file));
         }
         return sourceZipfile;
@@ -291,6 +297,37 @@ public final class Cai2Util {
         // Complete the entry
         out.closeEntry();
         in.close();
+    }
+
+    /**
+     * Validate a ZIP file.
+     * @param file the zip file to be validated.
+     * @return boolean if valid or not.
+     */    
+    public static boolean isValidZipFile(final File file) {
+        ZipFile zipfile = null;
+        try {
+            zipfile = new ZipFile(file);
+            ZipFile zipIn2 = new ZipFile(file);
+            zipIn2.close();
+            LOGGER.info("zipFile validated = " + file.getAbsolutePath());
+            return true;
+        } catch (ZipException e) {
+            return false;
+        } catch (IOException e) {
+            return false;
+        } catch (Exception e) {
+            return false;
+        } finally {
+            try {
+                if (zipfile != null) {
+                    zipfile.close();
+                    zipfile = null;
+                }
+            } catch (Exception e) {
+                LOGGER.info("Exception in isValidZipFile = " + e);
+            }
+        }
     }
     
     /**
@@ -635,4 +672,22 @@ public final class Cai2Util {
     public static long getHeapSizeMB() {
         return Runtime.getRuntime().maxMemory() / ONE_MILLION;
     }
+    
+    /**
+     * Lists the directory contents.
+     * @param dir the File directory of which the contents will be logged.
+     */    
+    public static void printDirContents(File dir) {
+
+        String[] files = dir.list();
+
+        if (files != null) {
+            LOGGER.info("Listing: Contents of " + files.length + " files in dir " + dir.getAbsolutePath());
+            for (int i = 0; i < files.length; i++) {
+                LOGGER.info("Listing: Files: " + files[i]);
+            }
+        } else {
+            LOGGER.info("Listing: files object is null.");
+        }
+    }     
 }

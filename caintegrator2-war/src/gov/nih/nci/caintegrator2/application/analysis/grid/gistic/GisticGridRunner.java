@@ -211,15 +211,21 @@ public class GisticGridRunner {
                 + "GISTIC_RESULTS_" + System.currentTimeMillis() + ".zip").getAbsolutePath();
         TransferServiceContextReference tscr = null;
         int callCount = 0;
+        String hostInfo = analysisClient.getEndpointReference().getAddress().getHost().toString()
+        + ":"
+        + analysisClient.getEndpointReference().getAddress().getPort()
+        + analysisClient.getEndpointReference().getAddress().getPath();
         while (tscr == null) {
             try {
                 callCount++;
                 tscr = analysisClient.getResult();
             } catch (AnalysisNotComplete e) {
-                LOGGER.info("GISTIC - " + callCount + " - Analysis not complete");
+                LOGGER.info("GISTIC - Attempt # " + callCount + " to host: " + hostInfo
+                        + " - Analysis not complete");
                 checkTimeout(callCount);
             } catch (CannotLocateResource e) {
-                LOGGER.info("GISTIC - " + callCount + " - Cannot locate resource");
+                LOGGER.info("GISTIC - Attempt # " + callCount + " to host: " + hostInfo
+                        + " - Cannot locate resource");
                 checkTimeout(callCount);
             } catch (RemoteException e) {
                 throw new ConnectionException("Unable to connect to server to download result.", e);

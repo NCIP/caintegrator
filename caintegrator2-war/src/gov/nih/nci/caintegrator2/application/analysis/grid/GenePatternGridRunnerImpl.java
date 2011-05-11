@@ -201,7 +201,9 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
             PCAGridRunner runner = new PCAGridRunner(client, fileManager);
             zipFile = runner.execute(job.getSubscription(), job.getForm().getPcaParameters(), gctFile);
             updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_LOCALLY);
-            Cai2Util.addFilesToZipFile(zipFile, gctFile);
+            if (Cai2Util.isValidZipFile(zipFile)) {
+                 Cai2Util.addFilesToZipFile(zipFile, gctFile);
+            }    
         } catch (IOException e) {
             FileUtils.deleteQuietly(zipFile);
             throw new IllegalStateException("Invalid Zip File retrieved from grid service:  " 
@@ -227,6 +229,7 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
             zipFile = runner.execute(subscription, job.getForm().getComparativeMarkerSelectionParameters(), gctFile,
                     clsFile);
             updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_LOCALLY);
+            Cai2Util.isValidZipFile(zipFile);
             Cai2Util.addFilesToZipFile(zipFile, gctFile, clsFile);
         } catch (IOException e) {
             if (zipFile != null) {
