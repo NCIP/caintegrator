@@ -14,7 +14,7 @@ if(P=="define_fields_help")C="CreatingNewStudy.4.10.html#1134706";
 if(P=="assign_annotations_help")C="CreatingNewStudy.4.11.html#1125074";
 if(P=="search_annotation_definitions_help")C="CreatingNewStudy.4.12.html#1082197";
 if(P=="survival_values_help")C="CreatingNewStudy.4.13.html#1077698";
-if(P=="edit_genomic_data_help")C="CreatingNewStudy.4.14.html#1076975";
+if(P=="edit_genomic_data_help")C="CreatingNewStudy.4.14.html#1178872";
 if(P=="edit_sample_mappings_help")C="CreatingNewStudy.4.15.html#1081247";
 if(P=="configure_copy_number_help")C="CreatingNewStudy.4.19.html#1089873";
 if(P=="edit_imaging_data_help")C="CreatingNewStudy.4.22.html#1150641";
