@@ -9,7 +9,7 @@
         <j l="19#1143163" />
       </i>
       <i t="genomic data">
-        <j l="26#1090798" />
+        <j l="26#1178875" />
       </i>
       <i t="image annotations">
         <j l="35#1150688" />
@@ -159,6 +159,9 @@
       <j l="46#1094333" />
       <j l="61#1193073" />
       <j l="85#1137395" />
+    </i>
+    <i t="CGHCalls">
+      <j l="45#1109905" />
     </i>
     <i t="choosing genes">
       <j l="46#1094287" />
@@ -410,7 +413,7 @@
       <i t="analyses, description">
         <j l="86#1073260" />
       </i>
-      <i t="analyses, in caIntegrator2">
+      <i t="analyses, in caIntegrator">
         <j l="86#1084384" />
       </i>
       <i t="analyses, modules">
@@ -448,7 +451,7 @@
         <j l="31#1119394" />
       </i>
       <i t="adding to study">
-        <j l="26#1090798" />
+        <j l="26#1178875" />
       </i>
       <i t="configuring for import">
         <j l="108#1073253" />
@@ -800,7 +803,7 @@
     </i>
     <i t="study">
       <i t="adding genomic data">
-        <j l="26#1090798" />
+        <j l="26#1178875" />
       </i>
       <i t="adding imaging data">
         <j l="34#1081374" />
