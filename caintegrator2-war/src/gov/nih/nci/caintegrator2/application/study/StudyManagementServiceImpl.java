@@ -471,6 +471,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
             sample.clearArrayData();
         }
+        getDao().refresh(genomicSource); // refresh to prevent hibernate resave error
         getDao().delete(genomicSource);
     }
     
