@@ -113,7 +113,8 @@ public class NCIASearchServiceTestIntegration {
         ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIASearchServiceTestIntegration.class); 
         //ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaServerConnectionProfile");
         //ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaNiamsServerConnectionProfile");
-        ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaQaServerConnectionProfile");
+        //ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaQaServerConnectionProfile");
+        ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaQaDirectConnectionProfile");
         NCIAServiceFactoryImpl nciaServiceClient = (NCIAServiceFactoryImpl) context.getBean("nciaServiceFactoryIntegration");
         searchService = nciaServiceClient.createNCIASearchService(profile);
     }
