@@ -208,7 +208,7 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
     public void testUpdateAnnotationDefinitions() {
         // Invalid because thre's not an Annotation EntityType selected.
         assertEquals(ActionSupport.INPUT, action.updateAnnotationDefinitions());
-        action.getGePlotForm().getAnnotationBasedForm().setAnnotationGroupSelection("subjectAnnotations");;
+        action.getGePlotForm().getAnnotationBasedForm().setAnnotationGroupSelection("subjectAnnotations");
         assertEquals(ActionSupport.SUCCESS, action.updateAnnotationDefinitions());
         assertEquals(1, action.getGePlotForm().getAnnotationBasedForm().getAnnotationFieldDescriptors().size());
         assertTrue(action.getGePlotForm().getAnnotationBasedForm().getAnnotationFieldDescriptors().containsKey("1"));
