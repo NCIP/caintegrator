@@ -186,7 +186,7 @@ public class PreprocessDatasetGridRunner {
         TransferServiceContextReference tscr = null;
         String hostInfo = "N/A";
         int callCount = 0;
-        hostInfo = analysisClient.getEndpointReference().getAddress().getHost().toString()
+        hostInfo = analysisClient.getEndpointReference().getAddress().getHost()
              + ":"
              + analysisClient.getEndpointReference().getAddress().getPort()
              + analysisClient.getEndpointReference().getAddress().getPath();
