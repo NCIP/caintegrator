@@ -102,12 +102,13 @@ public class DnaAnalysisDataConfiguration implements Serializable {
     private static final Double DEFAULT_CHANGE_POINT_SIGNIFICANCE_LEVEL = 0.01;
     private static final Double DEFAULT_EARLY_STOPPING_CRITERION = 0.05;
     private static final Integer DEFAULT_PERMUTATION_REPLICATES = 10000;
+    private static final Integer DEFAULT_RANDOM_NUMBER_SEED = 25;
     
     private String mappingFilePath;
     private Double changePointSignificanceLevel = DEFAULT_CHANGE_POINT_SIGNIFICANCE_LEVEL;
     private Double earlyStoppingCriterion = DEFAULT_EARLY_STOPPING_CRITERION;
     private Integer permutationReplicates = DEFAULT_PERMUTATION_REPLICATES;
-    private Integer randomNumberSeed = 0;
+    private Integer randomNumberSeed = DEFAULT_RANDOM_NUMBER_SEED;
     private ServerConnectionProfile segmentationService = new ServerConnectionProfile();
     private Boolean useCghCall = false;
     private Integer numberLevelCall = 3;

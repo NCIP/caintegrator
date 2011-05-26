@@ -72,7 +72,7 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
         configuration.setChangePointSignificanceLevel(0.0);
         configuration.setEarlyStoppingCriterion(0.0);
         configuration.setPermutationReplicates(0);
-        configuration.setRandomNumberSeed(0);
+        configuration.setRandomNumberSeed(25);
         configuration.setNumberLevelCall(4);
         // test caDNAcopy segmentation service
         server.setUrl("http://bioconductor.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
