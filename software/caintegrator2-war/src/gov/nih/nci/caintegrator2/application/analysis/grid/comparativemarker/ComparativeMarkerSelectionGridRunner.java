@@ -185,10 +185,10 @@ public class ComparativeMarkerSelectionGridRunner {
                 + System.currentTimeMillis() + ".zip").getAbsolutePath();
         TransferServiceContextReference tscr = null;
         int callCount = 0;
-        String hostInfo = analysisClient.getEndpointReference().getAddress().getHost().toString()
-        + ":"
-        + analysisClient.getEndpointReference().getAddress().getPort()
-        + analysisClient.getEndpointReference().getAddress().getPath();
+        String hostInfo = analysisClient.getEndpointReference().getAddress().getHost()
+            + ":"
+            + analysisClient.getEndpointReference().getAddress().getPort()
+            + analysisClient.getEndpointReference().getAddress().getPath();
         while (tscr == null) {
             try {
                 callCount++;
