@@ -186,9 +186,9 @@ public class ComparativeMarkerSelectionGridRunner {
         TransferServiceContextReference tscr = null;
         int callCount = 0;
         String hostInfo = analysisClient.getEndpointReference().getAddress().getHost()
-        + ":"
-        + analysisClient.getEndpointReference().getAddress().getPort()
-        + analysisClient.getEndpointReference().getAddress().getPath();
+            + ":"
+            + analysisClient.getEndpointReference().getAddress().getPort()
+            + analysisClient.getEndpointReference().getAddress().getPath();
         while (tscr == null) {
             try {
                 callCount++;
