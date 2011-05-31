@@ -168,15 +168,15 @@ public enum ConfigurationParameter {
     /**
      * Default CaDNACopy service URL.
      */
-    CA_DNA_COPY_URL("http://cabig.bioconductor.org:80/wsrf/services/cagrid/CaDNAcopy"),
+    CA_DNA_COPY_URL("http://bioconductor.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy"),
     
     /**
      * Default CGHCalls service URL.
      */
-    CA_CGH_CALLS_URL("http://ncias-s412.nci.nih.gov:8080/wsrf/services/cagrid/CaCGHcall"),
+    CA_CGH_CALLS_URL("http://bioconductor.nci.nih.gov:8080/wsrf/services/cagrid/CaCGHcall"),
     
     /**
-     * Default CaDNACopy service URL.
+     * Default CGAP service URL.
      */
     CGAP_URL("http://cgap.nci.nih.gov/Genes/RunUniGeneQuery?PAGE=1&SYM=&PATH=&ORG=Hs&TERM="),
     

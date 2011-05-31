@@ -91,7 +91,7 @@ public class BioconductorServiceTest {
         configuration.setChangePointSignificanceLevel(0.0);
         configuration.setEarlyStoppingCriterion(0.0);
         configuration.setPermutationReplicates(0);
-        configuration.setRandomNumberSeed(0);
+        configuration.setRandomNumberSeed(25);
         configuration.setUseCghCall(true);
         service.addSegmentationData(dnaAnalysisData, configuration);
         checkArrayDatasCGHcall(dnaAnalysisData);
