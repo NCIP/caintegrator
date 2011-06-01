@@ -129,7 +129,7 @@
                     <s:textfield name="dnaAnalysisDataConfiguration.changePointSignificanceLevel" label="Change Point Significance Level" /><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.earlyStoppingCriterion" label="Early Stopping Criterion" /><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.permutationReplicates" label="Permutation Replicates" /><br>
-                    <s:textfield name="dnaAnalysisDataConfiguration.randomNumberSeed" label="Random Number Seed" /><br>
+                    <s:textfield name="dnaAnalysisDataConfiguration.randomNumberSeed" label="Random Number Seed" required="true" /><br>
                 </s:if>
                     <tr>
                         <td></td>

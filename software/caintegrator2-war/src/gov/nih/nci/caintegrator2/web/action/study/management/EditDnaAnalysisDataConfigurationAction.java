@@ -133,6 +133,7 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
 
     private ConfigurationHelper configurationHelper;
     private static final String MAPPING_FILE = "mappingFile";
+    private static final String RAND_NUM_SEED = "dnaAnalysisDataConfiguration.randomNumberSeed";
     
     /**
      * {@inheritDoc}
@@ -246,7 +247,9 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
             addFieldError(MAPPING_FILE, getText("struts.messages.error.file.required"));
         } else if (mappingFile.length() == 0) {
             addFieldError(MAPPING_FILE, getText("struts.messages.error.file.empty"));
-        } else {
+        } else if (getDnaAnalysisDataConfiguration().getRandomNumberSeed() == null) {
+            addFieldError(RAND_NUM_SEED, getText("struts.messages.error.form.value.required"));
+        } else {    
             validateFileFormat();
         }
         validateServiceUrl();
