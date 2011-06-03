@@ -31,7 +31,7 @@
                 <s:form id="editStudyLogForm" name="editStudyLogForm" 
                     action="saveStudyLog" method="post" enctype="multipart/form-data">
                 <s:hidden name="studyConfiguration.id" />
-                <s:hidden name="readOnly" />
+                <s:hidden name="readOnly" value="%{isReadOnly()}" />
                 <s:set name="readOnly" id="readOnly" value="%{isReadOnly()}" />
                 <display:table name="displayableLogEntries" uid="logEntryRows" id="logEntryRows"
                 sort="list" class="data" requestURI="editStudyLog.action#" export="${readOnly}">
