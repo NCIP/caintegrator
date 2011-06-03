@@ -186,5 +186,15 @@ implements ModelDriven<StudyConfiguration> {
         }
         return null;
     }
+    
+    /**
+     * Remove malicious characters from the long and short study names.
+     */
+    public void cleanStudyName() {
+        getStudyConfiguration().getStudy().setShortTitleText(removeHtmlChars(getStudyConfiguration().getStudy().
+                getShortTitleText()));
+        getStudyConfiguration().getStudy().setLongTitleText(removeHtmlChars(getStudyConfiguration().getStudy().
+                getLongTitleText()));
+    }
 
 }
