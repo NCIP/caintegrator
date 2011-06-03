@@ -160,12 +160,5 @@ public class SaveStudyAction extends AbstractStudyAction {
                     studyName))); 
         }
     }
-    
-    private void cleanStudyName() {
-        getStudyConfiguration().getStudy().setShortTitleText(removeHtmlChars(getStudyConfiguration().getStudy().
-                getShortTitleText()));
-        getStudyConfiguration().getStudy().setLongTitleText(removeHtmlChars(getStudyConfiguration().getStudy().
-                getLongTitleText()));
-    }
 
 }
