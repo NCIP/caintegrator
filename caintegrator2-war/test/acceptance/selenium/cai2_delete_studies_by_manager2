@@ -20,7 +20,7 @@
 <!--// On the next line, change manager2 to be the userid for which all studies will be deleted.-->
 <tr>
 	<td>store</td>
-	<td>manager2</td>
+	<td>appscanmgr</td>
 	<td>ManagerUserId</td>
 </tr>
 <tr>
@@ -60,7 +60,7 @@
 </tr>
 <tr>
 	<td>assertConfirmation</td>
-	<td>This study will be permanently deleted.</td>
+	<td>*</td>
 	<td></td>
 </tr>
 <tr>
