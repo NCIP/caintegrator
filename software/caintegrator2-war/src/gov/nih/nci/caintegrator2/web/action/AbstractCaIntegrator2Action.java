@@ -636,7 +636,8 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
      */
     protected static final String removeHtmlChars(String inputString) {
         if (inputString != null) {
-             return inputString.replaceAll("\\<[^>]*>", StringUtils.EMPTY);
+             String holdString = inputString.replaceAll("([a-zA-Z][a-zA-Z0-9]*)[^>]*(?<!/)", StringUtils.EMPTY);
+             return holdString.replaceAll("\\<[^>]*>", StringUtils.EMPTY);
         }
         return StringUtils.EMPTY;
     }    

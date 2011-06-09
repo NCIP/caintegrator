@@ -146,6 +146,7 @@ public class EditStudyLogAction extends AbstractStudyAction implements Parameter
                 displayableLogEntry.getLogEntry().setTrimDescription(displayableLogEntry.getDescription());
             }
         }
+        cleanStudyName();
         getStudyManagementService().save(getStudyConfiguration());
         return SUCCESS;
     }
@@ -177,4 +178,5 @@ public class EditStudyLogAction extends AbstractStudyAction implements Parameter
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
     }
+     
 }
