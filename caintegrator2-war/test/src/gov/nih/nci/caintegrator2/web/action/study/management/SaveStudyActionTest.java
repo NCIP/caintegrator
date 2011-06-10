@@ -173,4 +173,27 @@ public class SaveStudyActionTest extends AbstractSessionBasedTest {
         
     }
 
+    @Test
+    public void testMaliciousCharacterRemoval() { 
+        String maliciousNameIn = "StudyName<iframe src=javascript:alert(70946)";
+        String goodNameIn = "StudyName";
+        String nameOut = "StudyName";
+        
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        SecurityContextHolder.getContext().setAuthentication(null);
+        assertEquals(Action.ERROR, action.execute());
+        // Must add authentication to pass the action.
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        SessionHelper.getInstance().setStudyManager(true);
+        action.getStudyConfiguration().getStudy().setShortTitleText(maliciousNameIn);
+        assertEquals(Action.SUCCESS, action.execute());
+        assertTrue(studyManagementServiceStub.saveCalled);
+        assertEquals(nameOut, action.getStudyConfiguration().getStudy().getShortTitleText());
+        
+        action.getStudyConfiguration().getStudy().setShortTitleText(goodNameIn);
+        assertEquals(Action.SUCCESS, action.execute());
+        assertTrue(studyManagementServiceStub.saveCalled);
+        assertEquals(nameOut, action.getStudyConfiguration().getStudy().getShortTitleText());
+
+    }    
 }
