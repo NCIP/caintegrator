@@ -110,6 +110,7 @@ public class DeployStudyAction extends SaveStudyAction implements ServletContext
      */
     @Override
     public String execute() {
+        cleanStudyName();
         setStudyLastModifiedByCurrentUser(null, LogEntry.getSystemLogDeploy(getStudyConfiguration().getStudy()));
         getDeploymentService().prepareForDeployment(getStudyConfiguration());
         ajaxUpdater.runJob(getStudyConfiguration(), createHeatmapParameters());
