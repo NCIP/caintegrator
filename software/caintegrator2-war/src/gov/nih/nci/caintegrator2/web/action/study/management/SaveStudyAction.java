@@ -110,9 +110,9 @@ public class SaveStudyAction extends AbstractStudyAction {
             if (getStudyConfiguration().getId() == null) {
                 return createStudy();
             } else {
+                cleanStudyName();
                 setStudyLastModifiedByCurrentUser(null, 
                         LogEntry.getSystemLogSave(getStudyConfiguration().getStudy()));
-                cleanStudyName();
                 getStudyManagementService().save(getStudyConfiguration());
             }
             return SUCCESS;
