@@ -129,10 +129,10 @@ import au.com.bytecode.opencsv.CSVReader;
 
 public class GenePatternGridRunnerImplTestIntegration {
     
-    private static final String PREPROCESS_DATASET_URL = "http://node255.broadinstitute.org:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService";
-    private static final String COMPARATIVE_MARKER_URL = "http://node255.broadinstitute.org:11010/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc";
-    private static final String PCA_URL                = "http://node255.broadinstitute.org:6060/wsrf/services/cagrid/PCA";
-    private static final String GISTIC_URL             = "http://node255.broadinstitute.org:10010/wsrf/services/cagrid/Gistic";
+    private static final String PREPROCESS_DATASET_URL = "http://cagrid.broadinstitute.org:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService";
+    private static final String COMPARATIVE_MARKER_URL = "http://cagrid.broadinstitute.org:11010/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc";
+    private static final String PCA_URL                = "http://cagrid.broadinstitute.org:6060/wsrf/services/cagrid/PCA";
+    private static final String GISTIC_URL             = "http://cagrid.broadinstitute.org:10010/wsrf/services/cagrid/Gistic";
     
     private GenePatternGridRunnerImpl genePatternGridRunner;
     private FileManager fileManager;
