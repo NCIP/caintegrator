@@ -122,23 +122,23 @@ public enum ConfigurationParameter {
      * Default Preprocess Dataset service URL.
      */
     PREPROCESS_DATASET_URL(
-            "http://node255.broadinstitute.org:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService"),
+            "http://cagrid.broadinstitute.org:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService"),
     
     /**
      * Default Comparative Marker Selection service URL.
      */
     COMPARATIVE_MARKER_SELECTION_URL(
-            "http://node255.broadinstitute.org:11010/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc"),
+            "http://cagrid.broadinstitute.org:11010/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc"),
             
     /**
      * Default PCA service URL.
      */
-    PCA_URL("http://node255.broadinstitute.org:6060/wsrf/services/cagrid/PCA"),
+    PCA_URL("http://cagrid.broadinstitute.org:6060/wsrf/services/cagrid/PCA"),
             
     /**
      * Default GISTIC service URL.
      */
-    GISTIC_URL("http://node255.broadinstitute.org:10010/wsrf/services/cagrid/Gistic"),
+    GISTIC_URL("http://cagrid.broadinstitute.org:10010/wsrf/services/cagrid/Gistic "),
             
     /**
      * Default AIM service URL.
