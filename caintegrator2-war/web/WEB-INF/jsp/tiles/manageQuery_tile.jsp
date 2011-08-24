@@ -165,7 +165,7 @@
 <s:div id="subjectlistdiv" cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:465px;max-height: 150px; overflow:auto;">
     <s:div cssClass="TB_ajaxWindowTitle"/>
     <s:div cssClass="TB_closeAjaxWindow">
-        <s:a href="" title="Click to close." onclick="hideSubjectListForm()" cssStyle="cursor: pointer;"><img src="/caintegrator/images/close.gif" border="none" align="center"/>&nbsp;</s:a>
+        <s:a href="" title="Click to close." onclick="hideSubjectListForm()" cssStyle="cursor: pointer;"><img src="/caintegrator/images/close.gif" border="none" align="center"alt="Click to close."/>&nbsp;</s:a>
     </s:div>
     <h2>Save Subject List</h2>
     <s:form id="myform">
