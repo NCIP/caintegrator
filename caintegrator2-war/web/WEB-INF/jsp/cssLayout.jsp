@@ -50,7 +50,7 @@
                 <sx:div id="TB_overlay" cssClass="TB_overlayBG"/>
                 <!-- Begin hidden busyDialogDiv -->
                 <s:div id="busyDialogDiv">
-                <img id="busyDialogProcessingImage" src="/caintegrator/images/ajax-loader-snake.gif" /><br></br> Please wait for action to complete ...
+                <img id="busyDialogProcessingImage" src="/caintegrator/images/ajax-loader-snake.gif" alt="ajax snake icon indicating loading process"/><br></br> Please wait for action to complete ...
                 </s:div>
                 <!-- End busyDialogDiv -->
                 
@@ -63,7 +63,7 @@
                         id="geneListSearchInputDiv"
                         href="geneListSearchInput.action"
                         showLoadingText="true"
-                        loadingText="<img src='images/ajax-loader.gif'/>"
+                        loadingText="<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>"
                         listenTopics="geneListSearchTopic"
                         refreshOnShow="false" 
                         cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:458px;max-height: 300px; overflow:auto;"/>
@@ -78,7 +78,7 @@
                     <sx:div id="caBioGeneSearchInputDiv"
                         href="caBioSearchInput.action"
                         showLoadingText="true"
-                        loadingText="<img src='images/ajax-loader.gif'/>"
+                        loadingText="<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>"
                         listenTopics="caBioGeneSearchTopic"
                         refreshOnShow="false" 
                         cssStyle="display:none;visibility:hidden;margin-top:-62px;width:830px;max-height: 300px; overflow:auto;"/>
