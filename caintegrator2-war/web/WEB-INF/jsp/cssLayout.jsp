@@ -71,7 +71,7 @@
                 <!-- End geneListSearchForm -->
                 
                 <!-- Begin hidden caBioGeneSearchForm -->
-                <s:form name="caBioGeneSearchForm" id="caBioGeneSearchForm" onsubmit="runCaBioSearch(); return false;">
+                <s:form name="caBioGeneSearchForm" id="caBioGeneSearchForm" onsubmit="runCaBioSearch(); return false;" theme="css_xhtml">
                     <!-- For caBio to know which form element to publish gene symbols to. -->
                     <s:hidden name="geneSymbolElementId" />
                     <s:hidden name="caBioGeneSearchTopicPublished" value="false" />
