@@ -186,7 +186,7 @@
             </tr>
             <tr>
                 <td align="right">Host type:</td>
-                <td> <img src="/caintegrator/images/caArray.gif" border="none"/></td>
+                <td> <img src="/caintegrator/images/caArray.gif" border="none" alt="caArray Logo"/></td>
                 <td />
                 <td />
             </tr>            
