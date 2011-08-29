@@ -32,18 +32,18 @@
     <s:if test="studySummary.deployed">
     <table class="study_summary">
             <tr>
-            <th colspan="4">Overview</th>
+            <th colspan="4" scope="col">Overview</th>
         </tr>
         <tr>
-            <td align="right">Name:</td>
+            <td align="right" scope="row">Name:</td>
             <td colspan="3"><b><s:property value="studySummary.studyName" /></b></td>
         </tr>
         <tr>
-            <td align="right">Description: </td>
+            <td align="right" scope="row">Description: </td>
             <td colspan="3" class="wrap"><b><s:div id="studyDescDiv"><s:property value="studySummary.studyDescription" /></s:div></b></td>
         </tr>
         <tr>
-            <td align="right">Deployment Status: </td>
+            <td align="right" scope="row">Deployment Status: </td>
             <td><b>
                 <s:if test="studySummary.deployed">
                     Deployed
@@ -57,7 +57,7 @@
             <td />
         </tr>
         <tr>
-            <td align="right">Data Dictionary: </td>
+            <td align="right" scope="row">Data Dictionary: </td>
             <td>
                 <s:url id="dataDictionaryUrl" includeParams="none" action="viewDataDictionary" />
                 <a href="${dataDictionaryUrl}">View</a>
@@ -67,7 +67,7 @@
         </tr>
         <s:if test="%{!anonymousUser}">
         <tr>
-            <td align="right">Study Log: </td>
+            <td align="right" scope="row">Study Log: </td>
             <td>
                 <s:url id="viewStudyLogUrl" includeParams="none" action="viewStudyLog" />
                 <a href="${viewStudyLogUrl}">View</a>
@@ -77,30 +77,30 @@
         </tr>
         </s:if>    
         <tr>
-            <th colspan="4">Subject Annotation Data</th>
+            <th colspan="4" scope="col">Subject Annotation Data</th>
         </tr>
         <tr>
-            <td align="right">Last Modified:</td>
+            <td align="right" scope="row">Last Modified:</td>
             <td> <b><s:property value="studySummary.subjectAnnotationsLastModifiedDate"/> </b> </td>
             <td />  
             <td />
         </tr>
         <tr>
-            <td align="right">Number of Subjects:</td>
+            <td align="right" scope="row">Number of Subjects:</td>
             <td> <b><s:property value="studySummary.numberSubjects"/> </b> </td>
             <td />  
             <td />
         </tr>
         
         <tr>
-            <td align="right">Number of Annotation Columns:</td>
+            <td align="right" scope="row">Number of Annotation Columns:</td>
             <td> <b><s:property value="studySummary.numberSubjectAnnotationColumns"/> </b></td>
             <td />  
             <td />
         </tr>
         
         <tr>
-	        <td align="right">
+	        <td align="right" scope="col">
 	         Survival Definitions:
 	        </td>
 	        
@@ -174,7 +174,7 @@
         </s:else>
         <s:if test="studySummary.genomicStudy" >
             <tr>
-                <th colspan="4">Genomic Data</th>
+                <th colspan="4" scope="col">Genomic Data</th>
             </tr>
             <s:iterator value="%{studySummary.genomicDataSources}" status="genomicDataSourceStatus">
 
@@ -310,7 +310,7 @@
     
         <s:if test="studySummary.imagingStudy" >
 	        <tr>
-	            <th colspan="4">Imaging Data</th>
+	            <th colspan="4" scope="col">Imaging Data</th>
 	        </tr>
             <s:iterator value="%{studySummary.imageDataSources}" status="imageDataSourceStatus">
 
