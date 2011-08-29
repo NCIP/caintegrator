@@ -55,7 +55,7 @@
                 <!-- End busyDialogDiv -->
                 
                 <!-- Begin hidden geneListSearchForm -->
-                <s:form name="geneListSearchForm" id="geneListSearchForm" onsubmit="runGeneListSearch(); return false;">
+                <s:form name="geneListSearchForm" id="geneListSearchForm" onsubmit="runGeneListSearch(); return false;" theme="css_xhtml">
                     <!-- For gene list to know which form element to publish gene symbols to. -->
                     <s:hidden name="geneSymbolElementId" />
                     <s:hidden name="geneListSearchTopicPublished" value="false" />
