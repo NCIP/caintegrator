@@ -35,7 +35,7 @@
     <s:form name="registrationForm" id="registrationForm" action="save">
         <table>
         <tbody id="securityInformationTbody" >
-        <tr><td colspan="2"><h2>Security Information</h2></td></tr>
+        <tr><td colspan="2" scope="col"><h2>Security Information</h2></td></tr>
         </tbody>
         <s:if test="%{ldapInstall}">
 	        <tbody>
@@ -53,7 +53,7 @@
 	    <s:checkboxlist name="registrationRequest.role" label="Requested Role(s)" 
                 list="@gov.nih.nci.caintegrator2.web.action.registration.UserRole@values()" listKey="name" listValue="name" required="true"/>
         <s:textfield name="registrationRequest.requestedStudies" label="Existing Studies to be Accessed" size="50" />
-        <tr><td colspan="2"><h2>Account Details</h2></td></tr>
+        <tr><td colspan="2" scope="col"><h2>Account Details</h2></td></tr>
         <s:textfield name="registrationRequest.firstName" label="First Name" size="50" required="true" />
         <s:textfield name="registrationRequest.lastName" label="Last Name" size="50" required="true" />
         <s:textfield name="registrationRequest.email" label="Email" size="50" required="true" />
