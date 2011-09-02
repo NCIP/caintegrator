@@ -192,16 +192,23 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
         }
     }
 
-    private void handleProbeSet(String probeSetName, Set<Gene> genes, String[] fields, ReporterList reporterList) {
-        DnaAnalysisReporter reporter = new DnaAnalysisReporter();
-        reporter.setName(probeSetName);
-        reporterList.getReporters().add(reporter);
-        reporter.setReporterList(reporterList);
-        reporter.getGenes().addAll(genes);
+    private void handleProbeSet(String probeSetName, Set<Gene> genes, String[] fields,
+            ReporterList reporterList) {
         String[] chrCoords = getAnnotationValue(fields, COMPOSITE_CHR_COORDS_HEADER).split(":");
-        reporterList.setGenomeVersion(mapGenomicVersion(chrCoords[0].substring(1)));
-        reporter.setChromosome(chrCoords[1]);
-        reporter.setPosition(getIntegerValue(chrCoords[2]));
+        if (chrCoords.length < 3) {
+            getLogger().error("Platform Loading: "
+                    + "invalid chromosome coords found for this probe: " 
+                    + probeSetName);
+        } else {
+            DnaAnalysisReporter reporter = new DnaAnalysisReporter();
+            reporter.setName(probeSetName);
+            reporterList.getReporters().add(reporter);
+            reporter.setReporterList(reporterList);
+            reporter.getGenes().addAll(genes);
+            reporterList.setGenomeVersion(mapGenomicVersion(chrCoords[0].substring(1)));
+            reporter.setChromosome(chrCoords[1]);
+            reporter.setPosition(getIntegerValue(chrCoords[2]));
+        }
     }
     
     private String mapGenomicVersion(String version) {
