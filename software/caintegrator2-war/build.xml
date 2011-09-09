@@ -12,7 +12,7 @@
     <!-- ** PROPERTIES / PATHS                                            ** -->
     <!-- ******************************************************************* -->
 
-    <!-- Main -->
+    <!-- Mainly -->
     <property name="root.dir" location="${basedir}/../.." />
     <property name="docs.dir" location="${root.dir}/docs" />
     <property name="software.dir" location=".." />
@@ -939,7 +939,7 @@
         You can find additional information about checkstyle at:
         http://checkstyle.sourceforge.net/
         -->
-    <target name="static-analysis:checkstyle" depends="ivy:setup-static-analysis">
+    <target name="static-analysis:checkstyle" depends="ivy:setup-static-analysis,path:caintegrator2.war.dependencies">
         <mkdir dir="${reports.checkstyle.dir}"/>
         <static-analysis-checkstyle
             checkstyle.src.dir="${caintegrator2.war.java.src.dir}"
@@ -1382,6 +1382,17 @@
 		<attribute name="checkstyle.html.name" default="checkstyle.html"/>
 		<attribute name="checkstyle.classpath.ref.name" />
 		<sequential>
+<echo>JPM 1 checkstyle.classpath.ref.name : @{checkstyle.classpath.ref.name}</echo>
+<echo>JPM 2 caintegrator2.full.classpath : @{caintegrator2.full.classpath}</echo>
+<echo>JPM 3 caintegrator2.war.dependencies.path : @{caintegrator2.war.dependencies.path}</echo>
+<echo message="HACK ${toString:caintegrator2.war.dependencies.path}"/>
+<echo message="HACK ${toString:caintegrator2.full.classpath}"/>
+<!-- Capture the path as a delimited property using the refid attribute -->
+  <property name="myclasspath" refid="caintegrator2.full.classpath"/>
+  <!-- Emit the property to the ant console -->
+<echo>JPM 4 myclasspath : ${myclasspath}</echo>
+  <echo message="JPM 5 myclasspathh = ${myclasspath}"/>
+  <echo>JPM 6 caintegrator2.war.dependencies.path : @{caintegrator2.war.dependencies.path}</echo>
 			<taskdef resource="checkstyletask.properties"
 				uri="antlib:com.puppycrawl.tools.checkstyle"
 				classpathref="project.test.checkstyle.classpath"/>
