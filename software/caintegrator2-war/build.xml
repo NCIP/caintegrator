@@ -1382,17 +1382,6 @@
 		<attribute name="checkstyle.html.name" default="checkstyle.html"/>
 		<attribute name="checkstyle.classpath.ref.name" />
 		<sequential>
-<echo>JPM 1 checkstyle.classpath.ref.name : @{checkstyle.classpath.ref.name}</echo>
-<echo>JPM 2 caintegrator2.full.classpath : @{caintegrator2.full.classpath}</echo>
-<echo>JPM 3 caintegrator2.war.dependencies.path : @{caintegrator2.war.dependencies.path}</echo>
-<echo message="HACK ${toString:caintegrator2.war.dependencies.path}"/>
-<echo message="HACK ${toString:caintegrator2.full.classpath}"/>
-<!-- Capture the path as a delimited property using the refid attribute -->
-  <property name="myclasspath" refid="caintegrator2.full.classpath"/>
-  <!-- Emit the property to the ant console -->
-<echo>JPM 4 myclasspath : ${myclasspath}</echo>
-  <echo message="JPM 5 myclasspathh = ${myclasspath}"/>
-  <echo>JPM 6 caintegrator2.war.dependencies.path : @{caintegrator2.war.dependencies.path}</echo>
 			<taskdef resource="checkstyletask.properties"
 				uri="antlib:com.puppycrawl.tools.checkstyle"
 				classpathref="project.test.checkstyle.classpath"/>
