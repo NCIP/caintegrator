@@ -16,9 +16,9 @@
 		</s:if>
 		</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<link rel="address bar icon" href="favicon.ico" />
-		<link rel="icon" href="favicon.ico" type="image/x-icon" />
-		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="address bar icon" href="/caintegrator/images/favicon.ico" />
+		<link rel="icon" href="/caintegrator/images/favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="/caintegrator/images/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/caintegrator2.css" />
 		<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/cai2modal.css" />
         <sx:head parseContent="true"/>
