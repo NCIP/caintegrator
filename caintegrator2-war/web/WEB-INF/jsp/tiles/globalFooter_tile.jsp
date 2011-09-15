@@ -4,8 +4,8 @@
 <div id="footerwrapper">
 
     <div align="center" style="padding: 5px; font-weight:normal;">
-        Download Plugins:&nbsp;&nbsp;<a title="Download Plugin Adobe Acrobat Reader" href="http://www.adobe.com/go/gntray_dl_get_reader" target="_blank"><img height="16" border="0" width="16" src="http://cbiit508help.nci.nih.gov/link_pdf.gif" alt="Download Plugin Adobe Acrobat Reader"></a>
-        <a target="_blank" href="http://get.adobe.com/flashplayer/" title="Download Plugin Adobe Flash Player"><img height="16" border="0" width="16" alt="Download Plugin Adobe Flash Player" src="http://cbiit508help.nci.nih.gov/link_swf.gif"></a>
+        Download Plugins:&nbsp;&nbsp;<a title="Download Plugin Adobe Acrobat Reader" href="http://www.adobe.com/go/gntray_dl_get_reader" target="_blank"><img height="16" border="0" width="16" src="/caintegrator/images/ico_pdf.gif" alt="Download Plugin Adobe Acrobat Reader"></a>
+        <a target="_blank" href="http://get.adobe.com/flashplayer/" title="Download Plugin Adobe Flash Player"><img height="16" border="0" width="16" alt="Download Plugin Adobe Flash Player" src="/caintegrator/images/ico_swf.gif"></a>
     </div>
     
     <div id="footernav">
