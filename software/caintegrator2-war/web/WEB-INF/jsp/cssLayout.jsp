@@ -16,9 +16,9 @@
 		</s:if>
 		</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<link rel="address bar icon" href="favicon.ico" />
-		<link rel="icon" href="favicon.ico" type="image/x-icon" />
-		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="address bar icon" href="/caintegrator/images/favicon.ico" />
+		<link rel="icon" href="/caintegrator/images/favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="/caintegrator/images/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/caintegrator2.css" />
 		<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/cai2modal.css" />
         <sx:head parseContent="true"/>
@@ -50,12 +50,12 @@
                 <sx:div id="TB_overlay" cssClass="TB_overlayBG"/>
                 <!-- Begin hidden busyDialogDiv -->
                 <s:div id="busyDialogDiv">
-                <img id="busyDialogProcessingImage" src="/caintegrator/images/ajax-loader-snake.gif" /><br></br> Please wait for action to complete ...
+                <img id="busyDialogProcessingImage" src="/caintegrator/images/ajax-loader-snake.gif" alt="ajax snake icon indicating loading process"/><br></br> Please wait for action to complete ...
                 </s:div>
                 <!-- End busyDialogDiv -->
                 
                 <!-- Begin hidden geneListSearchForm -->
-                <s:form name="geneListSearchForm" id="geneListSearchForm" onsubmit="runGeneListSearch(); return false;">
+                <s:form name="geneListSearchForm" id="geneListSearchForm" onsubmit="runGeneListSearch(); return false;" theme="css_xhtml">
                     <!-- For gene list to know which form element to publish gene symbols to. -->
                     <s:hidden name="geneSymbolElementId" />
                     <s:hidden name="geneListSearchTopicPublished" value="false" />
@@ -63,7 +63,7 @@
                         id="geneListSearchInputDiv"
                         href="geneListSearchInput.action"
                         showLoadingText="true"
-                        loadingText="<img src='images/ajax-loader.gif'/>"
+                        loadingText="<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>"
                         listenTopics="geneListSearchTopic"
                         refreshOnShow="false" 
                         cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:458px;max-height: 300px; overflow:auto;"/>
@@ -71,14 +71,14 @@
                 <!-- End geneListSearchForm -->
                 
                 <!-- Begin hidden caBioGeneSearchForm -->
-                <s:form name="caBioGeneSearchForm" id="caBioGeneSearchForm" onsubmit="runCaBioSearch(); return false;">
+                <s:form name="caBioGeneSearchForm" id="caBioGeneSearchForm" onsubmit="runCaBioSearch(); return false;" theme="css_xhtml">
                     <!-- For caBio to know which form element to publish gene symbols to. -->
                     <s:hidden name="geneSymbolElementId" />
                     <s:hidden name="caBioGeneSearchTopicPublished" value="false" />
                     <sx:div id="caBioGeneSearchInputDiv"
                         href="caBioSearchInput.action"
                         showLoadingText="true"
-                        loadingText="<img src='images/ajax-loader.gif'/>"
+                        loadingText="<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>"
                         listenTopics="caBioGeneSearchTopic"
                         refreshOnShow="false" 
                         cssStyle="display:none;visibility:hidden;margin-top:-62px;width:830px;max-height: 300px; overflow:auto;"/>

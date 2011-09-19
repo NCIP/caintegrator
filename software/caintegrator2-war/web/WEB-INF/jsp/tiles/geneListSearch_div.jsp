@@ -9,10 +9,10 @@
 <s:div cssClass="TB_closeAjaxWindow">
         <s:a href="" title="Click to close." onclick="hideGeneListInputForm()"
             cssStyle="cursor: pointer;"><img src="/caintegrator/images/close.gif"
-            border="none" align="center"/>&nbsp;</s:a>
+            border="none" align="center" alt="Click to close."/>&nbsp;</s:a>
 </s:div>
 
-<h2><img style="vertical-align: middle" src="/caintegrator/images/ico_list.gif"> Gene List Picker</h2>
+<h2><img style="vertical-align: middle" src="/caintegrator/images/ico_list.gif" alt="Click to select a saved list."> Gene List Picker</h2>
 
 <s:div cssStyle="padding-left: 5px;">
     <tr>

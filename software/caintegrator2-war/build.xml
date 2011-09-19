@@ -12,7 +12,7 @@
     <!-- ** PROPERTIES / PATHS                                            ** -->
     <!-- ******************************************************************* -->
 
-    <!-- Main -->
+    <!-- Mainly -->
     <property name="root.dir" location="${basedir}/../.." />
     <property name="docs.dir" location="${root.dir}/docs" />
     <property name="software.dir" location=".." />
@@ -939,7 +939,7 @@
         You can find additional information about checkstyle at:
         http://checkstyle.sourceforge.net/
         -->
-    <target name="static-analysis:checkstyle" depends="ivy:setup-static-analysis">
+    <target name="static-analysis:checkstyle" depends="ivy:setup-static-analysis,path:caintegrator2.war.dependencies">
         <mkdir dir="${reports.checkstyle.dir}"/>
         <static-analysis-checkstyle
             checkstyle.src.dir="${caintegrator2.war.java.src.dir}"
