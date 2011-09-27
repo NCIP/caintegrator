@@ -563,4 +563,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         
     }
 
+    public List<StudyConfiguration> getStudyConfigurationsWhichNeedThisPlatform(Platform platform) {
+        return null;
+    }
+
 }

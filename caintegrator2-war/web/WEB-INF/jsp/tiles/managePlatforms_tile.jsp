@@ -186,6 +186,7 @@
                                 <th>Array Name(s)</th>
                                 <th>Status</th>
                                 <th>Status Description</th>
+                                <th>Studies Where Used</th>
                                 <th>Action</th>
                             </tr>
                             <s:form id="statusTableForm" action="updatePlatform" theme="simple">
