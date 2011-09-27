@@ -134,6 +134,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -701,6 +702,36 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings(UNCHECKED)
+    public List<StudyConfiguration> getStudyConfigurationsWhichNeedThisPlatform(Platform platform) {
+        List<StudyConfiguration> listOfStudyConfigurations = new ArrayList<StudyConfiguration>();
+        List<ArrayData> listOfArrayData = null;
+        List<GenomicDataSourceConfiguration> genomicDataSourceConfigurationList = getHibernateTemplate().find(
+                "from GenomicDataSourceConfiguration where platformName = ?",
+                new Object[] {platform.getName()});
+        if (!genomicDataSourceConfigurationList.isEmpty()) {
+            listOfStudyConfigurations = getHibernateTemplate().find(
+                    "select studyConfiguration from GenomicDataSourceConfiguration gdsc "
+                    + "where gdsc.platformName = ?",
+                    new Object[] {platform.getName()});
+        } else {
+            listOfArrayData = getHibernateTemplate().find(
+                    "select arrayRef.arrayDataCollection from Array arrayRef "
+                    + "where arrayRef.platform = ?",
+                    new Object[] {platform});
+            for (ArrayData arrayData : listOfArrayData) {
+                listOfStudyConfigurations.add(arrayData.getStudy().getStudyConfiguration());
+            }
+        }
+        // before returning list remove duplicates by converting to set and back
+        Set<StudyConfiguration> setOfStudyConfigurations =
+            new LinkedHashSet<StudyConfiguration>(listOfStudyConfigurations);
+        return new ArrayList<StudyConfiguration>(setOfStudyConfigurations);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<Study> getPublicStudies() {
         return getCurrentSession().createCriteria(Study.class)
@@ -944,6 +975,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     public void setSecurityManager(SecurityManager securityManager) {
         this.securityManager = securityManager;
-    }
-
+    }    
+    
 }

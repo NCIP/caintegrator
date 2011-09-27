@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
@@ -304,6 +305,10 @@ public class ArrayDataServiceStub implements ArrayDataService {
             
         }
         return platforms;
+    }
+
+    public List<StudyConfiguration> getStudyConfigurationsWhichNeedThisPlatform(Platform platform) {
+        return null;
     }
 
 }
