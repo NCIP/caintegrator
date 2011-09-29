@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.DateUtil;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
@@ -230,23 +231,28 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
      * @return string html formatted list of platform names.
      */
     private String retrieveStudiesUsingThisPlatform(PlatformConfiguration platformConfiguration) {
-        List<StudyConfiguration> studyConfigurationList
-            = arrayDataService.getStudyConfigurationsWhichNeedThisPlatform(platformConfiguration.getPlatform());
-        String studyNames = "";
-        if (studyConfigurationList != null && !studyConfigurationList.isEmpty()) {
-            for (StudyConfiguration sc : studyConfigurationList) {
-                studyNames = studyNames.concat(sc.getStudy().getShortTitleText());
-                studyNames = studyNames.concat("<br>");
-                studyNames = studyNames.concat(" &nbsp;&nbsp;");
-                studyNames = studyNames.concat("(");
-                studyNames = studyNames.concat(sc.getLastModifiedBy().getUsername());
-                studyNames = studyNames.concat(" | ");
-                studyNames = studyNames.concat(sc.getDisplayableLastModifiedDate());
-                studyNames = studyNames.concat(")");
-                studyNames = studyNames.concat("<br>");
+        String studyInfo = "";
+        Platform platform = platformConfiguration.getPlatform();
+        if (platform != null) {
+            List<StudyConfiguration> studyConfigurationList
+            = arrayDataService.getStudyConfigurationsWhichNeedThisPlatform(platform);
+            if (studyConfigurationList != null && !studyConfigurationList.isEmpty()) {
+                for (StudyConfiguration sc : studyConfigurationList) {
+                    studyInfo = studyInfo.concat("<span style='white-space:nowrap;'>");
+                    studyInfo = studyInfo.concat(sc.getStudy().getShortTitleText());
+                    studyInfo = studyInfo.concat("<br>");
+                    studyInfo = studyInfo.concat(" &nbsp;&nbsp;");
+                    studyInfo = studyInfo.concat("(");
+                    studyInfo = studyInfo.concat(sc.getLastModifiedBy().getUsername());
+                    studyInfo = studyInfo.concat(" | ");
+                    studyInfo = studyInfo.concat(sc.getDisplayableLastModifiedDate());
+                    studyInfo = studyInfo.concat(")");
+                    studyInfo = studyInfo.concat("<br>");
+                    studyInfo = studyInfo.concat("</span>");
+                }
             }
         }
-        return studyNames;
+        return studyInfo;
     }
 
     private String retrievePlatformName(PlatformConfiguration platformConfiguration) {
