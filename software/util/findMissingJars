@@ -1,0 +1,34 @@
+#!/bin/bash
+# Make sure your path includes the location of this file.
+# 
+# Runing this script will find all jar files in the current directory
+# and below, and will check to see if the jar exists in
+# the nexus maven repository.  The final output file missingJars
+# contains a list of jars that are not found in the nexus repository.
+#
+locationOfOutputFiles="./"
+jarList="${locationOfOutputFiles}jarlist.data"
+jarListSorted="${locationOfOutputFiles}jarlist-sorted.data"
+missingSha1s="${locationOfOutputFiles}missingsha1s.data"
+missingSha1sUniq="${locationOfOutputFiles}missingsha1suniq.data"
+missingJars="${locationOfOutputFiles}missingjars.data"
+echo 'Finding files....'
+# Create list of Ivy jars and their SHA-1s
+for file in `find -f .ivy2-* -name "*.jar"`; do openssl sha1 $file | sed 's/.*(\(.*\))= \(.*\)$/\2 \1/'; done > ${jarList} 
+
+echo 'Sorting results...'
+export LC_ALL='C'
+# remove duplicate SHA-1s
+sort ${jarList} | sort | uniq > ${jarListSorted} 
+ 
+# Create list of missing SHA-1s.  NOTE: this could take a several minutes to run, depending on how many jars you have in your project
+echo 'Checking if files exist in Maven repo...'
+for sha1 in `awk '{print $1}' ${jarListSorted}`; do  curl -s https://ncimvn.nci.nih.gov/nexus/service/local/lucene/search?sha1=$sha1 | grep -q 'totalCount>0<' && echo $sha1 ; done > ${missingSha1s} 
+
+# remove redundant sha1 ids
+uniq ${missingSha1s} ${missingSha1sUniq}
+
+echo 'Creating missing files list....'
+# join list of missing SHA-1s with sorted jar list creating list of jars missing from Nexus
+join ${jarListSorted} ${missingSha1sUniq} > ${missingJars} 
+echo 'Done'
