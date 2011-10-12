@@ -25,7 +25,7 @@
 </tr>
 <tr>
 	<td>setTimeout</td>
-	<td>10000</td>
+	<td>30000</td>
 	<td></td>
 </tr>
 <tr>
@@ -50,12 +50,12 @@
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>//*[@id=&quot;studyDeploymentJobStatusTable&quot;]//span[text()='${ManagerUserId}']/parent::td/parent::tr//a[text()='Delete']</td>
+	<td>//*[@id=&quot;studyDeploymentJobStatusTable&quot;]//span[text()='${ManagerUserId}']/parent::td/parent::tr//a[contains(text(),'Delete')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//*[@id=&quot;studyDeploymentJobStatusTable&quot;]//span[text()='${ManagerUserId}']/parent::td/parent::tr//a[text()='Delete']</td>
+	<td>//*[@id=&quot;studyDeploymentJobStatusTable&quot;]//span[text()='${ManagerUserId}']/parent::td/parent::tr//a[contains(text(),'Delete')]</td>
 	<td></td>
 </tr>
 <tr>
