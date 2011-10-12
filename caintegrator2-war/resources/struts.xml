@@ -32,6 +32,9 @@
             <interceptor-stack name="cai2ParamsPrepareParamsStack">
                 <interceptor-ref name="exception"/>
                 <interceptor-ref name="alias"/>
+                <interceptor-ref name="tokenSession">
+                    <param name="excludeMethods">*</param>
+                </interceptor-ref>
                 <interceptor-ref name="params">
                      <!--
                         Excludes:
@@ -93,6 +96,10 @@
         <default-interceptor-ref name="cai2ParamsPrepareParamsStack" />
         
         <global-results>
+            <result name="invalid.token" type="redirectAction">
+                <param name="actionName">workspace</param>
+                <param name="invalidAccess">true</param>
+            </result>
             <result name="unauthorized" type="redirectAction">
                 <param name="actionName">workspace</param>
                 <param name="invalidAccess">true</param>
@@ -170,6 +177,7 @@
       
         <action name="editStudy" class="editStudyAction">
             <result type="tiles">editStudy</result>
+            <result name="input" type="tiles">editStudy</result>
         </action>
       
         <action name="deleteStudy" method="deleteStudy" class="editStudyAction">
@@ -680,16 +688,27 @@
         
         <action name="addAnnotationGroup" class="editAnnotationGroupAction">
             <result type="tiles">editAnnotationGroup</result>
+            <result name="input" type="tiles">editAnnotationGroup</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
         
         <action name="editAnnotationGroup" class="editAnnotationGroupAction">
             <result type="tiles">editAnnotationGroup</result>
+            <result name="input" type="tiles">editAnnotationGroup</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
         
         <action name="deleteAnnotationGroup" class="editAnnotationGroupAction" method="delete">
             <result type="tiles">editStudy</result>
             <result name="input" type="tiles">editStudy</result>
             <result name="error" type="tiles">editStudy</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
         </action>
         
         <action name="saveAnnotationGroup" class="editAnnotationGroupAction">
@@ -700,6 +719,9 @@
                 <param name="actionName">editStudy</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
             </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
         
         <action name="cancelAnnotationGroup" class="editAnnotationGroupAction">
@@ -707,6 +729,9 @@
                 <param name="actionName">editStudy</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
             </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
         
         <action name="saveFieldDescriptorsForGroup" method="saveFieldDescriptors" class="editAnnotationGroupAction">
