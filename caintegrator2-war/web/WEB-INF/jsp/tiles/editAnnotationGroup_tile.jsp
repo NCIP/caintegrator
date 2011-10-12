@@ -32,6 +32,7 @@
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="selectedAction" />
                     <s:hidden name="annotationGroup.id" />
+                    <s:token />
                 <table>
                     <tr><td> <s:actionerror /></td></tr>
                     <tr><td>

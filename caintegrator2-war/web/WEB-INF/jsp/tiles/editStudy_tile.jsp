@@ -222,16 +222,19 @@
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
-                                <s:url id="addAnnotationGroup" action="addAnnotationGroup" includeParams="none">
-                                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                </s:url>
-                            <li><s:a href="%{addAnnotationGroup}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="add">Add New</span></span></s:a></li>
+                            <s:token />
+							<s:url id="addAnnotationGroup" action="addAnnotationGroup" includeParams="none">
+							        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+							        <s:param name="struts.token.name">struts.token</s:param>
+                                    <s:param name="struts.token" value="%{struts.token}" />
+							</s:url>
+                            <li><s:a href="%{addAnnotationGroup}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="add">Add New</span></span></s:a></li>	                        
                         </ul>   
                     </del>
                 </th>
             </tr>
             <tr>
-                <td class="table_wrapper" colspan="2">              
+                <td class="table_wrapper" colspan="2">
                     <s:form>
                     <s:hidden name="studyConfiguration.id"  />
                     <table class="data">
@@ -248,7 +251,7 @@
                             </s:if>
                             <s:else>
                               <tr class="even">
-                            </s:else>            
+                            </s:else>
                             <td><s:property value="name" /></td>
                             <td><s:property value="description" /></td>
                             <td><s:property value="annotationFieldDescriptors.size()" /></td>
@@ -256,14 +259,18 @@
                                 <s:url id="editAnnotationGroup" action="editAnnotationGroup" includeParams="none">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="annotationGroup.id" value="id" />
+                                    <s:param name="struts.token.name">struts.token</s:param>
+                                    <s:param name="struts.token" value="%{struts.token}" />
                                 </s:url>
-                                <s:a href="%{editAnnotationGroup}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Group</span></span></s:a>
+                                <s:a href="%{editAnnotationGroup}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Group</span></span></s:a>                            
                                 <s:if test="deletable">
                                 <s:url id="deleteAnnotationGroup" action="deleteAnnotationGroup" includeParams="none">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="annotationGroup.id" value="id" />
+                                    <s:param name="struts.token.name">struts.token</s:param>
+                                    <s:param name="struts.token" value="%{struts.token}" />                                    
                                 </s:url> 
-                                <s:a href="%{deleteAnnotationGroup}" cssClass="btn" cssStyle="margin: 0pt;" onclick="return confirm('This annotation group will be permanently deleted.')"><span class="btn_img"><span class="delete">Delete</span></span></s:a>
+                                <s:a href="%{deleteAnnotationGroup}" cssClass="btn" cssStyle="margin: 0pt;" onclick="return confirm('This annotation group will be permanently deleted.')"><span class="btn_img"><span class="delete">Delete</span></span></s:a>                                
                                 </s:if>
                             </td>
                         </tr>
