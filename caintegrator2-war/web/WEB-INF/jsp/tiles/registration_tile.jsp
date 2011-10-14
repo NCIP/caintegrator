@@ -50,6 +50,7 @@
 		    </tbody>
 	    </s:if>
 	    <tbody>
+	    <s:token />
 	    <s:checkboxlist name="registrationRequest.role" label="Requested Role(s)" 
                 list="@gov.nih.nci.caintegrator2.web.action.registration.UserRole@values()" listKey="name" listValue="name" required="true"/>
         <s:textfield name="registrationRequest.requestedStudies" label="Existing Studies to be Accessed" size="50" />

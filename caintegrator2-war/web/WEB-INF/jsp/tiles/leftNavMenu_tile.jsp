@@ -3,7 +3,8 @@
 <%@ taglib prefix="authz" uri="http://acegisecurity.org/authz" %>
             
 <div id="leftnav">
-    
+
+    <s:token />
     <!--Study Logo-->
     <s:if test="studySubscription != null">
 	    <div id="study_logo">
@@ -432,9 +433,15 @@
         <ul class="menu">   
             <li class="stdnav"><div>Study Management</div>
                 <ul>
-                    <li><s:url id="manageStudiesUrl" includeParams="none" action="manageStudies" />
+                    <li><s:url id="manageStudiesUrl" includeParams="none" action="manageStudies">
+		                    <s:param name="struts.token.name">struts.token</s:param>
+		                    <s:param name="struts.token" value="%{struts.token}" />     
+                        </s:url>
                     <a href="${manageStudiesUrl}">Manage Studies</a></li>
-                    <li><s:url id="createStudyUrl" includeParams="none" action="createStudy" />
+                    <li><s:url id="createStudyUrl" includeParams="none" action="createStudy">
+                            <s:param name="struts.token.name">struts.token</s:param>
+                            <s:param name="struts.token" value="%{struts.token}" />  
+                        </s:url> 
                     <a href="${createStudyUrl}">Create New Study</a></li>
                 </ul>
             </li>
@@ -453,9 +460,13 @@
     
 	<s:url id="registrationUrl" action="input" namespace="registration" includeParams="all">
 	    <s:param name="selectedPage" value="%{'register'}" />
+        <s:param name="struts.token.name">struts.token</s:param>
+        <s:param name="struts.token" value="%{struts.token}" />  	    
 	</s:url>
 	<s:url id="loginUrl" namespace="/caintegrator/registration" value="../logout.jsp" includeParams="all">
         <s:param name="selectedPage" value="%{'login'}" />
+        <s:param name="struts.token.name">struts.token</s:param>
+        <s:param name="struts.token" value="%{struts.token}" />          
     </s:url>
     <s:url id="loginUrl2" value="/logout.jsp" includeParams="all">
         <s:param name="selectedPage" value="%{'login'}" />
