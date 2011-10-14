@@ -169,12 +169,12 @@
 <tr>
 	<td>type</td>
 	<td>caArrayUrl</td>
-	<td>http://ncicbcaqa-1.nci.nih.gov:38080/caarray</td>
+	<td>http://cbapp-s1002.nci.nih.gov:38080/caarray</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>caArrayHost</td>
-	<td>ncicbcaqa-1.nci.nih.gov</td>
+	<td>cbapp-s1002.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -184,7 +184,7 @@
 <tr>
 	<td>type</td>
 	<td>experimentId</td>
-	<td>EXP-1</td>
+	<td>EXP-15</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -286,7 +286,7 @@
 <!--// begin add copy number-->
 <tr>
 	<td>store</td>
-	<td>EXP-3</td>
+	<td>EXP-19</td>
 	<td>caarrayExperimentNameCopyNumber</td>
 </tr>
 <tr>
@@ -302,12 +302,12 @@
 <tr>
 	<td>type</td>
 	<td>caArrayUrl</td>
-	<td>http://ncicbcaqa-1.nci.nih.gov:38080/caarray</td>
+	<td>http://cbapp-s1002.nci.nih.gov:38080/caarray</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>caArrayHost</td>
-	<td>ncicbcaqa-1.nci.nih.gov</td>
+	<td>cbapp-s1002.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -322,12 +322,12 @@
 <tr>
 	<td>type</td>
 	<td>caArrayUsername</td>
-	<td></td>
+	<td>caarrayadmin</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>caArrayPassword</td>
-	<td></td>
+	<td>caArray2!</td>
 </tr>
 <tr>
 	<td>select</td>
