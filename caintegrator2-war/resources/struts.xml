@@ -163,10 +163,16 @@
         
         <action name="manageStudies" method="manageStudies" class="editStudyAction">
             <result type="tiles">manageStudies</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
         </action>
 
         <action name="createStudy" class="editStudyAction">
             <result type="tiles">editStudy</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
         </action>
             
         <action name="deployStudy" class="deployStudyAction">
@@ -191,17 +197,26 @@
             </result>
             <result name="error" type="tiles">editStudy</result>
             <result name="input" type="tiles">editStudy</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>                  
         </action>
         
         <action name="editStudyLog" class="editStudyLogAction">
             <result type="tiles">editStudyLog</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
         
         <action name="saveStudyLog" method="save" class="editStudyLogAction">
             <result type="redirectAction">
-                <param name="actionName">editStudy</param>
-                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+			<param name="actionName">editStudy</param>
+			<param name="studyConfiguration.id">${studyConfiguration.id}</param>              
             </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
         
         <action name="cancelStudyLog" class="editStudyLogAction">
@@ -209,6 +224,9 @@
                 <param name="actionName">editStudy</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
             </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
         
         
@@ -238,6 +256,9 @@
                 <param name="clinicalSource.id">${clinicalSource.id}</param>
             </result>
             <result name="input" type="tiles">editStudy</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
         
         <action name="addExternalLinks" class="addExternalLinksAction">
@@ -246,6 +267,9 @@
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
             </result>
             <result name="input" type="tiles">editStudy</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
         </action>
         
         <action name="deleteExternalLinks" class="deleteExternalLinksAction">
@@ -333,6 +357,9 @@
             <result type="tiles">editSurvivalValueDefinitions</result>
             <result name="input" type="tiles">genericError</result>
             <result name="error" type="tiles">genericError</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
         </action>
         
         <action name="editSurvivalValueDefinition" method="editSurvivalValueDefinition" class="defineSurvivalDefinitionAction">
@@ -536,10 +563,16 @@
         <action name="addGenomicSource" method="addNew" class="editGenomicSourceAction">
             <result type="tiles">editGenomicSource</result>
             <result name="error" type="tiles">genericErrorWithMenu</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
         
         <action name="refreshGenomicSource" method="refresh" class="editGenomicSourceAction">
             <result type="tiles">editGenomicSource</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
         </action>
         
         <action name="editGenomicSource" class="editGenomicSourceAction">
@@ -559,6 +592,9 @@
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
             </result>
             <result name="input" type="tiles">editGenomicSource</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref> 
         </action>
         
         <action name="cancelGenomicSource" method="cancel" class="editGenomicSourceAction">
@@ -571,11 +607,17 @@
         <action name="editSampleMapping" class="editSampleMappingAction">
             <result type="tiles">editSampleMapping</result>
             <result name="input" type="tiles">editGenomicSource</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
         </action>
 
         <action name="saveSampleMapping" class="saveSampleMappingAction">
             <result type="tiles">editStudy</result>
             <result name="input" type="tiles">editSampleMapping</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
         </action>
         
         <action name="editDnaAnalysisDataConfiguration" method="edit" class="editDnaAnalysisDataConfigurationAction">
@@ -601,6 +643,9 @@
                 
         <action name="addImagingSource" class="editImagingSourceAction">
             <result type="tiles">editImagingSource</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
         
         <action name="editImagingSource" class="editImagingSourceAction">
@@ -614,6 +659,9 @@
             </result>
             <result name="editImageAnnotations" type="tiles">editImagingFile</result>
             <result name="input" type="tiles">editImagingSource</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>             
         </action>
         
         <action name="updateImagingSource" class="editImagingSourceAction" method="updateImagingSource" >
@@ -1306,6 +1354,9 @@
             <result name="cancel" type="redirectAction">
                 <param name="actionName">../login</param>
             </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
         </action>
     </package>
     

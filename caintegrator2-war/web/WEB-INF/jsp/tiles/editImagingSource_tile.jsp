@@ -114,6 +114,7 @@
                         <s:actionerror />
                      </td>
                 </tr>
+                <s:token />
                 <s:hidden name="studyConfiguration.id" />
                 <s:hidden name="cancelAction" />
                 <s:hidden name="imageSourceConfiguration.id" id="imageSourceId"/>
