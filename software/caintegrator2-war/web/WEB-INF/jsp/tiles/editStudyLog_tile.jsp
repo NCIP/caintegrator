@@ -30,6 +30,7 @@
 
                 <s:form id="editStudyLogForm" name="editStudyLogForm" 
                     action="saveStudyLog" method="post" enctype="multipart/form-data">
+                <s:token/>
                 <s:hidden name="studyConfiguration.id" />
                 <s:hidden name="readOnly" value="%{isReadOnly()}" />
                 <s:set name="readOnly" id="readOnly" value="%{isReadOnly()}" />

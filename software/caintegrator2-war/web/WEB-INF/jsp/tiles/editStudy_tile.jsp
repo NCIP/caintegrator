@@ -71,7 +71,7 @@
                     <s:form id="studyDeploymentForm" name="studyDeploymentForm" onsubmit="return verifyName(nameId.value)" cssClass="form">        
                         <s:actionerror/>
                         <s:fielderror />
-                        
+                        <s:token />
                         <s:hidden name="studyConfiguration.id"  />
                         <s:textfield label="Study Name" name="studyConfiguration.study.shortTitleText" id="nameId" cssStyle="width: 280px;"/>
                         <s:textarea label="Study Description" name="studyConfiguration.study.longTitleText" cols="40" rows="4" cssStyle="width: 280px;"/>
@@ -131,6 +131,9 @@
                                 <s:url id="editStudyLog" action="editStudyLog" includeParams="none">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="readOnly" value="false" />
+                                    <s:param name="struts.token.name">struts.token</s:param>
+                                    <s:param name="struts.token" value="%{struts.token}" />
+                                    
                                 </s:url>
                             <tr>
                                 <td class="tdLabel" align="right">
@@ -293,6 +296,8 @@
                             <li><a name="action:addClinicalFile_clinicalFile" id="addClinicalFile_clinicalFile" onclick="new Effect.toggle($('add_clinical'),'blind')" class="btn" style="margin: 0pt;" href="javascript://"><span class="btn_img"><span class="add">Add New</span></span></a></li>
                                 <s:url id="editSurvivalValueDefinitions" action="editSurvivalValueDefinitions" includeParams="none">
                                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                                        <s:param name="struts.token.name">struts.token</s:param>
+                                        <s:param name="struts.token" value="%{struts.token}" />                                        
                                 </s:url>
                             <li><s:a href="%{editSurvivalValueDefinitions}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit">Edit Survival Values</span></span></s:a></li>
                         </ul>   
@@ -307,6 +312,7 @@
                     <div class="formbox" id="add_clinical" style="display: none;">
                         
                         <s:form action="addClinicalFile" method="post" enctype="multipart/form-data" cssClass="form" >
+                                    <s:token />
                                     <s:hidden name="studyConfiguration.id" />
                                     <s:file name="clinicalFile" label="Add New Subject Annotation Data Source" />
                                     <s:checkbox name="createNewAnnotationDefinition" label="Create a new Annotation Definition if one is not found" 
@@ -342,6 +348,8 @@
                         <ul class="btnrow">
                                 <s:url id="addGenomicSource" action="addGenomicSource" includeParams="none">
                                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                                        <s:param name="struts.token.name">struts.token</s:param>
+                                        <s:param name="struts.token" value="%{struts.token}" />
                                 </s:url>
                             <li><s:a href="%{addGenomicSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="add">Add New</span></span></s:a></li>
                         </ul>   
@@ -379,7 +387,9 @@
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
                                 <s:url id="addImagingSource" action="addImagingSource" includeParams="none">
-                                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                                    <s:param name="struts.token.name">struts.token</s:param>
+                                    <s:param name="struts.token" value="%{struts.token}" />                                        
                                 </s:url>
                             <li><s:a href="%{addImagingSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="add">Add New</span></span></s:a></li>
                         </ul>   
@@ -428,6 +438,7 @@
                     <div class="formbox" id="add_external_links" style="display: none;">
                         
                         <s:form action="addExternalLinks" method="post" enctype="multipart/form-data" cssClass="form" >
+                                    <s:token />
                                     <s:hidden name="studyConfiguration.id" />
                                     <s:textfield label="Name" name="externalLinkList.name" />
                                     <s:textarea label="Description" name="externalLinkList.description" cols="50" rows="3"/>
@@ -487,7 +498,10 @@
                 </s:else>
             </s:if>
             <li><input type="image" src="images/btn_save.gif" alt="Save" name="action:saveStudy" id="editStudy_saveStudy" onClick="document.getElementById('studyDeploymentForm').action='/caintegrator/saveStudy.action'; document.getElementById('studyDeploymentForm').submit()"/></li>
-            <li> <s:url id="manageStudiesUrl" includeParams="none" action="manageStudies" />
+            <li> <s:url id="manageStudiesUrl" includeParams="none" action="manageStudies">
+                    <s:param name="struts.token.name">struts.token</s:param>
+                    <s:param name="struts.token" value="%{struts.token}" />     
+            </s:url>
             <s:a href="%{manageStudiesUrl}" cssClass="btn" cssStyle="margin:0 5px;"><span class="btn_img"><span class="cancel">Cancel</span></span></s:a></li>
             
             </ul>   
