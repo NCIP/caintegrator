@@ -50,7 +50,7 @@
     <dependency org="asm" name="asm-tree" rev="2.2.1" conf="test-cobertura->master"/>
     
     <!-- svn connectors -->  
-    <dependency org="org.tigris" name="svnant" rev="1.2.1" conf="compile"/>
+    <dependency org="org.tigris" name="svnant" rev="1.3" conf="compile"/>
     
     
     <!-- Runtime items that exist in WEB-INF/lib for war runtime -->
@@ -102,21 +102,23 @@
     <dependency org="genepattern" name="GenePattern" rev="3.2.1" conf="runtime" />
 
     <!-- These exist in the repository -->
+    <!-- dependency org="net.sourceforge.addressing" name="addressing" rev="1.1" conf="compile, runtime->master"/-->
     <dependency org="javax.activation" name="activation" rev="1.1" conf="compile->master"/>
     <dependency org="javax.mail" name="mail" rev="1.4" conf="compile->master"/>
     <dependency org="javax.servlet" name="servlet-api" rev="2.4" conf="runtime->master"/>
     <dependency org="javax.servlet" name="jsp-api" rev="2.0" conf="runtime->master"/>
     <dependency org="javax.transaction" name="jta" rev="1.1" conf="runtime->master"/>
-    <dependency org="globus" name="ws-addressing" rev="1.0" conf="runtime" transitive="false"/>
+    <dependency org="globus" name="ws-addressing" rev="1.0" conf="runtime->master" transitive="false"/>
+    <dependency org="globus" name="ws-core-client" rev="4.0.3" conf="compile,runtime->master"/>
     <dependency org="globus" name="jcogfx" rev="noversion" conf="runtime"/>
-    <dependency org="globus" name="jcog" rev="1.2" conf="runtime"/>
-    <dependency org="globus" name="ws-enumeration" rev="4.0.3" conf="runtime"/>
-    <dependency org="globus" name="wss4j" rev="noversion" conf="runtime"/>
+    <dependency org="globus" name="jcog" rev="1.2" conf="compile,runtime->master"/>
+    <dependency org="globus" name="ws-enumeration" rev="4.0.3" conf="runtime->master"/>
+    <dependency org="wss4j" name="wss4j" rev="1.5.1" conf="runtime->master"/>
     <dependency org="antlr" name="antlr" rev="2.7.7" conf="runtime,test-checkstyle->master"/>
     <dependency org="asm" name="asm" rev="1.5.3" conf="runtime->master"/>
     <dependency org="asm" name="asm-attrs" rev="1.5.3" conf="runtime->master"/>
     <dependency org="ant-contrib" name="ant-contrib" rev="1.0b3" conf="compile->master"/>
-    <dependency org="globus" name="axis" rev="1.2RC2" conf="runtime"/>
+    <dependency org="globus" name="axis" rev="1.2RC2" conf="runtime->master"/>
     <dependency org="javax.xml.bind" name="jaxb-api" rev="2.1" conf="runtime->master"/>
     <dependency org="com.sun.xml.bind" name="jaxb-impl" rev="2.1.4" conf="runtime->master"/>
     <dependency org="com.sun.xml.bind" name="jaxb-xjc" rev="2.1.4" conf="runtime->master"/>
@@ -127,21 +129,24 @@
     <dependency org="c3p0" name="c3p0" rev="0.9.1" conf="runtime->master"/>
     <dependency org="org.codehaus.castor" name="castor" rev="1.0.4" conf="runtime->master"/>
     <dependency org="gov.nih.nci.security" name="csm" rev="4.2" conf="runtime->master"/>
-    <dependency org="ncicb" name="nci-commons-core" rev="1.2.8" conf="runtime"/>
+    <dependency org="ncicb" name="nci-commons-core" rev="1.2.18" conf="runtime->master"/>
     <dependency org="org.hibernate" name="ejb3-persistence" rev="1.0.1.GA" conf="runtime->default"/>
-    <dependency org="org.hibernate" name="hibernate-annotations" rev="1.0" conf="runtime"/>
+    <dependency org="org.hibernate" name="hibernate-annotations" rev="3.2.0.ga" conf="runtime->master"/>
     <dependency org="org.hibernate" name="hibernate" rev="3.2.0.ga" conf="runtime->master"/>
     <dependency org="junit" name="junit" rev="4.4" conf="compile->master"/>
     <dependency org="mysql" name="mysql-connector-java" rev="5.1.13" conf="compile->master"/>
     <dependency org="com.google.collections" name="google-collections" rev="1.0" conf="runtime,test-checkstyle->default"/>
     <dependency org="commons-collections" name="commons-collections" rev="3.2" conf="runtime,test-checkstyle->master"/>
-    <dependency org="commons-logging" name="commons-logging" rev="1.0.4" conf="compile,test-checkstyle->master"/>
+    <dependency org="commons-logging" name="commons-logging" rev="1.1.1" conf="compile,test-checkstyle->master"/>
+    <dependency org="commons-discovery" name="commons-discovery" rev="0.4" conf="runtime->master"/>
     <dependency org="oro" name="oro" rev="2.0.8" conf="runtime,test-cobertura->master"/>
-    <dependency org="gov.nih.nci.security" name="clm" rev="4.1" conf="runtime"/>
+    <dependency org="gov.nih.nci.security" name="clm" rev="4.2.beta" conf="compile,runtime->master"/>
     <dependency org="com.oracle" name="ojdbc14" rev="10.2.0.3.0" conf="runtime->master"/>
     <dependency org="displaytag" name="displaytag" rev="1.2" conf="runtime->master"/>
-    <dependency org="jfree" name="jfreechart" rev="1.0.9" conf="runtime"/>
-    <dependency org="jfree" name="jcommon" rev="1.0.12" conf="runtime"/>
+    <dependency org="javax.xml" name="jaxrpc-api" rev="1.1" conf="runtime->master"/>
+    <dependency org="jdom" name="jdom" rev="1.0" conf="runtime->master"/>
+    <dependency org="jce-jdk" name="jce-jdk" rev="1.3_1.25nci" conf="runtime->master"/>
+    <dependency org="jfree" name="jcommon" rev="1.0.12" conf="runtime->master"/>
     <dependency org="weka" name="weka" rev="3.4.13" conf="runtime"/>
     <dependency org="org.directwebremoting" name="dwr" rev="2.0.6" conf="runtime->master" />
     <dependency org="commons-dbcp" name="commons-dbcp" rev="1.2.1" conf="runtime->master" />
@@ -155,8 +160,9 @@
     <dependency org="caGrid" name="discovery" rev="1.2" conf="runtime->default" transitive="false" />
     <dependency org="caGrid" name="metadatautils" rev="1.2" conf="runtime->default" transitive="false" />
     <dependency org="caGrid" name="gts" rev="1.2" conf="runtime->client" transitive="false" />
-    <dependency org="globus" name="cryptix" rev="1.2" conf="runtime" />
-    <dependency org="globus" name="cryptix-asn1" rev="0.1.11" conf="runtime" />
+    <dependency org="cryptix" name="cryptix" rev="1.2nci" conf="runtime->master" />
+    <dependency org="cryptix" name="cryptix-asn1" rev="0.1.11nci" conf="runtime->master" />
+    <dependency org="cryptix" name="cryptix" rev="3.2.0" conf="runtime->master" />
     <dependency org="globus" name="puretls" rev="0.9b5" conf="runtime" />
     
     <!-- quartz 1.5.2 scheduler -->

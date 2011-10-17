@@ -13,7 +13,7 @@
   </publications>
   
   <dependencies>
-    <dependency org="globus" name="axis" rev="1.2RC2" conf="compile"/>
+    <dependency org="globus" name="axis" rev="1.2RC2" conf="compile->master"/>
     <dependency org="javax.activation" name="activation" rev="1.1" conf="compile->master"/>
     <dependency org="javax.xml" name="jaxrpc-api" rev="1.1" conf="compile->master"/>
     <dependency org="genepattern" name="GenePattern" rev="3.2.1" conf="runtime" />

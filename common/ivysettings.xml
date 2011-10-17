@@ -1,31 +1,18 @@
 <ivysettings>
-	<property name="cagrid.ivy.repo" value="http://software.cagrid.org/repository-1.2/"/>
-	
 	<settings defaultResolver="ncicb-chain" />
 	<caches defaultCacheDir="${user.home}/.ivy2-${ant.project.name}" useOrigin="true"/>
 	<resolvers>
 		<!-- this is where you read from -->
         <chain name="ncicb-chain">
-        	<filesystem name="local-repo" local="true">
+        	<filesystem name="local-repo1" local="true">
 				<artifact pattern="${local.repo.dir}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
 				<ivy pattern="${local.repo.dir}/[organisation]/[module]/[revision]/ivy.xml" />
-			</filesystem> 
-            <url name="cbiit-ivy-repo">
-                <!-- remote enterprise repository -->
-                <artifact pattern="https://ncisvn.nci.nih.gov/svn/cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
-                <ivy pattern="https://ncisvn.nci.nih.gov/svn/cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/ivy.xml" />
-            </url>  
-            <url name="cagrid-ivy-repo" m2compatible="false">
-				<ivy pattern="${cagrid.ivy.repo}/[organisation]/[module]//ivy-[revision].xml" />
-				<artifact pattern="${cagrid.ivy.repo}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
-			</url>
-            <ibiblio name="cbiit-maven-mirror" m2compatible="true" root="https://ncisvn.nci.nih.gov/svn/maven-mirror/trunk" changingPattern=".*SNAPSHOT" />
-            <!--<url name="cbiit-maven-mirror" m2compatible="true">
-                <artifact pattern="https://ncisvn.nci.nih.gov/svn/maven-mirror/trunk/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
-            </url>-->
-
-            <!-- this is where you can publish to, either your own code or for testing new thirdparty files -->
+			</filesystem>
+            <filesystem name="local-repo2" local="true">
+                <ivy pattern="${local.repo.dir}/[organisation]/[module]//ivy-[revision].xml" />
+                <artifact pattern="${local.repo.dir}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
+            </filesystem>           
+            <ibiblio name="nexus-repo-public" m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/public" pattern="[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
         </chain>
-
 	</resolvers>
 </ivysettings>

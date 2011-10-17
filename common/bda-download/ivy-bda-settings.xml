@@ -6,9 +6,7 @@ This file is the is the settings file used by IVY.  It is a good starting point 
 -->
 
 <ivysettings>
-	<property name="ivy.project.repo" value="${target.dir}/local-repo-dir"/>
-	<property name="ivy.system.repo" value="${bda.local.repo.dir}"/>
-	<property name="ivy.local-enterprise.repo" value="${commonlibrary.dir}/ivy-repo"/>
+    <property name="local.repo.dir" value="${software.dir}/local-ivy-repo"/>
 	<settings defaultResolver="ncicb-chain"/>
 	<!-- defaultCacheDir causes the bda-utils module to use it's own cache directory -->
 	<!-- useOrigin causes avoiding the copy of local artifacts to the cache and use directly their original location -->
@@ -16,27 +14,15 @@ This file is the is the settings file used by IVY.  It is a good starting point 
 	<resolvers>
 		<!-- this is where you read from -->
 		<chain name="ncicb-chain">
-			<filesystem name="local-project-repo" local="true">
-				<!-- Local project level repo -->
-				<artifact pattern="${ivy.project.repo}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
-				<ivy pattern="${ivy.project.repo}/[organisation]/[module]/[revision]/ivy.xml"/>
+        	<filesystem name="local-repo1" local="true">
+				<artifact pattern="${local.repo.dir}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
+				<ivy pattern="${local.repo.dir}/[organisation]/[module]/[revision]/ivy.xml" />
 			</filesystem>
-			<filesystem name="local-system-repo" local="true">
-				<!-- Local system level repo, to share chagnes ammong multiple projects-->
-				<artifact pattern="${ivy.system.repo}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
-				<ivy pattern="${ivy.system.repo}/[organisation]/[module]/[revision]/ivy.xml"/>
-			</filesystem>
-			<filesystem name="local-ncicb-ivy-repo" local="true">
-				<!-- local enterprise repository checkout, best used when working remote or network disconnected -->
-				<artifact pattern="${ivy.local-enterprise.repo}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
-				<ivy pattern="${ivy.local-enterprise.repo}/[organisation]/[module]/[revision]/ivy.xml"/>
-			</filesystem>
-			<url name="ncicb-ivy-repo">
-				<!-- remote enterprise repository -->
-				<artifact pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
-				<ivy pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/ivy.xml"/>
-			</url>
-			<!-- this is where you can publish to, either your own code or for testing new thirdparty files -->
-		</chain>
+            <filesystem name="local-repo2" local="true">
+                <ivy pattern="${local.repo.dir}/[organisation]/[module]//ivy-[revision].xml" />
+                <artifact pattern="${local.repo.dir}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
+            </filesystem>                
+            <ibiblio name="nexus-repo-public" m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/public" pattern="[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
+        </chain>
 	</resolvers>
 </ivysettings>
