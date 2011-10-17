@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="sdkQuery4" revision="1.2" status="release" publication="20080324163827">
+    <license name="caGrid" url="http://www.cagrid.org/wiki/CaGrid:LICENSE-1.2"/>
+    <description>The caCORE SDK 4 Query Processor</description>
+  </info>
+
+  <configurations>
+    <conf name="impl-test" visibility="private"/>
+
+    <!-- Public Configurations-->
+    <conf name="stubs" visibility="public"/>
+    <conf name="processor" visibility="public" extends="stubs"/>
+    <conf name="style" visibility="public" extends="processor"/>
+    <conf name="test" visibility="public" extends="style,impl-test"/>
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-sdkQuery4-beans" conf="stubs" type="jar"/>
+    <artifact name="caGrid-sdkQuery4-processor" conf="processor" type="jar"/>
+    <artifact name="caGrid-sdkQuery4-style" conf="style" type="jar"/>
+    <artifact name="caGrid-sdkQuery4-tests" conf="test" type="jar"/>
+    <artifact name="caGrid-sdkQuery4-tests-resources" conf="test" type="jar"/>
+  </publications>
+
+  <dependencies>
+    <dependency rev="1.2" org="caGrid" name="core" conf="processor->default;impl-test->test"/>
+    <dependency rev="1.2" org="caGrid" name="data" conf="processor->service;impl-test->cql-examples,test"/>
+
+    <dependency rev="1.2" org="caGrid" name="testing" conf="impl-test->system"/>
+
+
+    <dependency rev="1.2" org="caGrid" name="dataExtensions" conf="style->default"/>
+
+    <dependency rev="1.2" org="caGrid" name="introduce" conf="style->core"/>
+  </dependencies>
+</ivy-module>

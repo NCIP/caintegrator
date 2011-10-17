@@ -23,8 +23,8 @@
     <!-- ** IVY TARGETS AND DEPENDENCY PATHS                              ** -->
     <!-- ******************************************************************* -->
 
-    <property name="ivy.jar" location="${build.lib.dir}/ivy-2.0.0.jar" />
-    <get src="https://ncisvn.nci.nih.gov/svn/maven-mirror/trunk/org/apache/ivy/ivy/2.0.0/ivy-2.0.0.jar"
+    <property name="ivy.jar" location="${build.lib.dir}/ivy-2.2.0.jar" />
+    <get src="https://ncimvn.nci.nih.gov/nexus/content/repositories/public/org/apache/ivy/ivy/2.2.0/ivy-2.2.0.jar"
                         dest="${ivy.jar}" usetimestamp="true"/>
     <property name="ivy.settings.file" location="${common.dir}/ivysettings.xml" />
     <property name="ivy.def.file" location="ivy-kaplan-meier.xml" />
