@@ -23,12 +23,9 @@
   </publications>
   
   <dependencies>
-	<!-- 
-	  <dependency org="org.seleniumhq.selenium.server" name="selenium-server" rev="1.0.3" conf="test-selenium->master">
-		  <artifact name="selenuim-server" type="jar" url="https://ncisvn.nci.nih.gov/svn/maven-mirror/trunk/org/seleniumhq/selenium/server/selenium-server/1.0.3/selenium-server-1.0.3-standalone.jar"/>
-	  </dependency>
-     -->
-    <dependency org="openqa" name="selenium" rev="0.9.0" conf="test-selenium->master"/>
+    <dependency org="org.seleniumhq.selenium.server" name="selenium-server" rev="1.0.3" conf="test-selenium->default">
+     <artifact name="selenium-server" type="jar" url="https://ncimvn.nci.nih.gov/nexus/content/repositories/public/org/seleniumhq/selenium/server/selenium-server/1.0.3/selenium-server-1.0.3-standalone.jar"/>
+    </dependency>
     <dependency org="junit" name="junit" rev="4.3.1" conf="test-junit,test-pmd->master"/>
     <dependency org="javassist" name="javassist" rev="3.9.0.GA" conf="test-junit->default"/>
     <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9" conf="test-cobertura->master"/>  

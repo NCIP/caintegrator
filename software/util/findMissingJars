@@ -14,7 +14,7 @@ missingSha1sUniq="${locationOfOutputFiles}missingsha1suniq.data"
 missingJars="${locationOfOutputFiles}missingjars.data"
 echo 'Finding files....'
 # Create list of Ivy jars and their SHA-1s
-for file in `find -f .ivy2-* -name "*.jar"`; do openssl sha1 $file | sed 's/.*(\(.*\))= \(.*\)$/\2 \1/'; done > ${jarList} 
+for file in `find ./local-ivy-repo -name "*.jar"`; do openssl sha1 $file | sed 's/.*(\(.*\))= \(.*\)$/\2 \1/'; done > ${jarList} 
 
 echo 'Sorting results...'
 export LC_ALL='C'
