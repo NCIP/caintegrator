@@ -96,10 +96,7 @@
         <default-interceptor-ref name="cai2ParamsPrepareParamsStack" />
         
         <global-results>
-            <result name="invalid.token" type="redirectAction">
-                <param name="actionName">workspace</param>
-                <param name="invalidAccess">true</param>
-            </result>
+            <result name="invalid.token" type="tiles">unauthorized</result>
             <result name="unauthorized" type="redirectAction">
                 <param name="actionName">workspace</param>
                 <param name="invalidAccess">true</param>
@@ -111,6 +108,10 @@
         <!--  Navigation Actions -->
         <!--  Navigation Actions -->
         
+		<action name="welcome">
+            <result type="chain">workspace</result>
+		</action>
+ 
         <action name="notYetImplemented" class="emptyAction">
             <result type="tiles">notYetImplemented</result>
         </action>
