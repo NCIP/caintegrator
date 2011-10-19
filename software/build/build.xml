@@ -143,7 +143,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<property name="bda-download.file" value="bda-ivy-2.0.0-build.xml" />
 	<!--
 	<mkdir dir="${bda-download.dir}" />
-	<property name="bda-download.src.url" value="http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-download/${bda-download.file}" />
+	<property name="bda-download.src.url" value="http://ncisvn.nci.nih.gov/svn/automation/trunk/software/bda-download/${bda-download.file}" />
 	<get src="${bda-download.src.url}" dest="${bda-download.dir}/${bda-download.file}" />
 	-->
 	<ant inheritAll="false" inheritRefs="false" antfile="${bda-download.file}" target="retrieve-bda" dir="${bda-download.dir}">
