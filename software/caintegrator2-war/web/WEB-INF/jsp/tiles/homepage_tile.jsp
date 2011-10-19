@@ -40,13 +40,20 @@
 	    <s:if test="#session['ACEGI_SECURITY_LAST_EXCEPTION'] != null">
 	        <font color="red">Invalid username/password. Please try again.</font>
 	    </s:if>
+	    <s:property value="#session['ACEGI_SECURITY_LAST_EXCEPTION'].message" />
 	    
 	    <h1><s:property value="#subTitleText" /></h1>
 	    <s:form name="loginForm" method="POST" action="/j_acegi_security_check">
 	       <s:textfield label="Username" name="j_username" />
 	       <s:password label="Password" name="j_password" />
 	       <s:submit value="Login" />
-	       <tr><td><s:a href="registration/input.action?selectedPage=register">Register Now</s:a></td></tr>
+	       <tr><td>
+		    <s:url id="registrationUrl" action="input" namespace="registration" includeParams="all">
+		        <s:param name="selectedPage" value="register" />
+		        <s:param name="struts.token.name">struts.token</s:param>
+		        <s:param name="struts.token" value="%{struts.token}" />         
+		    </s:url>
+	       <s:a href="%{registrationUrl}">Register Now</s:a></td></tr>
 	       
 	    </s:form>
 	    <script language="javascript">

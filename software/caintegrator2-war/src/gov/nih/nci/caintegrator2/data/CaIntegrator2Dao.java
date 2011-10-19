@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -508,4 +509,12 @@ public interface CaIntegrator2Dao {
      * so the database doesn't think it is an idle thread and kill it.
      */
     void runSessionKeepAlive();
+
+    /**
+     * Retrieves studyConfigurations which used this specified platform.
+     * @param platform the platform to be used to look up studyConfigurations.
+     * @return List of StudyConfigurations or null if no studies use it.
+     */
+    List<StudyConfiguration> getStudyConfigurationsWhichNeedThisPlatform(Platform platform);
+
 }

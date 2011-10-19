@@ -34,6 +34,7 @@
 	
 	
 	<tiles:insertAttribute name="bodyTile" />
+        <s:token />
 		<a href="#content" id="navskip">Skip to Page Content</a>
 		
 		<div id="wrapper" class="curate">

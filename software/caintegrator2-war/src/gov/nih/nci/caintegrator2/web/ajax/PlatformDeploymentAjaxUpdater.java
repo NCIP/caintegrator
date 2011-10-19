@@ -89,7 +89,9 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.DateUtil;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
@@ -114,6 +116,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String JOB_PLATFORM_VENDOR = "platformVendor_";
     private static final String JOB_PLATFORM_STATUS = "platformStatus_";
     private static final String JOB_PLATFORM_STATUS_DESCRIPTION = "platformStatusDescription_";
+    private static final String JOB_PLATFORM_STUDIES_USING_THIS_PLATFORM = "platformStudiesUsingThisPlatform_";
     private static final String JOB_ARRAY_NAME = "platformArrayName_";
     private static final String JOB_ACTION_PLATFORM_URL = "platformJobActionUrl_";
     private static final String PLATFORM_LOADER = "platformLoader";
@@ -166,7 +169,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     }
 
     private String[][] createRow(PlatformConfiguration platformConfiguration) {
-        String[][] rowString = new String[1][8];
+        String[][] rowString = new String[1][9];
         String id = platformConfiguration.getId().toString();
         String startSpan = "<span id=\"";
         String endSpan = "\"> </span>";
@@ -177,7 +180,8 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
         rowString[0][4] = startSpan + JOB_ARRAY_NAME + id + endSpan;
         rowString[0][5] = startSpan + JOB_PLATFORM_STATUS + id + endSpan;
         rowString[0][6] = startSpan + JOB_PLATFORM_STATUS_DESCRIPTION + id + endSpan;
-        rowString[0][7] = startSpan + JOB_ACTION_PLATFORM_URL + id + endSpan;
+        rowString[0][7] = startSpan + JOB_PLATFORM_STUDIES_USING_THIS_PLATFORM + id + endSpan;
+        rowString[0][8] = startSpan + JOB_ACTION_PLATFORM_URL + id + endSpan;
         return rowString;
     }
 
@@ -217,7 +221,38 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
                 getStatusMessage(platformConfiguration.getStatus()));
         utilThis.setValue(JOB_PLATFORM_STATUS_DESCRIPTION + platformConfigurationId, 
                 platformConfiguration.getStatusDescription());
+        utilThis.setValue(JOB_PLATFORM_STUDIES_USING_THIS_PLATFORM + platformConfigurationId, 
+                retrieveStudiesUsingThisPlatform(platformConfiguration));
         updateRowActions(platformConfiguration, utilThis, platformConfigurationId);
+    }
+
+    /**
+     * @param platformConfiguration
+     * @return string html formatted list of platform names.
+     */
+    private String retrieveStudiesUsingThisPlatform(PlatformConfiguration platformConfiguration) {
+        String studyInfo = "";
+        Platform platform = platformConfiguration.getPlatform();
+        if (platform != null) {
+            List<StudyConfiguration> studyConfigurationList
+            = arrayDataService.getStudyConfigurationsWhichNeedThisPlatform(platform);
+            if (studyConfigurationList != null && !studyConfigurationList.isEmpty()) {
+                for (StudyConfiguration sc : studyConfigurationList) {
+                    studyInfo = studyInfo.concat("<span style='white-space:nowrap;'>");
+                    studyInfo = studyInfo.concat(sc.getStudy().getShortTitleText());
+                    studyInfo = studyInfo.concat("<br>");
+                    studyInfo = studyInfo.concat(" &nbsp;&nbsp;");
+                    studyInfo = studyInfo.concat("(");
+                    studyInfo = studyInfo.concat(sc.getLastModifiedBy().getUsername());
+                    studyInfo = studyInfo.concat(" | ");
+                    studyInfo = studyInfo.concat(sc.getDisplayableLastModifiedDate());
+                    studyInfo = studyInfo.concat(")");
+                    studyInfo = studyInfo.concat("<br>");
+                    studyInfo = studyInfo.concat("</span>");
+                }
+            }
+        }
+        return studyInfo;
     }
 
     private String retrievePlatformName(PlatformConfiguration platformConfiguration) {

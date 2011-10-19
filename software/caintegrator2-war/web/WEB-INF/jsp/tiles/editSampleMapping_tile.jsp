@@ -46,6 +46,7 @@
                 <s:actionerror />
                 <s:form id="sampleMappingForm" name="sampleMappingForm"
                     action="saveSampleMapping" method="post" enctype="multipart/form-data" >
+                    <s:token />
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="genomicSource.id" />
                     <s:if test="%{genomicSource.mappedSamples.isEmpty}">

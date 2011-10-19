@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
@@ -229,5 +230,11 @@ public interface ArrayDataService {
       */
      GeneLocationConfiguration loadGeneLocationFile(File geneLocationFile, GenomeBuildVersionEnum genomeBuildVersion) 
      throws ValidationException, IOException;
+
+    /**
+     * @param platform Platform to query for.
+     * @return list of studyConfigurations for this Platform
+     */
+     List<StudyConfiguration> getStudyConfigurationsWhichNeedThisPlatform(Platform platform);
     
 }

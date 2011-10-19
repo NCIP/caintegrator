@@ -81,6 +81,7 @@
     
                 <s:actionerror/>
                 <s:form id="genomicSourceForm" name="genomicSourceForm" action="saveGenomicSource" theme="css_xhtml">
+                    <s:token />
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="genomicSource.id" id="genomicSourceId"/>
                     <s:if test="tempGenomicSource.statusDescription != null && tempGenomicSource.statusDescription.length() > 0">

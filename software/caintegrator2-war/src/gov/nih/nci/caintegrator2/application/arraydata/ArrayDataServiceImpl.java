@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 import gov.nih.nci.caintegrator2.application.query.FoldChangeCriterionHandler;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
@@ -369,5 +370,12 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     public PlatformConfiguration getRefreshedPlatformConfiguration(Long id) {
         return dao.get(id, PlatformConfiguration.class);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<StudyConfiguration> getStudyConfigurationsWhichNeedThisPlatform(Platform platform) {
+        return dao.getStudyConfigurationsWhichNeedThisPlatform(platform);
+    }    
 
 }
