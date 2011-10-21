@@ -56,29 +56,6 @@
     <!-- ******************************************************************* -->
     <!-- Checkstyle -->
     <property name="checkstyle.config" location="${resource.dir}/checkstyle/caintegrator2_checks.xml" />
-    
-    <!-- Hibernate -->
-
-    <path id="hibernatetool.classpath">
-        <fileset dir="${lib.dir}/hibernatetool">
-            <include name="commons-logging-1.0.4.jar" />
-            <include name="ejb3-persistence-1.0.1.jar" />
-            <include name="hibernate-annotations-1.0.jar" />
-            <include name="hibernate-commons-annotations-3.0.0.GA.jar" />
-            <include name="hibernate-tools-3.2.2.beta1.jar" />
-            <include name="mysql-connector-java-5.1.13.jar" />
-            <include name="antlr-2.7.6.jar" />
-            <include name="asm-1.5.3.jar" />
-            <include name="c3p0-0.9.0.jar" />
-            <include name="cglib-2.1_3.jar" />
-            <include name="commons-collections-3.2.jar" />
-            <include name="ehcache-1.2.4.jar" />
-            <include name="hibernate-3.2.0.ga.jar" />
-            <include name="freemarker-2.3.8.jar" />            
-            <include name="dom4j-1.6.1.jar" />
-        </fileset>
-    </path>
-    <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernatetool.classpath" />
 
     <!-- BDA -->
     <property name="bda-utils.dir" location="${software.dir}/target/bda-utils" />
@@ -720,6 +697,23 @@
     </target>
 
     <target name="database:generate-sql" depends="compile:caintegrator2.war, database:init-sql">
+        <!-- Hibernate tool-->
+        <path id="hibernatetool.classpath">
+	        <fileset dir="${caintegrator2.war.compile.lib.dir}">
+	        	<include name="commons-logging-1.1.1.jar"/>
+	            <include name="ejb3-persistence-1.0.1.GA.jar" />
+	            <include name="hibernate-annotations-3.2.0.ga.jar" />
+	            <include name="hibernate-commons-annotations-3.0.0.GA.jar" />
+	            <include name="mysql-connector-java-5.1.13.jar" />
+	            <include name="commons-collections-3.2.jar" />
+	            <include name="hibernate-3.2.0.ga.jar" />       
+	            <include name="dom4j-1.6.jar" />
+	        </fileset>
+	        <fileset dir="${lib.dir}/hibernatetool">
+	        	<include name="hibernate-tools-3.2.2.beta1.jar" />      
+	        </fileset>
+        </path>
+        <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernatetool.classpath" />
         <hibernatetool destdir="${caintegrator2db.sql.target.dir}">
             <configuration configurationfile="${caintegrator2.war.resources.src.dir}/hibernate.cfg.xml" />
             <hbm2ddl drop="false" create="true" export="false" outputfilename="create-tables-generated.sql" />
