@@ -1,6 +1,6 @@
 <ivysettings>
 	<settings defaultResolver="ncicb-chain" />
-	<caches defaultCacheDir="${user.home}/.ivy2-${ant.project.name}" useOrigin="true"/>
+	<caches defaultCacheDir="${user.home}/.ivy2-${ant.project.name}-nexus" useOrigin="true"/>
 	<resolvers>
 		<!-- this is where you read from -->
         <chain name="ncicb-chain">
