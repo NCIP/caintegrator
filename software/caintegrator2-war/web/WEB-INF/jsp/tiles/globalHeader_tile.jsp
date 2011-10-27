@@ -42,12 +42,16 @@
             <s:action name="workspace"/>
         </s:if>
         <div id="user">
+            <s:url id="logoutUrl" value="/logout.action" includeParams="none">
+                <s:param name="struts.token.name">struts.token</s:param>
+                <s:param name="struts.token" value="%{struts.token}" />
+            </s:url>
 	        <s:if test="anonymousUser"> 
-	        Currently not logged in <s:if test="%{selectedPage!='register'}">| <a href="/caintegrator/logout.jsp">Login</a>
+	        Currently not logged in <s:if test="%{selectedPage!='register'}">| <a href="${logoutUrl}">Login</a>
 	        </s:if>
 	        </s:if>
 	        <s:else>
-	        Welcome, <s:property value="#sessionHelper.username"/> | <a href="/caintegrator/logout.jsp">Logout</a>
+	        Welcome, <s:property value="#sessionHelper.username"/> | <a href="${logoutUrl}">Logout</a>
 	        </s:else>
         </div>
         <div id="mystudies">

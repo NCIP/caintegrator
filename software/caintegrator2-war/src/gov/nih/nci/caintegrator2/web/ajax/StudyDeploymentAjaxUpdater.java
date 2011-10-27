@@ -90,12 +90,12 @@ import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentService;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import org.directwebremoting.proxy.dwr.Util;
 
 /**
@@ -229,9 +229,7 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
             String deleteMsg = "The study: " + studyConfiguration.getStudy().getShortTitleText()
                 + " will be permanently deleted.";
             utilThis.setValue(JOB_DELETE_STUDY_URL + studyConfigurationId, 
-                    "<a href=\"deleteStudy.action?studyConfiguration.id=" 
-                    + studyConfiguration.getId() 
-                    + "\" onclick=\"return confirm('" + deleteMsg + "')\">Delete</a>",
+                    getDeleteStudyUrlString(studyConfiguration, deleteMsg),
                     false);
             if (Status.ERROR.equals(studyConfiguration.getStatus())) {
                 utilThis.setValue(JOB_STUDY_STATUS + studyConfigurationId, 
@@ -246,6 +244,27 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
             utilThis.setValue(JOB_ACTION_BAR + studyConfigurationId, "");
             utilThis.setValue(JOB_DELETE_STUDY_URL, "");
         }
+    }
+    
+    /**
+     * @param studyConfiguration
+     * @param deleteMsg
+     * @return the string which forms the html for the deleteStudy url.
+     */
+    private String getDeleteStudyUrlString(StudyConfiguration studyConfiguration, String deleteMsg) {
+        
+       String token = SessionHelper.getInstance().getToken();
+       String tokenName = SessionHelper.getInstance().getTokenName();
+       
+       String returnString = "<a href=\"deleteStudy.action?studyConfiguration.id=" 
+       + studyConfiguration.getId()
+       + "&struts.token.name="
+       + tokenName
+       + "&struts.token="
+       + token
+       + "\" onclick=\"return confirm('" + deleteMsg + "')\">Delete</a>";
+          
+        return returnString;
     }
     
     private String getStatusMessage(Status studyConfigurationStatus) {

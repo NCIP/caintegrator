@@ -136,6 +136,13 @@
             <result name="login" type="redirectAction">workspace</result>
         </action>
         
+        <action name="logout" class="emptyAction">
+            <result>logout.jsp</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref> 
+        </action>        
+        
         <action name="workspace" method="openWorkspace" class="workspaceAction">
             <result name="workspaceStudy" type="redirectAction">
                 <param name="actionName">studySummary</param>
@@ -188,7 +195,14 @@
         </action>
       
         <action name="deleteStudy" method="deleteStudy" class="editStudyAction">
-            <result type="redirectAction">manageStudies</result>
+            <result type="redirectAction">
+                <param name="actionName">manageStudies</param>
+                <param name="struts.token.name">${tokenName} </param>
+                <param name="struts.token">${newToken}</param>
+            </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
    
         <action name="saveStudy" class="saveStudyAction">
