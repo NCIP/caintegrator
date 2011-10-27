@@ -270,6 +270,31 @@ public final class SessionHelper {
     }
 
     /**
+     * @return the struts token or empty string if no token is found.
+     */
+    public String getToken() {
+        
+        String returnString = "";
+        
+        if (ActionContext.getContext().getSession()
+                .get(org.apache.struts2.util.TokenHelper.DEFAULT_TOKEN_NAME) != null) {
+            returnString =
+                (String) ActionContext.getContext().
+                getSession().get(org.apache.struts2.util.TokenHelper.DEFAULT_TOKEN_NAME);
+        }
+        
+        return returnString;
+    }
+    
+    /**
+     * @return the struts token name
+     */
+    public String getTokenName() {
+        return (String) org.apache.struts2.util.TokenHelper.DEFAULT_TOKEN_NAME;
+
+    }    
+        
+    /**
      * @return the studyManager
      */
     public boolean isStudyManager() {
