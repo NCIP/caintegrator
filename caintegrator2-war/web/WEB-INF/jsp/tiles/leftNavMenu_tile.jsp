@@ -470,6 +470,8 @@
     </s:url>
     <s:url id="loginUrl2" value="/logout.jsp" includeParams="all">
         <s:param name="selectedPage" value="%{'login'}" />
+        <s:param name="struts.token.name">struts.token</s:param>
+        <s:param name="struts.token" value="%{struts.token}" />        
     </s:url>
     <ul class="menu">
         <li class="stdnavforinvestigator" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator Menu</div>
