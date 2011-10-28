@@ -455,6 +455,8 @@
                 <param name="actionName">editAnnotationGroup</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="annotationGroup.id">${groupId}</param>
+                <param name="struts.token.name">${tokenName} </param>
+                <param name="struts.token">${newToken}</param>
             </result>
         </action>
         
@@ -506,6 +508,8 @@
                 <param name="actionName">editAnnotationGroup</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="annotationGroup.id">${groupId}</param>
+                <param name="struts.token.name">${tokenName} </param>
+                <param name="struts.token">${newToken}</param>
             </result>
             <result name="input" type="tiles">editFieldDescriptor</result>
             <result name="error" type="tiles">editFieldDescriptor</result>
@@ -536,6 +540,8 @@
                 <param name="actionName">editAnnotationGroup</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="annotationGroup.id">${groupId}</param>
+                <param name="struts.token.name">${tokenName} </param>
+                <param name="struts.token">${newToken}</param>
             </result>
             <result name="input" type="tiles">editFieldDescriptor</result>
             <result name="error" type="tiles">editFieldDescriptor</result>
@@ -567,6 +573,8 @@
                 <param name="actionName">editAnnotationGroup</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="annotationGroup.id">${groupId}</param>
+                <param name="struts.token.name">${tokenName} </param>
+                <param name="struts.token">${newToken}</param>                
             </result>
             <result name="input" type="tiles">editFieldDescriptor</result>
             <result name="error" type="tiles">editFieldDescriptor</result>
