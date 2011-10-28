@@ -648,4 +648,19 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
         return StringUtils.EMPTY;
     }    
     
+    /**
+     * @return creates a new struts token and returns it.
+     */
+    public String getNewToken() {
+        org.apache.struts2.util.TokenHelper.setToken();
+        return (String) SessionHelper.getInstance().getToken();
+    }
+    
+    /**
+     * @return the struts token name
+     */
+    public String getTokenName() {
+        return (String) org.apache.struts2.util.TokenHelper.DEFAULT_TOKEN_NAME;
+
+    }
 }
