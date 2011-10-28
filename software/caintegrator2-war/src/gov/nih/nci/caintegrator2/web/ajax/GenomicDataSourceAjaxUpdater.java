@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import org.directwebremoting.proxy.dwr.Util;
 
@@ -306,6 +307,13 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
     private String retrieveUrl(GenomicDataSourceConfiguration genomicSource, String actionName, 
             String linkDisplay, String linkCssClass, boolean isDelete) {
         String deleteString = "";
+        String token = "";
+        String tokenName = "";
+        try {
+            token = SessionHelper.getInstance().getToken();
+            tokenName = SessionHelper.getInstance().getTokenName();
+        } catch (Exception e) { token = ""; }
+        
         if (isDelete) {
             StringBuffer messageString = new StringBuffer("The Genomic Data Source " 
                 + genomicSource.getExperimentIdentifier() + " will be permanently deleted.");
@@ -318,7 +326,10 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
 
         return "<a style=\"margin: 0pt;\" class=\"btn\" href=\"" + actionName + ".action?studyConfiguration.id=" 
         + genomicSource.getStudyConfiguration().getId() 
-        + "&genomicSource.id=" + genomicSource.getId() + "\"" 
+        + "&genomicSource.id=" + genomicSource.getId()
+        + "&struts.token.name=" + tokenName
+        + "&struts.token=" + token
+        + "\"" 
         + deleteString + "><span class=\"btn_img\"><span class=\""
         + linkCssClass + "\">" + linkDisplay + "</span></span></a>";
         
