@@ -57,3 +57,36 @@
         }
         return true;
     }
+
+    /**
+     * Replace a URL parameter (or change it if it already exists)
+     * @param {theurl} string  this is the url string as input
+     * @param {paramName}    string  the key to set
+     * @param {newValue}    string  value 
+     */    
+    function replace_param(theurl, paramName, newValue) {
+    	var uri_array = theurl.split('?'); // break up url/query
+    	var params_array = uri_array[1].split('&'); // break up the query
+    	var items_array = new Array;
+    	for (i=0; i<params_array.length; i++) {
+	    	items_array = params_array[i].split('='); // split name/value pairs
+	    	if (items_array[0] == paramName) {
+	    	params_array[i] = items_array[0] + '=' + newValue;
+	    	} // end if
+    	} // end for i
+    	return uri_array[0] + '?' + params_array.join('&');
+	} // end function     
+
+    /**
+     * Takes an Object and updates its href string by appending
+     * the struts token parameters found elsewhere in this page.
+     * @param {obj} string the object to operate on
+     */    
+    function updateUrlTokenParameters(obj){
+    	// retrieve the struts tokens from elsewhere in this page.
+    	var tokenName = document.getElementsByName('struts.token.name')[0].value;
+    	var token = document.getElementsByName('struts.token')[0].value;
+    	// modify the href of the object
+    	obj.href = replace_param(obj.href, 'struts.token.name', tokenName);
+    	obj.href = replace_param(obj.href, 'struts.token', token);
+    }
