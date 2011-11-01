@@ -306,9 +306,8 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
 
     private String retrieveUrl(GenomicDataSourceConfiguration genomicSource, String actionName, 
             String linkDisplay, String linkCssClass, boolean isDelete) {
-        String deleteString = "";
-        String token = "";
-        String tokenName = "";
+        String deleteString = "", token = "", tokenName = "";
+
         try {
             token = SessionHelper.getInstance().getToken();
             tokenName = SessionHelper.getInstance().getTokenName();
@@ -324,7 +323,8 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
             deleteString = "onclick=\"return confirm('" + messageString.toString() + "')\"";
         }
 
-        return "<a style=\"margin: 0pt;\" class=\"btn\" href=\"" + actionName + ".action?studyConfiguration.id=" 
+        return "<a style=\"margin: 0pt;\" class=\"btn\" "
+        + "onclick=\"updateUrlTokenParameters(this)\" href=\"" + actionName + ".action?studyConfiguration.id=" 
         + genomicSource.getStudyConfiguration().getId() 
         + "&genomicSource.id=" + genomicSource.getId()
         + "&struts.token.name=" + tokenName
