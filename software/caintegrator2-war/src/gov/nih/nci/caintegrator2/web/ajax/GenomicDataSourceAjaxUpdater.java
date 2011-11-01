@@ -313,13 +313,6 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
             tokenName = SessionHelper.getInstance().getTokenName();
         } catch (Exception e) { token = ""; }
         
-        String token = "";
-        String tokenName = "";
-        try {
-            token = SessionHelper.getInstance().getToken();
-            tokenName = SessionHelper.getInstance().getTokenName();
-        } catch (Exception e) { token = ""; }
-        
         if (isDelete) {
             StringBuffer messageString = new StringBuffer("The Genomic Data Source " 
                 + genomicSource.getExperimentIdentifier() + " will be permanently deleted.");
