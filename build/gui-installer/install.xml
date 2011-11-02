@@ -431,7 +431,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 				<jar src="@{bda-utils.dir}/ant-1.8.2.jar" stage="both" />
 				<jar src="@{bda-utils.dir}/ant-launcher-1.8.2.jar" stage="both"/>
 				<jar src="@{bda-utils.dir}/ant-nodeps-1.8.1.jar" stage="both"/>
-				<jar src="@{bda-utils.dir}/xml-commons-resolver-1.2.jar" stage="both"/>
+				<jar src="@{bda-utils.dir}/xml-resolver-1.2.jar" stage="both"/>
 				<jar src="@{bda-utils.dir}/mysql-connector-java-5.1.13.jar" stage="both"/>
 				<jar src="@{bda-utils.dir}/ojdbc14-10.2.0.3.0.jar" stage="both"/>
 				<jar src="@{bda-utils.dir}/postgresql-8.4-701.jdbc3.jar" stage="both"/>
