@@ -61,18 +61,20 @@
     <dependency org="commons-lang" name="commons-lang" rev="2.4" conf="runtime->master"/>
     <dependency org="commons-math" name="commons-math" rev="1.2" conf="runtime->master"/>
     <dependency org="commons-io" name="commons-io" rev="1.4" conf="runtime->master"/>
-    <dependency org="jboss" name="jbossall-client" rev="4.0.5.GA" conf="compile"/>
-    <dependency org="jboss" name="jboss-ejb3x" rev="4.0.5.GA" conf="runtime"/>
-    <dependency org="jboss" name="jboss-aop-client" rev="1.5.2.GA" conf="compile"/>
-    <dependency org="jboss" name="jboss-ejb3-client" rev="noversion" conf="runtime"/>
-    <dependency org="jboss" name="jboss-aspect-client" rev="1.5" conf="compile"/>
-    <dependency org="gov.nih.nci.caintegrator2" name="freestylesearch" rev="4.0" conf="runtime"/>
+    <dependency org="commons-io" name="commons-io" rev="1.4" conf="runtime->master"/>
+    <dependency org="jboss" name="jbossall-client" rev="4.0.5.GA" conf="compile->master"/>
+    <dependency org="jboss" name="jboss-ejb3x" rev="4.0.5.GA" conf="runtime->master"/>
+    <dependency org="jboss" name="jboss-aop-client" rev="1.5.2.GA" conf="compile->master"/>
+    <dependency org="jboss" name="jboss-ejb3" rev="4.0.5.GAnci" conf="runtime->master"/>
+    <dependency org="jboss" name="jboss-aspect-client" rev="1.5" conf="compile->master"/>
+    <dependency org="gov.nih.nci.caintegrator2" name="freestylesearch" rev="4.0" conf="runtime->master"/>
+    <dependency org="gov.nih.nci.caintegrator2" name="caDSR-beans" rev="4.0" conf="compile,runtime->master"/>
     <dependency org="org.hibernate" name="hibernate-commons-annotations" rev="3.0.0.ga" conf="compile->master"/>
     <dependency org="org.hibernate" name="hibernate-tools" rev="3.2.3.GA" conf="compile->master"/>
     <dependency org="org.hibernate" name="hibernate-validator" rev="3.0.0.ga" conf="runtime->master"/>
     <dependency org="org.hibernate" name="hibernate-search" rev="3.1.0.GA" conf="compile->master"/>
     <dependency org="bouncycastle" name="bcprov-jdk15" rev="140" conf="compile->master"/>
-    <dependency org="ucar" name="nccore" rev="4.0.34" conf="runtime"/>
+    <dependency org="ucar" name="nccore" rev="4.0.34" conf="runtime->master"/>
     <dependency org="net.sf.opencsv" name="opencsv" rev="1.8" conf="runtime->master"/>
     <dependency org="net.sf.ehcache" name="ehcache-core" rev="2.3.1" conf="runtime->master"/>
     <dependency org="cglib" name="cglib" rev="2.1_3" conf="runtime->default" transitive="false"/>
@@ -85,7 +87,7 @@
     <dependency org="org.springframework" name="spring-context" rev="2.5.6" conf="runtime->master"/>
     <dependency org="org.springframework" name="spring-test" rev="2.5.6" conf="test-junit->master"/>
     <dependency org="org.springframework" name="spring-mock" rev="2.0.3" conf="test-junit->master"/>
-    <dependency org="apache" name="santuario" rev="1.4.0" conf="compile->default"/>
+    <dependency org="org.apache.santuario" name="xmlsec" rev="1.4.0" conf="compile->default"/>
     <dependency org="org.apache.tiles" name="tiles-jsp" rev="2.0.6" conf="runtime->master"/>
     <dependency org="org.apache.tiles" name="tiles-core" rev="2.0.6" conf="runtime->master"/>
     <dependency org="org.apache.tiles" name="tiles-api" rev="2.0.6" conf="runtime->master"/>
@@ -94,9 +96,9 @@
     <dependency org="org.apache.struts" name="struts2-spring-plugin" rev="2.2.1" conf="runtime->master"/>
     <dependency org="org.apache.struts" name="struts2-tiles-plugin" rev="2.2.1" conf="runtime->master"/>
     <dependency org="org.apache.struts" name="struts2-dojo-plugin" rev="2.2.1" conf="runtime->master"/>
-    <dependency org="affymetrix" name="AffxFusion" rev="1.1" force="true"/>
-    <dependency org="iviCore" name="iviCore" rev="1.2dev" conf="runtime" />
-    <dependency org="genepattern" name="GenePattern" rev="3.2.1" conf="runtime" />
+    <dependency org="affymetrix" name="affxfusion" rev="1.1" conf="runtime->master" force="true"/>
+    <dependency org="ivicore" name="ivicore" rev="1.2dev" conf="runtime->master" />
+    <dependency org="genepattern" name="genepattern" rev="3.2.1" conf="runtime->master" />
 
     <!-- These exist in the repository -->
     <!-- dependency org="net.sourceforge.addressing" name="addressing" rev="1.1" conf="compile, runtime->master"/-->
@@ -107,7 +109,7 @@
     <dependency org="javax.transaction" name="jta" rev="1.1" conf="runtime->master"/>
     <dependency org="globus" name="ws-addressing" rev="1.0" conf="runtime->master" transitive="false"/>
     <dependency org="globus" name="ws-core-client" rev="4.0.3" conf="compile,runtime->master"/>
-    <dependency org="globus" name="jcogfx" rev="noversion" conf="runtime"/>
+    <dependency org="org.globus" name="cog-axis" rev="1.0nci" conf="runtime->master"/>
     <dependency org="globus" name="jcog" rev="1.2" conf="compile,runtime->master"/>
     <dependency org="globus" name="ws-enumeration" rev="4.0.3" conf="runtime->master"/>
     <dependency org="wss4j" name="wss4j" rev="1.5.1" conf="runtime->master"/>
@@ -125,7 +127,7 @@
     <dependency org="xerces" name="xercesImpl" rev="2.6.2" conf="compile->master"/>
     <dependency org="c3p0" name="c3p0" rev="0.9.1" conf="runtime->master"/>
     <dependency org="org.codehaus.castor" name="castor" rev="1.0.4" conf="runtime->master"/>
-    <dependency org="gov.nih.nci.security" name="csm" rev="4.2" conf="runtime->master"/>
+    <dependency org="csmapi" name="csmapi" rev="4.2" conf="runtime->master"/>
     <dependency org="ncicb" name="nci-commons-core" rev="1.2.18" conf="runtime->master"/>
     <dependency org="org.hibernate" name="ejb3-persistence" rev="1.0.1.GA" conf="runtime->default"/>
     <dependency org="org.hibernate" name="hibernate-annotations" rev="3.2.0.ga" conf="runtime->master"/>
@@ -136,6 +138,7 @@
     <dependency org="commons-collections" name="commons-collections" rev="3.2" conf="runtime,test-checkstyle->master"/>
     <dependency org="commons-logging" name="commons-logging" rev="1.1.1" conf="compile,test-checkstyle->master"/>
     <dependency org="commons-discovery" name="commons-discovery" rev="0.4" conf="runtime->master"/>
+    <dependency org="commons-httpclient" name="commons-httpclient" rev="3.0" conf="compile,runtime->master"/>
     <dependency org="oro" name="oro" rev="2.0.8" conf="runtime,test-cobertura->master"/>
     <dependency org="gov.nih.nci.security" name="clm" rev="4.2.beta" conf="compile,runtime->master"/>
     <dependency org="com.oracle" name="ojdbc14" rev="10.2.0.3.0" conf="runtime->master"/>
@@ -150,17 +153,30 @@
     <dependency org="org.apache.axis2" name="axis2-saaj" rev="1.1" conf="runtime->default" />
    
     <!-- caGrid 1.2 stuff -->
-    <dependency org="caGrid" name="data" rev="1.2" conf="runtime->stubs,utils" />
-    <dependency org="caGrid" name="transfer" rev="1.2" conf="runtime->client" />
-    <dependency org="caGrid" name="dataExtensions" rev="1.2" conf="runtime->style-cacore32" transitive="false"/>
-    <dependency org="caGrid" name="sdkQuery4" rev="1.2" conf="runtime->processor" transitive="false" />
-    <dependency org="caGrid" name="discovery" rev="1.2" conf="runtime->default" transitive="false" />
-    <dependency org="caGrid" name="metadatautils" rev="1.2" conf="runtime->default" transitive="false" />
-    <dependency org="caGrid" name="gts" rev="1.2" conf="runtime->client" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="data-utils" rev="1.2" conf="runtime->master" />
+    <dependency org="gov.nih.nci.cagrid" name="data-stubs" rev="1.2" conf="runtime->master" />
+    <dependency org="gov.nih.nci.cagrid" name="transfer-client" rev="1.2" conf="runtime->master" />
+    <dependency org="gov.nih.nci.cagrid" name="transfer-stubs" rev="1.2" conf="runtime->default" />
+    <dependency org="gov.nih.nci.cagrid" name="transfer-common" rev="1.2" conf="runtime->default" />
+    <dependency org="gov.nih.nci.cagrid" name="dataextensions-style-cacore32" rev="1.2" conf="runtime->default" transitive="false"/>
+    <dependency org="gov.nih.nci.cagrid" name="sdkquery4-processor" rev="1.2" conf="runtime->master" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="discovery" rev="1.2" conf="runtime->default" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="metadatautils" rev="1.2" conf="runtime->default" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="metadata-data" rev="1.2" conf="compile,runtime->default" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="metadata-common" rev="1.2" conf="compile,runtime->default" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="metadata-security" rev="1.2" conf="compile,runtime->default" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="gts-client" rev="1.2" conf="runtime->master" transitive="false" />    
+    <dependency org="gov.nih.nci.cagrid" name="service-security-provider-client" rev="1.2" conf="compile,runtime->master" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="service-security-provider-common" rev="1.2" conf="compile,runtime->master" transitive="false" />  
+    <dependency org="gov.nih.nci.cagrid" name="service-security-provider-stubs" rev="1.2" conf="runtime->master" transitive="false" />   
+    <dependency org="gov.nih.nci.cagrid" name="bulkdatatransfer-stubs" rev="1.2" conf="runtime->master" transitive="false" />   
+    <dependency org="gov.nih.nci.cagrid" name="bulkdatatransfer-common" rev="1.2" conf="runtime->master" transitive="false" />   
+    <dependency org="gov.nih.nci.cagrid" name="bulkdatatransfer-client" rev="1.2" conf="runtime->master" transitive="false" />   
+    <dependency org="cagrid" name="cagrid-core" rev="1.2.0.1nci" conf="compile,runtime->default"/>
     <dependency org="cryptix" name="cryptix" rev="1.2nci" conf="runtime->master" />
     <dependency org="cryptix" name="cryptix-asn1" rev="0.1.11nci" conf="runtime->master" />
     <dependency org="cryptix" name="cryptix" rev="3.2.0" conf="runtime->master" />
-    <dependency org="globus" name="puretls" rev="0.9b5" conf="runtime" />
+    <dependency org="globus" name="puretls" rev="4.0.3" conf="runtime->master" />
     
     <!-- quartz 1.5.2 scheduler -->
     <dependency org="opensymphony" name="quartz" rev="1.6.1" conf="runtime->master" />

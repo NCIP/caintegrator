@@ -89,7 +89,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- Distribution Structure properties, used to copy files into the distribution area.
        		Use project.propertie relative dir names becasue they are used by install also-->
 	<property name="dist.exploded.dir" value="${dist.dir}/exploded" />
-	<property name="caintegrator2-war.dist.dir" value="${dist.exploded.dir}/${caintegrator2-war.dist.relative.dir}" />
+    <property name="dist.artifacts.dir" value="${dist.dir}/artifacts" />
+    <property name="caintegrator2-war.dist.dir" value="${dist.exploded.dir}/${caintegrator2-war.dist.relative.dir}" />
 	<property name="tools.dist.dir" value="${dist.exploded.dir}/${tools.dist.relative.dir}" />
 	<property name="common.dist.dir" value="${dist.exploded.dir}/${common.dist.relative.dir}" />
 	<property name="db-install.dist.dir" value="${dist.exploded.dir}/${db-install.dist.relative.dir}" />
@@ -542,6 +543,19 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
                 </else>
         </if>	    
 	</target>
+    
+    <target name="build-artifacts" depends="build:all,dist:upgrader:prep" description="">
+        <ant inheritAll="false" inheritRefs="false" antfile="install.xml" target="common:init" dir="${build.dir}" />
+        <property name="caintegrator2-war.dir.dist" location="${dist.exploded.dir}/${caintegrator2-war.dist.relative.dir}" />
+        <property name="caintegrator2.jms.file" value="caintegrator2-jms-destinations-service.xml" />
+        <property name="caintegrator2-war.ds.file" value="caintegrator2-mysql-ds.xml" />
+        <property name="caintegrator2-war.mail.service.file" value="mail-service.xml" />
+        <property name="caintegrator2-war.war.file" value="caintegrator.war" />
+        <copy file="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" todir="${dist.artifacts.dir}" overwrite="true" />
+        <copy file="${jboss-conf.dist.dir}/${caintegrator2-war.ds.file}" todir="${dist.artifacts.dir}" overwrite="true" />
+        <copy file="${jboss-conf.dist.dir}/${caintegrator2.jms.file}" todir="${dist.artifacts.dir}/jms" overwrite="true" />
+        <copy file="${jboss-conf.dist.dir}/${caintegrator2-war.mail.service.file}" todir="${dist.artifacts.dir}" overwrite="true" />
+    </target>
 
 
 	<!-- Install the application remotely. Depends on above targets to copy and extract distribution. Will use the target from install.xml specified in ${install.target} (defaults to install unless passed in on command line).  Calls ant from sshexec task to ensure properties are do not carry over from current ant runtime and also to emulate a manual install. Requires specifying -Dproperties.file=@file@ on the command line to point installer to correct enviornment to install into -->
