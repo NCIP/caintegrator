@@ -96,7 +96,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<property name="db-install.dist.dir" value="${dist.exploded.dir}/${db-install.dist.relative.dir}" />
 	<property name="db-upgrade.dist.dir" value="${dist.exploded.dir}/${db-upgrade.dist.relative.dir}" />
 	<property name="jboss-conf.dist.dir" value="${dist.exploded.dir}/${jboss-conf.dist.relative.dir}" />
-
+    <property name="jboss-conf.dist.working.dir" value="${dist.exploded.dir}/working/${jboss-conf.dist.relative.dir}" />
+    
 	<!-- Where to write files retrieved by get, into the distribution area.  The file names come from project.properties  -->
 	<property name="jboss.dest.file" value="${download.dir}/${jboss.binaries.file}" />
 	<property name="jbosscp.dest.file" value="${download.dir}/${jbosscp.binaries.file}" />
@@ -544,19 +545,27 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
         </if>	    
 	</target>
     
-    <target name="build-artifacts" depends="build:all,dist:upgrader:prep" description="">
-        <ant inheritAll="false" inheritRefs="false" antfile="install.xml" target="common:init" dir="${build.dir}" />
+    <target name="build-artifacts" depends="build:all,dist:upgrader:prep" description="" >
+        <!--
+        <ant inheritAll="true" inheritRefs="true" antfile="install.xml" target="common:init" useNativeBasedir="true">
+                <property name="common.dist.relative.dir" location="../common"/>
+            	
+        </ant>
+        -->
+        <deploy-local
+        			target.name="common:init"
+        			/>
         <property name="caintegrator2-war.dir.dist" location="${dist.exploded.dir}/${caintegrator2-war.dist.relative.dir}" />
         <property name="caintegrator2.jms.file" value="caintegrator2-jms-destinations-service.xml" />
         <property name="caintegrator2-war.ds.file" value="caintegrator2-mysql-ds.xml" />
         <property name="caintegrator2-war.mail.service.file" value="mail-service.xml" />
         <property name="caintegrator2-war.war.file" value="caintegrator.war" />
         <copy file="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" todir="${dist.artifacts.dir}" overwrite="true" />
-        <copy file="${jboss-conf.dist.dir}/${caintegrator2-war.ds.file}" todir="${dist.artifacts.dir}" overwrite="true" />
-        <copy file="${jboss-conf.dist.dir}/${caintegrator2.jms.file}" todir="${dist.artifacts.dir}/jms" overwrite="true" />
-        <copy file="${jboss-conf.dist.dir}/${caintegrator2-war.mail.service.file}" todir="${dist.artifacts.dir}" overwrite="true" />
+        <copy file="${jboss-conf.dist.working.dir}/${caintegrator2-war.ds.file}" todir="${dist.artifacts.dir}" overwrite="true" />
+        <copy file="${jboss-conf.dist.working.dir}/${caintegrator2.jms.file}" todir="${dist.artifacts.dir}/jms" overwrite="true" />
+        <copy file="${jboss-conf.dist.working.dir}/${caintegrator2-war.mail.service.file}" todir="${dist.artifacts.dir}" overwrite="true" />
     </target>
-
+	
 
 	<!-- Install the application remotely. Depends on above targets to copy and extract distribution. Will use the target from install.xml specified in ${install.target} (defaults to install unless passed in on command line).  Calls ant from sshexec task to ensure properties are do not carry over from current ant runtime and also to emulate a manual install. Requires specifying -Dproperties.file=@file@ on the command line to point installer to correct enviornment to install into -->
 	<target name="deploy:remote:install" depends="
