@@ -42,9 +42,10 @@
    <!-- for ssh/scp from ant -->
    <dependency name="jsch" org="com.jcraft" rev="0.1.41"/>
    <!-- for svn tasks from ant -->
+   <dependency conf="runtime->master" name="svnclientadapter" org="org.tigris" rev="1.3"/>
    <dependency conf="runtime->master" name="svnant" org="org.tigris" rev="1.3"/>
    <!-- Custom taks for comparing template to file or memeory -->
-   <dependency conf="runtime->master" name="propertyvalidator" org="ncicb" rev="0.1.8"/>
+   <dependency conf="runtime->master" name="propertyvalidator" org="gov.nih.nci.ncicb" rev="0.1.8"/>
    <!-- Add grand functionality to ant -->
    <dependency conf="runtime->master" name="grand" org="ggtools" rev="1.8"/>
    <!-- Adds umlgraph functionality to ant -->
@@ -65,10 +66,10 @@
    <!-- Adds bean scripting framework to ant -->
    <dependency name="bsf" org="bsf" rev="2.4.0"/>
    <!-- Added to make xmlcatalog stuff work -->
-   <dependency conf="runtime->master" name="xml-commons-resolver" org="apache" rev="1.2"/>
+   <dependency conf="runtime->master" name="xml-resolver" org="xml-resolver" rev="1.2"/>
    <!-- Ant Listener that reports timing on target and task execution -->
    <dependency conf="runtime->master" name="antutility" org="gov.nih.nci.bda-utils" rev="r19"/>
-   <dependency conf="runtime->master" name="uptconfigurator" org="ncicb" rev="0.0.1"/>
+   <dependency conf="runtime->master" name="uptconfigurator" org="gov.nih.nci.ncicb" rev="0.0.1"/>
    <dependency conf="runtime->master" name="htmlunit" org="net.sourceforge.htmlunit" rev="2.9"/>
    <dependency name="commons-codec" org="commons-codec" rev="1.3"/>
    <!-- Library for grid HTTPSValve 
