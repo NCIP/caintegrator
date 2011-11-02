@@ -15,7 +15,7 @@
   <dependencies>
     <dependency org="jfree" name="jfreechart" rev="1.0.9" conf="compile->master"/>
     <dependency org="jfree" name="jcommon" rev="1.0.12" conf="compile->master"/>
-    <dependency org="weka" name="weka" rev="3.4.13" conf="compile"/>
+    <dependency org="weka" name="weka" rev="3.4.13" conf="compile->master"/>
     <dependency org="log4j" name="log4j" rev="1.2.9" conf="compile->master"/>
   </dependencies>
   
