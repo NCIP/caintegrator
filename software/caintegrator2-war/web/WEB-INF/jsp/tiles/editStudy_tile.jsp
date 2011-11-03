@@ -127,13 +127,14 @@
                                 <s:url id="viewStudyLog" action="editStudyLog" includeParams="none">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="readOnly" value="true" />
+                                    <s:param name="struts.token.name">struts.token</s:param>
+                                    <s:param name="struts.token" value="%{struts.token}" />                                    
                                 </s:url>
                                 <s:url id="editStudyLog" action="editStudyLog" includeParams="none">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                     <s:param name="readOnly" value="false" />
                                     <s:param name="struts.token.name">struts.token</s:param>
                                     <s:param name="struts.token" value="%{struts.token}" />
-                                    
                                 </s:url>
                             <tr>
                                 <td class="tdLabel" align="right">
