@@ -168,8 +168,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- Includes- include BDA marcos -->
 	<echoproperties prefix="temp"/>
 	<import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
-    <echo message="deleteivy..." />
-    <property name="deleteivy" value="true" />
+
     <if>
         <isset property="deleteivy"/>
     <then>
@@ -180,7 +179,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
             <delete dir="${user.home}/.ivy2-caintegrator2-nexus"/>
     </then>
     </if>
-    <echo message="ant task..." />
+
     <ant inheritAll="false" inheritRefs="false" antfile="${bda-download.file}" target="retrieve-bda" dir="${bda-download.dir}">
         <property name="bda.version" value="${bda.version}" />
         <property name="bda-utils.dir" location="${bda-utils.dir}" />
