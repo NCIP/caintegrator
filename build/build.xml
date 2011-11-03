@@ -90,14 +90,14 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
        		Use project.propertie relative dir names becasue they are used by install also-->
 	<property name="dist.exploded.dir" value="${dist.dir}/exploded" />
     <property name="dist.artifacts.dir" value="${dist.dir}/artifacts" />
-    <property name="caintegrator2-war.dist.dir" value="${dist.exploded.dir}/${caintegrator2-war.dist.relative.dir}" />
+	<property name="caintegrator2-war.dist.dir" value="${dist.exploded.dir}/${caintegrator2-war.dist.relative.dir}" />
 	<property name="tools.dist.dir" value="${dist.exploded.dir}/${tools.dist.relative.dir}" />
 	<property name="common.dist.dir" value="${dist.exploded.dir}/${common.dist.relative.dir}" />
 	<property name="db-install.dist.dir" value="${dist.exploded.dir}/${db-install.dist.relative.dir}" />
 	<property name="db-upgrade.dist.dir" value="${dist.exploded.dir}/${db-upgrade.dist.relative.dir}" />
 	<property name="jboss-conf.dist.dir" value="${dist.exploded.dir}/${jboss-conf.dist.relative.dir}" />
     <property name="jboss-conf.dist.working.dir" value="${dist.exploded.dir}/working/${jboss-conf.dist.relative.dir}" />
-    
+
 	<!-- Where to write files retrieved by get, into the distribution area.  The file names come from project.properties  -->
 	<property name="jboss.dest.file" value="${download.dir}/${jboss.binaries.file}" />
 	<property name="jbosscp.dest.file" value="${download.dir}/${jbosscp.binaries.file}" />
@@ -232,6 +232,14 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	    <ant inheritAll="false" inheritRefs="false" antfile="${kaplan-meier-jar.build.file}" target="ivy:clean" dir="${kaplan-meier-jar.base.dir}" />
 	    <ant inheritAll="false" inheritRefs="false" antfile="${cbs-to-heatmap-jar.build.file}" target="ivy:clean" dir="${cbs-to-heatmap-jar.base.dir}" />
 	</target>
+    
+    <target name="cleanivy" description="prepare for info and delete bda util">
+        <delete dir="${user.home}/.ivy2-bda-utils-nexus"/>
+        <delete dir="${user.home}/.ivy2-cbs-to-heatmap-jar-nexus"/>
+        <delete dir="${user.home}/.ivy2-genepattern-service-jar-nexus"/>
+        <delete dir="${user.home}/.ivy2-kaplan-meier-jar-nexus"/>
+        <delete dir="${user.home}/.ivy2-caintegrator2-nexus"/>
+    </target>    
     
     <target name="report:ivy:cai2" description="Runs ivy reports on all dependencies in the ivy defnintion file, also produces dependency diagrams" >
         <property name="ivy.dep.file" value="${caintegrator2-war.base.dir}/ivy-caintegrator2.xml" />
@@ -544,7 +552,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
                 </else>
         </if>	    
 	</target>
-    
+
     <target name="build-artifacts" depends="build:all,dist:upgrader:prep" description="" >
         <!--
         <ant inheritAll="true" inheritRefs="true" antfile="install.xml" target="common:init" useNativeBasedir="true">
