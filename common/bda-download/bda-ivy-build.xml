@@ -54,7 +54,7 @@ This ant build file downloads the bda project from the official NCICB Ivy Reposi
 	<echo message="comonlibrary.dir=${commonlibrary.dir}"/>
 
 	<!-- Targets -->
-	<target description="delete ivy dirs" name="deleteivy" if="${deleteivy}">
+	<target description="delete ivy dirs" name="deleteivy" if="deleteivy">
 	        <echo message="properties in deleteivy"/>
 	        <echoproperties prefix="deleteivy"/>
             <delete dir="${user.home}/.ivy2-bda-utils-nexus"/>
