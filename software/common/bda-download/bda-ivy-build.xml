@@ -54,7 +54,14 @@ This ant build file downloads the bda project from the official NCICB Ivy Reposi
 	<echo message="comonlibrary.dir=${commonlibrary.dir}"/>
 
 	<!-- Targets -->
-	<target description="Makes transcient directories" name="init">
+	<target description="delete ivy dirs" name="deleteivy" if="${deleteivy}">
+            <delete dir="${user.home}/.ivy2-bda-utils-nexus"/>
+            <delete dir="${user.home}/.ivy2-cbs-to-heatmap-jar-nexus"/>
+            <delete dir="${user.home}/.ivy2-genepattern-service-jar-nexus"/>
+            <delete dir="${user.home}/.ivy2-kaplan-meier-jar-nexus"/>
+            <delete dir="${user.home}/.ivy2-caintegrator2-nexus"/>
+        </target>
+        <target description="Makes transcient directories" name="init" depends="deleteivy">
 		<mkdir dir="${lib.dir}"/>
 		<mkdir dir="${bda.local.repo.dir}"/>
 		<mkdir dir="${bda-utils.dir}"/>
