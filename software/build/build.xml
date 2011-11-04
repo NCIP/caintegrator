@@ -149,6 +149,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<get src="${bda-download.src.url}" dest="${bda-download.dir}/${bda-download.file}" />
 	-->
     <mkdir dir="${lib.dir}" />
+    <mkdir dir="${bda-utils.dir}" />
+    
 	<!-- Paths -->
 	<path id="bda-utils.classpath">
 		<fileset dir="${bda-utils.dir}">
