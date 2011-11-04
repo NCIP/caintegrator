@@ -154,8 +154,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<property name="lib.dir" location="${lib.dir}" />
 		<property name="software.dir" location="${software.dir}" />
 		<property name="commonlibrary.dir" location="${commonlibrary.dir}" />
-                <property name="deleteivy" value="${deleteivy}"/>		
-                <!-- Use below for old ivy repo -->
+        <!-- Use below for old ivy repo -->
 		<!--<property name="ivy.settings.file" value="ivy-bda-settings.xml"/>-->
 		<!-- Use below for new ivy repo -->
 		<property name="ivy.settings.file" value="cbiit-ivy-bda-settings.xml"/>
