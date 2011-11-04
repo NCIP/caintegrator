@@ -55,8 +55,6 @@ This ant build file downloads the bda project from the official NCICB Ivy Reposi
 
 	<!-- Targets -->
 	<target description="delete ivy dirs" name="deleteivy" if="deleteivy">
-	        <echo message="properties in deleteivy"/>
-	        <echoproperties prefix="deleteivy"/>
             <delete dir="${user.home}/.ivy2-bda-utils-nexus"/>
             <delete dir="${user.home}/.ivy2-cbs-to-heatmap-jar-nexus"/>
             <delete dir="${user.home}/.ivy2-genepattern-service-jar-nexus"/>
@@ -65,8 +63,6 @@ This ant build file downloads the bda project from the official NCICB Ivy Reposi
 	        <echo message="deleteivy parameter = ${deleteivy}.  Done deleting directories."/>
 	</target>
     <target description="Makes transcient directories" name="init" depends="deleteivy">
-        <echo message="properties in init"/>
-        <echoproperties prefix="deleteivy"/>
 		<mkdir dir="${lib.dir}"/>
 		<mkdir dir="${bda.local.repo.dir}"/>
 		<mkdir dir="${bda-utils.dir}"/>
@@ -99,8 +95,6 @@ This ant build file downloads the bda project from the official NCICB Ivy Reposi
 	</target>
 
 	<target depends="   init,   download-ivy,   download-ivy-settings,   download-ivy-bda   " description="This task retrieves bda project.  It also depends on targets that will download files required to get the ivy bda project." name="retrieve-bda">
-        <echo message="properties in retrieve-bda"/>
-        <echoproperties prefix="deleteivy"/>
 	    <taskdef classpathref="ivy.classpath" resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant"/>
 	    <property name="ivy.dep.file" value="${ivy.bda.file}"/>
 		<!-- Causes IVY to check last-modified http header to determine if it is going to download the file.  This can be modified on the resolver (settings file) with the resolve attribute of checkmodified.  It can also be set on the dependency level with the dependency attibute changing. If the web server does not send the http header last-modified it will never detect updates and you have to resort to clean cache to get the updated artifact and depeencies to download.-->
