@@ -29,7 +29,7 @@
     <dependency org="junit" name="junit" rev="4.3.1" conf="test-junit,test-pmd->master"/>
     <dependency org="javassist" name="javassist" rev="3.9.0.GA" conf="test-junit->default"/>
     <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9" conf="test-cobertura->master"/>  
-    <dependency org="log4j" name="log4j" rev="1.2.9" conf="test-cobertura->master"/>  
+    <dependency org="log4j" name="log4j" rev="1.2.9" conf="runtime,test-cobertura->master"/>  
     <dependency org="javancss" name="javancss" rev="29.50" conf="test-javancss->master"/>
     <dependency org="javancss" name="ccl" rev="29.50" conf="test-javancss->master"/>
     <dependency org="com.puppycrawl.tools" name="checkstyle" rev="5.2" conf="test-checkstyle->master"/>
@@ -60,7 +60,6 @@
     <dependency org="commons-configuration" name="commons-configuration" rev="1.5" conf="runtime->master"/>
     <dependency org="commons-lang" name="commons-lang" rev="2.4" conf="runtime->master"/>
     <dependency org="commons-math" name="commons-math" rev="1.2" conf="runtime->master"/>
-    <dependency org="commons-io" name="commons-io" rev="1.4" conf="runtime->master"/>
     <dependency org="commons-io" name="commons-io" rev="1.4" conf="runtime->master"/>
     <dependency org="jboss" name="jbossall-client" rev="4.0.5.GA" conf="compile->master"/>
     <dependency org="jboss" name="jboss-ejb3x" rev="4.0.5.GA" conf="runtime->master"/>
@@ -156,7 +155,7 @@
     <dependency org="gov.nih.nci.cagrid" name="data-utils" rev="1.2" conf="runtime->master" />
     <dependency org="gov.nih.nci.cagrid" name="data-stubs" rev="1.2" conf="runtime->master" />
     <dependency org="gov.nih.nci.cagrid" name="transfer-client" rev="1.2" conf="runtime->master" />
-    <dependency org="gov.nih.nci.cagrid" name="transfer-stubs" rev="1.2" conf="runtime->default" />
+    <dependency org="cagrid" name="cagrid-transfer-stubs" rev="1.2nci" conf="runtime->default" />
     <dependency org="gov.nih.nci.cagrid" name="transfer-common" rev="1.2" conf="runtime->default" />
     <dependency org="gov.nih.nci.cagrid" name="dataextensions-style-cacore32" rev="1.2" conf="runtime->default" transitive="false"/>
     <dependency org="gov.nih.nci.cagrid" name="sdkquery4-processor" rev="1.2" conf="runtime->master" transitive="false" />
