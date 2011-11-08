@@ -319,7 +319,7 @@
                                     <s:file name="clinicalFile" label="Add New Subject Annotation Data Source" />
                                     <s:checkbox name="createNewAnnotationDefinition" label="Create a new Annotation Definition if one is not found" 
                                         labelposition="left" />
-                                    <s:submit value="Upload Now" onclick="showBusyDialog(); document.addClinicalFile.submit();" type="image" src="images/btn_upload.gif" cssClass="editStudyFile" align="center" />
+                                    <s:submit value="Upload Now" onclick="showBusyDialog();document.addClinicalFile.submit();return false" type="image" src="images/btn_upload.gif" cssClass="editStudyFile" align="center" />
                         </s:form>
                         
                     </div>
