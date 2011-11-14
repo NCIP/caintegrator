@@ -26,7 +26,13 @@
    <!-- used extensively in ant -->
    <dependency conf="runtime->master" name="ant-contrib" org="ant-contrib" rev="1.0b3"/>
    <!-- Deployed to applications -->
-   <dependency conf="runtime->master" name="clm" org="gov.nih.nci.security" rev="4.2.beta" transitive="false"/>
+   <dependency org="gov.nih.nci.security" name="clm" rev="4.2.beta_jboss51" transitive="false" conf="runtime->default">
+        <artifact name="clm" type="jar" url="https://ncimvn.nci.nih.gov/nexus/content/repositories/public/gov/nih/nci/security/clm/4.2.beta_jboss51/clm-4.2.beta_jboss51-fix.jar" />
+   </dependency>
+   <dependency conf="runtime->master" name="cog-tomcat" org="globus" rev="4.0.3"/>
+   <dependency conf="runtime->master" name="commons-digester" org="commons-digester" rev="2.1"/>
+   <dependency conf="runtime->master" name="commons-beanutils" org="commons-beanutils" rev="1.8.3"/>
+   <dependency conf="runtime->master" name="jcog" org="globus" rev="1.2"/>
    <!-- used in ant scripts to verify connectivity/version of databases -->
    <dependency conf="runtime->master" name="dbconfig" org="dbconfig" rev="0.1.8"/>
    <!-- copied to deployment and used by ant for db tasks -->
