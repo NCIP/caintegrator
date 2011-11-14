@@ -152,18 +152,42 @@
     <filter-mapping>
         <filter-name>longCacheFilter</filter-name>
         <url-pattern>/struts/dojo/*</url-pattern>
+     </filter-mapping>   
+     <filter-mapping>
+        <filter-name>longCacheFilter</filter-name>
         <url-pattern>/struts/ajax/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>longCacheFilter</filter-name>
         <url-pattern>/struts/xhtml/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>longCacheFilter</filter-name>
         <url-pattern>/struts/css_xhtml/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>longCacheFilter</filter-name>
         <url-pattern>/struts/*</url-pattern>
     </filter-mapping>
     
     <filter-mapping>
         <filter-name>neverExpireFilter</filter-name>
         <url-pattern>/struts/dojo/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>neverExpireFilter</filter-name>
         <url-pattern>/struts/ajax/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>neverExpireFilter</filter-name>
         <url-pattern>/struts/xhtml/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>neverExpireFilter</filter-name>
         <url-pattern>/struts/css_xhtml/*</url-pattern>
+    </filter-mapping>    
+    <filter-mapping>
+        <filter-name>neverExpireFilter</filter-name>
         <url-pattern>/struts/*</url-pattern>
     </filter-mapping>      
     
