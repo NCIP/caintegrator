@@ -3669,8 +3669,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 								role JBossAdmin to access the HTML JMX console web application
 							</description>
 							<url-pattern>/*</url-pattern>
-							<http-method>GET</http-method>
-							<http-method>POST</http-method>
 						</web-resource-collection>
 						<auth-constraint>
 							<role-name>JBossAdmin</role-name>
@@ -9769,8 +9767,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 										role JBossAdmin to access the HTML JMX console web application
 									</description>
 									<url-pattern>/*</url-pattern>
-									<http-method>GET</http-method>
-									<http-method>POST</http-method>
 								</web-resource-collection>
 								<auth-constraint>
 									<role-name>JBossAdmin</role-name>
@@ -9853,8 +9849,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 										role JBossAdmin to access the HTML JMX console web application
 									</description>
 									<url-pattern>/*</url-pattern>
-									<http-method>GET</http-method>
-									<http-method>POST</http-method>
 								</web-resource-collection>
 								<auth-constraint>
 									<role-name>JBossAdmin</role-name>
