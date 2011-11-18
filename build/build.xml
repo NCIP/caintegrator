@@ -546,12 +546,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</target>
     
     <target name="build-artifacts" depends="build:all,dist:upgrader:prep" description="" >
-        <!--
-        <ant inheritAll="true" inheritRefs="true" antfile="install.xml" target="common:init" useNativeBasedir="true">
-                <property name="common.dist.relative.dir" location="../common"/>
-            	
-        </ant>
-        -->
         <deploy-local
         			target.name="common:init"
         			/>
@@ -564,6 +558,19 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
         <copy file="${jboss-conf.dist.working.dir}/${caintegrator2-war.ds.file}" todir="${dist.artifacts.dir}" overwrite="true" />
         <copy file="${jboss-conf.dist.working.dir}/${caintegrator2.jms.file}" todir="${dist.artifacts.dir}/jms" overwrite="true" />
         <copy file="${jboss-conf.dist.working.dir}/${caintegrator2-war.mail.service.file}" todir="${dist.artifacts.dir}" overwrite="true" />
+    </target>
+    
+    <target name="build-db-artifacts:prep" depends="dist:upgrader:prep" description="Prepares dir with sql and xml files for use by liquidbase" >
+        <deploy-local
+           target.name="bda-lite:upgrade:database:prep"
+           />
+    </target>
+    
+    <target name="build-db-artifacts" description="Executes db upgrade scripts." >
+        <property name="workingdirnodelete" value="true" />
+        <deploy-local
+           target.name="bda-lite:upgrade:database"
+           />
     </target>
 	
 
