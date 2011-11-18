@@ -67,8 +67,13 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
     <import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
 
     <mkdir dir="${working.dir}" />
-    <delete dir="${working.dir}"/>
-    <mkdir dir="${working.dir}" />
+    <if>
+        <isset property="workingdirnodelete"/>
+        <then>
+            <delete dir="${working.dir}"/>
+            <mkdir dir="${working.dir}" />
+        </then>
+    </if>
 
     <!-- Start logging moved out of target so all targets are logged -->
     <property name="install-logs.dir" location="${log.dir}"/>
@@ -754,6 +759,46 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
             database.changelog.file="${os.temp.dir}/${project.name}/db-upgrade.xml"
             />
         <database-tag/>
+    </target>
+    
+    <target name="bda-lite:upgrade:database:prep" description="Generates artifacts for db upgrade." unless="exclude.database"
+        depends="
+        common:init,
+        install:database:prep,
+        install:database:validation:pre-install
+        ">            
+    </target>
+    
+    <target name="bda-lite:upgrade:database" description="Perform db upgrade." depends="common:init" unless="exclude.database" >
+        
+        <sequential>   
+            <basename property="changelog.file" file="${os.temp.dir}/${project.name}/db-upgrade.xml"/>
+            <echo message="Updateing liquibase metadata file name to ${os.temp.dir}/${project.name}/db-upgrade.xml where filename includes ${changelog.file}"/>
+            <sql
+             driver="${database.driver}"
+             url="${database.url}"
+             userid="${database.user}"
+             password="${database.password}"
+             expandproperties="true"
+             onerror="continue"
+             autocommit="true"
+             >
+             <classpath>
+              <pathelement location="${database.driver.file}" />
+             </classpath>
+             update databasechangelog set filename='${os.temp.dir}/${project.name}/db-upgrade.xml' where filename like '%${changelog.file}';
+            </sql>
+            <updateDatabase
+                driver="${database.driver}"
+                url="${database.url}"
+                username="${database.user}"
+                password="${database.password}"
+                classpathref="jdbc.driver.classpath"
+                defaultSchemaName="${database.schema}"
+                changeLogFile="${os.temp.dir}/${project.name}/db-upgrade.xml"
+            />
+        </sequential>
+                
     </target>
 
     <target name="upgrade:database:tag" description="Tags current state of database with a tag to allow for rollback of database to previous versions." unless="exclude.database"
