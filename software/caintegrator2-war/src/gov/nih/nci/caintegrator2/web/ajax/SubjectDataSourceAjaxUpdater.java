@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import org.directwebremoting.proxy.dwr.Util;
 
@@ -304,7 +305,13 @@ public class SubjectDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
 
     private String retrieveUrl(DelimitedTextClinicalSourceConfiguration subjectSource, String actionName, 
             String linkDisplay, String linkCssClass, boolean isDelete) {
-        String deleteString = "";
+        String deleteString = "", token = "", tokenName = "";
+
+        try {
+            token = SessionHelper.getInstance().getToken();
+            tokenName = SessionHelper.getInstance().getTokenName();
+        } catch (Exception e) { token = ""; }        
+        
         if (isDelete) {
             deleteString = 
                 "onclick=\"return confirm('The subject annotation source file will be permanently deleted.')\"";
@@ -312,7 +319,10 @@ public class SubjectDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
 
         return "<a style=\"margin: 0pt;\" class=\"btn\" href=\"" + actionName + ".action?studyConfiguration.id=" 
         + subjectSource.getStudyConfiguration().getId() 
-        + "&clinicalSource.id=" + subjectSource.getId() + "\"" 
+        + "&clinicalSource.id=" + subjectSource.getId()
+        + "&struts.token.name=" + tokenName
+        + "&struts.token=" + token
+        + "\"" 
         + deleteString + "><span class=\"btn_img\"><span class=\""
         + linkCssClass + "\">" + linkDisplay + "</span></span></a>";
         
