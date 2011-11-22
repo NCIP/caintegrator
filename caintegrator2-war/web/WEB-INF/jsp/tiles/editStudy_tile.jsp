@@ -239,7 +239,7 @@
             </tr>
             <tr>
                 <td class="table_wrapper" colspan="2">
-                    <s:form>
+                    <s:form action="noAction">
                     <s:hidden name="studyConfiguration.id"  />
                     <table class="data">
                         <tr>
@@ -360,7 +360,7 @@
             <tr>
                 <td class="table_wrapper" colspan="2">              
         
-                    <s:form>
+                    <s:form action="noAction">
                     <s:hidden name="studyConfiguration.id"  />
                     <table class="data">
                         <tr>
@@ -400,7 +400,7 @@
             <tr>
                 <td class="table_wrapper" colspan="2">
 
-                    <s:form>
+                    <s:form action="noAction">
                     <s:hidden name="studyConfiguration.id"  />
                     <table class="data">
                         <tr>

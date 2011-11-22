@@ -116,6 +116,10 @@
             <result type="tiles">notYetImplemented</result>
         </action>
         
+        <action name="noAction" class="emptyAction">
+             <result type="tiles">homepage</result>
+        </action>        
+        
         <action name="tutorials" class="emptyAction">
             <result type="tiles">tutorials</result>
         </action>
