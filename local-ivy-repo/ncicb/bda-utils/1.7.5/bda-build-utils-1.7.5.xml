@@ -3947,9 +3947,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		<attribute name="izpack-custom.svn.dir" default="${target.dir}/izpack-custom"/>
 		<attribute name="product.name" default="caArray-installer" />
 		<attribute name="product.version" default="2.1.0" />
-		<attribute name="ant.binary.file" default="apache-ant-1.7.0-bin.zip"/>
-		<attribute name="ant.binary.url" default="https://ncisvn.nci.nih.gov/svn/commonlibrary/trunk/techstack-2007/os-independent/apache-ant-1.7.0-bin.zip"/>
-		<attribute name="ant.binary.dir" default="${target.dir}/apache-ant-1.7.0"/>
 		<sequential>
 			<tstamp>
 				<format property="JAR_STAMP" pattern="MMddyyyyhhmmss" unit="millisecond" />
@@ -4001,9 +3998,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 			<mkdir dir="@{target.dir}/@{izpack.binary.name}/lib"/>
 			<copy todir="@{target.dir}/@{izpack.binary.name}/lib">
 				<fileset dir="@{bda-utils.dir}">
-					<include name="ant-1.7.0.jar"/>
-					<include name="ant-launcher-1.7.0.jar"/>
-					<include name="ant-nodeps-1.7.0.jar"/>
+					<include name="ant-1.8.2.jar"/>
+					<include name="ant-launcher-1.8.2.jar"/>
+					<include name="ant-nodeps-1.8.1.jar"/>
 				</fileset>
 			</copy>
 
@@ -4016,8 +4013,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 					<chmod dir="@{target.dir}/@{izpack.binary.name}/bin" perm="ugo+rx" includes="compile" />
 				</then>
 			</if>
-			<get src="@{ant.binary.url}" dest="@{download.dir}/@{ant.binary.file}" usetimestamp="true"/>
-			<unzip dest="@{target.dir}" src="@{download.dir}/@{ant.binary.file}" />
+		<!--  <get src="@{ant.binary.url}" dest="@{download.dir}/@{ant.binary.file}" usetimestamp="true"/>
+			<unzip dest="@{target.dir}" src="@{download.dir}/@{ant.binary.file}" /> -->
 		</sequential>
 	</macrodef>
 	<macrodef name="jboss-read-ldapconfig" description="check if the application is installed">
