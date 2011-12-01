@@ -67,6 +67,27 @@
    <!-- Ant lib files -->
    <dependency conf="runtime->master" name="ant" org="org.apache.ant" rev="1.8.2"/>
    <dependency conf="runtime->master" name="ant-nodeps" org="org.apache.ant" rev="1.8.1"/>
+   <dependency conf="runtime->master" name="ant-jai" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-antlr" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-apache-bcel" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-apache-bsf" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-apache-log4j" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-apache-oro" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-apache-regexp" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-apache-resolver" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-apache-xalan2" org="org.apache.ant" rev="1.8.2"/>           
+   <dependency conf="runtime->master" name="ant-commons-logging" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-commons-net" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-javamail" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-jmf" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-jdepend" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-jsch" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-junit" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-launcher" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-netrexx" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-swing" org="org.apache.ant" rev="1.8.2"/>
+   <dependency conf="runtime->master" name="ant-testutil" org="org.apache.ant" rev="1.8.2"/>
+    
    <!-- Adds xmltask functionality to ant -->
    <dependency conf="runtime->master" name="xmltask" org="oopsconsultancy" rev="1.15.1"/>
    <!-- Adds bean scripting framework to ant -->
