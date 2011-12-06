@@ -193,7 +193,12 @@ public enum ConfigurationParameter {
     /**
      * URL For UPT.
      */
-    UPT_URL("[Unknown UPT URL]");
+    UPT_URL("[Unknown UPT URL]"),
+    
+    /**
+     * Default Integrative Genomics Viewer download URL.
+     */
+    BROAD_HOSTED_IGV_URL("http://www.broadinstitute.org/igv/projects/current/igv.php?user=anonymous&sessionURL=");
 
     private String defaultValue;
 

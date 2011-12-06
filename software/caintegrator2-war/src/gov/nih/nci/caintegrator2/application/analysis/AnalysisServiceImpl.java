@@ -112,6 +112,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
@@ -148,6 +149,7 @@ import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.file.AnalysisFileManager;
 import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.caintegrator2.file.FileManagerImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -172,8 +174,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 @SuppressWarnings("PMD.ExcessiveClassLength") // This is the main class for running all analysis, consider refactor
 public class AnalysisServiceImpl extends CaIntegrator2BaseService implements AnalysisService {
-    private static final String BROAD_HOSTED_IGV_URL = 
-        "http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=";
     private KMPlotService kmPlotService;
     private GeneExpressionPlotService gePlotService;
     private QueryManagementService queryManagementService;
@@ -184,7 +184,6 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     private ArrayDataService arrayDataService;
     private SessionAnalysisResultsManager sessionAnalysisResultsManager;
     private CBSToHeatmapFactory cbsToHeatmapFactory;
-    
     /**
      * {@inheritDoc}
      */
@@ -463,7 +462,12 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
                 igvParameters.getSessionId(), igvParameters.getQuery().getColumnCollection(), copyNumberSubType));
         analysisFileManager.createIGVSessionFile(igvParameters, igvResult);
         sessionAnalysisResultsManager.storeJobResult(igvParameters.getSessionId(), igvResult);
-        return BROAD_HOSTED_IGV_URL + encodeUrl(igvParameters.getUrlPrefix()) + IGVFileTypeEnum.SESSION.getFilename();
+        FileManager thisFileMgrImpl = analysisFileManager.getFileManager();
+        String retStr = ((FileManagerImpl) thisFileMgrImpl).getConfigurationHelper()
+                            .getString(ConfigurationParameter.BROAD_HOSTED_IGV_URL);
+        retStr = retStr.concat(encodeUrl(igvParameters.getUrlPrefix()));
+        retStr = retStr.concat(IGVFileTypeEnum.SESSION.getFilename());
+        return retStr;
     }
 
     private CopyNumberCriterionTypeEnum retrieveCopyNumberSubtypeForIGV(
