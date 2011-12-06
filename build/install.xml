@@ -105,32 +105,51 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
         <if>
             <isset property="jboss.ncicb-standard.port-config"/>
             <then>
-                <!-- Read some port properties from standard bindings file -->
+                 <!-- Read some port properties from standard bindings file -->
                 <echo message="Using JBoss NCICB Standard port configurations"/>
-                <property name="jboss.server.binding.template.location" value="${basedir}/${jboss-bindings.file}"/>
-                <jboss-read-ports
-                    jboss.server.bindingfile.location="${jboss.server.binding.template.location}"
+                <if>
+                    <equals arg1="${jboss.major.version}" arg2="4" />
+                    <then>
+                        <property name="jboss.server.binding.template.location" value="${basedir}/${jboss4-bindings.file}"/>
+                        <jboss-read-ports
+                            jboss.server.bindingfile.location="${jboss.server.binding.template.location}" />
+                        <jboss-bindings-validate jboss.server.bindingfile.location="${jboss.server.binding.template.location}"
                     />
+                    </then>
+                    <elseif>
+                        <equals arg1="${jboss.major.version}" arg2="5" />
+                        <then>
+                            <property name="jboss.server.bindingfile.location" value="${basedir}/${jboss-bindings.file}" />
+                            <property name="jboss.server.binding.template.location" value="${basedir}/${jboss5-bindings.file}"/>
+                            <property name="temp.ejb.file" value="${temp.dir}/ejb3-connectors-jboss-beans.xml" />
+                            <copy tofile="${temp.ejb.file}" file="${bda-utils.dir}/resource/jboss-5.1.0.GA/ejb3-connectors-jboss-beans.xml" />
+                            <jboss51-bindings-nci jboss.server.bindingfile.location="${jboss.server.binding.template.location}" />
+                            <jboss51-read-ports-nci jboss.server.bindingfile.location="${jboss.server.binding.template.location}" jboss.server.ejbfile.location="${temp.ejb.file}" />
+                        </then>
+                    </elseif>
+                </if>
                 <echo message="http -${jboss.server.port} "/>
                 <echo message="http -${jboss.server.jndi.port} "/>
-                <properties-exist
-                    properties.list="jboss.server.jndi.port,jboss.server.port,jboss.server.ports.name"
-                    />
-                <!-- Make sure there are not unexpanded tokens and that the jboss.server.ports.name is a configuration in the bindings file. -->
-                <jboss-bindings-validate
-                    jboss.server.bindingfile.location="${jboss.server.binding.template.location}"
-                    />
-
             </then>
             <else>
-                <!-- else ensure that all ports are set, since these will be removed from install-properties.template we will verify here.  They have to be removed so the validator works with or without the properties or we have to change the format of the file. -->
                 <echo message="Using custom JBoss port configurations"/>
-                <property name="jboss.server.binding.template.location" value="${bda-utils.dir}/resource/${jboss.binaries.relative.dir}/bindings.xml"/>
+                <if>
+                    <equals arg1="${jboss.major.version}" arg2="4" />
+                    <then>
+                        <property name="jboss.server.binding.template.location" value="${bda-utils.dir}/resource/${jboss.binaries.relative.dir}/bindings.xml" 					/>
+                    </then>
+                    <else>
+                        <property name="jboss.server.binding.template.location" value="${bda-utils.dir}/resource/${jboss.binaries.relative.dir}/bindings-jboss-beans.xml" 					/>
+
+                    </else>
+                </if>
+                <properties-exist properties.list="jboss.server.jndi.port,jboss.server.port,jboss.server.ports.name" />
+                <!-- else ensure that all ports are set, since these will be removed from install-properties.template we will verify here.  They have to be removed so the validator works with or without the properties or we have to change the format of the file. -->
                 <properties-exist
-                    properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jboss.ejbinvoker.port,jboss.hajndi.port,jboss.hajrmi.port,jboss.jms.port,jboss.jmx-rmi.port,jboss.messaging.port,jboss.pooledha.port,jboss.remoting.port,jboss.server.bind.port,jboss.server.rmi.port,jboss.service.rmiobject.port,jboss.snmp.port,jboss.snmp-trapd.port,jboss.web.service.port"
-                    />
+properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jboss.hajndi.port,jboss.hajrmi.port,jboss.jmx-rmi.port,jboss.messaging.port,jboss.pooledha.port,jboss.server.bind.port,jboss.server.rmi.port,jboss.service.rmiobject.port,jboss.snmp.port,jboss.snmp-trapd.port,jboss.web.service.port,jboss.unifiedinvoker.port,jboss.hajndi.auto.port,jboss.ssl.port,jboss.jms2.netty.port,jboss.jms2.netty-ssl.port,jboss.transaction.recovery.port,jboss.transaction.status.port,jboss.transaction.processid.port"/>
             </else>
         </if>
+        <jboss-version />
     </target>
     <target name="common:jboss:init" depends="common:init:pre" unless="exclude.jboss">
         <math result="jboss.ssl.port" operand1="${jboss.server.port}" operation="+" operand2="363" datatype="int"/>
@@ -396,7 +415,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
         depends="
         common:jboss:init,
         common:init,
-        install:jboss:configure:log4j   
+        install:jboss:configure:log4j,
+        -install:jboss:configure:web-container   
         ">
         <!-- Calls the following macros
         jboss-bindings - configures ports for jboss
@@ -408,10 +428,56 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
         grid-secure-configure-connector - configures secure grid
         -->
         <!-- Use below if you are defining all the ports in your install.xml not the NCICB port configuraitons-->
-        <jboss-configure
-            />
+        <if>
+            <equals arg1="${jboss.major.version}" arg2="4"/>
+            <then>
+                <jboss-configure />
+            </then>
+        </if>
+        <if>
+            <equals arg1="${jboss.major.version}" arg2="5"/>
+            <then>
+                <jboss-configure
+                    jboss.grid.configure="false"
+                    jboss.server.bindingfile.location="${jboss.home}/server/${jboss.server.name}/conf/bindingservice.beans/META-INF/bindings-jboss-beans.xml"
+                    jboss.server.binding.template.location="${jboss.server.binding.template.location}"
+                    jboss.server-xml.file="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"
+                    proxy.update.connector.port.ssl="${jboss.ssl.port}"
+                />
+            </then>
+        </if>
     </target>
 
+     <target name="-install:jboss:configure:web-container" description="Configure web container for caArray JBoss installation.">
+        <xmltask preservetype="true" source="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"
+           dest="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml">
+           <xmlcatalog refid="bda.xml.catalog"/>
+           <remove path="/Server/Service[@name='jboss.web']/Connector[@port='29443']" />
+        </xmltask>
+        <xmltask source="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/context.xml" dest="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/context.xml">
+            <xmlcatalog refid="bda.xml.catalog"/>
+            <copy path="/Context/SessionCookie" property="session.cookie.contents.present"/>
+        </xmltask>
+        <if>
+            <isset property="session.cookie.contents.present"/>
+            <then>
+        <xmltask source="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/context.xml" dest="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/context.xml">
+            <xmlcatalog refid="bda.xml.catalog"/>
+            <attr path="/Context/SessionCookie" attr="path" value="/"/>
+                </xmltask>
+            </then>
+            <else>
+                <xmltask source="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/context.xml" dest="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/context.xml">
+                    <xmlcatalog refid="bda.xml.catalog"/>
+                     <insert path="/Context">
+                        <![CDATA[
+                        <SessionCookie path="/"/>
+                        ]]>
+                    </insert>
+                </xmltask>
+            </else>
+        </if>
+    </target>
 
     <!-- Calls to bda macros for basic functionality -->
     <target name="install:jboss:stop" description="Stops jboss" unless="exclude.jboss" depends="common:jboss:init,common:init">
@@ -487,8 +553,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
     <target name="install:jboss:validation:post-install" description="Run post-install checks from bda-utils"
         depends="
         common:jboss:init,
-        common:init,
-        install:jboss:start
+        common:init
         ">
         <if>
             <not>
@@ -975,7 +1040,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
             />              
         <jboss-read-bindings-file-location
             />              
-        <jboss-read-ports       
+        <jboss51-read-ports       
             />              
         <!-- Setting this variable will cause install to copy it into place if using CM/DAC, not modified in NCM -->
         <var name="jboss.ssl.keystore.dir" value="${working.dir}/keys/jboss"/>
@@ -1002,6 +1067,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
         <property name="copied.jboss.log4j.dir" value="${working.dir}/copied-log4j"/>
         <jboss-copy-log4j
             copied.jboss.log4j.dir="${copied.jboss.log4j.dir}"
+            jboss.log4j.location="${jboss.home}/server/${jboss.server.name}/conf/jboss-log4j.xml"
             />                      
         <!--
         <grid-read-index-url
@@ -1016,10 +1082,22 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
         -->
     </target>
     <target name="upgrade:post:jboss">
-        <jboss-copy-log4j
-            copied.jboss.log4j.dir="${copied.jboss.log4j.dir}"
-        />  
-        <copy file="${copied.jboss.log4j.dir}/log4j.xml" todir="${jboss.home}/server/${jboss.server.name}/conf"/>
+        
+        <if>
+            <equals arg1="${jboss.major.version}" arg2="4"/>
+            <then>
+                <jboss-copy-log4j copied.jboss.log4j.dir="${copied.jboss.log4j.dir}" />  
+                <copy file="${copied.jboss.log4j.dir}/log4j.xml" todir="${jboss.home}/server/${jboss.server.name}/conf"/>
+            </then>
+        </if>
+        <if>
+            <equals arg1="${jboss.major.version}" arg2="5"/>
+            <then>
+                <copy file="${copied.jboss.log4j.dir}/jboss-log4j.xml" todir="${jboss.home}/server/${jboss.server.name}/conf"/>
+            </then>
+        </if>
+        
+        
     </target>
 
 

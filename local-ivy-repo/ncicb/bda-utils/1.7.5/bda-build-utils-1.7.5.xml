@@ -3026,7 +3026,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		<attribute name="jboss.server.name" default="${jboss.server.name}"/>
 		<attribute name="jboss.conf.dir" default="@{jboss.home}/server/@{jboss.server.name}/conf"/>
 		<attribute name="jboss.webapp.dir" default="@{jboss.home}/server/@{jboss.server.name}/deploy"/>
-		<attribute name="jboss.server-xml.file" default="@{jboss.home}/server/@{jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="jboss.server-xml.file" default="@{jboss.home}/server/@{jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="jboss.server-xml.service.name" default="jboss.web"/>
 		<attribute name="jboss.port.http" default="${jboss.server.port}"/>
 		<attribute name="jboss.port.ssl" default="${jboss.ssl.port}"/>
@@ -3244,7 +3244,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		<attribute name="appserver.server.name" default="${jboss.server.name}"/>
 		<attribute name="appserver.conf.dir" default="${jboss.home}/server/${jboss.server.name}/conf"/>
 		<attribute name="appserver.webapp.dir" default="${jboss.home}/server/${jboss.server.name}/deploy"/>
-		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="appserver.server-xml.service.name" default="jboss.web"/>
 		<attribute name="appserver.port.http" default="${jboss.server.port}"/>
 		<attribute name="appserver.port.ssl" default="${jboss.ssl.port}"/>
@@ -4290,7 +4290,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 					<echo message="Patching jboss with @{jbosscp.binaries.file}."/>
 					<unzip dest="@{jboss.home}" src="@{jbosscp.binaries.file}" />
 					<!-- Copy of patched configuration files -->
-					<copy file="@{jboss.home}/config-patches/jboss-service.xml.patched" tofile="@{jboss.home}/server/@{jboss.server.name}/deploy/jbossweb-tomcat55.sar/META-INF/jboss-service.xml" overwrite="true"/>
+					<copy file="@{jboss.home}/config-patches/jboss-service.xml.patched" tofile="@{jboss.home}/server/@{jboss.server.name}/deploy/jbossweb.sar/META-INF/jboss-service.xml" overwrite="true"/>
 					<copy file="@{jboss.home}/config-patches/jmx-invoker-service.xml.patched" tofile="@{jboss.home}/server/@{jboss.server.name}/deploy/jmx-invoker-service.xml" overwrite="true"/>
 					<copy file="@{jboss.home}/config-patches/EntityEjb.jsp.patched" tofile="@{jboss.home}/server/@{jboss.server.name}/deploy/management/console-mgr.sar/web-console.war/EntityEjb.jsp" overwrite="true"/>
 					<copy file="@{jboss.home}/config-patches/MdbEjb.jsp.patched" tofile="@{jboss.home}/server/@{jboss.server.name}/deploy/management/console-mgr.sar/web-console.war/MdbEjb.jsp" overwrite="true"/>
@@ -4648,7 +4648,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 
 	<macrodef name="appserver-ssl-configure" description="macro for enabling ssl in jboss">
 		<attribute name="appserver.conf.dir" default="${jboss.home}/server/${jboss.server.name}/conf"/>
-		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="appserver.server-xml.service.name" default="jboss.web"/>
 		<attribute name="appserver.ssl.enable" default="${jboss.ssl.enable}"/>
 		<attribute name="appserver.ssl.port" default="8443"/>
@@ -4671,7 +4671,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 					<!-- copy keystore to ${jboss.home}/server/${jboss.server.name}/conf -->
 					<copy todir="@{appserver.conf.dir}" file="@{appserver.ssl.keystore.dir}/@{appserver.ssl.keystore.file}"/>
 
-					<!-- modify ${jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml -->
+					<!-- modify ${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml -->
 					<xmltask preservetype="true" source="@{appserver.server-xml.file}"
 						dest="@{appserver.server-xml.file}">
 						<xmlcatalog refid="bda.xml.catalog"/>
@@ -4838,7 +4838,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 
 	<macrodef name="grid-secure-configure-connector" description="Inserts a secure connector configuration into a tomcat configuration, including jboss tomcat">
 		<attribute name="appserver.conf.dir" default="${jboss.home}/server/${jboss.server.name}/conf"/>
-		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="appserver.server-xml.service.name" default="jboss.web"/>
 		<attribute name="grid.secure.enable" default="${grid.secure.enable}"/>
 		<attribute name="grid.secure.port" default="@{grid.secure.port}"/>
@@ -4943,7 +4943,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		</sequential>
 	</macrodef>
 	<macrodef name="grid-secure-configure-valve">
-		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="appserver.server-xml.service.name" default="jboss.web"/>
 		<sequential>
 			<var name="is.jboss40" unset="true"/>
@@ -5213,7 +5213,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		</sequential>
 	</macrodef>
 	<macrodef name="appserver-configure-external-hostname">
-		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="appserver.server-xml.service.name" default="jboss.web"/>
 		<attribute name="appserver.external.host" default="${jboss.external.ssl.host}"/>
 		<attribute name="appserver.external.port" default="${jboss.external.ssl.port}"/>
@@ -5543,7 +5543,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 
 		<!-- appserver-ssl-configure -->
 		<attribute name="jboss.conf.dir" default="${jboss.home}/server/${jboss.server.name}/conf"/>
-		<attribute name="jboss.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="jboss.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="jboss.server-xml.service.name" default="jboss.web"/>
 		<attribute name="jboss.ssl.enable" default="${jboss.ssl.enable}"/>
 		<!-- This is the value inserted into the connector in server.xml, bindings updates this the real port at runtime. You could use the real value then the bindings would not match  and it would update, so this may change in the future. -->
@@ -5797,7 +5797,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		</sequential>
 	</macrodef>
 	<macrodef name="appserver-configure-hostname">
-		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="appserver.server-xml.service.name" default="jboss.web"/>
 		<attribute name="appserver.hostname" default="${jboss.server.hostname}"/>
 		<sequential>
@@ -5912,7 +5912,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 	<macrodef name="appserver-accesslog-configure" description="macro for enabling ssl in jboss">
 		<attribute name="appserver.conf.dir" default="${jboss.home}/server/${jboss.server.name}/conf"/>
 		<attribute name="appserver.logs.dir" default="${jboss.home}/server/${jboss.server.name}/log"/>
-		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="appserver.server-xml.service.name" default="jboss.web"/>
 		<attribute name="appserver.hostname" default="${jboss.server.hostname}"/>
 		<sequential>
@@ -6298,11 +6298,11 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		<attribute name="jboss.jms.port.property.name" default="jboss.jms.port"/>
 		<attribute name="jboss.remoting.port.property.name" default="jboss.remoting.port"/>
 		<attribute name="jboss.messaging.port.property.name" default="jboss.messaging.port"/>
-
-		<sequential>
+        <sequential>
 			<var name="jboss-read-ports.properties.list" value="@{jboss.server.jndi.port.property.name},@{jboss.server.port.property.name},@{jboss.ejbinvoker.port.property.name},@{jboss.server.rmi.port.property.name},@{jboss.web.service.port.property.name},@{jboss.service.rmiobject.port.property.name},@{jboss.server.bind.port.property.name},@{jboss.hajndi.port.property.name},@{jboss.hajrmi.port.property.name},@{jboss.pooledha.port.property.name},@{jboss.cobraorb.port.property.name},@{jboss.jmx-rmi.port.property.name},@{jboss.snmp-trapd.port.property.name},@{jboss.snmp.port.property.name},@{jboss.jms.port.property.name},@{jboss.remoting.port.property.name},@{jboss.messaging.port.property.name}"/>
 			<var name="read.http.port" unset="true"/>
 			<var name="read.jndi.port" unset="true"/>
+            <echo message="jboss.server.bindingfile.location=@{jboss.server.bindingfile.location}, jboss.server.ports.name=@{jboss.server.ports.name}"/>
 			<xmltask preservetype="true" failWithoutMatch="true" source="@{jboss.server.bindingfile.location}">
 				<xmlcatalog refid="bda.xml.catalog"/>
 				<copy path="/service-bindings/server[@name='@{jboss.server.ports.name}']/service-config[@name='jboss.web:service=WebServer']/binding/@port" property="read.http.port" attrValue="true"/>
@@ -6439,7 +6439,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 
 	<macrodef name="jboss-read-ssl" description="macro for enabling ssl in jboss">
 		<attribute name="jboss.home" default="${jboss.home}"/>
-		<attribute name="jboss.server-xml.file" default="@{jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="jboss.server-xml.file" default="@{jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="jboss.server-xml.service.name" default="jboss.web"/>
 		<attribute name="jboss.ssl.enable.property.name" default="jboss.ssl.enable"/>
 		<attribute name="jboss.ssl.port.property.name" default="jboss.ssl.port"/>
@@ -6505,7 +6505,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 
 
 	<macrodef name="appserver-read-ssl" description="macro for enabling ssl in jboss">
-		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="appserver.server-xml.service.name" default="jboss.web"/>
 		<attribute name="appserver.ssl.enable.property.name" default="jboss.ssl.enable"/>
 		<attribute name="appserver.ssl.port.property.name" default="jboss.ssl.port"/>
@@ -6520,6 +6520,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 			<var name="read.keystore.alias" unset="true"/>
 			<var name="read.keystore.password" unset="true"/>
 			<var name="read.keystore.file.location" unset="true"/>
+            <echo message="appserver.server-xml.file=@{appserver.server-xml.file}"/>
+            <echo message="read.keystore.file.location = ${read.keystore.file.location}"/>
 			<xmltask preservetype="true" source="@{appserver.server-xml.file}">
 				<xmlcatalog refid="bda.xml.catalog"/>
 				<copy path="/Server/Service[@name='@{appserver.server-xml.service.name}']/Connector[@secure='true']/@port" property="read.ssl.port" attrValue="true"/>
@@ -6547,7 +6549,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 					<basename file="${read.keystore.file.location}" property="read.keystore.file"/>
 					<dirname file="${read.keystore.file.location}" property="read.keystore.dir"/>
 					<mkdir dir="@{copied.keystore.dir}"/>
-					<copy file="${read.keystore.file.location}" tofile="@{copied.keystore.dir}/${read.keystore.file}"/>
+                    <copy file="${read.keystore.file.location}" tofile="@{copied.keystore.dir}/${read.keystore.file}"/>
 					<property name="@{appserver.ssl.port.property.name}" value="${read.ssl.port}"/>
 					<property name="@{appserver.ssl.keystore.file.property.name}" value="${read.keystore.file}"/>
 					<property name="@{appserver.ssl.keystore.pass.property.name}" value="${read.keystore.password}"/>
@@ -6617,7 +6619,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 	</macrodef>
 	<macrodef name="jboss-read-external-hostname">
 		<attribute name="jboss.home" default="${jboss.home}"/>
-		<attribute name="jboss.server-xml.file" default="@{jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="jboss.server-xml.file" default="@{jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="jboss.server-xml.service.name" default="jboss.web"/>
 		<attribute name="jboss.external.ssl.host.property.name" default="jboss.external.ssl.host"/>
 		<attribute name="jboss.external.ssl.port.property.name" default="jboss.external.ssl.port"/>
@@ -6680,7 +6682,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		</sequential>
 	</macrodef>
 	<macrodef name="appserver-read-external-hostname">
-		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="appserver.server-xml.service.name" default="jboss.web"/>
 		<attribute name="appserver.external.ssl.host.property.name" default="jboss.external.ssl.host"/>
 		<attribute name="appserver.external.ssl.port.property.name" default="jboss.external.ssl.port"/>
@@ -6988,7 +6990,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 
 	<macrodef name="jboss-read-grid-secure" description="macro for enabling ssl in jboss">
 		<attribute name="jboss.home" default="${jboss.home}"/>
-		<attribute name="jboss.server-xml.file" default="@{jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="jboss.server-xml.file" default="@{jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="jboss.server-xml.service.name" default="jboss.web"/>
 		<attribute name="jboss.grid.secure.enable.property.name" default="jboss.grid.secure.enable"/>
 		<attribute name="jboss.grid.secure.port.property.name" default="jboss.grid.secure.port"/>
@@ -7050,7 +7052,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 	</macrodef>
 
 	<macrodef name="appserver-read-grid-secure" description="macro for enabling ssl in jboss">
-		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="appserver.server-xml.service.name" default="jboss.web"/>
 		<attribute name="appserver.grid.secure.enable.property.name" default="jboss.grid.secure.enable"/>
 		<attribute name="appserver.grid.secure.port.property.name" default="jboss.grid.secure.port"/>
@@ -8659,7 +8661,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		</sequential>
 	</macrodef>
 	<macrodef name="appserver-delete-http-connector" description="macro for enabling ssl in jboss">
-		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
 		<attribute name="appserver.server-xml.service.name" default="jboss.web"/>
 
 		<attribute name="appserver.http.port" default="${jboss.server.port}"/>
@@ -10254,7 +10256,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 	<macrodef name="jboss-configure-cgmm">
 		<attribute name="jboss.home" default="${jboss.home}"/>
 		<attribute name="jboss.server.name" default="${jboss.server.name}"/>
-		<attribute name="jboss.tomcat.dir" default="@{jboss.home}/server/@{jboss.server.name}/deploy/jbossweb-tomcat55.sar"/>
+		<attribute name="jboss.tomcat.dir" default="@{jboss.home}/server/@{jboss.server.name}/deploy/jbossweb.sar"/>
 		<attribute name="jboss.lib.dir" default="@{jboss.home}/server/@{jboss.server.name}/lib"/>
 		<attribute name="cgmm.conf.dest.dir" default="@{jboss.home}/server/@{jboss.server.name}/cgmm_config"/>
 		<attribute name="cgmm.conf.src.dir" default="${jboss-conf.dir.dest}/cgmm"/>
