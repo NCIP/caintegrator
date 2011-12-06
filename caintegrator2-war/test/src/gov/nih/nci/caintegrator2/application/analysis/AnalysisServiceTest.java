@@ -121,6 +121,8 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceForKMPl
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.common.ConfigurationHelperStub;
+import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -148,6 +150,7 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.file.AnalysisFileManagerStub;
+import gov.nih.nci.caintegrator2.file.FileManagerImpl;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
 import java.io.IOException;
@@ -181,6 +184,7 @@ public class AnalysisServiceTest {
     private AnalysisFileManagerStub analysisFileManagerStub = new AnalysisFileManagerStub();
     private ArrayDataServiceStub arrayDataServiceStub;
     private SessionAnalysisResultsManager sessionAnalysisResultsManager = new SessionAnalysisResultsManager();
+    private ConfigurationHelperStub configurationHelperStub = new ConfigurationHelperStub();
     
     @Before
     public void setUp() {
@@ -189,8 +193,12 @@ public class AnalysisServiceTest {
         kmPlotService.setCaIntegratorPlotService(caIntegratorPlotServiceStub);
         GeneExpressionPlotServiceImpl gePlotService = new GeneExpressionPlotServiceImpl();
         caIntegratorPlotServiceStub.clear();
+        FileManagerImpl fileManagerImpl = new FileManagerImpl();
         fileManagerStub.clear();
+        fileManagerImpl.setConfigurationHelper(configurationHelperStub);
         analysisFileManagerStub.clear();
+        analysisFileManagerStub.setFileManager(fileManagerImpl);
+        analysisFileManagerStub.setConfigurationHelper(configurationHelperStub);
         serviceImpl.setGenePatternClientFactory(genePatternClientFactoryStub); 
         serviceImpl.setDao(daoStub);
         serviceImpl.setKmPlotService(kmPlotService);
@@ -283,6 +291,7 @@ public class AnalysisServiceTest {
         
         StudySubscription subscription = new StudySubscription();
         subscription.setId(1L);
+        String IGVDownloadUrl = configurationHelperStub.getString(ConfigurationParameter.BROAD_HOSTED_IGV_URL);
         IGVParameters igvParameters = new IGVParameters();
         igvParameters.setUrlPrefix("http://localhost:8080/caintegrator2/igv/runIgv.do?JSESSIONID=sessionId&file=");
         igvParameters.setSessionId("sessionId");
@@ -305,7 +314,7 @@ public class AnalysisServiceTest {
         assertTrue(analysisFileManagerStub.createIGVSampleClassificationFileCalled);
         assertTrue(analysisFileManagerStub.createIGVSessionFileCalled);
         assertEquals(
-                "http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=http://localhost:8080/caintegrator2/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
+                IGVDownloadUrl + "http://localhost:8080/caintegrator2/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
                 resultURL);
         
         // Now test the All Platforms way.
