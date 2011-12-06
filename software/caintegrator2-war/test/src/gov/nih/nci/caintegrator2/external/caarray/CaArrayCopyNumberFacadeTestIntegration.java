@@ -120,7 +120,7 @@ public class CaArrayCopyNumberFacadeTestIntegration {
     private static String HOSTNAME = "array-stage.nci.nih.gov";
     private static int PORT = 8080;
     private static String PLATFORM_NAME = "022522_D_F_20090107";
-    private static String EXPERIMENT = "EXP-1756";
+    private static String EXPERIMENT = "EXP-475";
     
     @Before
     public void setUp() {
