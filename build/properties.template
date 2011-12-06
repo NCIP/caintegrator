@@ -30,11 +30,9 @@ jboss.cobraorb.port=
 jboss.ejbinvoker.port=
 jboss.hajndi.port=
 jboss.hajrmi.port=
-jboss.jms.port=
 jboss.jmx-rmi.port=
 jboss.messaging.port=
 jboss.pooledha.port=
-jboss.remoting.port=
 jboss.server.bind.port=
 jboss.server.jndi.port=
 jboss.server.port=
@@ -43,6 +41,20 @@ jboss.service.rmiobject.port=
 jboss.snmp.port=
 jboss.snmp-trapd.port=
 jboss.web.service.port=
+
+# not in jboss 5.1.0
+#jboss.remoting.port=
+#jboss.jms.port=
+
+# new ports with 5.1.0
+jboss.unifiedinvoker.port=
+jboss.hajndi.auto.port=
+jboss.ssl.port=
+jboss.jms2.netty.port=
+jboss.jms2.netty-ssl.port=
+jboss.transaction.recovery.port=
+jboss.transaction.status.port=
+jboss.transaction.processid.port=
 
 ###################################
 #  PRE-POST VALIDATION PROPERTIES #
