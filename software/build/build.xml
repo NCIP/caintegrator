@@ -117,8 +117,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- common directory to retrieve resources used by static-analysis tools -->
 	<property name="common.dir" value="common" />
 
-	<!-- retrive ivy files then retrieve bda files and librarires -->
-	<property name="bda-download.file" value="bda-ivy-build.xml" />
 	<!-- retrive ivy.jar.files then retrieve bda files and librarires -->
 	<condition property="commonlibrary.dir" value="">
 		<or>
@@ -333,7 +331,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		</if>   
 	</target>
 	<target name="dist:tools:retrieve:jboss-bindings"  description="Downloads JBOSS bindings filefrom binary repository and verifies checksum">
-		<get src="${jboss-bindings.src.url}" dest="${dist.exploded.dir}/${jboss-bindings.file}" />
+		<get src="${jboss4-bindings.src.url}" dest="${dist.exploded.dir}/${jboss4-bindings.file}" />
+        <get src="${jboss5-bindings.src.url}" dest="${dist.exploded.dir}/${jboss5-bindings.file}" />
 	</target>
 
     <target name="dist:gui-installer" description="Makes Gui-Installer distribution">
