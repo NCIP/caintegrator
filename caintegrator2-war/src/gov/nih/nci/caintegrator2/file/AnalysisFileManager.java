@@ -108,7 +108,7 @@ import java.util.Collection;
  * 
  */
 public interface AnalysisFileManager {
-    
+
     /**
      * Creates an igv directory for the session.
      * @param sessionId to create directory for.
@@ -235,5 +235,14 @@ public interface AnalysisFileManager {
     File createHeatmapSampleClassificationFile(QueryResult queryResult, String sessionId, 
             Collection<ResultColumn> columns);
 
+    /**
+     * @return the fileManager
+     */
+    FileManager getFileManager();
 
+    /**
+     * @param fileManager the fileManager to set
+     */
+    void setFileManager(FileManager fileManager);
+    
 }

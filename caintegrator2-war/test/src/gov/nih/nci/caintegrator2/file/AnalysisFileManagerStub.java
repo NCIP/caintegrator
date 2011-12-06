@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapResult;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
+import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
@@ -117,6 +118,9 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
     public boolean createHeatmapGenomicFileCalled;
     public boolean createHeatmapJnlpFileCalled;
     public boolean createHeatmapSampleClassificationFileCalled;
+    
+    public FileManager fileManager;
+    private ConfigurationHelper configurationHelper;
     
     public void clear() {
         deleteAllViewerDirectoryCalled = false;
@@ -220,5 +224,32 @@ public class AnalysisFileManagerStub implements AnalysisFileManager {
         result.setGenomicDataFile(new File("Dummy"));
         createHeatmapGenomicFileCalled = true;
     }
+    
+    /**
+     * @return the fileManager
+     */
+    public FileManager getFileManager() {
+        return fileManager;
+    }
 
+    /**
+     * @param fileManager the fileManager to set
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }    
+
+    /**
+     * @return the configurationHelper
+     */
+    public ConfigurationHelper getConfigurationHelper() {
+        return configurationHelper;
+    }
+
+    /**
+     * @param configurationHelper the configurationHelper to set
+     */
+    public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
+        this.configurationHelper = configurationHelper;
+    }    
 }

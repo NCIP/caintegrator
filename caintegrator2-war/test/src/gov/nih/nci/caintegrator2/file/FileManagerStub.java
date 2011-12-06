@@ -89,6 +89,7 @@ import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -109,6 +110,8 @@ public class FileManagerStub implements FileManager {
     public boolean createInputZipFileCalled;
     public boolean createMarkersFileCalled;
     public boolean createSamplesFileCalled;
+    
+    private ConfigurationHelper configurationHelper;
     
     
     public void clear() {
@@ -193,4 +196,17 @@ public class FileManagerStub implements FileManager {
         return retrieveTmpFile().getAbsolutePath();
     }
 
+    /**
+     * @return the configurationHelper
+     */
+    public ConfigurationHelper getConfigurationHelper() {
+        return configurationHelper;
+    }
+
+    /**
+     * @param configurationHelper the configurationHelper to set
+     */
+    public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
+        this.configurationHelper = configurationHelper;
+    }
 }
