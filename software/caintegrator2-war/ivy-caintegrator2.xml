@@ -65,7 +65,7 @@
     <dependency org="jboss" name="jboss-ejb3x" rev="4.0.5.GA" conf="runtime->master"/>
     <dependency org="jboss" name="jboss-aop-client" rev="1.5.2.GA" conf="compile->master"/>
     <dependency org="jboss" name="jboss-ejb3" rev="4.0.5.GAnci" conf="runtime->master"/>
-    <dependency org="jboss" name="jboss-aspect-client" rev="1.5" conf="compile->master"/>
+    <dependency org="jboss" name="jboss-aspect-client" rev="1.5" conf="compile,runtime->master"/>
     <dependency org="gov.nih.nci.caintegrator2" name="freestylesearch" rev="4.0" conf="runtime->master"/>
     <dependency org="gov.nih.nci.caintegrator2" name="caDSR-beans" rev="4.0" conf="compile,runtime->master"/>
     <dependency org="org.hibernate" name="hibernate-commons-annotations" rev="3.0.0.ga" conf="compile->master"/>
