@@ -1169,6 +1169,7 @@
                     <fileset dir="@{test.src.dir}">
                         <include name="@{includedTestFiles}" />
                         <exclude name="@{excludedTestFiles}" />
+                        <exclude name="**/CaArrayCopyNumberFacadeTestIntegration.java}" />
                     </fileset>
                 </batchtest>
             </junit>
@@ -1237,6 +1238,7 @@
                         <exclude name="**/Abstract*TestIntegration.java" />
                         <exclude name="**/LoadAffymetrixDesignsTestIntegration.java" />
                         <exclude name="**/Deploy*TestIntegration.java" />
+                        <exclude name="**/CaArrayCopyNumberFacadeTestIntegration.java" />
                     </fileset>
                 </batchtest>
             </junit>
