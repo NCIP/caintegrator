@@ -437,6 +437,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         <if>
             <equals arg1="${jboss.major.version}" arg2="5"/>
             <then>
+                <copy file="${jboss-conf.dir.dest}/run.conf" tofile="${jboss.home}/bin/run.conf"/>
                 <jboss-configure
                     jboss.grid.configure="false"
                     jboss.server.bindingfile.location="${jboss.home}/server/${jboss.server.name}/conf/bindingservice.beans/META-INF/bindings-jboss-beans.xml"
