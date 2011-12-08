@@ -114,7 +114,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
-public class CaArrayCopyNumberFacadeTestIntegration {
+public class AbstractCaArrayCopyNumberFacadeTestIntegration {
 
     private CaArrayFacadeImpl caArrayFacade;
     private static String HOSTNAME = "array-stage.nci.nih.gov";
