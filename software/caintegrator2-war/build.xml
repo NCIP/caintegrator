@@ -1167,9 +1167,8 @@
                 <formatter type="xml" />
                 <batchtest todir="@{xml.output.dir}">
                     <fileset dir="@{test.src.dir}">
-                        <include name="@{includedTestFiles}" />
                         <exclude name="@{excludedTestFiles}" />
-                        <exclude name="**/CaArrayCopyNumberFacadeTestIntegration.java}" />
+                        <include name="@{includedTestFiles}" />
                     </fileset>
                 </batchtest>
             </junit>
