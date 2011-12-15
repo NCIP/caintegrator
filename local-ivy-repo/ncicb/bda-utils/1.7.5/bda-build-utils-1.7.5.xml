@@ -11,7 +11,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 	<property name="bda-utils.resource.dir" location="${bda-utils.dir}/resource"/>
  	<property name="antunit.jar" value="antunit-1.0.jar"/>
 	<property name="template.dbintegrate.file" location="${bda-utils.resource.dir}/template-db-integrate.xml"/>
-
+    <property name="executable-ant-full-path" location="${env.ANT_HOME}/bin"/>
 	<!-- Supported versions -->
 	<property name="jboss.version.min" value="4.0.4"/>
 	<property name="jboss.version.max" value="5.1.999"/>
@@ -3547,11 +3547,11 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 				</then>
 				<else>
 					<echo message="in gui-installer, using exec to run cagrid-console build"/>
-					<exec osfamily="unix" executable="ant" dir="@{cagrid-console.dir}">
+					<exec osfamily="unix" executable="${executable-ant-full-path}/ant" dir="@{cagrid-console.dir}">
 						<arg line="-Djboss.dir=@{appserver.home} -Dwsrf.webapp.dir=@{appserver.webapp.dir}/@{grid.application.relative.dir} @{cagrid-console.target}"/>
 						<env key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
 					</exec>
-					<exec osfamily="windows" executable="ant.bat" dir="@{cagrid-console.dir}">
+					<exec osfamily="windows" executable="${executable-ant-full-path}/ant.bat" dir="@{cagrid-console.dir}">
 						<arg line="-Djboss.dir=@{appserver.home} -Dwsrf.webapp.dir=@{appserver.webapp.dir}/@{grid.application.relative.dir} @{cagrid-console.target}"/>
 						<env key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
 					</exec>
@@ -4507,12 +4507,12 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 				override.properties.delimiter="@{override.properties.delimiter}"
 				override.properties.string.property.name="override.properties.string"
 				/>
-			<exec osfamily="unix" executable="ant" dir="@{install.dir}" failonerror="true">
+			<exec osfamily="unix" executable="${executable-ant-full-path}/ant" dir="@{install.dir}" failonerror="true">
 				<!-- use alternate properties file since default has replace values -->
 				<!-- force reinstall of database and jboss without prompting -->
 				<arg line="${install.debug} ${install.timing} -Dproperties.file=@{properties.file} -Dforce.reinstall=true ${override.properties.string} @{target.name}" />
 			</exec>
-			<exec osfamily="windows" executable="ant.bat" dir="@{install.dir}" failonerror="true">
+			<exec osfamily="windows" executable="${executable-ant-full-path}/ant.bat" dir="@{install.dir}" failonerror="true">
 				<!-- use alternate properties file since default has replace values -->
 				<!-- force reinstall of database and jboss without prompting -->
 				<arg line="${install.debug} ${install.timing} -Dproperties.file=@{properties.file} -Dforce.reinstall=true ${override.properties.string} @{target.name}" />
@@ -8801,21 +8801,21 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 						<isset property="is.jre"/>
 						<then>
 							<echo message="Configuring syncgts to target grid"/>
-							<exec osfamily="windows" executable="ant.bat" dir="@{sync-gts.build.dir}" failonerror="true">
+							<exec osfamily="windows" executable="${executable-ant-full-path}/ant.bat" dir="@{sync-gts.build.dir}" failonerror="true">
 								<arg line="all" />
 								<env key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
 							</exec>
-							<exec osfamily="unix" executable="ant" dir="@{sync-gts.build.dir}" failonerror="true">
+							<exec osfamily="unix" executable="${executable-ant-full-path}/ant" dir="@{sync-gts.build.dir}" failonerror="true">
 								<arg line="all" />
 								<env key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
 							</exec>
 
 							<echo message="Syncing with fabric"/>
-							<exec osfamily="windows" executable="ant.bat" dir="@{sync-gts.build.dir}" failonerror="true">
+							<exec osfamily="windows" executable="${executable-ant-full-path}/ant.bat" dir="@{sync-gts.build.dir}" failonerror="true">
 								<arg line="syncWithTrustFabric" />
 								<env key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
 							</exec>
-							<exec osfamily="unix" executable="ant" dir="@{sync-gts.build.dir}" failonerror="true">
+							<exec osfamily="unix" executable="${executable-ant-full-path}/ant" dir="@{sync-gts.build.dir}" failonerror="true">
 								<arg line="syncWithTrustFabric" />
 								<env key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
 							</exec>
@@ -8861,11 +8861,11 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 							<if>
 								<isset property="is.jre"/>
 								<then>
-									<exec osfamily="windows" executable="ant.bat" dir="@{sync-gts.build.dir}" failonerror="true">
+									<exec osfamily="windows" executable="${executable-ant-full-path}/ant.bat" dir="@{sync-gts.build.dir}" failonerror="true">
 										<arg line="-Denv.JBOSS_HOME=@{appserver.home} deployJBoss" />
 										<env key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
 									</exec>
-									<exec osfamily="unix" executable="ant" dir="@{sync-gts.build.dir}" failonerror="true">
+									<exec osfamily="unix" executable="${executable-ant-full-path}/ant" dir="@{sync-gts.build.dir}" failonerror="true">
 										<arg line="-Denv.JBOSS_HOME=@{appserver.home} deployJBoss" />
 										<env key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
 									</exec>
@@ -8906,11 +8906,11 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 							<if>
 								<isset property="is.jre"/>
 								<then>
-									<exec osfamily="windows" executable="ant.bat" dir="@{sync-gts.build.dir}" failonerror="true">
+									<exec osfamily="windows" executable="${executable-ant-full-path}/ant.bat" dir="@{sync-gts.build.dir}" failonerror="true">
 										<arg line="-Denv.CATALINA_HOME=@{appserver.home} deployTomcat" />
 										<env key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
 									</exec>
-									<exec osfamily="unix" executable="ant" dir="@{sync-gts.build.dir}" failonerror="true">
+									<exec osfamily="unix" executable="${executable-ant-full-path}/ant" dir="@{sync-gts.build.dir}" failonerror="true">
 										<arg line="-Denv.CATALINA_HOME=@{appserver.home} deployTomcat" />
 										<env key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
 									</exec>
