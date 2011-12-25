@@ -830,34 +830,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
     <target name="bda-lite:upgrade:database:prep" description="Generates artifacts for db upgrade." unless="exclude.database"
         depends="
         common:init,
-        install:database:prep,
-        install:database:validation:pre-install
-        ">            
-    </target>
-    
-    <target name="bda-lite:clean-and-upgrade:database:prep" description="Cleans db and generates artifacts for db upgrade." unless="exclude.database"
-        depends="
-        bda-lite:upgrade:database:prep
-        ">
-        <!-- Drop all schema objects or re-create the db -->
-        <database-clean/>
-        <!-- Run baseline scripts stored in db.install.create.${database.type}.file.list variable -->
-        <sequential>
-        <for list="${db.install.create.mysql.file.list}" param="db.install.file">
-           <sequential>
-              <run-sql-script database.url="${database.url}"
-                 database.user="${database.user}"
-                 database.password="${database.password}"
-                 database.driver="${database.driver}"
-                 database.driver.file="${database.driver.file}"
-                 sql.delimiter=";"
-                 sql.delimitertype="normal"
-                 sql.file="${db-install.dir.dest}/${database.type}/@{db.install.file}"
-                 onerror="abort"/>
-           </sequential>
-        </for>
-        </sequential>
-          
+        install:database:prep">            
     </target>
     
     <target name="bda-lite:upgrade:database" description="Perform db upgrade." depends="common:init" unless="exclude.database" >

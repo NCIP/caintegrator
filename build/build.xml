@@ -559,11 +559,12 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
         <copy file="${jboss-conf.dist.working.dir}/${caintegrator2-war.mail.service.file}" todir="${dist.artifacts.dir}" overwrite="true" />
     </target>
     
-    <property name="bda-lite-db.target" value="bda-lite:upgrade:database:prep" />
-    
-    <target name="build-db-artifacts:prep" depends="dist:upgrader:prep" description="Prepares dir with sql and xml files for use by liquidbase" >
+    <target name="build-db-artifacts:prep" description="Prepares dir with sql and xml files for use by liquidbase"
+        depends="dist:upgrader:prep" >
         <deploy-local
-           target.name="${bda-lite-db.target}"
+           target.name="bda-lite:upgrade:database:prep"
+           override.properties="database.name=${database.name},database.user=${database.user},database.password=${database.password},database.port=${database.port},database.server=${database.server}"
+           override.properties.delimiter=","
            />
     </target>
     
@@ -571,6 +572,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
         <property name="workingdirnodelete" value="true" />
         <deploy-local
            target.name="bda-lite:upgrade:database"
+           override.properties="database.name=${database.name},database.user=${database.user},database.password=${database.password},database.port=${database.port},database.server=${database.server}"
+           override.properties.delimiter=","
            />
     </target>
 	
