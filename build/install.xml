@@ -27,6 +27,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
     <property name="log.dir" location="${basedir}/logs" />
     <property name="working.dir" location="${basedir}/working" />
     <property name="temp.dir" location="${working.dir}/temp" />
+    <property name="bda-db-artifact.dir" location="${basedir}" />
 
 
     <!-- Install Time properties -->
@@ -834,10 +835,9 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
     </target>
     
     <target name="bda-lite:upgrade:database" description="Perform db upgrade." depends="common:init" unless="exclude.database" >
-        
         <sequential>   
-            <basename property="changelog.file" file="${os.temp.dir}/${project.name}/db-upgrade.xml"/>
-            <echo message="Updateing liquibase metadata file name to ${os.temp.dir}/${project.name}/db-upgrade.xml where filename includes ${changelog.file}"/>
+            <basename property="changelog.file" file="${bda-db-artifact.dir}/db-upgrade.xml"/>
+            <echo message="Updateing liquibase metadata file name to ${bda-db-artifact.dir}/db-upgrade.xml where filename includes ${changelog.file}"/>
             <sql
              driver="${database.driver}"
              url="${database.url}"
@@ -850,7 +850,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
              <classpath>
               <pathelement location="${database.driver.file}" />
              </classpath>
-             update databasechangelog set filename='${os.temp.dir}/${project.name}/db-upgrade.xml' where filename like '%${changelog.file}';
+             update databasechangelog set filename='${bda-db-artifact.dir}/db-upgrade.xml' where filename like '%${changelog.file}';
             </sql>
             <updateDatabase
                 driver="${database.driver}"
@@ -859,7 +859,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
                 password="${database.password}"
                 classpathref="jdbc.driver.classpath"
                 defaultSchemaName="${database.schema}"
-                changeLogFile="${os.temp.dir}/${project.name}/db-upgrade.xml"
+                changeLogFile="${bda-db-artifact.dir}/db-upgrade.xml"
             />
         </sequential>
                 
