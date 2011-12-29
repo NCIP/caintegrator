@@ -566,17 +566,18 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
            override.properties="database.name=${database.name},database.user=${database.user},database.password=${database.password},database.port=${database.port},database.server=${database.server}"
            override.properties.delimiter=","
            />
+        <zip destfile="${dist.dir}/db-upgrade.zip" basedir="${db-upgrade.dist.dir}" />   
     </target>
     
-    <target name="build-db-artifacts" description="Executes db upgrade scripts." >
-        <property name="workingdirnodelete" value="true" />
+    <target name="build-db-artifacts" description="Executes db upgrade scripts." depends="dist:upgrader:prep">
+        <replaceregexp file="${bda-db-artifact.dir}/db-upgrade.xml" byline="true" match="@db-upgrade.run.dir@" replace="${bda-db-artifact.dir}/mysql" /> 
         <deploy-local
            target.name="bda-lite:upgrade:database"
-           override.properties="database.name=${database.name},database.user=${database.user},database.password=${database.password},database.port=${database.port},database.server=${database.server}"
+           override.properties="bda-db-artifact.dir=${bda-db-artifact.dir},database.name=${database.name},database.user=${database.user},database.password=${database.password},database.port=${database.port},database.server=${database.server}"
            override.properties.delimiter=","
            />
+          
     </target>
-	
 
 	<!-- Install the application remotely. Depends on above targets to copy and extract distribution. Will use the target from install.xml specified in ${install.target} (defaults to install unless passed in on command line).  Calls ant from sshexec task to ensure properties are do not carry over from current ant runtime and also to emulate a manual install. Requires specifying -Dproperties.file=@file@ on the command line to point installer to correct enviornment to install into -->
 	<target name="deploy:remote:install" depends="
