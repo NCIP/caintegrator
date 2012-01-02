@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<project name="upgrade-cai-db" default="build-db-artifacts" basedir=".">
+	<description>
+	 Upgrades the database.
+	</description>
+
+	<!-- Property file related properties and tasks -->
+	<property environment="env" />
+	<property name="build.dir" location="." />
+    <property name="target.dir" location="${build.dir}" />
+
+	<!-- Paths -->
+	<path id="target.classpath">
+		<fileset dir="${target.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	
+
+	<!-- Task definitions -->
+	<taskdef resource="liquibasetasks.properties" classpathref="target.classpath"/>
+
+	<!-- set some db variables -->
+    <target name="build-db-artifacts" description="Executes db upgrade scripts.">
+          <echo message="i am at location: ${target.dir}"/>
+          <replaceregexp file="${target.dir}/db-upgrade.xml" byline="true" match="@db-upgrade.run.dir@" replace="${target.dir}/mysql" /> 
+          <property name="install.running" value="true"/>
+          <echoproperties prefix="database"/>
+          <property name="database.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+          <property name="database.driver.file" value="${target.dir}/mysql-connector-java-5.1.13.jar"/>
+          <property name="database.driver" value="com.mysql.jdbc.Driver"/>
+          <property name="database.schema" value="${database.name}"/>
+        
+          <path id="jdbc.driver.classpath">
+              <pathelement location="${database.driver.file}"/>
+          </path>
+
+        
+          <sequential>   
+            <basename property="changelog.file" file="${target.dir}/db-upgrade.xml"/>
+            <echo message="Updateing liquibase metadata file name to ${target.dir}/db-upgrade.xml where filename includes ${changelog.file}"/>
+            <sql
+             driver="${database.driver}"
+             url="${database.url}"
+             userid="${database.user}"
+             password="${database.password}"
+             expandproperties="true"
+             onerror="continue"
+             autocommit="true"
+             >
+             <classpath>
+              <pathelement location="${database.driver.file}" />
+             </classpath>
+             update databasechangelog set filename='${target.dir}/db-upgrade.xml' where filename like '%${changelog.file}';
+            </sql>
+            <updateDatabase
+                driver="${database.driver}"
+                url="${database.url}"
+                username="${database.user}"
+                password="${database.password}"
+                classpathref="jdbc.driver.classpath"
+                defaultSchemaName="${database.schema}"
+                changeLogFile="${target.dir}/db-upgrade.xml"
+            />
+        </sequential>
+    </target>
+
+	
+
+</project>
