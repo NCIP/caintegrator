@@ -566,17 +566,10 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
            override.properties="database.name=${database.name},database.user=${database.user},database.password=${database.password},database.port=${database.port},database.server=${database.server}"
            override.properties.delimiter=","
            />
+        <copy file="${bda-utils.dir}/mysql-connector-java-5.1.13.jar" todir="${db-upgrade.dist.dir}" overwrite="true" />
+        <copy file="${bda-utils.dir}/liquibase-core-1.9.3.jar" todir="${db-upgrade.dist.dir}" overwrite="true" />
+        <copy file="${build.dir}/ahp3-db-upgrade.xml" todir="${db-upgrade.dist.dir}" overwrite="true" />
         <zip destfile="${dist.dir}/db-upgrade.zip" basedir="${db-upgrade.dist.dir}" />   
-    </target>
-    
-    <target name="build-db-artifacts" description="Executes db upgrade scripts." depends="dist:upgrader:prep">
-        <replaceregexp file="${bda-db-artifact.dir}/db-upgrade.xml" byline="true" match="@db-upgrade.run.dir@" replace="${bda-db-artifact.dir}/mysql" /> 
-        <deploy-local
-           target.name="bda-lite:upgrade:database"
-           override.properties="bda-db-artifact.dir=${bda-db-artifact.dir},database.name=${database.name},database.user=${database.user},database.password=${database.password},database.port=${database.port},database.server=${database.server}"
-           override.properties.delimiter=","
-           />
-          
     </target>
 
 	<!-- Install the application remotely. Depends on above targets to copy and extract distribution. Will use the target from install.xml specified in ${install.target} (defaults to install unless passed in on command line).  Calls ant from sshexec task to ensure properties are do not carry over from current ant runtime and also to emulate a manual install. Requires specifying -Dproperties.file=@file@ on the command line to point installer to correct enviornment to install into -->
