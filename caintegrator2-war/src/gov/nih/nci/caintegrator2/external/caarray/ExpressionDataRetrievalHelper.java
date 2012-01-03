@@ -104,7 +104,10 @@ import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformSignalNameEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
@@ -124,7 +127,6 @@ import org.apache.log4j.Logger;
  */
 class ExpressionDataRetrievalHelper extends AbstractDataRetrievalHelper {
 
-    private static final String CHP_SIGNAL_TYPE_NAME = "CHPSignal";
     private static final ReporterTypeEnum REPORTER_TYPE = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET;
     private static final Logger LOGGER = Logger.getLogger(ExpressionDataRetrievalHelper.class);
     private ArrayDataValues arrayDataValues;
@@ -150,7 +152,7 @@ class ExpressionDataRetrievalHelper extends AbstractDataRetrievalHelper {
     
         DataSet dataSet = getDataService().getDataSet(createRequest());
         if (dataSet.getDatas().isEmpty()) {
-            throw new DataRetrievalException("No Chip signal available for experiment: "
+            throw new DataRetrievalException("No hybridization values available for experiment: "
                     + getGenomicSource().getExperimentIdentifier());
         }
         Hybridization hybridization = dataSet.getDatas().get(0).getHybridization();
@@ -219,7 +221,7 @@ class ExpressionDataRetrievalHelper extends AbstractDataRetrievalHelper {
     @Override
     protected QuantitationType getSignal(DataSetRequest request) throws InvalidInputException {
         QuantitationType signal = new QuantitationType();
-        signal.setName(CHP_SIGNAL_TYPE_NAME);
+        signal.setName(getSignalTypeName());
         signal.setDataType(DataType.FLOAT);
         ExampleSearchCriteria<QuantitationType> criteria = new ExampleSearchCriteria<QuantitationType>();
         criteria.setExample(signal);
@@ -237,6 +239,26 @@ class ExpressionDataRetrievalHelper extends AbstractDataRetrievalHelper {
      */
     public ArrayDataValues getArrayDataValues() {
         return arrayDataValues;
+    }
+
+    /* (non-Javadoc)
+     * @see gov.nih.nci.caintegrator2.external.caarray.AbstractDataRetrievalHelper#getSignalTypeName()
+     */
+    @Override
+    public String getSignalTypeName() {
+        if (getGenomicSource().getPlatformVendor().equals(PlatformVendorEnum.AGILENT)) {
+            PlatformChannelTypeEnum holdPlatFormChannelType = getDao()
+                                                .getPlatformConfiguration(getGenomicSource().getPlatformName())
+                                                .getPlatformChannelType();
+            if (holdPlatFormChannelType
+                        .equals(PlatformChannelTypeEnum.ONE_COLOR)) {
+                return PlatformSignalNameEnum.ONE_COLOR_SIGNAL_NAME.getValue();
+            } else if (holdPlatFormChannelType
+                      .equals(PlatformChannelTypeEnum.TWO_COLOR)) {
+                return PlatformSignalNameEnum.TWO_COLOR_SIGNAL_NAME.getValue();
+            }
+        }
+        return PlatformSignalNameEnum.AFFYMETRIX_SIGNAL_NAME.getValue();
     }
 
 }
