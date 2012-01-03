@@ -205,15 +205,17 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
         SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
         DataService dataService = 
             getServiceFactory().createDataService(genomicSource.getServerProfile());
-        if (PlatformVendorEnum.AFFYMETRIX.equals(genomicSource.getPlatformVendor())
-                && genomicSource.isExpressionData()) {
+        boolean isSupportedExpressionData = (PlatformVendorEnum.AFFYMETRIX.equals(genomicSource.getPlatformVendor())
+                || PlatformVendorEnum.AGILENT.equals(genomicSource.getPlatformVendor()))
+                && genomicSource.isExpressionData();
+        if (isSupportedExpressionData) {
             return new ExpressionDataRetrievalHelper(genomicSource, dataService, searchService, dao, arrayDataService);
         } else if (PlatformVendorEnum.AGILENT.equals(genomicSource.getPlatformVendor())
                 && genomicSource.isCopyNumberData()) {
             return new DnaAnalysisDataRetrievalHelper(genomicSource, dataService, searchService, dao, 
                     arrayDataService);
         }
-        throw new DataRetrievalException("Unsupport platform vendor: " + genomicSource.getPlatformVendor()
+        throw new DataRetrievalException("Unsupported platform vendor: " + genomicSource.getPlatformVendor()
                 + " and type " + genomicSource.getDataTypeString());
     }
 

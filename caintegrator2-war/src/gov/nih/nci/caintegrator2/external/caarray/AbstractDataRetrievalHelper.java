@@ -142,6 +142,7 @@ abstract class AbstractDataRetrievalHelper {
     private PlatformHelper platformHelper;
     private final Map<Sample, List<HybridizationData>> sampleToHybridizationDataMap =
         new HashMap<Sample, List<HybridizationData>>();
+    private String signalTypeName;
     
     AbstractDataRetrievalHelper(GenomicDataSourceConfiguration genomicSource,
             DataService dataService, SearchService searchService, CaIntegrator2Dao dao, 
@@ -378,6 +379,22 @@ abstract class AbstractDataRetrievalHelper {
      */
     protected Map<Sample, List<HybridizationData>> getSampleToHybridizationDataMap() {
         return sampleToHybridizationDataMap;
+    }
+
+    /**
+     * @return the signalTypeName.  This is the name of column in the array
+     * data that is retrieved from the genomic data source (caArray)
+     * and is interpreted as the Signal Type.
+     */
+    public String getSignalTypeName() {
+        return signalTypeName;
+    }
+
+    /**
+     * @param signalTypeName the signalTypeName to set
+     */
+    public void setSignalTypeName(String signalTypeName) {
+        this.signalTypeName = signalTypeName;
     }
 
 }

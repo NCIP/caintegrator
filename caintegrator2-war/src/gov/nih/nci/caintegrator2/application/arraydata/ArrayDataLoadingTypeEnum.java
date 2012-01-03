@@ -90,8 +90,7 @@ public enum ArrayDataLoadingTypeEnum {
             } else {
                 list.add(CHP.value);
             }
-        } else if (PlatformVendorEnum.AGILENT.equals(vendor)
-                && PlatformDataTypeEnum.COPY_NUMBER.equals(type)) {
+        } else if (PlatformVendorEnum.AGILENT.equals(vendor)) {
             list.add(PARSED_DATA.value);
         }
         list.add(SINGLE_SAMPLE_PER_FILE.value);
