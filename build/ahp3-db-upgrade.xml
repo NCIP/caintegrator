@@ -26,7 +26,6 @@
           <echo message="i am at location: ${target.dir}"/>
           <replaceregexp file="${target.dir}/db-upgrade.xml" byline="true" match="@db-upgrade.run.dir@" replace="${target.dir}/mysql" /> 
           <property name="install.running" value="true"/>
-          <echoproperties prefix="database"/>
           <property name="database.dialect" value="org.hibernate.dialect.MySQLDialect"/>
           <property name="database.driver.file" value="${target.dir}/mysql-connector-java-5.1.13.jar"/>
           <property name="database.driver" value="com.mysql.jdbc.Driver"/>
