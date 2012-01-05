@@ -41,6 +41,7 @@
           <sequential>   
             <basename property="changelog.file" file="${target.dir}/db-upgrade.xml"/>
             <echo message="Updateing liquibase metadata file name to ${target.dir}/db-upgrade.xml where filename includes ${changelog.file}"/>
+            
             <sql
              driver="${database.driver}"
              url="${database.url}"
@@ -49,11 +50,10 @@
              expandproperties="true"
              onerror="continue"
              autocommit="true"
-             classpathref="jdbc.driver.classpath"
              >
              <classpath>
-              <pathelement location="${database.driver.file}" />
-             </classpath>
+               <pathelement location="${database.driver.file}" />
+             </classpath> 
              update databasechangelog set filename='${target.dir}/db-upgrade.xml' where filename like '%${changelog.file}';
             </sql>
             <updateDatabase
