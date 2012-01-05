@@ -26,7 +26,7 @@
           <echo message="i am at location: ${target.dir}"/>
           <replaceregexp file="${target.dir}/db-upgrade.xml" byline="true" match="@db-upgrade.run.dir@" replace="${target.dir}/mysql" /> 
           <property name="install.running" value="true"/>
-          <echoproperties prefix="database.d"/>
+         
           <property name="database.dialect" value="org.hibernate.dialect.MySQLDialect"/>
           <property name="database.driver.file" value="${target.dir}/mysql-connector-java-5.1.13.jar"/>
           <property name="database.driver" value="com.mysql.jdbc.Driver"/>
@@ -36,7 +36,8 @@
               <pathelement location="${database.driver.file}"/>
           </path>
 
-        
+          <echo message="database.driver = ${database.driver}"/>
+          <echo message="database.driver.file = ${database.driver.file}"/>
           <sequential>   
             <basename property="changelog.file" file="${target.dir}/db-upgrade.xml"/>
             <echo message="Updateing liquibase metadata file name to ${target.dir}/db-upgrade.xml where filename includes ${changelog.file}"/>
@@ -48,6 +49,7 @@
              expandproperties="true"
              onerror="continue"
              autocommit="true"
+             classpathref="jdbc.driver.classpath"
              >
              <classpath>
               <pathelement location="${database.driver.file}" />
