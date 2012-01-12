@@ -403,7 +403,7 @@
             </filterset>
         </copy>
         
-        <war destfile="${caintegrator2.war}" webxml="${web-inf.working.dir}/web.xml">
+        <war destfile="${caintegrator2.war}" webxml="${web-inf.working.dir}/web.xml" duplicate="preserve">
             <fileset dir="${caintegrator2.war.web.src.dir}">
                 <exclude name="WEB-INF/**" />
             </fileset>
