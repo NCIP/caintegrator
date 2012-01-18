@@ -23,7 +23,7 @@
     <s:url id="tutorialsUrl" includeParams="none" action="tutorials" />
     
     <s:set name="sessionHelper" value="#session['sessionHelper']" />
-
+    
     <s:if test="studySubscription != null">    
     <ul class="menu">
         <li class="stdnavforinvestigator">
@@ -36,15 +36,22 @@
                     <a href='<s:property value="#newQueryUrl" />'>
                     Search <s:property value="currentStudy.shortTitleText"/></a>
                 </li>
-                <li><s:url id="createListUrl" includeParams="none" action="manageList" />
-                    <a href="${createListUrl}">Create New List</a>
-                </li>
+                <s:if test="%{anonymousUser}">
+	                <li title="Must be logged in to use this feature">
+	                    <a class="inActiveLink" style="color: #999999;">Create New List</a>
+	                </li>
+                </s:if>
+                <s:else>
+                    <li><s:url id="createListUrl" includeParams="none" action="manageList" />
+                        <a href="${createListUrl}">Create New List</a>
+                    </li>                
+                </s:else>
             </ul>
         </li>
         
         <!--Tree Control-->
         
-        <li class="treenav"><div>Study Data</div>
+        <li class="treenav"><div>User Workspace</div>
             <s:if test="%{anonymousUser}">
                 <s:if test="!displayableWorkspace.globalGeneLists.isEmpty() || !displayableWorkspace.globalSubjectLists.isEmpty()">
                     <ul class="pde">
@@ -140,7 +147,7 @@
                 </s:if>
                 <s:else>
                     <ul class="pde" style="padding: 3px 0px 10px 10px;">
-                        <font color="black"><i>Must be registered to use this feature.</i></font>
+                        <font color="black"><i>Must be logged in to use the workspace.</i></font>
                     </ul>
                 </s:else>
             </s:if>
@@ -396,19 +403,37 @@
                 <li>
                     <s:url id="gePlotUrl" includeParams="none" action="initializeGePlot" />
                     <a href="${ gePlotUrl }">Gene Expression Plot</a></li>
-                <li>
-                    <s:url id="genePatternAnalysisUrl" includeParams="none" action="genePatternAnalysisStatus" />
-                    <a href="${genePatternAnalysisUrl}">GenePattern Analysis</a></li>
-                <li>
-                    <s:url id="igvViewerUrl" includeParams="none" action="viewAllIGV" />
-                    <a href="${igvViewerUrl}">Integrative Genomics Viewer</a>
-                </li>
-                <s:if test="!study.hasCghCalls()">
-                <li>
-                    <s:url id="heatmapViewerUrl" includeParams="none" action="viewAllHeatmap" />
-                    <a href="${heatmapViewerUrl}">Heat Map Viewer</a>
-                </li>
+                <s:if test="%{anonymousUser}">    
+                    <li title="Must be logged in to use this feature" >
+                    <a class="inActiveLink" style="color: #999999;">GenePattern Analysis</a></li>
                 </s:if>
+                <s:else>
+                    <li>
+                    <s:url id="genePatternAnalysisUrl" includeParams="none" action="genePatternAnalysisStatus" />
+                    <a href="${genePatternAnalysisUrl}">GenePattern Analysis</a></li>               
+                </s:else>   
+                <s:if test="%{anonymousUser}">    
+	                <li title="Must be logged in to use this feature" >
+                    <a class="inActiveLink" style="color: #999999;">Integrative Genomics Viewer</a></li>
+                </s:if>
+                <s:else>
+	                <li>
+	                    <s:url id="igvViewerUrl" includeParams="none" action="viewAllIGV" />
+	                    <a href="${igvViewerUrl}">Integrative Genomics Viewer</a>
+	                </li>                
+                </s:else>
+                <s:if test="%{anonymousUser}">
+                    <li title="Must be logged in to use this feature" >
+                    <a class="inActiveLink" style="color: #999999;">Heat Map Viewer</a></li>
+                </s:if>
+                <s:else>                   
+	                <s:if test="!study.hasCghCalls()">
+		                <li>
+		                    <s:url id="heatmapViewerUrl" includeParams="none" action="viewAllHeatmap" />
+		                    <a href="${heatmapViewerUrl}">Heat Map Viewer</a>
+		                </li>
+	                </s:if>
+                </s:else>
             </ul>
         </li>
         <s:if test = "%{!currentStudy.studyConfiguration.externalLinkLists.isEmpty()}" >
