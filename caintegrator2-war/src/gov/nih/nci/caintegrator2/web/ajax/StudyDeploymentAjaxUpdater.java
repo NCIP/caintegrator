@@ -231,8 +231,7 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
                     false);
             utilThis.setValue(JOB_ACTION_BAR + studyConfigurationId + "e", "&nbsp;|&nbsp;", false);
             utilThis.setValue(JOB_COPY_STUDY_URL + studyConfigurationId,
-                    "<a href=\"copyStudy.action?studyConfiguration.id="
-                    + studyConfiguration.getId() + "\">Copy</a>",
+                    getCopyStudyUrlString(studyConfiguration),
                     false);
             utilThis.setValue(JOB_ACTION_BAR + studyConfigurationId + "c", "&nbsp;|&nbsp;", false);
             String deleteMsg = "The study: " + studyConfiguration.getStudy().getShortTitleText()
@@ -276,6 +275,26 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
        + "&struts.token="
        + token
        + "\" onclick=\"return confirm('" + deleteMsg + "')\">Delete</a>";
+
+        return returnString;
+    }
+
+    /**
+     * @param studyConfiguration
+     * @return the string which forms the html for the copyStudy url.
+     */
+    private String getCopyStudyUrlString(StudyConfiguration studyConfiguration) {
+
+       String token = SessionHelper.getInstance().getToken();
+       String tokenName = SessionHelper.getInstance().getTokenName();
+
+       String returnString = "<a href=\"copyStudy.action?studyConfiguration.id="
+       + studyConfiguration.getId()
+       + "&struts.token.name="
+       + tokenName
+       + "&struts.token="
+       + token
+       + "\" >Copy</a>";
 
         return returnString;
     }
