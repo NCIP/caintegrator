@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.application.study;
@@ -142,7 +142,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @SuppressWarnings("PMD")
 public class StudyManagementServiceTest {
-    
+
     private StudyManagementServiceImpl studyManagementService;
     private CaIntegrator2DaoStub daoStub;
     private CaDSRFacadeStub caDSRFacadeStub;
@@ -154,10 +154,10 @@ public class StudyManagementServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class); 
-        studyManagementService = (StudyManagementServiceImpl) context.getBean("studyManagementService"); 
+        ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class);
+        studyManagementService = (StudyManagementServiceImpl) context.getBean("studyManagementService");
 		daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
-        daoStub.clear();                
+        daoStub.clear();
         caDSRFacadeStub = (CaDSRFacadeStub) context.getBean("caDSRFacadeStub");
         caDSRFacadeStub.clear();
         fileManagerStub = (FileManagerStub) context.getBean("fileManagerStub");
@@ -169,6 +169,11 @@ public class StudyManagementServiceTest {
         analysisServiceStub = new AnalysisServiceStub();
         studyManagementService.setAnalysisService(analysisServiceStub);
         analysisServiceStub.clear();
+        studyManagementService.setCopyHelper(new CopyStudyHelperStub(studyManagementService));
+    }
+
+    public StudyManagementServiceImpl getStudyManagementServiceImpl() {
+        return studyManagementService;
     }
 
     @Test
@@ -182,7 +187,7 @@ public class StudyManagementServiceTest {
     public void testDelete() throws ValidationException, CSException {
         StudyHelper studyHelper = new StudyHelper();
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
-        
+
         StudyConfiguration configTest = study.getStudyConfiguration();
         configTest.setStudy(study);
         UserWorkspace userWorkspace = new UserWorkspace();
@@ -196,21 +201,21 @@ public class StudyManagementServiceTest {
         assertTrue(daoStub.deleteCalled);
         assertFalse(analysisServiceStub.deleteGisticAnalysisCalled);
         daoStub.deleteCalled = false;
-        
+
         genomicSource.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
         studyManagementService.delete(configTest, genomicSource);
         assertTrue(daoStub.deleteCalled);
         assertTrue(analysisServiceStub.deleteGisticAnalysisCalled);
         deleteImageDataSource(study, configTest);
         daoStub.deleteCalled = false;
-        
+
         studyManagementService.delete(configTest);
         assertTrue(daoStub.deleteCalled);
         assertTrue(securityManagerStub.deleteProtectionElementCalled);
         assertTrue(workspaceServiceStub.unSubscribeAllCalled);
         assertTrue(fileManagerStub.deleteStudyDirectoryCalled);
     }
-    
+
     @SuppressWarnings("deprecation")
     private void deleteImageDataSource(Study study, StudyConfiguration configTest) throws ValidationException {
         daoStub.deleteCalled = false;
@@ -232,12 +237,12 @@ public class StudyManagementServiceTest {
         assertTrue(configTest.getImageDataSources().contains(imageSourceToKeep));
         assertTrue(daoStub.deleteCalled);
     }
-    
+
     @Test
     public void testAddClinicalAnnotationFile() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyManagementService.save(studyConfiguration);
-        DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
+        DelimitedTextClinicalSourceConfiguration sourceConfiguration =
             studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
                     false);
         assertEquals(1, studyConfiguration.getClinicalConfigurationCollection().size());
@@ -245,7 +250,7 @@ public class StudyManagementServiceTest {
         assertEquals(5, sourceConfiguration.getAnnotationFile().getColumns().size());
         assertTrue(daoStub.saveCalled);
     }
-    
+
     @Test
     public void testAddStudyLogo() throws IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -254,7 +259,22 @@ public class StudyManagementServiceTest {
         assertTrue(fileManagerStub.storeStudyFileCalled);
         assertTrue(daoStub.saveCalled);
     }
-    
+
+    @Test
+    public void testCopyStudy() throws ValidationException, IOException, ConnectionException {
+        StudyConfiguration copyTo = new StudyConfiguration();
+        copyTo.setId(1L);
+        studyManagementService.save(copyTo);
+        StudyHelper studyHelper = new StudyHelper();
+        Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
+        StudyConfiguration configTest = study.getStudyConfiguration();
+        configTest.setStudy(study);
+        configTest.setUserWorkspace(new UserWorkspace());
+        configTest.getUserWorkspace().setUsername("user");
+        copyTo = studyManagementService.copy(configTest, copyTo.getId());
+        assertEquals("Copy of Test Study", copyTo.getStudy().getShortTitleText());
+    }
+
     @Test
     public void testLoadClinicalAnnotation() throws ValidationException, IOException, InvalidFieldDescriptorException {
         CaIntegrator2DaoForStudyManagementStub dao = new CaIntegrator2DaoForStudyManagementStub();
@@ -262,7 +282,7 @@ public class StudyManagementServiceTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setId(1l);
         studyManagementService.save(studyConfiguration);
-        DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
+        DelimitedTextClinicalSourceConfiguration sourceConfiguration =
             studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
                     false);
         sourceConfiguration.setId(2l);
@@ -284,16 +304,16 @@ public class StudyManagementServiceTest {
         definition = new AnnotationDefinition();
         definition.setDataType(AnnotationTypeEnum.DATE);
         sourceConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
-        studyManagementService.loadClinicalAnnotation(studyConfiguration.getId(), sourceConfiguration.getId()); 
-        studyManagementService.reLoadClinicalAnnotation(studyConfiguration.getId()); 
+        studyManagementService.loadClinicalAnnotation(studyConfiguration.getId(), sourceConfiguration.getId());
+        studyManagementService.reLoadClinicalAnnotation(studyConfiguration.getId());
         assertFalse(sourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().isHasValidationErrors());
     }
-    
+
     @Test
     public void testLoadClinicalAnnotationCreateNewAD() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyManagementService.save(studyConfiguration);
-        DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
+        DelimitedTextClinicalSourceConfiguration sourceConfiguration =
             studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
                     true);
         AnnotationDefinition ad = sourceConfiguration.getAnnotationFile().getColumns().get(0).getFieldDescriptor().getDefinition();
@@ -301,8 +321,8 @@ public class StudyManagementServiceTest {
         assertEquals("ID", ad.getKeywords());
         assertEquals(AnnotationTypeEnum.STRING, ad.getDataType());
     }
-    
-    
+
+
     @Test(expected=InvalidFieldDescriptorException.class)
     public void testLoadInvalidClinicalAnnotation() throws ValidationException, IOException, InvalidFieldDescriptorException {
         CaIntegrator2DaoForStudyManagementStub dao = new CaIntegrator2DaoForStudyManagementStub();
@@ -311,7 +331,7 @@ public class StudyManagementServiceTest {
         dao.studyConfiguration = studyConfiguration;
         studyConfiguration.setId(1l);
         studyManagementService.save(studyConfiguration);
-        DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
+        DelimitedTextClinicalSourceConfiguration sourceConfiguration =
             studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
                     false);
         sourceConfiguration.setId(2l);
@@ -333,19 +353,19 @@ public class StudyManagementServiceTest {
         definition.setDataType(AnnotationTypeEnum.DATE);
         sourceConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
         studyManagementService.loadClinicalAnnotation(studyConfiguration.getId(), sourceConfiguration.getId());
-        studyManagementService.reLoadClinicalAnnotation(studyConfiguration.getId()); 
+        studyManagementService.reLoadClinicalAnnotation(studyConfiguration.getId());
     }
-    
-    @Test 
+
+    @Test
     public void testAddGenomicSource() throws ConnectionException, ExperimentNotFoundException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
         studyManagementService.addGenomicSource(studyConfiguration, genomicDataSourceConfiguration);
-        genomicDataSourceConfiguration.setId(Long.valueOf(1));        
+        genomicDataSourceConfiguration.setId(Long.valueOf(1));
         assertTrue(studyConfiguration.getGenomicDataSources().contains(genomicDataSourceConfiguration));
         assertTrue(daoStub.saveCalled);
     }
-    
+
     @Test
     public void testGetStudyEntity() {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -353,19 +373,19 @@ public class StudyManagementServiceTest {
         assertNotNull(studyManagementService.getRefreshedEntity(studyConfiguration));
         assertTrue(daoStub.getCalled);
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void testGetStudyEntityNoId() {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyManagementService.getRefreshedEntity(studyConfiguration);
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void testGetStudyEntityIllegalClass() {
         Object object = new Object();
         studyManagementService.getRefreshedEntity(object);
     }
-    
+
     @Test
     public void testGetMatchingDefinitions() {
         List<AnnotationDefinition> definitions = studyManagementService.getMatchingDefinitions(
@@ -373,13 +393,13 @@ public class StudyManagementServiceTest {
         assertEquals(1, definitions.size());
         assertEquals("definitionName", definitions.get(0).getDisplayName());
     }
-    
+
     @Test
     public void testGetMatchingDataElements() {
         studyManagementService.getMatchingDataElements(Arrays.asList(StringUtils.split("random String")));
         assertTrue(caDSRFacadeStub.retreiveCandidateDataElementsCalled);
     }
-    
+
     @SuppressWarnings("deprecation")
     @Test
     public void testSetDefinition() throws ValidationException {
@@ -404,7 +424,7 @@ public class StudyManagementServiceTest {
         imageStudy.setImageDataSource(imageDataSource);
         SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
         subjectAnnotation.setStudySubjectAssignment(assignment);
-        
+
         StringAnnotationValue value1 = new StringAnnotationValue();
         StringAnnotationValue value2 = new StringAnnotationValue();
         StringAnnotationValue value3 = new StringAnnotationValue();
@@ -429,7 +449,7 @@ public class StudyManagementServiceTest {
         assertTrue(daoStub.saveCalled);
         assertEquals(firstDefinition, fileColumn.getFieldDescriptor().getDefinition());
         assertTrue(firstDefinition.getAnnotationValueCollection().contains(value1));
-        
+
         // Now create a new Definition and set it and verify the first definition is removed.
         AnnotationDefinition newDefinition = new AnnotationDefinition();
         newDefinition.setId(2L);
@@ -439,11 +459,11 @@ public class StudyManagementServiceTest {
         studyManagementService.setDefinition(study, fileColumn.getFieldDescriptor(), newDefinition, EntityTypeEnum.IMAGESERIES);
         assertEquals(3, newDefinition.getAnnotationValueCollection().size());
         assertTrue(firstDefinition.getAnnotationValueCollection().isEmpty());
-        
+
         assertEquals(Double.valueOf(1.23),
            ((NumericAnnotationValue)newDefinition.getAnnotationValueCollection().iterator().next()).getNumericValue());
     }
-    
+
     @SuppressWarnings("deprecation")
     @Test
     public void testSetDataElement() throws ConnectionException, ValidationException {
@@ -457,7 +477,7 @@ public class StudyManagementServiceTest {
         fileColumn.getFieldDescriptor().setDefinition(originalDefinition);
         fileColumn.setAnnotationFile(new AnnotationFile());
         fileColumn.getAnnotationFile().setCurrentlyLoaded(Boolean.TRUE.toString());
-        
+
         StringAnnotationValue validValue = new StringAnnotationValue();
         SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
         StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
@@ -472,7 +492,7 @@ public class StudyManagementServiceTest {
         survivalDefinition.setLastFollowupDate(originalDefinition);
         survivalDefinition.setDeathDate(originalDefinition);
         study.getSurvivalValueDefinitionCollection().add(survivalDefinition);
-        
+
         CommonDataElement dataElement = new CommonDataElement();
         dataElement.setLongName("longName");
         dataElement.setDefinition("definition");
@@ -517,7 +537,7 @@ public class StudyManagementServiceTest {
             exceptionCaught = true;
         }
         assertTrue(exceptionCaught);
-        
+
         // Now set a different data element and verify the first one is no longer in the study's collection
         CommonDataElement dataElement2 = new CommonDataElement();
         dataElement2.setLongName("longName2");
@@ -528,7 +548,7 @@ public class StudyManagementServiceTest {
         daoStub.fileColumns.add(fileColumn);
         studyManagementService.setDataElement(fileColumn.getFieldDescriptor(), dataElement2, study, EntityTypeEnum.SUBJECT, "");
     }
-    
+
     @Test
     public void testMapSamples() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -553,14 +573,14 @@ public class StudyManagementServiceTest {
         sample2.setName("5500024030700072107989.G10");
         genomicDataSourceConfiguration.getSamples().add(sample2);
         studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
-        studyManagementService.mapSamples(studyConfiguration, TestDataFiles.SIMPLE_SAMPLE_MAPPING_FILE, 
+        studyManagementService.mapSamples(studyConfiguration, TestDataFiles.SIMPLE_SAMPLE_MAPPING_FILE,
                 genomicDataSourceConfiguration);
         assertEquals(1, assignment1.getSampleAcquisitionCollection().size());
         assertEquals(sample1, assignment1.getSampleAcquisitionCollection().iterator().next().getSample());
         assertEquals(1, assignment2.getSampleAcquisitionCollection().size());
         assertEquals(sample2, assignment2.getSampleAcquisitionCollection().iterator().next().getSample());
     }
-    
+
     @Test
     public void testMapAgilentSamples() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -587,20 +607,20 @@ public class StudyManagementServiceTest {
         studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
         boolean hasException = false;
         try {
-            studyManagementService.mapSamples(studyConfiguration, TestDataFiles.SIMPLE_SAMPLE_MAPPING_FILE, 
+            studyManagementService.mapSamples(studyConfiguration, TestDataFiles.SIMPLE_SAMPLE_MAPPING_FILE,
                 genomicDataSourceConfiguration);
         } catch (ValidationException e) {
             hasException = true;
         }
         assertTrue(hasException);
-        studyManagementService.mapSamples(studyConfiguration, TestDataFiles.SIMPLE_AGILENT_SAMPLE_MAPPING_FILE, 
+        studyManagementService.mapSamples(studyConfiguration, TestDataFiles.SIMPLE_AGILENT_SAMPLE_MAPPING_FILE,
             genomicDataSourceConfiguration);
         assertEquals(1, assignment1.getSampleAcquisitionCollection().size());
         assertEquals(sample1, assignment1.getSampleAcquisitionCollection().iterator().next().getSample());
         assertEquals(1, assignment2.getSampleAcquisitionCollection().size());
         assertEquals(sample2, assignment2.getSampleAcquisitionCollection().iterator().next().getSample());
     }
-    
+
     @Test
     public void testAddControlSamples() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -620,7 +640,7 @@ public class StudyManagementServiceTest {
         assertTrue(studyConfiguration.getControlSampleSet(CONTROL_SAMPLE_SET_NAME).getSamples().contains(sample1));
         assertTrue(studyConfiguration.getControlSampleSet(CONTROL_SAMPLE_SET_NAME).getSamples().contains(sample2));
     }
-    
+
     @Test(expected = ValidationException.class)
     public void testAddControlSamplesDuplicate() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -633,7 +653,7 @@ public class StudyManagementServiceTest {
         studyManagementService.addControlSampleSet(genomicSource, CONTROL_SAMPLE_SET_NAME,
                 TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE, TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE_PATH);
     }
-    
+
     @Test(expected = ValidationException.class)
     public void testAddControlSamplesValidation() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -649,13 +669,13 @@ public class StudyManagementServiceTest {
         ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
         studyManagementService.addImageSource(studyConfiguration, imageDataSourceConfiguration);
         studyManagementService.save(studyConfiguration);
-        ImageAnnotationConfiguration imageAnnotationConfiguration = 
+        ImageAnnotationConfiguration imageAnnotationConfiguration =
             studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
                     false);
         assertEquals(5, imageAnnotationConfiguration.getAnnotationFile().getColumns().size());
         assertTrue(daoStub.saveCalled);
     }
-    
+
     @Test
     public void testAddAimAnnotationSource() throws Exception {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -672,7 +692,7 @@ public class StudyManagementServiceTest {
         ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
         studyManagementService.addImageSource(studyConfiguration, imageDataSourceConfiguration);
         imageDataSourceConfiguration.setId(Long.valueOf(1));
-        ImageAnnotationConfiguration imageAnnotationConfiguration = 
+        ImageAnnotationConfiguration imageAnnotationConfiguration =
             studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
                     false);
         imageDataSourceConfiguration.setImageAnnotationConfiguration(imageAnnotationConfiguration);
@@ -698,7 +718,7 @@ public class StudyManagementServiceTest {
         acquisition.getSeriesCollection().add(series2);
         imageDataSourceConfiguration.getImageSeriesAcquisitions().add(acquisition);
         studyConfiguration.getImageDataSources().add(imageDataSourceConfiguration);
-        ImageAnnotationConfiguration imageAnnotationConfiguration = 
+        ImageAnnotationConfiguration imageAnnotationConfiguration =
             studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
                     false);
         imageAnnotationConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
@@ -715,13 +735,13 @@ public class StudyManagementServiceTest {
         definition.setDataType(AnnotationTypeEnum.DATE);
         imageAnnotationConfiguration.getAnnotationFile().getColumns().get(4).getFieldDescriptor().setDefinition(definition);
         imageDataSourceConfiguration.setImageAnnotationConfiguration(imageAnnotationConfiguration);
-        
-        studyManagementService.loadImageAnnotation(imageDataSourceConfiguration); 
+
+        studyManagementService.loadImageAnnotation(imageDataSourceConfiguration);
         assertEquals(4, series1.getAnnotationCollection().size());
         assertEquals(4, series2.getAnnotationCollection().size());
     }
-    
-    
+
+
     @Test
     public void testLoadAimAnnotations() throws Exception {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -744,7 +764,7 @@ public class StudyManagementServiceTest {
         assertEquals(2, studyConfiguration.getStudy().getAnnotationGroup("Group").getAnnotationFieldDescriptors().
                 iterator().next().getDefinition().getAnnotationValueCollection().size()); // 2 values, one for each image series.
     }
-    
+
     @Test
     public void testMapImageSeriesAcquisitions() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -766,15 +786,15 @@ public class StudyManagementServiceTest {
         imageDataSourceConfiguration.getImageSeriesAcquisitions().add(acquisition2);
         studyConfiguration.getImageDataSources().add(imageDataSourceConfiguration);
         studyManagementService.save(studyConfiguration);
-        studyManagementService.mapImageSeriesAcquisitions(studyConfiguration, imageDataSourceConfiguration, 
+        studyManagementService.mapImageSeriesAcquisitions(studyConfiguration, imageDataSourceConfiguration,
                 TestDataFiles.SIMPLE_IMAGE_MAPPING_FILE, ImageDataSourceMappingTypeEnum.IMAGE_SERIES);
         assertEquals("100", assignment1.getImageStudyCollection().iterator().next().getIdentifier());
         assertEquals("101", assignment2.getImageStudyCollection().iterator().next().getIdentifier());
-        
+
         assertEquals(2, imageDataSourceConfiguration.getMappedImageSeriesAcquisitions().size());
         assertEquals(0, imageDataSourceConfiguration.getUnmappedImageSeriesAcquisitions().size());
     }
-    
+
     @Test
     public void testCreateDefinition() throws ValidationException {
         AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
@@ -793,7 +813,7 @@ public class StudyManagementServiceTest {
         definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SAMPLE, AnnotationTypeEnum.STRING);
         assertEquals(1, study.getAllVisibleAnnotationFieldDescriptors(EntityTypeEnum.SAMPLE, null).size());
     }
-    
+
     @Test
     public void testIsDuplicateStudyName() {
         Study study = new Study();
@@ -801,25 +821,25 @@ public class StudyManagementServiceTest {
         assertFalse(studyManagementService.isDuplicateStudyName(study, ""));
         assertTrue(daoStub.isDuplicateStudyNameCalled);
     }
-    
+
     @Test
     public void testRemoveSurvivalValueDefinition() {
         Study study = StudyConfigurationFactory.createNewStudyConfiguration().getStudy();
         SurvivalValueDefinition definition = new SurvivalValueDefinition();
         study.getSurvivalValueDefinitionCollection().add(definition);
         assertTrue(study.getSurvivalValueDefinitionCollection().contains(definition));
-        
+
         studyManagementService.removeSurvivalValueDefinition(study, definition);
         assertTrue(daoStub.removeObjectsCalled);
         assertFalse(study.getSurvivalValueDefinitionCollection().contains(definition));
     }
-    
+
     @Test
     public void testRetrieveImageDataSource() {
         studyManagementService.retrieveImageDataSource(new Study());
         assertTrue(daoStub.retrieveImagingDataSourceForStudyCalled);
     }
-    
+
     @Test
     public void testGetRefreshedSecureStudyConfiguration() {
         SecureDaoStub secureDaoStub = new SecureDaoStub();
@@ -828,16 +848,16 @@ public class StudyManagementServiceTest {
             studyManagementService.getRefreshedSecureStudyConfiguration("invalid", Long.valueOf(1));
             fail();
         } catch (CSSecurityException e) {
-            
+
         }
         try {
-            assertEquals(secureDaoStub.studyConfiguration, 
+            assertEquals(secureDaoStub.studyConfiguration,
                     studyManagementService.getRefreshedSecureStudyConfiguration("valid", Long.valueOf(1)));
         } catch (CSSecurityException e) {
             fail();
         }
     }
-    
+
     @Test
     public void testSaveAnnotationDefinition() throws ValidationException {
         AnnotationDefinition stringToNumericDefinition = new AnnotationDefinition();
@@ -861,7 +881,7 @@ public class StudyManagementServiceTest {
                 ((NumericAnnotationValue)stringToNumericDefinition.getAnnotationValueCollection().iterator().next()).getNumericValue());
 
     }
-    
+
     @Test
     public void testAddExternalLinksToStudy() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -872,7 +892,7 @@ public class StudyManagementServiceTest {
         assertEquals(3, externalLinkList.getLinksByCategory().keySet().size());
         assertTrue(studyConfiguration.getExternalLinkLists().contains(externalLinkList));
     }
-    
+
     @Test
     public void testSaveAnnotationGroup() throws ValidationException, ConnectionException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -882,7 +902,7 @@ public class StudyManagementServiceTest {
                 TestDataFiles.ANNOTATION_GROUP_FILE);
         assertFalse(studyConfiguration.getStudy().getAnnotationGroups().isEmpty());
         assertEquals(5, annotationGroup.getAnnotationFieldDescriptors().size());
-        
+
         // Test invalid because AFD already exist
         annotationGroup = new AnnotationGroup();
         annotationGroup.setName("Test_2");
@@ -895,7 +915,7 @@ public class StudyManagementServiceTest {
         }
         assertTrue(catchException);
     }
-    
+
     @Test
     public void testDeleteAnnotationGroup() {
         SecureDaoStub secureDaoStub = new SecureDaoStub();
@@ -915,33 +935,33 @@ public class StudyManagementServiceTest {
         assertFalse(studyConfiguration.getStudy().getAnnotationGroups().contains(group));
         assertEquals(null, secureDaoStub.stringCriterion.getAnnotationFieldDescriptor());
         assertTrue(query.getColumnCollection().isEmpty());
-        
+
     }
-    
+
     @Test
     public void testSetStudyLastModifiedByCurrentUser() {
         UserWorkspace lastModifiedBy = new UserWorkspace();
         Query query = new Query();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        
+
         studyManagementService.setStudyLastModifiedByCurrentUser(studyConfiguration, lastModifiedBy, null, null);
         assertTrue(studyConfiguration.getLogEntries().isEmpty());
         assertTrue(studyConfiguration.getLastModifiedDate() != null);
-        
+
         studyManagementService.setStudyLastModifiedByCurrentUser(studyConfiguration, lastModifiedBy, query, null);
         assertEquals(studyConfiguration.getLastModifiedDate(), query.getLastModifiedDate());
         assertTrue(studyConfiguration.getLogEntries().isEmpty());
-        
+
         studyManagementService.setStudyLastModifiedByCurrentUser(studyConfiguration, lastModifiedBy, query, "Log Message1");
         assertEquals("Log Message1", studyConfiguration.getLogEntries().get(0).getSystemLogMessage());
         assertTrue(studyConfiguration.getLogEntries().get(0).getUsername() == null);
-        
+
         lastModifiedBy.setUsername("username");
         studyManagementService.setStudyLastModifiedByCurrentUser(studyConfiguration, lastModifiedBy, query, "Log Message2");
         assertEquals("Log Message1", studyConfiguration.getLogEntries().get(0).getSystemLogMessage());
         assertEquals("Log Message2", studyConfiguration.getLogEntries().get(1).getSystemLogMessage());
         assertEquals("username", studyConfiguration.getLogEntries().get(1).getUsername());
-        
+
     }
     @Test
     public void testUpdateImageDataSourceStatus() {
@@ -949,30 +969,30 @@ public class StudyManagementServiceTest {
         ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
         imageDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
         studyConfiguration.getImageDataSources().add(imageDataSourceConfiguration);
-        
+
         studyManagementService.updateImageDataSourceStatus(studyConfiguration);
         assertTrue(Status.NOT_MAPPED.equals(imageDataSourceConfiguration.getStatus()));
-        
+
         imageDataSourceConfiguration.setStatus(Status.PROCESSING);
         studyManagementService.updateImageDataSourceStatus(studyConfiguration);
         assertTrue(Status.PROCESSING.equals(imageDataSourceConfiguration.getStatus()));
-        
+
         imageDataSourceConfiguration.setStatus(Status.NOT_LOADED);
         studyManagementService.updateImageDataSourceStatus(studyConfiguration);
         assertTrue(Status.NOT_MAPPED.equals(imageDataSourceConfiguration.getStatus()));
-        
+
         ImageSeriesAcquisition imageSeriesAcquisition = new ImageSeriesAcquisition();
         imageSeriesAcquisition.setAssignment(new StudySubjectAssignment());
         imageDataSourceConfiguration.getImageSeriesAcquisitions().add(imageSeriesAcquisition);
         studyManagementService.updateImageDataSourceStatus(studyConfiguration);
         assertTrue(Status.LOADED.equals(imageDataSourceConfiguration.getStatus()));
     }
-    
+
     private static class SecureDaoStub extends CaIntegrator2DaoStub {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         StringComparisonCriterion stringCriterion = new StringComparisonCriterion();
         ResultColumn resultColumn = new ResultColumn();
-        
+
         @Override
         @SuppressWarnings("unchecked")
         public <T> T get(Long id, java.lang.Class<T> objectClass) {
@@ -981,7 +1001,7 @@ public class StudyManagementServiceTest {
             study.setStudyConfiguration(studyConfiguration);
             return (T) studyConfiguration;
         }
-        
+
         @Override
         public List<Study> getStudies(String username) {
             List<Study> studies = new ArrayList<Study>();
@@ -990,14 +1010,14 @@ public class StudyManagementServiceTest {
             }
             return studies;
         }
-        
+
         @Override
         public List<AbstractAnnotationCriterion> getCriteriaUsingAnnotation(AnnotationFieldDescriptor fieldDescriptor) {
             List<AbstractAnnotationCriterion> criteria = new ArrayList<AbstractAnnotationCriterion>();
             criteria.add(stringCriterion);
             return criteria;
         }
-        
+
         @Override
         public List<ResultColumn> getResultColumnsUsingAnnotation(AnnotationFieldDescriptor fieldDescriptor) {
             List<ResultColumn> columns = new ArrayList<ResultColumn>();
@@ -1005,16 +1025,44 @@ public class StudyManagementServiceTest {
             return columns;
         }
     }
-    
-    private class CaIntegrator2DaoForStudyManagementStub extends CaIntegrator2DaoStub {
+
+    public class CaIntegrator2DaoForStudyManagementStub extends CaIntegrator2DaoStub {
         public StudyConfiguration studyConfiguration;
         @SuppressWarnings("unchecked")
         @Override
         public <T> T get(Long id, Class<T> objectClass) {
             if (objectClass == StudyConfiguration.class) {
                 return (T) studyConfiguration;
-            } 
+            }
             return super.get(id, objectClass);
         }
+    }
+
+    public CaIntegrator2DaoForStudyManagementStub getCaIntegrator2DaoForStudyManagementStub() {
+        return new CaIntegrator2DaoForStudyManagementStub();
+    }
+
+    private class CopyStudyHelperStub extends CopyStudyHelper {
+
+        public CopyStudyHelperStub(StudyManagementService svc) {
+            super(svc);
+        }
+
+        @Override
+        public void copySubjectAnnotationGroups(StudyConfiguration copyFrom, StudyConfiguration copyTo)
+            throws ValidationException, IOException {
+
+        }
+
+        @Override
+        public void copyAnnotationGroups(StudyConfiguration copyFrom, StudyConfiguration copyTo)
+            throws ValidationException, ConnectionException, IOException {
+
+        }
+
+        @Override
+        public void copyStudyLogo(StudyConfiguration copyFrom, StudyConfiguration copyTo) throws IOException {
+        }
+
     }
 }

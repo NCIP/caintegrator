@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.application.study;
@@ -169,6 +169,15 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     private WorkspaceService workspaceService;
     private SecurityManager securityManager;
     private AnalysisService analysisService;
+    private CopyStudyHelper copyHelper = new CopyStudyHelper(this);
+
+    /**
+     * Instance of copy helper to help study copy.
+     * @param altCopyHelper copy Helper.
+     */
+    public void setCopyHelper(CopyStudyHelper altCopyHelper) {
+        copyHelper = altCopyHelper;
+    }
 
     /**
      * {@inheritDoc}
@@ -181,7 +190,27 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
         daoSave(studyConfiguration);
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(rollbackFor = {ValidationException.class, IOException.class, ConnectionException.class })
+    public StudyConfiguration copy(StudyConfiguration copyFrom, Long id) throws ValidationException, IOException,
+        ConnectionException {
+        StudyConfiguration copyTo = getRefreshedStudyConfiguration(id);
+        copyHelper.copyStudyData(copyFrom, copyTo);
+        copyHelper.copyStudyLogo(copyFrom, copyTo);
+        copyHelper.copyAnnotationGroups(copyFrom, copyTo);
+        copyHelper.copySurvivalDefinitions(copyFrom, copyTo);
+        copyHelper.copySubjectAnnotationGroups(copyFrom, copyTo);
+        //copyTo = getRefreshedStudyConfiguration(id);
+        copyHelper.copyExternalLinks(copyFrom, copyTo);
+        copyHelper.copyStudyGenomicSource(copyFrom, copyTo);
+        copyHelper.copyStudyImageSource(copyFrom, copyTo);
+        daoSave(copyTo);
+        return copyTo;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -196,7 +225,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
         daoSave(definition);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -209,7 +238,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
         securityManager.createProtectionElement(studyConfiguration);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -221,7 +250,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         studyConfiguration.setUserWorkspace(null);
         getDao().delete(studyConfiguration);
     }
-    
+
     private boolean isNew(StudyConfiguration studyConfiguration) {
         return studyConfiguration.getId() == null;
     }
@@ -230,8 +259,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         configureNew(studyConfiguration.getStudy());
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", 
-                        "PMD.ExcessiveMethodLength", 
+    @SuppressWarnings({"PMD.CyclomaticComplexity",
+                        "PMD.ExcessiveMethodLength",
                         "PMD.NPathComplexity" })   // multiple simple null checks
     private void configureNew(Study study) {
         if (study.getDefaultTimepoint() == null) {
@@ -257,19 +286,19 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         File permanentFile = getFileManager().storeStudyFile(inputFile, filename, studyConfiguration);
         AnnotationFile annotationFile = AnnotationFile.load(permanentFile, getDao(), studyConfiguration,
                 EntityTypeEnum.SUBJECT, createNewAnnotationDefinition);
-        DelimitedTextClinicalSourceConfiguration clinicalSourceConfig = 
+        DelimitedTextClinicalSourceConfiguration clinicalSourceConfig =
             new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfiguration);
         daoSave(clinicalSourceConfig);
         daoSave(studyConfiguration);
         return clinicalSourceConfig;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void addStudyLogo(StudyConfiguration studyConfiguration,
                              File imageFile,
-                             String fileName, 
+                             String fileName,
                              String fileType) throws IOException {
         if (studyConfiguration.getStudyLogo() == null) {
             studyConfiguration.setStudyLogo(new StudyLogo());
@@ -280,7 +309,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         studyConfiguration.getStudyLogo().setPath(studyLogoFile.getPath());
         daoSave(studyConfiguration);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -290,23 +319,23 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
 
     /**
      * {@inheritDoc}
-     * @throws InvalidFieldDescriptorException 
+     * @throws InvalidFieldDescriptorException
      */
     @Transactional(rollbackFor = ValidationException.class)
     public DelimitedTextClinicalSourceConfiguration loadClinicalAnnotation(Long studyConfigurationId,
             Long clinicalSourceId)
         throws ValidationException, InvalidFieldDescriptorException {
         StudyConfiguration studyConfiguration = getRefreshedStudyConfiguration(studyConfigurationId);
-        DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration 
+        DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration
                                                     = studyConfiguration.getClinicalSource(clinicalSourceId);
-        if (validateAnnotationFieldDescriptors(studyConfiguration, 
+        if (validateAnnotationFieldDescriptors(studyConfiguration,
                 clinicalSourceConfiguration.getAnnotationDescriptors(), EntityTypeEnum.SUBJECT)) {
             clinicalSourceConfiguration.loadAnnotation();
             save(studyConfiguration);
             return clinicalSourceConfiguration;
         } else {
             throw new InvalidFieldDescriptorException(
-                "Unable to load clinical source due to invalid values being loaded.  " 
+                "Unable to load clinical source due to invalid values being loaded.  "
                     + "Check the annotations on the edit screen for more details.");
         }
     }
@@ -320,7 +349,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             AnnotationDefinition definition = descriptor.getDefinition();
             if (definition != null && !definition.getPermissibleValueCollection().isEmpty()) {
                 try {
-                    validateAnnotationDefinition(descriptor, studyConfiguration.getStudy(), 
+                    validateAnnotationDefinition(descriptor, studyConfiguration.getStudy(),
                         entityType, definition);
                     if (descriptor.isHasValidationErrors()) {
                         makeFieldDescriptorValid(descriptor);
@@ -342,7 +371,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             AnnotationFieldDescriptor descriptor) throws ValidationException {
         if (descriptor.isUsePermissibleValues() && AnnotationFieldType.ANNOTATION.equals(descriptor.getType())
                 && descriptor.getDefinition().getPermissibleValueCollection().isEmpty()) {
-            Set<Object> uniqueValues = validateAndRetrieveUniqueValues(study, entityType, 
+            Set<Object> uniqueValues = validateAndRetrieveUniqueValues(study, entityType,
                     descriptor, descriptor.getDefinition());
             descriptor.getDefinition().addPermissibleValues(uniqueValues);
         }
@@ -363,7 +392,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public StudyConfiguration reLoadClinicalAnnotation(Long studyConfigurationId) throws ValidationException {
         StudyConfiguration studyConfiguration = getRefreshedStudyConfiguration(studyConfigurationId);
         deleteClinicalAnnotation(studyConfiguration);
-        for (AbstractClinicalSourceConfiguration configuration 
+        for (AbstractClinicalSourceConfiguration configuration
                 : studyConfiguration.getClinicalConfigurationCollection()) {
             configuration.reLoadAnnotation();
         }
@@ -377,7 +406,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     public void unloadAllClinicalAnnotation(StudyConfiguration studyConfiguration) {
         deleteClinicalAnnotation(studyConfiguration);
-        for (AbstractClinicalSourceConfiguration configuration 
+        for (AbstractClinicalSourceConfiguration configuration
                 : studyConfiguration.getClinicalConfigurationCollection()) {
             configuration.unloadAnnotation();
         }
@@ -440,7 +469,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public StudyConfiguration deleteClinicalSource(Long studyConfigurationId,
             Long clinicalSourceId) throws ValidationException {
         StudyConfiguration studyConfiguration = getRefreshedStudyConfiguration(studyConfigurationId);
-        DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration 
+        DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration
                                                     = studyConfiguration.getClinicalSource(clinicalSourceId);
         studyConfiguration.setStatus(Status.NOT_DEPLOYED);
         studyConfiguration.getClinicalConfigurationCollection().remove(clinicalSourceConfiguration);
@@ -448,14 +477,14 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         save(studyConfiguration);
         return reLoadClinicalAnnotation(studyConfiguration.getId());
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
         studyConfiguration.getGenomicDataSources().remove(genomicSource);
         if (genomicSource.isCopyNumberData()) {
-            Set<GisticAnalysis> gisticAnalysisCollection = 
+            Set<GisticAnalysis> gisticAnalysisCollection =
                 getDao().getGisticAnalysisUsingGenomicSource(genomicSource);
             for (GisticAnalysis gisticAnalysis : gisticAnalysisCollection) {
                 analysisService.deleteGisticAnalysis(gisticAnalysis);
@@ -474,18 +503,18 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         getDao().refresh(genomicSource); // refresh to prevent hibernate resave error
         getDao().delete(genomicSource);
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public void delete(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource) 
+    public void delete(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
         throws ValidationException {
         studyConfiguration.getImageDataSources().remove(imageSource);
         getDao().delete(imageSource);
-        
+
         reLoadImageAnnotation(studyConfiguration);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -493,7 +522,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         studyConfiguration.getExternalLinkLists().remove(externalLinkList);
         getDao().delete(externalLinkList);
     }
-    
+
     private void deleteImageAnnotation(StudyConfiguration studyConfiguration) {
         Study study = studyConfiguration.getStudy();
         for (StudySubjectAssignment studySubjectAssignment : study.getAssignmentCollection()) {
@@ -503,10 +532,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             studySubjectAssignment.getImageStudyCollection().clear();
         }
     }
-    
+
     private void reLoadImageAnnotation(StudyConfiguration studyConfiguration) throws ValidationException {
         deleteImageAnnotation(studyConfiguration);
-        for (ImageDataSourceConfiguration configuration 
+        for (ImageDataSourceConfiguration configuration
                 : studyConfiguration.getImageDataSources()) {
             if (configuration.getImageAnnotationConfiguration() != null) {
                 configuration.getImageAnnotationConfiguration().reLoadAnnontation();
@@ -515,12 +544,12 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         getDao().removeObjects(studyConfiguration.removeObsoleteSubjectAssignment());
         save(studyConfiguration);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Transactional(rollbackFor = {ValidationException.class, IOException.class })
-    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile, 
+    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile,
             GenomicDataSourceConfiguration genomicSource)
         throws ValidationException, IOException {
         unmapSamples(genomicSource);
@@ -533,7 +562,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
         save(studyConfiguration);
     }
-    
+
     private void unmapSamples(GenomicDataSourceConfiguration genomicSource) {
         for (Sample sample : genomicSource.getSamples()) {
             sample.removeSampleAcquisitionAssociations();
@@ -560,7 +589,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                 controlSampleFileName);
         save(genomicSource.getStudyConfiguration());
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -569,11 +598,11 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         addGenomicSourceToStudy(studyConfiguration, genomicSource);
         loadGenomicSource(genomicSource);
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public void addGenomicSourceToStudy(StudyConfiguration studyConfiguration, 
+    public void addGenomicSourceToStudy(StudyConfiguration studyConfiguration,
                                         GenomicDataSourceConfiguration genomicSource) {
         studyConfiguration.getGenomicDataSources().add(genomicSource);
         genomicSource.setStudyConfiguration(studyConfiguration);
@@ -583,7 +612,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public void loadGenomicSource(GenomicDataSourceConfiguration genomicSource) 
+    public void loadGenomicSource(GenomicDataSourceConfiguration genomicSource)
     throws ConnectionException, ExperimentNotFoundException {
         if (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())
                 || genomicSource.isExpressionData()) {
@@ -598,7 +627,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
 
     private void loadSamples(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
             ExperimentNotFoundException {
-        List<Sample> samples = getCaArrayFacade().getSamples(genomicSource.getExperimentIdentifier(), 
+        List<Sample> samples = getCaArrayFacade().getSamples(genomicSource.getExperimentIdentifier(),
                 genomicSource.getServerProfile());
         if (samples.isEmpty()) {
             throw new SamplesNotFoundException(
@@ -609,10 +638,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             sample.setGenomicDataSource(genomicSource);
         }
     }
-    
+
     private void checkSupplementalFiles(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
     ExperimentNotFoundException {
-        String errorMessage = 
+        String errorMessage =
             "No samples found for this caArray experiment (verify that sample data is accessible in caArray)";
         try {
             if (getCaArrayFacade().retrieveFilesForGenomicSource(genomicSource).isEmpty()) {
@@ -622,7 +651,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             throw new DnaAnalysisFilesNotFoundException(errorMessage, e);
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -633,25 +662,25 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         HibernateUtil.loadCollection(genomicSource.getStudyConfiguration());
         return genomicSource;
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public StudyConfiguration getRefreshedSecureStudyConfiguration(String username, Long id) 
+    public StudyConfiguration getRefreshedSecureStudyConfiguration(String username, Long id)
     throws CSSecurityException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setId(id);
         studyConfiguration = getRefreshedEntity(studyConfiguration);
         Set<StudyConfiguration> managedStudyConfigurations = new HashSet<StudyConfiguration>();
         try {
-            managedStudyConfigurations = 
-                securityManager.retrieveManagedStudyConfigurations(username, getDao().getStudies(username)); 
+            managedStudyConfigurations =
+                securityManager.retrieveManagedStudyConfigurations(username, getDao().getStudies(username));
         } catch (CSException e) {
             throw new IllegalStateException("Error retrieving CSM data from SecurityManager.");
         }
         if (!managedStudyConfigurations.contains(studyConfiguration)) {
             throw new CSSecurityException("User doesn't have access to this study.");
-        } 
+        }
         return studyConfiguration;
     }
 
@@ -704,11 +733,11 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     @SuppressWarnings("PMD.ExcessiveMethodLength")
     @Transactional(rollbackFor = {ConnectionException.class, ValidationException.class })
-    public void setDataElement(AnnotationFieldDescriptor fieldDescriptor, 
-                                CommonDataElement dataElement, 
-                                Study study, 
+    public void setDataElement(AnnotationFieldDescriptor fieldDescriptor,
+                                CommonDataElement dataElement,
+                                Study study,
                                 EntityTypeEnum entityType,
-                                String keywords) 
+                                String keywords)
     throws ConnectionException, ValidationException {
         if (dataElement.getValueDomain() == null) {
             retrieveValueDomain(dataElement);
@@ -725,18 +754,18 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         daoSave(fieldDescriptor);
     }
 
-    private void validateAnnotationDefinition(AnnotationFieldDescriptor fieldDescriptor, 
+    private void validateAnnotationDefinition(AnnotationFieldDescriptor fieldDescriptor,
             Study study, EntityTypeEnum entityType,
             AnnotationDefinition annotationDefinition) throws ValidationException {
-        Set<Object> uniqueValues = validateAndRetrieveUniqueValues(study, entityType, 
-                fieldDescriptor, annotationDefinition); 
+        Set<Object> uniqueValues = validateAndRetrieveUniqueValues(study, entityType,
+                fieldDescriptor, annotationDefinition);
         if (!annotationDefinition.getPermissibleValueCollection().isEmpty()) {
             validateValuesWithPermissibleValues(uniqueValues, annotationDefinition);
         }
     }
-    
-    private Set<Object> validateAndRetrieveUniqueValues(Study study, EntityTypeEnum entityType, 
-            AnnotationFieldDescriptor fieldDescriptor, 
+
+    private Set<Object> validateAndRetrieveUniqueValues(Study study, EntityTypeEnum entityType,
+            AnnotationFieldDescriptor fieldDescriptor,
             AnnotationDefinition annotationDefinition) throws ValidationException {
         AnnotationTypeEnum annotationType = annotationDefinition.getDataType();
         if (annotationType == null) {
@@ -745,7 +774,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         Set<Object> valueObjects = new HashSet<Object>();
         List<FileColumn> fileColumns = getDao().getFileColumnsUsingAnnotationFieldDescriptor(fieldDescriptor);
         for (FileColumn fileColumn : fileColumns) {
-            valueObjects.addAll(retrieveAndValidateValuesForFileColumn(study, entityType, annotationDefinition, 
+            valueObjects.addAll(retrieveAndValidateValuesForFileColumn(study, entityType, annotationDefinition,
                     annotationType, fileColumn));
         }
         return valueObjects;
@@ -758,22 +787,22 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             throws ValidationException {
         if (Boolean.valueOf(fileColumn.getAnnotationFile().getCurrentlyLoaded())) {
             annotationDefinition.validateValuesWithType();
-            return new HashSet<Object>(getDao().retrieveUniqueValuesForStudyAnnotation(study, annotationDefinition, 
+            return new HashSet<Object>(getDao().retrieveUniqueValuesForStudyAnnotation(study, annotationDefinition,
                     entityType, annotationType.getClassType()));
         } else {
             return fileColumn.getUniqueDataValues(annotationType.getClassType());
         }
     }
-    
-    private void validateValuesWithPermissibleValues(Set<Object> uniqueValues, 
+
+    private void validateValuesWithPermissibleValues(Set<Object> uniqueValues,
             AnnotationDefinition annotationDefinition) throws ValidationException {
         ValidationResult validationResult = new ValidationResult();
         validationResult.setValid(true);
-        Set<String> invalidValues =  
+        Set<String> invalidValues =
                 PermissibleValueUtil.retrieveValuesNotPermissible(uniqueValues, annotationDefinition);
         if (!invalidValues.isEmpty()) {
             StringBuffer message = new StringBuffer();
-            message.append("The following values exist that are NOT permissible for '" 
+            message.append("The following values exist that are NOT permissible for '"
                             + annotationDefinition.getDisplayName() + "': {");
             for (String invalidValue : invalidValues) {
                 message.append(" '" + invalidValue + "' ");
@@ -788,9 +817,9 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     private void retrieveValueDomain(CommonDataElement dataElement)
             throws ConnectionException {
         ValueDomain valueDomain;
-        String dataElementVersion = dataElement.getVersion(); 
-        valueDomain = caDSRFacade.retrieveValueDomainForDataElement(dataElement.getPublicID(), 
-                                                    NumberUtils.isNumber(dataElementVersion) 
+        String dataElementVersion = dataElement.getVersion();
+        valueDomain = caDSRFacade.retrieveValueDomainForDataElement(dataElement.getPublicID(),
+                                                    NumberUtils.isNumber(dataElementVersion)
                                                     ? Float.valueOf(dataElementVersion) : null);
         dataElement.setValueDomain(valueDomain);
     }
@@ -799,19 +828,19 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     @Transactional(rollbackFor = ValidationException.class)
-    public void setDefinition(Study study, AnnotationFieldDescriptor fieldDescriptor, 
+    public void setDefinition(Study study, AnnotationFieldDescriptor fieldDescriptor,
             AnnotationDefinition annotationDefinition, EntityTypeEnum entityType) throws ValidationException {
-        if (fieldDescriptor.getDefinition() == null 
+        if (fieldDescriptor.getDefinition() == null
             || !fieldDescriptor.getDefinition().equals(annotationDefinition)) {
             addDefinitionToStudy(fieldDescriptor, study, entityType, annotationDefinition);
             validateAnnotationDefinition(fieldDescriptor, study, entityType, annotationDefinition);
-            
+
             daoSave(annotationDefinition);
             daoSave(fieldDescriptor);
             daoSave(study);
         }
     }
-    
+
     /**
      * @return the nciaFacade
      */
@@ -870,10 +899,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     throws ValidationException, IOException {
         File permanentFile = getFileManager().storeStudyFile(inputFile, filename,
                 imageDataSourceConfiguration.getStudyConfiguration());
-        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, getDao(), 
+        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, getDao(),
                 imageDataSourceConfiguration.getStudyConfiguration(),
                 EntityTypeEnum.IMAGESERIES, createNewAnnotationDefinition);
-        ImageAnnotationConfiguration imageAnnotationConfiguration = 
+        ImageAnnotationConfiguration imageAnnotationConfiguration =
             new ImageAnnotationConfiguration(annotationFile, imageDataSourceConfiguration);
         imageAnnotationConfiguration.setImageDataSourceConfiguration(imageDataSourceConfiguration);
         imageDataSourceConfiguration.setImageAnnotationConfiguration(imageAnnotationConfiguration);
@@ -881,11 +910,11 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         daoSave(imageDataSourceConfiguration.getStudyConfiguration());
         return imageAnnotationConfiguration;
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public ImageAnnotationConfiguration addAimAnnotationSource(ServerConnectionProfile aimConnection, 
+    public ImageAnnotationConfiguration addAimAnnotationSource(ServerConnectionProfile aimConnection,
             ImageDataSourceConfiguration imageSource) {
         ImageAnnotationConfiguration annotationConfiguration = new ImageAnnotationConfiguration();
         annotationConfiguration.setUploadType(ImageAnnotationUploadType.AIM);
@@ -896,16 +925,16 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         daoSave(imageSource.getStudyConfiguration());
         return annotationConfiguration;
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    @Transactional(propagation = Propagation.NOT_SUPPORTED, 
+    @Transactional(propagation = Propagation.NOT_SUPPORTED,
             rollbackFor = {ConnectionException.class, ValidationException.class })
-    // Using Propagation.NOT_SUPPORTED because when it was being run it wouldn't always save the 
-    // AnnotationValue.AnnotationDefinition or AnnotationValue.ImageSeries, so when it's outside 
+    // Using Propagation.NOT_SUPPORTED because when it was being run it wouldn't always save the
+    // AnnotationValue.AnnotationDefinition or AnnotationValue.ImageSeries, so when it's outside
     // of the transaction and using a daoSave it correctly saves the objects
-    public void loadAimAnnotations(ImageDataSourceConfiguration imageSource) 
+    public void loadAimAnnotations(ImageDataSourceConfiguration imageSource)
         throws ConnectionException, ValidationException {
         List<ImageSeries> imageSeriesCollection = new ArrayList<ImageSeries>();
         for (ImageSeriesAcquisition imageSeriesAcquisition : imageSource.getImageSeriesAcquisitions()) {
@@ -932,7 +961,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                     AnnotationFieldDescriptor annotationDescriptor = AnnotationUtil.retrieveOrCreateFieldDescriptor(
                             getDao(), imageSource.getStudyConfiguration(), EntityTypeEnum.IMAGESERIES, true,
                             definitionName, groupName);
-                    AbstractAnnotationValue annotationValue = 
+                    AbstractAnnotationValue annotationValue =
                         AnnotationUtil.createAnnotationValue(annotationDescriptor, value);
                     daoSave(annotationDescriptor.getAnnotationGroup());
                     daoSave(annotationDescriptor);
@@ -948,27 +977,27 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource) 
+    public void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
         throws ConnectionException, InvalidImagingCollectionException {
         addImageSourceToStudy(studyConfiguration, imageSource);
         loadImageSource(imageSource);
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public void addImageSourceToStudy(StudyConfiguration studyConfiguration, 
+    public void addImageSourceToStudy(StudyConfiguration studyConfiguration,
             ImageDataSourceConfiguration imageSource) {
         imageSource.setStudyConfiguration(studyConfiguration);
         studyConfiguration.getImageDataSources().add(imageSource);
         daoSave(imageSource);
         daoSave(studyConfiguration);
     }
-    
+
     /**
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
-    public void loadImageSource(ImageDataSourceConfiguration imageSource) 
+    public void loadImageSource(ImageDataSourceConfiguration imageSource)
         throws ConnectionException, InvalidImagingCollectionException {
         List<ImageSeriesAcquisition> acquisitions = getNciaFacade().getImageSeriesAcquisitions(
                 imageSource.getCollectionName(), imageSource.getServerProfile());
@@ -986,13 +1015,13 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     public void loadImageAnnotation(ImageDataSourceConfiguration imageDataSource) throws ValidationException {
         ImageAnnotationConfiguration imageAnnotationConfiguration = imageDataSource.getImageAnnotationConfiguration();
-        if (validateAnnotationFieldDescriptors(imageDataSource.getStudyConfiguration(), 
+        if (validateAnnotationFieldDescriptors(imageDataSource.getStudyConfiguration(),
                 imageAnnotationConfiguration.getAnnotationDescriptors(), EntityTypeEnum.IMAGESERIES)) {
             imageAnnotationConfiguration.loadAnnontation();
             imageDataSource.setStatus(retrieveImageSourceStatus(imageDataSource));
             daoSave(imageDataSource);
         } else {
-            throw new ValidationException("Unable to load image source due to invalid values being loaded.  " 
+            throw new ValidationException("Unable to load image source due to invalid values being loaded.  "
                 + "Check the annotations on the edit screen for more details.");
         }
     }
@@ -1000,15 +1029,15 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, 
+    public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration,
             ImageDataSourceConfiguration imageSource, File mappingFile, ImageDataSourceMappingTypeEnum mappingType)
         throws ValidationException, IOException {
-        new ImageSeriesAcquisitionMappingHelper(studyConfiguration, mappingFile, 
+        new ImageSeriesAcquisitionMappingHelper(studyConfiguration, mappingFile,
                 mappingType, imageSource).mapImageSeries();
         imageSource.setStatus(retrieveImageSourceStatus(imageSource));
         daoSave(imageSource);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -1031,7 +1060,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
         ImageAnnotationConfiguration annotationConfiguration = imageSource.getImageAnnotationConfiguration();
         if (annotationConfiguration != null) {
-            if (annotationConfiguration.isLoadable() 
+            if (annotationConfiguration.isLoadable()
                  && !annotationConfiguration.isCurrentlyLoaded()) {
                 return Status.NOT_LOADED;
             } else if (annotationConfiguration.isCurrentlyLoaded()) {
@@ -1039,10 +1068,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             } else if (!annotationConfiguration.isLoadable()) {
                 return Status.DEFINITION_INCOMPLETE;
             }
-        } 
+        }
         return Status.LOADED;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -1053,7 +1082,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         HibernateUtil.loadCollection(imagingSource.getStudyConfiguration());
         return imagingSource;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -1068,8 +1097,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, 
-                                                 Study study, 
+    public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor,
+                                                 Study study,
                                                  EntityTypeEnum entityType,
                                                  AnnotationTypeEnum annotationType) throws ValidationException {
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
@@ -1082,7 +1111,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         daoSave(study);
         return annotationDefinition;
     }
-    
+
     @SuppressWarnings({ "PMD.ExcessiveMethodLength" }) // Switch Statement and null checks
     private void addDefinitionToStudy(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType,
             AnnotationDefinition annotationDefinition) throws ValidationException {
@@ -1107,7 +1136,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      */
     private void moveValuesToNewDefinition(Study study, AnnotationDefinition annotationDefinition,
             AnnotationDefinition annotationDefinitionToRemove) throws ValidationException {
-        if (annotationDefinitionToRemove.getAnnotationValueCollection() != null 
+        if (annotationDefinitionToRemove.getAnnotationValueCollection() != null
             && !annotationDefinitionToRemove.getAnnotationValueCollection().isEmpty()) {
             List<AbstractAnnotationValue> valuesToConvert = new ArrayList<AbstractAnnotationValue>();
             for (AbstractAnnotationValue value : annotationDefinitionToRemove.getAnnotationValueCollection()) {
@@ -1120,27 +1149,27 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
         }
     }
-    
+
     private boolean studyContainsAnnotationValue(AbstractAnnotationValue value, Study study) {
-        if (value.getSubjectAnnotation() != null 
+        if (value.getSubjectAnnotation() != null
                 && study.equals(value.getSubjectAnnotation().getStudySubjectAssignment().getStudy())) {
             return true;
-        } else if (value.getImageSeries() != null 
+        } else if (value.getImageSeries() != null
                 && study.equals(value.getImageSeries().getImageStudy().
                         getImageDataSource().getStudyConfiguration().getStudy())) {
             return true;
         } else if (value.getSampleAcquisition() != null
-                && study.equals(value.getSampleAcquisition().getAssignment().getStudy())) { 
+                && study.equals(value.getSampleAcquisition().getAssignment().getStudy())) {
             return true;
-        } else if (value.getImage() != null 
+        } else if (value.getImage() != null
                 && study.equals(value.getImage().getSeries().getImageStudy().
                         getImageDataSource().getStudyConfiguration().getStudy())) {
             return true;
         }
         return false;
     }
-    
-    private void moveDefinitionInSurvivalDefinitions(Study study, 
+
+    private void moveDefinitionInSurvivalDefinitions(Study study,
             AnnotationDefinition oldDefinition, AnnotationDefinition newDefinition) {
         for (SurvivalValueDefinition definition : study.getSurvivalValueDefinitionCollection()) {
             if (oldDefinition.equals(definition.getSurvivalStartDate())) {
@@ -1154,11 +1183,11 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public void addExternalLinksToStudy(StudyConfiguration studyConfiguration, ExternalLinkList externalLinkList) 
+    public void addExternalLinksToStudy(StudyConfiguration studyConfiguration, ExternalLinkList externalLinkList)
         throws ValidationException, IOException {
         ExternalLinksLoader.loadLinks(externalLinkList);
         studyConfiguration.getExternalLinkLists().add(externalLinkList);
@@ -1186,7 +1215,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public boolean isDuplicateStudyName(Study study, String username) {
         return getDao().isDuplicateStudyName(study, username);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -1285,7 +1314,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         daoSave(annotationGroup);
         daoSave(studyConfiguration);
     }
-    
+
     private void uploadAnnotationGroup(StudyConfiguration studyConfiguration,
             AnnotationGroup annotationGroup, File uploadFile)
     throws ConnectionException, ValidationException, IOException {
@@ -1306,7 +1335,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
         }
     }
-        
+
     private void createAnnotation(AnnotationGroup annotationGroup, AnnotationGroupUploadContent uploadContent)
     throws ConnectionException, ValidationException {
         AnnotationFieldDescriptor annotationFieldDescriptor = uploadContent.createAnnotationFieldDescriptor();
@@ -1333,7 +1362,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
         return annotationDefinition;
     }
-    
+
     private AnnotationDefinition getCaDsrAnnotationDefinition(Long cdeId, Float version)
     throws ConnectionException, ValidationException {
         AnnotationDefinition annotationDefinition = getDao().getAnnotationDefinition(
@@ -1343,7 +1372,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             annotationDefinition.setCommonDataElement(retrieveDataElement(
                     cdeId, version));
             retrieveValueDomain(annotationDefinition.getCommonDataElement());
-            
+
         }
         return annotationDefinition;
     }
@@ -1381,7 +1410,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     @Transactional(rollbackFor = ValidationException.class)
-    public AnnotationFieldDescriptor updateFieldDescriptorType(AnnotationFieldDescriptor fieldDescriptor, 
+    public AnnotationFieldDescriptor updateFieldDescriptorType(AnnotationFieldDescriptor fieldDescriptor,
             AnnotationFieldType type) throws ValidationException {
         AnnotationFieldDescriptor returnFieldDescriptor = fieldDescriptor;
         for (FileColumn fileColumn : getDao().getFileColumnsUsingAnnotationFieldDescriptor(fieldDescriptor)) {
@@ -1396,7 +1425,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                 daoSave(fileColumn);
             }
         }
-        
+
         returnFieldDescriptor.setType(type);
         daoSave(returnFieldDescriptor);
         return returnFieldDescriptor;
@@ -1406,7 +1435,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     @SuppressWarnings("PMD.EmptyCatchBlock") // See message inside catch block.
-    public Set<String> getAvailableValuesForFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) 
+    public Set<String> getAvailableValuesForFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor)
     throws ValidationException {
         Set<String> allAvailableValues = new HashSet<String>();
         allAvailableValues.addAll(AnnotationUtil.getAdditionalValue(fieldDescriptor.getDefinition()
