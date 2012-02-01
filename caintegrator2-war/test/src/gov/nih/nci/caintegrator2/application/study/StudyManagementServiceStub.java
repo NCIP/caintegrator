@@ -602,10 +602,11 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     }
 
-    public StudyConfiguration copy(StudyConfiguration copyFrom, Long id) throws ValidationException, IOException,
+    public StudyConfiguration copy(StudyConfiguration copyFrom, StudyConfiguration copyTo)
+        throws ValidationException, IOException,
             ConnectionException {
         copyCalled = true;
-        return null;
+        return copyTo;
     }
 
 }

@@ -264,14 +264,17 @@ public class StudyManagementServiceTest {
     public void testCopyStudy() throws ValidationException, IOException, ConnectionException {
         StudyConfiguration copyTo = new StudyConfiguration();
         copyTo.setId(1L);
-        studyManagementService.save(copyTo);
+        //studyManagementService.save(copyTo);
         StudyHelper studyHelper = new StudyHelper();
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
+        String name = "Copy of ".concat(StringUtils.trimToEmpty(study
+                .getShortTitleText()));
+        copyTo.getStudy().setShortTitleText(name);
         StudyConfiguration configTest = study.getStudyConfiguration();
         configTest.setStudy(study);
         configTest.setUserWorkspace(new UserWorkspace());
         configTest.getUserWorkspace().setUsername("user");
-        copyTo = studyManagementService.copy(configTest, copyTo.getId());
+        copyTo = studyManagementService.copy(configTest, copyTo);
         assertEquals("Copy of Test Study", copyTo.getStudy().getShortTitleText());
     }
 
