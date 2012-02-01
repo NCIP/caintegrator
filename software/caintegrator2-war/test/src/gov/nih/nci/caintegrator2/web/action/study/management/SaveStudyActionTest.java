@@ -149,6 +149,7 @@ public class SaveStudyActionTest extends AbstractSessionBasedTest {
         action.prepare();
         assertEquals(Action.ERROR, action.copyStudy());
         assertTrue(action.hasActionErrors());
+        action.clearActionErrors();
         StudyConfiguration study = new StudyConfiguration();
         study.setId(1L);
         action.setStudyConfiguration(study);

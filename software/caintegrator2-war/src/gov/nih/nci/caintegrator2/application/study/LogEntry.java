@@ -119,6 +119,9 @@ public class LogEntry extends AbstractCaIntegrator2Object {
     private static final String SAVE_STUDY = "Save Study: ";
     private static final String DEPLOY_STUDY = "Deploy Study: ";
     private static final String COPY_STUDY = "Copy Study based on: ";
+    private static final String COPY_STUDY_SKIPPING_LOGO = "Skipping logo copy, orignal file could not be found: ";
+    private static final String COPY_STUDY_SKIPPING_SUBJ_ANNOT =
+        "Skipping subject annotation copy, orignal file could not be found: ";
 
     private static final String ADD_SUBJECT_ANNOTATION_FILE = "Add Subject Annotation File: ";
     private static final String ADD_IMAGING_ANNOTATION_FILE = "Add Imaging Annotation File: ";
@@ -237,6 +240,24 @@ public class LogEntry extends AbstractCaIntegrator2Object {
     public static String getSystemLogCopy(Study study) {
         return COPY_STUDY
             + NAME + QUOTE + study.getShortTitleText() + QUOTE;
+    }
+
+    /**
+     *
+     * @param filename file missing
+     * @return system log message
+     */
+    public static String getSystemLogSkipLogoCopy(String filename) {
+        return COPY_STUDY_SKIPPING_LOGO + QUOTE + filename + QUOTE;
+    }
+
+    /**
+     *
+     * @param filename file missing
+     * @return log message
+     */
+    public static String getSystemLogSkipSubjAnotCopy(String filename) {
+        return COPY_STUDY_SKIPPING_SUBJ_ANNOT + QUOTE + filename + QUOTE;
     }
 
     /**

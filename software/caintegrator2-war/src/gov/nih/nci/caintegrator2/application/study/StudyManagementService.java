@@ -121,13 +121,13 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
     /**
      * Copy a study.
      * @param copyFrom original
-     * @param id of new study to copy into
+     * @param copyTo new
      * @return study configuration
      * @throws IOException on error
      * @throws ValidationException on error
      * @throws ConnectionException on error
      */
-    StudyConfiguration copy(StudyConfiguration copyFrom, Long id) throws ValidationException,
+    StudyConfiguration copy(StudyConfiguration copyFrom, StudyConfiguration copyTo) throws ValidationException,
         IOException, ConnectionException;
 
     /**

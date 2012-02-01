@@ -90,6 +90,8 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.security.exceptions.CSException;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -128,11 +130,8 @@ public class SaveStudyAction extends AbstractStudyAction {
         getStudyConfiguration().setLastModifiedBy(getWorkspace());
         cleanStudyName();
         getStudyManagementService().save(getStudyConfiguration());
-        if (isCopy) {
-            setStudyLastModifiedByCurrentUser(null,
-                LogEntry.getSystemLogCopy(getStudyConfiguration().getStudy()));
-        } else {
-            setStudyLastModifiedByCurrentUser(null,
+        if (!isCopy) {
+           setStudyLastModifiedByCurrentUser(null,
                     LogEntry.getSystemLogCreate(getStudyConfiguration().getStudy()));
         }
         getDisplayableWorkspace().setCurrentStudyConfiguration(getStudyConfiguration());
@@ -157,23 +156,43 @@ public class SaveStudyAction extends AbstractStudyAction {
                 addActionError(getText("struts.messages.error.study.copy.id"));
                 return ERROR;
             } else {
-                StudyConfiguration original = getStudyConfiguration();
-                setStudyConfiguration(new StudyConfiguration());
-                createStudy(true);
-                try {
-                    setStudyConfiguration(getStudyManagementService().copy(original, getStudyConfiguration().getId()));
-                } catch (Exception e) {
-                    addActionError(getText("struts.messages.error.study.copy",
-                            original.getStudy().getShortTitleText()));
-                    return ERROR;
-                }
+                doCopy();
             }
-            return SUCCESS;
+            return this.hasActionErrors() ? ERROR : SUCCESS;
         } else {
             addActionError(getText("struts.messages.error.unauthenticated.user"));
             return ERROR;
         }
+    }
 
+    private void doCopy() {
+        StudyConfiguration original = getStudyConfiguration();
+        setStudyConfiguration(new StudyConfiguration());
+        String name = "Copy of ".concat(StringUtils.trimToEmpty(original.getStudy()
+                .getShortTitleText()));
+        getStudyConfiguration().getStudy().setShortTitleText(name);
+        getStudyConfiguration().getStudy().setLongTitleText("Copy of ".concat(StringUtils.trimToEmpty(
+                original.getStudy().getLongTitleText())));
+        getStudyConfiguration().getStudy().setPubliclyAccessible(original.getStudy().isPubliclyAccessible());
+        validate();
+        if (!this.getFieldErrors().isEmpty()) {
+            for (List<String> errorList : this.getFieldErrors().values()) {
+                for (String error : errorList) {
+                    addActionError(error);
+                }
+            }
+        }
+        try {
+            getStudyConfiguration().setUserWorkspace(getWorkspace());
+            getStudyConfiguration().setLastModifiedBy(getWorkspace());
+            setStudyConfiguration(getStudyManagementService().copy(original, getStudyConfiguration()));
+            createStudy(true);
+            setStudyLastModifiedByCurrentUser(null,
+                    LogEntry.getSystemLogCopy(original.getStudy()));
+        } catch (Exception e) {
+            addActionError(getText("struts.messages.error.study.copy",
+                    original.getStudy().getShortTitleText()));
+        }
     }
 
 
