@@ -92,7 +92,6 @@ import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalLengthUnitsEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
@@ -149,18 +148,6 @@ public class CopyStudyHelperTest {
         helper = new CopyStudyHelper(smSvc);
     }
 
-    @Test
-    public void testStudyData() {
-        helper = new CopyStudyHelper(new StudyManagementServiceStub());
-        copyFrom.setUserWorkspace(new UserWorkspace());
-        copyFrom.getUserWorkspace().setUsername("user");
-        StudyConfiguration copyTo = createNewStudy(2L);
-        helper.copyStudyData(copyFrom, copyTo);
-        assertFalse(copyFrom.getId().equals(copyTo.getId()));
-        assertEquals("Copy of Test Study", copyTo.getStudy().getShortTitleText());
-        assertEquals("Copy of ", copyTo.getStudy().getLongTitleText());
-        assertEquals(true, copyTo.getStudy().isPubliclyAccessible());
-    }
 
     @Test
     public void testExternalLinks() {

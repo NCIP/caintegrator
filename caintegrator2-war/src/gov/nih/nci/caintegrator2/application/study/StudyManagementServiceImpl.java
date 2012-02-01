@@ -195,10 +195,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     @Transactional(rollbackFor = {ValidationException.class, IOException.class, ConnectionException.class })
-    public StudyConfiguration copy(StudyConfiguration copyFrom, Long id) throws ValidationException, IOException,
+    public StudyConfiguration copy(StudyConfiguration copyFrom, StudyConfiguration copyTo)
+    throws ValidationException, IOException,
         ConnectionException {
-        StudyConfiguration copyTo = getRefreshedStudyConfiguration(id);
-        copyHelper.copyStudyData(copyFrom, copyTo);
+        this.save(copyTo);
         copyHelper.copyStudyLogo(copyFrom, copyTo);
         copyHelper.copyAnnotationGroups(copyFrom, copyTo);
         copyHelper.copySurvivalDefinitions(copyFrom, copyTo);

@@ -93,7 +93,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.xwork.StringUtils;
 
 /**
  * Copy study.
@@ -171,23 +170,36 @@ public class CopyStudyHelper {
     public void copySubjectAnnotationGroups(StudyConfiguration copyFrom, StudyConfiguration copyTo)
         throws ValidationException, IOException {
         if (!copyFrom.getClinicalConfigurationCollection().isEmpty()) {
-            ISubjectDataSourceAjaxUpdater updater = new SubjectDataSourceAjaxUpdater();
-
             for (AbstractClinicalSourceConfiguration clinicalSource
                     : copyFrom.getClinicalConfigurationCollection()) {
 
                 DelimitedTextClinicalSourceConfiguration orgTextSource =
                         (DelimitedTextClinicalSourceConfiguration) clinicalSource;
                 File newFile = orgTextSource.getAnnotationFile().getFile();
-                DelimitedTextClinicalSourceConfiguration newClinicalSource =
-                    studyManagementSvc.addClinicalAnnotationFile(copyTo, newFile, newFile.getName(), false);
-                newClinicalSource.setLastModifiedDate(copyTo.getLastModifiedDate());
-                if (orgTextSource.getStatus().equals(Status.LOADED)) {
-                    updater.runJob(newClinicalSource.getId(), clinicalSource.getId(),
-                            SubjectDataSourceAjaxRunner.JobType.LOAD);
-                    newClinicalSource.setStatus(Status.LOADED);
-                }
+                processSubjectAnnotationFile(copyFrom, copyTo, clinicalSource, newFile);
             }
+        }
+    }
+
+    private void processSubjectAnnotationFile(StudyConfiguration copyFrom, StudyConfiguration copyTo,
+            AbstractClinicalSourceConfiguration clinicalSource,
+            File newFile) throws ValidationException, IOException {
+        DelimitedTextClinicalSourceConfiguration newClinicalSource = null;
+        DelimitedTextClinicalSourceConfiguration orgTextSource =
+            (DelimitedTextClinicalSourceConfiguration) clinicalSource;
+        ISubjectDataSourceAjaxUpdater updater = new SubjectDataSourceAjaxUpdater();
+        if (newFile != null && newFile.exists()) {
+            newClinicalSource =
+                studyManagementSvc.addClinicalAnnotationFile(copyTo, newFile, newFile.getName(), false);
+            newClinicalSource.setLastModifiedDate(copyTo.getLastModifiedDate());
+            if (orgTextSource.getStatus().equals(Status.LOADED)) {
+                updater.runJob(newClinicalSource.getId(), clinicalSource.getId(),
+                        SubjectDataSourceAjaxRunner.JobType.LOAD);
+                newClinicalSource.setStatus(Status.LOADED);
+            }
+        } else {
+            studyManagementSvc.setStudyLastModifiedByCurrentUser(copyTo, copyTo.getUserWorkspace(),
+                    null, LogEntry.getSystemLogSkipSubjAnotCopy(copyFrom.getStudyLogo().getPath()));
         }
     }
 
@@ -235,27 +247,15 @@ public class CopyStudyHelper {
     public void copyStudyLogo(StudyConfiguration copyFrom, StudyConfiguration copyTo) throws IOException {
         if (copyFrom.getStudyLogo() != null) {
             File originalFile = new File(copyFrom.getStudyLogo().getPath());
-            studyManagementSvc.addStudyLogo(copyTo, originalFile,
+            if (originalFile != null && originalFile.exists()) {
+                studyManagementSvc.addStudyLogo(copyTo, originalFile,
                     copyFrom.getStudyLogo().getFileName(), copyFrom.getStudyLogo().getFileType());
-        }
-    }
+            } else if (!copyFrom.getStudyLogo().getPath().isEmpty()) {
+                studyManagementSvc.setStudyLastModifiedByCurrentUser(copyTo, copyTo.getUserWorkspace(),
+                        null, LogEntry.getSystemLogSkipLogoCopy(copyFrom.getStudyLogo().getPath()));
 
-    /**
-     * Copy study data.
-     * @param copyFrom original study configuration.
-     * @param copyTo new study configuration.
-     */
-    public void copyStudyData(StudyConfiguration copyFrom, StudyConfiguration copyTo) {
-        String name = "Copy of ".concat(StringUtils.trimToEmpty(copyFrom.getStudy()
-                .getShortTitleText()));
-        copyTo.getStudy().setShortTitleText(name);
-        if (studyManagementSvc.isDuplicateStudyName(copyTo.getStudy(),
-                copyFrom.getUserWorkspace().getUsername())) {
-            copyTo.getStudy().setShortTitleText(name.concat("_1"));
+            }
         }
-        copyTo.getStudy().setLongTitleText("Copy of ".concat(StringUtils.trimToEmpty(copyFrom.getStudy().
-                getLongTitleText())));
-        copyTo.getStudy().setPubliclyAccessible(copyFrom.getStudy().isPubliclyAccessible());
     }
 
     /**
