@@ -175,23 +175,24 @@ public class SaveStudyAction extends AbstractStudyAction {
                 original.getStudy().getLongTitleText())));
         getStudyConfiguration().getStudy().setPubliclyAccessible(original.getStudy().isPubliclyAccessible());
         validate();
-        if (!this.getFieldErrors().isEmpty()) {
+        if (this.hasFieldErrors()) {
             for (List<String> errorList : this.getFieldErrors().values()) {
                 for (String error : errorList) {
                     addActionError(error);
                 }
             }
-        }
-        try {
-            getStudyConfiguration().setUserWorkspace(getWorkspace());
-            getStudyConfiguration().setLastModifiedBy(getWorkspace());
-            setStudyConfiguration(getStudyManagementService().copy(original, getStudyConfiguration()));
-            createStudy(true);
-            setStudyLastModifiedByCurrentUser(null,
-                    LogEntry.getSystemLogCopy(original.getStudy()));
-        } catch (Exception e) {
-            addActionError(getText("struts.messages.error.study.copy",
-                    original.getStudy().getShortTitleText()));
+        } else {
+            try {
+                getStudyConfiguration().setUserWorkspace(getWorkspace());
+                getStudyConfiguration().setLastModifiedBy(getWorkspace());
+                setStudyConfiguration(getStudyManagementService().copy(original, getStudyConfiguration()));
+                createStudy(true);
+                setStudyLastModifiedByCurrentUser(null,
+                        LogEntry.getSystemLogCopy(original.getStudy()));
+            } catch (Exception e) {
+                addActionError(getText("struts.messages.error.study.copy",
+                        original.getStudy().getShortTitleText()));
+            }
         }
     }
 
