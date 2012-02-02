@@ -176,12 +176,12 @@ public class CopyStudyHelper {
                 DelimitedTextClinicalSourceConfiguration orgTextSource =
                         (DelimitedTextClinicalSourceConfiguration) clinicalSource;
                 File newFile = orgTextSource.getAnnotationFile().getFile();
-                processSubjectAnnotationFile(copyFrom, copyTo, clinicalSource, newFile);
+                processSubjectAnnotationFile(copyTo, clinicalSource, newFile);
             }
         }
     }
 
-    private void processSubjectAnnotationFile(StudyConfiguration copyFrom, StudyConfiguration copyTo,
+    private void processSubjectAnnotationFile(StudyConfiguration copyTo,
             AbstractClinicalSourceConfiguration clinicalSource,
             File newFile) throws ValidationException, IOException {
         DelimitedTextClinicalSourceConfiguration newClinicalSource = null;
