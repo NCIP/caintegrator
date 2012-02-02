@@ -199,7 +199,7 @@ public class CopyStudyHelper {
             }
         } else {
             studyManagementSvc.setStudyLastModifiedByCurrentUser(copyTo, copyTo.getUserWorkspace(),
-                    null, LogEntry.getSystemLogSkipSubjAnotCopy(copyFrom.getStudyLogo().getPath()));
+                    null, LogEntry.getSystemLogSkipSubjAnotCopy(newFile.getPath()));
         }
     }
 
