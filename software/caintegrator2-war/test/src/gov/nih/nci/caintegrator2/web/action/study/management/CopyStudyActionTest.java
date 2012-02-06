@@ -89,6 +89,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
@@ -105,9 +106,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 
-public class SaveStudyActionTest extends AbstractSessionBasedTest {
+public class CopyStudyActionTest extends AbstractSessionBasedTest {
 
-    private SaveStudyAction action;
+    private CopyStudyAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
     private WorkspaceServiceStub workspaceServiceStub;
 
@@ -116,7 +117,7 @@ public class SaveStudyActionTest extends AbstractSessionBasedTest {
     public void setUp() {
         super.setUp();
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditStudyActionTest.class);
-        action = (SaveStudyAction) context.getBean("saveStudyAction");
+        action = (CopyStudyAction) context.getBean("copyStudyAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         workspaceServiceStub = (WorkspaceServiceStub) context.getBean("workspaceService");
         workspaceServiceStub.clear();
@@ -133,8 +134,14 @@ public class SaveStudyActionTest extends AbstractSessionBasedTest {
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         SessionHelper.getInstance().setStudyManager(true);
         action.prepare();
+        assertEquals(Action.ERROR, action.execute());
+        assertTrue(action.hasActionErrors());
+        action.clearActionErrors();
+        StudyConfiguration study = new StudyConfiguration();
+        study.setId(1L);
+        action.setStudyConfiguration(study);
         assertEquals(Action.SUCCESS, action.execute());
-        assertTrue(studyManagementServiceStub.saveCalled);
+        assertTrue(studyManagementServiceStub.copyCalled);
     }
 
     @Test
@@ -171,30 +178,6 @@ public class SaveStudyActionTest extends AbstractSessionBasedTest {
         action.getStudyConfiguration().getStudy().setLongTitleText(longName.toString());
         action.validate();
         assertTrue(action.hasFieldErrors());
-
-    }
-
-    @Test
-    public void testMaliciousCharacterRemoval() {
-        String maliciousNameIn = "StudyName<iframe src=javascript:alert(70946)";
-        String goodNameIn = "StudyName";
-        String nameOut = "StudyName";
-
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-        SecurityContextHolder.getContext().setAuthentication(null);
-        assertEquals(Action.ERROR, action.execute());
-        // Must add authentication to pass the action.
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        SessionHelper.getInstance().setStudyManager(true);
-        action.getStudyConfiguration().getStudy().setShortTitleText(maliciousNameIn);
-        assertEquals(Action.SUCCESS, action.execute());
-        assertTrue(studyManagementServiceStub.saveCalled);
-        assertEquals(nameOut, action.getStudyConfiguration().getStudy().getShortTitleText());
-
-        action.getStudyConfiguration().getStudy().setShortTitleText(goodNameIn);
-        assertEquals(Action.SUCCESS, action.execute());
-        assertTrue(studyManagementServiceStub.saveCalled);
-        assertEquals(nameOut, action.getStudyConfiguration().getStudy().getShortTitleText());
 
     }
 }

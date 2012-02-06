@@ -203,7 +203,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         copyHelper.copyAnnotationGroups(copyFrom, copyTo);
         copyHelper.copySurvivalDefinitions(copyFrom, copyTo);
         copyHelper.copySubjectAnnotationGroups(copyFrom, copyTo);
-        //copyTo = getRefreshedStudyConfiguration(id);
         copyHelper.copyExternalLinks(copyFrom, copyTo);
         copyHelper.copyStudyGenomicSource(copyFrom, copyTo);
         copyHelper.copyStudyImageSource(copyFrom, copyTo);

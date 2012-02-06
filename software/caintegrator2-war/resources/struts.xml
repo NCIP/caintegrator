@@ -202,7 +202,7 @@
             <result name="input" type="tiles">editStudy</result>
         </action>
         
-        <action name="copyStudy" method="copyStudy" class="saveStudyAction">
+        <action name="copyStudy" class="copyStudyAction">
             <result type="redirectAction">
                 <param name="actionName">editStudy</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>

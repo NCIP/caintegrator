@@ -85,9 +85,6 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-import gov.nih.nci.caintegrator2.web.ajax.ISubjectDataSourceAjaxUpdater;
-import gov.nih.nci.caintegrator2.web.ajax.SubjectDataSourceAjaxRunner;
-import gov.nih.nci.caintegrator2.web.ajax.SubjectDataSourceAjaxUpdater;
 
 import java.io.File;
 import java.io.IOException;
@@ -187,16 +184,11 @@ public class CopyStudyHelper {
         DelimitedTextClinicalSourceConfiguration newClinicalSource = null;
         DelimitedTextClinicalSourceConfiguration orgTextSource =
             (DelimitedTextClinicalSourceConfiguration) clinicalSource;
-        ISubjectDataSourceAjaxUpdater updater = new SubjectDataSourceAjaxUpdater();
         if (newFile != null && newFile.exists()) {
             newClinicalSource =
                 studyManagementSvc.addClinicalAnnotationFile(copyTo, newFile, newFile.getName(), false);
             newClinicalSource.setLastModifiedDate(copyTo.getLastModifiedDate());
-            if (orgTextSource.getStatus().equals(Status.LOADED)) {
-                updater.runJob(newClinicalSource.getId(), clinicalSource.getId(),
-                        SubjectDataSourceAjaxRunner.JobType.LOAD);
-                newClinicalSource.setStatus(Status.LOADED);
-            }
+            newClinicalSource.setStatus(orgTextSource.getStatus());
         } else {
             studyManagementSvc.setStudyLastModifiedByCurrentUser(copyTo, copyTo.getUserWorkspace(),
                     null, LogEntry.getSystemLogSkipSubjAnotCopy(newFile.getPath()));
