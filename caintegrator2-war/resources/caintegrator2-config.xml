@@ -128,6 +128,20 @@
         </property>
     </bean>
     
+    <bean id="copyStudyAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.CopyStudyAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+        <property name="updater">
+            <ref local="subjectDataSourceAjaxUpdater"/>
+        </property>
+    </bean>
+    
     <bean id="editStudyLogAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditStudyLogAction">
