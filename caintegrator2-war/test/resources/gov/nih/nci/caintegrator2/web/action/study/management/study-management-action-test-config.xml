@@ -146,6 +146,17 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
+    
+    <bean id="copyStudyAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.CopyStudyAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
 
     <bean id="defineClinicalFieldDescriptorAction"
         singleton="false"

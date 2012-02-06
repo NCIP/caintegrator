@@ -467,6 +467,10 @@
     <changeSet id="1.3.11" author="nguyennh">
         <comment>Adding attributes to GENOMIC_DATA_SOURCE_CONFIGURATION for number of CGHcall level.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.3/upgrade-1.3.11.sql"/>
+    </changeSet>
+    <changeSet id="1.4.1" author="mshestopalov">
+        <comment>Increasing size of short title column to 57 in  study table</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.4/upgrade-1.4.1.sql"/>
     </changeSet>   
     
 </databaseChangeLog>
