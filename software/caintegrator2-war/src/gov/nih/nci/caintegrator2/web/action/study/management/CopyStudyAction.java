@@ -164,8 +164,7 @@ public class CopyStudyAction extends AbstractStudyAction {
                 setStudyLastModifiedByCurrentUser(null,
                         LogEntry.getSystemLogCopy(original.getStudy()));
             } catch (Exception e) {
-                addActionError(getText("struts.messages.error.study.copy",
-                        original.getStudy().getShortTitleText()));
+                addActionError(getText("struts.messages.error.study.copy"));
                 setStudyConfiguration(original);
             }
         }
