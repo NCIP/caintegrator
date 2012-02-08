@@ -190,6 +190,7 @@ public class CopyStudyAction extends AbstractStudyAction {
                 DelimitedTextClinicalSourceConfiguration clinicalSourceToLoad =
                     (DelimitedTextClinicalSourceConfiguration) clinicalSource;
                 if (clinicalSourceToLoad.getStatus().equals(Status.LOADED)) {
+                    clinicalSourceToLoad.setStatus(Status.PROCESSING);
                     updater.runJob(getStudyConfiguration().getId(), clinicalSourceToLoad.getId(),
                             SubjectDataSourceAjaxRunner.JobType.RELOAD);
                 }
