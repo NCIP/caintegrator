@@ -88,6 +88,7 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import org.apache.commons.collections.CollectionUtils;
 
@@ -187,7 +188,7 @@ public class CopyStudyHelper {
         if (newFile != null && newFile.exists()) {
             newClinicalSource =
                 studyManagementSvc.addClinicalAnnotationFile(copyTo, newFile, newFile.getName(), false);
-            newClinicalSource.setLastModifiedDate(copyTo.getLastModifiedDate());
+            newClinicalSource.setLastModifiedDate(new Date());
             newClinicalSource.setStatus(orgTextSource.getStatus());
         } else {
             studyManagementSvc.setStudyLastModifiedByCurrentUser(copyTo, copyTo.getUserWorkspace(),
