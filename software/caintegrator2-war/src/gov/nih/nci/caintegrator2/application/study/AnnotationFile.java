@@ -103,6 +103,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -218,6 +219,15 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
             if (headerValues.contains(currentHeaderValue.toUpperCase(Locale.ENGLISH))) {
                 throwValidationException("The column header '" + currentHeaderValue + "' is used more than once in "
                         + "this file, please make sure all header names are unique and re-upload the file.");
+            }
+            
+            Pattern p = Pattern.compile("^[A-Za-z0-9_\\-\\(\\)\\[\\]\\/:. ]+$"); 
+            if (!p.matcher(currentHeaderValue).matches()) {
+                throwValidationException("The column header name '" + currentHeaderValue
+                        + "' contains invalid characters. "
+                        + "Allowed characters are a-z, A-Z, 0-9, "
+                        + "underscore, hyphen, space, forward slash, "
+                        + "parentheses, square brackets, colon, period.");
             }
             headerValues.add(currentHeaderValue.toUpperCase(Locale.ENGLISH));
         }
