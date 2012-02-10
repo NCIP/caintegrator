@@ -131,6 +131,7 @@ public class CopyStudyAction extends AbstractStudyAction {
     private String createStudy() {
         getStudyConfiguration().setUserWorkspace(getWorkspace());
         getStudyConfiguration().setLastModifiedBy(getWorkspace());
+     //   getStudyConfiguration().setEnabled(true);
         cleanStudyName();
         getStudyManagementService().save(getStudyConfiguration());
         getDisplayableWorkspace().setCurrentStudyConfiguration(getStudyConfiguration());
@@ -192,7 +193,7 @@ public class CopyStudyAction extends AbstractStudyAction {
                 if (clinicalSourceToLoad.getStatus().equals(Status.LOADED)) {
                     clinicalSourceToLoad.setStatus(Status.PROCESSING);
                     updater.runJob(getStudyConfiguration().getId(), clinicalSourceToLoad.getId(),
-                            SubjectDataSourceAjaxRunner.JobType.RELOAD);
+                            SubjectDataSourceAjaxRunner.JobType.LOAD);
                 }
             }
     }
