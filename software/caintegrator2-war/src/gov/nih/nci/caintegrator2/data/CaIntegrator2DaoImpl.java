@@ -756,7 +756,9 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public boolean isDuplicateStudyName(Study study, String username) {
         secureCurrentSession(username);
         long id = study.getId() == null ? 0 : study.getId().longValue();
-        List<Study> result = getHibernateTemplate().find("from Study where shortTitleText = ? and id != ?",
+        List<Study> result = getHibernateTemplate().find("from Study where shortTitleText = ? "
+                + "and enabled = true "
+                + "and id != ?",
                 new Object[] {study.getShortTitleText(), id });
         return !result.isEmpty();
     }

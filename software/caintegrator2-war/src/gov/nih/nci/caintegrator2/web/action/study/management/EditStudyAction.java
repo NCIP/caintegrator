@@ -165,8 +165,11 @@ public class EditStudyAction extends AbstractStudyAction {
 
         if (SessionHelper.getInstance().isAuthenticated()) {
             try {
-                getStudyConfiguration().getStudy().setEnabled(true);
-                getStudyManagementService().save(getStudyConfiguration());
+                validate();
+                if (!this.hasActionErrors()) {
+                    getStudyConfiguration().getStudy().setEnabled(true);
+                    getStudyManagementService().save(getStudyConfiguration());
+                }
             } catch (RuntimeException e) {
                 addActionError(getText("struts.messages.error.enabling", getArgs(STUDY)));
             }
@@ -184,5 +187,18 @@ public class EditStudyAction extends AbstractStudyAction {
         getDisplayableWorkspace().setStudyLogo(
                 getDisplayableWorkspace().getCurrentStudyConfiguration().getStudyLogo());
         return SUCCESS;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        if (getStudyManagementService().isDuplicateStudyName(getStudyConfiguration().getStudy(),
+                getWorkspace().getUsername())) {
+            String studyName = getStudyConfiguration().getStudy().getShortTitleText();
+            addActionError(getText("struts.messages.error.duplicate.name", getArgs("Study",
+                    studyName)));
+        }
     }
 }
