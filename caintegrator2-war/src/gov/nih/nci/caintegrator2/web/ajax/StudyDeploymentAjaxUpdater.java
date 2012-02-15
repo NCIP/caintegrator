@@ -97,6 +97,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.lang.xwork.BooleanUtils;
 import org.directwebremoting.proxy.dwr.Util;
 
 /**
@@ -112,6 +113,7 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String JOB_LAST_MODIFIED_BY = "studyLastModified_";
     private static final String JOB_EDIT_STUDY_URL = "studyJobEditUrl_";
     private static final String JOB_COPY_STUDY_URL = "studyJobCopyUrl_";
+    private static final String JOB_ARCHIVE_STUDY_URL = "studyJobArchiveUrl_";
     private static final String JOB_DELETE_STUDY_URL = "studyJobDeleteUrl_";
     private static final String JOB_START_DATE = "studyJobStartDate_";
     private static final String JOB_FINISH_DATE = "studyJobFinishDate_";
@@ -167,6 +169,8 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
                           + startSpan + JOB_ACTION_BAR + id + "e" + endSpan
                           + startSpan + JOB_COPY_STUDY_URL + id + endSpan
                           + startSpan + JOB_ACTION_BAR + id + "c" + endSpan
+                          + startSpan + JOB_ARCHIVE_STUDY_URL + id + endSpan
+                          + startSpan + JOB_ACTION_BAR + id + "a" + endSpan
                           + startSpan + JOB_DELETE_STUDY_URL + id + endSpan;
         return rowString;
     }
@@ -226,14 +230,18 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     private void updateRowActions(StudyConfiguration studyConfiguration, Util utilThis, String studyConfigurationId) {
         if (!Status.PROCESSING.equals(studyConfiguration.getStatus())) {
             utilThis.setValue(JOB_EDIT_STUDY_URL + studyConfigurationId,
-                    "<a href=\"editStudy.action?studyConfiguration.id="
-                    + studyConfiguration.getId() + "\">Edit</a>",
+                    getEditStudyUrlString(studyConfiguration, "Edit", ""),
                     false);
             utilThis.setValue(JOB_ACTION_BAR + studyConfigurationId + "e", "&nbsp;|&nbsp;", false);
             utilThis.setValue(JOB_COPY_STUDY_URL + studyConfigurationId,
                     getCopyStudyUrlString(studyConfiguration),
                     false);
             utilThis.setValue(JOB_ACTION_BAR + studyConfigurationId + "c", "&nbsp;|&nbsp;", false);
+            utilThis.setValue(JOB_ARCHIVE_STUDY_URL + studyConfigurationId,
+                    getArchiveStudyUrlString(studyConfiguration),
+                    false);
+            utilThis.setValue(JOB_ACTION_BAR + studyConfigurationId + "a", "&nbsp;|&nbsp;", false);
+
             String deleteMsg = "The study: " + studyConfiguration.getStudy().getShortTitleText()
                 + " will be permanently deleted.";
             utilThis.setValue(JOB_DELETE_STUDY_URL + studyConfigurationId,
@@ -250,10 +258,8 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     private void addError(StudyConfiguration studyConfiguration, Util utilThis, String studyConfigurationId) {
         if (Status.ERROR.equals(studyConfiguration.getStatus())) {
             utilThis.setValue(JOB_STUDY_STATUS + studyConfigurationId,
-                    "<a title=\"Click to view the Error description in the Study Overview\" "
-                    + "href=\"editStudy.action?studyConfiguration.id="
-                    + studyConfiguration.getId()
-                    + "\">Error</a>",
+                    getEditStudyUrlString(studyConfiguration, "Error",
+                            "Click to view the Error description in the Study Overview"),
                     false);
         }
     }
@@ -281,6 +287,21 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
 
     /**
      * @param studyConfiguration
+     * @return the string which forms the html for the editStudy url.
+     */
+    private String getEditStudyUrlString(StudyConfiguration studyConfiguration, String action, String title) {
+        String returnString = null;
+        if (studyConfiguration.getStudy().isEnabled()) {
+            returnString = "<a href=\"editStudy.action?studyConfiguration.id="
+           + studyConfiguration.getId();
+        } else {
+            returnString = "<a style=\"color:Grey; text-decoration:none;\" href=\"#";
+        }
+        return returnString + "\" title=\"" + title + "\">" + action + "</a>";
+    }
+
+    /**
+     * @param studyConfiguration
      * @return the string which forms the html for the copyStudy url.
      */
     private String getCopyStudyUrlString(StudyConfiguration studyConfiguration) {
@@ -288,15 +309,45 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
        String token = SessionHelper.getInstance().getToken();
        String tokenName = SessionHelper.getInstance().getTokenName();
 
-       String returnString = "<a href=\"copyStudy.action?studyConfiguration.id="
-       + studyConfiguration.getId()
+       String returnString = null;
+
+       if (studyConfiguration.getStudy().isEnabled()) {
+           returnString = "<a href=\"copyStudy.action?studyConfiguration.id="
+           + studyConfiguration.getId()
+           + "&struts.token.name="
+           + tokenName
+           + "&struts.token="
+           + token;
+       } else {
+           returnString = "<a style=\"color:Grey; text-decoration:none;\" href=\"#";
+       }
+       return returnString + "\" >Copy</a>";
+    }
+
+    /**
+     * @param studyConfiguration
+     * @return the string which forms the html for the disable/enable Study url.
+     */
+    private String getArchiveStudyUrlString(StudyConfiguration studyConfiguration) {
+
+       String token = SessionHelper.getInstance().getToken();
+       String tokenName = SessionHelper.getInstance().getTokenName();
+       String returnString = "";
+       String actionName = "";
+       if (BooleanUtils.isTrue(studyConfiguration.getStudy().isEnabled())) {
+           returnString = "<a href=\"disableStudy.action?studyConfiguration.id=";
+           actionName = "Disable";
+       } else {
+           returnString = "<a href=\"enableStudy.action?studyConfiguration.id=";
+           actionName = "Enable";
+       }
+
+       return returnString + studyConfiguration.getId()
        + "&struts.token.name="
        + tokenName
        + "&struts.token="
        + token
-       + "\" >Copy</a>";
-
-        return returnString;
+       + "\" >" + actionName + "</a>";
     }
 
     private String getStatusMessage(Status studyConfigurationStatus) {

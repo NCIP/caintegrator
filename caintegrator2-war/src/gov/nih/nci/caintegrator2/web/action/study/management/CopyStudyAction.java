@@ -131,7 +131,6 @@ public class CopyStudyAction extends AbstractStudyAction {
     private String createStudy() {
         getStudyConfiguration().setUserWorkspace(getWorkspace());
         getStudyConfiguration().setLastModifiedBy(getWorkspace());
-     //   getStudyConfiguration().setEnabled(true);
         cleanStudyName();
         getStudyManagementService().save(getStudyConfiguration());
         getDisplayableWorkspace().setCurrentStudyConfiguration(getStudyConfiguration());
