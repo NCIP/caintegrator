@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 
+ *
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals") // for the word "unused"
 public class Study extends AbstractCaIntegrator2Object {
@@ -37,7 +37,8 @@ public class Study extends AbstractCaIntegrator2Object {
     private Set<AnnotationGroup> annotationGroups = new HashSet<AnnotationGroup>();
     private StudyConfiguration studyConfiguration;
     private Boolean publiclyAccessible = false;
-    
+    private Boolean enabled = true;
+
     /**
      * The default annotation group name.
      */
@@ -137,7 +138,7 @@ public class Study extends AbstractCaIntegrator2Object {
 
     /**
      * Returns all samples associated with the study.
-     * 
+     *
      * @return the samples.
      */
     public Set<Sample> getSamples() {
@@ -152,9 +153,9 @@ public class Study extends AbstractCaIntegrator2Object {
 
     /**
      * Returns all array datas of the given type in the project.
-     * 
+     *
      * @param reporterType get array datas of this type.
-     * @param platform to retrieve Array Datas for (null if you want to use all platforms). 
+     * @param platform to retrieve Array Datas for (null if you want to use all platforms).
      * @return an immutable set of the matching array datas.
      */
     public Set<ArrayData> getArrayDatas(ReporterTypeEnum reporterType, Platform platform) {
@@ -189,19 +190,19 @@ public class Study extends AbstractCaIntegrator2Object {
     }
 
     /**
-     * @return the boolean of whether the study has Genomic data 
+     * @return the boolean of whether the study has Genomic data
      */
     public boolean hasGenomicDataSources() {
         return studyConfiguration.hasGenomicDataSources();
     }
 
     /**
-     * @return the boolean of whether the study has Image data 
+     * @return the boolean of whether the study has Image data
      */
     public boolean hasImageDataSources() {
         return studyConfiguration.hasImageDataSources();
     }
-    
+
     /**
      * @return the boolean of whether the study has clinical data.
      */
@@ -210,7 +211,7 @@ public class Study extends AbstractCaIntegrator2Object {
     }
 
     /**
-     * @return the boolean of whether the study has ImageSeries data 
+     * @return the boolean of whether the study has ImageSeries data
      */
     public boolean hasVisibleImageSeriesData() {
         for (AnnotationFieldDescriptor afd : getAllVisibleAnnotationFieldDescriptors()) {
@@ -222,10 +223,10 @@ public class Study extends AbstractCaIntegrator2Object {
     }
 
     /**
-     * @return the boolean of whether the study is deployed 
+     * @return the boolean of whether the study is deployed
      */
     public boolean isDeployed() {
-        return studyConfiguration != null 
+        return studyConfiguration != null
             && studyConfiguration.isDeployed();
     }
 
@@ -275,7 +276,7 @@ public class Study extends AbstractCaIntegrator2Object {
     private void setAnnotationGroups(Set<AnnotationGroup> annotationGroups) {
         this.annotationGroups = annotationGroups;
     }
-    
+
     /**
      * Get AnnotationGroup by name.
      * @param name of the annotation group to retrieve
@@ -289,9 +290,9 @@ public class Study extends AbstractCaIntegrator2Object {
         }
         return null;
     }
-    
+
     /**
-     * 
+     *
      * @return all annotation groups, sorted by name.
      */
     public List<AnnotationGroup> getSortedAnnotationGroups() {
@@ -322,7 +323,7 @@ public class Study extends AbstractCaIntegrator2Object {
         getAnnotationGroups().add(defaultGroup);
         return defaultGroup;
     }
-    
+
     /**
      * Gets all visible AnnotationFieldDescriptors that have AnnotationDefinitions that aren't null.
      * @return visible AFDs.
@@ -334,7 +335,7 @@ public class Study extends AbstractCaIntegrator2Object {
         }
         return visibleSet;
     }
-    
+
     /**
      * Gets all visible AnnotationFieldDescriptors that have AnnotationDefinitions and belong to the given group.
      * @param groupName containing the AFDs.
@@ -348,7 +349,7 @@ public class Study extends AbstractCaIntegrator2Object {
         }
         return visibleSet;
     }
-    
+
     /**
      * Gets all visible AnnotationFieldDescriptors that have AnnotationDefinitions that aren't null, and belong
      * to the given entityType and annotationType.  If entityType or annotationType is null, it will ignore them.
@@ -356,10 +357,10 @@ public class Study extends AbstractCaIntegrator2Object {
      * @param annotationType of the annotations.
      * @return visible AFDs.
      */
-    public Set<AnnotationFieldDescriptor> getAllVisibleAnnotationFieldDescriptors(EntityTypeEnum entityType, 
+    public Set<AnnotationFieldDescriptor> getAllVisibleAnnotationFieldDescriptors(EntityTypeEnum entityType,
             AnnotationTypeEnum annotationType) {
         Set<AnnotationFieldDescriptor> validSet = new HashSet<AnnotationFieldDescriptor>();
-        
+
         for (AnnotationFieldDescriptor fieldDescriptor : getAllVisibleAnnotationFieldDescriptors()) {
             boolean matchesAnnotationType = (annotationType == null || annotationType.equals(fieldDescriptor
                     .getDefinition().getDataType()));
@@ -384,5 +385,19 @@ public class Study extends AbstractCaIntegrator2Object {
      */
     public void setPubliclyAccessible(Boolean publiclyAccessible) {
         this.publiclyAccessible = publiclyAccessible;
+    }
+
+    /**
+     * @param enabled the enabled to set
+     */
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    /**
+     * @return the enabled
+     */
+    public Boolean isEnabled() {
+        return enabled;
     }
 }
