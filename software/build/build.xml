@@ -634,6 +634,13 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 		<svn-co svn.project.base.url="${svn.project.base.url}" svn.project.name="${svn.project.name}" svn.tag="${svn.tag}" svn.co.base.dir="${svn.co.base.dir}" />
 	</target>
+    
+    <!-- Wrapper to call caintegrator2-war svntag task from master build directory -->
+    <target name="svntag:caintegrator2.war" depends="">
+        <ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="svntag" dir="${caintegrator2-war.base.dir}">
+        </ant>
+    </target>    
+    
 	<!-- this target generates visio like diagrams of the build files -->
 	<target name="report:grand" depends="build:all" description="Generates grand graphs for build.xml files">
 		<!-- Temporary fix to make grand work for install.xml -->
