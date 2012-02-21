@@ -16,6 +16,7 @@
     <property name="root.dir" location="${basedir}/../.." />
     <property name="docs.dir" location="${root.dir}/docs" />
     <property name="software.dir" location=".." />
+    <property name="master.build.dir" location="${software.dir}/build" />
     <property name="build.dir" location="${software.dir}/caintegrator2-war" />
     <property name="lib.dir" location="${software.dir}/lib" />
     <property name="external.runtime.lib.dir" location="${lib.dir}/external-runtime" />
@@ -31,6 +32,7 @@
 
     <!-- Environment properties -->
     <property environment="env" />
+    <property file="${master.build.dir}/local.properties" />
     <property file="${build.dir}/local.properties" />
     <property file="${build.dir}/default.properties" />
     <property file="${software.dir}/build/project.properties"/>
@@ -298,6 +300,49 @@
         <echo message="svn getinfo: rev: ${svn.info.rev}" />
         <echo message="svn getinfo: cai2 version:${caintegrator2.svntag}" />
     </target>
+    
+
+    <!-- ****************************************************************** -->
+    <!-- svntag: performs tagging using properties from a local.properties  -->
+    <!--         file or from command line properties.  Command line        -->
+    <!--         properties will override local.properties.                 -->    
+    <!-- ****************************************************************** -->
+    <target name="svntag" description="tags individual project using svnant task">
+        
+        <!-- set default values for some of the properties if no value is found by this point -->
+        <condition property="svn.base.url" value="https://ncisvn.nci.nih.gov/svn">
+           <not>  
+              <isset property="svn.base.url"/>
+           </not>
+        </condition>        
+        
+        <property name="tag.name" value="CAI_TAG" />
+        <property name="svn.username" value="${svn.username}" />
+        <property name="svn.password" value="${svn.password}" />
+        
+        <property name="svnant.javahl" value="false" />
+        <property name="svnant.svnkit" value="true" />
+        
+        <property name="svn.tag.message" value="Tagging Project ${project.name} with tag name ${tag.name} from trunk "/>
+        <property name="src.url"  value="${svn.base.url}/${project.name}/trunk/software"/>
+        <property name="dest.url" value="${svn.base.url}/${project.name}/tags/${tag.name}"/>
+        
+        <echo message="${svn.tag.message}"/>
+        <echo message="SVN Username: ${svn.username}"/>
+        <echo message="Source: ${src.url}"/>
+        <echo message="Destination: ${dest.url}"/>
+        
+        <echo message="Delete Destination Before Copy: ${dest.url}"/>
+        <svn javahl="${svnant.javahl}" svnkit="${svnant.svnkit}" username="${svn.username}" password="${svn.password}" failonerror="false">
+            <delete url="${dest.url}" message=" Delete previous tag: ${dest.url}" />
+        </svn>         
+        
+        <svn javahl="${svnant.javahl}" svnkit="${svnant.svnkit}" username="${svn.username}" password="${svn.password}" failonerror="true">
+            <copy srcUrl="${src.url}" destUrl="${dest.url}" message="${svn.tag.message}"/>    
+        </svn>
+        
+        <echo message="Success."/>
+    </target>   
                 
     <target name="cleanbdautil" description="prepare for info and delete bda util">
         <delete includeEmptyDirs="true">
