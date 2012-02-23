@@ -147,6 +147,8 @@ public class LogEntry extends AbstractCaIntegrator2Object {
     private static final String DELETE_GENOMIC_SOURCE = "Delete Genomic Source: ";
     private static final String DELETE_IMAGING_SOURCE = "Delete Imaging Source: ";
 
+    private static final String DISABLE_STUDY = "Disable Study: ";
+    private static final String ENABLE_STUDY = "Enable Study: ";
 
     private Date logDate = new Date();
     private String systemLogMessage;
@@ -230,6 +232,26 @@ public class LogEntry extends AbstractCaIntegrator2Object {
     public static String getSystemLogCreate(Study study) {
         return CREATE_STUDY
             + NAME + QUOTE + study.getShortTitleText() + QUOTE;
+    }
+
+   /**
+    *
+    * @param study to get system log message for.
+    * @return System log message
+    */
+   public static String getSystemLogDisable(Study study) {
+       return DISABLE_STUDY
+           + NAME + QUOTE + study.getShortTitleText() + QUOTE;
+   }
+
+  /**
+   *
+   * @param study to get system log message for.
+   * @return System log message
+   */
+   public static String getSystemLogEnable(Study study) {
+      return ENABLE_STUDY
+          + NAME + QUOTE + study.getShortTitleText() + QUOTE;
     }
 
     /**
