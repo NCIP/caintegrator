@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.security.exceptions.CSException;
 
@@ -149,6 +150,8 @@ public class EditStudyAction extends AbstractStudyAction {
             try {
                 getStudyConfiguration().getStudy().setEnabled(false);
                 getStudyManagementService().save(getStudyConfiguration());
+                setStudyLastModifiedByCurrentUser(null,
+                        LogEntry.getSystemLogDisable(getStudyConfiguration().getStudy()));
             } catch (RuntimeException e) {
                 addActionError(getText("struts.messages.error.disabling", getArgs(STUDY)));
             }
@@ -169,6 +172,8 @@ public class EditStudyAction extends AbstractStudyAction {
                 if (!this.hasActionErrors()) {
                     getStudyConfiguration().getStudy().setEnabled(true);
                     getStudyManagementService().save(getStudyConfiguration());
+                    setStudyLastModifiedByCurrentUser(null,
+                            LogEntry.getSystemLogEnable(getStudyConfiguration().getStudy()));
                 }
             } catch (RuntimeException e) {
                 addActionError(getText("struts.messages.error.enabling", getArgs(STUDY)));

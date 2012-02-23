@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceCo
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.ajax.ISubjectDataSourceAjaxUpdater;
 import gov.nih.nci.caintegrator2.web.ajax.SubjectDataSourceAjaxRunner;
@@ -121,6 +122,10 @@ public class CopyStudyAction extends AbstractStudyAction {
             } else {
                 doCopy();
             }
+
+            // cleanup
+            getDisplayableWorkspace().refresh(getWorkspaceService(), false);
+
             return this.hasActionErrors() ? ERROR : SUCCESS;
         } else {
             addActionError(getText("struts.messages.error.unauthenticated.user"));
@@ -163,6 +168,8 @@ public class CopyStudyAction extends AbstractStudyAction {
                 createStudy();
                 setStudyLastModifiedByCurrentUser(null,
                         LogEntry.getSystemLogCopy(original.getStudy()));
+            } catch (ValidationException vale) {
+                addActionError(vale.getResult().getInvalidMessage());
             } catch (Exception e) {
                 addActionError(getText("struts.messages.error.study.copy"));
                 setStudyConfiguration(original);
