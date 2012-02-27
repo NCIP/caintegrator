@@ -53,7 +53,7 @@ H4
 LABEL
 { font-family:arial,helvetica,sans-serif; color:#333; font-weight:bold; font-style:normal; text-align:right; padding:3px 0 0 0 }
 TEXTAREA
-{ font-family:arial,helvetica,sans-serif; font-size:100%; overflow:auto; overflow:-moz-scrollbars-vertical; }
+{ font-family:arial,helvetica,sans-serif; font-size:100%; autoScroll:true; overflow:auto; height:60px; }
 INPUT, SELECT, TEXTAREA
 { font-family:arial,helvetica,sans-serif; color:#333; font-size:100%;  }
 INPUT
