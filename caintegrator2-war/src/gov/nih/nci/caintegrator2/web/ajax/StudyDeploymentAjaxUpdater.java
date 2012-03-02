@@ -298,11 +298,13 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
         String returnString = null;
         if (studyConfiguration.getStudy().isEnabled()) {
             returnString = "<a href=\"editStudy.action?studyConfiguration.id="
-           + studyConfiguration.getId();
+           + studyConfiguration.getId()
+           + "\" title=\"" + title + "\"";
         } else {
-            returnString = "<a style=\"color:Grey; text-decoration:none;\" href=\"#";
+            returnString = "<a style=\"color:Grey; text-decoration:none;\""
+            + " title=\"Edit Disabled - Enable Study to Edit\"";
         }
-        return returnString + "\" title=\"" + title + "\">" + action + "</a>";
+        return returnString + ">" + action + "</a>";
     }
 
     /**
@@ -324,7 +326,8 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
        + "&struts.token="
            + token;
        } else {
-           returnString = "<a style=\"color:Grey; text-decoration:none;\" href=\"#";
+           returnString = "<a style=\"color:Grey; text-decoration:none;\""
+               + " title=\"Copy Disabled - Enable Study to Copy\"";
        }
        return returnString + "\" >Copy</a>";
     }
