@@ -8,41 +8,44 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Transient;
+
 /**
- * 
+ *
  */
 public class Sample extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String name;
     private GenomicDataSourceConfiguration genomicDataSource;
     private SampleAcquisition sampleAcquisition;
     private Set<ArrayData> arrayDataCollection = new HashSet<ArrayData>();
     private Set<Array> arrayCollection = new HashSet<Array>();
     private Set<AbstractReporter> reportersHighVariance = new HashSet<AbstractReporter>();
-    
+    private SampleRefreshTypeEnum refreshType;
+
     /**
      * @return the name
      */
     public String getName() {
         return name;
     }
-    
+
     /**
      * @param name the name to set
      */
     public void setName(String name) {
         this.name = name;
     }
-    
+
     /**
      * @return the sampleAcquisition
      */
     public SampleAcquisition getSampleAcquisition() {
         return sampleAcquisition;
     }
-    
+
     /**
      * @param sampleAcquisition the sampleAcquisition to set
      */
@@ -52,7 +55,7 @@ public class Sample extends AbstractCaIntegrator2Object {
 
     /**
      * Returns all array datas of the given type for this sample.
-     * 
+     *
      * @param reporterType return array data of this type.
      * @param platform to retrieve Array Datas for (null if you want to use all platforms).
      * @return the array datas.
@@ -60,7 +63,7 @@ public class Sample extends AbstractCaIntegrator2Object {
     public Set<ArrayData> getArrayDatas(ReporterTypeEnum reporterType, Platform platform) {
         Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
         for (ArrayData arrayData : getArrayDataCollection()) {
-            if (reporterType.equals(arrayData.getReporterType()) 
+            if (reporterType.equals(arrayData.getReporterType())
                 && (platform == null || platform.equals(arrayData.getArray().getPlatform()))) {
                 arrayDatas.add(arrayData);
             }
@@ -137,7 +140,7 @@ public class Sample extends AbstractCaIntegrator2Object {
             return null;
         }
     }
-    
+
     /**
      * Removes the associations from the Sample Acquisition.
      */
@@ -148,7 +151,7 @@ public class Sample extends AbstractCaIntegrator2Object {
             sampleAcquisition = null;
         }
     }
-    
+
     /**
      * Remove all array data from this sample.
      */
@@ -156,6 +159,21 @@ public class Sample extends AbstractCaIntegrator2Object {
         arrayDataCollection.clear();
         arrayCollection.clear();
         reportersHighVariance.clear();
+    }
+
+    /**
+     * @param refreshType the refreshType to set
+     */
+    public void setRefreshType(SampleRefreshTypeEnum refreshType) {
+        this.refreshType = refreshType;
+    }
+
+    /**
+     * @return the refreshType
+     */
+    @Transient
+    public SampleRefreshTypeEnum getRefreshType() {
+        return refreshType;
     }
 
 }
