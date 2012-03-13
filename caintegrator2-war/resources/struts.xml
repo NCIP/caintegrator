@@ -245,6 +245,8 @@
                 <param name="struts.token.name">${tokenName} </param>
                 <param name="struts.token">${newToken}</param>
             </result>
+            <result name="error" type="tiles">manageStudies</result>
+            <result name="input" type="tiles">manageStudies</result>            
             <interceptor-ref name="paramsPrepareParamsStack">
                 <param name="tokenSession.includeMethods">*</param>
             </interceptor-ref>
