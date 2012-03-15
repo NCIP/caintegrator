@@ -101,7 +101,8 @@
         <mkdir dir="${genepattern-service.jar.java.classes.dir}" />
         <javac srcdir="${genepattern-service.jar.java.src.dir}" 
             destdir="${genepattern-service.jar.java.classes.dir}" 
-                classpathref="genepattern-service.jar.dependencies.path" 
+                classpathref="genepattern-service.jar.dependencies.path"
+                    includeantruntime="false"
                     debug="true" />
     </target>
 
