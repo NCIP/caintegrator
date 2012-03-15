@@ -174,12 +174,12 @@
 <tr>
 	<td>type</td>
 	<td>caArrayUrl</td>
-	<td>http://cbapp-s1002.nci.nih.gov:38080/caarray</td>
+	<td>http://ncias-q739-v.nci.nih.gov:38080/caarray</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>caArrayHost</td>
-	<td>cbapp-s1002.nci.nih.gov</td>
+	<td>ncias-q739-v.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -189,7 +189,7 @@
 <tr>
 	<td>type</td>
 	<td>experimentId</td>
-	<td>EXP-15</td>
+	<td>EXP-12</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -254,7 +254,7 @@
 <tr>
 	<td>type</td>
 	<td>sampleMappingFile</td>
-	<td>${testResourcesDirectory}Genomic_Data/Expression_Data/Affymetrix/Parsed/Data_Mapping.csv</td>
+	<td>${testResourcesDirectory}Genomic_Data/Expression_Data/Affymetrix/Parsed/Data_Mapping_Temp.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -280,7 +280,7 @@
 <tr>
 	<td>type</td>
 	<td>controlSampleFile</td>
-	<td>${testResourcesDirectory}Genomic_Data/Expression_Data/Affymetrix/Parsed/Controls.csv</td>
+	<td>${testResourcesDirectory}Genomic_Data/Expression_Data/Affymetrix/Parsed/Controls_Temp.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -291,7 +291,7 @@
 <!--// begin add copy number-->
 <tr>
 	<td>store</td>
-	<td>EXP-19</td>
+	<td>EXP-5</td>
 	<td>caarrayExperimentNameCopyNumber</td>
 </tr>
 <tr>
@@ -307,12 +307,12 @@
 <tr>
 	<td>type</td>
 	<td>caArrayUrl</td>
-	<td>http://cbapp-s1002.nci.nih.gov:38080/caarray</td>
+	<td>http://ncias-q739-v.nci.nih.gov:38080/caarray</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>caArrayHost</td>
-	<td>cbapp-s1002.nci.nih.gov</td>
+	<td>ncias-q739-v.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
