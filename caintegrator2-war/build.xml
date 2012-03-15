@@ -489,7 +489,7 @@
 
     <target name="compile:caintegrator2.war" depends="path:caintegrator2.war.dependencies">
         <mkdir dir="${caintegrator2.war.java.classes.dir}" />
-        <javac srcdir="${caintegrator2.war.java.src.dir}" destdir="${caintegrator2.war.java.classes.dir}" classpathref="caintegrator2.war.dependencies.path" debug="true" />
+        <javac srcdir="${caintegrator2.war.java.src.dir}" destdir="${caintegrator2.war.java.classes.dir}" classpathref="caintegrator2.war.dependencies.path" includeantruntime="false" debug="true" />
     </target>
 
     <target name="test:unit:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,test:instrument:unit:caintegrator2.war,test:unpack-test-data">
@@ -590,7 +590,7 @@
             <filterset refid="caintegrator2.filterset" />
             <fileset dir="${cbs-to-heatmap.jar.resources.bins.dir}" includes="*.dat" />
         </copy>
-        <javac srcdir="${caintegrator2.war.test.src.dir}" destdir="${caintegrator2.war.test.classes.dir}" classpathref="caintegrator2.war.test.dependencies.path" debug="true" />
+        <javac srcdir="${caintegrator2.war.test.src.dir}" destdir="${caintegrator2.war.test.classes.dir}" classpathref="caintegrator2.war.test.dependencies.path" includeantruntime="false" debug="true" />
     </target>
     
     <property name="struts.properties.src" value="${caintegrator2.war.resources.src.dir}/struts.properties" />
