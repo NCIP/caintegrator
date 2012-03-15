@@ -101,8 +101,9 @@
         <mkdir dir="${cbs-to-heatmap.jar.java.classes.dir}" />
         <javac srcdir="${cbs-to-heatmap.jar.java.src.dir}" 
             destdir="${cbs-to-heatmap.jar.java.classes.dir}" 
-                classpathref="cbs-to-heatmap.jar.dependencies.path" 
-                    debug="true" />
+                classpathref="cbs-to-heatmap.jar.dependencies.path"
+                    includeantruntime="false"
+                        debug="true" />
     </target>
 
 
