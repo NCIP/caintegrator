@@ -140,7 +140,6 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private Boolean useHighVarianceCalculation = true;
     private HighVarianceCalculationTypeEnum highVarianceCalculationType = HighVarianceCalculationTypeEnum.PERCENTAGE;
     private Double highVarianceThreshold = DEFAULT_HIGH_VARIANCE_THRESHOLD;
-    private Boolean refreshed;
     private Map<String, Date> refreshSampleNames;
 
     /**
@@ -239,47 +238,46 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
         return unmappedSamples;
     }
 
-    private void addRefreshFlagToMappedSamples(Collection<Sample> samples) {
+    private void addRefreshFlagToMappedSamples(Collection<Sample> mappedSamples) {
         if (MapUtils.isEmpty(refreshSampleNames)) {
             return;
         }
 
-        for (Sample sample : samples) {
+        for (Sample sample : mappedSamples) {
             if (!refreshSampleNames.containsKey(sample.getName())) {
                 sample.setRefreshType(SampleRefreshTypeEnum.DELETE_ON_REFRESH);
             } else if (refreshSampleNames.containsKey(sample.getName())
                     && studyConfiguration.getDeploymentFinishDate().before(refreshSampleNames.get(sample.getName()))) {
                 sample.setRefreshType(SampleRefreshTypeEnum.UPDATE_ON_REFRESH);
-            } else {
-                sample.setRefreshType(SampleRefreshTypeEnum.NOCHANGE_ON_REFRESH);
             }
         }
     }
 
-    private void addRefreshFlagToUnMappedSamples(Collection<Sample> samples) {
+    private void addRefreshFlagToUnMappedSamples(Collection<Sample> unMappedsamples) {
         if (MapUtils.isEmpty(refreshSampleNames)) {
             return;
         }
         List<Sample> samplesToAdd = new ArrayList<Sample>();
-        for (Sample sample : samples) {
+        for (Sample sample : unMappedsamples) {
             if (!refreshSampleNames.containsKey(sample.getName())) {
                 sample.setRefreshType(SampleRefreshTypeEnum.DELETE_ON_REFRESH);
             }
         }
 
         for (String sampleName : refreshSampleNames.keySet()) {
-            if (!isSampleInList(samples, sampleName)) {
+            if (!isSampleInList(sampleName)) {
                 Sample newSample = new Sample();
                 newSample.setName(sampleName);
+                newSample.setRefreshType(SampleRefreshTypeEnum.ADD_ON_REFRESH);
                 samplesToAdd.add(newSample);
             }
         }
 
-        samples.addAll(samplesToAdd);
+        unMappedsamples.addAll(samplesToAdd);
 
     }
 
-    private boolean isSampleInList(Collection<Sample> samples, String nameToLookFor) {
+    private boolean isSampleInList(String nameToLookFor) {
         for (Sample sample : samples) {
             if (StringUtils.equals(sample.getName(), nameToLookFor)) {
                 return true;
@@ -797,19 +795,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
         return isCopyNumberData() && dnaAnalysisDataConfiguration.isUseCghCall();
     }
 
-    /**
-     * @param refreshed the refreshed to set
-     */
-    public void setRefreshed(Boolean refreshed) {
-        this.refreshed = refreshed;
-    }
 
-    /**
-     * @return the refreshed
-     */
-    public Boolean isRefreshed() {
-        return refreshed;
-    }
 
     /**
      * @param refreshSampleNames the refreshSampleNames to set

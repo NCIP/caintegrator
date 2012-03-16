@@ -638,6 +638,23 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void checkForSampleUpdates(StudyConfiguration sc) throws ConnectionException, ExperimentNotFoundException {
+        for (GenomicDataSourceConfiguration gdsc : sc.getGenomicDataSources()) {
+            checkForSampleUpdates(gdsc);
+        }
+    }
+
+    private void checkForSampleUpdates(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
+    ExperimentNotFoundException {
+        Map<String, Date> sampleUpdates = getCaArrayFacade().checkForSampleUpdates(
+                genomicSource.getExperimentIdentifier(),
+                genomicSource.getServerProfile());
+        genomicSource.setRefreshSampleNames(sampleUpdates);
+    }
+
     private void checkSupplementalFiles(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
     ExperimentNotFoundException {
         String errorMessage =

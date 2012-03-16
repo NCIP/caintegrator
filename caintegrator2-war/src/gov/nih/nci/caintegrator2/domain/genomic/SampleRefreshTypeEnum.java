@@ -100,11 +100,6 @@ public enum SampleRefreshTypeEnum {
     ADD_ON_REFRESH,
 
     /**
-     * No change on refresh.
-     */
-    NOCHANGE_ON_REFRESH,
-
-    /**
      * Update on refresh.
      */
     UPDATE_ON_REFRESH;

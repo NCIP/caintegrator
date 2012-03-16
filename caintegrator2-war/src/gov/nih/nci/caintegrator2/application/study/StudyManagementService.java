@@ -627,4 +627,12 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @param persistentObject to save
      */
     void daoSave(Object persistentObject);
+
+    /**
+     * Check samples for updates based on experiment.
+     * @param sc study config
+     * @throws ConnectionException connection error
+     * @throws ExperimentNotFoundException experiment not found.
+     */
+    void checkForSampleUpdates(StudyConfiguration sc) throws ConnectionException, ExperimentNotFoundException;
 }
