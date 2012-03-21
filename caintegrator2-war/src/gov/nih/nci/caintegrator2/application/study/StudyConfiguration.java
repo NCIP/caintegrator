@@ -140,6 +140,8 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
     private transient Map<String, StudySubjectAssignment> identifierToSubjectAssignmentMap;
     private transient Map<String, ImageSeries> identifierToImageSeriesMap;
     private transient Map<String, Timepoint> nameToTimepointMap;
+    private List<AuthorizedStudyElementsGroup> authorizedStudyElementsGroups =
+        new ArrayList<AuthorizedStudyElementsGroup>();
 
     /**
      * Creates a new <code>StudyConfiguration</code>.
@@ -256,7 +258,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
     }
 
     /**
-     * Returns an assigment with the given identifier, creating one if necessary.
+     * Returns an assignment with the given identifier, creating one if necessary.
      * 
      * @param identifier the identifier.
      * @return the new or existing assignment.
@@ -745,5 +747,19 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
     @SuppressWarnings("unused")
     private void setLogEntries(List<LogEntry> logEntries) {
         this.logEntries = logEntries;
+    }
+
+    /**
+     * @return the authorizedStudyElementsGroups
+     */
+    public List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementsGroups() {
+        return authorizedStudyElementsGroups;
+    }
+
+    /**
+     * @param authorizedStudyElementsGroups the authorizedStudyElementsGroups to set
+     */
+    public void setAuthorizedStudyElementsGroups(List<AuthorizedStudyElementsGroup> authorizedStudyElementsGroups) {
+        this.authorizedStudyElementsGroups = authorizedStudyElementsGroups;
     }
 }

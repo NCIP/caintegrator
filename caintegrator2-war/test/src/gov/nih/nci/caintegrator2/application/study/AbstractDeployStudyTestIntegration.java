@@ -108,6 +108,7 @@ import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -180,6 +181,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         studyConfiguration = new StudyConfiguration();
         studyConfiguration.getStudy().setShortTitleText(getStudyName());
         studyConfiguration.getStudy().setLongTitleText(getDescription());
+        studyConfiguration.getStudy().setEnabled(Boolean.TRUE);
         studyConfiguration.setUserWorkspace(userWorkspace);
         studyConfiguration.getStudy().setStudyConfiguration(studyConfiguration);
         service.save(studyConfiguration);
@@ -197,6 +199,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         mapImages(imageSource);
         loadImageAnnotation(imageSource);
         deploy(userWorkspace);
+        authorizeStudyElements();
         checkArrayData();
         checkQueries();
     }
@@ -397,6 +400,10 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         return null;
     }
 
+    protected boolean getAuthorizeStudy() {
+        return false;
+    }    
+    
     private void checkArrayData() {
         if (getLoadSamples()) {
             logStart();
@@ -544,6 +551,61 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             fail(studyConfiguration.getStatusDescription());
         }
     }
+    
+    private void authorizeStudyElements()
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException {
+        if (getAuthorizeStudy()) {
+            logStart();
+            service.addAuthorizedStudyElementsGroup(studyConfiguration,
+                                                    createAuthorizedStudyElementsGroup(studyConfiguration,
+                                                    "IntegrationTestAuthorizedStudyElementsGroup1",
+                                                    "Gender"));
+            service.addAuthorizedStudyElementsGroup(studyConfiguration,
+                    createAuthorizedStudyElementsGroup(studyConfiguration,
+                    "IntegrationTestAuthorizedStudyElementsGroup2",
+                    "Age"));            
+            service.deleteAuthorizedStudyElementsGroup(studyConfiguration, studyConfiguration.getAuthorizedStudyElementsGroups().get(0));
+            logEnd();
+        }
+    }
+
+    /**
+     * This method creates and returns an AuthorizedStudyElementsGroup that
+     * consists of elements from the current studyConfiguration.
+     * 
+     * @return the authorizedStudyElementsGroup
+     */
+    protected AuthorizedStudyElementsGroup createAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
+                                                                                String authorizedStudyElementsGroupName,
+                                                                                String fieldDescriptorName) {
+        AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
+        authorizedStudyElementsGroup.setGroupName(authorizedStudyElementsGroupName);
+        String desc = "Created by integration test for study named: " + getStudyName();
+        authorizedStudyElementsGroup.setGroupDescription(desc);
+        // add AuthorizedAnnotationFieldDescriptor
+        AnnotationFieldDescriptor annotationFieldDescriptor = new AnnotationFieldDescriptor();
+        annotationFieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy(fieldDescriptorName);
+        AuthorizedAnnotationFieldDescriptor authorizedAnnotationFieldDescriptor = new AuthorizedAnnotationFieldDescriptor();
+        authorizedAnnotationFieldDescriptor.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
+        authorizedAnnotationFieldDescriptor.setAnnotationFieldDescriptor(annotationFieldDescriptor);
+        authorizedStudyElementsGroup.getAuthorizedAnnotationFieldDescriptors().add(authorizedAnnotationFieldDescriptor);
+        // add AuthorizedAbstractCriterion
+        AbstractAnnotationCriterion abstractAnnotationCriterion = new AbstractAnnotationCriterion();
+        abstractAnnotationCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
+        AbstractCriterion abstractCriterion = (AbstractCriterion) abstractAnnotationCriterion;
+        //abstractAnnotationCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
+        //dao.save(abstractAnnotationCriterion);
+        AuthorizedAbstractCriterion authorizedAbstractCriterion = new AuthorizedAbstractCriterion();
+        authorizedAbstractCriterion.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
+        authorizedAbstractCriterion.setAbstractCriterion(abstractCriterion);
+        authorizedStudyElementsGroup.getAuthorizedAbstractCriterions().add(authorizedAbstractCriterion);
+        // add AuthorizedGenomicDataSourceConfigurations
+        AuthorizedGenomicDataSourceConfiguration authorizedGenomicDataSourceConfiguration = new AuthorizedGenomicDataSourceConfiguration();
+        authorizedGenomicDataSourceConfiguration.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
+        authorizedGenomicDataSourceConfiguration.setGenomicDataSourceConfiguration(studyConfiguration.getGenomicDataSources().get(0));
+        authorizedStudyElementsGroup.getAuthorizedGenomicDataSourceConfigurations().add(authorizedGenomicDataSourceConfiguration);
+        return authorizedStudyElementsGroup;
+    }    
 
     protected HeatmapParameters getHeatmapParameters() {
         HeatmapParameters heatmapParameters = new HeatmapParameters();

@@ -312,6 +312,39 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    public void addAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
+                                        AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
+        studyConfiguration.getAuthorizedStudyElementsGroups().add(authorizedStudyElementsGroup);
+        authorizedStudyElementsGroup.setStudyConfiguration(studyConfiguration);
+        Date lastModifiedDate = new Date();
+        LogEntry logEntry = new LogEntry();
+        UserWorkspace lastModifiedBy = studyConfiguration.getLastModifiedBy();
+        logEntry.setUsername(lastModifiedBy == null ? null : lastModifiedBy.getUsername());
+        logEntry.setLogDate(lastModifiedDate);
+        logEntry.setTrimSystemLogMessage(LogEntry.getSystemLogAdd(authorizedStudyElementsGroup));
+        studyConfiguration.getLogEntries().add(logEntry);
+        daoSave(studyConfiguration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void deleteAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
+                                        AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
+        studyConfiguration.getAuthorizedStudyElementsGroups().remove(authorizedStudyElementsGroup);
+        Date lastModifiedDate = new Date();
+        LogEntry logEntry = new LogEntry();
+        UserWorkspace lastModifiedBy = studyConfiguration.getLastModifiedBy();
+        logEntry.setUsername(lastModifiedBy == null ? null : lastModifiedBy.getUsername());
+        logEntry.setLogDate(lastModifiedDate);
+        logEntry.setTrimSystemLogMessage(LogEntry.getSystemLogDelete(authorizedStudyElementsGroup));
+        studyConfiguration.getLogEntries().add(logEntry);
+        daoSave(studyConfiguration);
+    }     
+    
+    /**
+     * {@inheritDoc}
+     */
     public StudyLogo retrieveStudyLogo(Long studyId, String studyShortTitleText) {
         return getDao().retrieveStudyLogo(studyId, studyShortTitleText);
     }
@@ -1478,4 +1511,5 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }
+      
 }

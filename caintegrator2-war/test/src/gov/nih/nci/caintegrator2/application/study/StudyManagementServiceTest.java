@@ -255,11 +255,46 @@ public class StudyManagementServiceTest {
     public void testAddStudyLogo() throws IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyManagementService.save(studyConfiguration);
+        studyConfiguration.setStudyLogo(null);
         studyManagementService.addStudyLogo(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(), "image/jpeg");
         assertTrue(fileManagerStub.storeStudyFileCalled);
         assertTrue(daoStub.saveCalled);
     }
-
+    
+    @Test
+    public void testRetrieveStudyLogo() {
+        String name = "StudyForTestingStudyLogo";
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setStudy(new Study());
+        studyConfiguration.getStudy().setShortTitleText(name);
+        studyConfiguration.setStudyLogo(new StudyLogo());
+        studyManagementService.save(studyConfiguration);
+        assertNotNull(studyManagementService.retrieveStudyLogo(studyConfiguration.getStudy().getId(), name));
+        
+    }    
+    
+    @Test
+    public void testAddAuthorizedStudyElementsGroups() throws ConnectionException, ExperimentNotFoundException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
+        studyManagementService.addAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup);
+        authorizedStudyElementsGroup.setId(Long.valueOf(1));
+        assertTrue(studyConfiguration.getAuthorizedStudyElementsGroups().contains(authorizedStudyElementsGroup));
+        assertTrue(daoStub.saveCalled);
+    }
+    
+    @Test
+    public void testDeleteAuthorizedStudyElementsGroups() throws ConnectionException, ExperimentNotFoundException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
+        studyManagementService.addAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup);
+        authorizedStudyElementsGroup.setId(Long.valueOf(1));
+        assertTrue(studyConfiguration.getAuthorizedStudyElementsGroups().contains(authorizedStudyElementsGroup));
+        studyManagementService.deleteAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup);
+        assertFalse(studyConfiguration.getAuthorizedStudyElementsGroups().contains(authorizedStudyElementsGroup));
+        assertTrue(daoStub.saveCalled);
+    } 
+    
     @Test
     public void testCopyStudy() throws ValidationException, IOException, ConnectionException {
         StudyConfiguration copyTo = new StudyConfiguration();

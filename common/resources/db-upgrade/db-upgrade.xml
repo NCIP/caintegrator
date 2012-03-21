@@ -476,5 +476,9 @@
         <comment>Add is_enabled column to study configuration</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.4/upgrade-1.4.2.sql"/>
     </changeSet>   
-    
+    <changeSet id="1.4.3" author="marplej">
+        <comment>Add new data structure for storing authorized study elements</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.4/upgrade-1.4.3.sql"/>
+    </changeSet>
+        
 </databaseChangeLog>
