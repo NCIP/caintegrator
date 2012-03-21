@@ -118,6 +118,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean copyCalled;
     public boolean deleteCalled;
     public boolean addGenomicSourceCalled;
+    public boolean addAuthorizedStudyElementsGroupCalled;
+    public boolean deleteAuthorizedStudyElementsGroupCalled;
     public boolean addClinicalAnnotationFileCalled;
     public boolean getRefreshedStudyEntityCalled;
     public boolean getMatchingDefinitionsCalled;
@@ -607,6 +609,25 @@ public class StudyManagementServiceStub implements StudyManagementService {
             ConnectionException {
         copyCalled = true;
         return copyTo;
+    }
+
+    /* (non-Javadoc)
+     * @see gov.nih.nci.caintegrator2.application.study.StudyManagementService#addAuthorizedStudyElementsGroup(gov.nih.nci.caintegrator2.application.study.StudyConfiguration, gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup)
+     */
+    @Override
+    public void addAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
+            AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
+        addAuthorizedStudyElementsGroupCalled = true;
+        studyConfiguration.getAuthorizedStudyElementsGroups().add(authorizedStudyElementsGroup);
+    }
+
+    /* (non-Javadoc)
+     * @see gov.nih.nci.caintegrator2.application.study.StudyManagementService#deleteAuthorizedStudyElementsGroup(gov.nih.nci.caintegrator2.application.study.StudyConfiguration, gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup)
+     */
+    @Override
+    public void deleteAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
+            AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
+        deleteAuthorizedStudyElementsGroupCalled = true;
     }
 
 }

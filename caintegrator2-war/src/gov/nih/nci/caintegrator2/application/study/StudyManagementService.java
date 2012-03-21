@@ -221,7 +221,7 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
                         File imageFile,
                         String fileName,
                         String fileType) throws IOException;
-
+    
     /**
      * Retrieves study logo from the database given a study id and name.
      * @param studyId - ID of the Study object.
@@ -230,6 +230,22 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      */
     StudyLogo retrieveStudyLogo(Long studyId, String studyShortTitleText);
 
+    /**
+     * Adds an AuthorizedElementsGroup to the study configuration.
+     * @param studyConfiguration study configuration to which the authoriziedStudyElementGroup will be added
+     * @param authorizedStudyElementsGroup authoriziedStudyElementGroup that is being added
+     */
+    void addAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
+            AuthorizedStudyElementsGroup authorizedStudyElementsGroup);
+    
+    /**
+     * Deletes an AuthorizedElementsGroup from the study configuration.
+     * @param studyConfiguration study configuration from which the authoriziedStudyElementGroup will be deleted
+     * @param authorizedStudyElementsGroup authoriziedStudyElementGroup that is being deleted
+     */
+    void deleteAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
+            AuthorizedStudyElementsGroup authorizedStudyElementsGroup);    
+    
     /**
      * Loads a specific clinical annotation from study configuration.
      *
@@ -627,4 +643,5 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @param persistentObject to save
      */
     void daoSave(Object persistentObject);
+
 }
