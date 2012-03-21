@@ -44,7 +44,7 @@
         <filtersfile file="${build.dir}/default.properties" />
         <filtersfile file="${envpropertyfile}" />
     </filterset>
-
+    
     <!-- Report properties -->
     <property name="reports.dir" value="${software.dir}/target/reports"/>
     <property name="reports.simian.dir" value="${reports.dir}/simian"/>
@@ -726,6 +726,9 @@
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.3/upgrade-1.3.09.sql" />
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.3/upgrade-1.3.10.sql" />
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.3/upgrade-1.3.11.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.4/upgrade-1.4.1.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.4/upgrade-1.4.2.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.4/upgrade-1.4.3.sql" />
     </target>
 
 
@@ -1072,6 +1075,7 @@
         hibernate.cfg.xml.test, caintegrator2.csm.xml.test,
         database:reinitialize">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+            <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
              <classpath>
                  <pathelement path="${caintegrator2.war.test.dependencies.path}" />
              </classpath>
@@ -1089,6 +1093,7 @@
         hibernate.cfg.xml.test, caintegrator2.csm.xml.test,
         database:reinitialize">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+            <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
              <classpath>
                  <pathelement path="${caintegrator2.war.test.dependencies.path}" />
              </classpath>
@@ -1105,6 +1110,7 @@
         caintegrator2.war,
         hibernate.cfg.xml.test, caintegrator2.csm.xml.test">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+             <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
              <classpath>
                  <pathelement path="${caintegrator2.war.test.dependencies.path}" />
              </classpath>
@@ -1122,6 +1128,7 @@
         hibernate.cfg.xml.test, caintegrator2.csm.xml.test,
         database:reinitialize">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+            <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
              <classpath>
                  <pathelement path="${caintegrator2.war.test.dependencies.path}" />
              </classpath>
@@ -1139,6 +1146,7 @@
         hibernate.cfg.xml.test, caintegrator2.csm.xml.test,
         database:reinitialize">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+            <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
              <classpath>
                  <pathelement path="${caintegrator2.war.test.dependencies.path}" />
              </classpath>
@@ -1156,6 +1164,7 @@
         hibernate.cfg.xml.test, caintegrator2.csm.xml.test,
         database:reinitialize">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+             <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
              <classpath>
                  <pathelement path="${caintegrator2.war.test.dependencies.path}" />
              </classpath>
