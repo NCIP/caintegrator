@@ -85,188 +85,42 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
-import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
-import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
-import java.io.File;
+/**
+ * An AuthorizedGenomicDataSourceConfiguration is an <code>GenomicDataSourceConfiguration</code> that has been
+ * authorized for inclusion in an <code>AuthorizedStudyElementsGroup</code>.
+ */
+public class AuthorizedGenomicDataSourceConfiguration extends AbstractCaIntegrator2Object {
 
-import org.apache.log4j.Logger;
-import org.junit.Test;
-import org.springframework.transaction.annotation.Transactional;
+    private static final long serialVersionUID = 1L;
+    private GenomicDataSourceConfiguration genomicDataSourceConfiguration;
+    private AuthorizedStudyElementsGroup authorizedStudyElementsGroup;
 
-@Transactional(timeout = 2880)
-public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudyTestIntegration {
-    
-    private final static Logger LOGGER = Logger.getLogger(DeployStudyRembrandtNcriTestIntegration.class);
-
-    @Test
-    public void testDeployStudy() throws Exception {
-        deployStudy();
-    }
-
-
-    @Override
-    protected boolean getMapImages() {
-        return true;
-    }
-    
-    @Override
-    protected boolean getLoadImages() {
-        return true;
-    }
-    
-    @Override
-    protected boolean getLoadImageAnnotation() {
-        return true;
-    }
-
-    @Override    
-    protected boolean getAuthorizeStudy() {
-        return true;
-    }     
-    
-    @Override
-    protected boolean getLoadDesign() {
-        return true;
-    }
-    
-    @Override
-    protected boolean getLoadSamples() {
-        return true;
-    }
-    
-    @Override
-    protected String getCaArrayId() {
-        return "jagla-00034";
-    }
-    
+   
     /**
-     * {@inheritDoc}
+     * @param authorizedStudyElementsGroup the authorizedStudyElementsGroup to set
      */
-    @Override
-    protected String getCaArrayHostname() {
-        return "ncias-d227-v.nci.nih.gov";
+    public void setAuthorizedStudyElementsGroup(AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
+        this.authorizedStudyElementsGroup = authorizedStudyElementsGroup;
     }
-    
-    @Override
-    protected int getCaArrayPort() {
-        return 31099;
+    /**
+     * @return the authorizedStudyElementsGroup
+     */
+    public AuthorizedStudyElementsGroup getAuthorizedStudyElementsGroup() {
+        return authorizedStudyElementsGroup;
     }
-    
-    @Override
-    protected int getExpectedSampleCount() {
-        return 3;
+    /**
+     * @param genomicDataSourceConfiguration the genomicDataSourceConfiguration to set
+     */
+    public void setGenomicDataSourceConfiguration(GenomicDataSourceConfiguration genomicDataSourceConfiguration) {
+        this.genomicDataSourceConfiguration = genomicDataSourceConfiguration;
     }
-
-    @Override
-    protected int getExpectedMappedSampleCount() {
-        return 2;
-    }
-
-    @Override
-    protected int getExpectedControlSampleCount() {
-        return 1;
-    }
-
-    @Override
-    protected Logger getLogger() {
-        return LOGGER;
-    }
-
-    @Override
-    protected String getNCIAServerUrl() {
-        return "http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService";
-    }
-    
-    @Override
-    protected String getNCIATrialId() {
-        return "NCRI";
-    }
-
-    @Override
-    protected String getStudyName() {
-        return "Rembrandt with NCRI";
-    }
-
-    @Override
-    protected File getAnnotationGroupFile() {
-        return TestDataFiles.REMBRANDT_ANNOTATION_GROUP_FILE;
-    }
-
-    protected File getImageAnnotationFile() {
-        return TestDataFiles.REMBRANDT_NCRI_IMAGE_ANNOTATION_FILE;
-    }
-
-    @Override
-    protected File getImageMappingFile() {
-        return TestDataFiles.REMBRANDT_NCRI_IMAGE_SERIES_TO_SUBJECT_FILE;
-    }
-    @Override
-    protected File getSampleMappingFile() {
-        return TestDataFiles.REMBRANDT_NCRI_SAMPLE_MAPPING_FILE;
-    }
-
-    @Override
-    protected String getControlSampleSetName() {
-        return TestDataFiles.JAGLA_00034_CONTROL_SAMPLES_SET_NAME;
-    }
-
-    @Override
-    protected File getControlSamplesFile() {
-        return TestDataFiles.JAGLA_00034_CONTROL_SAMPLES_FILE;
-    }
-
-    @Override
-    protected String getControlSamplesFileName() {
-        return TestDataFiles.JAGLA_00034_CONTROL_SAMPLES_FILE_PATH;
-    }
-
-    @Override
-    protected File getSubjectAnnotationFile() {
-        return TestDataFiles.REMBRANDT_NCRI_CLINICAL_FILE;
-    }
-
-    @Override
-    protected AbstractPlatformSource getPlatformSource() {
-        return new AffymetrixExpressionPlatformSource(TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
-    }
-    
-    @Override
-    protected String getDeathDateName() {
-        return "Death Date";
-    }
-
-    @Override
-    protected String getLastFollowupDateName() {
-        return "Last Followup Date";
-    }
-
-    @Override
-    protected String getSurvivalStartDateName() {
-        return "Survival Start Date";
-    }
-
-    @Override
-    protected int getExpectedNumberOfGeneReporters() {
-        return 21432;
-    }
-
-    @Override
-    protected int getExpectedNumberProbeSets() {
-        return 54675;
-    }
-
-    @Override
-    protected String getPlatformName() {
-        return "HG-U133_Plus_2";
-    }
-
-    @Override
-    protected PlatformVendorEnum getPlatformVendor() {
-        return PlatformVendorEnum.AFFYMETRIX;
+    /**
+     * @return the genomicDataSourceConfiguration
+     */
+    public GenomicDataSourceConfiguration getGenomicDataSourceConfiguration() {
+        return genomicDataSourceConfiguration;
     }
 
 }

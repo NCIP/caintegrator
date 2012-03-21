@@ -83,5 +83,12 @@
             
         <many-to-one name="lastModifiedBy" class="gov.nih.nci.caintegrator2.domain.application.UserWorkspace" column="LAST_MODIFIED_BY_USER_ID"
             lazy="proxy" cascade="none" />
+            
+        <list name="authorizedStudyElementsGroups" lazy="false" cascade="all">
+            <cache usage="read-write" />
+            <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
+            <list-index column="LIST_INDEX"/>
+            <one-to-many class="gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup"/>
+        </list>            
 	</class>
 </hibernate-mapping>
