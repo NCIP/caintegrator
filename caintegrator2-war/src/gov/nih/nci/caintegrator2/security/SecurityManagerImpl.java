@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.security;
 
+import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.security.AuthorizationManager;
@@ -117,6 +118,9 @@ public class SecurityManagerImpl implements SecurityManager {
     private static final String STUDY_MANAGER_ROLE = "STUDY_MANAGER_ROLE";
     private static final String STUDY_OBJECT = "gov.nih.nci.caintegrator2.domain.translational.Study";
     private static final String STUDY_ATTRIBUTE = "id";
+    private static final String AUTHORIZED_STUDY_ELEMENTS_GROUP_OBJECT =
+                            "gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup";
+    private static final String AUTHORIZED_STUDY_ELEMENTS_GROUP_ATTRIBUTE = "id";
     private static final String UNCHECKED = "unchecked";
     
     private AuthorizationManagerFactory authorizationManagerFactory;
@@ -149,6 +153,11 @@ public class SecurityManagerImpl implements SecurityManager {
         List<ProtectionElement> retrievedElements = getAuthorizationManager().getObjects(elementCriteria);
         for (ProtectionElement pe : retrievedElements) {
             getAuthorizationManager().removeProtectionElement(String.valueOf(pe.getProtectionElementId()));
+        }
+        List<AuthorizedStudyElementsGroup> authStudyElementsGroups =
+                                                studyConfiguration.getAuthorizedStudyElementsGroups();
+        for (AuthorizedStudyElementsGroup aseg : authStudyElementsGroups) {
+            deleteProtectionElement(aseg);
         }
     }
     
@@ -270,6 +279,61 @@ public class SecurityManagerImpl implements SecurityManager {
      */
     public void setAuthorizationManagerFactory(AuthorizationManagerFactory authorizationManagerFactory) {
         this.authorizationManagerFactory = authorizationManagerFactory;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void createProtectionElement(StudyConfiguration studyConfiguration,
+                                        AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
+        if (doesUserExist(studyConfiguration.getUserWorkspace().getUsername())) {
+            User user = retrieveCsmUser(studyConfiguration.getUserWorkspace().getUsername());
+            String userId = String.valueOf(user.getUserId());
+            ProtectionElement element = createProtectionElementInstance(authorizedStudyElementsGroup);
+            element.setProtectionElementName(authorizedStudyElementsGroup.getGroupName());
+            Set<User> owners = new HashSet<User>();
+            owners.add(user);
+            element.setOwners(owners);
+            element.setProtectionGroups(retrieveStudyManagerProtectionGroups(userId));
+            
+            getAuthorizationManager().createProtectionElement(element);
+        }
+        
+    }
+
+    /**
+     * Create ProtectElementInstance in CSM.
+     * @param authorizedStudyElementsGroup
+     * @return element
+     */
+    private ProtectionElement createProtectionElementInstance(
+                AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
+            ProtectionElement element = new ProtectionElement();
+            String value = String.valueOf(authorizedStudyElementsGroup.
+                                            getId());
+            if (value == null) {
+                element = null;
+            } else {
+                element.setAttribute(AUTHORIZED_STUDY_ELEMENTS_GROUP_ATTRIBUTE);
+                element.setObjectId(AUTHORIZED_STUDY_ELEMENTS_GROUP_OBJECT);
+                element.setValue(value);
+            }
+            return element;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED) // CSM API is untyped
+    public void deleteProtectionElement(
+                AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
+        ProtectionElement element = createProtectionElementInstance(authorizedStudyElementsGroup);
+        SearchCriteria elementCriteria = new ProtectionElementSearchCriteria(element);
+        List<ProtectionElement> retrievedElements = getAuthorizationManager().getObjects(elementCriteria);
+        for (ProtectionElement pe : retrievedElements) {
+            getAuthorizationManager().removeProtectionElement(String.valueOf(pe.getProtectionElementId()));
+        }        
     }
 
 }

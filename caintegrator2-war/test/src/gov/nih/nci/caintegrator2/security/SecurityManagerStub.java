@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.security;
 
+import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.security.AuthorizationManager;
@@ -155,4 +156,12 @@ public class SecurityManagerStub implements SecurityManager {
         return false;
     }
 
+    @Override
+    public void createProtectionElement(StudyConfiguration studyConfiguration, AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
+        createProtectionElementCalled = true;
+    }
+
+    @Override
+    public void deleteProtectionElement(AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
+        deleteProtectionElementCalled = true;    }
 }
