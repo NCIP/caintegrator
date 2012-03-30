@@ -130,6 +130,7 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.File;
 import java.io.IOException;
@@ -553,18 +554,18 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     }
     
     private void authorizeStudyElements()
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException {
+    throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException, CSException {
         if (getAuthorizeStudy()) {
             logStart();
-            service.addAuthorizedStudyElementsGroup(studyConfiguration,
-                                                    createAuthorizedStudyElementsGroup(studyConfiguration,
-                                                    "IntegrationTestAuthorizedStudyElementsGroup1",
-                                                    "Gender"));
-            service.addAuthorizedStudyElementsGroup(studyConfiguration,
-                    createAuthorizedStudyElementsGroup(studyConfiguration,
-                    "IntegrationTestAuthorizedStudyElementsGroup2",
-                    "Age"));            
-            service.deleteAuthorizedStudyElementsGroup(studyConfiguration, studyConfiguration.getAuthorizedStudyElementsGroups().get(0));
+            AuthorizedStudyElementsGroup authorizedStudyElementsGroup1 = new AuthorizedStudyElementsGroup();
+            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup1","Gender");
+            service.addAuthorizedStudyElementsGroup(studyConfiguration,authorizedStudyElementsGroup1);
+
+            AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
+            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age");
+            service.addAuthorizedStudyElementsGroup(studyConfiguration,authorizedStudyElementsGroup2);
+            
+            service.deleteAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup2);
             logEnd();
         }
     }
@@ -580,6 +581,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
                                                                                 String fieldDescriptorName) {
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
         authorizedStudyElementsGroup.setGroupName(authorizedStudyElementsGroupName);
+        authorizedStudyElementsGroup.setStudyConfiguration(studyConfiguration);
         String desc = "Created by integration test for study named: " + getStudyName();
         authorizedStudyElementsGroup.setGroupDescription(desc);
         // add AuthorizedAnnotationFieldDescriptor

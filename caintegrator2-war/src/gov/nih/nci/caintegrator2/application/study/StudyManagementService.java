@@ -151,6 +151,16 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
     void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException;
 
     /**
+     * Creates a protection element for the AuthorizedStudyElementsGroup.
+     * @param studyConfiguration to create protection element for.
+     * @param authorizedStudyElementsGroup to create protection element for.
+     * @throws CSException if there's a problem creating the protection element.
+     */
+    void createProtectionElement(StudyConfiguration studyConfiguration,
+                                    AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException;
+    
+    
+    /**
      * Deletes a study.
      *
      * @param studyConfiguration study to delete
@@ -234,17 +244,19 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * Adds an AuthorizedElementsGroup to the study configuration.
      * @param studyConfiguration study configuration to which the authoriziedStudyElementGroup will be added
      * @param authorizedStudyElementsGroup authoriziedStudyElementGroup that is being added
+     * @throws CSException 
      */
     void addAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
-            AuthorizedStudyElementsGroup authorizedStudyElementsGroup);
+            AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException;
     
     /**
      * Deletes an AuthorizedElementsGroup from the study configuration.
      * @param studyConfiguration study configuration from which the authoriziedStudyElementGroup will be deleted
      * @param authorizedStudyElementsGroup authoriziedStudyElementGroup that is being deleted
+     * @throws CSException 
      */
     void deleteAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
-            AuthorizedStudyElementsGroup authorizedStudyElementsGroup);    
+            AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException;    
     
     /**
      * Loads a specific clinical annotation from study configuration.
