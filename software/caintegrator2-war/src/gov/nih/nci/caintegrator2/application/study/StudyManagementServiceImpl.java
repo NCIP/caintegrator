@@ -237,7 +237,14 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
         securityManager.createProtectionElement(studyConfiguration);
     }
-
+    /**
+     * {@inheritDoc}
+     */
+    public void createProtectionElement(StudyConfiguration studyConfiguration,
+                                        AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
+        securityManager.createProtectionElement(studyConfiguration, authorizedStudyElementsGroup);
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -311,9 +318,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
 
     /**
      * {@inheritDoc}
+     * @throws CSException 
      */
     public void addAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
-                                        AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
+                                        AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
         studyConfiguration.getAuthorizedStudyElementsGroups().add(authorizedStudyElementsGroup);
         authorizedStudyElementsGroup.setStudyConfiguration(studyConfiguration);
         Date lastModifiedDate = new Date();
@@ -324,13 +332,17 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         logEntry.setTrimSystemLogMessage(LogEntry.getSystemLogAdd(authorizedStudyElementsGroup));
         studyConfiguration.getLogEntries().add(logEntry);
         daoSave(studyConfiguration);
+        daoSave(authorizedStudyElementsGroup);
+        createProtectionElement(studyConfiguration, authorizedStudyElementsGroup);
     }
     
     /**
      * {@inheritDoc}
+     * @throws CSException 
      */
     public void deleteAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
-                                        AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
+                                        AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
+        securityManager.deleteProtectionElement(authorizedStudyElementsGroup);
         studyConfiguration.getAuthorizedStudyElementsGroups().remove(authorizedStudyElementsGroup);
         Date lastModifiedDate = new Date();
         LogEntry logEntry = new LogEntry();
@@ -339,6 +351,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         logEntry.setLogDate(lastModifiedDate);
         logEntry.setTrimSystemLogMessage(LogEntry.getSystemLogDelete(authorizedStudyElementsGroup));
         studyConfiguration.getLogEntries().add(logEntry);
+        getDao().delete(authorizedStudyElementsGroup);
         daoSave(studyConfiguration);
     }     
     

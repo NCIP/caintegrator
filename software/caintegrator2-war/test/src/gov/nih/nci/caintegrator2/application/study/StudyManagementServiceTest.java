@@ -274,7 +274,7 @@ public class StudyManagementServiceTest {
     }    
     
     @Test
-    public void testAddAuthorizedStudyElementsGroups() throws ConnectionException, ExperimentNotFoundException {
+    public void testAddAuthorizedStudyElementsGroups() throws ConnectionException, ExperimentNotFoundException, CSException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
         studyManagementService.addAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup);
@@ -284,7 +284,7 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testDeleteAuthorizedStudyElementsGroups() throws ConnectionException, ExperimentNotFoundException {
+    public void testDeleteAuthorizedStudyElementsGroups() throws ConnectionException, ExperimentNotFoundException, CSException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
         studyManagementService.addAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup);

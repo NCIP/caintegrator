@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.security;
 
+import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.security.AuthorizationManager;
@@ -109,12 +110,28 @@ public interface SecurityManager {
     void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException; 
 
     /**
+     * Creates the protectionElement on a AuthorizedStudyElementsGroup given the AuthorizedStudyElementsGroup.
+     * @param studyConfiguration for which to create protection element on
+     * @param authorizedStudyElementsGroup for which to create protection element on.
+     * @throws CSException If there's a problem creating the PE.
+     */
+    void createProtectionElement(StudyConfiguration studyConfiguration,
+                                    AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException;
+    
+    /**
      * Deletes a proteectionElement on a study given the Study Configuration.
      * @param studyConfiguration to delete the protection element for.
      * @throws CSException If there's a problem deleting the PE.
      */
     void deleteProtectionElement(StudyConfiguration studyConfiguration) throws CSException; 
     
+    /**
+     * Deletes a proteectionElement on a AuthorizedStudyElementsGroup given the AuthorizedStudyElementsGroup.
+     * @param authorizedStudyElementsGroup to delete the protection element for.
+     * @throws CSException If there's a problem deleting the PE.
+     */
+    void deleteProtectionElement(AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException; 
+        
     /**
      * Adds filter initialization to the session.
      * @param username to get all this users groups and filter based on those.

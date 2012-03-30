@@ -611,23 +611,23 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return copyTo;
     }
 
-    /* (non-Javadoc)
-     * @see gov.nih.nci.caintegrator2.application.study.StudyManagementService#addAuthorizedStudyElementsGroup(gov.nih.nci.caintegrator2.application.study.StudyConfiguration, gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup)
-     */
     @Override
     public void addAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
-            AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
+                                                AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
         addAuthorizedStudyElementsGroupCalled = true;
         studyConfiguration.getAuthorizedStudyElementsGroups().add(authorizedStudyElementsGroup);
     }
 
-    /* (non-Javadoc)
-     * @see gov.nih.nci.caintegrator2.application.study.StudyManagementService#deleteAuthorizedStudyElementsGroup(gov.nih.nci.caintegrator2.application.study.StudyConfiguration, gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup)
-     */
     @Override
     public void deleteAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
-            AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
+                                        AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
         deleteAuthorizedStudyElementsGroupCalled = true;
+    }
+
+
+    @Override
+    public void createProtectionElement(StudyConfiguration studyConfiguration,
+                                        AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
     }
 
 }
