@@ -99,6 +99,7 @@ import gov.nih.nci.security.authorization.instancelevel.InstanceLevelSecurityHel
 import gov.nih.nci.security.dao.ProtectionElementSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.exceptions.CSException;
+import gov.nih.nci.security.exceptions.CSInsufficientAttributesException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -291,13 +292,16 @@ public class SecurityManagerImpl implements SecurityManager {
             User user = retrieveCsmUser(studyConfiguration.getUserWorkspace().getUsername());
             String userId = String.valueOf(user.getUserId());
             ProtectionElement element = createProtectionElementInstance(authorizedStudyElementsGroup);
-            element.setProtectionElementName(authorizedStudyElementsGroup.getGroupName());
-            Set<User> owners = new HashSet<User>();
-            owners.add(user);
-            element.setOwners(owners);
-            element.setProtectionGroups(retrieveStudyManagerProtectionGroups(userId));
-            
-            getAuthorizationManager().createProtectionElement(element);
+            if (element == null) {
+                throw new CSInsufficientAttributesException();
+            } else {
+                element.setProtectionElementName(authorizedStudyElementsGroup.getGroupName());
+                Set<User> owners = new HashSet<User>();
+                owners.add(user);
+                element.setOwners(owners);
+                element.setProtectionGroups(retrieveStudyManagerProtectionGroups(userId));
+                getAuthorizationManager().createProtectionElement(element);
+            }
         }
         
     }
@@ -305,14 +309,14 @@ public class SecurityManagerImpl implements SecurityManager {
     /**
      * Create ProtectElementInstance in CSM.
      * @param authorizedStudyElementsGroup
-     * @return element
+     * @return element or null if ProtectionElement can not be created
      */
     private ProtectionElement createProtectionElementInstance(
                 AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
             ProtectionElement element = new ProtectionElement();
             String value = String.valueOf(authorizedStudyElementsGroup.
                                             getId());
-            if (value == null) {
+            if (value.equalsIgnoreCase("null")) {
                 element = null;
             } else {
                 element.setAttribute(AUTHORIZED_STUDY_ELEMENTS_GROUP_ATTRIBUTE);

@@ -458,6 +458,10 @@ public class AuthorizationManagerStub implements AuthorizationManager {
         element3.setObjectId("gov.nih.nci.caintegrator2.domain.translational.Study");
         element3.setValue("invalidId");
         protectionElements.add(element3);
+        ProtectionElement element4 = new ProtectionElement();
+        element4.setObjectId("gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup");
+        element4.setValue("invalidId");
+        protectionElements.add(element4);        
         return protectionElements;
     }
 
@@ -515,7 +519,11 @@ public class AuthorizationManagerStub implements AuthorizationManager {
     public User getUser(String loginName) {
         User user = new User();
         user.setUserId(Long.valueOf(1));
-        return user;
+        SecurityManagerStub securityManagerStub = new SecurityManagerStub();
+        if (securityManagerStub.doesUserExist(loginName)) {
+            return user;
+        }
+        return null;
     }
 
     public User getUserById(String userId) throws CSObjectNotFoundException {
