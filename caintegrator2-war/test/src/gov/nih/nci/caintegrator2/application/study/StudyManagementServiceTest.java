@@ -281,6 +281,18 @@ public class StudyManagementServiceTest {
         authorizedStudyElementsGroup.setId(Long.valueOf(1));
         assertTrue(studyConfiguration.getAuthorizedStudyElementsGroups().contains(authorizedStudyElementsGroup));
         assertTrue(daoStub.saveCalled);
+        // test if username is not found
+        daoStub.clear();
+        StudyConfiguration studyConfiguration2 = new StudyConfiguration();
+        UserWorkspace userWorkspace = new UserWorkspace();
+        userWorkspace.setUsername("NAMENOTFOUND");
+        studyConfiguration2.setUserWorkspace(userWorkspace);
+        AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
+        studyManagementService.addAuthorizedStudyElementsGroup(studyConfiguration2, authorizedStudyElementsGroup2);
+        authorizedStudyElementsGroup.setId(Long.valueOf(1));
+        assertTrue(studyConfiguration2.getAuthorizedStudyElementsGroups().contains(authorizedStudyElementsGroup2));
+        assertTrue(daoStub.saveCalled);
+        
     }
     
     @Test
