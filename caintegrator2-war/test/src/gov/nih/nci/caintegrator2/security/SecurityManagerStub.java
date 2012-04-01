@@ -150,7 +150,7 @@ public class SecurityManagerStub implements SecurityManager {
 
     public boolean doesUserExist(String username) {
         doesUserExistCalled = true;
-        if (username.equals("userExists")) {
+        if (username.equals("userExists") || username.equals("username")) {
             return true;
         }
         return false;
