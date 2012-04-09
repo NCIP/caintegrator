@@ -1,86 +1,86 @@
 /**
 {} * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.common;
@@ -118,8 +118,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
-import java.util.zip.ZipOutputStream;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -128,7 +128,7 @@ import org.apache.log4j.Logger;
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
- * This is a static utility class used by different caIntegrator2 objects. 
+ * This is a static utility class used by different caIntegrator2 objects.
  */
 @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" }) // See method retrieveValueFromRowColumn
 public final class Cai2Util {
@@ -140,11 +140,16 @@ public final class Cai2Util {
     private static final double MAX_ANGLE_CONSTANT = 360;
     private static final Set<Color> COLOR_PALETTE = new HashSet<Color>();
     private static final double NATURAL_LOG_OF_2 = Math.log(2);
-    private static final Integer MAX_DESCRIPTION_LENGTH = 255;
+    private static final int MAX_DESCRIPTION_LENGTH = 255;
     private static final int ONE_MILLION = 1000000;
-    
+
     private static final Logger LOGGER = Logger.getLogger(Cai2Util.class);
-    
+
+    /**
+     * Max description length for lists.
+     */
+    public static final int MAX_LIST_DESCRIPTION_LENGTH = 200;
+
     private Cai2Util() { }
 
     /**
@@ -154,7 +159,7 @@ public final class Cai2Util {
     public static String trimDescription(String statusDescription) {
         return trimStringIfTooLong(statusDescription, MAX_DESCRIPTION_LENGTH);
     }
-    
+
     /**
      * Trims string if it is greater than the maxCharacters to be '[trimmedString]...'.
      * @param string to possibly trim.
@@ -165,10 +170,10 @@ public final class Cai2Util {
         if (maxCharacters <= 3) {
             throw new IllegalArgumentException("maxCharacters has to be at least 4 characters.");
         }
-        return (string != null && string.length() > maxCharacters) 
+        return (string != null && string.length() > maxCharacters)
             ? string.substring(0, maxCharacters - 3) + "..." : string;
     }
-    
+
     /**
      * Used to see if a Collection of strings contains a string, ignoring case.
      * @param l - collection of strings.
@@ -184,7 +189,7 @@ public final class Cai2Util {
         }
         return false;
     }
-    
+
     /**
      * Write a byte array to a file.
      * @param fileBytes the byte array
@@ -196,7 +201,7 @@ public final class Cai2Util {
         int totalBytesWritten = 0;
         int fileBytesLength = fileBytes.length;
         while (totalBytesWritten < fileBytesLength) {
-            int lengthToWrite = fileBytesLength - totalBytesWritten < BUFFER_SIZE 
+            int lengthToWrite = fileBytesLength - totalBytesWritten < BUFFER_SIZE
                 ? fileBytesLength - totalBytesWritten : BUFFER_SIZE;
             bos.write(fileBytes, totalBytesWritten, lengthToWrite);
             totalBytesWritten += lengthToWrite;
@@ -207,7 +212,7 @@ public final class Cai2Util {
 
     /**
      * Takes in a directory and zips it up.
-     * 
+     *
      * @param dir - Directory to zip.
      * @return Zipped file, stored in same location, with same name as the directory with .zip attached.
      * @throws IOException - In case cannot be read.
@@ -229,7 +234,7 @@ public final class Cai2Util {
         FileUtils.deleteDirectory(directory);
         return zipfile;
     }
-    
+
     /**
      * Adds files to an already created zip file.
      * @param sourceZipfile to add files to.
@@ -247,7 +252,7 @@ public final class Cai2Util {
         }
         return sourceZipfile;
     }
-    
+
     private static byte[] streamFile(File file) throws IOException {
         InputStream is = new FileInputStream(file);
         long length = file.length();
@@ -270,7 +275,7 @@ public final class Cai2Util {
         is.close();
         return bytes;
     }
-    
+
     private static void addDir(File dirObj, ZipOutputStream out, int index) throws IOException {
         File[] files = dirObj.listFiles();
 
@@ -283,8 +288,8 @@ public final class Cai2Util {
             addFile(curFile, out, index);
         }
     }
-    
-    private static void addFile(File curFile, ZipOutputStream out, int index) 
+
+    private static void addFile(File curFile, ZipOutputStream out, int index)
     throws IOException {
         byte[] tmpBuf = new byte[BUFFER_SIZE];
         FileInputStream in = new FileInputStream(curFile);
@@ -303,7 +308,7 @@ public final class Cai2Util {
      * Validate a ZIP file.
      * @param file the zip file to be validated.
      * @return boolean if valid or not.
-     */    
+     */
     public static boolean isValidZipFile(final File file) {
         ZipFile zipfile = null;
         try {
@@ -329,10 +334,10 @@ public final class Cai2Util {
             }
         }
     }
-    
+
     /**
      * Extract the host name from the url.
-     * 
+     *
      * @param url
      *            the url
      * @return the host name
@@ -380,7 +385,7 @@ public final class Cai2Util {
         }
         return colorToBeReturned;
     }
-    
+
     /**
      * Used by classes to retrieve a color based on a number from an unlimited number of colors.
      * @param colorNumber - number to use.
@@ -391,7 +396,7 @@ public final class Cai2Util {
         int maxColorsInPalette = COLOR_PALETTE.size();
         Color[] colorsArray = new Color[maxColorsInPalette];
         Color colorToBeReturned;
-        
+
         colorsArray = COLOR_PALETTE.toArray(colorsArray);
 
         if (colorNumber < 1 || colorsArray.length == 0) {
@@ -403,7 +408,7 @@ public final class Cai2Util {
         }
         return colorToBeReturned;
     }
-    
+
     /**
      * Used by classes to retrieve a color based on a number from a ten color palette.
      * (1-10) are colors and anything else returns black.
@@ -436,7 +441,7 @@ public final class Cai2Util {
                 return Color.BLACK;
         }
     }
-    
+
     /**
      * Turns a comma separated list of strings into a List of strings.
      * @param commaDelimitedString comma separated list of strings.
@@ -446,13 +451,13 @@ public final class Cai2Util {
         return StringUtils.isBlank(commaDelimitedString) ? new ArrayList<String>()
             : Arrays.asList(commaDelimitedString.replaceAll(" ", "").split(","));
     }
-    
+
    /**
     * Validates the survival value definition, and throws an exception if it is invalid.
     * @param survivalValueDefinition to validate.
     * @throws InvalidSurvivalValueDefinitionException if the definition is invalid.
     */
-   public static void validateSurvivalValueDefinition(SurvivalValueDefinition survivalValueDefinition) 
+   public static void validateSurvivalValueDefinition(SurvivalValueDefinition survivalValueDefinition)
    throws InvalidSurvivalValueDefinitionException {
        if (SurvivalValueTypeEnum.DATE.equals(survivalValueDefinition.getSurvivalValueType())) {
            validateDateTypeSurvivalValueDefinition(survivalValueDefinition);
@@ -472,20 +477,20 @@ public final class Cai2Util {
            throw new InvalidSurvivalValueDefinitionException("'Value for Censored' cannot be blank.");
        }
    }
-   
+
    private static void validateDateTypeSurvivalValueDefinition(SurvivalValueDefinition survivalValueDefinition)
         throws InvalidSurvivalValueDefinitionException {
         if (survivalValueDefinition.getSurvivalStartDate() == null
-                || survivalValueDefinition.getDeathDate() == null 
+                || survivalValueDefinition.getDeathDate() == null
                 || survivalValueDefinition.getLastFollowupDate() == null) {
                throw new InvalidSurvivalValueDefinitionException(
-                       "Must have a Start Date, Death Date, and Last Followup " 
+                       "Must have a Start Date, Death Date, and Last Followup "
                        + " Date defined for definition '" + survivalValueDefinition.getName() + "'.");
            }
            if (survivalValueDefinition.getSurvivalStartDate() == survivalValueDefinition.getDeathDate()
-               || survivalValueDefinition.getSurvivalStartDate() == survivalValueDefinition.getLastFollowupDate() 
+               || survivalValueDefinition.getSurvivalStartDate() == survivalValueDefinition.getLastFollowupDate()
                || survivalValueDefinition.getLastFollowupDate() == survivalValueDefinition.getDeathDate()) {
-               throw new InvalidSurvivalValueDefinitionException("Start Date, Death Date, and Last Followup " 
+               throw new InvalidSurvivalValueDefinitionException("Start Date, Death Date, and Last Followup "
                        + " Date must be unique for definition '" + survivalValueDefinition.getName() + "'.");
            }
            if (!AnnotationTypeEnum.DATE.equals(survivalValueDefinition.getSurvivalStartDate().getDataType())
@@ -495,7 +500,7 @@ public final class Cai2Util {
                        + " Date must all be a 'DATE' type for definition '" + survivalValueDefinition.getName() + "'.");
            }
     }
-   
+
    /**
     * Validates the given SurvivalvalueDefinitions and only returns valid ones.
     * @param survivalValueDefinitions to validate.
@@ -514,7 +519,7 @@ public final class Cai2Util {
        }
        return validDefinitions;
    }
-   
+
    /**
     * Compute log2 of a given value.
     * @param value to do log2
@@ -523,7 +528,7 @@ public final class Cai2Util {
    public static double log2(double value) {
        return Math.log(value) / NATURAL_LOG_OF_2;
    }
-   
+
    /**
     * Compute the anti-log2 of a given value.
     * @param value to do anti-log2
@@ -532,7 +537,7 @@ public final class Cai2Util {
    public static double antiLog2(double value) {
        return Math.pow(2, value);
    }
-   
+
    /**
     * Retrieves the last modified date (in String format) of the list of timestamped objects.
     * @param timeStampedObjects list of timestamped objects to retrieve latest date from.
@@ -540,7 +545,7 @@ public final class Cai2Util {
     */
    public static String retrieveLatestLastModifiedDate(List<TimeStampable> timeStampedObjects) {
        TimeStampable latestTimestamp = null;
-       for (TimeStampable currentTimetStampedObject 
+       for (TimeStampable currentTimetStampedObject
                : timeStampedObjects) {
            if (latestTimestamp == null) {
                latestTimestamp = currentTimetStampedObject;
@@ -553,10 +558,10 @@ public final class Cai2Util {
                latestTimestamp = currentTimetStampedObject;
            }
        }
-       return latestTimestamp == null ? DateUtil.TIMESTAMP_UNAVAILABLE_STRING 
+       return latestTimestamp == null ? DateUtil.TIMESTAMP_UNAVAILABLE_STRING
                : latestTimestamp.getDisplayableLastModifiedDate();
    }
-   
+
    /**
     * The editable-select for internet explorer submits an extra URL after comma.
     * ex: "http://url, http://url" instead of just "http://url".
@@ -566,15 +571,15 @@ public final class Cai2Util {
    public static String fixUrlForEditableSelect(String originalUrl) {
        return Pattern.compile(",\\s.*").matcher(originalUrl).replaceAll("");
    }
-   
+
    /**
-    * Fills the amplifiedGenes and deletedGenes with the amplified and deleted genes associated 
+    * Fills the amplifiedGenes and deletedGenes with the amplified and deleted genes associated
     * with the gisticAnalysis.
     * @param gisticAnalysis to get genes for.
     * @param amplifiedGenes amplified genes associated with gisticAnalysis.
     * @param deletedGenes deleted genes associated with gisticAnalysis.
     */
-   public static void retrieveGisticAmplifiedDeletedGenes(GisticAnalysis gisticAnalysis, List<Gene> amplifiedGenes, 
+   public static void retrieveGisticAmplifiedDeletedGenes(GisticAnalysis gisticAnalysis, List<Gene> amplifiedGenes,
            List<Gene> deletedGenes) {
        if (gisticAnalysis.getReporterList() != null) {
            for (AbstractReporter reporter : gisticAnalysis.getReporterList().getReporters()) {
@@ -634,9 +639,9 @@ public final class Cai2Util {
         }
         return null;
     }
-    
+
     /**
-     * 
+     *
      * @param studyConfiguration the study.
      * @return true if any subject source is in progress (currently being loaded).
      */
@@ -648,7 +653,7 @@ public final class Cai2Util {
         }
         return false;
     }
-    
+
     /**
      * Read the next data line.
      * @param reader the CSVReader
@@ -665,18 +670,18 @@ public final class Cai2Util {
         }
         return fields;
     }
-    
+
     /**
      * @return the jvm heap size in MB.
      */
     public static long getHeapSizeMB() {
         return Runtime.getRuntime().maxMemory() / ONE_MILLION;
     }
-    
+
     /**
      * Lists the directory contents.
      * @param dir the File directory of which the contents will be logged.
-     */    
+     */
     public static void printDirContents(File dir) {
 
         String[] files = dir.list();
@@ -689,5 +694,5 @@ public final class Cai2Util {
         } else {
             LOGGER.info("Listing: files object is null.");
         }
-    }     
+    }
 }
