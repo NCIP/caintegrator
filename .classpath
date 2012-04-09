@@ -2,9 +2,6 @@
 <classpath>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/displaytag-1.2.jar" sourcepath="software/lib/src/displaytag-1.2-src.zip"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/servlet-api-2.4.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-sdkQuery4-beans-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-sdkQuery4-processor-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/iviCore-1.2dev.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/ncia-beans.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/dwr-2.0.6.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/ComparativeMarkerSelMAGESvc-service.jar"/>
@@ -51,13 +48,11 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jaxb-xjc-2.1.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/AIMDataServiceJaxB-stubs.jar" sourcepath="software/lib/src/aim-jaxb-src.zip"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/jsr173_1.0_api.jar"/>
-	<classpathentry kind="lib" path="software/lib/test-junit/javassist-3.9.0.GA.jar"/>
 	<classpathentry kind="lib" path="software/cbs-to-heatmap-jar/lib/compile/commons-cli-1.2.jar"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/src"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/cbs-to-heatmap-jar/resources/bins"/>
 	<classpathentry kind="src" path="software/genepattern-service-jar/src"/>
 	<classpathentry kind="src" path="software/cbs-to-heatmap-jar/src"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/GenePattern-3.2.1.jar" sourcepath="software/lib/src/GenePattern-3.2.1-src.zip"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/src"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/resources"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/resources"/>
@@ -70,30 +65,8 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/bcprov-jdk15-140.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/c3p0-0.9.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caDSR-beans-4.0.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-BulkDataHandler-client-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-BulkDataHandler-common-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-BulkDataHandler-stubs-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-data-common-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-data-stubs-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-data-utils-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-dataExtensions-core-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-dataExtensions-sdkstyle-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-dataExtensions-style-cacore32-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-dataExtensions-ui-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-dataExtensions-upgrades-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-metadata-common-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-metadata-data-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-metadata-security-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-ServiceSecurityProvider-client-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-ServiceSecurityProvider-common-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-ServiceSecurityProvider-service-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-ServiceSecurityProvider-stubs-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-Transfer-client-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-Transfer-common-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-Transfer-stubs-1.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/castor-1.0.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/cglib-2.1_3.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/cog-axis-noversion.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-codec-1.3.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-configuration-1.5.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-dbcp-1.2.1.jar"/>
@@ -115,7 +88,6 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jaxrpc-api-1.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jboss-aop-client-1.5.2.GA.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jboss-aspect-client-1.5.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jboss-ejb3-client-noversion.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jboss-ejb3x-4.0.5.GA.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jbossall-client-4.0.5.GA.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jdom-1.0.jar"/>
@@ -144,7 +116,6 @@
 	<classpathentry kind="lib" path="software/lib/external-runtime/sdk-core.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/sdk-web-framework.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/sdk-ws-framework.jar"/>
-	<classpathentry kind="lib" path="software/lib/test-junit/spring-mock-2.0.3.jar" sourcepath="software/lib/src/spring-src.zip"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/axis-1.2RC2.jar" sourcepath="software/lib/src/axis-1_2RC2-src.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-math-1.2.jar" sourcepath="software/lib/src/commons-math-1.2-sources.jar"/>
 	<classpathentry kind="lib" path="software/kaplan-meier-jar/lib/compile/jcommon-1.0.12.jar"/>
@@ -155,13 +126,8 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/caintegrator2/software/lib/javadoc/netcdf-4.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-discovery-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-gts-client-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-metadatautils-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/puretls-0.9b5.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/quartz-1.6.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/csmapi-4.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/AffxFusion-1.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/antlr-2.7.7.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/google-collections-1.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-collections-3.2.jar"/>
@@ -177,10 +143,25 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/cryptix-3.2.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/cryptix-asn1-0.1.11nci.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/clm-4.2.beta.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/cagrid-core-1.2.0.1nci.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-annotations-3.2.0.ga.jar"/>
 	<classpathentry kind="lib" path="software/kaplan-meier-jar/lib/compile/log4j-1.2.9.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/jcog-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/service-security-provider-client-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/service-security-provider-common-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/service-security-provider-stubs-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/metadata-security-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-runtime/cagrid-transfer-stubs-1.2nci.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/data-stubs-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/metadata-common-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-runtime/bulkdatatransfer-stubs-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/test-junit/spring-test-2.5.6.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/genepattern-3.2.1.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/data-utils-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/discovery-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/affxfusion-1.1.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/metadatautils-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/transfer-client-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/test-junit/javassist-3.9.0.GA.jar"/>
 	<classpathentry kind="output" path="software/caintegrator2-war/target/classes"/>
 </classpath>
