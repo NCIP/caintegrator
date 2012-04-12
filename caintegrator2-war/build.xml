@@ -24,6 +24,9 @@
     <property name="resource.dir" location="${software.dir}/common" />
     <property name="target.dir" location="${build.dir}/target" />
     <property name="common.dir" value="${software.dir}/common"/>
+    
+    <property name="cobertura.linecoverage" value="80"/>
+    <property name="cobertura.branchcoverage" value="70"/>
 
     <tstamp>
       <format property="touch.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
@@ -895,7 +898,8 @@
     </target>
 
     <target name="test:cobertura-check" depends="ivy:setup-test">
-        <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="70" totallinerate="80" />
+        <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" 
+            packagebranchrate="0" packagelinerate="0" totalbranchrate="${cobertura.branchcoverage}" totallinerate="${cobertura.linecoverage}" />
     </target>
 
     <!-- ******************************************************************* -->

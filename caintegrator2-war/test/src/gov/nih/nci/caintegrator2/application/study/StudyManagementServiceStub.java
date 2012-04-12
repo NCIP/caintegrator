@@ -161,6 +161,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean addExternalLinksToStudyCalled;
     public boolean saveAnnotationGroupCalled = false;
     public boolean daoSaveCalled = false;
+    public boolean checkForSampleUpdates = false;
 
     public ImageDataSourceConfiguration refreshedImageSource = new ImageDataSourceConfiguration();
     public GenomicDataSourceConfiguration refreshedGenomicSource = new GenomicDataSourceConfiguration();
@@ -255,6 +256,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         addExternalLinksToStudyCalled = false;
         saveAnnotationGroupCalled = false;
         daoSaveCalled = false;
+        checkForSampleUpdates = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -630,4 +632,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
                                         AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
     }
 
+    @Override
+    public void checkForSampleUpdates(StudyConfiguration sc) throws ConnectionException, ExperimentNotFoundException {
+        checkForSampleUpdates = false;
+    }
 }
