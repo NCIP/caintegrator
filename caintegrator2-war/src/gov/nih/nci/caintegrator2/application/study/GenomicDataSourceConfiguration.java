@@ -102,14 +102,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -140,7 +140,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private Boolean useHighVarianceCalculation = true;
     private HighVarianceCalculationTypeEnum highVarianceCalculationType = HighVarianceCalculationTypeEnum.PERCENTAGE;
     private Double highVarianceThreshold = DEFAULT_HIGH_VARIANCE_THRESHOLD;
-    private Map<String, Date> refreshSampleNames;
+    private Map<String, Date> refreshSampleNames = new HashMap<String, Date>();
 
     /**
      * Mapping file is not configured.
@@ -202,67 +202,59 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     /**
      * @return the mapped samples
      */
+    @SuppressWarnings("unchecked")
     public List<Sample> getMappedSamples() {
         List<Sample> mappedSamples = new ArrayList<Sample>();
-        mappedSamples.addAll(getSamples());
-        mappedSamples.retainAll(getStudyConfiguration().getSamples());
-        addRefreshFlagToMappedSamples(mappedSamples);
+        mappedSamples.addAll(CollectionUtils.intersection(getSamples(), getStudyConfiguration().getSamples()));
+        addRefreshFlagToMappedSamples(mappedSamples, getRefreshSampleNames());
         return mappedSamples;
     }
 
     /**
      * @return the control samples
      */
+    @SuppressWarnings("unchecked")
     public List<Sample> getControlSamples() {
-        if (!getStudyConfiguration().getAllControlSamples().isEmpty()) {
-            List<Sample> controlSamples = new ArrayList<Sample>();
-            controlSamples.addAll(getStudyConfiguration().getAllControlSamples());
-            controlSamples.retainAll(getSamples());
-            return controlSamples;
-        } else {
-            return Collections.emptyList();
+        List<Sample> controlSamples = new ArrayList<Sample>();
+        if (CollectionUtils.isNotEmpty(getStudyConfiguration().getAllControlSamples())) {
+            controlSamples.addAll(CollectionUtils.intersection(getSamples(),
+                    getStudyConfiguration().getAllControlSamples()));
         }
+        return controlSamples;
     }
 
     /**
      * @return the unmapped samples
      */
     public List<Sample> getUnmappedSamples() {
-        List<Sample> unmappedSamples = new ArrayList<Sample>();
-        unmappedSamples.addAll(getSamples());
-        if (!getStudyConfiguration().getAllControlSamples().isEmpty()) {
+        List<Sample> unmappedSamples = new ArrayList<Sample>(getSamples());
+        if (CollectionUtils.isNotEmpty(getStudyConfiguration().getAllControlSamples())) {
             unmappedSamples.removeAll(getStudyConfiguration().getAllControlSamples());
         }
         unmappedSamples.removeAll(getStudyConfiguration().getSamples());
-        addRefreshFlagToUnMappedSamples(unmappedSamples);
+        addRefreshFlagToUnMappedSamples(unmappedSamples, getRefreshSampleNames());
         return unmappedSamples;
     }
 
-    private void addRefreshFlagToMappedSamples(Collection<Sample> mappedSamples) {
-        if (MapUtils.isEmpty(refreshSampleNames)) {
-            return;
-        }
+    private void addRefreshFlagToMappedSamples(Collection<Sample> mappedSamples, Map<String, Date> refreshMap) {
         for (Sample sample : mappedSamples) {
-            if (!refreshSampleNames.containsKey(sample.getName())) {
+            if (!refreshMap.containsKey(sample.getName())) {
                 sample.setRefreshType(SampleRefreshTypeEnum.DELETE_ON_REFRESH);
-            } else if (refreshSampleNames.containsKey(sample.getName())
-                    && studyConfiguration.getDeploymentFinishDate().before(refreshSampleNames.get(sample.getName()))) {
+            } else if (refreshMap.containsKey(sample.getName())
+                    && studyConfiguration.getDeploymentFinishDate().before(refreshMap.get(sample.getName()))) {
                 sample.setRefreshType(SampleRefreshTypeEnum.UPDATE_ON_REFRESH);
             }
         }
     }
 
-    private void addRefreshFlagToUnMappedSamples(Collection<Sample> unMappedsamples) {
-        if (MapUtils.isEmpty(refreshSampleNames)) {
-            return;
-        }
+    private void addRefreshFlagToUnMappedSamples(Collection<Sample> unmappedsamples, Map<String, Date> refreshMap) {
         List<Sample> samplesToAdd = new ArrayList<Sample>();
-        for (Sample sample : unMappedsamples) {
-            if (!refreshSampleNames.containsKey(sample.getName())) {
+        for (Sample sample : unmappedsamples) {
+            if (!refreshMap.containsKey(sample.getName())) {
                 sample.setRefreshType(SampleRefreshTypeEnum.DELETE_ON_REFRESH);
             }
         }
-        for (String sampleName : refreshSampleNames.keySet()) {
+        for (String sampleName : refreshMap.keySet()) {
             if (!isSampleInList(sampleName)) {
                 Sample newSample = new Sample();
                 newSample.setName(sampleName);
@@ -270,7 +262,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
                 samplesToAdd.add(newSample);
             }
         }
-        unMappedsamples.addAll(samplesToAdd);
+        unmappedsamples.addAll(samplesToAdd);
     }
 
     private boolean isSampleInList(String nameToLookFor) {
@@ -515,9 +507,8 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public Set<SampleSet> getControlSampleSetCollection() {
         for (SampleSet ss : controlSampleSetCollection) {
-            addRefreshFlagToMappedSamples(ss.getSamples());
+            addRefreshFlagToMappedSamples(ss.getSamples(), getRefreshSampleNames());
         }
-
         return controlSampleSetCollection;
     }
 
