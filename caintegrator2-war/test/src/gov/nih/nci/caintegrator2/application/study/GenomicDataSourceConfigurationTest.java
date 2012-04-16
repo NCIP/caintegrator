@@ -1,135 +1,264 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleRefreshTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.time.DateUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 public class GenomicDataSourceConfigurationTest {
 
-    @Test
-    public void testGetSamples() {
-        GenomicDataSourceConfiguration configuration = new GenomicDataSourceConfiguration();
+    private GenomicDataSourceConfiguration configuration;
+    private List<Sample> samples;
+
+    /**
+     * Sets up the test.
+     */
+    @Before
+    public void setUp() {
+        samples = new ArrayList<Sample>();
         Sample sample1 = new Sample();
         sample1.setId(1L);
+        sample1.setName("sample1");
+        samples.add(sample1);
         Sample sample2 = new Sample();
         sample2.setId(2L);
+        sample2.setName("sample2");
+        samples.add(sample2);
         Sample sample3 = new Sample();
         sample3.setId(3L);
+        sample3.setName("sample3");
+        samples.add(sample3);
+
+        configuration = new GenomicDataSourceConfiguration();
+        configuration.getSamples().addAll(samples);
+
+        Sample extraSample = new Sample();
+        extraSample.setId(4L);
+        extraSample.setName("Extra Sample");
+        SampleSet sampleSet = new SampleSet();
+        sampleSet.getSamples().add(extraSample);
+        configuration.getControlSampleSetCollection().add(sampleSet);
+
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        Study study = new Study();
-        studyConfiguration.setStudy(study);
-        SampleSet controlSampleSet1 = new SampleSet();
+        studyConfiguration.setDeploymentFinishDate(DateUtils.addDays(new Date(), -1));
         studyConfiguration.getGenomicDataSources().add(configuration);
-        studyConfiguration.getGenomicDataSources().get(0).getControlSampleSetCollection().add(controlSampleSet1);
-        controlSampleSet1.getSamples().add(sample3);
         configuration.setStudyConfiguration(studyConfiguration);
-        StudySubjectAssignment assignment = new StudySubjectAssignment();
-        study.getAssignmentCollection().add(assignment);
-        SampleAcquisition sampleAcquisition = new SampleAcquisition();
-        assignment.getSampleAcquisitionCollection().add(sampleAcquisition);
-        sampleAcquisition.setSample(sample1);
-        configuration.getSamples().add(sample1);
-        configuration.getSamples().add(sample2);
-        configuration.getSamples().add(sample3);
-        assertEquals(3, configuration.getSamples().size());
-        assertEquals(1, configuration.getUnmappedSamples().size());
-        assertEquals(1, configuration.getMappedSamples().size());
-        assertEquals(1, configuration.getControlSamples().size());
-        assertTrue(configuration.getMappedSamples().contains(sample1));
-        assertTrue(configuration.getUnmappedSamples().contains(sample2));
-        assertTrue(configuration.getControlSamples().contains(sample3));
+        studyConfiguration.setStudy(new Study());
     }
 
+    /**
+     * Test's sample retrieval with all samples mapped.
+     */
+    @Test
+    public void getSamplesAllMapped() {
+        StudySubjectAssignment ssa = new StudySubjectAssignment();
+        SampleAcquisition sa1 = new SampleAcquisition();
+        sa1.setSample(samples.get(0));
 
+        SampleAcquisition sa2 = new SampleAcquisition();
+        sa2.setSample(samples.get(1));
+        SampleAcquisition sa3 = new SampleAcquisition();
+        sa3.setSample(samples.get(2));
+
+        ssa.getSampleAcquisitionCollection().add(sa1);
+        ssa.getSampleAcquisitionCollection().add(sa2);
+        ssa.getSampleAcquisitionCollection().add(sa3);
+
+        Study study = configuration.getStudyConfiguration().getStudy();
+        study.getAssignmentCollection().add(ssa);
+
+        Map<String, Date> refreshSampleNames = new HashMap<String, Date>();
+        refreshSampleNames.put("sample1", new Date());
+        refreshSampleNames.put("sample2", new Date());
+        refreshSampleNames.put("sample3", new Date());
+        configuration.setRefreshSampleNames(refreshSampleNames);
+
+        assertEquals(3, configuration.getSamples().size());
+        assertEquals(3, configuration.getMappedSamples().size());
+        assertTrue(configuration.getMappedSamples().contains(samples.get(0)));
+        assertTrue(configuration.getMappedSamples().contains(samples.get(1)));
+        assertTrue(configuration.getMappedSamples().contains(samples.get(2)));
+        for (Sample s : configuration.getMappedSamples()) {
+            assertEquals(SampleRefreshTypeEnum.UPDATE_ON_REFRESH, s.getRefreshType());
+        }
+        assertEquals(0, configuration.getUnmappedSamples().size());
+        for (Sample s : configuration.getUnmappedSamples()) {
+            assertEquals(SampleRefreshTypeEnum.ADD_ON_REFRESH, s.getRefreshType());
+        }
+    }
+
+    /**
+     * Test's sample retrieval with only some samples mapped.
+     */
+    @Test
+    public void getSamplesSomeUnmapped() {
+        StudySubjectAssignment ssa = new StudySubjectAssignment();
+        SampleAcquisition sa1 = new SampleAcquisition();
+        sa1.setSample(samples.get(0));
+
+        ssa.getSampleAcquisitionCollection().add(sa1);
+
+        Study study = configuration.getStudyConfiguration().getStudy();
+        study.getAssignmentCollection().add(ssa);
+
+        Map<String, Date> refreshSampleNames = new HashMap<String, Date>();
+        refreshSampleNames.put("Unknown Sample", new Date());
+        refreshSampleNames.put("Another Unknown Sample", new Date());
+        configuration.setRefreshSampleNames(refreshSampleNames);
+
+        assertEquals(3, configuration.getSamples().size());
+        assertEquals(1, configuration.getMappedSamples().size());
+        assertTrue(configuration.getMappedSamples().contains(samples.get(0)));
+        assertFalse(configuration.getMappedSamples().contains(samples.get(1)));
+        assertFalse(configuration.getMappedSamples().contains(samples.get(2)));
+        for (Sample s : configuration.getMappedSamples()) {
+            assertEquals(SampleRefreshTypeEnum.DELETE_ON_REFRESH, s.getRefreshType());
+        }
+        assertEquals(4, configuration.getUnmappedSamples().size());
+        for (Sample s : configuration.getUnmappedSamples()) {
+            assertTrue(SampleRefreshTypeEnum.DELETE_ON_REFRESH == s.getRefreshType()
+                    || SampleRefreshTypeEnum.ADD_ON_REFRESH == s.getRefreshType());
+        }
+    }
+
+    /**
+     * Test's sample retrieval with no samples mapped.
+     */
+    @Test
+    public void getSamplesNoneMapped() {
+        Map<String, Date> refreshSampleNames = new HashMap<String, Date>();
+        refreshSampleNames.put("Unknown Sample", new Date());
+        refreshSampleNames.put("Another Unknown Sample", new Date());
+        configuration.setRefreshSampleNames(refreshSampleNames);
+
+        assertEquals(3, configuration.getSamples().size());
+        assertEquals(0, configuration.getMappedSamples().size());
+        assertEquals(5, configuration.getUnmappedSamples().size());
+        assertTrue(configuration.getUnmappedSamples().contains(samples.get(0)));
+        assertTrue(configuration.getUnmappedSamples().contains(samples.get(1)));
+        assertTrue(configuration.getUnmappedSamples().contains(samples.get(2)));
+
+        for (Sample s : configuration.getUnmappedSamples()) {
+            assertTrue(SampleRefreshTypeEnum.DELETE_ON_REFRESH == s.getRefreshType()
+                    || SampleRefreshTypeEnum.ADD_ON_REFRESH == s.getRefreshType());
+        }
+    }
+
+    /**
+     * Test's the retrieval of control samples.
+     */
+    @Test
+    public void getControlSamples() {
+        configuration.getControlSampleSetCollection().clear();
+        assertTrue(configuration.getControlSamples().isEmpty());
+
+        SampleSet sampleSet = new SampleSet();
+        sampleSet.getSamples().addAll(samples);
+        configuration.getControlSampleSetCollection().add(sampleSet);
+        assertFalse(configuration.getControlSamples().isEmpty());
+        assertEquals(3, configuration.getControlSamples().size());
+        assertTrue(configuration.getControlSamples().contains(samples.get(0)));
+        assertTrue(configuration.getControlSamples().contains(samples.get(1)));
+        assertTrue(configuration.getControlSamples().contains(samples.get(2)));
+    }
 }

@@ -158,8 +158,8 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      */
     void createProtectionElement(StudyConfiguration studyConfiguration,
                                     AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException;
-    
-    
+
+
     /**
      * Deletes a study.
      *
@@ -231,7 +231,7 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
                         File imageFile,
                         String fileName,
                         String fileType) throws IOException;
-    
+
     /**
      * Retrieves study logo from the database given a study id and name.
      * @param studyId - ID of the Study object.
@@ -244,20 +244,20 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * Adds an AuthorizedElementsGroup to the study configuration.
      * @param studyConfiguration study configuration to which the authoriziedStudyElementGroup will be added
      * @param authorizedStudyElementsGroup authoriziedStudyElementGroup that is being added
-     * @throws CSException 
+     * @throws CSException on error
      */
     void addAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException;
-    
+
     /**
      * Deletes an AuthorizedElementsGroup from the study configuration.
      * @param studyConfiguration study configuration from which the authoriziedStudyElementGroup will be deleted
      * @param authorizedStudyElementsGroup authoriziedStudyElementGroup that is being deleted
-     * @throws CSException 
+     * @throws CSException on error
      */
     void deleteAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
-            AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException;    
-    
+            AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException;
+
     /**
      * Loads a specific clinical annotation from study configuration.
      *
@@ -656,4 +656,11 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      */
     void daoSave(Object persistentObject);
 
+    /**
+     * Check samples for updates based on experiment.
+     * @param sc study config
+     * @throws ConnectionException connection error
+     * @throws ExperimentNotFoundException experiment not found.
+     */
+    void checkForSampleUpdates(StudyConfiguration sc) throws ConnectionException, ExperimentNotFoundException;
 }
