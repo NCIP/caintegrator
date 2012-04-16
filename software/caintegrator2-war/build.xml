@@ -729,7 +729,8 @@
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.4/upgrade-1.4.1.sql" />
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.4/upgrade-1.4.2.sql" />
         <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.4/upgrade-1.4.3.sql" />
-        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.4/upgrade-1.4.4.sql" />        
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.4/upgrade-1.4.4.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.upgrade.target.dir}/1.4/upgrade-1.4.5.sql" /> 
     </target>
 
 

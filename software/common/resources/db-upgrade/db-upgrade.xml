@@ -484,5 +484,8 @@
         <comment>Add protection element to CSM for AuthorizedStudyElementsGroup</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.4/upgrade-1.4.4.sql"/>
     </changeSet>
-            
+    <changeSet id="1.4.5" author="marplej">
+        <comment>Modification for UPT 4.2.3</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.4/upgrade-1.4.5.sql"/>
+    </changeSet>            
 </databaseChangeLog>
