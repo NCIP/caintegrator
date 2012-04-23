@@ -370,6 +370,7 @@
                             <th>Data Type</th>
                             <th>Status</th>
                             <th>Last Modified</th>
+                            <th>caArray Data Updated</th>
                             <th>Action</th>
                         </tr>
                         <tbody id="genomicSourceJobStatusTable" />

@@ -301,4 +301,16 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
         return sampleMap;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public Date getLastDataModificationDate(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
+        ExperimentNotFoundException {
+        SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
+        CaArrayUtils.getExperiment(genomicSource.getExperimentIdentifier(), searchService);
+        //We'll just return the current date util caArray has update their data model to include the last data update
+        //date.
+        return new Date();
+    }
+
 }

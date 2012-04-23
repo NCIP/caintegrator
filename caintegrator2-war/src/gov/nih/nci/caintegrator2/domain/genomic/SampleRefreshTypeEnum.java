@@ -92,18 +92,32 @@ public enum SampleRefreshTypeEnum {
     /**
      * Delete on refresh.
      */
-    DELETE_ON_REFRESH,
+    DELETE_ON_REFRESH("Sample Deleted"),
 
     /**
      * Add on refresh.
      */
-    ADD_ON_REFRESH,
+    ADD_ON_REFRESH("Sample Added"),
 
     /**
      * Update on refresh.
      */
-    UPDATE_ON_REFRESH;
+    UPDATE_ON_REFRESH("Sample Updated");
 
-    private SampleRefreshTypeEnum() {
+    private final String displayName;
+
+    /**
+     * Constructor.
+     * @param displayName the display name of the enum
+     */
+    private SampleRefreshTypeEnum(String displayName) {
+        this.displayName = displayName;
+    }
+
+    /**
+     * @return the display name
+     */
+    public String getDisplayName() {
+        return displayName;
     }
 }

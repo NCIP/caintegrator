@@ -487,5 +487,9 @@
     <changeSet id="1.4.5" author="marplej">
         <comment>Modification for UPT 4.2.3</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.4/upgrade-1.4.5.sql"/>
+    </changeSet>
+    <changeSet id="1.4.6" author="aevansel">
+        <comment>Adding columns to stored whether or not a study/genomic data souce has new data in caArray.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.4/upgrade-1.4.6.sql"/>
     </changeSet>            
 </databaseChangeLog>

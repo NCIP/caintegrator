@@ -56,6 +56,7 @@
         <property name="useHighVarianceCalculation" type="boolean" column="USE_HIGH_VARIANCE_CALCULATION" />
         <property name="highVarianceCalculationType" type="HighVarianceCalculationType" column="HIGH_VARIANCE_CALCULATION_TYPE" />
         <property name="highVarianceThreshold" type="double" column="HIGH_VARIANCE_THRESHOLD" />
+        <property name="dataRefreshed" type="boolean" column="IS_DATA_REFRESHED" />
         
         <list name="sampleIdentifiers" lazy="true" inverse="true" cascade="all">
             <cache usage="read-write" />

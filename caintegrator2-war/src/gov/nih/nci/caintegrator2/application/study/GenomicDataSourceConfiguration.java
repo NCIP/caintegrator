@@ -141,6 +141,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private HighVarianceCalculationTypeEnum highVarianceCalculationType = HighVarianceCalculationTypeEnum.PERCENTAGE;
     private Double highVarianceThreshold = DEFAULT_HIGH_VARIANCE_THRESHOLD;
     private Map<String, Date> refreshSampleNames = new HashMap<String, Date>();
+    private boolean dataRefreshed = false;
 
     /**
      * Mapping file is not configured.
@@ -460,9 +461,9 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public List<String> getControlSampleSetNames() {
         List<String> controlSampleSetNames = new ArrayList<String>();
-            for (SampleSet controlSampleSet : controlSampleSetCollection) {
-                controlSampleSetNames.add(controlSampleSet.getName());
-            }
+        for (SampleSet controlSampleSet : controlSampleSetCollection) {
+            controlSampleSetNames.add(controlSampleSet.getName());
+        }
         return controlSampleSetNames;
     }
 
@@ -793,5 +794,19 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public Map<String, Date> getRefreshSampleNames() {
         return refreshSampleNames;
+    }
+
+    /**
+     * @return the dataRefreshed
+     */
+    public boolean isDataRefreshed() {
+        return dataRefreshed;
+    }
+
+    /**
+     * @param dataRefreshed the dataRefreshed to set
+     */
+    public void setDataRefreshed(boolean dataRefreshed) {
+        this.dataRefreshed = dataRefreshed;
     }
 }

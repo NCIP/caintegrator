@@ -3,6 +3,10 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
@@ -10,7 +14,6 @@ import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.application.study.deployment.AbstractAffymetrixDnaAnalysisMappingFileHandler;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
@@ -20,7 +23,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
-import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,19 +30,32 @@ import java.io.IOException;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.Before;
 import org.junit.Test;
 
-import affymetrix.calvin.data.ProbeSetMultiDataCopyNumberData;
 import affymetrix.calvin.data.CHPMultiDataData.MultiDataType;
+import affymetrix.calvin.data.ProbeSetMultiDataCopyNumberData;
 import affymetrix.calvin.exception.UnsignedOutOfLimitsException;
 import affymetrix.fusion.chp.FusionCHPDataReg;
 import affymetrix.fusion.chp.FusionCHPMultiDataData;
 
 public class AffymetrixCopyNumberMappingFileHandlerTest {
 
+    private CaArrayFacade caArrayFacade;
+
+    /**
+     * Sets up the test.
+     * @throws Exception on error
+     */
+    @Before
+    public void setUp() throws Exception {
+        caArrayFacade = mock(CaArrayFacade.class);
+        when(caArrayFacade.retrieveFile(any(GenomicDataSourceConfiguration.class), anyString()))
+            .thenReturn(FileUtils.readFileToByteArray(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE));
+    }
+
     @Test
     public void testLoadCopyNumberData() throws DataRetrievalException, ConnectionException, ValidationException, FileNotFoundException {
-        CaArrayFacade caArrayFacade = new LocalCaArrayFacadeStub();
         ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub();
         CaIntegrator2DaoStub dao = new LocalCaIntegrator2DaoStub();
         GenomicDataSourceConfiguration source = new GenomicDataSourceConfiguration();
@@ -62,10 +77,9 @@ public class AffymetrixCopyNumberMappingFileHandlerTest {
             checkArrayData(arrayData);
         }
     }
-    
+
     @Test(expected=FileNotFoundException.class)
     public void testLoadCopyNumberDataNoFile() throws DataRetrievalException, ConnectionException, ValidationException, FileNotFoundException {
-        CaArrayFacade caArrayFacade = new LocalCaArrayFacadeStub();
         ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub();
         CaIntegrator2DaoStub dao = new LocalCaIntegrator2DaoStub();
         GenomicDataSourceConfiguration source = new GenomicDataSourceConfiguration();
@@ -82,7 +96,7 @@ public class AffymetrixCopyNumberMappingFileHandlerTest {
         } catch (Exception e) {
             throw new FileNotFoundException();
         }
-    }      
+    }
 
     private void checkArrayData(ArrayData arrayData) {
         assertNotNull(arrayData.getArray());
@@ -94,7 +108,7 @@ public class AffymetrixCopyNumberMappingFileHandlerTest {
     }
 
     static class LocalCaIntegrator2DaoStub extends CaIntegrator2DaoStub {
-        
+
         private Platform platform;
 
         @Override
@@ -122,7 +136,7 @@ public class AffymetrixCopyNumberMappingFileHandlerTest {
             ReporterList reporterList = platform.addReporterList(reporterListName, ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
             int numProbeSets = chpData.getEntryCount(MultiDataType.CopyNumberMultiDataType);
             for (int i = 0; i < numProbeSets; i++) {
-                ProbeSetMultiDataCopyNumberData probeSetData = 
+                ProbeSetMultiDataCopyNumberData probeSetData =
                     chpData.getCopyNumberEntry(MultiDataType.CopyNumberMultiDataType, i);
                 DnaAnalysisReporter reporter = new DnaAnalysisReporter();
                 reporter.setName(probeSetData.getName());
@@ -139,19 +153,6 @@ public class AffymetrixCopyNumberMappingFileHandlerTest {
             }
             return null;
         }
-        
-    }
 
-    static class LocalCaArrayFacadeStub extends CaArrayFacadeStub {
-        
-        @Override
-        public byte[] retrieveFile(GenomicDataSourceConfiguration source, String filename) {
-            try {
-                return FileUtils.readFileToByteArray(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE);
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
-            }
-        }
     }
-
 }

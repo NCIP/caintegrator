@@ -1213,6 +1213,22 @@
         </property>
     </bean>
     
+    <bean id="dataRefreshJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass" value="gov.nih.nci.caintegrator2.application.quartz.DataRefreshJob"/>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="caArrayFacade" value-ref="caArrayFacade"/>
+                <entry key="dao" value-ref="caIntegrator2Dao"/>
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="dataRefreshJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="dataRefreshJob"/>
+        <!-- Once every day at 11pm for starter. -->
+        <property name="cronExpression" value="0 0 23 * * ?"/>
+    </bean>
+    
     <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
         <property name="jobDetail" ref="gridDiscoveryServiceTask"/>
         <!-- repeat every 3600 seconds (1 hour) -->
@@ -1223,6 +1239,7 @@
         <property name="triggers">
             <list>
                 <ref bean="simpleTrigger"/>
+                <ref bean="dataRefreshJobTrigger"/>
             </list>
         </property>
     </bean>
