@@ -55,6 +55,7 @@
                         <th>Status</th>
                         <th>Deployment Start Date</th>
                         <th>Deployment Finish Date</th>
+                        <th>caArray Data Updated</th>
                         <th>Action</th>
                     </tr>
                     <tbody id="studyDeploymentJobStatusTable" />

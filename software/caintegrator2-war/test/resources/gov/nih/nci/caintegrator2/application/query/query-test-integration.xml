@@ -19,20 +19,16 @@
         </property>
     </bean>
     
-    <bean id="arrayDataService" 
-
-        class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceImpl">
+    <bean id="arrayDataService" class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceImpl">
         <property name="dao">
-            <ref local="caIntegrator2Dao"/>
+            <ref bean="caIntegrator2Dao"/>
         </property>
         <property name="fileManager">
-            <ref local="fileManager"/>
+            <ref bean="fileManager"/>
         </property>
     </bean>
     
-    <bean id="fileManager"
-        class="gov.nih.nci.caintegrator2.file.FileManagerStub" />
-        
+    <bean id="fileManager" class="gov.nih.nci.caintegrator2.file.FileManagerStub" />
     <!-- Services -->
         
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
@@ -41,13 +37,11 @@
         </property>
     </bean>
     
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
     
-    <bean id="sessionFactory" 
-        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="configLocation">
             <value>classpath:hibernate.cfg.xml</value>
         </property>
     </bean>
-
 </beans>

@@ -163,5 +163,6 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/metadatautils-1.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/transfer-client-1.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/test-junit/javassist-3.9.0.GA.jar"/>
+	<classpathentry kind="lib" path="software/lib/test-junit/mockito-all-1.9.0.jar"/>
 	<classpathentry kind="output" path="software/caintegrator2-war/target/classes"/>
 </classpath>

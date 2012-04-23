@@ -3,9 +3,6 @@
 <beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
 
     <bean name="CaArrayFacade" class="gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeImpl" singleton="true">
-        <property name="serviceFactory">
-            <ref local="serviceFactoryStub"/>
-        </property>
         <property name="dao">
             <ref local="dao"/>
         </property>
@@ -21,9 +18,5 @@
     </bean>
     
     <bean id="serviceFactory" class="gov.nih.nci.caintegrator2.external.caarray.CaArrayServiceFactoryImpl" />
-    
-    <bean id="serviceFactoryStub" class="gov.nih.nci.caintegrator2.external.caarray.ServiceStubFactory" />
-
     <bean id="dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub" />
-
 </beans>

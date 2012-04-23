@@ -29,6 +29,7 @@
         <property name="deploymentFinishDate" type="java.util.Date" column="DEPLOYMENT_FINISH_DATE"/>
         
         <property name="lastModifiedDate" type="java.util.Date" column="LAST_MODIFIED_DATE"/>
+        <property name="dataRefreshed" type="boolean" column="IS_DATA_REFRESHED" />
         
     
         <list name="clinicalConfigurationCollection" lazy="false" cascade="all">
