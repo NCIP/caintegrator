@@ -185,4 +185,14 @@ public interface CaArrayFacade {
      */
     Map<String, Date> checkForSampleUpdates(String experimentIdentifier, ServerConnectionProfile profile)
     throws ConnectionException, ExperimentNotFoundException;
+
+    /**
+     * Retrieves the date of last data modification for a data source.
+     * @param genomicSource data source to retrieve date for
+     * @return the date of last data modification for this data source
+     * @throws ConnectionException if the server couldn't be reached
+     * @throws ExperimentNotFoundException if the experiment doesn't exist on the server
+     */
+    Date getLastDataModificationDate(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
+        ExperimentNotFoundException;
 }

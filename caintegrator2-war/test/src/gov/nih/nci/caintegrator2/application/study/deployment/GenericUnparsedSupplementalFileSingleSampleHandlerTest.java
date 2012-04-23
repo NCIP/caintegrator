@@ -4,6 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
@@ -21,7 +25,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
-import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub;
 import gov.nih.nci.caintegrator2.external.caarray.GenericMultiSamplePerFileParser;
 
 import java.io.File;
@@ -33,15 +36,27 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 import affymetrix.calvin.exception.UnsignedOutOfLimitsException;
 
 public class GenericUnparsedSupplementalFileSingleSampleHandlerTest {
+    private CaArrayFacade caArrayFacade;
+
+    /**
+     * Sets up the test.
+     * @throws Exception on error
+     */
+    @Before
+    public void setUp() throws Exception {
+        caArrayFacade = mock(CaArrayFacade.class);
+        when(caArrayFacade.retrieveFile(any(GenomicDataSourceConfiguration.class), anyString()))
+            .thenReturn(FileUtils.readFileToByteArray(TestDataFiles.TCGA_LEVEL_2_DATA_SINGLE_SAMPLE_FILE));
+    }
 
     @Test
     public void testLoadCopyNumberDataSingleSample() throws ConnectionException, ValidationException {
-        CaArrayFacade caArrayFacade = new LocalCaArrayFacadeStub();
         ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub();
         CaIntegrator2DaoStub dao = new LocalCaIntegrator2DaoStub();
         GenomicDataSourceConfiguration source = new GenomicDataSourceConfiguration();
@@ -84,7 +99,7 @@ public class GenericUnparsedSupplementalFileSingleSampleHandlerTest {
     }
 
     static class LocalCaIntegrator2DaoStub extends CaIntegrator2DaoStub {
-        
+
         private Platform platform;
 
         @Override
@@ -115,7 +130,7 @@ public class GenericUnparsedSupplementalFileSingleSampleHandlerTest {
             Map<String, Map<String, List<Float>>> dataMap = new HashMap<String, Map<String, List<Float>>>();
             parser.loadData(dataMap);
             Map<String, List<Float>> reporterMap = dataMap.values().iterator().next();
-            
+
             ReporterList reporterList = platform.addReporterList(reporterListName, ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
             for (String probeName : reporterMap.keySet()) {
                 DnaAnalysisReporter reporter = new DnaAnalysisReporter();
@@ -133,19 +148,6 @@ public class GenericUnparsedSupplementalFileSingleSampleHandlerTest {
             }
             return null;
         }
-        
-    }
 
-    static class LocalCaArrayFacadeStub extends CaArrayFacadeStub {
-        
-        @Override
-        public byte[] retrieveFile(GenomicDataSourceConfiguration source, String filename) {
-            try {
-                return FileUtils.readFileToByteArray(TestDataFiles.TCGA_LEVEL_2_DATA_SINGLE_SAMPLE_FILE);
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
-            }
-        }
     }
-
 }

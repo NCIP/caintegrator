@@ -101,7 +101,7 @@
                        
             <table class="data">
                 <tr>
-                    <th>Set Name</th><th>Sample Name</th><th>Refresh Status</th>
+                    <th>Set Name</th><th>Sample Name</th><th>Status in caArray</th>
                 </tr>
         
                 <s:iterator value="genomicSource.controlSampleSetCollection" status="status">
@@ -116,7 +116,7 @@
                               <td class="even">
                             </s:else> 
                             <s:div title="cai2 ID = %{id}"><s:property value="name" /></s:div></td>
-                            <td><s:property value="refreshType" /></td>
+                            <td><s:property value="refreshType.displayName" /></td>
                             </tr>
                     </s:iterator>
         
@@ -141,7 +141,7 @@
                         </tr>
                         <tr>
                             <th>Sample Name</th>
-                            <th>Refresh Status</th>
+                            <th>Status in caArray</th>
                         </tr>
                         <s:iterator value="genomicSource.unmappedSamples" status="status">
                             <s:if test="#status.odd == true">
@@ -151,7 +151,7 @@
                               <tr class="even">
                             </s:else>            
                              <td><s:div title="cai2 ID = %{id}"><s:property value="name" /></s:div></td>
-                             <td><s:property value="refreshType" /></td>
+                             <td><s:property value="refreshType.displayName" /></td>
                             </tr>
                         </s:iterator>
                     </table>
@@ -165,7 +165,7 @@
                         <tr>
                             <th>Sample Name</th>
                             <th>Subject Identifier</th>
-                            <th>Refresh Status</th>
+                            <th>Status in caArray</th>
                         </tr>
                         <s:iterator value="genomicSource.mappedSamples" status="status">
                             <s:if test="#status.odd == true">
@@ -176,7 +176,7 @@
                             </s:else>            
                             <td><s:div title="cai2 ID = %{id}"><s:property value="name" /></s:div></td>
                             <td><s:property value="sampleAcquisition.assignment.identifier" /></td>
-                            <td><s:property value="refreshType" /></td>
+                            <td><s:property value="refreshType.displayName" /></td>
                             </tr>
                         </s:iterator>
                     </table>

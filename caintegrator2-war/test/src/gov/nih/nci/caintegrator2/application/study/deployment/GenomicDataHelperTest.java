@@ -2,6 +2,9 @@ package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
@@ -16,26 +19,23 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.bioconductor.BioconductorService;
-import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class GenomicDataHelperTest {
-    
+public class GenomicDataHelperTest extends AbstractMockitoTest {
     private GenomicDataHelper helper;
-    private CaArrayFacadeStub caArrayFacade = new CaArrayFacadeStub();
     private ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub();
     private CaIntegrator2Dao dao = new CaIntegrator2DaoStub();
     private BioconductorService biocondutor;
     private DnaAnalysisHandlerFactory dnaAnalysisHandlerFactory = new LocalDnaAnalysisHandlerFactoryImpl();
     private ExpressionHandlerFactory expressionHandlerFactory = new LocalExpressionHandlerFactoryImpl();
-    
+
     @Before
     public void setUp() {
-        caArrayFacade.reset();
         arrayDataService.reset();
         helper = new GenomicDataHelper(caArrayFacade, arrayDataService, dao, biocondutor, dnaAnalysisHandlerFactory );
         helper.setExpressionHandlerFactory(expressionHandlerFactory);
@@ -54,7 +54,8 @@ public class GenomicDataHelperTest {
         studyConfiguration.getGenomicDataSources().add(genomicDataConfiguration);
         helper.loadData(studyConfiguration);
         assertTrue(arrayDataService.saveCalled);
-        assertTrue(caArrayFacade.retrieveDataCalled);
+        verify(caArrayFacade, atLeastOnce()).retrieveData(any(GenomicDataSourceConfiguration.class));
+//        assertTrue(caArrayFacade.retrieveDataCalled);
         assertEquals(1, sample.getArrayCollection().size());
         assertEquals(2, sample.getArrayDataCollection().size());
     }

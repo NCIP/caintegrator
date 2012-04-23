@@ -13,9 +13,6 @@
         <property name="caDSRFacade">
             <ref local="caDSRFacadeStub"/>
         </property>
-        <property name="caArrayFacade">
-            <ref local="caArrayFacadeStub"/>
-        </property>
         <property name="nciaFacade">
             <ref local="nciaFacadeStub"/>
         </property>
@@ -34,9 +31,6 @@
         class="gov.nih.nci.caintegrator2.application.study.deployment.DeploymentServiceImpl">
         <property name="dao">
             <ref local="dao"/>
-        </property>
-        <property name="caArrayFacade">
-            <ref local="caArrayFacadeStub"/>
         </property>
         <property name="arrayDataService">
             <ref local="arrayDataServiceStub"/>
@@ -68,9 +62,6 @@
 
     <bean id="caDSRFacadeStub"
         class="gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub" />
-
-    <bean id="caArrayFacadeStub"
-        class="gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub" />
 
     <bean id="nciaFacadeStub"
         class="gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeStub" />

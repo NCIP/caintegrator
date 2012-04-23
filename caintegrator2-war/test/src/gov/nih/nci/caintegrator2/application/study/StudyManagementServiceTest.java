@@ -124,6 +124,7 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 import gov.nih.nci.caintegrator2.security.SecurityManagerStub;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSSecurityException;
@@ -141,7 +142,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @SuppressWarnings("PMD")
-public class StudyManagementServiceTest {
+public class StudyManagementServiceTest extends AbstractMockitoTest {
 
     private StudyManagementServiceImpl studyManagementService;
     private CaIntegrator2DaoStub daoStub;
@@ -156,6 +157,7 @@ public class StudyManagementServiceTest {
     public void setUp() throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class);
         studyManagementService = (StudyManagementServiceImpl) context.getBean("studyManagementService");
+        studyManagementService.setCaArrayFacade(caArrayFacade);
 		daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
         daoStub.clear();
         caDSRFacadeStub = (CaDSRFacadeStub) context.getBean("caDSRFacadeStub");
@@ -260,7 +262,7 @@ public class StudyManagementServiceTest {
         assertTrue(fileManagerStub.storeStudyFileCalled);
         assertTrue(daoStub.saveCalled);
     }
-    
+
     @Test
     public void testRetrieveStudyLogo() {
         String name = "StudyForTestingStudyLogo";
@@ -270,9 +272,9 @@ public class StudyManagementServiceTest {
         studyConfiguration.setStudyLogo(new StudyLogo());
         studyManagementService.save(studyConfiguration);
         assertNotNull(studyManagementService.retrieveStudyLogo(studyConfiguration.getStudy().getId(), name));
-        
-    }    
-    
+
+    }
+
     @Test
     public void testAddAuthorizedStudyElementsGroups() throws ConnectionException, ExperimentNotFoundException, CSException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -292,9 +294,9 @@ public class StudyManagementServiceTest {
         authorizedStudyElementsGroup.setId(Long.valueOf(1));
         assertTrue(studyConfiguration2.getAuthorizedStudyElementsGroups().contains(authorizedStudyElementsGroup2));
         assertTrue(daoStub.saveCalled);
-        
+
     }
-    
+
     @Test
     public void testDeleteAuthorizedStudyElementsGroups() throws ConnectionException, ExperimentNotFoundException, CSException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -305,8 +307,8 @@ public class StudyManagementServiceTest {
         studyManagementService.deleteAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup);
         assertFalse(studyConfiguration.getAuthorizedStudyElementsGroups().contains(authorizedStudyElementsGroup));
         assertTrue(daoStub.saveCalled);
-    } 
-    
+    }
+
     @Test
     public void testCopyStudy() throws ValidationException, IOException, ConnectionException {
         StudyConfiguration copyTo = new StudyConfiguration();
