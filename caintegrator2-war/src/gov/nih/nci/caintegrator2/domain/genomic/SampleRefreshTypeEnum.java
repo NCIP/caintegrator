@@ -102,7 +102,12 @@ public enum SampleRefreshTypeEnum {
     /**
      * Update on refresh.
      */
-    UPDATE_ON_REFRESH("Sample Updated");
+    UPDATE_ON_REFRESH("Sample Updated"),
+
+    /**
+     * Unchanged.
+     */
+    UNCHANGED("Unchanged");
 
     private final String displayName;
 
