@@ -1,9 +1,9 @@
 <ivy-module version="1.0">
-  <info organisation="ncicb" 
+  <info organisation="ncicb"
         module="caintegrator"/>
-        
+
   <configurations>
-    <conf name="master" />  
+    <conf name="master" />
     <conf name="runtime" />
     <conf name="compile" extends="runtime" />
     <conf name="test" />
@@ -17,11 +17,11 @@
     <conf name="test-findbugs" />
     <conf name="test-simian" />
   </configurations>
-  
+
   <publications>
 	  <!-- <artifact name="caintegrator2" type="jar" conf="master, compile, runtime" />-->
   </publications>
-  
+
   <dependencies>
     <dependency org="org.seleniumhq.selenium.server" name="selenium-server" rev="1.0.3" conf="test-selenium->default">
      <artifact name="selenium-server" type="jar" url="https://ncimvn.nci.nih.gov/nexus/content/repositories/public/org/seleniumhq/selenium/server/selenium-server/1.0.3/selenium-server-1.0.3-standalone.jar"/>
@@ -29,8 +29,8 @@
     <dependency org="junit" name="junit" rev="4.3.1" conf="test-junit,test-pmd->master"/>
     <dependency org="javassist" name="javassist" rev="3.9.0.GA" conf="test-junit->default"/>
     <dependency org="org.mockito" name="mockito-all" rev="1.9.0" conf="test-junit->master"/>
-    <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9" conf="test-cobertura->master"/>  
-    <dependency org="log4j" name="log4j" rev="1.2.9" conf="runtime,test-cobertura->master"/>  
+    <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9" conf="test-cobertura->master"/>
+    <dependency org="log4j" name="log4j" rev="1.2.9" conf="runtime,test-cobertura->master"/>
     <dependency org="javancss" name="javancss" rev="29.50" conf="test-javancss->master"/>
     <dependency org="javancss" name="ccl" rev="29.50" conf="test-javancss->master"/>
     <dependency org="com.puppycrawl.tools" name="checkstyle" rev="5.2" conf="test-checkstyle->master"/>
@@ -44,13 +44,13 @@
     <dependency org="asm" name="asm" rev="3.1" conf="test-pmd->master"/>
     <dependency org="asm" name="asm" rev="2.2.1" conf="test-cobertura->master"/>
     <dependency org="asm" name="asm-tree" rev="2.2.1" conf="test-cobertura->master"/>
-    
-    <!-- svn connectors -->  
+
+    <!-- svn connectors -->
     <dependency org="org.tigris" name="svnant" rev="1.3" conf="compile"/>
-    
-    
+
+
     <!-- Runtime items that exist in WEB-INF/lib for war runtime -->
-    
+
     <!-- These are created by TJ -->
     <dependency org="concurrent" name="concurrent" rev="1.3.4" conf="compile->master"/>
     <dependency org="org.acegisecurity" name="acegi-security" rev="1.0.7" conf="runtime->master" transitive="false"/>
@@ -119,7 +119,7 @@
     <dependency org="javax.xml.bind" name="jaxb-api" rev="2.1" conf="runtime->master"/>
     <dependency org="com.sun.xml.bind" name="jaxb-impl" rev="2.1.4" conf="runtime->master"/>
     <dependency org="com.sun.xml.bind" name="jaxb-xjc" rev="2.1.4" conf="runtime->master"/>
-    
+
     <dependency org="xalan" name="xalan" rev="2.7.0" conf="compile->master"/>
     <dependency org="xerces" name="xercesImpl" rev="2.6.2" conf="compile->master"/>
     <dependency org="c3p0" name="c3p0" rev="0.9.1" conf="runtime->master"/>
@@ -149,7 +149,7 @@
     <dependency org="org.directwebremoting" name="dwr" rev="2.0.6" conf="runtime->master" />
     <dependency org="commons-dbcp" name="commons-dbcp" rev="1.2.1" conf="runtime->master" />
     <dependency org="org.apache.axis2" name="axis2-saaj" rev="1.1" conf="runtime->default" />
-   
+
     <!-- caGrid 1.2 stuff -->
     <dependency org="gov.nih.nci.cagrid" name="data-utils" rev="1.2" conf="runtime->master" />
     <dependency org="gov.nih.nci.cagrid" name="data-stubs" rev="1.2" conf="runtime->master" />
@@ -163,23 +163,26 @@
     <dependency org="gov.nih.nci.cagrid" name="metadata-data" rev="1.2" conf="compile,runtime->default" transitive="false" />
     <dependency org="gov.nih.nci.cagrid" name="metadata-common" rev="1.2" conf="compile,runtime->default" transitive="false" />
     <dependency org="gov.nih.nci.cagrid" name="metadata-security" rev="1.2" conf="compile,runtime->default" transitive="false" />
-    <dependency org="gov.nih.nci.cagrid" name="gts-client" rev="1.2" conf="runtime->master" transitive="false" />    
+    <dependency org="gov.nih.nci.cagrid" name="gts-client" rev="1.2" conf="runtime->master" transitive="false" />
     <dependency org="gov.nih.nci.cagrid" name="service-security-provider-client" rev="1.2" conf="compile,runtime->master" transitive="false" />
-    <dependency org="gov.nih.nci.cagrid" name="service-security-provider-common" rev="1.2" conf="compile,runtime->master" transitive="false" />  
-    <dependency org="gov.nih.nci.cagrid" name="service-security-provider-stubs" rev="1.2" conf="runtime->master" transitive="false" />   
-    <dependency org="gov.nih.nci.cagrid" name="bulkdatatransfer-stubs" rev="1.2" conf="runtime->master" transitive="false" />   
-    <dependency org="gov.nih.nci.cagrid" name="bulkdatatransfer-common" rev="1.2" conf="runtime->master" transitive="false" />   
-    <dependency org="gov.nih.nci.cagrid" name="bulkdatatransfer-client" rev="1.2" conf="runtime->master" transitive="false" />   
+    <dependency org="gov.nih.nci.cagrid" name="service-security-provider-common" rev="1.2" conf="compile,runtime->master" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="service-security-provider-stubs" rev="1.2" conf="runtime->master" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="bulkdatatransfer-stubs" rev="1.2" conf="runtime->master" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="bulkdatatransfer-common" rev="1.2" conf="runtime->master" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="bulkdatatransfer-client" rev="1.2" conf="runtime->master" transitive="false" />
     <dependency org="cagrid" name="cagrid-core" rev="1.2.0.1nci" conf="compile,runtime->default"/>
     <dependency org="cryptix" name="cryptix" rev="1.2nci" conf="runtime->master" />
     <dependency org="cryptix" name="cryptix-asn1" rev="0.1.11nci" conf="runtime->master" />
     <dependency org="cryptix" name="cryptix" rev="3.2.0" conf="runtime->master" />
     <dependency org="globus" name="puretls" rev="4.0.3" conf="runtime->master" />
-    
+
     <!-- quartz 1.5.2 scheduler -->
     <dependency org="opensymphony" name="quartz" rev="1.6.1" conf="runtime->master" />
     <dependency org="org.apache.struts.xwork" name="xwork-core" rev="2.2.1" conf="runtime->master" />
-  
+
+    <!-- CAS Client -->
+    <dependency org="cas" name="casclient" rev="2.1.1" conf="runtime->master"/>
+
   </dependencies>
-  
+
 </ivy-module>
