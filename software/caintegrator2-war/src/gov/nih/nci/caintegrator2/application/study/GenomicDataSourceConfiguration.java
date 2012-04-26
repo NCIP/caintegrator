@@ -241,9 +241,11 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
         for (Sample sample : mappedSamples) {
             if (!refreshMap.containsKey(sample.getName())) {
                 sample.setRefreshType(SampleRefreshTypeEnum.DELETE_ON_REFRESH);
-            } else if (refreshMap.containsKey(sample.getName())
+            } else if (refreshMap.containsKey(sample.getName()) && refreshMap.get(sample.getName()) != null
                     && studyConfiguration.getDeploymentFinishDate().before(refreshMap.get(sample.getName()))) {
                 sample.setRefreshType(SampleRefreshTypeEnum.UPDATE_ON_REFRESH);
+            } else {
+                sample.setRefreshType(SampleRefreshTypeEnum.UNCHANGED);
             }
         }
     }
@@ -253,6 +255,8 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
         for (Sample sample : unmappedsamples) {
             if (!refreshMap.containsKey(sample.getName())) {
                 sample.setRefreshType(SampleRefreshTypeEnum.DELETE_ON_REFRESH);
+            } else {
+                sample.setRefreshType(SampleRefreshTypeEnum.UNCHANGED);
             }
         }
         for (String sampleName : refreshMap.keySet()) {

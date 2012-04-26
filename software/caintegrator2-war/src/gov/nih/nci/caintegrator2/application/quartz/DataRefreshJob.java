@@ -63,7 +63,9 @@ public class DataRefreshJob extends QuartzJobBean {
         for (GenomicDataSourceConfiguration dataSource : dataSources) {
             try {
                 Date lastModifiedDate = caArrayFacade.getLastDataModificationDate(dataSource);
-                dataSource.setDataRefreshed(lastModifiedDate.after(dataSource.getLastModifiedDate()));
+                boolean modified = lastModifiedDate != null
+                        ? lastModifiedDate.after(dataSource.getLastModifiedDate()) : false;
+                dataSource.setDataRefreshed(modified);
                 dao.save(dataSource);
             } catch (ExperimentNotFoundException e) {
                 LOG.error("Unable to find experiment " + dataSource.getExperimentIdentifier(), e);

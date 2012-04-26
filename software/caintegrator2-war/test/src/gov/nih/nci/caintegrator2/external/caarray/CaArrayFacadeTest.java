@@ -147,6 +147,7 @@ import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.xwork.time.DateUtils;
 import org.hibernate.tool.hbm2x.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -236,6 +237,7 @@ public class CaArrayFacadeTest {
                     Experiment experiment = new Experiment();
                     experiment.setPublicIdentifier(crit.getPublicIdentifier());
                     experiment.setId(crit.getPublicIdentifier());
+                    experiment.setLastDataModificationDate(DateUtils.addDays(new Date(), -1));
                     result.getResults().add(experiment);
                 }
                 return result;
@@ -246,6 +248,7 @@ public class CaArrayFacadeTest {
             public SearchResult<Biomaterial> answer(InvocationOnMock invocation) throws Throwable {
                 Biomaterial sample = new Biomaterial();
                 sample.setName("sample");
+                sample.setLastModifiedDataTime(DateUtils.addDays(new Date(), -1));
                 SearchResult<Biomaterial> result = new SearchResult<Biomaterial>();
                 result.getResults().add(sample);
                 result.setMaxAllowedResults(-1);
@@ -365,6 +368,9 @@ public class CaArrayFacadeTest {
        Map<String, Date> updates = caArrayFacade.checkForSampleUpdates("sample-exp", mock(ServerConnectionProfile.class));
        assertFalse(updates.isEmpty());
        assertEquals(1, updates.size());
+       for (Date modifiedDate  : updates.values()) {
+           assertNotNull(modifiedDate);
+       }
     }
 
     /**
