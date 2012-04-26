@@ -7,8 +7,10 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            /WEB-INF/classes/application-config-security.xml 
-            /WEB-INF/classes/application-config-web-security.xml
+            /WEB-INF/classes/application-config-common-security.xml
+            <!-- TODO Build needs to be updated to remove whichever of these is not active-->
+            /WEB-INF/classes/application-config-non-cas-security.xml
+            <!-- /WEB-INF/classes/application-config-cas-security.xml -->
             /WEB-INF/classes/caintegrator2-config.xml
         </param-value>
     </context-param>
@@ -16,7 +18,7 @@
       <param-name>log4jConfigLocation</param-name>
       <param-value>/WEB-INF/classes/log4j.xml</param-value>
     </context-param>
-    
+
     <!-- Application version information being stored as an application context param -->
     <context-param>
         <param-name>caintegrator2Version</param-name>
@@ -41,8 +43,8 @@
     <context-param>
         <param-name>templatePath</param-name>
         <param-value>template</param-value>
-    </context-param> 
-    
+    </context-param>
+
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Forbidden</web-resource-name>
@@ -62,7 +64,7 @@
         <filter-name>SessionTimeoutFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
- 
+
     <!-- Export Filter (for exporting data results) -->
     <filter>
 		<filter-name>ResponseOverrideFilter</filter-name>
@@ -83,20 +85,20 @@
         <filter-name>AcegiFilters</filter-name>
         <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
         <init-param>
-        <param-name>targetClass</param-name>
-        <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
+            <param-name>targetClass</param-name>
+            <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
         </init-param>
     </filter>
-    
+
     <filter>
         <filter-name>sessionFixation</filter-name>
         <filter-class>com.fiveamsolutions.nci.commons.web.filter.SessionFixationProtectionFilter</filter-class>
     </filter>
-    
+
     <filter>
       <filter-name>neverExpireFilter</filter-name>
       <filter-class>gov.nih.nci.caintegrator2.web.filter.NeverExpireFilter</filter-class>
-    </filter>    
+    </filter>
 
     <filter>
       <filter-name>longCacheFilter</filter-name>
@@ -112,17 +114,17 @@
         <filter-name>sessionFixation</filter-name>
         <url-pattern>*.action</url-pattern>
     </filter-mapping>
-    
-    
+
+
 	<filter-mapping>
 		<filter-name>ResponseOverrideFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-        
+
     <filter-mapping>
         <filter-name>AcegiFilters</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>   
+    </filter-mapping>
 
     <filter-mapping>
         <filter-name>sessionFilter</filter-name>
@@ -133,7 +135,7 @@
         <filter-name>struts2</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    
+
     <filter-mapping>
         <filter-name>neverExpireFilter</filter-name>
         <url-pattern>/common/js/*</url-pattern>
@@ -143,16 +145,16 @@
         <filter-name>neverExpireFilter</filter-name>
         <url-pattern>/common/css/*</url-pattern>
     </filter-mapping>
-    
+
     <filter-mapping>
         <filter-name>neverExpireFilter</filter-name>
         <url-pattern>/images/*</url-pattern>
     </filter-mapping>
-    
+
     <filter-mapping>
         <filter-name>longCacheFilter</filter-name>
         <url-pattern>/struts/dojo/*</url-pattern>
-     </filter-mapping>   
+     </filter-mapping>
      <filter-mapping>
         <filter-name>longCacheFilter</filter-name>
         <url-pattern>/struts/ajax/*</url-pattern>
@@ -169,7 +171,7 @@
         <filter-name>longCacheFilter</filter-name>
         <url-pattern>/struts/*</url-pattern>
     </filter-mapping>
-    
+
     <filter-mapping>
         <filter-name>neverExpireFilter</filter-name>
         <url-pattern>/struts/dojo/*</url-pattern>
@@ -185,33 +187,33 @@
     <filter-mapping>
         <filter-name>neverExpireFilter</filter-name>
         <url-pattern>/struts/css_xhtml/*</url-pattern>
-    </filter-mapping>    
+    </filter-mapping>
     <filter-mapping>
         <filter-name>neverExpireFilter</filter-name>
         <url-pattern>/struts/*</url-pattern>
-    </filter-mapping>      
-    
+    </filter-mapping>
+
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    
+
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
-    
+
     <listener>
         <listener-class>gov.nih.nci.caintegrator2.web.listener.SessionCleanupListener</listener-class>
     </listener>
-    
+
     <listener>
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
     </listener>
-    
+
     <servlet>
         <servlet-name>logoRenderingServlet</servlet-name>
         <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
     </servlet>
-    
+
     <servlet>
         <servlet-name>viewerServlet</servlet-name>
         <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
@@ -242,7 +244,7 @@
         <servlet-name>logoRenderingServlet</servlet-name>
         <url-pattern>/logo</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>viewerServlet</servlet-name>
         <url-pattern>/viewer/*</url-pattern>
