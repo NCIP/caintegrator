@@ -296,7 +296,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
         Map<String, Date> sampleMap = new HashMap<String, Date>();
         for (Biomaterial experimentSample
                 : getCaArraySamples(experimentIdentifier, searchService)) {
-            sampleMap.put(experimentSample.getName(), new Date());
+            sampleMap.put(experimentSample.getName(), experimentSample.getLastModifiedDataTime());
         }
         return sampleMap;
     }
@@ -307,10 +307,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     public Date getLastDataModificationDate(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
         ExperimentNotFoundException {
         SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
-        CaArrayUtils.getExperiment(genomicSource.getExperimentIdentifier(), searchService);
-        //We'll just return the current date util caArray has update their data model to include the last data update
-        //date.
-        return new Date();
+        Experiment experiment = CaArrayUtils.getExperiment(genomicSource.getExperimentIdentifier(), searchService);
+        return experiment.getLastDataModificationDate();
     }
-
 }

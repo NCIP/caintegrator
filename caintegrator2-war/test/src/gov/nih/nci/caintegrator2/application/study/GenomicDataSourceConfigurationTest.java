@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -170,7 +171,7 @@ public class GenomicDataSourceConfigurationTest {
         Map<String, Date> refreshSampleNames = new HashMap<String, Date>();
         refreshSampleNames.put("sample1", new Date());
         refreshSampleNames.put("sample2", new Date());
-        refreshSampleNames.put("sample3", new Date());
+        refreshSampleNames.put("sample3", null);
         configuration.setRefreshSampleNames(refreshSampleNames);
 
         assertEquals(3, configuration.getSamples().size());
@@ -179,7 +180,8 @@ public class GenomicDataSourceConfigurationTest {
         assertTrue(configuration.getMappedSamples().contains(samples.get(1)));
         assertTrue(configuration.getMappedSamples().contains(samples.get(2)));
         for (Sample s : configuration.getMappedSamples()) {
-            assertEquals(SampleRefreshTypeEnum.UPDATE_ON_REFRESH, s.getRefreshType());
+            assertTrue(SampleRefreshTypeEnum.UNCHANGED == s.getRefreshType()
+                    || SampleRefreshTypeEnum.UPDATE_ON_REFRESH == s.getRefreshType());
         }
         assertEquals(0, configuration.getUnmappedSamples().size());
         for (Sample s : configuration.getUnmappedSamples()) {
@@ -203,7 +205,7 @@ public class GenomicDataSourceConfigurationTest {
 
         Map<String, Date> refreshSampleNames = new HashMap<String, Date>();
         refreshSampleNames.put("Unknown Sample", new Date());
-        refreshSampleNames.put("Another Unknown Sample", new Date());
+        refreshSampleNames.put("Another Unknown Sample", null);
         configuration.setRefreshSampleNames(refreshSampleNames);
 
         assertEquals(3, configuration.getSamples().size());
@@ -228,19 +230,24 @@ public class GenomicDataSourceConfigurationTest {
     public void getSamplesNoneMapped() {
         Map<String, Date> refreshSampleNames = new HashMap<String, Date>();
         refreshSampleNames.put("Unknown Sample", new Date());
-        refreshSampleNames.put("Another Unknown Sample", new Date());
+        refreshSampleNames.put("Another Unknown Sample", null);
+        refreshSampleNames.put("sample4", null);
         configuration.setRefreshSampleNames(refreshSampleNames);
 
-        assertEquals(3, configuration.getSamples().size());
+        Sample sample = new Sample();
+        sample.setName("sample4");
+        sample.setId(5L);
+        configuration.getSamples().add(sample);
+
+        assertEquals(4, configuration.getSamples().size());
         assertEquals(0, configuration.getMappedSamples().size());
-        assertEquals(5, configuration.getUnmappedSamples().size());
+        assertEquals(6, configuration.getUnmappedSamples().size());
         assertTrue(configuration.getUnmappedSamples().contains(samples.get(0)));
         assertTrue(configuration.getUnmappedSamples().contains(samples.get(1)));
         assertTrue(configuration.getUnmappedSamples().contains(samples.get(2)));
 
         for (Sample s : configuration.getUnmappedSamples()) {
-            assertTrue(SampleRefreshTypeEnum.DELETE_ON_REFRESH == s.getRefreshType()
-                    || SampleRefreshTypeEnum.ADD_ON_REFRESH == s.getRefreshType());
+            assertNotNull(s.getRefreshType());
         }
     }
 
