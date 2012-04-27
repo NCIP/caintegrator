@@ -144,6 +144,10 @@ import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 public abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalSpringContextTests {
     
+    /**
+     * 
+     */
+    private static final String USER_NCIMANAGER = "ncimanager";
     private final Logger logger = Logger.getLogger(getClass());
     private long startTime;
     
@@ -175,10 +179,11 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     
     public void deployStudy() throws Exception {
         AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
-        authentication.setUsername("ncimanager");
+        authentication.setUsername(USER_NCIMANAGER);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         loadDesigns();
         UserWorkspace userWorkspace = workspaceService.getWorkspace();
+        userWorkspace.setUsername(USER_NCIMANAGER);
         studyConfiguration = new StudyConfiguration();
         studyConfiguration.getStudy().setShortTitleText(getStudyName());
         studyConfiguration.getStudy().setLongTitleText(getDescription());

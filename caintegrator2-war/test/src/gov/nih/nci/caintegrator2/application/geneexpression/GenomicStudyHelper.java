@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl;
 import gov.nih.nci.caintegrator2.application.query.ResultHandler;
 import gov.nih.nci.caintegrator2.application.query.ResultHandlerImpl;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -96,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -116,6 +118,7 @@ import java.util.Set;
  * 
  */
 public class GenomicStudyHelper {
+    private static final String USER_EXISTS = "studyManager";
     private GeneExpressionReporter reporter;
     private QueryManagementServiceImpl queryManagementService = new QueryManagementServiceImpl();
     private GenomicDataTestDaoStub daoStub;
@@ -141,6 +144,14 @@ public class GenomicStudyHelper {
         query.setSubscription(new StudySubscription());
         query.getSubscription().setStudy(new Study());
         Study study = query.getSubscription().getStudy();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        study.setStudyConfiguration(studyConfiguration);
+        UserWorkspace userWorkspace = new UserWorkspace();
+        userWorkspace.setUsername(USER_EXISTS);
+        StudySubscription studySubscription = new StudySubscription();
+        studySubscription.setUserWorkspace(userWorkspace);
+        studySubscription.setStudy(study);
+        query.setSubscription(studySubscription);
         StudySubjectAssignment assignment = new StudySubjectAssignment();
         assignment.setId(Long.valueOf(1));
         SampleAcquisition acquisition = new SampleAcquisition();

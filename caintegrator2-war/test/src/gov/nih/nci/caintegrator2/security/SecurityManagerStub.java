@@ -90,7 +90,6 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.exceptions.CSException;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -164,4 +163,10 @@ public class SecurityManagerStub implements SecurityManager {
     @Override
     public void deleteProtectionElement(AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
         deleteProtectionElementCalled = true;    }
+
+    @Override
+    public Set<AuthorizedStudyElementsGroup> retrieveAuthorizedStudyElementsGroupsForInvestigator(String username,
+            Set<AuthorizedStudyElementsGroup> availableGroups) throws CSException {
+        return new HashSet<AuthorizedStudyElementsGroup>();
+    }
 }
