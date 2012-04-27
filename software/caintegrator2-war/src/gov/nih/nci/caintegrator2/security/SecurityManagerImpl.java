@@ -117,6 +117,7 @@ public class SecurityManagerImpl implements SecurityManager {
     
     private static final String APPLICATION_CONTEXT_NAME = "caintegrator2";
     private static final String STUDY_MANAGER_ROLE = "STUDY_MANAGER_ROLE";
+    private static final String STUDY_INVESTIGATOR_ROLE = "STUDY_INVESTIGATOR_ROLE";
     private static final String STUDY_OBJECT = "gov.nih.nci.caintegrator2.domain.translational.Study";
     private static final String STUDY_ATTRIBUTE = "id";
     private static final String AUTHORIZED_STUDY_ELEMENTS_GROUP_OBJECT =
@@ -138,7 +139,7 @@ public class SecurityManagerImpl implements SecurityManager {
             Set<User> owners = new HashSet<User>();
             owners.add(user);
             element.setOwners(owners);
-            element.setProtectionGroups(retrieveStudyManagerProtectionGroups(userId));
+            element.setProtectionGroups(retrieveProtectionGroups(userId, STUDY_MANAGER_ROLE));
             
             getAuthorizationManager().createProtectionElement(element);
         }
@@ -178,6 +179,31 @@ public class SecurityManagerImpl implements SecurityManager {
         }
     }
     
+    /*
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<AuthorizedStudyElementsGroup> retrieveAuthorizedStudyElementsGroupsForInvestigator(String username,
+                                                                    Set<AuthorizedStudyElementsGroup> availableGroups)
+        throws CSException {
+        if (!doesUserExist(username)) {
+            return new HashSet<AuthorizedStudyElementsGroup>();
+        }
+
+        Set<AuthorizedStudyElementsGroup> authorizedStudyElementsGroups = new HashSet<AuthorizedStudyElementsGroup>();
+        Set<ProtectionGroup> userProtectionGroups = 
+            retrieveProtectionGroups(String.valueOf(retrieveCsmUser(username).getUserId()),
+                                                                        STUDY_INVESTIGATOR_ROLE);
+        Set<Long> authorizedStudyElementsGroupIds = retrieveAuthorizedStudyElementsGroupIds(userProtectionGroups);
+        for (AuthorizedStudyElementsGroup group : availableGroups) {
+            if (authorizedStudyElementsGroupIds.contains(group.getId())) {
+                authorizedStudyElementsGroups.add(group);
+            }
+        }
+        return authorizedStudyElementsGroups;
+    
+    }    
+    
     /**
      * {@inheritDoc}
      */
@@ -188,7 +214,7 @@ public class SecurityManagerImpl implements SecurityManager {
         }
         Set<StudyConfiguration> managedStudies = new HashSet<StudyConfiguration>();
         Set<ProtectionGroup> studyManagerProtectionGroups = 
-            retrieveStudyManagerProtectionGroups(String.valueOf(retrieveCsmUser(username).getUserId()));
+            retrieveProtectionGroups(String.valueOf(retrieveCsmUser(username).getUserId()), STUDY_MANAGER_ROLE);
         Set<Long> managedStudyIds = retrieveStudyIds(studyManagerProtectionGroups);
         for (Study study : studies) {
             // I think there's a bug with this function, so having to do it the hard way.
@@ -218,6 +244,24 @@ public class SecurityManagerImpl implements SecurityManager {
         return managedStudyIds;
     }
     
+    @SuppressWarnings(UNCHECKED) // CSM API is untyped
+    private Set<Long> retrieveAuthorizedStudyElementsGroupIds(Set<ProtectionGroup> protectionGroups)
+                                                                                    throws CSException {
+        Set<Long> authorizedStudyElementsGroupIds = new HashSet<Long>();
+        for (ProtectionGroup group : protectionGroups) {
+            Set<ProtectionElement> elements = 
+                getAuthorizationManager().getProtectionElements(String.valueOf(group.getProtectionGroupId()));
+            for (ProtectionElement element : elements) {
+                if (AUTHORIZED_STUDY_ELEMENTS_GROUP_OBJECT.equals(element.getObjectId())
+                                                            && NumberUtils.isNumber(element.getValue())) {
+                    authorizedStudyElementsGroupIds.add(Long.valueOf(element.getValue()));
+                }
+            }
+        }
+        return authorizedStudyElementsGroupIds;
+    }    
+    
+    
     /**
      * {@inheritDoc}
      */
@@ -234,7 +278,7 @@ public class SecurityManagerImpl implements SecurityManager {
     }
     
     @SuppressWarnings(UNCHECKED) // CSM API is untyped
-    private Set<ProtectionGroup> retrieveStudyManagerProtectionGroups(String userId) 
+    private Set<ProtectionGroup> retrieveProtectionGroups(String userId, String csmRoleToBeRetrieved) 
     throws CSException {
         Set<ProtectionGroup> protectionGroups = new HashSet<ProtectionGroup>();
         Set<Group> groups = getAuthorizationManager().getGroups(userId);
@@ -243,7 +287,7 @@ public class SecurityManagerImpl implements SecurityManager {
                 getAuthorizationManager().getProtectionGroupRoleContextForGroup(String.valueOf(group.getGroupId()));
             for (ProtectionGroupRoleContext pgrc : pgrcs) {
                 for (Role role : (Set<Role>) pgrc.getRoles()) {
-                    if (STUDY_MANAGER_ROLE.equals(role.getName())) {
+                    if (csmRoleToBeRetrieved.equals(role.getName())) {
                         protectionGroups.add(pgrc.getProtectionGroup());
                         break;
                     }
@@ -299,7 +343,7 @@ public class SecurityManagerImpl implements SecurityManager {
                 Set<User> owners = new HashSet<User>();
                 owners.add(user);
                 element.setOwners(owners);
-                element.setProtectionGroups(retrieveStudyManagerProtectionGroups(userId));
+                element.setProtectionGroups(retrieveProtectionGroups(userId, STUDY_MANAGER_ROLE));
                 getAuthorizationManager().createProtectionElement(element);
             }
         }

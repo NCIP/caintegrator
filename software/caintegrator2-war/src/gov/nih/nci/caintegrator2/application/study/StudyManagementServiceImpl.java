@@ -146,6 +146,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -354,6 +355,22 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         getDao().delete(authorizedStudyElementsGroup);
         daoSave(studyConfiguration);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementsGroups(String username)
+    throws CSSecurityException {
+        List<AuthorizedStudyElementsGroup> list = new ArrayList<AuthorizedStudyElementsGroup>();
+        try {
+            list = getDao().getAuthorizedStudyElementGroups(username);
+        } catch (HibernateException e) {
+            throw new IllegalStateException("Error retrieving AuthorizedStudyElements data.");
+        }
+
+        return list;
+    }    
+    
 
     /**
      * {@inheritDoc}

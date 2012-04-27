@@ -163,5 +163,16 @@ public interface SecurityManager {
      * @return T/F value if it exists.
      */
     boolean doesUserExist(String username);
+
+    /**
+     * Retrieves all AuthorizedStudyElementsGroups that this user has access to.
+     * @param username to check access for.
+     * @param availableGroups the AuthorizedStudyElementsGroups that have been created for this Study.
+     * @return all AuthorizedStudyElementsGroups that this user has access to
+     * @throws CSException if there's a problem retrieving authorization manager from CSM.
+     */
+    Set<AuthorizedStudyElementsGroup> retrieveAuthorizedStudyElementsGroupsForInvestigator(String username,
+                                                                Set<AuthorizedStudyElementsGroup> availableGroups)
+        throws CSException;;
     
 }

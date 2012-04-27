@@ -100,6 +100,7 @@ import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
@@ -111,6 +112,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @SuppressWarnings("PMD")
 public class CompoundCriterionHandlerTest {
+    
+    private static final String USER_EXISTS = "studyManager";
     
     @Test
     public void testGetMatches() throws InvalidCriterionException {
@@ -124,13 +127,15 @@ public class CompoundCriterionHandlerTest {
         group.setName("name");
         study.getAnnotationGroups().add(group);
         Query query = new Query();
-        StudySubscription subscription = new StudySubscription();
-        subscription.setStudy(study);
-        query.setSubscription(subscription);
         study.setDefaultTimepoint(new Timepoint());
-        
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        study.setStudyConfiguration(studyConfiguration);
+        study.setStudyConfiguration(studyConfiguration);       
+        UserWorkspace userWorkspace = new UserWorkspace();
+        userWorkspace.setUsername(USER_EXISTS);
+        StudySubscription studySubscription = new StudySubscription();
+        studySubscription.setUserWorkspace(userWorkspace);
+        studySubscription.setStudy(study);
+        query.setSubscription(studySubscription);        
         
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
         annotationDefinition.setId(1L);
