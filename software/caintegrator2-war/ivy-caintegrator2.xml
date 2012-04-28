@@ -138,7 +138,7 @@
     <dependency org="commons-httpclient" name="commons-httpclient" rev="3.0" conf="compile,runtime->master"/>
     <dependency org="oro" name="oro" rev="2.0.8" conf="runtime,test-cobertura->master"/>
     <dependency org="gov.nih.nci.security" name="clm" rev="4.2.beta_jboss51" transitive="false" conf="compile,runtime->default">
-			<artifact name="clm" type="jar" url="https://ncimvn.nci.nih.gov/nexus/content/repositories/public/gov/nih/nci/security/clm/4.2.beta_jboss51/clm-4.2.beta_jboss51-fix.jar" />
+        <artifact name="clm" type="jar" url="https://ncimvn.nci.nih.gov/nexus/content/repositories/public/gov/nih/nci/security/clm/4.2.beta_jboss51/clm-4.2.beta_jboss51-fix.jar" />
     </dependency>
     <dependency org="com.oracle" name="ojdbc14" rev="10.2.0.3.0" conf="runtime->master"/>
     <dependency org="displaytag" name="displaytag" rev="1.2" conf="runtime->master"/>
@@ -149,32 +149,31 @@
     <dependency org="org.directwebremoting" name="dwr" rev="2.0.6" conf="runtime->master" />
     <dependency org="commons-dbcp" name="commons-dbcp" rev="1.2.1" conf="runtime->master" />
     <dependency org="org.apache.axis2" name="axis2-saaj" rev="1.1" conf="runtime->default" />
-
-    <!-- caGrid 1.2 stuff -->
-    <dependency org="gov.nih.nci.cagrid" name="data-utils" rev="1.2" conf="runtime->master" />
-    <dependency org="gov.nih.nci.cagrid" name="data-stubs" rev="1.2" conf="runtime->master" />
-    <dependency org="gov.nih.nci.cagrid" name="transfer-client" rev="1.2" conf="runtime->master" />
-    <dependency org="cagrid" name="cagrid-transfer-stubs" rev="1.2nci" conf="runtime->default" />
-    <dependency org="gov.nih.nci.cagrid" name="transfer-common" rev="1.2" conf="runtime->default" />
-    <dependency org="gov.nih.nci.cagrid" name="dataextensions-style-cacore32" rev="1.2" conf="runtime->default" transitive="false"/>
-    <dependency org="gov.nih.nci.cagrid" name="sdkquery4-processor" rev="1.2" conf="runtime->master" transitive="false" />
-    <dependency org="gov.nih.nci.cagrid" name="discovery" rev="1.2" conf="runtime->default" transitive="false" />
-    <dependency org="gov.nih.nci.cagrid" name="metadatautils" rev="1.2" conf="runtime->default" transitive="false" />
-    <dependency org="gov.nih.nci.cagrid" name="metadata-data" rev="1.2" conf="compile,runtime->default" transitive="false" />
-    <dependency org="gov.nih.nci.cagrid" name="metadata-common" rev="1.2" conf="compile,runtime->default" transitive="false" />
-    <dependency org="gov.nih.nci.cagrid" name="metadata-security" rev="1.2" conf="compile,runtime->default" transitive="false" />
-    <dependency org="gov.nih.nci.cagrid" name="gts-client" rev="1.2" conf="runtime->master" transitive="false" />
-    <dependency org="gov.nih.nci.cagrid" name="service-security-provider-client" rev="1.2" conf="compile,runtime->master" transitive="false" />
-    <dependency org="gov.nih.nci.cagrid" name="service-security-provider-common" rev="1.2" conf="compile,runtime->master" transitive="false" />
-    <dependency org="gov.nih.nci.cagrid" name="service-security-provider-stubs" rev="1.2" conf="runtime->master" transitive="false" />
+    
+    <!-- caGrid 1.4 stuff -->
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-data-utils" rev="1.4" conf="runtime->default" />
+    <dependency org="cagrid" name="cagrid-data-stubs" rev="1.4" conf="runtime->master" />
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-transfer-client" rev="1.4" conf="runtime->default" />
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-transfer-stubs" rev="1.4" conf="runtime->default" />
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-transfer-common" rev="1.4" conf="runtime->default" />
+    <dependency org="cagrid" name="cagrid-sdkquery4-processor" rev="1.4" conf="runtime->master" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-discovery" rev="1.4" conf="runtime->default" transitive="false"/>
+    <dependency org="cagrid" name="cagrid-metadatautils" rev="1.4" conf="runtime->default" transitive="false" />
+    <dependency org="cagrid" name="cagrid-metadata-data" rev="1.4" conf="compile,runtime->default" transitive="false" />
+    <dependency org="cagrid" name="cagrid-metadata-common" rev="1.4" conf="compile,runtime->default" transitive="false" />
+    <dependency org="cagrid" name="cagrid-metadata-security" rev="1.4" conf="compile,runtime->default" transitive="false" />
+    <dependency org="cagrid" name="cagrid-gts-client" rev="1.4" conf="runtime->master" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-service-security-provider-client" rev="1.4" conf="compile,runtime->master" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-service-security-provider-common" rev="1.4" conf="compile,runtime->master" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-service-security-provider-stubs" rev="1.4" conf="runtime->master" transitive="false" />
+    <!--  Keeping the one bulk data transfer jar version 1.2 as it doesn't exist in 1.4 -->
     <dependency org="gov.nih.nci.cagrid" name="bulkdatatransfer-stubs" rev="1.2" conf="runtime->master" transitive="false" />
-    <dependency org="gov.nih.nci.cagrid" name="bulkdatatransfer-common" rev="1.2" conf="runtime->master" transitive="false" />
-    <dependency org="gov.nih.nci.cagrid" name="bulkdatatransfer-client" rev="1.2" conf="runtime->master" transitive="false" />
-    <dependency org="cagrid" name="cagrid-core" rev="1.2.0.1nci" conf="compile,runtime->default"/>
+    <dependency org="cagrid" name="cagrid-core" rev="1.4" conf="compile,runtime->default" />
     <dependency org="cryptix" name="cryptix" rev="1.2nci" conf="runtime->master" />
     <dependency org="cryptix" name="cryptix-asn1" rev="0.1.11nci" conf="runtime->master" />
     <dependency org="cryptix" name="cryptix" rev="3.2.0" conf="runtime->master" />
     <dependency org="globus" name="puretls" rev="4.0.3" conf="runtime->master" />
+    
 
     <!-- quartz 1.5.2 scheduler -->
     <dependency org="opensymphony" name="quartz" rev="1.6.1" conf="runtime->master" />
