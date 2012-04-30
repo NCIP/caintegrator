@@ -45,6 +45,8 @@ import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.ejb.EJBAccessException;
+
 import org.apache.commons.lang.xwork.time.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -103,7 +105,7 @@ public class DataRefreshJobTest {
     @Test
     public void executeInternalNoExperiment() throws Exception {
         when(caArrayFacade.getLastDataModificationDate(any(GenomicDataSourceConfiguration.class)))
-            .thenThrow(new ExperimentNotFoundException("Experiement not found"));
+        .thenThrow(new ExperimentNotFoundException("Experiement not found"));
         job.executeInternal(mock(JobExecutionContext.class));
         verify(dao, times(1)).getAllGenomicDataSources();
         verify(dao, times(0)).save(anyObject());
@@ -117,7 +119,20 @@ public class DataRefreshJobTest {
     @Test
     public void executeInternalConnectionFails() throws Exception {
         when(caArrayFacade.getLastDataModificationDate(any(GenomicDataSourceConfiguration.class)))
-            .thenThrow(new ConnectionException("Connection Failed"));
+        .thenThrow(new ConnectionException("Connection Failed"));
+        job.executeInternal(mock(JobExecutionContext.class));
+        verify(dao, times(1)).getAllGenomicDataSources();
+        verify(dao, times(0)).save(anyObject());
+        verify(dao, times(1)).markStudiesAsNeedingRefresh();
+    }
+
+    /**
+     * Tests job execution when an EJB access error occurs.
+     * @throws Exception on error
+     */
+    public void executeInternalEJBError() throws Exception {
+        when(caArrayFacade.getLastDataModificationDate(any(GenomicDataSourceConfiguration.class)))
+        .thenThrow(new EJBAccessException());
         job.executeInternal(mock(JobExecutionContext.class));
         verify(dao, times(1)).getAllGenomicDataSources();
         verify(dao, times(0)).save(anyObject());
