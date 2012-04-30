@@ -156,7 +156,7 @@
 	<classpathentry kind="lib" path="/Users/ajevans/dev/caintegrator2/software/lib/caintegrator2-compile/cagrid-metadata-common-1.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/test-junit/spring-test-2.5.6.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/genepattern-3.2.1.jar"/>
-	<classpathentry kind="lib" path="/Users/ajevans/dev/caintegrator2/software/lib/caintegrator2-compile/data-utils-1.4.jar"/>
+	<classpathentry kind="lib" path="/Users/ajevans/dev/caintegrator2/software/lib/caintegrator2-compile/cagrid-data-utils-1.4.jar"/>
 	<classpathentry kind="lib" path="/Users/ajevans/dev/caintegrator2/software/lib/caintegrator2-compile/caGrid-discovery-1.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/affxfusion-1.1.jar"/>
 	<classpathentry kind="lib" path="/Users/ajevans/dev/caintegrator2/software/lib/caintegrator2-compile/cagrid-metadatautils-1.4.jar"/>
