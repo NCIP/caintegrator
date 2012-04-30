@@ -39,6 +39,8 @@ import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.EJBAccessException;
+
 import org.apache.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -61,20 +63,30 @@ public class DataRefreshJob extends QuartzJobBean {
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         List<GenomicDataSourceConfiguration> dataSources = dao.getAllGenomicDataSources();
         for (GenomicDataSourceConfiguration dataSource : dataSources) {
-            try {
-                Date lastModifiedDate = caArrayFacade.getLastDataModificationDate(dataSource);
-                boolean modified = lastModifiedDate != null
-                        ? lastModifiedDate.after(dataSource.getLastModifiedDate()) : false;
-                dataSource.setDataRefreshed(modified);
-                dao.save(dataSource);
-            } catch (ExperimentNotFoundException e) {
-                LOG.error("Unable to find experiment " + dataSource.getExperimentIdentifier(), e);
-            } catch (ConnectionException e) {
-                LOG.error("Error connecting to data source.", e);
-            }
+            handleModification(dataSource);
         }
         dao.markStudiesAsNeedingRefresh();
         LOG.info("Data Refresh Job successfully executed.");
+    }
+
+    /**
+     * @param dataSource
+     */
+    private void handleModification(GenomicDataSourceConfiguration dataSource) {
+        try {
+            Date lastModifiedDate = caArrayFacade.getLastDataModificationDate(dataSource);
+            boolean modified = lastModifiedDate != null
+                    ? lastModifiedDate.after(dataSource.getLastModifiedDate()) : false;
+            dataSource.setDataRefreshed(modified);
+            dao.save(dataSource);
+        } catch (ExperimentNotFoundException e) {
+            LOG.error("Unable to find experiment " + dataSource.getExperimentIdentifier(), e);
+        } catch (ConnectionException e) {
+            LOG.error("Error connecting to data source.", e);
+        } catch (EJBAccessException e) {
+            LOG.error("Error with an ejb connection.", e);
+
+        }
     }
 
     /**
