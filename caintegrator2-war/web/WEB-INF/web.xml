@@ -8,12 +8,20 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             /WEB-INF/classes/application-config-common-security.xml
-            <!-- TODO Build needs to be updated to remove whichever of these is not active-->
-            /WEB-INF/classes/application-config-non-cas-security.xml
-            <!-- /WEB-INF/classes/application-config-cas-security.xml -->
+        <!-- Configuration for CAS SSO-->
+        <!-- /WEB-INF/classes/application-config-cas-security.xml -->
+        <!-- Configuration for non SSO-->
+        <!-- /WEB-INF/classes/application-config-non-cas-security.xml -->
             /WEB-INF/classes/caintegrator2-config.xml
-        </param-value>
+         </param-value>
     </context-param>
+    
+    <context-param>
+        <description>This parameter indicates to the application that single sign on is enabled and it should not show login fields.</description>
+        <param-name>ssoEnabled</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
     <context-param>
       <param-name>log4jConfigLocation</param-name>
       <param-value>/WEB-INF/classes/log4j.xml</param-value>
