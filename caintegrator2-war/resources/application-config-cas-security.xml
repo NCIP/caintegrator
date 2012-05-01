@@ -8,7 +8,12 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
-
+				/services/**=sessionContextIntegrationFilter
+                /**/tutorials.action/**=sessionContextIntegrationFilter
+                /registration/input.action/**=sessionContextIntegrationFilter
+                /registration/save.action/**=sessionContextIntegrationFilter
+				/**/login.action=sessionContextIntegrationFilter,casProcessingFilter,basicProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor,logoutFilter
+                /**/*.action/**=sessionContextIntegrationFilter,logoutFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
 				/**=sessionContextIntegrationFilter,casProcessingFilter,basicProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor,logoutFilter
 			</value>
 		</property>
@@ -45,17 +50,17 @@
         </property>
         <!-- TODO is this key property necessary? -->
         <property name="key">
-            <value>somethingelse</value>
+            <value>@cas.ticket.key@</value>
         </property>
     </bean>
 
     <!--TODO Need to update the below host & port to be configured by the build. -->
     <bean id="casProxyTicketValidator" class="org.acegisecurity.providers.cas.ticketvalidator.CasProxyTicketValidator">
         <property name="casValidate">
-            <value>https://localhost:8443/cas/proxyValidate</value>
+            <value>https://@cas.server.hostname@:@cas.server.port@/cas/proxyValidate</value>
         </property>
         <property name="proxyCallbackUrl">
-            <value>https://localhost:8443/cas/casProxy/receptor</value>
+            <value>https://@cas.server.hostname@:@cas.server.port@/cas/casProxy/receptor</value>
         </property>
         <property name="serviceProperties">
             <ref local="serviceProperties"/>
@@ -90,7 +95,7 @@
     <!-- TODO Need to update the below to set the host & port during build. -->
     <bean id="serviceProperties" class="org.acegisecurity.ui.cas.ServiceProperties">
         <property name="service">
-            <value>http://localhost:47210/caintegrator/j_acegi_security_check</value>
+            <value>http://@jboss.server.hostname@:@jboss.server.port@/caintegrator/j_acegi_security_check</value>
         </property>
         <property name="sendRenew">
             <value>false</value>
@@ -108,7 +113,7 @@
     <!-- The location of your CAS server login page.-->
     <bean id="processingFilterEntryPoint" class="org.acegisecurity.ui.cas.CasProcessingFilterEntryPoint">
         <property name="loginUrl">
-            <value>https://localhost:8443/cas/login</value>
+            <value>https://@cas.server.hostname@:@cas.server.port@/cas/login</value>
         </property>
         <property name="serviceProperties">
             <ref local="serviceProperties"/>
