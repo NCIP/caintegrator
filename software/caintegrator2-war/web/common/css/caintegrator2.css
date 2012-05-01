@@ -1,6 +1,6 @@
 /* Default Tags */
 
-:root 
+:root
 { overflow-y:scroll; }
 BODY, HTML
 { margin:0; padding:0; font-family:arial,helvetica,sans-serif; color:#000; font-size:87%; background:#fff }
@@ -30,7 +30,7 @@ A:visited
 { color:#475882 }
 LI
 { list-style-type:none; margin:0; padding:0 }
-OL LI 
+OL LI
 { list-style-type:decimal; padding:3px }
 P,LI,H1,H2,H3,H4
 { line-height:1.4em }
@@ -64,7 +64,7 @@ SUB
 { font-size:80%; vertical-align:-15% }
 SUP
 { font-size:80%; vertical-align:35% }
-:lang(en) SUB 
+:lang(en) SUB
 { font-size:70%; vertical-align:-20% }
 FIELDSET
 { -moz-border-radius:5px; padding:0 10px 10px 10px; margin:10px 15px 10px 15px;  }
@@ -148,7 +148,7 @@ LEGEND INPUT, LEGEND SELECT
     line-height:1.5em; padding:0 10px 4px 19px; }
 
 
-/* Navigation */ 
+/* Navigation */
 
 .inActiveLink
 { cursor: default; }
@@ -201,7 +201,7 @@ LEGEND INPUT, LEGEND SELECT
 { padding:0 3px }
 #leftnav UL.menu LI.treenav UL.pde A:hover
 { text-decoration:none; background:#eee }
-#leftnav UL.menu LI.treenav UL.pde LI LI LI 
+#leftnav UL.menu LI.treenav UL.pde LI LI LI
 { padding:3px 0 3px 10px }
 
 #leftnav UL.menu LI.treenav UL.pde LI LI LI A.Searches, #leftnav UL.menu LI.treenav UL.pde LI LI LI A.lists
@@ -282,6 +282,8 @@ LEGEND .small
 { padding:8px; background:#fff }
 .padme10
 { padding:10px; }
+.padtop10
+{ padding-top:10px; }
 .normal
 { font-weight:normal }
 .lowercase
@@ -316,7 +318,7 @@ P.intro, .homepage P
 
 /* Right Side Bar */
 
-#sidebar 
+#sidebar
 {   background:#e3e3e3; width:174px; float:right; min-height:400px }
 #sidebar H1
 { border-top:0; background:#5c5c5c; color:#e3e6ec; padding-top:5px  }
@@ -477,11 +479,11 @@ TABLE.data TD A IMG.thumbnail:hover
 
 /* Details Pages */
 
-TABLE.details, TABLE.detailsbox 
+TABLE.details, TABLE.detailsbox
 { font-size:92%; background:#fff; margin:0; float:left; width:22%;}
 DIV.detailsbox
 { float:left; width:22%; }
-TABLE.detailsbox 
+TABLE.detailsbox
 { border:1px solid #ccc; }
 TABLE.details TD, TABLE.detailsbox TD
 { padding:6px; }
@@ -565,11 +567,11 @@ UL#maintabs
 { height:1.6em; margin:0; font-weight:bold; list-style:none; padding-left:3px; clear:both; }
 UL#maintabs LI
 { float:left;   margin:0; padding:0 0 0 5px; text-align:center; background:none }
-UL#maintabs LI A 
+UL#maintabs LI A
 { font-size:115%; text-decoration:none !important; display:block; margin:0; padding:5px 10px; background:#e4e4e4 url("../../images/bg_h2.gif") repeat-x 0 -10px; color:#475b82; text-decoration:none; border-top:2px solid #efefef;  border-right:1px solid #ccc;  }
-UL#maintabs LI A:hover 
+UL#maintabs LI A:hover
 {   color:#333; background:#efefef; text-decoration:none !important; }
-UL#maintabs LI A.active, UL#maintabs LI A.active:hover  
+UL#maintabs LI A.active, UL#maintabs LI A.active:hover
 { outline:none; color:#fff; background-color:#5d7ba2; border-top:3px solid #475b82; border-left:1px solid #475b82; border-right:0;  background-image:none }
 UL#maintabs LI.active
 { color:#333; background-color:#5d7ba2; }
@@ -583,11 +585,11 @@ UL#sectabs
 { height:1.4em; margin:-2.3em 10px 0 0; font-weight:bold; list-style:none; padding-left:3px; clear:both; float:right; }
 UL#sectabs LI
 { float:left;   margin:0; padding:0 5px 0 0; text-align:center; background:none }
-UL#sectabs LI A 
+UL#sectabs LI A
 { font-size:100%; text-decoration:none !important; display:block; margin:0; padding:3px 10px; background:#d6dce6 url("../../images/bg_th.gif") repeat-x top; color:#333; text-decoration:none; border-left:1px solid #d6dce6; border-right:1px solid #d6dce6; border-top:1px solid #d6dce6; }
-UL#sectabs LI A:hover 
+UL#sectabs LI A:hover
 { font-size:100%; text-decoration:none !important; display:block; margin:0; padding:3px 10px; background:#d6dce6 url("../../images/bg_th.gif") repeat-x 0 -5px; color:#000; text-decoration:none; border-left:1px solid #d6dce6; border-right:1px solid #d6dce6; border-top:1px solid #d6dce6; }
-UL#sectabs LI A.active, UL#sectabs LI A.active:hover 
+UL#sectabs LI A.active, UL#sectabs LI A.active:hover
 { outline:none; color:#333; background-color:#f8f8f8; border-top:3px solid #5d7ba2; border-bottom:2px solid #f8f8f8; border-left:1px solid #999; border-right:1px solid #999; background-image:none }
 UL#sectabs LI.active
 { color:#333;   background-color:#f8f8f8; }
@@ -646,7 +648,7 @@ A.icon:hover
 A.icon_off,A.icon_off:hover
 { background:#dcdcdc; border:1px solid #ccc; padding:4px; display:block; float:left; width:16px; height:16px; margin:0 0 0 2px }
 .drop
-{ text-decoration:line-through; color:#c00; } 
+{ text-decoration:line-through; color:#c00; }
 A.remove
 { font-size:92%; text-decoration:none; color:#666; background:url("../../images/ico_remove.gif") no-repeat; padding-left:15px; }
 A.remove:hover
@@ -655,11 +657,11 @@ A.remove:hover
 
 /* Centered Button Row at the Bottom */
 
-#content .btnrow, #content .btnrow2 
+#content .btnrow, #content .btnrow2
 { display:table; padding:0; margin:0 auto; list-style-type:none; white-space:nowrap; width: 100%;}
-#content .btnrow LI, #content .btnrow2 LI 
+#content .btnrow LI, #content .btnrow2 LI
 { display:table-cell; background:none }
-.actionsrow 
+.actionsrow
 { height:31px; background:#fbfcfb url("../../images/bg_h2.gif") repeat-x bottom;  margin-top:0px; padding:7px 10px 0 10px; clear:both; text-decoration:none !important; text-align:center; }
 .box2 .actionsrow
 { border:0 }
@@ -674,19 +676,21 @@ HTML>BODY .container { *display:inline-block; }
 
 /* Buttons */
 
-A.btn 
+A.btn
 { width:auto; background:transparent url("../../images/bg_btn_right.gif") no-repeat scroll top right; color:#414141; display:block; float:left; font:normal 12px arial, sans-serif; height:24px; line-height:24px; margin:0 20px; padding-right:9px; /* sliding doors padding */ text-decoration:none; }
+A.btn.flush_left_side
+{ margin-left: 0px}
 .actionsthin A.btn
 { margin:0 10px }
-A.btn SPAN.btn_img 
+A.btn SPAN.btn_img
 { background:transparent url("../../images/bg_btn_left.gif") no-repeat; display:block; line-height:17px; padding:4px 0 3px 9px; }
 A.btn:hover
 { background-position:center right; text-decoration:none !important; }
-A.btn:hover SPAN.btn_img 
+A.btn:hover SPAN.btn_img
 { background:transparent url("../../images/bg_btn_left.gif") no-repeat 0 -29px; display:block; line-height:17px; padding:4px 0 3px 9px; }
-A.btn:active 
+A.btn:active
 { background-position:bottom right; color:#000; outline:none; /* hide dotted outline in Firefox */ }
-A.btn:active SPAN.btn_img 
+A.btn:active SPAN.btn_img
 { background-position:bottom left; padding:5px 0 2px 9px; /* push text down 1px */ }
 A.btn SPAN SPAN
 { display:block; padding:0 0 0 20px }
@@ -755,9 +759,9 @@ A.btn SPAN.igv
 { padding:2px; margin:0 !important }
 #content UL.checklist LI INPUT
 { margin:0 !important; padding:0; }
-#content UL.checklist LI LABEL 
+#content UL.checklist LI LABEL
 { font-weight:normal !important; display:block; padding:0 0 0 22px; text-indent:-22px; cursor:pointer; text-align:left !important }
-#content UL.checklist LI LABEL:hover, #content UL.checklist LI LABEL.hover  
+#content UL.checklist LI LABEL:hover, #content UL.checklist LI LABEL.hover
 { background:#ffc }
 .checklistfooter
 { padding:2px 0; margin:0; border-right:1px solid #dcdcdc; background:#e5e5e5 url("../../images/bg_grad3d.gif") repeat-x; text-align:left; border-top:0; font-size:92%; font-weight:bold }
@@ -796,7 +800,7 @@ TABLE.data TBODY TR TH FORM TABLE.editStudyFile TBODY TR TD
 
 .form_wrapper_outer
 { border:1px solid #999; background:#eee; padding:10px 10px 5px 10px; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius:10px; min-width:900px}
-.form_wrapper_outer .bottombtns 
+.form_wrapper_outer .bottombtns
 { margin:0 auto; width:28em; height:3em; }
 TABLE.form_wrapper_table
 { border:1px solid #ccc; width:100%; background:#fff; margin-bottom:15px; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px;}
