@@ -284,7 +284,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
     </target>
 
 	<!-- Produces all distributions: installer, upgrader and source -->
-    <target name="dist" description="Makes all distributions: installer, upgrader and source"
+    <target name="dist" description="Makes all distributions: installer, gui installer, upgrader and source"
             depends="
             build:all,
             dist:installer,
