@@ -8,30 +8,20 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
+				/http/remoteauthenticationmanager/**=sessionContextIntegrationFilter
 				/services/**=sessionContextIntegrationFilter
                 /**/tutorials.action/**=sessionContextIntegrationFilter
                 /registration/input.action/**=sessionContextIntegrationFilter
                 /registration/save.action/**=sessionContextIntegrationFilter
 				/**/login.action=sessionContextIntegrationFilter,casProcessingFilter,basicProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor,logoutFilter
+				/http/applicationservice/**=sessionContextIntegrationFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
+                /gethtml/**=sessionContextIntegrationFilter,logoutFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
+                /getxml/**=sessionContextIntegrationFilter,logoutFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
                 /**/*.action/**=sessionContextIntegrationFilter,logoutFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
 				/**=sessionContextIntegrationFilter,casProcessingFilter,basicProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor,logoutFilter
 			</value>
 		</property>
 	</bean>
-<!--
-    Need to figure out the proper configuration for the following filter patterns.
-    /http/remoteauthenticationmanager/**=sessionContextIntegrationFilter
-                /services/**=sessionContextIntegrationFilter
-                /**/tutorials.action/**=sessionContextIntegrationFilter
-                /registration/input.action/**=sessionContextIntegrationFilter
-                /registration/save.action/**=sessionContextIntegrationFilter
-                /**/login.action/**=sessionContextIntegrationFilter,logoutFilter
-                /http/applicationservice/**=sessionContextIntegrationFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
-                /gethtml/**=sessionContextIntegrationFilter,logoutFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
-                /getxml/**=sessionContextIntegrationFilter,logoutFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
-                /**/*.action/**=sessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
-                /j_acegi_security_check/**=sessionContextIntegrationFilter,authenticationProcessingFilter
--->
 
 <!-- START CAS Configuration content -->
 
