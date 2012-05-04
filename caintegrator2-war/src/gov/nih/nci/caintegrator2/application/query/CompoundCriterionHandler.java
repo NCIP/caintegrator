@@ -87,7 +87,7 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.AuthorizedAbstractCriterion;
+import gov.nih.nci.caintegrator2.application.study.AuthorizedQuery;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
@@ -104,7 +104,6 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
-import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -115,6 +114,7 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.security.SecurityHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -122,8 +122,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Handles CompoundCriterion objects.
@@ -262,21 +260,30 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         // get restricted elements
         StringComparisonCriterion criterionForRestrictingSubjects = new StringComparisonCriterion();
         criterionForRestrictingSubjects.setEntityType(EntityTypeEnum.SUBJECT);
-        List<StudySubjectAssignment> listOfAuthorizedStudySubjectAssignments = new ArrayList<StudySubjectAssignment>();
-        String username = query.getSubscription().getUserWorkspace().getUsername();
+        Set<StudySubjectAssignment> listOfAllowedStudySubjectAssignments = new HashSet<StudySubjectAssignment>();
+        String username = SecurityHelper.getCurrentUsername();
        
-        for (AuthorizedStudyElementsGroup listOfASEG : dao.getAuthorizedStudyElementGroups(username)) {
-            for (AuthorizedAbstractCriterion listOfAAC : listOfASEG.getAuthorizedAbstractCriterions()) {
+        for (AuthorizedStudyElementsGroup asg : dao.getAuthorizedStudyElementGroups(username,
+                                                                                        query.getSubscription().
+                                                                                        getStudy().
+                                                                                        getStudyConfiguration().
+                                                                                        getId())) {
+            for (AuthorizedQuery authorizedQuery : asg.getAuthorizedQuerys()) {
+                for (AbstractCriterion abstractCriterion : authorizedQuery.
+                                                            getQuery().
+                                                            getCompoundCriterion().
+                                                            getCriterionCollection()) {
 
-                AbstractAnnotationCriterion abstractAnnotationCriterion = new AbstractAnnotationCriterion();
-                AnnotationFieldDescriptor annotationFieldDescriptor
-                                            = abstractAnnotationCriterion.getAnnotationFieldDescriptor();
-                criterionForRestrictingSubjects.setWildCardType(WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING);
-                criterionForRestrictingSubjects.setStringValue(StringUtils.EMPTY);
-                criterionForRestrictingSubjects.setAnnotationFieldDescriptor(annotationFieldDescriptor); 
-                listOfAuthorizedStudySubjectAssignments.
-                                addAll(dao.findMatchingSubjects(criterionForRestrictingSubjects,
-                                                                    query.getSubscription().getStudy()));
+                    StringComparisonCriterion stringComparisonCriterion = (StringComparisonCriterion) abstractCriterion;
+                    AnnotationFieldDescriptor annotationFieldDescriptor
+                                    = stringComparisonCriterion.getAnnotationFieldDescriptor();
+                    criterionForRestrictingSubjects.setWildCardType(stringComparisonCriterion.getWildCardType());
+                    criterionForRestrictingSubjects.setStringValue(stringComparisonCriterion.getStringValue());
+                    criterionForRestrictingSubjects.setAnnotationFieldDescriptor(annotationFieldDescriptor); 
+                    listOfAllowedStudySubjectAssignments.
+                                    addAll(dao.findMatchingSubjects(criterionForRestrictingSubjects,
+                                                                        query.getSubscription().getStudy()));
+                }
             }
         }
 
@@ -286,8 +293,10 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
             for (ResultRow resultRow : allValidRows) {
                 listOfRestrictedStudySubjectAssignments.add(resultRow.getSubjectAssignment());
             }
-            listOfRestrictedStudySubjectAssignments.retainAll(listOfAuthorizedStudySubjectAssignments);
-            for (ResultRow resultRow : allValidRows) {
+            listOfRestrictedStudySubjectAssignments.retainAll(listOfAllowedStudySubjectAssignments);
+            Set<ResultRow> tempRows = new HashSet<ResultRow>();
+            tempRows.addAll(allValidRows);
+            for (ResultRow resultRow : tempRows) {
                 if (!listOfRestrictedStudySubjectAssignments.contains(resultRow.getSubjectAssignment())) {
                     allValidRows.remove(resultRow);
                 }

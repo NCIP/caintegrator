@@ -85,106 +85,42 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 
 /**
- * A grouping of the parts of a study that are restricted and need to be authorized.
+ * An AuthorizedQuery is a <code>Query</code> that has been
+ * authorized for inclusion in an <code>AuthorizedStudyElementsGroup</code>.
  */
-public class AuthorizedStudyElementsGroup extends AbstractCaIntegrator2Object {
-    
+public class AuthorizedQuery extends AbstractCaIntegrator2Object {
+
     private static final long serialVersionUID = 1L;
-    private String authorizedStudyElementsGroupName;
-    private String authorizedStudyElementsGroupDescription;
-    private StudyConfiguration studyConfiguration;
-
-    private List<AuthorizedAnnotationFieldDescriptor> authorizedAnnotationFieldDescriptors =
-                                                new ArrayList<AuthorizedAnnotationFieldDescriptor>();
-
-    private List<AuthorizedGenomicDataSourceConfiguration> authorizedGenomicDataSourceConfigurations =
-                                                new ArrayList<AuthorizedGenomicDataSourceConfiguration>();
-    
-    private List<AuthorizedQuery> authorizedQuerys =
-                                                new ArrayList<AuthorizedQuery>();    
+    private Query query;
+    private AuthorizedStudyElementsGroup authorizedStudyElementsGroup;
 
     /**
-     * @return the groupName
+     * @param query the query to set
      */
-    public String getGroupName() {
-        return authorizedStudyElementsGroupName;
+    public void setQuery(Query query) {
+        this.query = query;
     }
     /**
-     * @return the groupDescription
+     * @return the Query
      */
-    public String getGroupDescription() {
-        return authorizedStudyElementsGroupDescription;
+    public Query getQuery() {
+        return query;
+    }    
+    /**
+     * @param authorizedStudyElementsGroup the authorizedStudyElementsGroup to set
+     */
+    public void setAuthorizedStudyElementsGroup(AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
+        this.authorizedStudyElementsGroup = authorizedStudyElementsGroup;
     }
     /**
-     * @param groupName the groupName to set
+     * @return the authorizedStudyElementsGroup
      */
-    public void setGroupName(String groupName) {
-        this.authorizedStudyElementsGroupName = groupName;
+    public AuthorizedStudyElementsGroup getAuthorizedStudyElementsGroup() {
+        return authorizedStudyElementsGroup;
     }
-    /**
-     * @param groupDescription the groupDescription to set
-     */
-    public void setGroupDescription(String groupDescription) {
-        this.authorizedStudyElementsGroupDescription = groupDescription;
-    }
-    
-    /**
-     * @return the studyConfiguration
-     */
-    public StudyConfiguration getStudyConfiguration() {
-        return studyConfiguration;
-    }
-
-    /**
-     * @param studyConfiguration the studyConfiguration to set
-     */
-    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
-        this.studyConfiguration = studyConfiguration;
-    }
-    /**
-     * @return the authorizedAnnotationFieldDescriptors
-     */
-    public List<AuthorizedAnnotationFieldDescriptor> getAuthorizedAnnotationFieldDescriptors() {
-        return authorizedAnnotationFieldDescriptors;
-    }
-    /**
-     * @param authorizedAnnotationFieldDescriptors the authorizedAnnotationFieldDescriptors to set
-     */
-    public void setAuthorizedAnnotationFieldDescriptors(
-                List<AuthorizedAnnotationFieldDescriptor> authorizedAnnotationFieldDescriptors) {
-        this.authorizedAnnotationFieldDescriptors = authorizedAnnotationFieldDescriptors;
-    }
-    /**
-     * @param authorizedGenomicDataSourceConfigurations the authorizedGenomicDataSourceConfigurations to set
-     */
-    public void setAuthorizedGenomicDataSourceConfigurations(
-                List<AuthorizedGenomicDataSourceConfiguration> authorizedGenomicDataSourceConfigurations) {
-        this.authorizedGenomicDataSourceConfigurations = authorizedGenomicDataSourceConfigurations;
-    }
-    /**
-     * @return the authorizedGenomicDataSourceConfigurations
-     */
-    public List<AuthorizedGenomicDataSourceConfiguration> getAuthorizedGenomicDataSourceConfigurations() {
-        return authorizedGenomicDataSourceConfigurations;
-    }
-    /**
-     * @param authorizedQuerys the authorizedQuerys to set
-     */
-    public void setAuthorizedQuerys(List<AuthorizedQuery> authorizedQuerys) {
-        this.authorizedQuerys = authorizedQuerys;
-    }
-    /**
-     * @return the authorizedQuerys
-     */
-    public List<AuthorizedQuery> getAuthorizedQuerys() {
-        return authorizedQuerys;
-    }
-
 
 }

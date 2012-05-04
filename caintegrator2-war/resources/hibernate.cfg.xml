@@ -44,7 +44,7 @@
         <mapping resource="gov/nih/nci/caintegrator2/application/study/AnnotationFile.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/application/study/AnnotationGroup.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/application/study/AuthorizedAnnotationFieldDescriptor.hbm.xml" />
-        <mapping resource="gov/nih/nci/caintegrator2/application/study/AuthorizedAbstractCriterion.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator2/application/study/AuthorizedQuery.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/application/study/AuthorizedGenomicDataSourceConfiguration.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/application/study/AuthorizedStudyElementsGroup.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/application/study/ExternalLinkList.hbm.xml" />

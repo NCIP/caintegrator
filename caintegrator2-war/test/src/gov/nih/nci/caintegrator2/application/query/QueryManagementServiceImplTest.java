@@ -92,7 +92,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.AuthorizedAbstractCriterion;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedAnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedGenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
@@ -579,16 +578,6 @@ public class QueryManagementServiceImplTest {
         authorizedAnnotationFieldDescriptor.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
         authorizedAnnotationFieldDescriptor.setAnnotationFieldDescriptor(annotationFieldDescriptor);
         authorizedStudyElementsGroup.getAuthorizedAnnotationFieldDescriptors().add(authorizedAnnotationFieldDescriptor);
-        // add AuthorizedAbstractCriterion
-        AbstractAnnotationCriterion abstractAnnotationCriterion = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
-        AbstractCriterion abstractCriterion = (AbstractCriterion) abstractAnnotationCriterion;
-        //abstractAnnotationCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
-        //dao.save(abstractAnnotationCriterion);
-        AuthorizedAbstractCriterion authorizedAbstractCriterion = new AuthorizedAbstractCriterion();
-        authorizedAbstractCriterion.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
-        authorizedAbstractCriterion.setAbstractCriterion(abstractCriterion);
-        authorizedStudyElementsGroup.getAuthorizedAbstractCriterions().add(authorizedAbstractCriterion);
         // add AuthorizedGenomicDataSourceConfigurations
         AuthorizedGenomicDataSourceConfiguration authorizedGenomicDataSourceConfiguration = new AuthorizedGenomicDataSourceConfiguration();
         authorizedGenomicDataSourceConfiguration.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);

@@ -532,8 +532,10 @@ public interface CaIntegrator2Dao {
     /**
      * Retrieves AuthorizedStudyElementGroups that are accesible for this CSM user.
      * @param username the username to be used to check authorization.
+     * @param studyConfigurationId the StudyConfigurationId
      * @return AuthorizedStudyElementGroups that are accesible for this CSM user.
      */
-    List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementGroups(String username);
+
+    List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementGroups(String username, Long studyConfigurationId);
 
 }
