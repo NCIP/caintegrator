@@ -705,7 +705,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
     /**
      * Retrieves any existing field descriptors with the given name for the given study.
      * @param name to search existing annotation field descriptors for.
-     * @return any matching AnnotationFieldDescriptor in the study with the given name.
+     * @return any matching AnnotationFieldDescriptor in the study with the given name or null.
      */
     public AnnotationFieldDescriptor getExistingFieldDescriptorInStudy(String name) {
         return getMatchingDescriptor(name, getAllExistingDescriptors());

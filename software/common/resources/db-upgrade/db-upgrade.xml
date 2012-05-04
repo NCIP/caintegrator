@@ -491,5 +491,9 @@
     <changeSet id="1.4.6" author="aevansel">
         <comment>Adding columns to stored whether or not a study/genomic data souce has new data in caArray.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.4/upgrade-1.4.6.sql"/>
-    </changeSet>            
+    </changeSet>
+    <changeSet id="1.4.7" author="marplej">
+        <comment>Removing Authorized_Criterion table and structure and replacing with Authorized_Query.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.4/upgrade-1.4.7.sql"/>
+    </changeSet>
 </databaseChangeLog>

@@ -117,8 +117,10 @@ import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
@@ -134,11 +136,13 @@ import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
@@ -161,6 +165,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     private ArrayDataService arrayDataService;
     private Platform design;
     private FileManager fileManager;
+    private boolean isPublicSubscription = Boolean.FALSE;
     
     public AbstractDeployStudyTestIntegration() {
         setDefaultRollback(false);
@@ -205,6 +210,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         mapImages(imageSource);
         loadImageAnnotation(imageSource);
         deploy(userWorkspace);
+        workspaceService.subscribe(userWorkspace, studyConfiguration.getStudy(), isPublicSubscription());
         authorizeStudyElements();
         checkArrayData();
         checkQueries();
@@ -558,16 +564,24 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         }
     }
     
+    /**
+     * @throws ConnectionException
+     * @throws DataRetrievalException
+     * @throws ValidationException
+     * @throws IOException
+     * @throws InvalidCriterionException
+     * @throws CSException
+     */
     private void authorizeStudyElements()
     throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException, CSException {
         if (getAuthorizeStudy()) {
             logStart();
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup1 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup1","Gender");
+            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup1","Gender", "F");
             service.addAuthorizedStudyElementsGroup(studyConfiguration,authorizedStudyElementsGroup1);
 
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age");
+            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age", StringUtils.EMPTY);
             service.addAuthorizedStudyElementsGroup(studyConfiguration,authorizedStudyElementsGroup2);
             
             service.deleteAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup2);
@@ -578,12 +592,16 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     /**
      * This method creates and returns an AuthorizedStudyElementsGroup that
      * consists of elements from the current studyConfiguration.
-     * 
-     * @return the authorizedStudyElementsGroup
+     * @param studyConfiguration
+     * @param authorizedStudyElementsGroupName
+     * @param fieldDescriptorName
+     * @param annotationValue
+     * @return authorizedStudyElementsGroup
      */
     protected AuthorizedStudyElementsGroup createAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
                                                                                 String authorizedStudyElementsGroupName,
-                                                                                String fieldDescriptorName) {
+                                                                                String fieldDescriptorName,
+                                                                                String annotationValue) {
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
         authorizedStudyElementsGroup.setGroupName(authorizedStudyElementsGroupName);
         authorizedStudyElementsGroup.setStudyConfiguration(studyConfiguration);
@@ -596,23 +614,41 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         authorizedAnnotationFieldDescriptor.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
         authorizedAnnotationFieldDescriptor.setAnnotationFieldDescriptor(annotationFieldDescriptor);
         authorizedStudyElementsGroup.getAuthorizedAnnotationFieldDescriptors().add(authorizedAnnotationFieldDescriptor);
-        // add AuthorizedAbstractCriterion
-        AbstractAnnotationCriterion abstractAnnotationCriterion = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
-        AbstractCriterion abstractCriterion = (AbstractCriterion) abstractAnnotationCriterion;
-        //abstractAnnotationCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
-        //dao.save(abstractAnnotationCriterion);
-        AuthorizedAbstractCriterion authorizedAbstractCriterion = new AuthorizedAbstractCriterion();
-        authorizedAbstractCriterion.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
-        authorizedAbstractCriterion.setAbstractCriterion(abstractCriterion);
-        authorizedStudyElementsGroup.getAuthorizedAbstractCriterions().add(authorizedAbstractCriterion);
         // add AuthorizedGenomicDataSourceConfigurations
         AuthorizedGenomicDataSourceConfiguration authorizedGenomicDataSourceConfiguration = new AuthorizedGenomicDataSourceConfiguration();
         authorizedGenomicDataSourceConfiguration.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
         authorizedGenomicDataSourceConfiguration.setGenomicDataSourceConfiguration(studyConfiguration.getGenomicDataSources().get(0));
         authorizedStudyElementsGroup.getAuthorizedGenomicDataSourceConfigurations().add(authorizedGenomicDataSourceConfiguration);
+        // add AuthorizedQuery
+        Query query = new Query();
+        query.setName("TestAuthorizationQuery");
+        query.setDescription(desc);
+        
+        for (StudySubscription studySubscription : workspaceService.getWorkspace().getSubscriptionCollection()) {
+            if (studySubscription.getStudy().getId().equals(studyConfiguration.getStudy().getId())) {
+                query.setSubscription(studySubscription);
+            }
+        }
+        
+        query.setLastModifiedDate(new Date());
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
+        StringComparisonCriterion stringComparisonCriterion = new StringComparisonCriterion();
+        stringComparisonCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
+        stringComparisonCriterion.setStringValue(annotationValue);
+        stringComparisonCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
+        AbstractCriterion abstractCriterion = (AbstractCriterion) new AbstractAnnotationCriterion();
+        abstractCriterion = stringComparisonCriterion;
+        HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
+        abstractCriterionCollection.add(abstractCriterion);
+        query.getCompoundCriterion().setCriterionCollection(abstractCriterionCollection);
+        AuthorizedQuery authorizedQuery = new AuthorizedQuery();
+        authorizedQuery.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
+        authorizedQuery.setQuery(query);
+        authorizedStudyElementsGroup.getAuthorizedQuerys().add(authorizedQuery);        
+        
         return authorizedStudyElementsGroup;
-    }    
+    }
 
     protected HeatmapParameters getHeatmapParameters() {
         HeatmapParameters heatmapParameters = new HeatmapParameters();
@@ -818,6 +854,20 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
      */
     public void setDeploymentService(DeploymentService deploymentService) {
         this.deploymentService = deploymentService;
+    }
+
+    /**
+     * @return the isPublicSubscription
+     */
+    public boolean isPublicSubscription() {
+        return isPublicSubscription;
+    }
+
+    /**
+     * @param isPublicSubscription the isPublicSubscription to set
+     */
+    public void setPublicSubscription(boolean isPublicSubscription) {
+        this.isPublicSubscription = isPublicSubscription;
     }
 
 }

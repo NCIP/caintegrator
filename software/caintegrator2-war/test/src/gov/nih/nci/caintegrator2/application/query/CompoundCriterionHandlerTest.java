@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.ExpressionLevelCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -159,6 +160,8 @@ public class CompoundCriterionHandlerTest {
         AbstractAnnotationCriterion abstractAnnotationCriterion3 = new AbstractAnnotationCriterion();
         abstractAnnotationCriterion3.setEntityType(EntityTypeEnum.SUBJECT);
         abstractAnnotationCriterion3.setAnnotationFieldDescriptor(afd2);
+        ExpressionLevelCriterion expressionLevelCriterion1 = new ExpressionLevelCriterion();
+        expressionLevelCriterion1.setGeneSymbol("EGFR");
         compoundCriterion.getCriterionCollection().add(abstractAnnotationCriterion);
         
         CompoundCriterion compoundCriterion2 = new CompoundCriterion();
@@ -174,6 +177,26 @@ public class CompoundCriterionHandlerTest {
         CompoundCriterionHandler compoundCriterionHandler=CompoundCriterionHandler.create(compoundCriterion3, 
                 ResultTypeEnum.GENE_EXPRESSION);
         compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.OR);
+        
+        // test creating handler if CompoundCriterion criterionCollection is null.
+        CompoundCriterion compoundCriterion4 = new CompoundCriterion();
+        compoundCriterion4.setCriterionCollection(null);
+        CompoundCriterionHandler compoundCriterionHandler2=CompoundCriterionHandler.create(compoundCriterion4, 
+                ResultTypeEnum.GENE_EXPRESSION);
+        // test creating handler if CompoundCriterion criterionCollection is not null but is empty.
+        compoundCriterion4.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion4.setBooleanOperator(BooleanOperatorEnum.OR);
+        compoundCriterionHandler2=CompoundCriterionHandler.create(compoundCriterion4, 
+                ResultTypeEnum.GENE_EXPRESSION);
+        compoundCriterionHandler2.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        // test creating handler with ExpressionLevelCriterion
+        CompoundCriterion compoundCriterion5 = new CompoundCriterion();
+        compoundCriterion5.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion5.getCriterionCollection().add(expressionLevelCriterion1);
+        compoundCriterion5.setBooleanOperator(BooleanOperatorEnum.OR);
+        CompoundCriterionHandler compoundCriterionHandler3=CompoundCriterionHandler.create(compoundCriterion5, 
+                ResultTypeEnum.GENE_EXPRESSION);
+        compoundCriterionHandler3.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         
         compoundCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingSamplesCalled);
