@@ -23,20 +23,20 @@
             <list-index column="LIST_INDEX"/>
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.AuthorizedAnnotationFieldDescriptor"/>
         </list>     
-               
-        <list name="authorizedAbstractCriterions" lazy="false" cascade="all">
-            <cache usage="read-write" />
-            <key column="AUTHORIZED_STUDY_ELEMENTS_GROUP_ID" not-null="true"/>
-            <list-index column="LIST_INDEX"/>
-            <one-to-many class="gov.nih.nci.caintegrator2.application.study.AuthorizedAbstractCriterion"/>
-        </list>
-        
+
         <list name="authorizedGenomicDataSourceConfigurations" lazy="false" cascade="all">
             <cache usage="read-write" />
             <key column="AUTHORIZED_STUDY_ELEMENTS_GROUP_ID" not-null="true"/>
             <list-index column="LIST_INDEX"/>
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.AuthorizedGenomicDataSourceConfiguration"/>
-        </list>        
+        </list>
+
+        <list name="authorizedQuerys" lazy="false" cascade="all">
+            <cache usage="read-write" />
+            <key column="AUTHORIZED_STUDY_ELEMENTS_GROUP_ID" not-null="true"/>
+            <list-index column="LIST_INDEX"/>
+            <one-to-many class="gov.nih.nci.caintegrator2.application.study.AuthorizedQuery"/>
+        </list>
                           
 	</class>
 </hibernate-mapping>

@@ -359,11 +359,11 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementsGroups(String username)
+    public List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementsGroups(String username, Long id)
     throws CSSecurityException {
         List<AuthorizedStudyElementsGroup> list = new ArrayList<AuthorizedStudyElementsGroup>();
         try {
-            list = getDao().getAuthorizedStudyElementGroups(username);
+            list = getDao().getAuthorizedStudyElementGroups(username, id);
         } catch (HibernateException e) {
             throw new IllegalStateException("Error retrieving AuthorizedStudyElements data.");
         }

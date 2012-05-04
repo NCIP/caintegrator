@@ -90,6 +90,7 @@ import static org.junit.Assert.assertTrue;
 
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
@@ -145,16 +146,6 @@ public class AuthorizedStudyElementsGroupTest {
         authorizedAnnotationFieldDescriptorList1.add(authorizedAnnotationFieldDescriptor1);
         authorizedStudyElementsGroup1.setAuthorizedAnnotationFieldDescriptors(authorizedAnnotationFieldDescriptorList1);
         authorizedStudyElementsGroup1.getAuthorizedAnnotationFieldDescriptors().add(authorizedAnnotationFieldDescriptor1);
-        // create first authorizedabstractcriterion
-        AbstractCriterion abstractCriterion1 = (AbstractCriterion) new AbstractAnnotationCriterion();
-        AuthorizedAbstractCriterion authorizedAbstractCriterion1 = new AuthorizedAbstractCriterion();
-        authorizedAbstractCriterion1.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup1);
-        authorizedAbstractCriterion1.setAbstractCriterion(abstractCriterion1);
-        List<AuthorizedAbstractCriterion> authorizedAbstractCriterionList1 =
-            new ArrayList<AuthorizedAbstractCriterion>();
-        authorizedAbstractCriterionList1.add(authorizedAbstractCriterion1);
-        authorizedStudyElementsGroup1.setAuthorizedAbstractCriterions(authorizedAbstractCriterionList1);
-        authorizedStudyElementsGroup1.getAuthorizedAbstractCriterions().add(authorizedAbstractCriterion1);
         // create first authorizedgenomicdatasource
         AuthorizedGenomicDataSourceConfiguration authorizedGenomicDataSourceConfiguration1 =
                                                     new AuthorizedGenomicDataSourceConfiguration();
@@ -166,6 +157,19 @@ public class AuthorizedStudyElementsGroupTest {
             new ArrayList<AuthorizedGenomicDataSourceConfiguration>();
         authorizedStudyElementsGroup1.setAuthorizedGenomicDataSourceConfigurations(authorizedGenomicDataSourceConfigurationsList1);
         authorizedStudyElementsGroup1.getAuthorizedGenomicDataSourceConfigurations().add(authorizedGenomicDataSourceConfiguration1);
+        // create first authorizedQuery
+        Query query1 = new Query();
+        String queryName = "Query Number 1";
+        query1.setName(queryName);
+        AuthorizedQuery authorizedQuery1 = new AuthorizedQuery();
+        authorizedQuery1.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup1);
+        authorizedQuery1.setQuery(query1);
+        List<AuthorizedQuery> authorizedQueryList1 =
+            new ArrayList<AuthorizedQuery>();
+        authorizedQueryList1.add(authorizedQuery1);
+        authorizedStudyElementsGroup1.setAuthorizedQuerys(authorizedQueryList1);
+        authorizedStudyElementsGroup1.getAuthorizedQuerys().add(authorizedQuery1);
+
         
         // create second AuthorizedStudyElementsGroup
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();        
@@ -184,16 +188,6 @@ public class AuthorizedStudyElementsGroupTest {
         authorizedAnnotationFieldDescriptorList2.add(authorizedAnnotationFieldDescriptor2);
         authorizedStudyElementsGroup2.setAuthorizedAnnotationFieldDescriptors(authorizedAnnotationFieldDescriptorList2);
         authorizedStudyElementsGroup2.getAuthorizedAnnotationFieldDescriptors().add(authorizedAnnotationFieldDescriptor2);
-        // create second authorizedabstractcriterion
-        AbstractCriterion abstractCriterion2 = (AbstractCriterion) new AbstractAnnotationCriterion();
-        AuthorizedAbstractCriterion authorizedAbstractCriterion2 = new AuthorizedAbstractCriterion();
-        authorizedAbstractCriterion2.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup2);
-        authorizedAbstractCriterion2.setAbstractCriterion(abstractCriterion2);
-        List<AuthorizedAbstractCriterion> authorizedAbstractCriterionList2 =
-            new ArrayList<AuthorizedAbstractCriterion>();
-        authorizedAbstractCriterionList2.add(authorizedAbstractCriterion2);
-        authorizedStudyElementsGroup2.setAuthorizedAbstractCriterions(authorizedAbstractCriterionList2);
-        authorizedStudyElementsGroup2.getAuthorizedAbstractCriterions().add(authorizedAbstractCriterion2);        
 
         // create groups list and add them
         List<AuthorizedStudyElementsGroup> authorizedStudyElementsGroups =
@@ -208,7 +202,6 @@ public class AuthorizedStudyElementsGroupTest {
         assertEquals(group1Description,studyConfiguration.getAuthorizedStudyElementsGroups().get(0).getGroupDescription());
         assertEquals(afd1Name,studyConfiguration.getAuthorizedStudyElementsGroups().get(0).getAuthorizedAnnotationFieldDescriptors().get(0).getAnnotationFieldDescriptor().getName());
         assertEquals(group1Name,studyConfiguration.getAuthorizedStudyElementsGroups().get(0).getAuthorizedAnnotationFieldDescriptors().get(0).getAuthorizedStudyElementsGroup().getGroupName());
-        assertEquals(group1Name,studyConfiguration.getAuthorizedStudyElementsGroups().get(0).getAuthorizedAbstractCriterions().get(0).getAuthorizedStudyElementsGroup().getGroupName());
         assertEquals(group1Name,studyConfiguration.getAuthorizedStudyElementsGroups().get(0).getAuthorizedGenomicDataSourceConfigurations().get(0).getAuthorizedStudyElementsGroup().getGroupName());
         assertEquals(studyName,studyConfiguration.getAuthorizedStudyElementsGroups().get(0).getAuthorizedGenomicDataSourceConfigurations().get(0).getGenomicDataSourceConfiguration().getStudyConfiguration().getStudy().getShortTitleText());
         

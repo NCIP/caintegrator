@@ -751,15 +751,19 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         Query query = getCurrentSession().createQuery("from Study order by shortTitleText");
         return query.list();
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
-    public List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementGroups(String username) {
+    public List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementGroups(String username,
+                                                                                Long studyConfigurationId) {
         secureCurrentSession(username);
-        Query query = getCurrentSession().createQuery("from AuthorizedStudyElementsGroup order by ID");
-        return query.list();
+        Criteria authorizedStudyElementsGroupCriteria = getCurrentSession().
+                                                         createCriteria(AuthorizedStudyElementsGroup.class).
+                                                         createCriteria("studyConfiguration").
+                                                         add(Restrictions.eq("id", studyConfigurationId));
+        return authorizedStudyElementsGroupCriteria.list();
     }    
     
 
