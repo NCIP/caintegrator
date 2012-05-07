@@ -37,8 +37,8 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
@@ -47,10 +47,13 @@ import gov.nih.nci.caintegrator2.security.SecurityManager;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
+import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -182,7 +185,20 @@ public class EditAuthorizedGroupActionTest extends AbstractSessionBasedTest {
     /**
      * Tests editing of an authorized user group.
      */
+    @Test
     public void edit() {
+        Group group = new Group();
+        group.setGroupName("Test Group");
+        group.setGroupDesc("Description");
+
+        group.setUsers(new HashSet<User>());
+        group.getUsers().add(new User());
+
+        AuthorizedStudyElementsGroup authorizedGroup = new AuthorizedStudyElementsGroup();
+        authorizedGroup.setAuthorizedGroup(group);
+        action.setAuthorizedGroup(authorizedGroup);
+        action.setSelectedGroupId(1L);
+        action.setGroupMembers(new ArrayList<User>());
         assertEquals(Action.SUCCESS, action.edit());
     }
 }

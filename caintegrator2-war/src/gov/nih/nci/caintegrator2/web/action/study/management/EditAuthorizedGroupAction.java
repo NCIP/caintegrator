@@ -129,7 +129,9 @@ public class EditAuthorizedGroupAction extends AbstractStudyAction {
      * Edit the selected authorized group.
      * @return the struts2 forwarding result
      */
+    @SuppressWarnings("unchecked")
     public String edit() {
+        getGroupMembers().addAll(getAuthorizedGroup().getAuthorizedGroup().getUsers());
         return SUCCESS;
     }
 

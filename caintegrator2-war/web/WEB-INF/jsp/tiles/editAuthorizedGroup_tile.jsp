@@ -6,15 +6,17 @@
         <table class="form_wrapper_table">
             <tr>
                 <td class="title">Group Name:</td>
-                <td><s:property value="authorizedGroup.groupName"/></td>
+                <td><s:property value="authorizedGroup.authorizedGroup.groupName"/></td>
             </tr>
             <tr>
                 <td class="title">Group Description:</td>
-                <td><s:property value="authorizedGroup.groupDescription"/></td>
+                <td><s:property value="authorizedGroup.authorizedGroup.groupDesc"/></td>
             </tr>
             <tr>
                 <td class="title">Group Members:</td>
-                <td>&nbsp;</td>
+                <td>
+                    <s:select list="groupMembers" listKey="loginName" listValue="%{lastName + ', ' + firstName}" size="10" disabled="true"/>
+                </td>
             </tr>
         </table>
     </div>
