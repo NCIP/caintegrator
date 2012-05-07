@@ -141,6 +141,7 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.IOException;
@@ -618,7 +619,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         authorizedStudyElementsGroup.add(createAuthorizedStudyElementsGroup(study.getStudyConfiguration(), "IntegrationTestAuthorizedStudyElementsGroup1","Gender"));
         return authorizedStudyElementsGroup;
     }
-    
+
     private void authorizeStudyElements(StudyConfiguration studyConfiguration)
     throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException, CSException {
 
@@ -629,7 +630,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
             studyConfiguration.setAuthorizedStudyElementsGroups(list);
 
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age");            
+            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age");
 
             list.add(authorizedStudyElementsGroup2);
             studyConfiguration.setAuthorizedStudyElementsGroups(list);
@@ -638,17 +639,20 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * This method creates and returns an AuthorizedStudyElementsGroup that
      * consists of elements from the current studyConfiguration.
-     * 
+     *
      * @return the authorizedStudyElementsGroup
      */
     protected AuthorizedStudyElementsGroup createAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
                                                                                 String authorizedStudyElementsGroupName,
                                                                                 String fieldDescriptorName) {
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
-        authorizedStudyElementsGroup.setGroupName(authorizedStudyElementsGroupName);
         authorizedStudyElementsGroup.setStudyConfiguration(studyConfiguration);
         String desc = "Created by integration test for study named: ";
-        authorizedStudyElementsGroup.setGroupDescription(desc);
+        Group group = new Group();
+        group.setGroupName(authorizedStudyElementsGroupName);
+        group.setGroupDesc(desc);
+
+        authorizedStudyElementsGroup.setAuthorizedGroup(group);
         // add AuthorizedAnnotationFieldDescriptor
         AnnotationFieldDescriptor annotationFieldDescriptor = new AnnotationFieldDescriptor();
         annotationFieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy(fieldDescriptorName);
@@ -666,20 +670,20 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         Query query = new Query();
         query.setName("TestAuthorizationQuery");
         query.setDescription(desc);
-        
+
         for (StudySubscription studySubscription : getWorkspace(USER_EXISTS).getSubscriptionCollection()) {
             if (studySubscription.getStudy().getId().equals(studyConfiguration.getStudy().getId())) {
                 query.setSubscription(studySubscription);
             }
         }
-        
+
         query.setLastModifiedDate(new Date());
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
         StringComparisonCriterion stringComparisonCriterion = new StringComparisonCriterion();
         stringComparisonCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING);
         stringComparisonCriterion.setStringValue("TRIAL1");
-        AbstractCriterion abstractCriterion = (AbstractCriterion) new AbstractAnnotationCriterion();
+        AbstractCriterion abstractCriterion = new AbstractAnnotationCriterion();
         abstractCriterion = stringComparisonCriterion;
         HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
         abstractCriterionCollection.add(abstractCriterion);
@@ -687,12 +691,12 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         AuthorizedQuery authorizedQuery = new AuthorizedQuery();
         authorizedQuery.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
         authorizedQuery.setQuery(query);
-        
-        authorizedStudyElementsGroup.getAuthorizedQuerys().add(authorizedQuery);        
-        
+
+        authorizedStudyElementsGroup.getAuthorizedQuerys().add(authorizedQuery);
+
         return authorizedStudyElementsGroup;
-    }    
-    
-    
-    
+    }
+
+
+
 }

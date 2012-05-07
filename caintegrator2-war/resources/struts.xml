@@ -859,6 +859,59 @@
             </result>
         </action>
         
+        <action name="saveAuthorizedGroup" method="save" class="gov.nih.nci.caintegrator2.web.action.study.management.EditAuthorizedGroupAction">
+        
+        </action>
+        
+        <action name="cancelAuthorizedGroup" method="cancel" class="gov.nih.nci.caintegrator2.web.action.study.management.EditAuthorizedGroupAction">
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="addAuthorizedGroup" method="add" class="gov.nih.nci.caintegrator2.web.action.study.management.EditAuthorizedGroupAction">
+            <result name="error" type="tiles">authorizeGroups</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="editAuthorizedGroup" method="edit" class="gov.nih.nci.caintegrator2.web.action.study.management.EditAuthorizedGroupAction">
+            <result type="tiles">editAuthorizedGroup</result>
+            <result name="success" type="tiles">editAuthorizedGroup</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="deleteAuthorizedGroup" method="delete" class="gov.nih.nci.caintegrator2.web.action.study.management.EditAuthorizedGroupAction">
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="error" type="tiles">editStudy</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="authorizeGroups" class="gov.nih.nci.caintegrator2.web.action.study.management.EditAuthorizedGroupAction">
+            <result type="tiles">authorizeGroups</result>
+            <result name="success" type="tiles">authorizeGroups</result>
+            <result name="error" type="tiles">authorizeGroups</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
         <!-- Manage List Actions -->
         <action name="manageList" class="manageListAction">
             <result type="tiles">manageList</result>

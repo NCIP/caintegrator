@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.application.query;
@@ -100,7 +100,6 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -146,6 +145,7 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregationTypeEnum;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResultTest;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.IOException;
@@ -161,7 +161,7 @@ import org.junit.Test;
  * Test class for QueryManagementServiceImpl
  */
 public class QueryManagementServiceImplTest {
- 
+
 
     private static final String USER_EXISTS = "studyManager";
     private QueryManagementServiceImpl queryManagementService;
@@ -171,7 +171,7 @@ public class QueryManagementServiceImplTest {
     private ArrayDataServiceStub arrayDataService;
     private SegmentData segmentData;
     private SegmentData segmentData2;
-    
+
     @Before
     public void setup() {
         dao = new GenomicDataTestDaoStub();
@@ -209,7 +209,7 @@ public class QueryManagementServiceImplTest {
         segmentData2.setLocation(location);
     }
 
-    
+
     @Test
     public void testExecute() throws InvalidCriterionException {
         QueryResult queryResult = queryManagementService.execute(query);
@@ -219,7 +219,7 @@ public class QueryManagementServiceImplTest {
         numericCrit.setEntityType(EntityTypeEnum.SUBJECT);
         numericCrit.setNumericValue(12d);
         numericCrit.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESSOREQUAL);
-        
+
         AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
         afd.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
         afd.setMaxNumber(10d);
@@ -232,13 +232,13 @@ public class QueryManagementServiceImplTest {
         query.getCompoundCriterion().getCriterionCollection().add(numericCrit);
         queryManagementService.execute(query);
         assertTrue(query.isHasMaskedValues());
-        
+
         // Test SubjectList with all matches
         SubjectList sl1 = new SubjectList();
         SubjectIdentifier subjectIdentifier = new SubjectIdentifier();
         subjectIdentifier.setIdentifier("real");
         sl1.getSubjectIdentifiers().add(subjectIdentifier);
-        
+
         StudySubjectAssignment subject1 = new StudySubjectAssignment();
         subject1.setIdentifier("real");
         query.getSubscription().getStudy().getAssignmentCollection().add(subject1);
@@ -248,7 +248,7 @@ public class QueryManagementServiceImplTest {
         query.getCompoundCriterion().getCriterionCollection().add(subjectListCriterion);
         queryResult = queryManagementService.execute(query);
         assertTrue(queryResult.getQuery().getSubjectIdsNotFound().isEmpty());
-        
+
         // Test 2 subject lists, one matches, and one doesn't.
         SubjectList sl2 = new SubjectList();
         SubjectIdentifier subjectIdentifier2 = new SubjectIdentifier();
@@ -257,8 +257,8 @@ public class QueryManagementServiceImplTest {
         subjectListCriterion.getSubjectListCollection().add(sl2);
         queryResult = queryManagementService.execute(query);
         assertTrue(queryResult.getQuery().getSubjectIdsNotFound().contains("fake"));
-        
-        
+
+
         // Test 1 subject list, where neither matches.
         subjectListCriterion.getSubjectListCollection().clear();
         subjectListCriterion.getSubjectListCollection().add(sl2);
@@ -268,9 +268,9 @@ public class QueryManagementServiceImplTest {
         } catch (InvalidCriterionException e) {
             // noop - expect it to come here.
         }
-        
+
     }
-    
+
     @Test
     @SuppressWarnings("PMD")
     public void testExecuteGenomicDataQuery() throws InvalidCriterionException {
@@ -304,7 +304,7 @@ public class QueryManagementServiceImplTest {
         arrayData2.getSegmentDatas().add(segmentData2);
         segmentData2.setArrayData(arrayData2);
         array.getArrayDataCollection().add(arrayData2);
-        sample.getArrayDataCollection().add(arrayData2);        
+        sample.getArrayDataCollection().add(arrayData2);
         array.getSampleCollection().add(sample);
         acquisition.setSample(sample);
         assignment.getSampleAcquisitionCollection().add(acquisition);
@@ -314,7 +314,7 @@ public class QueryManagementServiceImplTest {
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        
+
         //////////////////////////////////
         // Gene Name Criterion Testing. //
         //////////////////////////////////
@@ -336,7 +336,7 @@ public class QueryManagementServiceImplTest {
         ReporterList reporterList2 = platform.addReporterList("reporterList2", ReporterTypeEnum.GENE_EXPRESSION_GENE);
         arrayData2.getReporterLists().add(reporterList2);
         reporterList2.getArrayDatas().add(arrayData2);
-        
+
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         try {
             arrayDataService.numberPlatformsInStudy = 2;
@@ -348,14 +348,14 @@ public class QueryManagementServiceImplTest {
         geneNameCriterion.setPlatformName("platformName");
         query.setResultType(ResultTypeEnum.GENE_EXPRESSION);
         GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
-        
+
         assertEquals(1, result.getFilteredRowCollection().size());
         assertEquals(1, result.getColumnCollection().size());
         assertEquals(1, result.getFilteredRowCollection().iterator().next().getValues().size());
         GenomicDataResultColumn column = result.getColumnCollection().iterator().next();
         assertNotNull(column.getSampleAcquisition());
         assertNotNull(column.getSampleAcquisition().getSample());
-        
+
         /////////////////////////////////////////
         // Expression Level Criterion Testing. //
         /////////////////////////////////////////
@@ -374,19 +374,19 @@ public class QueryManagementServiceImplTest {
         column = result.getColumnCollection().iterator().next();
         assertNotNull(column.getSampleAcquisition());
         assertNotNull(column.getSampleAcquisition().getSample());
-        
+
         expressionLevelCriterion.setRangeType(RangeTypeEnum.LESS_OR_EQUAL); // No upper limit = always true.
         result = queryManagementService.executeGenomicDataQuery(query);
         assertEquals(1, result.getFilteredRowCollection().size());
         assertEquals(1, result.getColumnCollection().size());
         assertEquals(1, result.getFilteredRowCollection().iterator().next().getValues().size());
-        
+
         expressionLevelCriterion.setUpperLimit(1.1f);
         result = queryManagementService.executeGenomicDataQuery(query);
         assertEquals(0, result.getFilteredRowCollection().size());
         assertEquals(0, result.getColumnCollection().size());
-        
-        
+
+
         ////////////////////////////////////
         // Fold Change Criterion Testing. //
         ////////////////////////////////////
@@ -425,7 +425,7 @@ public class QueryManagementServiceImplTest {
             fail("Should have caught invalid criterion exception because genes are not found.");
         } catch (InvalidCriterionException e) {
         }
-        
+
         ReporterList reporterList3 = platform.addReporterList("reporterList3", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
         arrayData.getReporterLists().add(reporterList3);
         reporterList3.getArrayDatas().add(arrayData);
@@ -443,7 +443,7 @@ public class QueryManagementServiceImplTest {
         segmentData2.setLocation(location);
         result = queryManagementService.executeGenomicDataQuery(query);
         assertEquals(2, result.getFilteredRowCollection().size());
-        // test copy number - calls value 
+        // test copy number - calls value
         query.getCompoundCriterion().getCriterionCollection().clear();
         Set<Integer> callsValues = new HashSet<Integer>();
         callsValues.add(Integer.decode("1"));
@@ -454,7 +454,7 @@ public class QueryManagementServiceImplTest {
 
     }
 
-    
+
     @Test
     public void testSave() {
        queryManagementService.save(query);
@@ -463,13 +463,13 @@ public class QueryManagementServiceImplTest {
        queryManagementService.save(query);
        assertTrue(dao.mergeCalled);
     }
-    
+
     @Test
     public void testDelete() {
        queryManagementService.delete(query);
        assertTrue(dao.deleteCalled);
     }
-    
+
     @Test
     public void testCreateDicomJob() {
         queryManagementService.setDao(new ImageStudyTestDaoStub());
@@ -479,7 +479,7 @@ public class QueryManagementServiceImplTest {
         assertEquals(NCIAImageAggregationTypeEnum.IMAGESERIES, dicomJob.getImageAggregationType());
         assertTrue(!dicomJob.getImageSeriesIDs().isEmpty());
         assertTrue(dicomJob.getImageStudyIDs().isEmpty());
-        
+
         dicomJob = queryManagementService.createDicomJob(DisplayableQueryResultTest.
                                                         getImageStudyResult().
                                                         getRows());
@@ -487,7 +487,7 @@ public class QueryManagementServiceImplTest {
         assertTrue(dicomJob.getImageSeriesIDs().isEmpty());
         assertTrue(!dicomJob.getImageStudyIDs().isEmpty());
     }
-    
+
     @Test
     public void testCreateNciaBasket() {
         queryManagementService.setDao(new ImageStudyTestDaoStub());
@@ -497,7 +497,7 @@ public class QueryManagementServiceImplTest {
         assertEquals(NCIAImageAggregationTypeEnum.IMAGESERIES, nciaBasket.getImageAggregationType());
         assertTrue(!nciaBasket.getImageSeriesIDs().isEmpty());
         assertTrue(nciaBasket.getImageStudyIDs().isEmpty());
-        
+
         nciaBasket = queryManagementService.createNciaBasket(DisplayableQueryResultTest.
                                                         getImageStudyResult().
                                                         getRows());
@@ -516,7 +516,7 @@ public class QueryManagementServiceImplTest {
             reporters.add(reporter );
             return reporters;
         }
-        
+
         @Override
         public List<SegmentData> findMatchingSegmentDatas(CopyNumberAlterationCriterion copyNumberCriterion,
                 Study study, Platform platform) {
@@ -525,20 +525,21 @@ public class QueryManagementServiceImplTest {
             segmentDatas.add(segmentData2);
             return segmentDatas;
         }
-        
+
         @Override
-        public List<SegmentData> findMatchingSegmentDatasByLocation(List<SegmentData> segmentDatasToMatch, 
+        public List<SegmentData> findMatchingSegmentDatasByLocation(List<SegmentData> segmentDatasToMatch,
                 Study study, Platform platform) {
             return findMatchingSegmentDatas(null, study, platform);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     private static class ImageStudyTestDaoStub extends CaIntegrator2DaoStub {
+        @Override
         public <T> T get(Long id, Class<T> objectClass) {
             return (T) DisplayableQueryResultTest.retrieveStudySubjectAssignment(id);
         }
-        
+
     }
 
     private void authorizeStudyElements(StudyConfiguration studyConfiguration)
@@ -551,7 +552,7 @@ public class QueryManagementServiceImplTest {
             studyConfiguration.setAuthorizedStudyElementsGroups(list);
 
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age");            
+            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age");
 
             list.add(authorizedStudyElementsGroup2);
             studyConfiguration.setAuthorizedStudyElementsGroups(list);
@@ -560,17 +561,20 @@ public class QueryManagementServiceImplTest {
     /**
      * This method creates and returns an AuthorizedStudyElementsGroup that
      * consists of elements from the current studyConfiguration.
-     * 
+     *
      * @return the authorizedStudyElementsGroup
      */
     protected AuthorizedStudyElementsGroup createAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
                                                                                 String authorizedStudyElementsGroupName,
                                                                                 String fieldDescriptorName) {
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
-        authorizedStudyElementsGroup.setGroupName(authorizedStudyElementsGroupName);
         authorizedStudyElementsGroup.setStudyConfiguration(studyConfiguration);
         String desc = "Created by integration test for study named: " + studyConfiguration.getStudy().getShortTitleText();
-        authorizedStudyElementsGroup.setGroupDescription(desc);
+        Group group = new Group();
+        group.setGroupName(authorizedStudyElementsGroupName);
+        group.setGroupDesc(desc);
+
+        authorizedStudyElementsGroup.setAuthorizedGroup(group);
         // add AuthorizedAnnotationFieldDescriptor
         AnnotationFieldDescriptor annotationFieldDescriptor = new AnnotationFieldDescriptor();
         annotationFieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy(fieldDescriptorName);
@@ -584,6 +588,6 @@ public class QueryManagementServiceImplTest {
         authorizedGenomicDataSourceConfiguration.setGenomicDataSourceConfiguration(studyConfiguration.getGenomicDataSources().get(0));
         authorizedStudyElementsGroup.getAuthorizedGenomicDataSourceConfigurations().add(authorizedGenomicDataSourceConfiguration);
         return authorizedStudyElementsGroup;
-    }     
-    
+    }
+
 }

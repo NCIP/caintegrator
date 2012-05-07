@@ -81,6 +81,16 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editAnnotationGroup_tile.jsp" />
         <put-attribute name="subTitle" value="Edit Annotation Group" />
     </definition>
+    
+    <definition name="authorizeGroups" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/authorizeGroups_tile.jsp"/>
+        <put-attribute name="subTitle" value="Authorize Additional User Groups"/>
+    </definition>
+    
+    <definition name="editAuthorizedGroup" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editAuthorizedGroup_tile.jsp"/>
+        <put-attribute name="subTitle" value="Edit User Group Authorization"/>
+    </definition>
 
     <definition name="fileIoError" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/fileIoError_tile.jsp" />

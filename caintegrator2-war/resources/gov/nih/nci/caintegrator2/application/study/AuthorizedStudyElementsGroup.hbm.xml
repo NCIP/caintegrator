@@ -7,8 +7,8 @@
 			<generator class="native" />
 		</id>
 		
-        <property name="groupName" type="string" column="GROUP_NAME"/>
-        <property name="groupDescription" type="string" column="GROUP_DESCRIPTION"/>
+        <many-to-one name="authorizedGroup" class="gov.nih.nci.security.authorization.domainobjects.Group"
+                     column="GROUP_ID" not-null="true" cascade="none" />
         
         <many-to-one name="studyConfiguration" 
             class="gov.nih.nci.caintegrator2.application.study.StudyConfiguration" 
