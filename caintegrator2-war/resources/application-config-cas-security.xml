@@ -38,13 +38,11 @@
         <property name="statelessTicketCache">
             <ref local="statelessTicketCache"/>
         </property>
-        <!-- TODO is this key property necessary? -->
         <property name="key">
             <value>@cas.ticket.key@</value>
         </property>
     </bean>
 
-    <!--TODO Need to update the below host & port to be configured by the build. -->
     <bean id="casProxyTicketValidator" class="org.acegisecurity.providers.cas.ticketvalidator.CasProxyTicketValidator">
         <property name="casValidate">
             <value>https://@cas.server.hostname@:@cas.server.port@/cas/proxyValidate</value>
@@ -82,7 +80,6 @@
     <bean id="casProxyDecider" class="org.acegisecurity.providers.cas.proxy.RejectProxyTickets"></bean>
 
     <!-- This class stores the properties that are relevant to the local CAS service. -->
-    <!-- TODO Need to update the below to set the host & port during build. -->
     <bean id="serviceProperties" class="org.acegisecurity.ui.cas.ServiceProperties">
         <property name="service">
             <value>http://@jboss.server.hostname@:@jboss.server.port@/caintegrator/j_acegi_security_check</value>

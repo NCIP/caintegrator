@@ -153,6 +153,14 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 						</java>
 						<returnvalue type="boolean">true</returnvalue>
 					</condition>
+    				<condition type="variable" id="cas.install">
+    			        <name>single.sign.on.install</name>
+    			        <value>true</value>
+    		        </condition>
+    		        <condition type="and" id="display.authorization.select">
+                        <condition type="ref" refid="!container.database" />
+                        <condition type="ref" refid="!cas.install"/>
+                    </condition>
 					<condition type="variable" id="ldap.setup">
 						<name>authentication.type</name>
 						<value>ldap</value>
@@ -174,9 +182,8 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 						<name>install.selection</name>
 						<value>install.database</value>
 					</condition>
-
 				</conditions>
-				<!-- Identify your build targets for each of the contaiers for both install and upgrade -->
+				<!-- Identify your build targets for each of the containers for both install and upgrade -->
 				<dynamicvariables>
 					<variable name="build.file.target" value="install" condition="install+container.all" />
 					<variable name="build.file.target" value="install:jboss" condition="install+container.jboss" />
@@ -289,8 +296,8 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 					<variable name="grid.poc.science.email" value="" condition="container.database"/>
 					<variable name="grid.poc.science.role" value="" condition="container.database"/>
 
-					<variable name="ldap.url" value="" condition="container.database"/>
-					<variable name="ldap.basedn" value="" condition="container.database"/>
+					<variable name="ldap.url" value="" condition="container.database|cas.install"/>
+					<variable name="ldap.basedn" value="" condition="container.database|cas.install"/>
 					<variable name="mail.smtp.host" value="" condition="container.database"/>
 					<variable name="mail.smtp.port" value="" condition="container.database"/>
 					<variable name="mail.smtp.auth" value="" condition="container.database"/>
@@ -346,35 +353,39 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 					<panel classname="UserInputPanel"  id="UserInputPanel.9" condition="container.jboss|container.all"/>
 					<!-- external host stuff jboss -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.10" condition="container.jboss|container.all"/>
-					<!-- Authentication Type -->
+					<!-- Enable SSO  -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.11" condition="!container.database"/>
+                    <!-- CAS Settings -->
+                    <panel classname="UserInputPanel"  id="UserInputPanel.12" condition="cas.install"/>
+					<!-- Authentication Type -->
+					<panel classname="UserInputPanel"  id="UserInputPanel.13" condition="display.authorization.select"/>
 					<!-- Ldap data entry -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.12" condition="ldap.setup"/>
+					<panel classname="UserInputPanel"  id="UserInputPanel.14" condition="ldap.setup"/>
 					<!-- Database Properties -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.13"/>
+					<panel classname="UserInputPanel"  id="UserInputPanel.15"/>
 					<!-- Global Configuraiton Options -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.14" condition="!container.database"/>
+					<panel classname="UserInputPanel"  id="UserInputPanel.16" condition="!container.database"/>
 					<!-- UPT Configuration -->
-                    <panel classname="UserInputPanel"  id="UserInputPanel.15" />
+                    <panel classname="UserInputPanel"  id="UserInputPanel.17" />
 					<!-- Grid Global Configuration -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.16" condition="never"/>
-					<!-- Grid Research Center -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.17" condition="never"/>
-					<!-- Grid Tech Contact -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.18" condition="never"/>
-					<!-- Grid Science Contact -->
+					<!-- Grid Research Center -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.19" condition="never"/>
+					<!-- Grid Tech Contact -->
+					<panel classname="UserInputPanel"  id="UserInputPanel.20" condition="never"/>
+					<!-- Grid Science Contact -->
+					<panel classname="UserInputPanel"  id="UserInputPanel.21" condition="never"/>
 					<!-- Application Specific Properties -->
 					<!-- Tomcat Base Config 0.9.0 -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.20" condition="never"/>
-					<!-- Tomcat SSL 0.9.0 -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.21" condition="never"/>
-					<!-- external host stuff tomcat -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.22" condition="never"/>
+					<!-- Tomcat SSL 0.9.0 -->
+					<panel classname="UserInputPanel"  id="UserInputPanel.23" condition="never"/>
+					<!-- external host stuff tomcat -->
+					<panel classname="UserInputPanel"  id="UserInputPanel.24" condition="never"/>
 					<!-- Jar Signing 1.5.0 -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.23" condition="container.tomcat|container.all|container.jboss"/>
+					<panel classname="UserInputPanel"  id="UserInputPanel.25" condition="container.tomcat|container.all|container.jboss"/>
 					<!-- Installation Summary -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.24" />
+					<panel classname="UserInputPanel"  id="UserInputPanel.26" />
 					<panel classname="InstallationGroupPanel"/>
 					<panel classname="ExtendedInstallPanel"/>
 					<panel classname="FinishPanel"/>
@@ -441,9 +452,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 				<jar src="@{bda-utils.dir}/ant-apache-oro-1.8.2.jar" stage="both" />
 				<jar src="@{bda-utils.dir}/ant-apache-regexp-1.8.2.jar" stage="both" />
 				<jar src="@{bda-utils.dir}/ant-apache-resolver-1.8.2.jar" stage="both" />
-			    <jar src="@{bda-utils.dir}/ant-apache-xalan2-1.8.2.jar" stage="both" />			    			 
+			    <jar src="@{bda-utils.dir}/ant-apache-xalan2-1.8.2.jar" stage="both" />
 				<jar src="@{bda-utils.dir}/ant-commons-logging-1.8.2.jar" stage="both" />
-				<jar src="@{bda-utils.dir}/ant-commons-net-1.8.2.jar" stage="both" />			
+				<jar src="@{bda-utils.dir}/ant-commons-net-1.8.2.jar" stage="both" />
 				<jar src="@{bda-utils.dir}/ant-javamail-1.8.2.jar" stage="both" />
 				<jar src="@{bda-utils.dir}/ant-jdepend-1.8.2.jar" stage="both" />
 				<jar src="@{bda-utils.dir}/ant-jmf-1.8.2.jar" stage="both" />
@@ -453,7 +464,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 				<jar src="@{bda-utils.dir}/ant-netrexx-1.8.2.jar" stage="both" />
 				<jar src="@{bda-utils.dir}/ant-swing-1.8.2.jar" stage="both" />
 				<jar src="@{bda-utils.dir}/ant-testutil-1.8.2.jar" stage="both" />
-				
+
 			</installation>
 		]]></config>
 		</IzPack>
@@ -466,12 +477,12 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 
 		<copy todir="${pre-install.dir}/bda-utils" overwrite="true">
 			<fileset dir="${bda-utils.dir}">
-				<include name="**/*" />                 
-			</fileset>                      
-		</copy>                 
+				<include name="**/*" />
+			</fileset>
+		</copy>
 		<jar update="true" destfile="${dist.location}/${gui-installer.dist.base.name}-${build.time}.jar"
-			basedir="${target.location}/working"        
-			includes="pre-install/**/*"     
-			/>                              
+			basedir="${target.location}/working"
+			includes="pre-install/**/*"
+			/>
 	</target>
 </project>

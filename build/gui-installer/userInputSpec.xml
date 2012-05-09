@@ -24,7 +24,7 @@ Guide to this file:
 			<description align="left" txt="Choose a new Install or Upgrade an existing installation"/>
 			<spec>
 				<choice txt="Install" value="install" set="true" />
-				<choice txt="Upgrade" value="upgrade" /> 
+				<choice txt="Upgrade" value="upgrade" />
 			</spec>
 		</field>
 	</panel>
@@ -116,6 +116,10 @@ Guide to this file:
 			<propertymap propertyname="jboss.ssl.keystore.file" mapname="jboss.ssl.keystore.file"/>
 			<propertymap propertyname="jboss.ssl.keystore.pass" mapname="jboss.ssl.keystore.pass"/>
 			<propertymap propertyname="jboss.ssl.port" mapname="jboss.ssl.port"/>
+			<propertymap propertyname="single.sign.on.install" mapname="single.sign.on.install"/>
+			<propertymap propertyname="cas.server.hostname" mapname="cas.server.hostname"/>
+			<propertymap propertyname="cas.server.port" mapname="cas.server.port"/>
+			<propertymap propertyname="cas.ticket.key" mapname="cas.ticket.key"/>
 			<propertymap propertyname="ldap.basedn" mapname="ldap.basedn"/>
 			<propertymap propertyname="ldap.searchprefix" mapname="ldap.searchprefix"/>
 			<propertymap propertyname="ldap.url" mapname="ldap.url"/>
@@ -214,6 +218,10 @@ Guide to this file:
 			<propertymap propertyname="jboss.ssl.keystore.file" mapname="jboss.ssl.keystore.file"/>
 			<propertymap propertyname="jboss.ssl.keystore.pass" mapname="jboss.ssl.keystore.pass"/>
 			<propertymap propertyname="jboss.ssl.port" mapname="jboss.ssl.port"/>
+			<propertymap propertyname="single.sign.on.install" mapname="single.sign.on.install"/>
+            <propertymap propertyname="cas.server.hostname" mapname="cas.server.hostname"/>
+            <propertymap propertyname="cas.server.port" mapname="cas.server.port"/>
+            <propertymap propertyname="cas.ticket.key" mapname="cas.ticket.key"/>
 			<propertymap propertyname="ldap.basedn" mapname="ldap.basedn"/>
 			<propertymap propertyname="ldap.searchprefix" mapname="ldap.searchprefix"/>
 			<propertymap propertyname="ldap.url" mapname="ldap.url"/>
@@ -425,7 +433,7 @@ Guide to this file:
 			<spec txt="JBoss JMS port:" size="5" set="47170"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss JMS port number is already in use"/>
 		</field>
-		<!-- Not sure we ant to prompt for these, this page is so big already --> 
+		<!-- Not sure we ant to prompt for these, this page is so big already -->
 		<variable name="log4j.maxFileSize" value="100MB"/>
 		<variable name="log4j.maxDays" value="7"/>
 		<variable name="log4j.level" value="WARN"/>
@@ -583,7 +591,7 @@ Guide to this file:
 				<choice txt="False" value="false" set="true"/>
 			</spec>
 		</field>
-		
+
 		<field type="text" variable="jboss.grid.secure.port">
 			<spec txt="Port to run the Grid service on JBoss:"  size="5" set="47500"/>
 		</field>
@@ -626,8 +634,42 @@ Guide to this file:
 
 	</panel>
 
+    <!-- CAS SSO setup -->
+    <panel order="11">
+        <field type="title" txt="Single Sign-On" bold="true" size="1" />
+        <field type="staticText" align="left" txt="Single Sign-On (SSO) is a property of access control of multiple related, but independent software systems. With this property a user logs in once and gains access to all systems without being prompted to log in again at each of them."/>
+        <field type="staticText" align="left" txt="caArray supports CAS technology as way of facilitating Single Sign-On. Make a selection if you plan to use your system in SSO-enabled mode."/>
+        <field type="divider" align="top"/>
+        <field type="radio" variable="single.sign.on.install">
+            <description align="left" txt=""/>
+            <spec>
+                <choice txt="Do not use SSO" value="false" set="true" />
+                <choice txt="Use SSO" value="true" />
+            </spec>
+        </field>
+   </panel>
+
+   <panel order="12">
+        <field type="title" txt="Single Sign-On Configuration" bold="true" size="1" />
+        <field type="staticText" align="left" txt="Provide the CAS server settings."/>
+        <field type="divider" align="top"/>
+        <field type="text" variable="cas.server.hostname">
+            <spec txt="CAS Server Hostname " size="25" set="localhost"/>
+            <validator class="com.izforge.izpack.util.NotEmptyValidator" txt="CAS Server Hostname is a required field"/>
+        </field>
+        <field type="text" variable="cas.server.port">
+            <spec txt="CAS Server Port Number " size="25" set="8443"/>
+            <validator class="com.izforge.izpack.util.NotEmptyValidator" txt="CAS Server Port is a required field"/>
+        </field>
+        <field type="text" variable="cas.ticket.key">
+            <spec txt="CAS Ticket Key " size="25" set="changeit"/>
+            <validator class="com.izforge.izpack.util.NotEmptyValidator" txt="CAS Ticket Key is a required field"/>
+        </field>
+        <variable name="authentication.type" value="cas"/>
+    </panel>
+
 	<!-- Authentication Type -->
-	<panel order="11">
+	<panel order="13">
 		<field type="title" txt="Authentication Type" bold="true" size="1" />
 		<field type="staticText" align="left" txt="There are two types of ways to authenticate users: against database or using an LDAP server. To connect to LDAP, you must have an LDAP server available in your network."/>
 		<field type="divider" align="top"/>
@@ -640,10 +682,13 @@ Guide to this file:
 		</field>
 		<variable name="ldap.basedn" value=""/>
 		<variable name="ldap.url" value=""/>
+		<variable name="cas.server.hostname" value=""/>
+		<variable name="cas.server.port" value=""/>
+		<variable name="cas.ticket.key" value=""/>
 	</panel>
 
 	<!-- Ldap data entry -->
-	<panel order="12">
+	<panel order="14">
 			<field type="title" txt="LDAP Configuration" bold="true" size="1" />
 			<field type="staticText" align="left" txt="Choose the URL for the LDAP server and the Base DN for authenticating users."/>
 			<field type="divider" align="top"/>
@@ -658,7 +703,7 @@ Guide to this file:
 	</panel>
 
 	<!-- Database Properties -->
-	<panel order="13">
+	<panel order="15">
 		<field type="title" txt="Database Configuration" bold="true" size="1" />
         <field type="staticText" align="left" txt="The information you enter below will connect you to an existing database. It's highly recommended that 'Database Host Name' NOT be the machine from which you are currently installing. The 'Database User' must have full access to 'Database Name'. It's highly recommended you contact your database administrator to obtain this information. NOTE: All database objects for 'Database Name' will be dropped and recreated during the installation process, but will be preserved during database upgrade.  In either case we recommend backing up your database before proceeding."/>
 		<field type="divider" align="top"/>
@@ -691,7 +736,7 @@ Guide to this file:
 	</panel>
 
 	<!-- Global Configuraiton Options -->
-	<panel order="14">
+	<panel order="16">
 
 		<field type="title" txt="Global Settings" bold="true" size="1" />
         <field type="staticText" align="left" txt="These options are for properties that may be used by multiple applications."/>
@@ -724,7 +769,7 @@ Guide to this file:
         </field>
 	</panel>
 	<!-- UPT Configuration -->
-	<panel order="15">
+	<panel order="17">
         <field type="title" txt="UPT Settings" bold="true" size="1" />
         <field type="staticText" align="left" txt="These options are for properties regarding the User Provisioning Tool, for user administration."/>
         <field type="divider" align="top"/>
@@ -740,7 +785,7 @@ Guide to this file:
     </panel>
 
 	<!-- Grid Global Configuration -->
-	<panel order="16">
+	<panel order="18">
 		<field type="title" txt="Grid Resource Locations Configuration" bold="true" size="1" />
 		<field type="staticText" align="left" txt="These options are for configuring Grid Resource Locations."/>
 		<field type="divider" align="top"/>
@@ -751,7 +796,7 @@ Guide to this file:
 	</panel>
 
 	<!-- Grid Research Center -->
-	<panel order="17">
+	<panel order="19">
 		<field type="title" txt="Grid Research Center Info" bold="true" size="1" />
 		<field type="staticText" align="left" txt="These options are for configuring contact/location information about your Research center."/>
 		<field type="divider" align="top"/>
@@ -789,7 +834,7 @@ Guide to this file:
 	</panel>
 
 	<!-- Grid Tech Contact -->
-	<panel order="18">
+	<panel order="20">
 
 		<field type="title" txt="Grid Tech Contact Info" bold="true" size="1" />
 		<field type="staticText" align="left" txt="These options are for configuring contact information for your Tech Contact."/>
@@ -822,7 +867,7 @@ Guide to this file:
 	</panel>
 
 	<!-- Grid Science Contact -->
-	<panel order="19">
+	<panel order="21">
 		<field type="title" txt="Grid Science Contact Info" bold="true" size="1" />
 		<field type="staticText" align="left" txt="These options are for configuring contact information Science Contact."/>
 		<field type="divider" align="top"/>
@@ -854,7 +899,7 @@ Guide to this file:
 
 
 	<!-- Tomcat Base Config 0.9.0 -->
-	<panel order="20">
+	<panel order="21">
 		<field type="title" txt="Tomcat Configuration" bold="true" size="1" />
 		<field type="staticText" align="left" txt="As part of this installation, Tomcat will be installed in ${UserPathPanelVariable}/${tomcat.binaries.relative.dir}.  It will be configured based on the values you enter below and on the following screens.  NOTE: The Hostname below (and on other panels of this installer) is the host name accesible from this machine and others on the local network. To access this Tomcat application server from the Internet, you may need to provide the ports below and on the following page to your Network administrator to allow access through the firewall."/>
 		<field type="divider" align="top"/>
@@ -895,7 +940,7 @@ Guide to this file:
 	</panel>
 
 	<!-- Tomcat SSL 0.9.0 -->
-	<panel order="21">
+	<panel order="22">
 		<field type="title" txt="Tomcat Secure Listener Configuration" bold="true" size="1" />
 		<field type="staticText" align="left" txt="For Tomcat SSL and Secure Grid configuration requires that you have requested and retrieved certificates already.  See https://wiki.nci.nih.gov/x/7xWy for details on SSL, see https://wiki.nci.nih.gov/x/8BWy for details on Secure Grid."/>
 		<field type="divider" align="top"/>
@@ -952,7 +997,7 @@ Guide to this file:
 
 	</panel>
 	<!-- External Host stuff for Tomcat -->
-	<panel order="22">
+	<panel order="24">
 		<field type="title" txt="Tomcat External Hostname Configuration" bold="true" size="1" />
 		<field type="staticText" align="left" txt="For Tomcat External Hostname configurations see https://wiki.nci.nih.gov/x/8hWy, values not required if not externally accessible"/>
 		<field type="divider" align="top"/>
@@ -980,7 +1025,7 @@ Guide to this file:
 	<!-- Jar Signing 1.5.0 -->
 	<!-- If you are signing jars for Java Web Starts then you may want to add com.izforge.izpack.util.PasswordEqualityValidator to each of the fields below.
 	-->
-	<panel order="23">
+	<panel order="25">
 		<field type="title" txt="Jar Signing configuration" bold="true" size="1" />
 		<field type="staticText" align="left" txt="This application can sign jars.  This page allows you to use your own java keystore to sign the jars or to have a self-signed one generated for you.  If you have an existing one put the full path to the file, the alias and password."/>
 		<field type="divider" align="top"/>
@@ -1013,8 +1058,8 @@ Guide to this file:
 			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Passwords do not match. Please re-enter your passwords."/>
 		</field>
 	</panel>
-	
-	<panel order="24">
+
+	<panel order="26">
 		<field type="title" txt="Installation Summary" bold="true" size="1" />
 		<field type="staticText" align="left" txt="Below are the current configurations"/>
 		<field type="divider" align="top"/>
