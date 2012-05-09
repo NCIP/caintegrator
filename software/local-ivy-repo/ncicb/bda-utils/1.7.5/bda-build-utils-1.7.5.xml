@@ -4086,7 +4086,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		<attribute name="cas.server.port" default="cas.server.port" />
 		<attribute name="cas.ticket.key" default="cas.ticket.key" />
 
-		<echo message="${single.sign.on.install},${cas.server.hostname},${cas.server.port},${cas.ticket.key}"/>
 		<sequential>
 			<var name="sso.properties.list" value="@{single.sign.on.install},@{cas.server.hostname},@{cas.server.port},@{cas.ticket.key}"/>
 			<properties-missing
