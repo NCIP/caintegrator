@@ -2,7 +2,7 @@
 $Id: install.xml 4757 2008-05-15 20:43:31Z zengje $
 $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/install.xml $
 -->
-<project name="caintegrator-cacore-caintegrator2-war-installer" default="upgrade" basedir="." 
+<project name="caintegrator-cacore-caintegrator2-war-installer" default="upgrade" basedir="."
     xmlns:ivy="antlib:org.apache.ivy.ant"
     >
     <description>
@@ -88,15 +88,15 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
     <target name="common:init:pre">
         <!-- Set application.base.path based on platform -->
         <condition property="application.base.path" value="${application.base.path.linux}">
-            <or>                    
+            <or>
                 <os family="unix" />
                 <os family="mac" />
-            </or>           
+            </or>
         </condition>
-                                
+
         <condition property="application.base.path" value="${application.base.path.windows}">
             <os family="windows" />
-        </condition>    
+        </condition>
         <echo message="application.base.path=${application.base.path}"/>
         <property name="jboss.home" value="${application.base.path}/${jboss.relative.path}"/>
         <jboss-version/>
@@ -250,7 +250,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
                 <!-- Jboss backup, do not compress until install is finished -->
                 <property name="backup.jboss.base.dir" location="${application.base.path}/backup/jboss"/>
 
-                <!-- So these directories won't be included in the backup, they are not needed to use jboss --> 
+                <!-- So these directories won't be included in the backup, they are not needed to use jboss -->
                 <delete dir="${jboss.home}/server/${jboss.server.name}/work"/>
                 <delete dir="${jboss.home}/server/${jboss.server.name}/tmp"/>
 
@@ -309,7 +309,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         <database-tag/>
         <antcall target="upgrade:initdb"/>
     </target>
-    
+
     <target name="upgrade:initdb" description="Runs database initialization scripts." unless="exclude.database" depends="common:init">
         <!-- Run script to initialize application properties table -->
         <mkdir dir="${db-install.dir.dest}/${database.type}" />
@@ -323,12 +323,12 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
                     token="@user.admin.email.address.to@" value="${user.admin.email.address.to}" />
         <replace file="${db-install.dir.dest}/${database.type}/db-init-application-properties.sql"
                     token="@user.admin.email.address.from@" value="${user.admin.email.address.from}" />
-        <replace file="${db-install.dir.dest}/${database.type}/db-init-application-properties.sql" 
+        <replace file="${db-install.dir.dest}/${database.type}/db-init-application-properties.sql"
                     token="@upt.url@" value="${upt.url}" />
         <database-install
             db.install.create.file.list="db-init-application-properties.sql"
             />
-    </target>    
+    </target>
 
     <target name="install:jboss:binaries" description="Install JBoss binaries" unless="exclude.jboss" depends="common:jboss:init, common:init">
         <jboss-install-binaries
@@ -342,7 +342,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         <delete dir="${jboss.home}/server/${jboss.server.name}/tmp"/>
         <delete dir="${jboss.home}/server/${jboss.server.name}/work"/>
         <move file="${jboss.home}/server/${jboss.server.name}/log/server.log" tofile="${jboss.home}/server/${jboss.server.name}/log/server/log.${install.time}" failonerror="false"/>
-        
+
         <copy file="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" todir="${jboss.home}/server/${jboss.server.name}/deploy" overwrite="true" />
         <copy file="${bda-utils.dir}/clm-4.2.beta_jboss51.jar" todir="${jboss.home}/server/${jboss.server.name}/lib" overwrite="true" />
         <copy file="${bda-utils.dir}/commons-digester-2.1.jar" todir="${jboss.home}/server/${jboss.server.name}/lib" overwrite="true" />
@@ -350,7 +350,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         <copy file="${bda-utils.dir}/cog-tomcat-4.0.3.jar" todir="${jboss.home}/server/${jboss.server.name}/lib" overwrite="true" />
         <copy file="${bda-utils.dir}/jcog-1.2.jar" todir="${jboss.home}/server/${jboss.server.name}/lib" overwrite="true" />
         <copy file="${database.driver.file}" todir="${jboss.home}/server/${jboss.server.name}/lib" overwrite="true" />
-        
+
         <!-- Replace this with file from ivy when project is ivy'fied -->
     </target>
 
@@ -386,9 +386,9 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
                     <param name="MaxFileSize" value="${log4j.maxFileSize}"/>
                     <param name="MaxBackupIndex" value="${log4j.maxDays}"/>
 
-                    <layout class="org.apache.log4j.PatternLayout"> 
+                    <layout class="org.apache.log4j.PatternLayout">
                         <param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
-                    </layout>           
+                    </layout>
                 </appender>
                 ]]>
             </insert>
@@ -403,7 +403,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         </xmltask>
         <validate-log4j
             log4j.file="${jboss.home}/server/${jboss.server.name}/conf/${log4j.file.name}"
-            />                                                      
+            />
 
         <replaceregexp file="${jboss.home}/server/${jboss.server.name}/conf/${log4j.file.name}"
             byline="true"
@@ -417,15 +417,15 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         common:jboss:init,
         common:init,
         install:jboss:configure:log4j,
-        -install:jboss:configure:web-container   
+        -install:jboss:configure:web-container
         ">
         <!-- Calls the following macros
         jboss-bindings - configures ports for jboss
         jboss-login-config - sets up authentication
         secure-jboss-console - adds password to jboss console apps
-        jboss-update-shutdown - updates shutdown.jar with correct jndi port so no args need to used 4 shutdown 
+        jboss-update-shutdown - updates shutdown.jar with correct jndi port so no args need to used 4 shutdown
         appserver-ssl-configure -  enables ssl
-        appserver-configure-external-hostname - configures jboss for use through a reverse proxy 
+        appserver-configure-external-hostname - configures jboss for use through a reverse proxy
         grid-secure-configure-connector - configures secure grid
         -->
         <!-- Use below if you are defining all the ports in your install.xml not the NCICB port configuraitons-->
@@ -509,9 +509,9 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
             java.check.version.minor="${java.minor.version}"
             />
     </target>
-    <target name="install:jboss:validation:pre-install" description="Runs pre-install validation checks bda-utils" 
+    <target name="install:jboss:validation:pre-install" description="Runs pre-install validation checks bda-utils"
         depends="
-        common:jboss:init,common:init, 
+        common:jboss:init,common:init,
         install:common:validation:pre-install
         ">
         <validate-pre-install-jboss
@@ -541,7 +541,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         <condition property="propertyfile.backup.location" value="/tmp/caintegrator2/bda-property-backups">
             <or>
                 <os family="unix" />
-                <os family="mac" /> 
+                <os family="mac" />
             </or>
         </condition>
         <condition property="propertyfile.backup.location" value="c:/temp">
@@ -591,7 +591,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
     </target>
 
     <!-- Wrapper target to deploy all containers to one server -->
-    <target name="install" description="Installs and configures JBOSS, creates database, and deploys application" 
+    <target name="install" description="Installs and configures JBOSS, creates database, and deploys application"
         depends="
         common:jboss:init,
         common:init,
@@ -612,9 +612,9 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
 
     <!-- Fixes hibernate dialect and other configurations in code generated at build time.  This is requred because the properties/options selected at build time can be different than those used at install time. -->
     <target name="install:jboss:caintegrator2-war:re-configure" unless="exclude.jboss" depends="common:init">
-        <!--
         <delete dir="${working.dir}/caintegrator2-war"/>
         <unzip src="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" dest="${working.dir}/caintegrator2-war"/>
+        <!--
 
         <replaceregexp file="${working.dir}/caintegrator2-war/WEB-INF/classes/hibernate.cfg.xml"
             match="(connection.driver_class&quot;&lt;).*(&gt;)"
@@ -636,6 +636,43 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
             match="(dialect&quot;&lt;).*(&gt;)"
             replace="\1${database.dialect}\2"
             flags="sg"/>
+    -->
+        <copy todir="${working.dir}/caintegrator2-war/WEB-INF" file="${working.dir}/caintegrator2-war/WEB-INF/xml/web.xml" filtering="true" overwrite="true">
+            <filterset>
+                <filter token="caintegrator2.version" value="${caintegrator2.version}" />
+                <filter token="svn.url" value="${svn.info.url}"/>
+                <filter token="svn.revision" value="${svn.info.rev}"/>
+                <filter token="caintegrator2.svntag" value="${caintegrator2.svntag}"/>
+                <filter token="caintegrator2.builddate" value="${build.date}"/>
+            </filterset>
+        </copy>
+
+        <copy file="${working.dir}/caintegrator2-war/WEB-INF/xml/application-config-cas-security.xml"
+            todir="${working.dir}/caintegrator2-war/WEB-INF/classes" filtering="true" overwrite="true">
+            <filterset>
+                <filter token="cas.server.hostname" value="${cas.server.hostname}" />
+                <filter token="cas.server.port" value="${cas.server.port}"/>
+                <filter token="cas.ticket.key" value="${cas.ticket.key}"/>
+                <filter token="jboss.server.hostname" value="${jboss.server.hostname}"/>
+                <filter token="jboss.server.port" value="${jboss.server.port}"/>
+            </filterset>
+        </copy>
+
+        <!-- Uncomment the correct context configuration for CAS SSO or not-->
+        <if>
+            <equals arg1="${single.sign.on.install}" arg2="true" />
+            <then>
+                <xmltask source="${working.dir}/caintegrator2-war/WEB-INF/web.xml" dest="${working.dir}/caintegrator2-war/WEB-INF/web.xml">
+                    <uncomment path="//:context-param[:param-name/text()='contextConfigLocation']/:param-value/comment()[2]"/>
+                </xmltask>
+            </then>
+            <else>
+                <xmltask source="${working.dir}/caintegrator2-war/WEB-INF/web.xml" dest="${working.dir}/caintegrator2-war/WEB-INF/web.xml">
+                    <uncomment path="//:context-param[:param-name/text()='contextConfigLocation']/:param-value/comment()[4]"/>
+                    <remove path="//:context-param[:param-name/text()='ssoEnabled']"/>
+                </xmltask>
+            </else>
+        </if>
 
         <move file="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" tofile="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}.orig"/>
         <war destfile="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" compress="false" webxml="${working.dir}/caintegrator2-war/WEB-INF/web.xml" >
@@ -643,7 +680,6 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
                 <include name="*/**" />
             </fileset>
         </war>
-        -->
     </target>
 
     <!-- Generic targets to call appropriate upgrade path targets, just change the depends to use alternate ugprade path -->
@@ -699,7 +735,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
     </target>
 
     <target name="upgrade-dac:with-dbinstall" description="Upgrades JBoss and Database"
-        depends="       
+        depends="
         upgrade:common:init,
         common:init,
         common:jboss:init,
@@ -710,7 +746,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         install:database,
         upgrade-dac:jboss,
         install:common:validation:post-install
-        ">              
+        ">
     </target>
     <!-- Upgrade with Container Modification (CM) -->
     <target name="upgrade-cm:jboss" description="Wrapper target to call all targets required to upgrade jboss container." unless="exclude.jboss"
@@ -749,7 +785,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
     </target>
 
     <target name="upgrade-cm:with-dbinstall" description="Upgrades JBoss and Database"
-        depends="       
+        depends="
         upgrade:common:init,
         common:init,
         common:jboss:init,
@@ -760,7 +796,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         install:database,
         upgrade-cm:jboss,
         install:common:validation:post-install
-        ">              
+        ">
     </target>
     <!-- Upgrade with No Container Modification (NCM) -->
     <target name="upgrade-ncm:jboss" description="Wrapper target to call all targets required to upgrade jboss container." unless="exclude.jboss"
@@ -798,7 +834,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
     </target>
 
     <target name="upgrade-ncm:with-dbinstall" description="Upgrades JBoss and Database"
-        depends="       
+        depends="
         upgrade:common:init,
         common:init,
         common:jboss:init,
@@ -809,7 +845,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         install:database,
         upgrade-ncm:jboss,
         install:common:validation:post-install
-        ">              
+        ">
     </target>
 
     <!-- Wrapper target to upgrade all container and install the database. Does not install or configure binaries -->
@@ -827,13 +863,13 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
             />
         <database-tag/>
     </target>
-    
+
     <target name="bda-lite:upgrade:database:prep" description="Generates artifacts for db upgrade." unless="exclude.database"
         depends="
         common:init,
-        install:database:prep">            
+        install:database:prep">
     </target>
-    
+
     <target name="upgrade:database:tag" description="Tags current state of database with a tag to allow for rollback of database to previous versions." unless="exclude.database"
         depends="
         upgrade:database:init,
@@ -853,43 +889,43 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
     </target>
 
      <target name="install:common:post" depends="common:init,install:post:jboss">
-    </target>               
-                                    
+    </target>
+
     <target name="install:post:jboss" unless="exclude.jboss" depends="common:init">
-        <if>                    
-            <not>                           
+        <if>
+            <not>
                 <equals arg1="${exclude.jboss.backup}" arg2="true"/>
             </not>
-            <then>                          
+            <then>
                 <property name="changelogFile" location="${install-logs.dir}/chagneLog-${install.time}.diff"/>
                 <property name="compare1.dir" location="${backup.jboss.base.dir}/backup/${jboss.binaries.relative.dir}"/>
                 <property name="compare2.dir" location="${jboss.home}"/>
-                <report-dir-diff                        
-                    dir1="${compare1.dir}"                  
-                    dir2="${compare2.dir}"          
-                    reportFile="${changelogFile}"   
-                    />                              
+                <report-dir-diff
+                    dir1="${compare1.dir}"
+                    dir2="${compare2.dir}"
+                    reportFile="${changelogFile}"
+                    />
                 <!-- Copy app server logs -->
                 <mkdir dir="${jboss.home}/server/${jboss.server.name}/log"/>
                 <mkdir dir="${backup.jboss.base.dir}/backup/${jboss.binaries.relative.dir}/server/${jboss.server.name}/log"/>
-                <!-- so the logs wont be included in the zip --> 
+                <!-- so the logs wont be included in the zip -->
                 <move todir="${jboss.home}/server/${jboss.server.name}/log">
                     <fileset dir="${backup.jboss.base.dir}/backup/${jboss.binaries.relative.dir}/server/${jboss.server.name}/log">
-                        <include name="*"/>                     
-                    </fileset>                      
+                        <include name="*"/>
+                    </fileset>
                 </move>
-                                                
+
                 <!-- Compress backup and cleanup -->
                 <mkdir dir="${backup.jboss.base.dir}/backup1"/>
                 <zip destfile="${backup.jboss.base.dir}/backup1/${jboss.binaries.relative.dir}.zip" basedir="${backup.jboss.base.dir}/backup" />
                 <delete dir="${backup.jboss.base.dir}/backup"/>
-            </then>                 
-        </if>           
+            </then>
+        </if>
     </target>
 
     <target name="upgrade:common:init" depends="upgrade:jboss:init" >
     </target>
-    <target name="upgrade:jboss:init" 
+    <target name="upgrade:jboss:init"
         depends="
         upgrade:jboss:init:prep,
         upgrade:jboss:readers:bda,
@@ -905,7 +941,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
             properties.list="${read.properties.list}"
             />
     </target>
-    <target name="upgrade:database:init" 
+    <target name="upgrade:database:init"
         depends="
         upgrade:jboss:init:prep,
         upgrade:database:readers:bda,
@@ -978,83 +1014,72 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
     </target>
     <target name="upgrade:jboss:readers:bda" if="jboss.exists">
         <!-- Make sure the ${properties.file} has at least the following props -->
-        <properties-exist       
+        <properties-exist
             properties.list="application.base.path,jboss.home,jboss.server.name"
-            />              
+            />
         <!-- Set these -->
         <osfamily property="os.family"/>
-        <if>                    
-            <or>                            
-                <equals arg1="${os.family}" arg2="unix"/>
-                <equals arg1="${os.family}" arg2="mac"/>
-            </or>                   
-            <then>                          
-                <property name="jboss.server.hostname" value="${env.HOSTNAME}"/>
-            </then>         
-        </if>           
-        <if>                    
-            <equals arg1="${os.family}" arg2="windows"/>
-            <then>                          
-                <property name="jboss.server.hostname" value="${env.COMPUTERNAME}"/>
-            </then>         
-        </if>           
+        <if>
+            <not>
+                <isset property="jboss.server.hostname"/>
+            </not>
+            <then>
+		        <property name="jboss.server.hostname" value="localhost"/>
+            </then>
+        </if>
         <!-- Begin JBoss Readers -->
         <var name="read.properties.list" value=""/>
         <!-- Reader reqiures that you have only one data source defined in each *-ds.xml file -->
-        <jboss-read-dbconfig    
-            jboss.ds-xml.file="caintegrator2-mysql-ds.xml"
-            />              
-        <jboss-read-ldapconfig  
-            />              
-        <jboss-read-bindings-file-location
-            />              
-        <jboss51-read-ports       
-            />              
+        <jboss-read-dbconfig jboss.ds-xml.file="caintegrator2-mysql-ds.xml" />
+        <jboss-read-ldapconfig />
+        <jboss-read-bindings-file-location />
+        <jboss51-read-ports />
+        <jboss-read-ssoconfig />
         <!-- Setting this variable will cause install to copy it into place if using CM/DAC, not modified in NCM -->
         <var name="jboss.ssl.keystore.dir" value="${working.dir}/keys/jboss"/>
-        <jboss-read-ssl         
+        <jboss-read-ssl
             copied.keystore.dir="${jboss.ssl.keystore.dir}"
-            />              
+            />
         <!-- No longer needed now reading all the ports
-        <jboss-copy-bindings    
+        <jboss-copy-bindings
             copied.jboss.server.bindingfile.dir="${working.dir}/copied-bindings"
             copied.jboss.bindings.file.property.name="copied.jboss.bindings.file"
-            />              
-        # Setting this will cause install to copy this file into place if using CM/DAC, not modified in NCM 
+            />
+        # Setting this will cause install to copy this file into place if using CM/DAC, not modified in NCM
         <var name="jboss.server.binding.template.location" value="${working.dir}/copied-bindings/${copied.jboss.bindings.file}"/>
-        -->             
+        -->
         <jboss-read-external-hostname
-            />                      
+            />
         <!-- for tier installs, should be done first, since it is set first it will be the one used if it exists -->
         <jboss-read-java_opts
             jboss.bin.dir="${jboss.home}/server/${jboss.server.name}/bin"
-            />                      
+            />
         <jboss-read-java_opts
-            />                      
+            />
         <!-- will have to add code to install:post:jboss to copy this back if exists -->
         <property name="copied.jboss.log4j.dir" value="${working.dir}/copied-log4j"/>
         <jboss-copy-log4j
             copied.jboss.log4j.dir="${copied.jboss.log4j.dir}"
             jboss.log4j.location="${jboss.home}/server/${jboss.server.name}/conf/jboss-log4j.xml"
-            />                      
+            />
         <!--
         <grid-read-index-url
-            />                      
+            />
         <var name="jboss.grid.secure.dir" value="${working.dir}/keys/jboss"/>
         <jboss-read-grid-secure
             copied.keystore.dir="${jboss.grid.secure.dir}"
-            />                      
-        <grid-read-poc  
+            />
+        <grid-read-poc
             grid.service.name="Sample"
-            />                      
+            />
         -->
     </target>
     <target name="upgrade:post:jboss">
-        
+
         <if>
             <equals arg1="${jboss.major.version}" arg2="4"/>
             <then>
-                <jboss-copy-log4j copied.jboss.log4j.dir="${copied.jboss.log4j.dir}" />  
+                <jboss-copy-log4j copied.jboss.log4j.dir="${copied.jboss.log4j.dir}" />
                 <copy file="${copied.jboss.log4j.dir}/log4j.xml" todir="${jboss.home}/server/${jboss.server.name}/conf"/>
             </then>
         </if>
@@ -1064,8 +1089,8 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
                 <copy file="${copied.jboss.log4j.dir}/jboss-log4j.xml" todir="${jboss.home}/server/${jboss.server.name}/conf"/>
             </then>
         </if>
-        
-        
+
+
     </target>
 
 
