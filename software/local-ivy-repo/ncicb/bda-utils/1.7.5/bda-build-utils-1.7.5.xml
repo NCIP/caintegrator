@@ -3523,7 +3523,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 				match="ivy.instance"
 				replace="console-jboss"
 				/>
-			
+
 			<var name="classpath.colon.found" unset="true"/>
 			<propertyregex property="classpath.colon.found"
 				input="${java.classpath}"
@@ -4078,6 +4078,83 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		</sequential>
 	</macrodef>
 
+	<macrodef name="jboss-read-ssoconfig" description="check if the application is installed">
+		<attribute name="jboss.home" default="${jboss.home}"/>
+		<attribute name="jboss.server.name" default="${jboss.server.name}"/>
+		<attribute name="single.sign.on.install" default="single.sign.on.install" />
+		<attribute name="cas.server.hostname" default="cas.server.hostname" />
+		<attribute name="cas.server.port" default="cas.server.port" />
+		<attribute name="cas.ticket.key" default="cas.ticket.key" />
+
+		<sequential>
+			<var name="sso.properties.list" value="@{single.sign.on.install},@{cas.server.hostname},@{cas.server.port},@{cas.ticket.key}"/>
+			<properties-missing
+				properties.list="${sso.properties.list}"
+				properties.missing.property.name="sso.properties.missing"
+				/>
+			<if>
+				<isset property="sso.properties.missing"/>
+				<then>
+					<echo message="Reading SSO properties ${sso.properties.list}"/>
+			        <unzip src="@{jboss.home}/server/@{jboss.server.name}/deploy/${caintegrator2-war.war.file}" dest="${working.dir}/caintegrator2-war"/>
+
+					<xmltask preservetype="true" source="${working.dir}/caintegrator2-war/WEB-INF/web.xml" >
+						<xmlcatalog refid="bda.xml.catalog"/>
+						<copy path="//:context-param[:param-name/text()='ssoEnabled']/:param-value/text()" property="single.sign.on.install" />
+						<copy path="//:context-param[:param-name/text()='caintegrator2Version']/:param-value/text()" property="caintegrator2.version" />
+						<copy path="//:context-param[:param-name/text()='svnUrl']/:param-value/text()" property="svn.info.url" />
+						<copy path="//:context-param[:param-name/text()='svnRevision']/:param-value/text()" property="svn.info.rev" />
+						<copy path="//:context-param[:param-name/text()='caintegrator2Svntag']/:param-value/text()" property="caintegrator2.svntag" />
+						<copy path="//:context-param[:param-name/text()='caintegrator2Builddate']/:param-value/text()" property="build.date" />
+					</xmltask>
+					<if>
+                        <equals arg1="${single.sign.on.install}" arg2="true"/>
+                        <then>
+                        	<echo message="Reading SSO config properties"/>
+                            <xmltask preservetype="true" source="${working.dir}/caintegrator2-war/WEB-INF/classes/application-config-cas-security.xml" >
+                                <xmlcatalog refid="bda.xml.catalog"/>
+                                <copy path="//bean[@id='authenticationProvider']/property[@name='key']/value/text()"
+                                    property="cas.ticket.key"/>
+                                <copy path="//bean[@id='casProxyTicketValidator']/property[@name='casValidate']/value/text()"
+                                    property="cas.url"/>
+                            </xmltask>
+                        	<echo message="Ticket: ${cas.ticket.key}"/>
+                        	<echo message="URL: ${cas.url}"/>
+                            <property name="@{single.sign.on.install}" value="${single.sign.on.install}" />
+                        	<propertyregex property="@{cas.server.hostname}"
+                        	              input="${cas.url}"
+                        	              regexp="https://(.+):"
+                        	              select="\1"
+                        	              casesensitive="false" />
+                        	<propertyregex property="@{cas.server.port}"
+                        	              input="${cas.url}"
+                        	              regexp="https://.*:(\d{1,5})"
+                        	              select="\1"
+                        	              casesensitive="false" />
+                            <property name="@{cas.ticket.key}" value="${cas.ticket.key}"/>
+        					<var name="authentication.type" value="cas"/>
+                        </then>
+                        <else>
+                            <property name="@{single.sign.on.install}" value=""/>
+                            <property name="@{cas.server.hostname}" value=""/>
+                            <property name="@{cas.server.port}" value=""/>
+                            <property name="@{cas.ticket.key}" value=""/>
+                        </else>
+                    </if>
+
+			        <delete dir="${working.dir}/caintegrator2-war"/>
+				</then>
+				<else>
+					<var name="authentication.type" value="db"/>
+				</else>
+			</if>
+			<properties-print
+				properties.list="${sso.properties.list}"
+				/>
+			<var name="read.properties.list" value="${read.properties.list},${sso.properties.list}"/>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="report-dir-diff">
 		<attribute name="dir1"/>
 		<attribute name="dir2"/>
@@ -4328,22 +4405,32 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 							<var name="login-config.block.file" value="@{login-config.db.file}"/>
 						</then>
 						<else>
-							<fail message="@{authentication.type} is not a valid authentiation type, please change to db or ldap and re-run the build."/>
+							<if>
+								<not><equals arg1="@{authentication.type}" arg2="cas"/></not>
+								<then>
+									<fail message="@{authentication.type} is not a valid authentiation type, please change to cas, db or ldap and re-run the build."/>
+								</then>
+							</if>
 						</else>
 					</if>
 				</else>
 			</if>
-			<echo message="Inserting ${login-config.block.file} into @{jboss.home}/server/@{jboss.server.name}/conf/login-config.xml"/>
-			<xmltask preservetype="true" source="@{jboss.home}/server/@{jboss.server.name}/conf/login-config.xml"
-				dest="@{jboss.home}/server/@{jboss.server.name}/conf/login-config.xml">
-				<xmlcatalog refid="bda.xml.catalog"/>
-				<remove path="//policy/application-policy[@name='@{application.context.name}']"/>
-			</xmltask>
-			<xmltask preservetype="true" failWithoutMatch="true" source="@{jboss.home}/server/@{jboss.server.name}/conf/login-config.xml"
-				dest="@{jboss.home}/server/@{jboss.server.name}/conf/login-config.xml">
-				<xmlcatalog refid="bda.xml.catalog"/>
-				<insert path="//policy" file="${login-config.block.file}"/>
-			</xmltask>
+			<if>
+				<isset property="login-config.block.file"/>
+			    <then>
+        			<echo message="Inserting ${login-config.block.file} into @{jboss.home}/server/@{jboss.server.name}/conf/login-config.xml"/>
+        			<xmltask preservetype="true" source="@{jboss.home}/server/@{jboss.server.name}/conf/login-config.xml"
+        				dest="@{jboss.home}/server/@{jboss.server.name}/conf/login-config.xml">
+        				<xmlcatalog refid="bda.xml.catalog"/>
+        				<remove path="//policy/application-policy[@name='@{application.context.name}']"/>
+        			</xmltask>
+        			<xmltask preservetype="true" failWithoutMatch="true" source="@{jboss.home}/server/@{jboss.server.name}/conf/login-config.xml"
+        				dest="@{jboss.home}/server/@{jboss.server.name}/conf/login-config.xml">
+        				<xmlcatalog refid="bda.xml.catalog"/>
+        				<insert path="//policy" file="${login-config.block.file}"/>
+        			</xmltask>
+			    </then>
+			</if>
 		</sequential>
 	</macrodef>
 	<macrodef name="jboss-log4j-config">
@@ -6108,22 +6195,22 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		<attribute name="resultproperty" default="maven.result" />
 		<attribute name="maven.mem" default="-Xmx1024m"/>
 		<element name="args" implicit="true" optional="true" />
-		<sequential>              
+		<sequential>
 			<java classname="org.codehaus.classworlds.Launcher" fork="true"
 				dir="@{maven.dir}" resultproperty="@{resultproperty}">
-				<jvmarg value="-Xmx1024m"/>       
-				<classpath>                               
+				<jvmarg value="-Xmx1024m"/>
+				<classpath>
 					<fileset dir="@{maven.home}/boot">
-						<include name="*.jar" />          
-					</fileset>                                
-					<fileset dir="@{maven.home}/lib"> 
-						<include name="*.jar" />  
-					</fileset>                
+						<include name="*.jar" />
+					</fileset>
+					<fileset dir="@{maven.home}/lib">
+						<include name="*.jar" />
+					</fileset>
 				</classpath>
 				<sysproperty key="classworlds.conf" value="@{maven.home}/bin/m2.conf" />
 				<sysproperty key="maven.home" value="@{maven.home}" />
 				<arg line="--batch-mode @{maven.profile.list} @{maven.goal.list}" />
-			</java>           
+			</java>
 		</sequential>
 	</macrodef>
 
@@ -10367,7 +10454,7 @@ gov.nih.nci.security.cgmm.login.config.file=@{cgmm.conf.dest.dir}/cgmm.login.con
 			<echo message="Executing @{groovy.file}"/>
 			<groovy src="@{groovy.file}">
 				<arg line="@{maven.filelist.dest} @{cagrid12.filelist.dest} @{cagrid13.filelist.dest} @{cbiit-ivy.filelist.dest} @{ivy.analyze.file} @{migrate.out.file}"/>
-			</groovy>	
+			</groovy>
 		</sequential>
 	</macrodef>
 	<macrodef name="tomcat-nci-customizations">
@@ -10530,7 +10617,7 @@ gov.nih.nci.security.cgmm.login.config.file=@{cgmm.conf.dest.dir}/cgmm.login.con
 
 						</else>
 					</if>
-					
+
 				</then>
 				<else>
 					<echo message="This does not appear to be a NCI distribution of tomcat, skipping customizations."/>

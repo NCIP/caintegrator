@@ -394,6 +394,7 @@
     <property name="caintegrator2.war.test.classes.dir" location="${caintegrator2.war.target.dir}/test-classes" />
     <property name="caintegrator2.war" location="${caintegrator2.war.target.dir}/caintegrator.war" />
     <property name="caintegrator2.jar" location="${caintegrator2.war.target.dir}/caintegrator.jar" />
+    <property name="caintegrator2.xml.dir" location="${caintegrator2.war.target.dir}/xml" />
 
     <target name="path:caintegrator2.war.dependencies" depends="ivy:setup-compile">
         <path id="caintegrator2.war.dependencies.path">
@@ -439,10 +440,8 @@
 
     <target name="caintegrator2.war" depends="svn:getinfo2,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy,struts.properties.deploy">
 
-        <copy todir="${web-inf.working.dir}" filtering="true" overwrite="true">
-            <fileset dir="${caintegrator2.war.web.src.dir}/WEB-INF">
-                <include name="web.xml"/>
-            </fileset>
+    	<copy todir="${caintegrator2.xml.dir}" file="${caintegrator2.war.web.src.dir}/WEB-INF/web.xml" overwrite="true"/>
+        <copy todir="${web-inf.working.dir}" file="${caintegrator2.war.web.src.dir}/WEB-INF/web.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="caintegrator2.version" value="${caintegrator2.version}" />
                 <filter token="svn.url" value="${svn.info.url}"/>
@@ -452,6 +451,7 @@
             </filterset>
         </copy>
 
+    	<copy todir="${caintegrator2.xml.dir}" file="${caintegrator2.war.resources.src.dir}/application-config-cas-security.xml" overwrite="true"/>
     	<copy file="${caintegrator2.war.resources.src.dir}/application-config-cas-security.xml"
     		todir="${caintegrator2.war.resources.target.dir}" filtering="true" overwrite="true">
             <filterset>
@@ -507,6 +507,9 @@
             </webinf>
             <webinf dir="${caintegrator2.war.web.src.dir}/WEB-INF">
                 <exclude name="web.xml"/>
+            </webinf>
+            <webinf dir="${caintegrator2.war.target.dir}">
+            	   <include name="xml/*"/>
             </webinf>
         </war>
     </target>
