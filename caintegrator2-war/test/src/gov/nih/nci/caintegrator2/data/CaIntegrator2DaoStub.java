@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedAnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedGenomicDataSourceConfiguration;
@@ -107,6 +108,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
@@ -155,6 +157,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+
 public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
     public boolean getCalled;
@@ -191,6 +195,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     private Platform platform = new Platform();
     public final List<FileColumn> fileColumns = new ArrayList<FileColumn>();
     private static final String USER_EXISTS = "studyManager";
+    private static final String EXP_ID = "caArray Experiment ID 1";
 
     public UserWorkspace getWorkspace(String username) {
         getWorkspaceCalled = true;
@@ -310,9 +315,26 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         findMatchingSubjectsCalled = true;
         List<StudySubjectAssignment> ssaList = new ArrayList<StudySubjectAssignment>();
         studySubjectAssignment = study.getStudyConfiguration().getOrCreateSubjectAssignment("SubjectID1");
-        studySubjectAssignment.setId(Long.valueOf(1));
+        studySubjectAssignment = populateStudySubjectAssignment(studySubjectAssignment);
         ssaList.add(studySubjectAssignment);
         return ssaList;
+    }
+
+    /**
+     * Populate a StudySubjectAssignment for testing.  This method only in the daoStub.
+     * @param localStudySubjectAssignment 
+     * @return 
+     * 
+     */
+    private StudySubjectAssignment populateStudySubjectAssignment(StudySubjectAssignment localStudySubjectAssignment) {
+        localStudySubjectAssignment.setId(Long.valueOf(1));
+        SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
+        StringAnnotationValue stringAnnotationValue = new StringAnnotationValue();
+        stringAnnotationValue.setStringValue("F");
+        stringAnnotationValue.setAnnotationDefinition(getAd("Gender", AnnotationTypeEnum.STRING));
+        subjectAnnotation.setAnnotationValue(stringAnnotationValue);
+        localStudySubjectAssignment.getSubjectAnnotationCollection().add(subjectAnnotation);
+        return localStudySubjectAssignment;
     }
 
     /**
@@ -612,10 +634,11 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        genomicDataSourceConfiguration.setExperimentIdentifier(EXP_ID);
         studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
         study.setStudyConfiguration(studyConfiguration);
         study.setLongTitleText("test");
-        authorizedStudyElementsGroup.add(createAuthorizedStudyElementsGroup(study.getStudyConfiguration(), "IntegrationTestAuthorizedStudyElementsGroup1","Gender"));
+        authorizedStudyElementsGroup.add(createAuthorizedStudyElementsGroup(study.getStudyConfiguration(), "IntegrationTestAuthorizedStudyElementsGroup1","Gender","F"));
         return authorizedStudyElementsGroup;
     }
     
@@ -623,13 +646,13 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException, CSException {
 
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup1 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup1","Gender");
+            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup1","Gender","F");
             List<AuthorizedStudyElementsGroup> list = new ArrayList<AuthorizedStudyElementsGroup>();
             list.add(authorizedStudyElementsGroup1);
             studyConfiguration.setAuthorizedStudyElementsGroups(list);
 
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age");            
+            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age",StringUtils.EMPTY);            
 
             list.add(authorizedStudyElementsGroup2);
             studyConfiguration.setAuthorizedStudyElementsGroups(list);
@@ -638,25 +661,28 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * This method creates and returns an AuthorizedStudyElementsGroup that
      * consists of elements from the current studyConfiguration.
-     * 
-     * @return the authorizedStudyElementsGroup
+     * @param studyConfiguration
+     * @param authorizedStudyElementsGroupName
+     * @param fieldDescriptorName
+     * @param annotationValue
+     * @return authorizedStudyElementsGroup
      */
     protected AuthorizedStudyElementsGroup createAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
                                                                                 String authorizedStudyElementsGroupName,
-                                                                                String fieldDescriptorName) {
+                                                                                String fieldDescriptorName,
+                                                                                String annotationValue) {
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
         authorizedStudyElementsGroup.setGroupName(authorizedStudyElementsGroupName);
         authorizedStudyElementsGroup.setStudyConfiguration(studyConfiguration);
-        String desc = "Created by integration test for study named: ";
+        String desc = "Created by integration test for study named: " + studyConfiguration.getStudy().getShortTitleText();
         authorizedStudyElementsGroup.setGroupDescription(desc);
         // add AuthorizedAnnotationFieldDescriptor
         AnnotationFieldDescriptor annotationFieldDescriptor = new AnnotationFieldDescriptor();
-        annotationFieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy(fieldDescriptorName);
+        annotationFieldDescriptor = getAfd(fieldDescriptorName, AnnotationFieldType.ANNOTATION);
         AuthorizedAnnotationFieldDescriptor authorizedAnnotationFieldDescriptor = new AuthorizedAnnotationFieldDescriptor();
         authorizedAnnotationFieldDescriptor.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
         authorizedAnnotationFieldDescriptor.setAnnotationFieldDescriptor(annotationFieldDescriptor);
         authorizedStudyElementsGroup.getAuthorizedAnnotationFieldDescriptors().add(authorizedAnnotationFieldDescriptor);
-        // TODO add AuthorizedQuerys
         // add AuthorizedGenomicDataSourceConfigurations
         AuthorizedGenomicDataSourceConfiguration authorizedGenomicDataSourceConfiguration = new AuthorizedGenomicDataSourceConfiguration();
         authorizedGenomicDataSourceConfiguration.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
@@ -677,8 +703,9 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
         StringComparisonCriterion stringComparisonCriterion = new StringComparisonCriterion();
-        stringComparisonCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING);
-        stringComparisonCriterion.setStringValue("TRIAL1");
+        stringComparisonCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
+        stringComparisonCriterion.setStringValue(annotationValue);
+        stringComparisonCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
         AbstractCriterion abstractCriterion = (AbstractCriterion) new AbstractAnnotationCriterion();
         abstractCriterion = stringComparisonCriterion;
         HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
@@ -687,12 +714,36 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         AuthorizedQuery authorizedQuery = new AuthorizedQuery();
         authorizedQuery.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
         authorizedQuery.setQuery(query);
-        
-        authorizedStudyElementsGroup.getAuthorizedQuerys().add(authorizedQuery);        
-        
+        authorizedStudyElementsGroup.getAuthorizedQuerys().add(authorizedQuery); 
         return authorizedStudyElementsGroup;
-    }    
-    
-    
-    
+    }     
+ 
+    /**
+     * @param fieldDescriptorName 
+     * @param afdType 
+     * @return afd
+     */
+    private AnnotationFieldDescriptor getAfd(String fieldDescriptorName, AnnotationFieldType afdType) {
+        AnnotationDefinition ad = getAd(fieldDescriptorName, AnnotationTypeEnum.STRING);
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        afd.setName(fieldDescriptorName);
+        afd.setType(afdType);
+        afd.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
+        afd.setDefinition(ad);
+        return afd;
+    }
+
+    /**
+     * Returns a new AnnotationDefinition.
+     * @param adName the display name that will be given to the annotation definition.
+     * @param adDataType the DataType that will be given to the new
+     * @return annotationDefinition
+     */
+    private AnnotationDefinition getAd(String adName, AnnotationTypeEnum adDataType) {
+        AnnotationDefinition ad = new AnnotationDefinition();
+        ad.setDisplayName(adName);
+        ad.setDataType(adDataType);
+        return ad;
+    }
+
 }
