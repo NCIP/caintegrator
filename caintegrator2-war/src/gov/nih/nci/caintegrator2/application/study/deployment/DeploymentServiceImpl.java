@@ -196,6 +196,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     throws InvalidCriterionException, IOException {
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(studyConfiguration.getStudy());
+        studySubscription.setUserWorkspace(studyConfiguration.getUserWorkspace());
         dao.runSessionKeepAlive();
         getAnalysisService().deleteViewerDirectory(studyConfiguration.getStudy());
         heatmapParameters.setStudySubscription(studySubscription);

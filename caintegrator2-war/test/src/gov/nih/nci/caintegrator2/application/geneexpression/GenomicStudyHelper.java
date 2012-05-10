@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl;
 import gov.nih.nci.caintegrator2.application.query.ResultHandler;
 import gov.nih.nci.caintegrator2.application.query.ResultHandlerImpl;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
@@ -119,6 +120,7 @@ import java.util.Set;
  */
 public class GenomicStudyHelper {
     private static final String USER_EXISTS = "studyManager";
+    private static final String EXP_ID = "caArray Experiment ID 1";
     private GeneExpressionReporter reporter;
     private QueryManagementServiceImpl queryManagementService = new QueryManagementServiceImpl();
     private GenomicDataTestDaoStub daoStub;
@@ -145,6 +147,11 @@ public class GenomicStudyHelper {
         query.getSubscription().setStudy(new Study());
         Study study = query.getSubscription().getStudy();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
+
+        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        genomicDataSourceConfiguration.setExperimentIdentifier(EXP_ID);
+        studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
+        
         study.setStudyConfiguration(studyConfiguration);
         UserWorkspace userWorkspace = new UserWorkspace();
         userWorkspace.setUsername(USER_EXISTS);
@@ -156,6 +163,7 @@ public class GenomicStudyHelper {
         assignment.setId(Long.valueOf(1));
         SampleAcquisition acquisition = new SampleAcquisition();
         Sample sample = new Sample();
+        sample.setGenomicDataSource(genomicDataSourceConfiguration);
         sample.setSampleAcquisition(acquisition);
         Array array = new Array();
         array.setPlatform(platform);

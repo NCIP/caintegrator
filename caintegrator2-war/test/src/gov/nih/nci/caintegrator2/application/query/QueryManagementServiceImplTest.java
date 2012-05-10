@@ -92,14 +92,20 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
+import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedAnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedGenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.AuthorizedQuery;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
@@ -120,11 +126,13 @@ import gov.nih.nci.caintegrator2.domain.application.RangeTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectIdentifier;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -150,10 +158,12 @@ import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -164,6 +174,8 @@ public class QueryManagementServiceImplTest {
  
 
     private static final String USER_EXISTS = "studyManager";
+    private static final String AFD_NAME = "Gender";
+    private static final String EXP_ID = "caArray Experiment ID 1";
     private QueryManagementServiceImpl queryManagementService;
     private CaIntegrator2DaoStub dao;
     private Query query;
@@ -171,6 +183,7 @@ public class QueryManagementServiceImplTest {
     private ArrayDataServiceStub arrayDataService;
     private SegmentData segmentData;
     private SegmentData segmentData2;
+    private UserWorkspace userWorkspace;
     
     @Before
     public void setup() {
@@ -186,20 +199,41 @@ public class QueryManagementServiceImplTest {
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
         query.setColumnCollection(new HashSet<ResultColumn>());
-        UserWorkspace userWorkspace = new UserWorkspace();
+        userWorkspace = new UserWorkspace();
         userWorkspace.setUsername(USER_EXISTS);
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setUserWorkspace(userWorkspace);
-        query.setSubscription(studySubscription);
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
+        study = studyConfiguration.getStudy();
         study.setStudyConfiguration(studyConfiguration);
+        // setup AFD and AnnotationGroup
+        AnnotationDefinition ad = new AnnotationDefinition();
+        ad.setDisplayName(AFD_NAME);
+        ad.setDataType(AnnotationTypeEnum.STRING);
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        afd.setName(AFD_NAME);
+        afd.setType(AnnotationFieldType.ANNOTATION);
+        afd.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
+        afd.setDefinition(ad);
         StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
-        studySubjectAssignment.setIdentifier("1");
+        studySubjectAssignment.setId(Long.valueOf(1));
+        studySubjectAssignment.setIdentifier("SubjectID1");
+        SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
+        StringAnnotationValue stringAnnotationValue = new StringAnnotationValue();
+        stringAnnotationValue.setStringValue("F");
+        stringAnnotationValue.setAnnotationDefinition(ad);
+        subjectAnnotation.setAnnotationValue(stringAnnotationValue);
+        studySubjectAssignment.getSubjectAnnotationCollection().add(subjectAnnotation);
         study.getAssignmentCollection().add(studySubjectAssignment);
+        AnnotationGroup group = new AnnotationGroup();
+        group.setName("group");
+        group.getAnnotationFieldDescriptors().add(afd);
+        study.getAnnotationGroups().add(group);
+        studySubscription.setStudy(study);
+        query.setSubscription(studySubscription);
         query.getSubscription().setStudy(study);
         query.getSubscription().setUserWorkspace(userWorkspace);
-        studyConfiguration.getGenomicDataSources().add(new GenomicDataSourceConfiguration());
         segmentData = new SegmentData();
         ChromosomalLocation location = new ChromosomalLocation();
         location.setStartPosition(1);
@@ -280,10 +314,15 @@ public class QueryManagementServiceImplTest {
         userWorkspace.setUsername(USER_EXISTS);
         study.getStudyConfiguration().setUserWorkspace(userWorkspace);
         query.getSubscription().setUserWorkspace(userWorkspace);
-        StudySubjectAssignment assignment = new StudySubjectAssignment();
+        StudySubjectAssignment assignment = query.getSubscription().getStudy().getAssignmentCollection().iterator().next();
         SampleAcquisition acquisition = new SampleAcquisition();
         Sample sample = new Sample();
+        acquisition.setAssignment(assignment);
         sample.setSampleAcquisition(acquisition);
+        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        genomicDataSourceConfiguration.setExperimentIdentifier(EXP_ID);
+        study.getStudyConfiguration().getGenomicDataSources().add(genomicDataSourceConfiguration);
+        sample.setGenomicDataSource(genomicDataSourceConfiguration);
         Array array = new Array();
         array.setPlatform(platform);
         ArrayData arrayData = new ArrayData();
@@ -307,6 +346,7 @@ public class QueryManagementServiceImplTest {
         sample.getArrayDataCollection().add(arrayData2);        
         array.getSampleCollection().add(sample);
         acquisition.setSample(sample);
+        acquisition.setAssignment(assignment);
         assignment.getSampleAcquisitionCollection().add(acquisition);
         study.getAssignmentCollection().add(assignment);
         try {
@@ -545,13 +585,13 @@ public class QueryManagementServiceImplTest {
     throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException, CSException {
 
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup1 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup1","Gender");
+            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup1","Gender", "F");
             List<AuthorizedStudyElementsGroup> list = new ArrayList<AuthorizedStudyElementsGroup>();
             list.add(authorizedStudyElementsGroup1);
             studyConfiguration.setAuthorizedStudyElementsGroups(list);
 
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age");            
+            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age", StringUtils.EMPTY);
 
             list.add(authorizedStudyElementsGroup2);
             studyConfiguration.setAuthorizedStudyElementsGroups(list);
@@ -560,12 +600,16 @@ public class QueryManagementServiceImplTest {
     /**
      * This method creates and returns an AuthorizedStudyElementsGroup that
      * consists of elements from the current studyConfiguration.
-     * 
-     * @return the authorizedStudyElementsGroup
+     * @param studyConfiguration
+     * @param authorizedStudyElementsGroupName
+     * @param fieldDescriptorName
+     * @param annotationValue
+     * @return authorizedStudyElementsGroup
      */
     protected AuthorizedStudyElementsGroup createAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
                                                                                 String authorizedStudyElementsGroupName,
-                                                                                String fieldDescriptorName) {
+                                                                                String fieldDescriptorName,
+                                                                                String annotationValue) {
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
         authorizedStudyElementsGroup.setGroupName(authorizedStudyElementsGroupName);
         authorizedStudyElementsGroup.setStudyConfiguration(studyConfiguration);
@@ -583,6 +627,33 @@ public class QueryManagementServiceImplTest {
         authorizedGenomicDataSourceConfiguration.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
         authorizedGenomicDataSourceConfiguration.setGenomicDataSourceConfiguration(studyConfiguration.getGenomicDataSources().get(0));
         authorizedStudyElementsGroup.getAuthorizedGenomicDataSourceConfigurations().add(authorizedGenomicDataSourceConfiguration);
+        // add AuthorizedQuery
+        Query query = new Query();
+        query.setName("TestAuthorizationQuery");
+        query.setDescription(desc);
+        
+        for (StudySubscription studySubscription : userWorkspace.getSubscriptionCollection()) {
+            if (studySubscription.getStudy().getId().equals(studyConfiguration.getStudy().getId())) {
+                query.setSubscription(studySubscription);
+            }
+        }
+        
+        query.setLastModifiedDate(new Date());
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
+        StringComparisonCriterion stringComparisonCriterion = new StringComparisonCriterion();
+        stringComparisonCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
+        stringComparisonCriterion.setStringValue(annotationValue);
+        stringComparisonCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
+        AbstractCriterion abstractCriterion = (AbstractCriterion) new AbstractAnnotationCriterion();
+        abstractCriterion = stringComparisonCriterion;
+        HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
+        abstractCriterionCollection.add(abstractCriterion);
+        query.getCompoundCriterion().setCriterionCollection(abstractCriterionCollection);
+        AuthorizedQuery authorizedQuery = new AuthorizedQuery();
+        authorizedQuery.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
+        authorizedQuery.setQuery(query);
+        authorizedStudyElementsGroup.getAuthorizedQuerys().add(authorizedQuery); 
         return authorizedStudyElementsGroup;
     }     
     
