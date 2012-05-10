@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AuthorizedGenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedQuery;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.common.QueryUtil;
@@ -102,7 +102,6 @@ import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
@@ -114,7 +113,6 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
-import gov.nih.nci.caintegrator2.security.SecurityHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -123,12 +121,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Handles CompoundCriterion objects.
  */
 @SuppressWarnings("PMD.CyclomaticComplexity")
 final class CompoundCriterionHandler extends AbstractCriterionHandler {
-
+    
     private final Collection <AbstractCriterionHandler> handlers;
     private final CompoundCriterion compoundCriterion;
     private final ResultTypeEnum resultType;
@@ -257,53 +257,71 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
     private Set<ResultRow> removeUnauthorizedStudyElements(Set<ResultRow> allValidRows,
                                                             CaIntegrator2Dao dao,
                                                             Query query) {
-        // get restricted elements
-        StringComparisonCriterion criterionForRestrictingSubjects = new StringComparisonCriterion();
-        criterionForRestrictingSubjects.setEntityType(EntityTypeEnum.SUBJECT);
+
         Set<StudySubjectAssignment> listOfAllowedStudySubjectAssignments = new HashSet<StudySubjectAssignment>();
-        String username = SecurityHelper.getCurrentUsername();
+        Set<String> listOfAllowedExperimentIdentifiers = new HashSet<String>();
+        Set<ResultRow> allowedRows = new HashSet<ResultRow>();
+        String username = query.getSubscription().getUserWorkspace().getUsername();
+        Study study = query.getSubscription().getStudy();
+        String expId = StringUtils.EMPTY;
        
         for (AuthorizedStudyElementsGroup asg : dao.getAuthorizedStudyElementGroups(username,
-                                                                                        query.getSubscription().
-                                                                                        getStudy().
-                                                                                        getStudyConfiguration().
-                                                                                        getId())) {
+                                                                                    study.
+                                                                                    getStudyConfiguration().
+                                                                                    getId())) {
             for (AuthorizedQuery authorizedQuery : asg.getAuthorizedQuerys()) {
                 for (AbstractCriterion abstractCriterion : authorizedQuery.
                                                             getQuery().
                                                             getCompoundCriterion().
                                                             getCriterionCollection()) {
-
-                    StringComparisonCriterion stringComparisonCriterion = (StringComparisonCriterion) abstractCriterion;
-                    AnnotationFieldDescriptor annotationFieldDescriptor
-                                    = stringComparisonCriterion.getAnnotationFieldDescriptor();
-                    criterionForRestrictingSubjects.setWildCardType(stringComparisonCriterion.getWildCardType());
-                    criterionForRestrictingSubjects.setStringValue(stringComparisonCriterion.getStringValue());
-                    criterionForRestrictingSubjects.setAnnotationFieldDescriptor(annotationFieldDescriptor); 
-                    listOfAllowedStudySubjectAssignments.
-                                    addAll(dao.findMatchingSubjects(criterionForRestrictingSubjects,
-                                                                        query.getSubscription().getStudy()));
+                    if (abstractCriterion instanceof AbstractAnnotationCriterion) {
+                        listOfAllowedStudySubjectAssignments.
+                                          addAll(dao.findMatchingSubjects(
+                                                              (AbstractAnnotationCriterion) abstractCriterion,
+                                                              study));
+                    }
                 }
+            }
+            
+            for (AuthorizedGenomicDataSourceConfiguration authorizedGDC
+                                                            : asg.getAuthorizedGenomicDataSourceConfigurations()) {
+                listOfAllowedExperimentIdentifiers
+                                   .add(authorizedGDC.getGenomicDataSourceConfiguration().getExperimentIdentifier());
             }
         }
 
-        if (query.getResultType().equals(ResultTypeEnum.CLINICAL)) {
+        if ((query.getResultType().equals(ResultTypeEnum.CLINICAL))
+                || (query.getResultType().equals(ResultTypeEnum.GENE_EXPRESSION))
+                || (query.getResultType().equals(ResultTypeEnum.COPY_NUMBER))
+                || (query.getResultType().equals(ResultTypeEnum.IGV_VIEWER))
+                || (query.getResultType().equals(ResultTypeEnum.HEATMAP_VIEWER))
+            ) {
+            
             List<StudySubjectAssignment> listOfRestrictedStudySubjectAssignments
                                                          = new ArrayList<StudySubjectAssignment>();
             for (ResultRow resultRow : allValidRows) {
                 listOfRestrictedStudySubjectAssignments.add(resultRow.getSubjectAssignment());
             }
+
             listOfRestrictedStudySubjectAssignments.retainAll(listOfAllowedStudySubjectAssignments);
-            Set<ResultRow> tempRows = new HashSet<ResultRow>();
-            tempRows.addAll(allValidRows);
-            for (ResultRow resultRow : tempRows) {
-                if (!listOfRestrictedStudySubjectAssignments.contains(resultRow.getSubjectAssignment())) {
-                    allValidRows.remove(resultRow);
+            for (ResultRow resultRow2 : allValidRows) {
+                
+                if ((query.getResultType().equals(ResultTypeEnum.GENE_EXPRESSION))
+                    || (query.getResultType().equals(ResultTypeEnum.COPY_NUMBER))) {
+                    
+                    expId = resultRow2.getSampleAcquisition().getSample().getGenomicDataSource()
+                                                                                    .getExperimentIdentifier();
+                    if ((listOfRestrictedStudySubjectAssignments.contains(resultRow2.getSubjectAssignment()))
+                            && (listOfAllowedExperimentIdentifiers.contains(expId))) {
+                        allowedRows.add(resultRow2);
+                    }
+                } else if (listOfRestrictedStudySubjectAssignments.contains(resultRow2.getSubjectAssignment())) {
+                    allowedRows.add(resultRow2);
                 }
             }
         }
 
-        return allValidRows;
+        return allowedRows;
     }
 
 

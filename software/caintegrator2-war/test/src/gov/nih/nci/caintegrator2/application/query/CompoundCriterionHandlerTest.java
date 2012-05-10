@@ -106,6 +106,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -202,6 +203,39 @@ public class CompoundCriterionHandlerTest {
         assertTrue(daoStub.findMatchingSamplesCalled);
         assertTrue(daoStub.findMatchingImageSeriesCalled);
         assertTrue(daoStub.findMatchingSubjectsCalled);
+        
+        //test for specific entity type
+        Set<EntityTypeEnum> entityTypeSet = new HashSet<EntityTypeEnum>();
+        entityTypeSet.add(EntityTypeEnum.SUBJECT);
+        compoundCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        entityTypeSet = new HashSet<EntityTypeEnum>();
+        entityTypeSet.add(EntityTypeEnum.IMAGESERIES);
+        compoundCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        entityTypeSet = new HashSet<EntityTypeEnum>();
+        entityTypeSet.add(EntityTypeEnum.SAMPLE);
+        compoundCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        
+        
+        // compound criterion with multiple criterions
+        CompoundCriterion compoundCriterion6 = new CompoundCriterion();
+        compoundCriterion6.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion6.getCriterionCollection().add(expressionLevelCriterion1);
+        compoundCriterion6.getCriterionCollection().add(abstractAnnotationCriterion2);
+        compoundCriterion6.getCriterionCollection().add(abstractAnnotationCriterion3);
+        compoundCriterion6.setBooleanOperator(BooleanOperatorEnum.AND);
+        CompoundCriterionHandler compoundCriterionHandler4=CompoundCriterionHandler.create(compoundCriterion6, 
+                ResultTypeEnum.CLINICAL);
+        compoundCriterionHandler4.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        
+        // Check if criterion somehow ends up being empty.
+        entityTypeSet = new HashSet<EntityTypeEnum>();
+        entityTypeSet.add(EntityTypeEnum.SUBJECT);
+        CompoundCriterion compoundCriterion7 = new CompoundCriterion();
+        compoundCriterion7.setCriterionCollection(new HashSet<AbstractCriterion>());
+        CompoundCriterionHandler compoundCriterionHandler5=CompoundCriterionHandler.create(compoundCriterion7, 
+                ResultTypeEnum.CLINICAL);
+        compoundCriterionHandler5.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        
     }
 
 
