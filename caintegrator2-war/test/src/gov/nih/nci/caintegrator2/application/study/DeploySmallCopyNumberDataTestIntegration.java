@@ -310,4 +310,28 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
         return ArrayDataLoadingTypeEnum.PARSED_DATA;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override    
+    protected boolean getAuthorizeStudy() {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getQueryFieldDescriptorName() {
+        return "Gender";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getQueryAnnotationValue() {
+        return "F";
+    }       
+
 }

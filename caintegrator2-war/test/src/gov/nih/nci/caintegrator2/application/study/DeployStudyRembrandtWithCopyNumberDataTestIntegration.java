@@ -302,4 +302,27 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
         return PlatformVendorEnum.AFFYMETRIX;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override    
+    protected boolean getAuthorizeStudy() {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getQueryFieldDescriptorName() {
+        return "Gender";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getQueryAnnotationValue() {
+        return "F";
+    }     
 }
