@@ -1,4 +1,5 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
+
 <div id="content">
     <h1 style="color: #FFFFFF; background: #263D6B; padding: 5px;"> editing: <strong><s:property value="studyConfiguration.study.shortTitleText" /></strong>
     </h1>

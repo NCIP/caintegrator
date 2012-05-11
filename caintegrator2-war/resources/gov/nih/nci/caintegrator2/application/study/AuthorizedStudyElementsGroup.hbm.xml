@@ -17,21 +17,21 @@
             insert="false"
             update="false"/>
             
-        <list name="authorizedAnnotationFieldDescriptors" lazy="false" cascade="all">
+        <list name="authorizedAnnotationFieldDescriptors" lazy="false" cascade="all,delete-orphan">
             <cache usage="read-write" />
             <key column="AUTHORIZED_STUDY_ELEMENTS_GROUP_ID" not-null="true"/>
             <list-index column="LIST_INDEX"/>
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.AuthorizedAnnotationFieldDescriptor"/>
         </list>     
 
-        <list name="authorizedGenomicDataSourceConfigurations" lazy="false" cascade="all">
+        <list name="authorizedGenomicDataSourceConfigurations" lazy="false" cascade="all,delete-orphan">
             <cache usage="read-write" />
             <key column="AUTHORIZED_STUDY_ELEMENTS_GROUP_ID" not-null="true"/>
             <list-index column="LIST_INDEX"/>
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.AuthorizedGenomicDataSourceConfiguration"/>
         </list>
 
-        <list name="authorizedQuerys" lazy="false" cascade="all">
+        <list name="authorizedQuerys" lazy="false" cascade="all,delete-orphan">
             <cache usage="read-write" />
             <key column="AUTHORIZED_STUDY_ELEMENTS_GROUP_ID" not-null="true"/>
             <list-index column="LIST_INDEX"/>

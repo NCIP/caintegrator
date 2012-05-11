@@ -860,7 +860,13 @@
         </action>
         
         <action name="saveAuthorizedGroup" method="save" class="gov.nih.nci.caintegrator2.web.action.study.management.EditAuthorizedGroupAction">
-        
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
         
         <action name="cancelAuthorizedGroup" method="cancel" class="gov.nih.nci.caintegrator2.web.action.study.management.EditAuthorizedGroupAction">

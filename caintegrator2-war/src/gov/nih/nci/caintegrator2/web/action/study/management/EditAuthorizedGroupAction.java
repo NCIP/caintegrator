@@ -30,8 +30,13 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AuthorizedAnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AuthorizedGenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.security.SecurityManager;
+import gov.nih.nci.caintegrator2.web.transfer.AuthorizationTrees;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.exceptions.CSException;
@@ -52,6 +57,9 @@ public class EditAuthorizedGroupAction extends AbstractStudyAction {
     private Collection<Group> unauthorizedGroups = new ArrayList<Group>();
     private List<User> groupMembers = new ArrayList<User>();
     private Long selectedGroupId;
+    private AuthorizationTrees trees;
+    private List<Long> selectedDescriptorIds = new ArrayList<Long>();
+    private List<Long> selectedDataSourceIds = new ArrayList<Long>();
 
     /**
      * {@inheritDoc}
@@ -132,6 +140,34 @@ public class EditAuthorizedGroupAction extends AbstractStudyAction {
     @SuppressWarnings("unchecked")
     public String edit() {
         getGroupMembers().addAll(getAuthorizedGroup().getAuthorizedGroup().getUsers());
+        setTrees(new AuthorizationTrees(getStudyConfiguration(), getAuthorizedGroup()));
+        return SUCCESS;
+    }
+
+    /**
+     * Saves the currently selected authorized group.
+     * @return the struts2 forwarding result
+     */
+    public String save() {
+        getAuthorizedGroup().getAuthorizedAnnotationFieldDescriptors().clear();
+        for (Long id : getSelectedDescriptorIds()) {
+            AnnotationFieldDescriptor field = new AnnotationFieldDescriptor();
+            field.setId(id);
+            field = getStudyManagementService().getRefreshedEntity(field);
+            AuthorizedAnnotationFieldDescriptor aafd = new AuthorizedAnnotationFieldDescriptor();
+            aafd.setAnnotationFieldDescriptor(field);
+            aafd.setAuthorizedStudyElementsGroup(getAuthorizedGroup());
+            getAuthorizedGroup().getAuthorizedAnnotationFieldDescriptors().add(aafd);
+        }
+        getAuthorizedGroup().getAuthorizedGenomicDataSourceConfigurations().clear();
+        for (Long id : getSelectedDataSourceIds()) {
+            GenomicDataSourceConfiguration config = getStudyManagementService().getRefreshedGenomicSource(id);
+            AuthorizedGenomicDataSourceConfiguration authDataSource = new AuthorizedGenomicDataSourceConfiguration();
+            authDataSource.setGenomicDataSourceConfiguration(config);
+            authDataSource.setAuthorizedStudyElementsGroup(getAuthorizedGroup());
+            getAuthorizedGroup().getAuthorizedGenomicDataSourceConfigurations().add(authDataSource);
+        }
+        getStudyManagementService().daoSave(getAuthorizedGroup());
         return SUCCESS;
     }
 
@@ -203,5 +239,47 @@ public class EditAuthorizedGroupAction extends AbstractStudyAction {
      */
     public void setSelectedGroupId(Long selectedGroupId) {
         this.selectedGroupId = selectedGroupId;
+    }
+
+    /**
+     * @return the trees
+     */
+    public AuthorizationTrees getTrees() {
+        return trees;
+    }
+
+    /**
+     * @param trees the trees to set
+     */
+    public void setTrees(AuthorizationTrees trees) {
+        this.trees = trees;
+    }
+
+    /**
+     * @return the selectedDescriptorIds
+     */
+    public List<Long> getSelectedDescriptorIds() {
+        return selectedDescriptorIds;
+    }
+
+    /**
+     * @param selectedDescriptorIds the selectedDescriptorIds to set
+     */
+    public void setSelectedDescriptorIds(List<Long> selectedDescriptorIds) {
+        this.selectedDescriptorIds = selectedDescriptorIds;
+    }
+
+    /**
+     * @return the selectedDataSourceIds
+     */
+    public List<Long> getSelectedDataSourceIds() {
+        return selectedDataSourceIds;
+    }
+
+    /**
+     * @param selectedDataSourceIds the selectedDataSourceIds to set
+     */
+    public void setSelectedDataSourceIds(List<Long> selectedDataSourceIds) {
+        this.selectedDataSourceIds = selectedDataSourceIds;
     }
 }
