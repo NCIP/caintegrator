@@ -236,4 +236,28 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
         return PlatformVendorEnum.AFFYMETRIX;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override    
+    protected boolean getAuthorizeStudy() {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getQueryFieldDescriptorName() {
+        return "Gender";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getQueryAnnotationValue() {
+        return "F";
+    }     
+
 }
