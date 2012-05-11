@@ -112,6 +112,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
@@ -580,7 +581,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         if (getAuthorizeStudy()) {
             logStart();
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup1 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup1","Gender", "F");
+            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup1",getQueryFieldDescriptorName(), getQueryAnnotationValue());
             service.addAuthorizedStudyElementsGroup(studyConfiguration,authorizedStudyElementsGroup1);
 
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
@@ -745,11 +746,12 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         query.setResultType(ResultTypeEnum.CLINICAL);
         
         AnnotationFieldDescriptor annotationFieldDescriptor = new AnnotationFieldDescriptor();
-        annotationFieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy("Gender");
+        annotationFieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy(getQueryFieldDescriptorName());
         StringComparisonCriterion stringComparisonCriterion = new StringComparisonCriterion();
         stringComparisonCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
-        stringComparisonCriterion.setStringValue("F");
+        stringComparisonCriterion.setStringValue(getQueryAnnotationValue());
         stringComparisonCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
+        stringComparisonCriterion.setEntityType(EntityTypeEnum.SUBJECT);
         AbstractCriterion abstractCriterion = (AbstractCriterion) new AbstractAnnotationCriterion();
         abstractCriterion = stringComparisonCriterion;
         HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
@@ -760,6 +762,30 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         assertFalse(result.getRowCollection().isEmpty());
         logEnd();
     }
+    
+    /**
+     * This method returns the name of the Query AnnotationFieldDescriptor
+     * that is to be used for constructing a query to limit access to study
+     * data.  Override this method and replace the null value with the name
+     * of the column that will used in the query criterion to authorize access
+     * to subjects.
+     * @return
+     */
+    protected String getQueryFieldDescriptorName() {
+        return null;
+    }
+
+    /**
+     * This method returns the name of the Query AnotationValue
+     * that is to be used for constructing a query to limit access to study
+     * data.  Override this method and replace the null value with the value
+     * that will be used in the query criterion to authorize access
+     * to subjects.
+     * @return
+     */
+    protected String getQueryAnnotationValue() {
+        return null;
+    }    
 
     private void checkGenomicQuery() throws InvalidCriterionException {
         if (getLoadSamples() && getLoadDesign()) {

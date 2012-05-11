@@ -107,7 +107,6 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
         deployStudy();
     }
 
-
     @Override
     protected boolean getMapImages() {
         return true;
@@ -123,6 +122,9 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override    
     protected boolean getAuthorizeStudy() {
         return true;
@@ -269,4 +271,20 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
         return PlatformVendorEnum.AFFYMETRIX;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getQueryFieldDescriptorName() {
+        return "Gender";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getQueryAnnotationValue() {
+        return "F";
+    }    
+    
 }
