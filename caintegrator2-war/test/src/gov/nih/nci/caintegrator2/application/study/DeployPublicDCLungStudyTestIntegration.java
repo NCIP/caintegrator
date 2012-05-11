@@ -254,4 +254,24 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
         return PlatformVendorEnum.AFFYMETRIX;
     }
 
+    @Override    
+    protected boolean getAuthorizeStudy() {
+        return true;
+    }    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getQueryFieldDescriptorName() {
+        return "GENDER";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getQueryAnnotationValue() {
+        return "Female";
+    }     
 }
