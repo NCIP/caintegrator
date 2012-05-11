@@ -318,8 +318,12 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
      */
     private String getCopyStudyUrlString(StudyConfiguration studyConfiguration) {
 
-       String token = SessionHelper.getInstance().getToken();
-       String tokenName = SessionHelper.getInstance().getTokenName();
+        String token = "", tokenName = "";
+       
+        try {
+            token = SessionHelper.getInstance().getToken();
+            tokenName = SessionHelper.getInstance().getTokenName();
+        } catch (Exception e) { token = ""; }       
 
        String returnString = null;
 
