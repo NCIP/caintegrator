@@ -120,15 +120,7 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     @Override
     protected boolean getLoadImageAnnotation() {
         return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override    
-    protected boolean getAuthorizeStudy() {
-        return true;
-    }     
+    }   
     
     @Override
     protected boolean getLoadDesign() {
@@ -269,6 +261,14 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     @Override
     protected PlatformVendorEnum getPlatformVendor() {
         return PlatformVendorEnum.AFFYMETRIX;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override    
+    protected boolean getAuthorizeStudy() {
+        return true;
     }
 
     /**
