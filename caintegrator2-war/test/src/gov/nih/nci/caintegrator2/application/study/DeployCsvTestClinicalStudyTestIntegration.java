@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.TestDataFiles;
 
 import java.io.File;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
@@ -127,4 +128,27 @@ public class DeployCsvTestClinicalStudyTestIntegration extends AbstractDeployStu
         return TestDataFiles.VALID_FILE;
     }
 
+    /**
+     * {@inheritDoc}
+     */    
+    @Override    
+    protected boolean getAuthorizeStudy() {
+        return false;
+    }    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getQueryFieldDescriptorName() {
+        return "Col3";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getQueryAnnotationValue() {
+        return "Y";
+    }       
 }
