@@ -4118,8 +4118,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
                                 <copy path="//bean[@id='casProxyTicketValidator']/property[@name='casValidate']/value/text()"
                                     property="cas.url"/>
                             </xmltask>
-                        	<echo message="Ticket: ${cas.ticket.key}"/>
-                        	<echo message="URL: ${cas.url}"/>
+                        	<echo message="Original CAS URL: ${cas.url}"/>
                             <property name="@{single.sign.on.install}" value="${single.sign.on.install}" />
                         	<propertyregex property="@{cas.server.hostname}"
                         	              input="${cas.url}"

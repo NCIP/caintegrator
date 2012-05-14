@@ -82,7 +82,7 @@
     <!-- This class stores the properties that are relevant to the local CAS service. -->
     <bean id="serviceProperties" class="org.acegisecurity.ui.cas.ServiceProperties">
         <property name="service">
-            <value>http://@jboss.server.hostname@:@jboss.server.port@/caintegrator/j_acegi_security_check</value>
+            <value>@jboss.protocol@://@jboss.server.hostname@:@jboss.server.port@/caintegrator/j_acegi_security_check</value>
         </property>
         <property name="sendRenew">
             <value>false</value>
