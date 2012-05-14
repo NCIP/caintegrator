@@ -451,13 +451,25 @@
             </filterset>
         </copy>
 
+    	<if>
+            <equals arg1="${jboss.ssl.enable}" arg2="true"/>
+            <then>
+                <property name="jboss.protocol" value="https"/>
+            </then>
+            <else>
+                <property name="jboss.protocol" value="http"/>
+            </else>
+        </if>
+
     	<copy todir="${caintegrator2.xml.dir}" file="${caintegrator2.war.resources.src.dir}/application-config-cas-security.xml" overwrite="true"/>
+
     	<copy file="${caintegrator2.war.resources.src.dir}/application-config-cas-security.xml"
     		todir="${caintegrator2.war.resources.target.dir}" filtering="true" overwrite="true">
             <filterset>
                 <filter token="cas.server.hostname" value="${cas.server.hostname}" />
                 <filter token="cas.server.port" value="${cas.server.port}"/>
                 <filter token="cas.ticket.key" value="${cas.ticket.key}"/>
+                <filter token="jboss.protocol" value="${jboss.protocol}"/>
                 <filter token="jboss.server.hostname" value="${jboss.server.hostname}"/>
                 <filter token="jboss.server.port" value="${jboss.server.port}"/>
             </filterset>
