@@ -242,86 +242,101 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
             
         }
 
-        //TODO uncomment the following after query mechanism is working
+        //TODO uncomment the following after the AuthorizedStudyElementGroups UI is working
         //allValidRows = removeUnauthorizedStudyElements(allValidRows, dao, query);
         return allValidRows;
     }
     
     /**
-     * @param allValidRows
+     * This method takes the query result rows as an input and removes any restricted study data
+     * as determined by the dao.getAuthorizedStudyElementGroups, that are assigned to this user.
+     * The rowsAfterRestriction are returned.  If dao.getAuthorizedStudyElementGroups does not 
+     * produce any AuthorizedStudyElementsGroups for this user, then the input rowsBeforeRestriction
+     * are returned unmodified.
+     * 
+     * @param rowsBeforeRestriction
      * @param dao
      * @param query 
-     * @return
+     * @return rowsAfterRestriction
      */
     @SuppressWarnings({"unused", "PMD.ExcessiveMethodLength" })  //TODO JPM refactor and remove SuppressWarnings
-    private Set<ResultRow> removeUnauthorizedStudyElements(Set<ResultRow> allValidRows,
+    private Set<ResultRow> removeUnauthorizedStudyElements(Set<ResultRow> rowsBeforeRestriction,
                                                             CaIntegrator2Dao dao,
                                                             Query query) {
 
         Set<StudySubjectAssignment> listOfAllowedStudySubjectAssignments = new HashSet<StudySubjectAssignment>();
         Set<String> listOfAllowedExperimentIdentifiers = new HashSet<String>();
-        Set<ResultRow> allowedRows = new HashSet<ResultRow>();
+        Set<ResultRow> rowsAfterRestriction = new HashSet<ResultRow>();
         String username = query.getSubscription().getUserWorkspace().getUsername();
         Study study = query.getSubscription().getStudy();
         String expId = StringUtils.EMPTY;
-       
-        for (AuthorizedStudyElementsGroup asg : dao.getAuthorizedStudyElementGroups(username,
-                                                                                    study.
-                                                                                    getStudyConfiguration().
-                                                                                    getId())) {
-            for (AuthorizedQuery authorizedQuery : asg.getAuthorizedQuerys()) {
-                for (AbstractCriterion abstractCriterion : authorizedQuery.
-                                                            getQuery().
-                                                            getCompoundCriterion().
-                                                            getCriterionCollection()) {
-                    if (abstractCriterion instanceof AbstractAnnotationCriterion) {
-                        listOfAllowedStudySubjectAssignments.
-                                          addAll(dao.findMatchingSubjects(
-                                                              (AbstractAnnotationCriterion) abstractCriterion,
-                                                              study));
+
+        if (!dao.getAuthorizedStudyElementGroups(username, study.getStudyConfiguration().getId()).isEmpty()) {
+            
+            for (AuthorizedStudyElementsGroup asg : dao.getAuthorizedStudyElementGroups(username,
+                                                                                        study.
+                                                                                        getStudyConfiguration().
+                                                                                        getId())) {
+                for (AuthorizedQuery authorizedQuery : asg.getAuthorizedQuerys()) {
+                    for (AbstractCriterion abstractCriterion : authorizedQuery.
+                                                                getQuery().
+                                                                getCompoundCriterion().
+                                                                getCriterionCollection()) {
+                        if (abstractCriterion instanceof AbstractAnnotationCriterion) {
+                            listOfAllowedStudySubjectAssignments.
+                                              addAll(dao.findMatchingSubjects(
+                                                                  (AbstractAnnotationCriterion) abstractCriterion,
+                                                                  study));
+                        }
                     }
                 }
-            }
-            
-            for (AuthorizedGenomicDataSourceConfiguration authorizedGDC
-                                                            : asg.getAuthorizedGenomicDataSourceConfigurations()) {
-                listOfAllowedExperimentIdentifiers
-                                   .add(authorizedGDC.getGenomicDataSourceConfiguration().getExperimentIdentifier());
-            }
-        }
-
-        if ((query.getResultType().equals(ResultTypeEnum.CLINICAL))
-                || (query.getResultType().equals(ResultTypeEnum.GENE_EXPRESSION))
-                || (query.getResultType().equals(ResultTypeEnum.COPY_NUMBER))
-                || (query.getResultType().equals(ResultTypeEnum.IGV_VIEWER))
-                || (query.getResultType().equals(ResultTypeEnum.HEATMAP_VIEWER))
-            ) {
-            
-            List<StudySubjectAssignment> listOfRestrictedStudySubjectAssignments
-                                                         = new ArrayList<StudySubjectAssignment>();
-            for (ResultRow resultRow : allValidRows) {
-                listOfRestrictedStudySubjectAssignments.add(resultRow.getSubjectAssignment());
-            }
-
-            listOfRestrictedStudySubjectAssignments.retainAll(listOfAllowedStudySubjectAssignments);
-            for (ResultRow resultRow2 : allValidRows) {
                 
-                if ((query.getResultType().equals(ResultTypeEnum.GENE_EXPRESSION))
-                    || (query.getResultType().equals(ResultTypeEnum.COPY_NUMBER))) {
-                    
-                    expId = resultRow2.getSampleAcquisition().getSample().getGenomicDataSource()
-                                                                                    .getExperimentIdentifier();
-                    if ((listOfRestrictedStudySubjectAssignments.contains(resultRow2.getSubjectAssignment()))
-                            && (listOfAllowedExperimentIdentifiers.contains(expId))) {
-                        allowedRows.add(resultRow2);
-                    }
-                } else if (listOfRestrictedStudySubjectAssignments.contains(resultRow2.getSubjectAssignment())) {
-                    allowedRows.add(resultRow2);
+                for (AuthorizedGenomicDataSourceConfiguration authorizedGDC
+                                                                : asg.getAuthorizedGenomicDataSourceConfigurations()) {
+                    listOfAllowedExperimentIdentifiers.add(authorizedGDC.
+                                                            getGenomicDataSourceConfiguration().
+                                                            getExperimentIdentifier()
+                                                            );
                 }
             }
+    
+            if ((query.getResultType().equals(ResultTypeEnum.CLINICAL))
+                    || (query.getResultType().equals(ResultTypeEnum.GENE_EXPRESSION))
+                    || (query.getResultType().equals(ResultTypeEnum.COPY_NUMBER))
+                    || (query.getResultType().equals(ResultTypeEnum.IGV_VIEWER))
+                    || (query.getResultType().equals(ResultTypeEnum.HEATMAP_VIEWER))
+                ) {
+                
+                List<StudySubjectAssignment> listOfRestrictedStudySubjectAssignments
+                                                             = new ArrayList<StudySubjectAssignment>();
+                for (ResultRow resultRow : rowsBeforeRestriction) {
+                    listOfRestrictedStudySubjectAssignments.add(resultRow.getSubjectAssignment());
+                }
+    
+                listOfRestrictedStudySubjectAssignments.retainAll(listOfAllowedStudySubjectAssignments);
+                for (ResultRow resultRow2 : rowsBeforeRestriction) {
+                    
+                    if ((query.getResultType().equals(ResultTypeEnum.GENE_EXPRESSION))
+                        || (query.getResultType().equals(ResultTypeEnum.COPY_NUMBER))) {
+                        
+                        expId = resultRow2.getSampleAcquisition().getSample().getGenomicDataSource()
+                                                                                        .getExperimentIdentifier();
+                        if ((listOfRestrictedStudySubjectAssignments.contains(resultRow2.getSubjectAssignment()))
+                                && (listOfAllowedExperimentIdentifiers.contains(expId))) {
+                            rowsAfterRestriction.add(resultRow2);
+                        }
+                    } else if (listOfRestrictedStudySubjectAssignments.contains(resultRow2.getSubjectAssignment())) {
+                        rowsAfterRestriction.add(resultRow2);
+                    }
+                }
+            }
+    
+            return rowsAfterRestriction;
+        
+        } else {
+            return rowsBeforeRestriction;
         }
 
-        return allowedRows;
     }
 
 
