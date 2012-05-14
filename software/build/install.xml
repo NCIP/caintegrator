@@ -637,6 +637,16 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
             replace="\1${database.dialect}\2"
             flags="sg"/>
     -->
+        <if>
+             <equals arg1="${jboss.ssl.enable}" arg2="true"/>
+             <then>
+                 <property name="jboss.protocol" value="https"/>
+             </then>
+             <else>
+                 <property name="jboss.protocol" value="http"/>
+             </else>
+         </if>
+
         <copy todir="${working.dir}/caintegrator2-war/WEB-INF" file="${working.dir}/caintegrator2-war/WEB-INF/xml/web.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="caintegrator2.version" value="${caintegrator2.version}" />
@@ -653,6 +663,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
                 <filter token="cas.server.hostname" value="${cas.server.hostname}" />
                 <filter token="cas.server.port" value="${cas.server.port}"/>
                 <filter token="cas.ticket.key" value="${cas.ticket.key}"/>
+            	<filter token="jboss.protocol" value="${jboss.protocol}"/>
                 <filter token="jboss.server.hostname" value="${jboss.server.hostname}"/>
                 <filter token="jboss.server.port" value="${jboss.server.port}"/>
             </filterset>
