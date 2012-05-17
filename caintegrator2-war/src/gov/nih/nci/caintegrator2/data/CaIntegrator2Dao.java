@@ -125,6 +125,9 @@ import java.util.Set;
 /**
  * Main DAO interface for storage and retrieval of persistent entities.
  */
+/**
+ * 
+ */
 public interface CaIntegrator2Dao {
     
     
@@ -530,12 +533,21 @@ public interface CaIntegrator2Dao {
     void markStudiesAsNeedingRefresh();
 
     /**
-     * Retrieves AuthorizedStudyElementGroups that are accesible for this CSM user.
+     * Retrieves AuthorizedStudyElementGroups that are accessible for this CSM user.
      * @param username the username to be used to check authorization.
      * @param studyConfigurationId the StudyConfigurationId
-     * @return AuthorizedStudyElementGroups that are accesible for this CSM user.
+     * @return AuthorizedStudyElementGroups that are accessible for this CSM user.
      */
 
     List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementGroups(String username, Long studyConfigurationId);
+    
+    /**
+     * retrieves the authorized AnnotationFieldDescriptors that are accessible for this CSM user.
+     * @param username the username to be used to check authorization.
+     * @param studyConfiguration the StudyConfiguration
+     * @return AnnotationFieldDescriptors that are accessible for this CSM user.
+     */
+    List<AnnotationFieldDescriptor> getAuthorizedAnnotationFieldDescriptors(String username,
+            StudyConfiguration studyConfiguration);
 
 }
