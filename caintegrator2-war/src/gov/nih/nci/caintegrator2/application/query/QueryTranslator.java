@@ -138,7 +138,7 @@ class QueryTranslator {
             Set<ResultRow> resultsCollection = 
                 compoundCriterionHandler.getMatches(dao, arrayDataService, query, entityTypesInQuery);
             
-            return resultHandler.createResults(query, resultsCollection);
+            return resultHandler.createResults(query, resultsCollection, dao);
         } else {
             // Not sure what to return here if there's no compoundCriterion.
             // Maybe it should be EVERY row since there's no criterion?

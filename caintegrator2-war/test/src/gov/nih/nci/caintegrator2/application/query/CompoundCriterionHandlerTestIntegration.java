@@ -121,13 +121,12 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
     public void testGetMatches() throws InvalidCriterionException {
         StudyHelper studyHelper = new StudyHelper();
         dao.save(studyHelper.getPlatform());
-        Study study = studyHelper.populateAndRetrieveStudy().getStudy();
+        StudySubscription subscription = studyHelper.populateAndRetrieveStudy();
+        Study study = subscription.getStudy();
         Set<EntityTypeEnum> entityTypesInQuery = new HashSet<EntityTypeEnum>();
         dao.save(study);
         
         Query query = new Query();
-        StudySubscription subscription = new StudySubscription();
-        subscription.setStudy(study);
         query.setSubscription(subscription);
 
         // Try compoundCriterion1

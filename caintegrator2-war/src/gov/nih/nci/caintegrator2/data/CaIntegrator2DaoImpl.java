@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.AuthorizedAnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -764,7 +765,29 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                                                          createCriteria("studyConfiguration").
                                                          add(Restrictions.eq("id", studyConfigurationId));
         return authorizedStudyElementsGroupCriteria.list();
-    }    
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
+    public List<AnnotationFieldDescriptor> getAuthorizedAnnotationFieldDescriptors(String username,
+                                                                                StudyConfiguration studyConfiguration) {
+        secureCurrentSession(username);
+        Long studyConfigurationId = studyConfiguration.getId();
+        Criteria authorizedAfdCriteria = getCurrentSession().
+                                                         createCriteria(AuthorizedAnnotationFieldDescriptor.class).
+                                                         createCriteria("authorizedStudyElementsGroup").
+                                                         createCriteria("studyConfiguration").
+                                                         add(Restrictions.eq("id", studyConfigurationId));
+        List<AuthorizedAnnotationFieldDescriptor> listAAFD = authorizedAfdCriteria.list();
+        List<AnnotationFieldDescriptor> listAfd = new ArrayList<AnnotationFieldDescriptor>();
+        for (AuthorizedAnnotationFieldDescriptor aafd : listAAFD) {
+            listAfd.add(aafd.getAnnotationFieldDescriptor());
+        }
+        
+        return listAfd;
+    }      
     
 
     /**

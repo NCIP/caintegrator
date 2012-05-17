@@ -333,6 +333,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         stringAnnotationValue.setStringValue("F");
         stringAnnotationValue.setAnnotationDefinition(getAd("Gender", AnnotationTypeEnum.STRING));
         subjectAnnotation.setAnnotationValue(stringAnnotationValue);
+        localStudySubjectAssignment.getSubjectAnnotationCollection().clear();
         localStudySubjectAssignment.getSubjectAnnotationCollection().add(subjectAnnotation);
         return localStudySubjectAssignment;
     }
@@ -641,6 +642,24 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         authorizedStudyElementsGroup.add(createAuthorizedStudyElementsGroup(study.getStudyConfiguration(), "IntegrationTestAuthorizedStudyElementsGroup1","Gender","F"));
         return authorizedStudyElementsGroup;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<AnnotationFieldDescriptor> getAuthorizedAnnotationFieldDescriptors(String username,
+                                                                                StudyConfiguration studyConfiguration) {
+
+        Long studyConfigurationId = studyConfiguration.getId();
+        List<AuthorizedStudyElementsGroup> list = new ArrayList<AuthorizedStudyElementsGroup>();
+        List<AnnotationFieldDescriptor> listAfd = new ArrayList<AnnotationFieldDescriptor>();
+        list = getAuthorizedStudyElementGroups(username, studyConfigurationId);
+        for (AuthorizedStudyElementsGroup aseg : list) {
+            for (AuthorizedAnnotationFieldDescriptor aafd : aseg.getAuthorizedAnnotationFieldDescriptors()) {
+                listAfd.add(aafd.getAnnotationFieldDescriptor());
+            }
+        }
+        return listAfd;
+    }     
     
     private void authorizeStudyElements(StudyConfiguration studyConfiguration)
     throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException, CSException {

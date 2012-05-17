@@ -112,6 +112,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
@@ -147,6 +148,7 @@ public class StudyHelper {
     private AnnotationDefinition sampleAnnotationDefinition;
     private AnnotationDefinition imageSeriesAnnotationDefinition;
     private AnnotationDefinition subjectAnnotationDefinition;
+    private AnnotationDefinition subjectAnnotationDefinition2;
     private PermissibleValue permval1;
     private PermissibleValue permval2;
     private Timepoint defaultTimepoint;
@@ -154,14 +156,19 @@ public class StudyHelper {
     private List<StudySubjectAssignment> studySubjects = new ArrayList<StudySubjectAssignment>();
     private Platform platform = new Platform();
     private DelimitedTextClinicalSourceConfiguration clinicalConf;
+    private UserWorkspace userWorkspace;
+    private String USER_NAME = "ncimanager";
     
     @SuppressWarnings({"PMD", "deprecation"}) // This is a long method for setting up test data
     public StudySubscription populateAndRetrieveStudy() {
+        userWorkspace = new UserWorkspace();
+        userWorkspace.setUsername(USER_NAME);
         Study myStudy = new Study();
         myStudy.setShortTitleText("Test Study");
         
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(myStudy);
+        studySubscription.setUserWorkspace(userWorkspace);
         
         myStudy.setStudyConfiguration(new StudyConfiguration());
         
@@ -177,6 +184,10 @@ public class StudyHelper {
         subjectAnnotationDefinition.getCommonDataElement().setLongName("SubjectAnnotation");
         subjectAnnotationDefinition.setDataType(AnnotationTypeEnum.NUMERIC);
         
+        subjectAnnotationDefinition2 = new AnnotationDefinition();
+        subjectAnnotationDefinition2.getCommonDataElement().setLongName("Gender");
+        subjectAnnotationDefinition2.setDataType(AnnotationTypeEnum.STRING);
+        
         defaultTimepoint = new Timepoint();
         defaultTimepoint.setDescription("This is the default timepoint assuming none is given.");
         defaultTimepoint.setName("Default Timepoint");
@@ -190,6 +201,7 @@ public class StudyHelper {
         
         Collection<AnnotationDefinition> subjectDefinitions = new HashSet<AnnotationDefinition>();
         subjectDefinitions.add(subjectAnnotationDefinition);
+        subjectDefinitions.add(subjectAnnotationDefinition2);
         
         // Setup everything to use the same definition collection for simplicity.
         AnnotationGroup defaultAnnotationGroup = new AnnotationGroup();
@@ -197,6 +209,7 @@ public class StudyHelper {
         defaultAnnotationGroup.getAnnotationFieldDescriptors().add(getSubjectAnnotationFieldDescriptor());
         defaultAnnotationGroup.getAnnotationFieldDescriptors().add(getImageSeriesAnnotationFieldDescriptor());
         defaultAnnotationGroup.getAnnotationFieldDescriptors().add(getSampleAnnotationFieldDescriptor());
+        defaultAnnotationGroup.getAnnotationFieldDescriptors().add(getSubjectAnnotationFieldDescriptor2());
         myStudy.getAnnotationGroups().add(defaultAnnotationGroup);
 
         clinicalConf = new DelimitedTextClinicalSourceConfiguration();
@@ -205,6 +218,7 @@ public class StudyHelper {
         clinicalConf.setAnnotationFile(annotationFile);
         
         addColumn(annotationFile, subjectAnnotationDefinition);
+        addColumn(annotationFile, subjectAnnotationDefinition2);
 
 
         ImageDataSourceConfiguration imagingSourceConf = new ImageDataSourceConfiguration();
@@ -221,6 +235,7 @@ public class StudyHelper {
         Subject subject3 = new Subject();
         Subject subject4 = new Subject();
         Subject subject5 = new Subject();
+        Subject subject6 = new Subject();
         
         Collection<Subject> subjectCollection = new HashSet<Subject>();
         subjectCollection.add(subject1);
@@ -234,11 +249,13 @@ public class StudyHelper {
         StudySubjectAssignment studySubjectAssignment3 = new StudySubjectAssignment();
         StudySubjectAssignment studySubjectAssignment4 = new StudySubjectAssignment();
         StudySubjectAssignment studySubjectAssignment5 = new StudySubjectAssignment();
+        StudySubjectAssignment studySubjectAssignment6 = new StudySubjectAssignment();
         studySubjects.add(studySubjectAssignment1);
         studySubjects.add(studySubjectAssignment2);
         studySubjects.add(studySubjectAssignment3);
         studySubjects.add(studySubjectAssignment4);
         studySubjects.add(studySubjectAssignment5);
+        studySubjects.add(studySubjectAssignment6);
         
         NumericAnnotationValue numval1 = new NumericAnnotationValue();
         NumericAnnotationValue numval1_2 = new NumericAnnotationValue();
@@ -253,6 +270,7 @@ public class StudyHelper {
         StringAnnotationValue stringval3 = new StringAnnotationValue();
         StringAnnotationValue stringval4 = new StringAnnotationValue();
         StringAnnotationValue stringval5 = new StringAnnotationValue();
+        StringAnnotationValue stringval6 = new StringAnnotationValue();
         
         NumericAnnotationValue subjnumval1 = new NumericAnnotationValue();
         NumericAnnotationValue subjnumval2 = new NumericAnnotationValue();
@@ -327,18 +345,27 @@ public class StudyHelper {
         subjnumval5.setAnnotationDefinition(subjectAnnotationDefinition);
         subjectAnnotation5.setStudySubjectAssignment(studySubjectAssignment5);
         studySubjectAssignment5.setSubject(subject5);
+        
+        SubjectAnnotation subjectAnnotation6 = new SubjectAnnotation();
+        stringval6.setStringValue("F");
+        subjectAnnotation6.setAnnotationValue(stringval6);
+        stringval6.setAnnotationDefinition(subjectAnnotationDefinition2);
+        subjectAnnotation6.setStudySubjectAssignment(studySubjectAssignment6);
+        studySubjectAssignment6.setSubject(subject6);
 
         Collection<SubjectAnnotation> subjectAnnotationCollection1 = studySubjectAssignment1.getSubjectAnnotationCollection();
         Collection<SubjectAnnotation> subjectAnnotationCollection2 = studySubjectAssignment2.getSubjectAnnotationCollection();
         Collection<SubjectAnnotation> subjectAnnotationCollection3 = studySubjectAssignment3.getSubjectAnnotationCollection();
         Collection<SubjectAnnotation> subjectAnnotationCollection4 = studySubjectAssignment4.getSubjectAnnotationCollection();
         Collection<SubjectAnnotation> subjectAnnotationCollection5 = studySubjectAssignment5.getSubjectAnnotationCollection();
+        Collection<SubjectAnnotation> subjectAnnotationCollection6 = studySubjectAssignment6.getSubjectAnnotationCollection();
         
         subjectAnnotationCollection1.add(subjectAnnotation1);
         subjectAnnotationCollection2.add(subjectAnnotation2);
         subjectAnnotationCollection3.add(subjectAnnotation3);
         subjectAnnotationCollection4.add(subjectAnnotation4);
         subjectAnnotationCollection5.add(subjectAnnotation5);
+        subjectAnnotationCollection6.add(subjectAnnotation6);
         
 
         /**
@@ -494,6 +521,7 @@ public class StudyHelper {
         ssaCollection.add(studySubjectAssignment3);
         ssaCollection.add(studySubjectAssignment4);
         ssaCollection.add(studySubjectAssignment5);
+        ssaCollection.add(studySubjectAssignment6);
         
         return studySubscription;
     }
@@ -756,7 +784,9 @@ public class StudyHelper {
     public AnnotationDefinition getSubjectAnnotationDefinition() {
         return subjectAnnotationDefinition;
     }
-    
+    public AnnotationDefinition getSubjectAnnotationDefinition2() {
+        return subjectAnnotationDefinition2;
+    }
     public AnnotationFieldDescriptor getSampleAnnotationFieldDescriptor() {
         AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
         descriptor.setDefinition(getSampleAnnotationDefinition());
@@ -770,6 +800,13 @@ public class StudyHelper {
         descriptor.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
         return descriptor;
     }
+    
+    public AnnotationFieldDescriptor getSubjectAnnotationFieldDescriptor2() {
+        AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
+        descriptor.setDefinition(getSubjectAnnotationDefinition2());
+        descriptor.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
+        return descriptor;
+    }    
     
     public AnnotationFieldDescriptor getImageSeriesAnnotationFieldDescriptor() {
         AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
