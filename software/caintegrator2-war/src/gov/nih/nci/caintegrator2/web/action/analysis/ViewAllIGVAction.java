@@ -125,7 +125,7 @@ public class ViewAllIGVAction extends AbstractViewAllAction {
         igvParameters.setUrlPrefix(SessionHelper.getIgvSessionUrl());
         igvParameters.setQuery(getQuery());
         igvParameters.setPlatforms(getPlatforms());
-        igvParameters.setViewAllData(true);
+        igvParameters.setViewAllData(false);
         igvParameters.setUseCGHCall(CopyNumberCriterionTypeEnum.CALLS_VALUE.equals(getCopyNumberType()));
         getDisplayableWorkspace().setIgvParameters(igvParameters);
         return VIEW_IGV;

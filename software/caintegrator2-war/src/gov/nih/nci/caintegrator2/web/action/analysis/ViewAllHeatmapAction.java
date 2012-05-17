@@ -120,7 +120,7 @@ public class ViewAllHeatmapAction extends AbstractViewAllAction implements Servl
         heatmapParameters.setSmallBinsFile(SessionHelper.getHeatmapSmallBinsFile(context));
         heatmapParameters.setQuery(getQuery());
         heatmapParameters.setPlatform(getPlatforms().get(0));
-        heatmapParameters.setViewAllData(true);
+        heatmapParameters.setViewAllData(false);
         heatmapParameters.setUseCGHCall(CopyNumberCriterionTypeEnum.CALLS_VALUE.equals(getCopyNumberType()));
         getDisplayableWorkspace().setHeatmapParameters(heatmapParameters);
         return VIEW_HEATMAP;
