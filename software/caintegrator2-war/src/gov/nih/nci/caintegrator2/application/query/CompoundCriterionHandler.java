@@ -243,7 +243,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         }
 
         //TODO uncomment the following after the AuthorizedStudyElementGroups UI is working
-        //allValidRows = removeUnauthorizedStudyElements(allValidRows, dao, query);
+        allValidRows = removeUnauthorizedStudyElements(allValidRows, dao, query);
         return allValidRows;
     }
     
@@ -259,7 +259,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
      * @param query 
      * @return rowsAfterRestriction
      */
-    @SuppressWarnings({"unused", "PMD.ExcessiveMethodLength" })  //TODO JPM refactor and remove SuppressWarnings
+    @SuppressWarnings({"PMD.ExcessiveMethodLength" })  //TODO refactor and remove SuppressWarnings
     private Set<ResultRow> removeUnauthorizedStudyElements(Set<ResultRow> rowsBeforeRestriction,
                                                             CaIntegrator2Dao dao,
                                                             Query query) {

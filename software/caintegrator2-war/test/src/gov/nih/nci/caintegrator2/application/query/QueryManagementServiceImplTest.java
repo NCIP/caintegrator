@@ -205,7 +205,9 @@ public class QueryManagementServiceImplTest {
         studySubscription.setUserWorkspace(userWorkspace);
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setId(1L);
         study = studyConfiguration.getStudy();
+        study.setShortTitleText("Test study by QueryManagementServiceImpl");
         study.setStudyConfiguration(studyConfiguration);
         // setup AFD and AnnotationGroup
         AnnotationDefinition ad = new AnnotationDefinition();
@@ -221,7 +223,7 @@ public class QueryManagementServiceImplTest {
         studySubjectAssignment.setIdentifier("SubjectID1");
         SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
         StringAnnotationValue stringAnnotationValue = new StringAnnotationValue();
-        stringAnnotationValue.setStringValue("F");
+        stringAnnotationValue.setStringValue("M");
         stringAnnotationValue.setAnnotationDefinition(ad);
         subjectAnnotation.setAnnotationValue(stringAnnotationValue);
         studySubjectAssignment.getSubjectAnnotationCollection().add(subjectAnnotation);

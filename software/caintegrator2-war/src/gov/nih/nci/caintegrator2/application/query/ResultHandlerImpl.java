@@ -86,6 +86,8 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
@@ -115,11 +117,11 @@ public class ResultHandlerImpl implements ResultHandler {
     /**
      * {@inheritDoc}
      */
-    public QueryResult createResults(Query query, Set<ResultRow> resultRows) {
+    public QueryResult createResults(Query query, Set<ResultRow> resultRows, CaIntegrator2Dao dao) {
         QueryResult queryResult = new QueryResult();
         queryResult.setRowCollection(resultRows);
         queryResult.setQuery(query);
-        addColumns(queryResult);
+        addColumns(queryResult, dao);
         sortRows(queryResult);
         return queryResult;
     }
@@ -128,12 +130,14 @@ public class ResultHandlerImpl implements ResultHandler {
      * This function assumes a QueryResult with no columns, just rows, and it fills in the columns
      * and values for each row.
      * @param queryResult - object that contains the rows.
+     * @param dao 
      */
     // Have to iterate over many collections to get values.
     @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength" }) 
-    private void addColumns(QueryResult queryResult) {
+    private void addColumns(QueryResult queryResult, CaIntegrator2Dao dao) {
         Query query = queryResult.getQuery();
         Collection<ResultColumn> columns = query.retrieveVisibleColumns();
+        columns = removeUnauthorizedColumns(columns, query, dao);
         Collection<ResultRow> resultRows = queryResult.getRowCollection();
         for (ResultRow row : resultRows) {
             List<ResultValue> valueList = new ArrayList<ResultValue>();
@@ -167,6 +171,49 @@ public class ResultHandlerImpl implements ResultHandler {
     }
 
 
+    /**
+     * Takes an input collection of ResultColumns, and removes any column for
+     * which the corresponding AnnotationFieldDescriptor is restricted by the
+     * users AuthorizedStudyElementsGroups.
+     * 
+     * @param columns
+     * @param query 
+     * @param dao
+     * @return
+     */
+    private Collection<ResultColumn> removeUnauthorizedColumns(Collection<ResultColumn> columns,
+            Query query, CaIntegrator2Dao dao) {
+        String username = query.getSubscription().getUserWorkspace().getUsername();
+        StudyConfiguration studyconfiguration = query.getSubscription().getStudy().getStudyConfiguration();
+
+        List<AnnotationFieldDescriptor> authorizedAfdList = new ArrayList<AnnotationFieldDescriptor>();
+        authorizedAfdList = dao.getAuthorizedAnnotationFieldDescriptors(username, studyconfiguration);
+        
+        if (!authorizedAfdList.isEmpty()) {
+            List<ResultColumn> tempColumns = new ArrayList<ResultColumn>();
+            tempColumns.addAll(columns);
+            
+            for (ResultColumn column1 : columns) {
+                if (!authorizedAfdList.contains(column1.getAnnotationFieldDescriptor())) {
+                    tempColumns.remove(column1);
+                }
+            }
+            reindexColumns(tempColumns);
+            return tempColumns;
+        }
+        
+        return columns;
+    }
+        
+        
+
+    private void reindexColumns(List<ResultColumn> columns) {
+        Collections.sort(columns);
+        for (int i = 0; i < columns.size(); i++) {
+            columns.get(i).setColumnIndex(i);
+        }
+    }    
+    
     @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Have to iterate over many collections to get values.
     private AbstractAnnotationValue handleImageSeriesRow(ResultRow row, ResultColumn column) {
         ImageSeries imageSeries = row.getImageSeries();

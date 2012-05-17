@@ -204,8 +204,8 @@ public class WorkspaceServiceTest {
         assertNotNull(summary);
         assertTrue(daoStub.retrieveNumberImagesCalled);
         assertTrue(daoStub.retrievePlatformsForGenomicSourceCalled);
-        assertEquals(1, summary.getNumberSubjectAnnotationColumns());
-        assertEquals(5, summary.getNumberSubjects());
+        assertEquals(2, summary.getNumberSubjectAnnotationColumns());
+        assertEquals(6, summary.getNumberSubjects());
         assertEquals(study.getShortTitleText(), summary.getStudyName());
         assertEquals(study.getLongTitleText(), summary.getStudyDescription());
         assertTrue(summary.isGenomicStudy());

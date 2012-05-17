@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.mask.MaxNumberMask;
 import gov.nih.nci.caintegrator2.domain.annotation.mask.NumericRangeMask;
@@ -113,6 +115,7 @@ public class ResultHandlerImplTest {
 
     @Test
     public void testCreateResults() {
+        CaIntegrator2Dao dao = new CaIntegrator2DaoStub(); 
         StudyHelper studyHelper = new StudyHelper();
         StudySubscription subscription = studyHelper.populateAndRetrieveStudy();
         
@@ -128,12 +131,14 @@ public class ResultHandlerImplTest {
         
         Collection <ResultColumn> columnCollection = new HashSet<ResultColumn>();
         ResultColumn imageSeriesColumn = createColumn(EntityTypeEnum.IMAGESERIES, 0);
-        imageSeriesColumn.setSortType(SortTypeEnum.ASCENDING);
+        imageSeriesColumn.setSortType(SortTypeEnum.UNSORTED);
         ResultColumn sampleColumn = createColumn(EntityTypeEnum.SAMPLE, 1);
         ResultColumn subjectColumn = createColumn(EntityTypeEnum.SUBJECT, 2);
+        ResultColumn subjectColumn2 = createColumn(EntityTypeEnum.SUBJECT, 3);
         imageSeriesColumn.setAnnotationFieldDescriptor(studyHelper.getImageSeriesAnnotationFieldDescriptor());
         sampleColumn.setAnnotationFieldDescriptor(studyHelper.getSampleAnnotationFieldDescriptor());
         subjectColumn.setAnnotationFieldDescriptor(studyHelper.getSubjectAnnotationFieldDescriptor());
+        subjectColumn2.setAnnotationFieldDescriptor(studyHelper.getSubjectAnnotationFieldDescriptor2());
         NumericRangeMask numericRangeMask = new NumericRangeMask();
         numericRangeMask.setNumericRange(2);
         MaxNumberMask maxNumberMask = new MaxNumberMask();
@@ -146,9 +151,10 @@ public class ResultHandlerImplTest {
         columnCollection.add(imageSeriesColumn);
         columnCollection.add(sampleColumn);
         columnCollection.add(subjectColumn);
+        columnCollection.add(subjectColumn2);
         query.setColumnCollection(columnCollection);
         query.setSubscription(subscription);
-        QueryResult result = resultHandler.createResults(query, resultRows);
+        QueryResult result = resultHandler.createResults(query, resultRows, dao);
         List<ResultRow> rows = new ArrayList<ResultRow>(result.getRowCollection());
         
         validateRowColumnValue("string1", rows.get(0), imageSeriesColumn);
