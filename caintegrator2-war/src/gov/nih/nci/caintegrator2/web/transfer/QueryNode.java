@@ -83,100 +83,42 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.web.transfer;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.security.authorization.domainobjects.Group;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * A grouping of the parts of a study that are restricted and need to be authorized.
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public class AuthorizedStudyElementsGroup extends AbstractCaIntegrator2Object {
-    private static final long serialVersionUID = 1L;
-    private Group authorizedGroup;
-    private StudyConfiguration studyConfiguration;
-
-    private List<AuthorizedAnnotationFieldDescriptor> authorizedAnnotationFieldDescriptors =
-                                                new ArrayList<AuthorizedAnnotationFieldDescriptor>();
-
-    private List<AuthorizedGenomicDataSourceConfiguration> authorizedGenomicDataSourceConfigurations =
-                                                new ArrayList<AuthorizedGenomicDataSourceConfiguration>();
-
-    private List<AuthorizedQuery> authorizedQuerys =
-                                                new ArrayList<AuthorizedQuery>();
+public class QueryNode {
+    private Long annotationDefinitionId;
+    private String value;
 
     /**
-     * @return the authorizedGroup
+     * @return the annotationDefinitionId
      */
-    public Group getAuthorizedGroup() {
-        return authorizedGroup;
+    public Long getAnnotationDefinitionId() {
+        return annotationDefinitionId;
     }
 
     /**
-     * @param authorizedGroup the authorizedGroup to set
+     * @param annotationDefinitionId the annotationDefinitionId to set
      */
-    public void setAuthorizedGroup(Group authorizedGroup) {
-        this.authorizedGroup = authorizedGroup;
+    public void setAnnotationDefinitionId(Long annotationDefinitionId) {
+        this.annotationDefinitionId = annotationDefinitionId;
     }
 
     /**
-     * @return the studyConfiguration
+     * @return the value
      */
-    public StudyConfiguration getStudyConfiguration() {
-        return studyConfiguration;
+    public String getValue() {
+        return value;
     }
 
     /**
-     * @param studyConfiguration the studyConfiguration to set
+     * @param value the value to set
      */
-    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
-        this.studyConfiguration = studyConfiguration;
-    }
-
-    /**
-     * @return the authorizedAnnotationFieldDescriptors
-     */
-    public List<AuthorizedAnnotationFieldDescriptor> getAuthorizedAnnotationFieldDescriptors() {
-        return authorizedAnnotationFieldDescriptors;
-    }
-
-    /**
-     * @param authorizedAnnotationFieldDescriptors the authorizedAnnotationFieldDescriptors to set
-     */
-    public void setAuthorizedAnnotationFieldDescriptors(
-                List<AuthorizedAnnotationFieldDescriptor> authorizedAnnotationFieldDescriptors) {
-        this.authorizedAnnotationFieldDescriptors = authorizedAnnotationFieldDescriptors;
-    }
-
-    /**
-     * @param authorizedGenomicDataSourceConfigurations the authorizedGenomicDataSourceConfigurations to set
-     */
-    public void setAuthorizedGenomicDataSourceConfigurations(
-                List<AuthorizedGenomicDataSourceConfiguration> authorizedGenomicDataSourceConfigurations) {
-        this.authorizedGenomicDataSourceConfigurations = authorizedGenomicDataSourceConfigurations;
-    }
-
-    /**
-     * @return the authorizedGenomicDataSourceConfigurations
-     */
-    public List<AuthorizedGenomicDataSourceConfiguration> getAuthorizedGenomicDataSourceConfigurations() {
-        return authorizedGenomicDataSourceConfigurations;
-    }
-
-    /**
-     * @param authorizedQuerys the authorizedQuerys to set
-     */
-    public void setAuthorizedQuerys(List<AuthorizedQuery> authorizedQuerys) {
-        this.authorizedQuerys = authorizedQuerys;
-    }
-
-    /**
-     * @return the authorizedQuerys
-     */
-    public List<AuthorizedQuery> getAuthorizedQuerys() {
-        return authorizedQuerys;
+    public void setValue(String value) {
+        this.value = value;
     }
 }

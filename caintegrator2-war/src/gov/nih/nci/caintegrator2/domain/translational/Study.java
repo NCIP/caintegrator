@@ -20,6 +20,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+
 /**
  *
  */
@@ -371,6 +374,26 @@ public class Study extends AbstractCaIntegrator2Object {
             }
         }
         return validSet;
+    }
+
+    /**
+     * Returns all annotation field descriptors that have been marked as being valid to restrict upon via the
+     * authorization groups.
+     * @return the field descriptors
+     */
+    public Set<AnnotationFieldDescriptor> getAuthorizedFieldDescriptors() {
+        Set<AnnotationFieldDescriptor> descriptors = new HashSet<AnnotationFieldDescriptor>();
+        for (AnnotationGroup group : getAnnotationGroups()) {
+            descriptors.addAll(Collections2.filter(group.getAnnotationFieldDescriptors(),
+                    new Predicate<AnnotationFieldDescriptor>() {
+                @Override
+                public boolean apply(AnnotationFieldDescriptor afd) {
+                    return afd.isShowInAuthorization();
+                }
+
+            }));
+        }
+        return descriptors;
     }
 
     /**

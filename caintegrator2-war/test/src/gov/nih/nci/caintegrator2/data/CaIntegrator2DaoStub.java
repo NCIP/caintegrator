@@ -143,6 +143,7 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.IOException;
@@ -322,9 +323,9 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
     /**
      * Populate a StudySubjectAssignment for testing.  This method only in the daoStub.
-     * @param localStudySubjectAssignment 
-     * @return 
-     * 
+     * @param localStudySubjectAssignment
+     * @return
+     *
      */
     private StudySubjectAssignment populateStudySubjectAssignment(StudySubjectAssignment localStudySubjectAssignment) {
         localStudySubjectAssignment.setId(Long.valueOf(1));
@@ -642,7 +643,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         authorizedStudyElementsGroup.add(createAuthorizedStudyElementsGroup(study.getStudyConfiguration(), "IntegrationTestAuthorizedStudyElementsGroup1","Gender","F"));
         return authorizedStudyElementsGroup;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -671,7 +672,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
             studyConfiguration.setAuthorizedStudyElementsGroups(list);
 
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age",StringUtils.EMPTY);            
+            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age", StringUtils.EMPTY);
 
             list.add(authorizedStudyElementsGroup2);
             studyConfiguration.setAuthorizedStudyElementsGroups(list);
@@ -691,10 +692,13 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
                                                                                 String fieldDescriptorName,
                                                                                 String annotationValue) {
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
-        authorizedStudyElementsGroup.setGroupName(authorizedStudyElementsGroupName);
         authorizedStudyElementsGroup.setStudyConfiguration(studyConfiguration);
         String desc = "Created by integration test for study named: " + studyConfiguration.getStudy().getShortTitleText();
-        authorizedStudyElementsGroup.setGroupDescription(desc);
+        Group group = new Group();
+        group.setGroupName(authorizedStudyElementsGroupName);
+        group.setGroupDesc(desc);
+
+        authorizedStudyElementsGroup.setAuthorizedGroup(group);
         // add AuthorizedAnnotationFieldDescriptor
         AnnotationFieldDescriptor annotationFieldDescriptor = new AnnotationFieldDescriptor();
         annotationFieldDescriptor = getAfd(fieldDescriptorName, AnnotationFieldType.ANNOTATION);
@@ -711,13 +715,13 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         Query query = new Query();
         query.setName("TestAuthorizationQuery");
         query.setDescription(desc);
-        
+
         for (StudySubscription studySubscription : getWorkspace(USER_EXISTS).getSubscriptionCollection()) {
             if (studySubscription.getStudy().getId().equals(studyConfiguration.getStudy().getId())) {
                 query.setSubscription(studySubscription);
             }
         }
-        
+
         query.setLastModifiedDate(new Date());
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
@@ -725,7 +729,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         stringComparisonCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
         stringComparisonCriterion.setStringValue(annotationValue);
         stringComparisonCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
-        AbstractCriterion abstractCriterion = (AbstractCriterion) new AbstractAnnotationCriterion();
+        AbstractCriterion abstractCriterion = new AbstractAnnotationCriterion();
         abstractCriterion = stringComparisonCriterion;
         HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
         abstractCriterionCollection.add(abstractCriterion);
@@ -733,13 +737,14 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         AuthorizedQuery authorizedQuery = new AuthorizedQuery();
         authorizedQuery.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
         authorizedQuery.setQuery(query);
-        authorizedStudyElementsGroup.getAuthorizedQuerys().add(authorizedQuery); 
+        authorizedStudyElementsGroup.getAuthorizedQuerys().add(authorizedQuery);
+
         return authorizedStudyElementsGroup;
-    }     
- 
+    }
+
     /**
-     * @param fieldDescriptorName 
-     * @param afdType 
+     * @param fieldDescriptorName
+     * @param afdType
      * @return afd
      */
     private AnnotationFieldDescriptor getAfd(String fieldDescriptorName, AnnotationFieldType afdType) {
@@ -764,5 +769,4 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         ad.setDataType(adDataType);
         return ad;
     }
-
 }

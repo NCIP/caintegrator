@@ -1,0 +1,18 @@
+.tree_container {
+    width: 300px;
+}
+
+#left_tree, #middle_tree, #right_tree {
+    height: 300px;
+    overflow-y: scroll;
+}
+
+#left_tree ul li, #middle_tree ul li, #right_tree ul li {
+    background : none;
+    padding-left: 0px;
+    padding-bottom: 0px;
+}
+
+ul.dynatree-container {
+    border-style: none;
+}
