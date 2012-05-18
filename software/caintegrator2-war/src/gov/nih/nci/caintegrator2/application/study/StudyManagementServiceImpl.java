@@ -355,7 +355,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         getDao().delete(authorizedStudyElementsGroup);
         daoSave(studyConfiguration);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -369,8 +369,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
 
         return list;
-    }    
-    
+    }
+
 
     /**
      * {@inheritDoc}

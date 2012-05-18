@@ -83,100 +83,71 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.web.transfer;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.security.authorization.domainobjects.Group;
+import java.util.Set;
+import java.util.TreeSet;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.lang.builder.CompareToBuilder;
+
 
 /**
- * A grouping of the parts of a study that are restricted and need to be authorized.
+ * Represents a node in our permissions tree. Simply consists of the id of the object and whether or
+ * not that node has been selected in the UI.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class AuthorizedStudyElementsGroup extends AbstractCaIntegrator2Object {
-    private static final long serialVersionUID = 1L;
-    private Group authorizedGroup;
-    private StudyConfiguration studyConfiguration;
-
-    private List<AuthorizedAnnotationFieldDescriptor> authorizedAnnotationFieldDescriptors =
-                                                new ArrayList<AuthorizedAnnotationFieldDescriptor>();
-
-    private List<AuthorizedGenomicDataSourceConfiguration> authorizedGenomicDataSourceConfigurations =
-                                                new ArrayList<AuthorizedGenomicDataSourceConfiguration>();
-
-    private List<AuthorizedQuery> authorizedQuerys =
-                                                new ArrayList<AuthorizedQuery>();
+public class TreeNode implements Comparable<TreeNode> {
+    private final Long nodeId;
+    private final String label;
+    private final boolean selected;
+    private final Set<TreeNode> children = new TreeSet<TreeNode>();
 
     /**
-     * @return the authorizedGroup
+     * Class constructor.
+     * @param nodeId the id of the node
+     * @param label the label of this node
+     * @param selected whether the node is selected
      */
-    public Group getAuthorizedGroup() {
-        return authorizedGroup;
+    public TreeNode(Long nodeId, String label, boolean selected) {
+        this.nodeId = nodeId;
+        this.label = label;
+        this.selected = selected;
     }
 
     /**
-     * @param authorizedGroup the authorizedGroup to set
+     * @return the nodeId
      */
-    public void setAuthorizedGroup(Group authorizedGroup) {
-        this.authorizedGroup = authorizedGroup;
+    public Long getNodeId() {
+        return nodeId;
     }
 
     /**
-     * @return the studyConfiguration
+     * @return the label
      */
-    public StudyConfiguration getStudyConfiguration() {
-        return studyConfiguration;
+    public String getLabel() {
+        return label;
     }
 
     /**
-     * @param studyConfiguration the studyConfiguration to set
+     * @return the selected
      */
-    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
-        this.studyConfiguration = studyConfiguration;
+    public boolean isSelected() {
+        return selected;
     }
 
     /**
-     * @return the authorizedAnnotationFieldDescriptors
+     * @return the children
      */
-    public List<AuthorizedAnnotationFieldDescriptor> getAuthorizedAnnotationFieldDescriptors() {
-        return authorizedAnnotationFieldDescriptors;
+    public Set<TreeNode> getChildren() {
+        return children;
     }
 
     /**
-     * @param authorizedAnnotationFieldDescriptors the authorizedAnnotationFieldDescriptors to set
+     * {@inheritDoc}
      */
-    public void setAuthorizedAnnotationFieldDescriptors(
-                List<AuthorizedAnnotationFieldDescriptor> authorizedAnnotationFieldDescriptors) {
-        this.authorizedAnnotationFieldDescriptors = authorizedAnnotationFieldDescriptors;
-    }
-
-    /**
-     * @param authorizedGenomicDataSourceConfigurations the authorizedGenomicDataSourceConfigurations to set
-     */
-    public void setAuthorizedGenomicDataSourceConfigurations(
-                List<AuthorizedGenomicDataSourceConfiguration> authorizedGenomicDataSourceConfigurations) {
-        this.authorizedGenomicDataSourceConfigurations = authorizedGenomicDataSourceConfigurations;
-    }
-
-    /**
-     * @return the authorizedGenomicDataSourceConfigurations
-     */
-    public List<AuthorizedGenomicDataSourceConfiguration> getAuthorizedGenomicDataSourceConfigurations() {
-        return authorizedGenomicDataSourceConfigurations;
-    }
-
-    /**
-     * @param authorizedQuerys the authorizedQuerys to set
-     */
-    public void setAuthorizedQuerys(List<AuthorizedQuery> authorizedQuerys) {
-        this.authorizedQuerys = authorizedQuerys;
-    }
-
-    /**
-     * @return the authorizedQuerys
-     */
-    public List<AuthorizedQuery> getAuthorizedQuerys() {
-        return authorizedQuerys;
+    @Override
+    public int compareTo(TreeNode o) {
+        return new CompareToBuilder().append(this.label, o.getLabel()).toComparison();
     }
 }
