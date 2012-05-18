@@ -126,6 +126,7 @@ import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 import gov.nih.nci.caintegrator2.security.SecurityManagerStub;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSSecurityException;
 
@@ -279,6 +280,7 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
     public void testAddAuthorizedStudyElementsGroups() throws ConnectionException, ExperimentNotFoundException, CSException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
+        authorizedStudyElementsGroup.setAuthorizedGroup(new Group());
         studyManagementService.addAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup);
         authorizedStudyElementsGroup.setId(Long.valueOf(1));
         assertTrue(studyConfiguration.getAuthorizedStudyElementsGroups().contains(authorizedStudyElementsGroup));
@@ -290,6 +292,7 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
         userWorkspace.setUsername("NAMENOTFOUND");
         studyConfiguration2.setUserWorkspace(userWorkspace);
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
+        authorizedStudyElementsGroup2.setAuthorizedGroup(new Group());
         studyManagementService.addAuthorizedStudyElementsGroup(studyConfiguration2, authorizedStudyElementsGroup2);
         authorizedStudyElementsGroup.setId(Long.valueOf(1));
         assertTrue(studyConfiguration2.getAuthorizedStudyElementsGroups().contains(authorizedStudyElementsGroup2));
@@ -301,6 +304,7 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
     public void testDeleteAuthorizedStudyElementsGroups() throws ConnectionException, ExperimentNotFoundException, CSException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
+        authorizedStudyElementsGroup.setAuthorizedGroup(new Group());
         studyManagementService.addAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup);
         authorizedStudyElementsGroup.setId(Long.valueOf(1));
         assertTrue(studyConfiguration.getAuthorizedStudyElementsGroups().contains(authorizedStudyElementsGroup));

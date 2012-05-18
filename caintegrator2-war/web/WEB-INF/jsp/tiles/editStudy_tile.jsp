@@ -486,6 +486,74 @@
             </tr>
             </tbody>
         </table>
+    
+    
+        <table class="form_wrapper_table">
+            <tbody><tr>
+                <th class="title">Authorized User Groups</th>
+                <th class="thbutton">
+                    <del class="btnwrapper">                    
+                        <ul class="btnrow">
+                            <s:token />
+                            <s:url id="authorizeGroup" action="authorizeGroups" includeParams="none">
+                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                                    <s:param name="struts.token.name">struts.token</s:param>
+                                    <s:param name="struts.token" value="%{struts.token}" />
+                            </s:url>
+                            <li>
+                                <s:a href="%{authorizeGroup}" cssClass="btn" cssStyle="margin: 0pt;">
+                                    <span class="btn_img"><span class="add">Authorize Additional Group</span></span>
+                                </s:a>
+                            </li>                           
+                        </ul>   
+                    </del>
+                </th>
+            </tr>
+            <tr>
+                <td class="table_wrapper" colspan="2">
+                    <s:form action="noAction">
+                    <s:hidden name="studyConfiguration.id"  />
+                    <table class="data">
+                        <tr>
+                            <th>User Group Name</th>
+                            <th>User Group Description</th>
+                            <th>Action</th>
+                        </tr>
+                        <s:iterator value="studyConfiguration.authorizedStudyElementsGroups" status="status">
+                            <s:if test="#status.odd == true">
+                              <tr class="odd">
+                            </s:if>
+                            <s:else>
+                              <tr class="even">
+                            </s:else>
+                            <td><s:property value="authorizedGroup.groupName"/></td>
+                            <td><s:property value="authorizedGroup.groupDesc"/></td>
+                            <td style="float: right;">
+                                <s:url id="editAuthorizedGroup" action="editAuthorizedGroup" includeParams="none">
+                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                                    <s:param name="authorizedGroup.id" value="id" />
+                                    <s:param name="struts.token.name">struts.token</s:param>
+                                    <s:param name="struts.token" value="%{struts.token}" />
+                                </s:url>
+                                <s:a href="%{editAuthorizedGroup}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Authorization</span></span></s:a>                            
+                                <s:url id="deleteAuthorizedGroup" action="deleteAuthorizedGroup" includeParams="none">
+                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                                    <s:param name="authorizedGroup.id" value="id" />
+                                    <s:param name="struts.token.name">struts.token</s:param>
+                                    <s:param name="struts.token" value="%{struts.token}" />                                    
+                                </s:url> 
+                                <s:a href="%{deleteAuthorizedGroup}" cssClass="btn" cssStyle="margin: 0pt;" onclick="return confirm('This authorization group will be permanently deleted.')"><span class="btn_img"><span class="delete">Delete</span></span></s:a>                                
+                            </td>
+                        </tr>
+                        </s:iterator>
+                    </table>
+                    </s:form>
+                    
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        
         </s:if>
     
         <br>

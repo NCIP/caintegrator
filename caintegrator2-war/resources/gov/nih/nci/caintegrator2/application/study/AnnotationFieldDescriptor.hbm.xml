@@ -22,6 +22,7 @@
         <property name="annotationEntityType" type="EntityTypeEnum" column="ENTITY_TYPE" />
         
         <property name="shownInBrowse" type="boolean" column="SHOWN_IN_BROWSE"/>
+        <property name="showInAuthorization" type="boolean" column="SHOW_IN_AUTHORIZATION"/>
         
         <property name="hasValidationErrors" type="boolean" column="HAS_VALIDATION_ERRORS"/>
         

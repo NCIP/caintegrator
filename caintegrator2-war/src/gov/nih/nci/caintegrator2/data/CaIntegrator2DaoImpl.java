@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.data;
@@ -173,7 +173,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     private static final String NAME_ATTRIBUTE = "name";
     private static final String SYMBOL_ATTRIBUTE = "symbol";
     private SecurityManager securityManager;
-    
+
     /**
      * {@inheritDoc}
      */
@@ -195,14 +195,14 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public void refresh(Object persistentObject) {
         getHibernateTemplate().refresh(persistentObject);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void clearSession() {
         getCurrentSession().clear();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -224,7 +224,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public <T> T get(Long id, Class<T> objectClass) {
         return (T) getHibernateTemplate().get(objectClass, id);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -235,7 +235,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         newSource.setStatusDescription(source.getStatusDescription());
         save(newSource);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -264,14 +264,14 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
 
     private boolean containsKeyword(AnnotationDefinition ad, Collection<String> keywords) {
         for (String keyword : keywords) {
-            if (ad.getKeywords() != null 
+            if (ad.getKeywords() != null
                 && Cai2Util.containsIgnoreCase(Arrays.asList(StringUtils.split(ad.getKeywords())), keyword)) {
                 return true;
             }
         }
         return false;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -290,20 +290,20 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public List<ImageSeries> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study) {
         if (!criterion.getEntityType().equals(EntityTypeEnum.IMAGESERIES)) {
             return new ArrayList<ImageSeries>();
-        } 
+        }
         Criteria imageSeriesCrit = getCurrentSession().createCriteria(ImageSeries.class);
         if (criterion instanceof IdentifierCriterion) {
             imageSeriesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
         } else {
-            createAnnotationValuesCriteria(criterion, 
-                                            imageSeriesCrit, 
+            createAnnotationValuesCriteria(criterion,
+                                            imageSeriesCrit,
                                            ANNOTATION_VALUE_COLLECTION_ASSOCIATION);
         }
             createStudySubjectAssignmentCriteria(
                         imageSeriesCrit.createCriteria(IMAGE_SERIES_ACQUISITION_ASSOCIATION).
-                        createCriteria(STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION), 
+                        createCriteria(STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION),
                         study);
-        
+
         return imageSeriesCrit.list();
     }
 
@@ -316,11 +316,11 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             return new ArrayList<SampleAcquisition>();
         } else {
             Criteria sampleAcquisitionCrit = getCurrentSession().createCriteria(SampleAcquisition.class);
-            createAnnotationValuesCriteria(criterion, 
-                                           sampleAcquisitionCrit, 
+            createAnnotationValuesCriteria(criterion,
+                                           sampleAcquisitionCrit,
                                            ANNOTATION_VALUE_COLLECTION_ASSOCIATION);
             createStudySubjectAssignmentCriteria(
-                    sampleAcquisitionCrit.createCriteria(STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION), 
+                    sampleAcquisitionCrit.createCriteria(STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION),
                     study);
             return sampleAcquisitionCrit.list();
         }
@@ -338,15 +338,15 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         if (criterion instanceof IdentifierCriterion) {
             studySubjectAssignmentCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
         } else {
-            createAnnotationValuesCriteria(criterion, 
-                                           studySubjectAssignmentCrit.createCriteria("subjectAnnotationCollection"), 
+            createAnnotationValuesCriteria(criterion,
+                                           studySubjectAssignmentCrit.createCriteria("subjectAnnotationCollection"),
                                            ANNOTATION_VALUE_ASSOCIATION);
         }
             createStudySubjectAssignmentCriteria(studySubjectAssignmentCrit, study);
         return studySubjectAssignmentCrit.list();
 
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -361,8 +361,8 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
-    public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols, 
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
+    public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols,
             ReporterTypeEnum reporterType, Study study, Platform platform) {
         Set<ReporterList> studyReporterLists = getStudyReporterLists(study, reporterType, platform);
         if (studyReporterLists.isEmpty()) {
@@ -377,30 +377,30 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         reporters.addAll(criteria.list());
         return reporters;
     }
-    
+
     /**
      * {@inheritDoc}
-     * @throws InvalidCriterionException 
+     * @throws InvalidCriterionException
      */
-    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<SegmentData> findMatchingSegmentDatas(CopyNumberAlterationCriterion copyNumberCriterion,
             Study study, Platform platform) throws InvalidCriterionException {
-        if (GenomicIntervalTypeEnum.GENE_NAME.equals(copyNumberCriterion.getGenomicIntervalType()) 
-              && !copyNumberCriterion.getGeneSymbols().isEmpty() 
+        if (GenomicIntervalTypeEnum.GENE_NAME.equals(copyNumberCriterion.getGenomicIntervalType())
+              && !copyNumberCriterion.getGeneSymbols().isEmpty()
               && (platform.getGenomeVersion() == null || !isGenomeVersionMapped(platform.getGenomeVersion()))) {
-            throw new InvalidCriterionException("The platform genome version '" 
+            throw new InvalidCriterionException("The platform genome version '"
                     + platform.getGenomeVersion().getValue() + "' is not mapped to chromosomal locations, "
                     + "it is not possible to query based on gene locations.");
         }
         return new CopyNumberAlterationCriterionConverter(copyNumberCriterion).
                         retrieveSegmentDataCriteria(study, platform, getCurrentSession()).list();
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
-    public List<SegmentData> findMatchingSegmentDatasByLocation(List<SegmentData> segmentDatasToMatch, 
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
+    public List<SegmentData> findMatchingSegmentDatasByLocation(List<SegmentData> segmentDatasToMatch,
             Study study, Platform platform) {
         Criteria segmentDataCrit = getCurrentSession().createCriteria(SegmentData.class);
         Criteria arrayDataCrit = segmentDataCrit.createCriteria("arrayData");
@@ -417,7 +417,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         segmentDataCrit.add(overallOrStatement);
         return segmentDataCrit.list();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -425,29 +425,29 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         return !getCurrentSession().createCriteria(GeneLocationConfiguration.class).
                     add(Restrictions.eq("genomeBuildVersion", genomeVersion)).list().isEmpty();
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public GeneLocationConfiguration getGeneLocationConfiguration(GenomeBuildVersionEnum genomeVersion) {
-        List<GeneLocationConfiguration> geneLocationConfigurations = 
+        List<GeneLocationConfiguration> geneLocationConfigurations =
             getCurrentSession().createCriteria(GeneLocationConfiguration.class).
                 add(Restrictions.eq("genomeBuildVersion", genomeVersion)).list();
         return geneLocationConfigurations.isEmpty() ? null : geneLocationConfigurations.get(0);
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
-    public List<Gene> findGenesByLocation(String chromosome, Integer startPosition, Integer endPosition, 
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
+    public List<Gene> findGenesByLocation(String chromosome, Integer startPosition, Integer endPosition,
             GenomeBuildVersionEnum genomeBuildVersion) {
         String locStartPosition = "location.startPosition";
         String locEndPosition = "location.endPosition";
         Criteria geneLocationCriteria = getCurrentSession().createCriteria(GeneChromosomalLocation.class);
-        // (gene.startPos <= startPosition && gene.endPos >= startPosition) 
-        //  || (gene.startPos >= lowerInput  && gene.startPos <= higherInput) 
+        // (gene.startPos <= startPosition && gene.endPos >= startPosition)
+        //  || (gene.startPos >= lowerInput  && gene.startPos <= higherInput)
         Junction overallOrStatement = Restrictions.disjunction();
         overallOrStatement.add(Restrictions.conjunction().add(Restrictions.le(locStartPosition, startPosition))
                 .add(Restrictions.ge(locEndPosition, startPosition)));
@@ -459,7 +459,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             add(Restrictions.eq("genomeBuildVersion", genomeBuildVersion));
         geneLocationCriteria.setProjection(Projections.property("geneSymbol"));
         List<String> geneSymbols = geneLocationCriteria.list();
-        return geneSymbols.isEmpty() ? new ArrayList<Gene>() 
+        return geneSymbols.isEmpty() ? new ArrayList<Gene>()
                 : getCurrentSession().createCriteria(Gene.class).setProjection(
                         Projections.distinct(Projections.property(SYMBOL_ATTRIBUTE))).
                         add(Restrictions.in(SYMBOL_ATTRIBUTE, geneSymbols)).
@@ -485,7 +485,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         }
         return reporterLists;
     }
-    
+
     /**
      * This function adds the values criteria for getting back the correct annotation values.
      * @param criterion - The main criterion object for the values we want.
@@ -501,7 +501,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             valuesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
         }
     }
-    
+
     private void createStudySubjectAssignmentCriteria(Criteria studySubjectAssignmentCrit, Study study) {
         studySubjectAssignmentCrit.add(Restrictions.eq(STUDY_ASSOCIATION, study));
     }
@@ -532,14 +532,14 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             : getCurrentSession().createCriteria(AnnotationDefinition.class)
                 .add(Restrictions.eq("commonDataElement.publicID", cdeId))
                 .add(Restrictions.eq("commonDataElement.version", version.toString())).list();
-                    
+
         if (values.isEmpty()) {
             return null;
         } else {
             return latestVersion(values);
         }
     }
-    
+
     private AnnotationDefinition latestVersion(List<AnnotationDefinition> values) {
         AnnotationDefinition result = values.get(0);
         for (AnnotationDefinition definition : values) {
@@ -563,13 +563,13 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         }
         return resultMap;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public Gene getGene(String symbol) {
         @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
-        List values = getHibernateTemplate().findByNamedParam("from Gene where symbol = :symbol", 
+        List values = getHibernateTemplate().findByNamedParam("from Gene where symbol = :symbol",
                 SYMBOL_ATTRIBUTE, symbol.toUpperCase(Locale.getDefault()));
         if (values.isEmpty()) {
             return null;
@@ -595,7 +595,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     public Platform getPlatform(String name) {
         @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
-        List values = getHibernateTemplate().findByNamedParam("from Platform where name = :name", 
+        List values = getHibernateTemplate().findByNamedParam("from Platform where name = :name",
                 NAME_ATTRIBUTE, name);
         if (values.isEmpty()) {
             return null;
@@ -609,7 +609,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     public PlatformConfiguration getPlatformConfiguration(String name) {
         @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
-        List values = getHibernateTemplate().findByNamedParam("from PlatformConfiguration where name = :name", 
+        List values = getHibernateTemplate().findByNamedParam("from PlatformConfiguration where name = :name",
                 NAME_ATTRIBUTE, name);
         if (values.isEmpty()) {
             return null;
@@ -648,7 +648,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public ReporterList getReporterList(String name) {
-        List values = getHibernateTemplate().findByNamedParam("from ReporterList where name = :name", 
+        List values = getHibernateTemplate().findByNamedParam("from ReporterList where name = :name",
                 NAME_ATTRIBUTE, name);
         if (values.isEmpty()) {
             return null;
@@ -669,17 +669,17 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         Query query = getCurrentSession().createQuery("from Platform order by name");
         return query.list();
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<PlatformConfiguration> getPlatformConfigurations() {
-        List<PlatformConfiguration> platformConfigurationList = 
+        List<PlatformConfiguration> platformConfigurationList =
             getCurrentSession().
                 createCriteria(PlatformConfiguration.class).list();
         for (PlatformConfiguration configuration : platformConfigurationList) {
-            if (configuration.getPlatform() == null) { 
+            if (configuration.getPlatform() == null) {
                 configuration.setInUse(false);
             } else {
                 configuration.setInUse(isPlatformInUsed(configuration.getPlatform()));
@@ -702,7 +702,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         }
         return !result.isEmpty();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -732,7 +732,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             new LinkedHashSet<StudyConfiguration>(listOfStudyConfigurations);
         return new ArrayList<StudyConfiguration>(setOfStudyConfigurations);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -766,7 +766,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                                                          add(Restrictions.eq("id", studyConfigurationId));
         return authorizedStudyElementsGroupCriteria.list();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -785,10 +785,10 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         for (AuthorizedAnnotationFieldDescriptor aafd : listAAFD) {
             listAfd.add(aafd.getAnnotationFieldDescriptor());
         }
-        
+
         return listAfd;
-    }      
-    
+    }
+
 
     /**
      * {@inheritDoc}
@@ -803,13 +803,13 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                 new Object[] {study.getShortTitleText(), id });
         return !result.isEmpty();
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED)
     public StudyLogo retrieveStudyLogo(Long studyId, String studyShortTitleText) {
-        List<StudyConfiguration> studyConfigurationList = 
+        List<StudyConfiguration> studyConfigurationList =
                 getCurrentSession().
                     createCriteria(StudyConfiguration.class).
                     createCriteria(STUDY_ASSOCIATION).
@@ -820,12 +820,12 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         }
         return null;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED)
-    public <T> List<T> retrieveUniqueValuesForStudyAnnotation(Study study, 
+    public <T> List<T> retrieveUniqueValuesForStudyAnnotation(Study study,
                                                                AnnotationDefinition definition,
                                                                EntityTypeEnum entityType,
                                                                Class<T> objectClass) {
@@ -836,7 +836,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         Criteria abstractAnnotationValueCriteria = getCurrentSession().createCriteria(AbstractAnnotationValue.class);
         abstractAnnotationValueCriteria.add(Restrictions.eq(ANNOTATION_DEFINITION_ASSOCIATION, definition));
         addValuesToStudyCriteria(study, entityType, abstractAnnotationValueCriteria);
-        
+
         String uniqueAttribute = "stringValue";
         switch (annotationType) {
         case STRING:
@@ -853,9 +853,9 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         }
         abstractAnnotationValueCriteria.setProjection(Projections.distinct(Projections.property(uniqueAttribute)));
         return abstractAnnotationValueCriteria.list();
-        
+
     }
-    
+
 
     /**
      * Adds the criteria to the AnnotationValue object which will associate it to the given Study.
@@ -893,7 +893,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             throw new IllegalStateException("Unknown Entity Type.");
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -903,7 +903,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         imageCriteria.setProjection(Projections.rowCount());
         return (Integer) imageCriteria.list().get(0);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -914,10 +914,10 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                      .add(Restrictions.isNotNull(PLATFORM_ASSOCIATION))
                      .createCriteria("sampleCollection")
                      .add(Restrictions.eq("genomicDataSource", genomicSource));
-                     
+
         return arrayCriteria.list();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -926,7 +926,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         return getCurrentSession().createCriteria(FileColumn.class).add(
                 Restrictions.eq("fieldDescriptor", fieldDescriptor)).list();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -935,7 +935,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         return getCurrentSession().createCriteria(ResultColumn.class).add(
                 Restrictions.eq("annotationFieldDescriptor", fieldDescriptor)).list();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -946,7 +946,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                 createCriteria(AbstractAnnotationCriterion.class).add(
                         Restrictions.eq("annotationFieldDescriptor", fieldDescriptor)).list();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -970,7 +970,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         }
         return null;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -981,7 +981,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                 createCriteria("samplesUsedForCalculation").
                 add(Restrictions.eq("genomicDataSource", genomicSource)).list());
     }
-    
+
     private void secureCurrentSession(String username) {
         if (securityManager != null) {
             try {
@@ -998,14 +998,14 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public void setFlushMode(int mode) {
         getHibernateTemplate().setFlushMode(mode);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void runSessionKeepAlive() {
         getCurrentSession().createSQLQuery("select 1").list();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -1038,6 +1038,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     public void setSecurityManager(SecurityManager securityManager) {
         this.securityManager = securityManager;
-    }    
-    
+    }
+
 }

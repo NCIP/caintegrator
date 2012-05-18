@@ -123,13 +123,13 @@ public class LogEntry extends AbstractCaIntegrator2Object {
     private static final String COPY_STUDY_SKIPPING_SUBJ_ANNOT =
         "Skipping subject annotation copy, orignal file could not be found: ";
 
-    private static final String ADD_AUTHORIZED_STUDY_ELEMENTS = "Add Authorized Study Elements Group: ";     
+    private static final String ADD_AUTHORIZED_STUDY_ELEMENTS = "Add Authorized Study Elements Group: ";
     private static final String ADD_SUBJECT_ANNOTATION_FILE = "Add Subject Annotation File: ";
     private static final String ADD_IMAGING_ANNOTATION_FILE = "Add Imaging Annotation File: ";
     private static final String ADD_EXTERNAL_LINKS = "Add External Links: ";
     private static final String ADD_SAMPLE_MAPPING_FILE = "Add Sample Mapping File: ";
     private static final String ADD_CONTROL_SAMPLE_MAPPING_FILE = "Add Control Sample Mapping File: ";
-    private static final String ADD_COPY_NUMBER_MAPPING_FILE = "Add Copy Number Mapping File: ";  
+    private static final String ADD_COPY_NUMBER_MAPPING_FILE = "Add Copy Number Mapping File: ";
     private static final String UPDATE_SEGMENTATION_SERVICE = "Update Segmentation Service Parameters: ";
 
     private static final String LOAD_SUBJECT_ANNOTATION_FILE = "Load Subject Annotation File: ";
@@ -521,7 +521,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
                 + imagingSource.getImageAnnotationConfiguration().getAnnotationFile().getFile().getName() + QUOTE;
         }
     }
-    
+
     /**
     *
     * @param authorizedStudyElementsGroup to get system log message for.
@@ -529,9 +529,9 @@ public class LogEntry extends AbstractCaIntegrator2Object {
     */
    public static String getSystemLogAdd(AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
        return ADD_AUTHORIZED_STUDY_ELEMENTS
-           + NAME + QUOTE + authorizedStudyElementsGroup.getGroupName() + QUOTE;
+           + NAME + QUOTE + authorizedStudyElementsGroup.getAuthorizedGroup().getGroupName() + QUOTE;
    }
-   
+
    /**
    *
    * @param authorizedStudyElementsGroup to get system log message for.
@@ -539,6 +539,6 @@ public class LogEntry extends AbstractCaIntegrator2Object {
    */
   public static String getSystemLogDelete(AuthorizedStudyElementsGroup authorizedStudyElementsGroup) {
       return DELETE_AUTHORIZED_STUDY_ELEMENTS
-          + NAME + QUOTE + authorizedStudyElementsGroup.getGroupName() + QUOTE;
-  }     
+          + NAME + QUOTE + authorizedStudyElementsGroup.getAuthorizedGroup().getGroupName() + QUOTE;
+  }
 }

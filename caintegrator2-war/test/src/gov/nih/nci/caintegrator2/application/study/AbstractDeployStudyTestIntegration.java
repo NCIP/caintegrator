@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.application.study;
@@ -135,6 +135,9 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.caintegrator2.security.AuthorizationManagerFactory;
+import gov.nih.nci.security.AuthorizationManager;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.File;
@@ -150,14 +153,11 @@ import org.apache.log4j.Logger;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 public abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalSpringContextTests {
-    
-    /**
-     * 
-     */
     private static final String USER_NCIMANAGER = "ncimanager";
+    private static final String APPLICATION_CONTEXT_NAME = "caintegrator2";
     private final Logger logger = Logger.getLogger(getClass());
     private long startTime;
-    
+
     private StudyManagementService service;
     private DeploymentService deploymentService;
     private QueryManagementService queryManagementService;
@@ -168,23 +168,26 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     private ArrayDataService arrayDataService;
     private Platform design;
     private FileManager fileManager;
+    private AuthorizationManagerFactory authorizationManagerFactory;
     private boolean isPublicSubscription = Boolean.FALSE;
-    
+    private Group group1 = new Group();
+    private Group group2 = new Group();
+
     public AbstractDeployStudyTestIntegration() {
         setDefaultRollback(false);
     }
-    
+
     protected String[] getConfigLocations() {
         return new String[] {"classpath*:/**/service-test-integration-config.xml"};
     }
-    
+
     /**
      * @param caIntegrator2Dao the caIntegrator2Dao to set
      */
     public void setStudyManagementService(StudyManagementService studyManagementService) {
         this.service = studyManagementService;
     }
-    
+
     public void deployStudy() throws Exception {
         AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
         authentication.setUsername(USER_NCIMANAGER);
@@ -269,12 +272,12 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     private void clearStudyDirectory(Study study) throws IOException {
         File studyDirectory = fileManager.getStudyDirectory(study);
         if (studyDirectory.exists()) {
-            FileUtils.cleanDirectory(studyDirectory);            
+            FileUtils.cleanDirectory(studyDirectory);
         }
     }
 
     abstract protected String getStudyName();
-    
+
     protected String getDescription() {
         return getStudyName() + " demo study";
     }
@@ -351,7 +354,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     protected String getNCIAServerUrl() {
         return null;
     }
-    
+
     private ImageDataSourceConfiguration loadImages() throws ConnectionException, InvalidImagingCollectionException {
         if (getLoadImages()) {
             logStart();
@@ -378,13 +381,13 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     private void loadImageAnnotation(ImageDataSourceConfiguration imageSource) throws ValidationException, IOException {
         if (getLoadImageAnnotation()) {
             logStart();
-            ImageAnnotationConfiguration imageAnnotationConfiguration = 
-                service.addImageAnnotationFile(imageSource, getImageAnnotationFile(), 
+            ImageAnnotationConfiguration imageAnnotationConfiguration =
+                service.addImageAnnotationFile(imageSource, getImageAnnotationFile(),
                         getImageAnnotationFile().getName(), true);
             imageSource.setImageAnnotationConfiguration(imageAnnotationConfiguration);
             imageAnnotationConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
             for (ImageDataSourceConfiguration configuration : studyConfiguration.getImageDataSources()) {
-                service.loadImageAnnotation(configuration);    
+                service.loadImageAnnotation(configuration);
             }
             logEnd();
         }
@@ -401,7 +404,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     private void mapImages(ImageDataSourceConfiguration imageSource) throws ValidationException, IOException {
         if (getMapImages()) {
             logStart();
-            service.mapImageSeriesAcquisitions(studyConfiguration, imageSource, 
+            service.mapImageSeriesAcquisitions(studyConfiguration, imageSource,
                     getImageMappingFile(), ImageDataSourceMappingTypeEnum.IMAGE_SERIES);
             logEnd();
         }
@@ -417,8 +420,8 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
 
     protected boolean getAuthorizeStudy() {
         return false;
-    }    
-    
+    }
+
     private void checkArrayData() {
         if (getLoadSamples()) {
             logStart();
@@ -453,7 +456,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             if (studyConfiguration.getStudy().equals(arrayData.getStudy())) {
                 studyArrayDatas.add(arrayData);
             }
-        } 
+        }
         return studyArrayDatas;
     }
 
@@ -464,7 +467,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     protected int getExpectedNumberProbeSets() {
         return 0;
     }
-    
+
     protected boolean getLoadSamples() {
         return false;
     }
@@ -519,7 +522,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     protected String getCaArrayId() {
         return null;
     }
-    
+
     private void mapSamples() throws ValidationException, IOException {
         if (getLoadSamples()) {
             logStart();
@@ -555,7 +558,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     protected String getControlSamplesFileName() {
         return null;
     }
-    
+
     private void deploy(UserWorkspace userWorkspace)
     throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException {
         logStart();
@@ -567,7 +570,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             fail(studyConfiguration.getStatusDescription());
         }
     }
-    
+
     /**
      * @throws ConnectionException
      * @throws DataRetrievalException
@@ -581,13 +584,15 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         if (getAuthorizeStudy()) {
             logStart();
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup1 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup1",getQueryFieldDescriptorName(), getQueryAnnotationValue());
+            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,
+                    "Group 1 for " + getStudyName(), getQueryFieldDescriptorName(), getQueryAnnotationValue());
             service.addAuthorizedStudyElementsGroup(studyConfiguration,authorizedStudyElementsGroup1);
 
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age", StringUtils.EMPTY);
+            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,
+                    "Group 2 for " + getStudyName(), "Age", StringUtils.EMPTY);
             service.addAuthorizedStudyElementsGroup(studyConfiguration,authorizedStudyElementsGroup2);
-            
+
             service.deleteAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup2);
             logEnd();
         }
@@ -603,14 +608,20 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
      * @return authorizedStudyElementsGroup
      */
     protected AuthorizedStudyElementsGroup createAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
-                                                                                String authorizedStudyElementsGroupName,
-                                                                                String fieldDescriptorName,
-                                                                                String annotationValue) {
+            String authorizedStudyElementsGroupName, String fieldDescriptorName,
+            String annotationValue)  throws CSException {
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
-        authorizedStudyElementsGroup.setGroupName(authorizedStudyElementsGroupName);
         authorizedStudyElementsGroup.setStudyConfiguration(studyConfiguration);
         String desc = "Created by integration test for study named: " + getStudyName();
-        authorizedStudyElementsGroup.setGroupDescription(desc);
+
+        Group group = new Group();
+        group.setGroupName(authorizedStudyElementsGroupName);
+        group.setGroupDesc(desc);
+
+        getAuthorizationManager().createGroup(group);
+
+
+        authorizedStudyElementsGroup.setAuthorizedGroup(group);
         // add AuthorizedAnnotationFieldDescriptor
         AnnotationFieldDescriptor annotationFieldDescriptor = new AnnotationFieldDescriptor();
         annotationFieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy(fieldDescriptorName);
@@ -627,13 +638,13 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         Query query = new Query();
         query.setName("TestAuthorizationQuery");
         query.setDescription(desc);
-        
+
         for (StudySubscription studySubscription : workspaceService.getWorkspace().getSubscriptionCollection()) {
             if (studySubscription.getStudy().getId().equals(studyConfiguration.getStudy().getId())) {
                 query.setSubscription(studySubscription);
             }
         }
-        
+
         query.setLastModifiedDate(new Date());
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
@@ -641,7 +652,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         stringComparisonCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
         stringComparisonCriterion.setStringValue(annotationValue);
         stringComparisonCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
-        AbstractCriterion abstractCriterion = (AbstractCriterion) new AbstractAnnotationCriterion();
+        AbstractCriterion abstractCriterion = new AbstractAnnotationCriterion();
         abstractCriterion = stringComparisonCriterion;
         HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
         abstractCriterionCollection.add(abstractCriterion);
@@ -649,8 +660,8 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         AuthorizedQuery authorizedQuery = new AuthorizedQuery();
         authorizedQuery.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
         authorizedQuery.setQuery(query);
-        authorizedStudyElementsGroup.getAuthorizedQuerys().add(authorizedQuery);        
-        
+        authorizedStudyElementsGroup.getAuthorizedQuerys().add(authorizedQuery);
+
         return authorizedStudyElementsGroup;
     }
 
@@ -665,8 +676,8 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     private void loadClinicalData()
     throws IOException, ValidationException, ConnectionException, InvalidFieldDescriptorException {
         logStart();
-        sourceConfiguration = 
-            service.addClinicalAnnotationFile(studyConfiguration, getSubjectAnnotationFile(), 
+        sourceConfiguration =
+            service.addClinicalAnnotationFile(studyConfiguration, getSubjectAnnotationFile(),
                     getSubjectAnnotationFile().getName(), true);
         if (getAnnotationGroupFile() == null) {
             sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
@@ -687,7 +698,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         getService().saveAnnotationGroup(
                 annotationGroup, studyConfiguration, getAnnotationGroupFile());
     }
-    
+
     private void loadSurvivalValueDefinition() {
         SurvivalValueDefinition definition = new SurvivalValueDefinition();
         definition.setSurvivalStartDate(dao.getAnnotationDefinition(getSurvivalStartDateName(), AnnotationTypeEnum.DATE));
@@ -697,21 +708,21 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         studyConfiguration.getStudy().getSurvivalValueDefinitionCollection().add(definition);
         service.save(getStudyConfiguration());
     }
-    
+
     protected String getSurvivalStartDateName() {
         return null;
     }
-    
+
     protected String getDeathDateName() {
         return null;
     }
-    
+
     protected String getLastFollowupDateName() {
         return null;
     }
 
     abstract protected File getAnnotationGroupFile();
-    
+
     public CaIntegrator2Dao getCaIntegrator2Dao() {
         return dao;
     }
@@ -744,7 +755,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         logStart();
         Query query = createQuery();
         query.setResultType(ResultTypeEnum.CLINICAL);
-        
+
         AnnotationFieldDescriptor annotationFieldDescriptor = new AnnotationFieldDescriptor();
         annotationFieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy(getQueryFieldDescriptorName());
         StringComparisonCriterion stringComparisonCriterion = new StringComparisonCriterion();
@@ -752,17 +763,17 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         stringComparisonCriterion.setStringValue(getQueryAnnotationValue());
         stringComparisonCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
         stringComparisonCriterion.setEntityType(EntityTypeEnum.SUBJECT);
-        AbstractCriterion abstractCriterion = (AbstractCriterion) new AbstractAnnotationCriterion();
+        AbstractCriterion abstractCriterion = new AbstractAnnotationCriterion();
         abstractCriterion = stringComparisonCriterion;
         HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
         abstractCriterionCollection.add(abstractCriterion);
-        query.getCompoundCriterion().setCriterionCollection(abstractCriterionCollection);        
-        
+        query.getCompoundCriterion().setCriterionCollection(abstractCriterionCollection);
+
         QueryResult result = queryManagementService.execute(query);
         assertFalse(result.getRowCollection().isEmpty());
         logEnd();
     }
-    
+
     /**
      * This method returns the name of the Query AnnotationFieldDescriptor
      * that is to be used for constructing a query to limit access to study
@@ -785,7 +796,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
      */
     protected String getQueryAnnotationValue() {
         return null;
-    }    
+    }
 
     private void checkGenomicQuery() throws InvalidCriterionException {
         if (getLoadSamples() && getLoadDesign()) {
@@ -797,10 +808,10 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             geneNameCriterion.setGeneSymbol("EGFR");
             geneNameCriterion.setPlatformName(design.getName());
             geneNameCriterion.setGenomicCriterionType(GenomicCriterionTypeEnum.GENE_EXPRESSION);
-            
+
             HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
             abstractCriterionCollection.add(geneNameCriterion);
-            query.getCompoundCriterion().setCriterionCollection(abstractCriterionCollection);                
+            query.getCompoundCriterion().setCriterionCollection(abstractCriterionCollection);
             GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
             assertFalse(result.getColumnCollection().isEmpty());
             assertFalse(result.getFilteredRowCollection().isEmpty());
@@ -919,4 +930,25 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         this.isPublicSubscription = isPublicSubscription;
     }
 
+    /**
+     * @return the authorizationManagerFactory
+     */
+    public AuthorizationManagerFactory getAuthorizationManagerFactory() {
+        return authorizationManagerFactory;
+    }
+
+    /**
+     * @param authorizationManagerFactory the authorizationManagerFactory to set
+     */
+    public void setAuthorizationManagerFactory(AuthorizationManagerFactory authorizationManagerFactory) {
+        this.authorizationManagerFactory = authorizationManagerFactory;
+    }
+
+    /**
+     * @return the authorization manager
+     * @throws CSException on error
+     */
+    public AuthorizationManager getAuthorizationManager() throws CSException {
+        return authorizationManagerFactory.getAuthorizationManager(APPLICATION_CONTEXT_NAME);
+    }
 }
