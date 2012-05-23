@@ -60,6 +60,7 @@
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.9.sql"/>
     </changeSet>
     <changeSet id="1.1.10" author="tandrews">
+        <validCheckSum>8a9b894cc18fddadb7b7df11552f6</validCheckSum>
         <comment>Update database to use new SUBJECT_LIST/SUBJECT_LIST_CRITERION.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.10.sql"/>
     </changeSet>
@@ -305,6 +306,7 @@
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.23.sql"/>
     </changeSet>
     <changeSet id="1.1.24" author="tandrews">
+        <validCheckSum>bb706211ac37bef827633a08ff87e20</validCheckSum>
         <comment>Adds Annotation Masks to database.</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.24.sql"/>
     </changeSet>
@@ -341,6 +343,7 @@
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.32.sql"/>
     </changeSet>
     <changeSet id="1.1.33" author="tandrews">
+        <validCheckSum>13439134a62173b463c9df4f73311848</validCheckSum>
         <comment>Adds Central Tendency to GENOMIC_DATA_SOURCE_CONFIGURATION</comment>
         <sqlFile path="@db-upgrade.run.dir@/upgrade-1.1.33.sql"/>
     </changeSet>
@@ -377,6 +380,7 @@
         <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.06.sql"/>
     </changeSet>
     <changeSet id="1.2.07" author="tandrews">
+        <validCheckSum>f6acc458f66a95bd1c15b531671cd2c6</validCheckSum>
         <comment>Create tables for gistic copy number querying.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.07.sql"/>
     </changeSet>
@@ -393,6 +397,7 @@
         <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.10.sql"/>
     </changeSet>
     <changeSet id="1.2.11" author="tandrews">
+        <validCheckSum>44bf1dc98541382671f1899d282b674</validCheckSum>
         <comment>Adds the GENOMIC_CRITERION_TYPE to the COPY_NUMBER_ALTERATION_CRITERION table.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.2/upgrade-1.2.11.sql"/>
     </changeSet>
@@ -437,6 +442,7 @@
         <sqlFile path="@db-upgrade.run.dir@/1.3/upgrade-1.3.03.sql"/>
     </changeSet>    
     <changeSet id="1.3.04" author="tandrews">
+        <validCheckSum>d99762823597b91af8311eb34b3f8ccd</validCheckSum>
         <comment>Add new criterion, EXPRESSION_LEVEL_CRITERION.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.3/upgrade-1.3.04.sql"/>
     </changeSet>   
