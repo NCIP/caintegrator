@@ -8,4 +8,4 @@ CREATE TABLE EXPRESSION_LEVEL_CRITERION
     PLATFORM_NAME varchar(255),
     RANGE_TYPE varchar(255), 
     primary key (ID)
-) TYPE=InnoDB;
+) Engine=InnoDB;

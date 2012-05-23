@@ -11,4 +11,4 @@ CREATE TABLE COPY_NUMBER_ALTERATION_CRITERION
     GENE_SYMBOL varchar(6000),
     PLATFORM_NAME varchar(255), 
     primary key (ID)
-) TYPE=InnoDB;
+) Engine=InnoDB;
