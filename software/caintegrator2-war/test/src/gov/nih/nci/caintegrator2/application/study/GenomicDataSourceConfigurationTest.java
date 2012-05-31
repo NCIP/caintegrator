@@ -181,7 +181,8 @@ public class GenomicDataSourceConfigurationTest {
         assertTrue(configuration.getMappedSamples().contains(samples.get(2)));
         for (Sample s : configuration.getMappedSamples()) {
             assertTrue(SampleRefreshTypeEnum.UNCHANGED == s.getRefreshType()
-                    || SampleRefreshTypeEnum.UPDATE_ON_REFRESH == s.getRefreshType());
+                    || SampleRefreshTypeEnum.UPDATE_ON_REFRESH == s.getRefreshType()
+                    || SampleRefreshTypeEnum.ADD_ON_REFRESH == s.getRefreshType());
         }
         assertEquals(0, configuration.getUnmappedSamples().size());
         for (Sample s : configuration.getUnmappedSamples()) {

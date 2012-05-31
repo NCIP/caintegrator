@@ -241,6 +241,9 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
         for (Sample sample : mappedSamples) {
             if (!refreshMap.containsKey(sample.getName())) {
                 sample.setRefreshType(SampleRefreshTypeEnum.DELETE_ON_REFRESH);
+            } else if (studyConfiguration.getDeploymentFinishDate() != null
+                    && sample.getCreationDate().after(studyConfiguration.getDeploymentFinishDate())) {
+                sample.setRefreshType(SampleRefreshTypeEnum.ADD_ON_REFRESH);
             } else if (refreshMap.containsKey(sample.getName()) && refreshMap.get(sample.getName()) != null
                     && studyConfiguration.getDeploymentFinishDate() != null
                     && studyConfiguration.getDeploymentFinishDate().before(refreshMap.get(sample.getName()))) {

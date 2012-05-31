@@ -65,7 +65,7 @@
             <one-to-many class="gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier"/>
         </list>
         
-        <list name="samples" lazy="true" cascade="all">
+        <list name="samples" lazy="true" cascade="all, delete-orphan">
             <cache usage="read-write" />
             <key column="GENOMIC_DATA_SOURCE_CONFIGURATION_ID" />
             <list-index column="GENOMIC_DATA_SOURCE_INDEX"/>

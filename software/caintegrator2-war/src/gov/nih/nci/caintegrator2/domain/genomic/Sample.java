@@ -5,6 +5,7 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,7 +24,9 @@ public class Sample extends AbstractCaIntegrator2Object {
     private Set<ArrayData> arrayDataCollection = new HashSet<ArrayData>();
     private Set<Array> arrayCollection = new HashSet<Array>();
     private Set<AbstractReporter> reportersHighVariance = new HashSet<AbstractReporter>();
+    private Date creationDate = new Date();
     private SampleRefreshTypeEnum refreshType;
+
 
     /**
      * @return the name
@@ -174,6 +177,20 @@ public class Sample extends AbstractCaIntegrator2Object {
     @Transient
     public SampleRefreshTypeEnum getRefreshType() {
         return refreshType;
+    }
+
+    /**
+     * @return the creationDate
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * @param creationDate the creationDate to set
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
 }
