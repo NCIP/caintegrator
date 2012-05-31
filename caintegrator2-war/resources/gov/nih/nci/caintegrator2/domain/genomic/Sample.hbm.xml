@@ -8,6 +8,8 @@
         </id>
         <!-- Attributes mapping for the Sample class -->
         <property name="name" type="string" column="NAME"/>
+        <property name="creationDate" type="java.util.Date" column="CREATION_DATE"/>
+        
         <!-- Associations mapping for the Sample class -->
         <many-to-one name="sampleAcquisition" class="gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition" column="SAMPLE_ACQUISITION_ID" unique="true" lazy="proxy" cascade="all" />
         <many-to-one name="genomicDataSource" 

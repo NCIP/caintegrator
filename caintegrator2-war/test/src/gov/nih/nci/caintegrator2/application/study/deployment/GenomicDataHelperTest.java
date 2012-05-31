@@ -47,6 +47,7 @@ public class GenomicDataHelperTest extends AbstractMockitoTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration genomicDataConfiguration = new GenomicDataSourceConfiguration();
         Sample sample = new Sample();
+        sample.setName("testSample");
         genomicDataConfiguration.getSamples().add(sample);
         genomicDataConfiguration.setDataType(PlatformDataTypeEnum.EXPRESSION);
         genomicDataConfiguration.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
@@ -55,7 +56,6 @@ public class GenomicDataHelperTest extends AbstractMockitoTest {
         helper.loadData(studyConfiguration);
         assertTrue(arrayDataService.saveCalled);
         verify(caArrayFacade, atLeastOnce()).retrieveData(any(GenomicDataSourceConfiguration.class));
-//        assertTrue(caArrayFacade.retrieveDataCalled);
         assertEquals(1, sample.getArrayCollection().size());
         assertEquals(2, sample.getArrayDataCollection().size());
     }

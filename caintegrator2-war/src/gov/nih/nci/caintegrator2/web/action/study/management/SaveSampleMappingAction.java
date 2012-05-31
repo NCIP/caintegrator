@@ -88,8 +88,6 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 
 import java.io.File;
 import java.io.IOException;
@@ -178,7 +176,6 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
     private String executeSampleMapping() {
         if (getSampleMappingFile() != null) {
             try {
-                reloadSamples();
                 getStudyManagementService().mapSamples(getStudyConfiguration(), getSampleMappingFile(),
                         getGenomicSource());
                 persistFileName();
@@ -201,16 +198,6 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
             }
         }
         return SUCCESS;
-    }
-
-    private void reloadSamples() {
-        try {
-            getStudyManagementService().loadGenomicSource(getGenomicSource());
-        } catch (ConnectionException e) {
-            LOG.error("Unable to access experiement " + getGenomicSource().getExperimentIdentifier(), e);
-        } catch (ExperimentNotFoundException e) {
-            LOG.error("Experiment not found: " + getGenomicSource().getExperimentIdentifier(), e);
-        }
     }
 
     private void persistFileName() {

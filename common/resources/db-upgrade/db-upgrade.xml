@@ -506,4 +506,8 @@
         <comment>Updating the structure of the authorized study element group to include the group itself and not just it's name and description.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.4/upgrade-1.4.8.sql"/>
     </changeSet>
+    <changeSet id="1.4.9" author="aevansel">
+        <comment>Adding a creation date field to the sample table.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.4/upgrade-1.4.9.sql"/>
+    </changeSet>
 </databaseChangeLog>

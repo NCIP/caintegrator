@@ -85,7 +85,9 @@ public abstract class AbstractMockitoTest {
      */
     protected void setUpCaArrayFacade() throws Exception {
         caArrayFacade = mock(CaArrayFacade.class);
-        when(caArrayFacade.getSamples(anyString(), any(ServerConnectionProfile.class))).thenReturn(Arrays.asList(new Sample()));
+        Sample sample = new Sample();
+        sample.setName("testSample");
+        when(caArrayFacade.getSamples(anyString(), any(ServerConnectionProfile.class))).thenReturn(Arrays.asList(sample));
         when(caArrayFacade.retrieveFile(any(GenomicDataSourceConfiguration.class), anyString())).thenReturn(ArrayUtils.EMPTY_BYTE_ARRAY);
         when(caArrayFacade.retrieveFilesForGenomicSource(any(GenomicDataSourceConfiguration.class))).thenReturn(Collections.<File>emptyList());
         when(caArrayFacade.getLastDataModificationDate(any(GenomicDataSourceConfiguration.class))).thenReturn(new Date());
