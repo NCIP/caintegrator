@@ -474,6 +474,13 @@
                 <filter token="jboss.server.port" value="${jboss.server.port}"/>
             </filterset>
         </copy>
+        
+        <copy file="${caintegrator2.war.resources.src.dir}/caintegrator2-config.xml"
+            todir="${caintegrator2.war.resources.target.dir}" filtering="true" overwrite="true">
+            <filterset>
+                <filter token="single.sign.on.install" value="${single.sign.on.install}"/>
+            </filterset>
+        </copy>
 
     	<!-- Uncomment the correct context configuration for CAS SSO or not-->
         <if>

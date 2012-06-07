@@ -32,10 +32,12 @@ package gov.nih.nci.caintegrator2.application.quartz;
 
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,22 +51,51 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class DataRefreshJob extends QuartzJobBean {
+public class DataRefreshJob extends QuartzJobBean implements Runnable {
     private static final Logger LOG = Logger.getLogger(DataRefreshJob.class);
     private CaArrayFacade caArrayFacade;
     private CaIntegrator2Dao dao;
+    private String user;
+    private boolean singleSignOnInstallation = false;
 
     /**
      * {@inheritDoc}
      */
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-        List<GenomicDataSourceConfiguration> dataSources = dao.getAllGenomicDataSources();
-        for (GenomicDataSourceConfiguration dataSource : dataSources) {
-            handleModification(dataSource);
+        if (!isSingleSignOnInstallation()) {
+            List<GenomicDataSourceConfiguration> dataSources = dao.getAllGenomicDataSources();
+            for (GenomicDataSourceConfiguration dataSource : dataSources) {
+                handleModification(dataSource);
+            }
+            dao.markStudiesAsNeedingRefresh();
+            LOG.info("Data Refresh Job successfully executed.");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void run() {
+        List<Study> configs = dao.getStudies(user);
+        List<GenomicDataSourceConfiguration> dataSources = new ArrayList<GenomicDataSourceConfiguration>();
+        for (Study study : configs) {
+            dataSources.addAll(study.getStudyConfiguration().getGenomicDataSources());
+        }
+        for (GenomicDataSourceConfiguration gds : dataSources) {
+            handleModification(gds);
         }
         dao.markStudiesAsNeedingRefresh();
-        LOG.info("Data Refresh Job successfully executed.");
+        LOG.info("SSO Data Refresh Job successfully completed for " + user);
+    }
+
+    /**
+     * Kicks off the thread.
+     */
+    public void startTask() {
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
     /**
@@ -73,8 +104,7 @@ public class DataRefreshJob extends QuartzJobBean {
     private void handleModification(GenomicDataSourceConfiguration dataSource) {
         try {
             Date lastModifiedDate = caArrayFacade.getLastDataModificationDate(dataSource);
-            boolean modified = lastModifiedDate != null
-                    ? lastModifiedDate.after(dataSource.getLastModifiedDate()) : false;
+            boolean modified = lastModifiedDate != null && lastModifiedDate.after(dataSource.getLastModifiedDate());
             dataSource.setDataRefreshed(modified);
             dao.save(dataSource);
         } catch (ExperimentNotFoundException e) {
@@ -99,5 +129,26 @@ public class DataRefreshJob extends QuartzJobBean {
      */
     public void setCaArrayFacade(CaArrayFacade caArrayFacade) {
         this.caArrayFacade = caArrayFacade;
+    }
+
+    /**
+     * @return the singleSignOnInstallation
+     */
+    public boolean isSingleSignOnInstallation() {
+        return singleSignOnInstallation;
+    }
+
+    /**
+     * @param singleSignOnInstallation the singleSignOnInstallation to set
+     */
+    public void setSingleSignOnInstallation(boolean singleSignOnInstallation) {
+        this.singleSignOnInstallation = singleSignOnInstallation;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(String user) {
+        this.user = user;
     }
 }

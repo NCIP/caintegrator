@@ -68,10 +68,15 @@
         </property>
     </bean>
     
-    <bean id="loginAction"
-        scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.LoginAction">
+    <bean id="dataRefreshRunner" scope="prototype" class="gov.nih.nci.caintegrator2.application.quartz.DataRefreshJob">
+        <property name="dao" ref="caIntegrator2Dao"/>
+        <property name="caArrayFacade" ref="caArrayFacade"/>
     </bean>
+        
+    <bean id="loginAction" scope="prototype" class="gov.nih.nci.caintegrator2.web.action.LoginAction">
+        <property name="dataRefreshRunner" ref="dataRefreshRunner"/>
+    </bean>
+    
     
     <bean id="registrationAction"
         scope="prototype"
@@ -1219,6 +1224,7 @@
             <map>
                 <entry key="caArrayFacade" value-ref="caArrayFacade"/>
                 <entry key="dao" value-ref="caIntegrator2Dao"/>
+                <entry key="singleSignOnInstallation" value="@single.sign.on.install@"/>
             </map>
         </property>
     </bean>

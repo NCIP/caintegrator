@@ -39,6 +39,8 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -48,6 +50,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
@@ -70,6 +73,7 @@ import org.mockito.stubbing.Answer;
  */
 public abstract class AbstractMockitoTest {
     protected CaArrayFacade caArrayFacade;
+    protected CaIntegrator2Dao dao;
 
     /**
      * Sets up mocks.
@@ -78,6 +82,24 @@ public abstract class AbstractMockitoTest {
     @Before
     public void setUpMocks() throws Exception {
         setUpCaArrayFacade();
+        setUpDao();
+    }
+
+    /**
+     * Sets up the caIntegrator dao mock objects.
+     */
+    protected void setUpDao() throws Exception {
+        Study study = new Study();
+        study.setStudyConfiguration(new StudyConfiguration());
+
+        GenomicDataSourceConfiguration dataSource = new GenomicDataSourceConfiguration();
+        dataSource.setExperimentIdentifier("EXP-1");
+        dataSource.setLastModifiedDate(new Date());
+        study.getStudyConfiguration().getGenomicDataSources().add(dataSource);
+
+        dao = mock(CaIntegrator2Dao.class);
+        when(dao.getStudies(anyString())).thenReturn(Arrays.asList(study));
+        when(dao.getAllGenomicDataSources()).thenReturn(Arrays.asList(dataSource));
     }
 
     /**
