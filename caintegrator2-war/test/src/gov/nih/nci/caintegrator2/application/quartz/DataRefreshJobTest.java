@@ -33,21 +33,17 @@ package gov.nih.nci.caintegrator2.application.quartz;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
-
-import java.util.Arrays;
-import java.util.Date;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import javax.ejb.EJBAccessException;
 
-import org.apache.commons.lang.xwork.time.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.quartz.JobExecutionContext;
@@ -58,45 +54,48 @@ import org.quartz.JobExecutionContext;
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class DataRefreshJobTest {
-
+public class DataRefreshJobTest extends AbstractMockitoTest {
     private DataRefreshJob job;
-    private CaIntegrator2Dao dao;
-    private CaArrayFacade caArrayFacade;
 
     /**
      * Sets up the test.
      */
     @Before
     public void setUp() throws Exception {
-        Date now = new Date();
         job = new DataRefreshJob();
-        caArrayFacade = mock(CaArrayFacade.class);
-        when(caArrayFacade.getLastDataModificationDate(any(GenomicDataSourceConfiguration.class))).thenReturn(now);
-
         job.setCaArrayFacade(caArrayFacade);
-
-        dao = mock(CaIntegrator2Dao.class);
-        GenomicDataSourceConfiguration source = new GenomicDataSourceConfiguration();
-        source.setExperimentIdentifier("test-experiment");
-        source.setLastModifiedDate(DateUtils.addDays(now, -1));
-        when(dao.getAllGenomicDataSources()).thenReturn(Arrays.asList(source));
         job.setDao(dao);
     }
 
 
     /**
-     * Tests the job execution.
+     * Tests the job execution in non SSO mode.
      * @throws Exception on error
      */
     @Test
     public void executeInternal() throws Exception {
+        job.setSingleSignOnInstallation(false);
         job.executeInternal(mock(JobExecutionContext.class));
         verify(dao, times(1)).getAllGenomicDataSources();
         verify(caArrayFacade, times(1)).getLastDataModificationDate(any(GenomicDataSourceConfiguration.class));;
         verify(dao, times(1)).save(anyObject());
         verify(dao, times(1)).markStudiesAsNeedingRefresh();
     }
+
+    /**
+     * Tests the job execution in  SSO mode.
+     * @throws Exception
+     */
+    @Test
+    public void executeInternalSSOMode() throws Exception {
+        job.setSingleSignOnInstallation(true);
+        job.executeInternal(mock(JobExecutionContext.class));
+        verify(dao, never()).getAllGenomicDataSources();
+        verify(caArrayFacade, never()).getLastDataModificationDate(any(GenomicDataSourceConfiguration.class));;
+        verify(dao, never()).save(anyObject());
+        verify(dao, never()).markStudiesAsNeedingRefresh();
+    }
+
 
     /**
      * Tests the job execution when no experiment is to be found.
@@ -127,14 +126,65 @@ public class DataRefreshJobTest {
     }
 
     /**
-     * Tests job execution when an EJB access error occurs.
+     * Tests job execution when an unexpected error occurs.
      * @throws Exception on error
      */
+    @Test
     public void executeInternalEJBError() throws Exception {
         when(caArrayFacade.getLastDataModificationDate(any(GenomicDataSourceConfiguration.class)))
         .thenThrow(new EJBAccessException());
         job.executeInternal(mock(JobExecutionContext.class));
         verify(dao, times(1)).getAllGenomicDataSources();
+        verify(dao, times(0)).save(anyObject());
+        verify(dao, times(1)).markStudiesAsNeedingRefresh();
+    }
+
+    /**
+     * Tests the job execution.
+     * @throws Exception on error
+     */
+    @Test
+    public void run() throws Exception {
+        job.run();
+        verify(caArrayFacade, times(1)).getLastDataModificationDate(any(GenomicDataSourceConfiguration.class));;
+        verify(dao, times(1)).save(anyObject());
+        verify(dao, times(1)).markStudiesAsNeedingRefresh();
+    }
+
+    /**
+     * Tests the job execution when no experiment is to be found.
+     * @throws Exception on error
+     */
+    @Test
+    public void runNoExperiment() throws Exception {
+        when(caArrayFacade.getLastDataModificationDate(any(GenomicDataSourceConfiguration.class)))
+        .thenThrow(new ExperimentNotFoundException("Experiement not found"));
+        job.run();
+        verify(dao, times(0)).save(anyObject());
+        verify(dao, times(1)).markStudiesAsNeedingRefresh();
+    }
+
+    /**
+     * Tests the job execution when the connection fails.
+     * @throws Exception on error
+     */
+    @Test
+    public void runInternalConnectionFails() throws Exception {
+        when(caArrayFacade.getLastDataModificationDate(any(GenomicDataSourceConfiguration.class)))
+        .thenThrow(new ConnectionException("Connection Failed"));
+        job.run();
+        verify(dao, times(0)).save(anyObject());
+        verify(dao, times(1)).markStudiesAsNeedingRefresh();
+    }
+
+    /**
+     * Tests job execution when an unexpected error occurs.
+     * @throws Exception on error
+     */
+    @Test
+    public void runGenericException() throws Exception {
+        when(caArrayFacade.getLastDataModificationDate(any(GenomicDataSourceConfiguration.class))).thenThrow(new EJBAccessException());
+        job.run();
         verify(dao, times(0)).save(anyObject());
         verify(dao, times(1)).markStudiesAsNeedingRefresh();
     }
