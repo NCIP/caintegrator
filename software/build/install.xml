@@ -668,7 +668,14 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
                 <filter token="jboss.server.port" value="${jboss.server.port}"/>
             </filterset>
         </copy>
-
+        
+        <copy file="${working.dir}/caintegrator2-war/WEB-INF/classes/caintegrator2-config.xml" 
+            todir="${working.dir}/caintegrator2-war/WEB-INF/classes" filtering="true" overwrite="true">
+            <filterset>
+                <filter token="single.sign.on.install" value="${single.sign.on.install}"/>
+            </filterset>
+        </copy>
+        
         <!-- Uncomment the correct context configuration for CAS SSO or not-->
         <if>
             <equals arg1="${single.sign.on.install}" arg2="true" />

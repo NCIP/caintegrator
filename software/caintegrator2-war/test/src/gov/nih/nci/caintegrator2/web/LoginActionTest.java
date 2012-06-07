@@ -83,59 +83,85 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.quartz.DataRefreshJob;
-import gov.nih.nci.caintegrator2.security.SecurityHelper;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
+import gov.nih.nci.caintegrator2.web.action.LoginAction;
+
+import java.util.HashMap;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.struts2.util.ServletContextAware;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.junit.Before;
+import org.junit.Test;
 
+import com.opensymphony.xwork2.ActionContext;
 
 /**
- * Action used to log in a user (may not actually need this action when using ACEGI).
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public class LoginAction implements ServletContextAware {
-    private static final String LOGIN = "login";
+public class LoginActionTest extends AbstractMockitoTest {
+    private LoginAction action;
     private ServletContext servletContext;
-    private DataRefreshJob dataRefreshRunner;
+    private ActionContext actionContext;
 
-    /**
-     * Opens login screen.
-     * @return - login.
-     */
-    public String openLogin() {
-        String ssoEnabled = servletContext.getInitParameter("ssoEnabled");
-        String currentUser = SecurityHelper.getCurrentUsername();
-        if (BooleanUtils.toBoolean(ssoEnabled) && SessionHelper.getInstance().isStudyManager()) {
-            getDataRefreshRunner().setUser(currentUser);
-            getDataRefreshRunner().startTask();
-        }
-        return LOGIN;
+    @Before
+    public void setUp() {
+        servletContext = mock(ServletContext.class);
+        when(servletContext.getInitParameter(eq("ssoEnabled"))).thenReturn("false");
+
+        actionContext = new ActionContext(new HashMap<String, Object>());
+        ActionContext.setContext(actionContext);
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+
+        DataRefreshJob runner = new DataRefreshJob();
+        runner.setCaArrayFacade(caArrayFacade);
+        runner.setDao(dao);
+
+        action = new LoginAction();
+        action.setDataRefreshRunner(runner);
+        action.setServletContext(servletContext);
     }
 
     /**
-     * @return the dataRefreshRunner
+     * Tests the login method for a non SSO installation.
      */
-    public DataRefreshJob getDataRefreshRunner() {
-        return dataRefreshRunner;
+    @Test
+    public void nonSSOLogin() throws Exception {
+        AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
+        authentication.setUsername(UserWorkspace.ANONYMOUS_USER_NAME);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        assertEquals("login", action.openLogin());
+
+        authentication = new AcegiAuthenticationStub();
+        authentication.setUsername("validUserName");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        assertEquals("login", action.openLogin());
     }
 
     /**
-     * @param dataRefreshRunner the dataRefreshRunner to set
+     * Tests the login method for an SSO installation.
      */
-    public void setDataRefreshRunner(DataRefreshJob dataRefreshRunner) {
-        this.dataRefreshRunner = dataRefreshRunner;
-    }
+    @Test
+    public void ssoLogin() throws Exception {
+        when(servletContext.getInitParameter(eq("ssoEnabled"))).thenReturn("true");
+        AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
+        authentication.setUsername("manager");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setServletContext(ServletContext context) {
-        this.servletContext = context;
+        SessionHelper.getInstance().setStudyManager(false);
+        assertEquals("login", action.openLogin());
+
+        SessionHelper.getInstance().setStudyManager(true);
+        assertEquals("login", action.openLogin());
     }
 }
